@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1"
+     xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.ingest_management_app_0{fill-rule:evenodd;clip-rule:evenodd;}
+	.ingest_management_app_1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.ingest_management_app_2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.ingest_management_app_3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.ingest_management_app_4{fill:#BCB9BA;}
+	.ingest_management_app_5{fill:#BBB9BA;}
+	.ingest_management_app_6{fill:#BBB8B9;}
+	.ingest_management_app_7{fill:#BAB8B9;}
+	.ingest_management_app_8{fill:#B9B7B8;}
+	.ingest_management_app_9{fill:#B9B7B7;}
+	.ingest_management_app_10{fill:#B8B6B7;}
+	.ingest_management_app_11{fill:#B8B5B6;}
+	.ingest_management_app_12{fill:#B7B5B6;}
+	.ingest_management_app_13{fill:#B7B4B5;}
+	.ingest_management_app_14{fill:#B6B4B5;}
+	.ingest_management_app_15{fill:#B6B3B4;}
+	.ingest_management_app_16{fill:#B5B3B4;}
+	.ingest_management_app_17{fill:#B4B2B3;}
+	.ingest_management_app_18{fill:#B3B1B2;}
+	.ingest_management_app_19{fill:#B3B1B1;}
+	.ingest_management_app_20{fill:#B2B0B1;}
+	.ingest_management_app_21{fill:#B2AFB0;}
+	.ingest_management_app_22{fill:#B1AFB0;}
+	.ingest_management_app_23{fill:#B1AEAF;}
+	.ingest_management_app_24{fill:#B0AEAF;}
+	.ingest_management_app_25{fill:#AFADAE;}
+	.ingest_management_app_26{fill:#AEACAD;}
+	.ingest_management_app_27{fill:#ADABAC;}
+	.ingest_management_app_28{fill:#ADABAB;}
+	.ingest_management_app_29{fill:#ACAAAB;}
+	.ingest_management_app_30{fill:#ACAAAA;}
+	.ingest_management_app_31{fill:#ABA9AA;}
+	.ingest_management_app_32{fill:#AAA8A9;}
+	.ingest_management_app_33{fill:#A9A7A8;}
+	.ingest_management_app_34{fill:#A8A6A7;}
+	.ingest_management_app_35{fill:#A7A5A6;}
+	.ingest_management_app_36{fill:#A7A5A5;}
+	.ingest_management_app_37{fill:#A6A4A5;}
+	.ingest_management_app_38{fill:#A5A4A4;}
+	.ingest_management_app_39{fill:#A5A3A4;}
+	.ingest_management_app_40{fill:#A4A2A3;}
+	.ingest_management_app_41{fill:#A3A1A2;}
+	.ingest_management_app_42{fill:#A2A0A1;}
+	.ingest_management_app_43{fill:#A19FA0;}
+	.ingest_management_app_44{fill:#A09F9F;}
+	.ingest_management_app_45{fill:#A09E9F;}
+	.ingest_management_app_46{fill:#9F9E9E;}
+	.ingest_management_app_47{fill:#9F9D9E;}
+	.ingest_management_app_48{fill:#9E9D9D;}
+	.ingest_management_app_49{fill:#9E9C9D;}
+	.ingest_management_app_50{fill:#9D9B9C;}
+	.ingest_management_app_51{fill:#9C9A9B;}
+	.ingest_management_app_52{fill:#9B9A9B;}
+	.ingest_management_app_53{fill:#9B999A;}
+	.ingest_management_app_54{fill:#9A9999;}
+	.ingest_management_app_55{fill:#9A9899;}
+	.ingest_management_app_56{fill:#999898;}
+	.ingest_management_app_57{fill:#999798;}
+	.ingest_management_app_58{fill:#989797;}
+	.ingest_management_app_59{fill:#989697;}
+	.ingest_management_app_60{fill:#979596;}
+	.ingest_management_app_61{fill:#969596;}
+	.ingest_management_app_62{fill:#969495;}
+	.ingest_management_app_63{fill:#959495;}
+	.ingest_management_app_64{fill:#959394;}
+	.ingest_management_app_65{fill:#949393;}
+	.ingest_management_app_66{fill:#949293;}
+	.ingest_management_app_67{fill:#939292;}
+	.ingest_management_app_68{fill:#939192;}
+	.ingest_management_app_69{fill:#929191;}
+	.ingest_management_app_70{fill:#919091;}
+	.ingest_management_app_71{fill:#919090;}
+	.ingest_management_app_72{fill:#908F90;}
+	.ingest_management_app_73{fill:#908E8F;}
+	.ingest_management_app_74{fill:#8F8E8F;}
+	.ingest_management_app_75{fill:#8F8D8E;}
+	.ingest_management_app_76{fill:#8E8D8D;}
+	.ingest_management_app_77{fill:#8E8C8D;}
+	.ingest_management_app_78{fill:#8D8C8C;}
+	.ingest_management_app_79{fill:#8C8B8C;}
+	.ingest_management_app_80{fill:#8C8B8B;}
+	.ingest_management_app_81{fill:#8B8A8B;}
+	.ingest_management_app_82{fill:#8B8A8A;}
+	.ingest_management_app_83{fill:#8A898A;}
+	.ingest_management_app_84{fill:#8A8889;}
+	.ingest_management_app_85{fill:#898888;}
+	.ingest_management_app_86{fill:#898788;}
+	.ingest_management_app_87{fill:#888787;}
+	.ingest_management_app_88{fill:#878687;}
+	.ingest_management_app_89{fill:#878686;}
+	.ingest_management_app_90{fill:#868586;}
+	.ingest_management_app_91{fill:#868585;}
+	.ingest_management_app_92{fill:#858485;}
+	.ingest_management_app_93{fill:#858484;}
+	.ingest_management_app_94{fill:#848384;}
+	.ingest_management_app_95{fill:#848383;}
+	.ingest_management_app_96{fill:#838282;}
+	.ingest_management_app_97{fill:#828182;}
+	.ingest_management_app_98{fill:#828181;}
+	.ingest_management_app_99{fill:#818081;}
+	.ingest_management_app_100{fill:#818080;}
+	.ingest_management_app_101{fill:#807F80;}
+	.ingest_management_app_102{fill:#807F7F;}
+	.ingest_management_app_103{fill:#7F7E7F;}
+	.ingest_management_app_104{fill:#7F7E7E;}
+	.ingest_management_app_105{fill:#7E7D7E;}
+	.ingest_management_app_106{fill:#7D7D7D;}
+	.ingest_management_app_107{fill:#7D7C7C;}
+	.ingest_management_app_108{fill:#7C7B7C;}
+	.ingest_management_app_109{fill:#7C7B7B;}
+	.ingest_management_app_110{fill:#7B7A7B;}
+	.ingest_management_app_111{fill:#7B7A7A;}
+	.ingest_management_app_112{fill:#7A797A;}
+	.ingest_management_app_113{fill:#7A7979;}
+	.ingest_management_app_114{fill:#797879;}
+	.ingest_management_app_115{fill:#787878;}
+	.ingest_management_app_116{fill:#787778;}
+	.ingest_management_app_117{fill:#777777;}
+	.ingest_management_app_118{fill:#777676;}
+	.ingest_management_app_119{fill:#767676;}
+	.ingest_management_app_120{fill:#767575;}
+	.ingest_management_app_121{fill:#757475;}
+	.ingest_management_app_122{fill:#757474;}
+	.ingest_management_app_123{fill:#747374;}
+	.ingest_management_app_124{fill:#737373;}
+	.ingest_management_app_125{fill:#737273;}
+	.ingest_management_app_126{fill:#727272;}
+	.ingest_management_app_127{fill:#727172;}
+	.ingest_management_app_128{fill:#717171;}
+	.ingest_management_app_129{fill:#717070;}
+	.ingest_management_app_130{fill:#707070;}
+	.ingest_management_app_131{fill:#706F6F;}
+	.ingest_management_app_132{fill:#6F6E6F;}
+	.ingest_management_app_133{fill:#6E6E6E;}
+	.ingest_management_app_134{fill:#6E6D6E;}
+	.ingest_management_app_135{fill:#6D6D6D;}
+	.ingest_management_app_136{fill:#6D6C6D;}
+	.ingest_management_app_137{fill:#6C6C6C;}
+	.ingest_management_app_138{fill:#6C6B6C;}
+	.ingest_management_app_139{fill:#6B6B6B;}
+	.ingest_management_app_140{fill:#6B6A6A;}
+	.ingest_management_app_141{fill:#6A6A6A;}
+	.ingest_management_app_142{fill:#696969;}
+	.ingest_management_app_143{fill:#686868;}
+	.ingest_management_app_144{fill:#686768;}
+	.ingest_management_app_145{fill:#676767;}
+	.ingest_management_app_146{fill:#676667;}
+	.ingest_management_app_147{fill:#666666;}
+	.ingest_management_app_148{fill:#666566;}
+	.ingest_management_app_149{fill:#656565;}
+	.ingest_management_app_150{fill:#646464;}
+	.ingest_management_app_151{fill:#636363;}
+	.ingest_management_app_152{fill:#626262;}
+	.ingest_management_app_153{fill:#626162;}
+	.ingest_management_app_154{fill:#616161;}
+	.ingest_management_app_155{fill:#616061;}
+	.ingest_management_app_156{fill:#606060;}
+	.ingest_management_app_157{fill:#5F5F60;}
+	.ingest_management_app_158{fill:#5F5F5F;}
+	.ingest_management_app_159{fill:#5E5E5E;}
+	.ingest_management_app_160{fill:#5D5D5D;}
+	.ingest_management_app_161{fill:#5C5C5C;}
+	.ingest_management_app_162{fill:#5B5B5B;}
+	.ingest_management_app_163{fill:#5A5A5B;}
+	.ingest_management_app_164{fill:#5A5A5A;}
+	.ingest_management_app_165{fill:#59595A;}
+	.ingest_management_app_166{fill:#595959;}
+	.ingest_management_app_167{fill:#585858;}
+	.ingest_management_app_168{fill:#575757;}
+	.ingest_management_app_169{fill:#565656;}
+	.ingest_management_app_170{fill:#555656;}
+	.ingest_management_app_171{fill:#555555;}
+	.ingest_management_app_172{fill:#545455;}
+	.ingest_management_app_173{fill:#545454;}
+	.ingest_management_app_174{fill:#535353;}
+	.ingest_management_app_175{fill:#525252;}
+	.ingest_management_app_176{fill:#515151;}
+	.ingest_management_app_177{fill:#505151;}
+	.ingest_management_app_178{fill:#505050;}
+	.ingest_management_app_179{fill:#4F5050;}
+	.ingest_management_app_180{fill:#4F4F4F;}
+	.ingest_management_app_181{fill:#4E4F4F;}
+	.ingest_management_app_182{fill:#4E4E4E;}
+	.ingest_management_app_183{fill:#4D4D4D;}
+	.ingest_management_app_184{fill:#4C4C4C;}
+	.ingest_management_app_185{fill:url(#SVGID_INGEST_MANAGEMENT_APP_01);}
+	.ingest_management_app_186{fill:url(#SVGID_00000026845408679931758890000014067867817302157735_);}
+	.ingest_management_app_187{fill:var(--vitamui-primary);}
+	.ingest_management_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000027564935852308643190000010720279659120781490_);}
+	.ingest_management_app_189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000025444417398563389040000005742664364619787967_);}
+	.ingest_management_app_190{fill:url(#SVGID_00000139265167567790234420000002719804412620277677_);}
+	.ingest_management_app_191{fill:url(#SVGID_00000083056772623687710850000003738971561351276734_);}
+	.ingest_management_app_192{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000155123073889476505650000014842006876956746146_);}
+	.ingest_management_app_193{fill:var(--vitamui-primary-50);}
+	.ingest_management_app_194{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000057146306216665876610000006240017040316379322_);}
+	.ingest_management_app_195{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000145038599775552169370000015657242365852249011_);}
+	.ingest_management_app_196{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000075143445535262350510000008958867330964244383_);}
+	.ingest_management_app_197{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000156560659043280659030000008598752903191726232_);}
+	.ingest_management_app_198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000118393843733628116610000016548889861980464263_);}
+	.ingest_management_app_199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000174577291850415938740000012326936492026741124_);}
+	.ingest_management_app_200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000080925024323625948330000012899499724412602538_);}
+	.ingest_management_app_201{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000078747300424642421900000003208868728370631082_);}
+	.ingest_management_app_202{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000170247904840990299990000009327688461812191118_);}
+	.ingest_management_app_203{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000146485615037513044320000016498403421054265233_);}
+	.ingest_management_app_204{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000129175770310474713530000001780559916032298405_);}
+	.ingest_management_app_205{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000079444163720738610790000008346548430937865139_);}
+	.ingest_management_app_206{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000083085423058152648600000003585199494201984942_);}
+	.ingest_management_app_207{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000050634684008468432180000000288936375148281252_);}
+	.ingest_management_app_208{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000181793448112751093440000017296428786357638287_);}
+	.ingest_management_app_209{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000127738494600344043790000012346600824069046697_);}
+	.ingest_management_app_210{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000163031642362007924150000016409585946843609486_);}
+	.ingest_management_app_211{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000125574926998902190070000008863291734141590697_);}
+	.ingest_management_app_212{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000147940275934776198150000014244946384707499959_);}
+	.ingest_management_app_213{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000099623221483022006400000008863584941143416473_);}
+	.ingest_management_app_214{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000002343094478384629060000012161764481311542938_);}
+	.ingest_management_app_215{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000176739086847124644250000009376984827350231703_);}
+	.ingest_management_app_216{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000060006661773575030860000002455758952382936494_);}
+	.ingest_management_app_217{fill:url(#SVGID_00000141430213597837723270000005749339459723837629_);}
+	.ingest_management_app_218{fill:url(#SVGID_00000134212169924832985920000007570292398239404189_);}
+	.ingest_management_app_219{fill:url(#SVGID_00000098912225211677232790000013071196530061135505_);}
+	.ingest_management_app_220{fill:url(#SVGID_00000074426970402981691650000013224108587560975806_);}
+	.ingest_management_app_221{fill:#FFFFFF;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="123.3" width="165.1" x="17.7" y="19.1"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<path class="ingest_management_app_0" d="M100.3,141.7c45.6,0,82.6,8.5,82.6,19c0,10.5-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2
+			C17.6,150.2,54.6,141.7,100.3,141.7z"/>
+		<path class="ingest_management_app_1" d="M100.3,142.1c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.3,150.4,56.7,142.1,100.3,142.1z"/>
+		<path class="ingest_management_app_2" d="M100.3,139.9c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.3,148.2,56.7,139.9,100.3,139.9z"/>
+		<path class="ingest_management_app_1" d="M100.3,138.7c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.3,147,56.7,138.7,100.3,138.7z"/>
+		<path class="ingest_management_app_3" d="M100.2,138.7c22.9,0,43.4,2.3,57.8,6c-30.2-1.8-112.6,2.6-132.9,18.5c-2.5-1.8-3.8-3.8-3.8-5.7
+			C21.2,147,56.7,138.7,100.2,138.7z"/>
+		<path class="ingest_management_app_2" d="M21.3,157.3c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C21.3,158,21.3,157.7,21.3,157.3z"/>
+	</g>
+</g>
+<g>
+	<ellipse class="ingest_management_app_4" cx="113.1" cy="156.9" rx="58.4" ry="9.9"/>
+	<ellipse class="ingest_management_app_5" cx="113.1" cy="156.9" rx="58.3" ry="9.8"/>
+	<ellipse class="ingest_management_app_6" cx="113.1" cy="156.9" rx="58.2" ry="9.8"/>
+	<ellipse class="ingest_management_app_7" cx="113.1" cy="156.9" rx="58.1" ry="9.8"/>
+	<ellipse class="ingest_management_app_8" cx="113.1" cy="156.9" rx="58" ry="9.7"/>
+	<ellipse class="ingest_management_app_9" cx="113.1" cy="156.9" rx="57.9" ry="9.7"/>
+	<ellipse class="ingest_management_app_10" cx="113.1" cy="156.9" rx="57.8" ry="9.7"/>
+	<ellipse class="ingest_management_app_11" cx="113" cy="156.9" rx="57.7" ry="9.6"/>
+	<ellipse class="ingest_management_app_12" cx="113" cy="156.9" rx="57.6" ry="9.6"/>
+	<ellipse class="ingest_management_app_13" cx="113" cy="156.9" rx="57.5" ry="9.6"/>
+	<ellipse class="ingest_management_app_14" cx="113" cy="156.8" rx="57.4" ry="9.5"/>
+	<ellipse class="ingest_management_app_15" cx="113" cy="156.8" rx="57.3" ry="9.5"/>
+	<ellipse class="ingest_management_app_16" cx="113" cy="156.8" rx="57.2" ry="9.5"/>
+	<ellipse class="ingest_management_app_17" cx="113" cy="156.8" rx="57" ry="9.4"/>
+	<ellipse class="ingest_management_app_17" cx="113" cy="156.8" rx="56.9" ry="9.4"/>
+	<ellipse class="ingest_management_app_18" cx="113" cy="156.8" rx="56.8" ry="9.4"/>
+	<ellipse class="ingest_management_app_19" cx="113" cy="156.8" rx="56.7" ry="9.3"/>
+	<ellipse class="ingest_management_app_20" cx="113" cy="156.8" rx="56.6" ry="9.3"/>
+	<ellipse class="ingest_management_app_21" cx="113" cy="156.8" rx="56.5" ry="9.3"/>
+	<ellipse class="ingest_management_app_22" cx="113" cy="156.8" rx="56.4" ry="9.3"/>
+	<ellipse class="ingest_management_app_23" cx="113" cy="156.8" rx="56.3" ry="9.2"/>
+	<ellipse class="ingest_management_app_24" cx="113" cy="156.8" rx="56.2" ry="9.2"/>
+	<ellipse class="ingest_management_app_25" cx="113" cy="156.8" rx="56.1" ry="9.2"/>
+	<ellipse class="ingest_management_app_25" cx="113" cy="156.8" rx="56" ry="9.1"/>
+	<ellipse class="ingest_management_app_26" cx="113" cy="156.8" rx="55.9" ry="9.1"/>
+	<ellipse class="ingest_management_app_26" cx="113" cy="156.8" rx="55.8" ry="9.1"/>
+	<ellipse class="ingest_management_app_27" cx="113" cy="156.8" rx="55.7" ry="9"/>
+	<ellipse class="ingest_management_app_28" cx="113" cy="156.8" rx="55.6" ry="9"/>
+	<ellipse class="ingest_management_app_29" cx="113" cy="156.8" rx="55.5" ry="9"/>
+	<ellipse class="ingest_management_app_30" cx="113" cy="156.8" rx="55.4" ry="8.9"/>
+	<ellipse class="ingest_management_app_31" cx="113" cy="156.8" rx="55.3" ry="8.9"/>
+	<ellipse class="ingest_management_app_32" cx="113" cy="156.8" rx="55.2" ry="8.9"/>
+	<ellipse class="ingest_management_app_32" cx="113" cy="156.7" rx="55.1" ry="8.8"/>
+	<ellipse class="ingest_management_app_33" cx="113" cy="156.7" rx="55" ry="8.8"/>
+	<ellipse class="ingest_management_app_33" cx="113" cy="156.7" rx="54.9" ry="8.8"/>
+	<ellipse class="ingest_management_app_34" cx="113" cy="156.7" rx="54.8" ry="8.7"/>
+	<ellipse class="ingest_management_app_34" cx="113" cy="156.7" rx="54.7" ry="8.7"/>
+	<ellipse class="ingest_management_app_35" cx="113" cy="156.7" rx="54.6" ry="8.7"/>
+	<ellipse class="ingest_management_app_36" cx="113" cy="156.7" rx="54.5" ry="8.6"/>
+	<ellipse class="ingest_management_app_37" cx="113" cy="156.7" rx="54.4" ry="8.6"/>
+	<ellipse class="ingest_management_app_38" cx="113" cy="156.7" rx="54.3" ry="8.6"/>
+	<ellipse class="ingest_management_app_39" cx="113" cy="156.7" rx="54.2" ry="8.5"/>
+	<ellipse class="ingest_management_app_40" cx="113" cy="156.7" rx="54.1" ry="8.5"/>
+	<ellipse class="ingest_management_app_40" cx="113" cy="156.7" rx="54" ry="8.5"/>
+	<ellipse class="ingest_management_app_41" cx="113" cy="156.7" rx="53.9" ry="8.5"/>
+	<ellipse class="ingest_management_app_41" cx="113" cy="156.7" rx="53.7" ry="8.4"/>
+	<ellipse class="ingest_management_app_42" cx="113" cy="156.7" rx="53.6" ry="8.4"/>
+	<ellipse class="ingest_management_app_42" cx="113" cy="156.7" rx="53.5" ry="8.4"/>
+	<ellipse class="ingest_management_app_43" cx="113" cy="156.7" rx="53.4" ry="8.3"/>
+	<ellipse class="ingest_management_app_44" cx="113" cy="156.7" rx="53.3" ry="8.3"/>
+	<ellipse class="ingest_management_app_45" cx="113" cy="156.7" rx="53.2" ry="8.3"/>
+	<ellipse class="ingest_management_app_46" cx="113" cy="156.7" rx="53.1" ry="8.2"/>
+	<ellipse class="ingest_management_app_47" cx="113" cy="156.7" rx="53" ry="8.2"/>
+	<ellipse class="ingest_management_app_48" cx="113" cy="156.7" rx="52.9" ry="8.2"/>
+	<ellipse class="ingest_management_app_49" cx="113" cy="156.6" rx="52.8" ry="8.1"/>
+	<ellipse class="ingest_management_app_50" cx="113" cy="156.6" rx="52.7" ry="8.1"/>
+	<ellipse class="ingest_management_app_50" cx="113" cy="156.6" rx="52.6" ry="8.1"/>
+	<ellipse class="ingest_management_app_51" cx="113" cy="156.6" rx="52.5" ry="8"/>
+	<ellipse class="ingest_management_app_52" cx="113" cy="156.6" rx="52.4" ry="8"/>
+	<ellipse class="ingest_management_app_53" cx="113" cy="156.6" rx="52.3" ry="8"/>
+	<ellipse class="ingest_management_app_54" cx="113" cy="156.6" rx="52.2" ry="7.9"/>
+	<ellipse class="ingest_management_app_55" cx="113" cy="156.6" rx="52.1" ry="7.9"/>
+	<ellipse class="ingest_management_app_56" cx="113" cy="156.6" rx="52" ry="7.9"/>
+	<ellipse class="ingest_management_app_57" cx="113" cy="156.6" rx="51.9" ry="7.8"/>
+	<ellipse class="ingest_management_app_58" cx="113" cy="156.6" rx="51.8" ry="7.8"/>
+	<ellipse class="ingest_management_app_59" cx="113" cy="156.6" rx="51.7" ry="7.8"/>
+	<ellipse class="ingest_management_app_60" cx="113" cy="156.6" rx="51.6" ry="7.7"/>
+	<ellipse class="ingest_management_app_61" cx="113" cy="156.6" rx="51.5" ry="7.7"/>
+	<ellipse class="ingest_management_app_62" cx="113" cy="156.6" rx="51.4" ry="7.7"/>
+	<ellipse class="ingest_management_app_63" cx="113" cy="156.6" rx="51.3" ry="7.6"/>
+	<ellipse class="ingest_management_app_64" cx="113" cy="156.6" rx="51.2" ry="7.6"/>
+	<ellipse class="ingest_management_app_65" cx="113" cy="156.6" rx="51.1" ry="7.6"/>
+	<ellipse class="ingest_management_app_66" cx="112.9" cy="156.6" rx="51" ry="7.6"/>
+	<ellipse class="ingest_management_app_67" cx="112.9" cy="156.6" rx="50.9" ry="7.5"/>
+	<ellipse class="ingest_management_app_68" cx="112.9" cy="156.6" rx="50.8" ry="7.5"/>
+	<ellipse class="ingest_management_app_69" cx="112.9" cy="156.6" rx="50.7" ry="7.5"/>
+	<ellipse class="ingest_management_app_70" cx="112.9" cy="156.5" rx="50.6" ry="7.4"/>
+	<ellipse class="ingest_management_app_71" cx="112.9" cy="156.5" rx="50.4" ry="7.4"/>
+	<ellipse class="ingest_management_app_72" cx="112.9" cy="156.5" rx="50.3" ry="7.4"/>
+	<ellipse class="ingest_management_app_73" cx="112.9" cy="156.5" rx="50.2" ry="7.3"/>
+	<ellipse class="ingest_management_app_74" cx="112.9" cy="156.5" rx="50.1" ry="7.3"/>
+	<ellipse class="ingest_management_app_75" cx="112.9" cy="156.5" rx="50" ry="7.3"/>
+	<ellipse class="ingest_management_app_76" cx="112.9" cy="156.5" rx="49.9" ry="7.2"/>
+	<ellipse class="ingest_management_app_77" cx="112.9" cy="156.5" rx="49.8" ry="7.2"/>
+	<ellipse class="ingest_management_app_78" cx="112.9" cy="156.5" rx="49.7" ry="7.2"/>
+	<ellipse class="ingest_management_app_79" cx="112.9" cy="156.5" rx="49.6" ry="7.1"/>
+	<ellipse class="ingest_management_app_80" cx="112.9" cy="156.5" rx="49.5" ry="7.1"/>
+	<ellipse class="ingest_management_app_81" cx="112.9" cy="156.5" rx="49.4" ry="7.1"/>
+	<ellipse class="ingest_management_app_82" cx="112.9" cy="156.5" rx="49.3" ry="7"/>
+	<ellipse class="ingest_management_app_83" cx="112.9" cy="156.5" rx="49.2" ry="7"/>
+	<ellipse class="ingest_management_app_84" cx="112.9" cy="156.5" rx="49.1" ry="7"/>
+	<ellipse class="ingest_management_app_85" cx="112.9" cy="156.5" rx="49" ry="6.9"/>
+	<ellipse class="ingest_management_app_86" cx="112.9" cy="156.5" rx="48.9" ry="6.9"/>
+	<ellipse class="ingest_management_app_87" cx="112.9" cy="156.5" rx="48.8" ry="6.9"/>
+	<ellipse class="ingest_management_app_88" cx="112.9" cy="156.5" rx="48.7" ry="6.8"/>
+	<ellipse class="ingest_management_app_89" cx="112.9" cy="156.5" rx="48.6" ry="6.8"/>
+	<ellipse class="ingest_management_app_90" cx="112.9" cy="156.5" rx="48.5" ry="6.8"/>
+	<ellipse class="ingest_management_app_91" cx="112.9" cy="156.5" rx="48.4" ry="6.8"/>
+	<ellipse class="ingest_management_app_92" cx="112.9" cy="156.4" rx="48.3" ry="6.7"/>
+	<ellipse class="ingest_management_app_93" cx="112.9" cy="156.4" rx="48.2" ry="6.7"/>
+	<ellipse class="ingest_management_app_94" cx="112.9" cy="156.4" rx="48.1" ry="6.7"/>
+	<ellipse class="ingest_management_app_95" cx="112.9" cy="156.4" rx="48" ry="6.6"/>
+	<ellipse class="ingest_management_app_96" cx="112.9" cy="156.4" rx="47.9" ry="6.6"/>
+	<ellipse class="ingest_management_app_97" cx="112.9" cy="156.4" rx="47.8" ry="6.6"/>
+	<ellipse class="ingest_management_app_98" cx="112.9" cy="156.4" rx="47.7" ry="6.5"/>
+	<ellipse class="ingest_management_app_99" cx="112.9" cy="156.4" rx="47.6" ry="6.5"/>
+	<ellipse class="ingest_management_app_100" cx="112.9" cy="156.4" rx="47.5" ry="6.5"/>
+	<ellipse class="ingest_management_app_101" cx="112.9" cy="156.4" rx="47.4" ry="6.4"/>
+	<ellipse class="ingest_management_app_102" cx="112.9" cy="156.4" rx="47.3" ry="6.4"/>
+	<ellipse class="ingest_management_app_103" cx="112.9" cy="156.4" rx="47.1" ry="6.4"/>
+	<ellipse class="ingest_management_app_104" cx="112.9" cy="156.4" rx="47" ry="6.3"/>
+	<ellipse class="ingest_management_app_105" cx="112.9" cy="156.4" rx="46.9" ry="6.3"/>
+	<ellipse class="ingest_management_app_106" cx="112.9" cy="156.4" rx="46.8" ry="6.3"/>
+	<ellipse class="ingest_management_app_107" cx="112.9" cy="156.4" rx="46.7" ry="6.2"/>
+	<ellipse class="ingest_management_app_108" cx="112.9" cy="156.4" rx="46.6" ry="6.2"/>
+	<ellipse class="ingest_management_app_109" cx="112.9" cy="156.4" rx="46.5" ry="6.2"/>
+	<ellipse class="ingest_management_app_110" cx="112.9" cy="156.4" rx="46.4" ry="6.1"/>
+	<ellipse class="ingest_management_app_111" cx="112.9" cy="156.4" rx="46.3" ry="6.1"/>
+	<ellipse class="ingest_management_app_112" cx="112.9" cy="156.4" rx="46.2" ry="6.1"/>
+	<ellipse class="ingest_management_app_113" cx="112.9" cy="156.4" rx="46.1" ry="6"/>
+	<ellipse class="ingest_management_app_114" cx="112.9" cy="156.3" rx="46" ry="6"/>
+	<ellipse class="ingest_management_app_115" cx="112.9" cy="156.3" rx="45.9" ry="6"/>
+	<ellipse class="ingest_management_app_116" cx="112.9" cy="156.3" rx="45.8" ry="5.9"/>
+	<ellipse class="ingest_management_app_117" cx="112.9" cy="156.3" rx="45.7" ry="5.9"/>
+	<ellipse class="ingest_management_app_118" cx="112.9" cy="156.3" rx="45.6" ry="5.9"/>
+	<ellipse class="ingest_management_app_119" cx="112.9" cy="156.3" rx="45.5" ry="5.9"/>
+	<ellipse class="ingest_management_app_120" cx="112.9" cy="156.3" rx="45.4" ry="5.8"/>
+	<ellipse class="ingest_management_app_121" cx="112.9" cy="156.3" rx="45.3" ry="5.8"/>
+	<ellipse class="ingest_management_app_122" cx="112.9" cy="156.3" rx="45.2" ry="5.8"/>
+	<ellipse class="ingest_management_app_123" cx="112.9" cy="156.3" rx="45.1" ry="5.7"/>
+	<ellipse class="ingest_management_app_124" cx="112.9" cy="156.3" rx="45" ry="5.7"/>
+	<ellipse class="ingest_management_app_125" cx="112.9" cy="156.3" rx="44.9" ry="5.7"/>
+	<ellipse class="ingest_management_app_126" cx="112.9" cy="156.3" rx="44.8" ry="5.6"/>
+	<ellipse class="ingest_management_app_127" cx="112.9" cy="156.3" rx="44.7" ry="5.6"/>
+	<ellipse class="ingest_management_app_128" cx="112.9" cy="156.3" rx="44.6" ry="5.6"/>
+	<ellipse class="ingest_management_app_129" cx="112.9" cy="156.3" rx="44.5" ry="5.5"/>
+	<ellipse class="ingest_management_app_130" cx="112.8" cy="156.3" rx="44.4" ry="5.5"/>
+	<ellipse class="ingest_management_app_131" cx="112.8" cy="156.3" rx="44.3" ry="5.5"/>
+	<ellipse class="ingest_management_app_132" cx="112.8" cy="156.3" rx="44.2" ry="5.4"/>
+	<ellipse class="ingest_management_app_133" cx="112.8" cy="156.3" rx="44.1" ry="5.4"/>
+	<ellipse class="ingest_management_app_134" cx="112.8" cy="156.3" rx="44" ry="5.4"/>
+	<ellipse class="ingest_management_app_135" cx="112.8" cy="156.3" rx="43.8" ry="5.3"/>
+	<ellipse class="ingest_management_app_136" cx="112.8" cy="156.2" rx="43.7" ry="5.3"/>
+	<ellipse class="ingest_management_app_137" cx="112.8" cy="156.2" rx="43.6" ry="5.3"/>
+	<ellipse class="ingest_management_app_138" cx="112.8" cy="156.2" rx="43.5" ry="5.2"/>
+	<ellipse class="ingest_management_app_139" cx="112.8" cy="156.2" rx="43.4" ry="5.2"/>
+	<ellipse class="ingest_management_app_140" cx="112.8" cy="156.2" rx="43.3" ry="5.2"/>
+	<ellipse class="ingest_management_app_141" cx="112.8" cy="156.2" rx="43.2" ry="5.1"/>
+	<ellipse class="ingest_management_app_142" cx="112.8" cy="156.2" rx="43.1" ry="5.1"/>
+	<ellipse class="ingest_management_app_142" cx="112.8" cy="156.2" rx="43" ry="5.1"/>
+	<ellipse class="ingest_management_app_143" cx="112.8" cy="156.2" rx="42.9" ry="5.1"/>
+	<ellipse class="ingest_management_app_144" cx="112.8" cy="156.2" rx="42.8" ry="5"/>
+	<ellipse class="ingest_management_app_145" cx="112.8" cy="156.2" rx="42.7" ry="5"/>
+	<ellipse class="ingest_management_app_146" cx="112.8" cy="156.2" rx="42.6" ry="5"/>
+	<ellipse class="ingest_management_app_147" cx="112.8" cy="156.2" rx="42.5" ry="4.9"/>
+	<ellipse class="ingest_management_app_148" cx="112.8" cy="156.2" rx="42.4" ry="4.9"/>
+	<ellipse class="ingest_management_app_149" cx="112.8" cy="156.2" rx="42.3" ry="4.9"/>
+	<ellipse class="ingest_management_app_150" cx="112.8" cy="156.2" rx="42.2" ry="4.8"/>
+	<ellipse class="ingest_management_app_150" cx="112.8" cy="156.2" rx="42.1" ry="4.8"/>
+	<ellipse class="ingest_management_app_151" cx="112.8" cy="156.2" rx="42" ry="4.8"/>
+	<ellipse class="ingest_management_app_151" cx="112.8" cy="156.2" rx="41.9" ry="4.7"/>
+	<ellipse class="ingest_management_app_152" cx="112.8" cy="156.2" rx="41.8" ry="4.7"/>
+	<ellipse class="ingest_management_app_153" cx="112.8" cy="156.2" rx="41.7" ry="4.7"/>
+	<ellipse class="ingest_management_app_154" cx="112.8" cy="156.2" rx="41.6" ry="4.6"/>
+	<ellipse class="ingest_management_app_155" cx="112.8" cy="156.1" rx="41.5" ry="4.6"/>
+	<ellipse class="ingest_management_app_156" cx="112.8" cy="156.1" rx="41.4" ry="4.6"/>
+	<ellipse class="ingest_management_app_157" cx="112.8" cy="156.1" rx="41.3" ry="4.5"/>
+	<ellipse class="ingest_management_app_158" cx="112.8" cy="156.1" rx="41.2" ry="4.5"/>
+	<ellipse class="ingest_management_app_159" cx="112.8" cy="156.1" rx="41.1" ry="4.5"/>
+	<ellipse class="ingest_management_app_159" cx="112.8" cy="156.1" rx="41" ry="4.4"/>
+	<ellipse class="ingest_management_app_160" cx="112.8" cy="156.1" rx="40.9" ry="4.4"/>
+	<ellipse class="ingest_management_app_160" cx="112.8" cy="156.1" rx="40.8" ry="4.4"/>
+	<ellipse class="ingest_management_app_161" cx="112.8" cy="156.1" rx="40.7" ry="4.3"/>
+	<ellipse class="ingest_management_app_161" cx="112.8" cy="156.1" rx="40.5" ry="4.3"/>
+	<ellipse class="ingest_management_app_162" cx="112.8" cy="156.1" rx="40.4" ry="4.3"/>
+	<ellipse class="ingest_management_app_163" cx="112.8" cy="156.1" rx="40.3" ry="4.3"/>
+	<ellipse class="ingest_management_app_164" cx="112.8" cy="156.1" rx="40.2" ry="4.2"/>
+	<ellipse class="ingest_management_app_165" cx="112.8" cy="156.1" rx="40.1" ry="4.2"/>
+	<ellipse class="ingest_management_app_166" cx="112.8" cy="156.1" rx="40" ry="4.2"/>
+	<ellipse class="ingest_management_app_167" cx="112.8" cy="156.1" rx="39.9" ry="4.1"/>
+	<ellipse class="ingest_management_app_167" cx="112.8" cy="156.1" rx="39.8" ry="4.1"/>
+	<ellipse class="ingest_management_app_168" cx="112.8" cy="156.1" rx="39.7" ry="4.1"/>
+	<ellipse class="ingest_management_app_168" cx="112.8" cy="156.1" rx="39.6" ry="4"/>
+	<ellipse class="ingest_management_app_169" cx="112.8" cy="156.1" rx="39.5" ry="4"/>
+	<ellipse class="ingest_management_app_170" cx="112.8" cy="156.1" rx="39.4" ry="4"/>
+	<ellipse class="ingest_management_app_171" cx="112.8" cy="156.1" rx="39.3" ry="3.9"/>
+	<ellipse class="ingest_management_app_172" cx="112.8" cy="156" rx="39.2" ry="3.9"/>
+	<ellipse class="ingest_management_app_173" cx="112.8" cy="156" rx="39.1" ry="3.9"/>
+	<ellipse class="ingest_management_app_174" cx="112.8" cy="156" rx="39" ry="3.8"/>
+	<ellipse class="ingest_management_app_174" cx="112.8" cy="156" rx="38.9" ry="3.8"/>
+	<ellipse class="ingest_management_app_175" cx="112.8" cy="156" rx="38.8" ry="3.8"/>
+	<ellipse class="ingest_management_app_175" cx="112.8" cy="156" rx="38.7" ry="3.7"/>
+	<ellipse class="ingest_management_app_176" cx="112.8" cy="156" rx="38.6" ry="3.7"/>
+	<ellipse class="ingest_management_app_177" cx="112.8" cy="156" rx="38.5" ry="3.7"/>
+	<ellipse class="ingest_management_app_178" cx="112.8" cy="156" rx="38.4" ry="3.6"/>
+	<ellipse class="ingest_management_app_179" cx="112.8" cy="156" rx="38.3" ry="3.6"/>
+	<ellipse class="ingest_management_app_180" cx="112.8" cy="156" rx="38.2" ry="3.6"/>
+	<ellipse class="ingest_management_app_181" cx="112.8" cy="156" rx="38.1" ry="3.5"/>
+	<ellipse class="ingest_management_app_182" cx="112.8" cy="156" rx="38" ry="3.5"/>
+	<ellipse class="ingest_management_app_183" cx="112.8" cy="156" rx="37.9" ry="3.5"/>
+	<ellipse class="ingest_management_app_183" cx="112.8" cy="156" rx="37.8" ry="3.4"/>
+	<ellipse class="ingest_management_app_184" cx="112.7" cy="156" rx="37.7" ry="3.4"/>
+</g>
+<g>
+	<g>
+		<g>
+
+				<ellipse transform="matrix(4.254305e-02 -0.9991 0.9991 4.254305e-02 -65.6047 253.6824)" class="ingest_management_app_184" cx="99.6" cy="161.1" rx="2.1" ry="27.4"/>
+		</g>
+		<g>
+			<g>
+				<g>
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_01" gradientUnits="userSpaceOnUse" x1="99.0702" y1="120.8813" x2="152.0917" y2="90.1158">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+						<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+					</linearGradient>
+					<path class="ingest_management_app_185" d="M121.6,161.1l-32.1-4c-3.7-0.4-6.5-3.9-6.5-8V79.8c0-3.8,2.4-7.2,5.7-8.1l33-10.1c5.8-0.6,10,4.1,10,8.8
+						v82.2c0,4.5-2.7,7.4-7,8.4C124.2,161.1,122,161.1,121.6,161.1z"/>
+
+						<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_02" gradientUnits="userSpaceOnUse" x1="157.247" y1="170.6217" x2="95.7609" y2="98.0126">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+						<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+					</linearGradient>
+					<path style="fill:url(#SVGID_INGEST_MANAGEMENT_APP_02);" d="M121.7,161l-34.3-3.9
+						c-3.7-0.4-6.5-3.9-6.5-8.1V79.2c0-3.9,2.4-7.2,5.7-8.1l34.3-9.3c4.6-1.2,9,2.7,9,8v82.8C129.9,157.6,126.1,161.5,121.7,161z"/>
+					<path class="ingest_management_app_187" d="M129.9,69.8v79.7C129.9,149.6,127.5,116.7,129.9,69.8z"/>
+				</g>
+				<g>
+
+						<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_03" gradientUnits="userSpaceOnUse" x1="476.5502" y1="30.9893" x2="569.3163" y2="126.8248" gradientTransform="matrix(-1 0 0 1 661.9603 0)">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+						<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+
+						<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_03);" points="
+						127.7,161.8 127.9,58.6 78.5,70.2 78.5,154.4 					"/>
+					<polygon class="ingest_management_app_3" points="128.4,161.5 127.7,161.8 127.9,58.6 128.3,59 					"/>
+				</g>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_04" gradientUnits="userSpaceOnUse" x1="512.0507" y1="64.5815" x2="606.7145" y2="162.3776" gradientTransform="matrix(-1 0 0 1 661.9603 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_04);" points="
+					125.1,162.9 125.3,57.6 74.9,69.4 74.9,155.3 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_05" gradientUnits="userSpaceOnUse" x1="85.2444" y1="121.9223" x2="144.1326" y2="87.7526">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+					<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+				</linearGradient>
+				<path style="fill:url(#SVGID_INGEST_MANAGEMENT_APP_05);" d="M111,164.3l-37.9-5.1
+					c-4.3-0.5-7.6-4.2-7.6-8.6V78c0-4,2.7-7.5,6.6-8.4L111.1,59c7-0.6,11.9,4.3,11.9,9.4v87.3c0,4.7-3.3,7.8-8.3,8.7
+					C114.2,164.3,111.5,164.3,111,164.3z"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_06" gradientUnits="userSpaceOnUse" x1="75.2273" y1="175.2722" x2="111.0933" y2="50.2257">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+					<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+					<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+					<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+					<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+					<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+					<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+					<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+					<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+					<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+					<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+				<path style="fill:url(#SVGID_INGEST_MANAGEMENT_APP_06);" d="M111.2,164.2l-40.4-5.1
+					c-4.4-0.6-7.6-4.3-7.6-8.6V77.4c0-4,2.8-7.5,6.7-8.5l40.4-9.7c5.5-1.3,10.8,2.8,10.8,8.5v87.9
+					C121,160.8,116.4,164.9,111.2,164.2z"/>
+				<path class="ingest_management_app_0" d="M63.2,78.5l22.6-4.4c1.7-0.4,3.4,1,3.4,2.8v9.3c0,1.4-1,2.6-2.4,2.8L63.2,92L63.2,78.5z"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_07" gradientUnits="userSpaceOnUse" x1="64.5792" y1="71.8856" x2="86.3069" y2="94.3323">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_07);" d="
+					M85.7,88.2l-21.9,3c-1.3,0.2-2.5-0.9-2.5-2.2v-9.1c0-1.1,0.7-2,1.8-2.2l21.7-4.5c1.8-0.4,3.4,1,3.4,2.8v9.3
+					C88.2,86.8,87.1,88,85.7,88.2z"/>
+				<path class="ingest_management_app_193" d="M121,67.7v84.6C121,152.3,118.1,117.4,121,67.7z"/>
+				<polygon class="ingest_management_app_3" points="125.8,162.6 125.1,162.9 125.3,57.6 125.8,58 				"/>
+				<g>
+					<path class="ingest_management_app_184" d="M65.5,81.3l0-1.5l5.9-1.1l0,1.5l-4,5.5l4.1-0.6l0,1.5l-6.2,0.9l0-1.5l3.9-5.4L65.5,81.3z"/>
+					<path class="ingest_management_app_184" d="M73.1,78.4l1.8-0.3l0,8l-1.8,0.3L73.1,78.4z"/>
+					<path class="ingest_management_app_184" d="M80.8,76.9c0.9-0.2,1.7,0,2.3,0.4c0.6,0.4,0.9,1,0.9,1.8c0,0.8-0.3,1.5-0.9,2.2c-0.6,0.6-1.4,1-2.3,1.2
+						L79,82.8l0,2.7l-1.9,0.3l0-8.1L80.8,76.9z M79,78.9l0,2.3l1.8-0.3c0.4-0.1,0.7-0.2,1-0.5c0.3-0.3,0.4-0.6,0.4-0.9
+						c0-0.3-0.1-0.6-0.4-0.8c-0.3-0.2-0.6-0.2-1-0.2L79,78.9z"/>
+				</g>
+			</g>
+			<g>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_08" gradientUnits="userSpaceOnUse" x1="69.7996" y1="78.4635" x2="138.3369" y2="149.2685">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_08);" points="
+					104.3,163.3 99.6,162.7 99.6,61.8 104.3,60.6 				"/>
+				<polygon points="101.1,162.9 96.7,162.3 96.7,62.5 101.1,61.4 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_09" gradientUnits="userSpaceOnUse" x1="96.9863" y1="63.9679" x2="102.5951" y2="69.7623">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_09);" points="
+					98.2,70.3 101,69.7 101,63.1 98.2,63.7 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_10" gradientUnits="userSpaceOnUse" x1="96.9571" y1="73.0791" x2="102.6273" y2="78.9369">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_10);" points="
+					98.2,79.4 101,78.9 101,72.3 98.2,72.8 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_11" gradientUnits="userSpaceOnUse" x1="96.9279" y1="82.1903" x2="102.6596" y2="88.1116">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_11);" points="
+					98.2,88.5 101,88.1 101,81.5 98.2,81.9 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_12" gradientUnits="userSpaceOnUse" x1="96.8987" y1="91.3015" x2="102.6918" y2="97.2862">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_12);" points="
+					98.2,97.6 101,97.3 101,90.7 98.2,91 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_13" gradientUnits="userSpaceOnUse" x1="96.8695" y1="100.4127" x2="102.724" y2="106.4609">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_13);" points="
+					98.2,106.7 101,106.5 101,99.8 98.2,100.1 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_14" gradientUnits="userSpaceOnUse" x1="96.8403" y1="109.5239" x2="102.7562" y2="115.6355">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_14);" points="
+					98.2,115.8 101,115.7 101,109 98.2,109.2 				"/>
+				<polygon points="102,163 106.6,163.7 106.6,60.1 102,61.2 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_15" gradientUnits="userSpaceOnUse" x1="502.1075" y1="62.641" x2="508.6449" y2="69.3947" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_15);" points="
+					105,68.9 102.1,69.5 102.1,62.8 105,62.2 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_16" gradientUnits="userSpaceOnUse" x1="502.1376" y1="71.9463" x2="508.6118" y2="78.6347" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_16);" points="
+					105,78.2 102.1,78.7 102.1,72.1 105,71.5 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_17" gradientUnits="userSpaceOnUse" x1="502.1676" y1="81.2516" x2="508.5786" y2="87.8747" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_17);" points="
+					105,87.5 102.1,88 102.1,81.3 105,80.8 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_18" gradientUnits="userSpaceOnUse" x1="502.1977" y1="90.5569" x2="508.5455" y2="97.1148" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_18);" points="
+					105,96.9 102.1,97.2 102.1,90.5 105,90.1 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_19" gradientUnits="userSpaceOnUse" x1="502.2277" y1="99.8623" x2="508.5123" y2="106.3548" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_19);" points="
+					105,106.2 102.1,106.4 102.1,99.7 105,99.5 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_20" gradientUnits="userSpaceOnUse" x1="502.2578" y1="109.1676" x2="508.4792" y2="115.5948" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_20);" points="
+					105,115.5 102.1,115.6 102.1,109 105,108.8 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_21" gradientUnits="userSpaceOnUse" x1="96.8109" y1="118.6895" x2="102.7886" y2="124.865">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_21);" points="
+					98.2,124.9 101,124.9 101,118.3 98.2,118.4 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_22" gradientUnits="userSpaceOnUse" x1="96.7817" y1="127.8007" x2="102.8208" y2="134.0396">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_22);" points="
+					98.2,134 101,134.1 101,127.5 98.2,127.5 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_23" gradientUnits="userSpaceOnUse" x1="96.7525" y1="136.9119" x2="102.853" y2="143.2143">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_23);" points="
+					98.2,143.1 101,143.3 101,136.7 98.2,136.6 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_24" gradientUnits="userSpaceOnUse" x1="96.7233" y1="146.0231" x2="102.8852" y2="152.3889">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_24);" points="
+					98.2,152.2 101,152.5 101,145.8 98.2,145.6 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_25" gradientUnits="userSpaceOnUse" x1="96.6941" y1="155.1344" x2="102.9174" y2="161.5636">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_25);" points="
+					98.2,161.3 101,161.7 101,155 98.2,154.7 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_26" gradientUnits="userSpaceOnUse" x1="502.288" y1="118.5285" x2="508.4458" y2="124.89" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_26);" points="
+					105,124.9 102.1,124.9 102.1,118.2 105,118.2 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_27" gradientUnits="userSpaceOnUse" x1="502.3181" y1="127.8338" x2="508.4127" y2="134.13" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_27);" points="
+					105,134.2 102.1,134.1 102.1,127.5 105,127.5 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_28" gradientUnits="userSpaceOnUse" x1="502.3481" y1="137.1391" x2="508.3795" y2="143.37" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_28);" points="
+					105,143.5 102.1,143.4 102.1,136.7 105,136.8 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_29" gradientUnits="userSpaceOnUse" x1="502.3782" y1="146.4444" x2="508.3463" y2="152.61" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_29);" points="
+					105,152.9 102.1,152.6 102.1,145.9 105,146.1 				"/>
+
+					<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_30" gradientUnits="userSpaceOnUse" x1="502.4083" y1="155.7497" x2="508.3132" y2="161.8501" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_INGEST_MANAGEMENT_APP_30);" points="
+					105,162.2 102.1,161.8 102.1,155.2 105,155.5 				"/>
+			</g>
+		</g>
+	</g>
+
+		<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_31" gradientUnits="userSpaceOnUse" x1="110.599" y1="119.5311" x2="27.2362" y2="139.6908">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+		<stop  offset="6.233966e-02" style="stop-color:var(--vitamui-primary-800)"/>
+		<stop  offset="0.262" style="stop-color:var(--vitamui-primary-700)"/>
+		<stop  offset="0.4592" style="stop-color:var(--vitamui-primary-600)"/>
+		<stop  offset="0.6508" style="stop-color:var(--vitamui-primary-600)"/>
+		<stop  offset="0.834" style="stop-color:var(--vitamui-primary)"/>
+		<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+	</linearGradient>
+	<path style="fill:url(#SVGID_INGEST_MANAGEMENT_APP_31);" d="M91.1,111.9l-13.3,29.2l-2-1.8l-8.8,0
+		C66.9,139.4,70.3,108.9,91.1,111.9z"/>
+	<g>
+
+			<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_32" gradientUnits="userSpaceOnUse" x1="214.1848" y1="253.9046" x2="245.799" y2="197.8252" gradientTransform="matrix(-0.3345 -0.9424 -0.9424 0.3345 369.9661 263.1055)">
+			<stop  offset="0" style="stop-color:#BCB9BA"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path style="fill:url(#SVGID_INGEST_MANAGEMENT_APP_32);" d="M91,108.4c-0.8-0.2-1.7-0.3-2.5-0.2
+			l-12.5,0.9c-7.9,1.2-18.8,13.4-22.1,29c-0.1,0-0.1,0-0.2,0c-0.1,0-0.3-0.1-0.4-0.1c-0.1,0-0.2,0-0.2,0c-0.2,0-0.3-0.1-0.5-0.1
+			c0,0-0.1,0-0.1,0c-0.2,0-0.4-0.1-0.6-0.1c-0.1,0-0.1,0-0.2,0c-0.1,0-0.3-0.1-0.4-0.1c-0.1,0-0.1,0-0.2,0c-0.2,0-0.4-0.1-0.5-0.1
+			c0,0,0,0,0,0c-0.2-0.1-0.4-0.1-0.6-0.2c-0.1,0-0.1,0-0.1,0c-0.1,0-0.3-0.1-0.4-0.1c-0.1,0-0.1,0-0.1-0.1c-0.2-0.1-0.3-0.1-0.5-0.2
+			c2.4,13.3,4.1,18.4,9.9,30.9l2.9-0.8c0,0,5.3-10.5,16.3-25.5l-2-1.7l-0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0
+			c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.2,0c0,0,0,0,0,0c-0.5,0-1.3,0-2.3,0c0,0,0,0,0,0c-0.1,0-0.3,0-0.4,0
+			c0,0-0.1,0-0.1,0c-0.1,0-0.3,0-0.4,0c0,0-0.1,0-0.1,0c-0.1,0-0.3,0-0.4,0c0,0-0.1,0-0.1,0c-0.2,0-0.3,0-0.5,0
+			c0.1-0.4,0.2-0.7,0.3-1.1c0.1-0.3,0.1-0.5,0.2-0.8c0-0.1,0-0.2,0.1-0.3c0.1-0.3,0.2-0.6,0.3-0.9c0.1-0.3,0.1-0.5,0.2-0.8
+			c0,0,0,0,0-0.1c0.1-0.4,0.2-0.7,0.3-1.1c0.1-0.3,0.2-0.5,0.2-0.7c0.1-0.4,0.2-0.7,0.3-1.1c0-0.1,0.1-0.2,0.1-0.3
+			c0-0.1,0.1-0.2,0.1-0.4c0.3-0.8,0.5-1.5,0.8-2.3c0-0.1,0.1-0.2,0.1-0.4c0-0.1,0.1-0.1,0.1-0.2c0.1-0.3,0.3-0.7,0.4-1
+			c0.1-0.2,0.2-0.4,0.3-0.6c0.1-0.3,0.3-0.7,0.4-1c0.1-0.2,0.2-0.4,0.3-0.6c0.1-0.3,0.3-0.7,0.5-1c0.1-0.1,0.1-0.3,0.2-0.4
+			c0.3-0.7,0.7-1.3,1-2c0.1-0.1,0.1-0.2,0.2-0.3c0.2-0.3,0.3-0.6,0.5-0.9c0.1-0.1,0.2-0.3,0.3-0.4c0.2-0.3,0.3-0.5,0.5-0.8
+			c0.1-0.1,0.2-0.3,0.3-0.4c0.2-0.3,0.4-0.5,0.5-0.8c0.1-0.1,0.1-0.2,0.2-0.3c0.4-0.6,0.8-1.1,1.3-1.6c1-1.2,2-2.2,3.1-3l0,0
+			c2.4-1.8,4.9-2.5,7.3-2l0.1-3.5L91,108.4z M69.6,139.4C69.5,139.4,69.5,139.4,69.6,139.4c0.2,0,0.5,0,0.8,0c-0.1,0-0.1,0-0.2,0
+			C70,139.4,69.8,139.4,69.6,139.4z"/>
+
+			<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_33" gradientUnits="userSpaceOnUse" x1="210.8194" y1="243.6491" x2="231.6189" y2="227.9266" gradientTransform="matrix(-0.3345 -0.9424 -0.9424 0.3345 369.9661 263.1055)">
+			<stop  offset="0" style="stop-color:#9B9A9B"/>
+			<stop  offset="1" style="stop-color:#E5E4E4"/>
+		</linearGradient>
+		<path style="fill:url(#SVGID_INGEST_MANAGEMENT_APP_33);" d="M68.7,139.4c0,0,0.8,0,2,0
+			c1.9-7.9,4.5-14.6,7.6-19.4c1.7-2.6,3.5-4.7,5.4-6.1c0,0-5.8,1.1-7.6,4.1C73,123.4,70.4,130.6,68.7,139.4z"/>
+
+			<linearGradient id="SVGID_INGEST_MANAGEMENT_APP_34" gradientUnits="userSpaceOnUse" x1="186.265" y1="261.5383" x2="263.1931" y2="210.0684" gradientTransform="matrix(-0.3345 -0.9424 -0.9424 0.3345 369.9661 263.1055)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path style="fill:url(#SVGID_INGEST_MANAGEMENT_APP_34);" d="M75.7,139.4c0,0-2,0.1-5,0l0,0
+			c0,0,0,0,0,0c-0.4,0-0.8,0-1.2,0c0,0,0,0,0,0c-0.5,0-0.8,0-0.8,0c5.2-22,12.4-27.1,15.3-29.5c0.9-0.7,3.6-1.6,3.6-1.6l-9.2,0.6
+			c-8.6,7.2-22,24.5-19.9,58.7C58.6,167.5,64.3,155.9,75.7,139.4z"/>
+		<path class="ingest_management_app_221" d="M69.3,136.8c3.1-12,7.7-21.5,12.9-25.8c0,0,0,0,0,0c1.8-1.5,3.6-2.4,5.4-2.7
+			C80.5,110.3,73.4,121,69.3,136.8L69.3,136.8z"/>
+	</g>
+</g>
+</svg>

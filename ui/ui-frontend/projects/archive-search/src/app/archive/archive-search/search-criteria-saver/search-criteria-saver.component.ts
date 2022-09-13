@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -51,7 +51,7 @@ import { SearchCriteriaSaverService } from './search-criteria-saver.service';
   templateUrl: './search-criteria-saver.component.html',
   styleUrls: ['./search-criteria-saver.component.css'],
 })
-export class SearchCriteriaSaverComponent implements OnInit {
+export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   searchCriteriaForm: FormGroup;
   criteria: string;
   searchCriteriaHistory: SearchCriteriaHistory;
@@ -68,6 +68,9 @@ export class SearchCriteriaSaverComponent implements OnInit {
   events: any[] = [];
   criteriaId = '';
   criteriaToUpdate: SearchCriteriaHistory;
+  saveSearchCriteriaHistorySubscription: Subscription;
+  updateSearchCriteriaHistorySubscription: Subscription;
+  maxlength = 150;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -95,41 +98,42 @@ export class SearchCriteriaSaverComponent implements OnInit {
       }
     });
   }
+  ngOnDestroy(): void {
+    this.updateSearchCriteriaHistorySubscription?.unsubscribe();
+    this.saveSearchCriteriaHistorySubscription?.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.nameControl = '';
   }
 
   onCancel() {
-    if (this.searchCriteriaForm.dirty) {
-      this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
-    } else {
-      this.dialogRef.close();
-    }
+    this.searchCriteriaForm.dirty ? this.confirmDialogService.confirmBeforeClosing(this.dialogRef) : this.dialogRef.close();
   }
 
   onSubmit() {
     this.searchCriteriaHistory.name = this.searchCriteriaForm.value.name;
-    this.searchCriteriaSaverService.saveSearchCriteriaHistory(this.searchCriteriaHistory).subscribe(
-      (response) => {
-        this.searchCriteriaHistory.id = response.id;
-        this.archiveExchangeDataService.emitSearchCriteriaHistory(this.searchCriteriaHistory);
-        this.dialogRef.close(true);
-        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: { type: 'searchCriteriaHistoryCreated', name: response.name },
-          duration: 10000,
-        });
-      },
-      (error) => {
-        this.dialogRef.close(false);
-        console.error(error);
-        this.snackBar.open(error.error.message, null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-        });
-      }
-    );
+    this.saveSearchCriteriaHistorySubscription = this.searchCriteriaSaverService
+      .saveSearchCriteriaHistory(this.searchCriteriaHistory)
+      .subscribe(
+        (response) => {
+          this.searchCriteriaHistory.id = response.id;
+          this.archiveExchangeDataService.emitSearchCriteriaHistory(this.searchCriteriaHistory);
+          this.dialogRef.close(true);
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'searchCriteriaHistoryCreated', name: response.name },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.dialogRef.close(false);
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        }
+      );
   }
 
   preUpdate(criteria: SearchCriteriaHistory, event: any) {
@@ -157,7 +161,6 @@ export class SearchCriteriaSaverComponent implements OnInit {
 
     this.events.push(event);
 
-    // update
     if (this.criteriaToUpdate) {
       this.ToUpdate = null;
       this.updateConfirm = true;
@@ -179,30 +182,31 @@ export class SearchCriteriaSaverComponent implements OnInit {
   update() {
     this.criteriaToUpdate.searchCriteriaList = this.searchCriteriaHistory.searchCriteriaList;
     this.criteriaToUpdate.savingDate = new Date().toISOString();
-    this.searchCriteriaSaverService.updateSearchCriteriaHistory(this.criteriaToUpdate).subscribe(
-      () => {
-        this.dialogRef.close(true);
-        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: { type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name },
-          duration: 10000,
-        });
-      },
-      (error) => {
-        console.error(error);
-        this.snackBar.open(error.error.message, null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-        });
-      }
-    );
+    this.updateSearchCriteriaHistorySubscription = this.searchCriteriaSaverService
+      .updateSearchCriteriaHistory(this.criteriaToUpdate)
+      .subscribe(
+        () => {
+          this.dialogRef.close(true);
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        }
+      );
   }
 
   getNbFilters(criteria: SearchCriteriaHistory): number {
     return this.archiveExchangeDataService.nbFilters(criteria);
   }
 
-  closeIt() {
+  closeSaveCriteriaForm() {
     this.dialogRef.close(true);
   }
 

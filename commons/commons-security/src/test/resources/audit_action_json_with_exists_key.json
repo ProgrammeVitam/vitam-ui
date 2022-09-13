@@ -1,0 +1,23 @@
+{
+  "auditActions":"AUDIT_FILE_INTEGRITY",
+  "auditType":"tenant",
+  "evidenceAudit":null,
+  "objectId":1,
+  "query":{
+    "$query":[
+      {
+        "$or":[
+          {
+            "$exists":"#id"
+          }
+        ]
+      }
+    ],
+    "$filter":{
+
+    },
+    "$projection":{
+
+    }
+  }
+}

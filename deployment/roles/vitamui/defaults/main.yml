@@ -1,9 +1,22 @@
 ---
 
-# defaults file for common
-memory_opts: "-Xms512m -Xmx512m"
-gc_opts: ""
-java_opts: ""
-java_args: ""
-service_name: "{{ vitamui_struct.service_name }}"
-port_test: "{{ vitamui_struct.port_service }}"
+package_name: "vitamui-{{ vitamui_struct.vitamui_component }}"
+service_name: "vitamui-{{ vitamui_struct.vitamui_component }}"
+
+jvm_opts:
+  memory: "{{ vitamui_defaults.services.jvm_opts.memory | default('-Xms512m -Xmx512m') }}"
+  gc: "{{ vitamui_defaults.services.jvm_opts.gc | default('') }}"
+  java: "{{ vitamui_defaults.services.jvm_opts.java | default('') }}"
+
+start_timeout: "{{ vitamui_defaults.services.start_timeout | default(300) }}"
+at_boot: "{{ vitamui_defaults.services.at_boot | default(false) }}"
+secure: "{{ vitamui_default.services.secure | default('true') | lower }}"
+jvm_log: "{{ vitamui_default.services.jvm_log | default(false) | bool }}"
+accesslogs: "{{ vitamui_default.services.accesslogs | default('true') | lower }}"
+
+log:
+  logback_max_file_size: "{{ vitamui_default.services.log.logback_max_file_size | default('10MB') }}"
+  logback_max_history: "{{ vitamui_default.services.log.logback_max_history | default(30) }}"
+  logback_total_size_cap: "{{ vitamui_default.services.log.logback_total_size_cap | default('5GB') }}"
+  root_log_level: "{{ vitamui_default.services.log.root_log_level | default('ERROR') | upper }}"
+  vitamui_level: "{{ vitamui_default.services.log.vitamui_level | default('INFO') | upper }}"

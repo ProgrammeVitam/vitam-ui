@@ -39,7 +39,6 @@ package fr.gouv.vitamui.referential.common.service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
@@ -55,6 +54,7 @@ import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,13 +63,13 @@ import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import javax.ws.rs.core.Response;
-
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.mock;
 
 @RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
 @PrepareForTest({ ServerIdentityConfiguration.class })
@@ -381,32 +381,72 @@ public class VitamRuleServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_findRules_ok() throws VitamClientException {
+    public void checkRule_should_return_exception_when_vitam_response_is_null() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
-        FileRulesModel newRule = new FileRulesModel();
-        List<FileRulesModel> rulesList = new ArrayList<>();
-        rulesList.add(newRule);
+        RuleDto ruleDto = new RuleDto();
 
         expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class)))
             .andReturn(new RequestResponseOK<FileRulesModel>().setHttpCode(200));
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
-            vitamRuleService.checkAbilityToCreateRuleInVitam(rulesList, vitamContext);
-        }).doesNotThrowAnyException();
+            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
+        }).hasMessage("The body is not found");
+        assertThatCode(() -> {
+            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
+        }).isInstanceOf(BadRequestException.class);
     }
 
     @Test
-    public void check_should_throw_ConflictException_when_findRules_already_exists() throws VitamClientException {
+    public void checkRule_should_not_throw_ConflictException_when_requested_ruleId_and_ruleType_already_exist_in_vitam() throws VitamClientException {
+        // Given
         VitamContext vitamContext = new VitamContext(1);
         final FileRulesModel existingRule = new FileRulesModel();
         existingRule.setId("id_0");
+        existingRule.setRuleId("APP-00001");
+        existingRule.setRuleType(RuleType.AppraisalRule);
 
-        final FileRulesModel newRule = new FileRulesModel();
-        newRule.setId("id_0");
-        final List<FileRulesModel> rulesList = new ArrayList<>();
-        rulesList.add(newRule);
+        final FileRulesModel secondExistingRule = new FileRulesModel();
+        secondExistingRule.setId("id_1");
+        secondExistingRule.setRuleId("ACC-00001");
+        secondExistingRule.setRuleType(RuleType.AccessRule);
 
+        RuleDto ruleDto = new RuleDto();
+        ruleDto.setId("id_0");
+        ruleDto.setRuleId("APP-00001");
+        ruleDto.setRuleType("AppraisalRule");
+
+        // When
+        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<FileRulesModel>();
+        mockResponse.setHttpCode(200);
+        mockResponse.addResult(existingRule);
+        mockResponse.addResult(secondExistingRule);
+        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class)))
+            .andReturn(mockResponse);
+        EasyMock.replay(adminExternalClient);
+
+        // Then
+        assertThat(mockResponse.getResults()).hasSize(2);
+        assertThatCode(() -> {
+            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
+        }).doesNotThrowAnyException()
+        ;
+    }
+    @Test
+    public void checkRule_should_throw_ConflictException_when_requested_rule_does_not_exists_in_vitam() throws VitamClientException {
+        // Given
+        VitamContext vitamContext = new VitamContext(1);
+        final FileRulesModel existingRule = new FileRulesModel();
+        existingRule.setId("id_0");
+        existingRule.setRuleId("APP-00001");
+        existingRule.setRuleType(RuleType.AppraisalRule);
+
+        RuleDto ruleDto = new RuleDto();
+        ruleDto.setId("id_0");
+        ruleDto.setRuleId("APP-00002");
+        ruleDto.setRuleType("AppraisalRule");
+
+        // When
         final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<FileRulesModel>();
         mockResponse.setHttpCode(200);
         mockResponse.addResult(existingRule);
@@ -414,8 +454,95 @@ public class VitamRuleServiceTest {
             .andReturn(mockResponse);
         EasyMock.replay(adminExternalClient);
 
+        // Then
+        assertThat(mockResponse.getResults()).hasSize(1);
         assertThatCode(() -> {
-            vitamRuleService.checkAbilityToCreateRuleInVitam(rulesList, vitamContext);
+            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
         }).isInstanceOf(ConflictException.class);
+    }
+
+    @Test
+    public void checkRule_should_not_throw_ConflictException_when_requested_ruleId_already_exist_in_vitam() throws VitamClientException {
+
+        // Given
+        VitamContext vitamContext = new VitamContext(1);
+        final FileRulesModel existingRule = new FileRulesModel();
+        existingRule.setId("id_0");
+        existingRule.setRuleId("APP-00001");
+        existingRule.setRuleType(RuleType.AppraisalRule);
+
+        final FileRulesModel secondExistingRule = new FileRulesModel();
+        secondExistingRule.setId("id_1");
+        secondExistingRule.setRuleId("ACC-00001");
+        secondExistingRule.setRuleType(RuleType.AccessRule);
+
+        final FileRulesModel storageExistingRule = new FileRulesModel();
+        secondExistingRule.setId("id_2");
+        secondExistingRule.setRuleId("STO-00001");
+        secondExistingRule.setRuleType(RuleType.StorageRule);
+
+        RuleDto ruleDto = new RuleDto();
+        ruleDto.setId("id_0");
+        ruleDto.setRuleId("APP-00001");
+
+        // When
+        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<FileRulesModel>();
+        mockResponse.setHttpCode(200);
+        mockResponse.addResult(existingRule);
+        mockResponse.addResult(secondExistingRule);
+        mockResponse.addResult(storageExistingRule);
+        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class)))
+            .andReturn(mockResponse);
+        EasyMock.replay(adminExternalClient);
+
+        // Then
+        assertThat(mockResponse.getResults()).hasSize(3);
+        assertThatCode(() -> {
+            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
+        }).doesNotThrowAnyException();
+
+    }
+
+    @Test
+    public void checkRule_should_throw_BadRequestException_when_requested_rule_is_null() throws VitamClientException {
+        // Given
+        VitamContext vitamContext = new VitamContext(1);
+        final FileRulesModel existingRule = new FileRulesModel();
+        existingRule.setId("id_0");
+        existingRule.setRuleId("APP-00001");
+        existingRule.setRuleType(RuleType.AppraisalRule);
+
+        final FileRulesModel secondExistingRule = new FileRulesModel();
+        secondExistingRule.setId("id_1");
+        secondExistingRule.setRuleId("ACC-00001");
+        secondExistingRule.setRuleType(RuleType.AccessRule);
+
+        final FileRulesModel storageExistingRule = new FileRulesModel();
+        secondExistingRule.setId("id_2");
+        secondExistingRule.setRuleId("STO-00001");
+        secondExistingRule.setRuleType(RuleType.StorageRule);
+
+        RuleDto ruleDto = new RuleDto();
+
+        // When
+        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<FileRulesModel>();
+        mockResponse.setHttpCode(200);
+        mockResponse.addResult(existingRule);
+        mockResponse.addResult(secondExistingRule);
+        mockResponse.addResult(storageExistingRule);
+        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class)))
+            .andReturn(mockResponse);
+        EasyMock.replay(adminExternalClient);
+
+        // Then
+        assertThat(mockResponse.getResults()).hasSize(3);
+        assertThatCode(() -> {
+            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
+        }).isInstanceOf(BadRequestException.class);
+
+        assertThatCode(() -> {
+            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
+        }).hasMessage("The body is not found");
+
     }
 }

@@ -34,31 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, CUSTOM_ELEMENTS_SCHEMA, Input} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {RouterTestingModule} from '@angular/router/testing';
-import {InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterTestingModule } from '@angular/router/testing';
+import { InjectorModule, LoggerModule, SecurityService } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {AgencyComponent} from './agency.component';
-import {AgencyService} from './agency.service';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { AgencyComponent } from './agency.component';
+import { AgencyService } from './agency.service';
+import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
-@Component({selector: 'app-agency-preview', template: ''})
+@Component({ selector: 'app-agency-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({selector: 'app-agency-list', template: ''})
+@Component({ selector: 'app-agency-list', template: '' })
 // tslint:disable-next-line:component-class-suffix
 class AgencyListStub {
 }
+
+const securityServiceMock = {
+  hasRole: () => of(true),
+};
 
 describe('AgencyComponent', () => {
   let component: AgencyComponent;
@@ -82,7 +88,12 @@ describe('AgencyComponent', () => {
         MatMenuModule
       ],
       providers: [
-        {provide: AgencyService, useValue: {}}
+        { provide: AgencyService, useValue: {} },
+        { provide: SecurityService, useValue: securityServiceMock },
+        {
+          provide: ActivatedRoute,
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'AGENCIES_APP' }) },
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

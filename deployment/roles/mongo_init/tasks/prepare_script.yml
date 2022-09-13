@@ -3,7 +3,7 @@
 - fail: msg="Variable '{{ mongo_file }}' is not defined"
   when: mongo_file is undefined
 
-- name: 
+- name:
   debug:
     msg: ">>>> Execution of the file {{ mongo_file.finalname }}<<<<"
 
@@ -23,7 +23,7 @@
   template:
     src: "versioned_script.js.j2"
     dest: "{{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: 0755        
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: 0755
 

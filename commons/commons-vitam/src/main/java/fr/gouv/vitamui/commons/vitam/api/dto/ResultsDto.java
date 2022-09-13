@@ -36,18 +36,17 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -190,6 +189,12 @@ public class ResultsDto {
 
     @JsonProperty("Keyword")
     private List<KeywordDto> keyword = new ArrayList<>();
+
+    @JsonProperty("#approximate_creation_date")
+    private String approximateCreationDate;
+
+    @JsonProperty("#approximate_update_date")
+    private String approximateEndDate;
 
     @JsonProperty("#id")
     public String getId() {

@@ -1,0 +1,1980 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+  <!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.secure_app_01{fill-rule:evenodd;clip-rule:evenodd;}
+  .secure_app_02{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+  .secure_app_03{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+  .secure_app_04{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+  .secure_app_05{fill:#BCB9BA;}
+  .secure_app_06{fill:#BBB9BA;}
+  .secure_app_07{fill:#BBB8B9;}
+  .secure_app_08{fill:#BAB8B9;}
+  .secure_app_09{fill:#B9B7B8;}
+  .secure_app_10{fill:#B9B7B7;}
+  .secure_app_11{fill:#B8B6B7;}
+  .secure_app_12{fill:#B8B5B6;}
+  .secure_app_13{fill:#B7B5B6;}
+  .secure_app_14{fill:#B7B4B5;}
+  .secure_app_15{fill:#B6B4B5;}
+  .secure_app_16{fill:#B6B3B4;}
+  .secure_app_17{fill:#B5B3B4;}
+  .secure_app_18{fill:#B4B2B3;}
+  .secure_app_19{fill:#B3B1B2;}
+  .secure_app_20{fill:#B3B1B1;}
+  .secure_app_21{fill:#B2B0B1;}
+  .secure_app_22{fill:#B2AFB0;}
+  .secure_app_23{fill:#B1AFB0;}
+  .secure_app_24{fill:#B1AEAF;}
+  .secure_app_25{fill:#B0AEAF;}
+  .secure_app_26{fill:#AFADAE;}
+  .secure_app_27{fill:#AEACAD;}
+  .secure_app_28{fill:#ADABAC;}
+  .secure_app_29{fill:#ADABAB;}
+  .secure_app_30{fill:#ACAAAB;}
+  .secure_app_31{fill:#ACAAAA;}
+  .secure_app_32{fill:#ABA9AA;}
+  .secure_app_33{fill:#AAA8A9;}
+  .secure_app_34{fill:#A9A7A8;}
+  .secure_app_35{fill:#A8A6A7;}
+  .secure_app_36{fill:#A7A5A6;}
+  .secure_app_37{fill:#A7A5A5;}
+  .secure_app_38{fill:#A6A4A5;}
+  .secure_app_39{fill:#A5A4A4;}
+  .secure_app_40{fill:#A5A3A4;}
+  .secure_app_41{fill:#A4A2A3;}
+  .secure_app_42{fill:#A3A1A2;}
+  .secure_app_43{fill:#A2A0A1;}
+  .secure_app_44{fill:#A19FA0;}
+  .secure_app_45{fill:#A09F9F;}
+  .secure_app_46{fill:#A09E9F;}
+  .secure_app_47{fill:#9F9E9E;}
+  .secure_app_48{fill:#9F9D9E;}
+  .secure_app_49{fill:#9E9D9D;}
+  .secure_app_50{fill:#9E9C9D;}
+  .secure_app_51{fill:#9D9B9C;}
+  .secure_app_52{fill:#9C9A9B;}
+  .secure_app_53{fill:#9B9A9B;}
+  .secure_app_54{fill:#9B999A;}
+  .secure_app_55{fill:#9A9999;}
+  .secure_app_56{fill:#9A9899;}
+  .secure_app_57{fill:#999898;}
+  .secure_app_58{fill:#999798;}
+  .secure_app_59{fill:#989797;}
+  .secure_app_60{fill:#989697;}
+  .secure_app_61{fill:#979596;}
+  .secure_app_62{fill:#969596;}
+  .secure_app_63{fill:#969495;}
+  .secure_app_64{fill:#959495;}
+  .secure_app_65{fill:#959394;}
+  .secure_app_66{fill:#949393;}
+  .secure_app_67{fill:#949293;}
+  .secure_app_68{fill:#939292;}
+  .secure_app_69{fill:#939192;}
+  .secure_app_70{fill:#929191;}
+  .secure_app_71{fill:#919091;}
+  .secure_app_72{fill:#919090;}
+  .secure_app_73{fill:#908F90;}
+  .secure_app_74{fill:#908E8F;}
+  .secure_app_75{fill:#8F8E8F;}
+  .secure_app_76{fill:#8F8D8E;}
+  .secure_app_77{fill:#8E8D8D;}
+  .secure_app_78{fill:#8E8C8D;}
+  .secure_app_79{fill:#8D8C8C;}
+  .secure_app_80{fill:#8C8B8C;}
+  .secure_app_81{fill:#8C8B8B;}
+  .secure_app_82{fill:#8B8A8B;}
+  .secure_app_83{fill:#8B8A8A;}
+  .secure_app_84{fill:#8A898A;}
+  .secure_app_85{fill:#8A8889;}
+  .secure_app_86{fill:#898888;}
+  .secure_app_87{fill:#898788;}
+  .secure_app_88{fill:#888787;}
+  .secure_app_89{fill:#878687;}
+  .secure_app_90{fill:#878686;}
+  .secure_app_91{fill:#868586;}
+  .secure_app_92{fill:#868585;}
+  .secure_app_93{fill:#858485;}
+  .secure_app_94{fill:#858484;}
+  .secure_app_95{fill:#848384;}
+  .secure_app_96{fill:#848383;}
+  .secure_app_97{fill:#838282;}
+  .secure_app_98{fill:#828182;}
+  .secure_app_99{fill:#828181;}
+  .secure_app_100{fill:#818081;}
+  .secure_app_101{fill:#818080;}
+  .secure_app_102{fill:#807F80;}
+  .secure_app_103{fill:#807F7F;}
+  .secure_app_104{fill:#7F7E7F;}
+  .secure_app_105{fill:#7F7E7E;}
+  .secure_app_106{fill:#7E7D7E;}
+  .secure_app_107{fill:#7D7D7D;}
+  .secure_app_108{fill:#7D7C7C;}
+  .secure_app_109{fill:#7C7B7C;}
+  .secure_app_110{fill:#7C7B7B;}
+  .secure_app_111{fill:#7B7A7B;}
+  .secure_app_112{fill:#7B7A7A;}
+  .secure_app_113{fill:#7A797A;}
+  .secure_app_114{fill:#7A7979;}
+  .secure_app_115{fill:#797879;}
+  .secure_app_116{fill:#787878;}
+  .secure_app_117{fill:#787778;}
+  .secure_app_118{fill:#777777;}
+  .secure_app_119{fill:#777676;}
+  .secure_app_120{fill:#767676;}
+  .secure_app_121{fill:#767575;}
+  .secure_app_122{fill:#757475;}
+  .secure_app_123{fill:#757474;}
+  .secure_app_124{fill:#747374;}
+  .secure_app_125{fill:#737373;}
+  .secure_app_126{fill:#737273;}
+  .secure_app_127{fill:#727272;}
+  .secure_app_128{fill:#727172;}
+  .secure_app_129{fill:#717171;}
+  .secure_app_130{fill:#717070;}
+  .secure_app_131{fill:#707070;}
+  .secure_app_132{fill:#706F6F;}
+  .secure_app_133{fill:#6F6E6F;}
+  .secure_app_134{fill:#6E6E6E;}
+  .secure_app_135{fill:#6E6D6E;}
+  .secure_app_136{fill:#6D6D6D;}
+  .secure_app_137{fill:#6D6C6D;}
+  .secure_app_138{fill:#6C6C6C;}
+  .secure_app_139{fill:#6C6B6C;}
+  .secure_app_140{fill:#6B6B6B;}
+  .secure_app_141{fill:#6B6A6A;}
+  .secure_app_142{fill:#6A6A6A;}
+  .secure_app_143{fill:#696969;}
+  .secure_app_144{fill:#686868;}
+  .secure_app_145{fill:#686768;}
+  .secure_app_146{fill:#676767;}
+  .secure_app_147{fill:#676667;}
+  .secure_app_148{fill:#666666;}
+  .secure_app_149{fill:#666566;}
+  .secure_app_150{fill:#656565;}
+  .secure_app_151{fill:#646464;}
+  .secure_app_152{fill:#636363;}
+  .secure_app_153{fill:#626262;}
+  .secure_app_154{fill:#626162;}
+  .secure_app_155{fill:#616161;}
+  .secure_app_156{fill:#616061;}
+  .secure_app_157{fill:#606060;}
+  .secure_app_158{fill:#5F5F60;}
+  .secure_app_159{fill:#5F5F5F;}
+  .secure_app_160{fill:#5E5E5E;}
+  .secure_app_161{fill:#5D5D5D;}
+  .secure_app_162{fill:#5C5C5C;}
+  .secure_app_163{fill:#5B5B5B;}
+  .secure_app_164{fill:#5A5A5B;}
+  .secure_app_165{fill:#5A5A5A;}
+  .secure_app_166{fill:#59595A;}
+  .secure_app_167{fill:#595959;}
+  .secure_app_168{fill:#585858;}
+  .secure_app_169{fill:#575757;}
+  .secure_app_170{fill:#565656;}
+  .secure_app_171{fill:#555656;}
+  .secure_app_172{fill:#555555;}
+  .secure_app_173{fill:#545455;}
+  .secure_app_174{fill:#545454;}
+  .secure_app_175{fill:#535353;}
+  .secure_app_176{fill:#525252;}
+  .secure_app_177{fill:#515151;}
+  .secure_app_178{fill:#505151;}
+  .secure_app_179{fill:#505050;}
+  .secure_app_180{fill:#4F5050;}
+  .secure_app_181{fill:#4F4F4F;}
+  .secure_app_182{fill:#4E4F4F;}
+  .secure_app_183{fill:#4E4E4E;}
+  .secure_app_184{fill:#4D4D4D;}
+  .secure_app_185{fill:#4C4C4C;}
+  .secure_app_186{fill:url(#SVGID_SECURE_APP_01);}
+  .secure_app_187{fill:url(#SVGID_SECURE_APP_02);}
+  .secure_app_188{fill:url(#SVGID_SECURE_APP_03);}
+  .secure_app_189{fill:url(#SVGID_SECURE_APP_04);}
+  .secure_app_190{fill:url(#SVGID_SECURE_APP_05);}
+  .secure_app_191{fill:url(#SVGID_SECURE_APP_06);}
+  .secure_app_192{fill:url(#SVGID_SECURE_APP_07);}
+  .secure_app_193{fill:url(#SVGID_SECURE_APP_08);}
+  .secure_app_194{fill:var(--vitamui-primary-light);}
+  .secure_app_195{fill:var(--vitamui-primary-50);}
+  .secure_app_196{fill:url(#SVGID_SECURE_APP_09);}
+  .secure_app_197{fill:url(#SVGID_SECURE_APP_10);}
+  .secure_app_198{fill:url(#SVGID_SECURE_APP_11);}
+  .secure_app_199{fill:url(#SVGID_SECURE_APP_12);}
+  .secure_app_200{fill:url(#SVGID_SECURE_APP_13);}
+  .secure_app_201{fill:url(#SVGID_SECURE_APP_14);}
+  .secure_app_202{fill:url(#SVGID_SECURE_APP_15);}
+  .secure_app_203{fill:url(#SVGID_SECURE_APP_16);}
+  .secure_app_204{fill:url(#SVGID_SECURE_APP_17);}
+  .secure_app_205{fill:url(#SVGID_SECURE_APP_18);}
+  .secure_app_206{fill:var(--vitamui-primary);}
+  .secure_app_207{fill:var(--vitamui-primary-900);}
+  .secure_app_208{fill:var(--vitamui-primary-dark);}
+  .secure_app_209{fill:url(#SVGID_SECURE_APP_19);}
+  .secure_app_210{fill:url(#SVGID_SECURE_APP_20);}
+  .secure_app_211{fill:url(#SVGID_SECURE_APP_21);}
+  .secure_app_212{fill:url(#SVGID_SECURE_APP_22);}
+  .secure_app_213{fill:url(#SVGID_SECURE_APP_23);}
+  .secure_app_214{fill:url(#SVGID_SECURE_APP_24);}
+  .secure_app_215{fill:url(#SVGID_SECURE_APP_25);}
+  .secure_app_216{fill:url(#SVGID_SECURE_APP_26);}
+  .secure_app_217{fill:url(#SVGID_SECURE_APP_27);}
+  .secure_app_218{fill:url(#SVGID_SECURE_APP_28);}
+  .secure_app_219{fill:url(#SVGID_SECURE_APP_29);}
+  .secure_app_220{fill:url(#SVGID_SECURE_APP_30);}
+  .secure_app_221{fill:url(#SVGID_SECURE_APP_31);}
+  .secure_app_222{fill:url(#SVGID_SECURE_APP_32);}
+  .secure_app_223{fill:url(#SVGID_SECURE_APP_33);}
+  .secure_app_224{fill:url(#SVGID_SECURE_APP_34);}
+  .secure_app_225{fill:url(#SVGID_SECURE_APP_35);}
+  .secure_app_226{fill:url(#SVGID_SECURE_APP_36);}
+  .secure_app_227{fill:#2A2C2B;}
+  .secure_app_228{fill:url(#SVGID_SECURE_APP_37);}
+  .secure_app_229{fill:url(#SVGID_SECURE_APP_38);}
+  .secure_app_230{fill:url(#SVGID_SECURE_APP_39);}
+  .secure_app_231{fill:url(#SVGID_SECURE_APP_40);}
+  .secure_app_232{fill:url(#SVGID_SECURE_APP_41);}
+  .secure_app_233{fill:url(#SVGID_SECURE_APP_42);}
+  .secure_app_234{fill:url(#SVGID_SECURE_APP_43);}
+  .secure_app_235{fill:url(#SVGID_SECURE_APP_44);}
+  .secure_app_236{fill:url(#SVGID_SECURE_APP_45);}
+  .secure_app_237{fill:url(#SVGID_SECURE_APP_46);}
+  .secure_app_238{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURE_APP_47);}
+  .secure_app_239{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURE_APP_48);}
+  .secure_app_240{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURE_APP_49);}
+  .secure_app_241{fill-rule:evenodd;clip-rule:evenodd;fill:#9B9A9B;}
+  .secure_app_242{fill:#FFFFFF;}
+  .secure_app_243{fill:var(--vitamui-primary-800);}
+  .secure_app_244{fill:var(--vitamui-primary-light);}
+  .secure_app_245{fill:var(--vitamui-primary-50);}
+  .secure_app_246{fill:var(--vitamui-primary);}
+  .secure_app_247{fill:var(--vitamui-primary-dark);}
+  .secure_app_248{fill:#A1A1A1;}
+</style>
+  <metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+    <sliceSourceBounds  bottomLeftOrigin="true" height="117.6" width="165.1" x="17.8" y="19.3"></sliceSourceBounds>
+	</sfw>
+</metadata>
+  <g>
+	<g>
+		<path class="secure_app_01" d="M100.3,141.5c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2
+			C17.6,150,54.6,141.5,100.3,141.5z"/>
+    <path class="secure_app_02" d="M100.3,141.9c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.4,150.2,56.7,141.9,100.3,141.9z"/>
+    <path class="secure_app_03" d="M100.3,139.7c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.4,148,56.7,139.7,100.3,139.7z"/>
+    <path class="secure_app_02" d="M100.3,138.5c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.4,146.8,56.7,138.5,100.3,138.5z"/>
+    <path class="secure_app_04" d="M100.2,138.5c22.9,0,43.4,2.3,57.8,6c-30.2-1.8-112.6,2.6-132.9,18.5c-2.5-1.8-3.8-3.8-3.8-5.7
+			C21.3,146.8,56.7,138.5,100.2,138.5z"/>
+    <path class="secure_app_03" d="M21.4,157.2c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C21.4,157.8,21.4,157.5,21.4,157.2z"/>
+	</g>
+</g>
+  <g>
+	<ellipse class="secure_app_05" cx="102.5" cy="160.6" rx="67.8" ry="9.8"/>
+    <ellipse class="secure_app_06" cx="102.5" cy="160.6" rx="67.6" ry="9.8"/>
+    <ellipse class="secure_app_07" cx="102.5" cy="160.6" rx="67.5" ry="9.8"/>
+    <ellipse class="secure_app_08" cx="102.5" cy="160.6" rx="67.4" ry="9.7"/>
+    <ellipse class="secure_app_09" cx="102.5" cy="160.5" rx="67.3" ry="9.7"/>
+    <ellipse class="secure_app_10" cx="102.5" cy="160.5" rx="67.2" ry="9.7"/>
+    <ellipse class="secure_app_11" cx="102.5" cy="160.5" rx="67" ry="9.6"/>
+    <ellipse class="secure_app_12" cx="102.5" cy="160.5" rx="66.9" ry="9.6"/>
+    <ellipse class="secure_app_13" cx="102.5" cy="160.5" rx="66.8" ry="9.6"/>
+    <ellipse class="secure_app_14" cx="102.5" cy="160.5" rx="66.7" ry="9.6"/>
+    <ellipse class="secure_app_15" cx="102.5" cy="160.5" rx="66.6" ry="9.5"/>
+    <ellipse class="secure_app_16" cx="102.5" cy="160.5" rx="66.4" ry="9.5"/>
+    <ellipse class="secure_app_17" cx="102.5" cy="160.5" rx="66.3" ry="9.5"/>
+    <ellipse class="secure_app_18" cx="102.5" cy="160.4" rx="66.2" ry="9.4"/>
+    <ellipse class="secure_app_18" cx="102.5" cy="160.4" rx="66.1" ry="9.4"/>
+    <ellipse class="secure_app_19" cx="102.5" cy="160.4" rx="66" ry="9.4"/>
+    <ellipse class="secure_app_20" cx="102.5" cy="160.4" rx="65.8" ry="9.3"/>
+    <ellipse class="secure_app_21" cx="102.5" cy="160.4" rx="65.7" ry="9.3"/>
+    <ellipse class="secure_app_22" cx="102.5" cy="160.4" rx="65.6" ry="9.3"/>
+    <ellipse class="secure_app_23" cx="102.5" cy="160.4" rx="65.5" ry="9.2"/>
+    <ellipse class="secure_app_24" cx="102.5" cy="160.4" rx="65.4" ry="9.2"/>
+    <ellipse class="secure_app_25" cx="102.5" cy="160.4" rx="65.2" ry="9.2"/>
+    <ellipse class="secure_app_26" cx="102.5" cy="160.4" rx="65.1" ry="9.1"/>
+    <ellipse class="secure_app_26" cx="102.5" cy="160.3" rx="65" ry="9.1"/>
+    <ellipse class="secure_app_27" cx="102.5" cy="160.3" rx="64.9" ry="9.1"/>
+    <ellipse class="secure_app_27" cx="102.5" cy="160.3" rx="64.8" ry="9"/>
+    <ellipse class="secure_app_28" cx="102.4" cy="160.3" rx="64.6" ry="9"/>
+    <ellipse class="secure_app_29" cx="102.4" cy="160.3" rx="64.5" ry="9"/>
+    <ellipse class="secure_app_30" cx="102.4" cy="160.3" rx="64.4" ry="8.9"/>
+    <ellipse class="secure_app_31" cx="102.4" cy="160.3" rx="64.3" ry="8.9"/>
+    <ellipse class="secure_app_32" cx="102.4" cy="160.3" rx="64.2" ry="8.9"/>
+    <ellipse class="secure_app_33" cx="102.4" cy="160.3" rx="64" ry="8.8"/>
+    <ellipse class="secure_app_33" cx="102.4" cy="160.2" rx="63.9" ry="8.8"/>
+    <ellipse class="secure_app_34" cx="102.4" cy="160.2" rx="63.8" ry="8.8"/>
+    <ellipse class="secure_app_34" cx="102.4" cy="160.2" rx="63.7" ry="8.8"/>
+    <ellipse class="secure_app_35" cx="102.4" cy="160.2" rx="63.6" ry="8.7"/>
+    <ellipse class="secure_app_35" cx="102.4" cy="160.2" rx="63.5" ry="8.7"/>
+    <ellipse class="secure_app_36" cx="102.4" cy="160.2" rx="63.3" ry="8.7"/>
+    <ellipse class="secure_app_37" cx="102.4" cy="160.2" rx="63.2" ry="8.6"/>
+    <ellipse class="secure_app_38" cx="102.4" cy="160.2" rx="63.1" ry="8.6"/>
+    <ellipse class="secure_app_39" cx="102.4" cy="160.2" rx="63" ry="8.6"/>
+    <ellipse class="secure_app_40" cx="102.4" cy="160.1" rx="62.9" ry="8.5"/>
+    <ellipse class="secure_app_41" cx="102.4" cy="160.1" rx="62.7" ry="8.5"/>
+    <ellipse class="secure_app_41" cx="102.4" cy="160.1" rx="62.6" ry="8.5"/>
+    <ellipse class="secure_app_42" cx="102.4" cy="160.1" rx="62.5" ry="8.4"/>
+    <ellipse class="secure_app_42" cx="102.4" cy="160.1" rx="62.4" ry="8.4"/>
+    <ellipse class="secure_app_43" cx="102.4" cy="160.1" rx="62.3" ry="8.4"/>
+    <ellipse class="secure_app_43" cx="102.4" cy="160.1" rx="62.1" ry="8.3"/>
+    <ellipse class="secure_app_44" cx="102.4" cy="160.1" rx="62" ry="8.3"/>
+    <ellipse class="secure_app_45" cx="102.4" cy="160.1" rx="61.9" ry="8.3"/>
+    <ellipse class="secure_app_46" cx="102.4" cy="160.1" rx="61.8" ry="8.2"/>
+    <ellipse class="secure_app_47" cx="102.4" cy="160" rx="61.7" ry="8.2"/>
+    <ellipse class="secure_app_48" cx="102.4" cy="160" rx="61.5" ry="8.2"/>
+    <ellipse class="secure_app_49" cx="102.4" cy="160" rx="61.4" ry="8.1"/>
+    <ellipse class="secure_app_50" cx="102.4" cy="160" rx="61.3" ry="8.1"/>
+    <ellipse class="secure_app_51" cx="102.4" cy="160" rx="61.2" ry="8.1"/>
+    <ellipse class="secure_app_51" cx="102.4" cy="160" rx="61.1" ry="8"/>
+    <ellipse class="secure_app_52" cx="102.4" cy="160" rx="60.9" ry="8"/>
+    <ellipse class="secure_app_53" cx="102.4" cy="160" rx="60.8" ry="8"/>
+    <ellipse class="secure_app_54" cx="102.4" cy="160" rx="60.7" ry="8"/>
+    <ellipse class="secure_app_55" cx="102.4" cy="159.9" rx="60.6" ry="7.9"/>
+    <ellipse class="secure_app_56" cx="102.4" cy="159.9" rx="60.5" ry="7.9"/>
+    <ellipse class="secure_app_57" cx="102.4" cy="159.9" rx="60.3" ry="7.9"/>
+    <ellipse class="secure_app_58" cx="102.4" cy="159.9" rx="60.2" ry="7.8"/>
+    <ellipse class="secure_app_59" cx="102.4" cy="159.9" rx="60.1" ry="7.8"/>
+    <ellipse class="secure_app_60" cx="102.4" cy="159.9" rx="60" ry="7.8"/>
+    <ellipse class="secure_app_61" cx="102.4" cy="159.9" rx="59.9" ry="7.7"/>
+    <ellipse class="secure_app_62" cx="102.4" cy="159.9" rx="59.7" ry="7.7"/>
+    <ellipse class="secure_app_63" cx="102.4" cy="159.9" rx="59.6" ry="7.7"/>
+    <ellipse class="secure_app_64" cx="102.4" cy="159.8" rx="59.5" ry="7.6"/>
+    <ellipse class="secure_app_65" cx="102.4" cy="159.8" rx="59.4" ry="7.6"/>
+    <ellipse class="secure_app_66" cx="102.4" cy="159.8" rx="59.3" ry="7.6"/>
+    <ellipse class="secure_app_67" cx="102.3" cy="159.8" rx="59.1" ry="7.5"/>
+    <ellipse class="secure_app_68" cx="102.3" cy="159.8" rx="59" ry="7.5"/>
+    <ellipse class="secure_app_69" cx="102.3" cy="159.8" rx="58.9" ry="7.5"/>
+    <ellipse class="secure_app_70" cx="102.3" cy="159.8" rx="58.8" ry="7.4"/>
+    <ellipse class="secure_app_71" cx="102.3" cy="159.8" rx="58.7" ry="7.4"/>
+    <ellipse class="secure_app_72" cx="102.3" cy="159.8" rx="58.5" ry="7.4"/>
+    <ellipse class="secure_app_73" cx="102.3" cy="159.8" rx="58.4" ry="7.3"/>
+    <ellipse class="secure_app_74" cx="102.3" cy="159.7" rx="58.3" ry="7.3"/>
+    <ellipse class="secure_app_75" cx="102.3" cy="159.7" rx="58.2" ry="7.3"/>
+    <ellipse class="secure_app_76" cx="102.3" cy="159.7" rx="58.1" ry="7.2"/>
+    <ellipse class="secure_app_77" cx="102.3" cy="159.7" rx="57.9" ry="7.2"/>
+    <ellipse class="secure_app_78" cx="102.3" cy="159.7" rx="57.8" ry="7.2"/>
+    <ellipse class="secure_app_79" cx="102.3" cy="159.7" rx="57.7" ry="7.2"/>
+    <ellipse class="secure_app_80" cx="102.3" cy="159.7" rx="57.6" ry="7.1"/>
+    <ellipse class="secure_app_81" cx="102.3" cy="159.7" rx="57.5" ry="7.1"/>
+    <ellipse class="secure_app_82" cx="102.3" cy="159.7" rx="57.3" ry="7.1"/>
+    <ellipse class="secure_app_83" cx="102.3" cy="159.6" rx="57.2" ry="7"/>
+    <ellipse class="secure_app_84" cx="102.3" cy="159.6" rx="57.1" ry="7"/>
+    <ellipse class="secure_app_85" cx="102.3" cy="159.6" rx="57" ry="7"/>
+    <ellipse class="secure_app_86" cx="102.3" cy="159.6" rx="56.9" ry="6.9"/>
+    <ellipse class="secure_app_87" cx="102.3" cy="159.6" rx="56.7" ry="6.9"/>
+    <ellipse class="secure_app_88" cx="102.3" cy="159.6" rx="56.6" ry="6.9"/>
+    <ellipse class="secure_app_89" cx="102.3" cy="159.6" rx="56.5" ry="6.8"/>
+    <ellipse class="secure_app_90" cx="102.3" cy="159.6" rx="56.4" ry="6.8"/>
+    <ellipse class="secure_app_91" cx="102.3" cy="159.6" rx="56.3" ry="6.8"/>
+    <ellipse class="secure_app_92" cx="102.3" cy="159.5" rx="56.2" ry="6.7"/>
+    <ellipse class="secure_app_93" cx="102.3" cy="159.5" rx="56" ry="6.7"/>
+    <ellipse class="secure_app_94" cx="102.3" cy="159.5" rx="55.9" ry="6.7"/>
+    <ellipse class="secure_app_95" cx="102.3" cy="159.5" rx="55.8" ry="6.6"/>
+    <ellipse class="secure_app_96" cx="102.3" cy="159.5" rx="55.7" ry="6.6"/>
+    <ellipse class="secure_app_97" cx="102.3" cy="159.5" rx="55.6" ry="6.6"/>
+    <ellipse class="secure_app_98" cx="102.3" cy="159.5" rx="55.4" ry="6.5"/>
+    <ellipse class="secure_app_99" cx="102.3" cy="159.5" rx="55.3" ry="6.5"/>
+    <ellipse class="secure_app_100" cx="102.3" cy="159.5" rx="55.2" ry="6.5"/>
+    <ellipse class="secure_app_101" cx="102.3" cy="159.5" rx="55.1" ry="6.4"/>
+    <ellipse class="secure_app_102" cx="102.3" cy="159.4" rx="55" ry="6.4"/>
+    <ellipse class="secure_app_103" cx="102.3" cy="159.4" rx="54.8" ry="6.4"/>
+    <ellipse class="secure_app_104" cx="102.3" cy="159.4" rx="54.7" ry="6.4"/>
+    <ellipse class="secure_app_105" cx="102.3" cy="159.4" rx="54.6" ry="6.3"/>
+    <ellipse class="secure_app_106" cx="102.3" cy="159.4" rx="54.5" ry="6.3"/>
+    <ellipse class="secure_app_107" cx="102.3" cy="159.4" rx="54.4" ry="6.3"/>
+    <ellipse class="secure_app_108" cx="102.3" cy="159.4" rx="54.2" ry="6.2"/>
+    <ellipse class="secure_app_109" cx="102.3" cy="159.4" rx="54.1" ry="6.2"/>
+    <ellipse class="secure_app_110" cx="102.3" cy="159.4" rx="54" ry="6.2"/>
+    <ellipse class="secure_app_111" cx="102.3" cy="159.3" rx="53.9" ry="6.1"/>
+    <ellipse class="secure_app_112" cx="102.3" cy="159.3" rx="53.8" ry="6.1"/>
+    <ellipse class="secure_app_113" cx="102.2" cy="159.3" rx="53.6" ry="6.1"/>
+    <ellipse class="secure_app_114" cx="102.2" cy="159.3" rx="53.5" ry="6"/>
+    <ellipse class="secure_app_115" cx="102.2" cy="159.3" rx="53.4" ry="6"/>
+    <ellipse class="secure_app_116" cx="102.2" cy="159.3" rx="53.3" ry="6"/>
+    <ellipse class="secure_app_117" cx="102.2" cy="159.3" rx="53.2" ry="5.9"/>
+    <ellipse class="secure_app_118" cx="102.2" cy="159.3" rx="53" ry="5.9"/>
+    <ellipse class="secure_app_119" cx="102.2" cy="159.3" rx="52.9" ry="5.9"/>
+    <ellipse class="secure_app_120" cx="102.2" cy="159.2" rx="52.8" ry="5.8"/>
+    <ellipse class="secure_app_121" cx="102.2" cy="159.2" rx="52.7" ry="5.8"/>
+    <ellipse class="secure_app_122" cx="102.2" cy="159.2" rx="52.6" ry="5.8"/>
+    <ellipse class="secure_app_123" cx="102.2" cy="159.2" rx="52.4" ry="5.7"/>
+    <ellipse class="secure_app_124" cx="102.2" cy="159.2" rx="52.3" ry="5.7"/>
+    <ellipse class="secure_app_125" cx="102.2" cy="159.2" rx="52.2" ry="5.7"/>
+    <ellipse class="secure_app_126" cx="102.2" cy="159.2" rx="52.1" ry="5.6"/>
+    <ellipse class="secure_app_127" cx="102.2" cy="159.2" rx="52" ry="5.6"/>
+    <ellipse class="secure_app_128" cx="102.2" cy="159.2" rx="51.8" ry="5.6"/>
+    <ellipse class="secure_app_129" cx="102.2" cy="159.2" rx="51.7" ry="5.6"/>
+    <ellipse class="secure_app_130" cx="102.2" cy="159.1" rx="51.6" ry="5.5"/>
+    <ellipse class="secure_app_131" cx="102.2" cy="159.1" rx="51.5" ry="5.5"/>
+    <ellipse class="secure_app_132" cx="102.2" cy="159.1" rx="51.4" ry="5.5"/>
+    <ellipse class="secure_app_133" cx="102.2" cy="159.1" rx="51.2" ry="5.4"/>
+    <ellipse class="secure_app_134" cx="102.2" cy="159.1" rx="51.1" ry="5.4"/>
+    <ellipse class="secure_app_135" cx="102.2" cy="159.1" rx="51" ry="5.4"/>
+    <ellipse class="secure_app_136" cx="102.2" cy="159.1" rx="50.9" ry="5.3"/>
+    <ellipse class="secure_app_137" cx="102.2" cy="159.1" rx="50.8" ry="5.3"/>
+    <ellipse class="secure_app_138" cx="102.2" cy="159.1" rx="50.6" ry="5.3"/>
+    <ellipse class="secure_app_139" cx="102.2" cy="159" rx="50.5" ry="5.2"/>
+    <ellipse class="secure_app_140" cx="102.2" cy="159" rx="50.4" ry="5.2"/>
+    <ellipse class="secure_app_141" cx="102.2" cy="159" rx="50.3" ry="5.2"/>
+    <ellipse class="secure_app_142" cx="102.2" cy="159" rx="50.2" ry="5.1"/>
+    <ellipse class="secure_app_143" cx="102.2" cy="159" rx="50" ry="5.1"/>
+    <ellipse class="secure_app_143" cx="102.2" cy="159" rx="49.9" ry="5.1"/>
+    <ellipse class="secure_app_144" cx="102.2" cy="159" rx="49.8" ry="5"/>
+    <ellipse class="secure_app_145" cx="102.2" cy="159" rx="49.7" ry="5"/>
+    <ellipse class="secure_app_146" cx="102.2" cy="159" rx="49.6" ry="5"/>
+    <ellipse class="secure_app_147" cx="102.2" cy="158.9" rx="49.4" ry="4.9"/>
+    <ellipse class="secure_app_148" cx="102.2" cy="158.9" rx="49.3" ry="4.9"/>
+    <ellipse class="secure_app_149" cx="102.2" cy="158.9" rx="49.2" ry="4.9"/>
+    <ellipse class="secure_app_150" cx="102.2" cy="158.9" rx="49.1" ry="4.8"/>
+    <ellipse class="secure_app_151" cx="102.2" cy="158.9" rx="49" ry="4.8"/>
+    <ellipse class="secure_app_151" cx="102.2" cy="158.9" rx="48.8" ry="4.8"/>
+    <ellipse class="secure_app_152" cx="102.2" cy="158.9" rx="48.7" ry="4.8"/>
+    <ellipse class="secure_app_152" cx="102.2" cy="158.9" rx="48.6" ry="4.7"/>
+    <ellipse class="secure_app_153" cx="102.2" cy="158.9" rx="48.5" ry="4.7"/>
+    <ellipse class="secure_app_154" cx="102.2" cy="158.9" rx="48.4" ry="4.7"/>
+    <ellipse class="secure_app_155" cx="102.2" cy="158.8" rx="48.3" ry="4.6"/>
+    <ellipse class="secure_app_156" cx="102.1" cy="158.8" rx="48.1" ry="4.6"/>
+    <ellipse class="secure_app_157" cx="102.1" cy="158.8" rx="48" ry="4.6"/>
+    <ellipse class="secure_app_158" cx="102.1" cy="158.8" rx="47.9" ry="4.5"/>
+    <ellipse class="secure_app_159" cx="102.1" cy="158.8" rx="47.8" ry="4.5"/>
+    <ellipse class="secure_app_160" cx="102.1" cy="158.8" rx="47.7" ry="4.5"/>
+    <ellipse class="secure_app_160" cx="102.1" cy="158.8" rx="47.5" ry="4.4"/>
+    <ellipse class="secure_app_161" cx="102.1" cy="158.8" rx="47.4" ry="4.4"/>
+    <ellipse class="secure_app_161" cx="102.1" cy="158.8" rx="47.3" ry="4.4"/>
+    <ellipse class="secure_app_162" cx="102.1" cy="158.7" rx="47.2" ry="4.3"/>
+    <ellipse class="secure_app_162" cx="102.1" cy="158.7" rx="47.1" ry="4.3"/>
+    <ellipse class="secure_app_163" cx="102.1" cy="158.7" rx="46.9" ry="4.3"/>
+    <ellipse class="secure_app_164" cx="102.1" cy="158.7" rx="46.8" ry="4.2"/>
+    <ellipse class="secure_app_165" cx="102.1" cy="158.7" rx="46.7" ry="4.2"/>
+    <ellipse class="secure_app_166" cx="102.1" cy="158.7" rx="46.6" ry="4.2"/>
+    <ellipse class="secure_app_167" cx="102.1" cy="158.7" rx="46.5" ry="4.1"/>
+    <ellipse class="secure_app_168" cx="102.1" cy="158.7" rx="46.3" ry="4.1"/>
+    <ellipse class="secure_app_168" cx="102.1" cy="158.7" rx="46.2" ry="4.1"/>
+    <ellipse class="secure_app_169" cx="102.1" cy="158.6" rx="46.1" ry="4"/>
+    <ellipse class="secure_app_169" cx="102.1" cy="158.6" rx="46" ry="4"/>
+    <ellipse class="secure_app_170" cx="102.1" cy="158.6" rx="45.9" ry="4"/>
+    <ellipse class="secure_app_171" cx="102.1" cy="158.6" rx="45.7" ry="4"/>
+    <ellipse class="secure_app_172" cx="102.1" cy="158.6" rx="45.6" ry="3.9"/>
+    <ellipse class="secure_app_173" cx="102.1" cy="158.6" rx="45.5" ry="3.9"/>
+    <ellipse class="secure_app_174" cx="102.1" cy="158.6" rx="45.4" ry="3.9"/>
+    <ellipse class="secure_app_175" cx="102.1" cy="158.6" rx="45.3" ry="3.8"/>
+    <ellipse class="secure_app_175" cx="102.1" cy="158.6" rx="45.1" ry="3.8"/>
+    <ellipse class="secure_app_176" cx="102.1" cy="158.6" rx="45" ry="3.8"/>
+    <ellipse class="secure_app_176" cx="102.1" cy="158.5" rx="44.9" ry="3.7"/>
+    <ellipse class="secure_app_177" cx="102.1" cy="158.5" rx="44.8" ry="3.7"/>
+    <ellipse class="secure_app_178" cx="102.1" cy="158.5" rx="44.7" ry="3.7"/>
+    <ellipse class="secure_app_179" cx="102.1" cy="158.5" rx="44.5" ry="3.6"/>
+    <ellipse class="secure_app_180" cx="102.1" cy="158.5" rx="44.4" ry="3.6"/>
+    <ellipse class="secure_app_181" cx="102.1" cy="158.5" rx="44.3" ry="3.6"/>
+    <ellipse class="secure_app_182" cx="102.1" cy="158.5" rx="44.2" ry="3.5"/>
+    <ellipse class="secure_app_183" cx="102.1" cy="158.5" rx="44.1" ry="3.5"/>
+    <ellipse class="secure_app_184" cx="102.1" cy="158.5" rx="43.9" ry="3.5"/>
+    <ellipse class="secure_app_184" cx="102.1" cy="158.4" rx="43.8" ry="3.4"/>
+    <ellipse class="secure_app_185" cx="102.1" cy="158.4" rx="43.7" ry="3.4"/>
+</g>
+  <g>
+	<g>
+		<g>
+			<linearGradient id="SVGID_SECURE_APP_01" gradientUnits="userSpaceOnUse" x1="85.9753" y1="63.7193" x2="85.9753" y2="63.7193">
+				<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+			</linearGradient>
+      <path class="secure_app_186" d="M86,63.7"/>
+      <g>
+				<g>
+
+						<linearGradient id="SVGID_SECURE_APP_50" gradientUnits="userSpaceOnUse" x1="84.9433" y1="136.1398" x2="84.9433" y2="73.0483">
+						<stop  offset="0" style="stop-color:#000000"/>
+              <stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+              <stop  offset="4.243332e-02" style="stop-color:var(--vitamui-primary-800)"/>
+              <stop  offset="0.2123" style="stop-color:var(--vitamui-primary-700)"/>
+              <stop  offset="0.3813" style="stop-color:var(--vitamui-primary-600)"/>
+              <stop  offset="0.5467" style="stop-color:var(--vitamui-primary)"/>
+              <stop  offset="0.7072" style="stop-color:var(--vitamui-primary-400)"/>
+              <stop  offset="0.8609" style="stop-color:var(--vitamui-primary-light)"/>
+              <stop  offset="1" style="stop-color:var(--vitamui-primary-light)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_50);" d="M118.7,72.6l-18.2,0.3l0.1-3.9
+						c0.4-2.3-0.8-4.5-2.4-4.4l-45.3,0.6c-1.9,0.1-3.4,2.4-3.1,4.9l-1,48.2l-1.1,34.6v5.7c0,0-0.2,4.9,5,5.7
+						c5.2,0.8,8.9-0.5,8.9-0.5l0.6-9.4l54.7-16.1c1.7-0.3,3.2-2.2,3.6-4.7l1.8-54.7C122.7,75.5,121,72.4,118.7,72.6z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_51" gradientUnits="userSpaceOnUse" x1="73.2557" y1="177.1317" x2="95.8103" y2="42.0252">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="4.258544e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.179" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.3137" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4445" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5697" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6831" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.739" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.8255" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.9312" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_51);" d="M119.5,72.6l-18.2,0.3l0.1-3.9
+						c0.4-2.3-0.8-4.5-2.4-4.4l-45.3,0.6c-1.9,0.1-3.4,2.4-3.1,4.9l-1,48.2l-1.1,34.6v5.7c0,0-0.2,4.9,5,5.7
+						c5.2,0.8,9.1-0.8,9.1-0.8l0.4-9l54.7-16.1c1.7-0.3,3.2-2.2,3.6-4.7l1.8-54.7C123.5,75.5,121.8,72.4,119.5,72.6z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_52" gradientUnits="userSpaceOnUse" x1="52.8349" y1="77.953" x2="60.1838" y2="77.953">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_52);" d="M52.8,76.2l6.2,0.1
+						c0,0,1.4,2.8,1.1,2.8c-0.3,0-3.6,0.6-3.6,0.6l-2.2-0.8L52.8,76.2z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_53" gradientUnits="userSpaceOnUse" x1="90.1619" y1="69.881" x2="80.6868" y2="160.1152">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+            <stop  offset="1" style="stop-color:#4C4C4C"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_53);" d="M125.7,80.4v-6.3
+						c0,0-65.3,2.3-66.7,2.2c0,0-3,3.3-6.2-0.1l-1,82.3c0,0-0.9,3.7,5.7,3C58.2,161.4,125.7,80.4,125.7,80.4z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_54" gradientUnits="userSpaceOnUse" x1="57.5909" y1="117.8215" x2="125.7117" y2="117.8215">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+            <stop  offset="0.5573" style="stop-color:#E5E4E4"/>
+            <stop  offset="0.7758" style="stop-color:#E8E7E7"/>
+            <stop  offset="0.9599" style="stop-color:#F2F2F2"/>
+            <stop  offset="0.9992" style="stop-color:#F5F5F5"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_54);" d="M125.7,80.4v-6.3
+						c0,0-65.3,2.3-66.7,2.2c0,0-0.6,58.3-1.5,85.2C58.2,161.4,125.7,80.4,125.7,80.4z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_55" gradientUnits="userSpaceOnUse" x1="91.7769" y1="172.9423" x2="97.2883" y2="52.7935">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_55);" d="M59.3,88.7l-2.3,70.6
+						c-0.4,5.4,2.2,4.8,4.4,4.4l64.6-19.1c1.7-0.3,3.2-2.2,3.6-4.7l1.8-55.8c0.5-3.4-1.2-6.4-3.5-6.2l-64.1,3.8
+						C61.1,81.8,59,85.1,59.3,88.7z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_56" gradientUnits="userSpaceOnUse" x1="91.6726" y1="171.2413" x2="97.7777" y2="75.1576">
+						<stop  offset="8.429980e-02" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="0.1128" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.2041" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2943" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.3819" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4657" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.5417" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6226" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7477" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.9005" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_56);" d="M60.5,88.6l-2.2,70
+						c-0.4,5.3,2.2,4.8,4.4,4.4l64-19c1.7-0.3,3.1-2.2,3.5-4.6l1.7-55.3c0.5-3.3-1.2-6.3-3.5-6.2L65,81.6
+						C62.3,81.8,60.2,85.1,60.5,88.6z"/>
+          <path class="secure_app_194" d="M60.4,90.8L59,137.1C59,137.1,59.9,132.9,60.4,90.8z"/>
+          <path class="secure_app_195" d="M69.4,82.5l57.6-3.7C126.9,78.8,101.9,82,69.4,82.5z"/>
+          <g>
+
+							<linearGradient id="SVGID_SECURE_APP_57" gradientUnits="userSpaceOnUse" x1="58.3765" y1="43.417" x2="51.6142" y2="142.4122">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+                <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+                <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_57);" points="52.9,160.9 52.8,160.9
+							53.5,76.9 53.7,76.9 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_58" gradientUnits="userSpaceOnUse" x1="58.8362" y1="43.4244" x2="52.0744" y2="142.4136">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_58);" points="53.4,160.9 53.2,160.9
+							54,76.9 54.1,76.9 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_59" gradientUnits="userSpaceOnUse" x1="59.2959" y1="43.4318" x2="52.5344" y2="142.4149">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_59);" points="53.8,160.9 53.7,160.9
+							54.4,76.9 54.6,77 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_60" gradientUnits="userSpaceOnUse" x1="59.7555" y1="43.4393" x2="52.9944" y2="142.4163">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_60);" points="54.3,160.9 54.1,160.9
+							54.9,77 55.1,77 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_61" gradientUnits="userSpaceOnUse" x1="60.215" y1="43.4467" x2="53.4544" y2="142.4176">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_61);" points="54.8,160.9 54.6,160.9
+							55.4,77 55.5,77 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_62" gradientUnits="userSpaceOnUse" x1="60.6745" y1="43.4541" x2="53.9143" y2="142.419">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_62);" points="55.2,160.9 55.1,160.9
+							55.8,77 56,77 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_63" gradientUnits="userSpaceOnUse" x1="61.1339" y1="43.4615" x2="54.3741" y2="142.4203">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_63);" points="55.7,160.9 55.5,160.9
+							56.3,77 56.4,77 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_64" gradientUnits="userSpaceOnUse" x1="61.5933" y1="43.4689" x2="54.8339" y2="142.4217">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_64);" points="56.1,160.9 56,160.9
+							56.7,77 56.9,77 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_65" gradientUnits="userSpaceOnUse" x1="62.0526" y1="43.4763" x2="55.2936" y2="142.423">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_65);" points="56.6,160.9 56.4,160.9
+							57.2,77 57.4,77 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_66" gradientUnits="userSpaceOnUse" x1="62.5118" y1="43.4837" x2="55.7533" y2="142.4244">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_66);" points="57,160.9 56.9,160.9
+							57.7,77 57.8,77 						"/>
+					</g>
+          <path class="secure_app_206" d="M100.6,72.9l0.2-4.7c0,0,0-2.4-1.6-3.1c0,0,1.3,0.8,1.3,3.1c0,2.3-0.1,4.8-0.1,4.8L100.6,72.9z"/>
+          <path class="secure_app_206" d="M51.8,74.1l0.1-4.9c0,0,0.1-2.4,1.8-3.2c0,0-1.3,0.8-1.5,3.2c-0.1,2.4-0.1,4.9-0.1,4.9L51.8,74.1z"/>
+				</g>
+        <path class="secure_app_207" d="M60.4,161.6l64.8-19.1C125.2,142.5,83.9,151.2,60.4,161.6z"/>
+			</g>
+      <path class="secure_app_208" d="M51.8,75.6V152l1.1-75.7c0,0,1.7,0.2,6.2,0.1c15.7-0.4,52.1-1.7,51.8-1.7C110.5,74.6,51.8,75.6,51.8,75.6z
+				"/>
+		</g>
+	</g>
+</g>
+  <g>
+	<g>
+		<g>
+
+				<linearGradient id="SVGID_SECURE_APP_67" gradientUnits="userSpaceOnUse" x1="109.5658" y1="63.0676" x2="109.5658" y2="63.0676">
+				<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+          <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+          <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+          <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+          <stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+          <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+			</linearGradient>
+      <path style="fill:url(#SVGID_SECURE_APP_67);" d="M109.6,63.1"/>
+      <g>
+				<g>
+
+						<linearGradient id="SVGID_SECURE_APP_68" gradientUnits="userSpaceOnUse" x1="108.4545" y1="141.0541" x2="108.4545" y2="73.1135">
+						<stop  offset="0" style="stop-color:#000000"/>
+              <stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+              <stop  offset="4.243332e-02" style="stop-color:var(--vitamui-primary-800)"/>
+              <stop  offset="0.2123" style="stop-color:var(--vitamui-primary-700)"/>
+              <stop  offset="0.3813" style="stop-color:var(--vitamui-primary-600)"/>
+              <stop  offset="0.5467" style="stop-color:var(--vitamui-primary)"/>
+              <stop  offset="0.7072" style="stop-color:var(--vitamui-primary-400)"/>
+              <stop  offset="0.8609" style="stop-color:var(--vitamui-primary-light)"/>
+              <stop  offset="1" style="stop-color:var(--vitamui-primary-light)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_68);" d="M144.8,72.6L125.2,73l0.2-4.2
+						c0.4-2.5-0.9-4.8-2.6-4.7l-48.8,0.6c-2,0.1-3.6,2.6-3.4,5.3l-1.1,51.9l-1.2,37.3v6.1c0,0-0.3,5.3,5.4,6.1
+						c5.6,0.8,9.6-0.6,9.6-0.6l0.7-10.1l58.9-17.4c1.8-0.3,3.4-2.4,3.8-5l1.9-58.9C149.1,75.7,147.3,72.4,144.8,72.6z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_69" gradientUnits="userSpaceOnUse" x1="95.8686" y1="185.1965" x2="120.1567" y2="39.7061">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="4.258544e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.179" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.3137" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4445" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5697" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6831" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.739" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.8255" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.9312" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_69);" d="M145.7,72.6L126.1,73l0.2-4.2
+						c0.4-2.5-0.9-4.8-2.6-4.7l-48.8,0.6c-2,0.1-3.6,2.6-3.4,5.3l-1.1,51.9l-1.2,37.3v6.1c0,0-0.3,5.3,5.4,6.1
+						c5.6,0.8,9.8-0.9,9.8-0.9l0.5-9.7l58.9-17.4c1.8-0.3,3.4-2.4,3.8-5l1.9-58.9C150,75.7,148.2,72.4,145.7,72.6z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_70" gradientUnits="userSpaceOnUse" x1="73.8783" y1="78.3952" x2="81.792" y2="78.3952">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_70);" d="M73.9,76.6l6.7,0.1c0,0,1.5,3,1.2,3
+						c-0.3,0-3.9,0.6-3.9,0.6l-2.4-0.9L73.9,76.6z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_71" gradientUnits="userSpaceOnUse" x1="114.0742" y1="69.7028" x2="103.8708" y2="166.8722">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+            <stop  offset="1" style="stop-color:#4C4C4C"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_71);" d="M152.4,81.1v-6.8
+						c0,0-70.4,2.5-71.8,2.4c0,0-3.2,3.6-6.7-0.1l-1,88.6c0,0-1,4,6.2,3.2C79.7,168.2,152.4,81.1,152.4,81.1z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_72" gradientUnits="userSpaceOnUse" x1="78.9998" y1="121.3279" x2="152.3563" y2="121.3279">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+            <stop  offset="0.5573" style="stop-color:#E5E4E4"/>
+            <stop  offset="0.7758" style="stop-color:#E8E7E7"/>
+            <stop  offset="0.9599" style="stop-color:#F2F2F2"/>
+            <stop  offset="0.9992" style="stop-color:#F5F5F5"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_72);" d="M152.4,81.1v-6.8
+						c0,0-70.4,2.5-71.8,2.4c0,0-0.7,62.8-1.6,91.8C79.7,168.2,152.4,81.1,152.4,81.1z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_73" gradientUnits="userSpaceOnUse" x1="115.8133" y1="180.6852" x2="121.7483" y2="51.302">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_73);" d="M80.9,89.9L78.5,166
+						c-0.4,5.8,2.4,5.2,4.8,4.8l69.6-20.6c1.8-0.3,3.4-2.4,3.8-5l1.9-60.1c0.6-3.6-1.2-6.9-3.8-6.7l-69,4.1
+						C82.8,82.6,80.5,86.1,80.9,89.9z"/>
+
+          <linearGradient id="SVGID_SECURE_APP_74" gradientUnits="userSpaceOnUse" x1="115.7009" y1="178.8534" x2="122.2753" y2="75.385">
+						<stop  offset="8.429980e-02" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="0.1128" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.2041" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2943" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.3819" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4657" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.5417" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6226" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7477" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.9005" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_SECURE_APP_74);" d="M82.1,89.8l-2.4,75.4
+						c-0.4,5.7,2.3,5.1,4.7,4.7l68.9-20.4c1.8-0.3,3.4-2.4,3.8-5l1.9-59.6c0.6-3.6-1.2-6.8-3.7-6.7l-68.4,4.1
+						C84,82.5,81.8,86.1,82.1,89.8z"/>
+          <path class="secure_app_194" d="M82.1,92.2l-1.6,49.9C80.5,142.1,81.5,137.6,82.1,92.2z"/>
+          <path class="secure_app_195" d="M91.7,83.3l62-4C153.7,79.3,126.7,82.7,91.7,83.3z"/>
+          <g>
+
+							<linearGradient id="SVGID_SECURE_APP_75" gradientUnits="userSpaceOnUse" x1="79.8458" y1="41.2049" x2="72.5638" y2="147.8086">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+                <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+                <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_75);" points="74,167.7 73.8,167.7
+							74.6,77.3 74.8,77.3 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_76" gradientUnits="userSpaceOnUse" x1="80.3409" y1="41.2128" x2="73.0593" y2="147.8101">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_76);" points="74.5,167.7 74.3,167.7
+							75.1,77.3 75.3,77.3 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_77" gradientUnits="userSpaceOnUse" x1="80.8358" y1="41.2208" x2="73.5547" y2="147.8115">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_77);" points="75,167.7 74.8,167.7
+							75.6,77.3 75.8,77.3 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_78" gradientUnits="userSpaceOnUse" x1="81.3308" y1="41.2288" x2="74.0501" y2="147.813">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_78);" points="75.4,167.7 75.3,167.7
+							76.1,77.3 76.3,77.3 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_79" gradientUnits="userSpaceOnUse" x1="81.8256" y1="41.2368" x2="74.5454" y2="147.8144">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_79);" points="75.9,167.7 75.8,167.7
+							76.6,77.3 76.8,77.3 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_80" gradientUnits="userSpaceOnUse" x1="82.3204" y1="41.2448" x2="75.0406" y2="147.8159">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_80);" points="76.4,167.7 76.3,167.7
+							77.1,77.3 77.3,77.3 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_81" gradientUnits="userSpaceOnUse" x1="82.8152" y1="41.2528" x2="75.5358" y2="147.8173">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_81);" points="76.9,167.7 76.8,167.7
+							77.6,77.3 77.8,77.3 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_82" gradientUnits="userSpaceOnUse" x1="83.3098" y1="41.2607" x2="76.0309" y2="147.8188">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_82);" points="77.4,167.7 77.3,167.7
+							78.1,77.3 78.3,77.3 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_83" gradientUnits="userSpaceOnUse" x1="83.8044" y1="41.2687" x2="76.526" y2="147.8202">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_83);" points="77.9,167.7 77.8,167.7
+							78.6,77.3 78.7,77.4 						"/>
+
+            <linearGradient id="SVGID_SECURE_APP_84" gradientUnits="userSpaceOnUse" x1="84.299" y1="41.2767" x2="77.021" y2="147.8217">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_SECURE_APP_84);" points="78.4,167.7 78.3,167.7
+							79.1,77.4 79.2,77.4 						"/>
+					</g>
+          <path class="secure_app_206" d="M125.3,72.9l0.2-5.1c0,0,0-2.5-1.7-3.4c0,0,1.4,0.9,1.4,3.4s-0.1,5.1-0.1,5.1L125.3,72.9z"/>
+          <path class="secure_app_206" d="M72.7,74.2l0.1-5.2c0,0,0.1-2.6,2-3.4c0,0-1.4,0.8-1.6,3.4C73,71.6,73,74.3,73,74.3L72.7,74.2z"/>
+				</g>
+        <path class="secure_app_207" d="M82.1,168.5l69.8-20.6C151.8,147.9,107.4,157.3,82.1,168.5z"/>
+			</g>
+      <path class="secure_app_208" d="M72.7,75.9v82.2l1.1-81.5c0,0,1.9,0.2,6.7,0.1c16.9-0.5,56.1-1.8,55.8-1.8C135.9,74.8,72.7,75.9,72.7,75.9
+				z"/>
+		</g>
+	</g>
+</g>
+  <g>
+	<path class="secure_app_227" d="M162.2,108.6C162.2,108.6,162.2,108.6,162.2,108.6C162.2,108.6,162.2,108.6,162.2,108.6
+		C162.2,108.6,162.2,108.5,162.2,108.6C162.2,108.5,162.2,108.5,162.2,108.6c0-0.1,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0l-1.2-0.4c0.1,0,0.1,0.1,0.2,0.1l0,0c0.1,0.1,0.1,0.1,0.2,0.2c0,0.1,0.1,0.2,0.1,0.3c0,0,0,0,0,0
+		c0,0.1,0,0.2,0,0.3c0,0.1,0,0.3-0.1,0.4c0,0,0,0,0,0c0,0.1-0.1,0.2-0.2,0.3c0,0,0,0,0,0c-0.1,0.1-0.2,0.2-0.2,0.3c0,0,0,0,0,0
+		c-0.1,0.1-0.2,0.1-0.3,0.1c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0
+		c0,0,0,0,0,0l-4.6,0.8c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0l1.2,0.4
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l4.6-0.8c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0
+		v0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0-0.1,0-0.1s0-0.1,0-0.1c0,0,0-0.1,0-0.1c0,0,0,0,0,0
+		C162.2,108.7,162.2,108.7,162.2,108.6C162.2,108.7,162.2,108.7,162.2,108.6C162.2,108.7,162.2,108.7,162.2,108.6
+		C162.2,108.7,162.2,108.7,162.2,108.6C162.2,108.7,162.2,108.6,162.2,108.6C162.2,108.6,162.2,108.6,162.2,108.6
+		C162.2,108.6,162.2,108.6,162.2,108.6z"/>
+    <path class="secure_app_227" d="M155.9,111.5c-0.1-0.1-0.2-0.2-0.3-0.3c0,0,0,0,0,0c-0.1-0.1-0.2-0.2-0.2-0.4l0,0c-0.1-0.1-0.1-0.3-0.1-0.4
+		l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0l1.2,0.4C156.1,111.6,156,111.6,155.9,111.5
+		C155.9,111.5,155.9,111.5,155.9,111.5z"/>
+    <path class="secure_app_227" d="M155.4,109l0.7,0.2l1.2-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c-0.4-0.1-0.8-0.2-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0h0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l-0.7,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.2,0.2-0.4,0.4-0.5c0,0,0,0,0,0c0.1-0.2,0.3-0.3,0.4-0.4c0,0,0,0,0,0
+		c0.2-0.1,0.3-0.2,0.5-0.2l4.7-0.8c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+		c-0.4-0.1-0.8-0.2-1.2-0.4c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0
+		l-4.7,0.8c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1
+		s0,0.1,0,0.1c0,0,0,0.1,0,0.1l-3.6,0.6l1.2,0.4l3.6-0.6C155.3,109.2,155.4,109.1,155.4,109z"/>
+    <path class="secure_app_227" d="M149.1,111c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0-0.1,0.1-0.1,0.1-0.2c0,0,0,0,0,0c0-0.1,0.1-0.1,0.1-0.1
+		c0,0,0.1-0.1,0.2-0.1l1.3-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c-0.4-0.1-0.8-0.2-1.2-0.4c0,0,0.1,0,0.1,0.1c0,0,0,0,0,0c0,0,0.1,0,0.1,0.1c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1s0.1,0.1,0.1,0.1
+		l-1.3,0.2c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l1,0.3c0,0,0,0,0,0c0,0,0,0,0,0
+		c-0.1,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-4.6,0.8c0,0,0,0-0.1,0c0,0,0,0,0,0
+		c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0l1.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l4.6-0.8c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-1.2-0.4c0,0.1-0.1,0.1-0.1,0.2c0,0,0,0,0,0
+		c0,0.1-0.1,0.1-0.2,0.2c0,0-0.1,0.1-0.1,0.1c0,0,0,0-0.1-0.1c0,0,0-0.1-0.1-0.1c0,0,0,0,0,0C149.1,111.1,149.1,111,149.1,111z"/>
+    <path class="secure_app_227" d="M144.5,113.5c-0.1-0.1-0.2-0.2-0.3-0.3c-0.1-0.1-0.2-0.2-0.2-0.4s-0.1-0.3-0.1-0.4l-1.2-0.4c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l1.2,0.4C144.8,113.6,144.7,113.6,144.5,113.5C144.5,113.5,144.5,113.5,144.5,113.5z"
+    />
+    <path class="secure_app_227" d="M144.1,110.9l0.8,0.2l1.2-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0h0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-0.7,0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1-0.2,0.2-0.4,0.4-0.5c0,0,0,0,0,0c0.1-0.2,0.3-0.3,0.5-0.4c0,0,0,0,0,0c0.2-0.1,0.3-0.2,0.5-0.2l4.7-0.8c0,0,0.1,0,0.1,0
+		c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0l-4.7,0.8c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1s0,0.1,0,0.1c0,0,0,0.1,0,0.1
+		l-3.6,0.6l1.2,0.4l3.6-0.6C144,111.2,144.1,111.1,144.1,110.9z"/>
+    <path class="secure_app_227" d="M137.7,112.7c0-0.1,0.1-0.1,0.1-0.2c0,0,0,0,0,0c0-0.1,0.1-0.1,0.1-0.1s0.1-0.1,0.2-0.1l1.3-0.2c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l-1.2-0.4c0,0,0.1,0,0.1,0.1c0,0,0.1,0,0.1,0.1c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1s0.1,0.1,0.1,0.1l-1.3,0.2
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		s0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0
+		c0,0,0.1,0,0.1,0s0.1,0,0.1,0c0,0,0,0,0,0c-0.1,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0
+		c0,0,0,0,0,0l-4.7,0.8c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0l0,0
+		c0,0,0,0,0,0l1.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		l4.7-0.8c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0v0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-1.2-0.4c0,0.1-0.1,0.1-0.1,0.2l0,0c0,0.1-0.1,0.1-0.2,0.2c0,0,0,0,0,0c0,0-0.1,0.1-0.1,0.1
+		c0,0,0,0-0.1-0.1c0,0,0,0,0,0c0,0,0-0.1-0.1-0.1c0,0,0-0.1,0-0.2C137.7,112.9,137.7,112.8,137.7,112.7
+		C137.7,112.7,137.7,112.7,137.7,112.7z"/>
+    <path class="secure_app_227" d="M133.1,115.5c-0.1-0.1-0.2-0.2-0.3-0.3c-0.1-0.1-0.2-0.2-0.2-0.4c0,0,0,0,0,0c-0.1-0.1-0.1-0.3-0.1-0.4
+		l-1.2-0.4c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0
+		s0.1,0,0.1,0c0,0,0,0,0.1,0l0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0l0,0C133,115.5,133,115.5,133.1,115.5
+		C133,115.5,133,115.6,133.1,115.5l0.2,0.1c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+		C133.3,115.6,133.2,115.6,133.1,115.5L133.1,115.5z"/>
+    <path class="secure_app_227" d="M132.6,112.9l0.8,0.2l1.2-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c-0.4-0.1-0.8-0.2-1.2-0.4c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l-0.8,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.2,0.2-0.4,0.4-0.6c0,0,0,0,0,0
+		c0.1-0.2,0.3-0.3,0.5-0.4c0,0,0,0,0,0c0.2-0.1,0.3-0.2,0.5-0.2l4.8-0.8c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0l-4.8,0.8c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0.1,0,0.1s0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1l-3.7,0.6
+		l1.2,0.4l3.7-0.6C132.5,113.2,132.6,113.1,132.6,112.9z"/>
+    <path class="secure_app_227" d="M126.1,115c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0-0.1,0.1-0.1,0.1-0.2c0,0,0,0,0,0c0-0.1,0.1-0.1,0.1-0.1
+		c0,0,0.1-0.1,0.2-0.1l1.4-0.2c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0s0,0,0,0s0,0,0,0c-0.4-0.1-0.8-0.2-1.2-0.4c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0.1
+		c0,0,0.1,0,0.1,0.1c0,0,0,0,0,0l0,0c0,0,0.1,0.1,0.1,0.1c0,0,0.1,0.1,0.1,0.1l-1.4,0.2c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0.1,0,0.1,0
+		l0.9,0.3c0,0,0,0,0,0c0,0,0,0,0,0l0,0c-0.1,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l-4.8,0.8
+		c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0l1.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l4.8-0.8c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0l-1.2-0.4
+		c0,0.1-0.1,0.2-0.1,0.2c0,0,0,0,0,0c0,0.1-0.1,0.1-0.2,0.2c0,0,0,0,0,0c-0.1,0-0.1,0.1-0.2,0.1c0,0-0.1-0.1-0.1-0.1
+		c0,0,0-0.1-0.1-0.1c0,0,0,0,0,0C126.1,115.1,126.1,115,126.1,115z"/>
+    <path class="secure_app_227" d="M121.4,117.5c-0.1-0.1-0.2-0.2-0.3-0.3c0,0,0,0,0,0c-0.1-0.1-0.2-0.2-0.2-0.4c0,0,0,0,0,0
+		c-0.1-0.1-0.1-0.3-0.1-0.4l-1.2-0.4c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0l0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0l0.7,0.2c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0C121.6,117.7,121.5,117.6,121.4,117.5L121.4,117.5z"/>
+    <path class="secure_app_227" d="M121,115l0.8,0.2l1.3-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-0.8,0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1-0.2,0.2-0.4,0.4-0.6c0,0,0,0,0,0c0.1-0.2,0.3-0.3,0.5-0.4c0,0,0,0,0,0c0.2-0.1,0.3-0.2,0.5-0.2l4.9-0.8
+		c0.1,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0l-1.2-0.4
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0
+		c0,0,0,0-0.1,0l-4.9,0.8c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1
+		c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1s0,0.1,0,0.1c0,0,0,0.1,0,0.1l-3.7,0.6l1.2,0.4l3.7-0.6C120.8,115.2,120.9,115.1,121,115z"/>
+    <path class="secure_app_227" d="M114.5,117.4C114.5,117.4,114.5,117.3,114.5,117.4C114.4,117.3,114.4,117.3,114.5,117.4
+		c-0.1-0.1-0.1-0.2-0.1-0.2c0,0,0,0,0,0c0,0,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0-0.1,0.1-0.1,0.1-0.2l0,0
+		c0-0.1,0.1-0.1,0.1-0.1l0,0c0.1,0,0.1-0.1,0.2-0.1l1.4-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0v0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c-0.4-0.1-0.8-0.2-1.2-0.4c0,0,0.1,0,0.1,0.1c0,0,0.1,0,0.1,0.1l0,0c0,0,0.1,0.1,0.1,0.1
+		c0,0,0.1,0.1,0.1,0.1l-1.4,0.2c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0l0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l0,0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0
+		c0,0,0,0,0,0l0,0L114.5,117.4c-0.1,0-0.2,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l-4.8,0.8c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0
+		c0,0,0,0-0.1,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0
+		c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0l0.4,0.1c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l4.8-0.8c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0v0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l-1.2-0.4
+		c0,0.1-0.1,0.2-0.1,0.2c0,0,0,0,0,0c0,0.1-0.1,0.1-0.2,0.2c0,0,0,0,0,0C114.6,117.3,114.6,117.4,114.5,117.4z"/>
+    <path class="secure_app_227" d="M109.6,119.6c-0.1-0.1-0.2-0.2-0.3-0.3c0,0,0,0,0,0c-0.1-0.1-0.2-0.2-0.2-0.4c0,0,0,0,0,0
+		c-0.1-0.1-0.1-0.3-0.1-0.4l0,0l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0l1.2,0.4
+		C109.8,119.7,109.7,119.7,109.6,119.6L109.6,119.6z"/>
+    <path class="secure_app_227" d="M109.1,117l0.8,0.3l1.3-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l-0.8,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.2,0.2-0.4,0.4-0.6
+		c0,0,0,0,0,0c0.1-0.2,0.3-0.3,0.5-0.4c0,0,0,0,0,0c0.2-0.1,0.3-0.2,0.5-0.2l4.9-0.9c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+		c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0l-1.2-0.4c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0
+		c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0l-4.9,0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1l-3.8,0.7l1.2,0.4
+		l3.8-0.7C109,117.3,109.1,117.1,109.1,117z"/>
+    <path class="secure_app_227" d="M102.5,119.2C102.5,119.2,102.5,119.2,102.5,119.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0
+		c0-0.1,0.1-0.1,0.1-0.2c0-0.1,0.1-0.1,0.1-0.1c0,0,0,0,0,0c0.1,0,0.1-0.1,0.2-0.1l1.4-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0h0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-1.2-0.4c0,0,0.1,0,0.1,0.1l0,0c0,0,0.1,0.1,0.1,0.1
+		c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1l-1.4,0.2c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1
+		c0,0,0,0,0,0.1c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0v0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l1,0.3c-0.1,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		l-4.9,0.9c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0l1.2,0.4c0,0,0,0,0,0
+		s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l4.9-0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l-1.2-0.4
+		c0,0.1-0.1,0.2-0.1,0.2c0,0,0,0,0,0c-0.1,0.1-0.1,0.1-0.2,0.2c0,0,0,0,0,0c-0.1,0.1-0.1,0.1-0.2,0.1l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0-0.1-0.1-0.1-0.1l0,0C102.5,119.3,102.5,119.3,102.5,119.2z"/>
+    <path class="secure_app_227" d="M97.3,121.4C97.3,121.4,97.3,121.4,97.3,121.4c-0.1-0.1-0.2-0.2-0.2-0.4c0,0,0,0,0,0
+		c-0.1-0.1-0.1-0.3-0.1-0.4l-1.2-0.4c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l1.2,0.4
+		c-0.1,0-0.2-0.1-0.3-0.2C97.5,121.6,97.4,121.5,97.3,121.4z"/>
+    <path class="secure_app_227" d="M97.2,119.1l0.8,0.3l1.3-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c-0.4-0.1-0.8-0.3-1.2-0.4c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0l-0.9,0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1-0.2,0.2-0.4,0.4-0.6c0,0,0,0,0,0c0.1-0.2,0.3-0.3,0.5-0.4c0,0,0,0,0,0c0.2-0.1,0.4-0.2,0.6-0.2l5-0.9c0.1,0,0.1,0,0.2,0
+		c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0l-1.2-0.4c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0l-5,0.9c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1
+		c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1l-3.8,0.7l1.2,0.4l3.8-0.7C97,119.3,97.1,119.2,97.2,119.1z"/>
+    <path class="secure_app_227" d="M90.4,121.4C90.4,121.4,90.4,121.4,90.4,121.4c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0
+		c0-0.1,0.1-0.1,0.1-0.2v0c0-0.1,0.1-0.1,0.1-0.1c0,0,0,0,0,0c0.1,0,0.1-0.1,0.2-0.1l1.4-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0v0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c-0.4-0.1-0.8-0.3-1.2-0.4
+		c0,0,0.1,0,0.1,0.1c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1l0,0c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1l-1.4,0.2
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0v0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0l1,0.3c-0.1,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-5,0.9c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0
+		c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0l1.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l5-0.9c0,0,0,0,0,0
+		c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0v0l-1.2-0.4c0,0.1-0.1,0.2-0.1,0.2c0,0.1-0.1,0.1-0.2,0.2
+		c-0.1,0.1-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0-0.1-0.1-0.1-0.1l0,0C90.4,121.4,90.4,121.4,90.4,121.4z"/>
+    <path class="secure_app_227" d="M85.5,123.8c-0.1-0.1-0.2-0.2-0.3-0.3c0,0,0,0,0,0c-0.1-0.1-0.2-0.2-0.2-0.4c0,0,0,0,0,0
+		c-0.1-0.1-0.1-0.3-0.1-0.4l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0l0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0l0.1,0
+		c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0C85.4,123.8,85.4,123.9,85.5,123.8C85.5,123.9,85.5,123.9,85.5,123.8c0.1,0.1,0.1,0.1,0.2,0.1
+		c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0C85.7,124,85.6,123.9,85.5,123.8C85.5,123.8,85.5,123.8,85.5,123.8z"/>
+    <path class="secure_app_227" d="M85,121.2l0.8,0.3l1.3-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0l-1.2-0.4v0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0l-0.9,0.2
+		c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.2,0.2-0.4,0.4-0.6c0,0,0,0,0,0c0.1-0.2,0.3-0.3,0.5-0.4c0,0,0,0,0,0c0.2-0.1,0.4-0.2,0.6-0.2
+		l5.1-0.9c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0l0,0
+		c0,0,0,0,0,0l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0
+		c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0-0.1,0s0,0-0.1,0l-5.1,0.9c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1
+		c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1l-3.9,0.7l1.2,0.4l3.9-0.7
+		C84.9,121.4,85,121.3,85,121.2z"/>
+    <path class="secure_app_227" d="M78.2,123.5C78.2,123.5,78.2,123.5,78.2,123.5c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0
+		c0-0.1,0.1-0.1,0.1-0.2c0-0.1,0.1-0.1,0.1-0.1c0.1,0,0.1-0.1,0.2-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l1.4-0.2
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0
+		l0,0h0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		l-1.2-0.4c0,0,0.1,0,0.1,0.1l0,0c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1l-1.4,0.2
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0v0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l1,0.3c0,0-0.1,0-0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-5,0.9c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0
+		c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0l0,0h0v0l1.1,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l5-0.9
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		l-1.2-0.4c0,0.1-0.1,0.2-0.1,0.2l0,0c-0.1,0.1-0.1,0.1-0.2,0.2l0,0c-0.1,0.1-0.1,0.1-0.2,0.1l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0-0.1-0.1-0.1-0.1c0,0,0,0,0,0C78.2,123.6,78.2,123.5,78.2,123.5z"/>
+    <path class="secure_app_227" d="M73.1,125.9L73.1,125.9c-0.1-0.1-0.2-0.2-0.3-0.4l0,0c-0.1-0.2-0.2-0.3-0.2-0.5v0c0-0.2-0.1-0.4-0.1-0.6
+		c0-0.1,0-0.3,0-0.4c0,0,0,0,0-0.1c0-0.1,0.1-0.3,0.1-0.4c0,0,0,0,0,0c0.1-0.3,0.2-0.5,0.4-0.7c0,0,0,0,0,0c0.1-0.1,0.2-0.2,0.3-0.3
+		c0,0,0,0,0,0c0.1-0.1,0.2-0.2,0.3-0.3c0,0,0,0,0,0c0.1-0.1,0.2-0.1,0.3-0.2c0,0,0,0,0,0c0.1-0.1,0.2-0.1,0.3-0.1l5.1-0.9
+		c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0l0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l-1.2-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0-0.1,0l-5.1,0.9
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		l0,0v0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0.1,0,0.1-0.1,0.2c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0.1,0,0.1-0.1,0.2c0,0,0,0.1,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0.1,0,0.2,0,0.2c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1
+		c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0s0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0C73,126,73,126,73.1,125.9
+		c0,0.1,0,0.1,0,0.1l0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0l0.2,0.1C73.4,126.1,73.2,126,73.1,125.9z"/>
+</g>
+  <g>
+	<path class="secure_app_227" d="M43.7,115.8l2.7,0.6l-0.8,0.4l-3.3-0.8l-0.9-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0.8-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0L43.7,115.8z"/>
+    <path class="secure_app_227" d="M47.5,118.3C47.5,118.2,47.5,118.2,47.5,118.3C47.5,118.2,47.5,118.2,47.5,118.3c0.1-0.1,0.1-0.2,0.1-0.2
+		c0,0,0,0,0,0c0,0,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0-0.1,0-0.1-0.1-0.2l0,0c0-0.1-0.1-0.1-0.1-0.1l0,0
+		c0,0-0.1-0.1-0.1-0.1l-1-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0.3-0.1,0.6-0.2,0.8-0.4c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1l0,0c0,0,0,0.1-0.1,0.1c0,0,0,0.1-0.1,0.1
+		l1,0.2c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0l0,0L47.5,118.3c0.1,0,0.1,0.1,0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l3.5,0.8c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0
+		c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0
+		c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0-0.1,0l-0.3,0.1c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-3.5-0.8
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0v0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l0.8-0.4c0,0.1,0.1,0.2,0.1,0.2c0,0,0,0,0,0c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0,0
+		C47.4,118.2,47.4,118.2,47.5,118.3z"/>
+    <path class="secure_app_227" d="M51,120.5c0.1-0.1,0.1-0.2,0.2-0.3c0,0,0,0,0,0c0.1-0.1,0.1-0.2,0.2-0.4c0,0,0,0,0,0c0-0.1,0.1-0.3,0.1-0.4
+		l0,0l0.8-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-0.8,0.4
+		C50.9,120.6,50.9,120.5,51,120.5L51,120.5z"/>
+    <path class="secure_app_227" d="M51.4,117.9l-0.6,0.3l-0.9-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0.8-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0.6,0.1c0,0,0,0,0,0c0,0,0,0,0,0c-0.1-0.2-0.2-0.4-0.3-0.6
+		c0,0,0,0,0,0c-0.1-0.2-0.2-0.3-0.3-0.4c0,0,0,0,0,0c-0.1-0.1-0.3-0.2-0.4-0.2l-3.6-0.9c0,0-0.1,0-0.1,0c0,0,0,0,0,0
+		c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0l0.8-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l3.6,0.9c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1
+		c0,0,0,0.1,0,0.1l2.7,0.7l-0.8,0.4l-2.7-0.7C51.4,118.1,51.4,118,51.4,117.9z"/>
+    <path class="secure_app_227" d="M56.2,120.1C56.2,120.1,56.2,120.1,56.2,120.1c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0
+		c0-0.1,0-0.1-0.1-0.2c0-0.1-0.1-0.1-0.1-0.1c0,0,0,0,0,0c0,0-0.1-0.1-0.1-0.1l-1-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0h0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0.8-0.4c0,0-0.1,0-0.1,0.1l0,0
+		c0,0-0.1,0.1-0.1,0.1c0,0,0,0,0,0c0,0,0,0.1-0.1,0.1c0,0,0,0,0,0c0,0,0,0.1-0.1,0.1l1,0.2c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l-0.7,0.3c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l3.5,0.9
+		c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0l-0.8,0.4c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-3.5-0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		l0.8-0.4c0,0.1,0.1,0.2,0.1,0.2c0,0,0,0,0,0c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0,0c0,0.1,0.1,0.1,0.1,0.1l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0-0.1,0.1-0.1l0,0C56.2,120.2,56.2,120.2,56.2,120.1z"/>
+    <path class="secure_app_227" d="M59.9,122.3C59.9,122.3,59.9,122.3,59.9,122.3c0.1-0.1,0.1-0.2,0.2-0.4c0,0,0,0,0,0c0-0.1,0.1-0.3,0.1-0.4
+		l0.8-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-0.8,0.4
+		c0.1,0,0.2-0.1,0.3-0.2C59.8,122.5,59.8,122.4,59.9,122.3z"/>
+    <path class="secure_app_227" d="M60,119.9l-0.6,0.3l-0.9-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.3-0.1,0.6-0.3,0.8-0.4c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0l0.6,0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c-0.1-0.2-0.2-0.4-0.3-0.6c0,0,0,0,0,0c-0.1-0.2-0.2-0.3-0.3-0.4c0,0,0,0,0,0c-0.1-0.1-0.3-0.2-0.4-0.2l-3.6-0.9c0,0-0.1,0-0.1,0
+		c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0l0.8-0.4c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l3.6,0.9c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1
+		c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1l2.8,0.7l-0.8,0.4l-2.8-0.7
+		C60.1,120.2,60.1,120.1,60,119.9z"/>
+    <path class="secure_app_227" d="M64.9,122.2C64.9,122.2,64.9,122.2,64.9,122.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0
+		c0-0.1,0-0.1-0.1-0.2v0c0-0.1-0.1-0.1-0.1-0.1c0,0,0,0,0,0c0,0-0.1-0.1-0.1-0.1l-1-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.3-0.1,0.6-0.3,0.8-0.4
+		c0,0-0.1,0-0.1,0.1c0,0,0,0,0,0c0,0-0.1,0.1-0.1,0.1l0,0c0,0,0,0.1-0.1,0.1c0,0,0,0,0,0c0,0,0,0.1-0.1,0.1l1,0.2c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0v0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		l0,0l0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l-0.7,0.3c0,0,0.1,0.1,0.1,0.1
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l3.6,0.9
+		c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0l-0.8,0.4c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-3.6-0.9c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0v0l0,0v0l0.8-0.4c0,0.1,0.1,0.2,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0-0.1,0.1-0.1l0,0C64.9,122.3,64.9,122.3,64.9,122.2z"/>
+    <path class="secure_app_227" d="M68.5,124.7c0.1-0.1,0.1-0.2,0.2-0.3c0,0,0,0,0,0c0.1-0.1,0.1-0.2,0.2-0.4c0,0,0,0,0,0
+		c0-0.1,0.1-0.3,0.1-0.4l0.8-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0l0,0c0,0-0.1,0-0.1,0
+		c0,0,0,0,0,0l0,0c0,0,0,0,0,0C68.6,124.7,68.6,124.7,68.5,124.7C68.6,124.7,68.5,124.7,68.5,124.7
+		C68.5,124.7,68.5,124.7,68.5,124.7c-0.1,0.1-0.1,0.1-0.1,0.1c0,0,0,0,0,0c0,0-0.1,0-0.1,0C68.3,124.8,68.4,124.8,68.5,124.7
+		C68.5,124.7,68.5,124.7,68.5,124.7z"/>
+    <path class="secure_app_227" d="M68.8,122l-0.6,0.3l-1-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0l0.8-0.4v0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0l0.6,0.2
+		c0,0,0,0,0,0c0,0,0,0,0,0c-0.1-0.2-0.2-0.4-0.3-0.6c0,0,0,0,0,0c-0.1-0.2-0.2-0.3-0.3-0.4c0,0,0,0,0,0c-0.1-0.1-0.3-0.2-0.4-0.2
+		l-3.7-0.9c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0l0,0c0,0,0,0,0,0
+		l0.8-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l3.7,0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1l2.8,0.7l-0.8,0.4
+		l-2.8-0.7C68.9,122.3,68.9,122.2,68.8,122z"/>
+    <path class="secure_app_227" d="M73.3,122.9l1,0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0v0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1
+		c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-0.8,0.3l-0.1,0l0,0c0,0,0,0,0,0c0,0,0-0.1,0.1-0.1c0,0,0,0,0,0c0,0,0-0.1,0-0.1
+		c0,0,0,0,0,0c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0-0.1,0-0.1-0.1-0.2c0-0.1-0.1-0.1-0.1-0.1c0,0-0.1-0.1-0.1-0.1
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-1-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0h0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0"/>
+    <g>
+		<path class="secure_app_05" d="M73.5,124.7l-1-0.2c0,0-3.5-0.8-3.5-0.8c0,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.2,0.3-0.3,0.4
+			c-0.1,0.1-0.2,0.2-0.4,0.3c-0.1,0-0.3,0.1-0.4,0l-3.7-0.9c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.3-0.3-0.4
+			c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.2-0.1-0.4-0.2-0.7l-2.8-0.7c0,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.2,0.3-0.3,0.4
+			c-0.1,0.1-0.2,0.2-0.3,0.3c-0.1,0-0.3,0.1-0.4,0l-3.6-0.9c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.3-0.3-0.4
+			c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.2-0.1-0.4-0.2-0.7l-2.7-0.6c0,0.2-0.1,0.4-0.1,0.6c-0.1,0.2-0.2,0.3-0.3,0.4
+			c-0.1,0.1-0.2,0.2-0.3,0.2c-0.1,0-0.3,0.1-0.4,0l-3.6-0.9c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.3-0.3-0.4
+			c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.2-0.1-0.4-0.2-0.7l-2.7-0.6l-0.7-0.2l-0.9-0.2c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+			c0,0-0.1,0-0.1-0.1c0,0-0.1-0.1-0.1-0.1c0-0.1,0-0.1-0.1-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2s0-0.1,0.1-0.2
+			c0,0,0.1-0.1,0.1-0.1c0,0,0.1,0,0.1,0l4.3,1c0-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.3,0.3-0.4c0.1-0.1,0.2-0.2,0.3-0.3
+			c0.1,0,0.3-0.1,0.4,0l3.6,0.9c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.3,0.3,0.4c0.1,0.2,0.2,0.4,0.3,0.6c0.1,0.2,0.1,0.4,0.2,0.7
+			l2.7,0.7c0-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.3,0.3-0.4c0.1-0.1,0.2-0.2,0.3-0.3c0.1,0,0.3-0.1,0.4,0l3.6,0.9
+			c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.3,0.3,0.4c0.1,0.2,0.2,0.4,0.3,0.6c0.1,0.2,0.1,0.4,0.2,0.7l2.8,0.7c0-0.2,0.1-0.4,0.2-0.6
+			c0.1-0.2,0.2-0.3,0.3-0.4c0.1-0.1,0.2-0.2,0.4-0.3c0.1,0,0.3-0.1,0.4,0l3.7,0.9c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.3,0.3,0.4
+			c0.1,0.2,0.2,0.4,0.3,0.6c0.1,0.2,0.1,0.4,0.2,0.7l4.5,1.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0.1
+			c0,0,0.1,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1-0.1,0.2s-0.1,0.1-0.1,0.1
+			C73.6,124.7,73.5,124.7,73.5,124.7 M64.6,122.5l-1-0.2c0,0.1,0.1,0.2,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2s0.1,0.1,0.1,0.1
+			s0.1,0.1,0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l3.6,0.9c0.1,0,0.1,0,0.2,0s0.1,0,0.1-0.1c0,0,0.1-0.1,0.1-0.1
+			c0-0.1,0.1-0.1,0.1-0.2l-1-0.2c0,0-0.1,0-0.1-0.1c0,0-0.1-0.1-0.1-0.1s-0.1-0.1-0.1-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2
+			c0-0.1,0-0.1,0.1-0.2c0,0,0.1-0.1,0.1-0.1s0.1,0,0.1,0l1,0.2c0-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2c0-0.1-0.1-0.1-0.1-0.1
+			c0,0-0.1-0.1-0.2-0.1c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l-3.6-0.9c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.1,0.1
+			c0,0-0.1,0.1-0.1,0.1c0,0.1-0.1,0.1-0.1,0.2l1,0.2c0,0,0.1,0,0.1,0.1c0,0,0.1,0.1,0.1,0.1s0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2
+			c0,0.1,0,0.1,0,0.2s0,0.1-0.1,0.2s-0.1,0.1-0.1,0.1C64.7,122.5,64.7,122.5,64.6,122.5 M47.3,118.3l-1-0.2c0,0.1,0.1,0.2,0.1,0.2
+			c0,0.1,0.1,0.1,0.1,0.2s0.1,0.1,0.1,0.1c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l3.5,0.8
+			c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0-0.1,0.1-0.1,0.1-0.2l-0.9-0.2c0,0-0.1,0-0.1-0.1
+			c0,0-0.1-0.1-0.1-0.1c0-0.1-0.1-0.1-0.1-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2s0-0.1,0.1-0.2c0,0,0.1-0.1,0.1-0.1s0.1,0,0.1,0
+			l0.9,0.2c0-0.1-0.1-0.2-0.1-0.2s-0.1-0.1-0.1-0.2c0-0.1-0.1-0.1-0.1-0.1c0,0-0.1-0.1-0.2-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0l-3.5-0.8c-0.1,0-0.1,0-0.2,0c0,0-0.1,0-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0.1-0.1,0.1-0.1,0.2l1,0.2c0,0,0.1,0,0.1,0.1
+			c0,0,0.1,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1-0.1,0.2c0,0-0.1,0.1-0.1,0.1
+			C47.4,118.3,47.3,118.3,47.3,118.3 M55.9,120.4l-1-0.2c0,0.1,0.1,0.2,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.1
+			c0,0,0.1,0.1,0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l3.6,0.9c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.1-0.1
+			c0,0,0.1-0.1,0.1-0.1s0.1-0.1,0.1-0.2l-1-0.2c0,0-0.1,0-0.1-0.1c0,0-0.1-0.1-0.1-0.1c0-0.1-0.1-0.1-0.1-0.2c0-0.1,0-0.1,0-0.2
+			c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0.1-0.2c0,0,0.1-0.1,0.1-0.1c0,0,0.1,0,0.1,0l0.9,0.2c0-0.1-0.1-0.2-0.1-0.2
+			c0-0.1-0.1-0.1-0.1-0.2c0-0.1-0.1-0.1-0.1-0.1c0,0-0.1-0.1-0.2-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-3.6-0.9
+			c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.1,0.1c0,0-0.1,0.1-0.1,0.1s-0.1,0.1-0.1,0.2l1,0.2c0,0,0.1,0,0.1,0.1s0.1,0.1,0.1,0.1
+			c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1-0.1,0.2c0,0-0.1,0.1-0.1,0.1
+			C56,120.4,55.9,120.4,55.9,120.4"/>
+	</g>
+    <polygon class="secure_app_227" points="73.4,122.9 72.3,122.7 71.5,123.1 72.7,123.4 73.2,123.1 	"/>
+    <path class="secure_app_227" d="M42.7,115.6"/>
+    <path class="secure_app_227" d="M42.7,115.6"/>
+</g>
+  <g>
+
+		<linearGradient id="SVGID_SECURE_APP_85" gradientUnits="userSpaceOnUse" x1="407.4868" y1="-246.2366" x2="424.1367" y2="-246.2366" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_85);" d="M126.4,137.5l-5-7.4
+		c-1.3-1.9-1-4.5,0.8-6.6c-0.3,0.5-0.3,6.7,7.2,15.3l-1.8,0.6L126.4,137.5z"/>
+
+    <linearGradient id="SVGID_SECURE_APP_86" gradientUnits="userSpaceOnUse" x1="420.5296" y1="-215.4702" x2="396.8626" y2="-257.998" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_86);" d="M137.6,120c2.5,0.5,4.6,1.6,5.9,3l3.1,4.7
+		l1.4,2.1l-1.4,0.4C141.7,121.6,138.1,120.1,137.6,120z"/>
+    <path class="secure_app_53" d="M125.3,129.8c-0.6-0.9-0.7-1.6-0.6-2.2c0.2-1.1,1.2-1.6,1.2-1.6l0.1,0c-0.4,0.5-0.7,1.1-0.7,1.6
+		c0,0.4,0.1,0.8,0.4,1.1c1.5,2.8,5.3,5.8,7.6,5.3l-0.1,3.5L132,138C130.5,136.6,126.3,131.4,125.3,129.8z"/>
+    <path class="secure_app_53" d="M140.7,125.1c-0.4-0.5-1-0.9-1.7-1.3c-0.7-0.3-1.5-0.5-2.4-0.7l0,0c0,0,1.1-0.4,2.6,0
+		c0.2,0.1,0.4,0.1,0.5,0.2c0,0,0,0,0,0c1.2,0.4,2.5,1.4,3.7,3.4c1,1.6,1.6,2.9,2,3.9l-0.7,0.2L140.7,125.1z"/>
+
+    <linearGradient id="SVGID_SECURE_APP_87" gradientUnits="userSpaceOnUse" x1="394.3174" y1="-237.3002" x2="437.9565" y2="-226.5537" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_87);" d="M134.6,125c0.5-0.1,0.7-0.9,0.8-1.9
+		c0-0.2,0-0.4,0-0.6c0-0.6-0.1-1.2-0.3-1.9c-0.1-0.3-0.2-0.7-0.3-1c-0.4-1.1-0.8-1.9-1.3-2.4l0,0l-3.8-4.4l1.2-0.2l3.7,4.3l0,0
+		c0.5,0.5,1.1,1.5,1.4,2.7c0.1,0.2,0.1,0.4,0.2,0.6c0.2,0.8,0.3,1.6,0.3,2.3c0,0.2,0,0.4,0,0.6c-0.1,0.8-0.3,1.4-0.7,1.5
+		c0,0-0.1,0-0.1,0L134.6,125z"/>
+
+    <linearGradient id="SVGID_SECURE_APP_88" gradientUnits="userSpaceOnUse" x1="444.9424" y1="-219.7439" x2="315.4802" y2="-273.081" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_88);" d="M133.6,124.4L133.6,124.4l-1.2-1.2
+		c0.3,0,0.6-0.1,0.8-0.1c0.3,0.5,0.7,0.8,1,0.7c0.1,0,0.2-0.1,0.3-0.3c0.1-0.1,0.1-0.3,0.1-0.5c0-0.2,0.1-0.4,0.1-0.6
+		c0-0.5-0.1-1.1-0.2-1.7c-0.1-0.4-0.2-0.8-0.4-1.1c-0.3-0.6-0.6-1.1-0.9-1.3c-0.1-0.1-0.3-0.1-0.4-0.1c-0.3,0.1-0.5,0.6-0.5,1.4
+		c-0.6,0-1.2,0.1-1.8,0.2c-0.3-0.8-0.7-1.4-1.1-1.8l0.4-5.2l3.8,4.4l0,0c0.5,0.5,0.9,1.3,1.3,2.4c0.1,0.3,0.2,0.6,0.3,1
+		c0.2,0.7,0.2,1.3,0.3,1.9c0,0.2,0,0.4,0,0.6c0,1-0.3,1.8-0.8,1.9C134.3,125.1,133.9,124.8,133.6,124.4z"/>
+    <path class="secure_app_185" d="M133.2,123.1c0.3,0,0.6,0,0.9,0c0.1,0.2,0.3,0.3,0.4,0.4c-0.1,0.2-0.2,0.3-0.3,0.3
+		C133.9,123.9,133.5,123.6,133.2,123.1z"/>
+    <path class="secure_app_185" d="M132.8,118.2c0.1,0,0.3,0,0.4,0.1c-0.1,0.3-0.2,0.7-0.2,1.3c-0.3,0-0.5,0-0.8,0
+		C132.3,118.8,132.5,118.3,132.8,118.2z"/>
+
+    <linearGradient id="SVGID_SECURE_APP_89" gradientUnits="userSpaceOnUse" x1="408.2666" y1="-240.3319" x2="410.2984" y2="-232.5434" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_89);" d="M134.1,123.1c-0.3,0-0.6,0-0.9,0
+		c-0.3,0-0.6,0.1-0.8,0.1c-0.4,0-0.7,0.1-1.1,0.2c0-0.2,0-0.5-0.1-0.7c0.2,0,0.4-0.1,0.6-0.1c0.4,0,0.8-0.1,1.1-0.1
+		c0.3,0,0.6,0,0.8,0c0.3,0,0.7,0,1,0c0,0.2,0,0.4-0.1,0.6C134.5,123,134.3,123,134.1,123.1z"/>
+
+    <linearGradient id="SVGID_SECURE_APP_90" gradientUnits="userSpaceOnUse" x1="394.204" y1="-242.6031" x2="441.72" y2="-230.8245" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_90);" d="M129.4,126c0.5-0.1,0.8-1.1,0.8-2.4
+		c0-0.2,0-0.5-0.1-0.8c-0.1-0.4-0.1-0.8-0.2-1.3c-0.1-0.6-0.3-1.1-0.5-1.6c-0.3-0.8-0.7-1.4-1.1-1.8l0,0l-3.9-4.6l1.2-0.2l3.8,4.5
+		l0,0c0,0,0,0,0,0c0.4,0.4,0.8,1,1.1,1.8c0.2,0.5,0.4,1,0.5,1.5c0,0.2,0.1,0.4,0.1,0.6c0,0,0,0,0,0c0.1,0.3,0.1,0.5,0.1,0.8
+		c0,0.2,0,0.5,0.1,0.7c0,1.3-0.2,2.2-0.8,2.3c0,0-0.1,0-0.1,0L129.4,126z"/>
+
+    <linearGradient id="SVGID_SECURE_APP_91" gradientUnits="userSpaceOnUse" x1="403.4051" y1="-248.5899" x2="406.7036" y2="-232.7508" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_91);" d="M128.3,125.4L128.3,125.4l-0.8-0.8
+		c0.2-0.1,0.4-0.2,0.6-0.3c0.3,0.3,0.5,0.5,0.8,0.4c0.1,0,0.2-0.1,0.3-0.3c0.1-0.2,0.1-0.4,0.2-0.7c0-0.2,0-0.5,0-0.8
+		c0-0.4-0.1-0.8-0.2-1.3c-0.2-0.6-0.4-1.2-0.6-1.6c-0.2-0.4-0.5-0.7-0.7-0.9c-0.2-0.1-0.3-0.2-0.4-0.1c-0.4,0.1-0.5,0.6-0.5,1.4
+		c-0.9,0.3-1.7,0.6-2.4,1.1l-0.2-0.2l0-7.9l3.9,4.6l0,0c0.4,0.4,0.8,1,1.1,1.8c0.2,0.5,0.4,1,0.5,1.6c0.1,0.4,0.2,0.9,0.2,1.3
+		c0,0.3,0.1,0.5,0.1,0.8c0,1.3-0.2,2.2-0.8,2.4C129.1,126.1,128.7,125.9,128.3,125.4z"/>
+    <path class="secure_app_185" d="M127.5,119.1c0.1,0,0.3,0,0.4,0.1c-0.1,0.2-0.2,0.6-0.2,1.1c-0.2,0-0.3,0.1-0.5,0.1c-0.1,0-0.2,0.1-0.3,0.1
+		C127,119.8,127.2,119.2,127.5,119.1z"/>
+    <path class="secure_app_185" d="M128.2,124.4c0.2-0.1,0.4-0.2,0.7-0.3c0.1,0.2,0.3,0.3,0.4,0.4c-0.1,0.2-0.2,0.3-0.3,0.3
+		C128.7,124.9,128.4,124.7,128.2,124.4z"/>
+
+    <linearGradient id="SVGID_SECURE_APP_92" gradientUnits="userSpaceOnUse" x1="405.6915" y1="-246.5693" x2="418.6842" y2="-234.8225" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_92);" d="M124.7,127.6c0,0,0-1.9,2.2-3.3l0.3-0.2
+		l0,0c0.2-0.1,0.3-0.2,0.5-0.3c0.2-0.1,0.5-0.2,0.7-0.3c0.3-0.1,0.6-0.3,1-0.4c0,0.3,0,0.6,0,0.8c-0.2,0.1-0.4,0.1-0.6,0.2
+		c-0.2,0.1-0.5,0.2-0.7,0.3c-0.2,0.1-0.4,0.2-0.6,0.3l0,0l0,0l0,0c-0.7,0.4-1.2,0.8-1.6,1.3l0,0C125.9,126,124.9,126.5,124.7,127.6z
+		"/>
+
+    <linearGradient id="SVGID_SECURE_APP_93" gradientUnits="userSpaceOnUse" x1="409.652" y1="-237.0648" x2="416.7456" y2="-221.8395" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_93);" d="M139.7,123.3
+		C139.7,123.3,139.7,123.3,139.7,123.3c-0.1,0-0.3-0.1-0.5-0.2c-1.5-0.4-2.6,0-2.6,0l0,0c0,0-0.1,0-0.1,0c0-0.2,0-0.4,0-0.6
+		c0-0.7-0.1-1.5-0.3-2.3c0-0.2-0.1-0.4-0.2-0.6c0.5,0.1,1,0.1,1.5,0.3c0.5,0.1,4.2,1.6,8.9,10.4l-1,0.3c-0.4-1-1-2.3-2-3.9
+		C142.2,124.7,140.8,123.8,139.7,123.3z"/>
+
+    <linearGradient id="SVGID_SECURE_APP_94" gradientUnits="userSpaceOnUse" x1="413.2131" y1="-227.8563" x2="417.9018" y2="-267.489" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_SECURE_APP_94);" d="M122.3,123.5
+		C122.3,123.5,122.3,123.5,122.3,123.5C122.3,123.4,122.3,123.4,122.3,123.5c0.6-0.7,1.4-1.4,2.3-1.9c0.7-0.4,1.5-0.8,2.4-1.1
+		c0.1,0,0.2-0.1,0.3-0.1c0.2,0,0.3-0.1,0.5-0.1c0.3-0.1,0.6-0.2,0.9-0.2c0.2,0.4,0.5,1,0.6,1.6c0.1,0.5,0.2,0.9,0.2,1.3
+		c-0.4,0.1-0.7,0.3-1,0.4c-0.3,0.1-0.5,0.2-0.7,0.3c-0.3,0.1-0.5,0.3-0.7,0.4c0,0,0,0,0,0c-2.1,1.5-2.3,3.4-2.3,3.4
+		c-0.1,0.6,0,1.3,0.6,2.2c1.1,1.6,5.3,6.7,6.7,8.2l-2.5,0.8C118.2,128,121,125.2,122.3,123.5z"/>
+    <path class="secure_app_53" d="M134.7,122.4c-0.3,0-0.6,0-1,0c-0.3,0-0.5,0-0.8,0c-0.4,0-0.7,0-1.1,0.1c-0.2,0-0.4,0.1-0.6,0.1
+		c0-0.3-0.1-0.5-0.1-0.8l0,0l0,0c0-0.2-0.1-0.4-0.1-0.6c-0.1-0.5-0.3-1-0.5-1.5c0.6-0.1,1.2-0.1,1.8-0.2c0.2,0,0.4,0,0.6,0l0,0
+		l0.1,0c0,0,0,0,0,0c0,0,0,0,0,0l0.2,0l0,0c0.3,0,0.5,0,0.8,0c0.1,0.3,0.3,0.7,0.4,1.1C134.7,121.4,134.7,121.9,134.7,122.4z"/>
+
+    <linearGradient id="SVGID_SECURE_APP_95" gradientUnits="userSpaceOnUse" x1="434.5354" y1="-209.6068" x2="399.5188" y2="-278.0434" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+
+    <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURE_APP_95);" points="
+		158.2,139.5 148.6,125.9 125.7,132.1 135.7,145.7 	"/>
+    <polygon class="secure_app_04" points="135.8,145.5 157.7,138.8 158.4,139.9 157.5,143.8 156.5,144.7 134.5,151.7 132.9,151.4 134,147 	"/>
+
+    <linearGradient id="SVGID_SECURE_APP_96" gradientUnits="userSpaceOnUse" x1="440.2377" y1="-216.2749" x2="424.6756" y2="-250.8385" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+
+    <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURE_APP_96);" points="
+		122.8,137.9 123.9,133.4 134,147 132.9,151.4 	"/>
+
+    <linearGradient id="SVGID_SECURE_APP_97" gradientUnits="userSpaceOnUse" x1="419.1226" y1="-255.4776" x2="427.0244" y2="-238.497" gradientTransform="matrix(0.2313 0.9729 0.9729 -0.2313 267.9652 -329.9822)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+
+    <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURE_APP_97);" points="
+		123.8,133.6 125.7,132.1 135.7,145.7 133.9,147.1 	"/>
+    <polygon class="secure_app_02" points="136.2,146.3 156.8,139.9 157.3,140.5 156.6,143.7 155.8,144.4 135,151 133.9,150.7 134.8,147.4 	"/>
+    <polygon class="secure_app_241" points="133.9,150.7 135.1,151 155.8,144.4 156.6,143.7 157.3,140.5 156.8,139.9 156.5,140 156.7,140.5
+		156.2,143.4 155.4,144 135.3,150.3 134,150.2 	"/>
+    <path class="secure_app_03" d="M143.8,145.9c0.2,0.7,1.6,0.8,3.3,0.3c1.6-0.5,2.8-1.5,2.7-2.2c-0.2-0.7-1.6-0.8-3.2-0.3
+		C144.8,144.2,143.6,145.2,143.8,145.9z"/>
+    <path class="secure_app_04" d="M149.4,144.1c-0.1-0.6-1.5-0.7-2.9-0.3c-1.5,0.5-2.6,1.3-2.4,2c0.1,0.6,1.5,0.7,3,0.3
+		C148.5,145.6,149.6,144.7,149.4,144.1z"/>
+    <path class="secure_app_242" d="M123.6,130.5c0,0-2.8-4.3-0.6-6.8C123,125,121.5,125.7,123.6,130.5z"/>
+    <g>
+		<g>
+			<g>
+				<polygon class="secure_app_243" points="154.6,134.4 154.5,134.3 154.5,134.3 156.1,136.5 156,136.5 154.6,134.4 				"/>
+        <polygon class="secure_app_207" points="153.2,132.8 152.8,137.5 151.2,137.9 151.7,133.3 				"/>
+        <polygon class="secure_app_207" points="146.8,134.7 146.3,139.4 144.7,139.9 145.1,135.2 				"/>
+        <polygon class="secure_app_207" points="143.5,135.7 143,140.4 141.3,140.9 141.8,136.2 				"/>
+        <polygon class="secure_app_207" points="140.1,136.6 139.6,141.4 137.9,141.9 138.4,137.1 				"/>
+        <polygon class="secure_app_207" points="136.7,137.6 136.2,142.5 134.5,143 135,138.1 				"/>
+        <polygon class="secure_app_207" points="150,133.8 149.6,138.4 147.9,138.9 148.4,134.2 				"/>
+        <polygon class="secure_app_243" points="153.5,132.8 154.5,134.3 154.5,134.3 				"/>
+        <polygon class="secure_app_207" points="154.6,134.4 156,136.5 154.4,137 				"/>
+        <polygon class="secure_app_207" points="131.3,139.4 131.2,139.2 133.2,138.6 132.9,141.5 				"/>
+
+        <rect x="131.2" y="139.2" transform="matrix(0.8329 -0.5534 0.5534 0.8329 -55.1334 95.8506)" class="secure_app_243" width="0" height="0"/>
+        <polygon class="secure_app_243" points="131.2,139.2 131.2,139.2 131.3,139.4 				"/>
+        <polygon class="secure_app_243" points="131.2,139.2 131.2,139.2 131.2,139.2 				"/>
+        <polygon class="secure_app_244" points="132.9,141.5 132.9,141.6 131.5,139.7 				"/>
+        <polygon class="secure_app_244" points="134.1,143.1 134,143.1 134,143.1 				"/>
+        <polygon class="secure_app_244" points="131.5,143.7 131.5,143.7 132.2,144.6 132.1,144.4 132.1,144.4 				"/>
+        <polygon class="secure_app_244" points="129.3,140.7 129.3,140.8 129.3,140.7 129.3,140.7 129.3,140.7 129.3,140.7 129.3,140.7 				"/>
+        <rect x="132.2" y="144.6" class="secure_app_244" width="0" height="0"/>
+        <polygon class="secure_app_244" points="129.3,140.7 130.3,139.9 129.3,140.7 				"/>
+        <polygon class="secure_app_194" points="132.9,141.6 133.2,143.8 134,143.1 134,143.1 132.2,144.6 131.5,143.7 130.9,139.5 131.2,139.2
+					131.3,139.4 				"/>
+
+        <rect x="134" y="143.1" transform="matrix(0.7498 -0.6617 0.6617 0.7498 -61.1588 124.4934)" class="secure_app_244" width="0" height="0"/>
+        <polygon class="secure_app_244" points="131.3,139.4 131.5,139.7 132.9,141.6 132.9,141.6 				"/>
+
+        <rect x="129.3" y="140.7" transform="matrix(0.7368 -0.6761 0.6761 0.7368 -61.1022 124.4586)" class="secure_app_244" width="0" height="0"/>
+        <polygon class="secure_app_244" points="132.2,144.6 132.2,144.6 131.5,143.7 131.5,143.7 132.2,144.6 132.2,144.6 132.2,144.6 				"/>
+        <polygon class="secure_app_244" points="131.3,139.4 132.9,141.5 132.9,141.5 132.9,141.5 132.9,141.5 131.5,139.7 				"/>
+        <polygon class="secure_app_244" points="131.3,139.4 131.2,139.2 131.2,139.2 				"/>
+        <polygon class="secure_app_244" points="131.3,139.4 131.2,139.2 131.2,139.2 131.3,139.4 131.5,139.7 				"/>
+        <polygon class="secure_app_245" points="132.2,144.6 132.2,144.7 132.1,144.4 				"/>
+        <polygon class="secure_app_195" points="131,148.8 129.2,146.5 128.3,144 128,144.9 128.7,142.6 130.9,148.7 				"/>
+        <polygon class="secure_app_195" points="129.3,140.8 130.4,142.2 131.8,146.1 132,145.2 131,148.8 131.4,147.4 129.1,141.2 129.3,140.7
+					129.3,140.8 				"/>
+        <polygon class="secure_app_245" points="132.1,144.4 132.2,144.6 132.2,144.6 132.2,144.6 132.1,144.4 				"/>
+
+        <rect x="129.2" y="140.8" transform="matrix(0.9937 -0.1121 0.1121 0.9937 -14.9659 15.3804)" class="secure_app_245" width="0" height="0"/>
+        <polygon class="secure_app_245" points="132.2,144.6 132.2,144.6 132.2,144.6 				"/>
+        <polygon class="secure_app_246" points="154.6,134.4 154.6,134.4 154.5,134.3 				"/>
+        <polygon class="secure_app_206" points="153.5,132.8 154.5,134.3 154.6,134.4 154.4,137 152.8,137.5 153.2,132.8 				"/>
+        <polygon class="secure_app_206" points="145.1,135.2 144.7,139.9 143,140.4 143.5,135.7 				"/>
+        <polygon class="secure_app_206" points="133.2,138.6 135,138.1 134.5,143 134.1,143.1 132.9,141.5 				"/>
+        <polygon class="secure_app_206" points="148.4,134.2 147.9,138.9 146.3,139.4 146.8,134.7 				"/>
+        <polygon class="secure_app_206" points="141.8,136.2 141.3,140.9 139.6,141.4 140.1,136.6 				"/>
+        <polygon class="secure_app_206" points="138.4,137.1 137.9,141.9 136.2,142.5 136.7,137.6 				"/>
+        <polygon class="secure_app_206" points="151.7,133.3 151.2,137.9 149.6,138.4 150,133.8 				"/>
+        <polygon class="secure_app_246" points="132.9,141.5 134.1,143.1 132.9,141.5 				"/>
+
+        <rect x="128.2" y="141.9" transform="matrix(0.2845 -0.9587 0.9587 0.2845 -43.8158 225.1246)" class="secure_app_247" width="1.4" height="0"/>
+        <polygon class="secure_app_247" points="129.2,146.5 128,144.9 129.2,146.5 				"/>
+        <polygon class="secure_app_247" points="132.2,144.7 132,145.2 132.2,144.7 				"/>
+
+        <rect x="131.8" y="143.6" transform="matrix(0.7963 -0.6049 0.6049 0.7963 -60.3004 109.0563)" class="secure_app_247" width="0" height="0.9"/>
+        <polygon class="secure_app_185" points="131,148.8 130.9,148.7 128.7,142.6 129.1,141.2 131.4,147.4 				"/>
+        <polygon class="secure_app_185" points="129.2,146.5 128,144.9 128.3,144 				"/>
+        <polygon class="secure_app_185" points="130.4,142.2 131.5,143.7 131.5,143.7 132.1,144.4 132.2,144.7 132,145.2 131.8,146.1 				"/>
+
+        <rect x="131.3" y="144.1" transform="matrix(0.9707 -0.2403 0.2403 0.9707 -30.7623 35.8952)" class="secure_app_247" width="0.9" height="0"/>
+        <polygon class="secure_app_247" points="130.9,142.9 131.5,143.7 131.5,143.7 				"/>
+
+        <rect x="130" y="142.9" transform="matrix(0.9706 -0.2406 0.2406 0.9706 -30.5465 35.7009)" class="secure_app_247" width="1.9" height="0"/>
+        <polygon class="secure_app_247" points="130.4,142.2 130.9,142.9 131.5,143.7 131.5,143.7 130.4,142.2 				"/>
+			</g>
+      <polygon class="secure_app_227" points="132.9,141.6 132.9,141.5 132.9,141.5 132.9,141.5 134.1,143.1 134,143.1 134,143.1 133.2,143.8
+				132.9,141.6 			"/>
+      <polygon class="secure_app_227" points="131.5,143.7 131.5,143.7 130.9,142.9 130.4,142.2 130.4,142.2 130.4,142.2 129.3,140.8
+				129.3,140.8 129.3,140.8 129.3,140.7 129.3,140.7 129.3,140.7 130.3,139.9 130.9,139.5 130.9,139.5 131.5,143.7 			"/>
+		</g>
+	</g>
+    <path class="secure_app_248" d="M128.9,124.8c0.1,0,0.2-0.1,0.3-0.3l0,0l0,0c0.1-0.2,0.1-0.4,0.2-0.7c0.2-0.1,0.5-0.2,0.7-0.2
+		c0,1.3-0.2,2.2-0.8,2.4l0,0c-0.3,0.1-0.7-0.1-1.1-0.6l0,0l0,0l0,0l-0.8-0.8c0.2-0.1,0.4-0.2,0.6-0.3
+		C128.4,124.7,128.7,124.9,128.9,124.8z"/>
+    <path class="secure_app_248" d="M133.2,123.1c0.3,0.5,0.7,0.8,1,0.7c0.1,0,0.2-0.1,0.3-0.3l0,0l0,0c0.1-0.1,0.1-0.3,0.1-0.5
+		c0.2,0,0.5,0,0.7,0c0,1-0.3,1.8-0.8,1.9l0,0c-0.3,0.1-0.7-0.1-1-0.6l0,0l0,0l0,0l-1.2-1.2C132.7,123.1,132.9,123.1,133.2,123.1z"/>
+    <polygon class="secure_app_185" points="148.5,144.6 148.7,144.1 144.9,145.3 144.7,145.8 	"/>
+</g>
+  <g>
+	<path class="secure_app_05" d="M161.5,106.7c0.2,0,0.4,0,0.6,0.1c0.2,0.1,0.4,0.2,0.5,0.4c0.1,0.2,0.2,0.4,0.3,0.6c0.1,0.2,0.1,0.5,0.1,0.8
+		c0,0.3-0.1,0.6-0.1,0.8s-0.2,0.5-0.4,0.7c-0.1,0.2-0.3,0.4-0.5,0.5c-0.2,0.1-0.4,0.2-0.6,0.3l-4.6,0.8c-0.2,0-0.4,0-0.5,0
+		c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.3-0.3-0.4c-0.1-0.2-0.2-0.4-0.2-0.6l-3.6,0.6c-0.1,0.2-0.1,0.4-0.2,0.6
+		c-0.1,0.2-0.2,0.4-0.4,0.5c-0.1,0.2-0.3,0.3-0.4,0.4c-0.2,0.1-0.3,0.2-0.5,0.2l-4.7,0.8c-0.2,0-0.4,0-0.5,0c-0.2,0-0.3-0.1-0.5-0.2
+		c-0.1-0.1-0.2-0.3-0.3-0.4c-0.1-0.2-0.2-0.4-0.2-0.6l-3.6,0.6c-0.1,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.2,0.4-0.4,0.5
+		c-0.1,0.2-0.3,0.3-0.5,0.4c-0.2,0.1-0.3,0.2-0.5,0.2l-4.8,0.8c-0.2,0-0.4,0-0.5,0c-0.2,0-0.3-0.1-0.5-0.2c-0.1-0.1-0.3-0.3-0.3-0.4
+		c-0.1-0.2-0.2-0.4-0.2-0.6l-3.7,0.6c-0.1,0.2-0.1,0.4-0.2,0.7c-0.1,0.2-0.2,0.4-0.4,0.6c-0.1,0.2-0.3,0.3-0.5,0.4
+		c-0.2,0.1-0.3,0.2-0.5,0.2l-4.8,0.9c-0.2,0-0.4,0-0.6,0c-0.2,0-0.3-0.1-0.5-0.2c-0.1-0.1-0.3-0.3-0.4-0.4c-0.1-0.2-0.2-0.4-0.2-0.6
+		l-3.7,0.6c-0.1,0.2-0.1,0.5-0.2,0.7c-0.1,0.2-0.2,0.4-0.4,0.6c-0.1,0.2-0.3,0.3-0.5,0.4c-0.2,0.1-0.4,0.2-0.5,0.2l-4.9,0.9
+		c-0.2,0-0.4,0-0.6,0c-0.2,0-0.3-0.1-0.5-0.2c-0.1-0.1-0.3-0.3-0.4-0.4c-0.1-0.2-0.2-0.4-0.2-0.6l-3.8,0.6c-0.1,0.2-0.1,0.5-0.2,0.7
+		c-0.1,0.2-0.2,0.4-0.4,0.6c-0.1,0.2-0.3,0.3-0.5,0.4c-0.2,0.1-0.4,0.2-0.5,0.2l-5,0.9c-0.2,0-0.4,0-0.6,0c-0.2,0-0.3-0.1-0.5-0.3
+		c-0.1-0.1-0.3-0.3-0.4-0.4c-0.1-0.2-0.2-0.4-0.2-0.6l-3.8,0.7c-0.1,0.2-0.1,0.5-0.2,0.7c-0.1,0.2-0.2,0.4-0.4,0.6
+		c-0.1,0.2-0.3,0.3-0.5,0.4c-0.2,0.1-0.4,0.2-0.6,0.2l-5.1,0.9c-0.2,0-0.4,0-0.6,0c-0.2,0-0.3-0.1-0.5-0.3c-0.1-0.1-0.3-0.3-0.4-0.4
+		c-0.1-0.2-0.2-0.4-0.2-0.6l-3.9,0.7c-0.1,0.2-0.1,0.5-0.2,0.7c-0.1,0.2-0.2,0.4-0.4,0.6c-0.1,0.2-0.3,0.3-0.5,0.4
+		c-0.2,0.1-0.4,0.2-0.6,0.2l-5.1,0.9c-0.2,0-0.5,0-0.7-0.1c-0.2-0.1-0.4-0.2-0.6-0.4c-0.2-0.2-0.3-0.4-0.4-0.6
+		c-0.1-0.2-0.1-0.5-0.1-0.8c0-0.3,0.1-0.6,0.1-0.9c0.1-0.3,0.2-0.5,0.4-0.7c0.2-0.2,0.3-0.4,0.5-0.6c0.2-0.2,0.4-0.3,0.7-0.3
+		l5.1-0.9c0.2,0,0.4,0,0.6,0c0.2,0,0.3,0.1,0.5,0.3c0.1,0.1,0.3,0.3,0.4,0.4c0.1,0.2,0.2,0.4,0.2,0.6l3.9-0.7
+		c0.1-0.2,0.1-0.5,0.2-0.7c0.1-0.2,0.2-0.4,0.4-0.6c0.1-0.2,0.3-0.3,0.5-0.4c0.2-0.1,0.4-0.2,0.6-0.2l5.1-0.9c0.2,0,0.4,0,0.6,0
+		c0.2,0,0.3,0.1,0.5,0.3c0.1,0.1,0.3,0.3,0.4,0.4c0.1,0.2,0.2,0.4,0.2,0.6l3.8-0.7c0.1-0.2,0.1-0.5,0.2-0.7c0.1-0.2,0.2-0.4,0.4-0.6
+		c0.1-0.2,0.3-0.3,0.5-0.4c0.2-0.1,0.4-0.2,0.6-0.2l5-0.9c0.2,0,0.4,0,0.6,0c0.2,0,0.3,0.1,0.5,0.3c0.1,0.1,0.3,0.3,0.4,0.4
+		c0.1,0.2,0.2,0.4,0.2,0.6l3.8-0.7c0.1-0.2,0.1-0.4,0.2-0.7c0.1-0.2,0.2-0.4,0.4-0.6c0.1-0.2,0.3-0.3,0.5-0.4
+		c0.2-0.1,0.3-0.2,0.5-0.2l4.9-0.9c0.2,0,0.4,0,0.6,0c0.2,0,0.3,0.1,0.5,0.3c0.1,0.1,0.3,0.3,0.4,0.4c0.1,0.2,0.2,0.4,0.2,0.6
+		l3.7-0.6c0.1-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.4,0.4-0.6c0.1-0.2,0.3-0.3,0.5-0.4c0.2-0.1,0.3-0.2,0.5-0.2l4.9-0.8
+		c0.2,0,0.4,0,0.6,0c0.2,0,0.3,0.1,0.5,0.2c0.1,0.1,0.3,0.3,0.3,0.4c0.1,0.2,0.2,0.4,0.2,0.6l3.7-0.6c0.1-0.2,0.1-0.4,0.2-0.7
+		c0.1-0.2,0.2-0.4,0.4-0.6c0.1-0.2,0.3-0.3,0.5-0.4c0.2-0.1,0.3-0.2,0.5-0.2l4.8-0.8c0.2,0,0.4,0,0.5,0c0.2,0,0.3,0.1,0.5,0.2
+		c0.1,0.1,0.2,0.3,0.3,0.4c0.1,0.2,0.2,0.4,0.2,0.6l3.6-0.6c0.1-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.4,0.4-0.5
+		c0.1-0.2,0.3-0.3,0.5-0.4c0.2-0.1,0.3-0.2,0.5-0.2l4.7-0.8c0.2,0,0.4,0,0.5,0c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.3,0.3,0.4
+		c0.1,0.2,0.2,0.4,0.2,0.6l3.6-0.6c0.1-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.4,0.4-0.5c0.1-0.2,0.3-0.3,0.4-0.4
+		c0.2-0.1,0.3-0.2,0.5-0.2L161.5,106.7z M78.6,123.8c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1-0.1-0.1-0.1s-0.1-0.1-0.1-0.2s0-0.1,0-0.2
+		c0-0.1,0-0.1,0-0.2s0.1-0.1,0.1-0.2c0-0.1,0.1-0.1,0.1-0.1c0.1,0,0.1-0.1,0.2-0.1c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+		l1.4-0.2c0-0.1-0.1-0.1-0.1-0.2s-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.1,0-0.2,0l-5,0.9c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0s0,0,0,0c-0.1,0-0.2,0.1-0.3,0.2c-0.1,0.1-0.2,0.2-0.3,0.3c-0.1,0.1-0.1,0.2-0.2,0.4s-0.1,0.3-0.1,0.4
+		c0,0.2,0,0.3,0.1,0.4c0,0.1,0.1,0.2,0.2,0.3c0.1,0.1,0.2,0.1,0.3,0.2c0.1,0,0.2,0,0.3,0l5-0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.1,0,0.2-0.1s0.1-0.1,0.2-0.1c0.1-0.1,0.1-0.1,0.2-0.2c0.1-0.1,0.1-0.1,0.1-0.2L78.6,123.8 M162.2,108.7
+		c0-0.1,0-0.3,0-0.4c0-0.1-0.1-0.2-0.2-0.3c-0.1-0.1-0.2-0.1-0.2-0.2c-0.1,0-0.2,0-0.3,0l-4.6,0.8c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0.1-0.2,0.1c-0.1,0.1-0.1,0.1-0.2,0.2c0,0.1-0.1,0.1-0.1,0.2l1.2-0.2
+		c0.1,0,0.1,0,0.2,0c0,0,0.1,0.1,0.1,0.1c0,0,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.1-0.1,0.2
+		s-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-1.2,0.2c0,0.1,0.1,0.1,0.1,0.2
+		c0,0.1,0.1,0.1,0.2,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0,0.2,0l4.6-0.8c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.2-0.1,0.3-0.1c0.1-0.1,0.2-0.2,0.2-0.3c0.1-0.1,0.1-0.2,0.2-0.3S162.2,108.8,162.2,108.7 M90.8,121.7c-0.1,0-0.1,0-0.2,0
+		c-0.1,0-0.1,0-0.1-0.1c0,0-0.1-0.1-0.1-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0.1-0.1,0.1-0.2s0.1-0.1,0.1-0.1
+		c0.1,0,0.1-0.1,0.2-0.1l1.4-0.2c0-0.1-0.1-0.1-0.1-0.2S92,120,92,120c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.1,0-0.2,0l-5,0.9
+		c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0.1-0.2,0.1s-0.1,0.1-0.2,0.2
+		c0,0.1-0.1,0.1-0.1,0.2l1.3-0.2c0.1,0,0.1,0,0.2,0s0.1,0,0.1,0.1c0,0,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2
+		c0,0.1-0.1,0.1-0.1,0.2s-0.1,0.1-0.1,0.1c-0.1,0-0.1,0.1-0.2,0.1l-1.3,0.2c0,0.1,0.1,0.1,0.1,0.2c0.1,0.1,0.1,0.1,0.2,0.1
+		c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0,0.2,0l5-0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0.1,0,0.1,0,0.2-0.1
+		c0.1,0,0.1-0.1,0.2-0.1c0.1-0.1,0.1-0.1,0.2-0.2c0-0.1,0.1-0.1,0.1-0.2L90.8,121.7 M114.8,117.5c-0.1,0-0.1,0-0.2,0s-0.1,0-0.1-0.1
+		c0,0-0.1-0.1-0.1-0.2s0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0.1-0.1,0.1-0.2c0-0.1,0.1-0.1,0.1-0.1c0.1,0,0.1-0.1,0.2-0.1l1.4-0.2
+		c0-0.1-0.1-0.1-0.1-0.2c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.1,0-0.2,0l-4.8,0.8c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0.1-0.2,0.1c-0.1,0.1-0.1,0.1-0.2,0.2c0,0.1-0.1,0.1-0.1,0.2l1.3-0.2
+		c0.1,0,0.1,0,0.2,0s0.1,0,0.1,0.1c0,0,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.1-0.1,0.2
+		s-0.1,0.1-0.1,0.1c-0.1,0-0.1,0.1-0.2,0.1l-1.3,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.2,0.1c0.1,0,0.1,0.1,0.2,0.1
+		c0.1,0,0.1,0,0.2,0l4.8-0.8c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1-0.1,0.2-0.1
+		c0.1-0.1,0.1-0.1,0.2-0.2c0-0.1,0.1-0.1,0.1-0.2L114.8,117.5 M138.1,113.4c-0.1,0-0.1,0-0.2,0c0,0-0.1-0.1-0.1-0.1
+		s-0.1-0.1-0.1-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2s0.1-0.1,0.1-0.2s0.1-0.1,0.1-0.1s0.1-0.1,0.2-0.1l1.3-0.2
+		c0-0.1-0.1-0.1-0.1-0.2s-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1s-0.1,0-0.2,0l-4.7,0.8c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0.1-0.2,0.1c-0.1,0.1-0.1,0.1-0.2,0.2c0,0.1-0.1,0.1-0.1,0.2l1.2-0.2
+		c0.1,0,0.1,0,0.2,0c0,0,0.1,0.1,0.1,0.1c0,0,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.1-0.1,0.2
+		c0,0.1-0.1,0.1-0.1,0.1s-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l-1.3,0.2c0,0.1,0.1,0.1,0.1,0.2
+		c0,0.1,0.1,0.1,0.2,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0,0.2,0l4.7-0.8c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1-0.1,0.2-0.1c0.1-0.1,0.1-0.1,0.2-0.2c0-0.1,0.1-0.1,0.1-0.2L138.1,113.4 M102.9,119.6
+		c-0.1,0-0.1,0-0.2,0s-0.1,0-0.1-0.1c0,0-0.1-0.1-0.1-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0.1-0.1,0.1-0.2
+		c0-0.1,0.1-0.1,0.1-0.1c0.1,0,0.1-0.1,0.2-0.1l1.4-0.2c0-0.1-0.1-0.1-0.1-0.2c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1
+		c-0.1,0-0.1,0-0.2,0l-4.9,0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0-0.1,0-0.2,0.1s-0.1,0.1-0.2,0.1
+		c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1,0.1-0.1,0.1-0.1,0.2l1.3-0.2c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.1,0.1c0,0,0.1,0.1,0.1,0.2
+		c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2s-0.1,0.1-0.1,0.2c0,0.1-0.1,0.1-0.1,0.1s-0.1,0.1-0.2,0.1l-1.3,0.2c0,0.1,0.1,0.1,0.1,0.2
+		c0,0.1,0.1,0.1,0.2,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0,0.2,0l4.9-0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1-0.1,0.2-0.1s0.1-0.1,0.2-0.2s0.1-0.1,0.1-0.2L102.9,119.6 M149.5,111.4c-0.1,0-0.1,0-0.2,0
+		c0,0-0.1-0.1-0.1-0.1c0,0-0.1-0.1-0.1-0.2s0-0.1,0-0.2c0-0.1,0-0.1,0-0.2s0.1-0.1,0.1-0.2c0-0.1,0.1-0.1,0.1-0.1
+		c0,0,0.1-0.1,0.2-0.1l1.3-0.2c0-0.1-0.1-0.1-0.1-0.2c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.1,0-0.2,0l-4.6,0.8
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0.1-0.2,0.1c-0.1,0.1-0.1,0.1-0.2,0.2
+		c0,0.1-0.1,0.1-0.1,0.2l1.2-0.2c0.1,0,0.1,0,0.2,0c0,0,0.1,0.1,0.1,0.1s0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2
+		c0,0.1-0.1,0.1-0.1,0.2s-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l-1.2,0.2
+		c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.2,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0,0.2,0l4.6-0.8c0,0,0,0,0,0s0,0,0,0s0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1-0.1,0.2-0.1c0.1-0.1,0.1-0.1,0.2-0.2c0-0.1,0.1-0.1,0.1-0.2L149.5,111.4 M126.5,115.4
+		c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.1-0.1c0,0-0.1-0.1-0.1-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2s0.1-0.1,0.1-0.2
+		c0-0.1,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.2-0.1l1.4-0.2c0-0.1-0.1-0.1-0.1-0.2c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1
+		c-0.1,0-0.1,0-0.2,0l-4.8,0.8c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0.1-0.2,0.1
+		c-0.1,0.1-0.1,0.1-0.2,0.2s-0.1,0.1-0.1,0.2l1.3-0.2c0.1,0,0.1,0,0.2,0s0.1,0,0.1,0.1c0,0,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2
+		c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.1-0.1,0.2c0,0.1-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l-1.3,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.2,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0,0.2,0l4.8-0.8c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1-0.1,0.2-0.1s0.1-0.1,0.2-0.2c0-0.1,0.1-0.1,0.1-0.2
+		L126.5,115.4"/>
+</g>
+</svg>

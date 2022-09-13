@@ -14,7 +14,7 @@
 
 - name: Set mongod_output_dir_entry_point
   set_fact:
-    mongod_output_dir_entry_point: "{{ vitamui_defaults.folder.root_path }}/app/mongod/"
+    mongod_output_dir_entry_point: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/"
 
 - import_tasks: check_auth.yml
 
@@ -73,8 +73,8 @@
   template:
     src: "{{ mongod_source_template_dir }}/{{ item.name }}"
     dest: "{{ mongod_output_dir_entry_point }}/{{ item.finalname }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: 0755
   loop: "{{ mongod_eligible_files | unique }}"
 
@@ -89,8 +89,8 @@
   template:
     src: "main_script.js.j2"
     dest: "{{ mongod_output_dir_entry_point }}/main_script.js"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: 0755
 
 - name: Load script in database

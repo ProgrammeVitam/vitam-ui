@@ -6,17 +6,14 @@ var nbInsert = db.services.insert({
    "_id" : NumberInt(5),
    "_class": "org.apereo.cas.services.RegexRegisteredService",
 {% if vitamui.ingest.base_url is defined %}
-	"serviceId": "^{{ vitamui.ingest.base_url }}/.*",
+   "serviceId": "^{{ vitamui.ingest.base_url }}/.*",
+   "logoutUrl": "{{ vitamui.ingest.base_url }}/logout",
 {% else %}
-	"serviceId": "^{{ url_prefix }}/ingest/.*",
+   "serviceId": "^{{ url_prefix }}/ingest/.*",
+   "logoutUrl": "{{ url_prefix }}/ingest/logout",
 {% endif %}
    "name": "Ingest Management Application",
    "logoutType" : "FRONT_CHANNEL",
-{% if vitamui.ingest.base_url is defined %}
-	"logoutUrl": "{{ vitamui.ingest.base_url }}/logout",
-{% else %}
-	"logoutUrl": "{{ url_prefix }}/ingest/logout",
-{% endif %}
    "attributeReleasePolicy": {
       "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
    }

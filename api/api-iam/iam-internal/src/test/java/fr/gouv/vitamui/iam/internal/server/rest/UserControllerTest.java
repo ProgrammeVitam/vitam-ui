@@ -12,6 +12,8 @@ import static org.mockito.Mockito.when;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.AdditionalAnswers;
@@ -157,7 +159,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     }
 
     @Test
-    public void testUserCreationFailsAsCustomerIsNull() {
+    public void testUserCreationFailsAsCustomerIsNull() throws InvalidParseOperationException,
+        PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
         userDto.setIdentifier(null);
@@ -175,7 +178,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsUserIdIsNotNull() {
+    public void testCreationFailsAsUserIdIsNotNull() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setIdentifier(null);
 
@@ -191,7 +194,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsIdenfierIsNotNull() {
+    public void testCreationFailsAsIdenfierIsNotNull() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
         userDto.setIdentifier(IDENTIFIER);
@@ -208,7 +211,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsEmailAlreadyExists() {
+    public void testCreationFailsAsEmailAlreadyExists() throws InvalidParseOperationException,
+        PreconditionFailedException {
 
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
@@ -227,7 +231,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsGroupDoesNotExist() {
+    public void testCreationFailsAsGroupDoesNotExist() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
         userDto.setIdentifier(null);
@@ -245,7 +249,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsLevelIsNotValid() {
+    public void testCreationFailsAsLevelIsNotValid() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
 
@@ -262,7 +266,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
     @Override
     @Test
-    public void testUpdateOK() {
+    public void testUpdateOK() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
 
         prepareServices();
@@ -293,7 +297,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsTheGroupDoesNotExist() {
+    public void testUpdateFailsAsTheGroupDoesNotExist() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
 
         prepareServices();
@@ -309,7 +313,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsTheEmailAlreadyExists() {
+    public void testUpdateFailsAsTheEmailAlreadyExists() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setEmail("test" + userDto.getEmail());
 
@@ -359,7 +363,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() {
+    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
         userController.delete("dummy");
     }
 

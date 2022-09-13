@@ -60,37 +60,35 @@ describe('LogbookOperationDetailComponent', () => {
   let component: LogbookOperationDetailComponent;
   let fixture: ComponentFixture<LogbookOperationDetailComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const parameters: Map<string, string> = new Map<string, string>();
-      const externalParametersServiceMock = {
-        getUserExternalParameters: () => of(parameters),
-      };
+  beforeEach(waitForAsync(() => {
+    const parameters: Map<string, string> = new Map<string, string>();
+    const externalParametersServiceMock = {
+      getUserExternalParameters: () => of(parameters),
+    };
 
-      TestBed.configureTestingModule({
-        declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe, MockTruncatePipe],
-        imports: [
-          MatSnackBarModule,
-          InjectorModule,
-          RouterTestingModule,
-          VitamUICommonTestModule,
-          BrowserAnimationsModule,
-          LoggerModule.forRoot(),
-          RouterTestingModule,
-          NoopAnimationsModule,
-          HttpClientModule,
-        ],
-        providers: [
-          { provide: LogbookService, useValue: {} },
-          { provide: LogbookDownloadService, useValue: {} },
-          { provide: AuthService, useValue: {} },
-          { provide: ActivatedRoute, useValue: {} },
-          { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe, MockTruncatePipe],
+      imports: [
+        MatSnackBarModule,
+        InjectorModule,
+        RouterTestingModule,
+        VitamUICommonTestModule,
+        BrowserAnimationsModule,
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        NoopAnimationsModule,
+        HttpClientModule,
+      ],
+      providers: [
+        { provide: LogbookService, useValue: {} },
+        { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
+        { provide: AuthService, useValue: {} },
+        { provide: ActivatedRoute, useValue: {} },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookOperationDetailComponent);
@@ -98,7 +96,7 @@ describe('LogbookOperationDetailComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
   });
   it('Download button should not be null', () => {

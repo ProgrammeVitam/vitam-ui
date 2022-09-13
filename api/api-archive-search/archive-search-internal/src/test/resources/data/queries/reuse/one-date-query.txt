@@ -1,0 +1,1 @@
+[{"$or":[{"$and":[{"$gte":{"#management.ReuseRule.Rules.EndDate":"2021-11-02"}}]},{"$and":[{"$gte":{"#computedInheritedRules.ReuseRule.MaxEndDate":"2021-11-02"}}]}]}]

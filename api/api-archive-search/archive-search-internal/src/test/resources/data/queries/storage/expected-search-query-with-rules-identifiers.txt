@@ -1,0 +1,1 @@
+[{"$or":[{"$eq":{"#management.StorageRule.Rules.Rule":"StorageRuleFirstIdentifier"}},{"$eq":{"#management.StorageRule.Rules.Rule":"StorageRuleSecondIdentifier"}}]}]

@@ -1,11 +1,12 @@
-export enum IngestStatus {
+export enum IngestUploadStatus {
   WIP,
   FINISHED,
   ERROR,
 }
 
 export class IngestInfo {
-  constructor(public name: string, public size: number, public sizeUploaded: number, public status: IngestStatus) {}
+  constructor(public name: string, public size: number, public sizeUploaded: number, public status: IngestUploadStatus) {
+  }
 }
 
 export class IngestList {
@@ -17,7 +18,7 @@ export class IngestList {
     this.wipNumber++;
   }
 
-  update(requestId: string, sizeUploaded: number, status?: IngestStatus) {
+  update(requestId: string, sizeUploaded: number, status?: IngestUploadStatus) {
     if (!this.ingests[requestId]) {
       return;
     }
@@ -25,7 +26,7 @@ export class IngestList {
     if (status) {
       // status defined and value > 0 ( FINISHED or ERROR )
       this.ingests[requestId].status = status;
-      if (status === IngestStatus.FINISHED) {
+      if (status === IngestUploadStatus.FINISHED) {
         this.finishTask(requestId);
       }
     }

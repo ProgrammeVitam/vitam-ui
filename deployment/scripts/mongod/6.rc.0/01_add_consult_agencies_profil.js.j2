@@ -1,0 +1,40 @@
+db = db.getSiblingDB('iam')
+
+print("START 6.rc.0/01_add_consult_agencies_profil.js");
+
+// Create new profile CONSULTATION for AGENCIES_APP
+
+var lastIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+
+db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
+
+    db.profiles.insert({
+        "_id": "PROFIL_" + tenant.identifier + "-AGENCIES_APP-CONSULTATION",
+        "identifier": NumberInt(lastIdProfile++),
+        "name": "Profil consultation des services agents",
+        "description": "Profil de consultation du référentiel des services agent sans possibilité de mise à jour",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "AGENCIES_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": false,
+        "customerId": tenant.customerId,
+        "roles": [
+            {
+                "name": "ROLE_GET_AGENCIES"
+            }
+        ]
+    });
+
+});
+
+// Update sequence
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+    $set: {
+        "sequence": NumberInt(lastIdProfile)
+    }
+});
+
+print("END 01_add_consult_agencies_profil.js");

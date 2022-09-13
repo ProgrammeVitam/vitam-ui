@@ -36,9 +36,12 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -86,9 +89,11 @@ public class IngestContractController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<IngestContractDto> getAll(final Optional<String> criteria) {
+    public Collection<IngestContractDto> getAll(final Optional<String> criteria) throws
+        PreconditionFailedException, InvalidParseOperationException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -96,7 +101,12 @@ public class IngestContractController extends AbstractUiRestController {
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<IngestContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-                                                                 @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+                                                                 @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
@@ -104,7 +114,9 @@ public class IngestContractController extends AbstractUiRestController {
     @ApiOperation(value = "Get ingest contract by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     @ResponseStatus(HttpStatus.OK)
-    public IngestContractDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+    public IngestContractDto getById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }
@@ -117,7 +129,9 @@ public class IngestContractController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create entity")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody  IngestContractDto ingestContractDto) {
+    public ResponseEntity<Void> check(@RequestBody  IngestContractDto ingestContractDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ingestContractDto);
         LOGGER.debug("check ability to create ingestContract={}", ingestContractDto);
         final boolean exist = service.check(buildUiHttpContext(), ingestContractDto);
         LOGGER.debug("response value={}" + exist);
@@ -127,7 +141,9 @@ public class IngestContractController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public IngestContractDto create(@Valid @RequestBody IngestContractDto ingestContractDto) {
+    public IngestContractDto create(@Valid @RequestBody IngestContractDto ingestContractDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ingestContractDto);
         LOGGER.debug("create ingestContract={}", ingestContractDto);
         return service.create(buildUiHttpContext(), ingestContractDto);
     }
@@ -135,7 +151,10 @@ public class IngestContractController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public IngestContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public IngestContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(partialDto);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch ingestContract {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch ingestContract : the DTO id must match the path id.");
         return service.patch(buildUiHttpContext(), partialDto, id);
@@ -143,7 +162,10 @@ public class IngestContractController extends AbstractUiRestController {
 
     @ApiOperation(value = "get history by ingestContract's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for ingestContract with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }

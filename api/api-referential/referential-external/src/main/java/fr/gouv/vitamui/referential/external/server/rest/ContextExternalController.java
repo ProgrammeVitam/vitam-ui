@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -70,7 +71,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -88,7 +88,7 @@ public class ContextExternalController {
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
     public Collection<ContextDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all context criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return contextExternalService.getAll(criteria);
     }
 

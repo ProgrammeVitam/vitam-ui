@@ -39,7 +39,6 @@ package fr.gouv.vitamui.ingest.external.client;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
@@ -58,7 +57,6 @@ public class IngestExternalRestClientFactory extends BaseRestClientFactory {
             final RestTemplateBuilder restTemplateBuilder) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
-
 
     public IngestExternalRestClient getIngestExternalRestClient() {
         return new IngestExternalRestClient(getRestTemplate(), getBaseUrl());

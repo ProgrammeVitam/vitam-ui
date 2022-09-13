@@ -53,16 +53,8 @@ import { FilingHoldingSchemeNode } from './models/node.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
-import {
-  AppraisalRuleFacets,
-  PagedResult,
-  ResultFacet,
-  ResultFacetList,
-  SearchCriteria,
-  SearchCriteriaDto,
-  SearchCriteriaEltDto,
-  SearchCriteriaTypeEnum,
-} from './models/search.criteria';
+import { PagedResult, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from './models/search.criteria';
+import { TransferRequestDto } from './models/transfer-request-detail.interface';
 import { Unit } from './models/unit.interface';
 import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
@@ -203,71 +195,6 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
-    const nodesFacets: ResultFacet[] = [];
-
-    if (facetResults && facetResults.length > 0) {
-      for (const facet of facetResults) {
-        if (facet.name === 'COUNT_BY_NODE') {
-          for (const bucket of facet.buckets) {
-            nodesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    return nodesFacets;
-  }
-
-  extractAppraisalRulesFacetsResults(facetResults: ResultFacetList[]): AppraisalRuleFacets {
-    const appraisalRulesFacets = new AppraisalRuleFacets();
-    if (facetResults && facetResults.length > 0) {
-      for (const facet of facetResults) {
-        if (facet.name === 'FINAL_ACTION_COMPUTED_APPRAISAL_RULE') {
-          const buckets = facet.buckets;
-          const finalActionsFacets = [];
-          for (const bucket of buckets) {
-            finalActionsFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
-        }
-        if (facet.name === 'RULES_COMPUTED_NUMBER') {
-          const rulesListFacets = [];
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            rulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.rulesListFacets = rulesListFacets;
-        }
-        if (facet.name === 'EXPIRED_RULES_COMPUTED_APPRAISAL_RULE') {
-          const expiredRulesListFacets = [];
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
-        }
-        if (facet.name === 'COMPUTE_RULES_AU_NUMBER') {
-          const buckets = facet.buckets;
-          const waitingToRecalculateRulesListFacets = [];
-          for (const bucket of buckets) {
-            waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
-        }
-
-        if (facet.name === 'COUNT_WITHOUT_RULES_APPRAISAL_RULE') {
-          const buckets = facet.buckets;
-          const noAppraisalRulesFacets = [];
-          for (const bucket of buckets) {
-            noAppraisalRulesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.noAppraisalRulesFacets = noAppraisalRulesFacets;
-        }
-      }
-    }
-    return appraisalRulesFacets;
-  }
-
   normalizeTitle(title: string): string {
     title = title.replace(/[&\/\\|.'":*?<> ]/g, '');
     return title.substring(0, 218);
@@ -290,6 +217,12 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.exportDipApiService(exportDIPCriteriaList, headers);
+  }
+
+  transferRequestService(transferDipCriteriaDto: TransferRequestDto, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.transferDipApiService(transferDipCriteriaDto, headers);
   }
 
   startEliminationAnalysis(criteriaDto: SearchCriteriaDto, accessContract: string) {
@@ -453,6 +386,22 @@ export class ArchiveService extends SearchService<any> {
 
   isAppraisalRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.APPRAISAL_RULE;
+  }
+  isAccessRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.ACCESS_RULE;
+  }
+  isStorageRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.STORAGE_RULE;
+  }
+
+  isClassificationRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.CLASSIFICATION_RULE;
+  }
+  isDisseminationRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.DISSEMINATION_RULE;
+  }
+  isReuseRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.REUSE_RULE;
   }
 }
 

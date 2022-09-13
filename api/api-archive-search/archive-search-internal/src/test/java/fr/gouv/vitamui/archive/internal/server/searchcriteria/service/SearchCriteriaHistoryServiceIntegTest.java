@@ -123,7 +123,7 @@ public class SearchCriteriaHistoryServiceIntegTest {
     }
 
     @Test
-    public void testCreateSearchCriteria() {
+    void testCreateSearchCriteria() {
         final SearchCriteriaHistory searchCriteriaHistory =
             Utils.buildSearchCriteriaHistory();
         SearchCriteriaHistoryDto searchCriteriaHistoryDto =
@@ -133,6 +133,6 @@ public class SearchCriteriaHistoryServiceIntegTest {
         searchCriteriaHistory.setUserId("code");
         rrepository.save(searchCriteriaHistory);
 
-        assertThat(service.getSearchCriteriaHistoryDtos().size()).isEqualTo(1);
+        assertThat(service.getSearchCriteriaHistoryDtos()).hasSize(1);
     }
 }

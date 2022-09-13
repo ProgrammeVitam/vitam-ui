@@ -1,0 +1,1585 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+  <!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1"
+     xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.contexts_app_01{fill-rule:evenodd;clip-rule:evenodd;}
+  .contexts_app_02{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+  .contexts_app_03{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+  .contexts_app_04{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+  .contexts_app_05{fill:#BCB9BA;}
+  .contexts_app_06{fill:#BBB9BA;}
+  .contexts_app_07{fill:#BBB8B9;}
+  .contexts_app_08{fill:#BAB8B9;}
+  .contexts_app_09{fill:#B9B7B8;}
+  .contexts_app_10{fill:#B9B7B7;}
+  .contexts_app_11{fill:#B8B6B7;}
+  .contexts_app_12{fill:#B8B5B6;}
+  .contexts_app_13{fill:#B7B5B6;}
+  .contexts_app_14{fill:#B7B4B5;}
+  .contexts_app_15{fill:#B6B4B5;}
+  .contexts_app_16{fill:#B6B3B4;}
+  .contexts_app_17{fill:#B5B3B4;}
+  .contexts_app_18{fill:#B4B2B3;}
+  .contexts_app_19{fill:#B3B1B2;}
+  .contexts_app_20{fill:#B3B1B1;}
+  .contexts_app_21{fill:#B2B0B1;}
+  .contexts_app_22{fill:#B2AFB0;}
+  .contexts_app_23{fill:#B1AFB0;}
+  .contexts_app_24{fill:#B1AEAF;}
+  .contexts_app_25{fill:#B0AEAF;}
+  .contexts_app_26{fill:#AFADAE;}
+  .contexts_app_27{fill:#AEACAD;}
+  .contexts_app_28{fill:#ADABAC;}
+  .contexts_app_29{fill:#ADABAB;}
+  .contexts_app_30{fill:#ACAAAB;}
+  .contexts_app_31{fill:#ACAAAA;}
+  .contexts_app_32{fill:#ABA9AA;}
+  .contexts_app_33{fill:#AAA8A9;}
+  .contexts_app_34{fill:#A9A7A8;}
+  .contexts_app_35{fill:#A8A6A7;}
+  .contexts_app_36{fill:#A7A5A6;}
+  .contexts_app_37{fill:#A7A5A5;}
+  .contexts_app_38{fill:#A6A4A5;}
+  .contexts_app_39{fill:#A5A4A4;}
+  .contexts_app_40{fill:#A5A3A4;}
+  .contexts_app_41{fill:#A4A2A3;}
+  .contexts_app_42{fill:#A3A1A2;}
+  .contexts_app_43{fill:#A2A0A1;}
+  .contexts_app_44{fill:#A19FA0;}
+  .contexts_app_45{fill:#A09F9F;}
+  .contexts_app_46{fill:#A09E9F;}
+  .contexts_app_47{fill:#9F9E9E;}
+  .contexts_app_48{fill:#9F9D9E;}
+  .contexts_app_49{fill:#9E9D9D;}
+  .contexts_app_50{fill:#9E9C9D;}
+  .contexts_app_51{fill:#9D9B9C;}
+  .contexts_app_52{fill:#9C9A9B;}
+  .contexts_app_53{fill:#9B9A9B;}
+  .contexts_app_54{fill:#9B999A;}
+  .contexts_app_55{fill:#9A9999;}
+  .contexts_app_56{fill:#9A9899;}
+  .contexts_app_57{fill:#999898;}
+  .contexts_app_58{fill:#999798;}
+  .contexts_app_59{fill:#989797;}
+  .contexts_app_60{fill:#989697;}
+  .contexts_app_61{fill:#979596;}
+  .contexts_app_62{fill:#969596;}
+  .contexts_app_63{fill:#969495;}
+  .contexts_app_64{fill:#959495;}
+  .contexts_app_65{fill:#959394;}
+  .contexts_app_66{fill:#949393;}
+  .contexts_app_67{fill:#949293;}
+  .contexts_app_68{fill:#939292;}
+  .contexts_app_69{fill:#939192;}
+  .contexts_app_70{fill:#929191;}
+  .contexts_app_71{fill:#919091;}
+  .contexts_app_72{fill:#919090;}
+  .contexts_app_73{fill:#908F90;}
+  .contexts_app_74{fill:#908E8F;}
+  .contexts_app_75{fill:#8F8E8F;}
+  .contexts_app_76{fill:#8F8D8E;}
+  .contexts_app_77{fill:#8E8D8D;}
+  .contexts_app_78{fill:#8E8C8D;}
+  .contexts_app_79{fill:#8D8C8C;}
+  .contexts_app_80{fill:#8C8B8C;}
+  .contexts_app_81{fill:#8C8B8B;}
+  .contexts_app_82{fill:#8B8A8B;}
+  .contexts_app_83{fill:#8B8A8A;}
+  .contexts_app_84{fill:#8A898A;}
+  .contexts_app_85{fill:#8A8889;}
+  .contexts_app_86{fill:#898888;}
+  .contexts_app_87{fill:#898788;}
+  .contexts_app_88{fill:#888787;}
+  .contexts_app_89{fill:#878687;}
+  .contexts_app_90{fill:#878686;}
+  .contexts_app_91{fill:#868586;}
+  .contexts_app_92{fill:#868585;}
+  .contexts_app_93{fill:#858485;}
+  .contexts_app_94{fill:#858484;}
+  .contexts_app_95{fill:#848384;}
+  .contexts_app_96{fill:#848383;}
+  .contexts_app_97{fill:#838282;}
+  .contexts_app_98{fill:#828182;}
+  .contexts_app_99{fill:#828181;}
+  .contexts_app_100{fill:#818081;}
+  .contexts_app_101{fill:#818080;}
+  .contexts_app_102{fill:#807F80;}
+  .contexts_app_103{fill:#807F7F;}
+  .contexts_app_104{fill:#7F7E7F;}
+  .contexts_app_105{fill:#7F7E7E;}
+  .contexts_app_106{fill:#7E7D7E;}
+  .contexts_app_107{fill:#7D7D7D;}
+  .contexts_app_108{fill:#7D7C7C;}
+  .contexts_app_109{fill:#7C7B7C;}
+  .contexts_app_110{fill:#7C7B7B;}
+  .contexts_app_111{fill:#7B7A7B;}
+  .contexts_app_112{fill:#7B7A7A;}
+  .contexts_app_113{fill:#7A797A;}
+  .contexts_app_114{fill:#7A7979;}
+  .contexts_app_115{fill:#797879;}
+  .contexts_app_116{fill:#787878;}
+  .contexts_app_117{fill:#787778;}
+  .contexts_app_118{fill:#777777;}
+  .contexts_app_119{fill:#777676;}
+  .contexts_app_120{fill:#767676;}
+  .contexts_app_121{fill:#767575;}
+  .contexts_app_122{fill:#757475;}
+  .contexts_app_123{fill:#757474;}
+  .contexts_app_124{fill:#747374;}
+  .contexts_app_125{fill:#737373;}
+  .contexts_app_126{fill:#737273;}
+  .contexts_app_127{fill:#727272;}
+  .contexts_app_128{fill:#727172;}
+  .contexts_app_129{fill:#717171;}
+  .contexts_app_130{fill:#717070;}
+  .contexts_app_131{fill:#707070;}
+  .contexts_app_132{fill:#706F6F;}
+  .contexts_app_133{fill:#6F6E6F;}
+  .contexts_app_134{fill:#6E6E6E;}
+  .contexts_app_135{fill:#6E6D6E;}
+  .contexts_app_136{fill:#6D6D6D;}
+  .contexts_app_137{fill:#6D6C6D;}
+  .contexts_app_138{fill:#6C6C6C;}
+  .contexts_app_139{fill:#6C6B6C;}
+  .contexts_app_140{fill:#6B6B6B;}
+  .contexts_app_141{fill:#6B6A6A;}
+  .contexts_app_142{fill:#6A6A6A;}
+  .contexts_app_143{fill:#696969;}
+  .contexts_app_144{fill:#686868;}
+  .contexts_app_145{fill:#686768;}
+  .contexts_app_146{fill:#676767;}
+  .contexts_app_147{fill:#676667;}
+  .contexts_app_148{fill:#666666;}
+  .contexts_app_149{fill:#666566;}
+  .contexts_app_150{fill:#656565;}
+  .contexts_app_151{fill:#646464;}
+  .contexts_app_152{fill:#636363;}
+  .contexts_app_153{fill:#626262;}
+  .contexts_app_154{fill:#626162;}
+  .contexts_app_155{fill:#616161;}
+  .contexts_app_156{fill:#616061;}
+  .contexts_app_157{fill:#606060;}
+  .contexts_app_158{fill:#5F5F60;}
+  .contexts_app_159{fill:#5F5F5F;}
+  .contexts_app_160{fill:#5E5E5E;}
+  .contexts_app_161{fill:#5D5D5D;}
+  .contexts_app_162{fill:#5C5C5C;}
+  .contexts_app_163{fill:#5B5B5B;}
+  .contexts_app_164{fill:#5A5A5B;}
+  .contexts_app_165{fill:#5A5A5A;}
+  .contexts_app_166{fill:#59595A;}
+  .contexts_app_167{fill:#595959;}
+  .contexts_app_168{fill:#585858;}
+  .contexts_app_169{fill:#575757;}
+  .contexts_app_170{fill:#565656;}
+  .contexts_app_171{fill:#555656;}
+  .contexts_app_172{fill:#555555;}
+  .contexts_app_173{fill:#545455;}
+  .contexts_app_174{fill:#545454;}
+  .contexts_app_175{fill:#535353;}
+  .contexts_app_176{fill:#525252;}
+  .contexts_app_177{fill:#515151;}
+  .contexts_app_178{fill:#505151;}
+  .contexts_app_179{fill:#505050;}
+  .contexts_app_180{fill:#4F5050;}
+  .contexts_app_181{fill:#4F4F4F;}
+  .contexts_app_182{fill:#4E4F4F;}
+  .contexts_app_183{fill:#4E4E4E;}
+  .contexts_app_184{fill:#4D4D4D;}
+  .contexts_app_185{fill:#4C4C4C;}
+  .contexts_app_186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_01);}
+  .contexts_app_187{fill-rule:evenodd;clip-rule:evenodd;fill:#2A2C2B;}
+  .contexts_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:#4C4C4C;}
+  .contexts_app_189{fill:#2563A9;}
+  .contexts_app_190{fill:#478AD7;}
+  .contexts_app_191{fill:#8DB6E6;}
+  .contexts_app_192{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_02);}
+  .contexts_app_193{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_03);}
+  .contexts_app_194{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_04);}
+  .contexts_app_195{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_05);}
+  .contexts_app_196{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_06);}
+  .contexts_app_197{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_07);}
+  .contexts_app_198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_08);}
+  .contexts_app_199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_09);}
+  .contexts_app_200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_10);}
+  .contexts_app_201{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_11);}
+  .contexts_app_202{fill-rule:evenodd;clip-rule:evenodd;fill:#9B9A9B;}
+  .contexts_app_203{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_12);}
+  .contexts_app_204{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_13);}
+  .contexts_app_205{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_14);}
+  .contexts_app_206{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_15);}
+  .contexts_app_207{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_16);}
+  .contexts_app_208{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_17);}
+  .contexts_app_209{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_18);}
+  .contexts_app_210{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_19);}
+  .contexts_app_211{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_20);}
+  .contexts_app_212{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_21);}
+  .contexts_app_213{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_22);}
+  .contexts_app_214{fill-rule:evenodd;clip-rule:evenodd;fill:#9A999A;}
+  .contexts_app_215{fill-rule:evenodd;clip-rule:evenodd;fill:#999899;}
+  .contexts_app_216{fill-rule:evenodd;clip-rule:evenodd;fill:#989798;}
+  .contexts_app_217{fill-rule:evenodd;clip-rule:evenodd;fill:#979697;}
+  .contexts_app_218{fill-rule:evenodd;clip-rule:evenodd;fill:#969596;}
+  .contexts_app_219{fill-rule:evenodd;clip-rule:evenodd;fill:#959495;}
+  .contexts_app_220{fill-rule:evenodd;clip-rule:evenodd;fill:#949394;}
+  .contexts_app_221{fill-rule:evenodd;clip-rule:evenodd;fill:#939293;}
+  .contexts_app_222{fill-rule:evenodd;clip-rule:evenodd;fill:#929192;}
+  .contexts_app_223{fill-rule:evenodd;clip-rule:evenodd;fill:#919091;}
+  .contexts_app_224{fill-rule:evenodd;clip-rule:evenodd;fill:#908F90;}
+  .contexts_app_225{fill-rule:evenodd;clip-rule:evenodd;fill:#8F8E8F;}
+  .contexts_app_226{fill-rule:evenodd;clip-rule:evenodd;fill:#8E8D8E;}
+  .contexts_app_227{fill-rule:evenodd;clip-rule:evenodd;fill:#8D8C8D;}
+  .contexts_app_228{fill-rule:evenodd;clip-rule:evenodd;fill:#8C8B8C;}
+  .contexts_app_229{fill-rule:evenodd;clip-rule:evenodd;fill:#8B8B8B;}
+  .contexts_app_230{fill-rule:evenodd;clip-rule:evenodd;fill:#8A8A8A;}
+  .contexts_app_231{fill-rule:evenodd;clip-rule:evenodd;fill:#898989;}
+  .contexts_app_232{fill-rule:evenodd;clip-rule:evenodd;fill:#888888;}
+  .contexts_app_233{fill-rule:evenodd;clip-rule:evenodd;fill:#878787;}
+  .contexts_app_234{fill-rule:evenodd;clip-rule:evenodd;fill:#868686;}
+  .contexts_app_235{fill-rule:evenodd;clip-rule:evenodd;fill:#858585;}
+  .contexts_app_236{fill-rule:evenodd;clip-rule:evenodd;fill:#848484;}
+  .contexts_app_237{fill-rule:evenodd;clip-rule:evenodd;fill:#838384;}
+  .contexts_app_238{fill-rule:evenodd;clip-rule:evenodd;fill:#828283;}
+  .contexts_app_239{fill-rule:evenodd;clip-rule:evenodd;fill:#818182;}
+  .contexts_app_240{fill-rule:evenodd;clip-rule:evenodd;fill:#808081;}
+  .contexts_app_241{fill-rule:evenodd;clip-rule:evenodd;fill:#7F7F80;}
+  .contexts_app_242{fill-rule:evenodd;clip-rule:evenodd;fill:#7E7E7F;}
+  .contexts_app_243{fill-rule:evenodd;clip-rule:evenodd;fill:#7D7D7E;}
+  .contexts_app_244{fill-rule:evenodd;clip-rule:evenodd;fill:#7C7C7D;}
+  .contexts_app_245{fill-rule:evenodd;clip-rule:evenodd;fill:#7B7B7C;}
+  .contexts_app_246{fill-rule:evenodd;clip-rule:evenodd;fill:#7A7A7B;}
+  .contexts_app_247{fill-rule:evenodd;clip-rule:evenodd;fill:#79797A;}
+  .contexts_app_248{fill-rule:evenodd;clip-rule:evenodd;fill:#787879;}
+  .contexts_app_249{fill-rule:evenodd;clip-rule:evenodd;fill:#777778;}
+  .contexts_app_250{fill-rule:evenodd;clip-rule:evenodd;fill:#767677;}
+  .contexts_app_251{fill-rule:evenodd;clip-rule:evenodd;fill:#757576;}
+  .contexts_app_252{fill-rule:evenodd;clip-rule:evenodd;fill:#747475;}
+  .contexts_app_253{fill-rule:evenodd;clip-rule:evenodd;fill:#737374;}
+  .contexts_app_254{fill-rule:evenodd;clip-rule:evenodd;fill:#727273;}
+  .contexts_app_255{fill-rule:evenodd;clip-rule:evenodd;fill:#717172;}
+  .contexts_app_256{fill-rule:evenodd;clip-rule:evenodd;fill:#707071;}
+  .contexts_app_257{fill-rule:evenodd;clip-rule:evenodd;fill:#6F6F70;}
+  .contexts_app_258{fill-rule:evenodd;clip-rule:evenodd;fill:#6E6E6F;}
+  .contexts_app_259{fill-rule:evenodd;clip-rule:evenodd;fill:#6D6D6E;}
+  .contexts_app_260{fill-rule:evenodd;clip-rule:evenodd;fill:#6C6D6D;}
+  .contexts_app_261{fill-rule:evenodd;clip-rule:evenodd;fill:#6B6C6C;}
+  .contexts_app_262{fill-rule:evenodd;clip-rule:evenodd;fill:#6B6B6B;}
+  .contexts_app_263{fill-rule:evenodd;clip-rule:evenodd;fill:#6A6A6A;}
+  .contexts_app_264{fill-rule:evenodd;clip-rule:evenodd;fill:#696969;}
+  .contexts_app_265{fill-rule:evenodd;clip-rule:evenodd;fill:#686868;}
+  .contexts_app_266{fill-rule:evenodd;clip-rule:evenodd;fill:#676767;}
+  .contexts_app_267{fill-rule:evenodd;clip-rule:evenodd;fill:#666666;}
+  .contexts_app_268{fill-rule:evenodd;clip-rule:evenodd;fill:#656565;}
+  .contexts_app_269{fill-rule:evenodd;clip-rule:evenodd;fill:#646464;}
+  .contexts_app_270{fill-rule:evenodd;clip-rule:evenodd;fill:#636363;}
+  .contexts_app_271{fill-rule:evenodd;clip-rule:evenodd;fill:#626262;}
+  .contexts_app_272{fill-rule:evenodd;clip-rule:evenodd;fill:#616161;}
+  .contexts_app_273{fill-rule:evenodd;clip-rule:evenodd;fill:#606060;}
+  .contexts_app_274{fill-rule:evenodd;clip-rule:evenodd;fill:#5F5F5F;}
+  .contexts_app_275{fill-rule:evenodd;clip-rule:evenodd;fill:#5E5E5E;}
+  .contexts_app_276{fill-rule:evenodd;clip-rule:evenodd;fill:#5D5D5D;}
+  .contexts_app_277{fill-rule:evenodd;clip-rule:evenodd;fill:#5C5C5C;}
+  .contexts_app_278{fill-rule:evenodd;clip-rule:evenodd;fill:#5B5B5B;}
+  .contexts_app_279{fill-rule:evenodd;clip-rule:evenodd;fill:#5A5A5A;}
+  .contexts_app_280{fill-rule:evenodd;clip-rule:evenodd;fill:#595959;}
+  .contexts_app_281{fill-rule:evenodd;clip-rule:evenodd;fill:#585858;}
+  .contexts_app_282{fill-rule:evenodd;clip-rule:evenodd;fill:#575757;}
+  .contexts_app_283{fill-rule:evenodd;clip-rule:evenodd;fill:#565657;}
+  .contexts_app_284{fill-rule:evenodd;clip-rule:evenodd;fill:#555556;}
+  .contexts_app_285{fill-rule:evenodd;clip-rule:evenodd;fill:#545455;}
+  .contexts_app_286{fill-rule:evenodd;clip-rule:evenodd;fill:#535354;}
+  .contexts_app_287{fill-rule:evenodd;clip-rule:evenodd;fill:#525253;}
+  .contexts_app_288{fill-rule:evenodd;clip-rule:evenodd;fill:#515152;}
+  .contexts_app_289{fill-rule:evenodd;clip-rule:evenodd;fill:#505051;}
+  .contexts_app_290{fill-rule:evenodd;clip-rule:evenodd;fill:#4F4F50;}
+  .contexts_app_291{fill-rule:evenodd;clip-rule:evenodd;fill:#4E4F4F;}
+  .contexts_app_292{fill-rule:evenodd;clip-rule:evenodd;fill:#4D4E4E;}
+  .contexts_app_293{fill-rule:evenodd;clip-rule:evenodd;fill:#4C4D4D;}
+  .contexts_app_294{fill-rule:evenodd;clip-rule:evenodd;fill:#4B4C4C;}
+  .contexts_app_295{fill-rule:evenodd;clip-rule:evenodd;fill:#4A4B4B;}
+  .contexts_app_296{fill-rule:evenodd;clip-rule:evenodd;fill:#494A4A;}
+  .contexts_app_297{fill-rule:evenodd;clip-rule:evenodd;fill:#484949;}
+  .contexts_app_298{fill-rule:evenodd;clip-rule:evenodd;fill:#474848;}
+  .contexts_app_299{fill-rule:evenodd;clip-rule:evenodd;fill:#464747;}
+  .contexts_app_300{fill-rule:evenodd;clip-rule:evenodd;fill:#454646;}
+  .contexts_app_301{fill-rule:evenodd;clip-rule:evenodd;fill:#444545;}
+  .contexts_app_302{fill-rule:evenodd;clip-rule:evenodd;fill:#434444;}
+  .contexts_app_303{fill-rule:evenodd;clip-rule:evenodd;fill:#424343;}
+  .contexts_app_304{fill-rule:evenodd;clip-rule:evenodd;fill:#414242;}
+  .contexts_app_305{fill-rule:evenodd;clip-rule:evenodd;fill:#404141;}
+  .contexts_app_306{fill-rule:evenodd;clip-rule:evenodd;fill:#3F4040;}
+  .contexts_app_307{fill-rule:evenodd;clip-rule:evenodd;fill:#3E3F3F;}
+  .contexts_app_308{fill-rule:evenodd;clip-rule:evenodd;fill:#3D3E3E;}
+  .contexts_app_309{fill-rule:evenodd;clip-rule:evenodd;fill:#3C3D3D;}
+  .contexts_app_310{fill-rule:evenodd;clip-rule:evenodd;fill:#3B3C3C;}
+  .contexts_app_311{fill-rule:evenodd;clip-rule:evenodd;fill:#3A3B3B;}
+  .contexts_app_312{fill-rule:evenodd;clip-rule:evenodd;fill:#393A3A;}
+  .contexts_app_313{fill-rule:evenodd;clip-rule:evenodd;fill:#383939;}
+  .contexts_app_314{fill-rule:evenodd;clip-rule:evenodd;fill:#373838;}
+  .contexts_app_315{fill-rule:evenodd;clip-rule:evenodd;fill:#363737;}
+  .contexts_app_316{fill-rule:evenodd;clip-rule:evenodd;fill:#353636;}
+  .contexts_app_317{fill-rule:evenodd;clip-rule:evenodd;fill:#343535;}
+  .contexts_app_318{fill-rule:evenodd;clip-rule:evenodd;fill:#333434;}
+  .contexts_app_319{fill-rule:evenodd;clip-rule:evenodd;fill:#323333;}
+  .contexts_app_320{fill-rule:evenodd;clip-rule:evenodd;fill:#313232;}
+  .contexts_app_321{fill-rule:evenodd;clip-rule:evenodd;fill:#303231;}
+  .contexts_app_322{fill-rule:evenodd;clip-rule:evenodd;fill:#2F3130;}
+  .contexts_app_323{fill-rule:evenodd;clip-rule:evenodd;fill:#2E302F;}
+  .contexts_app_324{fill-rule:evenodd;clip-rule:evenodd;fill:#2D2F2E;}
+  .contexts_app_325{fill-rule:evenodd;clip-rule:evenodd;fill:#2C2E2D;}
+  .contexts_app_326{fill-rule:evenodd;clip-rule:evenodd;fill:#2B2D2C;}
+  .contexts_app_327{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_23);}
+  .contexts_app_328{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_24);}
+  .contexts_app_329{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_25);}
+  .contexts_app_330{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_26);}
+  .contexts_app_331{fill:#E5E4E4;}
+  .contexts_app_332{fill-rule:evenodd;clip-rule:evenodd;fill:#8B8A8B;}
+  .contexts_app_333{fill-rule:evenodd;clip-rule:evenodd;fill:#838383;}
+  .contexts_app_334{fill-rule:evenodd;clip-rule:evenodd;fill:#828282;}
+  .contexts_app_335{fill-rule:evenodd;clip-rule:evenodd;fill:#818181;}
+  .contexts_app_336{fill-rule:evenodd;clip-rule:evenodd;fill:#808080;}
+  .contexts_app_337{fill-rule:evenodd;clip-rule:evenodd;fill:#7F7F7F;}
+  .contexts_app_338{fill-rule:evenodd;clip-rule:evenodd;fill:#747374;}
+  .contexts_app_339{fill-rule:evenodd;clip-rule:evenodd;fill:#737273;}
+  .contexts_app_340{fill-rule:evenodd;clip-rule:evenodd;fill:#727172;}
+  .contexts_app_341{fill-rule:evenodd;clip-rule:evenodd;fill:#717071;}
+  .contexts_app_342{fill-rule:evenodd;clip-rule:evenodd;fill:#706F70;}
+  .contexts_app_343{fill-rule:evenodd;clip-rule:evenodd;fill:#6F6E6F;}
+  .contexts_app_344{fill-rule:evenodd;clip-rule:evenodd;fill:#6E6D6E;}
+  .contexts_app_345{fill-rule:evenodd;clip-rule:evenodd;fill:#6D6C6D;}
+  .contexts_app_346{fill-rule:evenodd;clip-rule:evenodd;fill:#6C6B6C;}
+  .contexts_app_347{fill-rule:evenodd;clip-rule:evenodd;fill:#6B6A6B;}
+  .contexts_app_348{fill-rule:evenodd;clip-rule:evenodd;fill:#6A696A;}
+  .contexts_app_349{fill-rule:evenodd;clip-rule:evenodd;fill:#565656;}
+  .contexts_app_350{fill-rule:evenodd;clip-rule:evenodd;fill:#555555;}
+  .contexts_app_351{fill-rule:evenodd;clip-rule:evenodd;fill:#545454;}
+  .contexts_app_352{fill-rule:evenodd;clip-rule:evenodd;fill:#535353;}
+  .contexts_app_353{fill-rule:evenodd;clip-rule:evenodd;fill:#525252;}
+  .contexts_app_354{fill-rule:evenodd;clip-rule:evenodd;fill:#515151;}
+  .contexts_app_355{fill-rule:evenodd;clip-rule:evenodd;fill:#505050;}
+  .contexts_app_356{fill-rule:evenodd;clip-rule:evenodd;fill:#4F4F4F;}
+  .contexts_app_357{fill-rule:evenodd;clip-rule:evenodd;fill:#4E4E4E;}
+  .contexts_app_358{fill-rule:evenodd;clip-rule:evenodd;fill:#4D4D4D;}
+  .contexts_app_359{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_27);}
+  .contexts_app_360{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_28);}
+  .contexts_app_361{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_29);}
+  .contexts_app_362{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_30);}
+  .contexts_app_363{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_31);}
+  .contexts_app_364{fill:#2A2C2B;}
+  .contexts_app_365{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_32);}
+  .contexts_app_366{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_33);}
+  .contexts_app_367{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-dark);}
+  .contexts_app_368{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_34);}
+  .contexts_app_369{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_35);}
+  .contexts_app_370{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_36);}
+  .contexts_app_371{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+  .contexts_app_372{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_37);}
+  .contexts_app_373{fill:none;stroke:#4C4C4C;stroke-miterlimit:10;}
+  .contexts_app_374{display:none;fill:#9B9A9B;}
+  .contexts_app_375{fill:var(--vitamui-primary-dark);}
+  .contexts_app_376{fill:url(#SVGID_CONTEXTS_APP_38);}
+  .contexts_app_377{fill:var(--vitamui-primary-light);}
+</style>
+  <metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+    <sliceSourceBounds  bottomLeftOrigin="true" height="135.9" width="169.8" x="15.1" y="18.8"></sliceSourceBounds>
+	</sfw>
+</metadata>
+  <g>
+	<g>
+		<path class="contexts_app_01" d="M100,140.9c46.9,0,84.9,8.8,84.9,19.6s-38.1,20.8-84.9,20.8s-84.9-10-84.9-20.8C15,149.6,53,140.9,100,140.9z
+			"/>
+    <path class="contexts_app_02" d="M100,141.3c44.9,0,81.2,8.7,81.2,19.3s-36.3,19.3-81.2,19.3s-81.2-8.7-81.2-19.3
+			C18.8,149.8,55.1,141.3,100,141.3z"/>
+    <path class="contexts_app_03" d="M100,139c44.9,0,81.2,8.7,81.2,19.3s-36.3,19.3-81.2,19.3s-81.2-8.7-81.2-19.3C18.8,147.5,55.1,139,100,139z"
+    />
+    <path class="contexts_app_02" d="M100,137.8c44.9,0,81.2,8.7,81.2,19.3c0,10.6-36.3,19.3-81.2,19.3s-81.2-8.7-81.2-19.3
+			C18.8,146.3,55.1,137.8,100,137.8z"/>
+    <path class="contexts_app_04" d="M99.9,137.8c23.6,0,44.6,2.4,59.5,6.1c-31-1.9-115.8,2.7-136.7,19c-2.5-1.9-3.9-3.9-3.9-5.9
+			C18.7,146.3,55.1,137.8,99.9,137.8z"/>
+    <path class="contexts_app_03" d="M18.8,157c0-10.6,36.3-19.3,81.2-19.3s81.2,8.7,81.2,19.3c0,0.4,0,0.7-0.1,1.1c-2.3-10.1-37.7-18.2-81.1-18.2
+			s-78.8,8.1-81.1,18.2C18.8,157.6,18.8,157.4,18.8,157z"/>
+	</g>
+</g>
+  <g>
+	<ellipse class="contexts_app_05" cx="101" cy="160.5" rx="66" ry="11.1"/>
+    <ellipse class="contexts_app_06" cx="101" cy="160.5" rx="65.9" ry="11.1"/>
+    <ellipse class="contexts_app_07" cx="101" cy="160.5" rx="65.8" ry="11.1"/>
+    <ellipse class="contexts_app_08" cx="101" cy="160.5" rx="65.7" ry="11"/>
+    <ellipse class="contexts_app_09" cx="101" cy="160.5" rx="65.5" ry="11"/>
+    <ellipse class="contexts_app_10" cx="101" cy="160.4" rx="65.4" ry="11"/>
+    <ellipse class="contexts_app_11" cx="101" cy="160.4" rx="65.3" ry="10.9"/>
+    <ellipse class="contexts_app_12" cx="101" cy="160.4" rx="65.2" ry="10.9"/>
+    <ellipse class="contexts_app_13" cx="101" cy="160.4" rx="65.1" ry="10.9"/>
+    <ellipse class="contexts_app_14" cx="101" cy="160.4" rx="65" ry="10.8"/>
+    <ellipse class="contexts_app_15" cx="101" cy="160.4" rx="64.8" ry="10.8"/>
+    <ellipse class="contexts_app_16" cx="101" cy="160.3" rx="64.7" ry="10.7"/>
+    <ellipse class="contexts_app_17" cx="101" cy="160.3" rx="64.6" ry="10.7"/>
+    <ellipse class="contexts_app_18" cx="101" cy="160.3" rx="64.5" ry="10.7"/>
+    <ellipse class="contexts_app_18" cx="101" cy="160.3" rx="64.4" ry="10.6"/>
+    <ellipse class="contexts_app_19" cx="101" cy="160.3" rx="64.3" ry="10.6"/>
+    <ellipse class="contexts_app_20" cx="101" cy="160.3" rx="64.1" ry="10.6"/>
+    <ellipse class="contexts_app_21" cx="101" cy="160.3" rx="64" ry="10.5"/>
+    <ellipse class="contexts_app_22" cx="101" cy="160.2" rx="63.9" ry="10.5"/>
+    <ellipse class="contexts_app_23" cx="101" cy="160.2" rx="63.8" ry="10.5"/>
+    <ellipse class="contexts_app_24" cx="101" cy="160.2" rx="63.7" ry="10.4"/>
+    <ellipse class="contexts_app_25" cx="101" cy="160.2" rx="63.6" ry="10.4"/>
+    <ellipse class="contexts_app_26" cx="101" cy="160.2" rx="63.4" ry="10.4"/>
+    <ellipse class="contexts_app_26" cx="101" cy="160.2" rx="63.3" ry="10.3"/>
+    <ellipse class="contexts_app_27" cx="101" cy="160.1" rx="63.2" ry="10.3"/>
+    <ellipse class="contexts_app_27" cx="101" cy="160.1" rx="63.1" ry="10.2"/>
+    <ellipse class="contexts_app_28" cx="101" cy="160.1" rx="63" ry="10.2"/>
+    <ellipse class="contexts_app_29" cx="101" cy="160.1" rx="62.9" ry="10.2"/>
+    <ellipse class="contexts_app_30" cx="101" cy="160.1" rx="62.7" ry="10.1"/>
+    <ellipse class="contexts_app_31" cx="101" cy="160.1" rx="62.6" ry="10.1"/>
+    <ellipse class="contexts_app_32" cx="101" cy="160" rx="62.5" ry="10.1"/>
+    <ellipse class="contexts_app_33" cx="101" cy="160" rx="62.4" ry="10"/>
+    <ellipse class="contexts_app_33" cx="101" cy="160" rx="62.3" ry="10"/>
+    <ellipse class="contexts_app_34" cx="101" cy="160" rx="62.2" ry="10"/>
+    <ellipse class="contexts_app_34" cx="101" cy="160" rx="62" ry="9.9"/>
+    <ellipse class="contexts_app_35" cx="101" cy="160" rx="61.9" ry="9.9"/>
+    <ellipse class="contexts_app_35" cx="101" cy="160" rx="61.8" ry="9.8"/>
+    <ellipse class="contexts_app_36" cx="101" cy="159.9" rx="61.7" ry="9.8"/>
+    <ellipse class="contexts_app_37" cx="101" cy="159.9" rx="61.6" ry="9.8"/>
+    <ellipse class="contexts_app_38" cx="101" cy="159.9" rx="61.5" ry="9.7"/>
+    <ellipse class="contexts_app_39" cx="101" cy="159.9" rx="61.3" ry="9.7"/>
+    <ellipse class="contexts_app_40" cx="101" cy="159.9" rx="61.2" ry="9.7"/>
+    <ellipse class="contexts_app_41" cx="101" cy="159.9" rx="61.1" ry="9.6"/>
+    <ellipse class="contexts_app_41" cx="101" cy="159.8" rx="61" ry="9.6"/>
+    <ellipse class="contexts_app_42" cx="101" cy="159.8" rx="60.9" ry="9.6"/>
+    <ellipse class="contexts_app_42" cx="101" cy="159.8" rx="60.8" ry="9.5"/>
+    <ellipse class="contexts_app_43" cx="101" cy="159.8" rx="60.6" ry="9.5"/>
+    <ellipse class="contexts_app_43" cx="101" cy="159.8" rx="60.5" ry="9.4"/>
+    <ellipse class="contexts_app_44" cx="100.9" cy="159.8" rx="60.4" ry="9.4"/>
+    <ellipse class="contexts_app_45" cx="100.9" cy="159.7" rx="60.3" ry="9.4"/>
+    <ellipse class="contexts_app_46" cx="100.9" cy="159.7" rx="60.2" ry="9.3"/>
+    <ellipse class="contexts_app_47" cx="100.9" cy="159.7" rx="60.1" ry="9.3"/>
+    <ellipse class="contexts_app_48" cx="100.9" cy="159.7" rx="59.9" ry="9.3"/>
+    <ellipse class="contexts_app_49" cx="100.9" cy="159.7" rx="59.8" ry="9.2"/>
+    <ellipse class="contexts_app_50" cx="100.9" cy="159.7" rx="59.7" ry="9.2"/>
+    <ellipse class="contexts_app_51" cx="100.9" cy="159.7" rx="59.6" ry="9.2"/>
+    <ellipse class="contexts_app_51" cx="100.9" cy="159.6" rx="59.5" ry="9.1"/>
+    <ellipse class="contexts_app_52" cx="100.9" cy="159.6" rx="59.4" ry="9.1"/>
+    <ellipse class="contexts_app_53" cx="100.9" cy="159.6" rx="59.2" ry="9"/>
+    <ellipse class="contexts_app_54" cx="100.9" cy="159.6" rx="59.1" ry="9"/>
+    <ellipse class="contexts_app_55" cx="100.9" cy="159.6" rx="59" ry="9"/>
+    <ellipse class="contexts_app_56" cx="100.9" cy="159.6" rx="58.9" ry="8.9"/>
+    <ellipse class="contexts_app_57" cx="100.9" cy="159.5" rx="58.8" ry="8.9"/>
+    <ellipse class="contexts_app_58" cx="100.9" cy="159.5" rx="58.7" ry="8.9"/>
+    <ellipse class="contexts_app_59" cx="100.9" cy="159.5" rx="58.5" ry="8.8"/>
+    <ellipse class="contexts_app_60" cx="100.9" cy="159.5" rx="58.4" ry="8.8"/>
+    <ellipse class="contexts_app_61" cx="100.9" cy="159.5" rx="58.3" ry="8.8"/>
+    <ellipse class="contexts_app_62" cx="100.9" cy="159.5" rx="58.2" ry="8.7"/>
+    <ellipse class="contexts_app_63" cx="100.9" cy="159.4" rx="58.1" ry="8.7"/>
+    <ellipse class="contexts_app_64" cx="100.9" cy="159.4" rx="58" ry="8.6"/>
+    <ellipse class="contexts_app_65" cx="100.9" cy="159.4" rx="57.8" ry="8.6"/>
+    <ellipse class="contexts_app_66" cx="100.9" cy="159.4" rx="57.7" ry="8.6"/>
+    <ellipse class="contexts_app_67" cx="100.9" cy="159.4" rx="57.6" ry="8.5"/>
+    <ellipse class="contexts_app_68" cx="100.9" cy="159.4" rx="57.5" ry="8.5"/>
+    <ellipse class="contexts_app_69" cx="100.9" cy="159.4" rx="57.4" ry="8.5"/>
+    <ellipse class="contexts_app_70" cx="100.9" cy="159.3" rx="57.3" ry="8.4"/>
+    <ellipse class="contexts_app_71" cx="100.9" cy="159.3" rx="57.1" ry="8.4"/>
+    <ellipse class="contexts_app_72" cx="100.9" cy="159.3" rx="57" ry="8.4"/>
+    <ellipse class="contexts_app_73" cx="100.9" cy="159.3" rx="56.9" ry="8.3"/>
+    <ellipse class="contexts_app_74" cx="100.9" cy="159.3" rx="56.8" ry="8.3"/>
+    <ellipse class="contexts_app_75" cx="100.9" cy="159.3" rx="56.7" ry="8.2"/>
+    <ellipse class="contexts_app_76" cx="100.9" cy="159.2" rx="56.6" ry="8.2"/>
+    <ellipse class="contexts_app_77" cx="100.9" cy="159.2" rx="56.4" ry="8.2"/>
+    <ellipse class="contexts_app_78" cx="100.9" cy="159.2" rx="56.3" ry="8.1"/>
+    <ellipse class="contexts_app_79" cx="100.9" cy="159.2" rx="56.2" ry="8.1"/>
+    <ellipse class="contexts_app_80" cx="100.9" cy="159.2" rx="56.1" ry="8.1"/>
+    <ellipse class="contexts_app_81" cx="100.9" cy="159.2" rx="56" ry="8"/>
+    <ellipse class="contexts_app_82" cx="100.9" cy="159.1" rx="55.9" ry="8"/>
+    <ellipse class="contexts_app_83" cx="100.9" cy="159.1" rx="55.7" ry="8"/>
+    <ellipse class="contexts_app_84" cx="100.9" cy="159.1" rx="55.6" ry="7.9"/>
+    <ellipse class="contexts_app_85" cx="100.9" cy="159.1" rx="55.5" ry="7.9"/>
+    <ellipse class="contexts_app_86" cx="100.9" cy="159.1" rx="55.4" ry="7.8"/>
+    <ellipse class="contexts_app_87" cx="100.9" cy="159.1" rx="55.3" ry="7.8"/>
+    <ellipse class="contexts_app_88" cx="100.9" cy="159.1" rx="55.2" ry="7.8"/>
+    <ellipse class="contexts_app_89" cx="100.9" cy="159" rx="55" ry="7.7"/>
+    <ellipse class="contexts_app_90" cx="100.9" cy="159" rx="54.9" ry="7.7"/>
+    <ellipse class="contexts_app_91" cx="100.9" cy="159" rx="54.8" ry="7.7"/>
+    <ellipse class="contexts_app_92" cx="100.9" cy="159" rx="54.7" ry="7.6"/>
+    <ellipse class="contexts_app_93" cx="100.9" cy="159" rx="54.6" ry="7.6"/>
+    <ellipse class="contexts_app_94" cx="100.9" cy="159" rx="54.5" ry="7.6"/>
+    <ellipse class="contexts_app_95" cx="100.9" cy="158.9" rx="54.3" ry="7.5"/>
+    <ellipse class="contexts_app_96" cx="100.9" cy="158.9" rx="54.2" ry="7.5"/>
+    <ellipse class="contexts_app_97" cx="100.9" cy="158.9" rx="54.1" ry="7.5"/>
+    <ellipse class="contexts_app_98" cx="100.9" cy="158.9" rx="54" ry="7.4"/>
+    <ellipse class="contexts_app_99" cx="100.9" cy="158.9" rx="53.9" ry="7.4"/>
+    <ellipse class="contexts_app_100" cx="100.8" cy="158.9" rx="53.8" ry="7.3"/>
+    <ellipse class="contexts_app_101" cx="100.8" cy="158.9" rx="53.6" ry="7.3"/>
+    <ellipse class="contexts_app_102" cx="100.8" cy="158.8" rx="53.5" ry="7.3"/>
+    <ellipse class="contexts_app_103" cx="100.8" cy="158.8" rx="53.4" ry="7.2"/>
+    <ellipse class="contexts_app_104" cx="100.8" cy="158.8" rx="53.3" ry="7.2"/>
+    <ellipse class="contexts_app_105" cx="100.8" cy="158.8" rx="53.2" ry="7.2"/>
+    <ellipse class="contexts_app_106" cx="100.8" cy="158.8" rx="53.1" ry="7.1"/>
+    <ellipse class="contexts_app_107" cx="100.8" cy="158.8" rx="52.9" ry="7.1"/>
+    <ellipse class="contexts_app_108" cx="100.8" cy="158.7" rx="52.8" ry="7.1"/>
+    <ellipse class="contexts_app_109" cx="100.8" cy="158.7" rx="52.7" ry="7"/>
+    <ellipse class="contexts_app_110" cx="100.8" cy="158.7" rx="52.6" ry="7"/>
+    <ellipse class="contexts_app_111" cx="100.8" cy="158.7" rx="52.5" ry="6.9"/>
+    <ellipse class="contexts_app_112" cx="100.8" cy="158.7" rx="52.4" ry="6.9"/>
+    <ellipse class="contexts_app_113" cx="100.8" cy="158.7" rx="52.2" ry="6.9"/>
+    <ellipse class="contexts_app_114" cx="100.8" cy="158.6" rx="52.1" ry="6.8"/>
+    <ellipse class="contexts_app_115" cx="100.8" cy="158.6" rx="52" ry="6.8"/>
+    <ellipse class="contexts_app_116" cx="100.8" cy="158.6" rx="51.9" ry="6.8"/>
+    <ellipse class="contexts_app_117" cx="100.8" cy="158.6" rx="51.8" ry="6.7"/>
+    <ellipse class="contexts_app_118" cx="100.8" cy="158.6" rx="51.7" ry="6.7"/>
+    <ellipse class="contexts_app_119" cx="100.8" cy="158.6" rx="51.6" ry="6.7"/>
+    <ellipse class="contexts_app_120" cx="100.8" cy="158.6" rx="51.4" ry="6.6"/>
+    <ellipse class="contexts_app_121" cx="100.8" cy="158.5" rx="51.3" ry="6.6"/>
+    <ellipse class="contexts_app_122" cx="100.8" cy="158.5" rx="51.2" ry="6.5"/>
+    <ellipse class="contexts_app_123" cx="100.8" cy="158.5" rx="51.1" ry="6.5"/>
+    <ellipse class="contexts_app_124" cx="100.8" cy="158.5" rx="51" ry="6.5"/>
+    <ellipse class="contexts_app_125" cx="100.8" cy="158.5" rx="50.9" ry="6.4"/>
+    <ellipse class="contexts_app_126" cx="100.8" cy="158.5" rx="50.7" ry="6.4"/>
+    <ellipse class="contexts_app_127" cx="100.8" cy="158.4" rx="50.6" ry="6.4"/>
+    <ellipse class="contexts_app_128" cx="100.8" cy="158.4" rx="50.5" ry="6.3"/>
+    <ellipse class="contexts_app_129" cx="100.8" cy="158.4" rx="50.4" ry="6.3"/>
+    <ellipse class="contexts_app_130" cx="100.8" cy="158.4" rx="50.3" ry="6.3"/>
+    <ellipse class="contexts_app_131" cx="100.8" cy="158.4" rx="50.2" ry="6.2"/>
+    <ellipse class="contexts_app_132" cx="100.8" cy="158.4" rx="50" ry="6.2"/>
+    <ellipse class="contexts_app_133" cx="100.8" cy="158.3" rx="49.9" ry="6.1"/>
+    <ellipse class="contexts_app_134" cx="100.8" cy="158.3" rx="49.8" ry="6.1"/>
+    <ellipse class="contexts_app_135" cx="100.8" cy="158.3" rx="49.7" ry="6.1"/>
+    <ellipse class="contexts_app_136" cx="100.8" cy="158.3" rx="49.6" ry="6"/>
+    <ellipse class="contexts_app_137" cx="100.8" cy="158.3" rx="49.5" ry="6"/>
+    <ellipse class="contexts_app_138" cx="100.8" cy="158.3" rx="49.3" ry="6"/>
+    <ellipse class="contexts_app_139" cx="100.8" cy="158.3" rx="49.2" ry="5.9"/>
+    <ellipse class="contexts_app_140" cx="100.8" cy="158.2" rx="49.1" ry="5.9"/>
+    <ellipse class="contexts_app_141" cx="100.8" cy="158.2" rx="49" ry="5.9"/>
+    <ellipse class="contexts_app_142" cx="100.8" cy="158.2" rx="48.9" ry="5.8"/>
+    <ellipse class="contexts_app_143" cx="100.8" cy="158.2" rx="48.8" ry="5.8"/>
+    <ellipse class="contexts_app_143" cx="100.8" cy="158.2" rx="48.6" ry="5.7"/>
+    <ellipse class="contexts_app_144" cx="100.8" cy="158.2" rx="48.5" ry="5.7"/>
+    <ellipse class="contexts_app_145" cx="100.8" cy="158.1" rx="48.4" ry="5.7"/>
+    <ellipse class="contexts_app_146" cx="100.8" cy="158.1" rx="48.3" ry="5.6"/>
+    <ellipse class="contexts_app_147" cx="100.8" cy="158.1" rx="48.2" ry="5.6"/>
+    <ellipse class="contexts_app_148" cx="100.8" cy="158.1" rx="48.1" ry="5.6"/>
+    <ellipse class="contexts_app_149" cx="100.8" cy="158.1" rx="47.9" ry="5.5"/>
+    <ellipse class="contexts_app_150" cx="100.8" cy="158.1" rx="47.8" ry="5.5"/>
+    <ellipse class="contexts_app_151" cx="100.8" cy="158" rx="47.7" ry="5.5"/>
+    <ellipse class="contexts_app_151" cx="100.8" cy="158" rx="47.6" ry="5.4"/>
+    <ellipse class="contexts_app_152" cx="100.8" cy="158" rx="47.5" ry="5.4"/>
+    <ellipse class="contexts_app_152" cx="100.8" cy="158" rx="47.4" ry="5.3"/>
+    <ellipse class="contexts_app_153" cx="100.8" cy="158" rx="47.2" ry="5.3"/>
+    <ellipse class="contexts_app_154" cx="100.7" cy="158" rx="47.1" ry="5.3"/>
+    <ellipse class="contexts_app_155" cx="100.7" cy="158" rx="47" ry="5.2"/>
+    <ellipse class="contexts_app_156" cx="100.7" cy="157.9" rx="46.9" ry="5.2"/>
+    <ellipse class="contexts_app_157" cx="100.7" cy="157.9" rx="46.8" ry="5.2"/>
+    <ellipse class="contexts_app_158" cx="100.7" cy="157.9" rx="46.7" ry="5.1"/>
+    <ellipse class="contexts_app_159" cx="100.7" cy="157.9" rx="46.5" ry="5.1"/>
+    <ellipse class="contexts_app_160" cx="100.7" cy="157.9" rx="46.4" ry="5.1"/>
+    <ellipse class="contexts_app_160" cx="100.7" cy="157.9" rx="46.3" ry="5"/>
+    <ellipse class="contexts_app_161" cx="100.7" cy="157.8" rx="46.2" ry="5"/>
+    <ellipse class="contexts_app_161" cx="100.7" cy="157.8" rx="46.1" ry="4.9"/>
+    <ellipse class="contexts_app_162" cx="100.7" cy="157.8" rx="46" ry="4.9"/>
+    <ellipse class="contexts_app_162" cx="100.7" cy="157.8" rx="45.8" ry="4.9"/>
+    <ellipse class="contexts_app_163" cx="100.7" cy="157.8" rx="45.7" ry="4.8"/>
+    <ellipse class="contexts_app_164" cx="100.7" cy="157.8" rx="45.6" ry="4.8"/>
+    <ellipse class="contexts_app_165" cx="100.7" cy="157.7" rx="45.5" ry="4.8"/>
+    <ellipse class="contexts_app_166" cx="100.7" cy="157.7" rx="45.4" ry="4.7"/>
+    <ellipse class="contexts_app_167" cx="100.7" cy="157.7" rx="45.3" ry="4.7"/>
+    <ellipse class="contexts_app_168" cx="100.7" cy="157.7" rx="45.1" ry="4.7"/>
+    <ellipse class="contexts_app_168" cx="100.7" cy="157.7" rx="45" ry="4.6"/>
+    <ellipse class="contexts_app_169" cx="100.7" cy="157.7" rx="44.9" ry="4.6"/>
+    <ellipse class="contexts_app_169" cx="100.7" cy="157.7" rx="44.8" ry="4.6"/>
+    <ellipse class="contexts_app_170" cx="100.7" cy="157.6" rx="44.7" ry="4.5"/>
+    <ellipse class="contexts_app_171" cx="100.7" cy="157.6" rx="44.6" ry="4.5"/>
+    <ellipse class="contexts_app_172" cx="100.7" cy="157.6" rx="44.4" ry="4.4"/>
+    <ellipse class="contexts_app_173" cx="100.7" cy="157.6" rx="44.3" ry="4.4"/>
+    <ellipse class="contexts_app_174" cx="100.7" cy="157.6" rx="44.2" ry="4.4"/>
+    <ellipse class="contexts_app_175" cx="100.7" cy="157.6" rx="44.1" ry="4.3"/>
+    <ellipse class="contexts_app_175" cx="100.7" cy="157.5" rx="44" ry="4.3"/>
+    <ellipse class="contexts_app_176" cx="100.7" cy="157.5" rx="43.9" ry="4.3"/>
+    <ellipse class="contexts_app_176" cx="100.7" cy="157.5" rx="43.7" ry="4.2"/>
+    <ellipse class="contexts_app_177" cx="100.7" cy="157.5" rx="43.6" ry="4.2"/>
+    <ellipse class="contexts_app_178" cx="100.7" cy="157.5" rx="43.5" ry="4.2"/>
+    <ellipse class="contexts_app_179" cx="100.7" cy="157.5" rx="43.4" ry="4.1"/>
+    <ellipse class="contexts_app_180" cx="100.7" cy="157.4" rx="43.3" ry="4.1"/>
+    <ellipse class="contexts_app_181" cx="100.7" cy="157.4" rx="43.2" ry="4"/>
+    <ellipse class="contexts_app_182" cx="100.7" cy="157.4" rx="43" ry="4"/>
+    <ellipse class="contexts_app_183" cx="100.7" cy="157.4" rx="42.9" ry="4"/>
+    <ellipse class="contexts_app_184" cx="100.7" cy="157.4" rx="42.8" ry="3.9"/>
+    <ellipse class="contexts_app_184" cx="100.7" cy="157.4" rx="42.7" ry="3.9"/>
+    <ellipse class="contexts_app_185" cx="100.7" cy="157.4" rx="42.6" ry="3.9"/>
+</g>
+  <g>
+	<g>
+
+			<linearGradient id="SVGID_CONTEXTS_APP_01" gradientUnits="userSpaceOnUse" x1="-9925.3379" y1="7305.9351" x2="-9884.2002" y2="7254.1055" gradientTransform="matrix(-1 0 0 1 -9760.3652 -7143.3135)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+        <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+        <stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+    <rect x="117.8" y="133.1" class="contexts_app_186" width="53.2" height="7.1"/>
+    <polygon class="contexts_app_187" points="123.8,123.5 117.8,133.1 171.1,133.1 165.1,123.5 		"/>
+    <rect x="118" y="140.2" class="contexts_app_188" width="52.7" height="0.7"/>
+    <rect x="118.2" y="99.5" class="contexts_app_188" width="52.7" height="0.7"/>
+    <g>
+			<g>
+				<polygon class="contexts_app_189" points="124.5,137.7 124.5,136.7 126.4,136.7 126.4,136.5 124.4,136.5 124.4,137.9 126.4,137.9
+					126.4,137.7 				"/>
+        <polygon class="contexts_app_190" points="124.6,137.5 124.6,137 126.4,137 126.4,136.7 124.5,136.7 124.5,137.7 126.4,137.7 126.4,137.5
+									"/>
+        <rect x="124.6" y="137" class="contexts_app_191" width="1.8" height="0.5"/>
+			</g>
+      <g>
+				<polygon class="contexts_app_189" points="129.2,136.7 129.2,137.6 127.3,137.6 127.3,137.9 129.3,137.9 129.3,136.5 127.3,136.5
+					127.3,136.7 				"/>
+        <polygon class="contexts_app_190" points="129,136.9 129,137.4 127.3,137.4 127.3,137.6 129.2,137.6 129.2,136.7 127.3,136.7 127.3,136.9
+									"/>
+        <rect x="127.3" y="136.9" class="contexts_app_191" width="1.8" height="0.5"/>
+			</g>
+		</g>
+    <g>
+			<g>
+				<polygon class="contexts_app_189" points="130.6,137.7 130.6,136.7 132.6,136.7 132.6,136.5 130.6,136.5 130.6,137.9 132.6,137.9
+					132.6,137.7 				"/>
+        <polygon class="contexts_app_190" points="130.8,137.5 130.8,137 132.6,137 132.6,136.7 130.6,136.7 130.6,137.7 132.6,137.7 132.6,137.5
+									"/>
+        <rect x="130.8" y="137" class="contexts_app_191" width="1.8" height="0.5"/>
+			</g>
+      <g>
+				<polygon class="contexts_app_189" points="135.3,136.7 135.3,137.6 133.4,137.6 133.4,137.9 135.4,137.9 135.4,136.5 133.4,136.5
+					133.4,136.7 				"/>
+        <polygon class="contexts_app_190" points="135.2,136.9 135.2,137.4 133.4,137.4 133.4,137.6 135.3,137.6 135.3,136.7 133.4,136.7
+					133.4,136.9 				"/>
+        <rect x="133.4" y="136.9" class="contexts_app_191" width="1.8" height="0.5"/>
+			</g>
+		</g>
+    <path class="contexts_app_01" d="M162.4,104.5c0-0.9,0-1.8,0-2.7c-2.3-1.2-3.8-1.2-6.2,0c0,0.9,0,1.9,0,2.8c-1.3-0.5-2.3-0.5-3.6-0.1
+			c0-0.9,0-1.8,0-2.7c-2.3-1.2-3.8-1.2-6.2,0c0,0.9,0,1.9,0,2.8c-1.3-0.5-2.3-0.5-3.6-0.1c0-0.9,0-1.8,0-2.7c-2.3-1.2-3.8-1.2-6.2,0
+			c0,0.9,0,1.9,0,2.8c-1.3-0.5-2.3-0.5-3.6-0.1c0-0.9,0-1.8,0-2.7c-2.3-1.2-3.8-1.2-6.2,0c0,0.9,0,1.9,0,2.8c-1.7-0.6-3.1-0.5-5,0.5
+			c0,8.2,0,16.4,0,24.7c2.3,1.2,3.8,1.2,6.2,0c0-0.9,0-1.9,0-2.8c1.3,0.5,2.3,0.5,3.6,0.1c0,0.9,0,1.8,0,2.7c2.3,1.2,3.8,1.2,6.2,0
+			c0-0.9,0-1.9,0-2.8c1.3,0.5,2.3,0.5,3.6,0.1c0,0.9,0,1.8,0,2.7c2.3,1.2,3.8,1.2,6.2,0c0-0.9,0-1.9,0-2.8c1.3,0.5,2.3,0.5,3.6,0.1
+			c0,0.9,0,1.8,0,2.7c2.3,1.2,3.8,1.2,6.2,0c0-0.9,0-1.9,0-2.8c1.3,0.5,2.3,0.5,3.6,0.1c0,0.9,0,1.8,0,2.7c2.3,1.2,3.8,1.2,6.2,0
+			c0-8.2,0-16.4,0-24.7C165.3,104.2,164,104,162.4,104.5z"/>
+    <g>
+
+				<linearGradient id="SVGID_CONTEXTS_APP_39" gradientUnits="userSpaceOnUse" x1="-9954.582" y1="7402.2646" x2="-9945.8574" y2="7402.2646" gradientTransform="matrix(-1 0 0 1 -9824.0322 -7285.293)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+          <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+          <stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+      <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_39);" d="
+				M122,104.6c2.3-1.2,3.8-1.2,6.2,0c0,8.2,0,16.4,0,24.7c-2.3,1.2-3.8,1.2-6.2,0C122,121.1,122,112.9,122,104.6z"/>
+		</g>
+    <g>
+
+				<linearGradient id="SVGID_CONTEXTS_APP_40" gradientUnits="userSpaceOnUse" x1="-9964.334" y1="7402.2646" x2="-9955.6084" y2="7402.2646" gradientTransform="matrix(-1 0 0 1 -9824.0322 -7285.293)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+          <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+          <stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+      <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_40);" d="
+				M131.7,104.6c2.3-1.2,3.8-1.2,6.2,0c0,8.2,0,16.4,0,24.7c-2.3,1.2-3.8,1.2-6.2,0C131.7,121.1,131.7,112.9,131.7,104.6z"/>
+		</g>
+    <g>
+
+				<linearGradient id="SVGID_CONTEXTS_APP_41" gradientUnits="userSpaceOnUse" x1="-9974.0859" y1="7402.2646" x2="-9965.3604" y2="7402.2646" gradientTransform="matrix(-1 0 0 1 -9824.0322 -7285.293)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+          <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+          <stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+      <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_41);" d="
+				M141.5,104.6c2.3-1.2,3.8-1.2,6.2,0c0,8.2,0,16.4,0,24.7c-2.3,1.2-3.8,1.2-6.2,0C141.5,121.1,141.5,112.9,141.5,104.6z"/>
+		</g>
+    <g>
+
+				<linearGradient id="SVGID_CONTEXTS_APP_42" gradientUnits="userSpaceOnUse" x1="-9983.8369" y1="7402.2646" x2="-9975.1123" y2="7402.2646" gradientTransform="matrix(-1 0 0 1 -9824.0322 -7285.293)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+          <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+          <stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+      <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_42);" d="
+				M151.2,104.6c2.3-1.2,3.8-1.2,6.2,0c0,8.2,0,16.4,0,24.7c-2.3,1.2-3.8,1.2-6.2,0C151.2,121.1,151.2,112.9,151.2,104.6z"/>
+		</g>
+    <g>
+
+				<linearGradient id="SVGID_CONTEXTS_APP_43" gradientUnits="userSpaceOnUse" x1="-9993.5889" y1="7402.2646" x2="-9984.8643" y2="7402.2646" gradientTransform="matrix(-1 0 0 1 -9824.0322 -7285.293)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+          <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+          <stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+      <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_43);" d="
+				M161,104.6c2.3-1.2,3.8-1.2,6.2,0c0,8.2,0,16.4,0,24.7c-2.3,1.2-3.8,1.2-6.2,0C161,121.1,161,112.9,161,104.6z"/>
+		</g>
+    <path class="contexts_app_53" d="M161,104.1c0,1,0,2,0,2.9h6.2c0-1,0-2,0-2.9C164.8,102.9,163.4,102.9,161,104.1z"/>
+    <path class="contexts_app_53" d="M151.2,104.1c0,1,0,2,0,2.9h6.2c0-1,0-2,0-2.9C155.1,102.9,153.5,102.9,151.2,104.1z"/>
+    <path class="contexts_app_53" d="M141.5,104.1c0,1,0,2,0,2.9h6.2c0-1,0-2,0-2.9C145.3,102.9,143.8,102.9,141.5,104.1z"/>
+    <path class="contexts_app_53" d="M131.7,104.1c0,1,0,2,0,2.9h6.2c0-1,0-2,0-2.9C135.6,102.9,134.1,102.9,131.7,104.1z"/>
+    <path class="contexts_app_53" d="M122.3,104.1c0,1,0,2,0,2.9h6.2c0-1,0-2,0-2.9C126.2,102.9,124.6,102.9,122.3,104.1z"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_44" gradientUnits="userSpaceOnUse" x1="-9924.4541" y1="7270.7793" x2="-9885.127" y2="7221.2314" gradientTransform="matrix(-1 0 0 1 -9760.3652 -7143.3135)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+
+    <rect x="117.8" y="100.2" style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_44);" width="53.2" height="4.9"/>
+    <polygon class="contexts_app_01" points="124.1,92.2 118.2,99.5 170.9,99.5 165,92.2 		"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_45" gradientUnits="userSpaceOnUse" x1="115.6582" y1="111.5836" x2="173.4668" y2="111.5836" gradientTransform="matrix(1 0 0 -1 0 199.3857)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+
+    <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_45);" points="
+			144.6,76.7 115.7,95.6 115.7,98.9 173.5,98.9 173.4,95.6 		"/>
+    <polygon class="contexts_app_188" points="144.6,78.6 118.6,95.6 170.4,95.6 		"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_46" gradientUnits="userSpaceOnUse" x1="126.3543" y1="124.0217" x2="155.825" y2="91.2765" gradientTransform="matrix(1 0 0 -1 0 199.3857)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+
+    <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_46);" points="
+			144.6,80.6 121.6,95.6 167.5,95.6 		"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_47" gradientUnits="userSpaceOnUse" x1="126.6094" y1="120.8039" x2="234.1572" y2="99.8627" gradientTransform="matrix(1 0 0 -1 0 199.3857)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+
+    <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_47);" points="
+			173.4,95.6 167.4,89.9 144.6,74.1 144.6,76.7 		"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_48" gradientUnits="userSpaceOnUse" x1="115.1102" y1="126.1449" x2="153.347" y2="96.4623" gradientTransform="matrix(1 0 0 -1 0 199.3857)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+
+    <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_48);" points="
+			115.7,95.6 121.8,89.9 144.6,74.1 144.6,76.7 		"/>
+    <g>
+			<g>
+				<path class="contexts_app_202" d="M120.5,136.2c0.6,0,1.1,0.5,1.1,1.1c0,0.6-0.5,1.1-1.1,1.1s-1.1-0.5-1.1-1.1
+					C119.5,136.7,119.9,136.2,120.5,136.2z"/>
+        <path class="contexts_app_01" d="M120.5,136.1c0.6,0,1.1,0.5,1.1,1.1c0,0.6-0.5,1.1-1.1,1.1s-1.1-0.5-1.1-1.1
+					C119.5,136.6,119.9,136.1,120.5,136.1z"/>
+        <path class="contexts_app_202" d="M120.5,136.3c0.5,0,0.9,0.4,0.9,0.9c0,0.5-0.4,0.9-0.9,0.9s-0.9-0.4-0.9-0.9
+					C119.7,136.7,120,136.3,120.5,136.3z"/>
+        <path class="contexts_app_187" d="M120.5,136.4c0.5,0,0.8,0.3,0.8,0.8c0,0.5-0.3,0.6-0.8,0.6s-0.8-0.2-0.8-0.6
+					C119.7,136.7,120.1,136.4,120.5,136.4z"/>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_49" gradientUnits="userSpaceOnUse" x1="120.541" y1="63.0039" x2="120.541" y2="61.737" gradientTransform="matrix(1 0 0 -1 0 199.3857)">
+					<stop  offset="0" style="stop-color:#FFFFFF"/>
+          <stop  offset="1" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_49);" d="
+					M120.5,136.4c0.4,0,0.7,0.3,0.7,0.7s-0.3,0.5-0.7,0.5s-0.7-0.1-0.7-0.5S120.1,136.4,120.5,136.4z"/>
+        <path class="contexts_app_04" d="M120.9,137.8l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C120.9,137.9,120.9,137.9,120.9,137.8z"/>
+        <path class="contexts_app_01" d="M120.9,137.7l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C120.9,137.8,120.9,137.8,120.9,137.7z"/>
+			</g>
+      <g>
+				<path class="contexts_app_202" d="M168.2,136.2c0.6,0,1.1,0.5,1.1,1.1c0,0.6-0.5,1.1-1.1,1.1s-1.1-0.5-1.1-1.1
+					C167.2,136.7,167.7,136.2,168.2,136.2z"/>
+        <path class="contexts_app_01" d="M168.2,136.1c0.6,0,1.1,0.5,1.1,1.1c0,0.6-0.5,1.1-1.1,1.1s-1.1-0.5-1.1-1.1
+					C167.2,136.6,167.7,136.1,168.2,136.1z"/>
+        <path class="contexts_app_202" d="M168.2,136.3c0.5,0,0.9,0.4,0.9,0.9c0,0.5-0.4,0.9-0.9,0.9c-0.5,0-0.9-0.4-0.9-0.9
+					C167.4,136.7,167.7,136.3,168.2,136.3z"/>
+        <path class="contexts_app_187" d="M168.2,136.4c0.5,0,0.8,0.3,0.8,0.8c0,0.5-0.3,0.6-0.8,0.6c-0.5,0-0.8-0.2-0.8-0.6
+					C167.5,136.7,167.8,136.4,168.2,136.4z"/>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_50" gradientUnits="userSpaceOnUse" x1="168.2475" y1="63.0039" x2="168.2475" y2="61.737" gradientTransform="matrix(1 0 0 -1 0 199.3857)">
+					<stop  offset="0" style="stop-color:#FFFFFF"/>
+          <stop  offset="1" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_50);" d="
+					M168.2,136.4c0.4,0,0.7,0.3,0.7,0.7s-0.3,0.5-0.7,0.5s-0.7-0.1-0.7-0.5S167.8,136.4,168.2,136.4z"/>
+        <path class="contexts_app_04" d="M168.6,137.8l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C168.6,137.9,168.6,137.9,168.6,137.8z"/>
+        <path class="contexts_app_01" d="M168.6,137.7l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C168.6,137.8,168.6,137.8,168.6,137.7z"/>
+			</g>
+		</g>
+    <g>
+			<g>
+				<path class="contexts_app_202" d="M120.5,101.7c0.6,0,1.1,0.5,1.1,1.1c0,0.6-0.5,1.1-1.1,1.1s-1.1-0.5-1.1-1.1
+					C119.5,102.2,119.9,101.7,120.5,101.7z"/>
+        <path class="contexts_app_01" d="M120.5,101.6c0.6,0,1.1,0.5,1.1,1.1c0,0.6-0.5,1.1-1.1,1.1s-1.1-0.5-1.1-1.1
+					C119.5,102.1,119.9,101.6,120.5,101.6z"/>
+        <path class="contexts_app_202" d="M120.5,101.8c0.5,0,0.9,0.4,0.9,0.9s-0.4,0.9-0.9,0.9s-0.9-0.4-0.9-0.9S120,101.8,120.5,101.8z"/>
+        <path class="contexts_app_187" d="M120.5,101.9c0.5,0,0.8,0.3,0.8,0.8s-0.3,0.6-0.8,0.6s-0.8-0.2-0.8-0.6
+					C119.7,102.2,120.1,101.9,120.5,101.9z"/>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_51" gradientUnits="userSpaceOnUse" x1="120.541" y1="97.5101" x2="120.541" y2="96.2432" gradientTransform="matrix(1 0 0 -1 0 199.3857)">
+					<stop  offset="0" style="stop-color:#FFFFFF"/>
+          <stop  offset="1" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_51);" d="
+					M120.5,101.9c0.4,0,0.7,0.3,0.7,0.7c0,0.4-0.3,0.5-0.7,0.5s-0.7-0.1-0.7-0.5C119.8,102.2,120.1,101.9,120.5,101.9z"/>
+        <path class="contexts_app_04" d="M120.9,103.3l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C120.9,103.3,120.9,103.3,120.9,103.3z"/>
+        <path class="contexts_app_01" d="M120.9,103.2l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C120.9,103.3,120.9,103.3,120.9,103.2z"/>
+			</g>
+      <g>
+				<path class="contexts_app_202" d="M168.2,101.7c0.6,0,1.1,0.5,1.1,1.1c0,0.6-0.5,1.1-1.1,1.1s-1.1-0.5-1.1-1.1
+					C167.2,102.2,167.7,101.7,168.2,101.7z"/>
+        <path class="contexts_app_01" d="M168.2,101.6c0.6,0,1.1,0.5,1.1,1.1c0,0.6-0.5,1.1-1.1,1.1s-1.1-0.5-1.1-1.1
+					C167.2,102.1,167.7,101.6,168.2,101.6z"/>
+        <path class="contexts_app_202" d="M168.2,101.8c0.5,0,0.9,0.4,0.9,0.9s-0.4,0.9-0.9,0.9c-0.5,0-0.9-0.4-0.9-0.9S167.7,101.8,168.2,101.8z"
+        />
+        <path class="contexts_app_187" d="M168.2,101.9c0.5,0,0.8,0.3,0.8,0.8s-0.3,0.6-0.8,0.6c-0.5,0-0.8-0.2-0.8-0.6
+					C167.5,102.2,167.8,101.9,168.2,101.9z"/>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_52" gradientUnits="userSpaceOnUse" x1="168.2475" y1="97.5101" x2="168.2475" y2="96.2432" gradientTransform="matrix(1 0 0 -1 0 199.3857)">
+					<stop  offset="0" style="stop-color:#FFFFFF"/>
+          <stop  offset="1" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_52);" d="
+					M168.2,101.9c0.4,0,0.7,0.3,0.7,0.7c0,0.4-0.3,0.5-0.7,0.5s-0.7-0.1-0.7-0.5C167.5,102.2,167.8,101.9,168.2,101.9z"/>
+        <path class="contexts_app_04" d="M168.6,103.3l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C168.6,103.3,168.6,103.3,168.6,103.3z"/>
+        <path class="contexts_app_01" d="M168.6,103.2l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C168.6,103.3,168.6,103.3,168.6,103.2z"/>
+			</g>
+      <g>
+				<path class="contexts_app_202" d="M144.5,83.6c0.6,0,1.1,0.5,1.1,1.1c0,0.6-0.5,1.1-1.1,1.1c-0.6,0-1.1-0.5-1.1-1.1
+					C143.5,84.1,143.9,83.6,144.5,83.6z"/>
+        <path class="contexts_app_01" d="M144.5,83.5c0.6,0,1.1,0.5,1.1,1.1s-0.5,1.1-1.1,1.1c-0.6,0-1.1-0.5-1.1-1.1S143.9,83.5,144.5,83.5z"/>
+        <path class="contexts_app_202" d="M144.5,83.7c0.5,0,0.9,0.4,0.9,0.9s-0.4,0.9-0.9,0.9c-0.5,0-0.9-0.4-0.9-0.9S144,83.7,144.5,83.7z"/>
+        <path class="contexts_app_187" d="M144.5,83.8c0.5,0,0.8,0.3,0.8,0.8s-0.3,0.6-0.8,0.6c-0.5,0-0.8-0.2-0.8-0.6
+					C143.7,84.1,144.1,83.8,144.5,83.8z"/>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_53" gradientUnits="userSpaceOnUse" x1="144.5293" y1="115.6084" x2="144.5293" y2="114.3415" gradientTransform="matrix(1 0 0 -1 0 199.3857)">
+					<stop  offset="0" style="stop-color:#FFFFFF"/>
+          <stop  offset="1" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_53);" d="
+					M144.5,83.8c0.4,0,0.7,0.3,0.7,0.7c0,0.4-0.3,0.5-0.7,0.5s-0.7-0.1-0.7-0.5C143.8,84.1,144.1,83.8,144.5,83.8z"/>
+        <path class="contexts_app_04" d="M144.9,85.2l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C144.9,85.2,144.9,85.2,144.9,85.2z"/>
+        <path class="contexts_app_01" d="M144.9,85.1l-0.3-0.3l-0.3,0.3c-0.1,0.1-0.1,0.1-0.1,0l-0.1-0.1c-0.1-0.1-0.1-0.1,0-0.1l0.3-0.3l-0.3-0.3
+					c-0.1-0.1-0.1-0.1,0-0.1l0.1-0.1c0.1-0.1,0.1-0.1,0.1,0l0.3,0.3l0.3-0.3c0.1-0.1,0.1-0.1,0.1,0l0.1,0.1c0.1,0.1,0.1,0.1,0,0.1
+					l-0.3,0.3l0.3,0.3c0.1,0.1,0.1,0.1,0,0.1l-0.1,0.1C144.9,85.2,144.9,85.2,144.9,85.1z"/>
+			</g>
+		</g>
+    <rect x="118.6" y="95.5" class="contexts_app_53" width="51.8" height="0.2"/>
+	</g>
+</g>
+  <g>
+	<g>
+
+			<linearGradient id="SVGID_CONTEXTS_APP_54" gradientUnits="userSpaceOnUse" x1="1181.1428" y1="-178.9503" x2="1092.5524" y2="-290.5643" gradientTransform="matrix(1 0 0 -1 -1073.3394 -125.6544)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+        <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+        <stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+    <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_54);" d="
+			M86.4,76.9H40.5c-5.2,0-9.3,4.2-9.3,9.3v45.9c0,5.2,4.2,9.3,9.3,9.3h45.9c5.2,0,9.3-4.2,9.3-9.3V86.3
+			C95.7,81.1,91.5,76.9,86.4,76.9z"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_55" gradientUnits="userSpaceOnUse" x1="1011.6962" y1="164.39" x2="924.213" y2="54.1709" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+    <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_55);" d="
+			M40.8,141.1h45.3c5.1,0,9.2-4.1,9.2-9.2V86.5c0-5.1-4.1-9.2-9.2-9.2H40.8c-5.1,0-9.2,4.1-9.2,9.2v45.3
+			C31.6,136.9,35.7,141.1,40.8,141.1z"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_56" gradientUnits="userSpaceOnUse" x1="902.9933" y1="40.726" x2="1032.9633" y2="177.8562" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+			<stop  offset="0" style="stop-color:#BCB9BA"/>
+      <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+    <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_56);" d="
+			M45,135.2h36.9c4.2,0,7.5-3.4,7.5-7.5V90.7c0-4.2-3.4-7.5-7.5-7.5H45c-4.2,0-7.5,3.4-7.5,7.5v36.9C37.4,131.8,40.8,135.2,45,135.2
+			z"/>
+    <path class="contexts_app_01" d="M45.7,134.2h35.5c4,0,7.2-3.2,7.2-7.2V91.5c0-4-3.2-7.2-7.2-7.2H45.7c-4,0-7.2,3.2-7.2,7.2v35.5
+			C38.5,130.9,41.7,134.2,45.7,134.2z"/>
+    <path class="contexts_app_04" d="M46.2,133.5h34.5c3.9,0,7-3.1,7-7V92c0-3.9-3.1-7-7-7H46.2c-3.9,0-7,3.1-7,7v34.5
+			C39.2,130.3,42.3,133.5,46.2,133.5z"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_57" gradientUnits="userSpaceOnUse" x1="935.3679" y1="75.3748" x2="995.0368" y2="137.4306" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+			<stop  offset="7.440476e-02" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.38" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.7191" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.9433" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+    <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_57);" d="
+			M46.5,133h33.8c3.8,0,6.9-3.1,6.9-6.9V92.3c0-3.8-3.1-6.9-6.9-6.9H46.5c-3.8,0-6.9,3.1-6.9,6.9v33.8C39.6,129.9,42.7,133,46.5,133
+			z"/>
+    <g>
+			<path class="contexts_app_188" d="M39.5,98.3c-1.2-0.6-2-0.6-3.3,0c0,4.3,0,1.9,0,6.3c1.2,0.6,2,0.6,3.3,0C39.5,100.2,39.5,102.6,39.5,98.3z
+				"/>
+		</g>
+    <g>
+			<g>
+
+					<linearGradient id="SVGID_CONTEXTS_APP_58" gradientUnits="userSpaceOnUse" x1="-10819.7754" y1="7385.8428" x2="-10815.1641" y2="7385.8428" gradientTransform="matrix(1 0 0 1 10855.3545 -7285.293)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+            <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+            <stop  offset="1" style="stop-color:#F5F5F5"/>
+				</linearGradient>
+        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_58);" d="
+					M40.1,97.4c-1.2-0.6-2-0.6-3.3,0c0,4.3,0,1.9,0,6.3c1.2,0.6,2,0.6,3.3,0C40.1,99.3,40.1,101.8,40.1,97.4z"/>
+			</g>
+      <g>
+				<path class="contexts_app_01" d="M36.8,100.9c1.3,0.1,2,0.1,3.3,0c0-0.2,0-0.3,0-0.6c-1.3-0.1-2-0.1-3.3,0C36.8,100.6,36.8,100.7,36.8,100.9
+					z"/>
+			</g>
+		</g>
+    <g>
+			<path class="contexts_app_188" d="M39.5,115.1c-1.2-0.6-2-0.6-3.3,0c0,4.3,0,1.9,0,6.3c1.2,0.6,2,0.6,3.3,0
+				C39.5,117.1,39.5,119.5,39.5,115.1z"/>
+		</g>
+    <g>
+			<g>
+
+					<linearGradient id="SVGID_CONTEXTS_APP_59" gradientUnits="userSpaceOnUse" x1="-10819.7754" y1="7402.6587" x2="-10815.1641" y2="7402.6587" gradientTransform="matrix(1 0 0 1 10855.3545 -7285.293)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+            <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+            <stop  offset="1" style="stop-color:#F5F5F5"/>
+				</linearGradient>
+        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_59);" d="
+					M40.1,114.2c-1.2-0.6-2-0.6-3.3,0c0,4.3,0,1.9,0,6.3c1.2,0.6,2,0.6,3.3,0C40.1,116.2,40.1,118.6,40.1,114.2z"/>
+			</g>
+      <g>
+				<path class="contexts_app_01" d="M36.8,117.7c1.3,0.1,2,0.1,3.3,0c0-0.2,0-0.3,0-0.6c-1.3-0.1-2-0.1-3.3,0C36.8,117.4,36.8,117.5,36.8,117.7
+					z"/>
+			</g>
+		</g>
+    <g>
+			<circle class="contexts_app_202" cx="63.4" cy="110.8" r="17.6"/>
+      <circle class="contexts_app_214" cx="63.4" cy="110.8" r="17.5"/>
+      <circle class="contexts_app_215" cx="63.4" cy="110.8" r="17.5"/>
+      <circle class="contexts_app_216" cx="63.4" cy="110.7" r="17.5"/>
+      <circle class="contexts_app_217" cx="63.4" cy="110.7" r="17.5"/>
+      <circle class="contexts_app_218" cx="63.4" cy="110.7" r="17.5"/>
+      <circle class="contexts_app_219" cx="63.4" cy="110.7" r="17.5"/>
+      <circle class="contexts_app_220" cx="63.4" cy="110.7" r="17.4"/>
+      <circle class="contexts_app_221" cx="63.4" cy="110.7" r="17.4"/>
+      <circle class="contexts_app_222" cx="63.4" cy="110.6" r="17.4"/>
+      <circle class="contexts_app_223" cx="63.4" cy="110.6" r="17.4"/>
+      <circle class="contexts_app_224" cx="63.4" cy="110.6" r="17.4"/>
+      <circle class="contexts_app_225" cx="63.4" cy="110.6" r="17.4"/>
+      <circle class="contexts_app_226" cx="63.4" cy="110.6" r="17.4"/>
+      <circle class="contexts_app_227" cx="63.4" cy="110.6" r="17.3"/>
+      <circle class="contexts_app_228" cx="63.4" cy="110.6" r="17.3"/>
+      <circle class="contexts_app_229" cx="63.4" cy="110.5" r="17.3"/>
+      <circle class="contexts_app_230" cx="63.4" cy="110.5" r="17.3"/>
+      <circle class="contexts_app_231" cx="63.4" cy="110.5" r="17.3"/>
+      <circle class="contexts_app_232" cx="63.4" cy="110.5" r="17.3"/>
+      <circle class="contexts_app_233" cx="63.4" cy="110.5" r="17.2"/>
+      <circle class="contexts_app_234" cx="63.4" cy="110.5" r="17.2"/>
+      <circle class="contexts_app_235" cx="63.4" cy="110.4" r="17.2"/>
+      <circle class="contexts_app_236" cx="63.4" cy="110.4" r="17.2"/>
+      <circle class="contexts_app_237" cx="63.4" cy="110.4" r="17.2"/>
+      <circle class="contexts_app_238" cx="63.4" cy="110.4" r="17.2"/>
+      <circle class="contexts_app_239" cx="63.4" cy="110.4" r="17.1"/>
+      <circle class="contexts_app_240" cx="63.4" cy="110.4" r="17.1"/>
+      <circle class="contexts_app_241" cx="63.4" cy="110.3" r="17.1"/>
+      <circle class="contexts_app_242" cx="63.4" cy="110.3" r="17.1"/>
+      <circle class="contexts_app_243" cx="63.4" cy="110.3" r="17.1"/>
+      <circle class="contexts_app_244" cx="63.4" cy="110.3" r="17.1"/>
+      <circle class="contexts_app_245" cx="63.4" cy="110.3" r="17.1"/>
+      <circle class="contexts_app_246" cx="63.4" cy="110.3" r="17"/>
+      <circle class="contexts_app_247" cx="63.4" cy="110.3" r="17"/>
+      <circle class="contexts_app_248" cx="63.4" cy="110.2" r="17"/>
+      <circle class="contexts_app_249" cx="63.4" cy="110.2" r="17"/>
+      <circle class="contexts_app_250" cx="63.4" cy="110.2" r="17"/>
+      <circle class="contexts_app_251" cx="63.4" cy="110.2" r="17"/>
+      <circle class="contexts_app_252" cx="63.4" cy="110.2" r="16.9"/>
+      <circle class="contexts_app_253" cx="63.4" cy="110.2" r="16.9"/>
+      <circle class="contexts_app_254" cx="63.4" cy="110.1" r="16.9"/>
+      <circle class="contexts_app_255" cx="63.4" cy="110.1" r="16.9"/>
+      <circle class="contexts_app_256" cx="63.4" cy="110.1" r="16.9"/>
+      <circle class="contexts_app_257" cx="63.4" cy="110.1" r="16.9"/>
+      <circle class="contexts_app_258" cx="63.4" cy="110.1" r="16.8"/>
+      <circle class="contexts_app_259" cx="63.4" cy="110.1" r="16.8"/>
+      <circle class="contexts_app_260" cx="63.4" cy="110" r="16.8"/>
+      <circle class="contexts_app_261" cx="63.4" cy="110" r="16.8"/>
+      <circle class="contexts_app_262" cx="63.4" cy="110" r="16.8"/>
+      <circle class="contexts_app_263" cx="63.4" cy="110" r="16.8"/>
+      <circle class="contexts_app_264" cx="63.4" cy="110" r="16.8"/>
+      <circle class="contexts_app_265" cx="63.4" cy="110" r="16.7"/>
+      <circle class="contexts_app_266" cx="63.4" cy="110" r="16.7"/>
+      <circle class="contexts_app_267" cx="63.4" cy="109.9" r="16.7"/>
+      <circle class="contexts_app_268" cx="63.4" cy="109.9" r="16.7"/>
+      <circle class="contexts_app_269" cx="63.4" cy="109.9" r="16.7"/>
+      <circle class="contexts_app_270" cx="63.4" cy="109.9" r="16.7"/>
+      <circle class="contexts_app_271" cx="63.4" cy="109.9" r="16.6"/>
+      <circle class="contexts_app_272" cx="63.4" cy="109.9" r="16.6"/>
+      <circle class="contexts_app_273" cx="63.4" cy="109.8" r="16.6"/>
+      <circle class="contexts_app_274" cx="63.4" cy="109.8" r="16.6"/>
+      <circle class="contexts_app_275" cx="63.4" cy="109.8" r="16.6"/>
+      <circle class="contexts_app_276" cx="63.4" cy="109.8" r="16.6"/>
+      <circle class="contexts_app_277" cx="63.4" cy="109.8" r="16.5"/>
+      <circle class="contexts_app_278" cx="63.4" cy="109.8" r="16.5"/>
+      <circle class="contexts_app_279" cx="63.4" cy="109.7" r="16.5"/>
+      <circle class="contexts_app_280" cx="63.4" cy="109.7" r="16.5"/>
+      <circle class="contexts_app_281" cx="63.4" cy="109.7" r="16.5"/>
+      <circle class="contexts_app_282" cx="63.4" cy="109.7" r="16.5"/>
+      <circle class="contexts_app_283" cx="63.4" cy="109.7" r="16.5"/>
+      <circle class="contexts_app_284" cx="63.4" cy="109.7" r="16.4"/>
+      <circle class="contexts_app_285" cx="63.4" cy="109.7" r="16.4"/>
+      <circle class="contexts_app_286" cx="63.4" cy="109.6" r="16.4"/>
+      <circle class="contexts_app_287" cx="63.4" cy="109.6" r="16.4"/>
+      <circle class="contexts_app_288" cx="63.4" cy="109.6" r="16.4"/>
+      <circle class="contexts_app_289" cx="63.4" cy="109.6" r="16.4"/>
+      <circle class="contexts_app_290" cx="63.4" cy="109.6" r="16.3"/>
+      <circle class="contexts_app_291" cx="63.4" cy="109.6" r="16.3"/>
+      <circle class="contexts_app_292" cx="63.4" cy="109.5" r="16.3"/>
+      <circle class="contexts_app_293" cx="63.4" cy="109.5" r="16.3"/>
+      <circle class="contexts_app_294" cx="63.4" cy="109.5" r="16.3"/>
+      <circle class="contexts_app_295" cx="63.4" cy="109.5" r="16.3"/>
+      <circle class="contexts_app_296" cx="63.4" cy="109.5" r="16.2"/>
+      <circle class="contexts_app_297" cx="63.4" cy="109.5" r="16.2"/>
+      <circle class="contexts_app_298" cx="63.4" cy="109.4" r="16.2"/>
+      <circle class="contexts_app_299" cx="63.4" cy="109.4" r="16.2"/>
+      <circle class="contexts_app_300" cx="63.4" cy="109.4" r="16.2"/>
+      <circle class="contexts_app_301" cx="63.4" cy="109.4" r="16.2"/>
+      <circle class="contexts_app_302" cx="63.4" cy="109.4" r="16.2"/>
+      <circle class="contexts_app_303" cx="63.4" cy="109.4" r="16.1"/>
+      <circle class="contexts_app_304" cx="63.4" cy="109.4" r="16.1"/>
+      <circle class="contexts_app_305" cx="63.4" cy="109.3" r="16.1"/>
+      <circle class="contexts_app_306" cx="63.4" cy="109.3" r="16.1"/>
+      <circle class="contexts_app_307" cx="63.4" cy="109.3" r="16.1"/>
+      <circle class="contexts_app_308" cx="63.4" cy="109.3" r="16.1"/>
+      <circle class="contexts_app_309" cx="63.4" cy="109.3" r="16"/>
+      <circle class="contexts_app_310" cx="63.4" cy="109.3" r="16"/>
+      <circle class="contexts_app_311" cx="63.4" cy="109.2" r="16"/>
+      <circle class="contexts_app_312" cx="63.4" cy="109.2" r="16"/>
+      <circle class="contexts_app_313" cx="63.4" cy="109.2" r="16"/>
+      <circle class="contexts_app_314" cx="63.4" cy="109.2" r="16"/>
+      <circle class="contexts_app_315" cx="63.4" cy="109.2" r="16"/>
+      <circle class="contexts_app_316" cx="63.4" cy="109.2" r="15.9"/>
+      <circle class="contexts_app_317" cx="63.4" cy="109.1" r="15.9"/>
+      <circle class="contexts_app_318" cx="63.4" cy="109.1" r="15.9"/>
+      <circle class="contexts_app_319" cx="63.4" cy="109.1" r="15.9"/>
+      <circle class="contexts_app_320" cx="63.4" cy="109.1" r="15.9"/>
+      <circle class="contexts_app_321" cx="63.4" cy="109.1" r="15.9"/>
+      <circle class="contexts_app_322" cx="63.4" cy="109.1" r="15.8"/>
+      <circle class="contexts_app_323" cx="63.4" cy="109.1" r="15.8"/>
+      <circle class="contexts_app_324" cx="63.4" cy="109" r="15.8"/>
+      <circle class="contexts_app_325" cx="63.4" cy="109" r="15.8"/>
+      <circle class="contexts_app_326" cx="63.4" cy="109" r="15.8"/>
+      <circle class="contexts_app_187" cx="63.4" cy="109" r="15.8"/>
+		</g>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_60" gradientUnits="userSpaceOnUse" x1="955.3134" y1="93.1118" x2="996.8254" y2="141.7321" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+      <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+      <stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+
+    <circle style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_60);" cx="63.4" cy="107.8" r="15.2"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_61" gradientUnits="userSpaceOnUse" x1="967.8845" y1="85.4283" x2="967.8845" y2="118.2918" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+			<stop  offset="0" style="stop-color:#BCB9BA"/>
+      <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+    <circle style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_61);" cx="63.4" cy="107.8" r="13.6"/>
+    <circle class="contexts_app_01" cx="63.4" cy="107.8" r="13.2"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_62" gradientUnits="userSpaceOnUse" x1="967.8845" y1="83.8005" x2="967.8845" y2="174.5219" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+			<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+      <stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+    <circle style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_62);" cx="63.4" cy="107.8" r="12.8"/>
+
+    <linearGradient id="SVGID_CONTEXTS_APP_63" gradientUnits="userSpaceOnUse" x1="967.8845" y1="83.8005" x2="967.8845" y2="174.5219" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+			<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+      <stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+    <circle style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_63);" cx="63.4" cy="107.8" r="12.8"/>
+    <g>
+			<path d="M71.1,97.7C71,97.9,71,98,71,98.1c0,0.1,0.1,0.3,0.2,0.4c0.1,0.1,0.3,0.2,0.4,0.3c0.1,0.1,0.2,0.1,0.4,0.1
+				c0.2,0,0.3-0.1,0.4-0.2c0.1-0.1,0.1-0.2,0.1-0.4c0-0.1-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.4-0.4c-0.1-0.1-0.2-0.1-0.4-0.1
+				C71.3,97.6,71.2,97.6,71.1,97.7z M71.8,98.7L71.8,98.7L71.8,98.7L71.8,98.7z"/>
+      <path d="M73.4,99.4c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.3,0.3,0.4c0.2,0.2,0.1,0.6-0.1,0.7c-0.1,0.1-0.2,0.1-0.3,0.1
+				c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.3-0.3-0.4c-0.1-0.1-0.1-0.3-0.1-0.4c0-0.1,0.1-0.3,0.2-0.4
+				C73.1,99.5,73.3,99.4,73.4,99.4z"/>
+      <path d="M73.2,115c-0.2,0.2-0.1,0.6,0.1,0.7c0.1,0.1,0.2,0.1,0.3,0.1c0.2,0,0.3-0.1,0.4-0.2c0.1-0.1,0.2-0.3,0.3-0.5
+				c0.2-0.2,0.1-0.6-0.1-0.7c-0.2-0.2-0.6-0.1-0.7,0.1C73.4,114.7,73.3,114.9,73.2,115z M73.5,115.6L73.5,115.6L73.5,115.6
+				L73.5,115.6z"/>
+      <path d="M71.9,116.5c0.1-0.1,0.3-0.2,0.4-0.2c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4
+				c-0.1,0.1-0.3,0.3-0.4,0.4c-0.1,0.1-0.2,0.1-0.4,0.1c-0.2,0-0.3-0.1-0.4-0.2c-0.2-0.2-0.2-0.6,0-0.8
+				C71.6,116.8,71.8,116.6,71.9,116.5z"/>
+      <path d="M75.6,107.8c0-0.2,0-0.3,0-0.5c0-0.3,0.2-0.5,0.5-0.6c0.1,0,0.3,0,0.4,0.1c0.1,0.1,0.2,0.2,0.2,0.4c0,0.2,0,0.4,0,0.6
+				c0,0.3-0.2,0.5-0.5,0.5C75.8,108.4,75.6,108.1,75.6,107.8z"/>
+      <path d="M52.1,102.2c-0.1-0.1-0.3-0.1-0.4,0c-0.1,0.1-0.2,0.2-0.3,0.3c-0.1,0.2-0.1,0.3-0.2,0.5c-0.1,0.3,0,0.6,0.3,0.7
+				c0.1,0,0.1,0,0.2,0c0.2,0,0.4-0.1,0.5-0.3c0.1-0.2,0.1-0.3,0.2-0.5C52.5,102.6,52.4,102.3,52.1,102.2z M51.6,103.4L51.6,103.4
+				L51.6,103.4L51.6,103.4z"/>
+      <path d="M51.2,104.7c-0.3-0.1-0.6,0.1-0.6,0.4c0,0.2-0.1,0.4-0.1,0.5c0,0.1,0,0.3,0.1,0.4c0.1,0.1,0.2,0.2,0.3,0.2l0.1,0
+				c0.3,0,0.5-0.2,0.5-0.4c0-0.2,0.1-0.3,0.1-0.5c0-0.1,0-0.3-0.1-0.4C51.4,104.8,51.3,104.7,51.2,104.7z M51,106L51,106L51,106
+				L51,106z"/>
+      <path d="M53.3,101.1c-0.1,0.1-0.3,0.2-0.4,0.2c-0.1,0-0.2,0-0.3-0.1c-0.2-0.2-0.3-0.5-0.1-0.7c0.1-0.2,0.2-0.3,0.3-0.5
+				c0.1-0.1,0.2-0.2,0.4-0.2c0.1,0,0.3,0,0.4,0.1c0.1,0.1,0.2,0.2,0.2,0.3c0,0.1,0,0.3-0.1,0.4C53.5,100.8,53.4,101,53.3,101.1z"/>
+      <path d="M69.5,118.4c0.1-0.1,0.3-0.2,0.4-0.3c0.1-0.1,0.3-0.1,0.4-0.1c0.1,0,0.3,0.1,0.3,0.2c0.1,0.1,0.1,0.3,0.1,0.4
+				c0,0.1-0.1,0.3-0.2,0.3c-0.2,0.1-0.3,0.2-0.5,0.3c-0.1,0-0.2,0.1-0.3,0.1c-0.2,0-0.4-0.1-0.5-0.3c-0.1-0.1-0.1-0.3-0.1-0.4
+				C69.3,118.5,69.3,118.4,69.5,118.4z"/>
+      <path d="M75.3,110.4c0-0.2,0.1-0.3,0.1-0.5c0-0.1,0.1-0.3,0.2-0.3c0.1-0.1,0.3-0.1,0.4-0.1c0.1,0,0.3,0.1,0.3,0.2
+				c0.1,0.1,0.1,0.3,0.1,0.4c0,0.2-0.1,0.4-0.1,0.5c-0.1,0.2-0.3,0.4-0.5,0.4c0,0-0.1,0-0.1,0C75.4,111,75.2,110.7,75.3,110.4z"/>
+      <path d="M75.2,103.2c-0.1,0-0.1,0-0.2,0c-0.2,0-0.4-0.1-0.5-0.3c-0.1-0.2-0.1-0.3-0.2-0.5c-0.1-0.1-0.1-0.3,0-0.4
+				s0.1-0.2,0.3-0.3c0.1-0.1,0.3-0.1,0.4,0c0.1,0,0.2,0.1,0.3,0.3c0.1,0.2,0.2,0.3,0.2,0.5c0.1,0.1,0.1,0.3,0,0.4
+				C75.5,103,75.4,103.1,75.2,103.2z"/>
+      <path d="M74.5,112.8c0.1-0.2,0.1-0.3,0.2-0.5c0.1-0.1,0.2-0.2,0.3-0.3c0.1-0.1,0.3-0.1,0.4,0c0.3,0.1,0.4,0.4,0.3,0.7
+				c-0.1,0.2-0.1,0.3-0.2,0.5c-0.1,0.2-0.3,0.3-0.5,0.3c-0.1,0-0.1,0-0.2,0c-0.1-0.1-0.2-0.2-0.3-0.3
+				C74.4,113.1,74.4,112.9,74.5,112.8z"/>
+      <path d="M75.9,105.7c0,0-0.1,0-0.1,0c-0.3,0-0.5-0.2-0.5-0.4c0-0.2-0.1-0.3-0.1-0.5c0-0.1,0-0.3,0.1-0.4c0.1-0.1,0.2-0.2,0.3-0.2
+				c0.1,0,0.3,0,0.4,0.1c0.1,0.1,0.2,0.2,0.2,0.3c0,0.2,0.1,0.4,0.1,0.5C76.4,105.4,76.2,105.7,75.9,105.7z"/>
+      <path d="M69.2,96.1c0.1,0,0.3,0,0.4,0c0.2,0.1,0.3,0.2,0.5,0.3c0.1,0.1,0.2,0.2,0.2,0.3c0,0.1,0,0.3-0.1,0.4
+				c-0.1,0.2-0.3,0.3-0.5,0.3c-0.1,0-0.2,0-0.3-0.1c-0.1-0.1-0.3-0.2-0.4-0.2c-0.3-0.1-0.4-0.5-0.2-0.7C68.9,96.2,69,96.2,69.2,96.1
+				z"/>
+      <path d="M55.3,116.8c0.1,0.1,0.3,0.2,0.4,0.3c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1,0,0.3-0.1,0.4c-0.1,0.1-0.3,0.2-0.4,0.2
+				c-0.1,0-0.2,0-0.3-0.1c-0.1-0.1-0.3-0.2-0.4-0.4c-0.2-0.2-0.2-0.5,0-0.8C54.7,116.6,55.1,116.6,55.3,116.8z"/>
+      <path d="M54.6,98c0.2-0.2,0.6-0.2,0.8,0c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.2,0.4c-0.1,0.1-0.3,0.2-0.4,0.3
+				c-0.1,0.1-0.2,0.1-0.4,0.1c-0.1,0-0.3-0.1-0.4-0.2c-0.2-0.2-0.2-0.5,0-0.8C54.4,98.3,54.5,98.1,54.6,98z"/>
+      <path d="M56.4,96.7c0.2-0.1,0.3-0.2,0.5-0.3c0.1-0.1,0.3-0.1,0.4-0.1c0.1,0,0.3,0.1,0.3,0.2c0.1,0.3,0.1,0.6-0.2,0.7
+				c-0.1,0.1-0.3,0.2-0.4,0.3c-0.1,0.1-0.2,0.1-0.3,0.1c-0.2,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.1-0.3-0.1-0.4S56.3,96.8,56.4,96.7z"/>
+      <path d="M51.4,112.8c-0.1,0.1,0,0.3,0,0.4c0.1,0.2,0.2,0.3,0.2,0.5c0.1,0.2,0.3,0.3,0.5,0.3c0.1,0,0.2,0,0.2-0.1
+				c0.3-0.1,0.4-0.5,0.2-0.7c-0.1-0.2-0.1-0.3-0.2-0.5c-0.1-0.3-0.4-0.4-0.7-0.3C51.5,112.5,51.4,112.6,51.4,112.8z M52.1,113.7
+				L52.1,113.7L52.1,113.7L52.1,113.7z"/>
+      <path d="M57.3,118.3c0.1,0.1,0.3,0.2,0.4,0.2c0.1,0.1,0.2,0.2,0.3,0.3c0,0.1,0,0.3,0,0.4c-0.1,0.2-0.3,0.3-0.5,0.3
+				c-0.1,0-0.2,0-0.2-0.1c-0.2-0.1-0.3-0.2-0.5-0.3c-0.1-0.1-0.2-0.2-0.2-0.3c0-0.1,0-0.3,0.1-0.4C56.8,118.3,57.1,118.2,57.3,118.3
+				z"/>
+      <path d="M50.8,107.3c0.3,0,0.5,0.3,0.5,0.5c0,0.2,0,0.3,0,0.5c0,0.3-0.2,0.5-0.5,0.6l0,0c-0.3,0-0.5-0.2-0.5-0.5
+				c0-0.2,0-0.4,0-0.5l0-0.1C50.2,107.5,50.5,107.3,50.8,107.3z"/>
+      <path d="M50.9,109.9c0.1,0,0.3,0,0.4,0.1c0.1,0.1,0.2,0.2,0.2,0.3c0,0.2,0.1,0.3,0.1,0.5c0,0.1,0,0.3-0.1,0.4
+				c-0.1,0.1-0.2,0.2-0.3,0.2c0,0-0.1,0-0.1,0c-0.2,0-0.5-0.2-0.5-0.4c0-0.2-0.1-0.4-0.1-0.5C50.5,110.3,50.6,110,50.9,109.9z"/>
+      <path d="M52.9,114.8c-0.1,0.1-0.2,0.2-0.2,0.3c0,0.1,0,0.3,0.1,0.4c0.1,0.1,0.2,0.3,0.3,0.4c0.1,0.1,0.3,0.2,0.4,0.2
+				c0.1,0,0.2,0,0.3-0.1c0.2-0.2,0.3-0.5,0.1-0.7c-0.1-0.1-0.2-0.3-0.3-0.4C53.4,114.7,53.1,114.6,52.9,114.8z M53.5,115.9
+				L53.5,115.9L53.5,115.9L53.5,115.9z"/>
+      <path d="M67,95.1c0.2,0,0.4,0.1,0.5,0.2c0.3,0.1,0.4,0.4,0.3,0.7c-0.1,0.2-0.3,0.4-0.5,0.4c-0.1,0-0.1,0-0.2,0
+				c-0.2-0.1-0.3-0.1-0.5-0.1c-0.1,0-0.3-0.1-0.3-0.3c-0.1-0.1-0.1-0.3,0-0.4C66.4,95.2,66.7,95,67,95.1z"/>
+      <path d="M58.9,95.5c0.2-0.1,0.3-0.1,0.5-0.2c0.3-0.1,0.6,0.1,0.7,0.3c0.1,0.3-0.1,0.6-0.3,0.7c-0.2,0.1-0.3,0.1-0.5,0.2
+				c-0.1,0-0.1,0-0.2,0c-0.2,0-0.4-0.1-0.5-0.3c0-0.1,0-0.3,0-0.4C58.6,95.6,58.7,95.5,58.9,95.5z"/>
+      <path d="M64.3,94.7c0.2,0,0.4,0,0.5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.1,0.2,0.1,0.4c0,0.3-0.3,0.5-0.5,0.5l-0.1,0
+				c-0.2,0-0.3,0-0.5,0c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.1-0.2-0.1-0.4C63.7,94.9,64,94.6,64.3,94.7z"/>
+      <path d="M67.1,119.4c0.2-0.1,0.3-0.1,0.5-0.2c0.1,0,0.3,0,0.4,0c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.3,0,0.6-0.3,0.7
+				c-0.2,0.1-0.3,0.1-0.5,0.2c-0.1,0-0.1,0-0.2,0c-0.2,0-0.4-0.1-0.5-0.4C66.7,119.8,66.9,119.5,67.1,119.4z"/>
+      <path d="M64.7,119.9c0.2,0,0.3,0,0.5-0.1c0.1,0,0.3,0,0.4,0.1c0.1,0.1,0.2,0.2,0.2,0.4c0,0.3-0.2,0.6-0.5,0.6
+				c-0.2,0-0.4,0-0.6,0.1l-0.1,0c-0.3,0-0.5-0.2-0.5-0.5c0-0.1,0-0.3,0.1-0.4C64.4,120,64.5,119.9,64.7,119.9z"/>
+      <path d="M59.2,119.4c0.1-0.1,0.3-0.1,0.4,0c0.2,0.1,0.3,0.1,0.5,0.1c0.3,0.1,0.4,0.4,0.4,0.7c-0.1,0.2-0.3,0.4-0.5,0.4
+				c0,0-0.1,0-0.1,0c-0.2-0.1-0.4-0.1-0.5-0.2c-0.3-0.1-0.4-0.4-0.3-0.7C59,119.6,59.1,119.5,59.2,119.4z"/>
+      <path d="M61.5,120.4c0,0.1,0,0.3,0.1,0.4c0.1,0.1,0.2,0.2,0.4,0.2c0.2,0,0.4,0,0.6,0l0,0c0.3,0,0.5-0.2,0.5-0.5
+				c0-0.1,0-0.3-0.1-0.4c-0.1-0.1-0.2-0.2-0.4-0.2c-0.2,0-0.3,0-0.5,0C61.8,119.9,61.6,120.1,61.5,120.4z M62.6,120.7L62.6,120.7
+				L62.6,120.7L62.6,120.7z"/>
+      <path d="M61.5,94.8c0.2,0,0.4,0,0.6-0.1c0.3,0,0.5,0.2,0.6,0.5c0,0.3-0.2,0.6-0.5,0.6c-0.2,0-0.3,0-0.5,0.1l-0.1,0
+				c-0.3,0-0.5-0.2-0.5-0.5C61,95.1,61.2,94.8,61.5,94.8z"/>
+		</g>
+    <g>
+			<path class="contexts_app_331" d="M63.4,93.6c-4.4,0-8.3,1.8-10.5,4.5c1.9-3,5.9-5,10.5-5c4.6,0,8.5,2,10.5,5C71.7,95.4,67.9,93.6,63.4,93.6
+				z"/>
+		</g>
+    <g>
+			<g>
+				<g>
+					<circle class="contexts_app_202" cx="63.4" cy="108.3" r="10.4"/>
+          <circle class="contexts_app_214" cx="63.4" cy="108.2" r="10.4"/>
+          <circle class="contexts_app_215" cx="63.4" cy="108.2" r="10.3"/>
+          <circle class="contexts_app_216" cx="63.4" cy="108.2" r="10.3"/>
+          <circle class="contexts_app_217" cx="63.4" cy="108.2" r="10.3"/>
+          <circle class="contexts_app_218" cx="63.4" cy="108.2" r="10.3"/>
+          <circle class="contexts_app_219" cx="63.4" cy="108.2" r="10.3"/>
+          <circle class="contexts_app_220" cx="63.4" cy="108.2" r="10.3"/>
+          <circle class="contexts_app_221" cx="63.4" cy="108.2" r="10.3"/>
+          <circle class="contexts_app_222" cx="63.4" cy="108.1" r="10.3"/>
+          <circle class="contexts_app_223" cx="63.4" cy="108.1" r="10.2"/>
+          <circle class="contexts_app_224" cx="63.4" cy="108.1" r="10.2"/>
+          <circle class="contexts_app_225" cx="63.4" cy="108.1" r="10.2"/>
+          <circle class="contexts_app_226" cx="63.4" cy="108.1" r="10.2"/>
+          <circle class="contexts_app_227" cx="63.4" cy="108.1" r="10.2"/>
+          <circle class="contexts_app_228" cx="63.4" cy="108.1" r="10.2"/>
+          <circle class="contexts_app_332" cx="63.4" cy="108" r="10.2"/>
+          <circle class="contexts_app_230" cx="63.4" cy="108" r="10.1"/>
+          <circle class="contexts_app_231" cx="63.4" cy="108" r="10.1"/>
+          <circle class="contexts_app_232" cx="63.4" cy="108" r="10.1"/>
+          <circle class="contexts_app_233" cx="63.4" cy="108" r="10.1"/>
+          <circle class="contexts_app_234" cx="63.4" cy="108" r="10.1"/>
+          <circle class="contexts_app_235" cx="63.4" cy="108" r="10.1"/>
+          <circle class="contexts_app_236" cx="63.4" cy="108" r="10.1"/>
+          <circle class="contexts_app_333" cx="63.4" cy="107.9" r="10.1"/>
+          <circle class="contexts_app_334" cx="63.4" cy="107.9" r="10"/>
+          <circle class="contexts_app_335" cx="63.4" cy="107.9" r="10"/>
+          <circle class="contexts_app_336" cx="63.4" cy="107.9" r="10"/>
+          <circle class="contexts_app_337" cx="63.4" cy="107.9" r="10"/>
+          <circle class="contexts_app_242" cx="63.4" cy="107.9" r="10"/>
+          <circle class="contexts_app_243" cx="63.4" cy="107.9" r="10"/>
+          <circle class="contexts_app_244" cx="63.4" cy="107.9" r="10"/>
+          <circle class="contexts_app_245" cx="63.4" cy="107.8" r="9.9"/>
+          <circle class="contexts_app_246" cx="63.4" cy="107.8" r="9.9"/>
+          <circle class="contexts_app_247" cx="63.4" cy="107.8" r="9.9"/>
+          <circle class="contexts_app_248" cx="63.4" cy="107.8" r="9.9"/>
+          <circle class="contexts_app_249" cx="63.4" cy="107.8" r="9.9"/>
+          <circle class="contexts_app_250" cx="63.4" cy="107.8" r="9.9"/>
+          <circle class="contexts_app_251" cx="63.4" cy="107.8" r="9.9"/>
+          <circle class="contexts_app_252" cx="63.4" cy="107.7" r="9.9"/>
+          <circle class="contexts_app_338" cx="63.4" cy="107.7" r="9.8"/>
+          <circle class="contexts_app_339" cx="63.4" cy="107.7" r="9.8"/>
+          <circle class="contexts_app_340" cx="63.4" cy="107.7" r="9.8"/>
+          <circle class="contexts_app_341" cx="63.4" cy="107.7" r="9.8"/>
+          <circle class="contexts_app_342" cx="63.4" cy="107.7" r="9.8"/>
+          <circle class="contexts_app_343" cx="63.4" cy="107.7" r="9.8"/>
+          <circle class="contexts_app_344" cx="63.4" cy="107.7" r="9.8"/>
+          <circle class="contexts_app_345" cx="63.4" cy="107.6" r="9.7"/>
+          <circle class="contexts_app_346" cx="63.4" cy="107.6" r="9.7"/>
+          <circle class="contexts_app_347" cx="63.4" cy="107.6" r="9.7"/>
+          <circle class="contexts_app_348" cx="63.4" cy="107.6" r="9.7"/>
+          <circle class="contexts_app_264" cx="63.4" cy="107.6" r="9.7"/>
+          <circle class="contexts_app_265" cx="63.4" cy="107.6" r="9.7"/>
+          <circle class="contexts_app_266" cx="63.4" cy="107.6" r="9.7"/>
+          <circle class="contexts_app_267" cx="63.4" cy="107.5" r="9.7"/>
+          <circle class="contexts_app_268" cx="63.4" cy="107.5" r="9.6"/>
+          <circle class="contexts_app_269" cx="63.4" cy="107.5" r="9.6"/>
+          <circle class="contexts_app_270" cx="63.4" cy="107.5" r="9.6"/>
+          <circle class="contexts_app_271" cx="63.4" cy="107.5" r="9.6"/>
+          <circle class="contexts_app_272" cx="63.4" cy="107.5" r="9.6"/>
+          <circle class="contexts_app_273" cx="63.4" cy="107.5" r="9.6"/>
+          <circle class="contexts_app_274" cx="63.4" cy="107.5" r="9.6"/>
+          <circle class="contexts_app_275" cx="63.4" cy="107.4" r="9.6"/>
+          <circle class="contexts_app_276" cx="63.4" cy="107.4" r="9.5"/>
+          <circle class="contexts_app_277" cx="63.4" cy="107.4" r="9.5"/>
+          <circle class="contexts_app_278" cx="63.4" cy="107.4" r="9.5"/>
+          <circle class="contexts_app_279" cx="63.4" cy="107.4" r="9.5"/>
+          <circle class="contexts_app_280" cx="63.4" cy="107.4" r="9.5"/>
+          <circle class="contexts_app_281" cx="63.4" cy="107.4" r="9.5"/>
+          <circle class="contexts_app_282" cx="63.4" cy="107.3" r="9.5"/>
+          <circle class="contexts_app_349" cx="63.4" cy="107.3" r="9.4"/>
+          <circle class="contexts_app_350" cx="63.4" cy="107.3" r="9.4"/>
+          <circle class="contexts_app_351" cx="63.4" cy="107.3" r="9.4"/>
+          <circle class="contexts_app_352" cx="63.4" cy="107.3" r="9.4"/>
+          <circle class="contexts_app_353" cx="63.4" cy="107.3" r="9.4"/>
+          <circle class="contexts_app_354" cx="63.4" cy="107.3" r="9.4"/>
+          <circle class="contexts_app_355" cx="63.4" cy="107.3" r="9.4"/>
+          <circle class="contexts_app_356" cx="63.4" cy="107.2" r="9.4"/>
+          <circle class="contexts_app_357" cx="63.4" cy="107.2" r="9.3"/>
+          <circle class="contexts_app_358" cx="63.4" cy="107.2" r="9.3"/>
+          <circle class="contexts_app_188" cx="63.4" cy="107.2" r="9.3"/>
+				</g>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_64" gradientUnits="userSpaceOnUse" x1="960.4574" y1="97.8194" x2="984.9831" y2="126.5447" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.21" style="stop-color:#9B9A9B"/>
+          <stop  offset="0.46" style="stop-color:#F5F5F5"/>
+          <stop  offset="0.74" style="stop-color:#BCB9BA"/>
+          <stop  offset="1" style="stop-color:#F5F5F5"/>
+				</linearGradient>
+
+        <circle style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_64);" cx="63.4" cy="106.5" r="9"/>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_65" gradientUnits="userSpaceOnUse" x1="967.8845" y1="93.2799" x2="967.8845" y2="112.696" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+					<stop  offset="0" style="stop-color:#BCB9BA"/>
+          <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+				</linearGradient>
+
+        <circle style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_65);" cx="63.4" cy="106.5" r="8"/>
+        <circle class="contexts_app_01" cx="63.4" cy="106.5" r="7.8"/>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_66" gradientUnits="userSpaceOnUse" x1="967.8845" y1="92.3182" x2="967.8845" y2="145.9171" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+					<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+          <stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+				</linearGradient>
+
+        <circle style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_66);" cx="63.4" cy="106.5" r="7.6"/>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_67" gradientUnits="userSpaceOnUse" x1="967.8845" y1="92.3182" x2="967.8845" y2="145.9171" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+					<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+          <stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+				</linearGradient>
+
+        <circle style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_67);" cx="63.4" cy="106.5" r="7.6"/>
+        <g>
+					<path class="contexts_app_331" d="M63.4,98.1c-2.6,0-4.9,1.1-6.2,2.7c1.1-1.8,3.5-3,6.2-3c2.7,0,5,1.2,6.2,3C68.3,99.2,66,98.1,63.4,98.1z
+						"/>
+				</g>
+			</g>
+
+      <linearGradient id="SVGID_CONTEXTS_APP_68" gradientUnits="userSpaceOnUse" x1="967.8845" y1="105.6666" x2="967.8845" y2="98.2603" gradientTransform="matrix(-1 0 0 1 1031.3219 0)">
+				<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="2.521605e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.106" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.1858" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.2632" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.3373" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.4045" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.5096" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6721" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.8708" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+			</linearGradient>
+      <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_68);" d="
+				M63.4,104.8L63.4,104.8c0.4,0,0.7-0.3,0.7-0.7V99h-1.4v5.1C62.8,104.5,63.1,104.8,63.4,104.8z"/>
+		</g>
+	</g>
+    <g>
+		<path d="M66.6,83.2H65v9.5c0.5,0.1,1.1,0.1,1.6,0.2V83.2z"/>
+      <path d="M65,134.2h1.6v-11.4c-0.5,0.1-1,0.2-1.6,0.2V134.2z"/>
+      <path class="contexts_app_185" d="M65,92.7V123c0.5-0.1,1.1-0.1,1.6-0.2V92.9C66,92.8,65.5,92.8,65,92.7z"/>
+      <path class="contexts_app_364" d="M65,92.7V123c0.5-0.1,1.1-0.1,1.6-0.2V92.9C66,92.8,65.5,92.8,65,92.7z"/>
+	</g>
+    <rect x="65" y="76.9" class="contexts_app_364" width="1.6" height="6.3"/>
+    <rect x="65" y="134.2" class="contexts_app_364" width="1.6" height="7.3"/>
+    <g>
+		<g>
+
+				<linearGradient id="SVGID_CONTEXTS_APP_69" gradientUnits="userSpaceOnUse" x1="139.1646" y1="182.2912" x2="99.1834" y2="98.814">
+				<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+          <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+          <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+          <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+          <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+          <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+			</linearGradient>
+      <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_69);" d="
+				M66.3,157.9V62.7c0-1.4,1.2-2.6,2.6-2.6h71.7c1.4,0,2.6,1.2,2.6,2.6v95.2c0,1.4-1.2,2.6-2.6,2.6H68.8
+				C67.4,160.5,66.3,159.4,66.3,157.9z"/>
+
+      <linearGradient id="SVGID_CONTEXTS_APP_70" gradientUnits="userSpaceOnUse" x1="184.5313" y1="214.1883" x2="53.2472" y2="41.0329">
+				<stop  offset="0.2059" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="0.2324" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.3174" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.4012" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4827" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5606" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7003" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.8198" style="stop-color:var(--vitamui-primary-light)"/>
+        <stop  offset="0.9743" style="stop-color:var(--vitamui-primary-100)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+			</linearGradient>
+      <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_70);" d="
+				M67.3,154V63.8c0-1.4,1.1-2.5,2.5-2.5h69.8c1.4,0,2.5,1.1,2.5,2.5V154c0,1.4-1.1,2.5-2.5,2.5H69.8
+				C68.4,156.4,67.3,155.3,67.3,154z"/>
+      <polygon class="contexts_app_367" points="136.3,151.6 69.6,153.4 73.4,65.1 136.3,65.1 			"/>
+
+      <linearGradient id="SVGID_CONTEXTS_APP_71" gradientUnits="userSpaceOnUse" x1="97.0008" y1="96.493" x2="176.6158" y2="192.1455">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_71);" points="
+				137.3,150.3 72.4,148.4 72.4,63.3 137.3,63.3 			"/>
+      <path class="contexts_app_202" d="M87.8,63.3v3.9c0,1,0.8,1.7,1.7,1.7h32.3c1,0,1.7-0.8,1.7-1.7v-3.9H87.8z"/>
+      <g>
+
+					<linearGradient id="SVGID_CONTEXTS_APP_72" gradientUnits="userSpaceOnUse" x1="106.4996" y1="63.7906" x2="94.8692" y2="24.1417">
+					<stop  offset="0" style="stop-color:#000000"/>
+            <stop  offset="8.721441e-02" style="stop-color:#1D1D1D"/>
+            <stop  offset="0.249" style="stop-color:#4D4C4C"/>
+            <stop  offset="0.4103" style="stop-color:#757374"/>
+            <stop  offset="0.5679" style="stop-color:#949293"/>
+            <stop  offset="0.721" style="stop-color:#AAA8A9"/>
+            <stop  offset="0.8674" style="stop-color:#B7B5B6"/>
+            <stop  offset="1" style="stop-color:#BCB9BA"/>
+				</linearGradient>
+        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_72);" d="
+					M109.6,55.9c-0.3-1-0.4-2-0.2-3c0.2-1.2,0.4-2.3,0.4-3c0-2.6-2.1-4.6-4.6-4.6c-2.6,0-4.6,2.1-4.6,4.6c0,0.7,0.1,1.7,0.4,3
+					c0.2,1,0.1,2-0.2,3c-1,3.2-1.6,6.7-1.6,8.3c0,3.3,2.7,3,6,3c3.3,0,6,0.4,6-3C111.2,62.6,110.6,59.1,109.6,55.9z"/>
+
+        <linearGradient id="SVGID_CONTEXTS_APP_73" gradientUnits="userSpaceOnUse" x1="100.8516" y1="45.2842" x2="113.649" y2="58.7331">
+					<stop  offset="0" style="stop-color:#000000"/>
+          <stop  offset="8.721441e-02" style="stop-color:#1D1D1D"/>
+          <stop  offset="0.249" style="stop-color:#4D4C4C"/>
+          <stop  offset="0.4103" style="stop-color:#757374"/>
+          <stop  offset="0.5679" style="stop-color:#949293"/>
+          <stop  offset="0.721" style="stop-color:#AAA8A9"/>
+          <stop  offset="0.8674" style="stop-color:#B7B5B6"/>
+          <stop  offset="1" style="stop-color:#BCB9BA"/>
+				</linearGradient>
+
+        <circle style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_73);" cx="105.2" cy="49.9" r="3.8"/>
+        <circle class="contexts_app_371" cx="105.2" cy="49.9" r="2.9"/>
+			</g>
+
+      <linearGradient id="SVGID_CONTEXTS_APP_74" gradientUnits="userSpaceOnUse" x1="106.3736" y1="69.0866" x2="96.7589" y2="36.3091">
+				<stop  offset="0" style="stop-color:#000000"/>
+        <stop  offset="8.721441e-02" style="stop-color:#1D1D1D"/>
+        <stop  offset="0.249" style="stop-color:#4D4C4C"/>
+        <stop  offset="0.4103" style="stop-color:#757374"/>
+        <stop  offset="0.5679" style="stop-color:#949293"/>
+        <stop  offset="0.721" style="stop-color:#AAA8A9"/>
+        <stop  offset="0.8674" style="stop-color:#B7B5B6"/>
+        <stop  offset="1" style="stop-color:#BCB9BA"/>
+			</linearGradient>
+      <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_74);" d="
+				M120.8,68H88.5c-1,0-1.7-0.8-1.7-1.7v-5.9c0-1,0.8-1.7,1.7-1.7h32.3c1,0,1.7,0.8,1.7,1.7v5.9C122.6,67.3,121.8,68,120.8,68z"/>
+      <polygon class="contexts_app_01" points="100.1,58.6 100.3,57.7 110.1,57.7 110.4,58.6 			"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="84.5" x2="117" y2="84.5"/>
+		</g>
+      <path class="contexts_app_374" d="M123.8,95.8C123.8,95.8,123.8,95.8,123.8,95.8c-12.6-4.3-17.8-5.6-31.3-7.7c0.1,0.1,0.1,0.2,0.2,0.3
+			c0,0,0,0.1,0,0.1c0,0.1,0.1,0.2,0.1,0.3c0,0,0,0.1,0,0.1c0,0.1,0.1,0.3,0.1,0.4c0,0,0,0,0,0c0,0.1,0.1,0.2,0.1,0.4
+			c0,0,0,0.1,0,0.1c0,0.1,0.1,0.2,0.1,0.3c0,0,0,0.1,0,0.1c0,0.1,0.1,0.3,0.1,0.4c0,0,0,0.1,0,0.1c0,0.1,0.1,0.2,0.1,0.3
+			c0,0.1,0,0.1,0,0.2c0,0.1,0,0.2,0.1,0.3c0,0,0,0.1,0,0.1c-8.1,0.8-15.4,3-20.9,5.6v10.9c0.2-0.1,0.4-0.2,0.6-0.3
+			c0.1-0.1,0.3-0.1,0.4-0.2c0.3-0.1,0.6-0.2,0.9-0.3c0.2-0.1,0.3-0.1,0.5-0.2c0.3-0.1,0.6-0.2,0.9-0.3c0.1,0,0.2-0.1,0.3-0.1
+			c0.7-0.2,1.4-0.4,2.1-0.6c0.2,0,0.3-0.1,0.5-0.1c0.3-0.1,0.7-0.2,1-0.3c0.2-0.1,0.4-0.1,0.6-0.2c0.3-0.1,0.7-0.2,1.1-0.3
+			c0.2-0.1,0.4-0.1,0.7-0.2c0.3-0.1,0.7-0.2,1-0.2c0.1,0,0.1,0,0.2,0c0.1,0,0.3-0.1,0.4-0.1c0.8-0.2,1.6-0.3,2.4-0.5
+			c0.1,0,0.3,0,0.4-0.1c0.1,0,0.2,0,0.3-0.1c0.4-0.1,0.7-0.1,1.1-0.2c0.3,0,0.5-0.1,0.8-0.1c0.4-0.1,0.8-0.1,1.2-0.2
+			c0,0,0.1,0,0.1,0c0.3,0,0.5-0.1,0.8-0.1c0.3,0,0.7-0.1,1-0.1c0.1,0,0.2,0,0.3,0c0.3,0,0.6-0.1,0.8-0.1c0.4,0,0.7-0.1,1.1-0.1
+			c0,0.2,0,0.4,0,0.6c0,0,0,0,0,0c0,0,0,0,0,0c0,0.1,0,0.2,0,0.3c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,1-0.1,1.7-0.2,2.1c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0.1,0,0.2,0,0.2c0,0,0,0,0,0c0,0,0,0,0,0l0.1,0.1l1.6,1.4c16-6.9,27.2-10.2,27.2-10.2L123.8,95.8
+			C123.8,95.8,123.8,95.8,123.8,95.8C123.8,95.8,123.8,95.8,123.8,95.8z M94.2,102.4c0,0,0-0.1,0-0.1c0,0,0,0,0,0
+			C94.2,102.4,94.2,102.4,94.2,102.4z"/>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="95.3" x2="117" y2="95.3"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="106.2" x2="117" y2="106.2"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="117.1" x2="117" y2="117.1"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="128" x2="117" y2="128"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="138.8" x2="117" y2="138.8"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="81.7" x2="117" y2="81.7"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="92.6" x2="117" y2="92.6"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="103.4" x2="117" y2="103.4"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="114.3" x2="117" y2="114.3"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="125.2" x2="117" y2="125.2"/>
+		</g>
+      <g>
+			<line class="contexts_app_373" x1="78.2" y1="136.1" x2="117" y2="136.1"/>
+		</g>
+      <g>
+			<path class="contexts_app_190" d="M129.3,135.5c-0.2,0-0.3,0.1-0.4,0.2c-0.9,0.8-1.8,1.6-2.6,2.5c-0.1,0.1-0.2,0.2-0.2,0.3
+				c-0.4-0.5-0.8-0.9-1.2-1.2c-0.1-0.1-0.2-0.2-0.4-0.2c-0.1,0-0.3,0.1-0.4,0.2c-0.1,0.1-0.2,0.2-0.2,0.4c0,0.1,0.1,0.3,0.2,0.4
+				c0.4,0.3,0.8,0.7,1.1,1.1c0.1,0.2,0.2,0.3,0.4,0.5c0.1,0.2,0.2,0.2,0.4,0.3c0.2,0,0.4,0,0.5-0.2c0.8-0.9,1.6-1.8,2.5-2.6
+				c0.2-0.2,0.5-0.5,0.8-0.7c0.1-0.1,0.2-0.3,0.2-0.4c0-0.1-0.1-0.3-0.2-0.4C129.6,135.6,129.5,135.5,129.3,135.5z"/>
+        <path class="contexts_app_190" d="M127.2,132.8c-2.6,0-4.7,2.1-4.7,4.7c0,2.6,2.1,4.7,4.7,4.7c2.6,0,4.7-2.1,4.7-4.7
+				C131.9,134.8,129.8,132.8,127.2,132.8z M127.2,141.4c-2.2,0-3.9-1.8-3.9-3.9s1.8-3.9,3.9-3.9c2.2,0,3.9,1.8,3.9,3.9
+				S129.4,141.4,127.2,141.4z"/>
+		</g>
+      <g>
+			<path class="contexts_app_190" d="M129.3,124.4c-0.2,0-0.3,0.1-0.4,0.2c-0.9,0.8-1.8,1.6-2.6,2.5c-0.1,0.1-0.2,0.2-0.2,0.3
+				c-0.4-0.5-0.8-0.9-1.2-1.2c-0.1-0.1-0.2-0.2-0.4-0.2c-0.1,0-0.3,0.1-0.4,0.2c-0.1,0.1-0.2,0.2-0.2,0.4c0,0.1,0.1,0.3,0.2,0.4
+				c0.4,0.3,0.8,0.7,1.1,1.1c0.1,0.2,0.2,0.3,0.4,0.5c0.1,0.2,0.2,0.2,0.4,0.3c0.2,0,0.4,0,0.5-0.2c0.8-0.9,1.6-1.8,2.5-2.6
+				c0.2-0.2,0.5-0.5,0.8-0.7c0.1-0.1,0.2-0.3,0.2-0.4c0-0.1-0.1-0.3-0.2-0.4C129.6,124.5,129.5,124.4,129.3,124.4z"/>
+        <path class="contexts_app_190" d="M127.2,121.6c-2.6,0-4.7,2.1-4.7,4.7c0,2.6,2.1,4.7,4.7,4.7c2.6,0,4.7-2.1,4.7-4.7
+				C131.9,123.7,129.8,121.6,127.2,121.6z M127.2,130.2c-2.2,0-3.9-1.8-3.9-3.9c0-2.2,1.8-3.9,3.9-3.9c2.2,0,3.9,1.8,3.9,3.9
+				C131.2,128.5,129.4,130.2,127.2,130.2z"/>
+		</g>
+      <g>
+			<path class="contexts_app_190" d="M129.3,91c-0.2,0-0.3,0.1-0.4,0.2c-0.9,0.8-1.8,1.6-2.6,2.5c-0.1,0.1-0.2,0.2-0.2,0.3
+				c-0.4-0.5-0.8-0.9-1.2-1.2c-0.1-0.1-0.2-0.2-0.4-0.2c-0.1,0-0.3,0.1-0.4,0.2c-0.1,0.1-0.2,0.2-0.2,0.4c0,0.1,0.1,0.3,0.2,0.4
+				c0.4,0.3,0.8,0.7,1.1,1.1c0.1,0.2,0.2,0.3,0.4,0.5c0.1,0.2,0.2,0.2,0.4,0.3c0.2,0,0.4,0,0.5-0.2c0.8-0.9,1.6-1.8,2.5-2.6
+				c0.2-0.2,0.5-0.5,0.8-0.7c0.1-0.1,0.2-0.3,0.2-0.4c0-0.1-0.1-0.3-0.2-0.4C129.6,91,129.5,91,129.3,91z"/>
+        <path class="contexts_app_190" d="M127.2,88.2c-2.6,0-4.7,2.1-4.7,4.7s2.1,4.7,4.7,4.7c2.6,0,4.7-2.1,4.7-4.7S129.8,88.2,127.2,88.2z
+				 M127.2,96.8c-2.2,0-3.9-1.8-3.9-3.9s1.8-3.9,3.9-3.9c2.2,0,3.9,1.8,3.9,3.9S129.4,96.8,127.2,96.8z"/>
+		</g>
+	</g>
+</g>
+  <path class="contexts_app_375" d="M94.2,102.3c0,0,0,0.1,0,0.1C94.2,102.4,94.2,102.4,94.2,102.3C94.2,102.3,94.2,102.3,94.2,102.3z"/>
+  <path class="contexts_app_364" d="M131.7,117.9c-1.1-1-2.3-2-3.4-3c0.9-0.8,1.8-1.6,2.8-2.4c0.6-0.5-0.1-1.6-0.7-1.1c-1,0.9-2,1.8-3,2.7
+	c-0.9-0.8-1.9-1.7-2.8-2.5c-0.6-0.6-1.3,0.5-0.7,1c0.9,0.8,1.8,1.6,2.6,2.4c-1.2,1.2-2.5,2.4-3.6,3.7c-0.2,0.2-0.3,0.6-0.1,1
+	c0.2,0.3,0.6,0.4,0.8,0.2c1.3-1.4,2.6-2.7,3.9-3.9c1.2,1.1,2.4,2.2,3.6,3.2C131.6,119.5,132.3,118.4,131.7,117.9z"/>
+  <path class="contexts_app_364" d="M131.7,106.1c-1.1-1-2.3-2-3.4-3c0.9-0.8,1.8-1.6,2.8-2.4c0.6-0.5-0.1-1.6-0.7-1.1c-1,0.9-2,1.8-3,2.7
+	c-0.9-0.8-1.9-1.7-2.8-2.5c-0.6-0.6-1.3,0.5-0.7,1c0.9,0.8,1.8,1.6,2.6,2.4c-1.2,1.2-2.5,2.4-3.6,3.7c-0.2,0.2-0.3,0.6-0.1,1
+	c0.2,0.3,0.6,0.4,0.8,0.2c1.3-1.4,2.6-2.7,3.9-3.9c1.2,1.1,2.4,2.2,3.6,3.2C131.6,107.7,132.3,106.6,131.7,106.1z"/>
+  <path class="contexts_app_364" d="M131.7,84.2c-1.1-1-2.3-2-3.4-3c0.9-0.8,1.8-1.6,2.8-2.4c0.6-0.5-0.1-1.6-0.7-1.1c-1,0.9-2,1.8-3,2.7
+	c-0.9-0.8-1.9-1.7-2.8-2.5c-0.6-0.6-1.3,0.5-0.7,1c0.9,0.8,1.8,1.6,2.6,2.4c-1.2,1.2-2.5,2.4-3.6,3.7c-0.2,0.2-0.3,0.6-0.1,1
+	c0.2,0.3,0.6,0.4,0.8,0.2c1.3-1.4,2.6-2.7,3.9-3.9c1.2,1.1,2.4,2.2,3.6,3.2C131.6,85.8,132.3,84.8,131.7,84.2z"/>
+  <polygon class="contexts_app_187" points="143.9,141.1 143.1,141.1 143.1,77.6 143.9,77.1 "/>
+  <g>
+
+		<radialGradient id="SVGID_CONTEXTS_APP_75" cx="116.1787" cy="118.0729" r="64.0644" gradientUnits="userSpaceOnUse">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.3035" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.4738" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6112" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.7311" style="stop-color:var(--vitamui-primary-dark)"/>
+      <stop  offset="0.8394" style="stop-color:var(--vitamui-primary-700)"/>
+      <stop  offset="0.9381" style="stop-color:var(--vitamui-primary-800)"/>
+      <stop  offset="1" style="stop-color:var(--vitamui-primary-900)"/>
+	</radialGradient>
+    <path style="fill:url(#SVGID_CONTEXTS_APP_75);" d="M173.1,112.4
+		C173.1,112.4,173.1,112.4,173.1,112.4c0-0.1-0.1-0.2-0.1-0.3c-0.8-1.9-2.9-3.9-5.8-5.6v2.7c0.2,0.2,0.4,0.5,0.5,0.7
+		c0.4,0.6,0.6,1.2,0.6,1.8c0,1.5-1.3,3.1-3.6,4.4c-2.1,1.3-5.2,2.5-9.1,3.5c-0.1,0-0.1,0-0.2,0.1c-0.5,0.1-1,0.3-1.5,0.4
+		c-0.2,0.1-0.5,0.1-0.7,0.2c-0.2,0.1-0.5,0.1-0.7,0.2c-2.2,0.5-4.6,1-7.2,1.4c-6.3,1-13.6,1.7-21.5,2c-2.5,0.1-5.1,0.1-7.7,0.1
+		c-4.2,0-8.3-0.1-12.2-0.3c-11.5-0.6-21.5-2.2-28.6-4.3c-3.9-1.2-7-2.5-9-4c-0.8-0.6-1.4-1.2-1.8-1.8c0,0,0-0.1-0.1-0.1
+		c-0.1-0.1-0.1-0.2-0.2-0.4c-0.2-0.5-0.4-0.9-0.4-1.4c0-1.2,0.8-2.4,2.2-3.5l0-2.8c-4.7,2.4-7.3,5.6-7.3,8.6c0,3.7,4,7,10.7,9.8
+		c1.7,0.7,3.7,1.3,5.8,2c0.2,0.1,0.5,0.2,0.7,0.2c5.9,1.7,13,3,20.9,3.8c0.1,0,0.3,0,0.4,0c2.1,0.2,4.3,0.4,6.6,0.5
+		c3.9,0.2,7.9,0.4,12,0.4c2.4,0,4.8-0.1,7.2-0.2c3-0.1,5.9-0.3,8.8-0.5c0.2,0,0.4,0,0.6,0c6.6-0.6,12.7-1.5,18.1-2.7
+		c1.3-0.3,2.6-0.6,3.9-0.9c0.8-0.2,1.4-0.4,2.1-0.6c3-0.9,5.7-1.9,8-3c4.6-2.2,7.6-4.6,8.5-7.3c0.2-0.5,0.2-1,0.2-1.5
+		C173.4,113.5,173.3,112.9,173.1,112.4z"/>
+    <path class="contexts_app_377" d="M64.1,116.7c0,0,7.1,7.3,39.9,8.8c0.4,1.1-0.9,1.6-3.4,1.6c-0.9,0-6.6-0.6-8.2-0.9
+		C77.4,124.1,68.1,121.7,64.1,116.7z"/>
+</g>
+</svg>

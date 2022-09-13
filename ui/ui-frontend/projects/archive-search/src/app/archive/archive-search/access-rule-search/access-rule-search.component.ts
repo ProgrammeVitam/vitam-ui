@@ -3,14 +3,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { RuleValidator } from './../rule.validator';
 
 const RULE_TYPE_SUFFIX = '_ACCESS_RULE';
-
-const UPDATE_DEBOUNCE_TIME = 200;
 
 const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
 const ORIGIN_INHERITE_AT_LEAST_ONE = 'ORIGIN_INHERITE_AT_LEAST_ONE';
@@ -78,7 +77,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
     });
     merge(this.accessRuleCriteriaForm.statusChanges, this.accessRuleCriteriaForm.valueChanges)
       .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
+        debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => this.accessRuleCriteriaForm.value),
         map(() => diff(this.accessRuleCriteriaForm.value, this.previousAccessCriteriaValue)),
         filter((formData) => this.isEmpty(formData))
@@ -97,9 +96,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
           { id: value, value },
           value,
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           false,
-          'STRING',
+          CriteriaDataType.STRING,
           SearchCriteriaTypeEnum.ACCESS_RULE
         );
         this.resetAccessRuleCriteriaForm();
@@ -109,9 +108,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
     this.subscriptionAccessFromMainSearchCriteria = this.archiveExchangeDataService.accessFromMainSearchCriteriaObservable.subscribe(
       (criteria) => {
         if (criteria) {
-          if (this.accessAdditionalCriteria && criteria.action === 'ADD') {
+          if (this.accessAdditionalCriteria && criteria.action === ActionOnCriteria.ADD) {
             this.accessAdditionalCriteria.set(criteria.valueElt.value, true);
-          } else if (criteria.action === 'REMOVE') {
+          } else if (criteria.action === ActionOnCriteria.REMOVE) {
             if (this.accessAdditionalCriteria && this.accessAdditionalCriteria.has(criteria.valueElt.value)) {
               this.accessAdditionalCriteria.set(criteria.valueElt.value, false);
             }
@@ -132,9 +131,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
             { value: ORIGIN_INHERITE_AT_LEAST_ONE, id: ORIGIN_INHERITE_AT_LEAST_ONE },
             ORIGIN_INHERITE_AT_LEAST_ONE,
             true,
-            'EQ',
+            CriteriaOperator.EQ,
             true,
-            'STRING',
+            CriteriaDataType.STRING,
             SearchCriteriaTypeEnum.ACCESS_RULE
           );
         } else {
@@ -152,9 +151,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
             { id: ORIGIN_HAS_NO_ONE, value: ORIGIN_HAS_NO_ONE },
             ORIGIN_HAS_NO_ONE,
             true,
-            'MISSING',
+            CriteriaOperator.MISSING,
             true,
-            'STRING',
+            CriteriaDataType.STRING,
             SearchCriteriaTypeEnum.ACCESS_RULE
           );
         } else {
@@ -172,9 +171,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
             { id: ORIGIN_WAITING_RECALCULATE, value: ORIGIN_WAITING_RECALCULATE },
             ORIGIN_WAITING_RECALCULATE,
             true,
-            'EQ',
+            CriteriaOperator.EQ,
             true,
-            'STRING',
+            CriteriaDataType.STRING,
             SearchCriteriaTypeEnum.ACCESS_RULE
           );
         } else {
@@ -192,9 +191,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
             { id: ORIGIN_HAS_AT_LEAST_ONE, value: ORIGIN_HAS_AT_LEAST_ONE },
             ORIGIN_HAS_AT_LEAST_ONE,
             true,
-            'EXISTS',
+            CriteriaOperator.EXISTS,
             true,
-            'STRING',
+            CriteriaDataType.STRING,
             SearchCriteriaTypeEnum.ACCESS_RULE
           );
         } else {
@@ -221,9 +220,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
         },
         this.accessRuleCriteriaForm.value.accessRuleStartDate,
         true,
-        'LTE',
+        CriteriaOperator.LTE,
         false,
-        'INTERVAL',
+        CriteriaDataType.INTERVAL,
         SearchCriteriaTypeEnum.ACCESS_RULE
       );
       this.accessRuleCriteriaForm.controls.accessRuleStartDate.setValue(null);
@@ -241,9 +240,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
 
         this.accessRuleCriteriaForm.value.accessRuleIdentifier.trim(),
         true,
-        'EQ',
+        CriteriaOperator.EQ,
         false,
-        'STRING',
+        CriteriaDataType.STRING,
         SearchCriteriaTypeEnum.ACCESS_RULE
       );
       this.accessRuleCriteriaForm.controls.accessRuleIdentifier.setValue(null);
@@ -261,9 +260,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
         },
         this.accessRuleCriteriaForm.value.accessRuleStartDate,
         true,
-        'BETWEEN',
+        CriteriaOperator.BETWEEN,
         false,
-        'INTERVAL',
+        CriteriaDataType.INTERVAL,
         SearchCriteriaTypeEnum.ACCESS_RULE
       );
       this.accessRuleCriteriaForm.controls.accessRuleStartDate.setValue(null);
@@ -280,9 +279,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
 
           formData.accessRuleIdentifier.trim(),
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           false,
-          'STRING',
+          CriteriaDataType.STRING,
           SearchCriteriaTypeEnum.ACCESS_RULE
         );
         this.resetAccessRuleCriteriaForm();
@@ -293,9 +292,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
           { id: formData.accessRuleTitle.trim(), value: formData.accessRuleTitle.trim() },
           formData.accessRuleTitle.trim(),
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           false,
-          'STRING',
+          CriteriaDataType.STRING,
           SearchCriteriaTypeEnum.ACCESS_RULE
         );
         return true;
@@ -341,9 +340,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       { value: ORIGIN_HAS_AT_LEAST_ONE, id: ORIGIN_HAS_AT_LEAST_ONE },
       ORIGIN_HAS_AT_LEAST_ONE,
       true,
-      'EXISTS',
+      CriteriaOperator.EXISTS,
       true,
-      'STRING',
+      CriteriaDataType.STRING,
       SearchCriteriaTypeEnum.ACCESS_RULE
     );
     this.addCriteria(
@@ -351,9 +350,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       { value: ORIGIN_INHERITE_AT_LEAST_ONE, id: ORIGIN_INHERITE_AT_LEAST_ONE },
       ORIGIN_INHERITE_AT_LEAST_ONE,
       true,
-      'EXISTS',
+      CriteriaOperator.EXISTS,
       true,
-      'STRING',
+      CriteriaDataType.STRING,
       SearchCriteriaTypeEnum.ACCESS_RULE
     );
     this.accessAdditionalCriteria.set(ORIGIN_INHERITE_AT_LEAST_ONE, true);

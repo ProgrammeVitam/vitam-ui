@@ -86,6 +86,26 @@ export class UpdateUnitManagementRuleService {
       });
   }
 
+  getRuleManagementCategory(categoryName: string): string {
+    switch (categoryName) {
+      case 'AppraisalRule':
+        return SearchCriteriaTypeEnum.APPRAISAL_RULE;
+      case 'AccessRule':
+        return SearchCriteriaTypeEnum.ACCESS_RULE;
+      case 'StorageRule':
+        return SearchCriteriaTypeEnum.STORAGE_RULE;
+      case 'HoldRule':
+        return SearchCriteriaTypeEnum.HOLD_RULE;
+      case 'DisseminationRule':
+        return SearchCriteriaTypeEnum.DISSEMINATION_RULE;
+      case 'ReuseRule':
+        return SearchCriteriaTypeEnum.REUSE_RULE;
+      case 'ClassificationRule':
+        return SearchCriteriaTypeEnum.CLASSIFICATION_RULE;
+      default:
+    }
+  }
+
   private updateManagementRule(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     criteriaSearchList: SearchCriteriaEltDto[],

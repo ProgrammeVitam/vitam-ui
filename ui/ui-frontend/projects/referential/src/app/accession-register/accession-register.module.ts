@@ -61,6 +61,16 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
 import { MatRadioModule } from '@angular/material/radio';
+import {AccessionRegisterPreviewComponent} from "./accession-register-preview/accession-register-preview.component";
+import {
+  AccessionRegisterDetailComponent
+} from "./accession-register-preview/accession-register-detail/accession-register-detail.component";
+import {
+  AccessionRegisterOperationsListComponent
+} from "./accession-register-preview/accession-register-operations-list/accession-register-operations-list.component";
+import {
+  AccessionRegisterOperationComponent
+} from "./accession-register-preview/accession-register-operations-list/accession-register-operation/accession-register-operation.component";
 
 @NgModule({
   imports: [
@@ -95,6 +105,10 @@ import { MatRadioModule } from '@angular/material/radio';
     AccessionRegisterListComponent,
     AccessionRegisterFacetsComponent,
     AccessionRegisterAdvancedSearchComponent,
+    AccessionRegisterPreviewComponent,
+    AccessionRegisterDetailComponent,
+    AccessionRegisterOperationsListComponent,
+    AccessionRegisterOperationComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

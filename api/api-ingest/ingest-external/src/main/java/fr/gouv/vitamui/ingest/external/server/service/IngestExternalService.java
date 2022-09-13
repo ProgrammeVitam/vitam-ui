@@ -89,7 +89,7 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
         final PaginatedValuesDto<LogbookOperationDto> result =
             getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
-            result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
+            result.getValues().stream().map(this::converterToExternalDto).collect(Collectors.toList()),
             result.getPageNum(),
             result.getPageSize(),
             result.isHasMore());

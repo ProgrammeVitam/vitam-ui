@@ -1,11 +1,9 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-
-import java.util.*;
 
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -13,14 +11,14 @@ import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.*;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -28,7 +26,6 @@ import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
-import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
@@ -59,18 +56,12 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.AdditionalAnswers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,12 +69,9 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link CustomerInternalController}.
@@ -233,7 +221,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationOK() {
+    public void testCreationOK() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
 
         final CustomerDto customerDto = buildFullCustomerDto();
@@ -245,7 +233,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationWithoutTenantOK()  {
+    public void testCreationWithoutTenantOK() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
         final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -256,7 +244,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationWithoutIdpOK()  {
+    public void testCreationWithoutIdpOK() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
 
         final CustomerDto customerDto = buildFullCustomerDto();
@@ -268,7 +256,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsOwnersIsNull() {
+    public void testCreationFailsAsOwnersIsNull() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setOwners(null);
 
@@ -283,7 +271,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsOwnersIsEmpty() {
+    public void testCreationFailsAsOwnersIsEmpty() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setOwners(Collections.emptyList());
 
@@ -311,7 +299,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsTheCodeIsAlreadyUsed() {
+    public void testCreationFailsAsTheCodeIsAlreadyUsed() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setId(null);
 
@@ -329,7 +317,8 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsTheDomainIsAlreadyUsed() {
+    public void testCreationFailsAsTheDomainIsAlreadyUsed() throws InvalidParseOperationException,
+        PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setId(null);
 
@@ -349,7 +338,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnIdpError() {
+    public void testRollbackOnIdpError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -361,7 +350,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnOwnerError() {
+    public void testRollbackOnOwnerError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -372,7 +361,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnTenantError() {
+    public void testRollbackOnTenantError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -383,7 +372,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnGroupError() {
+    public void testRollbackOnGroupError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -394,7 +383,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnProfileError() {
+    public void testRollbackOnProfileError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -405,7 +394,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnUserError() {
+    public void testRollbackOnUserError() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
         final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -445,7 +434,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsTheNewCodeIsAlreadyUsed() {
+    public void testUpdateFailsAsTheNewCodeIsAlreadyUsed() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildCustomerDto();
         final Customer conlictedCustomerDto = new Customer();
         conlictedCustomerDto.setId("conflict");
@@ -468,7 +457,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() {
+    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
         prepareServices();
         controller.delete("id");
     }

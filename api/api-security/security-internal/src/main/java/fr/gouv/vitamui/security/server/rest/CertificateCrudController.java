@@ -36,8 +36,11 @@
  */
 package fr.gouv.vitamui.security.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
@@ -52,7 +55,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -72,6 +84,8 @@ public class CertificateCrudController implements CrudController<CertificateDto>
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CertificateCrudController.class);
 
+    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+
     @Autowired
     private CertificateCrudService certificateCrudService;
 
@@ -85,8 +99,8 @@ public class CertificateCrudController implements CrudController<CertificateDto>
     @Override
     @RequestMapping(path = CommonConstants.PATH_ID, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final @PathVariable("id") String id) {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         LOGGER.debug("Check exists {}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final List<CertificateDto> dto = certificateCrudService.getMany(id);
         return RestUtils.buildBooleanResponse(dto != null && !dto.isEmpty());
     }
@@ -94,32 +108,38 @@ public class CertificateCrudController implements CrudController<CertificateDto>
     @GetMapping(CommonConstants.PATH_ID)
     public CertificateDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
         LOGGER.debug("Get {} criteria={}", id, criteria);
-        RestUtils.checkCriteria(criteria);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.sanitizeCriteria(criteria);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         return certificateCrudService.getOne(id, criteria);
     }
 
     @Override
     @PostMapping
-    public CertificateDto create(final @Valid @RequestBody CertificateDto dto) {
+    public CertificateDto create(final @Valid @RequestBody CertificateDto dto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return certificateCrudService.create(dto);
     }
 
     @Override
     @PutMapping(CommonConstants.PATH_ID)
-    public CertificateDto update(final @PathVariable("id") String id, final @Valid @RequestBody CertificateDto dto) {
-        LOGGER.debug("Update {} with {}", id, dto);
+    public CertificateDto update(final @PathVariable("id") String id, final @Valid @RequestBody CertificateDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier and the certificate are mandatory parameters: ", id, dto);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Update {} with {}", id, dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return certificateCrudService.update(dto);
     }
 
     @Override
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
+    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete {}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         certificateCrudService.delete(id);
     }
 }

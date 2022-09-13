@@ -35,20 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
-import {Context} from 'projects/vitamui-library/src/lib/models/context';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Context } from 'projects/vitamui-library/src/lib/models/context';
 import { merge, Subject } from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import {
   AdminUserProfile,
   ApplicationId,
@@ -60,9 +50,9 @@ import {
   PageRequest,
   Role,
   rotateAnimation,
-  User
+  User,
 } from 'ui-frontend-common';
-import {ContextService} from '../context.service';
+import { ContextService } from '../context.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -70,16 +60,12 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-context-list',
   templateUrl: './context-list.component.html',
   styleUrls: ['./context-list.component.scss'],
-  animations: [
-   collapseAnimation,
-   rotateAnimation,
-  ]
+  animations: [collapseAnimation, rotateAnimation],
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
   @Input('search')
   set searchText(searchText: string) {
-    console.log('searchTect: ', searchText);
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
@@ -89,21 +75,21 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
 
   @Output() contextClick = new EventEmitter<Context>();
 
-  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<ContextListComponent>;
-  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
+  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<ContextListComponent>;
+  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
   overridePendingChange: true;
   loaded = false;
 
   filterMap: { [key: string]: any[] } = {
-    status: ['ACTIVE', 'INACTIVE']
+    status: ['ACTIVE', 'INACTIVE'],
   };
 
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
-  private groups: Array<{ id: string, group: any }> = [];
+  private groups: Array<{ id: string; group: any }> = [];
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
@@ -120,32 +106,24 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(
-    public contextService: ContextService,
-    /*   private groupApiService: GroupApiService,
-       @Inject(LOCALE_ID) private locale: string,*/
-    private authService: AuthService
-  ) {
+  constructor(public contextService: ContextService, private authService: AuthService) {
     super(contextService);
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS]
+      roles: [Role.ROLE_GENERIC_USERS],
     };
   }
 
   ngOnInit() {
-    this.contextService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
-      .subscribe((data: Context[]) => {
-        this.dataSource = data;
-      });
+    this.contextService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe((data: Context[]) => {
+      this.dataSource = data;
+    });
 
-    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildContextCriteriaFromSearch();
-      console.log('query: ', query);
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
@@ -180,7 +158,6 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   }
 
   emitOrderChange() {
-    console.log('Order change !');
     this.orderChange.next();
   }
 
@@ -188,6 +165,4 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     this.filterMap[key] = values;
     this.filterChange.next(this.filterMap);
   }
-
-
 }

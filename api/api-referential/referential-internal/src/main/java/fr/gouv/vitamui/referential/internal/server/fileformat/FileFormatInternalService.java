@@ -237,7 +237,7 @@ public class FileFormatInternalService {
 
     public void delete(VitamContext context, String id) {
         LOGGER.debug("Try to delete File Format {} {}", id, context);
-        LOGGER.info("Delete File Format EvIdAppSession : {} " , context.getApplicationSessionId());
+        LOGGER.debug("Delete File Format EvIdAppSession : {} " , context.getApplicationSessionId());
 
         if (!id.startsWith("EXTERNAL_")) {
             throw new InternalServerException("Unable to patch fileFormat: Not an external format");
@@ -256,7 +256,7 @@ public class FileFormatInternalService {
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String identifier) throws VitamClientException {
         LOGGER.debug("findHistoryById for identifier" + identifier);
-        LOGGER.info("File Format History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("File Format History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return logbookService.findEventsByIdentifierAndCollectionNames(
                 identifier, AdminCollections.AGENCIES.getName(), vitamContext).toJsonNode();
     }

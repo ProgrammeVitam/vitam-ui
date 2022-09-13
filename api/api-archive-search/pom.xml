@@ -12,7 +12,7 @@
     <artifactId>api-archive-search</artifactId>
     <packaging>pom</packaging>
     <description>VITAMUI Archive Search API</description>
-
+    <name>VITAMUI Archive Search API</name>
     <modules>
         <module>archive-search-commons</module>
         <module>archive-search-external</module>

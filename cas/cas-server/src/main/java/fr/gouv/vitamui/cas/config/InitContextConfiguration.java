@@ -36,21 +36,19 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
+import fr.gouv.vitamui.cas.util.Constants;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.xml.bind.DatatypeConverter;
-
-import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Custom context initializer to pre-fill logo and favicon.
@@ -85,7 +83,7 @@ public class InitContextConfiguration implements ServletContextInitializer {
                 servletContext.setAttribute(Constants.VITAM_UI_FAVICON, favicon);
             } catch (final IOException e) {
                 LOGGER.warn("Can't find vitam ui favicon");
-                e.printStackTrace();
+                throw new ServletException(e);
             }
 
         }

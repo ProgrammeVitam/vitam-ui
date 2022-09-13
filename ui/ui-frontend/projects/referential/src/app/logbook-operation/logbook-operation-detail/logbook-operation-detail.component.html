@@ -17,9 +17,9 @@
     <button
       mat-button
       class="btn btn-primary button-maring"
-      *ngIf="!hideDownload || canDownload"
+      *ngIf="showDownloadButton"
       (click)="downloadReports()"
-      [disabled]="couldDownload && !canDownload || !hasAccessContractId"
+      [disabled]="disableDownloadButton"
     >
       {{ downloadButtonTitle }}
     </button>
@@ -30,7 +30,9 @@
       <mat-tab label="Informations" i18n-label="Information tab@@eventDetailTabInformation">
         <div class="read-only-field">
           <label i18n="Operation category@@logbookOperationCategory">Catégorie d'opération</label>
-          <div class="word-break">{{ event?.typeProc }}</div>
+          <div class="word-break">
+            <vitamui-common-event-type-label [key]="event?.typeProc"> </vitamui-common-event-type-label>
+          </div>
         </div>
 
         <div class="panel-row">

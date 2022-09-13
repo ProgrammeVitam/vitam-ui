@@ -83,15 +83,18 @@ public class SearchCriteriaHistoryExternalService extends AbstractResourceClient
         return super.getOne(id, embedded);
     }
 
+    @Override
     @Transactional
     public SearchCriteriaHistoryDto create(final SearchCriteriaHistoryDto dto) {
         return super.create(dto);
     }
 
+    @Override
     public void delete(final String id) {
         super.delete(id);
     }
 
+    @Override
     public SearchCriteriaHistoryDto update(final SearchCriteriaHistoryDto dto) {
         LOGGER.debug("service external = Update SearchCriteriaHistory with id :{}", dto.getId());
         return super.update(dto);

@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1"
+     xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.rules_app_0{fill-rule:evenodd;clip-rule:evenodd;}
+	.rules_app_1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.rules_app_2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.rules_app_3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.rules_app_4{fill:#BCB9BA;}
+	.rules_app_5{fill:#BBB9BA;}
+	.rules_app_6{fill:#BBB8B9;}
+	.rules_app_7{fill:#BAB8B9;}
+	.rules_app_8{fill:#B9B7B8;}
+	.rules_app_9{fill:#B9B7B7;}
+	.rules_app_10{fill:#B8B6B7;}
+	.rules_app_11{fill:#B8B5B6;}
+	.rules_app_12{fill:#B7B5B6;}
+	.rules_app_13{fill:#B7B4B5;}
+	.rules_app_14{fill:#B6B4B5;}
+	.rules_app_15{fill:#B6B3B4;}
+	.rules_app_16{fill:#B5B3B4;}
+	.rules_app_17{fill:#B4B2B3;}
+	.rules_app_18{fill:#B3B1B2;}
+	.rules_app_19{fill:#B3B1B1;}
+	.rules_app_20{fill:#B2B0B1;}
+	.rules_app_21{fill:#B2AFB0;}
+	.rules_app_22{fill:#B1AFB0;}
+	.rules_app_23{fill:#B1AEAF;}
+	.rules_app_24{fill:#B0AEAF;}
+	.rules_app_25{fill:#AFADAE;}
+	.rules_app_26{fill:#AEACAD;}
+	.rules_app_27{fill:#ADABAC;}
+	.rules_app_28{fill:#ADABAB;}
+	.rules_app_29{fill:#ACAAAB;}
+	.rules_app_30{fill:#ACAAAA;}
+	.rules_app_31{fill:#ABA9AA;}
+	.rules_app_32{fill:#AAA8A9;}
+	.rules_app_33{fill:#A9A7A8;}
+	.rules_app_34{fill:#A8A6A7;}
+	.rules_app_35{fill:#A7A5A6;}
+	.rules_app_36{fill:#A7A5A5;}
+	.rules_app_37{fill:#A6A4A5;}
+	.rules_app_38{fill:#A5A4A4;}
+	.rules_app_39{fill:#A5A3A4;}
+	.rules_app_40{fill:#A4A2A3;}
+	.rules_app_41{fill:#A3A1A2;}
+	.rules_app_42{fill:#A2A0A1;}
+	.rules_app_43{fill:#A19FA0;}
+	.rules_app_44{fill:#A09F9F;}
+	.rules_app_45{fill:#A09E9F;}
+	.rules_app_46{fill:#9F9E9E;}
+	.rules_app_47{fill:#9F9D9E;}
+	.rules_app_48{fill:#9E9D9D;}
+	.rules_app_49{fill:#9E9C9D;}
+	.rules_app_50{fill:#9D9B9C;}
+	.rules_app_51{fill:#9C9A9B;}
+	.rules_app_52{fill:#9B9A9B;}
+	.rules_app_53{fill:#9B999A;}
+	.rules_app_54{fill:#9A9999;}
+	.rules_app_55{fill:#9A9899;}
+	.rules_app_56{fill:#999898;}
+	.rules_app_57{fill:#999798;}
+	.rules_app_58{fill:#989797;}
+	.rules_app_59{fill:#989697;}
+	.rules_app_60{fill:#979596;}
+	.rules_app_61{fill:#969596;}
+	.rules_app_62{fill:#969495;}
+	.rules_app_63{fill:#959495;}
+	.rules_app_64{fill:#959394;}
+	.rules_app_65{fill:#949393;}
+	.rules_app_66{fill:#949293;}
+	.rules_app_67{fill:#939292;}
+	.rules_app_68{fill:#939192;}
+	.rules_app_69{fill:#929191;}
+	.rules_app_70{fill:#919091;}
+	.rules_app_71{fill:#919090;}
+	.rules_app_72{fill:#908F90;}
+	.rules_app_73{fill:#908E8F;}
+	.rules_app_74{fill:#8F8E8F;}
+	.rules_app_75{fill:#8F8D8E;}
+	.rules_app_76{fill:#8E8D8D;}
+	.rules_app_77{fill:#8E8C8D;}
+	.rules_app_78{fill:#8D8C8C;}
+	.rules_app_79{fill:#8C8B8C;}
+	.rules_app_80{fill:#8C8B8B;}
+	.rules_app_81{fill:#8B8A8B;}
+	.rules_app_82{fill:#8B8A8A;}
+	.rules_app_83{fill:#8A898A;}
+	.rules_app_84{fill:#8A8889;}
+	.rules_app_85{fill:#898888;}
+	.rules_app_86{fill:#898788;}
+	.rules_app_87{fill:#888787;}
+	.rules_app_88{fill:#878687;}
+	.rules_app_89{fill:#878686;}
+	.rules_app_90{fill:#868586;}
+	.rules_app_91{fill:#868585;}
+	.rules_app_92{fill:#858485;}
+	.rules_app_93{fill:#858484;}
+	.rules_app_94{fill:#848384;}
+	.rules_app_95{fill:#848383;}
+	.rules_app_96{fill:#838282;}
+	.rules_app_97{fill:#828182;}
+	.rules_app_98{fill:#828181;}
+	.rules_app_99{fill:#818081;}
+	.rules_app_100{fill:#818080;}
+	.rules_app_101{fill:#807F80;}
+	.rules_app_102{fill:#807F7F;}
+	.rules_app_103{fill:#7F7E7F;}
+	.rules_app_104{fill:#7F7E7E;}
+	.rules_app_105{fill:#7E7D7E;}
+	.rules_app_106{fill:#7D7D7D;}
+	.rules_app_107{fill:#7D7C7C;}
+	.rules_app_108{fill:#7C7B7C;}
+	.rules_app_109{fill:#7C7B7B;}
+	.rules_app_110{fill:#7B7A7B;}
+	.rules_app_111{fill:#7B7A7A;}
+	.rules_app_112{fill:#7A797A;}
+	.rules_app_113{fill:#7A7979;}
+	.rules_app_114{fill:#797879;}
+	.rules_app_115{fill:#787878;}
+	.rules_app_116{fill:#787778;}
+	.rules_app_117{fill:#777777;}
+	.rules_app_118{fill:#777676;}
+	.rules_app_119{fill:#767676;}
+	.rules_app_120{fill:#767575;}
+	.rules_app_121{fill:#757475;}
+	.rules_app_122{fill:#757474;}
+	.rules_app_123{fill:#747374;}
+	.rules_app_124{fill:#737373;}
+	.rules_app_125{fill:#737273;}
+	.rules_app_126{fill:#727272;}
+	.rules_app_127{fill:#727172;}
+	.rules_app_128{fill:#717171;}
+	.rules_app_129{fill:#717070;}
+	.rules_app_130{fill:#707070;}
+	.rules_app_131{fill:#706F6F;}
+	.rules_app_132{fill:#6F6E6F;}
+	.rules_app_133{fill:#6E6E6E;}
+	.rules_app_134{fill:#6E6D6E;}
+	.rules_app_135{fill:#6D6D6D;}
+	.rules_app_136{fill:#6D6C6D;}
+	.rules_app_137{fill:#6C6C6C;}
+	.rules_app_138{fill:#6C6B6C;}
+	.rules_app_139{fill:#6B6B6B;}
+	.rules_app_140{fill:#6B6A6A;}
+	.rules_app_141{fill:#6A6A6A;}
+	.rules_app_142{fill:#696969;}
+	.rules_app_143{fill:#686868;}
+	.rules_app_144{fill:#686768;}
+	.rules_app_145{fill:#676767;}
+	.rules_app_146{fill:#676667;}
+	.rules_app_147{fill:#666666;}
+	.rules_app_148{fill:#666566;}
+	.rules_app_149{fill:#656565;}
+	.rules_app_150{fill:#646464;}
+	.rules_app_151{fill:#636363;}
+	.rules_app_152{fill:#626262;}
+	.rules_app_153{fill:#626162;}
+	.rules_app_154{fill:#616161;}
+	.rules_app_155{fill:#616061;}
+	.rules_app_156{fill:#606060;}
+	.rules_app_157{fill:#5F5F60;}
+	.rules_app_158{fill:#5F5F5F;}
+	.rules_app_159{fill:#5E5E5E;}
+	.rules_app_160{fill:#5D5D5D;}
+	.rules_app_161{fill:#5C5C5C;}
+	.rules_app_162{fill:#5B5B5B;}
+	.rules_app_163{fill:#5A5A5B;}
+	.rules_app_164{fill:#5A5A5A;}
+	.rules_app_165{fill:#59595A;}
+	.rules_app_166{fill:#595959;}
+	.rules_app_167{fill:#585858;}
+	.rules_app_168{fill:#575757;}
+	.rules_app_169{fill:#565656;}
+	.rules_app_170{fill:#555656;}
+	.rules_app_171{fill:#555555;}
+	.rules_app_172{fill:#545455;}
+	.rules_app_173{fill:#545454;}
+	.rules_app_174{fill:#535353;}
+	.rules_app_175{fill:#525252;}
+	.rules_app_176{fill:#515151;}
+	.rules_app_177{fill:#505151;}
+	.rules_app_178{fill:#505050;}
+	.rules_app_179{fill:#4F5050;}
+	.rules_app_180{fill:#4F4F4F;}
+	.rules_app_181{fill:#4E4F4F;}
+	.rules_app_182{fill:#4E4E4E;}
+	.rules_app_183{fill:#4D4D4D;}
+	.rules_app_184{fill:#4C4C4C;}
+	.rules_app_185{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-50);}
+	.rules_app_186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_01);}
+	.rules_app_187{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000150786065652101384910000008426793789305564860_);}
+	.rules_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000163041741208135004730000003939565315523838347_);}
+	.rules_app_189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000134232202053676501770000006595407529805718166_);}
+	.rules_app_190{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000100383631227305542780000010761634657788273299_);}
+	.rules_app_191{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000137831343798963758520000005436302478239998095_);}
+	.rules_app_192{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000044157733417769278530000000692423466348957831_);}
+	.rules_app_193{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000010275523048399732080000017819612025387033987_);}
+	.rules_app_194{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000091733360141791359110000006434589993987714751_);}
+	.rules_app_195{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000060724035687611439080000016019844043267837595_);}
+	.rules_app_196{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000157302705479965444660000007398306029254611602_);}
+	.rules_app_197{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000042708620976077807260000013721272344176004753_);}
+	.rules_app_198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000176738218036525679310000011128163097674213524_);}
+	.rules_app_199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000013876280594663461260000018076264840424431551_);}
+	.rules_app_200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000002349609309560662340000000541290703699697338_);}
+	.rules_app_201{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000169516105822574070070000006484051321146177702_);}
+	.rules_app_202{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000145058842170955789160000016344197439064751767_);}
+	.rules_app_203{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000160882839377895799440000009442998419288249985_);}
+	.rules_app_204{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000088816825244679774910000009726914280486324100_);}
+	.rules_app_205{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000104677743454511270670000003994140054216770978_);}
+	.rules_app_206{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000142873904958800175790000001510973569294817450_);}
+	.rules_app_207{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000070840172935794317570000018434280165329910145_);}
+	.rules_app_208{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000028286635553998533820000000329445105359621296_);}
+	.rules_app_209{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000008849725725598024110000015368782940238334101_);}
+	.rules_app_210{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000149364872087363369410000013580523577067572620_);}
+	.rules_app_211{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000138573500768394107550000004652458140411863718_);}
+	.rules_app_212{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000066517085546304827190000005563515906280025269_);}
+	.rules_app_213{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000118380940054624462800000011843551593810832517_);}
+	.rules_app_214{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.rules_app_215{fill:#FFFFFF;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="117.8" width="165.1" x="17.3" y="19"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<path class="rules_app_0" d="M99.8,141.8c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2
+			C17.1,150.4,54.2,141.8,99.8,141.8z"/>
+		<path class="rules_app_1" d="M99.8,142.2c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,150.5,56.2,142.2,99.8,142.2z"/>
+		<path class="rules_app_2" d="M99.8,140c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,148.3,56.2,140,99.8,140z"/>
+		<path class="rules_app_1" d="M99.8,138.9c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,147.1,56.2,138.9,99.8,138.9z"/>
+		<path class="rules_app_3" d="M99.7,138.9c22.9,0,43.4,2.3,57.8,6C127.4,143,45,147.4,24.6,163.3c-2.5-1.8-3.8-3.8-3.8-5.7
+			C20.8,147.1,56.2,138.9,99.7,138.9z"/>
+		<path class="rules_app_2" d="M20.9,157.5c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C20.9,158.1,20.9,157.9,20.9,157.5z"/>
+	</g>
+</g>
+<g>
+	<ellipse class="rules_app_4" cx="100.3" cy="158.9" rx="58.4" ry="10.6"/>
+	<ellipse class="rules_app_5" cx="100.3" cy="158.9" rx="58.3" ry="10.6"/>
+	<ellipse class="rules_app_6" cx="100.3" cy="158.9" rx="58.2" ry="10.5"/>
+	<ellipse class="rules_app_7" cx="100.3" cy="158.9" rx="58.1" ry="10.5"/>
+	<ellipse class="rules_app_8" cx="100.3" cy="158.9" rx="58" ry="10.5"/>
+	<ellipse class="rules_app_9" cx="100.3" cy="158.9" rx="57.9" ry="10.4"/>
+	<ellipse class="rules_app_10" cx="100.3" cy="158.9" rx="57.8" ry="10.4"/>
+	<ellipse class="rules_app_11" cx="100.3" cy="158.9" rx="57.7" ry="10.4"/>
+	<ellipse class="rules_app_12" cx="100.3" cy="158.9" rx="57.6" ry="10.3"/>
+	<ellipse class="rules_app_13" cx="100.3" cy="158.9" rx="57.5" ry="10.3"/>
+	<ellipse class="rules_app_14" cx="100.3" cy="158.9" rx="57.4" ry="10.3"/>
+	<ellipse class="rules_app_15" cx="100.3" cy="158.9" rx="57.3" ry="10.2"/>
+	<ellipse class="rules_app_16" cx="100.3" cy="158.8" rx="57.2" ry="10.2"/>
+	<ellipse class="rules_app_17" cx="100.3" cy="158.8" rx="57" ry="10.2"/>
+	<ellipse class="rules_app_17" cx="100.3" cy="158.8" rx="56.9" ry="10.1"/>
+	<ellipse class="rules_app_18" cx="100.3" cy="158.8" rx="56.8" ry="10.1"/>
+	<ellipse class="rules_app_19" cx="100.3" cy="158.8" rx="56.7" ry="10.1"/>
+	<ellipse class="rules_app_20" cx="100.3" cy="158.8" rx="56.6" ry="10"/>
+	<ellipse class="rules_app_21" cx="100.3" cy="158.8" rx="56.5" ry="10"/>
+	<ellipse class="rules_app_22" cx="100.3" cy="158.8" rx="56.4" ry="10"/>
+	<ellipse class="rules_app_23" cx="100.3" cy="158.8" rx="56.3" ry="9.9"/>
+	<ellipse class="rules_app_24" cx="100.3" cy="158.8" rx="56.2" ry="9.9"/>
+	<ellipse class="rules_app_25" cx="100.3" cy="158.8" rx="56.1" ry="9.9"/>
+	<ellipse class="rules_app_25" cx="100.3" cy="158.8" rx="56" ry="9.8"/>
+	<ellipse class="rules_app_26" cx="100.2" cy="158.8" rx="55.9" ry="9.8"/>
+	<ellipse class="rules_app_26" cx="100.2" cy="158.8" rx="55.8" ry="9.7"/>
+	<ellipse class="rules_app_27" cx="100.2" cy="158.8" rx="55.7" ry="9.7"/>
+	<ellipse class="rules_app_28" cx="100.2" cy="158.8" rx="55.6" ry="9.7"/>
+	<ellipse class="rules_app_29" cx="100.2" cy="158.8" rx="55.5" ry="9.6"/>
+	<ellipse class="rules_app_30" cx="100.2" cy="158.8" rx="55.4" ry="9.6"/>
+	<ellipse class="rules_app_31" cx="100.2" cy="158.8" rx="55.3" ry="9.6"/>
+	<ellipse class="rules_app_32" cx="100.2" cy="158.8" rx="55.2" ry="9.5"/>
+	<ellipse class="rules_app_32" cx="100.2" cy="158.7" rx="55.1" ry="9.5"/>
+	<ellipse class="rules_app_33" cx="100.2" cy="158.7" rx="55" ry="9.5"/>
+	<ellipse class="rules_app_33" cx="100.2" cy="158.7" rx="54.9" ry="9.4"/>
+	<ellipse class="rules_app_34" cx="100.2" cy="158.7" rx="54.8" ry="9.4"/>
+	<ellipse class="rules_app_34" cx="100.2" cy="158.7" rx="54.7" ry="9.4"/>
+	<ellipse class="rules_app_35" cx="100.2" cy="158.7" rx="54.6" ry="9.3"/>
+	<ellipse class="rules_app_36" cx="100.2" cy="158.7" rx="54.5" ry="9.3"/>
+	<ellipse class="rules_app_37" cx="100.2" cy="158.7" rx="54.4" ry="9.3"/>
+	<ellipse class="rules_app_38" cx="100.2" cy="158.7" rx="54.3" ry="9.2"/>
+	<ellipse class="rules_app_39" cx="100.2" cy="158.7" rx="54.2" ry="9.2"/>
+	<ellipse class="rules_app_40" cx="100.2" cy="158.7" rx="54.1" ry="9.2"/>
+	<ellipse class="rules_app_40" cx="100.2" cy="158.7" rx="54" ry="9.1"/>
+	<ellipse class="rules_app_41" cx="100.2" cy="158.7" rx="53.9" ry="9.1"/>
+	<ellipse class="rules_app_41" cx="100.2" cy="158.7" rx="53.7" ry="9.1"/>
+	<ellipse class="rules_app_42" cx="100.2" cy="158.7" rx="53.6" ry="9"/>
+	<ellipse class="rules_app_42" cx="100.2" cy="158.7" rx="53.5" ry="9"/>
+	<ellipse class="rules_app_43" cx="100.2" cy="158.7" rx="53.4" ry="9"/>
+	<ellipse class="rules_app_44" cx="100.2" cy="158.7" rx="53.3" ry="8.9"/>
+	<ellipse class="rules_app_45" cx="100.2" cy="158.7" rx="53.2" ry="8.9"/>
+	<ellipse class="rules_app_46" cx="100.2" cy="158.7" rx="53.1" ry="8.9"/>
+	<ellipse class="rules_app_47" cx="100.2" cy="158.7" rx="53" ry="8.8"/>
+	<ellipse class="rules_app_48" cx="100.2" cy="158.6" rx="52.9" ry="8.8"/>
+	<ellipse class="rules_app_49" cx="100.2" cy="158.6" rx="52.8" ry="8.7"/>
+	<ellipse class="rules_app_50" cx="100.2" cy="158.6" rx="52.7" ry="8.7"/>
+	<ellipse class="rules_app_50" cx="100.2" cy="158.6" rx="52.6" ry="8.7"/>
+	<ellipse class="rules_app_51" cx="100.2" cy="158.6" rx="52.5" ry="8.6"/>
+	<ellipse class="rules_app_52" cx="100.2" cy="158.6" rx="52.4" ry="8.6"/>
+	<ellipse class="rules_app_53" cx="100.2" cy="158.6" rx="52.3" ry="8.6"/>
+	<ellipse class="rules_app_54" cx="100.2" cy="158.6" rx="52.2" ry="8.5"/>
+	<ellipse class="rules_app_55" cx="100.2" cy="158.6" rx="52.1" ry="8.5"/>
+	<ellipse class="rules_app_56" cx="100.2" cy="158.6" rx="52" ry="8.5"/>
+	<ellipse class="rules_app_57" cx="100.2" cy="158.6" rx="51.9" ry="8.4"/>
+	<ellipse class="rules_app_58" cx="100.2" cy="158.6" rx="51.8" ry="8.4"/>
+	<ellipse class="rules_app_59" cx="100.2" cy="158.6" rx="51.7" ry="8.4"/>
+	<ellipse class="rules_app_60" cx="100.2" cy="158.6" rx="51.6" ry="8.3"/>
+	<ellipse class="rules_app_61" cx="100.2" cy="158.6" rx="51.5" ry="8.3"/>
+	<ellipse class="rules_app_62" cx="100.2" cy="158.6" rx="51.4" ry="8.3"/>
+	<ellipse class="rules_app_63" cx="100.2" cy="158.6" rx="51.3" ry="8.2"/>
+	<ellipse class="rules_app_64" cx="100.2" cy="158.6" rx="51.2" ry="8.2"/>
+	<ellipse class="rules_app_65" cx="100.2" cy="158.6" rx="51.1" ry="8.2"/>
+	<ellipse class="rules_app_66" cx="100.2" cy="158.6" rx="51" ry="8.1"/>
+	<ellipse class="rules_app_67" cx="100.2" cy="158.5" rx="50.9" ry="8.1"/>
+	<ellipse class="rules_app_68" cx="100.2" cy="158.5" rx="50.8" ry="8.1"/>
+	<ellipse class="rules_app_69" cx="100.2" cy="158.5" rx="50.7" ry="8"/>
+	<ellipse class="rules_app_70" cx="100.2" cy="158.5" rx="50.6" ry="8"/>
+	<ellipse class="rules_app_71" cx="100.2" cy="158.5" rx="50.4" ry="8"/>
+	<ellipse class="rules_app_72" cx="100.2" cy="158.5" rx="50.3" ry="7.9"/>
+	<ellipse class="rules_app_73" cx="100.2" cy="158.5" rx="50.2" ry="7.9"/>
+	<ellipse class="rules_app_74" cx="100.2" cy="158.5" rx="50.1" ry="7.9"/>
+	<ellipse class="rules_app_75" cx="100.2" cy="158.5" rx="50" ry="7.8"/>
+	<ellipse class="rules_app_76" cx="100.2" cy="158.5" rx="49.9" ry="7.8"/>
+	<ellipse class="rules_app_77" cx="100.2" cy="158.5" rx="49.8" ry="7.7"/>
+	<ellipse class="rules_app_78" cx="100.2" cy="158.5" rx="49.7" ry="7.7"/>
+	<ellipse class="rules_app_79" cx="100.2" cy="158.5" rx="49.6" ry="7.7"/>
+	<ellipse class="rules_app_80" cx="100.2" cy="158.5" rx="49.5" ry="7.6"/>
+	<ellipse class="rules_app_81" cx="100.2" cy="158.5" rx="49.4" ry="7.6"/>
+	<ellipse class="rules_app_82" cx="100.1" cy="158.5" rx="49.3" ry="7.6"/>
+	<ellipse class="rules_app_83" cx="100.1" cy="158.5" rx="49.2" ry="7.5"/>
+	<ellipse class="rules_app_84" cx="100.1" cy="158.5" rx="49.1" ry="7.5"/>
+	<ellipse class="rules_app_85" cx="100.1" cy="158.5" rx="49" ry="7.5"/>
+	<ellipse class="rules_app_86" cx="100.1" cy="158.5" rx="48.9" ry="7.4"/>
+	<ellipse class="rules_app_87" cx="100.1" cy="158.5" rx="48.8" ry="7.4"/>
+	<ellipse class="rules_app_88" cx="100.1" cy="158.4" rx="48.7" ry="7.4"/>
+	<ellipse class="rules_app_89" cx="100.1" cy="158.4" rx="48.6" ry="7.3"/>
+	<ellipse class="rules_app_90" cx="100.1" cy="158.4" rx="48.5" ry="7.3"/>
+	<ellipse class="rules_app_91" cx="100.1" cy="158.4" rx="48.4" ry="7.3"/>
+	<ellipse class="rules_app_92" cx="100.1" cy="158.4" rx="48.3" ry="7.2"/>
+	<ellipse class="rules_app_93" cx="100.1" cy="158.4" rx="48.2" ry="7.2"/>
+	<ellipse class="rules_app_94" cx="100.1" cy="158.4" rx="48.1" ry="7.2"/>
+	<ellipse class="rules_app_95" cx="100.1" cy="158.4" rx="48" ry="7.1"/>
+	<ellipse class="rules_app_96" cx="100.1" cy="158.4" rx="47.9" ry="7.1"/>
+	<ellipse class="rules_app_97" cx="100.1" cy="158.4" rx="47.8" ry="7.1"/>
+	<ellipse class="rules_app_98" cx="100.1" cy="158.4" rx="47.7" ry="7"/>
+	<ellipse class="rules_app_99" cx="100.1" cy="158.4" rx="47.6" ry="7"/>
+	<ellipse class="rules_app_100" cx="100.1" cy="158.4" rx="47.5" ry="7"/>
+	<ellipse class="rules_app_101" cx="100.1" cy="158.4" rx="47.4" ry="6.9"/>
+	<ellipse class="rules_app_102" cx="100.1" cy="158.4" rx="47.3" ry="6.9"/>
+	<ellipse class="rules_app_103" cx="100.1" cy="158.4" rx="47.1" ry="6.9"/>
+	<ellipse class="rules_app_104" cx="100.1" cy="158.4" rx="47" ry="6.8"/>
+	<ellipse class="rules_app_105" cx="100.1" cy="158.4" rx="46.9" ry="6.8"/>
+	<ellipse class="rules_app_106" cx="100.1" cy="158.4" rx="46.8" ry="6.7"/>
+	<ellipse class="rules_app_107" cx="100.1" cy="158.4" rx="46.7" ry="6.7"/>
+	<ellipse class="rules_app_108" cx="100.1" cy="158.3" rx="46.6" ry="6.7"/>
+	<ellipse class="rules_app_109" cx="100.1" cy="158.3" rx="46.5" ry="6.6"/>
+	<ellipse class="rules_app_110" cx="100.1" cy="158.3" rx="46.4" ry="6.6"/>
+	<ellipse class="rules_app_111" cx="100.1" cy="158.3" rx="46.3" ry="6.6"/>
+	<ellipse class="rules_app_112" cx="100.1" cy="158.3" rx="46.2" ry="6.5"/>
+	<ellipse class="rules_app_113" cx="100.1" cy="158.3" rx="46.1" ry="6.5"/>
+	<ellipse class="rules_app_114" cx="100.1" cy="158.3" rx="46" ry="6.5"/>
+	<ellipse class="rules_app_115" cx="100.1" cy="158.3" rx="45.9" ry="6.4"/>
+	<ellipse class="rules_app_116" cx="100.1" cy="158.3" rx="45.8" ry="6.4"/>
+	<ellipse class="rules_app_117" cx="100.1" cy="158.3" rx="45.7" ry="6.4"/>
+	<ellipse class="rules_app_118" cx="100.1" cy="158.3" rx="45.6" ry="6.3"/>
+	<ellipse class="rules_app_119" cx="100.1" cy="158.3" rx="45.5" ry="6.3"/>
+	<ellipse class="rules_app_120" cx="100.1" cy="158.3" rx="45.4" ry="6.3"/>
+	<ellipse class="rules_app_121" cx="100.1" cy="158.3" rx="45.3" ry="6.2"/>
+	<ellipse class="rules_app_122" cx="100.1" cy="158.3" rx="45.2" ry="6.2"/>
+	<ellipse class="rules_app_123" cx="100.1" cy="158.3" rx="45.1" ry="6.2"/>
+	<ellipse class="rules_app_124" cx="100.1" cy="158.3" rx="45" ry="6.1"/>
+	<ellipse class="rules_app_125" cx="100.1" cy="158.3" rx="44.9" ry="6.1"/>
+	<ellipse class="rules_app_126" cx="100.1" cy="158.3" rx="44.8" ry="6.1"/>
+	<ellipse class="rules_app_127" cx="100.1" cy="158.3" rx="44.7" ry="6"/>
+	<ellipse class="rules_app_128" cx="100.1" cy="158.3" rx="44.6" ry="6"/>
+	<ellipse class="rules_app_129" cx="100.1" cy="158.2" rx="44.5" ry="6"/>
+	<ellipse class="rules_app_130" cx="100.1" cy="158.2" rx="44.4" ry="5.9"/>
+	<ellipse class="rules_app_131" cx="100.1" cy="158.2" rx="44.3" ry="5.9"/>
+	<ellipse class="rules_app_132" cx="100.1" cy="158.2" rx="44.2" ry="5.8"/>
+	<ellipse class="rules_app_133" cx="100.1" cy="158.2" rx="44.1" ry="5.8"/>
+	<ellipse class="rules_app_134" cx="100.1" cy="158.2" rx="44" ry="5.8"/>
+	<ellipse class="rules_app_135" cx="100.1" cy="158.2" rx="43.8" ry="5.7"/>
+	<ellipse class="rules_app_136" cx="100.1" cy="158.2" rx="43.7" ry="5.7"/>
+	<ellipse class="rules_app_137" cx="100.1" cy="158.2" rx="43.6" ry="5.7"/>
+	<ellipse class="rules_app_138" cx="100.1" cy="158.2" rx="43.5" ry="5.6"/>
+	<ellipse class="rules_app_139" cx="100.1" cy="158.2" rx="43.4" ry="5.6"/>
+	<ellipse class="rules_app_140" cx="100.1" cy="158.2" rx="43.3" ry="5.6"/>
+	<ellipse class="rules_app_141" cx="100.1" cy="158.2" rx="43.2" ry="5.5"/>
+	<ellipse class="rules_app_142" cx="100.1" cy="158.2" rx="43.1" ry="5.5"/>
+	<ellipse class="rules_app_142" cx="100.1" cy="158.2" rx="43" ry="5.5"/>
+	<ellipse class="rules_app_143" cx="100.1" cy="158.2" rx="42.9" ry="5.4"/>
+	<ellipse class="rules_app_144" cx="100.1" cy="158.2" rx="42.8" ry="5.4"/>
+	<ellipse class="rules_app_145" cx="100.1" cy="158.2" rx="42.7" ry="5.4"/>
+	<ellipse class="rules_app_146" cx="100" cy="158.2" rx="42.6" ry="5.3"/>
+	<ellipse class="rules_app_147" cx="100" cy="158.2" rx="42.5" ry="5.3"/>
+	<ellipse class="rules_app_148" cx="100" cy="158.1" rx="42.4" ry="5.3"/>
+	<ellipse class="rules_app_149" cx="100" cy="158.1" rx="42.3" ry="5.2"/>
+	<ellipse class="rules_app_150" cx="100" cy="158.1" rx="42.2" ry="5.2"/>
+	<ellipse class="rules_app_150" cx="100" cy="158.1" rx="42.1" ry="5.2"/>
+	<ellipse class="rules_app_151" cx="100" cy="158.1" rx="42" ry="5.1"/>
+	<ellipse class="rules_app_151" cx="100" cy="158.1" rx="41.9" ry="5.1"/>
+	<ellipse class="rules_app_152" cx="100" cy="158.1" rx="41.8" ry="5.1"/>
+	<ellipse class="rules_app_153" cx="100" cy="158.1" rx="41.7" ry="5"/>
+	<ellipse class="rules_app_154" cx="100" cy="158.1" rx="41.6" ry="5"/>
+	<ellipse class="rules_app_155" cx="100" cy="158.1" rx="41.5" ry="5"/>
+	<ellipse class="rules_app_156" cx="100" cy="158.1" rx="41.4" ry="4.9"/>
+	<ellipse class="rules_app_157" cx="100" cy="158.1" rx="41.3" ry="4.9"/>
+	<ellipse class="rules_app_158" cx="100" cy="158.1" rx="41.2" ry="4.8"/>
+	<ellipse class="rules_app_159" cx="100" cy="158.1" rx="41.1" ry="4.8"/>
+	<ellipse class="rules_app_159" cx="100" cy="158.1" rx="41" ry="4.8"/>
+	<ellipse class="rules_app_160" cx="100" cy="158.1" rx="40.9" ry="4.7"/>
+	<ellipse class="rules_app_160" cx="100" cy="158.1" rx="40.8" ry="4.7"/>
+	<ellipse class="rules_app_161" cx="100" cy="158.1" rx="40.7" ry="4.7"/>
+	<ellipse class="rules_app_161" cx="100" cy="158.1" rx="40.5" ry="4.6"/>
+	<ellipse class="rules_app_162" cx="100" cy="158.1" rx="40.4" ry="4.6"/>
+	<ellipse class="rules_app_163" cx="100" cy="158.1" rx="40.3" ry="4.6"/>
+	<ellipse class="rules_app_164" cx="100" cy="158" rx="40.2" ry="4.5"/>
+	<ellipse class="rules_app_165" cx="100" cy="158" rx="40.1" ry="4.5"/>
+	<ellipse class="rules_app_166" cx="100" cy="158" rx="40" ry="4.5"/>
+	<ellipse class="rules_app_167" cx="100" cy="158" rx="39.9" ry="4.4"/>
+	<ellipse class="rules_app_167" cx="100" cy="158" rx="39.8" ry="4.4"/>
+	<ellipse class="rules_app_168" cx="100" cy="158" rx="39.7" ry="4.4"/>
+	<ellipse class="rules_app_168" cx="100" cy="158" rx="39.6" ry="4.3"/>
+	<ellipse class="rules_app_169" cx="100" cy="158" rx="39.5" ry="4.3"/>
+	<ellipse class="rules_app_170" cx="100" cy="158" rx="39.4" ry="4.3"/>
+	<ellipse class="rules_app_171" cx="100" cy="158" rx="39.3" ry="4.2"/>
+	<ellipse class="rules_app_172" cx="100" cy="158" rx="39.2" ry="4.2"/>
+	<ellipse class="rules_app_173" cx="100" cy="158" rx="39.1" ry="4.2"/>
+	<ellipse class="rules_app_174" cx="100" cy="158" rx="39" ry="4.1"/>
+	<ellipse class="rules_app_174" cx="100" cy="158" rx="38.9" ry="4.1"/>
+	<ellipse class="rules_app_175" cx="100" cy="158" rx="38.8" ry="4.1"/>
+	<ellipse class="rules_app_175" cx="100" cy="158" rx="38.7" ry="4"/>
+	<ellipse class="rules_app_176" cx="100" cy="158" rx="38.6" ry="4"/>
+	<ellipse class="rules_app_177" cx="100" cy="158" rx="38.5" ry="4"/>
+	<ellipse class="rules_app_178" cx="100" cy="158" rx="38.4" ry="3.9"/>
+	<ellipse class="rules_app_179" cx="100" cy="158" rx="38.3" ry="3.9"/>
+	<ellipse class="rules_app_180" cx="100" cy="157.9" rx="38.2" ry="3.8"/>
+	<ellipse class="rules_app_181" cx="100" cy="157.9" rx="38.1" ry="3.8"/>
+	<ellipse class="rules_app_182" cx="100" cy="157.9" rx="38" ry="3.8"/>
+	<ellipse class="rules_app_183" cx="100" cy="157.9" rx="37.9" ry="3.7"/>
+	<ellipse class="rules_app_183" cx="100" cy="157.9" rx="37.8" ry="3.7"/>
+	<ellipse class="rules_app_184" cx="100" cy="157.9" rx="37.7" ry="3.7"/>
+</g>
+<g>
+	<path class="rules_app_185" d="M57.4,63.5l1,0.1l1-0.1C59.4,63.5,58.5,63.4,57.4,63.5z"/>
+	<g>
+
+			<linearGradient id="SVGID_RULES_APP_01" gradientUnits="userSpaceOnUse" x1="6003.5117" y1="109.2159" x2="6000.4531" y2="73.3369" gradientTransform="matrix(-1 0 0 1 6103.7666 0)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+		<polygon class="rules_app_186" points="141.4,163 141.7,67.9 59.4,63.3 58.4,63.4 141.3,68.1 140.9,163.1 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_02" gradientUnits="userSpaceOnUse" x1="5584.9121" y1="-200.8395" x2="5683.0879" y2="-99.4149" gradientTransform="matrix(-1.0991 6.937514e-02 -1.195069e-03 1 6306.5405 -141.8854)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_02);" points="
+			141,163.2 141.3,68 58.9,63.3 59.8,153.5 		"/>
+	</g>
+	<g>
+
+			<linearGradient id="SVGID_RULES_APP_03" gradientUnits="userSpaceOnUse" x1="5494.8911" y1="-102.3944" x2="5593.3521" y2="-0.6753" gradientTransform="matrix(-1.0702 4.431804e-02 -1.197360e-03 1 6045.7871 -94.4147)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_03);" points="
+			138.8,164.4 139,69.4 58.3,63.6 59.8,153.6 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_04" gradientUnits="userSpaceOnUse" x1="5554.9258" y1="-67.5619" x2="5562.5967" y2="35.0678" gradientTransform="matrix(-1.0702 4.431804e-02 -1.197360e-03 1 6045.7871 -94.4147)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_04);" points="
+			139.2,164.3 139.5,69.3 59.3,63.5 58.3,63.6 139,69.5 138.7,164.4 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_05" gradientUnits="userSpaceOnUse" x1="5574.7783" y1="-52.8505" x2="5673.3716" y2="49.0054" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_05);" points="
+			136.9,165 137.1,70.2 58.3,63.6 59.8,153.6 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_06" gradientUnits="userSpaceOnUse" x1="5634.8726" y1="-17.8183" x2="5642.5039" y2="84.2843" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_06);" points="
+			137.3,164.9 137.6,70.1 59.2,63.5 58.3,63.6 137.1,70.2 136.8,165 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_07" gradientUnits="userSpaceOnUse" x1="5656.5068" y1="-2.1507" x2="5755.2285" y2="99.8375" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_07);" points="
+			135.1,165.6 135.2,71 58.3,63.6 59.8,153.6 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_08" gradientUnits="userSpaceOnUse" x1="5716.6587" y1="33.0759" x2="5724.2515" y2="134.6631" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_08);" points="
+			135.5,165.5 135.7,70.9 59.2,63.5 58.3,63.6 135.2,71 135,165.6 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_09" gradientUnits="userSpaceOnUse" x1="5741.5229" y1="52.4422" x2="5840.373" y2="154.5634" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_09);" points="
+			133.4,166.2 133.4,71.8 58.3,63.7 59.9,153.6 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_10" gradientUnits="userSpaceOnUse" x1="5799.6421" y1="85.6994" x2="5807.1973" y2="186.7867" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_10);" points="
+			133.8,166.2 133.8,71.7 59.1,63.6 58.3,63.7 133.4,71.8 133.3,166.2 		"/>
+	</g>
+	<g>
+
+			<linearGradient id="SVGID_RULES_APP_11" gradientUnits="userSpaceOnUse" x1="5482.7046" y1="157.1124" x2="5577.7925" y2="255.3463" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_11);" points="
+			131.7,166.8 131.7,72.4 57.4,63.7 59.8,154 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_12" gradientUnits="userSpaceOnUse" x1="5540.6924" y1="190.1962" x2="5548.2524" y2="291.3448" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_12);" points="
+			132.1,166.7 132.2,72.3 58.3,63.7 57.4,63.7 131.7,72.4 131.6,166.8 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_13" gradientUnits="userSpaceOnUse" x1="5562.2246" y1="206.522" x2="5657.3579" y2="304.8029" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_13);" points="
+			130,167.4 130,73.1 57.4,63.7 59.8,154 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_14" gradientUnits="userSpaceOnUse" x1="5620.2163" y1="239.717" x2="5627.7461" y2="340.458" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_14);" points="
+			130.4,167.3 130.4,73 58.2,63.7 57.4,63.7 130,73.1 129.9,167.4 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_15" gradientUnits="userSpaceOnUse" x1="5643.5752" y1="257.0786" x2="5738.7515" y2="355.4038" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_15);" points="
+			128.3,167.9 128.3,73.8 57.4,63.7 59.8,154 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_16" gradientUnits="userSpaceOnUse" x1="5701.5703" y1="290.3819" x2="5709.0703" y2="390.7231" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_16);" points="
+			128.7,167.8 128.7,73.7 58.2,63.7 57.4,63.7 128.3,73.8 128.3,167.9 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_17" gradientUnits="userSpaceOnUse" x1="5725.0044" y1="307.8763" x2="5820.23" y2="406.2527" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_17);" points="
+			126.8,168.5 126.6,74.5 57.4,63.8 59.8,154 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_18" gradientUnits="userSpaceOnUse" x1="5784.4365" y1="342.7665" x2="5791.9067" y2="442.7166" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_18);" points="
+			127.2,168.4 127,74.4 58.2,63.7 57.4,63.8 126.6,74.5 126.8,168.5 		"/>
+	</g>
+	<g>
+
+			<linearGradient id="SVGID_RULES_APP_19" gradientUnits="userSpaceOnUse" x1="5489.3916" y1="161.6899" x2="5579.4595" y2="254.7378" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_19);" points="
+			125.1,169.1 125,74.9 56.6,63.8 59,154.2 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_20" gradientUnits="userSpaceOnUse" x1="5544.082" y1="190.6386" x2="5551.8452" y2="294.5099" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_20);" points="
+			125.5,169 125.4,74.9 57.4,63.8 56.6,63.8 125,74.9 125,169.1 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_21" gradientUnits="userSpaceOnUse" x1="5568.9185" y1="211.1208" x2="5659.0303" y2="304.2141" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_21);" points="
+			123.5,169.6 123.4,75.6 56.6,63.8 59,154.2 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_22" gradientUnits="userSpaceOnUse" x1="5623.6143" y1="240.1753" x2="5631.3491" y2="343.664" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_22);" points="
+			123.9,169.5 123.8,75.5 57.4,63.8 56.6,63.8 123.4,75.6 123.5,169.6 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_23" gradientUnits="userSpaceOnUse" x1="5650.2773" y1="261.6987" x2="5740.4302" y2="354.8348" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_23);" points="
+			122,170.1 121.8,76.2 56.6,63.8 59,154.2 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_24" gradientUnits="userSpaceOnUse" x1="5704.9771" y1="290.8561" x2="5712.6841" y2="393.9692" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_24);" points="
+			122.4,170 122.2,76.2 57.4,63.8 56.6,63.8 121.8,76.2 122,170.1 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_25" gradientUnits="userSpaceOnUse" x1="5745.999" y1="327.2735" x2="5836.2031" y2="420.4624" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_25);" points="
+			120.6,170.6 120.3,76.9 56.6,63.9 59.1,154.3 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_26" gradientUnits="userSpaceOnUse" x1="5787.854" y1="343.2558" x2="5795.5337" y2="446.0085" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_26);" points="
+			121,170.5 120.6,76.8 57.3,63.8 56.6,63.9 120.3,76.9 120.6,170.6 		"/>
+	</g>
+	<g>
+
+			<linearGradient id="SVGID_RULES_APP_27" gradientUnits="userSpaceOnUse" x1="-1859.5729" y1="248.3658" x2="-1704.2657" y2="58.4586" gradientTransform="matrix(1 0 0 1 1840.2769 0)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_27);" points="
+			118.5,172.6 118.8,77 55.7,63.9 55.6,154.4 		"/>
+
+			<linearGradient id="SVGID_RULES_APP_28" gradientUnits="userSpaceOnUse" x1="7521.4185" y1="1076.6937" x2="7518.3604" y2="1040.8193" gradientTransform="matrix(-0.7615 -0.1554 -2.949967e-04 1.0065 5815.6733 197.2003)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_28);" points="
+			118.9,172.5 119.2,77 56.5,63.8 55.7,63.9 118.8,77 118.5,172.6 		"/>
+	</g>
+	<path class="rules_app_185" d="M59.4,63.3l1,0.1L56.6,64l-0.9-0.2l0.1,0C55.8,63.8,56.6,63.2,59.4,63.3z"/>
+	<polygon class="rules_app_214" points="57.1,64 60.1,63.4 60.1,63.6 57.8,64.1 	"/>
+</g>
+<g>
+	<path d="M90.3,80.9c1.3,0.3,2.4,1,3.2,2.1c0.8,1.1,1.3,2.3,1.3,3.7c0,1.3-0.4,2.4-1.3,3.1c-0.8,0.7-1.9,0.9-3.2,0.6L87,89.6v-9.4
+		L90.3,80.9z M89.3,83v4.9l1,0.2c0.6,0.1,1.1,0,1.5-0.3s0.6-0.9,0.6-1.6c0-0.7-0.2-1.3-0.6-1.9c-0.4-0.5-0.9-0.9-1.6-1L89.3,83z"/>
+	<path d="M101.1,90.3c0.3-0.3,0.5-0.7,0.5-1.2v-5.5l2.3,0.5v5.5c0,1.2-0.4,2.1-1.1,2.7s-1.7,0.8-2.8,0.6c-1.1-0.3-2-0.9-2.8-1.8
+		c-0.7-1-1.1-2-1.1-3.2v-5.5l2.3,0.5v5.5c0,0.5,0.2,1,0.5,1.5s0.7,0.7,1.1,0.8C100.4,90.7,100.8,90.6,101.1,90.3z"/>
+	<path d="M107.4,92.3l-0.6,1.9l-2.5-0.6l3.2-8.7l2.5,0.6l3.2,10.2l-2.5-0.6l-0.6-2.2L107.4,92.3z M108.8,87.8l-0.8,2.6l1.6,0.4
+		L108.8,87.8z"/>
+	<path d="M90.3,95.7c1.3,0.3,2.4,1,3.2,2.1s1.3,2.3,1.3,3.7c0,1.3-0.4,2.4-1.3,3.1c-0.8,0.7-1.9,0.9-3.2,0.6l-3.3-0.8v-9.4
+		L90.3,95.7z M89.3,97.7v4.9l1,0.2c0.6,0.1,1.1,0,1.5-0.3c0.4-0.4,0.6-0.9,0.6-1.6c0-0.7-0.2-1.3-0.6-1.9c-0.4-0.5-0.9-0.9-1.6-1
+		L89.3,97.7z"/>
+	<path d="M101.1,105c0.3-0.3,0.5-0.7,0.5-1.2v-5.5l2.3,0.5v5.5c0,1.2-0.4,2.1-1.1,2.7c-0.7,0.6-1.7,0.8-2.8,0.6
+		c-1.1-0.3-2-0.9-2.8-1.8c-0.7-1-1.1-2-1.1-3.2V97l2.3,0.5v5.5c0,0.5,0.2,1,0.5,1.5c0.3,0.4,0.7,0.7,1.1,0.8
+		C100.4,105.4,100.8,105.3,101.1,105z"/>
+	<path d="M108.3,106.4c0.5,0.6,1,1,1.7,1.2c0.4,0.1,0.8,0.1,1.2,0c0.4-0.1,0.7-0.3,0.8-0.4l0.3-0.2l1.3,1.9c0,0-0.1,0.1-0.1,0.2
+		c-0.1,0.1-0.2,0.2-0.4,0.4s-0.5,0.3-0.7,0.4c-0.3,0.1-0.6,0.2-1,0.2s-0.9,0-1.3-0.1c-1.3-0.3-2.4-1.1-3.4-2.2
+		c-0.9-1.2-1.4-2.5-1.4-3.8s0.5-2.4,1.4-3.2c0.9-0.8,2-1,3.4-0.7c0.5,0.1,0.9,0.3,1.3,0.5c0.4,0.2,0.7,0.5,1,0.7
+		c0.3,0.2,0.5,0.5,0.7,0.7c0.2,0.2,0.3,0.4,0.4,0.6l0.1,0.2l-1.4,1.3c0,0-0.1-0.1-0.1-0.2c0-0.1-0.1-0.2-0.3-0.4
+		c-0.1-0.2-0.3-0.3-0.4-0.5s-0.4-0.3-0.6-0.4c-0.3-0.1-0.5-0.2-0.8-0.3c-0.7-0.2-1.3,0-1.7,0.4c-0.5,0.4-0.7,1-0.7,1.8
+		C107.6,105.1,107.8,105.8,108.3,106.4z"/>
+	<path d="M87.9,118.1c-0.9-1.2-1.4-2.5-1.4-3.8c0-1.4,0.5-2.4,1.4-3.2c0.9-0.8,2-1,3.4-0.7c0.5,0.1,0.9,0.3,1.3,0.5
+		c0.4,0.2,0.7,0.5,1,0.7c0.3,0.2,0.5,0.5,0.7,0.7s0.3,0.4,0.4,0.6l0.1,0.2l-1.4,1.3c0,0-0.1-0.1-0.1-0.2c0-0.1-0.1-0.2-0.3-0.4
+		s-0.3-0.3-0.4-0.5c-0.2-0.1-0.4-0.3-0.6-0.4c-0.3-0.1-0.5-0.2-0.8-0.3c-0.7-0.2-1.3,0-1.7,0.4c-0.5,0.4-0.7,1-0.7,1.8
+		s0.2,1.5,0.7,2.1c0.5,0.6,1,1,1.7,1.2c0.3,0.1,0.6,0.1,0.8,0c0.2,0,0.4-0.1,0.5-0.2l0.1-0.1v-1l-1.3-0.3v-1.6l3.6,0.8v3.6
+		c0,0-0.1,0.1-0.2,0.2c-0.1,0.1-0.2,0.2-0.5,0.3s-0.5,0.3-0.8,0.4c-0.3,0.1-0.6,0.2-1,0.2c-0.4,0-0.9,0-1.3-0.1
+		C89.9,120,88.8,119.3,87.9,118.1z"/>
+	<path d="M103.5,120.7v2.2l-6.7-1.5v-9.4l6.5,1.5v2.2l-4.2-1v1.5l3.3,0.8v2l-3.3-0.8v1.6L103.5,120.7z"/>
+	<path d="M104.9,123.2v-9.4l2.3,0.5v7.2l3.8,0.9v2.3L104.9,123.2z"/>
+</g>
+<g>
+	<path class="rules_app_215" d="M89.5,80.2c1.3,0.3,2.4,1,3.2,2.1c0.8,1.1,1.3,2.3,1.3,3.7c0,1.3-0.4,2.4-1.3,3.1c-0.8,0.7-1.9,0.9-3.2,0.6
+		l-3.3-0.8v-9.4L89.5,80.2z M88.6,82.3v4.9l1,0.2c0.6,0.1,1.1,0,1.5-0.3c0.4-0.4,0.6-0.9,0.6-1.6c0-0.7-0.2-1.3-0.6-1.9
+		s-0.9-0.9-1.6-1L88.6,82.3z"/>
+	<path class="rules_app_215" d="M100.4,89.6c0.3-0.3,0.5-0.7,0.5-1.2v-5.5l2.3,0.5v5.5c0,1.2-0.4,2.1-1.1,2.7c-0.7,0.6-1.7,0.8-2.8,0.6
+		c-1.1-0.3-2-0.9-2.8-1.8c-0.7-1-1.1-2-1.1-3.2v-5.5l2.3,0.5v5.5c0,0.5,0.2,1,0.5,1.5c0.3,0.4,0.7,0.7,1.1,0.8
+		C99.7,90,100.1,89.9,100.4,89.6z"/>
+	<path class="rules_app_215" d="M106.7,91.6l-0.6,1.9l-2.5-0.6l3.2-8.7l2.5,0.6l3.2,10.2l-2.5-0.6l-0.6-2.2L106.7,91.6z M108.1,87.1
+		l-0.8,2.6l1.6,0.4L108.1,87.1z"/>
+	<path class="rules_app_215" d="M89.5,94.9c1.3,0.3,2.4,1,3.2,2.1c0.8,1.1,1.3,2.3,1.3,3.7c0,1.3-0.4,2.4-1.3,3.1s-1.9,0.9-3.2,0.6l-3.3-0.8
+		v-9.4L89.5,94.9z M88.6,97v4.9l1,0.2c0.6,0.1,1.1,0,1.5-0.3s0.6-0.9,0.6-1.6c0-0.7-0.2-1.3-0.6-1.9s-0.9-0.9-1.6-1L88.6,97z"/>
+	<path class="rules_app_215" d="M100.4,104.3c0.3-0.3,0.5-0.7,0.5-1.2v-5.5l2.3,0.5v5.5c0,1.2-0.4,2.1-1.1,2.7c-0.7,0.6-1.7,0.8-2.8,0.6
+		c-1.1-0.3-2-0.9-2.8-1.8c-0.7-1-1.1-2-1.1-3.2v-5.5l2.3,0.5v5.5c0,0.5,0.2,1,0.5,1.5s0.7,0.7,1.1,0.8
+		C99.7,104.7,100.1,104.6,100.4,104.3z"/>
+	<path class="rules_app_215" d="M107.6,105.7c0.5,0.6,1,1,1.7,1.2c0.4,0.1,0.8,0.1,1.2,0s0.7-0.3,0.8-0.4l0.3-0.2l1.3,1.9
+		c0,0-0.1,0.1-0.1,0.2s-0.2,0.2-0.4,0.4c-0.2,0.2-0.5,0.3-0.7,0.4s-0.6,0.2-1,0.2c-0.4,0-0.9,0-1.3-0.1c-1.3-0.3-2.4-1.1-3.4-2.2
+		c-0.9-1.2-1.4-2.5-1.4-3.8c0-1.4,0.5-2.4,1.4-3.2c0.9-0.8,2-1,3.4-0.7c0.5,0.1,0.9,0.3,1.3,0.5c0.4,0.2,0.7,0.5,1,0.7
+		c0.3,0.2,0.5,0.5,0.7,0.7c0.2,0.2,0.3,0.4,0.4,0.6l0.1,0.2l-1.4,1.3c0,0-0.1-0.1-0.1-0.2c0-0.1-0.1-0.2-0.3-0.4
+		c-0.1-0.2-0.3-0.3-0.4-0.5c-0.2-0.1-0.4-0.3-0.6-0.4c-0.3-0.1-0.5-0.2-0.8-0.3c-0.7-0.2-1.3,0-1.7,0.4c-0.5,0.4-0.7,1-0.7,1.8
+		S107.1,105.1,107.6,105.7z"/>
+	<path class="rules_app_215" d="M87.2,117.4c-0.9-1.2-1.4-2.5-1.4-3.8s0.5-2.4,1.4-3.2c0.9-0.8,2-1,3.4-0.7c0.5,0.1,0.9,0.3,1.3,0.5
+		c0.4,0.2,0.7,0.5,1,0.7c0.3,0.2,0.5,0.5,0.7,0.7c0.2,0.2,0.3,0.4,0.4,0.6l0.1,0.2l-1.4,1.3c0,0-0.1-0.1-0.1-0.2
+		c0-0.1-0.1-0.2-0.3-0.4c-0.1-0.2-0.3-0.3-0.4-0.5s-0.4-0.3-0.6-0.4c-0.3-0.1-0.5-0.2-0.8-0.3c-0.7-0.2-1.3,0-1.7,0.4
+		c-0.5,0.4-0.7,1-0.7,1.8c0,0.8,0.2,1.5,0.7,2.1c0.5,0.6,1,1,1.7,1.2c0.3,0.1,0.6,0.1,0.8,0c0.2,0,0.4-0.1,0.5-0.2l0.1-0.1v-1
+		l-1.3-0.3v-1.6l3.6,0.8v3.6c0,0-0.1,0.1-0.2,0.2c-0.1,0.1-0.2,0.2-0.5,0.3c-0.2,0.2-0.5,0.3-0.8,0.4c-0.3,0.1-0.6,0.2-1,0.2
+		c-0.4,0-0.9,0-1.3-0.1C89.2,119.3,88.1,118.6,87.2,117.4z"/>
+	<path class="rules_app_215" d="M102.7,120v2.2l-6.7-1.5v-9.4l6.5,1.5v2.2l-4.2-1v1.5l3.3,0.8v2l-3.3-0.8v1.6L102.7,120z"/>
+	<path class="rules_app_215" d="M104.2,122.5v-9.4l2.3,0.5v7.2l3.8,0.9v2.3L104.2,122.5z"/>
+</g>
+</svg>

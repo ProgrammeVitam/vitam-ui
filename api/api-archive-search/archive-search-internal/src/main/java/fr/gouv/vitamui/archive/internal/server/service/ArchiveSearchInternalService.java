@@ -83,8 +83,10 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.NODES;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.REUSE_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaMgtRulesCategory;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.DEFAULT_DEPTH;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
@@ -157,10 +159,12 @@ public class ArchiveSearchInternalService {
             fillWaitingToComputeCriteria(searchQuery);
             SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
             archiveSearchFacetsInternalService.addPositionsNodesFacet(searchQuery, selectMultiQuery);
-            if (archiveSearchFacetsInternalService.computeFacets(searchQuery)) {
+            if (searchQuery.isComputeFacets()) {
                 selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COMPUTE_RULES_AU_NUMBER,
                     SIMPLE_FIELDS_VALUES_MAPPING.get(RULES_COMPUTED), 3,
                     FacetOrder.ASC));
+                selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
+                selectMultiQuery.setLimitFilter(0, 1);
             }
             JsonNode dslQuery = selectMultiQuery.getFinalSelect();
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
@@ -177,13 +181,24 @@ public class ArchiveSearchInternalService {
             searchQuery.extractCriteriaListByCategory(APPRAISAL_RULE);
         List<SearchCriteriaEltDto> accessMgtRulesCriteriaList =
             searchQuery.extractCriteriaListByCategory(ACCESS_RULE);
+        List<SearchCriteriaEltDto> reuseMgtRulesCriteriaList =
+            searchQuery.extractCriteriaListByCategory(REUSE_RULE);
+        List<SearchCriteriaEltDto> disseminationMgtRulesCriteriaList =
+            searchQuery.extractCriteriaListByCategory(DISSEMINATION_RULE);
         List<SearchCriteriaEltDto> waitingToRecalculateCriteria = searchQuery
             .extractCriteriaListByCategoryAndFieldNames(FIELDS,
                 List.of(WAITING_RECALCULATE));
 
-        if (!CollectionUtils.isEmpty(waitingToRecalculateCriteria) &&
-            (!CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList) ||
-                !CollectionUtils.isEmpty(accessMgtRulesCriteriaList))) {
+        boolean hasAppraisalRulesCriteria = !CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList);
+        boolean hasAccessRulesCriteria = !CollectionUtils.isEmpty(accessMgtRulesCriteriaList);
+        boolean hasReuseRulesCriteria = !CollectionUtils.isEmpty(reuseMgtRulesCriteriaList);
+        boolean hasDisseminationRulesCriteria = !CollectionUtils.isEmpty(disseminationMgtRulesCriteriaList);
+        boolean hasWaitingToRecalculateCriteria = !CollectionUtils.isEmpty(waitingToRecalculateCriteria);
+
+        if (hasWaitingToRecalculateCriteria &&
+            (hasAppraisalRulesCriteria || hasAccessRulesCriteria ||
+                hasReuseRulesCriteria ||
+                hasDisseminationRulesCriteria)) {
             List<SearchCriteriaEltDto> initialCriteriaList = searchQuery.getCriteriaList().stream().filter(
                 searchCriteriaEltDto ->
                     !(FIELDS.equals(searchCriteriaEltDto.getCategory()) &&
@@ -191,15 +206,25 @@ public class ArchiveSearchInternalService {
                             .equals(WAITING_RECALCULATE)))
             ).collect(Collectors.toList());
 
-            if (!CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList)) {
+            if (hasAppraisalRulesCriteria) {
                 archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithAppraisalCriteria(initialCriteriaList,
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
                         APPRAISAL_RULE);
             }
-            if (!CollectionUtils.isEmpty(accessMgtRulesCriteriaList)) {
+            if (hasAccessRulesCriteria) {
                 archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithAppraisalCriteria(initialCriteriaList,
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
                         ACCESS_RULE);
+            }
+            if (hasReuseRulesCriteria) {
+                archiveSearchFacetsInternalService
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
+                        REUSE_RULE);
+            }
+            if (hasDisseminationRulesCriteria) {
+                archiveSearchFacetsInternalService
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
+                        DISSEMINATION_RULE);
             }
             searchQuery.setCriteriaList(initialCriteriaList);
         }
@@ -397,7 +422,7 @@ public class ArchiveSearchInternalService {
 
     public ResultsDto findObjectById(String id, VitamContext vitamContext) throws VitamClientException {
         try {
-            LOGGER.info("Get Object Group");
+            LOGGER.debug("Get Object Group");
             String re = StringUtils
                 .chop(
                     unitService.findObjectMetadataById(id, vitamContext).toJsonNode()
@@ -422,12 +447,10 @@ public class ArchiveSearchInternalService {
      */
     public Response downloadObjectFromUnit(String id, String usage, Integer version, final VitamContext vitamContext)
         throws VitamClientException {
-        LOGGER.info("Download Archive Unit Object with id {} , usage {} and version {}  ", id, usage, version);
+        LOGGER.debug("Download Archive Unit Object with id {} , usage {} and version {}  ", id, usage, version);
         return unitService
             .getObjectStreamByUnitId(id, usage, version, vitamContext);
     }
-
-
 
     public SelectMultiQuery createSelectMultiQuery(List<SearchCriteriaEltDto> criteriaList)
         throws InvalidParseOperationException, InvalidCreateOperationException {
@@ -456,6 +479,7 @@ public class ArchiveSearchInternalService {
         if (query.isReady()) {
             select.setQuery(query);
         }
+
         LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
 
         return select;
@@ -549,7 +573,7 @@ public class ArchiveSearchInternalService {
         Arrays.stream(new String[] {DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS})
             .forEach(((ObjectNode) dslQuery)::remove);
         array.add(dslQuery);
-        LOGGER.debug("Reclassification query : {}", array.toPrettyString());
+        LOGGER.debug("Reclassification query : {}", array);
         RequestResponse<JsonNode> jsonNodeRequestResponse = unitService.reclassification(vitamContext, array);
         return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
 

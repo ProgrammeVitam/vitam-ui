@@ -1,0 +1,1 @@
+[{"$or":[{"$and":[{"$gte":{"#management.DisseminationRule.Rules.EndDate":"2011-11-02"}},{"$lte":{"#management.DisseminationRule.Rules.EndDate":"2021-11-02"}}]},{"$and":[{"$gte":{"#computedInheritedRules.DisseminationRule.MaxEndDate":"2011-11-02"}},{"$lte":{"#computedInheritedRules.DisseminationRule.MaxEndDate":"2021-11-02"}}]}]}]

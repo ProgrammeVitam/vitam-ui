@@ -5,7 +5,7 @@
     </i>
     {{ getRuleCategoryName(ruleCategory) }}
   </div>
-  <div class="col" *ngIf="!isPreventInheritance">{{ getMaxEndDate(unitRuleDTO) | date: 'dd/MM/yyyy' }}</div>
+  <div class="col" *ngIf="!isPreventInheritance">{{ getMaxEndDate(unitRuleDTO) | dateTime: 'dd/MM/yyyy' }}</div>
   <div class="col" *ngIf="!isPreventInheritance">{{ getFinalActionValue(propertiesList) }}</div>
 </div>
 <div class="collapsible" [@collapse]="listOfRulesCollapsed">
@@ -116,7 +116,7 @@
 </div>
 
 <ng-template #resultsFound>
-  <div class="vitamui-table-head" *ngIf="isToShowRulesList">
+  <div class="vitamui-table-head" *ngIf="isToShowRulesList || isToShowBlockedRulesList">
     <div class="col-4">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE.IDENTIFIER' | translate }}</div>
     <div class="col-3">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE.START_DATE' | translate }}</div>
     <div class="col-3">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE.END_DATE' | translate }}</div>
@@ -131,8 +131,8 @@
         (click)="getHoldRuleInformations(rule)"
       >
         <div class="col-4 text">{{ rule.Rule }}</div>
-        <div class="col-3 text">{{ rule.StartDate | date: 'dd/MM/yyyy' }}</div>
-        <div class="col-3 text">{{ rule.EndDate | date: 'dd/MM/yyyy' }}</div>
+        <div class="col-3 text">{{ rule.StartDate | dateTime: 'dd/MM/yyyy' }}</div>
+        <div class="col-3 text">{{ rule.EndDate | dateTime: 'dd/MM/yyyy' }}</div>
         <div class="col-2 text">{{ getRuleStatus(rule) }}</div>
       </div>
     </div>

@@ -45,6 +45,7 @@ import fr.gouv.vitamui.ui.commons.rest.LogbookController;
 import fr.gouv.vitamui.ui.commons.rest.RuleController;
 import fr.gouv.vitamui.ui.commons.rest.SecurityController;
 import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
+import fr.gouv.vitamui.ui.commons.rest.UnitController;
 import fr.gouv.vitamui.ui.commons.rest.UserController;
 import fr.gouv.vitamui.ui.commons.rest.UserInfoController;
 import fr.gouv.vitamui.ui.commons.service.AccessContractService;
@@ -55,6 +56,7 @@ import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.RuleService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
+import fr.gouv.vitamui.ui.commons.service.UnitService;
 import fr.gouv.vitamui.ui.commons.service.UserInfoService;
 import fr.gouv.vitamui.ui.commons.service.UserService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -137,5 +139,12 @@ public class AutoConfigurationRestController {
     @ConditionalOnMissingBean
     public RuleController ruleService(final RuleService ruleService) {
         return new RuleController(ruleService);
+    }
+
+    @Bean("unitController")
+    @DependsOn("unitService")
+    @ConditionalOnMissingBean
+    public UnitController unitController(final UnitService unitService) {
+        return new UnitController(unitService);
     }
 }

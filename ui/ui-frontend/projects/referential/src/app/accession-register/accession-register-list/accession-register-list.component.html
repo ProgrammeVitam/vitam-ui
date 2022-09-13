@@ -6,7 +6,8 @@
           {{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: { nb: dataSource?.length } }}
         </div>
         <div class="col-1 area-download" [ngClass]="dataSource?.length > 0 ? 'enabled-div' : 'disabled-div'">
-          <i (click)="exportAccessionRegisterCsv()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
+          <i (click)="exportAccessionRegisterCsv()"
+             class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
         </div>
       </div>
       <div class="vitamui-table-head">
@@ -60,7 +61,7 @@
           <button
             class="vitamui-filter-button ml-1"
             [vitamuiCommonTableFilter]="statusFilterTemplate"
-            [class.active]="filterMap['Status'] && filterMap['Status'].length > 0"
+            [class.active]="filterMap.get('Status') && filterMap.get('Status').length > 0"
             #statusFilterTrigger="vitamuiCommonTableFilter"
           >
             <em class="material-icons vitamui-row-icon">filter_list</em>
@@ -78,10 +79,12 @@
       </div>
 
       <div class="vitamui-table-body">
-        <div class="vitamui-table-rows" *ngFor="let accessionRegisterDetail of dataSource" (click)="onSelectRow(accessionRegisterDetail)">
+        <div class="vitamui-table-rows"
+             *ngFor="let accessionRegisterDetail of dataSource"
+             (click)="onSelectRow(accessionRegisterDetail)">
           <div class="vitamui-row d-flex align-items-center clickable">
-            <div class="col-1">{{ accessionRegisterDetail.endDate | date: 'dd/MM/yyyy' }}</div>
-            <div class="col-3">{{ accessionRegisterDetail.opi }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.endDate | dateTime: 'dd/MM/yyyy' }}</div>
+            <div class="col-3">{{ accessionRegisterDetail.obIdIn }}</div>
             <div class="col-1">
               <p
                 matTooltip="{{ accessionRegisterDetail.originatingAgencyLabel }}"
@@ -92,7 +95,8 @@
               </p>
             </div>
             <div class="col-1">
-              <p matTooltip="{{ accessionRegisterDetail.archivalAgreement }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+              <p matTooltip="{{ accessionRegisterDetail.archivalAgreement }}" matTooltipClass="vitamui-tooltip"
+                 [matTooltipShowDelay]="300">
                 {{ accessionRegisterDetail.archivalAgreement | truncate: 12 }}
               </p>
             </div>
@@ -102,10 +106,9 @@
             <div class="col-1">{{ accessionRegisterDetail.totalObjects?.ingested }}</div>
             <div class="col-1">{{ accessionRegisterDetail.objectSize?.ingested | bytes }}</div>
             <div class="col-1">
-              <p
-                matTooltip="{{ 'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate }}"
-                matTooltipClass="vitamui-tooltip"
-                [matTooltipShowDelay]="300"
+              <p matTooltip="{{ 'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate }}"
+                 matTooltipClass="vitamui-tooltip"
+                 [matTooltipShowDelay]="300"
               >
                 {{ 'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate | truncate: 12 }}
               </p>
@@ -113,6 +116,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <div *ngIf="!dataSource || pending; then loadingSpinner"></div>

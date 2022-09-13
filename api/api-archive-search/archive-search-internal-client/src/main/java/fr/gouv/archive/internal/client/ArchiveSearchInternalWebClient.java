@@ -64,7 +64,7 @@ public class ArchiveSearchInternalWebClient extends BaseWebClient<InternalHttpCo
      */
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
         final InternalHttpContext context) {
-        LOGGER.info("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
+        LOGGER.debug("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(
                 getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +

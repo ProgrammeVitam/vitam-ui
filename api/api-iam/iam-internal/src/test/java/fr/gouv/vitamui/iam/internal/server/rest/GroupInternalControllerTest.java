@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -150,7 +152,8 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
     }
 
     @Test
-    public void testCreationFailsAsTheProfileDoesNotExist() {
+    public void testCreationFailsAsTheProfileDoesNotExist() throws InvalidParseOperationException,
+        PreconditionFailedException {
         final GroupDto dto = buildGroupDto();
         dto.setId(null);
 
@@ -167,7 +170,7 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
     }
 
     @Test
-    public void testCreationFailsAsTheNameIsAlreadyUsed() {
+    public void testCreationFailsAsTheNameIsAlreadyUsed() throws InvalidParseOperationException, PreconditionFailedException {
         final GroupDto dto = buildGroupDto();
         dto.setId(null);
 

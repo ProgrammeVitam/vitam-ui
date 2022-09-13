@@ -71,4 +71,6 @@ public class VitamUiRuleCategoryAction implements Serializable {
     private Boolean preventInheritance;
 
     private Set<String> preventRulesId;
+
+    private Set<String> preventRulesIdToAdd;
 }

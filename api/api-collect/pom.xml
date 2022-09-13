@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>api-parent</artifactId>
+        <groupId>fr.gouv.vitamui</groupId>
+        <version>6.rc.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <name>VITAMUI Collect API</name>
+    <artifactId>api-collect</artifactId>
+    <packaging>pom</packaging>
+    <description>VITAMUI Collect API</description>
+
+    <modules>
+        <module>collect-commons</module>
+        <module>collect-external</module>
+        <module>collect-external-client</module>
+        <module>collect-internal</module>
+        <module>collect-internal-client</module>
+    </modules>
+
+</project>

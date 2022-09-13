@@ -32,7 +32,7 @@
                         'status-badge-orange': probativeValueStatus(probativeValue) == 'WARNING', 'status-badge-red': probativeValueStatus(probativeValue) == 'KO' || probativeValueStatus(probativeValue) == 'FATAL' }"></i>
         </td>
         <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValue?.id }}</td>
-        <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValue?.dateTime | date: 'dd/MM/yyyy'  }}
+        <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValue?.dateTime | dateTime: 'dd/MM/yyyy'  }}
         </td>
         <td class="clickable" (click)="probativeValueClick.emit(probativeValue)"
           [ngClass]="{'text-green': probativeValueStatus(probativeValue) == 'OK', 'text-grey':probativeValueStatus(probativeValue) == 'STARTED',

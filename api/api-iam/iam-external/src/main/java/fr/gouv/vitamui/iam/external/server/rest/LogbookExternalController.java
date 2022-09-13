@@ -37,12 +37,13 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -51,7 +52,6 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.external.server.service.LogbookExternalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -67,7 +67,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -93,7 +92,10 @@ public class LogbookExternalController {
     @ApiOperation(value = "Get operation by id")
     @GetMapping(CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id) {
+    public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return logbookExternalService.findOperationByUnitId(id);
     }
@@ -101,7 +103,10 @@ public class LogbookExternalController {
     @ApiOperation(value = "Get logbook unit lifecycle by archive unit id")
     @GetMapping(CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id) {
+    public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return logbookExternalService.findUnitLifeCyclesByUnitId(id);
     }
@@ -109,7 +114,10 @@ public class LogbookExternalController {
     @ApiOperation(value = "Get logbook object lifecycle by archive unit id")
     @GetMapping(CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id) {
+    public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return logbookExternalService.findObjectGroupLifeCyclesByUnitId(id);
     }
@@ -118,7 +126,6 @@ public class LogbookExternalController {
     @Secured({ServicesData.ROLE_LOGBOOKS})
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) throws VitamClientException {
-        SanityChecker.sanitizeJson(select);
         return logbookExternalService.findOperations(select);
     }
 
@@ -126,9 +133,12 @@ public class LogbookExternalController {
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH)
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadManifest(@PathVariable final String id) {
-        LOGGER.debug("Download the manifest for the Vitam operation : {}", id);
+    public ResponseEntity<Resource> downloadManifest(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Download the manifest for the Vitam operation : {}", id);
         final ResponseEntity<Resource> response = logbookExternalService.downloadManifest(id);
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
     }
@@ -137,9 +147,12 @@ public class LogbookExternalController {
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH)
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadAtr(@PathVariable final String id) {
-        LOGGER.debug("Download the ATR file for the Vitam operation : {}", id);
+    public ResponseEntity<Resource> downloadAtr(@PathVariable final String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Download the ATR file for the Vitam operation : {}", id);
         final ResponseEntity<Resource> response = logbookExternalService.downloadAtr(id);
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
     }
@@ -148,9 +161,12 @@ public class LogbookExternalController {
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadReport(@PathVariable final String id, @PathVariable final String downloadType) {
-        LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
+    public ResponseEntity<Resource> downloadReport(@PathVariable final String id, @PathVariable final String downloadType)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier and the download type are mandatory parameters: ", id, downloadType);
+        SanityChecker.checkSecureParameter(id, downloadType);
+        LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
         ResponseEntity<Resource> responseResource = logbookExternalService.downloadReport(id, downloadType).block();
         return RestUtils.buildFileResponse(responseResource, Optional.empty(), Optional.empty());
     }

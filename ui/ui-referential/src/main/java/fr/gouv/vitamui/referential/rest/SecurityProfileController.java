@@ -47,7 +47,10 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -97,9 +100,11 @@ public class SecurityProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<SecurityProfileDto> getAll(final Optional<String> criteria) {
+    public Collection<SecurityProfileDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -107,7 +112,12 @@ public class SecurityProfileController extends AbstractUiRestController {
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(criteria);
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
@@ -115,7 +125,9 @@ public class SecurityProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Get agency by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     @ResponseStatus(HttpStatus.OK)
-    public SecurityProfileDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+    public SecurityProfileDto getById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
@@ -129,7 +141,9 @@ public class SecurityProfileController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create securityProfile")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody SecurityProfileDto securityProfileDto) {
+    public ResponseEntity<Void> check(@RequestBody SecurityProfileDto securityProfileDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(securityProfileDto);
         LOGGER.debug("check ability to create securityProfile={}", securityProfileDto);
         final boolean exist = service.check(buildUiHttpContext(), securityProfileDto);
         LOGGER.debug("response value={}" + exist);
@@ -139,7 +153,9 @@ public class SecurityProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Create securityProfile")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SecurityProfileDto create(@Valid @RequestBody  SecurityProfileDto securityProfileDto) {
+    public SecurityProfileDto create(@Valid @RequestBody  SecurityProfileDto securityProfileDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(securityProfileDto);
         LOGGER.debug("create securityProfile={}", securityProfileDto);
         return service.create(buildUiHttpContext(), securityProfileDto);
     }
@@ -147,26 +163,35 @@ public class SecurityProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public SecurityProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch User {} with {}", id, partialDto);
+    public SecurityProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier, the partialEntity are mandatory parameters: ", id, partialDto);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch User {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch securityProfile : the DTO id must match the path id.");
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
     @ApiOperation(value = "get history by securityProfile's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
-        LOGGER.debug("get logbook for securityProfile with id :{}", id);
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for securityProfile with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "delete securityProfile")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable String id) {
-        LOGGER.debug("delete securityProfile with id :{}", id);
+    public void delete(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("delete securityProfile with id :{}", id);
         service.delete(buildUiHttpContext(), id);
     }
 

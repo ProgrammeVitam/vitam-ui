@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archives.search.external.client;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -50,7 +51,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.Objects;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.when;
@@ -78,7 +81,7 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     @Test
     public void sampleArchiveTest() {
         Assertions.assertNotNull(archiveSearchExternalRestClient);
-        Assertions.assertEquals(archiveSearchExternalRestClient.getPathUrl(), RestApi.ARCHIVE_SEARCH_PATH);
+        Assertions.assertEquals(RestApi.ARCHIVE_SEARCH_PATH, archiveSearchExternalRestClient.getPathUrl());
     }
 
 
@@ -125,8 +128,9 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
         SearchCriteriaDto query = new SearchCriteriaDto();
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
 
-        Resource resource = new ByteArrayResource(ArchiveSearchExternalRestClientTest.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+        Resource resource = new ByteArrayResource(
+            Objects.requireNonNull(ArchiveSearchExternalRestClientTest.class.getClassLoader()
+                .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)).readAllBytes());
 
         when(restTemplate.exchange(anyString(), eq(HttpMethod.POST),
             eq(request), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
@@ -136,5 +140,19 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
 
         Assertions.assertEquals(response.getBody(), resource);
     }
-}
 
+    @Test
+    public void transferRequest_should_return_OK() {
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        MultiValueMap<String, String> headers = archiveSearchExternalRestClient.buildSearchHeaders(context);
+        TransferRequestDto transferRequestDto = new TransferRequestDto();
+        final HttpEntity<TransferRequestDto> request = new HttpEntity<>(transferRequestDto, headers);
+        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST), eq(request), any(Class.class)))
+            .thenReturn(new ResponseEntity<>("OK", HttpStatus.OK));
+        // When
+        ResponseEntity<String> response = archiveSearchExternalRestClient.transferRequest(transferRequestDto, context);
+
+        org.assertj.core.api.Assertions.assertThat(response).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(response.getBody()).isEqualTo("OK");
+    }
+}

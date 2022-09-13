@@ -36,35 +36,17 @@
  */
 package fr.gouv.vitamui.referential.internal.server.rest;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
-import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
-
-import java.io.IOException;
-import java.util.Optional;
-
-import fr.gouv.vitamui.common.security.SanityChecker;
-import fr.gouv.vitamui.commons.api.ParameterChecker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -75,6 +57,20 @@ import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.unit.UnitInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.util.Optional;
+
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
+import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 
 @RestController
 @RequestMapping(RestApi.UNITS_PATH)
@@ -112,7 +108,7 @@ public class UnitInternalController {
             @PathVariable final Optional<String> id,
             @RequestBody final JsonNode dsl) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
+        SanityChecker.sanitizeJson(dsl);
         return unitInternalService.searchUnitsWithErrors(id, dsl, vitamContext);
     }
 
@@ -124,7 +120,7 @@ public class UnitInternalController {
             @RequestBody final JsonNode dsl) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
+        SanityChecker.sanitizeJson(dsl);
         return unitInternalService.findObjectMetadataById(id, dsl, vitamContext);
     }
 

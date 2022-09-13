@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.service;
 
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
@@ -78,7 +78,7 @@ public class AccessionRegisterDetailExternalService extends
         return accessionRegisterDetailInternalRestClient;
     }
 
-    public Resource exportCsvArchiveUnitsByCriteria(final AccessionRegisterDetailsSearchStatsDto query) {
+    public Resource exportCsvArchiveUnitsByCriteria(final AccessionRegisterSearchDto query) {
         return accessionRegisterDetailInternalRestClient.exportAccessionRegisterCsv(query, getInternalHttpContext());
     }
 

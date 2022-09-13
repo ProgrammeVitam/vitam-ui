@@ -42,10 +42,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUICommonModule } from 'ui-frontend-common';
+
 import { UploadModule } from '../core/common/upload.module';
+import { UploadTrackingModule } from '../shared/upload-tracking/upload-tracking.module';
 import { HoldingFillingSchemeRoutingModule } from './holding-filling-scheme-routing.module';
 import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 
@@ -61,12 +62,10 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
     MatNativeDateModule,
     HoldingFillingSchemeRoutingModule,
     MatProgressBarModule,
-    UploadModule
+    UploadModule,
+    UploadTrackingModule,
   ],
-  declarations: [
-    HoldingFillingSchemeComponent
-  ],
-  providers: [
-  ]
+  declarations: [HoldingFillingSchemeComponent],
+  providers: [],
 })
-export class HoldingFillingSchemeModule { }
+export class HoldingFillingSchemeModule {}
