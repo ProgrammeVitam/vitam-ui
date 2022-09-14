@@ -124,7 +124,8 @@ public class UserInfoController extends AbstractUiRestController {
 
     @ApiOperation(value = "get history by user info id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException {
         LOGGER.debug("get logbook for user info with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
