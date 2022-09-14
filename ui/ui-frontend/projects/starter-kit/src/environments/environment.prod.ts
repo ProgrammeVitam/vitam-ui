@@ -39,4 +39,7 @@ export enum TooltipPosition {
   BOTTOM = 'BOTTOM',
   LEFT = 'LEFT',
   RIGHT = 'RIGHT',
-}
+};
+export const environment = {
+  production: true
+};

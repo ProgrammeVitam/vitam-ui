@@ -214,6 +214,7 @@
     "RULE_UPDATE_FAILED": "Management rule {{ name }} has not been updated",
     "RULE_DELETE_SUCCESS": "Management rule {{ name }} has been deleted",
     "RULE_DELETE_FAILED": "Management rule {{ name }} could not be deleted",
-    "RULE_EXPORT_ALL": "Export of management rules in progress ..."
+    "RULE_EXPORT_ALL": "Export of management rules in progress ...",
+    "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de {{ limit }} résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
   }
 }

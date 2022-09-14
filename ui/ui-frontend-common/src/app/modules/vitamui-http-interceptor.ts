@@ -67,6 +67,7 @@ const ERROR_NOTIFICATION_MESSAGE_BY_HTTP_STATUS: Map<number, string> = new Map([
   [503, 'HTTP_INTERCEPTOR.HTTP_STATUS_CODE_SERVICE_UNAVAILABLE'],
   [504, 'HTTP_INTERCEPTOR.HTTP_STATUS_CODE_GATEWAY_TIMEOUT'],
   [417, 'HTTP_INTERCEPTOR.HTTP_STATUS_CODE_EXPECTATION_FAILED'],
+  [412, 'HTTP_INTERCEPTOR.HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION'],
 ]);
 @Injectable()
 export class VitamUIHttpInterceptor implements HttpInterceptor {
@@ -81,8 +82,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     private authService: AuthService,
     private injector: Injector,
     @Inject(ENVIRONMENT) private environment: any,
-    @Inject(WINDOW_LOCATION) private location: any,
-    private translateService: TranslateService
+    @Inject(WINDOW_LOCATION) private location: any
   ) {
     this.apiTimeout = environment?.apiTimeout ? environment.apiTimeout :  DEFAULT_API_TIMEOUT;
   }
@@ -117,7 +117,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
         'X-Requested-With': 'XMLHttpRequest',
         'X-Tenant-Id': tenantIdentifier ? tenantIdentifier.toString() : '-1',
         'X-Application-Id': applicationId,
-      },
+      }
     });
 
     let errorToByPass: number = null;
@@ -125,9 +125,8 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
       errorToByPass = +request.headers.get('X-By-Passed-Error');
     }
 
-    return next.handle(reqWithCredentials)
-      .pipe(
-        timeoutWith(
+    return next.handle(reqWithCredentials).pipe(
+      timeoutWith(
           this.apiTimeout,
           throwError(new VitamUITimeoutError())
         ),

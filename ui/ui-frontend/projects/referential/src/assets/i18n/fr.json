@@ -215,6 +215,7 @@
     "RULE_UPDATE_FAILED": "La règle de gestion {{ name }} n'a pu être mise à jour.",
     "RULE_DELETE_SUCCESS": "La règle de gestion {{ name }} a bien été supprimée.",
     "RULE_DELETE_FAILED": "La règle de gestion {{ name }} n'a pu être supprimée.",
-    "RULE_EXPORT_ALL": "Export des règles de gestion en cours..."
+    "RULE_EXPORT_ALL": "Export des règles de gestion en cours...",
+    "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de {{ limit }} résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
   }
 }

@@ -41,14 +41,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import { BASE_URL, InjectorModule, VitamUISnackBar, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab.component';
 
 describe('ArchiveUnitRulesDetailsTabComponent', () => {
   let component: ArchiveUnitRulesDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitRulesDetailsTabComponent>;
-
-  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -56,7 +54,6 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
       imports: [InjectorModule, MatSnackBarModule, HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
       ],
