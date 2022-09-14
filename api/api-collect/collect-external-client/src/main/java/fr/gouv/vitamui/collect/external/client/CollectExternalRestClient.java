@@ -29,6 +29,7 @@ package fr.gouv.vitamui.collect.external.client;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -48,8 +49,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
 
 
 public class CollectExternalRestClient
@@ -81,14 +81,21 @@ public class CollectExternalRestClient
         return RestApi.COLLECT_PROJECT_PATH;
     }
 
+    private String getTransactionUrl() {
+        if (baseUrl != null) {
+            return baseUrl + RestApi.COLLECT_TRANSACTION_PATH;
+        } else {
+            return RestApi.COLLECT_TRANSACTION_PATH;
+        }
+    }
+
     public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String projectId,
         SearchCriteriaDto searchQuery) {
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
-            restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS,
-                HttpMethod.POST,
-                request, ArchiveUnitsDto.class);
+            restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST, request,
+                ArchiveUnitsDto.class);
         checkResponse(response);
         return response.getBody();
     }
@@ -102,8 +109,7 @@ public class CollectExternalRestClient
 
 
     public void deleteProject(String id, ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
     }
@@ -117,4 +123,28 @@ public class CollectExternalRestClient
             request, Resource.class);
     }
 
+    public void sendTransaction(ExternalHttpContext context, String transactionId) {
+
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID + SEND_PATH);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, Void.class);
+    }
+
+    public void validateTransaction(ExternalHttpContext context, String transactionId) {
+
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID + VALIDATE_PATH);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, Void.class);
+    }
+
+    public CollectTransactionDto getTransactionById(ExternalHttpContext context, String projectId) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        ResponseEntity<CollectTransactionDto> response =
+            restTemplate.exchange(uriBuilder.build(projectId), HttpMethod.GET, request, CollectTransactionDto.class);
+        return response.getBody();
+    }
 }

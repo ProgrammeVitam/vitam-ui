@@ -18,15 +18,32 @@
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
       <div class="row justify-content-around">
-        <div class="col-8 form-control">
+        <div class="col-6 form-control">
           <app-title-and-description-criteria-search-collect></app-title-and-description-criteria-search-collect>
         </div>
-        <div class="col-1 form-control"></div>
         <div class="col-3 form-control text-right">
           <button type="button" class="btn primary"
             [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)" (click)="submit()">
             {{ 'COLLECT.LAUNCH_SEARCH_ACTION' | translate }}
           </button>
+
+        </div>
+
+        <div class="col-3 form-control text-right">
+          <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
+            <i class="material-icons">more_horiz</i> <span
+            i18n="More actions button label@@customerListMoreActionsButton">{{ 'COLLECT.OTHER_ACTION' | translate }} </span>
+          </button>
+          <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu"
+                    xPosition="before">
+            <button mat-menu-item i18n="Import@@RuleImportButton" (click)="validateTransaction()"
+                    [disabled]="isNotOpen$ | async"> {{ 'COLLECT.VALIDATE_ACTION' | translate }}
+            </button>
+
+            <button mat-menu-item i18n="Export@@RuleExportButton" (click)="sendTransaction()"
+                    [disabled]="isNotReady$ | async">{{ 'COLLECT.INGEST_ACTION' | translate }}
+            </button>
+          </mat-menu>
         </div>
       </div>
 

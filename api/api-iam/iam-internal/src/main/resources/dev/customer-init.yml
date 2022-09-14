@@ -239,6 +239,8 @@ customer-init:
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
+        - ROLE_SEND_TRANSACTIONS
+        - ROLE_CLOSE_TRANSACTIONS
 
   #- name: profileName
   #  description: desc

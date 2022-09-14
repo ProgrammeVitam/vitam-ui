@@ -25,14 +25,14 @@
  * accept its terms.
  */
 
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { merge, Subject, Subscription } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ActivatedRoute} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
+import {BehaviorSubject, merge, Subject, Subscription} from 'rxjs';
+import {debounceTime, map, mergeMap} from 'rxjs/operators';
 import {
   AccessContract,
   Direction,
@@ -40,8 +40,10 @@ import {
   ExternalParametersService,
   GlobalEventService,
   SidenavPage,
+  Transaction,
+  TransactionStatus
 } from 'ui-frontend-common';
-import { Unit } from 'vitamui-library/lib/models/unit.interface';
+import {Unit} from 'vitamui-library/lib/models/unit.interface';
 import {
   ArchiveSearchResultFacets,
   CriteriaValue,
@@ -54,13 +56,15 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
+  SearchCriteriaTypeEnum
 } from '../core/models';
-import { ArchiveCollectService } from './archive-collect.service';
-import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
-import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
-import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
-import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
+import {ArchiveCollectService} from './archive-collect.service';
+import {
+  SearchCriteriaSaverComponent
+} from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
+import {ArchiveFacetsService} from './archive-search-criteria/services/archive-facets.service';
+import {ArchiveSearchHelperService} from './archive-search-criteria/services/archive-search-helper.service';
+import {ArchiveSharedDataService} from './archive-search-criteria/services/archive-shared-data.service';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -73,15 +77,17 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./archive-search-collect.component.scss'],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy {
+  accessContract: string;
   accessContractSub: Subscription;
   accessContractSubscription: Subscription;
+  transactionSubscription: Subscription;
   errorMessageSub: Subscription;
   subscriptionFilingHoldingSchemeNodes: Subscription;
   subscriptionSimpleSearchCriteriaAdd: Subscription;
   subscriptionNodes: Subscription;
   searchCriteriaChangeSubscription: Subscription;
 
-  accessContract: string;
+  transaction: Transaction;
   projectId: string;
   foundAccessContract = false;
   hasAccessContractManagementPermissions = false;
@@ -134,6 +140,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly orderChange = new Subject<string>();
+  isNotOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  isNotReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+
 
   constructor(
     private route: ActivatedRoute,
@@ -183,6 +192,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   ngOnDestroy(): void {
     this.accessContractSub?.unsubscribe();
     this.accessContractSubscription?.unsubscribe();
+    this.transactionSubscription?.unsubscribe();
     this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
     this.subscriptionFilingHoldingSchemeNodes?.unsubscribe();
     this.subscriptionNodes?.unsubscribe();
@@ -193,10 +203,20 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   ngOnInit(): void {
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
-    this.route.params.subscribe((params) => {
+    this.transactionSubscription = this.route.params.pipe(mergeMap((params) => {
       this.projectId = params.id;
-    });
+      return this.archiveUnitCollectService.getProjectById(this.projectId);
+    }), mergeMap(project => {
+      return this.archiveUnitCollectService.getTransactionById(project.transactionId)
+    })).subscribe(transaction => {
+      this.transaction = transaction;
+      this.isNotOpen$.next(this.transaction.status !== TransactionStatus.OPEN);
+      this.isNotReady$.next(this.transaction.status !== TransactionStatus.READY);
+    })
+    ;
     this.projectName = this.route.snapshot.queryParamMap.get('projectName');
+
+
     this.searchCriteriaKeys = [];
     this.searchCriterias = new Map();
     this.initializeSelectionParams();
@@ -778,5 +798,29 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.isAllchecked,
       this.isIndeterminate
     );
+  }
+
+
+  validateTransaction() {
+    this.archiveUnitCollectService.validateTransaction(this.transaction.id).subscribe(() => {
+      this.isNotOpen$.next(true);
+      this.isNotReady$.next(false);
+      const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
+      this.snackBar.open(message + ': ' + this.accessContract, null, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 10000,
+      });
+    });
+  }
+
+  sendTransaction() {
+    this.archiveUnitCollectService.sendTransaction(this.transaction.id).subscribe(() => {
+      this.isNotReady$.next(true);
+      const message = this.translateService.instant('COLLECT.INGEST_TRANSACTION_LAUNCHED');
+      this.snackBar.open(message + ': ' + this.accessContract, null, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 10000,
+      });
+    });
   }
 }

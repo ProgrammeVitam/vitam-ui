@@ -63,7 +63,12 @@
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Ingest project",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
+    "INGEST_ACTION": "Ingest",
+    "VALIDATE_ACTION": "Validate",
+    "OTHER_ACTION": "Other actions",
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
+    "INGEST_TRANSACTION_LAUNCHED": "The ingest request of the project has been launched",
+    "VALIDATE_TRANSACTION_VALIDATED": "The ingest request of the project has been validated",
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "ARCHIVE_UNIT_PREVIEW": {
       "FIELDS": {

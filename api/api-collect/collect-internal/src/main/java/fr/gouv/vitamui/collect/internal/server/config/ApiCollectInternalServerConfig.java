@@ -37,6 +37,7 @@ import fr.gouv.vitamui.collect.internal.server.service.SearchCriteriaHistoryInte
 import fr.gouv.vitamui.collect.internal.server.service.converters.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.collect.internal.server.service.TransactionInternalService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -102,6 +103,12 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
         ObjectMapper objectMapper) {
         return new ProjectInternalService(collectService, objectMapper);
     }
+
+    @Bean
+    public TransactionInternalService transactionInternalService(final CollectService collectService) {
+        return new TransactionInternalService(collectService);
+    }
+
 
     @Bean
     public ProjectArchiveUnitInternalService projectArchiveUnitInternalService(final CollectService collectService,
