@@ -35,65 +35,58 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService } from 'ui-frontend-common';
-
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Component, forwardRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { Component, forwardRef, NO_ERRORS_SCHEMA } from '@angular/core';
-
+import { EMPTY, of } from 'rxjs';
+import { BASE_URL, ConfirmDialogService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { GroupService } from '../../../group.service';
-
 import { UnitsEditComponent } from './units-edit.component';
 
 @Component({
   selector: 'app-units-form',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => UnitsFormStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => UnitsFormStubComponent),
+      multi: true,
+    },
+  ],
 })
 class UnitsFormStubComponent {
   writeValue() {}
-  registerOnChange() { }
-  registerOnTouched() { }
+  registerOnChange() {}
+  registerOnTouched() {}
 }
 
 describe('UnitsEditComponent', () => {
   let component: UnitsEditComponent;
   let fixture: ComponentFixture<UnitsEditComponent>;
 
-  beforeEach(waitForAsync(() => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  beforeEach(
+    waitForAsync(() => {
+      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ UnitsEditComponent, UnitsFormStubComponent ],
-      providers: [
-        { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: GroupService, useValue: { patch: () => of({ result: 'test' }) } },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+        declarations: [UnitsEditComponent, UnitsFormStubComponent],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
+          { provide: MatDialogRef, useValue: matDialogRefSpy },
+          { provide: GroupService, useValue: { patch: () => of({ result: 'test' }) } },
+          { provide: BASE_URL, useValue: '/fake-api' },
+          { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnitsEditComponent);
@@ -106,7 +99,6 @@ describe('UnitsEditComponent', () => {
   });
 
   describe('Component', () => {
-
     it('should call groupService.patch when form is dirty', () => {
       const groupService = TestBed.inject(GroupService);
       spyOn(groupService, 'patch').and.callThrough();

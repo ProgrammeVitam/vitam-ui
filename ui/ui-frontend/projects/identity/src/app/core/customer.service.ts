@@ -36,14 +36,13 @@
  */
 import { Observable, Subject, zip } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Criterion, Customer, Logo, Operators, SearchQuery, ThemeService } from 'ui-frontend-common';
-
-import { Injectable } from '@angular/core';
+import { Criterion, Customer, Logo, Operators, SearchQuery, ThemeService, VitamUISnackBarService } from 'ui-frontend-common';
 
 import { HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AttachmentType } from '../customer/attachment.enum';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { CustomerApiService } from './api/customer-api.service';
 
 export const DEFAULT_PAGE_SIZE = 20;
@@ -56,7 +55,7 @@ export class CustomerService {
 
   constructor(
     private customerApi: CustomerApiService,
-    private snackBar: VitamUISnackBar,
+    private snackBarService: VitamUISnackBarService,
     private sanitizer: DomSanitizer,
     private themeService: ThemeService
   ) {}
@@ -85,45 +84,47 @@ export class CustomerService {
   }
 
   create(customer: Customer, logos?: Logo[]): Observable<Customer> {
-    return this.customerApi.createCustomer(customer, logos).pipe(
-      tap(
-        (response: Customer) => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'customerCreate', code: response.code },
-            duration: 10000,
-          });
-        },
-        () => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'customerCreateError' },
-            duration: 10000,
-          });
-        }
-      )
-    );
+    return this.customerApi.createCustomer(customer, logos)
+      .pipe(
+        tap(
+          (response: Customer) => {
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.CUSTOMER_CREATE',
+              icon: 'vitamui-icon-bank',
+              translateParams: {
+                param1: response.code
+              }
+            });
+          },
+          () => {
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.CUSTOMER_CREATE_ERROR',
+              icon: 'vitamui-icon-danger',
+            });
+          }
+        )
+      );
   }
 
-  patch(partialCustomer: { id: string; [key: string]: any }, logos?: Logo[]): Observable<Customer> {
-    return this.customerApi.patchCustomer(partialCustomer, logos).pipe(
-      tap((updatedCustomer: Customer) => this.updated.next(updatedCustomer)),
-      tap(
-        (updatedCustomer: Customer) => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'customerUpdate', code: updatedCustomer.code },
-            duration: 10000,
-          });
-        },
-        (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          });
-        }
-      )
-    );
+  patch(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[]): Observable<Customer> {
+    return this.customerApi.patchCustomer(partialCustomer, logos)
+      .pipe(
+        tap((updatedCustomer: Customer) => this.updated.next(updatedCustomer)),
+        tap(
+          (updatedCustomer: Customer) => {
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.CUSTOMER_UPDATE',
+              icon: 'vitamui-icon-bank',
+              translateParams: {
+                param1: updatedCustomer.code
+              }
+            });
+          },
+          (error) => {
+            this.snackBarService.open({ message: error.error.message, translate: false });
+          }
+        )
+      );
   }
 
   public getLogoUrl(id: string, type: AttachmentType): Observable<SafeResourceUrl> {

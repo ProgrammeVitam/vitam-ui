@@ -83,8 +83,9 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
 
   public setMessages(): void {
     let idCustomer = null;
-    const title = this.startupService.getDefaultPortalTitle();
-    const message = this.startupService.getDefaultPortalMessage();
+
+    const title = this.startupService.getConfigStringValue('PORTAL_MESSAGE');
+    const message = this.startupService.getConfigStringValue('PORTAL_TITLE');
 
     if (this.customer) {
       if (this.customer.id) {

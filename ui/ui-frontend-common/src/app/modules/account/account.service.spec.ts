@@ -37,20 +37,25 @@
 import { inject, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { VitamUISnackBar } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { BASE_URL } from '../injection-tokens';
 import { AccountService } from './account.service';
 
+import { EMPTY } from 'rxjs';
+
+import { TranslateService } from '@ngx-translate/core';
+import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
+
+
 describe('AccountService', () => {
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         AccountService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: {} },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } }
       ]
     });
   });

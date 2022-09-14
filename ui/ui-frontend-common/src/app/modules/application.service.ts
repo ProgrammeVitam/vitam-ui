@@ -38,7 +38,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
 import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
@@ -53,128 +53,98 @@ import { TenantSelectionService } from './tenant-selection.service';
   providedIn: 'root',
 })
 export class ApplicationService {
-  /**
-   * Applications list of the authenticated user.
-   */
-  set applications(apps: Application[]) { this._applications = apps; }
 
-  get applications(): Application[] { return this._applications; }
-
-  // tslint:disable-next-line:variable-name
-  _applications: Application[];
-
-  get applicationsAnalytics(): ApplicationAnalytics[] { return this._applicationsAnalytics; }
-
-  set applicationsAnalytics(apps: ApplicationAnalytics[]) {
-    this._applicationsAnalytics = apps;
-    this.analyticsUpdated$.next();
+  set applications(apps: Application[]) {
+    this._applications = apps;
+    this._applications$.next(this._applications);
   }
 
-  // tslint:disable-next-line:variable-name
-  _applicationsAnalytics: ApplicationAnalytics[];
-
-  private analyticsUpdated$ = new Subject();
-
-  /**
-   * Map that will contain applications grouped by categories
-   */
-  private appMap: Map<Category, Application[]> = undefined;
-
-  /*
-   * Categories of the application.
-   */
-  set categories(categories: Category[]) { this._categories = categories; }
+  get applicationsAnalytics(): ApplicationAnalytics[] { return this._applicationsAnalytics; }
+  set applicationsAnalytics(apps: ApplicationAnalytics[]) {
+    this._applicationsAnalytics = apps;
+  }
 
   get categories(): Category[] { return this._categories; }
-
+  set categories(categories: Category[]) { this._categories = categories; }
   // tslint:disable-next-line:variable-name
-  _categories: Category[];
-
-  private appMap$ = new BehaviorSubject(undefined);
+  private _categories: Category[];
+  // tslint:disable-next-line:variable-name
+  private _applications: Application[];
+  // tslint:disable-next-line:variable-name
+  private _applications$ = new BehaviorSubject<Application[]>(null);
+  // tslint:disable-next-line:variable-name
+  private _applicationsAnalytics: ApplicationAnalytics[];
+  private appMap$ = new BehaviorSubject(null);
 
   constructor(
     private applicationApi: ApplicationApiService,
     private authService: AuthService,
     private tenantService: TenantSelectionService,
-    private globalEventService: GlobalEventService
-  ) {}
+    private globalEventService: GlobalEventService,
+  ) { }
 
   /**
-   * Get Applications list for an user and save it in a property.
+   * Get and init applications list for the current auth user.
    */
-  list(): Observable<ApplicationInfo> {
+  public list(): Observable<ApplicationInfo> {
     const params = new HttpParams().set('filterApp', 'true');
     const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
     return this.applicationApi.getAllByParams(params, headers).pipe(
-      catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: [] })),
+      catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {} })),
       map((applicationInfo: ApplicationInfo) => {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;
         this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);
+        this._applications$.next(this._applications);
         return applicationInfo;
       })
     );
   }
 
-  /**
-   * Get Applications list grouped by categories in a hashMap.
-   */
-  public getAppsMap(): Observable<Map<Category, Application[]>> {
-    if (!this.appMap) {
-      const stringMap = this.fillCategoriesWithApps(this.categories, this.applications);
-      this.analyticsUpdated$.subscribe(() => {
-        const lastUsedApps = this.getLastUsedApps(this.categories, this.applications);
-        if (lastUsedApps) {
-          this.appMap.set(lastUsedApps.category, lastUsedApps.apps);
-          const convertedMap = this.convertToCategoryMap(stringMap);
-          this.appMap = this.sortMapByCategory(convertedMap);
-        }
-        this.appMap$.next(this.appMap);
-      });
-    }
-    return this.appMap$;
-  }
 
   /**
    * Get Applications list grouped by categories in a hashMap of the active tenant.
    */
   public getActiveTenantAppsMap(): Observable<Map<Category, Application[]>> {
-    this.tenantService.getSelectedTenant$().subscribe((tenant: Tenant) => {
-      this.appMap$.next(this.getTenantAppMap(tenant));
-    });
-    return this.appMap$;
+    return this.tenantService.getSelectedTenant$()
+      .pipe(
+        mergeMap((tenant: Tenant) => this.getTenantAppMap(tenant)),
+        tap((appMap: Map<Category, Application[]>) => this.appMap$.next(appMap))
+      );
   }
 
   /**
    * Returns the provided tenant application map as Map<Category, Application[]>
    * @param tenant - tenant whitch we want applications
    */
-  public getTenantAppMap(tenant: Tenant): Map<Category, Application[]> {
-    const apps: Application[] = [];
-    const tenantsByApp = this.authService.user.tenantsByApp;
-    if (tenantsByApp && tenant) {
-      tenantsByApp.forEach((tenantByAppItem: { name: string; tenants: Tenant[] }) => {
-        const index = tenantByAppItem.tenants.findIndex((value) => value.identifier === tenant.identifier);
-        const app = this.applications.find((value) => value.identifier === tenantByAppItem.name);
+  public getTenantAppMap(tenant: Tenant): Observable<Map<Category, Application[]>> {
+    return this.getApplications$().pipe(map((applications: Application[]) => {
+      const apps: Application[] = [];
+      const tenantsByApp = this.authService.user.tenantsByApp;
+      if (tenantsByApp && tenant) {
+        tenantsByApp.forEach((tenantByAppItem: { name: string; tenants: Tenant[] }) => {
+          const appTenant = tenantByAppItem.tenants.find((value) => value.identifier === tenant.identifier);
+          const app = applications.find((value) => value.identifier === tenantByAppItem.name);
+          if (app && (appTenant || !app.hasTenantList)) {
+            apps.push(app);
+          }
+        });
 
-        if (app && (index !== -1 || !app.hasTenantList)) {
-          apps.push(app);
+        const resultMap = this.fillCategoriesWithApps(this.categories, apps);
+        const lastUsedApps = this.getLastUsedApps(this.categories, apps);
+
+        if (lastUsedApps) {
+          resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
         }
 
-      });
-
-      const resultMap = this.fillCategoriesWithApps(this.categories, apps);
-      const lastUsedApps = this.getLastUsedApps(this.categories, apps);
-      if (lastUsedApps) {
-          resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
+        const convertedMap = this.convertToCategoryMap(resultMap);
+        return this.sortMapByCategory(convertedMap);
       }
-      const convertedMap = this.convertToCategoryMap(resultMap);
-      return this.sortMapByCategory(convertedMap);
-    }
+    }));
   }
 
   public openApplication(app: Application, router: Router, uiUrl: string, tenantIdentifier?: number): void {
     this.tenantService.saveTenantIdentifier(tenantIdentifier).subscribe((identifier: number) => {
-      if (router && app.serviceId.includes(uiUrl)) {
+      if (app.serviceId.includes(uiUrl)) {
         if (app.hasTenantList) {
           router.navigate([app.url.replace(uiUrl, ''), 'tenant', identifier]);
         } else {
@@ -191,7 +161,7 @@ export class ApplicationService {
     });
   }
 
-  getApplicationUrl(app: Application, tenantIdentifier?: number): string {
+  public getApplicationUrl(app: Application, tenantIdentifier?: number): string {
     if (!tenantIdentifier) {
       tenantIdentifier = this.tenantService.getSelectedTenant().identifier;
     }
@@ -203,37 +173,44 @@ export class ApplicationService {
     }
   }
 
-  getApplicationTenants(appId): Tenant[] {
+  public getApplicationTenants(appId): Tenant[] {
     if (this.authService.user) {
-        const appTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === appId);
-        const appTenants = appTenantsInfo ? appTenantsInfo.tenants : [];
-        appTenants.sort((t1, t2) => t1.name.localeCompare(t2.name));
-        return appTenants;
+      const appTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === appId);
+      const appTenants = appTenantsInfo ? appTenantsInfo.tenants : [];
+      appTenants.sort((t1, t2) => t1.name.localeCompare(t2.name));
+      return appTenants;
     }
   }
 
-  private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
-    return new Map([...appMap.entries()].sort((a, b) => (a[0].order < b[0].order ? -1 : 1)));
-  }
-
-  public getAppById(identifier: string): Application {
-    return this.applications.find((value) => value.identifier === identifier);
+  public getAppById(identifier: string): Observable<Application> {
+    return this.getApplications$().pipe(map((apps: Application[]) => apps.find((value) => value.identifier === identifier)));
   }
 
   /**
    * Return an observable that notify if the current application has a tenant list or not.
    */
   public hasTenantList(): Observable<boolean> {
-    return new Observable((observer) => {
-      this.globalEventService.pageEvent.subscribe((appId: string) => {
+    return this.globalEventService.pageEvent.pipe(mergeMap((appId: string) => {
+      return this.getAppById(appId).pipe(map((app: Application) => {
         if (appId === ApplicationId.PORTAL_APP) {
-          observer.next(true);
-        } else {
-          const app = this.applications.find((value) => value.identifier === appId);
-          app ? observer.next(app.hasTenantList) : observer.next(false);
+          return true;
         }
-      });
-    });
+        return app ? app.hasTenantList : false;
+      }));
+    }));
+  }
+
+  public isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
+    return this.applicationApi.isApplicationExternalIdentifierEnabled(id).pipe(
+      catchError(() => of([])),
+      map((result: boolean) => {
+        return result;
+      })
+    );
+  }
+
+  public getApplications$(): Observable<Application[]> {
+    return this._applications$.pipe(filter((apps: Application[]) => !!apps), take(1));
   }
 
   /**
@@ -247,6 +224,10 @@ export class ApplicationService {
       categMap.set(categ, val);
     });
     return categMap;
+  }
+
+  private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
+    return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
   }
 
   private fillCategoriesWithApps(categories: Category[], applications: Application[]): Map<string, Application[]> {
@@ -320,12 +301,4 @@ export class ApplicationService {
     });
   }
 
-  isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
-    return this.applicationApi.isApplicationExternalIdentifierEnabled(id).pipe(
-      catchError(() => of([])),
-      map((result: boolean) => {
-        return result;
-      })
-    );
-  }
 }

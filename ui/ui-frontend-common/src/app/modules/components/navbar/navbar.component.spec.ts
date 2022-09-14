@@ -43,7 +43,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 import { environment } from './../../../../environments/environment';
@@ -54,8 +54,10 @@ import { AuthService } from '../../auth.service';
 import { BASE_URL, SUBROGRATION_REFRESH_RATE_MS } from '../../injection-tokens';
 import { LoggerModule } from '../../logger';
 import { StartupService } from '../../startup.service';
-import { VitamUISnackBar } from '../vitamui-snack-bar/vitamui-snack-bar.service';
 import { NavbarComponent } from './navbar.component';
+
+import { TranslateService } from '@ngx-translate/core';
+import { VitamUISnackBarService } from '../vitamui-snack-bar/vitamui-snack-bar.service';
 
 
 @Directive({ selector: '[vitamuiCommonTriggerFor]' })
@@ -107,7 +109,6 @@ export class RouterLinkStubDirective {
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 
   beforeEach(waitForAsync(() => {
     const authServiceStub = { logout: () => { } };
@@ -133,13 +134,14 @@ describe('NavbarComponent', () => {
       ],
       providers: [
         { provide: BASE_URL, useValue: '/fakeapi' },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
         { provide: AuthService, useValue: authServiceStub },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: ActivatedRoute, useValue: { params: of('11') } },
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
-        { provide: ENVIRONMENT, useValue: environment }
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } }
       ]
     })
       .compileComponents();

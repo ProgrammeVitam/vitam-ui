@@ -34,23 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL } from 'ui-frontend-common';
+import { BASE_URL, VitamUISnackBarService } from 'ui-frontend-common';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { HierarchyService } from './hierarchy.service';
 
 describe('HierarchyService', () => {
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
+    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         HierarchyService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
       ]
     });

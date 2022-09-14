@@ -171,7 +171,7 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
         profile.roles.push({ name: Role.ROLE_CREATE_USER_INFOS });
       }
     } else if (userCreateInfoRoleIndex !== -1) {
-      profile.roles.splice(userCreateInfoRoleIndex, 1);
+      profile.roles.splice(userCreateInfoRoleIndex, 1)
     }
   }
 

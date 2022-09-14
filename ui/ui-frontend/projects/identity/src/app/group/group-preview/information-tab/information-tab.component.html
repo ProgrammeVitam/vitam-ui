@@ -17,7 +17,7 @@
     <div class="col-8 form-control">
       <vitamui-common-editable-input formControlName="name" minlength="2" maxlength="100" [label]="'GROUP.INFORMATIONS.NAME' | translate"
         [validator]="form?.get('name')?.validator" [asyncValidator]="form?.get('name')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="nameExists">{{'GROUP.INFORMATIONS.EXISTING_NAME' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -28,7 +28,7 @@
       <vitamui-common-editable-textarea formControlName="description" maxlength="250" minlength="4" maxlength="100" [label]="'GROUP.INFORMATIONS.DESCRIPTION' | translate"
         [validator]="form?.get('description')?.validator"
         [asyncValidator]="form?.get('description')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-textarea>
     </div>
   </div>
@@ -47,7 +47,7 @@
         [prefix]="authService.user.level"
         [label]="'GROUP.INFORMATIONS.SUBLEVEL' | translate"
         [validator]="form?.get('level')?.validator">
-          <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
           <vitamui-common-field-error errorKey="nameExists">{{'GROUP.INFORMATIONS.WRONG_FORMAT' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-level-input>
     </div>

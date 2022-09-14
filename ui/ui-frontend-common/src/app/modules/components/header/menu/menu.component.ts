@@ -174,7 +174,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public updateApps(tenant: MenuOption): void {
     if (tenant) {
       this.selectedTenant = tenant;
-      this.appMap = this.applicationService.getTenantAppMap(tenant.value);
+      this.applicationService.getTenantAppMap(tenant.value).subscribe((map: Map<Category, Application[]>) => this.appMap = map);
     }
   }
 

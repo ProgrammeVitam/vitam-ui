@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {DOCUMENT} from '@angular/common';
-import {Directive, ElementRef, HostListener, Inject, Input, OnInit, Renderer2,} from '@angular/core';
+import {Directive, ElementRef, HostListener, Inject, Input, OnInit, Renderer2} from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonResizeSidebar]',
@@ -89,11 +89,7 @@ export class ResizeSidebarDirective implements OnInit {
     this.status = 0;
   }
 
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Inject(DOCUMENT) private document
-  ) {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) private document) {
   }
 
   ngOnInit(): void {

@@ -7,7 +7,7 @@ $anim-timing: 150ms ease-out;
 :host {
     display: inline-block;
 
-    &.ng-invalid .vitamui-input {
+    &.ng-invalid:not(.ng-untouched) .vitamui-input {
         border: 1px solid $red;
     }
 

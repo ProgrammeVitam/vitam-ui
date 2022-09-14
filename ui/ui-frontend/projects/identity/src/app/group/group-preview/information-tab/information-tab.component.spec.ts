@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EMPTY, of } from 'rxjs';
-
-import { AuthService, Group } from 'ui-frontend-common';
+import { AuthService, BASE_URL, Group, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { CountryService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { GroupService } from '../../group.service';
@@ -58,63 +58,56 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-    template: `<app-information-tab [group]="group" [readOnly]="readOnly"></app-information-tab>`
+  template: `<app-information-tab [group]="group" [readOnly]="readOnly"></app-information-tab>`,
 })
 class TestHostComponent {
-    group = expectedGroup;
-    readOnly = false;
+  group = expectedGroup;
+  readOnly = false;
 
   @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
 }
-
 
 describe('Profile Group InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
   const groupServiceSpy = jasmine.createSpyObj('GroupService', { patch: of({}) });
-  const groupValidatorsSpy = jasmine.createSpyObj(
-    'GroupValidators', { nameExists: () => of(null) }
-  );
-  const authServiceMock = { user : { level: ''}};
+  const groupValidatorsSpy = jasmine.createSpyObj('GroupValidators', { nameExists: () => of(null) });
+  const authServiceMock = { user: { level: '' } };
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  beforeEach(waitForAsync(() => {
-    expectedGroup = {
-      id: '42',
-      enabled: true,
-      identifier: '1',
-      customerId: '4242442',
-      name: 'Group Name',
-      description: 'Group Description',
-      level : '',
-      usersCount: 0,
-      profileIds: [],
-      profiles: [],
-      units: [],
-      readonly : false
-    };
+  beforeEach(
+    waitForAsync(() => {
+      expectedGroup = {
+        id: '42',
+        enabled: true,
+        identifier: '1',
+        customerId: '4242442',
+        name: 'Group Name',
+        description: 'Group Description',
+        level: '',
+        usersCount: 0,
+        profileIds: [],
+        profiles: [],
+        units: [],
+        readonly: false,
+      };
 
-    TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [
-        InformationTabComponent,
-        TestHostComponent,
-        MatTooltipStubDirective,
-      ],
-      providers: [
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: GroupService, useValue: groupServiceSpy },
-        { provide: GroupValidators, useValue: groupValidatorsSpy },
-        { provide: AuthService, useValue: authServiceMock},
-        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-      ]
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot(), HttpClientTestingModule],
+        declarations: [InformationTabComponent, TestHostComponent, MatTooltipStubDirective],
+        providers: [
+          { provide: WINDOW_LOCATION, useValue: window.location },
+          { provide: BASE_URL, useValue: '/fake-api' },
+          { provide: MatDialog, useValue: matDialogSpy },
+          { provide: GroupService, useValue: groupServiceSpy },
+          { provide: GroupValidators, useValue: groupValidatorsSpy },
+          { provide: AuthService, useValue: authServiceMock },
+          { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        ],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
@@ -140,7 +133,7 @@ describe('Profile Group InformationTabComponent', () => {
         name: null,
         level: null,
         enabled: false,
-        description: null
+        description: null,
       });
       expect(testhost.component.form.get('id').valid).toBeFalsy('id');
       expect(testhost.component.form.get('name').valid).toBeFalsy('name');
@@ -151,10 +144,10 @@ describe('Profile Group InformationTabComponent', () => {
       testhost.component.form.setValue({
         id: expectedGroup.id,
         identifier: expectedGroup.identifier,
-        enabled : expectedGroup.enabled,
+        enabled: expectedGroup.enabled,
         name: expectedGroup.name,
         level: '',
-        description: expectedGroup.description
+        description: expectedGroup.description,
       });
       expect(testhost.component.form.valid).toBeTruthy();
     });
@@ -168,5 +161,4 @@ describe('Profile Group InformationTabComponent', () => {
       expect(testhost.component.form.disabled).toBe(false);
     });
   });
-
 });

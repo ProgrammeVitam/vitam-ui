@@ -39,7 +39,7 @@ import {Inject, Injectable} from '@angular/core';
 import {AccessContract} from 'projects/vitamui-library/src/public-api';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import {BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse} from 'ui-frontend-common';
 
 const HTTP_STATUS_OK = 200;
 

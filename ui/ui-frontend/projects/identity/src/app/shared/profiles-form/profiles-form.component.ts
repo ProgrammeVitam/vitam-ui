@@ -36,7 +36,7 @@
  */
 
 import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { switchMap, tap } from 'rxjs/operators';
 import { Application, ApplicationApiService, Option, Profile, ProfileService, VitamUIAutocompleteComponent } from 'ui-frontend-common';
 
@@ -80,9 +80,9 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   }
   private _level: string;
 
-  appSelect = new FormControl();
-  tenantSelect = new FormControl();
-  profileSelect = new FormControl();
+  appSelect = new FormControl(null, [Validators.required]);
+  tenantSelect = new FormControl(null, [Validators.required]);
+  profileSelect = new FormControl(null, [Validators.required]);
 
   applications: OptionTree[] = [];
   filteredTenants: OptionTree[] = [];
@@ -218,6 +218,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
     this.filterTenants();
     this.filterProfiles();
     this.toggleSelects();
+    this.appSelect.reset();
   }
 
   getSelectedProfiles(): Profile[] {

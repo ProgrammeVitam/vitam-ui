@@ -40,13 +40,15 @@ import { Observable } from 'rxjs';
 import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
 import { UserInfo } from '../models/user/user-info.interface';
+import { Account } from '../models/account/account.interface';
+import { AuthService } from './../auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, private authService: AuthService) {
     super(http, baseUrl + '/userinfos');
   }
 
@@ -70,8 +72,9 @@ export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
 
 
 
-  getMyUserInfo(): Observable<UserInfo> {
-    return super.getHttp().get<any>(super.getApiUrl() + '/me');
+  getMyUserInfo(headers?: HttpHeaders): Observable<UserInfo> {
+    headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
+    return super.getHttp().get<any>(super.getApiUrl() + '/me', { headers });
   }
 
 }

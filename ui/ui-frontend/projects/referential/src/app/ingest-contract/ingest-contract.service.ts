@@ -36,14 +36,12 @@
  */
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { IngestContract } from 'projects/vitamui-library/src/public-api';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService } from 'ui-frontend-common';
+import {SearchService, VitamUISnackBarService} from 'ui-frontend-common';
 
 import { IngestContractApiService } from '../core/api/ingest-contract-api.service';
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +49,7 @@ import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 export class IngestContractService extends SearchService<IngestContract> {
   updated = new Subject<IngestContract>();
 
-  constructor(private ingestContractApi: IngestContractApiService, private snackBar: MatSnackBar, http: HttpClient) {
+  constructor(private ingestContractApi: IngestContractApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
     super(http, ingestContractApi, 'ALL');
   }
 
@@ -94,17 +92,16 @@ export class IngestContractService extends SearchService<IngestContract> {
       tap((response) => this.updated.next(response)),
       tap(
         (response) => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-            data: { type: 'ingestContractUpdate', name: response.name },
+            this.snackBarService.open({
+              message: 'SNACKBAR.INGEST_CONTRACT_UPDATED',
+              translateParams: {
+                name: response.name,
+              },
+              icon: 'vitamui-icon-contrat'
           });
         },
         (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          });
+            this.snackBarService.open({ message: error.error.message, translate: false });
         }
       )
     );
@@ -114,17 +111,16 @@ export class IngestContractService extends SearchService<IngestContract> {
     return this.ingestContractApi.create(ingestContract).pipe(
       tap(
         (response: IngestContract) => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'ingestContractCreate', name: response.name },
-            duration: 10000,
+            this.snackBarService.open({
+              message: 'SNACKBAR.INGEST_CONTRACT_CREATED',
+              translateParams:{
+                name: response.name,
+              },
+              icon: 'vitamui-icon-contrat'
           });
         },
         (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          });
+            this.snackBarService.open({ message: error.error.message, translate: false });
         }
       )
     );

@@ -37,6 +37,7 @@
  */
 
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -44,7 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CountryService } from 'ui-frontend-common';
+import { BASE_URL, CountryService, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { Owner } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { OwnerService } from '../owner.service';
@@ -75,14 +76,17 @@ describe('OwnerFormComponent', () => {
         NoopAnimationsModule,
         FormsModule,
         VitamUICommonTestModule,
+        HttpClientTestingModule,
+        LoggerModule.forRoot(),
       ],
       declarations: [ OwnerFormComponent, TesthostComponent ],
       providers: [
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: OwnerService, useValue: ownerServiceSpy },
         { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
+        { provide: StartupService, useValue: { getConfigNumberValue: () => 100 }},
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-
-
       ]
     })
     .compileComponents();

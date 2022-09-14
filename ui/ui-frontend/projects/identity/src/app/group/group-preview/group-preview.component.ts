@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService, Group, isLevelAllowed, StartupService } from 'ui-frontend-common';
 
@@ -46,21 +46,16 @@ import { GroupService } from '../group.service';
   templateUrl: './group-preview.component.html',
   styleUrls: ['./group-preview.component.scss']
 })
-export class GroupPreviewComponent implements OnInit, OnDestroy {
+export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() isPopup: boolean;
 
-  @Input()
-  set group(group: Group) {
-    this._group = group;
-    this.groupService.get(group.id).subscribe((groupRetrieved) => this.groupService.updated.next(groupRetrieved));
-  }
-  get group(): Group { return this._group; }
-  private _group: Group;
+  @Input() group: Group;
 
   @Output() previewClose = new EventEmitter();
 
   private groupUpdateSub: Subscription;
+  public groupUsersCount: number;
 
   constructor(
     private groupService: GroupService, private authService: AuthService,
@@ -68,22 +63,39 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    if(this.group) {
+      this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
+        this.group = groupRetrieved;
+        this.groupService.updated.next(groupRetrieved)
+      });
+    }
+
     this.groupUpdateSub = this.groupService.updated.subscribe((updatedGroup) => {
       if (updatedGroup) {
-        this._group = updatedGroup;
+        this.group = updatedGroup;
       }
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.hasOwnProperty('group')) {
+      if(this.group) {
+        this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
+          this.group = groupRetrieved;
+          this.groupService.updated.next(groupRetrieved)
+        });
+      }
+    }
+  }
   openPopup() {
     window.open(this.startupService.getConfigStringValue('UI_URL')
-    + '/group/' + this._group.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    + '/group/' + this.group.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
     this.emitClose();
   }
 
   levelNotAllowed(): boolean {
-    if (this._group) {
-      return !isLevelAllowed(this.authService.user, this._group.level);
+    if (this.group) {
+      return !isLevelAllowed(this.authService.user, this.group.level);
     }
   }
 

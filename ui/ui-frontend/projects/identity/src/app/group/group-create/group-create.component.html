@@ -16,7 +16,7 @@
             <vitamui-common-input class="col-5 p-0" formControlName="name" minlength="2" maxlength="100"
               required [placeholder]="'GROUP.INFORMATIONS.NAME' | translate">
               <ng-container *ngIf="form.get('name')?.touched">
-                <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
                 <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">{{'GROUP.INFORMATIONS.MODAL.EXISTING_NAME' | translate}}</vitamui-common-input-error>
               </ng-container>
             </vitamui-common-input>
@@ -25,7 +25,7 @@
           <div>
             <vitamui-common-input class="col-10 p-0" formControlName="description" minlength="4" maxlength="100" required
               [placeholder]="'GROUP.INFORMATIONS.DESCRIPTION' | translate">
-              <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+              <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('required')">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
             </vitamui-common-input>
           </div>
 
@@ -38,7 +38,7 @@
             <div class="col-3 p-0">
               <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
                 <ng-container *ngIf="form.get('level')?.touched">
-                  <vitamui-common-input-error *ngIf="form?.get('level')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+                  <vitamui-common-input-error *ngIf="form?.get('level')?.hasError('required')">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
                   <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')">{{'GROUP.INFORMATIONS.MODAL.WRONG_FORMAT' | translate}}
                   </vitamui-common-input-error>
                 </ng-container>

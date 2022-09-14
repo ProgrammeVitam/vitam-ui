@@ -34,23 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatSnackBarRef } from '@angular/material/snack-bar';
 import { interval, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, last, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 import * as moment_ from 'moment';
 import { SubrogationApiService } from '../api/subrogation-api.service';
 import { AuthService } from '../auth.service';
-import { VitamUISnackBarComponent } from '../components/vitamui-snack-bar/vitamui-snack-bar.component';
-import { VitamUISnackBar } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { SUBROGRATION_REFRESH_RATE_MS } from '../injection-tokens';
 import { Logger } from '../logger/logger';
 import { Subrogation } from '../models';
-import { NotificationSnackBarComponent } from './notification-snack-bar/notification-snack-bar.component';
-import { NotificationType } from './notification-type.enum';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogation-snack-bar.component';
+
+import { formatDate } from '@angular/common';
+import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
 
 const moment = moment_;
 
@@ -68,10 +67,10 @@ export class SubrogationService {
   constructor(
     private logger: Logger,
     private subrogationApi: SubrogationApiService,
-    private snackBar: VitamUISnackBar,
-    private matSnackBar: MatSnackBar,
+    private snackBarService: VitamUISnackBarService,
     private authService: AuthService,
-    @Inject(SUBROGRATION_REFRESH_RATE_MS) private subrogationRefreshRateMs: number) {}
+    @Inject(SUBROGRATION_REFRESH_RATE_MS) private subrogationRefreshRateMs: number,
+    @Inject(LOCALE_ID) private local: string) {}
 
   intervalCheck: number;
 
@@ -107,10 +106,9 @@ export class SubrogationService {
         error: (error) => {
           this.logger.error(this, error);
           dialogRef.close();
-          this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: NotificationType.SUBRO_DENY },
-            duration: 10000
+          this.snackBarService.open({
+            message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.DENIED_SUBROGATION',
+            icon: 'vitamui-icon-link banner-icon'
           });
         }
       })
@@ -121,18 +119,14 @@ export class SubrogationService {
     return this.subrogationApi.delete(subrogation.id).pipe(
       tap({
         next: () => {
-          this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: NotificationType.SUBRO_CANCEL },
-            duration: 10000
+          this.snackBarService.open({
+            message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.CANCEL_SUBROGATION',
+            icon: 'vitamui-icon-link banner-icon'
           });
           this.subrogationCancel.next();
         },
         error: (error) => {
-          this.matSnackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
+          this.snackBarService.open({ message: error.error.message, translate: false });
         }
       })
     );
@@ -152,10 +146,12 @@ export class SubrogationService {
 
   checkSubrogation() {
     const callCount = this.TIMEOUT_SUBROGATION_MS / this.subrogationRefreshRateMs;
-    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
-      data: { type: 'subrogationActivated', duration: '5', endTime: moment().add(this.TIMEOUT_SUBROGATION_MS, 'ms') },
-      duration: 50000
+    const endTime = new Date();
+    endTime.setMilliseconds(endTime.getMilliseconds() + this.TIMEOUT_SUBROGATION_MS);
+    this.snackBarService.open( {
+      message: 'SNACKBAR.ACTIVATED_SUBROGATION',
+      translateParams: { duration: '5', hours: formatDate(endTime, 'H', this.local), minutes: formatDate(endTime, 'mm', this.local )},
+      duration: 50000,
     });
     this.logger.log(this, callCount);
     const subrogationAccepted = new Subject();
@@ -169,11 +165,7 @@ export class SubrogationService {
       filter((data) => data !== null),
       tap((data) => {
         if (data.status === 'CREATED' && !this.subrogationSnackBarComponent) {
-          this.subrogationSnackBarComponent = this.matSnackBar.openFromComponent(SubrogationSnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 0,
-            data: { subro: data }
-          });
+          this.subrogationSnackBarComponent = this.snackBarService.openFromComponent(SubrogationSnackBarComponent, { subro: data }, 0);
           this.subrogationSnackBarComponent.afterDismissed().subscribe(() => this.subrogationSnackBarComponent = null);
         }
       }),
@@ -190,10 +182,9 @@ export class SubrogationService {
     )
       .subscribe((accepted) => {
         if (!accepted) {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'subrogationFinish' },
-            duration: 10000
+          this.snackBarService.open({
+            message: 'SNACKBAR.FINISHED_SUBROGATION',
+            icon: 'vitamui-icon-link banner-icon'
           });
         }
       });

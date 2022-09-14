@@ -38,12 +38,11 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Rule, SearchService, VitamUISnackBar } from 'ui-frontend-common';
+import { Rule, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 import { RuleApiService } from '../core/api/rule-api.service';
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 /**
  * @deprecated This class is deprecated since 5.0.2, and it will be removed in the next minor version, use commonized service RuleService instead
@@ -51,7 +50,7 @@ import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 export class RuleService extends SearchService<Rule> {
   updated = new Subject<Rule>();
 
-  constructor(private ruleApiService: RuleApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+  constructor(private ruleApiService: RuleApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
     super(http, ruleApiService, 'ALL');
   }
 
@@ -80,23 +79,10 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.createRule(rule, this.headers).pipe(
       tap(
         (success) => {
-          const message = success ? 'ruleCreateSuccess' : 'ruleCreateFailed';
-
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-            data: {
-              type: message,
-              name: rule.ruleId
-            }
-          });
+          const message = success ? 'SNACKBAR.RULE_CREATE_SUCCESS' : 'SNACKBAR.RULE_CREATE_FAILED';
+          this.snackBarService.open({ message: message, translateParams: { name: rule.ruleId }, icon: 'vitamui-icon-rules' });
         },
-        (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
-        }
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
     );
   }
@@ -105,23 +91,10 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.patchRule(data).pipe(
       tap(
         (success) => {
-          const message = success ? 'ruleUpdateSuccess' : 'ruleUpdateFailed';
-
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-            data: {
-              type: message,
-              name: data.id
-            }
-          });
+          const message = success ? 'SNACKBAR.RULE_UPDATE_SUCCESS' : 'SNACKBAR.RULE_UPDATE_FAILED';
+          this.snackBarService.open({ message: message, translateParams: { name: data.id }, icon: 'vitamui-icon-admin-rules' });
         },
-        (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
-        }
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
     );
   }
@@ -130,33 +103,16 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.deleteRule(rule.ruleId).pipe(
       tap(
         (success) => {
-          const message = success ? 'ruleDeleteSuccess' : 'ruleDeleteFailed';
-
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-            data: {
-              type: message,
-              name: rule.ruleId
-            }
-          });
+          const message = success ? 'SNACKBAR.RULE_DELETE_SUCCESS' : 'SNACKBAR.RULE_DELETE_FAILED';
+          this.snackBarService.open({ message: message, translateParams: { name: rule.ruleId }, icon: 'vitamui-icon-admin-rules' });
         },
-        (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
-        }
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
     );
   }
 
   export() {
-    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
-      duration: 10000,
-      data: { type: 'ruleExportAll' }
-    });
+    this.snackBarService.open({ message: 'RULE_EXPORT_ALL', icon: 'vitamui-icon-rules' });
 
     this.ruleApiService.export().subscribe(
       (response) => {
@@ -171,12 +127,7 @@ export class RuleService extends SearchService<Rule> {
         a.click();
         window.URL.revokeObjectURL(url);
       },
-      (error) => {
-        this.snackBar.open(error.error.message, null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000
-        });
-      }
+      (error) => this.snackBarService.open({ message: error.error.message, translate: false })
     );
   }
 }

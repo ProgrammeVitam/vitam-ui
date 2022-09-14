@@ -39,8 +39,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { SecurityApiService } from '../api/security-api.service';
-import { VitamUISnackBarComponent } from '../components/vitamui-snack-bar/vitamui-snack-bar.component';
-import { VitamUISnackBar } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { Account } from '../models/account/account.interface';
 import { AccountApiService } from './account-api.service';
 
@@ -48,8 +47,10 @@ import { AccountApiService } from './account-api.service';
   providedIn: 'root'
 })
 export class AccountService {
-
-  constructor(private accountApi: AccountApiService, private securityApi: SecurityApiService, private snackBar: VitamUISnackBar) {
+  constructor(
+    private accountApi: AccountApiService,
+    private securityApi: SecurityApiService,
+    private snackBarService: VitamUISnackBarService) {
   }
 
   public getMyAccount(): Observable<Account> {
@@ -60,17 +61,13 @@ export class AccountService {
     return this.accountApi.patchMe(accountPartial).pipe(
       tap(
         () => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'accountUpdate' },
-            duration: 10000
+          this.snackBarService.open({
+            message: 'SNACKBAR.UPDATED_ACCOUNT',
+            icon: 'vitamui-icon-user'
           });
         },
         (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
+          this.snackBarService.open({message: error.error.message});
         }
       )
     );

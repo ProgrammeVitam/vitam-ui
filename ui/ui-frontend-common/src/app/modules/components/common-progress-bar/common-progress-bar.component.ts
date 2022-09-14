@@ -44,10 +44,8 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./common-progress-bar.component.scss'],
 })
 export class CommonProgressBarComponent implements OnInit {
-  // tslint:disable-next-line: variable-name
-  private _count: number;
-  // tslint:disable-next-line: variable-name
-  private _index: number;
+
+  @Input() hideCounter = false;
 
   @Input() set index(val: number) {
     this._index = val;
@@ -68,11 +66,16 @@ export class CommonProgressBarComponent implements OnInit {
 
   public progressValue: number;
 
+  // tslint:disable-next-line: variable-name
+  private _count: number;
+  // tslint:disable-next-line: variable-name
+  private _index: number;
+
   constructor() {}
 
   ngOnInit() {}
 
   getProgressValue(index: number, count: number): number {
-    return ((index + 1) / count) * PROGRESS_BAR_MULTIPLICATOR;
+    return ((index) / count) * PROGRESS_BAR_MULTIPLICATOR;
   }
 }

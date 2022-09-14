@@ -37,13 +37,11 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { SearchService } from 'ui-frontend-common';
+import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 import { LogbookManagementOperationApiService } from '../core/api/logbook-management-operation-api.service';
 import { OperationDetails, OperationResponse, OperationsResults } from '../models/operation-response.interface';
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +51,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
 
   constructor(
     private logbookManagementOperationApiService: LogbookManagementOperationApiService,
-    private snackBar: MatSnackBar,
+    private snackBarService: VitamUISnackBarService,
     http: HttpClient
   ) {
     super(http, logbookManagementOperationApiService, 'ALL');
@@ -103,20 +101,8 @@ export class LogbookManagementOperationService extends SearchService<any> {
           }
         }),
         tap(
-          () => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'updateOperation' },
-              duration: 10000,
-            });
-          },
-          (error) => {
-            console.error(error);
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000,
-            });
-          }
+          () => this.snackBarService.open({ message: 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.MESSAGE' }),
+          (error) => this.snackBarService.open({ message: error.error.message, translate: false })
         )
       );
   }
@@ -137,20 +123,8 @@ export class LogbookManagementOperationService extends SearchService<any> {
           }
         }),
         tap(
-          () => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'updateOperation' },
-              duration: 10000,
-            });
-          },
-          (error) => {
-            console.error(error);
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000,
-            });
-          }
+          () => this.snackBarService.open({ message: 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.MESSAGE' }),
+          (error) => this.snackBarService.open({ message: error.error.message, translate: false })
         )
       );
   }

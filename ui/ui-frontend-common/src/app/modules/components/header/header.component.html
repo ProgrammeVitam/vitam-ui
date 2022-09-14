@@ -6,6 +6,8 @@
   </div>
 
   <div class="header-actions">
+    <ng-content select="[extended-content]"></ng-content>
+
     <div class="d-flex align-items-center">
       <vitamui-common-select-language *ngIf="hasLangSelection" [displayMode]="'select'"></vitamui-common-select-language>
     </div>

@@ -2,8 +2,8 @@
 import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Inject,
   Input, OnDestroy, OnInit, Optional, Output} from '@angular/core';
 import {AbstractControl} from '@angular/forms';
-import {MAT_OPTION_PARENT_COMPONENT, MatOptgroup, MatOption,
-  MatOptionParentComponent, MatPseudoCheckboxState} from '@angular/material/core';
+import {MatOptgroup, MatOption, MatOptionParentComponent,
+  MatPseudoCheckboxState, MAT_OPTION_PARENT_COMPONENT} from '@angular/material/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 

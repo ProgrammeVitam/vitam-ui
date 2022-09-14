@@ -38,6 +38,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule, MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { EMPTY } from 'rxjs';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { SubrogationApiService } from '../../api/subrogation-api.service';
@@ -63,6 +65,7 @@ describe('SubrogationSnackBarComponent', () => {
         { provide: Router, useValue: { navigate: () => {},  navigateByUrl: () => {}, url : 'subrogations/customers/customerId' } },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: SubrogationApiService, useValue: {} },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
       ]
     })
     .compileComponents();

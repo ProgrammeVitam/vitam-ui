@@ -52,7 +52,7 @@ export class SecurityService {
    * Returns true if the logged user has any of the specified roles and false otherwise.
    */
   hasAnyRole(appId: string, tenantIdentifier: number, ...roles: string[]): Observable<boolean> {
-    return this.authService.userLoaded
+    return this.authService.user$
       .pipe(
         switchMap((user: AuthUser) => {
           if (user.profileGroup.profiles) {
