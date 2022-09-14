@@ -40,6 +40,9 @@ server:
         file-date-format: ".yyyy-MM-dd"
         suffix: ".log"
 
+address:
+  max-street-length: {{ vitamui.identity.max_street_length }}
+
 management:
   server:
     port: {{ vitamui_struct.port_admin }}
@@ -150,6 +153,10 @@ cas:
     trust-store-password: {{ password_truststore }}
     hostname-verification: {{ vitamui.cas_server.hostname_verification | default('true') }}
 {% endif %}
+
+portal:
+  message: {{vitamui_platform_informations.portal_message}}
+  title: {{vitamui_platform_informations.portal_title}}
 
 opentracing:
   jaeger:

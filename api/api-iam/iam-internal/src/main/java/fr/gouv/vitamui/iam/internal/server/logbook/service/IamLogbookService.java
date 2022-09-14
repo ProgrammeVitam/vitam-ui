@@ -36,27 +36,17 @@
  */
 package fr.gouv.vitamui.iam.internal.server.logbook.service;
 
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -82,7 +72,19 @@ import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -208,6 +210,16 @@ public class IamLogbookService {
     }
 
     /**
+     *
+     * @param sourceEvent
+     */
+    public void createUserInfoEvent(final UserInfoDto sourceEvent) {
+        LOGGER.info("Create User Info {}", sourceEvent.toString());
+        create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.USER_INFOS, EventType.EXT_VITAMUI_CREATE_USER_INFO,
+            converters.getUserInfoConverter().convertToLogbook(sourceEvent));
+    }
+
+    /**
     *
     * @param sourceEvent
     */
@@ -287,6 +299,16 @@ public class IamLogbookService {
     public void updateUserEvent(final User user, final Collection<EventDiffDto> logbooks) {
         LOGGER.debug("Update User {}", user.toString());
         update(getCurrentProofTenantIdentifier(), user.getIdentifier(), MongoDbCollections.USERS, EventType.EXT_VITAMUI_UPDATE_USER, logbooks);
+    }
+
+    /**
+     *
+     * @param userInfo
+     * @param logbooks
+     */
+    public void updateUserInfoEvent(final UserInfo userInfo, final Collection<EventDiffDto> logbooks) {
+        LOGGER.info("Update User Info {}", userInfo.toString());
+        update(getCurrentProofTenantIdentifier(), userInfo.getIdentifier(), MongoDbCollections.USER_INFOS, EventType.EXT_VITAMUI_UPDATE_USER_INFO, logbooks);
     }
 
     /**

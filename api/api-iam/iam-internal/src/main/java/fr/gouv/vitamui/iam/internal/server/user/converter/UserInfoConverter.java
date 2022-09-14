@@ -38,20 +38,27 @@ package fr.gouv.vitamui.iam.internal.server.user.converter;
 
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
-import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.api.utils.ApiUtils;
+import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 @Getter
 @Setter
 public class UserInfoConverter implements Converter<UserInfoDto, UserInfo> {
 
+    public static final String LANGUAGE_KEY = "Langue";
 
     @Override
     public String convertToLogbook(final UserInfoDto userInfoDto) {
-        throw new NotImplementedException("not implemented yet");
+        final Map<String, String> userInfoLogbookData = new LinkedHashMap<>();
+        userInfoLogbookData.put(LANGUAGE_KEY, LogbookUtils.getValue(userInfoDto.getLanguage()));
+        return ApiUtils.toJson(userInfoLogbookData);
     }
 
     @Override

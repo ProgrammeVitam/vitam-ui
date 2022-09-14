@@ -62,6 +62,8 @@ public interface UserRepository extends VitamUIRepository<User, String> {
 
     long countByGroupId(String profileGroupId);
 
+    long countByGroupIdIn(List<String> groupIds);
+
     Page<User> findByCustomerIdAndSubrogeableAndTypeAndStatus(String customerId, boolean subrogeable, UserTypeEnum type, UserStatusEnum status,
             Pageable pageable);
 

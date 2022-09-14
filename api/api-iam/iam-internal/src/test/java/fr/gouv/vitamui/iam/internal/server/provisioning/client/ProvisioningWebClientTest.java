@@ -89,7 +89,7 @@ class ProvisioningWebClientTest {
         ArgumentCaptor<URI> URICaptor = ArgumentCaptor.forClass(URI.class);
 
         // Do
-        provisioningWebClient.getProvidedUser(httpContextMock,email,null,null,null);
+        provisioningWebClient.getProvidedUser(httpContextMock,email,null,null,null, null);
 
         // Verify
         verify(requestHeadersUriSpecMock, times(1)).uri(URICaptor.capture());

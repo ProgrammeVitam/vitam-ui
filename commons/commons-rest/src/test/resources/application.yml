@@ -39,6 +39,12 @@ rest-client1:
       key-path: "@project.build.testOutputDirectory@/truststore_rest-app.jks"
       key-password: azerty
     hostname-verification: true
+  proxy:
+    host: vitamui.test.com
+    port: 80
+    type: SOCKS4
+    username: username
+    password: password
 
 rest-client2:
   server-host: restapp2.service.consul

@@ -164,3 +164,10 @@ opentracing:
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
+
+address:
+  max-street-length: {{ vitamui.identity.max_street_length }}
+
+portal:
+  message: {{vitamui_platform_informations.portal_message}}
+  title: {{vitamui_platform_informations.portal_title}}

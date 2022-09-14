@@ -60,7 +60,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.Assert.assertEquals;
@@ -849,7 +848,7 @@ public final class UserInternalServiceTest {
 
     @Test
     public void patchNotAllowedAnalyticsFieldShouldThrowAnException() {
-        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("notAllowedField", "test")));
+        final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("notAllowedField", "test")));
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Unable to patch user analytics key : notAllowedField is not allowed");
@@ -859,7 +858,7 @@ public final class UserInternalServiceTest {
 
     @Test
     public void patchAnalyticsWithEmptyPayloadShouldThrowAnException() {
-        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of()));
+        final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of()));
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("Unable to patch user analytics : payload is empty");
         verifyNoInteractions(applicationInternalService);
@@ -873,7 +872,7 @@ public final class UserInternalServiceTest {
         when(internalUserService.getMe()).thenReturn(authUserDto);
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of(APPLICATION_ID, "PROFILES_APP")));
+        final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("applicationId", "PROFILES_APP")));
 
         assertThat(thrown).isInstanceOf(NotFoundException.class).hasMessageContaining("No user found with id : userId");
         verify(userRepository).findById(authUserDto.getId());
@@ -890,7 +889,7 @@ public final class UserInternalServiceTest {
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(applicationInternalService.getAll(Optional.empty(), Optional.empty())).thenReturn(List.of());
 
-        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of(APPLICATION_ID, "applicationWithoutPermission")));
+        final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("applicationId", "applicationWithoutPermission")));
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("User has no permission to access to the application : applicationWithoutPermission");
@@ -902,8 +901,8 @@ public final class UserInternalServiceTest {
 
     @Test
     public void patchApplicationAnalyticsOk() {
-        String applicationId = "PROFILES_APP";
-        ApplicationDto application = new ApplicationDto();
+        final String applicationId = "PROFILES_APP";
+        final ApplicationDto application = new ApplicationDto();
         application.setIdentifier(applicationId);
 
         internalUserService = spy(internalUserService);
@@ -914,7 +913,7 @@ public final class UserInternalServiceTest {
         when(applicationInternalService.getAll(Optional.empty(), Optional.empty())).thenReturn(List.of(application));
         assertThat(user.getAnalytics().getApplications()).isNullOrEmpty();
 
-        internalUserService.patchAnalytics(Map.of(APPLICATION_ID, applicationId));
+        internalUserService.patchAnalytics(Map.of("applicationId", applicationId));
 
         verify(userRepository).findById(user.getId());
         verify(applicationInternalService).getAll(Optional.empty(), Optional.empty());
@@ -924,7 +923,7 @@ public final class UserInternalServiceTest {
         verify(userRepository).save(captor.capture());
 
         assertThat(captor.getValue()).isEqualToIgnoringGivenFields(user);
-        List<ApplicationAnalytics> applications = captor.getValue().getAnalytics().getApplications();
+        final List<ApplicationAnalytics> applications = captor.getValue().getAnalytics().getApplications();
         assertThat(applications).hasSize(1);
         assertThat(applications.get(0).getApplicationId()).isEqualTo(applicationId);
         assertThat(applications.get(0).getAccessCounter()).isEqualTo(1);

@@ -67,5 +67,4 @@ public class ManagementDto {
 
     @JsonProperty("AccessRule")
     private RuleCategoryVitamUiDto accessRule;
-
 }
