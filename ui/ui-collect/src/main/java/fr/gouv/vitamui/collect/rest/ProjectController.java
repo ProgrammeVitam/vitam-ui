@@ -81,7 +81,7 @@ public class ProjectController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Get projects paginated")
-    @GetMapping(params = {"page", "size"})
+    @GetMapping(params = {"page", "size","criteria"})
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
         @RequestParam final Integer size,
