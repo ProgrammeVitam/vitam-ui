@@ -112,8 +112,12 @@
         "ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT_ONE": "Action on one archive unit",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE": "Are you sure to launch this action on the selected archive unit ?",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirm you this action ?",
-        "CONFIRM": "Confirmer",
-        "CANCEL": "Annuler"
+        "CONFIRM": "Confirm",
+        "CANCEL": "Cancel",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, the operation reach the plateform allowed threshold.",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Validate rule change(s) ? ",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "This action is not allowed ont the selected items",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "The operation reach the allowed threshold, Please modify the selection and retry "
       }
     },
     "COMPUTED_INHERITED_RULES": {

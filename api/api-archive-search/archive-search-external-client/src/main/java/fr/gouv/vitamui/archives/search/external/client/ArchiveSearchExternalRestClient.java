@@ -236,4 +236,5 @@ public class ArchiveSearchExternalRestClient
         final HttpEntity<?> request = new HttpEntity<>(unitDescriptiveMetadataDto, buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, String.class);
     }
+
 }

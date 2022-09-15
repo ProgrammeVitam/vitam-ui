@@ -31,6 +31,7 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -51,7 +52,7 @@ public class ExternalParamProfileRepository {
 
     private final MongoOperations mongoOperations;
 
-    private static final String ACCESS_CONTRACT = "accessContract";
+    private static final String PARAMETERS = "parameters";
     private static final String COUNT = "count";
     private static final String DESCRIPTION = "description";
     private static final String ENABLED = "enabled";
@@ -61,7 +62,6 @@ public class ExternalParamProfileRepository {
     private static final String EXTERNAL_PARAM_IDENTIFIER = "externalParamIdentifier";
     private static final String EXTERNAL_ID = "external._id";
     private static final String EXTERNAL_PARAMETERS = "external.parameters";
-    private static final String EXTERNAL_PARAMETERS_VALUE = "external.parameters.value";
     private static final String ID = "_id";
     private static final String ID_EXTERNAL_PARAM = "idExternalParam";
     private static final String ID_PROFILE = "idProfile";
@@ -77,9 +77,13 @@ public class ExternalParamProfileRepository {
         String criteria = "{\"criteria\":[{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"_id\",\"value\":\"" +
             idProfile + "\",\"operator\":\"EQUALSIGNORECASE\"}]}]}";
         Aggregation aggregation = buildAggregation(criteria, null, null);
-        return mongoOperations
+        ExternalParamProfileDto profileDto = mongoOperations
             .aggregate(aggregation, MongoDbCollections.PROFILES, ExternalParamProfileDto.class)
             .getUniqueMappedResult();
+        if (profileDto != null) {
+            ExternalParamProfileInternalService.extractFieldsFromExternalParameters(profileDto);
+        }
+        return profileDto;
     }
 
     public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(final Integer pageNumber, final Integer size,
@@ -103,10 +107,10 @@ public class ExternalParamProfileRepository {
         List<ExternalParamProfileDto> dtos = mongoOperations
             .aggregate(paginateAggregation, MongoDbCollections.PROFILES, ExternalParamProfileDto.class)
             .getMappedResults();
+        dtos.stream().forEach(dto -> ExternalParamProfileInternalService.extractFieldsFromExternalParameters(dto));
 
         int count = counter != null ? counter.getCount() : 0;
         boolean hasMore = pageNumber * size + dtos.size() < count;
-
         return new PaginatedValuesDto<>(dtos, pageNumber, size, hasMore);
     }
 
@@ -126,15 +130,16 @@ public class ExternalParamProfileRepository {
         UnwindOperation externalUnwindOperation = Aggregation.unwind(EXTERNAL, false);
         operations.add(externalUnwindOperation);
 
-        UnwindOperation parametersUnwindOperation = Aggregation.unwind(EXTERNAL_PARAMETERS);
-        operations.add(parametersUnwindOperation);
 
         ProjectionOperation projectionOperation = Aggregation.project(NAME, DESCRIPTION, ENABLED)
             .andExpression(IDENTIFIER).as(PROFILE_ID)
             .andExpression(ID).as(ID_PROFILE)
-            .andInclude(Fields.from(Fields.field(ACCESS_CONTRACT, EXTERNAL_PARAMETERS_VALUE)))
+            .andExpression(PARAMETERS).as(EXTERNAL_PARAMETERS)
+            .andInclude(Fields.from(Fields.field(PARAMETERS, EXTERNAL_PARAMETERS)))
             .andInclude(Fields.from(Fields.field(EXTERNAL_PARAM_IDENTIFIER, EXTERNAL_IDENTIFIER)))
             .andInclude(Fields.from(Fields.field(ID_EXTERNAL_PARAM, EXTERNAL_ID)));
+
+
         operations.add(projectionOperation);
 
         if (orderBy != null && direction != null) {

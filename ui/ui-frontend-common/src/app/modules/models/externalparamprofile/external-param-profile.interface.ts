@@ -46,4 +46,6 @@ export interface ExternalParamProfile extends Id {
   idExternalParam: string;
   idProfile: string;
   enabled: boolean;
+  usePlatformThreshold?: boolean;
+  bulkOperationsThreshold?: number;
 }

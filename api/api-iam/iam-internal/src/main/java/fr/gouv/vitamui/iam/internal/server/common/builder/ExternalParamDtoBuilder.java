@@ -31,11 +31,13 @@ import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExternalParamDtoBuilder {
 
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
+    public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
 
     private ExternalParamDtoBuilder() {
         throw new IllegalStateException("Utility class");
@@ -44,8 +46,14 @@ public class ExternalParamDtoBuilder {
     public static ExternalParametersDto build(ExternalParamProfileDto entityDto, String externalParamIdentifier) {
 
         ExternalParametersDto externalParametersDto = new ExternalParametersDto();
+        List<ParameterDto> parametersDtos = new ArrayList<>();
+        parametersDtos.add(new ParameterDto(PARAM_ACCESS_CONTRACT_NAME, entityDto.getAccessContract()));
+        if (!entityDto.isUsePlatformThreshold() && entityDto.getBulkOperationsThreshold() != null) {
+            parametersDtos.add(new ParameterDto(PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
+                String.valueOf(entityDto.getBulkOperationsThreshold())));
+        }
 
-        externalParametersDto.setParameters(List.of(new ParameterDto(PARAM_ACCESS_CONTRACT_NAME, entityDto.getAccessContract())));
+        externalParametersDto.setParameters(parametersDtos);
         externalParametersDto.setName(entityDto.getName());
         externalParametersDto.setIdentifier(externalParamIdentifier);
         return externalParametersDto;

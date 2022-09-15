@@ -71,7 +71,7 @@ import {
   SearchCriteriaTypeEnum,
 } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
-import { ReclassificationComponent } from './reclassification/reclassification.component';
+import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 
 const PAGE_SIZE = 10;
@@ -85,6 +85,15 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
   styleUrls: ['./archive-search.component.scss'],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
+export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
+  ActionType = ActionType;
+
+  DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD = 100000;
+  DEFAULT_DIP_EXPORT_THRESHOLD = 100000;
+  DEFAULT_ELIMINATION_THRESHOLD = 10000;
+  DEFAULT_TRANSFER_THRESHOLD = 100000;
+  DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 5;
+
   constructor(
     private archiveService: ArchiveService,
     private archiveFacetsService: ArchiveFacetsService,
@@ -103,6 +112,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private archiveUnitDipService: ArchiveUnitDipService,
     private cdr: ChangeDetectorRef
   ) {
+
+    this.subscriptionBulkOperationsThreshold = this.managementRulesSharedDataService
+      .getBulkOperationsThreshold()
+      .subscribe((bulkOperationsThreshold) => {
+        this.bulkOperationsThreshold = bulkOperationsThreshold;
+      });
+
     this.subscriptionNodes = this.archiveExchangeDataService.getNodes().subscribe((node) => {
       if (node.checked) {
         this.archiveHelperService.addCriteria(
@@ -267,9 +283,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   showConfirmBigNumberOfResultsSuscription: Subscription;
   updateArchiveUnitAlerteMessageDialogSubscription: Subscription;
   reclassificationAlerteMessageDialogSubscription: Subscription;
+
+  actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
+  confirmImportantAllowedBulkOperationsDialogSubscription: Subscription;
+
   subscriptionNodes: Subscription;
   subscriptionSimpleSearchCriteriaAdd: Subscription;
   subscriptionEntireNodes: Subscription;
+  subscriptionBulkOperationsThreshold: Subscription;
   subscriptionFilingHoldingSchemeNodes: Subscription;
 
   eliminationAnalysisResponse: any;
@@ -284,6 +305,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   archiveUnitGuidSelected: string;
   archiveUnitAllunitup: string[];
   hasAccessContractManagementPermissionsMessage = '';
+  bulkOperationsThreshold: number = -1;
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
 
@@ -296,6 +318,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
   launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
   archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
+
+  @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
+  confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchComponent>;
+
+  @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
+  actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
@@ -786,12 +814,15 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   ngOnDestroy() {
     this.subscriptionNodes?.unsubscribe();
     this.subscriptionEntireNodes?.unsubscribe();
+    this.subscriptionBulkOperationsThreshold?.unsubscribe();
     this.subscriptionFilingHoldingSchemeNodes?.unsubscribe();
     this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
     this.openDialogSubscription?.unsubscribe();
     this.showConfirmBigNumberOfResultsSuscription?.unsubscribe();
     this.updateArchiveUnitAlerteMessageDialogSubscription?.unsubscribe();
     this.reclassificationAlerteMessageDialogSubscription?.unsubscribe();
+    this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+    this.confirmImportantAllowedBulkOperationsDialogSubscription?.unsubscribe();
   }
 
   exportArchiveUnitsToCsvFile() {
@@ -1005,76 +1036,495 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   async goToUpdateManagementRule() {
     await this.prepareToLaunchVitamAction();
-    this.updateUnitManagementRuleService.goToUpdateManagementRule(
-      this.listOfUACriteriaSearch,
-      this.criteriaSearchList,
-      this.accessContract,
-      this.currentPage,
-      this.tenantIdentifier,
-      this.numberOfHoldingUnitType,
-      this.router,
-      this.itemSelected,
-      this.updateArchiveUnitAlerteMessageDialogSubscription,
-      this.updateArchiveUnitAlerteMessageDialog,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
-    );
+    this.selectedItemCount = this.selectedItemCountKnown();
+    if (this.selectedItemCount && this.itemSelected > 0) {
+      //We know the count
+      if (this.bulkOperationsThreshold !== -1) {
+        //We defined a threshold
+        if (this.itemSelected > this.bulkOperationsThreshold) {
+          //error message prohibited
+          const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {});
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+        } else {
+          if (this.itemSelected > this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD) {
+            //Warning and confirmation
+
+            const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+            const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+              panelClass: 'vitamui-dialog',
+            });
+            dialogConfirmActionWithImportantAllowedCountRef
+              .afterClosed()
+              .pipe(filter((result) => !!result))
+              .subscribe(() => {
+                this.updateUnitManagementRuleService.updateManagementRuleWithThresholds(
+                  this.listOfUACriteriaSearch,
+                  this.eliminationAnalysisResponse,
+                  this.accessContract,
+                  this.currentPage,
+                  this.tenantIdentifier,
+                  this.itemSelected,
+                  this.router,
+                  this.itemSelected,
+                  this.showConfirmBigNumberOfResultsSuscription,
+                  this.confirmSecondActionBigNumberOfResultsActionDialog,
+                  this.actionsWithThresholdReachedAlerteMessageDialogSubscription,
+                  this.actionsWithThresholdReachedAlerteMessageDialog,
+                  this.confirmImportantAllowedBulkOperationsDialog,
+                  this.confirmSecondActionBigNumberOfResultsActionDialog,
+                  this.bulkOperationsThreshold
+                );
+              });
+          } else {
+            //normal process
+
+            this.updateUnitManagementRuleService.updateManagementRuleWithThresholds(
+              this.listOfUACriteriaSearch,
+              this.eliminationAnalysisResponse,
+              this.accessContract,
+              this.currentPage,
+              this.tenantIdentifier,
+              this.itemSelected,
+              this.router,
+              this.itemSelected,
+              this.showConfirmBigNumberOfResultsSuscription,
+              this.confirmSecondActionBigNumberOfResultsActionDialog,
+              this.actionsWithThresholdReachedAlerteMessageDialogSubscription,
+              this.actionsWithThresholdReachedAlerteMessageDialog,
+              this.confirmImportantAllowedBulkOperationsDialog,
+              this.confirmSecondActionBigNumberOfResultsActionDialog,
+              this.bulkOperationsThreshold
+            );
+          }
+        }
+      } else {
+        //no threshold defined
+        if (this.itemSelected > this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD) {
+          //Warning and confirmation
+          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+            panelClass: 'vitamui-dialog',
+          });
+          dialogConfirmActionWithImportantAllowedCountRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {
+              this.updateUnitManagementRuleService.updateManagementRuleWithThresholds(
+                this.listOfUACriteriaSearch,
+                this.eliminationAnalysisResponse,
+                this.accessContract,
+                this.currentPage,
+                this.tenantIdentifier,
+                this.itemSelected,
+                this.router,
+                this.itemSelected,
+                this.showConfirmBigNumberOfResultsSuscription,
+                this.confirmSecondActionBigNumberOfResultsActionDialog,
+                this.actionsWithThresholdReachedAlerteMessageDialogSubscription,
+                this.actionsWithThresholdReachedAlerteMessageDialog,
+                this.confirmImportantAllowedBulkOperationsDialog,
+                this.confirmSecondActionBigNumberOfResultsActionDialog,
+                this.bulkOperationsThreshold
+              );
+            });
+        } else {
+          //normal process
+
+          this.updateUnitManagementRuleService.updateManagementRuleWithThresholds(
+            this.listOfUACriteriaSearch,
+            this.eliminationAnalysisResponse,
+            this.accessContract,
+            this.currentPage,
+            this.tenantIdentifier,
+            this.itemSelected,
+            this.router,
+            this.itemSelected,
+            this.showConfirmBigNumberOfResultsSuscription,
+            this.confirmSecondActionBigNumberOfResultsActionDialog,
+            this.actionsWithThresholdReachedAlerteMessageDialogSubscription,
+            this.actionsWithThresholdReachedAlerteMessageDialog,
+            this.confirmImportantAllowedBulkOperationsDialog,
+            this.confirmSecondActionBigNumberOfResultsActionDialog,
+            this.bulkOperationsThreshold
+          );
+        }
+      }
+    }
   }
 
   async launchEliminationAnalysisModal() {
     await this.prepareToLaunchVitamAction();
     this.selectedItemCount = this.selectedItemCountKnown();
-    this.archiveUnitEliminationService.launchEliminationAnalysisModal(
-      this.listOfUACriteriaSearch,
-      this.eliminationAnalysisResponse,
-      this.accessContract,
-      this.selectedItemCount,
-      this.itemSelected,
-      this.tenantIdentifier,
-      this.currentPage,
-      this.confirmSecondActionBigNumberOfResultsActionDialog,
-      this.showConfirmBigNumberOfResultsSuscription
-    );
+    if (this.selectedItemCount && this.itemSelected > 0) {
+      //We know the count
+      if (this.bulkOperationsThreshold !== -1) {
+        //We defined a threshold
+        if (this.itemSelected > this.bulkOperationsThreshold) {
+          //error message prohibited
+          const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {});
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+        } else {
+          if (this.itemSelected > this.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD) {
+            //Warning and confirmation
+
+            const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+            const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+              panelClass: 'vitamui-dialog',
+            });
+            dialogConfirmActionWithImportantAllowedCountRef
+              .afterClosed()
+              .pipe(filter((result) => !!result))
+              .subscribe(() => {
+                this.archiveUnitEliminationService.launchEliminationAnalysisModal(
+                  this.listOfUACriteriaSearch,
+                  this.eliminationAnalysisResponse,
+                  this.accessContract,
+                  this.selectedItemCount,
+                  this.itemSelected,
+                  this.tenantIdentifier,
+                  this.currentPage,
+                  this.confirmSecondActionBigNumberOfResultsActionDialog,
+                  this.showConfirmBigNumberOfResultsSuscription
+                );
+              });
+          } else {
+            //normal process
+
+            this.archiveUnitEliminationService.launchEliminationAnalysisModal(
+              this.listOfUACriteriaSearch,
+              this.eliminationAnalysisResponse,
+              this.accessContract,
+              this.selectedItemCount,
+              this.itemSelected,
+              this.tenantIdentifier,
+              this.currentPage,
+              this.confirmSecondActionBigNumberOfResultsActionDialog,
+              this.showConfirmBigNumberOfResultsSuscription
+            );
+          }
+        }
+      } else {
+        //no threshold defined
+        if (this.itemSelected > this.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD) {
+          //Warning and confirmation
+          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+            panelClass: 'vitamui-dialog',
+          });
+          dialogConfirmActionWithImportantAllowedCountRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {
+              this.archiveUnitEliminationService.launchEliminationAnalysisModal(
+                this.listOfUACriteriaSearch,
+                this.eliminationAnalysisResponse,
+                this.accessContract,
+                this.selectedItemCount,
+                this.itemSelected,
+                this.tenantIdentifier,
+                this.currentPage,
+                this.confirmSecondActionBigNumberOfResultsActionDialog,
+                this.showConfirmBigNumberOfResultsSuscription
+              );
+            });
+        } else {
+          //normal process
+
+          this.archiveUnitEliminationService.launchEliminationAnalysisModal(
+            this.listOfUACriteriaSearch,
+            this.eliminationAnalysisResponse,
+            this.accessContract,
+            this.selectedItemCount,
+            this.itemSelected,
+            this.tenantIdentifier,
+            this.currentPage,
+            this.confirmSecondActionBigNumberOfResultsActionDialog,
+            this.showConfirmBigNumberOfResultsSuscription
+          );
+        }
+      }
+    }
   }
 
   async launchEliminationModal() {
     await this.prepareToLaunchVitamAction();
-    this.archiveUnitEliminationService.launchEliminationModal(
-      this.listOfUACriteriaSearch,
-      this.eliminationActionResponse,
-      this.accessContract,
-      this.tenantIdentifier,
-      this.currentPage,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
-    );
+    this.selectedItemCount = this.selectedItemCountKnown();
+    if (this.selectedItemCount && this.itemSelected > 0) {
+      //We know the count
+      if (this.bulkOperationsThreshold !== -1) {
+        //We defined a threshold
+        if (this.itemSelected > this.bulkOperationsThreshold) {
+          //error message prohibited
+          const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {});
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+        } else {
+          if (this.itemSelected > this.DEFAULT_ELIMINATION_THRESHOLD) {
+            //Warning and confirmation
+
+            const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+            const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+              panelClass: 'vitamui-dialog',
+            });
+            dialogConfirmActionWithImportantAllowedCountRef
+              .afterClosed()
+              .pipe(filter((result) => !!result))
+              .subscribe(() => {
+                this.archiveUnitEliminationService.launchEliminationModal(
+                  this.listOfUACriteriaSearch,
+                  this.eliminationActionResponse,
+                  this.accessContract,
+                  this.tenantIdentifier,
+                  this.currentPage,
+                  this.confirmSecondActionBigNumberOfResultsActionDialog
+                );
+              });
+          } else {
+            //normal process
+
+            this.archiveUnitEliminationService.launchEliminationModal(
+              this.listOfUACriteriaSearch,
+              this.eliminationActionResponse,
+              this.accessContract,
+              this.tenantIdentifier,
+              this.currentPage,
+              this.confirmSecondActionBigNumberOfResultsActionDialog
+            );
+          }
+        }
+      } else {
+        //no threshold defined
+        if (this.itemSelected > this.DEFAULT_ELIMINATION_THRESHOLD) {
+          //Warning and confirmation
+          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+            panelClass: 'vitamui-dialog',
+          });
+          dialogConfirmActionWithImportantAllowedCountRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {
+              this.archiveUnitEliminationService.launchEliminationModal(
+                this.listOfUACriteriaSearch,
+                this.eliminationActionResponse,
+                this.accessContract,
+                this.tenantIdentifier,
+                this.currentPage,
+                this.confirmSecondActionBigNumberOfResultsActionDialog
+              );
+            });
+        } else {
+          //normal process
+
+          this.archiveUnitEliminationService.launchEliminationModal(
+            this.listOfUACriteriaSearch,
+            this.eliminationActionResponse,
+            this.accessContract,
+            this.tenantIdentifier,
+            this.currentPage,
+            this.confirmSecondActionBigNumberOfResultsActionDialog
+          );
+        }
+      }
+    }
   }
 
   async launchExportDipModal() {
     await this.prepareToLaunchVitamAction();
-    const selectedItemCount = this.selectedItemCountKnown();
-    this.archiveUnitDipService.launchExportDipModal(
-      this.listOfUACriteriaSearch,
-      selectedItemCount,
-      this.accessContract,
-      this.tenantIdentifier,
-      this.itemSelected,
-      this.currentPage,
-      this.isAllchecked,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
-    );
+    this.selectedItemCount = this.selectedItemCountKnown();
+    if (this.selectedItemCount && this.itemSelected > 0) {
+      //We know the count
+      if (this.bulkOperationsThreshold !== -1) {
+        //We defined a threshold
+        if (this.itemSelected > this.bulkOperationsThreshold) {
+          //error message prohibited
+          const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {});
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+        } else {
+          if (this.itemSelected > this.DEFAULT_DIP_EXPORT_THRESHOLD) {
+            //Warning and confirmation
+
+            const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+            const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+              panelClass: 'vitamui-dialog',
+            });
+            dialogConfirmActionWithImportantAllowedCountRef
+              .afterClosed()
+              .pipe(filter((result) => !!result))
+              .subscribe(() => {
+                this.archiveUnitDipService.launchExportDipModal(
+                  this.listOfUACriteriaSearch,
+                  this.selectedItemCount,
+                  this.accessContract,
+                  this.tenantIdentifier,
+                  this.itemSelected,
+                  this.currentPage,
+                  this.isAllchecked,
+                  this.confirmSecondActionBigNumberOfResultsActionDialog
+                );
+              });
+          } else {
+            //normal process
+
+            this.archiveUnitDipService.launchExportDipModal(
+              this.listOfUACriteriaSearch,
+              this.selectedItemCount,
+              this.accessContract,
+              this.tenantIdentifier,
+              this.itemSelected,
+              this.currentPage,
+              this.isAllchecked,
+              this.confirmSecondActionBigNumberOfResultsActionDialog
+            );
+          }
+        }
+      } else {
+        //no threshold defined
+        if (this.itemSelected > this.DEFAULT_DIP_EXPORT_THRESHOLD) {
+          //Warning and confirmation
+          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+            panelClass: 'vitamui-dialog',
+          });
+          dialogConfirmActionWithImportantAllowedCountRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {
+              this.archiveUnitDipService.launchExportDipModal(
+                this.listOfUACriteriaSearch,
+                this.selectedItemCount,
+                this.accessContract,
+                this.tenantIdentifier,
+                this.itemSelected,
+                this.currentPage,
+                this.isAllchecked,
+                this.confirmSecondActionBigNumberOfResultsActionDialog
+              );
+            });
+        } else {
+          //normal process
+
+          this.archiveUnitDipService.launchExportDipModal(
+            this.listOfUACriteriaSearch,
+            this.selectedItemCount,
+            this.accessContract,
+            this.tenantIdentifier,
+            this.itemSelected,
+            this.currentPage,
+            this.isAllchecked,
+            this.confirmSecondActionBigNumberOfResultsActionDialog
+          );
+        }
+      }
+    }
   }
 
   async launchTransferRequestModal() {
     await this.prepareToLaunchVitamAction();
-    const selectedItemCount = this.selectedItemCountKnown();
-    this.archiveUnitDipService.launchTransferRequestModal(
-      this.listOfUACriteriaSearch,
-      selectedItemCount,
-      this.accessContract,
-      this.tenantIdentifier,
-      this.itemSelected,
-      this.currentPage,
-      this.isAllchecked,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
-    );
+    this.selectedItemCount = this.selectedItemCountKnown();
+    if (this.selectedItemCount && this.itemSelected > 0) {
+      //We know the count
+      if (this.bulkOperationsThreshold !== -1) {
+        //We defined a threshold
+        if (this.itemSelected > this.bulkOperationsThreshold) {
+          //error message prohibited
+          const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {});
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+        } else {
+          if (this.itemSelected > this.DEFAULT_TRANSFER_THRESHOLD) {
+            //Warning and confirmation
+
+            const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+            const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+              panelClass: 'vitamui-dialog',
+            });
+            dialogConfirmActionWithImportantAllowedCountRef
+              .afterClosed()
+              .pipe(filter((result) => !!result))
+              .subscribe(() => {
+                this.archiveUnitDipService.launchTransferRequestModal(
+                  this.listOfUACriteriaSearch,
+                  this.selectedItemCount,
+                  this.accessContract,
+                  this.tenantIdentifier,
+                  this.itemSelected,
+                  this.currentPage,
+                  this.isAllchecked,
+                  this.confirmSecondActionBigNumberOfResultsActionDialog
+                );
+              });
+          } else {
+            //normal process
+
+            this.archiveUnitDipService.launchTransferRequestModal(
+              this.listOfUACriteriaSearch,
+              this.selectedItemCount,
+              this.accessContract,
+              this.tenantIdentifier,
+              this.itemSelected,
+              this.currentPage,
+              this.isAllchecked,
+              this.confirmSecondActionBigNumberOfResultsActionDialog
+            );
+          }
+        }
+      } else {
+        //no threshold defined
+        if (this.itemSelected > this.DEFAULT_TRANSFER_THRESHOLD) {
+          //Warning and confirmation
+          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+            panelClass: 'vitamui-dialog',
+          });
+          dialogConfirmActionWithImportantAllowedCountRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {
+              this.archiveUnitDipService.launchTransferRequestModal(
+                this.listOfUACriteriaSearch,
+                this.selectedItemCount,
+                this.accessContract,
+                this.tenantIdentifier,
+                this.itemSelected,
+                this.currentPage,
+                this.isAllchecked,
+                this.confirmSecondActionBigNumberOfResultsActionDialog
+              );
+            });
+        } else {
+          //normal process
+
+          this.archiveUnitDipService.launchTransferRequestModal(
+            this.listOfUACriteriaSearch,
+            this.selectedItemCount,
+            this.accessContract,
+            this.tenantIdentifier,
+            this.itemSelected,
+            this.currentPage,
+            this.isAllchecked,
+            this.confirmSecondActionBigNumberOfResultsActionDialog
+          );
+        }
+      }
+    }
   }
 }

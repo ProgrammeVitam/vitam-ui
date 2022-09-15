@@ -108,7 +108,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         ResultsDto got = findObjectById(id, context).getBody();
         String usage = getUsage(Objects.requireNonNull(got), objectData);
         return archiveSearchExternalWebClient
-                .downloadObjectFromUnit(id, usage, getVersion(got.getQualifiers(), usage), context);
+            .downloadObjectFromUnit(id, usage, getVersion(got.getQualifiers(), usage), context);
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {

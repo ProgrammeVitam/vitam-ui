@@ -92,7 +92,7 @@ public class ArchiveSearchInternalController {
 
     private static final String MANDATORY_PARAMETERS =
         "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ";
-    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY=
+    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY =
         "The identifier, the accessContract Id  are mandatory parameters: ";
 
     private final ArchiveSearchInternalService archiveInternalService;
@@ -198,9 +198,9 @@ public class ArchiveSearchInternalController {
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         return Mono.<Resource>fromCallable(() -> {
-                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
-                return new InputStreamResource((InputStream) response.getEntity());
-            }).subscribeOn(Schedulers.boundedElastic())
+            Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
+            return new InputStreamResource((InputStream) response.getEntity());
+        }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
                 .ok().cacheControl(CacheControl.noCache())
                 .body(resource)));

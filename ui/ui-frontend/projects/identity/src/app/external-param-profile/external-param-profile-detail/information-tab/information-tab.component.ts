@@ -60,6 +60,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   userLevel: string;
   previousValue: ExternalParamProfile;
   activeAccessContracts$: Observable<AccessContract[]>;
+  thresholdValues: number[] = [100, 10000, 100000, 10000000, 100000000, 1000000000];
 
   @Input() externalParamProfile: ExternalParamProfile;
   @Input() readOnly: boolean;
@@ -77,8 +78,6 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   ngOnInit() {
     this.initForm();
-    this.initListenersOnFormsValuesChanges();
-
     this.activeAccessContracts$ = this.externalParamProfileService.getAllActiveAccessContracts(this.tenantIdentifier);
   }
 
@@ -99,10 +98,12 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
       description: [null, Validators.required],
       enabled: false,
       accessContract: [null, Validators.required],
+      usePlatformThreshold: true,
+      bulkOperationsThreshold: [null, []],
     });
   }
 
-  private initListenersOnFormsValuesChanges() {
+  public initListenersOnFormsValuesChanges() {
     this.updateFormSub = this.form.valueChanges
       .pipe(
         map(() => diff(this.form.value, this.previousValue)),
@@ -113,6 +114,8 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
               id: this.externalParamProfile.id,
               idExternalParam: this.externalParamProfile.idExternalParam,
               idProfile: this.externalParamProfile.idProfile,
+              usePlatformThreshold: this.externalParamProfile.usePlatformThreshold,
+              bulkOperationsThreshold: this.externalParamProfile.bulkOperationsThreshold,
             },
             formData
           )
@@ -139,5 +142,26 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
           externalParamProfile.name
         )
       );
+  }
+
+  submitModification() {
+    let updated: any = diff(this.form.value, this.previousValue);
+    if (!isEmpty(updated)) {
+      updated = extend(
+        {
+          id: this.externalParamProfile.id,
+          idExternalParam: this.externalParamProfile.idExternalParam,
+          idProfile: this.externalParamProfile.idProfile,
+        },
+        updated
+      );
+      if (updated.usePlatformThreshold) {
+        delete updated.bulkOperationsThreshold;
+      }
+
+      this.externalParamProfileService
+        .patch(updated)
+        .subscribe((externalParamProfile: ExternalParamProfile) => this.resetForm(this.form, externalParamProfile, this.readOnly));
+    }
   }
 }

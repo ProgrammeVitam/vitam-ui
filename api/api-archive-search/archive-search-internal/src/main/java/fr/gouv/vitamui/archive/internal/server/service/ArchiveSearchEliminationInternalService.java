@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.archive.internal.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
@@ -58,12 +59,16 @@ public class ArchiveSearchEliminationInternalService {
     private final EliminationService eliminationService;
     private final ArchiveSearchInternalService archiveSearchInternalService;
 
+    private final ObjectMapper objectMapper;
+
     @Autowired
     public ArchiveSearchEliminationInternalService(
         final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
-        final EliminationService eliminationService) {
+        final EliminationService eliminationService,
+        final ObjectMapper objectMapper) {
         this.eliminationService = eliminationService;
         this.archiveSearchInternalService = archiveSearchInternalService;
+        this.objectMapper = objectMapper;
     }
 
     public JsonNode startEliminationAction(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
@@ -72,7 +77,7 @@ public class ArchiveSearchEliminationInternalService {
         LOGGER.debug("Elimination action by criteria {} ", searchQuery.toString());
         JsonNode dslQuery = archiveSearchInternalService.prepareDslQuery(searchQuery, vitamContext);
         EliminationRequestBody eliminationRequestBody = null;
-        eliminationRequestBody = getEliminationRequestBody(dslQuery);
+        eliminationRequestBody = getEliminationRequestBody(dslQuery, searchQuery.getMaxSizeThreshold());
         LOGGER.debug("Elimination action final query {} ",
             JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
         RequestResponse<JsonNode> jsonNodeRequestResponse =
@@ -80,11 +85,14 @@ public class ArchiveSearchEliminationInternalService {
         return jsonNodeRequestResponse.toJsonNode();
     }
 
-    public EliminationRequestBody getEliminationRequestBody(JsonNode updateSet) {
+    public EliminationRequestBody getEliminationRequestBody(JsonNode updateSet, Long threshold) {
 
         ObjectNode query = JsonHandler.createObjectNode();
         query.set(BuilderToken.GLOBAL.ROOTS.exactToken(), updateSet.get(BuilderToken.GLOBAL.ROOTS.exactToken()));
         query.set(BuilderToken.GLOBAL.QUERY.exactToken(), updateSet.get(BuilderToken.GLOBAL.QUERY.exactToken()));
+        if (threshold != null) {
+            query.set(BuilderToken.GLOBAL.THRESOLD.exactToken(), objectMapper.convertValue(threshold, JsonNode.class));
+        }
         EliminationRequestBody requestBody = new EliminationRequestBody();
         requestBody.setDate(new SimpleDateFormat(ONLY_DATE_FORMAT).format(new Date()));
         requestBody.setDslRequest(query);
@@ -96,14 +104,13 @@ public class ArchiveSearchEliminationInternalService {
 
         LOGGER.debug("Elimination analysis by criteria {} ", searchQuery.toString());
         JsonNode dslQuery = archiveSearchInternalService.prepareDslQuery(searchQuery, vitamContext);
-        EliminationRequestBody eliminationRequestBody = null;
-        eliminationRequestBody = getEliminationRequestBody(dslQuery);
+        EliminationRequestBody eliminationRequestBody =
+            getEliminationRequestBody(dslQuery, searchQuery.getMaxSizeThreshold());
 
         LOGGER.debug("Elimination analysis final query {} ",
             JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
         RequestResponse<JsonNode> jsonNodeRequestResponse =
             eliminationService.startEliminationAnalysis(vitamContext, eliminationRequestBody);
-
 
         return jsonNodeRequestResponse.toJsonNode();
     }
