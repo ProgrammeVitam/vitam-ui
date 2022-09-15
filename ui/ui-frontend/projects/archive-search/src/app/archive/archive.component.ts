@@ -45,6 +45,7 @@ import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEv
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
+import { Unit } from './models/unit.interface';
 
 @Component({
   selector: 'app-archive',
@@ -152,7 +153,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
-  showPreviewArchiveUnit(item: Event) {
+  showPreviewArchiveUnit(item: Unit) {
     this.openPanel(item);
   }
   showExtendedLateralPanel() {

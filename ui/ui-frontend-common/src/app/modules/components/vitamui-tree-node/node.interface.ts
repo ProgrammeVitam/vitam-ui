@@ -34,27 +34,48 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FilingHoldingSchemeNode} from '../../models/node.interface';
 
-@Component({
-  selector: 'app-filing-holding-node',
-  templateUrl: './filing-holding-node.component.html',
-  styleUrls: ['./filing-holding-node.component.scss']
-})
-export class FilingHoldingNodeComponent implements OnInit {
+import {Id} from "../../models";
 
-  @Input() node: FilingHoldingSchemeNode;
-  @Input() expanded: boolean;
-  @Input() disabled: boolean;
+export interface FilingHoldingSchemeNode extends Id {
+  title: string;
+  type: string;
+  descriptionLevel?: string;
+  label?: string;
+  children: FilingHoldingSchemeNode[];
+  parents: FilingHoldingSchemeNode[];
+  vitamId: string;
+  disabledChild?: boolean;
+  disabled?: boolean;
+  checked: boolean;
+  count?: number;
+  hidden?: boolean;
+  isLoadingChildren?: boolean;
+  canLoadMoreChildren?: boolean;
+}
 
-  @Output() nodeToggle = new EventEmitter<void>();
-  @Output() labelClick = new EventEmitter<void>();
+export const nodeHasChildren = (node: FilingHoldingSchemeNode): boolean => {
+  return node.children && node.children.length > 0;
+}
 
-  constructor() {
-  }
+export const nodeHasMatch = (node: FilingHoldingSchemeNode): boolean => {
+  return node.count && node.count > 0;
+}
 
-  ngOnInit() {
-  }
+export const copyNodeWhithoutChildren = (node: FilingHoldingSchemeNode): FilingHoldingSchemeNode => {
+  return {
+    id: node.id,
+    title: node.title,
+    type: node.type,
+    label: node.label,
+    children: null,
+    parents: null,
+    vitamId: node.vitamId,
+    checked: node.checked,
+    count: node.count,
 
+    hidden: node.hidden,
+    isLoadingChildren: false,
+    canLoadMoreChildren: true,
+  };
 }

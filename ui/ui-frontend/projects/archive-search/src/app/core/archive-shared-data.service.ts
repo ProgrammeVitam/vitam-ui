@@ -36,8 +36,7 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Direction } from 'ui-frontend-common';
-import { FilingHoldingSchemeNode } from '../archive/models/node.interface';
+import { Direction, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { NodeData } from '../archive/models/nodedata.interface';
 import { SearchCriteriaHistory } from '../archive/models/search-criteria-history.interface';
 import { ResultFacet, SearchCriteriaAddAction, SearchCriteriaDto, SearchCriteriaRemoveAction } from '../archive/models/search.criteria';
@@ -74,8 +73,6 @@ export class ArchiveSharedDataService {
 
   private searchCriteriaRemoveFromChildSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
 
-  private entireNodes = new BehaviorSubject<string[]>([]);
-
   private auTitleSubject = new BehaviorSubject<string>('');
 
   private actionSubject = new BehaviorSubject<string>('');
@@ -104,12 +101,7 @@ export class ArchiveSharedDataService {
 
   removeFromApraisalSearchCriteriaObservable = this.searchCriteriaRemoveFromChildSubject.asObservable();
 
-  filingHoldingNodes = this.filingHoldingNodesSubject.asObservable();
-
-  entireNodesObservable = this.entireNodes.asObservable();
-
-  constructor() {
-  }
+  constructor() {}
 
   emitRuleCategory(ruleCategory: string) {
     this.ruleCategory.next(ruleCategory);
@@ -117,14 +109,6 @@ export class ArchiveSharedDataService {
 
   getRuleCategory(): Observable<string> {
     return this.ruleCategory.asObservable();
-  }
-
-  emitEntireNodes(nodes: string[]) {
-    this.entireNodes.next(nodes);
-  }
-
-  getEntireNodes(): Observable<string[]> {
-    return this.entireNodes.asObservable();
   }
 
   emitFilingHoldingNodes(node: FilingHoldingSchemeNode[]) {

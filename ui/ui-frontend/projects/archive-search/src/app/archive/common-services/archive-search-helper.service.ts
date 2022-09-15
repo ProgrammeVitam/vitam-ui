@@ -27,10 +27,9 @@
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator } from 'ui-frontend-common';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
 import {
   CriteriaValue,
   SearchCriteria,

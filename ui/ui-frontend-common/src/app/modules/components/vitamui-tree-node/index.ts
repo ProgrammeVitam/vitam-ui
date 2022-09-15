@@ -34,57 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Directive, OnDestroy, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
-import { ActivatedRoute } from '@angular/router';
-import { merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import { AppRootComponent } from './app-root-component.class';
-import { GlobalEventService } from './global-event.service';
-
-@Directive()
-// tslint:disable-next-line:directive-class-suffix
-export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, OnDestroy {
-
-  openedItem: T;
-
-  @ViewChild('panel') panel: MatSidenav;
-
-  private destroy = new Subject<void>();
-
-  constructor(route: ActivatedRoute, public globalEventService: GlobalEventService) {
-    super(route);
-    merge(
-      this.globalEventService.pageEvent,
-      this.globalEventService.customerEvent,
-      this.globalEventService.tenantEvent
-    ).pipe(takeUntil(this.destroy)).subscribe(() => {
-      this.closePanel();
-    });
-  }
-
-  ngAfterViewInit() {
-    if (!this.panel) {
-      this.logger.error(this, 'Missing <mat-sidenav> element in component\'s template. Please a <mat-sidenav> with a #panel attribute');
-    }
-  }
-
-  ngOnDestroy() {
-    this.destroy.next();
-  }
-
-  async openPanel(item: T) {
-    this.openedItem = item;
-    if (this.panel && !this.panel.opened) {
-      await this.panel.open();
-    }
-  }
-
-  async closePanel() {
-    if (this.panel && this.panel.opened) {
-      await this.panel.close();
-    }
-  }
-
-}
+export * from './node.interface';
+export * from './vitamui-tree-node.component';
+export * from './vitamui-tree-node.module';

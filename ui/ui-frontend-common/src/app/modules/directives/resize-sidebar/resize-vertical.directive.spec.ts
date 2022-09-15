@@ -34,47 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Id } from 'ui-frontend-common';
 
-export interface FilingHoldingSchemeNode extends Id {
-  title: string;
-  type: string;
-  descriptionLevel?: string;
-  label?: string;
-  children: FilingHoldingSchemeNode[];
-  parents: FilingHoldingSchemeNode[];
-  vitamId: string;
-  disabledChild?: boolean;
-  disabled?: boolean;
-  checked: boolean;
-  count?: number;
-  hidden?: boolean;
-  isLoadingChildren?: boolean;
-  canLoadMoreChildren?: boolean;
+import {ComponentFixture, TestBed } from "@angular/core/testing";
+import {Component} from "@angular/core";
+import {By} from "@angular/platform-browser";
+import {ResizeVerticalDirective} from "./resize-vertical.directive";
+
+@Component({
+  template: `
+    <div class="cadre">
+      <div class="box">
+        Top div
+      </div>
+      <div class="cadre" vitamuiVerticalResizeSidebar="top"></div>
+      <div class="box">
+        Bottom div
+      </div>
+    </div>
+  `,
+  styles: [`
+    .vitamui-sidepanel-resize-sidebar {
+      border-top: 4px solid rgb(112, 35, 130);
+      height: 0;
+      padding: 0;
+      margin: 0;
+      cursor: ns-resize;
+      flex: 0 0 auto;
+    }
+  `]
+})
+class ResizeVerticalBarTestComponent {
 }
 
-export function nodeHasChildren(node: FilingHoldingSchemeNode): boolean {
-  return node.children && node.children.length > 0;
-}
+describe('ResizeVerticalDirective', () => {
 
-export function nodeHasMatch(node: FilingHoldingSchemeNode): boolean {
-  return node.count && node.count > 0;
-}
+  let fixture: ComponentFixture<ResizeVerticalBarTestComponent>;
 
-export function copyNodeWhithoutChildren(node: FilingHoldingSchemeNode): FilingHoldingSchemeNode {
-  return {
-    id: node.id,
-    title: node.title,
-    type: node.type,
-    label: node.label,
-    children: null,
-    parents: null,
-    vitamId: node.vitamId,
-    checked: node.checked,
-    count: node.count,
+  beforeEach((() => {
+    fixture = TestBed.configureTestingModule({
+      declarations: [ResizeVerticalDirective, ResizeVerticalBarTestComponent]
+    }).createComponent(ResizeVerticalBarTestComponent);
+    fixture.detectChanges();
+  }));
 
-    hidden: node.hidden,
-    isLoadingChildren: false,
-    canLoadMoreChildren: true,
-  };
-}
+  it('should have one element resizeable', () => {
+    const div = fixture.debugElement.queryAll(By.directive(ResizeVerticalDirective));
+    expect(div.length).toBe(1);
+  });
+
+});

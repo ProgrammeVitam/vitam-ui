@@ -1,10 +1,11 @@
 @import '~ui-frontend-common/sass/variables/colors';
-/* styles applied directly to the ap-root element only */
+
 :host {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: start;
+  height: 100%;
+  background: white;
+  margin: 0;
   width: 100%;
 
   div, mat-tree, mat-tree-node, mat-nested-tree-node {
@@ -17,7 +18,7 @@
 
   .tree-text {
     flex: 1;
-    min-width: 0; /* or some value */
+    min-width: 0;
     p, a {
       white-space: nowrap;
       overflow: hidden;
@@ -26,7 +27,6 @@
   }
 
   .mat-tree-node {
-    //hidde empty node
     flex: 1 1 auto;
     min-height: 0;
   }
@@ -48,12 +48,12 @@
   .vitamui-sidepanel-header {
     flex-grow: 1;
     overflow: auto;
-    position: relative;
   }
 
   .tree-filing-scheme {
     flex: 1;
     flex-direction: column;
+    background-color: #fafafa;
 
     mat-tree-node, mat-nested-tree-node {
       flex-direction: column;
@@ -62,7 +62,7 @@
 
   .load-more-ua {
     cursor: pointer;
-    color: #205692;
+    color: #979797;
     text-decoration: underline;
   }
 
@@ -72,6 +72,10 @@
     margin-top: 15px;
     margin-bottom: 15px;
   }
+}
+
+.hide {
+  display: none;
 }
 
 .filing-holding-scheme-tree-invisible {
@@ -85,7 +89,6 @@
   cursor: pointer;
 
   &:hover {
-    // text-decoration: underline;
     background-color: rgba(250, 250, 250, 1);
   }
 }
