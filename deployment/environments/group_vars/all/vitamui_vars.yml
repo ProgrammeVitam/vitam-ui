@@ -59,7 +59,6 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8002
     port_admin: 7002
-    max_street_length: 250
     # Custom directories linked to the module
     dirs:
       - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
@@ -133,7 +132,6 @@ vitamui:
     connect_timeout: 30
     read_timeout: 30
     write_timeout: 30
-    max_street_length: 250
     # gdpr_alert_readonly: true
     # login_max_failure: 5
     # login_interval: 20
@@ -244,6 +242,7 @@ vitamui_platform_informations:
     zip_code: change-it
     city: change-it
     country: change-it
+    max_street_length: 250
   proof_tenant: 1
   cas_tenant: -1
   first_customer_tenant: 9
