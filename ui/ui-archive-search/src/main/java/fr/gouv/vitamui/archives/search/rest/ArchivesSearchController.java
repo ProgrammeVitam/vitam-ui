@@ -315,4 +315,5 @@ public class ArchivesSearchController extends AbstractUiRestController {
         LOGGER.debug("Update the Archive Unit update query {}", unitDescriptiveMetadataDto);
         return archivesSearchService.updateUnitById(id, unitDescriptiveMetadataDto, buildUiHttpContext());
     }
+
 }

@@ -57,6 +57,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   tenantIdentifier: string;
   foundAccessContract = false;
   accessContract: string;
+  bulkOperationsThreshold: number;
   accessContractSub: Subscription;
   errorMessageSub: Subscription;
   isLPExtended = false;
@@ -125,6 +126,15 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
             })
           )
           .subscribe();
+      }
+      const thresholdParams: any = parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD);
+
+      if (thresholdParams && thresholdParams.length > 0) {
+        this.bulkOperationsThreshold = Number(thresholdParams);
+        this.managementRulesSharedDataService.emitBulkOperationsThreshold(Number(thresholdParams));
+      } else {
+        this.bulkOperationsThreshold = -1;
+        this.managementRulesSharedDataService.emitBulkOperationsThreshold(-1);
       }
     });
   }

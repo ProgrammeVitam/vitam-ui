@@ -264,4 +264,5 @@ public class ArchiveInternalRestClient
             restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, String.class);
         return response.getBody();
     }
+
 }

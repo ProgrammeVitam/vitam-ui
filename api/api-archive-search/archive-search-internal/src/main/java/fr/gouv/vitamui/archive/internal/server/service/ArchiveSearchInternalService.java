@@ -63,6 +63,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
+import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,6 +98,7 @@ import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.
 /**
  * Archive-Search Internal service communication with VITAM.
  */
+@Getter
 @Service
 public class ArchiveSearchInternalService {
     private static final VitamUILogger LOGGER =
@@ -127,7 +129,6 @@ public class ArchiveSearchInternalService {
     private final RulesUpdateCommonService rulesUpdateCommonService;
     private final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
-
     @Autowired
     public ArchiveSearchInternalService(final ObjectMapper objectMapper, final UnitService unitService,
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
@@ -135,9 +136,7 @@ public class ArchiveSearchInternalService {
         final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService,
         final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService,
         final RulesUpdateCommonService rulesUpdateCommonService,
-        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService
-
-    ) {
+        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
@@ -577,7 +576,6 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("Reclassification query : {}", array);
         RequestResponse<JsonNode> jsonNodeRequestResponse = unitService.reclassification(vitamContext, array);
         return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
-
     }
 
 }

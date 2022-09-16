@@ -230,7 +230,8 @@ public class ArchivesSearchExternalController {
 
     @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
-    public String updateUnitById(final @PathVariable("id") String id, @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
+    public String updateUnitById(final @PathVariable("id") String id,
+        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
@@ -238,4 +239,5 @@ public class ArchivesSearchExternalController {
         LOGGER.debug("update unit by id {} ", id);
         return archivesSearchExternalService.updateUnitById(id, unitDescriptiveMetadataDto);
     }
+
 }

@@ -705,3 +705,66 @@
     </button>
   </mat-dialog-actions>
 </ng-template>
+
+<ng-template #confirmImportantAllowedBulkOperationsDialog>
+  <mat-dialog-content>
+    <br />
+    <div class="text large bold">
+      <span *ngIf="itemSelected > 1">
+        {{
+          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE'
+            | translate: { elementsSize: itemSelected }
+        }}</span
+      >
+    </div>
+    <div class="text large bold">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2' | translate }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions class="mat-dialog-actions-right">
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM' | translate }}
+    </button>
+    <button matDialogClose class="btn cancel" cdkFocusInitial>
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CANCEL' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #actionsWithThresholdReachedAlerteMessageDialog>
+  <mat-dialog-content>
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}</div>
+    <br />
+
+    <div class="row red-text">
+      <div class="col-1">
+        <i class="material-icons icon-style">cancel</i>
+      </div>
+      <div class="col-11">
+        {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-1">
+        <span class="vertical-line"></span>
+      </div>
+      <div class="col-11">
+        <div class="text small bold">
+          {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
+        </div>
+
+        <div class="text small">
+          {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2' | translate }}
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>

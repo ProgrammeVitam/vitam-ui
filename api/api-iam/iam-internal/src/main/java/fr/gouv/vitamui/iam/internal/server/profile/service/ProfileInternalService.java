@@ -36,29 +36,7 @@
  */
 package fr.gouv.vitamui.iam.internal.server.profile.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -73,6 +51,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -80,6 +59,7 @@ import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
+import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
@@ -94,11 +74,27 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * The service to read, create, update and delete the profiles.
- *
- *
  */
 @Getter
 @Setter
@@ -125,10 +121,13 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     private LogbookService logbookService;
 
     @Autowired
-    public ProfileInternalService(final SequenceGeneratorService sequenceGeneratorService, final ProfileRepository profileRepository,
-            final CustomerRepository customerRepository, final GroupRepository groupRepository, final TenantRepository tenantRepository,
-            final UserRepository userRepository, final InternalSecurityService internalSecurityService, final IamLogbookService iamLogbookService,
-            final ProfileConverter profileConverter, final LogbookService logbookService) {
+    public ProfileInternalService(final SequenceGeneratorService sequenceGeneratorService,
+        final ProfileRepository profileRepository,
+        final CustomerRepository customerRepository, final GroupRepository groupRepository,
+        final TenantRepository tenantRepository,
+        final UserRepository userRepository, final InternalSecurityService internalSecurityService,
+        final IamLogbookService iamLogbookService,
+        final ProfileConverter profileConverter, final LogbookService logbookService) {
         super(sequenceGeneratorService);
         this.profileRepository = profileRepository;
         this.customerRepository = customerRepository;
@@ -153,8 +152,9 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
      * {@inheritDoc}
      */
     @Override
-    public PaginatedValuesDto<ProfileDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteriaJsonString,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, final Optional<String> embedded) {
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(final Integer page, final Integer size,
+        final Optional<String> criteriaJsonString,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction, final Optional<String> embedded) {
         return super.getAllPaginated(page, size, criteriaJsonString, orderBy, direction, embedded);
     }
 
@@ -175,7 +175,8 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
             final String embedded = optEmbedded.get();
             if (EmbeddedOptions.ALL.toString().equalsIgnoreCase(embedded)) {
                 final Tenant tenant = Optional.ofNullable(tenantRepository.findByIdentifier(dto.getTenantIdentifier()))
-                        .orElseThrow(() -> new NotFoundException("Unable to find the following tenant: " + dto.getTenantIdentifier()));
+                    .orElseThrow(() -> new NotFoundException(
+                        "Unable to find the following tenant: " + dto.getTenantIdentifier()));
 
                 dto.setTenantName(tenant.getName());
 
@@ -230,7 +231,6 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -238,7 +238,8 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
         final String id = CastUtils.toString(partialDto.get("id"));
         final String message = "Unable to patch profile " + id;
         Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto,
-                Arrays.asList("id", "readonly", "identifier", "customerId", "applicationName", "tenantIdentifier")), message);
+            Arrays.asList("id", "readonly", "identifier", "customerId", "applicationName", "tenantIdentifier")),
+            message);
 
         final ProfileDto profileDto = getOne(id, Optional.empty(), Optional.empty());
         final String customerId = CastUtils.toString(partialDto.get("customerId"));
@@ -290,41 +291,45 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
-                case "id" :
-                case "customerId" :
-                case "readonly" :
-                case "applicationName" :
-                case "tenantIdentifier" :
-                case "identifier" :
+                case "id":
+                case "customerId":
+                case "readonly":
+                case "applicationName":
+                case "tenantIdentifier":
+                case "identifier":
                     break;
-                case "name" :
+                case "name":
                     logbooks.add(new EventDiffDto(ProfileConverter.NAME_KEY, profile.getName(), entry.getValue()));
                     profile.setName(CastUtils.toString(entry.getValue()));
                     break;
-                case "description" :
-                    logbooks.add(new EventDiffDto(ProfileConverter.DESCRIPTION_KEY, profile.getDescription(), entry.getValue()));
+                case "description":
+                    logbooks.add(
+                        new EventDiffDto(ProfileConverter.DESCRIPTION_KEY, profile.getDescription(), entry.getValue()));
                     profile.setDescription(CastUtils.toString(entry.getValue()));
                     break;
-                case "enabled" :
+                case "enabled":
                     logbooks.add(new EventDiffDto(ProfileConverter.ENABLED_KEY, profile.isEnabled(), entry.getValue()));
                     profile.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
-                case "level" :
-                    logbooks.add(new EventDiffDto(ProfileConverter.LEVEL_KEY, profile.getDescription(), entry.getValue()));
+                case "level":
+                    logbooks
+                        .add(new EventDiffDto(ProfileConverter.LEVEL_KEY, profile.getDescription(), entry.getValue()));
                     profile.setLevel(CastUtils.toString(entry.getValue()));
                     break;
-                case "roles" :
+                case "roles":
                     final List<Map<String, Object>> roleEntries = CastUtils.toList(entry.getValue());
                     final List<Role> roles = roleEntries.stream().map(this::convertToRole).collect(Collectors.toList());
-                    logbooks.add(new EventDiffDto(ProfileConverter.ROLES_KEY, profileConverter.convertRoleToLogbook(profile.getRoles()),
-                            profileConverter.convertRoleToLogbook(roles)));
+                    logbooks.add(new EventDiffDto(ProfileConverter.ROLES_KEY,
+                        profileConverter.convertRoleToLogbook(profile.getRoles()),
+                        profileConverter.convertRoleToLogbook(roles)));
                     profile.setRoles(roles);
                     break;
-                case "externalParamId" :
+                case "externalParamId":
                     profile.setExternalParamId(CastUtils.toString(entry.getValue()));
                     break;
-                default :
-                    throw new IllegalArgumentException("Unable to patch profile " + profile.getId() + ": key " + entry.getKey() + " is not allowed");
+                default:
+                    throw new IllegalArgumentException(
+                        "Unable to patch profile " + profile.getId() + ": key " + entry.getKey() + " is not allowed");
             }
         }
         iamLogbookService.updateProfileEvent(profile, logbooks);
@@ -344,21 +349,26 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
 
     protected Role convertToRole(final Map<String, Object> patchEntry) {
         if (!patchEntry.containsKey("name")) {
-            throw new IllegalArgumentException("No property 'name' has been found for the role : " + patchEntry.toString());
+            throw new IllegalArgumentException(
+                "No property 'name' has been found for the role : " + patchEntry.toString());
         }
         final Role role = new Role();
         role.setName(patchEntry.get("name").toString());
         return role;
     }
 
-    private Profile find(final String id, final String customerId, final Integer tenantIdentifier, final String message) {
+    private Profile find(final String id, final String customerId, final Integer tenantIdentifier,
+        final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
         Assert.isTrue(StringUtils.isNotEmpty(customerId), message + ": no customerId");
         Assert.isTrue(tenantIdentifier != null, message + ": no tenant Identifier");
-        Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
+        Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()),
+            message + ": customerId " + customerId + " is not allowed");
 
-        return getRepository().findByIdAndCustomerIdAndTenantIdentifier(id, customerId, tenantIdentifier).orElseThrow(() -> new IllegalArgumentException(
-                message + ": no profile found for id " + id + " - customerId : " + customerId + " - tenantIdentifier : " + tenantIdentifier));
+        return getRepository().findByIdAndCustomerIdAndTenantIdentifier(id, customerId, tenantIdentifier)
+            .orElseThrow(() -> new IllegalArgumentException(
+                message + ": no profile found for id " + id + " - customerId : " + customerId +
+                    " - tenantIdentifier : " + tenantIdentifier));
     }
 
     private void checkEnabled(final String profileId, final boolean dtoEnable, final String message) {
@@ -376,7 +386,8 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     }
 
     private void checkLevel(final String level, final String message) {
-        Assert.isTrue(Pattern.matches(ApiIamInternalConstants.LEVEL_VALID_REGEXP, level), "level : " + level + " format is not allowed");
+        Assert.isTrue(Pattern.matches(ApiIamInternalConstants.LEVEL_VALID_REGEXP, level),
+            "level : " + level + " format is not allowed");
         Assert.isTrue(internalSecurityService.isLevelAllowed(level), message + ": level " + level + " is not allowed");
     }
 
@@ -389,7 +400,8 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     }
 
     private void checkCustomer(final String customerId, final String message) {
-        Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
+        Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()),
+            message + ": customerId " + customerId + " is not allowed");
 
         final Optional<Customer> customer = customerRepository.findById(customerId);
         Assert.isTrue(customer.isPresent(), message + ": customer does not exist");
@@ -397,9 +409,11 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
         Assert.isTrue(customer.get().isEnabled(), message + ": customer must be enabled");
     }
 
-    private void checkName(final String name, final Integer tenantIdentifier, final String level, final String appName, final String message) {
+    private void checkName(final String name, final Integer tenantIdentifier, final String level, final String appName,
+        final String message) {
         LOGGER.debug("name : {} , level : {}", name, level);
-        final Criteria criteria = MongoUtils.buildCriteriaEquals("name", name, true).and("level").is(level).and("applicationName").is(appName)
+        final Criteria criteria =
+            MongoUtils.buildCriteriaEquals("name", name, true).and("level").is(level).and("applicationName").is(appName)
                 .and("tenantIdentifier").is(tenantIdentifier);
         Assert.isTrue(!getRepository().exists(criteria), message + ": profile already exists");
     }
@@ -412,16 +426,17 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     /**
      * This method check for the creation, update, patch of a profile, if the user can managed roles contains
      * by the profile.
+     *
      * @param roles roles to check if user can managed roles
      * @param level user's level
-     * @param customerId customer's id
      * @param message
      */
     private void checkRoles(final List<Role> roles, final String level, final String message) {
         Assert.isTrue(CollectionUtils.isNotEmpty(roles), message + ": no roles");
         final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
         final List<Role> allRoles = CustomerInitConfig.getAllRoles();
-        final List<Role> myRoles = InternalSecurityService.getRoles(internalSecurityService.getUser(), tenantIdentifier);
+        final List<Role> myRoles =
+            InternalSecurityService.getRoles(internalSecurityService.getUser(), tenantIdentifier);
         final List<Role> subRoles = getSubRoles(level, tenantIdentifier);
         final List<Role> adminVitamUIRoles = ServicesData.getAdminVitamUIRoles();
 
@@ -429,7 +444,7 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
             Assert.isTrue(allRoles.contains(role), message + ": role " + role.getName() + " does not exist");
 
             final boolean allow = myRoles.contains(role) || subRoles.contains(role)
-                    || internalSecurityService.userIsRootLevel() && !adminVitamUIRoles.contains(role);
+                || internalSecurityService.userIsRootLevel() && !adminVitamUIRoles.contains(role);
 
             Assert.isTrue(allow, message + ": role " + role + " is not allowed");
         }
@@ -452,7 +467,8 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
         if (!level.isEmpty()) {
             criterias.add(Criteria.where("level").regex("^" + level + "\\..+$"));
         }
-        return getRepository().findAll(criterias).stream().flatMap(p -> p.getRoles().stream()).collect(Collectors.toList());
+        return getRepository().findAll(criterias).stream().flatMap(p -> p.getRoles().stream())
+            .collect(Collectors.toList());
     }
 
     public List<String> getSubLevels(final String level, final String customerId) {
@@ -466,7 +482,6 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -500,6 +515,7 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
 
     /**
      * Get Many with List ids.
+     *
      * @param ids
      * @return
      */
@@ -533,15 +549,19 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
 
         final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
-                .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
-                .setApplicationSessionId(internalSecurityService.getApplicationId());
+            .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
+            .setApplicationSessionId(internalSecurityService.getApplicationId());
 
-        LOGGER.debug("Find History Access Contract By ID {}, EvIdAppSession : {}", id,vitamContext.getApplicationSessionId());
+        LOGGER.debug("Find History Access Contract By ID {}, EvIdAppSession : {}", id,
+            vitamContext.getApplicationSessionId());
         final Optional<Profile> profile = getRepository().findById(id);
         profile.orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
-        LOGGER.debug("findHistoryById : events.obId {}, events.obIdReq {}, VitamContext {}", profile.get().getIdentifier(), MongoDbCollections.PROFILES,
-                vitamContext);
-        return logbookService.findEventsByIdentifierAndCollectionNames(profile.get().getIdentifier(), MongoDbCollections.PROFILES, vitamContext).toJsonNode();
+        LOGGER.debug("findHistoryById : events.obId {}, events.obIdReq {}, VitamContext {}",
+            profile.get().getIdentifier(), MongoDbCollections.PROFILES,
+            vitamContext);
+        return logbookService
+            .findEventsByIdentifierAndCollectionNames(profile.get().getIdentifier(), MongoDbCollections.PROFILES,
+                vitamContext).toJsonNode();
     }
 
     /**

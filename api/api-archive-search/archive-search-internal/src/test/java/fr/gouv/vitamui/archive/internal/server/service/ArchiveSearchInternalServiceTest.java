@@ -122,7 +122,6 @@ public class ArchiveSearchInternalServiceTest {
     @MockBean(name = "archiveSearchInternalService")
     private ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
-
     @InjectMocks
     private RulesUpdateCommonService rulesUpdateCommonService;
 
@@ -141,8 +140,8 @@ public class ArchiveSearchInternalServiceTest {
         archiveSearchInternalService =
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
                 archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
-                archivesSearchManagementRulesQueryBuilderService,
-                rulesUpdateCommonService, archiveSearchFacetsInternalService);
+                archivesSearchManagementRulesQueryBuilderService, rulesUpdateCommonService,
+                archiveSearchFacetsInternalService);
     }
 
     @Test
