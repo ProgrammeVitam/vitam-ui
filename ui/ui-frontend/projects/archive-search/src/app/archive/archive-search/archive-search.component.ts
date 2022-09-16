@@ -46,7 +46,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, Direction, Logger, VitamuiRoles, FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeNode, Logger, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -85,9 +85,6 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
   styleUrls: ['./archive-search.component.scss'],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
-export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
-  ActionType = ActionType;
-
   DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD = 100000;
   DEFAULT_DIP_EXPORT_THRESHOLD = 100000;
   DEFAULT_ELIMINATION_THRESHOLD = 10000;
@@ -112,7 +109,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     private archiveUnitDipService: ArchiveUnitDipService,
     private cdr: ChangeDetectorRef
   ) {
-
     this.subscriptionBulkOperationsThreshold = this.managementRulesSharedDataService
       .getBulkOperationsThreshold()
       .subscribe((bulkOperationsThreshold) => {
