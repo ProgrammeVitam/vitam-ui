@@ -59,6 +59,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import org.springframework.util.CollectionUtils;
 
+import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
