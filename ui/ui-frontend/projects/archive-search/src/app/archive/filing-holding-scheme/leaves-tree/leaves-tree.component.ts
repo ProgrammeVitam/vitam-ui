@@ -34,7 +34,6 @@ import { ArchiveService } from '../../archive.service';
 import { ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { FilingHoldingSchemeHandler } from '../filing-holding-scheme.handler';
 import { first } from 'rxjs/operators';
-import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -46,19 +45,12 @@ export class LeavesTreeComponent implements OnInit, OnDestroy {
   readonly DEFAULT_UNIT_PAGE_SIZE = 10;
 
   @Input() accessContract: string;
+  @Input() loadingNodeUnit: boolean;
 
-  _nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
   @Input()
-  set nestedDataSourceLeaves(values: MatTreeNestedDataSource<FilingHoldingSchemeNode>) {
-    this._nestedDataSourceLeaves = _.cloneDeep(values);
-  }
-
-  get nestedDataSourceLeaves() {
-    return this._nestedDataSourceLeaves;
-  }
+  nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
 
   @Input() originalRequestResultFacets: ResultFacet[];
-  @Input() loadingNodeUnit: boolean;
 
   @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
   @Output() showNodeDetail: EventEmitter<string> = new EventEmitter();
@@ -105,18 +97,18 @@ export class LeavesTreeComponent implements OnInit, OnDestroy {
     return node.canLoadMoreChildren;
   }
 
-  loadMoreUAForNode(node: FilingHoldingSchemeNode) {
-    if (node.canLoadMoreChildren === undefined) {
-      node.canLoadMoreChildren = true;
+  loadMoreUAForNode(parentNode: FilingHoldingSchemeNode) {
+    if (parentNode.canLoadMoreChildren === undefined) {
+      parentNode.canLoadMoreChildren = true;
     }
-    if (!node.canLoadMoreChildren) {
+    if (!parentNode.canLoadMoreChildren) {
       return;
     }
-    node.isLoadingChildren = true;
-    if (!node.children) {
-      node.children = [];
+    parentNode.isLoadingChildren = true;
+    if (!parentNode.children) {
+      parentNode.children = [];
     }
-    const size = node.children.length;
+    const size = parentNode.children.length;
     const page = Math.floor(size / this.DEFAULT_UNIT_PAGE_SIZE);
 
     const searchCriteria: SearchCriteriaDto = {
@@ -125,7 +117,7 @@ export class LeavesTreeComponent implements OnInit, OnDestroy {
           criteria: '#unitups',
           operator: CriteriaOperator.IN,
           category: SearchCriteriaTypeEnum.FIELDS,
-          values: [{ id: node.id, value: node.id }],
+          values: [{ id: parentNode.id, value: parentNode.id }],
           dataType: CriteriaDataType.STRING,
         },
       ],
@@ -140,28 +132,30 @@ export class LeavesTreeComponent implements OnInit, OnDestroy {
         .searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
         .pipe(first())
         .subscribe((pageResult) => {
-          FilingHoldingSchemeHandler.addMoreChildrenToNode(node, pageResult, this.originalRequestResultFacets);
-          this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
+          FilingHoldingSchemeHandler.addMoreChildrenToNode(parentNode, pageResult, this.originalRequestResultFacets);
+          const data = this.nestedDataSourceLeaves.data;
+          this.nestedDataSourceLeaves.data = null;
+          this.nestedDataSourceLeaves.data = data;
         })
     );
   }
 
-  nodeIsUAWithChidren(_: number, node: FilingHoldingSchemeNode): boolean {
+  nodeIsUAWithChildren(_: number, node: FilingHoldingSchemeNode): boolean {
     return (
       node.type === 'INGEST' && (node.descriptionLevel === DescriptionLevel.RECORDGRP || node.descriptionLevel === DescriptionLevel.FILE)
     );
   }
 
-  nodeIsUAWithoutChidren(_: number, node: FilingHoldingSchemeNode): boolean {
+  nodeIsUAWithoutChildren(_: number, node: FilingHoldingSchemeNode): boolean {
     return node.type === 'INGEST' && node.descriptionLevel !== DescriptionLevel.RECORDGRP;
   }
 
-  nodeHasPositivCount(node: FilingHoldingSchemeNode): boolean {
+  nodeHasPositiveCount(node: FilingHoldingSchemeNode): boolean {
     return node.count && node.count > 0;
   }
 
   nodeHasResultOrShowAll(node: FilingHoldingSchemeNode) {
-    return this.nodeHasPositivCount(node) || this.showEveryNodes;
+    return this.nodeHasPositiveCount(node) || this.showEveryNodes;
   }
 
   onLabelClick(nodeId: string) {
