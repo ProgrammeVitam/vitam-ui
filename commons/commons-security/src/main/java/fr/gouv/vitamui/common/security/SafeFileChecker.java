@@ -103,7 +103,7 @@ public class SafeFileChecker {
      * @throws IOException
      */
     private static void doCanonicalPathCheck(String path) throws IOException {
-        String canonicalPath = new File(path).getCanonicalFile().getPath();
+        String canonicalPath = new File(path).getCanonicalFile().getName();
 
         if (!path.equals(canonicalPath)) {
             LOGGER.error("Invalid path {} did not match canonical : {}", path, canonicalPath);

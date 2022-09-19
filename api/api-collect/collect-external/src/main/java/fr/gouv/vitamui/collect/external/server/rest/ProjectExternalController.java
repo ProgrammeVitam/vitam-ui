@@ -81,7 +81,7 @@ public class ProjectExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_PROJECTS)
-    @GetMapping(params = {"page", "size","criteria"})
+    @GetMapping(params = {"page", "size"})
     public PaginatedValuesDto<CollectProjectDto> getAllPaginated(@RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
