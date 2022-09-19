@@ -44,9 +44,9 @@ import {
   AccessContractApiService,
   CriteriaDataType,
   CriteriaOperator,
+  FilingHoldingSchemeNode,
   SearchService,
   SecurityService,
-  FilingHoldingSchemeNode,
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
@@ -375,6 +375,16 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract).append('X-Tenant-Id', '' + tenantIdentifier);
     return this.archiveApiService.updateUnit(id, unitMDDDto, headers);
+  }
+
+  transferAcknowledgment(tenantIdentifier: string, xmlFile: Blob, fileName: string, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders();
+    headers = headers.append('X-Tenant-Id', tenantIdentifier);
+    headers = headers.append('Content-Type', 'application/octet-stream');
+    headers = headers.append('fileName', fileName);
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+
+    return this.archiveApiService.transferAcknowledgment(xmlFile, headers);
   }
 
   isWaitingToRecalculateCriteria(criteriaKey: string): boolean {

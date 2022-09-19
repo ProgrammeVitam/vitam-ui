@@ -99,6 +99,7 @@
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
     "@types/uuid": "^7.0.0",
+    "@types/xml2js": "^0.4.3",
     "angular-svg-icon": "^11.2.0",
     "bootstrap": "^4.5.0",
     "bufferutil": "^4.0.1",
@@ -117,12 +118,14 @@
     "ngx-translate-multi-http-loader": "^3.0.0",
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.5",
+    "timers": "^0.1.1",
     "tslib": "^2.0.3",
-    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-2.1.39.tgz",
+    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-2.1.40.tgz",
     "underscore": "^1.13.1",
     "utf-8-validate": "^5.0.2",
     "uuid": "^7.0.2",
     "web-animations-js": "^2.3.2",
+    "xml2js": "^0.4.23",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {

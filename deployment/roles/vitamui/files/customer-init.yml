@@ -201,7 +201,7 @@ customer-init:
         - ROLE_GET_RULES
 
     - name: Archiviste administrateur
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination
+      description: Profil pour la recherche et consultation des archives dans Vitam avec mise à jour des règles, export DIP, opérations d'élimination, reclassement, demande de transfert et acquittement de transfert
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
@@ -217,6 +217,7 @@ customer-init:
         - ROLE_RECLASSIFICATION
         - ROLE_UPDATE_UNIT_DESC_METADATA
         - ROLE_TRANSFER_REQUEST
+        - ROLE_TRANSFER_ACKNOWLEDGMENT
         - ROLE_GET_RULES
 
     - name: Registre des fonds

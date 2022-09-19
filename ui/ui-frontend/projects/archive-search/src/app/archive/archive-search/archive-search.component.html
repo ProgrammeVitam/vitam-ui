@@ -7,11 +7,18 @@
     <div class="col-8 form-control">
       <app-title-and-description-criteria-search></app-title-and-description-criteria-search>
     </div>
-    <div class="col-1 form-control"></div>
+
     <div class="col-3 form-control text-right">
       <button type="button" class="btn primary" [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)" (click)="submit()">
         {{ 'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate }}
       </button>
+    </div>
+    <div class="col-1 form-control">
+      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+        <button mat-menu-item [disabled]="!hasTransferAcknowledgmentRole" (click)="showAcknowledgmentTransferForm()">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACTION_TITLE' | translate }}
+        </button>
+      </vitamui-common-menu-button>
     </div>
   </div>
   <div class="row justify-content-around">
@@ -353,7 +360,11 @@
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
-          <button mat-menu-item (click)="startLaunchEliminationModal()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
+          <button
+            mat-menu-item
+            (click)="startLaunchEliminationModal()"
+            [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
+          >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
           <button

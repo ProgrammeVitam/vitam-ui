@@ -23,17 +23,47 @@
  *
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
+ *
+ *
  */
-export enum VitamuiRoles {
-  ROLE_CREATE_ARCHIVE_SEARCH = 'ROLE_CREATE_ARCHIVE_SEARCH',
-  ROLE_GET_ARCHIVE_SEARCH = 'ROLE_GET_ARCHIVE_SEARCH',
-  ROLE_GET_ALL_ARCHIVE_SEARCH = 'ROLE_GET_ALL_ARCHIVE_SEARCH',
-  ROLE_SEARCH_WITH_RULES = 'ROLE_SEARCH_WITH_RULES',
-  ROLE_EXPORT_DIP = 'ROLE_EXPORT_DIP',
-  ROLE_TRANSFER_REQUEST = 'ROLE_TRANSFER_REQUEST',
-  ROLE_ELIMINATION = 'ROLE_ELIMINATION',
-  ROLE_UPDATE_MANAGEMENT_RULES = 'ROLE_UPDATE_MANAGEMENT_RULES',
-  ROLE_COMPUTED_INHERITED_RULES = 'ROLE_COMPUTED_INHERITED_RULES',
-  ROLE_RECLASSIFICATION = 'ROLE_RECLASSIFICATION',
-  ROLE_TRANSFER_ACKNOWLEDGMENT = 'ROLE_TRANSFER_ACKNOWLEDGMENT',
+
+package fr.gouv.vitamui.commons.vitam.api.access;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.apache.http.HttpStatus;
+
+import java.io.InputStream;
+
+public class TransferAcknowledgmentService {
+
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(TransferAcknowledgmentService.class);
+    private final AccessExternalClient accessExternalClient;
+
+    public TransferAcknowledgmentService(AccessExternalClient accessExternalClient) {
+        this.accessExternalClient = accessExternalClient;
+    }
+
+    /**
+     * Transfer Acknowledgment
+     *
+     * @param vitamContext
+     * @param atrFile
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> transferAcknowledgment(final VitamContext vitamContext, final InputStream atrFile)
+        throws VitamClientException {
+        LOGGER.debug("Call Vitam Transfer Acknowledgment Operation");
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.transferReply(vitamContext, atrFile);
+        VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return jsonResponse;
+    }
 }

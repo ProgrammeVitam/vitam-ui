@@ -66,36 +66,7 @@ import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-un
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
 import { ArchiveRoutingModule } from './archive-routing.module';
-import { AccessRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/access-rule-search/access-rule-search.component';
-import { AppraisalRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/appraisal-rule-search/appraisal-rule-search.component';
-import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
-import { SearchAccessRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
-import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
-import { SearchDisseminationRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-dissemination-rules-facets/search-dissemination-rules-facets.component';
-import { SearchReuseRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-reuse-rules-facets/search-reuse-rules-facets.component';
-import { SearchStorageRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-storage-rules-facets/search-storage-rules-facets.component';
-import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/additional-actions-search/dip-request-create/dip-request-create.component';
-import { DisseminationRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/dissemination-rule-search/dissemination-rule-search.component';
-import { ReclassificationComponent } from './archive-search/additional-actions-search/reclassification/reclassification.component';
-import { ReuseRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/reuse-rule-search/reuse-rule-search.component';
-import { RuleValidator } from './archive-search/rule.validator';
-import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
-import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
-import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
-import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
-import { StorageRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/storage-rule-search/storage-rule-search.component';
-import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
-import { TransferRequestModalComponent } from './archive-search/additional-actions-search/transfer-request-modal/transfer-request-modal.component';
-import { ArchiveComponent } from './archive.component';
-import { ArchiveFacetsService } from './common-services/archive-facets.service';
-import { ArchiveSearchHelperService } from './common-services/archive-search-helper.service';
-import { ArchiveUnitDipService } from './common-services/archive-unit-dip.service';
-import { ArchiveUnitEliminationService } from './common-services/archive-unit-elimination.service';
-import { ComputeInheritedRulesService } from './common-services/compute-inherited-rules.service';
-import { UpdateUnitManagementRuleService } from './common-services/update-unit-management-rule.service';
-import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
-import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { AddManagementRulesComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
 import { AddUpdatePropertyComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/add-update-property/add-update-property.component';
 import { ArchiveUnitRulesComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/archive-unit-rules.component';
@@ -106,11 +77,41 @@ import { UnlockCategoryInheritanceComponent } from './archive-search/additional-
 import { UnlockRulesInheritanceComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/unlock-rules-inheritance/unlock-rules-inheritance.component';
 import { UpdateUnitRulesComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
 import { ManagementRulesComponent } from './archive-search/additional-actions-search/management-rules/management-rules.component';
+import { ReclassificationComponent } from './archive-search/additional-actions-search/reclassification/reclassification.component';
+import { TransferRequestModalComponent } from './archive-search/additional-actions-search/transfer-request-modal/transfer-request-modal.component';
+import { AccessRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/access-rule-search/access-rule-search.component';
+import { AppraisalRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/appraisal-rule-search/appraisal-rule-search.component';
+import { DisseminationRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/dissemination-rule-search/dissemination-rule-search.component';
+import { ReuseRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/reuse-rule-search/reuse-rule-search.component';
+import { StorageRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/storage-rule-search/storage-rule-search.component';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
+import { SearchAccessRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
+import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
+import { SearchDisseminationRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-dissemination-rules-facets/search-dissemination-rules-facets.component';
+import { SearchReuseRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-reuse-rules-facets/search-reuse-rules-facets.component';
+import { SearchStorageRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-storage-rules-facets/search-storage-rules-facets.component';
+import { ArchiveSearchComponent } from './archive-search/archive-search.component';
+import { RuleValidator } from './archive-search/rule.validator';
+import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
+import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
+import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
+import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
+import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
+import { TransferAcknowledgmentComponent } from './archive-search/transfer-acknowledgment/transfer-acknowledgment.component';
+import { ArchiveComponent } from './archive.component';
+import { ArchiveFacetsService } from './common-services/archive-facets.service';
+import { ArchiveSearchHelperService } from './common-services/archive-search-helper.service';
+import { ArchiveUnitDipService } from './common-services/archive-unit-dip.service';
+import { ArchiveUnitEliminationService } from './common-services/archive-unit-elimination.service';
+import { ComputeInheritedRulesService } from './common-services/compute-inherited-rules.service';
+import { UpdateUnitManagementRuleService } from './common-services/update-unit-management-rule.service';
+import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
+import { ClassificationTreeComponent } from './filing-holding-scheme/classification-tree/classification-tree.component';
+import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
+import { LeavesTreeComponent } from './filing-holding-scheme/leaves-tree/leaves-tree.component';
 import { SharedModule } from './shared/shared.module';
 import { ArchiveUnitValidatorService } from './validators/archive-unit-validator.service';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
-import { LeavesTreeComponent } from './filing-holding-scheme/leaves-tree/leaves-tree.component';
-import { ClassificationTreeComponent } from './filing-holding-scheme/classification-tree/classification-tree.component';
 
 @NgModule({
   imports: [
@@ -140,6 +141,7 @@ import { ClassificationTreeComponent } from './filing-holding-scheme/classificat
     MatIconModule,
     MatTabsModule,
     MatRadioModule,
+    CommonModule,
   ],
   providers: [
     ArchiveApiService,
@@ -198,6 +200,7 @@ import { ClassificationTreeComponent } from './filing-holding-scheme/classificat
     UnlockCategoryInheritanceComponent,
     BlockRulesInheritanceComponent,
     UnlockRulesInheritanceComponent,
+    TransferAcknowledgmentComponent,
     ClassificationTreeComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

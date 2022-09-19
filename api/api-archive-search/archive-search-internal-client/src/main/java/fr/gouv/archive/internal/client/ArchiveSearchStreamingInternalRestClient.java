@@ -46,14 +46,18 @@ import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -106,6 +110,30 @@ public class ArchiveSearchStreamingInternalRestClient
         ResponseEntity<Resource> result = ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).body(response.getBody());
         return result;
+    }
+
+    public String transferAcknowledgment(final InternalHttpContext context, String originalFileName,
+        InputStream inputStream) {
+        LOGGER.debug("Calling upload atr file using streaming process");
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.TRANSFER_ACKNOWLEDGMENT);
+
+        final MultiValueMap<String, String> headersList = new HttpHeaders();
+        headersList.addAll(buildHeaders(context));
+        headersList.add(CommonConstants.X_ORIGINAL_FILENAME_HEADER, originalFileName);
+
+        HttpHeaders headersParams = new HttpHeaders();
+        headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headersParams.addAll(headersList);
+
+        final HttpEntity<InputStreamResource> request =
+            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+
+        final ResponseEntity<String> response =
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
+                request, String.class);
+        LOGGER.debug("The transfer acknowledgment operation id : {} ", response.toString());
+        return response.getBody();
     }
 
 }

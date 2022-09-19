@@ -38,6 +38,7 @@ import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -55,6 +56,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -71,15 +73,19 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
     private final ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
     private final ArchiveSearchExternalWebClient archiveSearchExternalWebClient;
+
+    private final ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient;
     private final CommonService commonService;
 
     @Autowired
     public ArchivesSearchService(final CommonService commonService,
         final ArchiveSearchExternalRestClient archiveSearchExternalRestClient,
-        final ArchiveSearchExternalWebClient archiveSearchExternalWebClient) {
+        final ArchiveSearchExternalWebClient archiveSearchExternalWebClient,
+        ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient) {
         this.commonService = commonService;
         this.archiveSearchExternalRestClient = archiveSearchExternalRestClient;
         this.archiveSearchExternalWebClient = archiveSearchExternalWebClient;
+        this.archiveSearchStreamingExternalRestClient = archiveSearchStreamingExternalRestClient;
     }
 
     @Override
@@ -211,5 +217,12 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         ExternalHttpContext context) {
         LOGGER.debug("Update the Archive Unit with id {}", id);
         return archiveSearchExternalRestClient.updateUnitById(id, unitDescriptiveMetadataDto, context);
+    }
+
+    public ResponseEntity<String> transferAcknowledgment(final ExternalHttpContext context, String fileName,
+        InputStream inputStream) {
+        LOGGER.debug("transfer acknowledgment");
+        return archiveSearchStreamingExternalRestClient
+            .transferAcknowledgment(context, fileName, inputStream);
     }
 }

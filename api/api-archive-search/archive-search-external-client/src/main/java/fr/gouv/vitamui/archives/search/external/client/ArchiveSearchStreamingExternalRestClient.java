@@ -45,14 +45,18 @@ import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -107,5 +111,24 @@ public class ArchiveSearchStreamingExternalRestClient
             .contentType(MediaType.APPLICATION_OCTET_STREAM).body(responseEntity.getBody());
     }
 
+    public ResponseEntity<String> transferAcknowledgment(final ExternalHttpContext context, String fileName,
+        InputStream inputStream) {
+        LOGGER.debug("Calling transfer Acknowledgment using streaming process");
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.TRANSFER_ACKNOWLEDGMENT );
 
+        final MultiValueMap<String, String> headersList = new HttpHeaders();
+        headersList.addAll(buildHeaders(context));
+        headersList.add(CommonConstants.X_ORIGINAL_FILENAME_HEADER, fileName);
+        HttpHeaders headersParams = new HttpHeaders();
+        headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headersParams.addAll(headersList);
+
+        final HttpEntity<InputStreamResource> request =
+            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+
+        return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
+                request, String.class);
+
+    }
 }

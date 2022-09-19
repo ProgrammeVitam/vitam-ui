@@ -74,6 +74,7 @@ import {
 import { Unit } from '../models/unit.interface';
 import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
+import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -83,7 +84,7 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 @Component({
   selector: 'app-archive-search',
   templateUrl: './archive-search.component.html',
-  styleUrls: [ './archive-search.component.scss' ],
+  styleUrls: ['./archive-search.component.scss'],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
   DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD = 100000;
@@ -110,13 +111,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private archiveUnitDipService: ArchiveUnitDipService,
     private cdr: ChangeDetectorRef
   ) {
-    this.subscriptions.add(this.managementRulesSharedDataService.getBulkOperationsThreshold()
-      .subscribe((bulkOperationsThreshold) => {
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
         this.bulkOperationsThreshold = bulkOperationsThreshold;
-      }));
+      })
+    );
 
-    this.subscriptions.add(this.archiveExchangeDataService.getNodes()
-      .subscribe((node) => {
+    this.subscriptions.add(
+      this.archiveExchangeDataService.getNodes().subscribe((node) => {
         if (node.checked) {
           this.archiveHelperService.addCriteria(
             this.searchCriterias,
@@ -136,29 +138,29 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           node.count = null;
           this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
         }
-      }));
+      })
+    );
 
-    this.subscriptions.add(this.archiveExchangeDataService.receiveSimpleSearchCriteriaSubject()
-      .subscribe((criteria) => this.searchCriteriaAddAction(criteria)));
+    this.subscriptions.add(
+      this.archiveExchangeDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria))
+    );
 
-    this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject()
+    this.archiveExchangeDataService
+      .receiveRemoveFromChildSearchCriteriaSubject()
       .subscribe((criteria) => this.searchCriteriaRemoveAction(criteria));
 
-    this.archiveExchangeDataService.receiveAppraisalSearchCriteriaSubject()
-      .subscribe((criteria) => this.searchCriteriaAddAction(criteria));
+    this.archiveExchangeDataService.receiveAppraisalSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
 
-    this.archiveExchangeDataService.receiveAccessSearchCriteriaSubject()
-      .subscribe((criteria) => this.searchCriteriaAddAction(criteria));
+    this.archiveExchangeDataService.receiveAccessSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
 
-    this.archiveService.getOntologiesFromJson()
-      .subscribe((data: any) => {
-        this.ontologies = data;
-        this.ontologies.sort((a: any, b: any) => {
-          const shortNameA = a.Label;
-          const shortNameB = b.Label;
-          return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
-        });
+    this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
+      this.ontologies = data;
+      this.ontologies.sort((a: any, b: any) => {
+        const shortNameA = a.Label;
+        const shortNameB = b.Label;
+        return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
       });
+    });
   }
 
   DEFAULT_RESULT_THRESHOLD = 10000;
@@ -220,6 +222,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   subscriptions: Subscription = new Subscription();
   showConfirmBigNumberOfResultsSuscription: Subscription;
+  transferAcknowledgmentDialogSub: Subscription;
   actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
 
   rulesFacetsCanBeComputed = false;
@@ -232,6 +235,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   archiveUnitAllunitup: string[];
   hasAccessContractManagementPermissionsMessage = '';
   bulkOperationsThreshold = -1;
+  hasTransferAcknowledgmentRole = false;
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
 
@@ -353,6 +357,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.checkUserHasRole(VitamuiRoles.ROLE_UPDATE_MANAGEMENT_RULES, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_RECLASSIFICATION, +this.tenantIdentifier);
+    this.checkUserHasRole(VitamuiRoles.ROLE_TRANSFER_ACKNOWLEDGMENT, +this.tenantIdentifier);
     const ruleActions: ActionsRules[] = [];
     this.managementRulesSharedDataService.emitRuleActions(ruleActions);
     this.managementRulesSharedDataService.emitManagementRules([]);
@@ -451,8 +456,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
-    // tslint:disable-next-line:forin
-    for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
+
+    for (let mgtRuleType in SearchCriteriaMgtRuleEnum) {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
     if (this.hasSearchCriterias()) {
@@ -651,10 +656,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   setFilingHoldingScheme() {
-    this.subscriptions.add(this.archiveExchangeDataService.getFilingHoldingNodes()
-      .subscribe((nodes) => {
+    this.subscriptions.add(
+      this.archiveExchangeDataService.getFilingHoldingNodes().subscribe((nodes) => {
         this.nodeArray = nodes;
-      }));
+      })
+    );
   }
 
   checkAllNodes(show: boolean) {
@@ -776,6 +782,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
     this.showConfirmBigNumberOfResultsSuscription?.unsubscribe();
+    this.transferAcknowledgmentDialogSub?.unsubscribe();
     this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
   }
 
@@ -902,6 +909,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         case VitamuiRoles.ROLE_RECLASSIFICATION:
           this.hasReclassificationRole = result;
           break;
+        case VitamuiRoles.ROLE_TRANSFER_ACKNOWLEDGMENT:
+          this.hasTransferAcknowledgmentRole = result;
+          break;
         default:
           break;
       }
@@ -912,9 +922,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     if (this.itemSelected > 1) {
       const dialogToOpen = this.reclassificationAlerteMessageDialog;
       const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-      this.subscriptions.add(dialogRef.afterClosed().pipe(filter((result) => !!result))
-        .subscribe(() => {
-        }));
+      this.subscriptions.add(
+        dialogRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {})
+      );
     } else if (this.itemSelected === 1) {
       this.archiveUnitGuidSelected = this.isAllchecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
       this.archiveUnitAllunitup = this.archiveUnits.find((archiveUnit) => archiveUnit['#id'] === this.archiveUnitGuidSelected)['#unitups'];
@@ -938,12 +951,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           archiveUnitAllunitup: this.archiveUnitAllunitup,
         },
       });
-      this.subscriptions.add(dialogRef.afterClosed()
-        .subscribe((result) => {
+      this.subscriptions.add(
+        dialogRef.afterClosed().subscribe((result) => {
           if (result) {
             return;
           }
-        }));
+        })
+      );
     }
   }
 
@@ -1003,8 +1017,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))
-          .subscribe(() => {
-          });
+          .subscribe(() => {});
         this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
       } else {
         if (this.itemSelected > this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD) {
@@ -1018,7 +1031,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             .afterClosed()
             .pipe(filter((result) => !!result))
             .subscribe(() => {
-              this.updateManagementRuleWithThresholds()
+              this.updateManagementRuleWithThresholds();
             });
         } else {
           // normal process
@@ -1083,8 +1096,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
             .afterClosed()
             .pipe(filter((result) => !!result))
-            .subscribe(() => {
-            });
+            .subscribe(() => {});
           this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
         } else {
           if (this.itemSelected > this.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD) {
@@ -1180,8 +1192,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))
-          .subscribe(() => {
-          });
+          .subscribe(() => {});
         this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
       } else {
         if (this.itemSelected > this.DEFAULT_ELIMINATION_THRESHOLD) {
@@ -1244,8 +1255,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
             .afterClosed()
             .pipe(filter((result) => !!result))
-            .subscribe(() => {
-            });
+            .subscribe(() => {});
           this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
         } else {
           if (this.itemSelected > this.DEFAULT_DIP_EXPORT_THRESHOLD) {
@@ -1317,8 +1327,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))
-          .subscribe(() => {
-          });
+          .subscribe(() => {});
         this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
       } else {
         if (this.itemSelected > this.DEFAULT_TRANSFER_THRESHOLD) {
@@ -1369,5 +1378,22 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.isAllchecked,
       this.confirmSecondActionBigNumberOfResultsActionDialog
     );
+  }
+
+  showAcknowledgmentTransferForm() {
+    const dialogRef = this.dialog.open(TransferAcknowledgmentComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: true,
+      data: {
+        accessContract: this.accessContract,
+        tenantIdentifier: this.tenantIdentifier.toString(),
+      },
+    });
+
+    this.transferAcknowledgmentDialogSub = dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        return;
+      }
+    });
   }
 }
