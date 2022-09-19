@@ -81,21 +81,23 @@ public class ProjectController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Get projects paginated")
-    @GetMapping(params = {"page", "size","criteria"})
+    @GetMapping(params = {"page", "size"})
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
         @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
+        LOGGER.debug("getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
+            criteria,
             orderBy, direction);
         return projectService.getAllProjectsPaginated(buildUiHttpContext(), page, size, criteria, orderBy, direction);
     }
 
     @ApiOperation(value = "Create new collect project")
     @PostMapping
-    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
+    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
+        throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         return projectService.createProject(buildUiHttpContext(), collectProjectDto);
     }
@@ -123,7 +125,8 @@ public class ProjectController extends AbstractUiRestController {
     }
 
     @PutMapping(CommonConstants.PATH_ID)
-    public CollectProjectDto updateProject(final @PathVariable("id") String id, @RequestBody CollectProjectDto collectProjectDto)
+    public CollectProjectDto updateProject(final @PathVariable("id") String id,
+        @RequestBody CollectProjectDto collectProjectDto)
         throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
