@@ -35,9 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject } from '@angular/core';
-import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+
 import { SubrogationApiService } from '../../api/subrogation-api.service';
-import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { NotificationSnackBarComponent } from '../notification-snack-bar/notification-snack-bar.component';
+import { NotificationType } from '../notification-type.enum';
 
 @Component({
   templateUrl: './subrogation-snack-bar.component.html'
@@ -48,7 +50,7 @@ export class SubrogationSnackBarComponent {
     @Inject(MAT_SNACK_BAR_DATA) public data: any,
     private matSnackBarRef: MatSnackBarRef<SubrogationSnackBarComponent>,
     private subrogationApiService: SubrogationApiService,
-    private snackBarService: VitamUISnackBarService
+    private matSnackBar: MatSnackBar
   ) {}
 
   close() {
@@ -57,9 +59,10 @@ export class SubrogationSnackBarComponent {
 
   accept() {
     this.subrogationApiService.accept(this.data.subro.id).subscribe(() => {
-      this.snackBarService.open({
-        message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ACCEPT_SUBROGATION',
-        icon: 'vitamui-icon-link banner-icon'
+      this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        data: { type: NotificationType.SUBRO_ACCEPT },
+        duration: 10000
       });
       this.close();
     });

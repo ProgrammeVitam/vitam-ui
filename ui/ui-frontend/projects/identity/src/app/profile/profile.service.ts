@@ -37,11 +37,14 @@
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
-  AdminUserProfile, Criterion, Operators, Profile, ProfileApiService, Role, SearchQuery, SearchService, VitamUISnackBarService
+  AdminUserProfile, Criterion, Operators, Profile, ProfileApiService, Role, SearchQuery, SearchService
 } from 'ui-frontend-common';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
+
+import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +53,7 @@ export class ProfileService extends SearchService<Profile> {
 
   updated = new Subject<Profile>();
 
-  constructor(private profileApi: ProfileApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(private profileApi: ProfileApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
     super(http, profileApi, 'ALL');
   }
 
@@ -78,16 +81,17 @@ export class ProfileService extends SearchService<Profile> {
         tap((response) => this.updated.next(response)),
         tap(
           (response) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
-              translateParams:{
-                param1: response.name,
-              },
-              icon: 'vitamui-icon-admin-key'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+              data: { type: 'profileUpdate', name: response.name }
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -98,15 +102,17 @@ export class ProfileService extends SearchService<Profile> {
       .pipe(
         tap(
           (response: Profile) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROFILE_CREATE',
-              translateParams:{
-                param1: response.name,
-              }
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'profileAdminCreate', name: response.name },
+              duration: 10000
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );

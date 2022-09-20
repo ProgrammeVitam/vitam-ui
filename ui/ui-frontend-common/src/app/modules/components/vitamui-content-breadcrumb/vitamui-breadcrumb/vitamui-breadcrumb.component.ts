@@ -38,7 +38,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
-import { Application } from '../../../models';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
@@ -62,12 +61,15 @@ export class VitamuiBreadcrumbComponent implements OnInit {
     if (!this.data) {
       const appId = this.route.snapshot.data.appId;
       if (appId) {
-        this.applicationService.getAppById(appId).subscribe((app: Application) => {
-          this.data = [
-            { identifier: ApplicationId.PORTAL_APP },
-            { label: app.name, identifier: appId }
-          ];
-        });
+        this.data = [
+          {
+            identifier: ApplicationId.PORTAL_APP
+          },
+          {
+            label: this.applicationService.getAppById(appId).name,
+            identifier: appId
+          }
+        ];
       }
     }
   }

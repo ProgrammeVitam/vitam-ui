@@ -26,11 +26,11 @@
           >
             <vitamui-common-input-error
               *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.required"
-              >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
+              >{{ 'COMMON.REQUIRED_FIELD' | translate }}</vitamui-common-input-error
 
-            <vitamui-common-input-error
+      >      <vitamui-common-input-error
               *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.nameExists"
-              >{{ 'COMMON.ERROR.NAME_ALREADY_EXISTS' | translate }}</vitamui-common-input-error
+              >{{ 'COMMON.NAME_ALREADY_EXISTS' | translate }}</vitamui-common-input-error
             >
           </vitamui-common-input>
 
@@ -46,7 +46,7 @@
               *ngIf="
                 externalParamProfileForm?.get('description')?.touched && !!externalParamProfileForm?.get('description')?.errors?.required
               "
-              >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
+              >{{ 'COMMON.REQUIRED_FIELD' | translate }}</vitamui-common-input-error
             >
           </vitamui-common-input>
 

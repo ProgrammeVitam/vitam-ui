@@ -52,17 +52,18 @@ interface TooltipOverlayConfig {
 
 const DEFAULT_CONFIG: TooltipOverlayConfig = {
   hasBackdrop: true,
-  backdropClass: 'transparent-backdrop',
+  backdropClass: 'transparent-backdrop'
 };
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class TooltipService {
+
   private closeTooltip = new Subject<any>();
   public Information: string;
 
-  constructor(private injector: Injector, private overlay: Overlay) {}
+  constructor(private injector: Injector, private overlay: Overlay) { }
 
   open(origin: ElementRef, component: ComponentType<{}>, config: TooltipOverlayConfig = {}) {
     const overlayConfig = { ...DEFAULT_CONFIG, ...config };
@@ -78,8 +79,7 @@ export class TooltipService {
   }
 
   getOverlayConfig(origin: ElementRef, config: TooltipOverlayConfig): OverlayConfig {
-    const positionStrategy = this.overlay
-      .position()
+    const positionStrategy = this.overlay.position()
       .flexibleConnectedTo(origin)
       .withPositions([{ originX: 'end', originY: 'bottom', overlayX: 'center', overlayY: 'top' }]);
 
@@ -87,7 +87,7 @@ export class TooltipService {
       hasBackdrop: config.hasBackdrop,
       backdropClass: config.backdropClass,
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      positionStrategy: config.positionStrategy || positionStrategy,
+      positionStrategy: config.positionStrategy || positionStrategy
     });
 
     return overlayConfig;
@@ -99,7 +99,12 @@ export class TooltipService {
     return this.overlay.create(overlayConfig);
   }
 
-  private attachDialogContainer(overlayRef: OverlayRef, config: TooltipOverlayConfig, component: ComponentType<{}>, dialogRef: TooltipRef) {
+  private attachDialogContainer(
+    overlayRef: OverlayRef,
+    config: TooltipOverlayConfig,
+    component: ComponentType<{}>,
+    dialogRef: TooltipRef
+  ) {
     const injector = this.createInjector(config, dialogRef);
     const containerPortal = new ComponentPortal(component, null, injector);
     const containerRef: ComponentRef<{}> = overlayRef.attach(containerPortal);

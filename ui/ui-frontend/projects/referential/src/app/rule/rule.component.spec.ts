@@ -52,7 +52,7 @@ import {
   InjectorModule,
   LoggerModule,
   SecurityService,
-  VitamUISnackBarService,
+  VitamUISnackBar,
 } from 'ui-frontend-common';
 
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -87,25 +87,24 @@ describe('RuleComponent', () => {
   let component: RuleComponent;
   let fixture: ComponentFixture<RuleComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-      const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+  beforeEach(waitForAsync(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 
-      const authServiceMock = {
-        user: {
-          proofTenantIdentifier: '1',
-          profileGroup: {
-            profiles: [{ applicationName: 'USERS_APP' }],
-          },
+    const authServiceMock = {
+      user: {
+        proofTenantIdentifier: '1',
+        profileGroup: {
+          profiles: [{ applicationName: 'USERS_APP' }],
         },
-      };
+      },
+    };
 
-      const activatedRouteMock = {
-        params: of({ tenantIdentifier: 1 }),
-        data: of({ appId: 'RULE_APP' }),
-        paramMap: EMPTY,
-      };
+    const activatedRouteMock = {
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'RULE_APP' }),
+      paramMap: EMPTY,
+    };
 
     const securityServiceMock = {
       hasRole: () => of(true),
@@ -132,7 +131,7 @@ describe('RuleComponent', () => {
         GlobalEventService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: AuthService, useValue: authServiceMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SecurityService, useValue: securityServiceMock },

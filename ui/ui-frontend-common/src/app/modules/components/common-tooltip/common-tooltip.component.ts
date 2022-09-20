@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { fadeInOutAnimation } from '../../animations';
 
@@ -49,10 +50,9 @@ export class CommonTooltipComponent implements OnInit {
 
   constructor() { }
 
-  public text = '';
-  public position: string;
-  public outline: boolean;
-  public className: string;
+ public text = '';
+ public className: string;
+public outline: boolean;
 
   ngOnInit() {
   }

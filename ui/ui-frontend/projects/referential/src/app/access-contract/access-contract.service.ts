@@ -36,11 +36,13 @@
  */
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccessContract } from 'projects/vitamui-library/src/public-api';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService , VitamUISnackBarService} from 'ui-frontend-common';
+import { SearchService } from 'ui-frontend-common';
 import { AccessContractApiService } from '../core/api/access-contract-api.service';
+import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +50,7 @@ import { AccessContractApiService } from '../core/api/access-contract-api.servic
 export class AccessContractService extends SearchService<AccessContract> {
   updated = new Subject<AccessContract>();
 
-  constructor(private accessContractApi: AccessContractApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(private accessContractApi: AccessContractApiService, private snackBar: MatSnackBar, http: HttpClient) {
     super(http, accessContractApi, 'ALL');
   }
 
@@ -73,7 +75,7 @@ export class AccessContractService extends SearchService<AccessContract> {
     return this.accessContractApi.check(accessContract, this.headers);
   }
 
-  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
     const existContract: any = {};
     if (properties.name) {
       existContract.name = properties.name;
@@ -91,39 +93,40 @@ export class AccessContractService extends SearchService<AccessContract> {
       tap((response) => this.updated.next(response)),
       tap(
         (response) => {
-             this.snackBarService.open({
-              message: 'SNACKBAR.ACCESS_CONTRACT_UPDATED',
-              translateParams:{
-                name: response.name,
-              },
-              icon: 'vitamui-icon-contrat'
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: { type: 'accessContractUpdate', name: response.name }
           });
         },
         (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+          });
         }
       )
     );
   }
 
   create(accessContract: AccessContract) {
-    return this.accessContractApi.create(accessContract)
-      .pipe(
-        tap(
-          (response: AccessContract) => {
-             this.snackBarService .open({
-              message: 'SNACKBAR.ACCESS_CONTRACT_CREATED',
-              translateParams:{
-                name: response.name,
-              },
-              icon: 'vitamui-icon-contrat'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+    return this.accessContractApi.create(accessContract).pipe(
+      tap(
+        (response: AccessContract) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'accessContractCreate', name: response.name },
+            duration: 10000
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+          });
+        }
+      )
+    );
   }
 
   setTenantId(tenantIdentifier: number) {

@@ -36,7 +36,8 @@
  */
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { VitamUISnackBarService } from 'ui-frontend-common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 import { ReferentialImportService } from './referential-import.service';
 import { Referential } from './referential.enum';
 
@@ -45,7 +46,7 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 @Component({
   selector: 'app-vitamui-import-dialog',
   templateUrl: './vitamui-import-dialog.component.html',
-  styleUrls: ['./vitamui-import-dialog.component.scss'],
+  styleUrls: ['./vitamui-import-dialog.component.scss']
 })
 export class VitamUIImportDialogComponent implements OnInit {
   stepIndex = 0;
@@ -63,10 +64,10 @@ export class VitamUIImportDialogComponent implements OnInit {
 
   constructor(
     private referentialImportService: ReferentialImportService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<VitamUIImportDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Referential
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: Referential) {
+  }
 
   ngOnInit() {
     this.referential = this.data;
@@ -116,21 +117,36 @@ export class VitamUIImportDialogComponent implements OnInit {
   importFile() {
     this.isImportInProgress = true;
 
-    this.referentialImportService.importReferential(this.referential, this.fileToUpload).subscribe(
-      (response) => {
-        this.isImportInProgress = false;
-        const importResult = JSON.parse(response);
-        if (importResult.httpCode === 200 || importResult.httpCode === 201) {
-          this.snackBarService.open({ message: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED', icon: 'vitamui-icon-admin-key' });
-          this.dialogRef.close({ success: true });
-        } else {
-          this.snackBarService.open({ message: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED', icon: 'vitamui-icon-admin-key' });
-        }
-      },
-      () => {
-        this.isImportInProgress = false;
+    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+      panelClass: 'vitamui-snack-bar',
+      duration: 10000,
+      data: { type: this.referential + 'ImportInProgress' }
+    });
+
+    this.referentialImportService.importReferential(this.referential, this.fileToUpload).subscribe(response => {
+      this.isImportInProgress = false;
+      const importResult = JSON.parse(response);
+      if (importResult.httpCode === 200 || importResult.httpCode === 201) {
+        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+          data: { type: this.referential + 'ImportSuccessed' }
+        });
+
+        this.dialogRef.close({
+          success: true
+        });
+      } else {
+        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+          data: { type: this.referential + 'ImportFailed' }
+        });
       }
-    );
+    }, () => {
+      this.isImportInProgress = false;
+    });
+
   }
 
   get stepProgress() {
@@ -144,4 +160,5 @@ export class VitamUIImportDialogComponent implements OnInit {
       return 0;
     }
   }
+
 }

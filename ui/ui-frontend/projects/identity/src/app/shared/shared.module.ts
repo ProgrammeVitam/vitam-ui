@@ -42,11 +42,13 @@ import { DomainsInputModule } from './domains-input';
 import { EditableFieldModule } from './editable-field';
 import { PatternModule } from './pattern';
 import { ProfilesFormModule } from './profiles-form/profiles-form.module';
+import { VitamUISnackBarModule } from './vitamui-snack-bar';
 
 @NgModule({
   imports: [
     CommonModule,
     CollapseModule,
+    VitamUISnackBarModule,
     DomainsInputModule,
     EditableFieldModule,
     PatternModule,
@@ -56,6 +58,7 @@ import { ProfilesFormModule } from './profiles-form/profiles-form.module';
   ],
   exports: [
     CollapseModule,
+    VitamUISnackBarModule,
     DomainsInputModule,
     EditableFieldModule,
     PatternModule,

@@ -47,8 +47,9 @@ import {
   Operators,
   SearchQuery,
   SearchService,
-  VitamUISnackBarService,
+  VitamUISnackBar,
 } from 'ui-frontend-common';
+import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +60,7 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
   constructor(
     private externalParamProfileApi: ExternalParamProfileApiService,
     private accessContractApiService: AccessContractApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBar: VitamUISnackBar,
     http: HttpClient
   ) {
     super(http, externalParamProfileApi);
@@ -81,13 +82,18 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
     return this.externalParamProfileApi.create(externalParamProfile).pipe(
       tap(
         (response: ExternalParamProfile) => {
-          this.snackBarService.open({
-            message: 'EXTERNAL_PARAM_PROFILE.NOTIF_EXTERNAL_PARAM_PROFILE_CREATED',
-            icon: 'vitamui-icon-admin-key',
-            translateParams: { name: response.name },
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'externalParamProfileCreate', name: response.name },
+            duration: 10000,
           });
         },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        }
       )
     );
   }
@@ -97,13 +103,18 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
       tap((response) => this.updated.next(response)),
       tap(
         (response) => {
-          this.snackBarService.open({
-            message: 'EXTERNAL_PARAM_PROFILE.NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED',
-            icon: 'vitamui-icon-admin-key',
-            translateParams: { name: response.name },
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: { type: 'externalParamProfileUpdate', name: response.name },
           });
         },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        }
       )
     );
   }

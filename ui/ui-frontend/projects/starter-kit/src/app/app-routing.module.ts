@@ -1,3 +1,4 @@
+import { TranslationComponent } from './components/translation/translation.component';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -48,7 +49,6 @@ import { InputsComponent } from './components/inputs/inputs.component';
 import { MiscellaneousComponent } from './components/miscellaneous/miscellaneous.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
-import { TranslationComponent } from './components/translation/translation.component';
 import { TypographyComponent } from './components/typography/typography.component';
 import { StarterKitComponent } from './starter-kit/starter-kit.component';
 

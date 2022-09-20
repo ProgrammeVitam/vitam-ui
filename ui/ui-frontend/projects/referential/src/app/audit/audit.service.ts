@@ -45,13 +45,13 @@ import {
   Direction,
   LogbookApiService,
   PageRequest,
-  SearchService,
-  VitamUISnackBarService,
+  SearchService
 } from 'ui-frontend-common';
 
 import {AccessionRegisterSummaryApiService} from '../core/api/accession-register-summary-api.service';
 import {OperationApiService} from '../core/api/operation-api.service';
 import {AuditOptions} from '../models/audit.interface';
+import {VitamUISnackBar, VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -61,7 +61,7 @@ export class AuditService extends SearchService<Event> {
     private operationApiService: OperationApiService,
     private logbookApiService: LogbookApiService,
     private accessionRegisterSummaryApiService: AccessionRegisterSummaryApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBar: VitamUISnackBar,
     http: HttpClient
   ) {
     super(http, operationApiService, 'ALL');
@@ -77,9 +77,10 @@ export class AuditService extends SearchService<Event> {
       tap(
         () => {
           console.log('Audit: ', audit);
-          this.snackBarService.open({
-            message: 'SNACKBAR.AUDIT_RUN',
-            icon: 'vitamui-icon-audit',
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: {type: 'auditRun'},
+            duration: 10000,
           });
         },
         (error: any) => {
@@ -87,7 +88,10 @@ export class AuditService extends SearchService<Event> {
           if (!error || !error.error) {
             return;
           }
-          this.snackBarService.open({ message: error.error.message, translate: false });
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
         }
       )
     );
@@ -132,7 +136,12 @@ export class AuditService extends SearchService<Event> {
         element.click();
         document.body.removeChild(element);
       },
-      (error) => this.snackBarService.open({ message: error.error.message, translate: false })
+      (error) => {
+        this.snackBar.open(error.error.message, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
+      }
     );
   }
 

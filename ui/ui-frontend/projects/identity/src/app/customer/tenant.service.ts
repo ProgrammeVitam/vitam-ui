@@ -36,11 +36,12 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Criterion, Operators, SearchQuery, Tenant, VitamUISnackBarService } from 'ui-frontend-common';
+import { Criterion, Operators, SearchQuery, Tenant } from 'ui-frontend-common';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { TenantApiService } from './tenant-api.service';
 
 @Injectable()
@@ -48,7 +49,7 @@ export class TenantService {
 
   updated = new Subject<Tenant>();
 
-  constructor(private tenantApi: TenantApiService, private snackBarService: VitamUISnackBarService) {}
+  constructor(private tenantApi: TenantApiService, private snackBar: VitamUISnackBar) {}
 
   get(id: string): Observable<Tenant> {
     return this.tenantApi.getOne(id);
@@ -72,19 +73,17 @@ export class TenantService {
       .pipe(
         tap(
           (newTenant: Tenant) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.SAFE_CREATE',
-              translateParams:{
-                param1: newTenant.name,
-                param2: ownerName,
-              },
-              icon: 'vitamui-icon-safe'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'tenantCreate', tenantName: newTenant.name, ownerName },
+              duration: 10000
             });
           },
           () => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.SAFE_CREATE_ERROR',
-              icon: 'vitamui-icon-danger'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'tenantCreateError' },
+              duration: 10000
             });
           }
         )
@@ -97,17 +96,17 @@ export class TenantService {
         tap((updatedTenant: Tenant) => this.updated.next(updatedTenant)),
         tap(
           (updatedTenant: Tenant) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.SAFE_UPDATE',
-              translateParams:{
-                param1: updatedTenant.name,
-                param2: ownerName,
-              },
-              icon: 'vitamui-icon-safe'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'tenantUpdate', tenantName: updatedTenant.name, ownerName },
+              duration: 10000
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );

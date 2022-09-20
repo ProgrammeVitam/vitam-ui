@@ -39,10 +39,10 @@ import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CountryOption, CountryService, Customer, StartupService } from 'ui-frontend-common';
+import { CountryOption, CountryService, Customer } from 'ui-frontend-common';
 
 import { Owner } from 'ui-frontend-common';
-import { ALPHA_NUMERIC_REGEX, OwnerFormValidators, OWNER_CODE_MAX_LENGTH } from './owner-form.validators';
+import { OwnerFormValidators } from './owner-form.validators';
 
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -57,12 +57,13 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
   providers: [OWNER_FORM_VALUE_ACCESSOR]
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
-  public form: FormGroup;
-  public maxStreetLength: number;
-  public ownerCodeMaxLength = OWNER_CODE_MAX_LENGTH;
-  public countries: CountryOption[];
+
+  form: FormGroup;
 
   private sub: any;
+
+  public countries: CountryOption[];
+
 
   @Input()
   set customerId(customerId: string) {
@@ -73,7 +74,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
 
   get customerId() { return this._customerId; }
 
-  // tslint:disable-next-line:variable-name
   private _customerId: string;
 
   @Input()
@@ -89,44 +89,39 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   }
 
   get customerInfo() { return this._customerInfo; }
-  // tslint:disable-next-line:variable-name
+
   private _customerInfo: any;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private ownerFormValidators: OwnerFormValidators,
-    private countryService: CountryService,
-    private startupService: StartupService
-  ) {
-    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
-    this.form = this.formBuilder.group({
-      id: null,
-      customerId: [null],
-      identifier: null,
-      code: [
-        null,
-        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(this.ownerCodeMaxLength)],
-        this.ownerFormValidators.uniqueCode(),
-      ],
-      name: [null, Validators.required],
-      companyName: [null, Validators.required],
-      internalCode: [null],
-      address: this.formBuilder.group({
-        street: [null, Validators.maxLength(this.maxStreetLength)],
-        zipCode: null,
-        city: null,
-        country: 'FR',
-      }),
-      readonly: false
-    });
-  }
+  constructor(private formBuilder: FormBuilder, private ownerFormValidators: OwnerFormValidators, private countryService: CountryService) {}
 
   onChange = (_: any) => {};
 
   onTouched = () => {};
 
   ngOnInit() {
+    this.form = this.formBuilder.group({
+      id: null,
+      customerId: [null],
+      identifier: null,
+      code: [
+        null,
+        [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)],
+        this.ownerFormValidators.uniqueCode(),
+      ],
+      name: [null, Validators.required],
+      companyName: [null, Validators.required],
+      internalCode: [null],
+      address: this.formBuilder.group({
+        street: null,
+        zipCode: null,
+        city: null,
+        country: 'FR',
+      }),
+      readonly: false
+    });
+
     this.subscribeToValueChanges();
+
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values;
     });

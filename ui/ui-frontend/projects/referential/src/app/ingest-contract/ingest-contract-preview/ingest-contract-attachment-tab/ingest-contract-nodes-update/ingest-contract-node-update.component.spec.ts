@@ -41,10 +41,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FilingPlanModule } from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.module';
-import {BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUISnackBarService} from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from './../../../../../environments/environment';
 
+import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-node-update.component';
 
 // TODO fix tests
@@ -55,7 +56,7 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
   beforeEach(
     waitForAsync(() => {
       const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+      const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
       TestBed.configureTestingModule({
         imports: [
           ReactiveFormsModule,
@@ -74,7 +75,7 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
             useValue: { data: { ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1 } },
           },
           { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: VitamUISnackBarService, useValue: snackBarSpy },
+          { provide: VitamUISnackBar, useValue: snackBarSpy },
           { provide: ENVIRONMENT, useValue: environment },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -38,10 +38,11 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {SearchService, VitamUISnackBarService} from 'ui-frontend-common';
+import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
 
 import {Context} from '../../../../vitamui-library/src/lib/models/context';
 import {ContextApiService} from '../core/api/context-api.service';
+import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class ContextService extends SearchService<Context> {
 
   constructor(
     private contextApiService: ContextApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBar: VitamUISnackBar,
     http: HttpClient) {
     super(http, contextApiService, 'ALL');
   }
@@ -79,16 +80,17 @@ export class ContextService extends SearchService<Context> {
       .pipe(
         tap(
           (response: Context) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.CONTEXT_CREATED',
-              translateParams:{
-                name: response.identifier,
-              },
-              icon: 'vitamui-icon-admin-key'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: {type: 'contextCreate', name: response.identifier},
+              duration: 10000
             });
           },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+          (error: any) => {
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -100,16 +102,17 @@ export class ContextService extends SearchService<Context> {
         tap((response) => this.updated.next(response)),
         tap(
           (response) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.CONTEXT_UPDATED',
-              translateParams:{
-                name: response.identifier,
-              },
-              icon: 'vitamui-icon-admin-key'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+              data: {type: 'contextUpdate', name: response.identifier}
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );

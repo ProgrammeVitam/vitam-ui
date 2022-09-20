@@ -38,7 +38,7 @@ import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
   AdminUserProfile, ApplicationId, AuthService, buildCriteriaFromSearch, collapseAnimation, DEFAULT_PAGE_SIZE,
-  Direction, Group, InfiniteScrollTable, PageRequest, Role, rotateAnimation, SearchQuery, User, VitamUISnackBarService
+  Direction, Group, InfiniteScrollTable, PageRequest, Role, rotateAnimation, SearchQuery, User, VitamUISnackBar
 } from 'ui-frontend-common';
 
 import {
@@ -46,9 +46,10 @@ import {
   TemplateRef, ViewChild
 } from '@angular/core';
 
-import { CustomerService } from '../../core/customer.service';
 import { UserService } from '../user.service';
 import { buildCriteriaFromUserFilters } from './user-criteria-builder.util';
+import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { CustomerService } from '../../core/customer.service';
 
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -113,7 +114,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
-  // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
   @Input()
@@ -134,10 +134,10 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
   constructor(
     private customerService: CustomerService,
+    private snackBar: VitamUISnackBar,
     public userService: UserService,
     @Inject(LOCALE_ID) private locale: string,
-    private authService: AuthService,
-    private snackBarService: VitamUISnackBarService,
+    private authService: AuthService
   ) {
     super(userService);
     this.genericUserRole = {
@@ -219,12 +219,15 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   }
 
   showUser(user: User) {
-    if (user.status === 'REMOVED') {
-      this.snackBarService.open({
-        message: 'SHARED.SNACKBAR.USER_ALREADY_DELETED',
-        icon: 'vitamui-icon-bank'
+    if (user.status === "REMOVED") {
+      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 10000,
+        data: { type: 'useralreadyDeleted' },
       });
-    } else {
+    }
+    else {
+
       this.userClick.emit(user);
     }
   }
@@ -235,24 +238,29 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     this.customerService.getMyCustomer().subscribe((customer) => {
       if (customer.gdprAlert) {
 
-        this.dataSource.filter((user: User) => user.status === 'DISABLED' && user.disablingDate !== null).forEach((u: User) => {
+        this.dataSource.filter((user: User) => user.status === "DISABLED" && user.disablingDate !== null).forEach((u: User) => {
 
-          this.totalMonth = ((new Date().getFullYear()) - (new Date(u.disablingDate)).getFullYear()) * 12
-            - (new Date(u.disablingDate)).getMonth() + (new Date().getMonth());
+          this.totalMonth = ((new Date().getFullYear()) - (new Date(u.disablingDate)).getFullYear()) * 12 - (new Date(u.disablingDate)).getMonth() + (new Date().getMonth());
 
           if (this.totalMonth > customer.gdprAlertDelay && u.email.split('@')[1] === customer.defaultEmailDomain) {
+
             this.isInactifUsers = true;
           }
-        });
+        })
 
         if (this.isInactifUsers) {
-          this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.USER_TO_DELETE',
-            icon: 'vitamui-icon-bank'
+
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 60000,
+            data: { type: 'usersToDelete' },
           });
         }
       }
     });
+
+
+
   }
 
 }

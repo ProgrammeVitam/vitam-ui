@@ -42,9 +42,6 @@ import { map, switchMap, take } from 'rxjs/operators';
 
 import { CustomerService } from '../../core/customer.service';
 
-export const CUSTOMER_CODE_MAX_LENGTH = 15;
-export const ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]*$/;
-
 @Injectable()
 export class CustomerCreateValidators {
 

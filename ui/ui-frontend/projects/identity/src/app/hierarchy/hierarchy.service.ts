@@ -1,6 +1,3 @@
-import { HttpParams } from '@angular/common/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -39,7 +36,12 @@ import { Injectable } from '@angular/core';
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Criterion, Operators, Profile, ProfileApiService, SearchQuery, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { Criterion, Operators, Profile, ProfileApiService, SearchQuery, SearchService } from 'ui-frontend-common';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -48,19 +50,13 @@ export class HierarchyService extends SearchService<Profile>  {
 
   updated = new Subject<Profile>();
 
-  constructor(private profileApi: ProfileApiService, http: HttpClient, private snackBarService: VitamUISnackBarService) {
+  constructor(private profileApi: ProfileApiService, http: HttpClient, private snackBar: VitamUISnackBar) {
     super(http, profileApi, 'ALL');
   }
 
   setTenantId(tenantIdentifier: number) {
     this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString()});
   }
-
-  getAllByParams(query: SearchQuery, headers?: HttpHeaders) {
-    const params = new HttpParams().set('criteria',  JSON.stringify(query));
-    return this.profileApi.getAllByParams(params, headers);
-  }
-
 
   get(id: string): Observable<Profile> {
     return this.profileApi.getOneWithEmbedded(id, 'ALL', this.headers);
@@ -86,15 +82,17 @@ export class HierarchyService extends SearchService<Profile>  {
         tap((response) => this.updated.next(response)),
         tap(
           (response) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
-              translateParams:{
-                param1: response.name,
-              }
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+              data: { type: 'profileUpdate', name: response.name }
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -105,15 +103,17 @@ export class HierarchyService extends SearchService<Profile>  {
     return this.profileApi.create(profile, this.headers).pipe(
       tap(
         (response: Profile) => {
-          this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.PROFILE_CREATE_ERROR',
-              translateParams:{
-                param1: response.name,
-              }
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'profileAdminCreate', name: response.name },
+            duration: 10000
           });
         },
         (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+          });
         }
       )
     );

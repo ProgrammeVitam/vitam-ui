@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { CountryOption,  CountryService, Customer, diff, OtpState, StartupService } from 'ui-frontend-common';
+import { CountryOption,  CountryService, Customer, diff, OtpState } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 
 import { CustomerService } from '../../../core/customer.service';
-import { ALPHA_NUMERIC_REGEX, CustomerCreateValidators, CUSTOMER_CODE_MAX_LENGTH } from '../../customer-create/customer-create.validators';
+import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -54,8 +54,7 @@ const UPDATE_DEBOUNCE_TIME = 200;
 })
 export class InformationTabComponent implements OnInit, OnDestroy {
   public readonly form: FormGroup;
-  public maxStreetLength: number;
-  public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;
+
   previousValue: {
     code: string,
     identifier: string,
@@ -83,9 +82,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
   }
 
   get customer(): Customer { return this._customer; }
-  // tslint:disable-next-line:variable-name
   private _customer: Customer;
-  // tslint:disable-next-line:variable-name
   private _gdprReadOnlyStatus: boolean;
   get gdprReadOnlyStatus(): boolean { return this._gdprReadOnlyStatus; }
 
@@ -96,7 +93,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
       this.form.enable({ emitEvent: false });
-      if (this._gdprReadOnlyStatus) {
+      if(this._gdprReadOnlyStatus){
         this.form.get('gdprAlertDelay').disable({ emitEvent: false });
         this.form.get('gdprAlert').disable({ emitEvent: false });
         this.form.get('identifier').disable({ emitEvent: false });
@@ -124,15 +121,13 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private customerCreateValidators: CustomerCreateValidators,
     private countryService: CountryService,
-    private startupService: StartupService
   ) {
-    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
       id: [null, Validators.required],
       identifier: [{ value: null, disabled: true }, Validators.required],
       code: [
         null,
-        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(this.customerCodeMaxLength)],
+        [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
         this.customerCreateValidators.uniqueCode(),
       ],
       name: [null, Validators.required],
@@ -140,7 +135,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       passwordRevocationDelay: [null, Validators.required],
       otp: [null],
       address: this.formBuilder.group({
-        street: [null, [Validators.required, Validators.maxLength(this.maxStreetLength)]],
+        street: [null, Validators.required],
         zipCode: [null, Validators.required],
         city: [null, Validators.required],
         country: [null, Validators.required],
@@ -157,8 +152,6 @@ export class InformationTabComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.form.valueChanges.subscribe((data) => console.log(data))
-    
     this.sub = merge(this.form.statusChanges, this.form.valueChanges)
     .pipe(
       debounceTime(UPDATE_DEBOUNCE_TIME),

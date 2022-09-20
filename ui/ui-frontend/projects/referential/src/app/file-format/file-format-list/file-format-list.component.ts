@@ -60,8 +60,9 @@ import {
   PageRequest,
   Role,
   User,
-  VitamUISnackBarService
+  VitamUISnackBar
 } from 'ui-frontend-common';
+import {VitamUISnackBarComponent} from '../../shared/vitamui-snack-bar';
 import {FileFormatService} from '../file-format.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -113,7 +114,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     public fileFormatService: FileFormatService,
     private authService: AuthService,
     private matDialog: MatDialog,
-    private snackBarService: VitamUISnackBarService
+    private snackBar: VitamUISnackBar
   ) {
     super(fileFormatService);
     this.genericUserRole = {
@@ -180,13 +181,10 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     dialog.afterClosed().pipe(
       filter((result) => !!result)
     ).subscribe(() => {
-      this.snackBarService.open({
-        message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETING',
-        translateParams:{
-          param1: fileFormat.puid,
-        },
+      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
         duration: 5000,
-        icon: 'vitamui-icon-admin-key'
+        data: {type: 'fileFormatDeleteStart', name: fileFormat.puid}
       });
       this.fileFormatService.delete(fileFormat).subscribe(() => {
         this.searchFileFormatOrdered();

@@ -34,14 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { FooterComponent } from './footer.component';
 
 @NgModule({
-  declarations: [FooterComponent],
-  imports: [TranslateModule, CommonModule],
-  exports: [FooterComponent]
+  declarations: [
+    FooterComponent
+  ],
+  exports: [
+    FooterComponent
+  ],
+  imports: [
+    TranslateModule,
+  ]
 })
-export class FooterModule {}
+export class FooterModule {
+}

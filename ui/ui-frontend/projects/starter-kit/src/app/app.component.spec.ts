@@ -62,6 +62,8 @@ describe('AppComponent', () => {
       getPlatformName: () => '',
       load: () => { },
       getPortalUrl: () => '',
+      getCustomerTechnicalReferentEmail: () => '',
+      getCustomerWebsiteUrl: () => ''
     };
 
     TestBed.configureTestingModule({

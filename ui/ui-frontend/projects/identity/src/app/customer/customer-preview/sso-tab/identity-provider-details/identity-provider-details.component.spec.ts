@@ -41,7 +41,8 @@ import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsM
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { AuthnRequestBindingEnum, IdentityProvider, VitamUISnackBarService } from 'ui-frontend-common';
+
+import { AuthnRequestBindingEnum, IdentityProvider, VitamUISnackBar } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderDetailsComponent } from './identity-provider-details.component';
@@ -134,8 +135,7 @@ class TestHostComponent {
 describe('IdentityProviderDetailsComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
-
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -149,7 +149,7 @@ describe('IdentityProviderDetailsComponent', () => {
       ],
       declarations: [IdentityProviderDetailsComponent, TestHostComponent, EditableKeystoreStubComponent, EditablePatternStubComponent],
       providers: [
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: IdentityProviderService, useValue: { patch: () => of(null), updateMetadataFile: () => of(null) } },
       ],
     }).compileComponents();

@@ -13,17 +13,15 @@ mat-chip span {
 }
 
 .list-input-control {
+    // margin-bottom: 20px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: stretch;
 
     .list-input-wrapper {
-        width: 100%;
-        margin-right: 2rem;
-
-        > input {
-            max-width: 100%;
-        }
+        position: relative;
+        margin-right: 15px;
+        flex-grow: 1;
 
         mat-spinner {
             position: absolute;

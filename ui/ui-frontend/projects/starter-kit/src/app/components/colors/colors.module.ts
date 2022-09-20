@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
 import { ColorsComponent } from './colors.component';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
 
 

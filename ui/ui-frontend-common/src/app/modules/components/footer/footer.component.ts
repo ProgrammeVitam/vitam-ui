@@ -18,16 +18,16 @@ export class FooterComponent implements OnInit {
     private startupService: StartupService,
     private authService: AuthService,
     private themeService: ThemeService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    const versionRelease = this.startupService.getConfigStringValue('VERSION_RELEASE');
+    const versionRelease = this.startupService.getConfigStringValue( 'VERSION_RELEASE');
     if (versionRelease) {
       this.version = 'v' + versionRelease;
     }
-
-    this.themeService.getData$(this.authService.user, ThemeDataType.FOOTER_LOGO).subscribe((footerLogoUrl: SafeResourceUrl) => {
-      this.footerLogoUrl = footerLogoUrl;
-    });
+    this.footerLogoUrl = this.themeService.getData(
+      this.authService.user,
+      ThemeDataType.FOOTER_LOGO
+    );
   }
 }

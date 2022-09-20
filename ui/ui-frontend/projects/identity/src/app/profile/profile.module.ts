@@ -41,6 +41,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { VitamUISnackBar } from './../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { LevelInputModule } from 'ui-frontend-common';
@@ -76,6 +77,7 @@ import { ProfileService } from './profile.service';
   providers: [
     ProfileResolver,
     ProfileService,
+    VitamUISnackBar,
   ]
 })
 export class ProfileModule { }

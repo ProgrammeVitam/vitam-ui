@@ -42,7 +42,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of} from 'rxjs';
-import {InjectorModule, LoggerModule, VitamUISnackBarService} from 'ui-frontend-common';
+import {InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 import {DslQueryType} from '../../../../vitamui-library/src/lib/models/dsl-query-type.enum';
 import {AccessContractService} from '../access-contract/access-contract.service';
@@ -52,7 +52,6 @@ import {AdminDslService} from './admin-dsl.service';
 describe('AdminDslComponent', () => {
   let component: AdminDslComponent;
   let fixture: ComponentFixture<AdminDslComponent>;
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
   const adminDslValue = {
     id: 'id',
@@ -92,7 +91,6 @@ describe('AdminDslComponent', () => {
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: AdminDslService, useValue: adminDslServiceMock},
         {provide: AccessContractService, useValue: accessContractServiceMock},
-        {provide: VitamUISnackBarService, useValue: snackBarSpy},
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

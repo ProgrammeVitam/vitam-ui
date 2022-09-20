@@ -47,6 +47,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { LevelInputModule, RoleToggleModule, VitamUICommonModule } from 'ui-frontend-common';
 import { ProfileValidators } from '../profile/profile.validators';
 import { SharedModule } from '../shared/shared.module';
+import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail/external-param-profile-detail.component';
@@ -82,6 +83,6 @@ import { SharedService } from './shared.service';
     ExternalParamProfileDetailComponent,
     InformationTabComponent,
   ],
-  providers: [ExternalParamProfileValidators, ProfileValidators, SharedService],
+  providers: [VitamUISnackBar, ExternalParamProfileValidators, ProfileValidators, SharedService],
 })
 export class ExternalParamProfileModule {}

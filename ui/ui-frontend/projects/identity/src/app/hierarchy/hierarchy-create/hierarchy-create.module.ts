@@ -44,6 +44,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { VitamUISnackBar } from './../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
+
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
 import { HierarchyCreateComponent } from './hierarchy-create.component';
@@ -67,5 +69,8 @@ import { HierarchyCreateComponent } from './hierarchy-create.component';
   ],
   exports: [HierarchyCreateComponent],
   entryComponents: [HierarchyCreateComponent],
+  providers: [
+    VitamUISnackBar,
+  ]
 })
 export class HierarchyCreateModule { }

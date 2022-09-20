@@ -38,10 +38,9 @@
 import { UserInfo } from 'ui-frontend-common/app/modules/models/user/user-info.interface';
 
 import { EMPTY, of } from 'rxjs';
-import { AdminUserProfile, AuthService, BASE_URL, Customer, LoggerModule, OtpState, User, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AdminUserProfile, AuthService, Customer, OtpState, User } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -83,10 +82,10 @@ let expectedUser: User = {
   centerCode: '000001',
   autoProvisioningEnabled: false
 };
-let userInfolanguage: UserInfo = {
+ let userInfolanguage: UserInfo = {
    id : '1',
    language: 'fr'
- };
+ }
 let expectedCustomer: Customer = {
   id: 'idCustomer',
   identifier : '1',
@@ -155,7 +154,6 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-    // tslint:disable-next-line: max-line-length
     template: `<app-user-info-tab [user]="user" [customer]="customer" [readOnly]="readOnly" [adminUserProfile]="adminUserProfile"></app-user-info-tab>`
 })
 class TestHostComponent {
@@ -261,10 +259,10 @@ describe('UserInfoTabComponent', () => {
         description: 'Une description du profil group'
       }]
     };
-    userInfolanguage = {
+     userInfolanguage = {
       id : '1',
       language: 'fr'
-    };
+    }
     const userServiceSpy = jasmine.createSpyObj('UserService', { patch: of({}) });
     const userInfoServiceSpy = jasmine.createSpyObj('UserInfoService', { patch: of({}) });
 
@@ -279,13 +277,9 @@ describe('UserInfoTabComponent', () => {
         NoopAnimationsModule,
         MatButtonToggleModule,
         VitamUICommonTestModule,
-        LoggerModule.forRoot(),
-        HttpClientTestingModule
       ],
       declarations: [ UserInfoTabComponent, TestHostComponent, MatTooltipStubDirective ],
       providers: [
-        { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: UserService, useValue: userServiceSpy },
         { provide: UserInfoService, useValue: userInfoServiceSpy },
         { provide: UserCreateValidators, useValue: userCreateValidatorsSpy },

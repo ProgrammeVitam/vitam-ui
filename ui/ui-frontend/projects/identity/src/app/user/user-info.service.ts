@@ -39,12 +39,13 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { EMPTY } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { User, VitamUISnackBarService } from 'ui-frontend-common';
+import { User } from 'ui-frontend-common';
 import {
   BaseUserInfoApiService, SearchService
 } from 'ui-frontend-common';
 
 import { UserInfo } from 'ui-frontend-common';
+import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService extends SearchService<UserInfo> {
@@ -53,14 +54,14 @@ export class UserInfoService extends SearchService<UserInfo> {
 
   constructor(
     private userInfoServiceApi: BaseUserInfoApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBar: VitamUISnackBar,
 
     http: HttpClient
   ) {
     super(http, { getAllPaginated: () => EMPTY }, '');
   }
 
-  create(userInfo: UserInfo): Observable<UserInfo> {
+  create(userInfo: UserInfo) : Observable<UserInfo>{
     return this.userInfoServiceApi.create(userInfo);
   }
 
@@ -78,17 +79,17 @@ export class UserInfoService extends SearchService<UserInfo> {
       tap((response) => this.userInfoUpdated.next(response)),
       tap(
         () => {
-          this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
-            translateParams:{
-              param1: user.firstname,
-              param2: user.lastname,
-            },
-            icon: 'vitamui-icon-key'
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: { type: 'userUpdate', firstname: user.firstname, lastname: user.lastname },
           });
         },
         (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+          });
         }
       )
     );

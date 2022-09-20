@@ -40,11 +40,12 @@ import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { isEqual, isObject, mapObject, omit } from 'underscore';
 
-import { AuthnRequestBindingEnum, IdentityProvider, newFile, VitamUISnackBarService } from 'ui-frontend-common';
+import { AuthnRequestBindingEnum, IdentityProvider, newFile, VitamUISnackBar } from 'ui-frontend-common';
 import { IdentityProviderService } from '../identity-provider.service';
 
 import { extend, isEmpty } from 'underscore';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
+import { TranslateService } from '@ngx-translate/core';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -136,20 +137,18 @@ export class IdentityProviderDetailsComponent implements OnInit {
   commonsControls: FormGroup;
   idpMetadata: FormControl;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private identityProviderService: IdentityProviderService,
-    private snackBarService: VitamUISnackBarService
-  ) {
+  constructor(private formBuilder: FormBuilder, private identityProviderService: IdentityProviderService, private snackBar: VitamUISnackBar,
+    private translate: TranslateService) {
     this.commonsControls = this.initializeCommonControls();
     this.specificSamlControls = this.initializeSamlControls();
     this.specificOidcControls = this.initializeOidcControls();
     this.form = this.formBuilder.group({
-      ...this.commonsControls.controls,
+      ...this.commonsControls.controls
     });
     this.idpMetadata = new FormControl({ value: newFile([''], 'metadata.xml'), disabled: true });
   }
   updateForm() {
+
     if (this.form.value?.protocoleType !== this.previousValue?.protocoleType) {
       this.displayOIDCSAMLBLOCKS = false;
       this.manageForm(this.form.getRawValue());
@@ -221,7 +220,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
    * in our case, we need to do only first level comparaison
    */
   diff(o1: { [key: string]: any }, o2: { [key: string]: any }): { [key: string]: any } {
-    let diffObj = {};
+    var diffObj = {};
     if (o1.protocoleType !== o2.protocoleType) {
       switch (o2.protocoleType) {
         case ProtocoleType.OIDC:
@@ -246,7 +245,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
           break;
       }
     }
-    const diff = omit(o1, (value: any, key: string) => {
+    var diff = omit(o1, (value: any, key: string) => {
       return isObject(value) ? isEqual(o2[key], value) : o2[key] === value;
     });
     diffObj = { ...diffObj, ...diff };
@@ -266,7 +265,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
           ...this.commonsControls.controls,
           ...this.specificSamlControls.controls,
         });
-        // set default value if it is not defined
+        //set default value if it is not defined
         if (!formValue.authnRequestBinding) {
           formValue.authnRequestBinding = AuthnRequestBindingEnum.POST;
         }
@@ -276,7 +275,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
           ...this.commonsControls.controls,
           ...this.specificOidcControls.controls,
         });
-        // set default value if it is not defined
+        //set default value if it is not defined
         if (formValue.useState == undefined || formValue.useState == null) {
           formValue.useState = true;
           formValue.useNonce = true;
@@ -287,8 +286,11 @@ export class IdentityProviderDetailsComponent implements OnInit {
 
     this.form.reset(formValue, { emitEvent: false });
     this.manageChanges();
-    if (this.form.invalid) {
-      this.snackBarService.open({ message: 'SHARED.SNACKBAR.OIDC_UPDATE' });
+    if(this.form.invalid){
+      this.snackBar.open(this.translate.instant('SHARED.SNACKBAR.OIDC_UPDATE'), null, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 10000
+      });
     }
     this.displayOIDCSAMLBLOCKS = true;
   }

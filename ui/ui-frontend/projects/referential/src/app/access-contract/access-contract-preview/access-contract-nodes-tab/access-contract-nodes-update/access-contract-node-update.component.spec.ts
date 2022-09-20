@@ -37,11 +37,12 @@
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService} from 'ui-frontend-common';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 import {environment} from './../../../../../environments/environment';
 
+import {VitamUISnackBar} from '../../../../shared/vitamui-snack-bar';
 import {AccessContractService} from '../../../access-contract.service';
 import {AccessContractNodeUpdateComponent} from './access-contract-node-update.component';
 
@@ -97,7 +98,7 @@ xdescribe('AccessContractNodeUpdateComponent', () => {
 
   beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -111,7 +112,7 @@ xdescribe('AccessContractNodeUpdateComponent', () => {
         {provide: MatDialogRef, useValue: matDialogRefSpy},
         {provide: MAT_DIALOG_DATA, useValue: {customer: expectedCustomer, logo: null}},
         {provide: BASE_URL, useValue: '/fake-api'},
-        {provide: VitamUISnackBarService, useValue: snackBarSpy},
+        {provide: VitamUISnackBar, useValue: snackBarSpy},
         {provide: ENVIRONMENT, useValue: environment},
         {provide: AccessContractService, useValue: {}}
       ]

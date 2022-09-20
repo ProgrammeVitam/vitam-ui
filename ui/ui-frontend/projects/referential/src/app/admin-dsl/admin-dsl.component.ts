@@ -39,15 +39,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import '@angular/localize/init';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppRootComponent, Option, VitamUISnackBarService } from 'ui-frontend-common';
+import { AppRootComponent, Option } from 'ui-frontend-common';
 import { DslQueryType } from '../../../../vitamui-library/src/lib/models/dsl-query-type.enum';
 import { AccessContractService } from '../access-contract/access-contract.service';
+import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { AdminDslService } from './admin-dsl.service';
 
 @Component({
   selector: 'app-admin-dsl',
   templateUrl: './admin-dsl.component.html',
-  styleUrls: ['./admin-dsl.component.scss'],
+  styleUrls: ['./admin-dsl.component.scss']
 })
 export class AdminDslComponent extends AppRootComponent implements OnInit {
   tenantId: number;
@@ -58,25 +59,26 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
   dslQueryTypeEnum = DslQueryType;
   dslQueryFormatErrorMessage = $localize`:dsl query format error message@@dslQueryFormatErrorMessage:Format de la requête invalide`;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private adminDslService: AdminDslService,
-    private snackBarService: VitamUISnackBarService,
-    private accessContractService: AccessContractService,
-    private formBuilder: FormBuilder
-  ) {
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private snackBar: VitamUISnackBar,
+              private adminDslService: AdminDslService,
+              private accessContractService: AccessContractService,
+              private formBuilder: FormBuilder) {
+
     super(route);
 
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(params => {
       if (params.tenantIdentifier) {
         this.tenantId = params.tenantIdentifier;
-        this.accessContractService.getAllForTenant('' + this.tenantId).subscribe((accessContracts) => {
-          this.accessContracts = accessContracts.map((accessContract) => ({
-            key: accessContract.identifier,
-            label: accessContract.name,
-          }));
-        });
+        this.accessContractService.getAllForTenant('' + this.tenantId).subscribe(
+          accessContracts => {
+            this.accessContracts = accessContracts.map(accessContract => ({
+              key: accessContract.identifier,
+              label: accessContract.name
+            }));
+          }
+        );
       }
     });
 
@@ -85,16 +87,16 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
       id: null,
       accessContract: [null, Validators.required],
       dsl: [null, Validators.required],
-      response: null,
+      response: null
     });
+
   }
 
   search() {
     try {
-      const searchObservable: Observable<any> =
-        this.form.get('dslQueryType').value === this.dslQueryTypeEnum.ARCHIVE_UNIT
-          ? this.adminDslService.getByDsl(this.form.value.id, JSON.parse(this.form.value.dsl), this.form.value.accessContract)
-          : this.adminDslService.getUnitObjectsByDsl(this.form.value.id, JSON.parse(this.form.value.dsl), this.form.value.accessContract);
+      const searchObservable: Observable<any> = this.form.get('dslQueryType').value === this.dslQueryTypeEnum.ARCHIVE_UNIT ?
+        this.adminDslService.getByDsl(this.form.value.id, JSON.parse(this.form.value.dsl), this.form.value.accessContract) :
+        this.adminDslService.getUnitObjectsByDsl(this.form.value.id, JSON.parse(this.form.value.dsl), this.form.value.accessContract);
 
       searchObservable.subscribe(
         (response: any) => {
@@ -103,13 +105,14 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
           } else {
             this.form.controls.response.setValue(JSON.stringify(response, null, 2));
           }
-        },
-        (error: any) => {
+        }, (error: any) => {
           console.log(error);
-        }
-      );
+        });
     } catch (syntaxError) {
-      this.snackBarService.open({ message: this.dslQueryFormatErrorMessage, translate: false });
+      this.snackBar.open(this.dslQueryFormatErrorMessage, null, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 1000
+      });
     }
   }
 
@@ -118,8 +121,9 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
     try {
       return dsl.length > 1 && !!JSON.parse(dsl);
     } catch (syntaxError) {
-      this.snackBarService.open({
-        message: 'SNACKBAR.FORMAT_INVALID',
+      this.snackBar.open(this.dslQueryFormatErrorMessage, null, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 1000
       });
       return false;
     }
@@ -135,7 +139,8 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
     this.form.controls.response.reset();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   changeTenant(tenantIdentifier: number) {
     this.tenantId = tenantIdentifier;
@@ -148,4 +153,5 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
   isUnitIdRequired(): boolean {
     return this.form.get('dslQueryType').value === this.dslQueryTypeEnum.TECHNICAL_OBJECT_GROUP;
   }
+
 }

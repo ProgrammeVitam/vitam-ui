@@ -38,18 +38,20 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { StartupService, VitamUISnackBarService } from 'ui-frontend-common';
+import { StartupService } from 'ui-frontend-common';
+import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
+
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         UserService,
         StartupService,
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: VitamUISnackBar, useValue: snackBarSpy },
       ]
     });
 

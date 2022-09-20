@@ -39,6 +39,7 @@ import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { VitamUISnackBar } from './../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { CustomerRoutingModule } from './customer-routing.module';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
@@ -88,6 +89,7 @@ import { TenantService } from './tenant.service';
     OwnerService,
     TenantResolver,
     TenantService,
+    VitamUISnackBar,
   ]
 })
 export class CustomerModule { }

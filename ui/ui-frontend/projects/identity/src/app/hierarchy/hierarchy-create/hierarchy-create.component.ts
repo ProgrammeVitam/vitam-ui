@@ -34,28 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService, rotateAnimation } from 'ui-frontend-common';
+
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { forkJoin, Observable, Subscription } from 'rxjs';
-import {
-  AuthService,
-  buildValidators,
-  collapseAnimation,
-  ConfirmDialogService, Operators, Profile,
-  rotateAnimation,
-  SearchQuery
-} from 'ui-frontend-common';
-import { HierarchyService } from '../hierarchy.service';
 
+import { Subscription } from 'rxjs';
+import { HierarchyService } from '../hierarchy.service';
 
 @Component({
   selector: 'app-hierarchy-create',
   templateUrl: './hierarchy-create.component.html',
   styleUrls: ['./hierarchy-create.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
+  animations: [
+    collapseAnimation,
+    rotateAnimation,
+  ]
 })
 export class HierarchyCreateComponent implements OnInit, OnDestroy {
+
   form: FormGroup;
   stepIndex = 0;
   subLevelIsRequired: boolean;
@@ -69,26 +67,25 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private hierarchyService: HierarchyService,
     private confirmDialogService: ConfirmDialogService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      enabled: [true],
-      level: ['', buildValidators(this.authService.user)],
+      enabled : [true],
+      level : ['', buildValidators(this.authService.user)],
       profileIds: [null, Validators.required],
-      customerId: [this.authService.user.customerId],
+      customerId: [this.authService.user.customerId]
     });
 
-    this.keyPressSubscription = this.confirmDialogService
-      .listenToEscapeKeyPress(this.dialogRef)
-      .subscribe(() => this.onCancel());
+    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
   ngOnDestroy() {
     this.keyPressSubscription.unsubscribe();
   }
 
-  public onCancel(): void {
+  onCancel() {
     if (this.form.dirty) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
@@ -96,30 +93,30 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSubmit(): void {
-    if (this.form.invalid) {
-      return;
-    }
-
+  onSubmit() {
+    if (this.form.invalid) { return; }
     const form = this.form.getRawValue();
-    const observables: Observable<Profile>[] = [];
-    const query: SearchQuery = { criteria: [{ key: 'id', value: form.profileIds, operator: Operators.in }] };
-
-    this.hierarchyService.getAllByParams(query).subscribe((profiles: Profile[]) => {
-      profiles.forEach((profile: Profile) => {
-        profile.id = null;
-        profile.identifier = null;
-        profile.level = form.level;
-        profile.enabled = form.enabled;
-        profile.readonly = false;
-        observables.push(this.hierarchyService.create(profile));
-      });
-
-      forkJoin(observables).subscribe(() => this.dialogRef.close(true), () => this.dialogRef.close());
+    form.profileIds.forEach((profileId: string) => {
+        this.duplicateProfil(profileId, form.level, form.enabled);
     });
   }
 
-  public formValid(): boolean {
+  duplicateProfil(profileId: string, level: string, enabled: boolean) {
+    this.hierarchyService.get(profileId).subscribe((profile) => {
+      profile.id = null;
+      profile.identifier = null;
+      profile.level = level;
+      profile.enabled = enabled;
+      profile.readonly = false;
+      this.hierarchyService.create(profile).subscribe(
+        () => this.dialogRef.close(true),
+        (error) => {
+          console.error(error);
+        });
+    });
+  }
+  formValid(): boolean {
     return this.form.pending || this.form.invalid;
   }
+
 }

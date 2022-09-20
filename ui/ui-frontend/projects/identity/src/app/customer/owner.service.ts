@@ -36,9 +36,11 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Criterion, Operators, Owner, SearchQuery, VitamUISnackBarService } from 'ui-frontend-common';
+import { Criterion, Operators, Owner, SearchQuery } from 'ui-frontend-common';
 
 import { Injectable } from '@angular/core';
+
+import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { OwnerApiService } from './owner-api.service';
 
 @Injectable()
@@ -46,7 +48,7 @@ export class OwnerService {
 
   updated = new Subject<Owner>();
 
-  constructor(private ownerApi: OwnerApiService, private snackBarService: VitamUISnackBarService) { }
+  constructor(private ownerApi: OwnerApiService, private snackBar: VitamUISnackBar) { }
 
   get(id: string): Observable<Owner> {
     return this.ownerApi.getOne(id);
@@ -57,15 +59,17 @@ export class OwnerService {
       .pipe(
         tap(
           (newOwner: Owner) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.OWNER_CREATE',
-              translateParams:{
-                param1: newOwner.name,
-              }
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'ownerCreate', name: newOwner.name },
+              duration: 10000
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -87,15 +91,17 @@ export class OwnerService {
         tap((updatedOwner: Owner) => this.updated.next(updatedOwner)),
         tap(
           (updatedOwner: Owner) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.OWNER_UPDATE',
-              translateParams:{
-                param1: updatedOwner.name,
-              }
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'ownerUpdate', name: updatedOwner.name },
+              duration: 10000
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );

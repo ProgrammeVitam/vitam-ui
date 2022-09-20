@@ -37,6 +37,5 @@
 import { Id } from '../id.interface';
 
 export interface UserInfo extends Id {
-  identifier?: string;
   language: string;
 }

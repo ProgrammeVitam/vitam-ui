@@ -63,20 +63,23 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
     private logger: Logger
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
-  public navigateTo(identifier: string): void {
+  public redirectTo(identifier: string): void {
     if (!identifier || identifier === ApplicationId.PORTAL_APP) {
       this.router.navigate([this.startupService.getPortalUrl()]);
     } else {
-      this.applicationService.getApplications$().subscribe((applications: Application[]) => {
-        const app = applications.find((application: Application) => application.identifier === identifier);
-        if (app) {
-          this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
-        } else {
-          this.logger.error(this, 'No application identifier found for ', identifier);
-        }
-      });
+      const app = this.applicationService.applications.find((application: Application) => application.identifier === identifier);
+      if (app) {
+        this.applicationService.openApplication(
+          app,
+          this.router,
+          this.startupService.getConfigStringValue('UI_URL')
+        );
+      } else {
+        this.logger.error(this, 'No application identifier found for ', identifier);
+      }
     }
   }
 }

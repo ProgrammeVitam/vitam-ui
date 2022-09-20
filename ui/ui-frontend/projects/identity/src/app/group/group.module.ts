@@ -40,6 +40,7 @@ import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { VitamUISnackBar } from './../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../shared/shared.module';
@@ -71,6 +72,7 @@ import { GroupService } from './group.service';
   providers: [
     GroupResolver,
     GroupService,
+    VitamUISnackBar,
   ]
 })
 export class GroupModule { }

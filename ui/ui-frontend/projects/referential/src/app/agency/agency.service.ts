@@ -38,10 +38,11 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {SearchService, VitamUISnackBarService} from 'ui-frontend-common';
+import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
 
 import {Agency} from '../../../../vitamui-library/src/lib/models/agency';
 import {AgencyApiService} from '../core/api/agency-api.service';
+import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class AgencyService extends SearchService<Agency> {
 
   constructor(
     private agencyApiService: AgencyApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBar: VitamUISnackBar,
     http: HttpClient) {
     super(http, agencyApiService, 'ALL');
   }
@@ -84,16 +85,17 @@ export class AgencyService extends SearchService<Agency> {
       .pipe(
         tap(
           (response: Agency) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.AGENCY_CONTRACT_CREATED',
-              translateParams:{
-                name: response.identifier,
-              },
-              icon: 'vitamui-icon-admin-key'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: {type: 'agencyCreate', name: response.identifier},
+              duration: 10000
             });
           },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+          (error: any) => {
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -105,16 +107,17 @@ export class AgencyService extends SearchService<Agency> {
         tap((response) => this.updated.next(response)),
         tap(
           (response) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.AGENCY_CONTRACT_UPDATED',
-              translateParams:{
-                name: response.identifier,
-              },
-              icon: 'vitamui-icon-admin-key'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+              data: {type: 'agencyUpdate', name: response.identifier}
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -124,33 +127,32 @@ export class AgencyService extends SearchService<Agency> {
     return this.agencyApiService.delete(agency.id).pipe(
       tap((response) => {
           if (response === false) {
-            this.snackBarService.open({
-              message: 'SNACKBAR.AGENCY_CONTRACT_DELETE_ERROR',
-              translateParams:{
-                name: agency.id,
-              },
-              icon: 'vitamui-icon-admin-key'
+            this.snackBar.open('Erreur lors de la suppression du Service Agent ' + agency.id, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
             });
           } else {
-            this.snackBarService.open({
-              message: 'SNACKBAR.AGENCY_CONTRACT_DELETED',
-              translateParams:{
-                name: agency.identifier,
-              },
-              icon: 'vitamui-icon-admin-key'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+              data: {type: 'agencyDelete', name: agency.identifier}
             });
           }
         },
         (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+          });
         })
     );
   }
 
   export() {
-    this.snackBarService.open({
-      message: 'SNACKBAR.AGENCY_CONTRACT_EXPORT_ALL',
-      icon: 'vitamui-icon-admin-key'
+    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+      panelClass: 'vitamui-snack-bar',
+      duration: 10000,
+      data: { type: 'agencyExportAll' }
     });
 
     this.agencyApiService.export().subscribe(
@@ -166,7 +168,10 @@ export class AgencyService extends SearchService<Agency> {
         a.click();
         window.URL.revokeObjectURL(url);
       }, (error) => {
-        this.snackBarService.open({ message: error.error.message, translate: false });
+        this.snackBar.open(error.error.message, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000
+        });
       }
     );
   }

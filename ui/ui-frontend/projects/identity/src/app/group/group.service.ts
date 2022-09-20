@@ -36,12 +36,13 @@
  */
 import { Observable, Subject } from 'rxjs';
 import {map, tap} from 'rxjs/operators';
-import { Criterion, Group, Operators, SearchQuery, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { Criterion, Group, Operators, SearchQuery, SearchService } from 'ui-frontend-common';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { GroupApiService } from '../core/api/group-api.service';
+import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -50,8 +51,8 @@ export class GroupService extends SearchService<Group> {
 
   updated = new Subject<Group>();
 
-  constructor(private groupApi: GroupApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
-    super(http, groupApi);
+  constructor(private groupApi: GroupApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+    super(http, groupApi, 'ALL');
   }
 
   create(group: Group) {
@@ -59,16 +60,17 @@ export class GroupService extends SearchService<Group> {
       .pipe(
         tap(
           (response: Group) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.GROUP_CREATE',
-              translateParams:{
-                param1: response.name,
-              },
-              icon: 'vitamui-icon-keys'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'groupCreate', name: response.name },
+              duration: 10000
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -110,16 +112,17 @@ export class GroupService extends SearchService<Group> {
         tap((updatedGroup: Group) => this.updated.next(updatedGroup)),
         tap(
           (response: Group) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.GROUP_UPDATE',
-              translateParams:{
-                param1: response.name,
-              },
-              icon: 'vitamui-icon-keys'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'groupUpdate', name: response.name },
+              duration: 10000
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -133,8 +136,7 @@ export class GroupService extends SearchService<Group> {
     }
     const query: SearchQuery = { criteria: criterionArray };
 
-    let params = new HttpParams();
-
+    let params = new HttpParams().set('embedded', 'ALL');
     if (criterionArray.length > 0) {
       params = params.set('criteria',  JSON.stringify(query));
     }

@@ -36,12 +36,13 @@
  */
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {FileFormat, FILE_FORMAT_EXTERNAL_PREFIX} from 'projects/vitamui-library/src/lib/models/file-format';
+import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
 import {Observable, Subject} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {SearchService, VitamUISnackBarService} from 'ui-frontend-common';
+import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
 
 import {FileFormatApiService} from '../core/api/file-format-api.service';
+import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class FileFormatService extends SearchService<FileFormat> {
 
   constructor(
     private fileFormatApiService: FileFormatApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBar: VitamUISnackBar,
     http: HttpClient) {
     super(http, fileFormatApiService, 'ALL');
   }
@@ -86,16 +87,17 @@ export class FileFormatService extends SearchService<FileFormat> {
       .pipe(
         tap(
           (response: FileFormat) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED',
-              translateParams:{
-                name: response.puid,
-              },
-              icon: 'vitamui-icon-admin-key'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: {type: 'fileFormatCreate', name: response.puid},
+              duration: 10000
             });
           },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+          (error: any) => {
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -107,16 +109,17 @@ export class FileFormatService extends SearchService<FileFormat> {
         tap((response) => this.updated.next(response)),
         tap(
           (response) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.FILE_FORMAT_CONTRACT_UPDATED',
-              translateParams:{
-                name: response.puid,
-              },
-              icon: 'vitamui-icon-admin-key'
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+              data: {type: 'fileFormatUpdate', name: response.puid}
             });
           },
           (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
           }
         )
       );
@@ -125,16 +128,17 @@ export class FileFormatService extends SearchService<FileFormat> {
   delete(fileFormat: FileFormat): Observable<any> {
     return this.fileFormatApiService.delete(fileFormat.puid).pipe(
       tap(() => {
-          this.snackBarService.open({
-            message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETED',
-            translateParams:{
-              name: fileFormat.puid,
-            },
-            icon: 'vitamui-icon-admin-key'
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: {type: 'fileFormatDelete', name: fileFormat.puid}
           });
         },
         (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+          });
         })
     );
   }
