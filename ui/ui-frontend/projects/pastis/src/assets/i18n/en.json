@@ -73,7 +73,8 @@
         "POPUP_CREATE_NOTICE_SUBTITLE_DIALOG": "Registration",
         "POPUP_CREATE_NOTICE_TITLE_DIALOG_EDIT": "Validate the profile record",
         "POPUP_CREATE_NOTICE_SUBTITLE_DIALOG_EDIT": "Validation",
-        "POPUP_CREATE_NOTICE_OK_LABEL": "TERMINATE"
+        "POPUP_CREATE_NOTICE_OK_LABEL": "TERMINATE",
+        "POPUP_SELECT_NOTICE_TITLE_DIALOG": "Attach the profile to an existing record"
       },
       "CHOICE": {
         "FIRST_CHOICE_ENREGISTREMENT": "Local",
@@ -95,6 +96,11 @@
         "PROFIL_ACTIF": "Active Profile",
         "PROFIL_INACTIF": "Inactive Profile"
       }
+    },
+    "POP-UP_SELECT_NOTICE": {
+      "LIST_NOTICE": "Record list",
+      "VALIDATION_MESSAGE": "Attention, the selected record already has an associated profile. The current action will overwrite the profile currently present in VITAM.\nDo you want to continue linking the profile to this record?",
+      "NEXT_LABEL": "next"
     },
     "POP_UP_CREATION": {
       "POPUP_CREATION_CANCEL_LABEL":"CANCEL",

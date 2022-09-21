@@ -55,10 +55,11 @@ import {CoreModule} from '../core/core.module';
 import {CreateNoticeComponent} from './create-notice/create-notice.component';
 import {SaveProfileOptionsComponent} from './save-profile-options/save-profile-options.component';
 import { AllowAdditionalPropertiesComponent } from './allow-additional-properties/allow-additional-properties.component';
+import { SelectNoticeComponent } from './select-notice/select-notice.component';
 
 
 @NgModule({
-  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, AllowAdditionalPropertiesComponent, UserActionAddPuaControlComponent],
+  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, AllowAdditionalPropertiesComponent, UserActionAddPuaControlComponent, SelectNoticeComponent],
   imports: [
     CommonModule,
     PastisMaterialModule,

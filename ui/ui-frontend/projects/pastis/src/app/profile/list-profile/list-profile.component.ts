@@ -265,7 +265,19 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   public onSearchSubmit(search: string): void {
+    if (!search) {
+      search = '';
+    }
       this.search = search;
+    let profileDescriptions = this.retrievedProfiles
+      .filter(profile =>
+        profile.identifier.toLowerCase().indexOf(search.toLowerCase()) >= 0 ||
+        profile.name.toLowerCase().indexOf(search.toLowerCase()) >= 0
+      );
+    console.log(this.retrievedProfiles)
+    this.totalProfileNum = profileDescriptions.length;
+    this.numPA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === 'PA').length;
+    this.numPUA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === 'PUA').length;
   }
 
   isRowHovered(elementId: number) {

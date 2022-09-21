@@ -103,11 +103,11 @@ export class ProfileInformationTabComponent implements OnInit {
 
 
     if (inputProfile.type == 'PA') {
-      this.profile = Object.assign(this.form.value, this.profile);
+      this.profile = this.form.value;
       console.log(JSON.stringify(this.profile));
       return this.profileService.updateProfilePa(this.profile).pipe(catchError(() => of(null)));
     } else {
-      this.archivalProfileUnit = Object.assign( this.form.value, this.archivalProfileUnit);
+      this.archivalProfileUnit = this.form.value;
       return this.profileService.updateProfilePua(this.archivalProfileUnit).pipe(catchError(() => of(null)));
     }
   }

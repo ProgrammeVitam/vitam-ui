@@ -121,7 +121,7 @@
                 </div>
                 <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word;">{{element.identifier}}</div>
                 <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word;">{{element.name}}</div>
-                <div (click)="showProfile(element)" class="col-2 mr-3 clickable">{{element.lastUpdate}}</div>
+                <div (click)="showProfile(element)" class="col-2 mr-3 clickable">{{element.lastUpdate | date: 'medium':'UTC+4'}}</div>
                 <div class="col-2  actions">
                   <div>
                     <button (click)="editProfile(element)" class="btn btn-circle primary mr-3"
