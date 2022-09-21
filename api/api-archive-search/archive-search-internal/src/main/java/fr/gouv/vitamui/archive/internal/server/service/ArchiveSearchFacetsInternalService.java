@@ -66,6 +66,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.TRUE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.ALL_UNIT_UPS;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
@@ -92,7 +93,6 @@ import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULE_END_DATE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.UNITS_UPS;
 
 /**
  * Archive-Search facets Internal service .
@@ -356,7 +356,7 @@ public class ArchiveSearchFacetsInternalService {
     public void addPositionsNodesFacet(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)
         throws InvalidCreateOperationException {
         List<String> nodesCriteriaList = searchQuery.extractNodesCriteria();
-        selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COUNT_BY_NODE, UNITS_UPS,
+        selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COUNT_BY_NODE, ALL_UNIT_UPS,
             (nodesCriteriaList.size() + 1) * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
     }
 

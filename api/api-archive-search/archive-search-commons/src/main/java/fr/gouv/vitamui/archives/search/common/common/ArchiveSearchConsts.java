@@ -205,7 +205,7 @@ public class ArchiveSearchConsts {
     public static final String UNIT_TYPE = "#unitType";
     public static final String PRODUCER_SERVICE = "#originating_agency";
     public static final String GUID = "#id";
-    public static final String UNITS_UPS = "#allunitups";
+    public static final String ALL_UNIT_UPS = "#allunitups";
     public static final String TITLE_OR_DESCRIPTION = "TITLE_OR_DESCRIPTION";
     public static final String ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE = "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE";
     public static final String ELIMINATION_GUID = "#elimination.OperationId";
