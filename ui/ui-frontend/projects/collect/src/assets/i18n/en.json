@@ -45,6 +45,10 @@
     "PROJECT_CONTEXT_ACQUISITION_INFORMATION": "Acquisition information",
     "PROJECT_CONTEXT_LEGAL_STATUS": "Legal status",
     "COMMENTS": "Comments",
+    "RESULTS": "results",
+    "RESULT": "result",
+    "SELECTED": "selected",
+    "ONE_SELECTED": "selected",
     "UPLOAD": {
       "TRACKING_TITLE": "Files remittance in progress",
       "TERMINATED": "Files upload complete!",

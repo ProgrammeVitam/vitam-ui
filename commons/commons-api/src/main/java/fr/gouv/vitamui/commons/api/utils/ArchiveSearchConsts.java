@@ -50,6 +50,8 @@ public class ArchiveSearchConsts {
     public final static String ARCHIVE_UNIT_FILING_UNIT = "ARCHIVE_UNIT_FILING_UNIT";
     public final static String FILING_UNIT_TYPE = "FILING_UNIT";
     public final static String HOLDING_UNIT_TYPE = "HOLDING_UNIT";
+    public static final String INGEST_ARCHIVE_TYPE = "INGEST";
+    public static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
 
 
     public enum CriteriaDataType {

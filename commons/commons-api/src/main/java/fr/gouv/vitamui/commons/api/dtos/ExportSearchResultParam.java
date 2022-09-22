@@ -1,4 +1,4 @@
-package fr.gouv.vitamui.archives.search.common.dto;
+package fr.gouv.vitamui.commons.api.dtos;
 
 import lombok.Data;
 

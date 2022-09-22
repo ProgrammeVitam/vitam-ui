@@ -47,12 +47,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { environment } from '../../../../environments/environment.prod';
-import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
-import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
+import { environment } from 'projects/collect/src/environments/environment';
+import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {

@@ -18,6 +18,24 @@
         </div>
 
         <div class="row justify-content-around margin-row">
+          <div class="col-6 form-control" [ngStyle]="{ 'margin-right': '50%' }">
+            <vitamui-common-editable-input
+              formControlName="guid"
+              [validator]="simpleCriteriaForm?.get('guid')?.validator"
+              label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}">
+            </vitamui-common-editable-input>
+            <i
+              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
+              [matTooltip]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_SEPARATED' | translate"
+              matTooltipClass="vitamui-tooltip"
+              [matTooltipShowDelay]="300"
+            ></i>
+          </div>
+          <div class="col-6 form-control">
+          </div>
+        </div>
+
+        <div class="row justify-content-around margin-row">
           <div class="col-6 form-control">
             <p class="title-text">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
           </div>

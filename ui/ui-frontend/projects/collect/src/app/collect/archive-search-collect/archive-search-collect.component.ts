@@ -30,8 +30,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { merge, Subject, Subscription } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
 import {
   AccessContract,
   Direction,
@@ -52,6 +52,7 @@ import { SearchCriteriaSaverComponent } from './archive-search-criteria/componen
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
+const FILTER_DEBOUNCE_TIME_MS = 400;
 
 @Component({
   selector: 'app-archive-search-collect',
@@ -66,6 +67,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   subscriptionFilingHoldingSchemeNodes: Subscription;
   subscriptionSimpleSearchCriteriaAdd: Subscription;
   subscriptionNodes: Subscription;
+  searchCriteriaChangeSubscription: Subscription;
 
   accessContract: string;
   projectId: string;
@@ -118,6 +120,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   submitedGetFixedCount = false;
   rulesFacetsCanBeComputed = false;
 
+  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly orderChange = new Subject<string>();
 
   constructor(
@@ -171,6 +174,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
     this.subscriptionFilingHoldingSchemeNodes?.unsubscribe();
     this.subscriptionNodes?.unsubscribe();
+    this.errorMessageSub?.unsubscribe();
+    this.searchCriteriaChangeSubscription?.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -184,6 +189,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.searchCriterias = new Map();
     this.initializeSelectionParams();
     this.fetchUserAccessContractFromExternalParameters();
+    const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    this.searchCriteriaChangeSubscription = searchCriteriaChange.subscribe(() => {
+      this.submit();
+    });
   }
 
   private initializeSelectionParams() {
@@ -731,6 +740,34 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.nodeArray = null;
       this.archiveExchangeDataService.emitToggle(true);
     }
+  }
+
+  // Export data to CSV
+
+  exportArchiveUnitsToCsvFile() {
+    if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
+      const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+      const searchCriteria = {
+        criteriaList: this.listOfUACriteriaSearch,
+        pageNumber: this.currentPage,
+        size: PAGE_SIZE,
+        sortingCriteria,
+        language: this.translateService.currentLang,
+      };
+      this.archiveUnitCollectService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria,
+         this.projectId,this.accessContract);
+    }
+  }
+
+  prepareListOfUACriteriaSearch() {
+    return this.archiveHelperService.prepareUAIdList(
+      this.criteriaSearchList,
+      this.listOfUAIdToInclude,
+      this.listOfUAIdToExclude,
+      this.isAllchecked,
+      this.isIndeterminate
+    );
   }
 
 }

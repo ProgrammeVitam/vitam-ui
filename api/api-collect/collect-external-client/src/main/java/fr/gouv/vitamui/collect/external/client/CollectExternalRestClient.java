@@ -36,11 +36,10 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -48,6 +47,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
 
@@ -66,7 +66,8 @@ public class CollectExternalRestClient
 
     @Override
     protected ParameterizedTypeReference<List<CollectProjectDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {};
+        return new ParameterizedTypeReference<>() {
+        };
     }
 
     @Override
@@ -105,6 +106,15 @@ public class CollectExternalRestClient
             UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
+    }
+
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(String projectId, SearchCriteriaDto query,
+        ExternalHttpContext context) {
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        return restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH,
+            HttpMethod.POST,
+            request, Resource.class);
     }
 
 }

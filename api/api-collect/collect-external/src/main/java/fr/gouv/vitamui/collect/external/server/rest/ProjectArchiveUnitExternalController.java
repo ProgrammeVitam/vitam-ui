@@ -28,6 +28,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.ProjectArchiceUnitExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -39,6 +40,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -52,6 +54,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_ARCHIVE_UNITS_PATH;
 
@@ -64,7 +67,9 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_ARCHIV
 @ResponseBody
 public class ProjectArchiveUnitExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalController.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalController.class);
+    private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
     private final ProjectArchiceUnitExternalService projectArchiceUnitExternalService;
 
     @Autowired
@@ -82,12 +87,23 @@ public class ProjectArchiveUnitExternalController {
         @RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        ParameterChecker.checkParameter("The Query and the projectId are mandatories parameters: ", projectId ,searchQuery);
+        ParameterChecker.checkParameter("The Query and the projectId are mandatories parameters: ", projectId,
+            searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         SanityChecker.checkSecureParameter(projectId);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
 
         return projectArchiceUnitExternalService.searchCollectProjectArchiveUnits(projectId, searchQuery);
+    }
+
+    @PostMapping("/{projectId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
+    public Resource exportCsvArchiveUnitsByCriteria(final @PathVariable("projectId") String projectId,
+        final @RequestBody SearchCriteriaDto query)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
+        SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling export to csv search archive Units By Criteria {} ", query);
+        return projectArchiceUnitExternalService.exportCsvArchiveUnitsByCriteria(projectId, query);
     }
 
 }

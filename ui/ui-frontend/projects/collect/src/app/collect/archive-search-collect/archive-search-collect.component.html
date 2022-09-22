@@ -57,7 +57,8 @@
                 <i class="material-icons btn-add">add</i>
                 {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_MENU' | translate }}
               </button>
-              <app-search-criteria-list (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"> </app-search-criteria-list>
+              <app-search-criteria-list (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)">
+              </app-search-criteria-list>
             </mat-menu>
             <div *ngIf="searchCriterias && searchCriterias.size > 0" class="d-flex justify-content-end div-btn-delete">
               <button class="mat-boutton">
@@ -226,15 +227,68 @@
 
       <!-- Show Units results -->
 
-
       <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()">
         <div class="vitamui-table">
           <div class="vitamui-table-head">
-            <div class="col-8">
+
+            <div class="col-8" *ngIf="waitingToGetFixedCount">
               <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper">
               </mat-spinner>
-              {{ totalResults }} {{ 'COLLECT.RESULTS' | translate }}
+              <ng-container *ngIf="!pendingGetFixedCount && !pending">
+                <a class="link-without-underline" (click)="loadExactCount()"
+                  matTooltip="{{ 'COLLECT.RETRIVE_EXACT_COUNT' | translate }}" matTooltipClass="vitamui-tooltip"
+                  [matTooltipShowDelay]="300">
+                  {{ 'COLLECT.MORE_THAN' | translate }} {{ totalResults }}
+                </a>
+                <ng-container *ngIf="isAllchecked">
+                  <span>
+                    {{ 'COLLECT.RESULTS' | translate }} / {{ 'COLLECT.MORE_THAN' | translate }} {{ totalResults }}
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="!isAllchecked">
+                  <span>
+                    {{ 'COLLECT.RESULTS' | translate }} / {{ itemSelected }}
+                  </span>
+                </ng-container>
+              </ng-container>
             </div>
+
+            <div class="col-8" *ngIf="!waitingToGetFixedCount">
+              <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper">
+              </mat-spinner>
+
+              <ng-container *ngIf="totalResults > 1 && !pendingGetFixedCount && !pending">
+                <span>{{ totalResults }} {{ 'COLLECT.RESULTS' | translate }} / {{ itemSelected }}
+
+                  {{
+                  itemSelected === 1 || itemSelected === 0
+                  ? ('COLLECT.ONE_SELECTED' | translate)
+                  : ('COLLECT.SELECTED' | translate)
+                  }}
+                </span>
+              </ng-container>
+              <ng-container *ngIf="totalResults === 1">
+                <span>
+                  {{ totalResults }} {{ 'COLLECT.RESULT' | translate }} / {{ itemSelected }}
+                  {{ 'COLLECT.ONE_SELECTED' | translate }}
+                </span>
+              </ng-container>
+              <ng-container *ngIf="totalResults === 0">
+                <span>
+                  {{ totalResults }} {{ 'COLLECT.RESULT' | translate }} / {{ itemSelected }}
+                  {{ 'COLLECT.ONE_SELECTED' | translate }}
+                </span>
+              </ng-container>
+            </div>
+
+            <div class="col-1"></div>
+
+            <div class="col-3 area-download" [disabled]="totalResults == 0 || itemSelected ==0"
+              [ngClass]="totalResults > 0 && itemSelected > 0 ? 'enabled-div' : 'disabled-div'">
+              <i (click)="exportArchiveUnitsToCsvFile()"
+                class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
+            </div>
+
           </div>
 
           <div class="vitamui-table-head">
@@ -246,7 +300,7 @@
             <div class="col-1 d-flex align-items-center">
               <span>{{ 'COLLECT.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}</span>
 
-              <vitamui-common-order-by-button orderByKey="#unitType" [(orderBy)]="orderBy" [(direction)]="direction"
+              <vitamui-common-order-by-button orderByKey="DescriptionLevel" [(orderBy)]="orderBy" [(direction)]="direction"
                 (orderChange)="emitOrderChange()">
               </vitamui-common-order-by-button>
             </div>

@@ -40,6 +40,7 @@ import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -97,18 +98,23 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
     }
 
     @Bean
-    public ProjectInternalService collectInternalService(final CollectService collectService, ObjectMapper objectMapper) {
+    public ProjectInternalService collectInternalService(final CollectService collectService,
+        ObjectMapper objectMapper) {
         return new ProjectInternalService(collectService, objectMapper);
-    }
-    @Bean
-    public ProjectArchiveUnitInternalService projectArchiveUnitInternalService(final CollectService collectService, ObjectMapper objectMapper) {
-        return new ProjectArchiveUnitInternalService(collectService, objectMapper);
     }
 
     @Bean
-    public ProjectObjectGroupInternalService projectObjectGroupInternalService(final CollectService collectService, ObjectMapper objectMapper) {
+    public ProjectArchiveUnitInternalService projectArchiveUnitInternalService(final CollectService collectService,
+        AgencyService agencyService, ObjectMapper objectMapper) {
+        return new ProjectArchiveUnitInternalService(collectService, agencyService, objectMapper);
+    }
+
+    @Bean
+    public ProjectObjectGroupInternalService projectObjectGroupInternalService(final CollectService collectService,
+        ObjectMapper objectMapper) {
         return new ProjectObjectGroupInternalService(collectService, objectMapper);
     }
+
     @Bean
     public SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService(
         final CustomSequenceRepository sequenceRepository,

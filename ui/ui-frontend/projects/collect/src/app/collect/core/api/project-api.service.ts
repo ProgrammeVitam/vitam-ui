@@ -80,7 +80,14 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   // Manage Archive Units
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${projectId}/archive-units`, criteriaDto, { headers });
+    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${projectId}/search`, criteriaDto, { headers });
+  }
+
+  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, headers?: HttpHeaders): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/archive-units/${projectId}/export-csv-search`, criteriaDto, {
+      responseType: 'blob',
+      headers,
+    });
   }
 
   // Manage Object Groups

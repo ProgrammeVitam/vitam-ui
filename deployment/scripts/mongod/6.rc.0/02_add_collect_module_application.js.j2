@@ -70,7 +70,7 @@ var profileCollectAppAdminId = "PROFIL_{{ vitamui_platform_informations.proof_te
 
 db.groups.updateOne(
     {
-        "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363",
+        "_id": "admin_group",
         "profileIds": { $nin: [ profileCollectAppAdminId ] }
     },
     {
