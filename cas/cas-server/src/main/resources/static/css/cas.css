@@ -205,7 +205,7 @@
 
 .centered {
   position: fixed;
-  top: 40%;
+  top: 44%;
   left: 50%;
   transform: translate(-50%, -50%); }
 
@@ -703,3 +703,5 @@ button, textarea, input {
   width: 31px;
   height: 28px;
   object-fit: contain; }
+
+/*# sourceMappingURL=../../../../../target/cas.css.map */

@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {EMPTY, of} from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {LogbookSearchService} from '../logbook-search.service';
-import {EventTypeBadgeClassPipe} from './event-type-badge-class.pipe';
-import {EventTypeColorClassPipe} from './event-type-color-class.pipe';
-import {LastEventPipe} from './last-event.pipe';
-import {LogbookOperationListComponent} from './logbook-operation-list.component';
-import {LogbookDownloadService} from "../logbook-download.service";
+import { LogbookDownloadService } from '../logbook-download.service';
+import { LogbookSearchService } from '../logbook-search.service';
+import { EventTypeBadgeClassPipe } from './event-type-badge-class.pipe';
+import { EventTypeColorClassPipe } from './event-type-color-class.pipe';
+import { LastEventPipe } from './last-event.pipe';
+import { LogbookOperationListComponent } from './logbook-operation-list.component';
 
 describe('LogbookOperationListComponent', () => {
   let component: LogbookOperationListComponent;
@@ -54,13 +54,11 @@ describe('LogbookOperationListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LogbookOperationListComponent, LastEventPipe, EventTypeColorClassPipe, EventTypeBadgeClassPipe],
       providers: [
-        {provide: LogbookSearchService, useValue: {search: () => EMPTY}},
-        {provide: LogbookDownloadService, useValue: {logbookOperationsReloaded: of([{id: "event-01"}])}},
-
+        { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
+        { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -70,7 +68,33 @@ describe('LogbookOperationListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should return ARCHIVE_TRANSFER', () => {
+    // Given
+    const type = 'ARCHIVE_TRANSFER';
+    const operationLabel = 'ARCHIVE_TRANSFER_LABEL';
+
+    // When
+    const response: string = component.manageOperationLabel(type);
+
+    // Then
+    expect(response).not.toBeNull();
+    expect(response).toEqual(operationLabel);
+  });
+
+  it('should return the given value', () => {
+    // Given
+    const type = 'TRANSFER_REPLY';
+    const operationLabel = 'TRANSFER_REPLY';
+
+    // When
+    const response: string = component.manageOperationLabel(type);
+
+    // Then
+    expect(response).not.toBeNull();
+    expect(response).toEqual(operationLabel);
   });
 });

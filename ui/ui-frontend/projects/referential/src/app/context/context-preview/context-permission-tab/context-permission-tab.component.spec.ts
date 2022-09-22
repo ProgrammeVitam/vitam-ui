@@ -34,6 +34,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { Context, ContextPermission } from 'projects/vitamui-library/src/public-api';
 import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
@@ -150,6 +151,7 @@ describe('ContextPermissionTabComponent', () => {
         LoggerModule.forRoot(),
         HttpClientTestingModule,
         RouterTestingModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [ContextPermissionTabComponent],
       providers: [
@@ -177,13 +179,21 @@ describe('ContextPermissionTabComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('Should return true when the two permissions arrays are the same', () => {
+    // Given
+    const permissionsFirstArray: ContextPermission[] = [{ tenant: '1', accessContracts: [], ingestContracts: [] }];
+    const permissionsSecondArray: ContextPermission[] = [{ tenant: '1', accessContracts: [], ingestContracts: [] }];
+
+    // Then
+    expect(component.samePermission(permissionsFirstArray, permissionsSecondArray)).toBeTruthy();
+  });
+
   it('Should return false when the two arrays are not the same', () => {
     // Given
     const firstArray = ['test1', 'test2', 'test3'];
     const secondArray = ['test1', 'test2', 'test5'];
 
     // Then
-
     expect(component.sameArray(firstArray, secondArray)).toBeFalsy();
   });
 
@@ -232,7 +242,15 @@ describe('ContextPermissionTabComponent', () => {
     const secondArray = ['test1', 'test2', 'test3'];
 
     // Then
-
     expect(component.sameArray(firstArray, secondArray)).toBeTruthy();
+  });
+
+  it('Should return false when the two permissions arrays are not the same', () => {
+    // Given
+    const permissionsFirstArray: ContextPermission[] = [{ tenant: '1', accessContracts: [], ingestContracts: [] }];
+    const permissionsSecondArray: ContextPermission[] = [{ tenant: '2', accessContracts: [], ingestContracts: [] }];
+
+    // Then
+    expect(component.samePermission(permissionsFirstArray, permissionsSecondArray)).toBeFalsy();
   });
 });
