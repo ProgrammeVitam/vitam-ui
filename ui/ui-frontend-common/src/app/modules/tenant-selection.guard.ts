@@ -37,59 +37,58 @@
 import { Inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { TenantsByApplication } from './models/user/tenants-by-application.interface';
-import { TENANT_SELECTION_URL_CONDITION } from './tenant-selection.service';
-import { TenantSelectionService } from './tenant-selection.service';
+import { TenantSelectionService, TENANT_SELECTION_URL_CONDITION } from './tenant-selection.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TenantSelectionGuard implements CanActivate, CanActivateChild {
-
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private appService: ApplicationService,
     private router: Router,
     private tenantService: TenantSelectionService,
-    @Inject(WINDOW_LOCATION) private location: any) {
-  }
+    private translateService: TranslateService,
+    @Inject(WINDOW_LOCATION) private location: any
+  ) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot
-  ): boolean {
+  canActivate(route: ActivatedRouteSnapshot): boolean {
     if (route.params.tenantIdentifier) {
       return true;
     } else if (this.tenantService.getSelectedTenant()) {
-      const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
-      this.location.href = application.url + TENANT_SELECTION_URL_CONDITION + this.tenantService.getSelectedTenant().identifier;
+      this.appService.getApplications$().subscribe((data) => {
+        const application = data.find((appFromService) => appFromService.identifier === route.data.appId);
+        this.location.href = application.url + TENANT_SELECTION_URL_CONDITION + this.tenantService.getSelectedTenant().identifier;
+      });
     }
 
-    const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find((element) => element.name === route.data.appId);
+    const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find(
+      (applicationDetails) => applicationDetails.name === route.data.appId
+    );
     if (tenantsByApp) {
       const tenants = tenantsByApp.tenants;
       if (tenants.length === 1) {
         // redirect user to the unique tenant page of the app
-        const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
-        this.router.navigate(route.pathFromRoot.map(r => r.url.toString()).concat([tenants[0].identifier.toString()]));
-        return true;
-      } else {
-        return true;
+        this.router.navigate(
+          route.pathFromRoot.map((activeRouter) => activeRouter.url.toString()).concat([tenants[0].identifier.toString()])
+        );
       }
+      return true;
     } else {
-      this.snackBar.open('Liste des tenants introuvable pour :' + route.data.appId + '.', null, {
+      this.snackBar.open(this.translateService.instant('SNACK_BAR.TENANT_NOT_FOUND') + route.data.appId + '.', null, {
         duration: 4000,
       });
     }
-
     return false;
   }
 
   canActivateChild(route: ActivatedRouteSnapshot): boolean {
     return this.canActivate(route);
   }
-
 }

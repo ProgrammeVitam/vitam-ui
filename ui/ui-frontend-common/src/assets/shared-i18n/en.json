@@ -1,4 +1,7 @@
 {
+  "SNACK_BAR" : {
+    "TENANT_NOT_FOUND" : "List of tenants not found for :"
+  },
   "COMMON": {
     "ADD": "Add",
     "UNDO": "Cancel",

@@ -39,10 +39,10 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxFilesizeModule } from 'ngx-filesize';
 import { of } from 'rxjs';
 
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { Event } from '../../../../../../vitamui-library/src/lib/models/event';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationInformationTabComponent } from './securisation-information-tab.component';
-import { Event } from '../../../../../../vitamui-library/src/lib/models/event';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 describe('SecurisationInformationTabComponent', () => {
   let component: SecurisationInformationTabComponent;
@@ -90,30 +90,25 @@ describe('SecurisationInformationTabComponent', () => {
         collectionName: 'collectionName',
         agId: 'agId',
         agIdApp: 'agIdApp',
-        obIdReq: 'obIdReq',
         agIdExt: 'agIdExt',
+        obIdReq: 'obIdReq',
         rightsStatementIdentifier: 'rightsStatementIdentifier',
       } as Event,
     ],
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      const securisationServiceMock = {
-        getInfoFromTimestamp: () => of({}),
-      };
+  beforeEach(waitForAsync(() => {
+    const securisationServiceMock = {
+      getInfoFromTimestamp: () => of({}),
+    };
 
     TestBed.configureTestingModule({
-      imports: [
-        NgxFilesizeModule, VitamUICommonTestModule
-      ],
+      imports: [NgxFilesizeModule, VitamUICommonTestModule],
       declarations: [SecurisationInformationTabComponent],
-      providers: [
-        {provide: SecurisationService, useValue: securisationServiceMock}
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-  );
+      providers: [{ provide: SecurisationService, useValue: securisationServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationInformationTabComponent);
