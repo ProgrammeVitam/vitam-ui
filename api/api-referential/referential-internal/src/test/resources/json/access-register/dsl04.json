@@ -1,24 +1,8 @@
 {
-  "$query" : {
-    "$or" : [ {
-      "$and" : [ {
-        "$exists" : "AcquisitionInformation"
-      }, {
-        "$nin" : {
-          "AcquisitionInformation" : [ "Versement", "Protocole", "Achat", "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration" ]
-        }
-      } ]
-    }, {
-      "$and" : [ {
-        "$exists" : "AcquisitionInformation"
-      }, {
-        "$in" : {
-          "AcquisitionInformation" : [ "Versement", "Protocole", "Achat", "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration" ]
-        }
-      } ]
-    } ]
-  },
+  "$query" : { },
   "$filter" : {
+    "$offset" : 12,
+    "$limit" : 1,
     "$orderby" : {
       "messageIdentifierOrder" : -1
     }
