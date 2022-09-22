@@ -46,7 +46,8 @@ const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
 
 @Injectable()
 export class ArchiveSearchHelperService {
-  constructor(private archiveExchangeDataService: ArchiveSharedDataService, private archiveService: ArchiveService) {}
+  constructor(private archiveExchangeDataService: ArchiveSharedDataService, private archiveService: ArchiveService) {
+  }
 
   addCriteria(
     searchCriterias: Map<string, SearchCriteria>,
@@ -350,6 +351,7 @@ export class ArchiveSearchHelperService {
       });
     });
   }
+
   openSnackBarForWorkflow(snackBar: MatSnackBar, message: string, serviceUrl?: string) {
     snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
@@ -393,6 +395,7 @@ export class ArchiveSearchHelperService {
     }
     return defaultFacetTabIndex;
   }
+
   checkIfRulesFacetsCanBeComputed(searchCriterias: Map<string, SearchCriteria>): boolean {
     let hasMgtRuleCriteria = false;
     if (searchCriterias && searchCriterias.size > 0) {

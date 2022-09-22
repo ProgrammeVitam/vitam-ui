@@ -330,10 +330,10 @@
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="launchExportDipModal()" [disabled]="itemSelected === 0 || !hasDipExportRole">
+          <button mat-menu-item (click)="startLaunchExportDipModal()" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-          <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="itemSelected === 0 || !hasTransferRequestRole">
+          <button mat-menu-item (click)="startLaunchTransferRequestModal()" [disabled]="itemSelected === 0 || !hasTransferRequestRole">
             {{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST' | translate }}
           </button>
           <button
@@ -353,7 +353,7 @@
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
-          <button mat-menu-item (click)="launchEliminationModal()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
+          <button mat-menu-item (click)="startLaunchEliminationModal()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
           <button
