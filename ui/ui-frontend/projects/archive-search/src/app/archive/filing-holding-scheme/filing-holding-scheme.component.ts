@@ -29,18 +29,18 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { NodeData } from '../models/nodedata.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../models/search.criteria';
-import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { Unit } from '../models/unit.interface';
 import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
-  styleUrls: ['./filing-holding-scheme.component.scss'],
+  styleUrls: [ './filing-holding-scheme.component.scss' ],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() accessContract: string;
@@ -54,6 +54,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   );
   nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
   nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
+
   disabled: boolean;
   loadingHolding = true;
   node: string;
@@ -113,9 +114,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
         if (facets && facets.length > 0) {
           this.requestResultFacets = facets;
           this.hasMatchesInSearch = true;
-          for (const node of this.nestedDataSourceFull.data) {
-            FilingHoldingSchemeHandler.setCountRecursively(node, facets);
-          }
+          FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceFull.data, facets);
         } else {
           this.hasMatchesInSearch = false;
           for (const node of this.nestedDataSourceFull.data) {
@@ -153,16 +152,12 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   }
 
   filterNodesToLeavesOnly() {
-    let leaves: FilingHoldingSchemeNode[] = [];
-    for (const node of this.fullNodes) {
-      const filtredNode = FilingHoldingSchemeHandler.buildRecursiveTree(node);
-      if (filtredNode != null) {
-        leaves = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(filtredNode);
-      }
-    }
-    this.nestedDataSourceLeaves.data = [...leaves];
+    // fullNodes is a Graph .
+    // keeps last child with result only
+    this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(this.fullNodes);
     this.showEveryNodes = false;
   }
+
 
   addToSearchCriteria(node: FilingHoldingSchemeNode) {
     this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
@@ -184,7 +179,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     const criteriaSearchList = [
       {
         criteria: '#id',
-        values: [{ id: archiveUnitId, value: archiveUnitId }],
+        values: [ { id: archiveUnitId, value: archiveUnitId } ],
         operator: CriteriaOperator.EQ,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
         dataType: CriteriaDataType.STRING,
@@ -196,10 +191,11 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
       size: 1,
     };
     this.subscriptions.add(
-      this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe((pageResult: PagedResult) => {
-        this.showArchiveUnitDetails.emit(pageResult.results[0]);
-        this.loadingArchiveUnit[`${from}`] = false;
-      })
+      this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
+        .subscribe((pageResult: PagedResult) => {
+          this.showArchiveUnitDetails.emit(pageResult.results[0]);
+          this.loadingArchiveUnit[`${from}`] = false;
+        })
     );
   }
 }

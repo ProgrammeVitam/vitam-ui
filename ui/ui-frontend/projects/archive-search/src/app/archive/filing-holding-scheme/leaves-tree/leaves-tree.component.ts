@@ -25,32 +25,32 @@
  * accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, nodeHasChildren } from 'ui-frontend-common';
+import { Observable, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { DescriptionLevel } from '../../../../../../vitamui-library/src/lib/models/description-level.enum';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
-import { ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { ArchiveFacetsService } from '../../common-services/archive-facets.service';
+import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { FilingHoldingSchemeHandler } from '../filing-holding-scheme.handler';
-import { first } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-leaves-tree',
   templateUrl: './leaves-tree.component.html',
-  styleUrls: ['./leaves-tree.component.scss'],
+  styleUrls: [ './leaves-tree.component.scss' ],
 })
-export class LeavesTreeComponent implements OnInit, OnDestroy {
+export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   readonly DEFAULT_UNIT_PAGE_SIZE = 10;
 
   @Input() accessContract: string;
   @Input() loadingNodeUnit: boolean;
-
-  @Input()
-  nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
-
-  @Input() originalRequestResultFacets: ResultFacet[];
+  loadingNodesDetails: boolean;
+  // Already a graph
+  @Input() nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
+  @Input() searchRequestResultFacets: ResultFacet[];
 
   @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
   @Output() showNodeDetail: EventEmitter<string> = new EventEmitter();
@@ -59,11 +59,23 @@ export class LeavesTreeComponent implements OnInit, OnDestroy {
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
     (node) => node.children
   );
-  showEveryNodes = true;
+  showEveryNodes = false;
   private searchCriterias: SearchCriteriaDto;
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private archiveService: ArchiveService, private archiveSharedDataService: ArchiveSharedDataService) {}
+  constructor(private archiveService: ArchiveService,
+              private archiveSharedDataService: ArchiveSharedDataService,
+              private archiveFacetsService: ArchiveFacetsService,) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nestedDataSourceLeaves || changes.searchRequestResultFacets) {
+      this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
+      if (this.searchCriterias) {
+        this.loadNodesDetailsFromFacetsIds(this.nestedDataSourceLeaves.data, this.searchRequestResultFacets);
+      }
+    }
+  }
 
   ngOnInit(): void {
     this.subscriptions.add(
@@ -71,7 +83,6 @@ export class LeavesTreeComponent implements OnInit, OnDestroy {
         this.searchCriterias = searchCriteriaDto;
       })
     );
-    this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
   }
 
   ngOnDestroy(): void {
@@ -82,72 +93,222 @@ export class LeavesTreeComponent implements OnInit, OnDestroy {
     this.addToSearchCriteria.emit(node);
   }
 
+  private prepareSearch(parentNode: FilingHoldingSchemeNode, matchingSearch: boolean): boolean {
+    if (matchingSearch && !parentNode.canLoadMoreMatchingChildren) {
+      return false;
+    } else if (!matchingSearch && !parentNode.canLoadMoreChildren) {
+      return false;
+    }
+    parentNode.isLoadingChildren = true;
+    return true
+  }
+
+  private loadNodesDetailsFromFacetsIds(parentNodes: FilingHoldingSchemeNode[], facets: ResultFacet[]) {
+    this.loadingNodesDetails = true;
+    const searchCriteria: SearchCriteriaDto = {
+      pageNumber: 0,
+      size: facets.length,
+      criteriaList: [
+        {
+          criteria: '#id',
+          operator: CriteriaOperator.IN,
+          category: SearchCriteriaTypeEnum.FIELDS,
+          values: facets.map(facet => {
+            return { id: facet.node, value: facet.node };
+          }),
+          dataType: CriteriaDataType.STRING,
+        },
+      ],
+      sortingCriteria: this.searchCriterias.sortingCriteria,
+      trackTotalHits: false,
+      computeFacets: false
+    };
+    // Can be improve with a projection (only nodes fields are needed)
+    this.subscriptions.add(
+      this.sendSearchArchiveUnitsByCriteria(searchCriteria)
+        .subscribe(pageResult => {
+            FilingHoldingSchemeHandler.addChildrenRecursively(parentNodes, pageResult.results);
+            FilingHoldingSchemeHandler.setCountRecursively(parentNodes, facets);
+            this.refreshTreeNodes();
+            this.loadingNodesDetails = false;
+          }
+        )
+    );
+  }
+
+  private searchWithSearchCriteriasForFacets(parentNodes: FilingHoldingSchemeNode[]): void {
+    if (!parentNodes || parentNodes.length < 1) {
+      return;
+    }
+    const newCriteriaList = [ ...this.searchCriterias.criteriaList ];
+    newCriteriaList.push({
+      criteria: '#allunitups',
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum.FIELDS,
+      values: parentNodes.map(node => {
+        return { id: node.id, value: node.id }
+      }),
+      dataType: CriteriaDataType.STRING,
+    })
+    // Can be improved: we only need the facets, not the units
+    const searchCriteria: SearchCriteriaDto = {
+      pageNumber: 0,
+      size: 1,
+      criteriaList: newCriteriaList,
+      sortingCriteria: this.searchCriterias.sortingCriteria,
+      trackTotalHits: false,
+      computeFacets: false
+    };
+    this.subscriptions.add(
+      this.sendSearchArchiveUnitsByCriteria(searchCriteria)
+        .subscribe((pageResult) => {
+          this.checkFacetsAndLoadUnknowns(parentNodes, pageResult);
+
+        })
+    );
+  }
+
+  private searchUnderNode(parentNode: FilingHoldingSchemeNode) {
+    if (!this.prepareSearch(parentNode, false)) {
+      return;
+    }
+    const searchCriteria: SearchCriteriaDto = {
+      pageNumber: Math.floor(parentNode.childrenLoaded / this.DEFAULT_UNIT_PAGE_SIZE),
+      size: this.DEFAULT_UNIT_PAGE_SIZE,
+      criteriaList: [
+        {
+          criteria: '#unitups',
+          operator: CriteriaOperator.IN,
+          category: SearchCriteriaTypeEnum.FIELDS,
+          values: [ { id: parentNode.id, value: parentNode.id } ],
+          dataType: CriteriaDataType.STRING,
+        },
+      ],
+      sortingCriteria: this.searchCriterias.sortingCriteria,
+      trackTotalHits: false,
+      computeFacets: false,
+    };
+    this.subscriptions.add(
+      this.sendSearchArchiveUnitsByCriteria(searchCriteria)
+        .subscribe((pageResult) => {
+          const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildrenAndCheckPaternity(parentNode, pageResult.results);
+          parentNode.childrenLoaded += pageResult.results.length
+          parentNode.canLoadMoreChildren = parentNode.children.length < pageResult.totalResults;
+          parentNode.isLoadingChildren = false;
+          this.refreshTreeNodes();
+          this.searchWithSearchCriteriasForFacets(matchingNodesNumbers.nodesAddedList);
+        })
+    );
+  }
+
+  private searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
+    if (!this.prepareSearch(parentNode, true)) {
+      return;
+    }
+    const newCriteriaList = [ ...this.searchCriterias.criteriaList ];
+    newCriteriaList.push({
+      criteria: '#allunitups',
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum.FIELDS,
+      values: [ { id: parentNode.id, value: parentNode.id } ],
+      dataType: CriteriaDataType.STRING,
+    })
+    const searchCriteria: SearchCriteriaDto = {
+      pageNumber: Math.floor(parentNode.matchingChildrenLoaded / this.DEFAULT_UNIT_PAGE_SIZE),
+      size: this.DEFAULT_UNIT_PAGE_SIZE,
+      criteriaList: newCriteriaList,
+      sortingCriteria: this.searchCriterias.sortingCriteria,
+      trackTotalHits: false,
+      computeFacets: false
+    };
+    this.sendSearchArchiveUnitsByCriteria(searchCriteria)
+      .subscribe(pageResult => {
+          const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildrenAndCheckPaternity(parentNode, pageResult.results, true);
+          parentNode.matchingChildrenLoaded += matchingNodesNumbers.nodesAdded + matchingNodesNumbers.nodesUpdated
+          parentNode.canLoadMoreMatchingChildren = (matchingNodesNumbers.nodesAdded + matchingNodesNumbers.nodesUpdated) !== 0
+          if (parentNode.matchingChildrenLoaded >= pageResult.totalResults) {
+            parentNode.canLoadMoreMatchingChildren = false;
+          }
+          this.checkFacetsAndLoadUnknowns([ parentNode ], pageResult);
+          parentNode.isLoadingChildren = false;
+          this.refreshTreeNodes();
+        }
+      );
+  }
+
+  private checkFacetsAndLoadUnknowns(parentNodes: FilingHoldingSchemeNode[], pageResult: PagedResult) {
+    const filteredFacets = this.archiveFacetsService.extractNodesFacetsResults(pageResult.facets)
+      .filter(facet => this.searchRequestResultFacets.findIndex(originalFacet => originalFacet.node === facet.node) === -1);
+    // Warning: count decrease on top nodes when search is made on a deeper nodes.
+    if (filteredFacets.length < 1) {
+      return;
+    }
+    FilingHoldingSchemeHandler.setCountRecursively(parentNodes, filteredFacets);
+    const unknownFacets = FilingHoldingSchemeHandler.filterUnknownFacetsIds(parentNodes, filteredFacets);
+    if (unknownFacets && unknownFacets.length > 1) {
+      this.loadNodesDetailsFromFacetsIds(parentNodes, unknownFacets);
+    }
+  }
+
+  private sendSearchArchiveUnitsByCriteria(searchCriteria: SearchCriteriaDto): Observable<PagedResult> {
+    return this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
+      .pipe(first());
+  }
+
+  private refreshTreeNodes() {
+    const data = this.nestedDataSourceLeaves.data;
+    this.nestedDataSourceLeaves.data = null;
+    this.nestedDataSourceLeaves.data = data;
+  }
+
+  private firstToggle(node: FilingHoldingSchemeNode): boolean {
+    if (node.toggled === undefined) {
+      node.toggled = true;
+      if (!node.children) {
+        node.children = [];
+      }
+      node.matchingChildrenLoaded = node.children.length;
+      node.canLoadMoreMatchingChildren = true;
+      node.childrenLoaded = 0;
+      node.canLoadMoreChildren = true;
+      return true;
+    }
+    return false;
+  }
+
   toggleLeave(node: FilingHoldingSchemeNode) {
     const isExpanded = this.nestedTreeControlLeaves.isExpanded(node);
     this.nestedTreeControlLeaves.toggle(node);
-    if (!isExpanded && !nodeHasChildren(node)) {
-      this.loadMoreUAForNode(node);
+    if (isExpanded) {
+      return;
     }
+    if (this.firstToggle(node)) {
+      this.searchUnderNodeWithSearchCriterias(node);
+      this.searchUnderNode(node);
+    }
+  }
+
+  toggleLoadMore(node: FilingHoldingSchemeNode) {
+    if (!this.nestedTreeControlLeaves.isExpanded(node)) {
+      return;
+    }
+    this.searchUnderNodeWithSearchCriterias(node);
+    this.searchUnderNode(node);
   }
 
   canLoadMoreUAForNode(node: FilingHoldingSchemeNode): boolean {
     if (node.isLoadingChildren) {
       return false;
     }
-    return node.canLoadMoreChildren;
-  }
-
-  loadMoreUAForNode(parentNode: FilingHoldingSchemeNode) {
-    if (parentNode.canLoadMoreChildren === undefined) {
-      parentNode.canLoadMoreChildren = true;
-    }
-    if (!parentNode.canLoadMoreChildren) {
-      return;
-    }
-    parentNode.isLoadingChildren = true;
-    if (!parentNode.children) {
-      parentNode.children = [];
-    }
-    const size = parentNode.children.length;
-    const page = Math.floor(size / this.DEFAULT_UNIT_PAGE_SIZE);
-
-    const searchCriteria: SearchCriteriaDto = {
-      criteriaList: [
-        {
-          criteria: '#unitups',
-          operator: CriteriaOperator.IN,
-          category: SearchCriteriaTypeEnum.FIELDS,
-          values: [{ id: parentNode.id, value: parentNode.id }],
-          dataType: CriteriaDataType.STRING,
-        },
-      ],
-      pageNumber: page,
-      size: this.DEFAULT_UNIT_PAGE_SIZE,
-      sortingCriteria: this.searchCriterias.sortingCriteria,
-      trackTotalHits: false,
-      computeFacets: false,
-    };
-    this.subscriptions.add(
-      this.archiveService
-        .searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
-        .pipe(first())
-        .subscribe((pageResult) => {
-          FilingHoldingSchemeHandler.addMoreChildrenToNode(parentNode, pageResult, this.originalRequestResultFacets);
-          const data = this.nestedDataSourceLeaves.data;
-          this.nestedDataSourceLeaves.data = null;
-          this.nestedDataSourceLeaves.data = data;
-        })
-    );
+    return this.showEveryNodes && node.canLoadMoreChildren || !this.showEveryNodes && node.canLoadMoreMatchingChildren;
   }
 
   nodeIsUAWithChildren(_: number, node: FilingHoldingSchemeNode): boolean {
-    return (
-      node.type === 'INGEST' && (node.descriptionLevel === DescriptionLevel.RECORDGRP || node.descriptionLevel === DescriptionLevel.FILE)
-    );
+    return node.type === 'INGEST' && node.descriptionLevel !== DescriptionLevel.ITEM;
   }
 
   nodeIsUAWithoutChildren(_: number, node: FilingHoldingSchemeNode): boolean {
-    return node.type === 'INGEST' && node.descriptionLevel !== DescriptionLevel.RECORDGRP;
+    return node.type === 'INGEST' && node.descriptionLevel === DescriptionLevel.ITEM;
   }
 
   nodeHasPositiveCount(node: FilingHoldingSchemeNode): boolean {
@@ -161,4 +322,9 @@ export class LeavesTreeComponent implements OnInit, OnDestroy {
   onLabelClick(nodeId: string) {
     this.showNodeDetail.emit(nodeId);
   }
+
+  switchViewAllNodes(): void {
+    this.showEveryNodes = !this.showEveryNodes;
+  }
+
 }

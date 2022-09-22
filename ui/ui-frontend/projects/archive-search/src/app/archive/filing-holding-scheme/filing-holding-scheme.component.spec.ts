@@ -26,7 +26,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
-import { InjectorModule, LoggerModule, FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTreeModule } from '@angular/material/tree';
@@ -95,7 +95,6 @@ describe('FilingHoldingSchemeComponent', () => {
         id: 'rootId',
         title: 'RootTitle',
         type: 'RecordGrp',
-        parents: [],
         children: [],
         vitamId: 'rootId',
         checked: false,
@@ -109,7 +108,6 @@ describe('FilingHoldingSchemeComponent', () => {
           type: 'RecordGrp',
           children: [],
           vitamId: 'rootChild-1',
-          parents: [rootNode],
           checked: false,
           hidden: false,
         },
@@ -119,7 +117,6 @@ describe('FilingHoldingSchemeComponent', () => {
           type: 'RecordGrp',
           children: [],
           vitamId: 'rootChild-2',
-          parents: [rootNode],
           checked: false,
           hidden: false,
         },
@@ -133,7 +130,6 @@ describe('FilingHoldingSchemeComponent', () => {
           type: 'RecordGrp',
           children: [],
           vitamId: 'leaf-1',
-          parents: [rootChildren[0]],
           checked: false,
           hidden: false,
         },
@@ -143,7 +139,6 @@ describe('FilingHoldingSchemeComponent', () => {
           type: 'RecordGrp',
           children: [],
           vitamId: 'leaf-2',
-          parents: [rootChildren[0]],
           checked: false,
           hidden: false,
         },

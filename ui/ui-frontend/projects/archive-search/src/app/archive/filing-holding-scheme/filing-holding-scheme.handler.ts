@@ -24,15 +24,16 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { copyNodeWhithoutChildren, FilingHoldingSchemeNode } from 'ui-frontend-common';
-import { PagedResult, ResultFacet } from '../models/search.criteria';
+import { copyNodeWithoutChildren, FilingHoldingSchemeNode, MatchingNodesNumbers } from 'ui-frontend-common';
 import { DescriptionLevel } from '../../../../../vitamui-library/src/lib/models/description-level.enum';
+import { ResultFacet } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 
 export class FilingHoldingSchemeHandler {
+
   public static foundNodeAndSetCheck(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {
     if (nodes.length < 1) {
-      return;
+      return false;
     }
     let nodeHasBeenChecked = false;
     for (const node of nodes) {
@@ -49,121 +50,178 @@ export class FilingHoldingSchemeHandler {
     return nodeHasBeenChecked;
   }
 
-  public static setCountRecursively(node: FilingHoldingSchemeNode, facets: ResultFacet[]): number {
-    let nodesChecked = 0;
-    if (!node) {
+  public static setCountRecursively(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): number {
+    if (!nodes) {
       return 0;
     }
-    node.count = 0;
-    for (const facet of facets) {
-      if (node.id === facet.node) {
-        node.count = facet.count;
-        node.hidden = false;
-        nodesChecked++;
+    let nodesChecked = 0;
+    for (const node of nodes) {
+      if (!node.count) {
+        node.count = 0;
       }
-    }
-    let nodesCheckedChilren = 0;
-    if (node.children) {
-      for (const child of node.children) {
-        nodesCheckedChilren += FilingHoldingSchemeHandler.setCountRecursively(child, facets);
-      }
-    }
-    node.hidden = nodesCheckedChilren === 0 && nodesChecked === 0;
-    return nodesCheckedChilren;
-  }
-
-  public static convertNodesToList(holdingSchemas: FilingHoldingSchemeNode[]): string[] {
-    const nodeDataList: string[] = [];
-    for (const node of holdingSchemas) {
-      if (node && node.id) {
-        nodeDataList.push(node.id);
-      }
-    }
-    return nodeDataList;
-  }
-
-  public static buildRecursiveTree(node: FilingHoldingSchemeNode) {
-    if (node.count === 0) {
-      return;
-    }
-    const filtredNode = copyNodeWhithoutChildren(node);
-    if (node.children && node.children.length > 0) {
-      const filtredChildren = [];
-
-      for (const child of node.children) {
-        const childFiltred = this.buildRecursiveTree(child);
-        if (childFiltred) {
-          filtredChildren.push({ ...childFiltred });
+      for (const facet of facets) {
+        if (node.id === facet.node) {
+          node.count = facet.count;
+          node.hidden = false;
+          nodesChecked++;
         }
       }
-      if (filtredChildren && filtredChildren.length > 0) {
-        filtredNode.children = [...filtredChildren];
+      if (node.children) {
+        nodesChecked += FilingHoldingSchemeHandler.setCountRecursively(node.children, facets);
       }
+      node.hidden = nodesChecked === 0;
     }
-    return filtredNode;
+    return nodesChecked;
   }
 
-  public static keepEndNodesWithResultsOnly(node: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
-    if (node.count < 1) {
+  public static keepEndNodesWithResultsOnly(nodes: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
+    if (!nodes) {
       return [];
     }
-    if (!node.children || node.children.length < 1) {
-      return [copyNodeWhithoutChildren(node)];
+    const leaves: FilingHoldingSchemeNode[] = []
+    for (const node of nodes) {
+      if (node.count < 1) {
+        continue;
+      }
+      if (!node.children || node.children.length < 1) {
+        leaves.push(copyNodeWithoutChildren(node));
+        continue;
+      }
+      const childResult: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(node.children);
+      const addedCount = childResult.reduce((accumulator, schemeNode) => accumulator + schemeNode.count, 0);
+      if (addedCount < node.count) {
+        const nodeCopy = copyNodeWithoutChildren(node);
+        nodeCopy.children = childResult;
+        leaves.push(nodeCopy);
+      }
+      leaves.push(...childResult);
     }
-    const childResult: FilingHoldingSchemeNode[] = [];
-    for (const child of node.children) {
-      childResult.push(...FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(child));
-    }
-    const addedCount = childResult.reduce((accumulator, schemeNode) => accumulator + schemeNode.count, 0);
-    if (addedCount < node.count) {
-      const nodeCopy = copyNodeWhithoutChildren(node);
-      nodeCopy.children = childResult;
-      return [nodeCopy];
-    }
-    return childResult;
+    return leaves;
   }
 
-  public static addMoreChildrenToNode(
-    parentNode: FilingHoldingSchemeNode,
-    pageResult: PagedResult,
-    requestResultFacets: ResultFacet[]
-  ): void {
-    const resultList: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.convertUAToNode(pageResult.results);
-    resultList.forEach((node) => {
-      const index = parentNode.children.findIndex((nodeChild) => nodeChild.id === node.id);
-      if (index === -1) {
-        FilingHoldingSchemeHandler.setCountOnOneUnit(node, requestResultFacets);
+  public static addChildren(parentNode: FilingHoldingSchemeNode,
+                            units: Unit[],): FilingHoldingSchemeNode[] {
+    const addedNodes: FilingHoldingSchemeNode[] = [];
+    units.forEach((unit) => {
+      const child = FilingHoldingSchemeHandler.foundChild(parentNode, unit['#id']);
+      if (!child) {
+        const node = FilingHoldingSchemeHandler.convertUAToNode(unit);
         parentNode.children.push(node);
+        addedNodes.push(node)
       }
     });
-    parentNode.isLoadingChildren = false;
-    parentNode.canLoadMoreChildren = parentNode.children.length < pageResult.totalResults;
+    return addedNodes;
   }
 
-  private static convertUAToNode(units: Unit[]): FilingHoldingSchemeNode[] {
-    return units.map((unit) => {
-      return {
-        id: unit['#id'],
-        title: unit.Title,
-        type: unit['#unitType'],
-        descriptionLevel: unit.DescriptionLevel,
-        children: [],
-        parents: [],
-        vitamId: unit['#id'],
-        checked: false,
-        isLoadingChildren: false,
-        canLoadMoreChildren: unit.DescriptionLevel !== DescriptionLevel.ITEM,
-      };
+  public static unitHasDirectParent(unit: Unit, parentId: string): boolean {
+    return unit['#unitups'].findIndex(unitupId => unitupId === parentId) !== -1;
+  }
+
+  public static foundChild(parentNode: FilingHoldingSchemeNode, childId: string): FilingHoldingSchemeNode {
+    if (!parentNode.children) {
+      parentNode.children = [];
+    }
+    return parentNode.children.find(nodeChild => nodeChild.id === childId);
+  }
+
+  public static addChildrenAndCheckPaternity(parentNode: FilingHoldingSchemeNode,
+                                             units: Unit[],
+                                             initCount: boolean = false): MatchingNodesNumbers {
+    const matchingNodes = new MatchingNodesNumbers();
+    units.forEach((unit) => {
+      if (!FilingHoldingSchemeHandler.unitHasDirectParent(unit, parentNode.id)) {
+        return;
+      }
+      let child = FilingHoldingSchemeHandler.foundChild(parentNode, unit['#id']);
+      if (!child) {
+        // adding child only if it didn't exist
+        child = FilingHoldingSchemeHandler.convertUAToNode(unit);
+        if (initCount) {
+          child.count = 1;
+        }
+        parentNode.children.push(child);
+        matchingNodes.addNode(child);
+      } else if (initCount && child.count < 1) {
+        child.count = 1;
+        matchingNodes.incrementUpdated();
+      } else {
+        matchingNodes.incrementFoundButUnchanged();
+      }
     });
+    return matchingNodes;
   }
 
-  private static setCountOnOneUnit(node: FilingHoldingSchemeNode, requestResultFacets: ResultFacet[]) {
-    if (node.descriptionLevel === DescriptionLevel.ITEM) {
-      return;
+  public static addChildrenRecursively(parentNodes: FilingHoldingSchemeNode[],
+                                       units: Unit[],
+                                       initCount: boolean = false): number {
+    if (!parentNodes || parentNodes.length === 0) {
+      return 0;
     }
-    const facet: ResultFacet = requestResultFacets.find((resultFacet) => node.id === resultFacet.node);
-    if (facet) {
-      node.count = facet.count;
+    let nodeAdded = 0;
+    for (const parentNode of parentNodes) {
+      for (let index = 0, len = units.length; index < len; index++) {
+        const unit = units[index];
+        if (!unit) {
+          continue;
+        }
+        if (FilingHoldingSchemeHandler.unitHasDirectParent(unit, parentNode.id)) {
+          if (!parentNode.children) {
+            parentNode.children = [];
+          }
+          let child = FilingHoldingSchemeHandler.foundChild(parentNode, unit['#id']);
+          if (!child) {
+            // adding child only if it didn't exist
+            child = FilingHoldingSchemeHandler.convertUAToNode(unit)
+            parentNode.children.push(child);
+            nodeAdded += 1;
+            if (initCount) {
+              parentNode.matchingChildrenLoaded += 1;
+            } else {
+              parentNode.childrenLoaded += 1;
+            }
+          }
+          if (initCount && child.count < 1) {
+            child.count = 1;
+          }
+          units[index] = null;
+        }
+      }
+      nodeAdded += FilingHoldingSchemeHandler.addChildrenRecursively(parentNode.children, units, initCount);
+      return nodeAdded;
     }
   }
+
+  public static getGraphIds(nodes: FilingHoldingSchemeNode[]): string[] {
+    if (!nodes || nodes.length < 1)
+      return []
+    const knownIds: string[] = []
+    for (const node of nodes) {
+      knownIds.push(node.id);
+      knownIds.push(...FilingHoldingSchemeHandler.getGraphIds(node.children));
+    }
+    return knownIds;
+  }
+
+  public static filterUnknownFacetsIds(nodes: FilingHoldingSchemeNode[],
+                                       facets: ResultFacet[]): ResultFacet[] {
+    const knownIds = FilingHoldingSchemeHandler.getGraphIds(nodes);
+    return facets.filter(facet => !knownIds.includes(facet.node));
+
+  }
+
+  public static convertUAToNode(unit: Unit): FilingHoldingSchemeNode {
+    return {
+      id: unit['#id'],
+      title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
+      type: unit['#unitType'],
+      descriptionLevel: unit.DescriptionLevel,
+      children: [],
+      vitamId: unit['#id'],
+      checked: false,
+      isLoadingChildren: false,
+      canLoadMoreChildren: unit.DescriptionLevel !== DescriptionLevel.ITEM,
+      count: 0
+    };
+  }
+
 }

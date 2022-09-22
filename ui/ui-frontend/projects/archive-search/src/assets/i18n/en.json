@@ -529,7 +529,7 @@
       "SHOW_TREE_PARENT": "Show only result",
       "TREE_TITLE": "Trees and plans",
       "TREE_LEAVES_TITLE": "Attachment position(s)",
-      "LOAD_MORE_UNITS": "Load more units"
+      "LOAD_MORE_UNITS": "See more..."
     },
     "EXPORT_CSV": {
       "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
