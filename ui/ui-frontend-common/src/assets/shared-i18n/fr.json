@@ -1,4 +1,7 @@
 {
+  "SNACK_BAR" : {
+    "TENANT_NOT_FOUND" : "Liste des tenants introuvable pour :"
+  },
   "COMMON": {
     "ADD": "Ajouter",
     "UNDO": "Annuler",
