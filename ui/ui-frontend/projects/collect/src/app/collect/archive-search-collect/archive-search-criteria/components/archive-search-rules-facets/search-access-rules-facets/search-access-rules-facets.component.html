@@ -1,0 +1,21 @@
+<div id="facet-row">
+  <div id="count-facet-details">
+    <app-vitamui-facet
+      [facetDetails]="archiveUnitsCountFacetDetails"
+      [facetTitle]="'COLLECT.FACETS.ACCESS_RULE.ARCHIVE_UNITS_COUNT' | translate"
+    ></app-vitamui-facet>
+  </div>
+  <div id="rules-facet-details">
+    <app-vitamui-facet
+      [facetDetails]="rulesFacetDetails"
+      [facetTitle]="'COLLECT.FACETS.ACCESS_RULE.RULES_COUNT' | translate"
+    ></app-vitamui-facet>
+  </div>
+  <div id="expired-rules-facet-details">
+    <app-vitamui-facet
+      [facetDetails]="expiredRulesFacetDetails"
+      [facetSubTitle]="('COLLECT.FACETS.ACCESS_RULE.FROM_DATE' | translate) + ' ' + dateFilterValue"
+      [facetTitle]="'COLLECT.FACETS.ACCESS_RULE.EXPIRED_RULES' | translate"
+    ></app-vitamui-facet>
+  </div>
+</div>

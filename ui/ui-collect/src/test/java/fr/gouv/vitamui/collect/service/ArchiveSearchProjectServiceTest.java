@@ -29,9 +29,10 @@
 
 package fr.gouv.vitamui.collect.service;
 
+import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.ui.commons.service.CommonService;

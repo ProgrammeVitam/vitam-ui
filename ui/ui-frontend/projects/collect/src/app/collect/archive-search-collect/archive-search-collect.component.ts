@@ -42,9 +42,16 @@ import {
 } from 'ui-frontend-common';
 import { Unit } from 'vitamui-library/lib/models/unit.interface';
 import { ArchiveCollectService } from './archive-collect.service';
-import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto } from '../core/models';
+import { ArchiveSearchResultFacets, CriteriaValue, FilingHoldingSchemeNode, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements, SearchCriteriaHistory, SearchCriteriaMgtRuleEnum, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum } from '../core/models';
+import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
+import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
+import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 
 const PAGE_SIZE = 10;
+const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
+const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 
 @Component({
   selector: 'app-archive-search-collect',
@@ -52,11 +59,15 @@ const PAGE_SIZE = 10;
   styleUrls: ['./archive-search-collect.component.scss'],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy {
-  accessContract: string;
+
   accessContractSub: Subscription;
   accessContractSubscription: Subscription;
   errorMessageSub: Subscription;
+  subscriptionFilingHoldingSchemeNodes: Subscription;
+  subscriptionSimpleSearchCriteriaAdd: Subscription;
+  subscriptionNodes: Subscription;
 
+  accessContract: string;
   projectId: string;
   foundAccessContract = false;
   hasAccessContractManagementPermissions = false;
@@ -67,6 +78,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   searchCriterias: Map<string, SearchCriteria>;
   criteriaSearchList: SearchCriteriaEltDto[] = [];
   additionalSearchCriteriaCategories: SearchCriteriaCategory[];
+  nbQueryCriteria = 0;
+  additionalSearchCriteriaCategoryIndex = 0;
   included = false;
   showCriteriaPanel = true;
   showSearchCriteriaPanel = false;
@@ -76,6 +89,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   listOfUAIdToInclude: CriteriaValue[] = [];
   listOfUAIdToExclude: CriteriaValue[] = [];
   listOfUACriteriaSearch: SearchCriteriaEltDto[] = [];
+  nodeArray: FilingHoldingSchemeNode[] = [];
 
   // AU Search Properties
   pending = false;
@@ -86,7 +100,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   isIndeterminate: boolean;
   isAllchecked: boolean;
   waitingToGetFixedCount = false;
-  pendingGetFixedCount = false;
   totalResults = 0;
   orderBy = 'Title';
   direction = Direction.ASCENDANT;
@@ -94,6 +107,16 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   hasResults = false;
   pageNumbers = 0;
   canLoadMore = false;
+
+  // Facets properties
+  pendingGetFixedCount = false;
+  pendingComputeFacets = false;
+  archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
+  rulesFacetsComputed = false;
+  showingFacets = false;
+  defaultFacetTabIndex = 1;
+  submitedGetFixedCount = false;
+  rulesFacetsCanBeComputed = false;
 
   private readonly orderChange = new Subject<string>();
 
@@ -103,28 +126,80 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     private externalParameterService: ExternalParametersService,
     private translateService: TranslateService,
     private archiveUnitCollectService: ArchiveCollectService,
-    private snackBar: MatSnackBar
+    private archiveHelperService: ArchiveSearchHelperService,
+    private archiveExchangeDataService: ArchiveSharedDataService,
+    private archiveFacetsService: ArchiveFacetsService,
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {
     super(route, globalEventService);
+    this.subscriptionSimpleSearchCriteriaAdd = this.archiveExchangeDataService
+      .receiveSimpleSearchCriteriaSubject()
+      .subscribe((criteria) => {
+        if (criteria) {
+          this.archiveHelperService.addCriteria(
+            this.searchCriterias,
+            this.searchCriteriaKeys,
+            this.nbQueryCriteria,
+            criteria.keyElt,
+            criteria.valueElt,
+            criteria.labelElt,
+            criteria.keyTranslated,
+            criteria.operator,
+            criteria.category,
+            criteria.valueTranslated,
+            criteria.dataType,
+            false
+          );
+        }
+      });
+
+    this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
+      if (criteria) {
+        if (criteria.valueElt) {
+          this.removeCriteria(criteria.keyElt, criteria.valueElt, false);
+        } else {
+          this.removeCriteriaAllValues(criteria.keyElt, false);
+        }
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.accessContractSub?.unsubscribe();
     this.accessContractSubscription?.unsubscribe();
+    this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
+    this.subscriptionFilingHoldingSchemeNodes?.unsubscribe();
+    this.subscriptionNodes?.unsubscribe();
   }
 
   ngOnInit(): void {
+    this.additionalSearchCriteriaCategoryIndex = 0;
+    this.additionalSearchCriteriaCategories = [];
     this.route.params.subscribe((params) => {
       this.projectId = params.id;
     });
 
     this.searchCriteriaKeys = [];
     this.searchCriterias = new Map();
-
+    this.initializeSelectionParams();
     this.fetchUserAccessContractFromExternalParameters();
-    this.submit();
   }
 
+  private initializeSelectionParams() {
+    this.pending = true;
+    this.showCriteriaPanel = false;
+    this.showSearchCriteriaPanel = false;
+    this.currentPage = 0;
+    this.archiveUnits = [];
+    this.criteriaSearchList = [];
+    this.itemSelected = 0;
+    this.isIndeterminate = false;
+    this.itemNotSelected = 0;
+    this.isAllchecked = false;
+  }
+
+  // Search Data
   fetchUserAccessContractFromExternalParameters() {
     this.accessContractSub = this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
@@ -137,7 +212,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }
       } else {
         this.errorMessageSub = this.translateService
-          .get('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND')
+          .get('COLLECT.ACCESS_CONTRACT_NOT_FOUND')
           .pipe(
             map((message) => {
               this.snackBar.open(message, null, {
@@ -168,21 +243,19 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   submit() {
-    this.initializeSelectionParams();
-  }
-
-  private initializeSelectionParams() {
-    this.pending = true;
     this.submited = true;
-    this.showCriteriaPanel = false;
-    this.showSearchCriteriaPanel = false;
-    this.currentPage = 0;
-    this.archiveUnits = [];
-    this.criteriaSearchList = [];
-    this.itemSelected = 0;
-    this.isIndeterminate = false;
-    this.itemNotSelected = 0;
-    this.isAllchecked = false;
+    this.initializeSelectionParams();
+    this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
+    this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
+    for (var mgtRuleType in SearchCriteriaMgtRuleEnum) {
+      this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
+    }
+    if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      this.rulesFacetsComputed = false;
+      this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
+      this.searchArchiveUnits(this.rulesFacetsCanBeComputed);
+      this.showingFacets = this.rulesFacetsCanBeComputed;
+    }
   }
 
   loadMore() {
@@ -199,7 +272,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   private searchArchiveUnits(includeFacets: boolean) {
     this.pending = true;
-
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
@@ -231,7 +303,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }
 
         this.canLoadMore = this.currentPage < this.pageNumbers - 1;
-
+        this.archiveHelperService.updateCriteriaStatus(
+          this.searchCriterias,
+          SearchCriteriaStatusEnum.IN_PROGRESS,
+          SearchCriteriaStatusEnum.INCLUDED
+        );
         this.pending = false;
         this.included = true;
       },
@@ -242,6 +318,23 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       }
     );
   }
+
+  // Manage lateral panels
+
+  showExtendedLateralPanel() {
+    this.isLPExtended = true;
+  }
+
+  backToNormalLateralPanel() {
+    this.isLPExtended = false;
+  }
+
+  emitOrderChange() {
+    this.orderChange.next();
+  }
+
+
+  // Manage criteria filters methods
 
   checkParentBoxChange(event: any) {
     const action = event.target.checked;
@@ -289,15 +382,355 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     }
   }
 
-  showExtendedLateralPanel() {
-    this.isLPExtended = true;
+  removeCriteriaEvent(criteriaToRemove: any) {
+    if (criteriaToRemove.valueElt) {
+      this.removeCriteria(criteriaToRemove.keyElt, criteriaToRemove.valueElt, true);
+    } else {
+      this.removeCriteriaAllValues(criteriaToRemove.keyElt, true);
+    }
   }
 
-  backToNormalLateralPanel() {
-    this.isLPExtended = false;
+  removeCriteriaAllValues(keyElt: string, emit: boolean) {
+    if (this.searchCriterias && this.searchCriterias.size > 0) {
+      this.searchCriterias.forEach((val, key) => {
+        if (key === keyElt) {
+          val.values.forEach((value) => {
+            this.removeCriteria(key, value.value, emit);
+          });
+        }
+      });
+    }
   }
 
-  emitOrderChange() {
-    this.orderChange.next();
+  removeCriteria(keyElt: string, valueElt: CriteriaValue, emit: boolean) {
+    this.archiveHelperService.removeCriteria(keyElt, valueElt, emit, this.searchCriteriaKeys, this.searchCriterias, this.nbQueryCriteria);
+
+    if (this.searchCriterias && this.searchCriterias.size === 0) {
+      this.submited = false;
+      this.showCriteriaPanel = true;
+      this.showSearchCriteriaPanel = false;
+      // Get initial AUs by project Id
+      this.searchCriteriaKeys = [];
+      this.searchCriterias = new Map();
+      this.criteriaSearchList = []
+      this.searchArchiveUnits(false);
+      this.archiveExchangeDataService.emitNodeTarget(null);
+    }
   }
+
+  clearCriterias() {
+    const searchCriteriaKeysCloned = Object.assign([], this.searchCriteriaKeys);
+    searchCriteriaKeysCloned.forEach((criteriaKey) => {
+      if (this.searchCriterias.has(criteriaKey)) {
+        const criteria = this.searchCriterias.get(criteriaKey);
+        const values = criteria.values;
+        values.forEach((value) => {
+          this.removeCriteria(criteriaKey, value.value, true);
+        });
+      }
+    });
+    this.searchCriterias = new Map();
+    this.searchCriteriaKeys = [];
+    this.included = false;
+    this.nbQueryCriteria = 0;
+    this.pageNumbers = 0;
+    this.totalResults = 0;
+    this.itemSelected = 0;
+    this.isAllchecked = false;
+    this.isIndeterminate = false;
+    this.itemNotSelected = 0;
+    this.canLoadMore = false;
+    // TODO : to uncomment when filing will be available
+    // this.setFilingHoldingScheme();
+    // this.archiveExchangeDataService.emitFilingHoldingNodes(this.nodeArray);
+    // this.checkAllNodes(false);
+  }
+
+  setFilingHoldingScheme() {
+    this.subscriptionFilingHoldingSchemeNodes = this.archiveExchangeDataService.getFilingHoldingNodes().subscribe((nodes) => {
+      this.nodeArray = nodes;
+    });
+  }
+
+  checkAllNodes(show: boolean) {
+    this.archiveHelperService.recursiveCheck(this.nodeArray, show);
+  }
+
+  selectedCategoryChange(selectedCategoryIndex: number) {
+    this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
+  }
+
+  // Manage crietria categories
+
+  addCriteriaCategory(categoryName: string) {
+    this.archiveExchangeDataService.emitRuleCategory(categoryName);
+    const indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
+    if (indexOfCategory === -1) {
+      this.additionalSearchCriteriaCategories.push({
+        name: categoryName,
+        index: this.additionalSearchCriteriaCategories.length + 1,
+      });
+      this.additionalSearchCriteriaCategories.forEach((category, index) => {
+        category.index = index + 1;
+      });
+      this.additionalSearchCriteriaCategoryIndex = this.additionalSearchCriteriaCategories.length;
+    }
+  }
+
+  sendRuleCategorySelected(categoryName: string) {
+    this.archiveExchangeDataService.emitRuleCategory(categoryName);
+  }
+
+  isCategoryAdded(categoryName: string): boolean {
+    const indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
+    return indexOfCategory !== -1;
+  }
+
+  removeCriteriaCategory(categoryName: string) {
+    this.additionalSearchCriteriaCategories.forEach((element, index) => {
+      if (element.name === categoryName) {
+        this.additionalSearchCriteriaCategories.splice(index, 1);
+        if (index === this.additionalSearchCriteriaCategoryIndex - 1) {
+          this.additionalSearchCriteriaCategoryIndex = 0;
+        } else {
+          if (this.additionalSearchCriteriaCategoryIndex > 0) {
+            this.additionalSearchCriteriaCategoryIndex = this.additionalSearchCriteriaCategoryIndex - 1;
+          }
+        }
+      }
+    });
+    this.additionalSearchCriteriaCategories.forEach((category, index) => {
+      category.index = index + 1;
+    });
+    this.removeCriteriaByCategory(categoryName);
+  }
+
+  removeCriteriaByCategory(category: string) {
+    if (this.searchCriterias && this.searchCriterias.size > 0) {
+      if (category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+        this.searchCriterias.forEach((criteriaValues, key) => {
+          if (key === ELIMINATION_TECHNICAL_ID) {
+            criteriaValues.values.forEach((value) => {
+              this.removeCriteria(key, value.value, true);
+            });
+          }
+        });
+      }
+      this.searchCriterias.forEach((val, key) => {
+        if (SearchCriteriaTypeEnum[val.category] === category) {
+          val.values.forEach((value) => {
+            this.removeCriteria(key, value.value, true);
+          });
+        }
+      });
+    }
+  }
+
+  showHidePanel(show: boolean) {
+    this.showCriteriaPanel = show;
+  }
+
+  containsWaitingToRecalculateInheritenceRuleCriteria() {
+    return this.searchCriterias && this.searchCriterias.has('WAITING_RECALCULATE');
+  }
+
+  // Save criteria 
+
+  mapSearchCriteriaHistory() {
+    let searchCriteriaHistoryObject: SearchCriteriaHistory;
+    const criteriaListObject: SearchCriteriaEltements[] = [];
+    this.searchCriterias.forEach((criteria: SearchCriteria) => {
+      const strValues: CriteriaValue[] = [];
+      criteria.values.forEach((elt) => {
+        strValues.push(elt.value);
+      });
+      criteriaListObject.push({
+        criteria: criteria.key,
+        values: strValues,
+        category: SearchCriteriaTypeEnum[criteria.category],
+        operator: criteria.operator,
+        keyTranslated: criteria.keyTranslated,
+        valueTranslated: criteria.valueTranslated,
+        dataType: criteria.dataType,
+      });
+    });
+    searchCriteriaHistoryObject = {
+      id: null,
+      name: '',
+      savingDate: new Date().toISOString(),
+      searchCriteriaList: criteriaListObject,
+    };
+    this.openCriteriaPopup(searchCriteriaHistoryObject);
+  }
+
+  openCriteriaPopup(searchCriteriaHistory$: SearchCriteriaHistory) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = 'vitamui-modal';
+    dialogConfig.disableClose = false;
+    dialogConfig.data = {
+      searchCriteriaHistory: searchCriteriaHistory$,
+      originalSearchCriteria: this.searchCriterias,
+      nbCriterias: this.archiveExchangeDataService.nbFilters(searchCriteriaHistory$),
+    };
+
+    const dialogRef = this.dialog.open(SearchCriteriaSaverComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        return;
+      }
+    });
+  }
+
+  // Manage Facets
+
+  private launchComputingManagementRulesFacets() {
+    this.pendingComputeFacets = true;
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    const searchCriteria = {
+      criteriaList: this.criteriaSearchList,
+      pageNumber: 0,
+      size: 1,
+      sortingCriteria,
+      trackTotalHits: false,
+      computeFacets: true,
+    };
+
+    this.loadExactCount();
+
+    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.projectId, this.accessContract).subscribe(
+      (pagedResult: PagedResult) => {
+        this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
+        this.pendingComputeFacets = false;
+        this.rulesFacetsComputed = true;
+        this.showingFacets = true;
+        this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
+      },
+      (error: HttpErrorResponse) => {
+        this.pendingComputeFacets = false;
+        this.logger.error('Error message :', error.message);
+      }
+    );
+  }
+
+  loadExactCount() {
+    if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      this.pendingGetFixedCount = true;
+      this.submitedGetFixedCount = true;
+      this.archiveUnitCollectService.getTotalTrackHitsByCriteria(this.criteriaSearchList, this.projectId, this.accessContract).subscribe(
+        (exactCountResults: number) => {
+          if (exactCountResults !== -1) {
+            this.totalResults = exactCountResults;
+            if (this.isAllchecked) {
+              this.itemSelected = this.totalResults - this.itemNotSelected;
+            }
+            this.waitingToGetFixedCount = false;
+          }
+          this.pendingGetFixedCount = false;
+        },
+        (error: HttpErrorResponse) => {
+          this.pendingGetFixedCount = false;
+          this.logger.error('Error message :', error.message);
+        }
+      );
+    }
+  }
+
+  showHideFacets(show: boolean) {
+    if (show === true) {
+      if (this.rulesFacetsComputed === true) {
+        this.showingFacets = true;
+      } else {
+        this.launchFacetsComputing();
+      }
+    } else {
+      this.showingFacets = false;
+    }
+  }
+
+  launchFacetsComputing() {
+    if (!this.pendingComputeFacets && this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      this.launchComputingManagementRulesFacets();
+    }
+  }
+
+  // Manage criteria save
+
+  showStoredSearchCriteria(event: SearchCriteriaHistory) {
+    if (this.searchCriterias.size > 0) {
+      this.searchCriterias = new Map();
+      this.searchCriteriaKeys = [];
+      this.included = false;
+    }
+    this.reMapSearchCriteriaFromSearchCriteriaHistory(event);
+  }
+
+  public reMapSearchCriteriaFromSearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
+    // TODO : to uncomment when filing will be available
+    // this.setFilingHoldingScheme();
+    // this.checkAllNodes(false);
+    storedSearchCriteriaHistory.searchCriteriaList.forEach((criteria: SearchCriteriaEltements) => {
+      this.fillTreeNodeAsSearchCriteriaHistory(criteria);
+      const c = criteria.criteria;
+      criteria.values.forEach((value) => {
+        if (
+          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE] ||
+          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES] ||
+          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE] ||
+          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.STORAGE_RULE] ||
+          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.REUSE_RULE] ||
+          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.DISSEMINATION_RULE]
+        ) {
+          this.addCriteriaCategory(criteria.category);
+          this.archiveHelperService.addCriteria(
+            this.searchCriterias,
+            this.searchCriteriaKeys,
+            this.nbQueryCriteria,
+            c,
+            value,
+            value.value,
+            criteria.keyTranslated,
+            criteria.operator,
+            criteria.category,
+            criteria.valueTranslated,
+            criteria.dataType,
+            true
+          );
+        } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS]) {
+          this.archiveHelperService.addCriteria(
+            this.searchCriterias,
+            this.searchCriteriaKeys,
+            this.nbQueryCriteria,
+            c,
+            value,
+            c === ALL_ARCHIVE_UNIT_TYPES
+              ? this.translateService.instant('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + value.id)
+              : value.value,
+            criteria.keyTranslated,
+            criteria.operator,
+            SearchCriteriaTypeEnum.FIELDS,
+            criteria.valueTranslated,
+            criteria.dataType,
+            true
+          );
+        }
+      });
+    });
+  }
+
+  fillTreeNodeAsSearchCriteriaHistory(searchCriteriaList: SearchCriteriaEltements) {
+    if (searchCriteriaList && searchCriteriaList.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES]) {
+      searchCriteriaList.values.forEach((nodeId) => {
+        this.archiveHelperService.fillNodeTitle(
+          this.nodeArray,
+          nodeId.value,
+          this.searchCriterias,
+          this.searchCriteriaKeys,
+          this.nbQueryCriteria
+        );
+      });
+      this.nodeArray = null;
+      this.archiveExchangeDataService.emitToggle(true);
+    }
+  }
+
 }

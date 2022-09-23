@@ -42,7 +42,7 @@ import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCr
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.domain.SearchCriteriaHistory;
 import fr.gouv.vitamui.archive.internal.server.utils.Utils;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;

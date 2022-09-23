@@ -28,11 +28,15 @@
 package fr.gouv.vitamui.collect.internal.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.collect.internal.server.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.collect.internal.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectArchiveUnitInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectObjectGroupInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.SearchCriteriaHistoryInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.converters.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -105,4 +109,14 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
     public ProjectObjectGroupInternalService projectObjectGroupInternalService(final CollectService collectService, ObjectMapper objectMapper) {
         return new ProjectObjectGroupInternalService(collectService, objectMapper);
     }
+    @Bean
+    public SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService(
+        final CustomSequenceRepository sequenceRepository,
+        final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
+        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
+        final InternalSecurityService internalSecurityService) {
+        return new SearchCriteriaHistoryInternalService(sequenceRepository, searchCriteriaHistoryRepository,
+            searchCriteriaHistoryConverter, internalSecurityService);
+    }
+
 }

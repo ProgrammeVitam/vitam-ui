@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, Project } from 'ui-frontend-common';
-import { SearchCriteriaDto, SearchResponse } from '../models';
+import { SearchCriteriaDto, SearchCriteriaHistory, SearchResponse } from '../models';
 
 
 
@@ -49,7 +49,7 @@ import { SearchCriteriaDto, SearchResponse } from '../models';
 
 export class ProjectsApiService extends BaseHttpClient<any> {
   baseUrl: string;
-  
+
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/projects');
     this.baseUrl = baseUrl;
@@ -58,6 +58,8 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   getBaseUrl() {
     return this.baseUrl;
   }
+
+  // Manage projects
 
   public getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Project>> {
     return super.getAllPaginated(pageRequest, embedded, headers);
@@ -75,9 +77,13 @@ export class ProjectsApiService extends BaseHttpClient<any> {
     return super.getOne(projectId);
   }
 
+  // Manage Archive Units
+
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, headers?: HttpHeaders): Observable<SearchResponse> {
     return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${projectId}/archive-units`, criteriaDto, { headers });
   }
+
+  // Manage Object Groups
 
   getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number): string {
     return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
@@ -85,5 +91,23 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   public deletebyId(projectId: string) {
     return this.http.delete<void>(`${this.apiUrl}/${projectId}`);
+  }
+
+  // Manage AU search criteria save
+
+  getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
+    return this.http.get<SearchCriteriaHistory[]>(`${this.apiUrl}/archive-units/searchcriteriahistory`);
+  }
+
+  saveSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
+    return this.http.post<SearchCriteriaHistory>(`${this.apiUrl}/archive-units/searchcriteriahistory`, searchCriteriaHistory);
+  }
+
+  deleteSearchCriteriaHistory(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/archive-units/searchcriteriahistory/${id}`);
+  }
+
+  updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
+    return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
   }
 }

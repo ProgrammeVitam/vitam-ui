@@ -33,6 +33,8 @@ import fr.gouv.vitamui.collect.external.client.CollectExternalWebClient;
 import fr.gouv.vitamui.collect.external.client.CollectExternalWebClientFactory;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClientFactory;
+import fr.gouv.vitamui.collect.external.client.SearchCriteriaHistoryExternalRestClient;
+import fr.gouv.vitamui.collect.external.client.SearchCriteriaHistoryExternalRestClientCollectFactory;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -91,7 +93,7 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public CollectExternalWebClientFactory collectExternalWebClientFactory (
+    public CollectExternalWebClientFactory collectExternalWebClientFactory(
         final CollectApplicationProperties uiProperties, final WebClient.Builder webClientBuilder) {
         return new CollectExternalWebClientFactory(uiProperties.getCollectExternalClient(),
             webClientBuilder);
@@ -101,6 +103,21 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     public CollectExternalWebClient archiveSearchExternalWebClient(
         final CollectExternalWebClientFactory collectExternalWebClientFactory) {
         return collectExternalWebClientFactory.getCollectExternalWebClient();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public SearchCriteriaHistoryExternalRestClientCollectFactory searchCriteriaHistoryExternalRestClientFactory(
+        final CollectApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
+        return new SearchCriteriaHistoryExternalRestClientCollectFactory(uiProperties.getCollectExternalClient(),
+            restTemplateBuilder);
+    }
+
+    @Bean
+    public SearchCriteriaHistoryExternalRestClient searchCriteriaHistoryExternalRestClient(
+        SearchCriteriaHistoryExternalRestClientCollectFactory factory) {
+        return factory.getSearchCriteriaHistoryExternalRestClient();
     }
 
 }

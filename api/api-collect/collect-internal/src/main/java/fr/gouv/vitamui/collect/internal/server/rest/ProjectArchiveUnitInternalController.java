@@ -30,14 +30,16 @@
 package fr.gouv.vitamui.collect.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectArchiveUnitInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -60,7 +62,8 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_ARCHIV
 @Api(tags = "collect", value = "Unités archivistiques d'un projet")
 public class ProjectArchiveUnitInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectArchiveUnitInternalController.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(ProjectArchiveUnitInternalController.class);
     private final InternalSecurityService securityService;
     private final ProjectArchiveUnitInternalService projectArchiveUnitInternalService;
 
@@ -74,9 +77,11 @@ public class ProjectArchiveUnitInternalController {
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @PathVariable("projectId") final String  projectId,
+        @PathVariable("projectId") final String projectId,
         @RequestBody final SearchCriteriaDto searchQuery)
-        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException,
+        InvalidCreateOperationException {
+
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
             .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
@@ -86,7 +91,9 @@ public class ProjectArchiveUnitInternalController {
             tenantId,
             accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return projectArchiveUnitInternalService.searchArchiveUnitsByCriteria(projectId, searchQuery, vitamContext);
+        ArchiveUnitsDto archiveUnitsDto =
+            projectArchiveUnitInternalService.searchArchiveUnitsByCriteria(projectId, searchQuery, vitamContext);
+        return archiveUnitsDto;
     }
 
 }

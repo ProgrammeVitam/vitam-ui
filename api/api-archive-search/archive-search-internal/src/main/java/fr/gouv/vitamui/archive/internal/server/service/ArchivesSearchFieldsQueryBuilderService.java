@@ -30,10 +30,10 @@ package fr.gouv.vitamui.archive.internal.server.service;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.stereotype.Service;
@@ -283,13 +283,13 @@ public class ArchivesSearchFieldsQueryBuilderService {
                     case "ARCHIVE_UNIT_FILING_UNIT":
                         subQueryOr
                             .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES,
-                                ArchiveSearchConsts.ARCHIVE_UNIT_FILING_UNIT,
+                                ArchiveSearchConsts.FILING_UNIT_TYPE,
                                 ArchiveSearchConsts.CriteriaOperators.EQ));
                         break;
                     case "ARCHIVE_UNIT_HOLDING_UNIT":
                         subQueryOr
                             .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES,
-                                ArchiveSearchConsts.ARCHIVE_UNIT_HOLDING_UNIT,
+                                ArchiveSearchConsts.HOLDING_UNIT_TYPE,
                                 ArchiveSearchConsts.CriteriaOperators.EQ));
                         break;
                     case "ARCHIVE_UNIT_WITH_OBJECTS":

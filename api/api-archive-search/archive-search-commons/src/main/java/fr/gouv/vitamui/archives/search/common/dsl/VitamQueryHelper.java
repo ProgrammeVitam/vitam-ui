@@ -33,10 +33,11 @@ import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.QueryProjection;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 public class VitamQueryHelper {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
 
-    public static void addParameterCriteria(BooleanQuery query, ArchiveSearchConsts.CriteriaOperators operator,
+    public static void addParameterCriteria(BooleanQuery query, CriteriaOperators operator,
         String searchKey, final List<String> searchValues) throws InvalidCreateOperationException {
         if (searchKey == null || "".equals(searchKey.trim())) {
             throw new InvalidCreateOperationException("searchKey is empty or null ");
@@ -75,7 +76,7 @@ public class VitamQueryHelper {
             BooleanQuery subQueryOr = or();
             BooleanQuery subQueryAnd = and();
             //The case of multiple values
-            if (operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
+            if (operator == CriteriaOperators.NOT_EQ) {
                 for (String value : searchValues) {
                     subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
                 }
@@ -92,8 +93,7 @@ public class VitamQueryHelper {
         }
     }
 
-    public static Query buildSubQueryByOperator(String searchKey, String value,
-        ArchiveSearchConsts.CriteriaOperators operator)
+    public static Query buildSubQueryByOperator(String searchKey, String value, CriteriaOperators operator)
         throws InvalidCreateOperationException {
         LOGGER.debug("buildSubQueryByOperator  searchKey : {}  value : {} operator : {} ", searchKey, value, operator);
         Query criteriaSubQuery;

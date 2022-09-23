@@ -47,6 +47,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
             {"name": "ROLE_CREATE_PROJECTS"},
             {"name": "ROLE_UPDATE_PROJECTS"},
             {"name": "ROLE_GET_ACCESS_CONTRACTS"},
+            {"name": "ROLE_GET_RULES"}
         ]
     });
 
@@ -69,7 +70,7 @@ var profileCollectAppAdminId = "PROFIL_{{ vitamui_platform_informations.proof_te
 
 db.groups.updateOne(
     {
-        "_id": "admin_group",
+        "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363",
         "profileIds": { $nin: [ profileCollectAppAdminId ] }
     },
     {

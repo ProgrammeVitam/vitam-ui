@@ -30,18 +30,18 @@
 package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.collect.external.server.service.ProjectArchiceUnitExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -132,7 +132,8 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectEx
         Mockito
             .when(projectArchiceUnitExternalService.searchCollectProjectArchiveUnits("projectId", query))
             .thenReturn(expectedResponse);
-        ArchiveUnitsDto responseDto = projectArchiveUnitExternalController.searchArchiveUnits("projectId", query);
+        ArchiveUnitsDto
+            responseDto = projectArchiveUnitExternalController.searchArchiveUnits("projectId", query);
         Assertions.assertEquals(responseDto, expectedResponse);
     }
 }

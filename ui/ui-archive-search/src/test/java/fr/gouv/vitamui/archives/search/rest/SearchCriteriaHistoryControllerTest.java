@@ -1,6 +1,6 @@
 package fr.gouv.vitamui.archives.search.rest;
 
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.archives.search.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;

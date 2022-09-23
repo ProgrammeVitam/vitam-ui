@@ -1,0 +1,29 @@
+<div class="list-div">
+  <ng-container *ngFor="let criteria of searchCriteriaHistory">
+    <button
+      mat-menu-item
+      (click)="storedSearchCriteriaHistory.emit(criteria)"
+      matTooltip="{{ criteria.name }}"
+      matTooltipClass="vitamui-tooltip"
+      [matTooltipShowDelay]="300"
+    >
+      <div class="grid-container">
+        <div class="criteria-name-date">
+          <span class="criteria-name">{{ criteria.name | truncate: 30 }}</span> -
+          <span class="criteria-date">{{ criteria.savingDate | dateTime: 'dd/MM/yyyy' }}</span>
+        </div>
+        <div>
+          <i class="material-icons btn-delete" (click)="deleteSearchCriteriaHistory(criteria)">delete</i>
+        </div>
+      </div>
+    </button>
+  </ng-container>
+
+  <button mat-menu-item *ngIf="searchCriteriaHistory !== undefined && searchCriteriaHistory.length === 0">
+    {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NO_RESULTS' | translate }}
+  </button>
+
+  <div class="center-spinner" *ngIf="pending">
+    <mat-spinner diameter="50" color="accent"></mat-spinner>
+  </div>
+</div>

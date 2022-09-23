@@ -30,12 +30,6 @@
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-api</artifactId>
-            <exclusions>
-            	<exclusion>
-            		<groupId>com.fasterxml.jackson.core</groupId>
-            		<artifactId>jackson-core</artifactId>
-            	</exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>

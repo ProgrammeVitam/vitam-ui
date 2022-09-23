@@ -41,7 +41,7 @@ import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archiv
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AccessContract, AccessContractApiService, SearchService } from 'ui-frontend-common';
-import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchResponse } from '../core/models';
+import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({
@@ -92,6 +92,23 @@ export class ArchiveCollectService extends SearchService<any> {
         return of({ $hits: null, $results: [] });
       }),
       map((results) => ArchiveCollectService.buildPagedResults(results))
+    );
+  }
+
+  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], projectId: string, accessContract: string): Observable<number> {
+    const searchCriteria = {
+      criteriaList: criteriaElts,
+      pageNumber: 0,
+      size: 1,
+      trackTotalHits: true,
+    };
+    return this.searchArchiveUnitsByCriteria(searchCriteria, projectId, accessContract).pipe(
+      map((pagedResult: PagedResult) => {
+        return pagedResult.totalResults;
+      }),
+      catchError(() => {
+        return of(-1);
+      })
     );
   }
 
