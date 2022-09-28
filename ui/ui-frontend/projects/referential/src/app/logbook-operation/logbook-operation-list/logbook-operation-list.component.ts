@@ -43,6 +43,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -50,7 +51,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { merge, Subject } from 'rxjs';
+import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { EventFilter } from '../event-filter.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
@@ -79,7 +80,7 @@ const ARCHIVE_TRANSFER_LABEL = 'ARCHIVE_TRANSFER_LABEL';
     ]),
   ],
 })
-export class LogbookOperationListComponent extends InfiniteScrollTable<Event> implements OnInit, OnChanges {
+export class LogbookOperationListComponent extends InfiniteScrollTable<Event> implements OnInit, OnChanges, OnDestroy {
   @Input() tenantIdentifier: number;
 
   @Input('search')
@@ -96,6 +97,8 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
 
   private _searchText: string;
   private _searchFilters: Readonly<EventFilter>;
+
+  logbookOperationsSubscription: Subscription;
 
   @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<LogbookOperationListComponent>;
   @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
@@ -125,12 +128,13 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange).pipe(
       debounceTime(FILTER_DEBOUNCE_TIME_MS)
     );
+
     searchCriteriaChange.subscribe(() => {
       this.refreshList();
     });
     this.refreshOperationCategoriesOptions();
     this.refreshList();
-    this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperationsReloaded) =>
+    this.logbookOperationsSubscription = this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperationsReloaded) =>
       this.updateLogbookOperations(logbookOperationsReloaded)
     );
   }
@@ -206,5 +210,9 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
 
   selectEvent(event: Event) {
     this.eventClick.emit(event);
+  }
+
+  ngOnDestroy(): void {
+    this.logbookOperationsSubscription?.unsubscribe();
   }
 }
