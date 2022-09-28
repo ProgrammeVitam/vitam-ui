@@ -74,16 +74,16 @@ export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, O
     this.destroy.next();
   }
 
-  openPanel(item: T) {
+  async openPanel(item: T) {
     this.openedItem = item;
     if (this.panel && !this.panel.opened) {
-      this.panel.open();
+      await this.panel.open();
     }
   }
 
-  closePanel() {
+  async closePanel() {
     if (this.panel && this.panel.opened) {
-      this.panel.close();
+      await this.panel.close();
     }
   }
 

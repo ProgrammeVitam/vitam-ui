@@ -41,7 +41,6 @@ import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaElementsDto;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
-import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
@@ -86,9 +85,7 @@ public class Utils {
     }
 
     public static AuthUserDto buildAuthUserDto() {
-        final AuthUserDto extUserDto =
-            new AuthUserDto(buildUserDto("1", "eee@eee.fr", "groupId", "customerId", "Level"));
-        return extUserDto;
+        return new AuthUserDto(buildUserDto("1", "eee@eee.fr", "groupId", "customerId", "Level"));
     }
 
     public static UserDto buildUserDto(final String id, final String email, final String groupId,

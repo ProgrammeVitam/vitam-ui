@@ -54,7 +54,7 @@ public class ExportDipCriteriaDto implements Serializable {
 
     private DipRequestParameters dipRequestParameters;
     private SearchCriteriaDto exportDIPSearchCriteria;
-    private Set<String> dataObjectVersions ;
+    private Set<String> dataObjectVersions;
     private boolean lifeCycleLogs;
-
+    private Long maxSizeThreshold;
 }

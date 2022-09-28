@@ -49,7 +49,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -539,7 +538,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
-            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsContainsIgnoreCase(domain);
+            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsIgnoreCase(domain);
             Assert.isTrue(!optCustomer.isPresent(), message + ": a customer has already the email domain " + domain);
         }
     }
@@ -550,7 +549,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
-            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsContainsIgnoreCase(domain);
+            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsIgnoreCase(domain);
             if (optCustomer.isPresent()) {
                 Assert.isTrue(StringUtils.equals(optCustomer.get().getId(), customerId),
                     message + ": a customer has already the email domain " + domain);
@@ -564,9 +563,10 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
-        final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
+        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
+        final VitamContext vitamContext = new VitamContext(tenantIdentifier)
             .setAccessContract(
-                        internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier())
+                        internalSecurityService.getTenant(tenantIdentifier)
                 .getAccessContractLogbookIdentifier())
             .setApplicationSessionId(internalSecurityService.getApplicationId());
 

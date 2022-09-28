@@ -24,12 +24,13 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Colors, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project } from 'ui-frontend-common';
-import { BehaviorSubject } from 'rxjs';
-import { ProjectsService } from '../projects.service';
-import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
+import { Colors, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project } from 'ui-frontend-common';
+import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import { ProjectsService } from '../projects.service';
 
 @Component({
   selector: 'app-project-list',
@@ -78,7 +79,10 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     },
   ];
 
-  constructor(public projectsService: ProjectsService, private translationService: TranslateService) {
+  @Output()
+  previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
+
+  constructor(public projectsService: ProjectsService, private translationService: TranslateService, private router: Router) {
     super(projectsService);
   }
 
@@ -99,5 +103,13 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
 
   emitOrderChange(event: string) {
     this.orderChange.next(event);
+  }
+
+  searchArchiveUnitsByProject(projectId: string) {
+    this.router.navigate(['collect/archive-search-collect', projectId]);
+  }
+
+  showProjectDetails(projectId: string) {
+    this.previewProjectDetailsPanel.emit(projectId);
   }
 }

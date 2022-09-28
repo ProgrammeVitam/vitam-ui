@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 
 import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
@@ -46,18 +47,29 @@ import { MenuType } from '../menu-type.enum';
 @Component({
   selector: 'vitamui-common-application-menu',
   templateUrl: './application-menu.component.html',
-  styleUrls: ['./application-menu.component.scss']
+  styleUrls: ['./application-menu.component.scss'],
 })
-export class ApplicationMenuComponent {
-
+export class ApplicationMenuComponent implements OnInit, OnDestroy {
   @Input() appId: ApplicationId;
+  activeApplication: Application;
+  applications: Application[];
+  getApplicationSubscription: Subscription;
 
-  constructor(
-    public applicationService: ApplicationService,
-    public dialog: MatDialog) { }
+  constructor(public applicationService: ApplicationService, public dialog: MatDialog) {}
 
-  get activeApplication(): Application {
-    return this.applicationService.applications.find((application) => application.identifier === this.appId);
+  getActiveApplication() {
+    this.getApplicationSubscription = this.applicationService.getApplications$().subscribe((applications) => {
+      this.applications = applications;
+      this.activeApplication = applications.find((application) => application.identifier === this.appId);
+    });
+  }
+
+  ngOnInit(): void {
+    this.getActiveApplication();
+  }
+
+  ngOnDestroy(): void {
+    this.getApplicationSubscription?.unsubscribe();
   }
 
   openApplicationMenu() {
@@ -65,8 +77,8 @@ export class ApplicationMenuComponent {
       panelClass: 'vitamui-modal',
       data: {
         menuType: MenuType.application,
-        applicationConfig: { applications: this.applicationService.applications, categories: this.applicationService.categories }
-      }
+        applicationConfig: { applications: this.applications, categories: this.applicationService.categories },
+      },
     });
   }
 }

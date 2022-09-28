@@ -139,7 +139,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
 
         // Then
         Assertions.assertThat(vitamUISearchResponseDto).isNotNull();
-        Assertions.assertThat(vitamUISearchResponseDto.getResults().size()).isEqualTo(20);
+        Assertions.assertThat(vitamUISearchResponseDto.getResults()).hasSize(20);
     }
 
     private RequestResponse<JsonNode> buildUnitMetadataResponse(String filename)
@@ -148,6 +148,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream = ArchiveSearchMgtRulesInternalServiceTest.class.getClassLoader()
             .getResourceAsStream(filename);
+        Assertions.assertThat(inputStream).isNotNull();
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }

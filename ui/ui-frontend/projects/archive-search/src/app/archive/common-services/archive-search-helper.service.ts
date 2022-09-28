@@ -27,10 +27,9 @@
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator } from 'ui-frontend-common';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
 import {
   CriteriaValue,
   SearchCriteria,
@@ -47,7 +46,8 @@ const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
 
 @Injectable()
 export class ArchiveSearchHelperService {
-  constructor(private archiveExchangeDataService: ArchiveSharedDataService, private archiveService: ArchiveService) {}
+  constructor(private archiveExchangeDataService: ArchiveSharedDataService, private archiveService: ArchiveService) {
+  }
 
   addCriteria(
     searchCriterias: Map<string, SearchCriteria>,
@@ -88,6 +88,13 @@ export class ArchiveSearchHelperService {
         }
         if (category === SearchCriteriaTypeEnum.STORAGE_RULE) {
           this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        }
+        if (category === SearchCriteriaTypeEnum.REUSE_RULE) {
+          this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        }
+
+        if (category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
+          this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
         }
       } else if (searchCriterias) {
         nbQueryCriteria++;
@@ -154,6 +161,20 @@ export class ArchiveSearchHelperService {
         if (emit === true && category === SearchCriteriaTypeEnum.STORAGE_RULE) {
           this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
         }
+        if (emit === true && category === SearchCriteriaTypeEnum.REUSE_RULE) {
+          this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
+            keyElt,
+            valueElt,
+            action: ActionOnCriteria.ADD,
+          });
+        }
+        if (emit === true && category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
+          this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
+            keyElt,
+            valueElt,
+            action: ActionOnCriteria.ADD,
+          });
+        }
       }
     }
   }
@@ -215,16 +236,24 @@ export class ArchiveSearchHelperService {
             valueElt,
             action: ActionOnCriteria.REMOVE,
           });
-        }
-        if (emit === true) {
+
           this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
             action: ActionOnCriteria.REMOVE,
           });
-        }
-        if (emit === true) {
+
           this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({
+            keyElt,
+            valueElt,
+            action: ActionOnCriteria.REMOVE,
+          });
+          this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
+            keyElt,
+            valueElt,
+            action: ActionOnCriteria.REMOVE,
+          });
+          this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
             action: ActionOnCriteria.REMOVE,
@@ -283,6 +312,20 @@ export class ArchiveSearchHelperService {
               action: ActionOnCriteria.REMOVE,
             });
           }
+          if (emit === true && val.category === SearchCriteriaTypeEnum.REUSE_RULE) {
+            this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
+              keyElt,
+              valueElt,
+              action: ActionOnCriteria.REMOVE,
+            });
+          }
+          if (emit === true && val.category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
+            this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
+              keyElt,
+              valueElt,
+              action: ActionOnCriteria.REMOVE,
+            });
+          }
           if (emit === true && val.category === SearchCriteriaTypeEnum.FIELDS && val.key === ALL_ARCHIVE_UNIT_TYPES) {
             this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
               keyElt,
@@ -308,6 +351,7 @@ export class ArchiveSearchHelperService {
       });
     });
   }
+
   openSnackBarForWorkflow(snackBar: MatSnackBar, message: string, serviceUrl?: string) {
     snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
@@ -335,6 +379,12 @@ export class ArchiveSearchHelperService {
           defaultFacetTabIndex = 3;
         }
 
+        if (defaultFacetTabIndex > 4 && this.archiveService.isDisseminationRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 4;
+        }
+        if (defaultFacetTabIndex > 5 && this.archiveService.isReuseRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 5;
+        }
         if (defaultFacetTabIndex > 6 && this.archiveService.isClassificationRuleCriteria(criteria)) {
           defaultFacetTabIndex = 6;
         }
@@ -345,6 +395,7 @@ export class ArchiveSearchHelperService {
     }
     return defaultFacetTabIndex;
   }
+
   checkIfRulesFacetsCanBeComputed(searchCriterias: Map<string, SearchCriteria>): boolean {
     let hasMgtRuleCriteria = false;
     if (searchCriterias && searchCriterias.size > 0) {
@@ -353,7 +404,9 @@ export class ArchiveSearchHelperService {
           (!hasMgtRuleCriteria &&
             (this.archiveService.isAppraisalRuleCriteria(criteria) ||
               this.archiveService.isAccessRuleCriteria(criteria) ||
-              this.archiveService.isStorageRuleCriteria(criteria))) ||
+              this.archiveService.isStorageRuleCriteria(criteria) ||
+              this.archiveService.isReuseRuleCriteria(criteria) ||
+              this.archiveService.isDisseminationRuleCriteria(criteria))) ||
           this.archiveService.isWaitingToRecalculateCriteria(criteria.key) ||
           this.archiveService.isEliminationTenchnicalIdCriteria(criteria.key)
         ) {
@@ -385,23 +438,12 @@ export class ArchiveSearchHelperService {
     criteriaSearchList: SearchCriteriaEltDto[]
   ) {
     searchCriterias.forEach((criteria: SearchCriteria) => {
-      if (
-        criteria.category === SearchCriteriaTypeEnum.ACCESS_RULE ||
-        criteria.category === SearchCriteriaTypeEnum.APPRAISAL_RULE ||
-        criteria.category === SearchCriteriaTypeEnum.STORAGE_RULE
-      ) {
+      if (criteria.category.toString() === managementRuleType) {
         const strValues: CriteriaValue[] = [];
         criteria.values.forEach((elt) => {
           strValues.push(elt.value);
         });
-        let replacedCriteria;
-        if (managementRuleType === SearchCriteriaTypeEnum.ACCESS_RULE) {
-          replacedCriteria = criteria.key.replace('_ACCESS_RULE', '');
-        } else if (managementRuleType === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-          replacedCriteria = criteria.key.replace('_APPRAISAL_RULE', '');
-        } else if (managementRuleType === SearchCriteriaTypeEnum.STORAGE_RULE) {
-          replacedCriteria = criteria.key.replace('_STORAGE_RULE', '');
-        }
+        let replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
 
         criteriaSearchList.push({
           criteria: replacedCriteria,

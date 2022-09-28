@@ -43,8 +43,6 @@ ui-portal:
   header-logo: logo_HEADER.png
   footer-logo: logo_FOOTER.png
   user-logo: logo_USER.png
-  portal-message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics."
-  portal-title: "Portail des applications de l'archivage"
   theme-colors:
     vitamui-primary: "#702382"
     vitamui-secondary: "#2563A9"
@@ -112,6 +110,10 @@ ui-portal:
       title: "Organisation & droits utilisateurs"
       displayTitle: true
       order: 5
+
+portal:
+  message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toute sécurité et pour imprimer des étiquettes en quelques clics."
+  title: "Portail des applications de l'archivage"
 
 ui:
   url: "https://dev.vitamui.com:4200"

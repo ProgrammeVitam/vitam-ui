@@ -95,6 +95,7 @@ ui-collect:
     collect: "https://dev.vitamui.com:4210/collect"
     ingest: "https://dev.vitamui.com:4208/ingest"
     referential: "https://dev.vitamui.com:4202"
+    archives-search: "https://dev.vitamui.com:4209/archive-search"
 
   portal-categories:
     ingest_and_consultation:

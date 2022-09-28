@@ -32,6 +32,7 @@ import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitamui.archive.internal.server.utils.FileReader;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
@@ -46,10 +47,7 @@ import org.mockito.InjectMocks;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,7 +150,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         //then
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent("appraisal/one-date-query.txt");
+        String queryFileStr = FileReader.loadFileContent("appraisal/one-date-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -180,7 +178,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.debug(queryStr);
-        String queryFileStr = loadFileContent("appraisal/interval-date-query.txt");
+        String queryFileStr = FileReader.loadFileContent("appraisal/interval-date-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -207,7 +205,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("appraisal/identifier-rule-query.txt");
+        String queryFileStr = FileReader.loadFileContent("appraisal/identifier-rule-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -242,7 +240,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("appraisal/identifier-inherited-only-rule-query.txt");
+        String queryFileStr = FileReader.loadFileContent("appraisal/identifier-inherited-only-rule-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -287,7 +285,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("appraisal/identifier-inherited-or-scoped-rule-query.txt");
+        String queryFileStr = FileReader.loadFileContent("appraisal/identifier-inherited-or-scoped-rule-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -332,7 +330,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("appraisal/identifier-waiting-to-recalculate-rule-query.txt");
+        String queryFileStr = FileReader.loadFileContent("appraisal/identifier-waiting-to-recalculate-rule-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -376,7 +374,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("appraisal/identifier-no-rules-query.txt");
+        String queryFileStr = FileReader.loadFileContent("appraisal/identifier-no-rules-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -420,7 +418,8 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("appraisal/identifier-final-action-elimination-rules-query.txt");
+        String queryFileStr =
+            FileReader.loadFileContent("appraisal/identifier-final-action-elimination-rules-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -457,7 +456,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).hasSize(2);
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("appraisal/identifier-final-action-keep-rules-query.txt");
+        String queryFileStr = FileReader.loadFileContent("appraisal/identifier-final-action-keep-rules-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -514,7 +513,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).hasSize(1);
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("appraisal/vitam_query_with_start_date.txt");
+        String queryFileStr = FileReader.loadFileContent("appraisal/vitam_query_with_start_date.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -623,7 +622,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(1);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
@@ -660,7 +659,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(2);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
@@ -688,7 +687,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(1);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_CATEGORY_INHERITANCE_APPRAISAL);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_CATEGORY_INHERITANCE_APPRAISAL);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
@@ -716,7 +715,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(1);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_CATEGORY_INHERITANCE_STORAGE);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_CATEGORY_INHERITANCE_STORAGE);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
@@ -744,10 +743,11 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(1);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_APPRAISAL_PREVENT_RULE_IDENTIFIER);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_APPRAISAL_PREVENT_RULE_IDENTIFIER);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
+
     @Test
     void testFillQueryFromCriteriaListRulesWithPreventRulesIdentifiersListParameterThenReturnTheExactQuery()
         throws Exception {
@@ -771,10 +771,11 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(1);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_APPRAISAL_PREVENT_RULES_IDENTIFIERS_LIST);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_APPRAISAL_PREVENT_RULES_IDENTIFIERS_LIST);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
+
     @Test
     void testFillQueryFromCriteriaListRulesWithInheritanceAndPreventRuleIdentifierParameterThenReturnTheExactQuery()
         throws Exception {
@@ -806,7 +807,8 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(2);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_APPRAISAL_INHERITANCE_AND_PREVENT_RULE_IDENTIFIER);
+        String queryFileStr =
+            FileReader.loadFileContent(SEARCH_QUERY_WITH_APPRAISAL_INHERITANCE_AND_PREVENT_RULE_IDENTIFIER);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
@@ -828,7 +830,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         BooleanQuery query = and();
 
         //then
-        assertThatCode(() ->   archivesSearchManagementRulesQueryBuilderService
+        assertThatCode(() -> archivesSearchManagementRulesQueryBuilderService
             .fillQueryFromMgtRulesCriteriaList(query, criteriaList)).
             doesNotThrowAnyException();
         assertThat(query).isNotNull();
@@ -837,23 +839,6 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
 
     }
 
-    private String loadFileContent(String filename) throws IOException {
-        InputStream inputStream = ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest.class.getClassLoader()
-            .getResourceAsStream("data/queries/" + filename);
-        return readFromInputStream(inputStream);
-    }
 
-    private String readFromInputStream(InputStream inputStream)
-        throws IOException {
-        StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br
-            = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append("\n");
-            }
-        }
-        return resultStringBuilder.toString();
-    }
 
 }

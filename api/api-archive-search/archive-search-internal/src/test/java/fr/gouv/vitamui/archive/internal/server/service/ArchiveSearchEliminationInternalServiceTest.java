@@ -38,6 +38,7 @@ package fr.gouv.vitamui.archive.internal.server.service;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
@@ -56,6 +57,8 @@ public class ArchiveSearchEliminationInternalServiceTest {
 
     @MockBean(name = "eliminationService")
     private EliminationService eliminationService;
+    @MockBean(name = "objectMapper")
+    private ObjectMapper objectMapper;
 
     @MockBean(name = "archiveSearchInternalService")
     private ArchiveSearchInternalService archiveSearchInternalService;
@@ -71,14 +74,14 @@ public class ArchiveSearchEliminationInternalServiceTest {
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         archiveSearchEliminationInternalService =
-            new ArchiveSearchEliminationInternalService(archiveSearchInternalService, eliminationService);
+            new ArchiveSearchEliminationInternalService(archiveSearchInternalService, eliminationService,objectMapper);
     }
 
     @Test
     public void getFinalEliminationConstructedQuery() throws Exception {
         JsonNode fromString = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_QUERY));
         EliminationRequestBody eliminationRequestBody2 =
-            archiveSearchEliminationInternalService.getEliminationRequestBody(fromString);
+            archiveSearchEliminationInternalService.getEliminationRequestBody(fromString, null);
 
         JsonNode resultExpected = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_FINAL_QUERY));
         Assertions.assertThat(eliminationRequestBody2.getDslRequest()).isEqualTo(resultExpected);

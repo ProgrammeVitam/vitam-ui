@@ -53,6 +53,7 @@ import {CustomerColorsInputModule} from '../customer-create/customer-colors-inpu
 import { CustomerPreviewComponent } from './customer-preview.component';
 import { GraphicIdentityTabComponent } from './graphic-identity-tab/graphic-identity-tab.component';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-tab/graphic-identity-update/graphic-identity-update.component';
+// tslint:disable-next-line: max-line-length
 import { GraphicIdentityFormComponent } from './graphic-identity-tab/graphic-identity/graphic-identity-form/graphic-identity-form.component';
 import { GraphicIdentityComponent } from './graphic-identity-tab/graphic-identity/graphic-identity.component';
 import { HomepageMessageTabComponent } from './homepage-message-tab/homepage-message-tab.component';

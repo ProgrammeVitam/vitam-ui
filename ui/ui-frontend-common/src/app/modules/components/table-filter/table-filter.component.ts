@@ -39,8 +39,17 @@ import { startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { SelectionModel } from '@angular/cdk/collections';
 import {
-  AfterContentInit, Component, ContentChildren, EventEmitter, HostListener, Input, NgZone,
-  OnDestroy, OnInit, Output, QueryList
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  EventEmitter,
+  HostListener,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
 } from '@angular/core';
 
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
@@ -48,10 +57,9 @@ import { TableFilterOptionComponent } from './table-filter-option/table-filter-o
 @Component({
   selector: 'vitamui-common-table-filter',
   templateUrl: './table-filter.component.html',
-  styleUrls: ['./table-filter.component.scss']
+  styleUrls: ['./table-filter.component.scss'],
 })
 export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy {
-
   @Input()
   set filter(values: any[]) {
     this._filter = values || [];
@@ -79,15 +87,16 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
       );
     }
 
-    return this.ngZone.onStable
-      .asObservable()
-      .pipe(take(1), switchMap(() => this.optionSelectionChanges));
+    return this.ngZone.onStable.asObservable().pipe(
+      take(1),
+      switchMap(() => this.optionSelectionChanges)
+    );
   }) as Observable<TableFilterOptionComponent>;
 
   private readonly destroy = new Subject<void>();
   private selectionModel: SelectionModel<TableFilterOptionComponent>;
 
-  constructor(private ngZone: NgZone) { }
+  constructor(private ngZone: NgZone) {}
 
   ngOnInit() {
     this.selectionModel = new SelectionModel<TableFilterOptionComponent>(true);
@@ -150,9 +159,7 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
     const changedOrDestroyed = merge(this.options.changes, this.destroy);
 
     this.optionSelectionChanges.pipe(takeUntil(changedOrDestroyed)).subscribe((filterOption) => {
-
-      if (!this.multiSelect)
-      {
+      if (!this.multiSelect) {
         const options = this.options.forEach((option) => {
           if (option.value !== filterOption.value && option.selected) {
             this.selectionModel.deselect(option);
@@ -177,5 +184,4 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
 
     this._filter.forEach((currentValue) => this.selectValue(currentValue));
   }
-
 }

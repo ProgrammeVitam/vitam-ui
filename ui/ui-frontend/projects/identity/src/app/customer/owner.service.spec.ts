@@ -39,9 +39,12 @@ import { inject, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Owner } from 'ui-frontend-common';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import { BASE_URL, Owner, VitamUISnackBarService } from 'ui-frontend-common';
 import { OwnerService } from './owner.service';
+
+import { TranslateService } from '@ngx-translate/core';
+
+import { EMPTY } from 'rxjs';
 
 const expectedOwner: Owner = {
   id: '42',
@@ -62,16 +65,16 @@ const expectedOwner: Owner = {
 describe('OwnerService', () => {
   let httpTestingController: HttpTestingController;
   let ownerService: OwnerService;
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
-
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NoopAnimationsModule],
       providers: [
         OwnerService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
       ]
     });
 
@@ -91,15 +94,15 @@ describe('OwnerService', () => {
   });
 
   it('should call /fake-api/owners and display a success message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBar);
+    const snackBarService = TestBed.inject(VitamUISnackBarService);
     ownerService.create(expectedOwner).subscribe(
       (response: Owner) => {
         expect(response).toEqual(expectedOwner);
-        expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-        expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: { type: 'ownerCreate', name: expectedOwner.name },
-          duration: 10000
+        expect(snackBarService.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.OWNER_CREATE',
+          translateParams: {
+            param1: expectedOwner.name,
+          }
         });
       },
       fail
@@ -110,12 +113,11 @@ describe('OwnerService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBar);
+    const snackBarService = TestBed.inject(VitamUISnackBarService);
     ownerService.create(expectedOwner).subscribe(
       fail,
       () => {
-        expect(snackBar.open).toHaveBeenCalledTimes(1);
-        expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, { panelClass: 'vitamui-snack-bar', duration: 10000 });
+        expect(snackBarService.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false});
       }
     );
     const req = httpTestingController.expectOne('/fake-api/owners');

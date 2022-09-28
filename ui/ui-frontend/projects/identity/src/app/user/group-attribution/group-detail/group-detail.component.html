@@ -11,7 +11,7 @@
         <div class="col-4" vitamuiCommonEllipsis>{{ group?.description }}</div>
         <div class="col-3" vitamuiCommonEllipsis>{{ group?.level }}</div>
         <div class="col-5">
-          <div class="d-flex justify-content-between align-items-center py-1 px-2 mb-2 vitamui-profile-list" *ngFor="let profile of group?.profiles">
+          <div class="d-flex justify-content-between align-items-center py-1 px-2 mb-2 vitamui-profile-list" *ngFor="let profile of groupProfiles">
             <div>
               <div class="profile-value">{{ profile?.name | titlecase }}</div>
             </div>

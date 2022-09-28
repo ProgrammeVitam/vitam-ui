@@ -66,9 +66,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.TRUE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.ALL_UNIT_UPS;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.REUSE_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.STORAGE_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaDataType.STRING;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaOperators.EQ;
@@ -90,7 +93,6 @@ import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULE_END_DATE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.UNITS_UPS;
 
 /**
  * Archive-Search facets Internal service .
@@ -114,7 +116,7 @@ public class ArchiveSearchFacetsInternalService {
     }
 
 
-    public void mergeValidComputedInheritenceCriteriaWithAppraisalCriteria(
+    public void mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(
         List<SearchCriteriaEltDto> initialCriteriaList,
         ArchiveSearchConsts.CriteriaCategory criteriaCategory) {
         long originRulesCriteriaCount = initialCriteriaList.stream().filter(
@@ -151,13 +153,16 @@ public class ArchiveSearchFacetsInternalService {
 
         List<FacetResultsDto> globalRulesFacets = new ArrayList<>();
         try {
-            List<ArchiveSearchConsts.CriteriaCategory> categories = List.of(APPRAISAL_RULE, ACCESS_RULE, STORAGE_RULE);
+            List<ArchiveSearchConsts.CriteriaCategory> categories =
+                List.of(APPRAISAL_RULE, ACCESS_RULE, STORAGE_RULE, REUSE_RULE, DISSEMINATION_RULE);
             List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList = new ArrayList<>(
                 initialArchiveUnitsCriteriaList);
             indexedArchiveUnitsCriteriaList.add(new SearchCriteriaEltDto(RULES_COMPUTED, FIELDS, EQ.name(),
                 List.of(new CriteriaValue(TRUE)), STRING.name()));
             SelectMultiQuery selectMultiQuery = archiveSearchInternalService
                 .createSelectMultiQuery(indexedArchiveUnitsCriteriaList);
+            selectMultiQuery.addUsedProjection("#id");
+            selectMultiQuery.setLimitFilter(0, 1);
             JsonNode vitamResponse =
                 archiveSearchInternalService.searchArchiveUnits(selectMultiQuery.getFinalSelect(), vitamContext);
             VitamUISearchResponseDto archivesUnitsResults = objectMapper.treeToValue(vitamResponse,
@@ -196,6 +201,9 @@ public class ArchiveSearchFacetsInternalService {
 
         SelectMultiQuery selectMultiQuery = archiveSearchInternalService
             .createSelectMultiQuery(criteriaList);
+
+        selectMultiQuery.setLimitFilter(0, 1);
+        selectMultiQuery.trackTotalHits(true);
 
         try {
             List<SearchCriteriaEltDto> rulesCriteriaList =
@@ -348,7 +356,7 @@ public class ArchiveSearchFacetsInternalService {
     public void addPositionsNodesFacet(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)
         throws InvalidCreateOperationException {
         List<String> nodesCriteriaList = searchQuery.extractNodesCriteria();
-        selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COUNT_BY_NODE, UNITS_UPS,
+        selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COUNT_BY_NODE, ALL_UNIT_UPS,
             (nodesCriteriaList.size() + 1) * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
     }
 

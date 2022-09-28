@@ -36,14 +36,13 @@
  */
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { ENVIRONMENT } from 'ui-frontend-common';
+import { ENVIRONMENT, VitamUISnackBarService } from 'ui-frontend-common';
 import { BASE_URL, IdentityProvider, LoggerModule, Operators, SearchQuery, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from './../../../../environments/environment';
 
 import { Type } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar';
 import { IdentityProviderService } from './identity-provider.service';
 
 describe('IdentityProviderService', () => {
@@ -66,21 +65,21 @@ describe('IdentityProviderService', () => {
         patterns: ['test.com', 'test.fr'],
         enabled: true,
         keystore,
-        idpMetadata
+        idpMetadata,
       },
     ];
-    const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+    const snackBarSpy = jasmine.createSpyObj(['open']);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, LoggerModule.forRoot()],
       providers: [
         IdentityProviderService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } }
-      ]
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+      ],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
@@ -92,77 +91,62 @@ describe('IdentityProviderService', () => {
   }));
 
   describe('create', () => {
-
     it('should call /fake-api/providers and display a succes message', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
-      identityProviderService.create(identityProviders[0]).subscribe(
-        (response: IdentityProvider) => {
-          expect(response).toEqual(identityProviders[0]);
-          expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-          expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'providerCreate', name: identityProviders[0].name },
-            duration: 10000
-          });
-        },
-        fail
-      );
+      const snackBar = TestBed.inject(VitamUISnackBarService);
+      identityProviderService.create(identityProviders[0]).subscribe((response: IdentityProvider) => {
+        expect(response).toEqual(identityProviders[0]);
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.PROVIDER_CREATE',
+          translateParams: {
+            param1: identityProviders[0].name,
+          },
+        });
+      }, fail);
       const req = httpTestingController.expectOne('/fake-api/providers');
       expect(req.request.method).toEqual('POST');
       req.flush(identityProviders[0]);
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
-      identityProviderService.create(identityProviders[0]).subscribe(
-        fail,
-        () => {
-          expect(snackBar.open).toHaveBeenCalledTimes(1);
-          expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, { panelClass: 'vitamui-snack-bar', duration: 10000 });
-        }
-      );
+      const snackBar = TestBed.inject(VitamUISnackBarService);
+      identityProviderService.create(identityProviders[0]).subscribe(fail, () => {
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
+      });
       const req = httpTestingController.expectOne('/fake-api/providers');
       expect(req.request.method).toEqual('POST');
       req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
     });
-
   });
 
   describe('getAll', () => {
-
     it('should call /fake-api/providers?criteria...', () => {
-      identityProviderService.getAll('4242').subscribe(
-        (result: IdentityProvider[]) => {
-          expect(result).toEqual(identityProviders);
-        },
-        fail
-      );
+      identityProviderService.getAll('4242').subscribe((result: IdentityProvider[]) => {
+        expect(result).toEqual(identityProviders);
+      }, fail);
       const criterionArray: any[] = [{ key: 'customerId', value: '4242', operator: Operators.equals }];
       const query: SearchQuery = { criteria: criterionArray };
       const req = httpTestingController.expectOne('/fake-api/providers?criteria=' + encodeURI(JSON.stringify(query)));
       expect(req.request.method).toEqual('GET');
       req.flush(identityProviders);
     });
-
   });
 
   describe('update', () => {
-
     it('should call PATCH /fake-api/providers/42', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBarService);
       identityProviderService.updated.subscribe((provider: IdentityProvider) => expect(provider).toEqual(identityProviders[0]), fail);
-      identityProviderService.patch(identityProviders[0]).subscribe(
-        (provider: IdentityProvider) => {
-          expect(provider).toEqual(identityProviders[0]);
-          expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-          expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'providerUpdate', name: identityProviders[0].name },
-            duration: 10000
-          });
-        },
-        fail
-      );
+      identityProviderService.patch(identityProviders[0]).subscribe((provider: IdentityProvider) => {
+        expect(provider).toEqual(identityProviders[0]);
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+          translateParams: {
+            param1: identityProviders[0].name,
+          },
+        });
+      }, fail);
       const req = httpTestingController.expectOne('/fake-api/providers/42');
       expect(req.request.method).toEqual('PATCH');
       expect(req.request.body).toEqual(identityProviders[0]);
@@ -170,39 +154,32 @@ describe('IdentityProviderService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
-      identityProviderService.patch(identityProviders[0]).subscribe(
-        fail,
-        () => {
-          expect(snackBar.open).toHaveBeenCalledTimes(1);
-          expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, { panelClass: 'vitamui-snack-bar', duration: 10000 });
-        }
-      );
+      const snackBar = TestBed.inject(VitamUISnackBarService);
+      identityProviderService.patch(identityProviders[0]).subscribe(fail, () => {
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
+      });
       const req = httpTestingController.expectOne('/fake-api/providers/42');
       expect(req.request.method).toEqual('PATCH');
       req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
     });
-
   });
 
   describe('updateMetadataFile', () => {
-
     it('should call PATCH /fake-api/providers/42/idpMetadata', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBarService);
       const expectedFile = new File([''], 'metadata.xml');
       identityProviderService.updated.subscribe((provider: IdentityProvider) => expect(provider).toEqual(identityProviders[0]), fail);
-      identityProviderService.updateMetadataFile('42', expectedFile).subscribe(
-        (provider: IdentityProvider) => {
-          expect(provider).toEqual(identityProviders[0]);
-          expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-          expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'providerUpdate', name: identityProviders[0].name },
-            duration: 10000
-          });
-        },
-        fail
-      );
+      identityProviderService.updateMetadataFile('42', expectedFile).subscribe((provider: IdentityProvider) => {
+        expect(provider).toEqual(identityProviders[0]);
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+          translateParams: {
+            param1: identityProviders[0].name,
+          },
+        });
+      }, fail);
       const req = httpTestingController.expectOne('/fake-api/providers/42/idpMetadata');
       expect(req.request.method).toEqual('PATCH');
       const formData = new FormData();
@@ -213,39 +190,32 @@ describe('IdentityProviderService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
-      identityProviderService.updateMetadataFile('42', new File([''], 'metadata.xml')).subscribe(
-        fail,
-        () => {
-          expect(snackBar.open).toHaveBeenCalledTimes(1);
-          expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, { panelClass: 'vitamui-snack-bar', duration: 10000 });
-        }
-      );
+      const snackBar = TestBed.inject(VitamUISnackBarService);
+      identityProviderService.updateMetadataFile('42', new File([''], 'metadata.xml')).subscribe(fail, () => {
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
+      });
       const req = httpTestingController.expectOne('/fake-api/providers/42/idpMetadata');
       expect(req.request.method).toEqual('PATCH');
       req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
     });
-
   });
 
   describe('updateKeystore', () => {
-
     it('should call PATCH /fake-api/providers/42/keystore', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBarService);
       const expectedFile = new File([''], 'keystore.jks');
       identityProviderService.updated.subscribe((provider: IdentityProvider) => expect(provider).toEqual(identityProviders[0]), fail);
-      identityProviderService.updateKeystore('42', expectedFile, 'password').subscribe(
-        (provider: IdentityProvider) => {
-          expect(provider).toEqual(identityProviders[0]);
-          expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-          expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'providerUpdate', name: identityProviders[0].name },
-            duration: 10000
-          });
-        },
-        fail
-      );
+      identityProviderService.updateKeystore('42', expectedFile, 'password').subscribe((provider: IdentityProvider) => {
+        expect(provider).toEqual(identityProviders[0]);
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+          translateParams: {
+            param1: identityProviders[0].name,
+          },
+        });
+      }, fail);
       const req = httpTestingController.expectOne('/fake-api/providers/42/keystore');
       expect(req.request.method).toEqual('PATCH');
       const formData = new FormData();
@@ -256,18 +226,14 @@ describe('IdentityProviderService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
-      identityProviderService.updateKeystore('42', new File([''], 'keystore.jks'), 'password').subscribe(
-        fail,
-        () => {
-          expect(snackBar.open).toHaveBeenCalledTimes(1);
-          expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, { panelClass: 'vitamui-snack-bar', duration: 10000 });
-        }
-      );
+      const snackBar = TestBed.inject(VitamUISnackBarService);
+      identityProviderService.updateKeystore('42', new File([''], 'keystore.jks'), 'password').subscribe(fail, () => {
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
+      });
       const req = httpTestingController.expectOne('/fake-api/providers/42/keystore');
       expect(req.request.method).toEqual('PATCH');
       req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
     });
-
   });
 });

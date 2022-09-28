@@ -51,9 +51,8 @@ import {
   Rule,
   RuleService,
   User,
-  VitamUISnackBar,
+  VitamUISnackBarService,
 } from 'ui-frontend-common';
-import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -117,7 +116,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     public ruleService: RuleService,
     private authService: AuthService,
     private matDialog: MatDialog,
-    private snackBar: VitamUISnackBar
+    private snackBarService: VitamUISnackBarService
   ) {
     super(ruleService);
     this.genericUserRole = {
@@ -199,14 +198,13 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 5000,
-          data: { type: 'ruleDeleteStart', name: rule.ruleId },
+        this.snackBarService.open({
+          message: 'SNACKBAR.RULE_DELETION_START',
+          icon: 'vitamui-icon-admin-rules',
+          translateParams: { name: rule.ruleId },
         });
-        this.ruleService.delete(rule).subscribe(() => {
-          this.searchRuleOrdered();
-        });
+
+        this.ruleService.delete(rule).subscribe(() => this.searchRuleOrdered());
       });
   }
 }

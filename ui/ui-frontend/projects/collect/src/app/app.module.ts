@@ -42,21 +42,13 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
-
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatNativeDateModule } from '@angular/material/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
+import { CoreModule } from './collect/core/core.module';
+import { QuicklinkModule } from 'ngx-quicklink';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
@@ -74,17 +66,8 @@ registerLocaleData(localeFr, 'fr');
     BrowserAnimationsModule,
     BrowserModule,
     VitamUICommonModule,
-    AppRoutingModule,
     QuicklinkModule,
-
-    MatDialogModule,
-    MatMenuModule,
-    MatSidenavModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatTooltipModule,
-
+    AppRoutingModule,
     TranslateModule.forRoot({
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
       defaultLanguage: 'fr',

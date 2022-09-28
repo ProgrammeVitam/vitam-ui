@@ -40,11 +40,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { merge, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState } from 'ui-frontend-common';
+import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState, StartupService } from 'ui-frontend-common';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
-import { CustomerCreateValidators } from './customer-create.validators';
+import { ALPHA_NUMERIC_REGEX, CustomerCreateValidators, CUSTOMER_CODE_MAX_LENGTH } from './customer-create.validators';
 
 interface CustomerInfo {
   code: string;
@@ -58,7 +58,10 @@ interface CustomerInfo {
   styleUrls: ['./customer-create.component.scss'],
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
-  private destroy = new Subject();
+  public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;
+  public maxStreetLength: number;
+  public stepIndex = 0;
+  public stepCount = 6;
   public form: FormGroup;
   public hasError = true;
   public message: string;
@@ -68,37 +71,28 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     name: null,
     companyName: null,
   };
-  public stepIndex = 0;
-  public stepCount = 6;
-  private _customerForm: FormGroup;
   public get customerForm(): FormGroup {
     return this._customerForm;
   }
   public set customerForm(form: FormGroup) {
     this._customerForm = form;
   }
-  gdprReadOnlyStatus: boolean;
-
-  // tslint:disable-next-line: variable-name
-  private _homepageMessageForm: FormGroup;
+  public logos: Logo[];
+  public countries: CountryOption[];
+  public portalTitles: { [language: string]: string };
+  public portalMessages: { [language: string]: string };
   public get homepageMessageForm(): FormGroup {
     return this._homepageMessageForm;
   }
   public set homepageMessageForm(form: FormGroup) {
     this._homepageMessageForm = form;
   }
-
-  public portalTitles: {
-    [language: string]: string;
-  };
-
-  public portalMessages: {
-    [language: string]: string;
-  };
-
-  public logos: Logo[];
-
-  public countries: CountryOption[];
+  gdprReadOnlyStatus: boolean;
+  private destroy = new Subject();
+  // tslint:disable-next-line: variable-name
+  private _homepageMessageForm: FormGroup;
+  // tslint:disable-next-line: variable-name
+  private _customerForm: FormGroup;
 
   customer: Customer;
 
@@ -109,23 +103,27 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private customerCreateValidators: CustomerCreateValidators,
     private confirmDialogService: ConfirmDialogService,
-    private matDialog: MatDialog,
     private tenantFormValidators: TenantFormValidators,
-    private countryService: CountryService
-  ) {}
-
-  ngOnInit() {
+    private countryService: CountryService,
+    private startupService: StartupService,
+    private matDialog: MatDialog
+  ) {
+    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
       gdprAlert: true,
       gdprAlertDelay: [72, Validators.min(1)],
       enabled: [true, Validators.required],
-      code: [null, [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)], this.customerCreateValidators.uniqueCode()],
+      code: [
+        null,
+        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(this.customerCodeMaxLength)],
+        this.customerCreateValidators.uniqueCode(),
+      ],
       name: [null, Validators.required],
       companyName: [null, Validators.required],
       passwordRevocationDelay: 6,
       otp: OtpState.OPTIONAL,
       address: this.formBuilder.group({
-        street: [null, Validators.required],
+        street: [null, [Validators.required, Validators.maxLength(this.maxStreetLength)]],
         zipCode: [null, Validators.required],
         city: [null, Validators.required],
         country: ['FR', Validators.required],
@@ -141,20 +139,23 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       owners: this.formBuilder.array([this.formBuilder.control(null, Validators.required)]),
       tenantName: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
     });
+
     if (this.data) {
       this.gdprReadOnlyStatus = this.data.gdprReadOnlySettingStatus;
     }
+
     this.form.get('gdprAlert').valueChanges.subscribe(() => {
       if (!this.form.get('gdprAlert').value) {
         this.confirm(CustomerAlertingComponent).subscribe(() => this.form.get('gdprAlert').setValue(true));
       }
     });
+  }
 
+  ngOnInit() {
+    this.onChanges();
     this.customerService.getMyCustomer().subscribe((customerDetails) => {
       this.customer = customerDetails;
     });
-
-    this.onChanges();
 
     this.confirmDialogService
       .listenToEscapeKeyPress(this.dialogRef)

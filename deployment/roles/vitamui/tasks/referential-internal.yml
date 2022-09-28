@@ -2,9 +2,9 @@
   copy:
     src: "{{ item }}"
     dest: "{{ vitamui_folder_conf }}/{{ item | basename }}"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   with_fileglob:
     - "{{ inventory_dir }}/keystores/client-vitam/*.*"
   when:

@@ -78,6 +78,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -159,12 +160,13 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
             .getResourceAsStream(filename);
+        Assertions.assertThat(inputStream).isNotNull();
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
 
     @Test
-    public void testExportCSVWithFrThenReturnTheExactExpectedFile() throws Exception {
+    void testExportCSVWithFrThenReturnTheExactExpectedFile() throws Exception {
         // Given
         setUpData();
         // query
@@ -182,8 +184,9 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         query.setPageNumber(20);
         query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(FR_ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+        Resource GivenResourceCsv = new ByteArrayResource(
+            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                .getResourceAsStream(FR_ARCHIVE_UNITS_RESULTS_CSV)).readAllBytes());
         // When
         Resource responseCsv =
             archiveSearchUnitExportCsvInternalService
@@ -228,8 +231,9 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         query.setPageNumber(20);
         query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(EN_ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+        Resource GivenResourceCsv = new ByteArrayResource(
+            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                .getResourceAsStream(EN_ARCHIVE_UNITS_RESULTS_CSV)).readAllBytes());
         // When
         Resource responseCsv =
             archiveSearchUnitExportCsvInternalService
@@ -289,8 +293,9 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         query.setPageNumber(20);
         query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_TO_ENCODE_CORRECTLY).readAllBytes());
+        Resource GivenResourceCsv = new ByteArrayResource(
+            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_TO_ENCODE_CORRECTLY)).readAllBytes());
         // When
         Resource responseCsv =
             archiveSearchUnitExportCsvInternalService
@@ -351,8 +356,9 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         query.setPageNumber(20);
         query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_FILING_UNIT).readAllBytes());
+        Resource GivenResourceCsv = new ByteArrayResource(
+            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_FILING_UNIT)).readAllBytes());
         // When
         Resource responseCsv =
             archiveSearchUnitExportCsvInternalService
@@ -413,8 +419,9 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         query.setPageNumber(20);
         query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_HOLDING_UNIT).readAllBytes());
+        Resource GivenResourceCsv = new ByteArrayResource(
+            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_HOLDING_UNIT)).readAllBytes());
         // When
         Resource responseCsv =
             archiveSearchUnitExportCsvInternalService
@@ -475,8 +482,9 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         query.setPageNumber(20);
         query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITH_OBJECT).readAllBytes());
+        Resource GivenResourceCsv = new ByteArrayResource(
+            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITH_OBJECT)).readAllBytes());
         // When
         Resource responseCsv =
             archiveSearchUnitExportCsvInternalService
@@ -537,8 +545,9 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         query.setPageNumber(20);
         query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITHOUT_OBJECT).readAllBytes());
+        Resource GivenResourceCsv = new ByteArrayResource(
+            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITHOUT_OBJECT)).readAllBytes());
         // When
         Resource responseCsv =
             archiveSearchUnitExportCsvInternalService
@@ -606,6 +615,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream = ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest.class.getClassLoader()
             .getResourceAsStream(filename);
+        Assertions.assertThat(inputStream).isNotNull();
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
@@ -643,11 +653,8 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
     }
 
     private RequestResponse<AgenciesModel> buildAgenciesResponse() {
-        JsonNode query = null;
         List<AgenciesModel> agenciesModelList = List.of(createAgencyModel("FRAN_NP_009915", "Service producteur1", 0));
-        RequestResponseOK response =
-            new RequestResponseOK<>(query, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
 
-        return response;
+        return new RequestResponseOK<>(null, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
     }
 }

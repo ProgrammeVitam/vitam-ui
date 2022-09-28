@@ -34,20 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
- import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { AccessContractApiService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import {AccessContractPreviewComponent} from './access-contract-preview.component';
+import { AccessContractPreviewComponent } from './access-contract-preview.component';
 
-// TODO fix tests
-xdescribe('AccessContractPreviewComponent', () => {
+const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+
+describe('AccessContractPreviewComponent', () => {
   let component: AccessContractPreviewComponent;
   let fixture: ComponentFixture<AccessContractPreviewComponent>;
 
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+
+  const accessContractApiServiceMock = {
+    getAccessContractById: () => of({}),
+    getAllAccessContracts: () => of({}),
+  };
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AccessContractPreviewComponent]
-    })
-      .compileComponents();
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        HttpClientTestingModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
+      declarations: [AccessContractPreviewComponent],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: MatSnackBar, useValue: snackBarSpy },
+        { provide: AccessContractApiService, useValue: accessContractApiServiceMock },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -56,7 +88,25 @@ xdescribe('AccessContractPreviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have 5 mat-tab', () => {
+    // When
+    const nativeElement = fixture.nativeElement;
+    const matTabElements = nativeElement.querySelectorAll('mat-tab');
+
+    // Then
+    expect(matTabElements.length).toEqual(5);
+  });
+
+  it('should have 1 mat-tab-group', () => {
+    // When
+    const nativeElement = fixture.nativeElement;
+    const matTabGrpElements = nativeElement.querySelectorAll('mat-tab-group');
+
+    // Then
+    expect(matTabGrpElements.length).toEqual(1);
   });
 });

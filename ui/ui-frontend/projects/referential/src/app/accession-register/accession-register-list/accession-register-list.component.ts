@@ -24,24 +24,17 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output} from '@angular/core';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {withLatestFrom} from 'rxjs/operators';
-import {
-  AccessionRegisterDetail,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  OjectUtils,
-  PageRequest
-} from 'ui-frontend-common';
-import {AccessionRegistersService} from '../accession-register.service';
-import {AccessionRegisterSearchDto} from "../../models/accession-register-export-csv.interface";
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
+import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, OjectUtils, PageRequest } from 'ui-frontend-common';
+import { AccessionRegisterSearchDto } from '../../models/accession-register-export-csv.interface';
+import { AccessionRegistersService } from '../accession-register.service';
 
 @Component({
   selector: 'app-accession-register-list',
   templateUrl: './accession-register-list.component.html',
-  styleUrls: ['./accession-register-list.component.scss'],
+  styleUrls: [ './accession-register-list.component.scss' ],
 })
 export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
   @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();
@@ -55,7 +48,6 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
 
   @Input('accessContract')
   accessContract: string;
-  filterDebounceTimeMs = 400;
   direction = Direction.DESCENDANT;
   orderBy = 'EndDate';
 
@@ -101,6 +93,10 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     this.advancedSearchSub?.unsubscribe();
   }
 
+  getTotalElements() {
+    return this.searchService.getTotalElements;
+  }
+
   searchRequest() {
     const query: AccessionRegisterSearchDto = this.constructQuery();
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
@@ -109,8 +105,8 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
 
   exportAccessionRegisterCsv() {
     const query: AccessionRegisterSearchDto = this.constructQuery();
-    query.orderBy = this.orderBy
-    query.direction = this.direction
+    query.orderBy = this.orderBy;
+    query.direction = this.direction;
     this.accessionRegistersService.exportAccessionRegisterCsv(query, this.accessContract);
   }
 
@@ -162,8 +158,8 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   addCriteriaFromSearch(query: AccessionRegisterSearchDto) {
     if (this.textToSearch !== undefined && this.textToSearch !== null && this.textToSearch.length > 0) {
       query.searchText = this.textToSearch;
-      query.originatingAgency = this.textToSearch
-      query.opi = this.textToSearch
+      query.originatingAgency = this.textToSearch;
+      query.opi = this.textToSearch;
     }
   }
 

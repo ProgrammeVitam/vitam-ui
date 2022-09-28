@@ -4,14 +4,14 @@
   file:
     path: "{{ mongo_dump_folder }}"
     state: directory
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
 
 - import_tasks: set_auth.yml
 
 - import_tasks: backup_db.yml
-  when: "collections is defined and (collections|length == 0)" 
+  when: "collections is defined and (collections|length == 0)"
 
 - import_tasks: backup_collection.yml
-  when: "collections is defined and (collections|length > 0)" 
+  when: "collections is defined and (collections|length > 0)"

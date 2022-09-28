@@ -55,4 +55,6 @@ public class UserInfoDto extends IdDto {
     @NotNull
     private String language;
 
+    // no validations for identifier. Because during the creation step, the identifier is set by the backend.
+    private String identifier;
 }

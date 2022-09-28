@@ -37,7 +37,8 @@
         "ACCESSRULE": "Communicabilité",
         "DISSEMINATIONRULE": "Diffusion",
         "REUSERULE": "Réutilisation",
-        "CLASSIFICATIONRULE": "Classification"
+        "CLASSIFICATIONRULE": "Classification",
+        "STORAGERULE": "DUC"
       },
       "CLASSIFICATION_RULE_PROPERTIES": {
         "CLASSIFICATIONLEVEL": "Niveau de classification",
@@ -58,7 +59,8 @@
     },
     "DIP": {
       "EXPORT_DIP": "Exporter un DIP",
-      "TRANSFER_REQUEST": "Transférer un DIP",
+      "EXPORT_DIP_TRANSFER_REQUEST": "Exporter un DIP de transfert",
+      "TRANSFER_REQUEST": "Demander un transfert d’archives",
       "ARCHIVAL_AGREEMENT": "Contrat d'entrée",
       "ORIGINATING_AGENCY_IDENTIFIER": "Identifiant du service producteur",
       "ARCHIVAL_AGENCY": "Identifiant du service d’archives",
@@ -112,7 +114,11 @@
         "ACTION_ON_BIG_NUMBERS_MESSAGE_WITHOUT_EXACT_COUNT": "Vous êtes sur le point d'effectuer cette action sur + de 10 000 unités archivistiques sélectionnées.",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirmez-vous votre action ?",
         "CONFIRM": "Confirmer",
-        "CANCEL": "Annuler"
+        "CANCEL": "Annuler",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, l’opération demandée dépasse le seuil de plateforme autorisé.",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Voulez-vous confirmer l’action à réaliser ?",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "L’action demandée n’est pas possible sur cette sélection",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "L’opération demandée dépasse le seuil de plateforme autorisé. Veuillez revoir la sélection des unités archivistiques avant de relancer l’opération"
       }
     },
     "COMPUTED_INHERITED_RULES": {
@@ -150,6 +156,9 @@
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
       "DUA_TITLE": "Durée d'utilité administrative",
       "ACCESS_TITLE": "Communicabilité",
+      "STORAGE_TITLE": "Durée d'utilité courante",
+      "REUSE_TITLE": "Réutilisation",
+      "DISSEMINATION_TITLE": "Diffusion",
       "NODES": {
         "NODE": "Position"
       },
@@ -214,6 +223,36 @@
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination"
       },
+      "REUSE_RULE": {
+        "RULE_END_DATE_END": "Réutilisation: Date de fin max",
+        "RULE_END_DATE_BEGIN": "Réutilisation: Date de fin min",
+        "CREATE_INTERVAL": "Créer un intervale",
+        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "RULE_TITLE_REUSE_RULE": "Intitulé règle Réutilisation",
+        "RULE_IDENTIFIER_REUSE_RULE": "Identifiant règle Réutilisation",
+        "RULE_START_DATE_REUSE_RULE": "Date de début règle Réutilisation",
+        "RULE_END_DATE_REUSE_RULE": "Date de fin Réutilisation",
+        "RULE_ORIGIN_REUSE_RULE": "Règle Réutilisation",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
+        "ORIGIN_HAS_NO_ONE": "Non définies",
+        "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
+      },
+      "DISSEMINATION_RULE": {
+        "RULE_END_DATE_END": "Diffusion: Date de fin max",
+        "RULE_END_DATE_BEGIN": "Diffusion: Date de fin min",
+        "CREATE_INTERVAL": "Créer un intervale",
+        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "RULE_TITLE_DISSEMINATION_RULE": "Intitulé règle de diffusion",
+        "RULE_IDENTIFIER_DISSEMINATION_RULE": "Identifiant règle de diffusion",
+        "RULE_START_DATE_DISSEMINATION_RULE": "Date de début règle de diffusion",
+        "RULE_END_DATE_DISSEMINATION_RULE": "Date de fin règle de diffusion",
+        "RULE_ORIGIN_DISSEMINATION_RULE": "Règle de diffusion",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
+        "ORIGIN_HAS_NO_ONE": "Non définies",
+        "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
+      },
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
@@ -238,17 +277,29 @@
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
         "TITLE_DUA": "Intitulé",
         "TITLE_ACCESS": "Intitulé",
+        "TITLE_REUSE": "Intitulé",
+        "TITLE_DISSEMINATION": "Intitulé",
         "ID_DUA": "Identifiant",
         "ID_ACCESS": "Identifiant",
+        "ID_REUSE": "Identifiant",
+        "ID_DISSEMINATION": "Identifiant",
         "START_DATE_DUA": "Date de début",
-        "END_DATE_DUA": "Date de fin de la règle",
-        "END_DATE_DUA_EQUAL": "Date de fin extrême",
+        "END_DATE_DUA": "Date d'échéance maximale",
+        "END_DATE_DUA_EQUAL": "Date de fin applicable",
         "END_DATE_DUA_BEGIN": "Entre le ",
         "END_DATE_DUA_END": "et le ",
-        "END_DATE_ACCESS": "Date de fin de la règle",
-        "END_DATE_ACCESS_EQUAL": "Date de fin extrême",
+        "END_DATE_ACCESS": "Date d'échéance maximale",
+        "END_DATE_ACCESS_EQUAL": "Date de fin applicable",
         "END_DATE_ACCESS_BEGIN": "Entre le ",
         "END_DATE_ACCESS_END": "et le ",
+        "END_DATE_REUSE": "Date d'échéance maximale",
+        "END_DATE_REUSE_EQUAL": "Date de fin applicable",
+        "END_DATE_REUSE_BEGIN": "Entre le ",
+        "END_DATE_REUSE_END": "et le ",
+        "END_DATE_DISSEMINATION": "Date d'échéance maximale",
+        "END_DATE_DISSEMINATION_EQUAL": "Date de fin applicable",
+        "END_DATE_DISSEMINATION_BEGIN": "Entre le ",
+        "END_DATE_DISSEMINATION_END": "et le ",
         "GUID_OPI": "Identifiant technique du versement",
         "ARCHIVE_UNIT_FILING_UNIT": "Plan",
         "ARCHIVE_UNIT_HOLDING_UNIT": "Arbre ",
@@ -266,18 +317,28 @@
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",
           "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Porte au moins une règle DUA",
           "HAS_NO_APPRAISAL_RULE": "N'a pas de règle DUA définie ",
-          "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE": "Est en attente de recalcul de règle",
+          "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE": "Est en attente d'indexation de règle",
           "SELECT_ALL_APPRAISAL_RULE": "Sélectionne tout",
-          "INHERITE_AT_LEAST_ONE_ACCESS_RULE": "Hérite d'au moins une règle Communicabilité",
-          "HAS_AT_LEAST_ONE_ACCESS_RULE": "Porte au moins une règle Communicabilité",
-          "HAS_NO_ACCESS_RULE": "N'a pas de règle Communicabilité définie ",
-          "WAITING_TO_RE_CALCULATE_ACCESS_RULE": "Est en attente de recalcul de règle",
+          "INHERITE_AT_LEAST_ONE_ACCESS_RULE": "Hérite d'au moins une règle de communicabilité",
+          "HAS_AT_LEAST_ONE_ACCESS_RULE": "Porte au moins une règle de communicabilité",
+          "HAS_NO_ACCESS_RULE": "N'a pas de règle de communicabilité définie ",
+          "WAITING_TO_RE_CALCULATE_ACCESS_RULE": "Est en attente d'indexation de règle",
           "SELECT_ALL_ACCESS_RULE": "Sélectionne tout",
           "INHERITE_AT_LEAST_ONE_STORAGE_RULE": "Hérite d'au moins une règle DUC",
           "HAS_AT_LEAST_ONE_STORAGE_RULE": "Porte au moins une règle DUC",
           "HAS_NO_STORAGE_RULE": "N'a pas de règle DUC définie ",
-          "WAITING_TO_RE_CALCULATE_STORAGE_RULE": "Est en attente de recalcul de règle",
-          "SELECT_ALL_STORAGE_RULE": "Sélectionne tout"
+          "WAITING_TO_RE_CALCULATE_STORAGE_RULE": "Est en attente d'indexation de règle",
+          "SELECT_ALL_STORAGE_RULE": "Sélectionne tout",
+          "INHERITE_AT_LEAST_ONE_REUSE_RULE": "Hérite d'au moins une règle de réutilisation",
+          "HAS_AT_LEAST_ONE_REUSE_RULE": "Porte au moins une règle de réutilisation",
+          "HAS_NO_REUSE_RULE": "N'a pas de règle de réutilisation définie ",
+          "WAITING_TO_RE_CALCULATE_REUSE_RULE": "Est en attente d'indexation de règle",
+          "SELECT_ALL_REUSE_RULE": "Sélectionne tout",
+          "INHERITE_AT_LEAST_ONE_DISSEMINATION_RULE": "Hérite d'au moins une règle de diffusion",
+          "HAS_AT_LEAST_ONE_DISSEMINATION_RULE": "Porte au moins une règle de diffusion",
+          "HAS_NO_DISSEMINATION_RULE": "N'a pas de règle de diffusion définie ",
+          "WAITING_TO_RE_CALCULATE_DISSEMINATION_RULE": "Est en attente d'indexation de règle",
+          "SELECT_ALL_DISSEMINATION_RULE": "Sélectionne tout"
         },
         "FINAL_ACTION_TYPE": {
           "TITLE": "L'unité archivistique",
@@ -364,6 +425,34 @@
         "SHOW_RULES_LIST": "AFFICHER LISTE",
         "WAITING_TO_RECALCULATE": "Non indexées",
         "CALCULATED": "Indexées"
+      },
+      "REUSE_RULE": {
+        "RULES_COUNT": "Nombre de règles",
+        "EXPIRED_RULES": "Date d'échéance",
+        "FINAL_ACTIONS": "Sort final",
+        "WITHOUT_RULES": "Dont sans règle définie",
+        "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
+        "NOT_EXPIRED": "Non-Echue",
+        "EXPIRED": "Echue",
+        "DISTINCT_RULES": "Règles distinctes",
+        "FROM_DATE": "A partir du",
+        "SHOW_RULES_LIST": "AFFICHER LISTE",
+        "WAITING_TO_RECALCULATE": "Non indexées",
+        "CALCULATED": "Indexées"
+      },
+      "DISSEMINATION_RULE": {
+        "RULES_COUNT": "Nombre de règles",
+        "EXPIRED_RULES": "Date d'échéance",
+        "FINAL_ACTIONS": "Sort final",
+        "WITHOUT_RULES": "Dont sans règle définie",
+        "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
+        "NOT_EXPIRED": "Non-Echue",
+        "EXPIRED": "Echue",
+        "DISTINCT_RULES": "Règles distinctes",
+        "FROM_DATE": "A partir du",
+        "SHOW_RULES_LIST": "AFFICHER LISTE",
+        "WAITING_TO_RECALCULATE": "Non indexées",
+        "CALCULATED": "Indexées"
       }
     },
     "ARCHIVE_UNIT": {
@@ -414,7 +503,10 @@
     "FILING_SHCEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbre ou Plan trouvés avec le contrat choisi",
       "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
-      "SHOW_TREE_PARENT": "Réduire l'arborescence"
+      "SHOW_TREE_PARENT": "Afficher seulement les résultats",
+      "TREE_TITLE": "Arbres et plans",
+      "TREE_LEAVES_TITLE": "Position(s) de rattachement",
+      "LOAD_MORE_UNITS": "Charger plus d'éléments"
     },
     "EXPORT_CSV": {
       "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
@@ -464,8 +556,17 @@
       "APPRAISAL_RULE": "Durée d’utilité administrative",
       "STORAGE_RULE": "Durée d’utilité courante",
       "ACCESS_RULE": "Communicabilité",
-      "REUSING": "Réutilisation",
-      "DIFFUSION": "Diffusion",
+      "REUSE": "Réutilisation",
+      "DISSEMINATION": "Diffusion",
+      "CLASSIFICATION": "Classification",
+      "GEL": "Gel / Dégel"
+    },
+    "CRITERIA_CATEGORY_SHORT_NAME": {
+      "APPRAISAL_RULE": "DUA",
+      "STORAGE_RULE": "DUC",
+      "ACCESS_RULE": "Communicabilité",
+      "REUSE_RULE": "Réutilisation",
+      "DISSEMINATION_RULE": "Diffusion",
       "CLASSIFICATION": "Classification",
       "GEL": "Gel / Dégel"
     },
@@ -483,14 +584,14 @@
     "EXECUTE_RULE_UPDATE": "Lancer la mise à jour",
     "EXECUTE_RULE_UPDATE_MESSAGE": "L’opération de mise à jour des règles de gestion a bien été lancée",
     "ACTION_ON_RULES": "Action sur les règles",
-    "UA_SELECTED": "{{ua_selected}} unités archivistiques séléctionnées",
+    "UA_SELECTED": "{{ua_selected}} unités archivistiques sélectionnées",
     "RULES_TO_ADD": "Règle(s) à ajouter",
     "RULES_TO_UPDATE": "Règle(s) à modifier",
     "RULES_TO_DELETE": "Règle(s) à supprimer",
     "CATEGORY_TO_BLOCK": "Catégorie à bloquer",
     "CATEGORY_TO_UNLOCK": "Catégorie à débloquer",
-    "BLOCK_RULES_INHERITANCE" : "Héritage de règle(s) à bloquer",
-    "UNLOCK_RULES_INHERITANCE" : "Héritage de règle(s) à débloquer",
+    "BLOCK_RULES_INHERITANCE": "Héritage de règle(s) à bloquer",
+    "UNLOCK_RULES_INHERITANCE": "Héritage de règle(s) à débloquer",
     "ACTIONS": {
       "ADD_RULE": "Ajouter une règle",
       "DELETE_RULE": "Supprimer une règle",
@@ -523,8 +624,8 @@
       "TARGET_START_DATE": "Date de début cible",
       "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour",
       "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées",
-      "UA_INHERITANCE_TO_IGNORE" :"Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
-      "UA_WITH_NO_PREVENT_RULES" :"Cette règle n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
+      "UA_INHERITANCE_TO_IGNORE": "Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
+      "UA_WITH_NO_PREVENT_RULES": "Cette règle n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
     },
     "FINAL_ACTION": {
       "TITLE": "Sort final",

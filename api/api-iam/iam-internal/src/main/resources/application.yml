@@ -11,6 +11,8 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: false
+  jmx:
+    unique-names: true
 
 management:
   endpoints:

@@ -68,6 +68,7 @@ import org.springframework.http.HttpHeaders;
 
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
+import java.util.Set;
 
 import static fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils.responseMapping;
 
@@ -76,14 +77,13 @@ public class LogbookService {
     @SuppressWarnings("unused")
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookService.class);
 
-    private static final String INGEST_TYPE = "INGEST";
     private static final String DIP_REPORT = "dip";
     private static final String TRANSFER_REPORT = "transfersip";
     private static final String BATCH_REPORT = "batchreport";
     private static final String RULE_REPORT = "report";
     private static final String OBJECT_REPORT = "object";
-    private static final String MASTER_DATA = "MASTERDATA";
 
+    private static final Set<String> INGEST_ALLOWED_TYPES_PROC = Set.of("MASTERDATA", "INGEST", "INGEST_TEST");
     private final AccessExternalClient accessExternalClient;
 
     private final IngestExternalClient ingestExternalClient;
@@ -218,8 +218,7 @@ public class LogbookService {
             if (operation == null || operation.getResults() == null || operation.getResults().size() == 0) {
                 throw new IllegalArgumentException("Unable to download object of operation " + id + ": the operation does not exist");
             }
-            if (!INGEST_TYPE.equals(operation.getResults().get(0).getEvTypeProc()) &&
-                !MASTER_DATA.equals(operation.getResults().get(0).getEvTypeProc())) {
+            if (!INGEST_ALLOWED_TYPES_PROC.contains(operation.getResults().get(0).getEvTypeProc())) {
                 throw new IllegalArgumentException("Unable to download object of operation " + id + ": the operation is not an ingest or master data one");
             }
 

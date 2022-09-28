@@ -1,5 +1,9 @@
 package fr.gouv.vitamui.cas.authentication;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.PropertiesUtils;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
@@ -35,6 +39,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.FileNotFoundException;
 import java.security.Principal;
 import java.security.cert.X509Certificate;
 import java.util.*;
@@ -89,7 +94,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     private ProvidersService providersService;
 
     @Before
-    public void setUp() {
+    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
         super.setUp();
 
         casExternalRestClient = mock(CasExternalRestClient.class);
@@ -121,7 +126,11 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
 
     @Test
     public void testResolveX509() {
-        when(casExternalRestClient.getUser(any(ExternalHttpContext.class), eq(USERNAME), eq(null), eq(Optional.of(IDENTIFIER)),
+        val provider = new IdentityProviderDto();
+        provider.setId(PROVIDER_ID);
+        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(Optional.of(provider));
+
+        when(casExternalRestClient.getUser(any(ExternalHttpContext.class), eq(USERNAME), eq(PROVIDER_ID), eq(Optional.of(IDENTIFIER)),
             eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
         val cert = mock(X509Certificate.class);
         val subjectDn = mock(Principal.class);

@@ -1,80 +1,71 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
- * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
- * contact@programmevitam.fr
+ * contact.vitam@culture.gouv.fr
  *
- * This software is a computer program whose purpose is to implement
- * implement a digital archiving front-office system for the secure and
- * efficient high volumetry VITAM solution.
+ * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
+ * high volumetry securely and efficiently.
  *
- * This software is governed by the CeCILL-C license under French law and
- * abiding by the rules of distribution of free software.  You can  use,
- * modify and/ or redistribute the software under the terms of the CeCILL-C
- * license as circulated by CEA, CNRS and INRIA at the following URL
- * "http://www.cecill.info".
+ * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
+ * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
- * As a counterpart to the access to the source code and  rights to copy,
- * modify and redistribute granted by the license, users are provided only
- * with a limited warranty  and the software's author,  the holder of the
- * economic rights,  and the successive licensors  have only  limited
- * liability.
+ * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
+ * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
+ * successive licensors have only limited liability.
  *
- * In this respect, the user's attention is drawn to the risks associated
- * with loading,  using,  modifying and/or developing or reproducing the
- * software by the user in light of its specific status of free software,
- * that may mean  that it is complicated to manipulate,  and  that  also
- * therefore means  that it is reserved for developers  and  experienced
- * professionals having in-depth computer knowledge. Users are therefore
- * encouraged to load and test the software's suitability as regards their
- * requirements in conditions enabling the security of their systems and/or
- * data to be ensured and,  more generally, to use and operate it in the
- * same conditions as regards security.
+ * In this respect, the user's attention is drawn to the risks associated with loading, using, modifying and/or
+ * developing or reproducing the software by the user in light of its specific status of free software, that may mean
+ * that it is complicated to manipulate, and that also therefore means that it is reserved for developers and
+ * experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the
+ * software's suitability as regards their requirements in conditions enabling the security of their systems and/or data
+ * to be ensured and, more generally, to use and operate it in the same conditions as regards security.
  *
- * The fact that you are presently reading this means that you have had
- * knowledge of the CeCILL-C license and that you accept its terms.
+ * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
+ * accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
-import { ResultFacet } from '../models/search.criteria';
+import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../models/search.criteria';
+import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { Unit } from '../models/unit.interface';
+import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
   styleUrls: ['./filing-holding-scheme.component.scss'],
 })
-export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
-  @Input()
-  accessContract: string;
+export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() accessContract: string;
+  @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
+  @Output() switchView: EventEmitter<void> = new EventEmitter();
+  private subscriptions = new Subscription();
+
   tenantIdentifier: number;
-  subscriptionNodesFull: Subscription;
-  subscriptionNodesFiltred: Subscription;
-
-  subscriptionFacets: Subscription;
-  nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode>;
-  nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
-
-  nestedTreeControlFiltred: NestedTreeControl<FilingHoldingSchemeNode>;
-  nestedDataSourceFiltred: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
-
+  nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
+    (node) => node.children
+  );
+  nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
+  nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
   disabled: boolean;
   loadingHolding = true;
   node: string;
   nodeData: NodeData;
-  hasResults = false;
-  linkOneToNotKeep = false;
-  linkTwoToNotKeep = true;
+  hasMatchesInSearch = false;
   fullNodes: FilingHoldingSchemeNode[] = [];
-  filtredNodes: FilingHoldingSchemeNode[] = [];
-
-  filtered: boolean;
+  showEveryNodes = true;
+  requestResultFacets: ResultFacet[];
+  loadingArchiveUnit: { [key: string]: boolean } = {
+    TREE: false,
+    LEAVE: false,
+  };
 
   constructor(
     private archiveService: ArchiveService,
@@ -84,103 +75,13 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
-
-    this.nestedTreeControlFull = new NestedTreeControl<FilingHoldingSchemeNode>((node) => node.children);
-    this.nestedDataSourceFull = new MatTreeNestedDataSource();
-
-    this.nestedTreeControlFiltred = new NestedTreeControl<FilingHoldingSchemeNode>((node) => node.children);
-    this.nestedDataSourceFiltred = new MatTreeNestedDataSource();
-
-    this.subscriptionNodesFull = this.archiveSharedDataService.getNodesTarget().subscribe((nodeId) => {
-      if (nodeId == null) {
-        this.showAllTreeNodes();
-      } else {
-        this.recursiveShowById(this.nestedDataSourceFull.data, false, nodeId);
-        this.recursiveShowById(this.nestedDataSourceFiltred.data, false, nodeId);
-      }
-    });
-
-    this.subscriptionFacets = this.archiveSharedDataService.getFacets().subscribe((facets) => {
-      this.hasResults = true;
-      if (facets && facets.length > 0) {
-        for (const node of this.nestedDataSourceFull.data) {
-          this.recursiveByNode(node, facets);
-        }
-      } else {
-        for (const node of this.nestedDataSourceFull.data) {
-          node.count = 0;
-          node.hidden = true;
-        }
-      }
-      this.filterNodes();
-    });
-
-    this.archiveSharedDataService.getFilingHoldingNodes().subscribe((nodes) => {
-      if (nodes) {
-        this.fullNodes = nodes;
-        this.showAllTreeNodes();
-      }
-    });
-  }
-  convertNodesToList(holdingSchemas: FilingHoldingSchemeNode[]): string[] {
-    const nodeDataList: string[] = [];
-    for (const node of holdingSchemas) {
-      if (node && node.id) {
-        nodeDataList.push(node.id);
-      }
-    }
-    return nodeDataList;
   }
 
-  recursive(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): number {
-    let nodesChecked = 0;
-    if (nodes.length === 0) {
-      return 0;
-    }
-
-    for (const node of nodes) {
-      node.count = -1;
-      for (const facet of facets) {
-        if (node.id === facet.node) {
-          node.count = facet.count;
-          node.hidden = false;
-          nodesChecked++;
-        }
-      }
-      let nodesCheckedChilren = 0;
-      if (node.children) {
-        nodesCheckedChilren = this.recursive(node.children, facets);
-      }
-      node.hidden = nodesCheckedChilren === 0 && nodesChecked === 0;
-      nodesChecked += nodesCheckedChilren;
-    }
-    return nodesChecked;
+  ngOnInit(): void {
+    this.initialNodesState();
+    this.initialNodeCheckState();
+    this.initialNodeFacetState();
   }
-
-  recursiveByNode(node: FilingHoldingSchemeNode, facets: ResultFacet[]): number {
-    let nodesChecked = 0;
-    if (!node) {
-      return 0;
-    }
-    node.count = 0;
-    for (const facet of facets) {
-      if (node.id === facet.node) {
-        node.count = facet.count;
-        node.hidden = false;
-        nodesChecked++;
-      }
-    }
-    let nodesCheckedChilren = 0;
-    if (node.children) {
-      for (const child of node.children) {
-        nodesCheckedChilren += this.recursiveByNode(child, facets);
-      }
-    }
-    node.hidden = nodesCheckedChilren === 0 && nodesChecked === 0;
-    return nodesCheckedChilren;
-  }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.accessContract) {
@@ -189,108 +90,116 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     }
   }
 
-  initFilingHoldingSchemeTree() {
-    this.loadingHolding = true;
-    this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract).subscribe((nodes) => {
-      this.fullNodes = nodes;
-      this.nestedDataSourceFull.data = nodes;
-      this.nestedTreeControlFull.dataNodes = nodes;
-      this.loadingHolding = false;
-      this.filtered = false;
-      this.archiveSharedDataService.emitEntireNodes(this.convertNodesToList(nodes));
-      this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
-    });
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
-  filterNodes() {
-    this.filtredNodes = [];
-    for (const node of this.fullNodes) {
-      const filtredNode = this.buildrecursiveTree(node);
-      if (filtredNode !== null) {
-        this.filtredNodes.push(filtredNode);
-      }
-    }
-    this.nestedDataSourceFiltred.data = this.filtredNodes;
-    this.nestedTreeControlFiltred.dataNodes = this.filtredNodes;
-    this.loadingHolding = false;
-    this.filtered = true;
+  private initialNodeCheckState(): void {
+    this.subscriptions.add(
+      this.archiveSharedDataService.getNodesTarget().subscribe((nodeId) => {
+        if (nodeId == null) {
+          this.switchViewAllNodes();
+        } else {
+          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
+          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
+        }
+      })
+    );
   }
 
-  buildrecursiveTree(node: FilingHoldingSchemeNode) {
-    if (node.count === 0) {
-      return null;
-    } else {
-      const filtredNode: FilingHoldingSchemeNode = {
-        count: node.count,
-        id: node.id,
-        label: node.label,
-        title: node.title,
-        type: node.type,
-        children: null,
-        parents: null,
-        vitamId: node.vitamId,
-        checked: node.checked,
-      };
-      if (node.children && node.children.length > 0) {
-        const filtredChildren = [];
-
-        for (const child of node.children) {
-          const childFiltred = this.buildrecursiveTree(child);
-          if (childFiltred) {
-            filtredChildren.push(childFiltred);
+  private initialNodeFacetState(): void {
+    this.subscriptions.add(
+      this.archiveSharedDataService.getFacets().subscribe((facets) => {
+        if (facets && facets.length > 0) {
+          this.requestResultFacets = facets;
+          this.hasMatchesInSearch = true;
+          for (const node of this.nestedDataSourceFull.data) {
+            FilingHoldingSchemeHandler.setCountRecursively(node, facets);
+          }
+        } else {
+          this.hasMatchesInSearch = false;
+          for (const node of this.nestedDataSourceFull.data) {
+            node.count = 0;
+            node.hidden = true;
           }
         }
-        if (filtredChildren && filtredChildren.length > 0) {
-          filtredNode.children = filtredChildren;
-        }
-      }
-      return filtredNode;
-    }
+        this.filterNodesToLeavesOnly();
+      })
+    );
   }
 
-  hasNestedChild = (_: number, node: any) => node.children && node.children.length;
+  private initialNodesState(): void {
+    this.subscriptions.add(
+      this.archiveSharedDataService.getFilingHoldingNodes().subscribe((nodes) => {
+        if (nodes) {
+          this.fullNodes = nodes;
+          this.switchViewAllNodes();
+        }
+      })
+    );
+  }
 
-  emitNode(node: FilingHoldingSchemeNode) {
+  initFilingHoldingSchemeTree() {
+    this.loadingHolding = true;
+    this.subscriptions.add(
+      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract).subscribe((nodes) => {
+        this.fullNodes = nodes;
+        this.nestedDataSourceFull.data = nodes;
+        this.nestedTreeControlFull.dataNodes = nodes;
+        this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
+        this.loadingHolding = false;
+      })
+    );
+  }
+
+  filterNodesToLeavesOnly() {
+    let leaves: FilingHoldingSchemeNode[] = [];
+    for (const node of this.fullNodes) {
+      const filtredNode = FilingHoldingSchemeHandler.buildRecursiveTree(node);
+      if (filtredNode != null) {
+        leaves = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(filtredNode);
+      }
+    }
+    this.nestedDataSourceLeaves.data = [...leaves];
+    this.showEveryNodes = false;
+  }
+
+  addToSearchCriteria(node: FilingHoldingSchemeNode) {
     this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
-    this.recursiveShowById(this.nestedDataSourceFull.data, node.checked, node.id);
+    FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
+    FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.id);
     this.archiveSharedDataService.emitNode(this.nodeData);
   }
 
-  onTouched = () => {};
-
-  showAllTreeNodes() {
-    this.filtered = false;
-  }
-
-  recursiveShow(nodes: FilingHoldingSchemeNode[], show: boolean) {
-    if (nodes.length === 0) {
-      return;
-    }
-    for (const node of nodes) {
-      node.hidden = show;
-      this.recursiveShow(node.children, show);
-      this.linkOneToNotKeep = true;
-      this.linkTwoToNotKeep = false;
-    }
-  }
-
-  recursiveShowById(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {
-    let found = false;
-    if (nodes.length !== 0) {
-      for (const node of nodes) {
-        if (node.id === nodeId) {
-          node.checked = checked;
-          found = true;
-        }
-        if (!found && node.children) {
-          found = this.recursiveShowById(node.children, checked, nodeId);
-        }
-      }
-      return found;
-    }
+  switchViewAllNodes() {
+    this.showEveryNodes = !this.showEveryNodes;
   }
 
   emitClose() {
     this.archiveSharedDataService.emitToggle(false);
+  }
+
+  fetchUaFromNodeAndShowDetails(archiveUnitId: string, from: string) {
+    this.loadingArchiveUnit[from] = true;
+    const criteriaSearchList = [
+      {
+        criteria: '#id',
+        values: [{ id: archiveUnitId, value: archiveUnitId }],
+        operator: CriteriaOperator.EQ,
+        category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+        dataType: CriteriaDataType.STRING,
+      },
+    ];
+    const searchCriteria: SearchCriteriaDto = {
+      criteriaList: criteriaSearchList,
+      pageNumber: 0,
+      size: 1,
+    };
+    this.subscriptions.add(
+      this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe((pageResult: PagedResult) => {
+        this.showArchiveUnitDetails.emit(pageResult.results[0]);
+        this.loadingArchiveUnit[`${from}`] = false;
+      })
+    );
   }
 }

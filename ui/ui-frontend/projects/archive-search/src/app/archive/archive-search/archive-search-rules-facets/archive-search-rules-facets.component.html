@@ -32,4 +32,25 @@
       <app-search-access-rules-facets [totalResults]="totalResults" [accessRuleFacets]="accessRuleFacets"></app-search-access-rules-facets>
     </div>
   </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DISSEMINATION' | translate }} </span>
+    </ng-template>
+
+    <div *ngIf="facetsVisibles" id="facet-content">
+      <app-search-dissemination-rules-facets
+        [totalResults]="totalResults"
+        [disseminationRuleFacets]="disseminationRuleFacets"
+      ></app-search-dissemination-rules-facets>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.REUSE' | translate }} </span>
+    </ng-template>
+
+    <div *ngIf="facetsVisibles" id="facet-content">
+      <app-search-reuse-rules-facets [totalResults]="totalResults" [reuseRuleFacets]="reuseRuleFacets"></app-search-reuse-rules-facets>
+    </div>
+  </mat-tab>
 </mat-tab-group>

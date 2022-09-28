@@ -41,10 +41,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEventService, Logger, SidenavPage } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
+import { Unit } from './models/unit.interface';
 
 @Component({
   selector: 'app-archive',
@@ -56,6 +57,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   tenantIdentifier: string;
   foundAccessContract = false;
   accessContract: string;
+  bulkOperationsThreshold: number;
   accessContractSub: Subscription;
   errorMessageSub: Subscription;
   isLPExtended = false;
@@ -72,7 +74,8 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private archiveService: ArchiveService
+    private archiveService: ArchiveService,
+    private loggerService: Logger
   ) {
     super(route, globalEventService);
   }
@@ -124,6 +127,15 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
           )
           .subscribe();
       }
+      const thresholdParams: any = parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD);
+
+      if (thresholdParams && thresholdParams.length > 0) {
+        this.bulkOperationsThreshold = Number(thresholdParams);
+        this.managementRulesSharedDataService.emitBulkOperationsThreshold(Number(thresholdParams));
+      } else {
+        this.bulkOperationsThreshold = -1;
+        this.managementRulesSharedDataService.emitBulkOperationsThreshold(-1);
+      }
     });
   }
 
@@ -133,7 +145,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
         this.hasAccessContractManagementPermissions = this.archiveService.hasAccessContractManagementPermissions(ac);
       },
       (error: any) => {
-        console.error('AccessContract not found', error);
+        this.loggerService.error('error message', error);
         const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
         this.snackBar.open(message + ': ' + this.accessContract, null, {
           panelClass: 'vitamui-snack-bar',
@@ -151,7 +163,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
-  showPreviewArchiveUnit(item: Event) {
+  showPreviewArchiveUnit(item: Unit) {
     this.openPanel(item);
   }
   showExtendedLateralPanel() {

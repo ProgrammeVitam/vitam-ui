@@ -39,12 +39,10 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL } from '../injection-tokens';
-import { ApiEvent, Event } from '../models';
+import { ApiEvent, Event, VitamSelectQuery } from '../models';
 import { VitamResponse } from '../models/vitam/vitam-response.interface';
-import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
 import { PaginatedApi } from '../paginated-api.interface';
 import { PageRequest, PaginatedResponse } from '../vitamui-table';
-
 
 
 const CAS_CONTEXT = 'Contexte CAS';
@@ -147,13 +145,13 @@ export class LogbookApiService implements PaginatedApi<Event> {
   }
 
   findOperationByIdAndCollectionName(id: string, resourcePath: string, headers?: HttpHeaders): Observable<{ $results: Event[] }> {
-    return this.http.get<{ $results: ApiEvent[] }>(this.baseUrl +  '/' + resourcePath + '/' + id + '/history' , { headers }).pipe(
+    return this.http.get<{ $results: ApiEvent[] }>(this.baseUrl + '/' + resourcePath + '/' + id + '/history', { headers }).pipe(
       map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) }))
     );
   }
 
   findOperationsBySelectQuery(selectQuery: VitamSelectQuery, headers?: HttpHeaders): Observable<{ $results: Event[] }> {
-    return this.http.post<{ $results: ApiEvent[] }>(this.apiUrl + '/operations' , selectQuery, { headers }).pipe(
+    return this.http.post<{ $results: ApiEvent[] }>(this.apiUrl + '/operations', selectQuery, { headers }).pipe(
       map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) }))
     );
   }
@@ -167,7 +165,11 @@ export class LogbookApiService implements PaginatedApi<Event> {
   }
 
   downloadReport(id: string, downloadType: string, headers?: HttpHeaders): Observable<HttpResponse<Blob>> {
-    return this.http.get(this.apiUrl + '/operations/' + id + '/download/' + downloadType, { headers, observe: 'response', responseType: 'blob' });
+    return this.http.get(this.apiUrl + '/operations/' + id + '/download/' + downloadType, {
+      headers,
+      observe: 'response',
+      responseType: 'blob',
+    });
   }
 
   getDownloadReportUrl(id: string, downloadType: string, accessContractId: string, tenantId: number): string {
@@ -184,13 +186,13 @@ export class LogbookApiService implements PaginatedApi<Event> {
     // We don't actually need to use the other properties of the page request
     return this.http.post<VitamResponse<ApiEvent>>(this.apiUrl + '/operations', JSON.parse(pageRequest.criteria), { headers })
       .pipe(
-      map((response) => ({
-        pageNum: pageRequest.page,
-        pageSize: pageRequest.size,
-        hasMore: (response.$hits.offset + response.$hits.size) < response.$hits.total,
-        values: response.$results.map(LogbookApiService.toEvent)
-      }))
-    );
+        map((response) => ({
+          pageNum: pageRequest.page,
+          pageSize: pageRequest.size,
+          totalElements: response.$hits.total,
+          hasMore: (response.$hits.offset + response.$hits.size) < response.$hits.total,
+          values: response.$results.map(LogbookApiService.toEvent)
+        }))
+      );
   }
-
 }

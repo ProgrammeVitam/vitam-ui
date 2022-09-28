@@ -48,7 +48,7 @@
             </span>
           </div>
           <div class="col-2">
-            <div>{{ ingest?.evDateTime | dateTime: 'dd/MM/yyyy' }}</div>
+            <div>{{ ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy' }}</div>
             <span class="date">
               {{ ingestEndDate(ingest) | dateTime: 'HH:mm:ss' }}
             </span>

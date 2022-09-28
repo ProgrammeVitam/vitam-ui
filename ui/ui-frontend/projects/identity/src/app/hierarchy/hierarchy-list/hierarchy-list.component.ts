@@ -37,8 +37,7 @@
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import {
-  Application,
-  ApplicationId, ApplicationService, buildCriteriaFromSearch, Criterion, Direction,
+  ApplicationId, buildCriteriaFromSearch, Criterion, Direction,
   InfiniteScrollTable, Operators, PageRequest, Profile, SearchQuery
 } from 'ui-frontend-common';
 
@@ -73,7 +72,7 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
   private readonly orderChange = new Subject<string>();
   private readonly searchKeys = ['name', 'description', 'identifier'];
 
-  constructor(public hierarchyService: HierarchyService, public applicationService: ApplicationService, private route: ActivatedRoute) {
+  constructor(public hierarchyService: HierarchyService, private route: ActivatedRoute) {
     super(hierarchyService);
     this.updatedProfileSub = this.hierarchyService.updated.subscribe((updatedProfile: Profile) => {
       const profileIndex = this.dataSource.findIndex((profile) => updatedProfile.id === profile.id);
@@ -134,19 +133,10 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
       criteria: [
         ...defaultCriteria,
         ...buildCriteriaFromSearch(this._searchText, this.searchKeys),
-     ]
+      ]
     };
 
     super.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'name', Direction.ASCENDANT, JSON.stringify(query)));
-  }
-
-  getApplicationName(appId: string): string {
-    if (appId) {
-      const matchApplication: Application = this.applicationService.applications.find((application) => application.identifier === appId);
-      return matchApplication ? matchApplication.name : appId;
-    }
-
-    return '';
   }
 
 }

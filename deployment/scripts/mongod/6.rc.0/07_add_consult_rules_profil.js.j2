@@ -1,0 +1,40 @@
+db = db.getSiblingDB('iam')
+
+print("START 6.rc.0/07_add_consult_rules_profil.js");
+
+// Create new profile CONSULTATION for RULES_APP
+
+var lastIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+
+db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
+
+    db.profiles.insert({
+        "_id": "PROFIL_" + tenant.identifier + "-RULES_APP-CONSULTATION",
+        "identifier": NumberInt(lastIdProfile++),
+        "name": "Profil consultation des règles de gestion",
+        "description": "Profil pour la consultation des règles de gestion dans Vitam sans mises à jour des règles",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "RULES_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": false,
+        "customerId": tenant.customerId,
+        "roles": [
+            {
+                "name": "ROLE_GET_RULES"
+            }
+        ]
+    });
+
+});
+
+// Update sequence
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+    $set: {
+        "sequence": NumberInt(lastIdProfile)
+    }
+});
+
+print("END 6.rc.0/07_add_consult_rules_profil.js");

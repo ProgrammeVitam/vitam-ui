@@ -31,23 +31,33 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'dateTime',
 })
 export class DateTimePipe implements PipeTransform {
-  constructor(private datePipe: DatePipe) {}
+  constructor(private datePipe: DatePipe) {
+  }
 
   transform(value: any, format?: string, local?: string): any {
     if (value) {
-      if (!value.endsWith('Z')) {
-        value = value + 'Z';
-      }
-      const hours = (new Date().getTimezoneOffset() / 60) * -1;
-      let timezone = 'UTC';
-
-      if (hours < 0) {
-        timezone = 'UTC' + hours;
-      } else if (hours > 0) {
-        timezone = 'UTC+' + hours;
-      }
-
-      return this.datePipe.transform(value, format, timezone, local);
+      value = this.formatDateTime(value);
+      return this.datePipe.transform(value, format, this.getTimezone(), local);
     }
   }
+
+  private getTimezone(): string {
+    const hours = (new Date().getTimezoneOffset() / 60) * -1;
+    let timezone = 'UTC';
+
+    if (hours < 0) {
+      timezone = 'UTC' + hours;
+    } else if (hours > 0) {
+      timezone = 'UTC+' + hours;
+    }
+    return timezone;
+  }
+
+  private formatDateTime(value): string {
+    if (!String(value).endsWith('Z') && value.includes(':')) {
+      value = value + 'Z';
+    }
+    return value;
+  }
+
 }

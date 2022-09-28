@@ -52,7 +52,7 @@
           <button (click)="move()" [disabled]="(uploadFiles$|async)?.length === 0"
                   class="btn primary"
                   type="button">{{ 'COMMON.NEXT' | translate }}</button>
-          <button (click)="onCancel()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
+          <button (click)="onClose()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
         </div>
       </div>
     </cdk-step>
@@ -74,7 +74,7 @@
         </div>
         <div class="actions">
           <button (click)="validateAndProcessUpload()" class="btn primary" type="button">{{ 'COMMON.NEXT' | translate }}</button>
-          <button (click)="onCancel()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
+          <button (click)="onClose()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
         </div>
       </div>
     </cdk-step>
@@ -98,24 +98,6 @@
             placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_DESC' | translate }}"
           >
           </vitamui-common-textarea>
-          <div class="col-12">
-            <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_BOUNDED_DATES' | translate }}</h4>
-            <span class="error-message">{{ dateErrorMessage }}</span>
-          </div>
-
-          <div class="col-5 vitamui-input vitamui-date">
-            <input [matDatepicker]="pickerStart" formControlName="startDate" matInput
-                   placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_START_DATE' | translate }}">
-            <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
-            <mat-datepicker #pickerStart></mat-datepicker>
-          </div>
-
-          <div class="col-5 offset-2 vitamui-input vitamui-date">
-            <input [matDatepicker]="pickerEnd" formControlName="endDate" matInput
-                   placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_END_DATE' | translate }}">
-            <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
-            <mat-datepicker #pickerEnd></mat-datepicker>
-          </div>
 
           <div class="col-12 mt-4 mb-3">
             <div class="row">
@@ -158,9 +140,9 @@
           </vitamui-common-input>
         </div>
         <div class="actions">
-          <button (click)="back()" class="btn secondary back" type="button">
-            <i class="material-icons mr-2">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <button type="button" class="btn link back" (click)="back()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
           </button>
           <button (click)="move()" [disabled]="validateThirdStep()" class="btn primary"
                   type="button">{{ 'COMMON.NEXT' | translate }}</button>
@@ -227,7 +209,7 @@
           </vitamui-common-input>
           <vitamui-common-input
             class="col-5"
-            formControlName="archivalProfile"
+            formControlName="archiveProfile"
             placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
           >
           </vitamui-common-input>
@@ -243,7 +225,7 @@
               <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
             </label>
             <mat-select formControlName="acquisitionInformation">
-              <mat-option *ngFor="let acqInfo of acquisitionInformations" [value]="acqInfo">{{ acqInfo }}</mat-option>
+              <mat-option *ngFor="let acqInfo of acquisitionInformationsList" [value]="acqInfo">{{ acqInfo }}</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -251,15 +233,15 @@
             <label for="legal-status">
               <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
             </label>
-            <mat-select formControlName="status">
-              <mat-option *ngFor="let lgs of legalStatus" [value]="lgs">{{ lgs }}</mat-option>
+            <mat-select formControlName="legalStatus">
+              <mat-option *ngFor="let lgs of legalStatusList" [value]="lgs">{{ lgs }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <div class="actions">
-          <button (click)="back()" class="btn secondary back" type="button">
-            <i class="material-icons mr-2">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <button type="button" class="btn link back" (click)="back()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
           </button>
           <button (click)="updateProject()" [disabled]="validateFourStep()" class="btn primary"
                   type="button">{{ 'COMMON.SUBMIT' | translate }}</button>
@@ -309,4 +291,20 @@
       </div>
     </cdk-step>
   </vitamui-common-stepper>
+
 </form>
+
+
+<ng-template #confirmDeleteAddRuleDialog>
+  <mat-dialog-content>
+    <br />
+
+    <div class="text large bold">{{ 'UNIT_UPDATE.CONFIRM_CLOSE' | translate }}</div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog margin-btn">{{ 'UNIT_UPDATE.CLOSE' | translate }}</button>
+
+    <button  (click)="onClose()" class="btn cancel">{{ 'COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

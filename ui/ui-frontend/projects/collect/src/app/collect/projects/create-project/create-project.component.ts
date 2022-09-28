@@ -24,21 +24,20 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Observable, Subscription } from 'rxjs';
+import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Logger, Project, ProjectStatus } from 'ui-frontend-common';
+import { Observable, Subscription } from 'rxjs';
+import { ExternalParameters, ExternalParametersService, Logger, Project, ProjectStatus } from 'ui-frontend-common';
 import { FilingPlanMode } from 'vitamui-library';
 
-import { ProjectsService } from '../projects.service';
-import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
+import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
+import { ProjectsService } from '../projects.service';
 
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-create-project',
@@ -63,10 +62,10 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
   FILLING_PLAN_MODE = FilingPlanMode;
   tenantIdentifier: number;
-  projectId: string;
+  createdProject: Project;
   createDialogSub: Subscription;
   updateDialogSub: Subscription;
-  acquisitionInformations = [
+  acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
     this.translationService.instant('ACQUISITION_INFORMATION.PROTOCOL'),
     this.translationService.instant('ACQUISITION_INFORMATION.PURCHASE'),
@@ -80,34 +79,37 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.translationService.instant('ACQUISITION_INFORMATION.OTHER'),
     this.translationService.instant('ACQUISITION_INFORMATION.UNKNOWN'),
   ];
-  legalStatus = [
+  legalStatusList = [
     this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE'),
     this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE'),
     this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE'),
   ];
-  dateErrorMessage = '';
   closeModal = false;
+  uploadZipCompleted = false;
+
+  @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
 
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CreateProjectComponent>,
+    private dialogRefToClose: MatDialogRef<CreateProjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private projectsService: ProjectsService,
     private uploadService: CollectUploadService,
     private snackBar: MatSnackBar,
     private logger: Logger,
     private externalParameterService: ExternalParametersService,
-    private confirmDialogService: ConfirmDialogService,
     private cdr: ChangeDetectorRef,
-    private translationService: TranslateService
-  ) {}
+    private translationService: TranslateService,
+    public dialog: MatDialog,
+  ) { }
 
   get linkParentIdControl() {
-    return this.projectForm.controls['linkParentIdControl'] as FormControl;
+    return this.projectForm.controls.linkParentIdControl as FormControl;
   }
 
   get accessContractSelect() {
-    return this.projectForm.controls['accessContractSelect'];
+    return this.projectForm.controls.accessContractSelect;
   }
 
   ngOnInit(): void {
@@ -143,11 +145,27 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   }
 
   onCancel() {
-    if (this.projectForm.dirty) {
-      this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
+      const dialogToOpen = this.confirmDeleteAddRuleDialog;
+      this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+  }
+
+  onClose() {
+    this.dialogRefToClose.close(true);
+  }
+
+  onConfirm() {
+    if (this.uploadZipCompleted) {
+      this.projectsService.deleteProjectId(this.createdProject.id).subscribe(
+        () => {
+          this.dialogRefToClose.close(true);
+          this.close();
+        }
+      );
     } else {
-      this.uploadService.reinitializeZip();
-      this.dialogRef.close();
+      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TRACKING_TITLE'), null, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 10000,
+      });
     }
   }
 
@@ -212,16 +230,17 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       .create(project)
       .toPromise()
       .then((response) => {
-        this.projectId = response.id;
-        return this.uploadService.uploadZip(this.tenantIdentifier, this.projectId);
+        this.createdProject = response;
+        return this.uploadService.uploadZip(this.tenantIdentifier, this.createdProject.id);
       })
       .then((uploadOperation) => {
         uploadOperation.subscribe(
-          () => {},
+          () => { },
           (error: any) => {
             this.logger.error(error);
           },
           () => {
+            this.uploadZipCompleted = true;
             this.closeModal = true;
             this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
               panelClass: 'vitamui-snack-bar',
@@ -237,41 +256,43 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   /*** Step 3 : Description du versement ***/
   validateThirdStep() {
-    const startDate = this.projectForm.controls['startDate'].value;
-    const endDate = this.projectForm.controls['endDate'].value;
-
-    if (startDate !== null && endDate !== null && moment(startDate).isAfter(endDate)) {
-      this.dateErrorMessage = this.translationService.instant('COLLECT.PROJECT_DESCRIPTION_DATE_ERROR');
-      return true;
-    }
-    this.dateErrorMessage = '';
-
     return (
-      this.projectForm.controls['originatingAgencyIdentifier'].invalid ||
-      this.projectForm.controls['messageIdentifier'].invalid ||
-      this.projectForm.controls['submissionAgencyIdentifier'].invalid
+      this.projectForm.controls.originatingAgencyIdentifier.invalid ||
+      this.projectForm.controls.messageIdentifier.invalid ||
+      this.projectForm.controls.submissionAgencyIdentifier.invalid
     );
   }
 
   /*** Step 4 : Contexte de versement ***/
   validateFourStep() {
     return (
-      this.projectForm.controls['archivalAgencyIdentifier'].invalid ||
-      this.projectForm.controls['transferringAgencyIdentifier'].invalid ||
-      this.projectForm.controls['archivalAgreement'].invalid
+      this.projectForm.controls.archivalAgencyIdentifier.invalid ||
+      this.projectForm.controls.transferringAgencyIdentifier.invalid ||
+      this.projectForm.controls.archivalAgreement.invalid
     );
   }
 
   updateProject() {
-    const project = { ...this.projectForm.value, id: this.projectId };
-    this.updateDialogSub = this.projectsService.updateProject(project).subscribe();
+    // Project name should be setted from messageIdentifier field until further notice
+    const projectToUpdate = {
+      ...this.projectForm.value,  name: this.projectForm.controls.messageIdentifier.value
+    };
+    this.mapProjectInternalFields(projectToUpdate);
+    this.updateDialogSub = this.projectsService.updateProject(projectToUpdate).subscribe();
     this.move();
+  }
+
+  mapProjectInternalFields(project: Project) {
+    project.id = this.createdProject.id;
+    project.createdOn = this.createdProject.createdOn;
+    project.unitUp = this.createdProject.unitUp;
+    project.status = this.createdProject.status;
   }
 
   /*** Step 5 : Téléchargements ***/
   close() {
     this.dialogRef.close(true);
-    this.projectId = null;
+    this.createdProject = null;
   }
 
   /*** All Steps ***/
@@ -279,16 +300,15 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.projectForm = this.formBuilder.group({
       messageIdentifier: [null],
       comment: [null],
-      startDate: [null],
-      endDate: [null],
       originatingAgencyIdentifier: [null, Validators.required],
       submissionAgencyIdentifier: [null, Validators.required],
       referentialCheckup: [true],
       archivalAgencyIdentifier: [null, Validators.required],
       transferringAgencyIdentifier: [null, Validators.required],
       archivalAgreement: [null, Validators.required],
-      archivalProfile: [null],
+      archiveProfile: [null],
       acquisitionInformation: [null],
+      legalStatus: [null],
       status: [null],
       linkParentIdControl: [{ included: [], excluded: [] }],
       accessContractSelect: [null],

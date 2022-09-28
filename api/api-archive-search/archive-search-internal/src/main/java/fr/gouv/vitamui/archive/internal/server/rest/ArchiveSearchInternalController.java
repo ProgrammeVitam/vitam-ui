@@ -90,6 +90,11 @@ public class ArchiveSearchInternalController {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchiveSearchInternalController.class);
 
+    private static final String MANDATORY_PARAMETERS =
+        "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ";
+    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY =
+        "The identifier, the accessContract Id  are mandatory parameters: ";
+
     private final ArchiveSearchInternalService archiveInternalService;
     private final ArchiveSearchUnitExportCsvInternalService archiveSearchUnitExportCsvInternalService;
     private final ExportDipInternalService exportDipInternalService;
@@ -127,7 +132,7 @@ public class ArchiveSearchInternalController {
         throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
-            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+            .checkParameter(MANDATORY_PARAMETERS,
                 tenantId, accessContractId, searchQuery);
         SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Calling service searchArchiveUnits for tenantId {}, accessContractId {} By Criteria {} ",
@@ -157,7 +162,7 @@ public class ArchiveSearchInternalController {
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
 
         ParameterChecker
-            .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
+            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id, accessContractId);
         SanityChecker.checkSecureParameter(id, accessContractId);
         LOGGER.debug("UA Details  {}", id);
         VitamContext vitamContext =
@@ -170,7 +175,7 @@ public class ArchiveSearchInternalController {
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException, InvalidParseOperationException {
         ParameterChecker
-            .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
+            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id, accessContractId);
         SanityChecker.checkSecureParameter(id, accessContractId);
         LOGGER.debug("Get ObjectGroup By id : {}", id);
         VitamContext vitamContext =
@@ -186,16 +191,16 @@ public class ArchiveSearchInternalController {
     ) throws InvalidParseOperationException, PreconditionFailedException {
 
         ParameterChecker
-            .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
+            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id, accessContractId);
         SanityChecker.checkSecureParameter(id, accessContractId, usage);
         LOGGER.debug("Access Contract {} ", accessContractId);
         LOGGER.debug("Download Archive Unit Object with id {}", id);
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         return Mono.<Resource>fromCallable(() -> {
-                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
-                return new InputStreamResource((InputStream) response.getEntity());
-            }).subscribeOn(Schedulers.boundedElastic())
+            Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
+            return new InputStreamResource((InputStream) response.getEntity());
+        }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
                 .ok().cacheControl(CacheControl.noCache())
                 .body(resource)));
@@ -227,7 +232,7 @@ public class ArchiveSearchInternalController {
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
         ParameterChecker
             .checkParameter(
-                "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                MANDATORY_PARAMETERS,
                 tenantId, accessContractId, exportDipCriteriaDto);
         SanityChecker.checkSecureParameter(accessContractId);
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
@@ -245,7 +250,7 @@ public class ArchiveSearchInternalController {
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(transferRequestDto);
         ParameterChecker.checkParameter(
-            "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+            MANDATORY_PARAMETERS,
             tenantId, accessContractId, transferRequestDto);
         SanityChecker.checkSecureParameter(accessContractId);
         SanityChecker.sanitizeCriteria(transferRequestDto);
@@ -265,7 +270,7 @@ public class ArchiveSearchInternalController {
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
             .checkParameter(
-                "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                MANDATORY_PARAMETERS,
                 tenantId, accessContractId, searchQuery);
         SanityChecker.checkSecureParameter(accessContractId);
         SanityChecker.sanitizeCriteria(searchQuery);
@@ -284,7 +289,7 @@ public class ArchiveSearchInternalController {
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
             .checkParameter(
-                "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                MANDATORY_PARAMETERS,
                 tenantId, accessContractId, searchQuery);
         SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Calling elimination action by criteria {} ", searchQuery);
@@ -300,7 +305,7 @@ public class ArchiveSearchInternalController {
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
         ParameterChecker
-            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+            .checkParameter(MANDATORY_PARAMETERS,
                 tenantId, accessContractId, ruleSearchCriteriaDto);
         SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Update Archive Units Rules by criteria {}", ruleSearchCriteriaDto);
@@ -319,7 +324,7 @@ public class ArchiveSearchInternalController {
         SanityChecker.sanitizeCriteria(searchCriteriaDto);
         ParameterChecker
             .checkParameter(
-                "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                MANDATORY_PARAMETERS,
                 tenantId, accessContractId, searchCriteriaDto);
         SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Computed Inherited Rules  by criteria {}", searchCriteriaDto);
@@ -336,7 +341,7 @@ public class ArchiveSearchInternalController {
         throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
-            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+            .checkParameter(MANDATORY_PARAMETERS,
                 tenantId, accessContractId, searchQuery);
         SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug(
@@ -356,7 +361,7 @@ public class ArchiveSearchInternalController {
 
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         ParameterChecker
-            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+            .checkParameter(MANDATORY_PARAMETERS,
                 tenantId, accessContractId, reclassificationCriteriaDto);
         SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
@@ -371,7 +376,7 @@ public class ArchiveSearchInternalController {
         @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker
-            .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
+            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id, accessContractId);
         ParameterChecker
             .checkParameter("The request body is mandatory: ", unitDescriptiveMetadataDto);
         SanityChecker.checkSecureParameter(accessContractId, id);

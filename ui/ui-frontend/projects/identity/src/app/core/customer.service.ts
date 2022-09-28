@@ -36,30 +36,28 @@
  */
 import { Observable, Subject, zip } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Criterion, Customer, Logo, Operators, SearchQuery, ThemeService } from 'ui-frontend-common';
-
-import { Injectable } from '@angular/core';
+import { Criterion, Customer, Logo, Operators, SearchQuery, ThemeService, VitamUISnackBarService } from 'ui-frontend-common';
 
 import { HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AttachmentType } from '../customer/attachment.enum';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { CustomerApiService } from './api/customer-api.service';
 
 export const DEFAULT_PAGE_SIZE = 20;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerService {
-
   updated = new Subject<Customer>();
 
   constructor(
     private customerApi: CustomerApiService,
-    private snackBar: VitamUISnackBar,
+    private snackBarService: VitamUISnackBarService,
     private sanitizer: DomSanitizer,
-    private themeService: ThemeService,
+    private themeService: ThemeService
   ) {}
 
   get(id: string): Observable<Customer> {
@@ -70,18 +68,17 @@ export class CustomerService {
     return this.customerApi.getMyCustomer();
   }
 
-  exists(properties: { code?: string, domain?: string }): Observable<any> {
-
+  exists(properties: { code?: string; domain?: string }): Observable<any> {
     const criterionArray: Criterion[] = [];
     if (properties.code) {
       criterionArray.push({ key: 'code', value: properties.code, operator: Operators.equals });
     }
     if (properties.domain) {
-      criterionArray.push({ key: 'emailDomains', value: properties.domain, operator: Operators.containsIgnoreCase });
+      criterionArray.push({ key: 'emailDomains', value: properties.domain, operator: Operators.equalsIgnoreCase });
     }
     const query: SearchQuery = { criteria: criterionArray };
 
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.customerApi.checkExistsByParam(params);
   }
@@ -91,17 +88,18 @@ export class CustomerService {
       .pipe(
         tap(
           (response: Customer) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'customerCreate', code: response.code },
-              duration: 10000
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.CUSTOMER_CREATE',
+              icon: 'vitamui-icon-bank',
+              translateParams: {
+                param1: response.code
+              }
             });
           },
           () => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'customerCreateError' },
-              duration: 10000
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.CUSTOMER_CREATE_ERROR',
+              icon: 'vitamui-icon-danger',
             });
           }
         )
@@ -114,17 +112,16 @@ export class CustomerService {
         tap((updatedCustomer: Customer) => this.updated.next(updatedCustomer)),
         tap(
           (updatedCustomer: Customer) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'customerUpdate', code: updatedCustomer.code },
-              duration: 10000
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.CUSTOMER_UPDATE',
+              icon: 'vitamui-icon-bank',
+              translateParams: {
+                param1: updatedCustomer.code
+              }
             });
           },
           (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
+            this.snackBarService.open({ message: error.error.message, translate: false });
           }
         )
       );
@@ -133,17 +130,22 @@ export class CustomerService {
   public getLogoUrl(id: string, type: AttachmentType): Observable<SafeResourceUrl> {
     return this.customerApi.getLogo(id, type).pipe(
       map((res: HttpResponse<Blob>) => {
-          if (res.status === 204) {
-            switch (type) {
-              case AttachmentType.Header: return this.themeService.defaultTheme.headerUrl; break;
-              case AttachmentType.Footer: return this.themeService.defaultTheme.footerUrl; break;
-              case AttachmentType.Portal: return this.themeService.defaultTheme.portalUrl; break;
-            }
-            return null;
+        if (res.status === 204) {
+          switch (type) {
+            case AttachmentType.Header:
+              return this.themeService.defaultTheme.headerUrl;
+              break;
+            case AttachmentType.Footer:
+              return this.themeService.defaultTheme.footerUrl;
+              break;
+            case AttachmentType.Portal:
+              return this.themeService.defaultTheme.portalUrl;
+              break;
           }
-          return this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(res.body));
+          return null;
         }
-      )
+        return this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(res.body));
+      })
     );
   }
 
@@ -157,5 +159,4 @@ export class CustomerService {
   public getGdprReadOnlySettingStatus(): Observable<boolean> {
     return this.customerApi.getGdprSettingStatus();
   }
-
 }

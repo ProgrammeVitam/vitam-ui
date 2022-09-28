@@ -41,6 +41,9 @@ import { map, switchMap, take } from 'rxjs/operators';
 
 import { OwnerService } from '../owner.service';
 
+export const OWNER_CODE_MAX_LENGTH = 15;
+export const ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]*$/;
+
 @Injectable()
 export class OwnerFormValidators {
 

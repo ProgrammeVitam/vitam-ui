@@ -40,10 +40,11 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AdminUserProfile, Direction, GlobalEventService, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
 import {IngestList} from '../core/common/ingest-list';
+import {IngestType} from '../core/common/ingest-type.enum';
 import {UploadComponent} from '../core/common/upload.component';
 import {UploadService} from '../core/common/upload.service';
+import {LogbookOperation} from '../models/logbook-event.interface';
 import {IngestListComponent} from './ingest-list/ingest-list.component';
-import {LogbookOperation} from "../models/logbook-event.interface";
 
 @Component({
   selector: 'app-ingest',
@@ -51,6 +52,7 @@ import {LogbookOperation} from "../models/logbook-event.interface";
   styleUrls: ['./ingest.component.scss'],
 })
 export class IngestComponent extends SidenavPage<any> implements OnInit {
+  IngestType = IngestType;
   search: string;
   uploadError = false;
   tenantIdentifier: string;
@@ -141,7 +143,7 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
     this.openPanel(item);
   }
 
-  openImportSipDialog(type: string) {
+  openImportSipDialog(type: IngestType) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = 'vitamui-modal';
     dialogConfig.disableClose = false;

@@ -39,12 +39,20 @@ import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
-
-import { AuthnRequestBindingEnum, IdentityProvider } from 'ui-frontend-common';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
+import { AuthnRequestBindingEnum, IdentityProvider, VitamUISnackBarService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderDetailsComponent } from './identity-provider-details.component';
+
+const translations: any = { TEST: 'Mock translate test' };
+
+class FakeLoader implements TranslateLoader {
+  getTranslation(): Observable<any> {
+    return of(translations);
+  }
+}
 
 @Component({
   selector: 'app-editable-keystore',
@@ -123,19 +131,29 @@ class TestHostComponent {
   readOnly: boolean;
 }
 
-xdescribe('IdentityProviderDetailsComponent', () => {
+describe('IdentityProviderDetailsComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
-        declarations: [IdentityProviderDetailsComponent, TestHostComponent, EditableKeystoreStubComponent, EditablePatternStubComponent],
-        providers: [{ provide: IdentityProviderService, useValue: { patch: () => of(null), updateMetadataFile: () => of(null) } }],
-      }).compileComponents();
-    })
-  );
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
+        }),
+        VitamUICommonTestModule,
+      ],
+      declarations: [IdentityProviderDetailsComponent, TestHostComponent, EditableKeystoreStubComponent, EditablePatternStubComponent],
+      providers: [
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: IdentityProviderService, useValue: { patch: () => of(null), updateMetadataFile: () => of(null) } },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
@@ -143,32 +161,22 @@ xdescribe('IdentityProviderDetailsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should created', () => {
     expect(testhost).toBeTruthy();
   });
 
   describe('Class', () => {
-    it('should set the form value', () => {
+    it('should the form to have the correct value', () => {
       expect(testhost.component.form.getRawValue()).toEqual({
-        authnRequestBinding: 'POST',
-        autoProvisioningEnabled: false,
-        clientId: null,
-        clientSecret: null,
-        customParams: null,
-        discoveryUrl: null,
-        enabled: true,
-        identifier: '2',
-        identifierAttribute: 'identifierAttribute',
-        internal: true,
-        mailAttribute: 'mailAttribute',
-        name: 'Test IDP',
-        patterns: ['test1.com', 'test3.com'],
-        preferredJwsAlgorithm: null,
         protocoleType: null,
-        scope: null,
-        useNonce: null,
-        usePkce: null,
-        useState: null,
+        identifier: '2',
+        enabled: true,
+        name: 'Test IDP',
+        internal: true,
+        patterns: ['test1.com', 'test3.com'],
+        mailAttribute: 'mailAttribute',
+        identifierAttribute: 'identifierAttribute',
+        autoProvisioningEnabled: false,
       });
     });
 
@@ -191,75 +199,52 @@ xdescribe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('patterns')).not.toBeNull();
       expect(testhost.component.form.get('mailAttribute')).not.toBeNull();
       expect(testhost.component.form.get('identifierAttribute')).not.toBeNull();
-      expect(testhost.component.form.get('authnRequestBinding')).not.toBeNull();
+      expect(testhost.component.form.get('authnRequestBinding')).toBeNull();
       expect(testhost.component.form.get('autoProvisioningEnabled')).not.toBeNull();
     });
 
     it('should have the required validator', () => {
+      // When
       testhost.component.form.setValue({
+        protocoleType: null,
         identifier: null,
-        enabled: null,
+        enabled: true,
         name: null,
-        internal: null,
+        internal: true,
         patterns: null,
         mailAttribute: null,
         identifierAttribute: null,
-        authnRequestBinding: null,
         autoProvisioningEnabled: null,
-        protocoleType:null,
-        clientId: null,
-        clientSecret: null,
-        customParams: null,
-        discoveryUrl: null,
-        scope:null,
-        preferredJwsAlgorithm:null,
-        useNonce: null,
-        usePkce: null,
-        useState: null,
-        
       });
-      expect(testhost.component.form.get('enabled').valid).toBeFalsy('enabled');
+
+      // Then
+      expect(testhost.component.form.get('enabled').valid).toBeTruthy('enabled');
       expect(testhost.component.form.get('identifier').valid).toBeFalsy('identifier');
       expect(testhost.component.form.get('name').valid).toBeFalsy('name');
       expect(testhost.component.form.get('internal').valid).toBeFalsy('internal');
       expect(testhost.component.form.get('patterns').valid).toBeFalsy('patterns');
       expect(testhost.component.form.get('mailAttribute').valid).toBeTruthy('mailAttribute');
-      expect(testhost.component.form.get('authnRequestBinding').valid).toBeFalsy('authnRequestBinding');
       expect(testhost.component.form.get('autoProvisioningEnabled').valid).toBeFalsy('autoProvisioningEnabled');
+      expect(testhost.component.form.get('identifierAttribute').valid).toBeTruthy('identifierAttribute');
+      expect(testhost.component.form.get('protocoleType').valid).toBeTruthy('protocoleType');
     });
 
-    it(
-      'should be valid and call patch()',
-      waitForAsync(() => {
-        const providerService = TestBed.inject(IdentityProviderService);
-        spyOn(providerService, 'patch').and.returnValue(of(null));
-        testhost.component.form.setValue({
-          identifier: testhost.provider.identifier,
-          enabled: false,
-          name: testhost.provider.name,
-          internal: testhost.provider.internal,
-          patterns: testhost.provider.patterns,
-          mailAttribute: testhost.provider.mailAttribute,
-          identifierAttribute: testhost.provider.identifierAttribute,
-          authnRequestBinding: testhost.provider.authnRequestBinding,
-          autoProvisioningEnabled: false,
-          protocoleType: 'SAML',
-          clientId: 2,
-          clientSecret: 'secret',
-          discoveryUrl: 'discoveryUrl',
-          scope: 'private',
-          preferredJwsAlgorithm: 'HS-256',
-          customParams: { key: 'value' },
-          useNonce: true,
-          usePkce: true,
-          useState: true,
-          
-        });
-        expect(testhost.component.form.valid).toBeTruthy();
-      })
-    );
-
-    it('should call updateMetadataFile');
+    it('should be valid and call patch()', waitForAsync(() => {
+      const providerService = TestBed.inject(IdentityProviderService);
+      spyOn(providerService, 'patch').and.returnValue(of(null));
+      testhost.component.form.setValue({
+        identifier: testhost.provider.identifier,
+        enabled: false,
+        name: testhost.provider.name,
+        internal: testhost.provider.internal,
+        patterns: testhost.provider.patterns,
+        mailAttribute: testhost.provider.mailAttribute,
+        identifierAttribute: testhost.provider.identifierAttribute,
+        autoProvisioningEnabled: false,
+        protocoleType: 'SAML',
+      });
+      expect(testhost.component.form.valid).toBeTruthy();
+    }));
 
     it('should disable then enable the form', () => {
       testhost.readOnly = true;
@@ -271,9 +256,5 @@ xdescribe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.disabled).toBe(false);
       expect(testhost.component.idpMetadata.disabled).toBe(false);
     });
-  });
-
-  describe('DOM', () => {
-    // TODO
   });
 });

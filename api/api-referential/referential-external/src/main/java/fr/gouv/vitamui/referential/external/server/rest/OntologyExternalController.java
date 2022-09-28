@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -161,6 +162,10 @@ public class OntologyExternalController {
     @Secured(ServicesData.ROLE_IMPORT_ONTOLOGIES)
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        if(file != null) {
+            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        }
+        SanityChecker.isValidFileName(fileName);
         LOGGER.debug("Import ontology file {}", fileName);
         return ontologyExternalService.importOntologies(fileName, file);
     }

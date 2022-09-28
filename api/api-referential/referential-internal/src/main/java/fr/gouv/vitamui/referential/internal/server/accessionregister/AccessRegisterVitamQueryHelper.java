@@ -118,6 +118,9 @@ public class AccessRegisterVitamQueryHelper {
 
         BooleanQuery orQuery = or();
         BooleanQuery andQuery = and();
+        if (nonNull(pageNumber) && nonNull(size)) {
+            select.setLimitFilter((long) pageNumber * size, size);
+        }
 
         addOrderToQuery(select, orderBy, direction);
         addFiltersToQuery(andQuery, criteria.getFilters());

@@ -249,7 +249,7 @@ public class SendEventToVitamTasks {
             if (response != null && response.getStatus() == Response.Status.CONFLICT.getStatusCode()) {
                 LOGGER.warn("Event already send to vitam", e);
             } else {
-                LOGGER.error("Failed to send event {} to vitam", logbookOperationParams, e);
+                LOGGER.error(String.format("Failed to send event %s to vitam", logbookOperationParams), e);
             }
 
         } finally {

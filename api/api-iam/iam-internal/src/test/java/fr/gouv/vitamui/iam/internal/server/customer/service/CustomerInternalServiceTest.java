@@ -1,6 +1,10 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.LanguageDto;
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
@@ -50,7 +54,6 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class CustomerInternalServiceTest {
@@ -310,5 +313,13 @@ public class CustomerInternalServiceTest {
         dto.setGdprAlert(false);
         dto.setGdprAlertDelay(72);
         return dto;
+    }
+
+    @Test
+    public void testCheckNotExistByDomainMail() {
+        when(customerRepository.findByEmailDomainsIgnoreCase(any())).thenReturn(null);
+
+        final boolean result = internalCustomerService.checkExist(null);
+        Assert.assertFalse("Customers shouldn't be found.", result);
     }
 }

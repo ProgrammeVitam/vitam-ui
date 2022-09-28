@@ -677,6 +677,13 @@ h5 {
   100% {
     transform: rotate(360deg); } }
 
+@font-face {
+  font-family: 'Mulish', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  src: local("Mulish", sans-serif), url(https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900&display=swap) format("woff2");
+  font-display: optional; }
+
 body {
   margin: 0;
   font-family: 'Mulish', sans-serif;

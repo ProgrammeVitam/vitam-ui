@@ -89,6 +89,7 @@ public class IngestExternalRestClient
     }
 
     public ResponseEntity<byte[]> generateODTReport(ExternalHttpContext context, String id) {
+        LOGGER.debug("Generate odt file for ingest with id : {}", id);
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID);
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));

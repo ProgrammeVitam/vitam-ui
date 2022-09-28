@@ -47,7 +47,14 @@ export class UpdateUnitManagementRuleService {
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private translateService: TranslateService,
     public dialog: MatDialog
-  ) {}
+  ) {
+  }
+
+  DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD = 100000;
+  DEFAULT_DIP_EXPORT_THRESHOLD = 100000;
+  DEFAULT_ELIMINATION_THRESHOLD = 10000;
+  DEFAULT_TRANSFER_THRESHOLD = 100000;
+  DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 100000;
 
   goToUpdateManagementRule(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
@@ -120,7 +127,7 @@ export class UpdateUnitManagementRuleService {
   ) {
     listOfUACriteriaSearch.push({
       criteria: ARCHIVE_UNIT_HOLDING_UNIT,
-      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
+      values: [ { value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' } ],
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
       dataType: CriteriaDataType.STRING,
@@ -140,7 +147,8 @@ export class UpdateUnitManagementRuleService {
         updateArchiveUnitAlerteMessageDialogSubscription = dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))
-          .subscribe(() => {});
+          .subscribe(() => {
+          });
         updateArchiveUnitAlerteMessageDialogSubscription?.unsubscribe();
       } else {
         const criteriaSearchDSLQueryToSend = {
@@ -153,8 +161,123 @@ export class UpdateUnitManagementRuleService {
         this.managementRulesSharedDataService.emitCriteriaSearchListToSave(criteriaSearchList);
         this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQueryToSend);
 
-        router.navigate(['/archive-search/update-rules/tenant/', tenantIdentifier]);
+        router.navigate([ '/archive-search/update-rules/tenant/', tenantIdentifier ]);
       }
     });
+  }
+
+  updateManagementRuleWithThresholds(
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
+    criteriaSearchList: SearchCriteriaEltDto[],
+    accessContract: string,
+    currentPage: number,
+    tenantIdentifier: number,
+    numberOfHoldingUnitType: number,
+    router: Router,
+    itemSelected: number,
+    updateArchiveUnitAlerteMessageDialogSubscription: Subscription,
+    updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>,
+    actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription,
+    actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>,
+    confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchComponent>,
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
+    bulkOperationsThreshold: number
+  ) {
+    if (bulkOperationsThreshold !== -1) {
+      //We defined a threshold
+      if (itemSelected > bulkOperationsThreshold) {
+        //error message prohibited
+        const dialogRef = this.dialog.open(actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
+        actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {
+          });
+        actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+      } else {
+        if (itemSelected > this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD) {
+          //Warning and confirmation
+          const dialogConfirmActionWithImportantAllowedCount = confirmImportantAllowedBulkOperationsDialog;
+          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+            panelClass: 'vitamui-dialog',
+          });
+          dialogConfirmActionWithImportantAllowedCountRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {
+              this.goToUpdateManagementRule(
+                listOfUACriteriaSearch,
+                criteriaSearchList,
+                accessContract,
+                currentPage,
+                tenantIdentifier,
+                numberOfHoldingUnitType,
+                router,
+                itemSelected,
+                updateArchiveUnitAlerteMessageDialogSubscription,
+                updateArchiveUnitAlerteMessageDialog,
+                confirmSecondActionBigNumberOfResultsActionDialog
+              );
+            });
+        } else {
+          //normal process
+          this.goToUpdateManagementRule(
+            listOfUACriteriaSearch,
+            criteriaSearchList,
+            accessContract,
+            currentPage,
+            tenantIdentifier,
+            numberOfHoldingUnitType,
+            router,
+            itemSelected,
+            updateArchiveUnitAlerteMessageDialogSubscription,
+            updateArchiveUnitAlerteMessageDialog,
+            confirmSecondActionBigNumberOfResultsActionDialog
+          );
+        }
+      }
+    } else {
+      //no threshold defined
+      if (itemSelected > this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD) {
+        //Warning and confirmation
+        const dialogConfirmActionWithImportantAllowedCount = confirmImportantAllowedBulkOperationsDialog;
+        const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+          panelClass: 'vitamui-dialog',
+        });
+        dialogConfirmActionWithImportantAllowedCountRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {
+            this.goToUpdateManagementRule(
+              listOfUACriteriaSearch,
+              criteriaSearchList,
+              accessContract,
+              currentPage,
+              tenantIdentifier,
+              numberOfHoldingUnitType,
+              router,
+              itemSelected,
+              updateArchiveUnitAlerteMessageDialogSubscription,
+              updateArchiveUnitAlerteMessageDialog,
+              confirmSecondActionBigNumberOfResultsActionDialog
+            );
+          });
+      } else {
+        //normal process
+        this.goToUpdateManagementRule(
+          listOfUACriteriaSearch,
+          criteriaSearchList,
+          accessContract,
+          currentPage,
+          tenantIdentifier,
+          numberOfHoldingUnitType,
+          router,
+          itemSelected,
+          updateArchiveUnitAlerteMessageDialogSubscription,
+          updateArchiveUnitAlerteMessageDialog,
+          confirmSecondActionBigNumberOfResultsActionDialog
+        );
+      }
+    }
   }
 }

@@ -36,19 +36,21 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import fr.gouv.vitamui.commons.api.domain.UserDto;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.internal.client.UserInfoInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 
 @Getter
@@ -97,6 +99,22 @@ public class UserInfoExternalService extends AbstractResourceClientService<UserI
     @Override
     protected UserInfoInternalRestClient getClient() {
         return userInfoInternalRestClient;
+    }
+
+    public JsonNode findHistoryById(final String id) {
+        checkLogbookRight(id);
+        return getClient().findHistoryById(getInternalHttpContext(), id);
+    }
+
+    public void checkLogbookRight(final String id) {
+        final boolean hasRoleGetUserInfos = externalSecurityService.hasRole(ServicesData.ROLE_GET_USER_INFOS);
+        if (!hasRoleGetUserInfos && !StringUtils.equals(externalSecurityService.getUser().getUserInfoId(), id)) {
+                throw new ForbiddenException(String.format("Unable to access user info with id: %s", id));
+        }
+        final UserInfoDto userInfoDto = super.getOne(id);
+        if (userInfoDto == null) {
+            throw new ForbiddenException(String.format("Unable to access user info with id: %s", id));
+        }
     }
 
 }

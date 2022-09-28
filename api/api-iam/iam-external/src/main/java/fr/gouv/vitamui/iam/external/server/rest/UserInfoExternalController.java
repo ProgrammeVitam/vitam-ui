@@ -40,6 +40,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
@@ -162,5 +163,10 @@ public class UserInfoExternalController implements CrudController<UserInfoDto> {
         return userInfoExternalService.patch(partialDto);
     }
 
+    @GetMapping(CommonConstants.USER_INFO_HISTORY)
+    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+        LOGGER.debug("get logbook for user info with id :{}", id);
+        return userInfoExternalService.findHistoryById(id);
+    }
 
 }

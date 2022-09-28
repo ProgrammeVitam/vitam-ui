@@ -25,21 +25,23 @@
  * accept its terms.
  */
 import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { DEFAULT_PAGE_SIZE, Direction, PageRequest, SidenavPage } from 'ui-frontend-common';
-import { ProjectsService } from './projects.service';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { DEFAULT_PAGE_SIZE, Direction, PageRequest, SidenavPage } from 'ui-frontend-common';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ProjectListComponent } from './project-list/project-list.component';
+import { ProjectsService } from './projects.service';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
 })
-export class ProjectsComponent extends SidenavPage<ProjectsService> implements OnDestroy {
+export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
   tenantIdentifier: string;
+  projectId: string;
+  isLPExtended = false;
   createDialogSub: Subscription;
 
   @ViewChild(ProjectListComponent, { static: true }) projectListComponent: ProjectListComponent;
@@ -68,5 +70,29 @@ export class ProjectsComponent extends SidenavPage<ProjectsService> implements O
     this.createDialogSub = dialogRef.afterClosed().subscribe(() => {
       this.projectListComponent.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT));
     });
+  }
+
+  openProjectDetailsPanel(selectedProjectId: string) {
+    this.projectId = selectedProjectId;
+    this.openPanel(selectedProjectId);
+  }
+
+  showExtendedLateralPanel() {
+    this.isLPExtended = true;
+  }
+
+  backToNormalLateralPanel() {
+    this.isLPExtended = false;
+  }
+
+  onSearch(event: string) {
+    const criteria: string = event
+      ? JSON.stringify({
+          query: event,
+        })
+      : null;
+
+    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT, criteria);
+    this.projectListComponent.search(pageRequest);
   }
 }

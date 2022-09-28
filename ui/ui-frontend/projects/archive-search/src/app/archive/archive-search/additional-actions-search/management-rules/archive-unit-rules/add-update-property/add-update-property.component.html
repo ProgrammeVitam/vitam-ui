@@ -1,0 +1,77 @@
+<div class="container">
+  <label class="title-text">{{ 'RULES.FINAL_ACTION.TITLE' | translate }}</label>
+  <div *ngIf="ruleCategory === 'AppraisalRule'" class="row content vitamui-form" style="margin-right: 0px">
+    <mat-form-field class="vitamui-mat-select select-more-actions col-5">
+      <mat-select
+        placeholder="{{ 'RULES.FINAL_ACTION.SELECT_VALUE' | translate }} "
+        (selectionChange)="onChangeValue()"
+        [(value)]="rulePropertyName"
+      >
+        <mat-option value="Keep"> {{ 'RULES.FINAL_ACTION.KEEP' | translate }}</mat-option>
+        <mat-option value="Destroy"> {{ 'RULES.FINAL_ACTION.ELIMINATION' | translate }}</mat-option>
+      </mat-select>
+
+      <div class="select-arrow">
+        <i class="vitamui-icon vitamui-row-icon"></i>
+      </div>
+      <div class="select-arrow">
+        <i class="material-icons">keyboard_arrow_up</i>
+        <i class="material-icons">keyboard_arrow_down</i>
+      </div>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="ruleCategory === 'StorageRule'" class="row content vitamui-form" style="margin-right: 0px">
+    <mat-form-field class="vitamui-mat-select select-more-actions col-5">
+      <mat-select
+        placeholder="{{ 'RULES.FINAL_ACTION.SELECT_VALUE' | translate }} "
+        (selectionChange)="onChangeValue()"
+        [(value)]="rulePropertyName"
+      >
+        <mat-option value="RestrictAccess"> {{ 'RULES.FINAL_ACTION.RESTRICT_ACCESS' | translate }}</mat-option>
+        <mat-option value="Transfer">{{ 'RULES.FINAL_ACTION.TRANSFER' | translate }} </mat-option>
+        <mat-option value="Copy"> {{ 'RULES.FINAL_ACTION.COPY' | translate }}</mat-option>
+      </mat-select>
+
+      <div class="select-arrow">
+        <i class="vitamui-icon vitamui-row-icon"></i>
+      </div>
+      <div class="select-arrow">
+        <i class="material-icons">keyboard_arrow_up</i>
+        <i class="material-icons">keyboard_arrow_down</i>
+      </div>
+    </mat-form-field>
+  </div>
+
+  <br />
+  <div *ngIf="showText" class="row message-text-ok">
+    <div class="col-1"><i class="material-icons">check_circle</i></div>
+    <div class="col-11">
+      {{ 'RULES.UA_CONTROL.UA_FINAL_ACTION_MESSAGE' | translate }}
+    </div>
+  </div>
+  <br />
+
+  <div class="d-flex padding-btm-style">
+    <button type="button" (click)="onUpdateRuleProperty()" [disabled]="isValidValue" class="btn primary mr-4">
+      {{ 'RULES.COMMON.CONTROL' | translate }}
+    </button>
+    <button type="button" (click)="onCancelAddRuleProperty()" [disabled]="isCancelAddRulePropertyButtonDisabled" class="btn link cancel">
+      {{ 'RULES.COMMON.UNDO' | translate }}
+    </button>
+  </div>
+</div>
+
+<ng-template #confirmDeleteAddRulePropertyDialog>
+  <mat-dialog-content>
+    <br />
+
+    <div class="text large bold">{{ 'RULES.DIALOG_MESSAGE.DELETE_COMPONENT' | translate }}</div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
+
+    <button matDialogClose class="btn cancel">{{ 'RULES.COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

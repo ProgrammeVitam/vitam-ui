@@ -1,12 +1,12 @@
 <vitamui-common-sidenav-header
-  [badge]="user?.status === 'ENABLED' ? 'green' : ((user?.status === 'DISABLED' || user?.status === 'ANONYM' || user?.status === 'REMOVED') ? 'grey' : 'orange')"
+  [badge]="user?.status === 'ENABLED' ? 'green' : (user?.status === 'DISABLED' || user?.status === 'ANONYM' ? 'grey' : 'orange')"
   [title]="user?.lastname.toUpperCase() + ' ' + user?.firstname"
   [subtitle]="'(' +  user?.identifier + ')'"
   [icon]="'vitamui-icon-user'"
   (onclose)="emitClose()">
     <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-      <button mat-menu-item (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED' || user?.status === 'REMOVED'">{{'USER.OTHER_ACTION.ACTIVATE' | translate}} </button>
-      <button mat-menu-item (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED' || user?.status === 'REMOVED'">{{'USER.OTHER_ACTION.DESACTIVATE' | translate}}</button>
+      <button mat-menu-item (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED'">{{'USER.OTHER_ACTION.ACTIVATE' | translate}} </button>
+      <button mat-menu-item (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">{{'USER.OTHER_ACTION.DESACTIVATE' | translate}}</button>
       <button mat-menu-item i18n="@@userPreviewDeleted" (click)="deleteUser(user,'REMOVED')"
               [disabled]="user?.status === 'ENABLED' || user?.status === 'REMOVED' || user?.status === 'BLOCKED' || user?.status === 'ANONYM'">Supprimer les données personnelles</button>
     </vitamui-common-menu-button>
@@ -23,8 +23,8 @@
     </mat-tab>
 
     <mat-tab [label]="'USER.TAB.HISTORY' | translate">
-        <vitamui-common-operation-history-tab [id]="user?.id" [identifier]="user?.identifier" collectionName="users" [filter]="filterAuthenticationEvents"></vitamui-common-operation-history-tab>
-    </mat-tab>
+      <vitamui-common-multi-operation-history-tab [collectionsMap]="collectionsMap" [identifiers]="identifiers" [filter]="filterAuthenticationEvents"></vitamui-common-multi-operation-history-tab>
+   </mat-tab>
   </mat-tab-group>
 </div>
 
@@ -42,6 +42,7 @@
 <ng-template #confirmEnabledUserDialog>
   <mat-dialog-content>
     <p>{{'USER.OTHER_ACTION.REACTIVATE_MESSAGE' | translate : { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}</p>
+    <p>{{'USER.OTHER_ACTION.REACTIVATE_MESSAGE' | translate : { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}</p>
   </mat-dialog-content>
 
   <mat-dialog-actions>
@@ -56,9 +57,9 @@
       {{user?.firstname}} {{user?.lastname}}. Cette action ne peut pas être annulée, voulez-vous confirmer ?
     </p>
   </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog"
-      i18n="@@confirmDialogConfirmButton">Confirmer</button>
-    <button matDialogClose class="btn cancel" i18n="@@confirmDialogCancelButton">Annuler</button>
+
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary mr-2">{{'COMMON.CONFIRM' | translate}}</button>
+    <button matDialogClose class="btn link cancel">{{'COMMON.BACK' | translate}}</button>
   </mat-dialog-actions>
 </ng-template>

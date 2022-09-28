@@ -125,12 +125,12 @@ public class ConverterConfig {
     }
 
     @Bean
-    public Converters converters(final UserConverter userConverter, final TenantConverter tenantConverter, final OwnerConverter ownerConverter,
+    public Converters converters(final UserConverter userConverter, final UserInfoConverter userInfoConverter, final TenantConverter tenantConverter, final OwnerConverter ownerConverter,
             final ProfileConverter profileConverter, final ApplicationConverter applicationConverter, final GroupConverter groupConverter,
             final CustomerConverter customerConverter, final IdentityProviderConverter identityProviderConverter,
             final SubrogationConverter subrogationConverter, final ExternalParametersConverter externalParametersConverter,
             final ExternalParamProfileConverter externalParamProfileConverter) {
-        return new Converters(userConverter, tenantConverter, ownerConverter, profileConverter, applicationConverter, groupConverter, customerConverter,
+        return new Converters(userConverter, userInfoConverter, tenantConverter, ownerConverter, profileConverter, applicationConverter, groupConverter, customerConverter,
                 identityProviderConverter, subrogationConverter, externalParametersConverter, externalParamProfileConverter);
     }
 

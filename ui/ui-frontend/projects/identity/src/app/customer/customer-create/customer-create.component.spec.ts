@@ -35,7 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable: max-classes-per-file directive-selector */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
+import { CountryService } from 'ui-frontend-common';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -46,7 +48,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, CountryService, LoggerModule, OtpState } from 'ui-frontend-common';
+import { BASE_URL, ConfirmDialogService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CustomerService } from '../../core/customer.service';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
@@ -194,11 +196,15 @@ describe('CustomerCreateComponent', () => {
           MatProgressSpinnerModule,
           VitamUICommonTestModule,
           LoggerModule.forRoot(),
+          HttpClientTestingModule,
         ],
         declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
         providers: [
           { provide: MatDialogRef, useValue: matDialogRefSpy },
           { provide: MAT_DIALOG_DATA, useValue: {} },
+          { provide: WINDOW_LOCATION, useValue: window.location },
+          { provide: BASE_URL, useValue: '/fake-api' },
+          { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
           { provide: CustomerService, useValue: customerServiceSpy },
           { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
           { provide: OwnerService, useValue: ownerServiceSpy },
@@ -255,10 +261,9 @@ describe('CustomerCreateComponent', () => {
       describe('code', () => {
         it('should check the code format', () => {
           expect(setControlValue('code', '').invalid).toBeTruthy();
-          expect(setControlValue('code', 'A1A1AazZ').invalid).toBeTruthy();
+          expect(setControlValue('code', 'A1A1AazZ').valid).toBeTruthy();
+          expect(setControlValue('code', 'A1A1AazZ_').invalid).toBeTruthy();
           expect(setControlValue('code', '12345678901234567890123455').invalid).toBeTruthy();
-          expect(setControlValue('code', '1234567890123456789011513666').invalid).toBeTruthy();
-          expect(setControlValue('code', '12345678901234567890').valid).toBeTruthy('12345678901234567890');
           expect(setControlValue('code', '000000000').valid).toBeTruthy('000000000');
           expect(setControlValue('code', '999999').valid).toBeTruthy('999999');
         });

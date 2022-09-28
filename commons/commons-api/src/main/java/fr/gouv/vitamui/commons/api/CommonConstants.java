@@ -183,6 +183,8 @@ public class CommonConstants {
 
     public static final String SITE_CODE = "siteCode";
 
+    public static final String CENTER_CODE = "centerCode";
+
     public static final String INTERNAL_CODE = "internalCode";
 
     public static final String CUSTOMER_ID_ATTRIBUTE = "customerId";
@@ -223,6 +225,7 @@ public class CommonConstants {
 
     public static final String USER_INFO_ID = "userInfoId";
 
+    public static final String USER_INFO_HISTORY = "/{id}/history";
 
     /**
      * Constant contains application list for portal/header applications display

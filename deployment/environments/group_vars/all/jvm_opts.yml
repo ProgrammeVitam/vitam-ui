@@ -1,9 +1,12 @@
 ---
 
-# Defaults values if unset
-# memory: "-Xms512m -Xmx512m"
-# gc: ""
-# java: ""
+# Defaults values if unset can be override globaly
+# vitamui_defaults:
+#   services:
+#     jvm_opts:
+#       memory: "-Xms512m -Xmx512m"
+#       gc: ""
+#       java: ""
 
 vitamui:
   identity:

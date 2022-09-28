@@ -63,6 +63,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
+import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,8 +84,10 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.NODES;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.REUSE_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaMgtRulesCategory;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.DEFAULT_DEPTH;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
@@ -95,6 +98,7 @@ import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.
 /**
  * Archive-Search Internal service communication with VITAM.
  */
+@Getter
 @Service
 public class ArchiveSearchInternalService {
     private static final VitamUILogger LOGGER =
@@ -125,7 +129,6 @@ public class ArchiveSearchInternalService {
     private final RulesUpdateCommonService rulesUpdateCommonService;
     private final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
-
     @Autowired
     public ArchiveSearchInternalService(final ObjectMapper objectMapper, final UnitService unitService,
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
@@ -133,9 +136,7 @@ public class ArchiveSearchInternalService {
         final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService,
         final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService,
         final RulesUpdateCommonService rulesUpdateCommonService,
-        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService
-
-    ) {
+        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
@@ -161,6 +162,9 @@ public class ArchiveSearchInternalService {
                 selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COMPUTE_RULES_AU_NUMBER,
                     SIMPLE_FIELDS_VALUES_MAPPING.get(RULES_COMPUTED), 3,
                     FacetOrder.ASC));
+                selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
+                selectMultiQuery
+                    .setLimitFilter((long) searchQuery.getPageNumber() * searchQuery.getSize(), searchQuery.getSize());
             }
             JsonNode dslQuery = selectMultiQuery.getFinalSelect();
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
@@ -177,13 +181,24 @@ public class ArchiveSearchInternalService {
             searchQuery.extractCriteriaListByCategory(APPRAISAL_RULE);
         List<SearchCriteriaEltDto> accessMgtRulesCriteriaList =
             searchQuery.extractCriteriaListByCategory(ACCESS_RULE);
+        List<SearchCriteriaEltDto> reuseMgtRulesCriteriaList =
+            searchQuery.extractCriteriaListByCategory(REUSE_RULE);
+        List<SearchCriteriaEltDto> disseminationMgtRulesCriteriaList =
+            searchQuery.extractCriteriaListByCategory(DISSEMINATION_RULE);
         List<SearchCriteriaEltDto> waitingToRecalculateCriteria = searchQuery
             .extractCriteriaListByCategoryAndFieldNames(FIELDS,
                 List.of(WAITING_RECALCULATE));
 
-        if (!CollectionUtils.isEmpty(waitingToRecalculateCriteria) &&
-            (!CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList) ||
-                !CollectionUtils.isEmpty(accessMgtRulesCriteriaList))) {
+        boolean hasAppraisalRulesCriteria = !CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList);
+        boolean hasAccessRulesCriteria = !CollectionUtils.isEmpty(accessMgtRulesCriteriaList);
+        boolean hasReuseRulesCriteria = !CollectionUtils.isEmpty(reuseMgtRulesCriteriaList);
+        boolean hasDisseminationRulesCriteria = !CollectionUtils.isEmpty(disseminationMgtRulesCriteriaList);
+        boolean hasWaitingToRecalculateCriteria = !CollectionUtils.isEmpty(waitingToRecalculateCriteria);
+
+        if (hasWaitingToRecalculateCriteria &&
+            (hasAppraisalRulesCriteria || hasAccessRulesCriteria ||
+                hasReuseRulesCriteria ||
+                hasDisseminationRulesCriteria)) {
             List<SearchCriteriaEltDto> initialCriteriaList = searchQuery.getCriteriaList().stream().filter(
                 searchCriteriaEltDto ->
                     !(FIELDS.equals(searchCriteriaEltDto.getCategory()) &&
@@ -191,15 +206,25 @@ public class ArchiveSearchInternalService {
                             .equals(WAITING_RECALCULATE)))
             ).collect(Collectors.toList());
 
-            if (!CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList)) {
+            if (hasAppraisalRulesCriteria) {
                 archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithAppraisalCriteria(initialCriteriaList,
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
                         APPRAISAL_RULE);
             }
-            if (!CollectionUtils.isEmpty(accessMgtRulesCriteriaList)) {
+            if (hasAccessRulesCriteria) {
                 archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithAppraisalCriteria(initialCriteriaList,
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
                         ACCESS_RULE);
+            }
+            if (hasReuseRulesCriteria) {
+                archiveSearchFacetsInternalService
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
+                        REUSE_RULE);
+            }
+            if (hasDisseminationRulesCriteria) {
+                archiveSearchFacetsInternalService
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
+                        DISSEMINATION_RULE);
             }
             searchQuery.setCriteriaList(initialCriteriaList);
         }
@@ -551,7 +576,6 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("Reclassification query : {}", array);
         RequestResponse<JsonNode> jsonNodeRequestResponse = unitService.reclassification(vitamContext, array);
         return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
-
     }
 
 }

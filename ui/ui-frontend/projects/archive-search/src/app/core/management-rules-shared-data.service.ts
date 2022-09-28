@@ -50,6 +50,7 @@ export class ManagementRulesSharedDataService {
   private criteriaSearchDSLQuery = new BehaviorSubject<SearchCriteriaDto>(null);
   private ruleActions = new BehaviorSubject<ActionsRules[]>([]);
   private ruleCategory = new BehaviorSubject<string>('');
+  private bulkOperationsThreshold = new BehaviorSubject<number>(-1);
 
   private managementRules = new BehaviorSubject<ManagementRules[]>([]);
   private hasExactCount = new BehaviorSubject<boolean>(false);
@@ -81,6 +82,14 @@ export class ManagementRulesSharedDataService {
 
   emitselectedItems(uaSelected: number) {
     this.selectedItems.next(uaSelected);
+  }
+
+  emitBulkOperationsThreshold(threshold: number) {
+    this.bulkOperationsThreshold.next(threshold);
+  }
+
+  getBulkOperationsThreshold(): Observable<number> {
+    return this.bulkOperationsThreshold.asObservable();
   }
 
   getselectedItems(): Observable<number> {

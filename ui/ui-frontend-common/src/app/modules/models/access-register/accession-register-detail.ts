@@ -1,4 +1,4 @@
-import {Id} from '../id.interface';
+import { Id } from '../id.interface';
 import { AccessionRegisterStatus } from './accession-register-status';
 import { RegisterValueDetailModel } from './register-value-detail-model';
 import { RegisterValueEventModel } from './register-value-event-model';

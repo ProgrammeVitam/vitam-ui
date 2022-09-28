@@ -45,7 +45,8 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @NoArgsConstructor
-public class SearchCriteriaDto implements Serializable {
+public class
+SearchCriteriaDto implements Serializable {
     /**
      * Criteria list for searching archive units
      */
@@ -58,6 +59,7 @@ public class SearchCriteriaDto implements Serializable {
     private String language = Locale.FRENCH.getLanguage();
     private boolean trackTotalHits;
     private boolean computeFacets;
+    private Long maxSizeThreshold;
 
 
     public List<String> extractNodesCriteria() {

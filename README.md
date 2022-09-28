@@ -39,7 +39,7 @@ Il est possible que l'ajout du lien vers ansible dans le PATH et/ou qu'un redém
 - Build project using `vitam` profile (see [Build for Vitam developers
 ](#Build-for-Vitam-internal-developers))
 - Set up environment variables : `SERVICE_NEXUS_URL` and `SERVICE_REPOSITORY_URL`
-- Copy files: `access-external-client.conf`, `ingest-external-client.conf`, `keystore_ihm-demo.p12` and `truststore_ihm-demo.jks` into `api/api-(iam|referential)/(iam|referential)-internal/src/main/config/dev-vitam/`
+- Copy files: `collect-client.conf`,`access-external-client.conf`, `ingest-external-client.conf`, `keystore_ihm-demo.p12` and `truststore_ihm-demo.jks` into `api/api-(iam|referential)/(iam|referential)-internal/src/main/config/dev-vitam/`
 - Redirect `dev.vitamui.com` URL defined in code to `localhost` : add this line `127.0.0.1       dev.vitamui.com` to your `hosts` (`/etc/hosts`) file
 
 ### For non Vitam developers

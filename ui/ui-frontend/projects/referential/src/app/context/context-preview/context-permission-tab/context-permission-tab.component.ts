@@ -64,10 +64,8 @@ export class ContextPermissionTabComponent implements OnInit {
   dataLoaded = false;
   isPermissionsOnMultipleOrganisations = false;
 
-  // The initial context beforme modification
-  // tslint:disable-next-line:variable-name
+
   private _context: Context;
-  // The updated permissions
   private updatedPermissions: ContextPermission[] = new Array();
 
   tenants: Map<string, Tenant> = new Map();

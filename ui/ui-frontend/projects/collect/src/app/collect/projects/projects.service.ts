@@ -28,7 +28,7 @@ import { Injectable } from '@angular/core';
 import { Project, SearchService } from 'ui-frontend-common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { ProjectsApiService } from '../../core/api/project-api.service';
+import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -48,5 +48,13 @@ export class ProjectsService extends SearchService<Project> {
 
   public updateProject(project: Project) {
     return this.projectsApiService.update(project);
+  }
+
+  public getProjectById(projectId: string) {
+    return this.projectsApiService.getById(projectId);
+  }
+
+  public deleteProjectId(projectId: string) : Observable<void> {
+    return this.projectsApiService.deletebyId(projectId);
   }
 }

@@ -27,18 +27,33 @@
 
 package fr.gouv.vitamui.collect.external.client;
 
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
 
-public class CollectExternalRestClient extends BasePaginatingAndSortingRestClient<CollectProjectDto, ExternalHttpContext> {
+
+public class CollectExternalRestClient
+    extends BasePaginatingAndSortingRestClient<CollectProjectDto, ExternalHttpContext> {
 
     public CollectExternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
@@ -56,12 +71,40 @@ public class CollectExternalRestClient extends BasePaginatingAndSortingRestClien
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<CollectProjectDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {};
+        return new ParameterizedTypeReference<>() {
+        };
     }
 
     @Override
     public String getPathUrl() {
         return RestApi.COLLECT_PROJECT_PATH;
+    }
+
+    public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String projectId,
+        SearchCriteriaDto searchQuery) {
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
+        final ResponseEntity<ArchiveUnitsDto> response =
+            restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS,
+                HttpMethod.POST,
+                request, ArchiveUnitsDto.class);
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public ResponseEntity<ResultsDto> findObjectById(String id, ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + OBJECT_GROUPS + CommonConstants.PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
+    }
+
+
+    public void deleteProject(String id, ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
     }
 
 }

@@ -77,6 +77,9 @@ public class ArchivesSearchExternalController {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchivesSearchExternalController.class);
 
+    private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
+    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+
     private final ArchivesSearchExternalService archivesSearchExternalService;
 
     @Autowired
@@ -88,7 +91,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling search archive Units By Criteria {} ", query);
         return archivesSearchExternalService.searchArchiveUnitsByCriteria(query);
@@ -106,7 +109,7 @@ public class ArchivesSearchExternalController {
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
         final @RequestParam("usage") String usage, final @RequestParam("version") Integer version)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the Archive Unit Object with id {} ", id);
         return archivesSearchExternalService.downloadObjectFromUnit(id, usage, version);
@@ -116,7 +119,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("the UA by id {} ", id);
         return archivesSearchExternalService.findUnitById(id);
@@ -126,7 +129,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find a ObjectGroup by id {} ", id);
         return archivesSearchExternalService.findObjectById(id);
@@ -136,7 +139,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling export to csv search archive Units By Criteria {} ", query);
         return archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(query);
@@ -146,7 +149,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_EXPORT_DIP)
     public String exportDIPByCriteria(final @RequestBody ExportDipCriteriaDto exportDipCriteriaDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", exportDipCriteriaDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, exportDipCriteriaDto);
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
         LOGGER.debug("Calling export DIP By Criteria {} ", exportDipCriteriaDto);
         return archivesSearchExternalService.exportDIPByCriteria(exportDipCriteriaDto);
@@ -156,7 +159,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_TRANSFER_REQUEST)
     public String transferRequest(final @RequestBody TransferRequestDto transferRequestDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", transferRequestDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, transferRequestDto);
         SanityChecker.sanitizeCriteria(transferRequestDto);
         LOGGER.debug("Calling transfer request {} ", transferRequestDto);
         return archivesSearchExternalService.transferRequest(transferRequestDto);
@@ -166,7 +169,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_ELIMINATION)
     public ResponseEntity<JsonNode> startEliminationAnalysis(final @RequestBody SearchCriteriaDto query)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling elimination analysis by criteria {} ", query);
         return archivesSearchExternalService.startEliminationAnalysis(query);
@@ -176,7 +179,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_ELIMINATION)
     public ResponseEntity<JsonNode> startEliminationAction(final @RequestBody SearchCriteriaDto query)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling elimination action by criteria {} ", query);
         return archivesSearchExternalService.startEliminationAction(query);
@@ -186,7 +189,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_RULES)
     public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", ruleSearchCriteriaDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, ruleSearchCriteriaDto);
         SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
         LOGGER.debug("Calling Update Archive Units Rules By Criteria {} ", ruleSearchCriteriaDto);
         return archivesSearchExternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto);
@@ -196,7 +199,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_COMPUTED_INHERITED_RULES)
     public String computedInheritedRules(final @RequestBody SearchCriteriaDto searchCriteriaDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", searchCriteriaDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, searchCriteriaDto);
         SanityChecker.sanitizeCriteria(searchCriteriaDto);
         LOGGER.debug("Calling computed inherited rules By Criteria {} ", searchCriteriaDto);
         return archivesSearchExternalService.computedInheritedRules(searchCriteriaDto);
@@ -207,7 +210,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public ResultsDto selectUnitWithInheritedRules(final @RequestBody SearchCriteriaDto query)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling select Unit With Inherited Rules By Criteria {} ", query);
         return archivesSearchExternalService.selectUnitWithInheritedRules(query);
@@ -218,7 +221,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_RECLASSIFICATION)
     public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", reclassificationCriteriaDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, reclassificationCriteriaDto);
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
         return archivesSearchExternalService.reclassification(reclassificationCriteriaDto);
@@ -227,12 +230,14 @@ public class ArchivesSearchExternalController {
 
     @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
-    public String updateUnitById(final @PathVariable("id") String id, @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
+    public String updateUnitById(final @PathVariable("id") String id,
+        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(unitDescriptiveMetadataDto);
         LOGGER.debug("update unit by id {} ", id);
         return archivesSearchExternalService.updateUnitById(id, unitDescriptiveMetadataDto);
     }
+
 }

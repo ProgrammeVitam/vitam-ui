@@ -51,12 +51,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
+  AccessContract,
   BASE_URL,
   InjectorModule,
   LoggerModule,
   SearchBarModule,
   SecurityService,
-  WINDOW_LOCATION
+  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from '../../environments/environment';
@@ -67,9 +68,28 @@ describe('ArchiveComponent', () => {
   let component: ArchiveComponent;
   let fixture: ComponentFixture<ArchiveComponent>;
 
+  const accessContract: AccessContract = {
+    id: 'accessContractId',
+    tenant: 1,
+    version: 12,
+    name: 'string',
+    identifier: 'string',
+    description: 'string',
+    status: 'string',
+    writingPermission: true,
+    writingRestrictedDesc: false,
+    everyOriginatingAgency: true,
+    everyDataObjectVersion: true,
+    creationDate: 'string',
+    lastUpdate: 'string',
+    activationDate: 'string',
+    rootUnits: [],
+  };
+
   const archiveServiceMock = {
     archive: () => of('test archive'),
     search: () => of([]),
+    getAccessContractById: () => of(accessContract),
   };
   const securityServiceMock = {
     hasRole: () => of(true),
@@ -120,7 +140,19 @@ describe('ArchiveComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  fit('component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('isLPExtended should be falsy', () => {
+    component.backToNormalLateralPanel();
+    expect(component.isLPExtended).toBeDefined();
+    expect(component.isLPExtended).toBeFalsy();
+  });
+
+  it('isLPExtended should be truthy', () => {
+    component.showExtendedLateralPanel();
+    expect(component.isLPExtended).toBeDefined();
+    expect(component.isLPExtended).toBeTruthy();
   });
 });

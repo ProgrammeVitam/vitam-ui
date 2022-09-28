@@ -55,7 +55,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
 
 /**
  * All the services.
- *
  */
 public class ServicesData {
 
@@ -441,12 +440,17 @@ public class ServicesData {
 
     public static final String ROLE_UPDATE_MANAGEMENT_CONTRACT = UPDATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
 
+    //------------------------------------ COLLECT -----------------------------------------
     public static final String PROJECTS = "PROJECTS";
     public static final String ROLE_GET_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
     public static final String ROLE_CREATE_PROJECTS = CREATE_ROLE_PREFIX + PROJECTS;
     public static final String ROLE_UPDATE_PROJECTS = UPDATE_ROLE_PREFIX + PROJECTS;
 
     //@formatter:off
+
+    //------------------------------ PROVISIONING USERS ------------------------------------------------
+
+    public static final String ROLE_PROVISIONING_USER = ROLE_PREFIX + "PROVISIONING_USER";
 
     /**
      * List of the admin roles for the VITAMUI application.

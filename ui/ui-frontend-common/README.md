@@ -58,9 +58,9 @@ Test your new version in all the apps and check that everything is okay. Make ch
 
 Use the right npmrc for common publication.
 
-Run `npm publish dist` to publish on the nexus repository.
+Run `npm run publish-dist` to publish on the nexus repository.
 
-Commit the changes to the `ui-frontend-common` folder only then tag that commit like so `git tag ui-frontend-commons@X.X.X`.
+Commit the changes to the `ui-frontend-common` folder only then tag that commit like so `git tag ui-frontend-common@X.X.X`.
 
 Run `./install_from_repo.sh <version>` to install your freshly published version from the nexus on the 4 apps.
 

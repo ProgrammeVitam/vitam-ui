@@ -148,10 +148,8 @@ public class ArchiveSearchExternalRestClient
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
 
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<Resource> response =
-            restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
-                request, Resource.class);
-        return response;
+        return restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
+            request, Resource.class);
     }
 
     public ResponseEntity<String> exportDIPCriteria(ExportDipCriteriaDto exportDipCriteriaDto,
@@ -159,10 +157,8 @@ public class ArchiveSearchExternalRestClient
         LOGGER.debug("Calling export DIP by criteria");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ExportDipCriteriaDto> request = new HttpEntity<>(exportDipCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST,
-                request, String.class);
-        return response;
+        return restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST,
+            request, String.class);
     }
 
     public ResponseEntity<String> transferRequest(TransferRequestDto transferRequestDto,
@@ -194,10 +190,8 @@ public class ArchiveSearchExternalRestClient
         LOGGER.debug("Calling updateArchiveUnitsRules by criteria");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<RuleSearchCriteriaDto> request = new HttpEntity<>(ruleSearchCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.MASS_UPDATE_UNITS_RULES, HttpMethod.POST,
-                request, String.class);
-        return response;
+        return restTemplate.exchange(getUrl() + RestApi.MASS_UPDATE_UNITS_RULES, HttpMethod.POST,
+            request, String.class);
     }
 
     public ResponseEntity<String> computedInheritedRules(SearchCriteriaDto searchCriteriaDto,
@@ -205,10 +199,8 @@ public class ArchiveSearchExternalRestClient
         LOGGER.debug("Calling computed inherited rules by criteria");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.COMPUTED_INHERITED_RULES, HttpMethod.POST,
-                request, String.class);
-        return response;
+        return restTemplate.exchange(getUrl() + RestApi.COMPUTED_INHERITED_RULES, HttpMethod.POST,
+            request, String.class);
     }
 
 
@@ -244,4 +236,5 @@ public class ArchiveSearchExternalRestClient
         final HttpEntity<?> request = new HttpEntity<>(unitDescriptiveMetadataDto, buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, String.class);
     }
+
 }

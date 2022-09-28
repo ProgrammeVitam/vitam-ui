@@ -143,6 +143,14 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         return response.getBody();
     }
 
+    public D create(String url, final C context, final D dto) {
+        LOGGER.debug("Create {}", dto);
+        final HttpEntity<D> request = new HttpEntity<>(dto, buildHeaders(context));
+        final ResponseEntity<D> response = restTemplate.exchange(url, HttpMethod.POST, request, getDtoClass());
+        checkResponse(response, 200, 201);
+        return response.getBody();
+    }
+
     public D create(final C context, final D dto) {
         LOGGER.debug("Create {}", dto);
         final HttpEntity<D> request = new HttpEntity<>(dto, buildHeaders(context));
