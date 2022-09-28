@@ -35,7 +35,6 @@
             ></vitamui-common-order-by-button>
           </div>
         </th>
-        <!-- TODO: Change labels for i18n -->
 
         <th>
           <div class="vitamui-table-header">
@@ -76,7 +75,7 @@
         <th></th>
       </tr>
     </thead>
-    <!--tbody vitamuiCommonCollapseContainer-->
+
     <tbody>
       <ng-container *ngFor="let managementContract of dataSource; let index = index">
         <tr class="vitamui-table-row">
@@ -93,7 +92,6 @@
             {{ managementContract?.identifier }}
           </td>
           <td class="clickable" (click)="managementContractClick.emit(managementContract)">{{ managementContract?.name }}</td>
-          <!-- TODO: Add date pipe -->
           <td class="clickable" (click)="managementContractClick.emit(managementContract)">
             {{ managementContract?.lastUpdate | date: 'dd/MM/yyyy' }}
           </td>

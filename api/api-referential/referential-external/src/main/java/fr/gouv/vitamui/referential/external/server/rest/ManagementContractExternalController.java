@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -96,14 +97,16 @@ public class ManagementContractExternalController {
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public ManagementContractDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get managementcontract  identifier={}", identifier);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        LOGGER.debug("get managementcontract  identifier={}", identifier);
         return managementContractExternalService.getOne(identifier);
     }
 
     @Secured({ ServicesData.ROLE_GET_MANAGEMENT_CONTRACT })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody ManagementContractDto managementContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> check(@RequestBody ManagementContractDto managementContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(managementContractDto);
         LOGGER.debug("check exist managementContract={}", managementContractDto);
         final boolean exist = managementContractExternalService.check(managementContractDto);
         return RestUtils.buildBooleanResponse(exist);
@@ -120,8 +123,8 @@ public class ManagementContractExternalController {
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_CONTRACT)
     public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return managementContractExternalService.patch(partialDto);
     }
@@ -129,9 +132,8 @@ public class ManagementContractExternalController {
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
-        LOGGER.debug("get logbook for ManagementContract with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        LOGGER.debug("get logbook for ManagementContract with id :{}", id);
         return managementContractExternalService.findHistoryById(id);
     }
-
 }

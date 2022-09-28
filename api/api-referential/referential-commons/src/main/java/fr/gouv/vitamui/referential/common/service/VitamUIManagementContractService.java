@@ -33,6 +33,7 @@ import fr.gouv.vitam.access.external.common.exception.AccessExternalClientExcept
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
@@ -50,6 +51,7 @@ public class VitamUIManagementContractService {
     }
 
     public RequestResponse<?> patchManagementContract(final VitamContext vitamContext, final String id, JsonNode jsonNode) throws InvalidParseOperationException, AccessExternalClientException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("patch: {}, {}", id, jsonNode);
         LOGGER.info("Management Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return adminExternalClient.updateManagementContract(vitamContext,id,jsonNode);

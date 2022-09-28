@@ -85,7 +85,6 @@ public class ManagementContractInternalController {
     @GetMapping()
     public Collection<ManagementContractDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all management contract criteria={}", criteria);
-        SanityChecker.sanitizeCriteria(criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return managementContractInternalService.getAll(vitamContext);
     }
@@ -101,6 +100,7 @@ public class ManagementContractInternalController {
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public ManagementContractDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+        ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
         LOGGER.debug("get managementContract identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return managementContractInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
