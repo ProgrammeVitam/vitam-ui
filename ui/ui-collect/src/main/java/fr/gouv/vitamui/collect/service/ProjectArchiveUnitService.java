@@ -30,12 +30,14 @@
 package fr.gouv.vitamui.collect.service;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -55,6 +57,11 @@ public class ProjectArchiveUnitService extends AbstractPaginateService<CollectPr
 
     public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String projectId, SearchCriteriaDto searchQuery) {
         return collectExternalRestClient.searchArchiveUnitsByProjectAndSearchQuery(context, projectId, searchQuery);
+    }
+
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(String projectId, final SearchCriteriaDto searchQuery,
+        ExternalHttpContext context) {
+        return collectExternalRestClient.exportCsvArchiveUnitsByCriteria(projectId, searchQuery, context);
     }
 
     @Override

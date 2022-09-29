@@ -811,6 +811,11 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitam</groupId>
+                <artifactId>common-database-public</artifactId>
+                <version>${vitam.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitam</groupId>
                 <artifactId>common-private</artifactId>
                 <version>${vitam.version}</version>
             </dependency>

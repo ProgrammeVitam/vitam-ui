@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AccessContract, AccessContractApiService, SearchService } from 'ui-frontend-common';
-import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchResponse } from '../core/models';
+import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({
@@ -92,6 +92,23 @@ export class ArchiveCollectService extends SearchService<any> {
         return of({ $hits: null, $results: [] });
       }),
       map((results) => ArchiveCollectService.buildPagedResults(results))
+    );
+  }
+
+  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], projectId: string, accessContract: string): Observable<number> {
+    const searchCriteria = {
+      criteriaList: criteriaElts,
+      pageNumber: 0,
+      size: 1,
+      trackTotalHits: true,
+    };
+    return this.searchArchiveUnitsByCriteria(searchCriteria, projectId, accessContract).pipe(
+      map((pagedResult: PagedResult) => {
+        return pagedResult.totalResults;
+      }),
+      catchError(() => {
+        return of(-1);
+      })
     );
   }
 
@@ -153,6 +170,35 @@ export class ArchiveCollectService extends SearchService<any> {
     }
     location.href = url;
   }
+
+  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string) {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+
+    return this.projectsApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, projectId, headers).subscribe(
+      (file) => {
+        const element = document.createElement('a');
+        element.href = window.URL.createObjectURL(file);
+        element.download = 'export-archive-units.csv';
+        element.style.visibility = 'hidden';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      },
+      (errors: HttpErrorResponse) => {
+        if (errors.status === 413) {
+          console.log('Please update filter to reduce size of response' + errors.message);
+
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'exportCsvLimitReached' },
+            duration: 10000,
+          });
+        }
+      }
+    );
+  }
+
 }
 
 function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingSchemeNode) => number {

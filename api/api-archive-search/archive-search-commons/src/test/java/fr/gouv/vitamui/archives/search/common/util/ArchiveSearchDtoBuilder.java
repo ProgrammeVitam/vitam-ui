@@ -36,10 +36,10 @@
  */
 package fr.gouv.vitamui.archives.search.common.util;
 
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaElementsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaElementsDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;

@@ -35,9 +35,9 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitCsv;
-import fr.gouv.vitamui.archives.search.common.dto.ExportSearchResultParam;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.ExportSearchResultParam;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
@@ -66,6 +66,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.cleanString;
 
 /**
  * Archive-Search export Internal service.
@@ -267,16 +269,6 @@ public class ArchiveSearchUnitExportCsvInternalService {
                 null);
         return archiveUnitCsv;
     }
-
-    private String cleanString(String initialValue) {
-        if (initialValue == null)
-            return null;
-        return initialValue.replace(SEMI_COLON, COMMA).replace(DOUBLE_QUOTE, SINGLE_QUOTE)
-            .replace(NEW_LINE, SPACE)
-            .replace(NEW_LINE_1, SPACE)
-            .replace(NEW_TAB, SPACE);
-    }
-
 
     private String getArchiveUnitTitle(ArchiveUnit archiveUnit) {
         String title = null;

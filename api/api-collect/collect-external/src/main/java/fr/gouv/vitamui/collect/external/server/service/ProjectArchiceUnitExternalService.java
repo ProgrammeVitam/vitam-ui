@@ -30,13 +30,14 @@
 package fr.gouv.vitamui.collect.external.server.service;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 @Getter
@@ -54,6 +55,10 @@ public class ProjectArchiceUnitExternalService extends
     }
     public ArchiveUnitsDto searchCollectProjectArchiveUnits(String projectId, SearchCriteriaDto searchQuery) {
         return collectInternalRestClient.searchCollectProjectArchiveUnits(getInternalHttpContext(), projectId, searchQuery);
+    }
+
+    public Resource exportCsvArchiveUnitsByCriteria(String projectId, final SearchCriteriaDto query) {
+        return collectInternalRestClient.exportCsvArchiveUnitsByCriteria(projectId, query, getInternalHttpContext());
     }
 
     @Override

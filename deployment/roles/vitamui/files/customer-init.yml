@@ -236,6 +236,7 @@ customer-init:
         - ROLE_UPDATE_PROJECTS
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
 
   # Other Default profiles for admin group
   admin-profiles:

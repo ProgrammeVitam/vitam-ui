@@ -1,0 +1,246 @@
+<div class="row pad">
+  <div class="col-5 rectangle">
+    <div class="row actif-filters">{{ 'COLLECT.SEARCH_CRITERIA_SAVER.ACTIVE_FILTERS' | translate }} ({{ nbCriterias }})</div>
+    <div
+      (mouseenter)="over('scroll-filters')"
+      (mouseleave)="out('scroll-filters')"
+      [ngClass]="showScrollFilter ? 'scroll-filters' : 'scroll-div'"
+    >
+      <div *ngFor="let criteria of searchCriterias | keyvalue">
+        <div class="separate-div">
+          <ng-container *ngIf="criteria.value.key === 'NODE'">
+            <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index">
+              <div class="row pad-bottom">
+                <button
+                  type="button"
+                  matTooltip="{{
+                    criteria.value.keyTranslated
+                      ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
+                        | translate)
+                      : criteria.value.key
+                  }}"
+                  matTooltipClass="vitamui-tooltip"
+                  [matTooltipShowDelay]="300"
+                  class="button-content right-arround left-arround after-search-launched-button"
+                >
+                  <ng-container>
+                    <i class="vitamui-icon vitamui-icon-target vitamui-row-icon"></i>
+                    {{
+                      (criteriaValue.translated
+                        ? ('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.' + criteria.value.key | translate)
+                        : criteria.value.label) +
+                        ' : ' +
+                        criteriaValue.value.value | truncate: 45
+                    }}
+
+                    {{
+                      criteria.value.keyTranslated
+                        ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
+                          | translate)
+                        : criteria.value.key
+                    }}
+                  </ng-container>
+                </button>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="btn-group" *ngFor="let criteria of searchCriterias | keyvalue">
+        <ng-container *ngIf="criteria.value.key !== 'NODE'">
+          <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index">
+            <div class="row pad-bottom">
+              <button
+                type="button"
+                matTooltip="{{
+                  criteria.value.keyTranslated
+                    ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
+                      | translate)
+                    : criteria.value.key
+                }}"
+                matTooltipClass="vitamui-tooltip"
+                [matTooltipShowDelay]="300"
+                class="button-content right-arround left-arround after-search-launched-button"
+              >
+                <ng-container *ngIf="criteria.value.dataType === 'STRING'">
+                  {{
+                    criteria.value.keyTranslated
+                      ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
+                        | translate)
+                      : criteria.value.key
+                  }}:
+                  {{
+                    criteria.value.valueTranslated
+                      ? ('COLLECT.SEARCH_CRITERIA_FILTER.' +
+                          getCategoryName(criteria.value.category) +
+                          '.' +
+                          criteriaValue.value.value | translate)
+                      : criteriaValue.label
+                  }}
+                </ng-container>
+                <ng-container *ngIf="criteria.value.dataType === 'DATE'">
+                  {{
+                    criteria.value.keyTranslated
+                      ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
+                        | translate)
+                      : criteria.value.key
+                  }}:
+                  {{ criteriaValue.value.value | dateTime: 'dd/MM/yyyy' | truncate: 45 }}
+                </ng-container>
+                <ng-container *ngIf="criteria.value.dataType === 'INTERVAL'">
+                  {{
+                    criteria.value.keyTranslated
+                      ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
+                        | translate)
+                      : criteria.value.key
+                  }}:
+
+                  <ng-container *ngIf="criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
+                    {{ 'COLLECT.SEARCH_CRITERIA_BETWEEN' | translate }}
+                    {{ criteriaValue.value.beginInterval | dateTime: 'dd/MM/yyyy' }} {{ 'COLLECT.SEARCH_CRITERIA_AND' | translate }}
+                    {{ criteriaValue.value.endInterval | dateTime: 'dd/MM/yyyy' }}
+                  </ng-container>
+                  <ng-container *ngIf="criteriaValue.value.beginInterval && !criteriaValue.value.endInterval">
+                    {{ 'COLLECT.SEARCH_CRITERIA_GTE' | translate }} {{ criteriaValue.value.beginInterval | dateTime: 'dd/MM/yyyy' }}
+                  </ng-container>
+                  <ng-container *ngIf="!criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
+                    {{ 'COLLECT.SEARCH_CRITERIA_LTE' | translate }} {{ criteriaValue.value.endInterval | dateTime: 'dd/MM/yyyy' }}
+                  </ng-container>
+                </ng-container>
+              </button>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6 form-width" *ngIf="ToUpdate !== null && !ToUpdate">
+    <div class="row triangle"></div>
+    <form [formGroup]="searchCriteriaForm">
+      <div class="sauvegarde-text">{{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_IN_POPUP' | translate }}</div>
+      <div class="row input-width">
+        <div class="col-11">
+          <vitamui-common-input
+            [(ngModel)]="nameControl"
+            class="input-text"
+            formControlName="name"
+            maxlength="maxlength"
+            required
+            placeholder="{{ 'COLLECT.SEARCH_CRITERIA_SAVER.NAME' | translate }}"
+          >
+          </vitamui-common-input>
+        </div>
+
+        <div class="col-1 btn-ok" *ngIf="ToUpdate !== null && !ToUpdate">
+          <button type="submit" class="btn primary" (click)="onSubmit()" [disabled]="nameControl === '' || nameControl.length > maxlength">
+            OK
+          </button>
+        </div>
+
+        <div *ngIf="nameControl.length > maxlength" class="warning">
+          <span class="ko-icon">
+            <i class="material-icons">report_problem</i>
+            {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_ALERT_NAME' | translate }}
+          </span>
+          <br />
+          <span class="warning-message">
+            {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_MESSAGE_NAME' | translate }}
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-6 form-width" *ngIf="ToUpdate">
+    <div class="row triangle"></div>
+    <div class="sauvegarde-text pad5">{{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_LABEL' | translate }}</div>
+    <strong class="pad35">{{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_REPLACE_LABEL' | translate }}</strong>
+    <div
+      (mouseenter)="over('scroll-results')"
+      (mouseleave)="out('scroll-results')"
+      [ngClass]="showScroll ? 'scroll-results' : 'no-scroll-results'"
+    >
+      <div *ngFor="let criteria of searchCriteriaHistories" class="border-results">
+        <div
+          *ngIf="criteria !== searchCriteriaHistory"
+          class="pad-results hover-div"
+          (click)="preUpdate(criteria, $event)"
+          matTooltip="{{ criteria.name }}"
+          matTooltipClass="vitamui-tooltip"
+          [matTooltipShowDelay]="300"
+        >
+          <button mat-menu-item (click)="preUpdate(criteria, $event)" class="boutton btn-result-update">
+            <i class="material-icons save-icon">save</i>
+            <ng-container (click)="preUpdate(criteria, $event)">
+              <span class="results-message">
+                {{ criteria.name | truncate: 30 }}
+              </span>
+              <span class="results-nb-filters"> - ({{ getNbFilters(criteria) }} filtres) </span>
+            </ng-container>
+          </button>
+        </div>
+      </div>
+      <button mat-menu-item class="btn-no-result" *ngIf="searchCriteriaHistories !== undefined && searchCriteriaHistories.length === 0">
+        {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NO_RESULTS' | translate }}
+      </button>
+    </div>
+    <div class="btn-create">
+      <button
+        type="submit"
+        class="btn primary"
+        (click)="createNewCriteria()"
+        [disabled]="criteriaId !== '' || searchCriteriaHistories.length == 10"
+      >
+        {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_BUTTON' | translate }}
+      </button>
+    </div>
+    <div *ngIf="searchCriteriaHistories.length === 10" class="warning">
+      <span class="ko-icon">
+        <i class="material-icons">report_problem</i>{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_ALERT' | translate }}</span
+      >
+      <br />
+      <span>{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_MESSAGE' | translate }}</span>
+    </div>
+  </div>
+
+  <div class="col-6 form-width" *ngIf="criteriaToUpdate && updateConfirm">
+    <div class="row triangle"></div>
+    <div class="sauvegarde-text pad5">{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CONFIRM_MESSAGE' | translate }}</div>
+    <div class="div-update no-scroll-results">
+      <div class="border-results pink-color pad-results hover-div">
+        <button mat-menu-item class="boutton btn-result-update">
+          <i class="material-icons save-icon">save</i>
+          <ng-container>
+            <span
+              class="results-message"
+              matTooltip="{{ criteriaToUpdate.name }}"
+              matTooltipClass="vitamui-tooltip"
+              [matTooltipShowDelay]="300"
+            >
+              {{ criteriaToUpdate.name | truncate: 30 }}
+            </span>
+            <span class="results-nb-filters"> - ({{ getNbFilters(criteriaToUpdate) }} filtres) </span>
+          </ng-container>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="searchCriteriaHistories.length == 0" class="no-results-center search-criterias" (click)="onCancel()">
+      {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NO_RESULTS' | translate }}
+    </div>
+    <mat-dialog-actions class="pad-actions">
+      <button class="btn primary" (click)="update()">
+        <ng-container> {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CONFIRM_BUTTON' | translate }} </ng-container>
+      </button>
+      <button class="btn link cancel-update" (click)="cancel()">
+        <ng-container>{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CANCEL_BUTTON' | translate }}</ng-container>
+      </button>
+    </mat-dialog-actions>
+  </div>
+
+  <button class="col-1 btn link cancel">
+    <i class="vitamui-icon vitamui-icon-close" (click)="closeSaveCriteriaForm()"></i>
+  </button>
+</div>

@@ -35,7 +35,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
@@ -46,7 +46,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.ONLY_DATE_FORMAT;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ONLY_DATE_FORMAT;
 
 /**
  * Archive-Search destroy and destroy analysis rules Internal service.

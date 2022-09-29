@@ -1,0 +1,12 @@
+.check-rule {
+  margin-right: 25%;
+  margin-left: -15%;
+  margin-top: 5px;
+}
+
+.title-text {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--vitamui-primary) !important;
+}
