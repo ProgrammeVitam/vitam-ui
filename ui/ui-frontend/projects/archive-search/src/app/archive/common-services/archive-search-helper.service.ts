@@ -46,8 +46,7 @@ const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
 
 @Injectable()
 export class ArchiveSearchHelperService {
-  constructor(private archiveExchangeDataService: ArchiveSharedDataService, private archiveService: ArchiveService) {
-  }
+  constructor(private archiveExchangeDataService: ArchiveSharedDataService, private archiveService: ArchiveService) {}
 
   addCriteria(
     searchCriterias: Map<string, SearchCriteria>,
@@ -375,18 +374,18 @@ export class ArchiveSearchHelperService {
         if (defaultFacetTabIndex > 1 && this.archiveService.isAppraisalRuleCriteria(criteria)) {
           defaultFacetTabIndex = 1;
         }
-        if (defaultFacetTabIndex > 3 && this.archiveService.isAccessRuleCriteria(criteria)) {
-          defaultFacetTabIndex = 3;
+        if (defaultFacetTabIndex > 2 && this.archiveService.isAccessRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 2;
         }
 
-        if (defaultFacetTabIndex > 4 && this.archiveService.isDisseminationRuleCriteria(criteria)) {
+        if (defaultFacetTabIndex > 3 && this.archiveService.isDisseminationRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 3;
+        }
+        if (defaultFacetTabIndex > 4 && this.archiveService.isReuseRuleCriteria(criteria)) {
           defaultFacetTabIndex = 4;
         }
-        if (defaultFacetTabIndex > 5 && this.archiveService.isReuseRuleCriteria(criteria)) {
+        if (defaultFacetTabIndex > 5 && this.archiveService.isClassificationRuleCriteria(criteria)) {
           defaultFacetTabIndex = 5;
-        }
-        if (defaultFacetTabIndex > 6 && this.archiveService.isClassificationRuleCriteria(criteria)) {
-          defaultFacetTabIndex = 6;
         }
       }
     }
@@ -443,7 +442,7 @@ export class ArchiveSearchHelperService {
         criteria.values.forEach((elt) => {
           strValues.push(elt.value);
         });
-        let replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
+        const replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
 
         criteriaSearchList.push({
           criteria: replacedCriteria,
