@@ -63,45 +63,43 @@ describe('ArchivePreviewComponent', () => {
     }
   }
 
-  beforeEach(
-    waitForAsync(() => {
-      const activatedRouteMock = {
-        params: of({ tenantIdentifier: 1 }),
-        data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
-      };
+  beforeEach(waitForAsync(() => {
+    const activatedRouteMock = {
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+    };
 
-      const archiveServiceMock = {
-        getBaseUrl: () => '/fake-api',
-        buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
-        receiveDownloadProgressSubject: () => of(true),
-      };
+    const archiveServiceMock = {
+      getBaseUrl: () => '/fake-api',
+      buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
+      receiveDownloadProgressSubject: () => of(true),
+    };
 
-      TestBed.configureTestingModule({
-        imports: [
-          MatMenuModule,
-          MatTreeModule,
-          MatProgressSpinnerModule,
-          MatSidenavModule,
-          InjectorModule,
-          LoggerModule.forRoot(),
-          RouterTestingModule,
-          MatIconModule,
-          BrowserAnimationsModule,
-          TranslateModule.forRoot(),
-        ],
-        declarations: [ArchivePreviewComponent, MockTruncatePipe],
-        providers: [
-          { provide: ArchiveService, useValue: archiveServiceMock },
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: ActivatedRoute, useValue: activatedRouteMock },
-          { provide: ENVIRONMENT, useValue: environment },
-          { provide: WINDOW_LOCATION, useValue: window.location },
-          { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [
+        MatMenuModule,
+        MatTreeModule,
+        MatProgressSpinnerModule,
+        MatSidenavModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        MatIconModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot(),
+      ],
+      declarations: [ArchivePreviewComponent, MockTruncatePipe],
+      providers: [
+        { provide: ArchiveService, useValue: archiveServiceMock },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchivePreviewComponent);
@@ -137,5 +135,25 @@ describe('ArchivePreviewComponent', () => {
   it('should the selectedIndex to be 1 after choosing the exteded lateral panel ', () => {
     component.showExtendedPanel();
     expect(component.selectedIndex).toEqual(1);
+  });
+
+  describe('DOM', () => {
+    it('should have 3 mat-tab', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const matTabElements = nativeElement.querySelectorAll('mat-tab');
+
+      // Then
+      expect(matTabElements.length).toEqual(3);
+    });
+
+    it('should have 1 mat-tab-group', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const matTabGrpElements = nativeElement.querySelectorAll('mat-tab-group');
+
+      // Then
+      expect(matTabGrpElements.length).toEqual(1);
+    });
   });
 });

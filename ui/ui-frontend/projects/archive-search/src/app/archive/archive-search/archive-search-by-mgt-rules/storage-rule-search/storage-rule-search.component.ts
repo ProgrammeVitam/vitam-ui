@@ -161,8 +161,9 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptionStorageFromMainSearchCriteria = this.archiveExchangeDataService.storageFromMainSearchCriteriaObservable.subscribe(
-      (criteria) => {
+    this.subscriptionStorageFromMainSearchCriteria = this.archiveExchangeDataService
+      .receiveStorageFromMainSearchCriteriaSubject()
+      .subscribe((criteria) => {
         if (criteria) {
           if (criteria.action === ActionOnCriteria.ADD) {
             this.storageAdditionalCriteria.set(criteria.valueElt.value, true);
@@ -172,8 +173,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             }
           }
         }
-      }
-    );
+      });
   }
 
   checkBoxChange(field: string, event: any) {

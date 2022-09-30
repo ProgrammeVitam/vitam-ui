@@ -217,7 +217,10 @@ describe('UnlockCategoryInheritanceComponent', () => {
   let fixture: ComponentFixture<UnlockCategoryInheritanceComponent>;
 
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
+  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchDSLQuery: () => of(searchCriteriaDto),
@@ -272,8 +275,21 @@ describe('UnlockCategoryInheritanceComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should component creation be truthy', () => {
+  it('component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call getManagementRules of ManagementRulesSharedDataService', () => {
+    // Given
+    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    component.ruleTypeDUA = ruleCategoryAction;
+    spyOn(managementRulesSharedDataServiceMock, 'getManagementRules').and.callThrough();
+
+    // When
+    component.onCancelUnlockCategoryInheritance();
+
+    // Then
+    expect(managementRulesSharedDataServiceMock.getManagementRules).toHaveBeenCalled();
   });
 
   it('should the stepValid parameter be true after an unlock of category inheritance', () => {
@@ -326,5 +342,26 @@ describe('UnlockCategoryInheritanceComponent', () => {
     expect(component.criteriaSearchDSLQuery).not.toBeNull();
     expect(archiveServiceMock.searchArchiveUnitsByCriteria).toHaveBeenCalledTimes(0);
     expect(archiveServiceMock.searchArchiveUnitsByCriteria).not.toHaveBeenCalled();
+  });
+
+  it('should call getManagementRules of ManagementRulesSharedDataService', () => {
+    // Given
+    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    component.ruleTypeDUA = ruleCategoryAction;
+    spyOn(managementRulesSharedDataServiceMock, 'getManagementRules').and.callThrough();
+
+    // When
+    component.onUnlockCategoryInheritance();
+
+    // Then
+    expect(managementRulesSharedDataServiceMock.getManagementRules).toHaveBeenCalled();
+  });
+
+  describe('DOM', () => {
+    it('should have 2 buttons ', () => {
+      const nativeElement = fixture.nativeElement;
+      const elementBtn = nativeElement.querySelectorAll('button[type=button]');
+      expect(elementBtn.length).toBe(2);
+    });
   });
 });

@@ -261,7 +261,7 @@ describe('ManagementRulesComponent', () => {
     expect(component.isReuseRuleActionDisabled).toBeTruthy();
   });
 
-  fit('Should append ADD_RULES & UPDATE_PROPERTY actions when selecting ADD_RULES action for AppraisalRule', () => {
+  it('Should append ADD_RULES & UPDATE_PROPERTY actions when selecting ADD_RULES action for AppraisalRule', () => {
     component.selectRule(rulesCatygories[1]);
     component.onSelectAction('ADD_RULES');
     expect(component.ruleCategorySelected).toEqual('AppraisalRule');
@@ -272,7 +272,7 @@ describe('ManagementRulesComponent', () => {
     expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
   });
 
-  fit('Should append BLOCK_RULE_INHERITANCE & UPDATE_PROPERTY actions when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule', () => {
+  it('Should append BLOCK_RULE_INHERITANCE & UPDATE_PROPERTY when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule', () => {
     component.selectRule(rulesCatygories[1]);
     component.onSelectAction('BLOCK_RULE_INHERITANCE');
     expect(component.ruleCategorySelected).toEqual('AppraisalRule');
@@ -283,7 +283,7 @@ describe('ManagementRulesComponent', () => {
     expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
   });
 
-  fit('Should append BLOCK_CATEGORY_INHERITANCE & UPDATE_PROPERTY actions when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule', () => {
+  it('Should append BLOCK_CATEGORY_INHERITANCE & UPDATE_PROPERTY when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule', () => {
     component.selectRule(rulesCatygories[1]);
     component.onSelectAction('BLOCK_CATEGORY_INHERITANCE');
     expect(component.ruleCategorySelected).toEqual('AppraisalRule');
@@ -294,7 +294,7 @@ describe('ManagementRulesComponent', () => {
     expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
   });
 
-  fit('Should append UNLOCK_CATEGORY_INHERITANCE & UPDATE_PROPERTY actions when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule', () => {
+  it('Should append UNLOCK_CATEGORY_INHERITANCE & UPDATE_PROPERTY when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule', () => {
     component.selectRule(rulesCatygories[1]);
     component.onSelectAction('UNLOCK_CATEGORY_INHERITANCE');
     expect(component.ruleCategorySelected).toEqual('AppraisalRule');
@@ -305,7 +305,7 @@ describe('ManagementRulesComponent', () => {
     expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
   });
 
-  fit('Should append ADD_RULES & UPDATE_PROPERTY actions when selecting ADD_RULES action for StorageRule', () => {
+  it('Should append ADD_RULES & UPDATE_PROPERTY actions when selecting ADD_RULES action for StorageRule', () => {
     component.selectRule(rulesCatygories[0]);
     component.onSelectAction('ADD_RULES');
     expect(component.ruleCategorySelected).toEqual('StorageRule');
@@ -316,12 +316,41 @@ describe('ManagementRulesComponent', () => {
     expect(component.ruleActions[4].ruleType).toEqual('StorageRule');
   });
 
-  fit('Should only append ADD_RULES actions when selecting ADD_RULES action for AccessRule', () => {
+  it('Should only append ADD_RULES actions when selecting ADD_RULES action for AccessRule', () => {
     component.selectRule(rulesCatygories[3]);
     component.onSelectAction('ADD_RULES');
     expect(component.ruleCategorySelected).toEqual('AccessRule');
     expect(component.ruleActions.length).toEqual(4);
     expect(component.ruleActions[3].actionType).toEqual('ADD_RULES');
     expect(component.ruleActions[3].ruleType).toEqual('AccessRule');
+  });
+
+  describe('DOM', () => {
+    it('should have 4 rows  ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementRow = nativeElement.querySelectorAll('.row');
+
+      // Then
+      expect(elementRow.length).toBe(4);
+    });
+
+    it('should have 9 mat options  ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementMatOption = nativeElement.querySelectorAll('mat-option');
+
+      // Then
+      expect(elementMatOption).toBeTruthy();
+      expect(elementMatOption.length).toBe(9);
+    });
+
+    it('should have 2 text titles', () => {
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.title-text');
+
+      expect(formTitlesHtmlElements).toBeTruthy();
+      expect(formTitlesHtmlElements.length).toBe(2);
+      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.SELECT_RULE_CATEGORY');
+    });
   });
 });

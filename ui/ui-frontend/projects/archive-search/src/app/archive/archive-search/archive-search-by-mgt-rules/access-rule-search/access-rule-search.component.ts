@@ -105,8 +105,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptionAccessFromMainSearchCriteria = this.archiveExchangeDataService.accessFromMainSearchCriteriaObservable.subscribe(
-      (criteria) => {
+    this.subscriptionAccessFromMainSearchCriteria = this.archiveExchangeDataService
+      .receiveAccessFromMainSearchCriteriaSubject()
+      .subscribe((criteria) => {
         if (criteria) {
           if (this.accessAdditionalCriteria && criteria.action === ActionOnCriteria.ADD) {
             this.accessAdditionalCriteria.set(criteria.valueElt.value, true);
@@ -116,8 +117,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
             }
           }
         }
-      }
-    );
+      });
   }
 
   checkBoxChange(field: string, event: any) {

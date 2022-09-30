@@ -28,12 +28,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { TransferRequestModalComponent } from './transfer-request-modal.component';
 
@@ -41,13 +41,20 @@ describe('TransferRequestModalComponent tests', () => {
   let component: TransferRequestModalComponent;
   let fixture: ComponentFixture<TransferRequestModalComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close', 'keydownEvents']);
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
   const archiveServiceMock = {
     archive: () => of('test archive'),
     search: () => of([]),
     getAccessContractById: () => of({}),
+    transferRequestService: () => of({}),
+  };
+
+  const confirmDialogServiceMock = {
+    confirm: () => of(true),
+    listenToEscapeKeyPress: () => of({}),
+    confirmBeforeClosing: () => of(),
   };
 
   beforeEach(async () => {
@@ -65,11 +72,21 @@ describe('TransferRequestModalComponent tests', () => {
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: {
+            itemSelected: 30,
+            searchCriteria: [],
+            accessContract: 'ContratTNR',
+            tenantIdentifier: '1',
+            selectedItemCountKnown: true,
+          },
+        },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
+        { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
       ],
     }).compileComponents();
   });
@@ -80,13 +97,50 @@ describe('TransferRequestModalComponent tests', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
   });
+
   it('items Selected should be grather than 0 ', () => {
     expect(component.itemSelected).toBeGreaterThan(0);
+    expect(component.itemSelected).toEqual(30);
   });
+
   it('Should have an accessContract ', () => {
+    expect(component.data.accessContract).toBeDefined();
     expect(component.data.accessContract).not.toBeNull();
+    expect(component.data.accessContract).toEqual('ContratTNR');
+  });
+
+  it('should not call transferRequestService of archiveService when transferRequestFormGroup is invalid', () => {
+    // Given
+    spyOn(archiveServiceMock, 'transferRequestService').and.callThrough();
+
+    // When
+    component.onSubmit();
+
+    // Then
+    expect(archiveServiceMock.transferRequestService).not.toHaveBeenCalled();
+  });
+
+  it('Should have a tenant identifier ', () => {
+    expect(component.data.tenantIdentifier).toBeDefined();
+    expect(component.data.tenantIdentifier).not.toBeNull();
+    expect(component.data.tenantIdentifier).toEqual('1');
+  });
+
+  describe('DOM', () => {
+    it('should have 2 text titles', () => {
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.text-title');
+
+      expect(formTitlesHtmlElements).toBeTruthy();
+      expect(formTitlesHtmlElements.length).toBe(2);
+      expect(formTitlesHtmlElements[0].textContent).toContain('ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_TITLE');
+    });
+
+    it('should have 8 vitamui input', () => {
+      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-common-input');
+      expect(elementVitamuiInput.length).toBe(8);
+    });
   });
 });

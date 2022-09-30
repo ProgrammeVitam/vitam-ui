@@ -30,10 +30,12 @@ import { ResultFacet } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 
-export function newNode(currentId: string,
-                        currentChildren: FilingHoldingSchemeNode[] = [],
-                        currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
-                        currentCount?: number): FilingHoldingSchemeNode {
+export function newNode(
+  currentId: string,
+  currentChildren: FilingHoldingSchemeNode[] = [],
+  currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
+  currentCount?: number
+): FilingHoldingSchemeNode {
   return {
     id: currentId,
     title: currentId,
@@ -43,7 +45,7 @@ export function newNode(currentId: string,
     children: currentChildren,
     vitamId: 'whatever',
     count: currentCount,
-  }
+  };
 }
 
 export function newTreeNode(currentId: string, count: number, currentChildren: FilingHoldingSchemeNode[] = []): FilingHoldingSchemeNode {
@@ -53,20 +55,19 @@ export function newTreeNode(currentId: string, count: number, currentChildren: F
 export function newUnit(currentId: string, parentId?: string): Unit {
   return {
     '#id': currentId,
-    '#unitups': [ parentId ],
-    '#allunitups': [ parentId ],
+    '#unitups': [parentId],
+    '#allunitups': [parentId],
     '#opi': 'whatever',
     '#unitType': 'INGEST',
     Title: 'whatever',
-    DescriptionLevel: DescriptionLevel.ITEM
-  }
+    DescriptionLevel: DescriptionLevel.ITEM,
+  };
 }
 
 describe('FilingHoldingSchemeHandler', () => {
   let node: FilingHoldingSchemeNode;
   let uaNodes: FilingHoldingSchemeNode[];
   let facets: ResultFacet[];
-
 
   beforeEach(() => {
     uaNodes = [
@@ -83,79 +84,52 @@ describe('FilingHoldingSchemeHandler', () => {
         newNode('node-0-3'),
         newNode('node-0-4'),
       ]),
-      newNode('node-1', [
-        newNode('node-1-0'),
-        newNode('node-1-1'),
-        newNode('node-1-2'),
-        newNode('node-1-3'),
-        newNode('node-1-4'),
-      ]),
-      newNode('node-2', [
-        newNode('node-2-0'),
-        newNode('node-2-1'),
-        newNode('node-2-2'),
-        newNode('node-2-3'),
-        newNode('node-2-4'),
-      ]),
+      newNode('node-1', [newNode('node-1-0'), newNode('node-1-1'), newNode('node-1-2'), newNode('node-1-3'), newNode('node-1-4')]),
+      newNode('node-2', [newNode('node-2-0'), newNode('node-2-1'), newNode('node-2-2'), newNode('node-2-3'), newNode('node-2-4')]),
       newNode('node-3'),
       newNode('node-4'),
-    ]
+    ];
   });
 
   it('foundNodeAndSetCheck with invalid id is false', () => {
-    expect(FilingHoldingSchemeHandler.foundNodeAndSetCheck(uaNodes, true, 'not-an-id')).toBeFalsy()
+    expect(FilingHoldingSchemeHandler.foundNodeAndSetCheck(uaNodes, true, 'not-an-id')).toBeFalsy();
   });
 
   it('foundNodeAndSetCheck change checked and return true', () => {
     node = uaNodes[0].children[0].children[4];
-    expect(node.id).toEqual('node-0-0-4')
-    expect(node.checked).toBeFalsy()
-    expect(FilingHoldingSchemeHandler.foundNodeAndSetCheck(uaNodes, true, 'node-0-0-4')).toBeTruthy()
-    expect(node.checked).toBeTruthy()
-    expect(FilingHoldingSchemeHandler.foundNodeAndSetCheck(uaNodes, false, 'node-0-0-4')).toBeTruthy()
-    expect(node.checked).toBeFalsy()
+    expect(node.id).toEqual('node-0-0-4');
+    expect(node.checked).toBeFalsy();
+    expect(FilingHoldingSchemeHandler.foundNodeAndSetCheck(uaNodes, true, 'node-0-0-4')).toBeTruthy();
+    expect(node.checked).toBeTruthy();
+    expect(FilingHoldingSchemeHandler.foundNodeAndSetCheck(uaNodes, false, 'node-0-0-4')).toBeTruthy();
+    expect(node.checked).toBeFalsy();
   });
 
   it('setCountRecursively do nothing without facets', () => {
-    facets = []
-    expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(0)
-    facets = [ { node: '', count: 34 } ]
-    expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(0)
+    facets = [];
+    expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(0);
+    facets = [{ node: '', count: 34 }];
+    expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(0);
   });
 
   it('setCountRecursively should return the number of node checked and set count', () => {
     node = uaNodes[0].children[0].children[2];
-    expect(node.id).toEqual('node-0-0-2')
-    expect(node.count).toBeUndefined()
+    expect(node.id).toEqual('node-0-0-2');
+    expect(node.count).toBeUndefined();
     node = uaNodes[2].children[2];
-    expect(node.id).toEqual('node-2-2')
-    expect(node.count).toBeUndefined()
-    facets = [ { node: 'node-0-0-2', count: 42 }, { node: 'node-2-2', count: 65 } ]
-    expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(2)
+    expect(node.id).toEqual('node-2-2');
+    expect(node.count).toBeUndefined();
+    facets = [
+      { node: 'node-0-0-2', count: 42 },
+      { node: 'node-2-2', count: 65 },
+    ];
+    expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(2);
     node = uaNodes[0].children[0].children[2];
-    expect(node.id).toEqual('node-0-0-2')
-    expect(node.count).toEqual(42)
+    expect(node.id).toEqual('node-0-0-2');
+    expect(node.count).toEqual(42);
     node = uaNodes[2].children[2];
-    expect(node.id).toEqual('node-2-2')
-    expect(node.count).toEqual(65)
-  });
-
-  it('addChildren should add new children and not presents ones', () => {
-    let units = [ newUnit('node-0-2-0'), newUnit('node-0-2-1'), ];
-    node = uaNodes[0].children[2];
-    expect(node.id).toEqual('node-0-2')
-    expect(node.children.length).toEqual(0)
-
-    FilingHoldingSchemeHandler.addDirectChildrenOnly(node, units)
-    expect(node.children.length).toEqual(2)
-
-    units = [ newUnit('node-0-2-0'), newUnit('node-0-2-1'), newUnit('node-0-2-3'), ];
-    FilingHoldingSchemeHandler.addDirectChildrenOnly(node, units)
-    expect(node.children.length).toEqual(3)
-
-    units = [ newUnit('node-0-2-3'), ];
-    FilingHoldingSchemeHandler.addDirectChildrenOnly(node, units)
-    expect(node.children.length).toEqual(3)
+    expect(node.id).toEqual('node-2-2');
+    expect(node.count).toEqual(65);
   });
 
   it('addChildrenRecursively should add new children and not presents ones', () => {
@@ -166,22 +140,21 @@ describe('FilingHoldingSchemeHandler', () => {
       newUnit('node-3-1', 'node-3'),
       newUnit('node-3-1', 'node-3'),
     ];
-    expect(uaNodes[2].children.length).toEqual(5)
-    expect(uaNodes[3].children.length).toEqual(0)
+    expect(uaNodes[2].children.length).toEqual(5);
+    expect(uaNodes[3].children.length).toEqual(0);
 
-    FilingHoldingSchemeHandler.addChildrenRecursively(uaNodes, units)
+    FilingHoldingSchemeHandler.addChildrenRecursively(uaNodes, units);
 
-    expect(uaNodes[2].children.length).toEqual(6)
-    expect(uaNodes[2].children[5].id).toEqual('node-2-5')
-    expect(uaNodes[2].children[5].count).toEqual(0)
+    expect(uaNodes[2].children.length).toEqual(6);
+    expect(uaNodes[2].children[5].id).toEqual('node-2-5');
+    expect(uaNodes[2].children[5].count).toEqual(0);
 
-    expect(uaNodes[3].children.length).toEqual(2)
-    expect(uaNodes[3].children[0].id).toEqual('node-3-0')
-    expect(uaNodes[3].children[0].count).toEqual(0)
-    expect(uaNodes[3].children[1].id).toEqual('node-3-1')
-    expect(uaNodes[3].children[1].count).toEqual(0)
+    expect(uaNodes[3].children.length).toEqual(2);
+    expect(uaNodes[3].children[0].id).toEqual('node-3-0');
+    expect(uaNodes[3].children[0].count).toEqual(0);
+    expect(uaNodes[3].children[1].id).toEqual('node-3-1');
+    expect(uaNodes[3].children[1].count).toEqual(0);
   });
-
 
   it('addChildrenRecursively matching should add new children and not presents ones and set count', () => {
     const units = [
@@ -191,20 +164,20 @@ describe('FilingHoldingSchemeHandler', () => {
       newUnit('node-3-1', 'node-3'),
       newUnit('node-3-1', 'node-3'),
     ];
-    expect(uaNodes[2].children.length).toEqual(5)
-    expect(uaNodes[3].children.length).toEqual(0)
+    expect(uaNodes[2].children.length).toEqual(5);
+    expect(uaNodes[3].children.length).toEqual(0);
 
-    FilingHoldingSchemeHandler.addChildrenRecursively(uaNodes, units, true)
+    FilingHoldingSchemeHandler.addChildrenRecursively(uaNodes, units, true);
 
-    expect(uaNodes[2].children.length).toEqual(6)
-    expect(uaNodes[2].children[5].id).toEqual('node-2-5')
-    expect(uaNodes[2].children[5].count).toEqual(1)
+    expect(uaNodes[2].children.length).toEqual(6);
+    expect(uaNodes[2].children[5].id).toEqual('node-2-5');
+    expect(uaNodes[2].children[5].count).toEqual(1);
 
-    expect(uaNodes[3].children.length).toEqual(2)
-    expect(uaNodes[3].children[0].id).toEqual('node-3-0')
-    expect(uaNodes[3].children[0].count).toEqual(1)
-    expect(uaNodes[3].children[1].id).toEqual('node-3-1')
-    expect(uaNodes[3].children[1].count).toEqual(1)
+    expect(uaNodes[3].children.length).toEqual(2);
+    expect(uaNodes[3].children[0].id).toEqual('node-3-0');
+    expect(uaNodes[3].children[0].count).toEqual(1);
+    expect(uaNodes[3].children[1].id).toEqual('node-3-1');
+    expect(uaNodes[3].children[1].count).toEqual(1);
   });
 
   it('keepEndNodesWithResultsOnly should keep ends results only', () => {
@@ -238,16 +211,16 @@ describe('FilingHoldingSchemeHandler', () => {
       ]),
       newTreeNode('node-3', 0),
       newTreeNode('node-4', 0),
-    ]
+    ];
     const leaves: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(treePlanNodes);
     expect(leaves.length).toEqual(3);
 
-    expect(leaves[0].id).toEqual('node-0-0-1')
-    expect(leaves[0].count).toEqual(1)
-    expect(leaves[1].id).toEqual('node-0-3')
-    expect(leaves[1].count).toEqual(2)
-    expect(leaves[2].id).toEqual('node-2-2')
-    expect(leaves[2].count).toEqual(1)
+    expect(leaves[0].id).toEqual('node-0-0-1');
+    expect(leaves[0].count).toEqual(1);
+    expect(leaves[1].id).toEqual('node-0-3');
+    expect(leaves[1].count).toEqual(2);
+    expect(leaves[2].id).toEqual('node-2-2');
+    expect(leaves[2].count).toEqual(1);
   });
 
   it('keepEndNodesWithResultsOnly should keep ends results only and parent if parent has more match ?', () => {
@@ -281,20 +254,20 @@ describe('FilingHoldingSchemeHandler', () => {
       ]),
       newTreeNode('node-3', 0),
       newTreeNode('node-4', 0),
-    ]
+    ];
     const leaves: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(treePlanNodes);
     expect(leaves.length).toEqual(5);
 
-    expect(leaves[0].id).toEqual('node-0-0')
-    expect(leaves[0].count).toEqual(18)
-    expect(leaves[1].id).toEqual('node-0-0-0')
-    expect(leaves[1].count).toEqual(1)
-    expect(leaves[2].id).toEqual('node-0-0-1')
-    expect(leaves[2].count).toEqual(1)
-    expect(leaves[3].id).toEqual('node-0-3')
-    expect(leaves[3].count).toEqual(2)
-    expect(leaves[4].id).toEqual('node-2-2')
-    expect(leaves[4].count).toEqual(1)
+    expect(leaves[0].id).toEqual('node-0-0');
+    expect(leaves[0].count).toEqual(18);
+    expect(leaves[1].id).toEqual('node-0-0-0');
+    expect(leaves[1].count).toEqual(1);
+    expect(leaves[2].id).toEqual('node-0-0-1');
+    expect(leaves[2].count).toEqual(1);
+    expect(leaves[3].id).toEqual('node-0-3');
+    expect(leaves[3].count).toEqual(2);
+    expect(leaves[4].id).toEqual('node-2-2');
+    expect(leaves[4].count).toEqual(1);
   });
 
   it('unitHasDirectParent test', () => {
@@ -308,16 +281,11 @@ describe('FilingHoldingSchemeHandler', () => {
     expect(FilingHoldingSchemeHandler.foundChild(node, 'whatever')).toBeUndefined();
 
     const child = newNode('node-0-0');
-    node = newNode('node-0', [ child ]);
+    node = newNode('node-0', [child]);
     expect(FilingHoldingSchemeHandler.foundChild(node, 'node-0-0')).toBe(child);
 
     node = newNode('node-0', [
-      newNode('node-0-0', [
-        newNode('node-0-0-0'),
-        newNode('node-0-0-1', [
-          newNode('node-0-0-1-0'),
-        ]),
-      ]),
+      newNode('node-0-0', [newNode('node-0-0-0'), newNode('node-0-0-1', [newNode('node-0-0-1-0')])]),
       newNode('node-0-1'),
       newNode('node-0-2'),
     ]);
@@ -335,8 +303,7 @@ describe('FilingHoldingSchemeHandler', () => {
       newUnit('node-0-5', 'node-0'), // new
       newUnit('new-node', 'node-0-1'), // wrong parent
     ];
-    const matchingNodesNumbers: MatchingNodesNumbers = FilingHoldingSchemeHandler
-      .addDirectChildrenOnly(toggleNode, resturnedUnits);
+    const matchingNodesNumbers: MatchingNodesNumbers = FilingHoldingSchemeHandler.addDirectChildrenOnly(toggleNode, resturnedUnits);
 
     expect(matchingNodesNumbers.nodesAdded).toEqual(1);
     expect(matchingNodesNumbers.nodesUpdated).toEqual(0);
@@ -355,8 +322,7 @@ describe('FilingHoldingSchemeHandler', () => {
       newUnit('new-node-0-6', 'node-0'), // new
       newUnit('new-node', 'node-0-1'), // wrong parent
     ];
-    const matchingNodesNumbers: MatchingNodesNumbers = FilingHoldingSchemeHandler
-      .addDirectChildrenOnly(toggleNode, resturnedUnits, true);
+    const matchingNodesNumbers: MatchingNodesNumbers = FilingHoldingSchemeHandler.addDirectChildrenOnly(toggleNode, resturnedUnits, true);
 
     expect(matchingNodesNumbers.nodesAdded).toEqual(2);
     expect(matchingNodesNumbers.nodesAddedList.length).toEqual(2);
@@ -370,21 +336,32 @@ describe('FilingHoldingSchemeHandler', () => {
   });
 
   it('filterUnknownFacets filter unknown ids', () => {
-    let oldFacets = [ { node: 'node-0', count: 1 }, { node: 'node-1', count: 65 } ]
-    let newFacets = [ { node: 'node-0', count: 5 }, { node: 'node-1', count: 42 } ]
-    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([])
+    let oldFacets = [
+      { node: 'node-0', count: 1 },
+      { node: 'node-1', count: 65 },
+    ];
+    let newFacets = [
+      { node: 'node-0', count: 5 },
+      { node: 'node-1', count: 42 },
+    ];
+    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([]);
 
-    oldFacets = [ { node: 'node-0', count: 1 }, { node: 'node-1', count: 65 } ]
-    newFacets = [ { node: 'node-2', count: 5 } ]
-    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([ { node: 'node-2', count: 5 } ])
+    oldFacets = [
+      { node: 'node-0', count: 1 },
+      { node: 'node-1', count: 65 },
+    ];
+    newFacets = [{ node: 'node-2', count: 5 }];
+    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([{ node: 'node-2', count: 5 }]);
 
-    oldFacets = []
-    newFacets = [ { node: 'node-2', count: 5 } ]
-    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([ { node: 'node-2', count: 5 } ])
+    oldFacets = [];
+    newFacets = [{ node: 'node-2', count: 5 }];
+    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([{ node: 'node-2', count: 5 }]);
 
-    oldFacets = [ { node: 'node-0', count: 1 }, { node: 'node-1', count: 65 } ]
-    newFacets = []
-    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([])
+    oldFacets = [
+      { node: 'node-0', count: 1 },
+      { node: 'node-1', count: 65 },
+    ];
+    newFacets = [];
+    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([]);
   });
-
 });

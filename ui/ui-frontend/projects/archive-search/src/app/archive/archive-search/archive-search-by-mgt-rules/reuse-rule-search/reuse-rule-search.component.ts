@@ -142,8 +142,9 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptionReuseFromMainSearchCriteria = this.archiveExchangeDataService.reuseFromMainSearchCriteriaObservable.subscribe(
-      (criteria) => {
+    this.subscriptionReuseFromMainSearchCriteria = this.archiveExchangeDataService
+      .receiveReuseFromMainSearchCriteriaSubject()
+      .subscribe((criteria) => {
         if (criteria) {
           if (this.reuseAdditionalCriteria && criteria.action === ActionOnCriteria.ADD) {
             this.reuseAdditionalCriteria.set(criteria.valueElt.value, true);
@@ -153,8 +154,7 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
             }
           }
         }
-      }
-    );
+      });
   }
 
   checkBoxChange(field: string, event: any) {

@@ -35,12 +35,96 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { inject, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ResultFacet, ResultFacetList } from '../models/search.criteria';
 import { ArchiveFacetsService } from './archive-facets.service';
 
-describe('CustomerService', () => {
+describe('ArchiveFacetsService', () => {
   let archiveFacetsService: ArchiveFacetsService;
+
+  const facetNodeResultsInput: ResultFacetList = {
+    name: 'COUNT_BY_NODE',
+    buckets: [
+      {
+        value: 'node1',
+        count: 10,
+      },
+    ],
+  };
+
+  const facetComutedRulesInput: ResultFacetList = {
+    name: 'FINAL_ACTION_COMPUTED_APPRAISAL_RULE',
+    buckets: [
+      {
+        value: 'facet-final',
+        count: 18,
+      },
+    ],
+  };
+  const facetExpiredComutedRulesInput: ResultFacetList = {
+    name: 'EXPIRED_RULES_COMPUTED_APPRAISAL_RULE',
+    buckets: [
+      {
+        value: 'facet2',
+        count: 120,
+      },
+    ],
+  };
+  const facetCountRulesInput: ResultFacetList = {
+    name: 'COUNT_WITHOUT_RULES_APPRAISAL_RULE',
+    buckets: [
+      {
+        value: 'facet-count',
+        count: 11,
+      },
+    ],
+  };
+  const facetComputeRulesInput: ResultFacetList = {
+    name: 'COMPUTE_RULES_AU_NUMBER',
+    buckets: [
+      {
+        value: 'facet-Computed',
+        count: 121,
+      },
+    ],
+  };
+
+  const facetNodeResultsInputByNode: ResultFacetList = {
+    name: 'COUNT_BY_NODE',
+    buckets: [
+      {
+        value: 'node55',
+        count: 55,
+      },
+    ],
+  };
+
+  const facetResultsInput: ResultFacetList[] = [
+    facetNodeResultsInput,
+    facetComutedRulesInput,
+    facetExpiredComutedRulesInput,
+    facetCountRulesInput,
+    facetComputeRulesInput,
+    facetNodeResultsInputByNode,
+  ];
+
+  const facetResultsInputWithoutNode: ResultFacetList[] = [
+    facetExpiredComutedRulesInput,
+    facetComutedRulesInput,
+    facetCountRulesInput,
+    facetComputeRulesInput,
+  ];
+
+  const expectedResultExpiredFacets: ResultFacet[] = [{ node: 'facet2', count: 120 }];
+  const expectedResultFinalActionsFacets: ResultFacet[] = [{ node: 'facet-final', count: 18 }];
+  const expectedResultCountWithoutRulesFacets: ResultFacet[] = [{ node: 'facet-count', count: 11 }];
+  const expectedResultComputeRulesFacets: ResultFacet[] = [{ node: 'facet-Computed', count: 121 }];
+  const expectedResultNodesFacetsByNode: ResultFacet[] = [
+    { node: 'node1', count: 10 },
+    { node: 'node55', count: 55 },
+  ];
+
+  const expectedResultNodesFacetsWithoutNode: ResultFacet[] = [];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -51,93 +135,26 @@ describe('CustomerService', () => {
     archiveFacetsService = TestBed.inject(ArchiveFacetsService);
   });
 
-  it('should be created', inject([ArchiveFacetsService], (service: ArchiveFacetsService) => {
+  it('service should be created', () => {
+    const service: ArchiveFacetsService = TestBed.inject(ArchiveFacetsService);
     expect(service).toBeTruthy();
-  }));
+  });
 
   it('should call extractNodesFacetsResults', () => {
-    let resultFacets = archiveFacetsService.extractNodesFacetsResults(facetResultsInput);
-    expect(resultFacets).toEqual(expectedResultNodesFacets);
+    const resultFacets = archiveFacetsService.extractNodesFacetsResults(facetResultsInput);
+    expect(resultFacets).toEqual(expectedResultNodesFacetsByNode);
   });
 
   it('should call extractRulesFacetsResults for appraisal', () => {
-    let resultFacets = archiveFacetsService.extractRulesFacetsResults(facetResultsInput);
+    const resultFacets = archiveFacetsService.extractRulesFacetsResults(facetResultsInput);
     expect(resultFacets.appraisalRuleFacets.expiredRulesListFacets).toEqual(expectedResultExpiredFacets);
     expect(resultFacets.appraisalRuleFacets.finalActionsFacets).toEqual(expectedResultFinalActionsFacets);
     expect(resultFacets.appraisalRuleFacets.noRulesFacets).toEqual(expectedResultCountWithoutRulesFacets);
     expect(resultFacets.appraisalRuleFacets.waitingToRecalculateRulesListFacets).toEqual(expectedResultComputeRulesFacets);
   });
-});
-const expectedResultNodesFacets: ResultFacet[] = [{ node: 'node1', count: 10 }];
-const expectedResultExpiredFacets: ResultFacet[] = [{ node: 'facet2', count: 120 }];
-const expectedResultFinalActionsFacets: ResultFacet[] = [{ node: 'facet-final', count: 18 }];
-const expectedResultCountWithoutRulesFacets: ResultFacet[] = [{ node: 'facet-count', count: 11 }];
-const expectedResultComputeRulesFacets: ResultFacet[] = [{ node: 'facet-Computed', count: 121 }];
 
-const facetNodeResultsInput: ResultFacetList = {
-  name: 'COUNT_BY_NODE',
-  buckets: [
-    {
-      value: 'node1',
-      count: 10,
-    },
-  ],
-};
-
-const facetComutedRulesInput: ResultFacetList = {
-  name: 'FINAL_ACTION_COMPUTED_APPRAISAL_RULE',
-  buckets: [
-    {
-      value: 'facet-final',
-      count: 18,
-    },
-  ],
-};
-const facetExpiredComutedRulesInput: ResultFacetList = {
-  name: 'EXPIRED_RULES_COMPUTED_APPRAISAL_RULE',
-  buckets: [
-    {
-      value: 'facet2',
-      count: 120,
-    },
-  ],
-};
-const facetCountRulesInput: ResultFacetList = {
-  name: 'COUNT_WITHOUT_RULES_APPRAISAL_RULE',
-  buckets: [
-    {
-      value: 'facet-count',
-      count: 11,
-    },
-  ],
-};
-const facetComputeRulesInput: ResultFacetList = {
-  name: 'COMPUTE_RULES_AU_NUMBER',
-  buckets: [
-    {
-      value: 'facet-Computed',
-      count: 121,
-    },
-  ],
-};
-const facetResultsInput: ResultFacetList[] = [
-  facetNodeResultsInput,
-  facetComutedRulesInput,
-  facetExpiredComutedRulesInput,
-  facetCountRulesInput,
-  facetComputeRulesInput,
-];
-
-describe('ArchiveFacetsService', () => {
-  beforeEach(() =>
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [],
-    })
-  );
-
-  it('should be created', () => {
-    const service: ArchiveFacetsService = TestBed.inject(ArchiveFacetsService);
-    expect(service).toBeTruthy();
+  it('should call extractNodesFacetsResults and return an empty array', () => {
+    const resultFacets = archiveFacetsService.extractNodesFacetsResults(facetResultsInputWithoutNode);
+    expect(resultFacets).toEqual(expectedResultNodesFacetsWithoutNode);
   });
 });

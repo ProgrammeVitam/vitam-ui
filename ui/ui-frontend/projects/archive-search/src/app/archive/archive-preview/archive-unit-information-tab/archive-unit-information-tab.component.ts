@@ -227,7 +227,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       this.hasEnTitle = this.hasFrTitle ? false : true;
     }
 
-    if (archiveUnit.Description == undefined) {
+    if (archiveUnit.Description === undefined) {
       this.hasNoDescription = true;
     }
 
@@ -280,7 +280,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
         switchMap((formData) => of(formData)),
         catchError((error) => of(error))
       )
-      .subscribe((formData: any) => console.log('value au = ', formData));
+      .subscribe((formData: any) => this.logger.info('value au = ', formData));
   }
 
   private formHasValidTitle(): boolean {
@@ -407,7 +407,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       }
       this.form.get(date).reset(null, { emitEvent: false });
     } else {
-      console.error('clearDate() error: unknown date ' + date);
+      this.logger.error('clearDate() error: unknown date ' + date);
     }
   }
 

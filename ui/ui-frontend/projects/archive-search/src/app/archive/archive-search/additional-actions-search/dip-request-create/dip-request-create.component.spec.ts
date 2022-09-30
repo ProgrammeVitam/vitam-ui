@@ -44,7 +44,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { DipRequestCreateComponent } from './dip-request-create.component';
 
@@ -52,13 +52,26 @@ describe('DipRequestCreateComponent', () => {
   let component: DipRequestCreateComponent;
   let fixture: ComponentFixture<DipRequestCreateComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close', 'keydownEvents']);
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
   const archiveServiceMock = {
     archive: () => of('test archive'),
     search: () => of([]),
+    exportDIPService: () => of([]),
     getAccessContractById: () => of({}),
+  };
+
+  const confirmDialogServiceMock = {
+    confirm: () => of(true),
+    listenToEscapeKeyPress: () => of({}),
+    confirmBeforeClosing: () => of(),
+  };
+
+  const startupServiceStub = {
+    getPortalUrl: () => '',
+    getConfigStringValue: () => '',
+    getReferentialUrl: () => '',
   };
 
   beforeEach(async () => {
@@ -76,11 +89,22 @@ describe('DipRequestCreateComponent', () => {
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: {
+            itemSelected: 30,
+            searchCriteria: [],
+            accessContract: 'ContratTNR',
+            tenantIdentifier: '1',
+            selectedItemCountKnown: true,
+          },
+        },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
+        { provide: StartupService, useValue: startupServiceStub },
       ],
     }).compileComponents();
   });
@@ -91,13 +115,50 @@ describe('DipRequestCreateComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
   });
+
   it('items Selected should be grather than 0 ', () => {
     expect(component.itemSelected).toBeGreaterThan(0);
+    expect(component.itemSelected).toEqual(30);
   });
+
+  it('should not call exportDIPService of archiveService when exportDIPform is invalid', () => {
+    // Given
+    spyOn(archiveServiceMock, 'exportDIPService').and.callThrough();
+
+    // When
+    component.onSubmit();
+
+    // Then
+    expect(archiveServiceMock.exportDIPService).not.toHaveBeenCalled();
+  });
+
   it('Should have an accessContract ', () => {
+    expect(component.data.accessContract).toBeDefined();
     expect(component.data.accessContract).not.toBeNull();
+    expect(component.data.accessContract).toEqual('ContratTNR');
+  });
+
+  it('Should have a tenant identifier ', () => {
+    expect(component.data.tenantIdentifier).toBeDefined();
+    expect(component.data.tenantIdentifier).not.toBeNull();
+    expect(component.data.tenantIdentifier).toEqual('1');
+  });
+
+  describe('DOM', () => {
+    it('should have 2 text titles', () => {
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.text-title');
+
+      expect(formTitlesHtmlElements).toBeTruthy();
+      expect(formTitlesHtmlElements.length).toBe(2);
+      expect(formTitlesHtmlElements[0].textContent).toContain('ARCHIVE_SEARCH.DIP.REQUEST_DIP_EXPORT');
+    });
+
+    it('should have 6 vitamui input', () => {
+      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-common-input');
+      expect(elementVitamuiInput.length).toBe(6);
+    });
   });
 });
