@@ -23,6 +23,8 @@
  *
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
+ *
+ *
  */
 
 package fr.gouv.vitamui.archive.internal.server.service;
@@ -31,10 +33,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,19 +49,26 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 @ExtendWith(SpringExtension.class)
-class TransferRequestInternalServiceTest {
+class TransferVitamOperationsInternalServiceTest {
 
+    @Mock
+    private TransferAcknowledgmentService transferAcknowledgmentService;
     @Mock
     private TransferRequestService transferRequestService;
     @Mock
     private ArchiveSearchInternalService archiveSearchInternalService;
     @InjectMocks
-    TransferRequestInternalService transferRequestInternalService;
+    TransferVitamOperationsInternalService transferVitamOperationsInternalService;
 
     @BeforeEach
     public void beforeEach() {
@@ -81,10 +93,47 @@ class TransferRequestInternalServiceTest {
             RequestResponseOK.getFromJsonNode(newJsonNode(requestResponseOKJson));
         Mockito.when(transferRequestService.transferRequest(eq(vitamContext), any())).thenReturn(responseReturned);
         //When
-        String response = transferRequestInternalService.transferRequest(transferRequestDto, vitamContext);
+        String response = transferVitamOperationsInternalService.transferRequest(transferRequestDto, vitamContext);
         //then
         assertThat(response).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
 
+    }
+
+    @Test
+    void transferAcknowledgmentRequest_should_pass_and_Vitam_Return_OperationDetails()
+        throws VitamClientException, IOException, InvalidParseOperationException {
+
+        // Given
+        VitamContext vitamContext = new VitamContext(1);
+        InputStream atrFileInputStream = TransferVitamOperationsInternalServiceTest.class.getClassLoader()
+            .getResourceAsStream("data/transferAcknowledgment/ATR_aeeaaaaaaghduohdabkogamdgezb2taaaaaq.xml");
+
+        InputStream transferReplyVitamResponse = TransferVitamOperationsInternalServiceTest.class.getClassLoader()
+            .getResourceAsStream("data/transferAcknowledgment/transferReplyVitamResponse.json");
+
+        String vitamResponseToString = readFromInputStream(transferReplyVitamResponse);
+        RequestResponse<JsonNode> vitamJsonResponse = RequestResponseOK.getFromJsonNode
+            (new ObjectMapper().readTree(vitamResponseToString));
+
+        //When
+        Mockito.when(transferAcknowledgmentService.transferAcknowledgment(eq(vitamContext), any())).thenReturn(vitamJsonResponse);
+        String response = transferVitamOperationsInternalService.transferAcknowledgmentService(atrFileInputStream, vitamContext);
+
+        //Then
+        assertThat(response).isEqualTo("aeeaaaaaaghduohdabjwkamdgezrs7aaaaaq");
+    }
+
+    private static String readFromInputStream(InputStream inputStream)
+        throws IOException {
+        StringBuilder resultStringBuilder = new StringBuilder();
+        try (BufferedReader br
+            = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                resultStringBuilder.append(line).append("\n");
+            }
+        }
+        return resultStringBuilder.toString();
     }
 
     private JsonNode newJsonNode(String json) throws JsonProcessingException {

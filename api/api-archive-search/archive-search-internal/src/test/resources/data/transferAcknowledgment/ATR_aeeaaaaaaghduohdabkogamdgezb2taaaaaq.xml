@@ -1,0 +1,43 @@
+<ArchiveTransferReply xmlns="fr:gouv:culture:archivesdefrance:seda:v2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="fr:gouv:culture:archivesdefrance:seda:v2.2 seda-2.2/seda-2.2-main.xsd">
+    <Date>2022-09-12T10:15:14.543Z</Date>
+    <MessageIdentifier>aeeaaaaaaghduohdabkogamdgezb2taaaaaq</MessageIdentifier>
+    <CodeListVersions>
+        <ReplyCodeListVersion/>
+        <MessageDigestAlgorithmCodeListVersion/>
+        <FileFormatCodeListVersion/>
+    </CodeListVersions>
+    <DataObjectPackage>
+        <DescriptiveMetadata/>
+        <ManagementMetadata/>
+    </DataObjectPackage>
+    <ReplyCode>KO</ReplyCode>
+    <Operation>
+        <Event>
+            <EventTypeCode>STP_INGEST_CONTROL_SIP</EventTypeCode>
+            <EventType>Processus de contrôle du SIP</EventType>
+            <EventDateTime>2022-09-12T10:15:13.911</EventDateTime>
+            <Outcome>KO</Outcome>
+            <OutcomeDetail>STP_INGEST_CONTROL_SIP.KO</OutcomeDetail>
+            <OutcomeDetailMessage>Échec du processus du contrôle du bordereau du SIP</OutcomeDetailMessage>
+        </Event>
+        <Event>
+            <EventTypeCode>CHECK_HEADER</EventTypeCode>
+            <EventType>Vérification générale du bordereau de transfert</EventType>
+            <EventDateTime>2022-09-12T10:15:13.911</EventDateTime>
+            <Outcome>KO</Outcome>
+            <OutcomeDetail>CHECK_HEADER.UNKNOWN.KO</OutcomeDetail>
+            <OutcomeDetailMessage>Échec de la vérification générale du bordereau de transfert : donnée référentielle inconnue Detail= KO:1</OutcomeDetailMessage>
+            <EventDetailData>{"evDetTechData":"error originating agency validation[ \"tt\" ]","ArchivalAgreement":"tt"}</EventDetailData>
+        </Event>
+        <Event>
+            <EventTypeCode>CHECK_HEADER.CHECK_AGENT</EventTypeCode>
+            <EventType>Vérification de la présence et du contrôle des services agents</EventType>
+            <EventDateTime>2022-09-12T10:15:13.911</EventDateTime>
+            <Outcome>KO</Outcome>
+            <OutcomeDetail>CHECK_HEADER.CHECK_AGENT.UNKNOWN.KO</OutcomeDetail>
+            <OutcomeDetailMessage>Échec de la vérification de la présence et du contrôle des services agents : services agents inconnus du référentiel des services agents Detail= KO:1</OutcomeDetailMessage>
+        </Event>
+    </Operation>
+    <MessageRequestIdentifier/>
+    <GrantDate>2022-09-12T10:15:14.543Z</GrantDate>
+</ArchiveTransferReply>

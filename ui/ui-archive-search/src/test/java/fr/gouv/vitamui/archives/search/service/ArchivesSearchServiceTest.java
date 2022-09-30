@@ -40,6 +40,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
@@ -67,6 +68,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
@@ -89,6 +91,8 @@ public class ArchivesSearchServiceTest {
 
     @Mock
     private ArchiveSearchExternalWebClient archiveSearchExternalWebClient;
+    @Mock
+    private ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient;
 
     @Mock
     private CommonService commonService;
@@ -99,7 +103,7 @@ public class ArchivesSearchServiceTest {
     @Before
     public void init() {
         archivesSearchService = new ArchivesSearchService(commonService, archiveSearchExternalRestClient,
-            archiveSearchExternalWebClient);
+            archiveSearchExternalWebClient, archiveSearchStreamingExternalRestClient);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
@@ -418,5 +422,21 @@ public class ArchivesSearchServiceTest {
         // Then
         verify(archiveSearchExternalRestClient, Mockito.times(1))
             .reclassification(any(ReclassificationCriteriaDto.class), ArgumentMatchers.any());
+    }
+
+    @Test
+    public void launch_transfer_reply_should_call_appropriate_rest_client_one_time() {
+        // Given
+         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        Mockito.when(archiveSearchStreamingExternalRestClient.transferAcknowledgment(
+                ArgumentMatchers.any(), any(String.class), any(InputStream.class)))
+            .thenReturn(new ResponseEntity<>("OperationId", HttpStatus.OK));
+
+        // When
+        archivesSearchService.transferAcknowledgment(eq(context), eq("fileName"), ArgumentMatchers.any());
+
+        // Then
+        verify(archiveSearchStreamingExternalRestClient, Mockito.times(1))
+            .transferAcknowledgment(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
     }
 }

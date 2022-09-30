@@ -36,8 +36,7 @@ import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalServ
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchMgtRulesInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchUnitExportCsvInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ExportDipInternalService;
-import fr.gouv.vitamui.archive.internal.server.service.TransferRequestInternalService;
-import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
+import fr.gouv.vitamui.archive.internal.server.service.TransferVitamOperationsInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
@@ -56,6 +55,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,11 +99,12 @@ public class ArchiveSearchInternalController {
     private final ArchiveSearchInternalService archiveInternalService;
     private final ArchiveSearchUnitExportCsvInternalService archiveSearchUnitExportCsvInternalService;
     private final ExportDipInternalService exportDipInternalService;
-    private final TransferRequestInternalService transferRequestInternalService;
+    private final TransferVitamOperationsInternalService transferVitamOperationsInternalService;
     private final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService;
     private final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService;
     private final InternalSecurityService securityService;
     private final ObjectMapper objectMapper;
+
 
     @Autowired
     public ArchiveSearchInternalController(final ArchiveSearchInternalService archiveInternalService,
@@ -111,16 +112,14 @@ public class ArchiveSearchInternalController {
         final ObjectMapper objectMapper,
         final ArchiveSearchUnitExportCsvInternalService archiveSearchUnitExportCsvInternalService,
         final ExportDipInternalService exportDipInternalService,
-        final TransferRequestInternalService transferRequestInternalService,
-        final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService,
-        final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService
-    ) {
+        TransferVitamOperationsInternalService transferVitamOperationsInternalService, final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService,
+        final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService) {
         this.archiveInternalService = archiveInternalService;
         this.securityService = securityService;
         this.objectMapper = objectMapper;
         this.archiveSearchUnitExportCsvInternalService = archiveSearchUnitExportCsvInternalService;
         this.exportDipInternalService = exportDipInternalService;
-        this.transferRequestInternalService = transferRequestInternalService;
+        this.transferVitamOperationsInternalService = transferVitamOperationsInternalService;
         this.archiveSearchEliminationInternalService = archiveSearchEliminationInternalService;
         this.archiveSearchMgtRulesInternalService = archiveSearchMgtRulesInternalService;
     }
@@ -257,7 +256,7 @@ public class ArchiveSearchInternalController {
         SanityChecker.sanitizeCriteria(transferRequestDto);
         LOGGER.debug("Transfer request {}", transferRequestDto);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        String result = transferRequestInternalService.transferRequest(transferRequestDto, vitamContext);
+        String result = transferVitamOperationsInternalService.transferRequest(transferRequestDto, vitamContext);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -385,5 +384,29 @@ public class ArchiveSearchInternalController {
         VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         return archiveInternalService.updateUnitById(id, unitDescriptiveMetadataDto, vitamContext);
+    }
+
+
+    @ApiOperation(value = "Upload an ATR for transfer acknowledgment operation", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public String transferAcknowledgment(
+        InputStream inputStream,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+    )
+        throws PreconditionFailedException, InvalidParseOperationException,
+        VitamClientException {
+
+        LOGGER.debug("[INTERNAL] : Transfer Acknowledgment Operation");
+        ParameterChecker.checkParameter("The access contract and the fileName are mandatory parameters: ", accessContractId,
+            originalFileName);
+        SanityChecker.isValidFileName(originalFileName);
+        SanityChecker.checkSecureParameter(accessContractId);
+        LOGGER.debug("Transfer Acknowledgment : upload  atr xml filename: {}", originalFileName);
+
+        VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+
+        return transferVitamOperationsInternalService.transferAcknowledgmentService(inputStream, vitamContext);
     }
 }

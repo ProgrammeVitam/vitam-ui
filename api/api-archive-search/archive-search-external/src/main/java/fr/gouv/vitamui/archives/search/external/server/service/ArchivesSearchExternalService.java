@@ -30,6 +30,7 @@ package fr.gouv.vitamui.archives.search.external.server.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
+import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
@@ -50,6 +51,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+
+import java.io.InputStream;
 
 import java.util.Optional;
 
@@ -72,13 +75,18 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     @Autowired
     private final ArchiveSearchInternalWebClient archiveSearchInternalWebClient;
 
+    @Autowired
+    private final ArchiveSearchStreamingInternalRestClient archiveSearchStreamingInternalRestClient;
+
     public ArchivesSearchExternalService(@Autowired ArchiveInternalRestClient archiveInternalRestClient,
         ArchiveSearchInternalWebClient archiveSearchInternalWebClient,
         final ExternalSecurityService externalSecurityService,
+        final ArchiveSearchStreamingInternalRestClient archiveSearchStreamingInternalRestClient,
         final ArchiveSearchThresholdService archiveSearchThresholdService) {
         super(externalSecurityService);
         this.archiveInternalRestClient = archiveInternalRestClient;
         this.archiveSearchInternalWebClient = archiveSearchInternalWebClient;
+        this.archiveSearchStreamingInternalRestClient = archiveSearchStreamingInternalRestClient;
         this.archiveSearchThresholdService = archiveSearchThresholdService;
     }
 
@@ -182,6 +190,12 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
 
     public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
         return archiveInternalRestClient.updateUnitById(id, unitDescriptiveMetadataDto, getInternalHttpContext());
+    }
+
+    public String transferAcknowledgment(InputStream atrInputStream, final String originalFileName) {
+        return
+            archiveSearchStreamingInternalRestClient
+                .transferAcknowledgment(getInternalHttpContext(), originalFileName, atrInputStream);
     }
 
 }

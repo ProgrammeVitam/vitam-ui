@@ -35,22 +35,26 @@ import fr.gouv.vitam.common.model.export.transfer.TransferRequest;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-@Service
-public class TransferRequestInternalService {
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransferRequestInternalService.class);
-    public static final String OPERATION_IDENTIFIER = "itemId";
+import java.io.InputStream;
 
+@Service
+public class TransferVitamOperationsInternalService {
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransferVitamOperationsInternalService.class);
+    public static final String OPERATION_IDENTIFIER = "itemId";
+    private final TransferAcknowledgmentService transferAcknowledgmentService;
     private final TransferRequestService transferRequestService;
     private final ArchiveSearchInternalService archiveSearchInternalService;
 
 
-    public TransferRequestInternalService(final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
+    public TransferVitamOperationsInternalService(final TransferAcknowledgmentService transferAcknowledgmentService, final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
         final TransferRequestService transferRequestService
     ) {
+        this.transferAcknowledgmentService = transferAcknowledgmentService;
         this.archiveSearchInternalService = archiveSearchInternalService;
         this.transferRequestService = transferRequestService;
     }
@@ -90,5 +94,13 @@ public class TransferRequestInternalService {
 
         JsonNode response = sendTransferRequest(vitamContext, transferRequest);
         return response.findValue(OPERATION_IDENTIFIER).textValue();
+    }
+
+    public String transferAcknowledgmentService(InputStream atrInputStream, VitamContext vitamContext) throws VitamClientException {
+
+        LOGGER.debug("Transfer Acknowledgment Operation");
+        JsonNode transferAcknowledgmentResponse =
+            transferAcknowledgmentService.transferAcknowledgment(vitamContext, atrInputStream).toJsonNode();
+        return transferAcknowledgmentResponse.findValue(OPERATION_IDENTIFIER).textValue();
     }
 }

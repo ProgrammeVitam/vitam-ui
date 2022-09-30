@@ -38,6 +38,7 @@ import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -66,6 +67,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,6 +75,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,6 +88,10 @@ import java.util.Objects;
 public class ArchivesSearchController extends AbstractUiRestController {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AbstractUiRestController.class);
+
+    public static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+    public static final String MANDATORY_QUERY = "The Query is a mandatory parameter: ";
+    public static final String CONTENT_DISPOSITION = "Content-Disposition";
 
     private final ArchivesSearchService archivesSearchService;
 
@@ -100,7 +107,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     public VitamUIArchiveUnitResponseDto searchArchiveUnits(@RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
         ArchiveUnitsDto archiveUnits;
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, searchQuery);
 
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
@@ -145,7 +152,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the Archive Unit with ID {}", id);
         return archivesSearchService.findUnitById(id, buildUiHttpContext());
@@ -156,7 +163,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         LOGGER.debug("Find the Object Group with Identifier {}", id);
         SanityChecker.checkSecureParameter(id);
         return archivesSearchService.findObjectById(id, buildUiHttpContext());
@@ -178,7 +185,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
         ResponseEntity<Resource> responseResource =
             archivesSearchService.downloadObjectFromUnit(id, objectData, buildUiHttpContext(tenantId, contractId))
                 .block();
-        List<String> headersValuesContentDispo = responseResource.getHeaders().get("Content-Disposition");
+        List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
         String fileNameHeader =
             StringUtils.isNotEmpty(objectData.getFilename()) ? "attachment;filename=" + objectData.getFilename()
@@ -186,7 +193,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
 
         return ResponseEntity.ok()
             .contentType(new MediaType(MimeType.valueOf(objectData.getMimeType())))
-            .header("Content-Disposition", fileNameHeader)
+            .header(CONTENT_DISPOSITION, fileNameHeader)
             .body(responseResource.getBody());
     }
 
@@ -196,14 +203,14 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(@RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("Export search archives Units by criteria into csv format = {}", searchQuery);
         Resource exportedCsvResult =
             archivesSearchService.exportCsvArchiveUnitsByCriteria(searchQuery, buildUiHttpContext()).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .header("Content-Disposition", "attachment")
+            .header(CONTENT_DISPOSITION, "attachment")
             .body(exportedCsvResult);
     }
 
@@ -212,7 +219,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public String exportDIPByCriteria(@RequestBody final ExportDipCriteriaDto exportDipCriteriaDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", exportDipCriteriaDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, exportDipCriteriaDto);
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
         LOGGER.debug("Export DIP  with criteria {}", exportDipCriteriaDto);
         return archivesSearchService.exportDIPByCriteria(exportDipCriteriaDto, buildUiHttpContext()).getBody();
@@ -223,7 +230,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public String transferRequest(@RequestBody final TransferRequestDto transferRequestDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", transferRequestDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, transferRequestDto);
         SanityChecker.sanitizeCriteria(transferRequestDto);
         LOGGER.debug("Transfer request: {}", transferRequestDto);
         return archivesSearchService.transferRequest(transferRequestDto, buildUiHttpContext()).getBody();
@@ -235,7 +242,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     public JsonNode startEliminationAnalysis(@RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("Elimination analysis of query: {}", searchQuery);
         ResponseEntity<JsonNode> jsonNodeResponseEntity =
@@ -248,7 +255,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public JsonNode startEliminationAction(@RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("Elimination Action of query: {}", searchQuery);
         ResponseEntity<JsonNode> jsonNodeResponseEntity =
@@ -261,7 +268,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public String updateArchiveUnitsRules(@RequestBody final RuleSearchCriteriaDto ruleSearchCriteriaDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", ruleSearchCriteriaDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, ruleSearchCriteriaDto);
         LOGGER.debug("Update Archive Units Rules  with criteria {} ", ruleSearchCriteriaDto);
         SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
         return archivesSearchService.updateArchiveUnitsRules(ruleSearchCriteriaDto, buildUiHttpContext()).getBody();
@@ -272,7 +279,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public String computedInheritedRules(@RequestBody final SearchCriteriaDto searchCriteriaDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchCriteriaDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, searchCriteriaDto);
         SanityChecker.sanitizeCriteria(searchCriteriaDto);
         LOGGER.debug("Computed Inherited Rules with criteria {}", searchCriteriaDto);
         return archivesSearchService.computedInheritedRules(searchCriteriaDto, buildUiHttpContext()).getBody();
@@ -284,7 +291,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResultsDto selectUnitsWithInheritedRules(@RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("select Unit With Inherited Rules by criteria = {}", searchQuery);
         return archivesSearchService.selectUnitsWithInheritedRules(searchQuery, buildUiHttpContext()).getBody();
@@ -306,7 +313,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     public ResponseEntity<String> updateUnitById(final @PathVariable("id") String id,
         @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         ParameterChecker
             .checkParameter("The Unit Descriptive Metadata Dto sould not be empty: ", unitDescriptiveMetadataDto);
         SanityChecker.checkSecureParameter(id);
@@ -316,4 +323,23 @@ public class ArchivesSearchController extends AbstractUiRestController {
         return archivesSearchService.updateUnitById(id, unitDescriptiveMetadataDto, buildUiHttpContext());
     }
 
+    @ApiOperation(value = "Transfer Acknowledgment", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(RestApi.TRANSFER_ACKNOWLEDGMENT)
+    public ResponseEntity<String> transferAcknowledgmentOperation(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final String tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestHeader(value = "fileName") final String fileName,
+        final InputStream inputStream) throws InvalidParseOperationException, PreconditionFailedException {
+
+        LOGGER.debug("[UI] : Transfer Acknowledgment Operation");
+        ParameterChecker.checkParameter("The access Contract , the tenant Id and the fileName are mandatory parameters: ",
+            accessContractId, tenantId, fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
+        SanityChecker.checkSecureParameter(tenantId, accessContractId);
+        LOGGER.debug("Start uploading file ...{} ", fileName);
+        ResponseEntity<String> response = archivesSearchService.transferAcknowledgment(buildUiHttpContext(), fileName, inputStream);
+        LOGGER.debug("The transfer acknowledgment operation id : {} ", response.toString());
+        return response;
+    }
 }
