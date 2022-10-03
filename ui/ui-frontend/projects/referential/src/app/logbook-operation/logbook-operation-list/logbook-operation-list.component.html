@@ -67,12 +67,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr
-      *ngFor="let event of dataSource; let index = index"
-      (click)="selectEvent(event)"
-      class="vitamui-table-row"
-      [ngStyle]="{ cursor: 'pointer' }"
-    >
+    <tr *ngFor="let event of dataSource; let index = index" (click)="selectEvent(event)" class="vitamui-table-row cursor-pointer">
       <td class="no-first-cell-padding width60">
         <div class="vitamui-cell-icon aligned">
           <div class="status-badge" [ngClass]="event | eventTypeBadgeClass">

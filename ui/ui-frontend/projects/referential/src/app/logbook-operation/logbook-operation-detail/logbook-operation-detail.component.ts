@@ -46,15 +46,14 @@ import {
   fadeInOutAnimation,
   LogbookOperationReportState,
   LogbookOperationTypeProc,
-  LogbookService
+  LogbookService,
 } from 'ui-frontend-common';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 
-
 const msgForDownload: { [key: string]: string } = {
   EXPORT_DIP: 'Télécharger le DIP',
-  ARCHIVE_TRANSFER: 'Télécharger le DIP de transfert'
+  ARCHIVE_TRANSFER: 'Télécharger le DIP de transfert',
 };
 
 const DOWNLOAD_REPORT = 'Télécharger le rapport';
@@ -62,8 +61,8 @@ const DOWNLOAD_REPORT = 'Télécharger le rapport';
 @Component({
   selector: 'app-logbook-operation-detail',
   templateUrl: './logbook-operation-detail.component.html',
-  styleUrls: [ './logbook-operation-detail.component.scss' ],
-  animations: [ fadeInOutAnimation ],
+  styleUrls: ['./logbook-operation-detail.component.scss'],
+  animations: [fadeInOutAnimation],
 })
 export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
   @Input() eventId: string;
@@ -93,15 +92,15 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     private logbookDownloadService: LogbookDownloadService,
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters()
-      .subscribe(parameters => this.setAccessContractId(parameters));
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => this.setAccessContractId(parameters));
     this.subscriptions.add(
-      this.logbookDownloadService.logbookOperationsReloaded
-        .subscribe(logbookOperations => this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations)));
+      this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperations) =>
+        this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations)
+      )
+    );
     this.refreshLogbookOperation();
   }
 
@@ -114,7 +113,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   }
 
   setLogbookOperationIfIfHasBeenReloaded(logbookOperations: Event[]) {
-    const logbookOperationUpdated = logbookOperations.find(e => e.id === this.eventId);
+    const logbookOperationUpdated = logbookOperations.find((e) => e.id === this.eventId);
     if (logbookOperationUpdated) {
       this.event = logbookOperationUpdated;
       this.updateDownloadButton();
@@ -150,12 +149,12 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     this.logbookDownloadService.launchDownloadReport(this.event, this.tenantIdentifier, this.accessContractId);
   }
 
-
   private updateDownloadButton() {
     this.downloadButtonTitle = msgForDownload[this.event.typeProc] ?? DOWNLOAD_REPORT;
     const logbookOperationReportState = this.logbookDownloadService.logbookOperationReportState(this.event);
-    this.showDownloadButton = logbookOperationReportState === LogbookOperationReportState.IN_PROGRESS
-      || logbookOperationReportState === LogbookOperationReportState.DOWNLOADABLE;
+    this.showDownloadButton =
+      logbookOperationReportState === LogbookOperationReportState.IN_PROGRESS ||
+      logbookOperationReportState === LogbookOperationReportState.DOWNLOADABLE;
     this.disableDownloadButton = !(logbookOperationReportState === LogbookOperationReportState.DOWNLOADABLE && this.hasAccessContractId);
   }
 
@@ -189,12 +188,10 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     }
     this.setAccessContractLogbookIdentifier();
     this.loading = true;
-    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier)
-      .subscribe((event) => {
-        this.logbookDownloadService.logbookOperationsReloaded.next([ event ]);
-        console.log('subscribe-->' + JSON.stringify(this.event));
-        this.loading = false;
-      });
+    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier).subscribe((event) => {
+      this.logbookDownloadService.logbookOperationsReloaded.next([event]);
+      this.loading = false;
+    });
   }
 
   hasATRDownloadable(): boolean {
@@ -234,5 +231,4 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   downloadATR() {
     this.logbookService.downloadATR(this.event.objectId);
   }
-
 }

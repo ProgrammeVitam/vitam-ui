@@ -85,6 +85,20 @@ describe('LogbookOperationListComponent', () => {
     expect(response).toEqual(operationLabel);
   });
 
+  it('should have details about transfer reply', () => {
+    // Given
+    component.operationCategoriesFilterOptions = [];
+
+    // When
+    component.refreshOperationCategoriesOptions();
+
+    // Then
+    expect(component.operationCategoriesFilterOptions).toBeDefined();
+    expect(component.operationCategoriesFilterOptions).not.toBeNull();
+    expect(component.operationCategoriesFilterOptions.find((category) => category.label === 'Acquittement de transfert')).toBeDefined();
+    expect(component.operationCategoriesFilterOptions.find((category) => category.label === 'Acquittement de transfert')).not.toBeNull();
+  });
+
   it('should return the given value', () => {
     // Given
     const type = 'TRANSFER_REPLY';
@@ -96,5 +110,38 @@ describe('LogbookOperationListComponent', () => {
     // Then
     expect(response).not.toBeNull();
     expect(response).toEqual(operationLabel);
+  });
+
+  it('should return 15 as array length', () => {
+    // Given
+    component.operationCategoriesFilterOptions = [];
+
+    // When
+    component.refreshOperationCategoriesOptions();
+
+    // Then
+    expect(component.operationCategoriesFilterOptions).toBeDefined();
+    expect(component.operationCategoriesFilterOptions).not.toBeNull();
+    expect(component.operationCategoriesFilterOptions.length).toEqual(15);
+  });
+
+  describe('DOM', () => {
+    it('should have 1 table and 1 footer', () => {
+      const tableFooterHtmlElements = fixture.nativeElement.querySelectorAll('.vitamui-table-footer');
+      const vitamUiTableHtmlElements = fixture.nativeElement.querySelectorAll('.vitamui-table');
+
+      expect(tableFooterHtmlElements).toBeTruthy();
+      expect(tableFooterHtmlElements.length).toBe(1);
+
+      expect(vitamUiTableHtmlElements).toBeTruthy();
+      expect(vitamUiTableHtmlElements.length).toBe(1);
+    });
+
+    it('should have 7 different columns', () => {
+      const tableHeaderrHtmlElements = fixture.nativeElement.querySelectorAll('.vitamui-table-header');
+
+      expect(tableHeaderrHtmlElements).toBeTruthy();
+      expect(tableHeaderrHtmlElements.length).toBe(7);
+    });
   });
 });
