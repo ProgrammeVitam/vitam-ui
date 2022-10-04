@@ -27,14 +27,12 @@
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ManagementContract } from 'projects/vitamui-library/src/public-api';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService } from 'ui-frontend-common';
+import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
 import { ManagementContractsApiService } from '../core/api/management-contracts-api.service';
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +40,7 @@ import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 export class ManagementContractService extends SearchService<ManagementContract> {
   updated = new Subject<ManagementContract>();
 
-  constructor(private managementContractApi: ManagementContractsApiService, private snackBar: MatSnackBar, http: HttpClient) {
+  constructor(private managementContractApi: ManagementContractsApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
     super(http, managementContractApi, 'ALL');
   }
 
@@ -84,17 +82,10 @@ export class ManagementContractService extends SearchService<ManagementContract>
       tap((response) => this.updated.next(response)),
       tap(
         (response) => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-            data: { type: 'managementContractUpdate', name: response.name },
-          });
+          this.snackBarService.open({ message: 'managementContractUpdate' + response.name });
         },
         (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          });
+          this.snackBarService.open({ message: error.error.message });
         }
       )
     );
@@ -104,17 +95,11 @@ export class ManagementContractService extends SearchService<ManagementContract>
     return this.managementContractApi.create(managementContract).pipe(
       tap(
         (response: ManagementContract) => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'managementContractCreate', name: response.name },
-            duration: 10000,
-          });
+
+          this.snackBarService.open({ message: 'managementContractCreate' + response.name });
         },
         (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          });
+          this.snackBarService.open({ message: error.error.message });
         }
       )
     );
