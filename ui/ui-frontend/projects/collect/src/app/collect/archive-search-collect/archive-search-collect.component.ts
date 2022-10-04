@@ -27,6 +27,7 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -41,13 +42,25 @@ import {
   SidenavPage,
 } from 'ui-frontend-common';
 import { Unit } from 'vitamui-library/lib/models/unit.interface';
+import {
+  ArchiveSearchResultFacets,
+  CriteriaValue,
+  FilingHoldingSchemeNode,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaEltements,
+  SearchCriteriaHistory,
+  SearchCriteriaMgtRuleEnum,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+} from '../core/models';
 import { ArchiveCollectService } from './archive-collect.service';
-import { ArchiveSearchResultFacets, CriteriaValue, FilingHoldingSchemeNode, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements, SearchCriteriaHistory, SearchCriteriaMgtRuleEnum, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum } from '../core/models';
+import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
+import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
-import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -60,7 +73,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./archive-search-collect.component.scss'],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy {
-
   accessContractSub: Subscription;
   accessContractSubscription: Subscription;
   errorMessageSub: Subscription;
@@ -86,7 +98,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   showCriteriaPanel = true;
   showSearchCriteriaPanel = false;
   archiveUnits: Unit[];
-  ontologies: any;
 
   listOfUAIdToInclude: CriteriaValue[] = [];
   listOfUAIdToExclude: CriteriaValue[] = [];
@@ -256,7 +267,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
-    for (var mgtRuleType in SearchCriteriaMgtRuleEnum) {
+    for (let mgtRuleType in SearchCriteriaMgtRuleEnum) {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
@@ -342,7 +353,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.orderChange.next();
   }
 
-
   // Manage criteria filters methods
 
   checkParentBoxChange(event: any) {
@@ -421,7 +431,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       // Get initial AUs by project Id
       this.searchCriteriaKeys = [];
       this.searchCriterias = new Map();
-      this.criteriaSearchList = []
+      this.criteriaSearchList = [];
       this.searchArchiveUnits(false);
       this.archiveExchangeDataService.emitNodeTarget(null);
     }
@@ -543,7 +553,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     return this.searchCriterias && this.searchCriterias.has('WAITING_RECALCULATE');
   }
 
-  // Save criteria 
+  // Save criteria
 
   mapSearchCriteriaHistory() {
     let searchCriteriaHistoryObject: SearchCriteriaHistory;
@@ -755,8 +765,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         sortingCriteria,
         language: this.translateService.currentLang,
       };
-      this.archiveUnitCollectService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria,
-         this.projectId,this.accessContract);
+      this.archiveUnitCollectService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.projectId, this.accessContract);
     }
   }
 
@@ -769,5 +778,4 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.isIndeterminate
     );
   }
-
 }

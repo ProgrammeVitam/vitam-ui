@@ -1,1720 +1,2952 @@
 [
-    {
-        "Label": "AcquiredDate",
-        "Value": "AcquiredDate",
-        "Type": "DATE",
-        "ShortName": "Date de numérisation"
-    },
-    {
-        "Label": "Addressee.BirthDate",
-        "Value": "Addressee.BirthDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "date de naissance"
-    },
-    {
-        "Label": "Addressee.DeathDate",
-        "Value": "Addressee.DeathDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "date de décès"
-    },
-    {
-        "Label": "Addressee.BirthPlace.PostalCode",
-        "Value": "Addressee.BirthPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "Code postal naissance"
-    },
-    {
-        "Label": "Addressee.DeathPlace.PostalCode",
-        "Value": "Addressee.DeathPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "Code postal décès"
-    },
-    {
-        "Label": "Addressee.Identifier",
-        "Value": "Addressee.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.043",
-        "LastUpdate": "2020-11-02T14:21:30.440",
-        "ShortName": "Identifiant adresse"
-    },
-    {
-        "Label": "ArchivalAgencyArchiveUnitIdentifier",
-        "Value": "ArchivalAgencyArchiveUnitIdentifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.043",
-        "LastUpdate": "2020-11-02T14:21:30.573",
-        "ShortName": "Identifiant métier (Service d'archives)"
-    },
-    {
-        "Label": "ArchiveUnitProfile",
-        "Value": "ArchiveUnitProfile",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.043",
-        "LastUpdate": "2020-11-02T14:21:30.660",
-        "ShortName": "Profil d'unité archivistique"
-    },
-    {
-        "Label": "AuthorizedAgent.BirthDate",
-        "Value": "AuthorizedAgent.BirthDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.345",
-        "ShortName": "Date de naissance"
-    },
-    {
-        "Label": "AuthorizedAgent.BirthPlace.PostalCode",
-        "Value": "AuthorizedAgent.BirthPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "Code postal naissance"
-    },
-    {
-        "Label": "AuthorizedAgent.DeathDate",
-        "Value": "AuthorizedAgent.DeathDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:30.156",
-        "ShortName": "Date de décès AuthorizedAgent"
-    },
-    {
-        "Label": "AuthorizedAgent.DeathPlace.PostalCode",
-        "Value": "AuthorizedAgent.DeathPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "Code postal DeathPlace AuthorizedAgent "
-    },
-    {
-        "Label": "AuthorizedAgent.Identifier",
-        "Value": "AuthorizedAgent.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.043",
-        "LastUpdate": "2020-11-02T14:21:30.440",
-        "ShortName": "Identifiant AuthorizedAgent"
-    },
-    {
-        "Label": "CreatedDate",
-        "Value": "CreatedDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.043",
-        "LastUpdate": "2020-11-02T14:21:31.004",
-        "ShortName": "Date de création"
-    },
-    {
-        "Label": "CustodialHistory.CustodialHistoryFile.DataObjectGroupReferenceId",
-        "Value": "CustodialHistory.CustodialHistoryFile.DataObjectGroupReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.104",
-        "ShortName": "Référence à un groupe d'objets"
-    },
-    {
-        "Label": "DescriptionLevel",
-        "Value": "DescriptionLevel",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.401",
-        "ShortName": "Niveau de description"
-    },
-    {
-        "Label": "DescriptionLanguage",
-        "Value": "DescriptionLanguage",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.329",
-        "ShortName": "Langue des descriptions"
-    },
-    {
-        "Label": "EndDate",
-        "Value": "EndDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.551",
-        "ShortName": "Date de fin"
-    },
-    {
-        "Label": "Event.EventDateTime",
-        "Value": "Event.EventDateTime",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.056",
-        "LastUpdate": "2020-11-02T14:21:44.116",
-        "ShortName": "Date"
-    },
-    {
-        "Label": "Event.EventIdentifier",
-        "Value": "Event.EventIdentifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.056",
-        "LastUpdate": "2020-11-02T14:21:44.192",
-        "ShortName": "Identifiant de l'événement"
-    },
-    {
-        "Label": "FilePlanPosition",
-        "Value": "FilePlanPosition",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.693",
-        "ShortName": "Position dans le plan de classement"
-    },
-    {
-        "Label": "Gps.GpsAltitude",
-        "Value": "Gps.GpsAltitude",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.863",
-        "ShortName": "Niveau de la mer"
-    },
-    {
-        "Label": "Gps.GpsAltitudeRef",
-        "Value": "Gps.GpsAltitudeRef",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.863",
-        "ShortName": "Niveau de la mer"
-    },
-    {
-        "Label": "Gps.GpsDateStamp",
-        "Value": "Gps.GpsDateStamp",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.972",
-        "ShortName": "Heure et date GpsDateStamp"
-    },
-    {
-        "Label": "Gps.GpsLatitude",
-        "Value": "Gps.GpsLatitude",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.045",
-        "LastUpdate": "2020-11-02T14:21:32.035",
-        "ShortName": "Latitude"
-    },
-    {
-        "Label": "Gps.GpsLatitudeRef",
-        "Value": "Gps.GpsLatitudeRef",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.046",
-        "LastUpdate": "2020-11-02T14:21:32.098",
-        "ShortName": "Référence GpsLatitudeRef"
-    },
-    {
-        "Label": "Gps.GpsLongitude",
-        "Value": "Gps.GpsLongitude",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.046",
-        "LastUpdate": "2020-11-02T14:21:32.164",
-        "ShortName": "Longitude"
-    },
-    {
-        "Label": "Gps.GpsLongitudeRef",
-        "Value": "Gps.GpsLongitudeRef",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.046",
-        "LastUpdate": "2020-11-02T14:21:32.236",
-        "ShortName": "Référence"
-    },
-    {
-        "Label": "Gps.GpsVersionID",
-        "Value": "Gps.GpsVersionID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.046",
-        "LastUpdate": "2020-11-02T14:21:32.304",
-        "ShortName": "Identifiant de version du GPS"
-    },
-    {
-        "Label": "Keyword.KeywordContent",
-        "Value": "Keyword.KeywordContent",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.046",
-        "LastUpdate": "2020-11-02T14:21:32.375",
-        "ShortName": "Mot clé"
-    },
-    {
-        "Label": "Keyword.KeywordReference",
-        "Value": "Keyword.KeywordReference",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.046",
-        "LastUpdate": "2020-11-02T14:21:32.464",
-        "ShortName": "Référence Mot clé"
-    },
-    {
-        "Label": "Keyword.KeywordType",
-        "Value": "Keyword.KeywordType",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.046",
-        "LastUpdate": "2020-11-02T14:21:32.523",
-        "ShortName": "Type Mot clé"
-    },
-    {
-        "Label": "Language",
-        "Value": "Language",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.046",
-        "LastUpdate": "2020-11-02T14:21:32.585",
-        "ShortName": "Langue des documents"
-    },
-    {
-        "Label": "OriginatingAgency.Identifier",
-        "Value": "OriginatingAgency.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.043",
-        "LastUpdate": "2020-11-02T14:21:30.440",
-        "ShortName": "Identifiant OriginatingAgency"
-    },
-    {
-        "Label": "OriginatingAgencyArchiveUnitIdentifier",
-        "Value": "OriginatingAgencyArchiveUnitIdentifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.043",
-        "LastUpdate": "2020-11-02T14:21:30.440",
-        "ShortName": "OriginatingAgencyArchiveUnitIdentifier"
-    },
-    {
-        "Label": "OriginatingSystemId",
-        "Value": "OriginatingSystemId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.046",
-        "LastUpdate": "2020-11-02T14:21:32.644",
-        "ShortName": "Identifiant métier (Service producteur)"
-    },
-    {
-        "Label": "ReceivedDate",
-        "Value": "ReceivedDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.794",
-        "ShortName": "Date de réception"
-    },
-    {
-        "Label": "Recipient.BirthDate",
-        "Value": "Recipient.BirthDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "date de naissance"
-    },
-    {
-        "Label": "Recipient.DeathDate",
-        "Value": "Recipient.DeathDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "date de décès"
-    },
-    {
-        "Label": "Recipient.BirthPlace.PostalCode",
-        "Value": "Recipient.BirthPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "Code postal naissance"
-    },
-    {
-        "Label": "Recipient.DeathPlace.PostalCode",
-        "Value": "Recipient.DeathPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.042",
-        "LastUpdate": "2020-11-02T14:21:29.887",
-        "ShortName": "Code postal décès"
-    },
-    {
-        "Label": "Recipient.Identifier",
-        "Value": "Recipient.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.043",
-        "LastUpdate": "2020-11-02T14:21:30.440",
-        "ShortName": "Identifiant adresse"
-    },
-    {
-        "Label": "RegisteredDate",
-        "Value": "RegisteredDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.794",
-        "ShortName": "RegisteredDate"
-    },
-    {
-        "Label": "RelatedObjectReference.IsPartOf.ArchiveUnitRefId",
-        "Value": "RelatedObjectReference.IsPartOf.ArchiveUnitRefId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.908",
-        "ShortName": "Référence à une ArchiveUnit interne"
-    },
-    {
-        "Label": "RelatedObjectReference.IsPartOf.DataObjectReference.DataObjectGroupReferenceId",
-        "Value": "RelatedObjectReference.IsPartOf.DataObjectReference.DataObjectGroupReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.104",
-        "ShortName": "Référence à un groupe d'objets"
-    },
-    {
-        "Label": "RelatedObjectReference.IsPartOf.DataObjectReference.DataObjectReferenceId",
-        "Value": "RelatedObjectReference.IsPartOf.DataObjectReference.DataObjectReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.982",
-        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
-    },
-    {
-        "Label": "RelatedObjectReference.IsPartOf.RepositoryArchiveUnitPID",
-        "Value": "RelatedObjectReference.IsPartOf.RepositoryArchiveUnitPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.059",
-        "ShortName": "Référence à une ArchiveUnit déjà conservée"
-    },
-    {
-        "Label": "RelatedObjectReference.IsPartOf.RepositoryObjectPID",
-        "Value": "RelatedObjectReference.IsPartOf.RepositoryObjectPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.132",
-        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
-    },
-    {
-        "Label": "RelatedObjectReference.IsVersionOf.ArchiveUnitRefId",
-        "Value": "RelatedObjectReference.IsVersionOf.ArchiveUnitRefId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.908",
-        "ShortName": "Référence à une ArchiveUnit interne"
-    },
-    {
-        "Label": "RelatedObjectReference.IsVersionOf.DataObjectReference.DataObjectGroupReferenceId",
-        "Value": "RelatedObjectReference.IsVersionOf.DataObjectReference.DataObjectGroupReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.104",
-        "ShortName": "Référence à un groupe d'objets"
-    },
-    {
-        "Label": "RelatedObjectReference.IsVersionOf.DataObjectReference.DataObjectReferenceId",
-        "Value": "RelatedObjectReference.IsVersionOf.DataObjectReference.DataObjectReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.982",
-        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
-    },
-    {
-        "Label": "RelatedObjectReference.IsVersionOf.RepositoryArchiveUnitPID",
-        "Value": "RelatedObjectReference.IsVersionOf.RepositoryArchiveUnitPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.059",
-        "ShortName": "Référence à une ArchiveUnit déjà conservée"
-    },
-    {
-        "Label": "RelatedObjectReference.IsVersionOf.RepositoryObjectPID",
-        "Value": "RelatedObjectReference.IsVersionOf.RepositoryObjectPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.132",
-        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
-    },
-    {
-        "Label": "RelatedObjectReference.References.ArchiveUnitRefId",
-        "Value": "RelatedObjectReference.References.ArchiveUnitRefId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.908",
-        "ShortName": "Référence à une ArchiveUnit interne"
-    },
-    {
-        "Label": "RelatedObjectReference.References.DataObjectReference.DataObjectGroupReferenceId",
-        "Value": "RelatedObjectReference.References.DataObjectReference.DataObjectGroupReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.104",
-        "ShortName": "Référence à un groupe d'objets"
-    },
-    {
-        "Label": "RelatedObjectReference.References.DataObjectReference.DataObjectReferenceId",
-        "Value": "RelatedObjectReference.References.DataObjectReference.DataObjectReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.982",
-        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
-    },
-    {
-        "Label": "RelatedObjectReference.References.RepositoryArchiveUnitPID",
-        "Value": "RelatedObjectReference.References.RepositoryArchiveUnitPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.059",
-        "ShortName": "Référence à une ArchiveUnit déjà conservée"
-    },
-    {
-        "Label": "RelatedObjectReference.References.RepositoryObjectPID",
-        "Value": "RelatedObjectReference.References.RepositoryObjectPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.132",
-        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
-    },
-    {
-        "Label": "RelatedObjectReference.Replaces.ArchiveUnitRefId",
-        "Value": "RelatedObjectReference.Replaces.ArchiveUnitRefId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.908",
-        "ShortName": "Référence à une ArchiveUnit interne"
-    },
-    {
-        "Label": "RelatedObjectReference.Replaces.DataObjectReference.DataObjectGroupReferenceId",
-        "Value": "RelatedObjectReference.Replaces.DataObjectReference.DataObjectGroupReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.104",
-        "ShortName": "Référence à un groupe d'objets"
-    },
-    {
-        "Label": "RelatedObjectReference.Replaces.DataObjectReference.DataObjectReferenceId",
-        "Value": "RelatedObjectReference.Replaces.DataObjectReference.DataObjectReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.982",
-        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
-    },
-    {
-        "Label": "RelatedObjectReference.Replaces.RepositoryArchiveUnitPID",
-        "Value": "RelatedObjectReference.Replaces.RepositoryArchiveUnitPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.059",
-        "ShortName": "Référence à une ArchiveUnit déjà conservée"
-    },
-    {
-        "Label": "RelatedObjectReference.Replaces.RepositoryObjectPID",
-        "Value": "RelatedObjectReference.Replaces.RepositoryObjectPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.132",
-        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
-    },
-    {
-        "Label": "RelatedObjectReference.Requires.ArchiveUnitRefId",
-        "Value": "RelatedObjectReference.Requires.ArchiveUnitRefId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.908",
-        "ShortName": "Référence à une ArchiveUnit interne"
-    },
-    {
-        "Label": "RelatedObjectReference.Requires.DataObjectReference.DataObjectGroupReferenceId",
-        "Value": "RelatedObjectReference.Requires.DataObjectReference.DataObjectGroupReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.044",
-        "LastUpdate": "2020-11-02T14:21:31.104",
-        "ShortName": "Référence à un groupe d'objets"
-    },
-    {
-        "Label": "RelatedObjectReference.Requires.DataObjectReference.DataObjectReferenceId",
-        "Value": "RelatedObjectReference.Requires.DataObjectReference.DataObjectReferenceId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:32.982",
-        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
-    },
-    {
-        "Label": "RelatedObjectReference.Requires.RepositoryArchiveUnitPID",
-        "Value": "RelatedObjectReference.Requires.RepositoryArchiveUnitPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.059",
-        "ShortName": "Référence à une ArchiveUnit déjà conservée"
-    },
-    {
-        "Label": "RelatedObjectReference.Requires.RepositoryObjectPID",
-        "Value": "RelatedObjectReference.Requires.RepositoryObjectPID",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.132",
-        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
-    },
-    {
-        "Label": "SentDate",
-        "Value": "SentDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Date d'envoi"
-    },
-    {
-        "Label": "Signature.DateSignature",
-        "Value": "Signature.DateSignature",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Date de Signature"
-    },
-    {
-        "Label": "Signature.ReferencedObject.SignedObjectDigest.Algorithm",
-        "Value": "Signature.ReferencedObject.SignedObjectDigest.Algorithm",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.ReferencedObject.SignedObjectDigest.Algorithm"
-    },
-    {
-        "Label": "Signature.ReferencedObject.SignedObjectId",
-        "Value": "Signature.ReferencedObject.SignedObjectId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.ReferencedObject.SignedObjectId"
-    },
-    {
-        "Label": "Signature.Signer.Activity",
-        "Value": "Signature.Signer.Activity",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Signer.Activity"
-    },
-    {
-        "Label": "Signature.Signer.BirthDate",
-        "Value": "Signature.Signer.BirthDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Signer.BirthDate"
-    },
-    {
-        "Label": "Signature.Signer.BirthPlace.PostalCode",
-        "Value": "Signature.Signer.BirthPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Signer.BirthPlace.PostalCode"
-    },
-    {
-        "Label": "Signature.Signer.DeathDate",
-        "Value": "Signature.Signer.DeathDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Signer.DeathDate"
-    },
-    {
-        "Label": "Signature.Signer.DeathPlace.PostalCode",
-        "Value": "Signature.Signer.DeathPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Signer.DeathPlace.PostalCode"
-    },
-    {
-        "Label": "Signature.Signer.Function",
-        "Value": "Signature.Signer.Function",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Signer.Function"
-    },
-    {
-        "Label": "Signature.Signer.Identifier",
-        "Value": "Signature.Signer.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Signer.Identifier"
-    },
-    {
-        "Label": "Signature.Signer.SigningTime",
-        "Value": "Signature.Signer.SigningTime",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Signer.SigningTime"
-    },
-    {
-        "Label": "Signature.Validator.Activity",
-        "Value": "Signature.Validator.Activity",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Validator.Activity"
-    },
-    {
-        "Label": "Signature.Validator.BirthDate",
-        "Value": "Signature.Validator.BirthDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Validator.BirthDate"
-    },
-    {
-        "Label": "Signature.Validator.BirthPlace.PostalCode",
-        "Value": "Signature.Validator.BirthPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Date de Signature"
-    },
-    {
-        "Label": "Signature.Validator.DeathDate",
-        "Value": "Signature.Validator.DeathDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Validator.DeathDate"
-    },
-    {
-        "Label": "Signature.Validator.DeathPlace.PostalCode",
-        "Value": "Signature.Validator.DeathPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Validator.DeathPlace.PostalCode"
-    },
-    {
-        "Label": "Signature.Validator.Function",
-        "Value": "Signature.Validator.Function",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Validator.Function"
-    },
-    {
-        "Label": "Signature.Validator.Identifier",
-        "Value": "Signature.Validator.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Validator.Identifier"
-    },
-    {
-        "Label": "Signature.Validator.ValidationTime",
-        "Value": "Signature.Validator.ValidationTime",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Signature.Validator.ValidationTime"
-    },
-    {
-        "Label": "StartDate",
-        "Value": "StartDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21",
-        "ShortName": "Date de début"
-    },
-    {
-        "Label": "Status",
-        "Value": "Status",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.381",
-        "ShortName": "Statut"
-    },
-    {
-        "Label": "SubmissionAgency.Identifier",
-        "Value": "SubmissionAgency.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.381",
-        "ShortName": "SubmissionAgency.Identifier"
-    },
-    {
-        "Label": "SystemId",
-        "Value": "SystemId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.520",
-        "ShortName": "GUID"
-    },
-    {
-        "Label": "Tag",
-        "Value": "Tag",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.579",
-        "ShortName": "Tag"
-    },
-    {
-        "Label": "Titles",
-        "Value": "Titles",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.579",
-        "ShortName": "Titles"
-    },
-    {
-        "Label": "TransactedDate",
-        "Value": "TransactedDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.805",
-        "ShortName": "Date de la transaction"
-    },
-    {
-        "Label": "TransferringAgencyArchiveUnitIdentifier",
-        "Value": "TransferringAgencyArchiveUnitIdentifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.865",
-        "ShortName": "ID métier (Service versant)"
-    },
-    {
-        "Label": "Type",
-        "Value": "Type",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.935",
-        "ShortName": "Type"
-    },
-    {
-        "Label": "Version",
-        "Value": "Version",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.996",
-        "ShortName": "Version"
-    },
-    {
-        "Label": "Sender.Activity",
-        "Value": "Sender.Activity",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.996",
-        "ShortName": "Sender.Activity"
-    },
-    {
-        "Label": "Sender.BirthDate",
-        "Value": "Sender.BirthDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.996",
-        "ShortName": "Sender.BirthDate"
-    },
-    {
-        "Label": "Sender.BirthPlace.PostalCode",
-        "Value": "Sender.BirthPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Sender.BirthPlace.PostalCode"
-    },
-    {
-        "Label": "Sender.DeathDate",
-        "Value": "Sender.DeathDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Sender.DeathDate"
-    },
-    {
-        "Label": "Sender.DeathPlace.PostalCode",
-        "Value": "Sender.DeathPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Sender.DeathPlace.PostalCode"
-    },
-    {
-        "Label": "Sender.Function",
-        "Value": "Sender.Function",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Sender.Function"
-    },
-    {
-        "Label": "Sender.Identifier",
-        "Value": "Sender.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Sender.Identifier"
-    },
-    {
-        "Label": "Transmitter.Activity",
-        "Value": "Transmitter.Activity",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.996",
-        "ShortName": "Transmitter.Activity"
-    },
-    {
-        "Label": "Transmitter.BirthDate",
-        "Value": "Transmitter.BirthDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.996",
-        "ShortName": "Transmitter.BirthDate"
-    },
-    {
-        "Label": "Transmitter.BirthPlace.PostalCode",
-        "Value": "Transmitter.BirthPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Transmitter.BirthPlace.PostalCode"
-    },
-    {
-        "Label": "Transmitter.DeathDate",
-        "Value": "Transmitter.DeathDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Transmitter.DeathDate"
-    },
-    {
-        "Label": "Transmitter.DeathPlace.PostalCode",
-        "Value": "Transmitter.DeathPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Transmitter.DeathPlace.PostalCode"
-    },
-    {
-        "Label": "Transmitter.Function",
-        "Value": "Transmitter.Function",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Transmitter.Function"
-    },
-    {
-        "Label": "Transmitter.Identifier",
-        "Value": "Transmitter.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Transmitter.Identifier"
-    },
-    {
-        "Label": "Writer.Activity",
-        "Value": "Writer.Activity",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.996",
-        "ShortName": "Writer.Activity"
-    },
-    {
-        "Label": "Writer.BirthDate",
-        "Value": "Writer.BirthDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.048",
-        "LastUpdate": "2020-11-02T14:21:34.996",
-        "ShortName": "Writer.BirthDate"
-    },
-    {
-        "Label": "Writer.BirthPlace.PostalCode",
-        "Value": "Writer.BirthPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Writer.BirthPlace.PostalCode"
-    },
-    {
-        "Label": "Writer.DeathDate",
-        "Value": "Writer.DeathDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Writer.DeathDate"
-    },
-    {
-        "Label": "Writer.DeathPlace.PostalCode",
-        "Value": "Writer.DeathPlace.PostalCode",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Writer.DeathPlace.PostalCode"
-    },
-    {
-        "Label": "Writer.Function",
-        "Value": "Writer.Function",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Writer.Function"
-    },
-    {
-        "Label": "Writer.Identifier",
-        "Value": "Writer.Identifier",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.047",
-        "LastUpdate": "2020-11-02T14:21:33.798",
-        "ShortName": "Writer.Identifier"
-    },
-    {
-        "Label": "elimination.OperationId",
-        "Value": "#elimination.OperationId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.044",
-        "ShortName": "OperationId"
-    },
-    {
-        "Label": "elimination.GlobalStatus",
-        "Value": "#elimination.GlobalStatus",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.120",
-        "ShortName": "GlobalStatus"
-    },
-    {
-        "Label": "elimination.DestroyableOriginatingAgencies",
-        "Value": "#elimination.DestroyableOriginatingAgencies",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.186",
-        "ShortName": "DestroyableOriginatingAgencies"
-    },
-    {
-        "Label": "elimination.NonDestroyableOriginatingAgencies",
-        "Value": "#elimination.NonDestroyableOriginatingAgencies",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "NonDestroyableOriginatingAgencies"
-    },
-    {
-        "Label": "elimination.ExtendedInfo",
-        "Value": "#elimination.ExtendedInfo",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.329",
-        "ShortName": "ExtendedInfoType"
-    },
-    {
-        "Label": "elimination.ExtendedInfo.ExtendedInfoType",
-        "Value": "#elimination.ExtendedInfo.ExtendedInfoType",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.329",
-        "ShortName": "ExtendedInfoType"
-    },
-    {
-        "Label": "elimination.ExtendedInfo.ExtendedInfoDetails",
-        "Value": "#elimination.ExtendedInfo.ExtendedInfoDetails",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.329",
-        "ShortName": "elimination.ExtendedInfo.ExtendedInfoDetails"
-    },
-    {
-        "Label": "elimination.ExtendedInfo.ExtendedInfoDetails.ParentUnitId",
-        "Value": "#elimination.ExtendedInfo.ExtendedInfoDetails.ParentUnitId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.060",
-        "LastUpdate": "2020-11-02T14:21:48.404",
-        "ShortName": "ParentUnitId"
-    },
-    {
-        "Label": "elimination.ExtendedInfo.ExtendedInfoDetails.DestroyableOriginatingAgencies",
-        "Value": "#elimination.ExtendedInfo.ExtendedInfoDetails.DestroyableOriginatingAgencies",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.186",
-        "ShortName": "DestroyableOriginatingAgencies"
-    },
-    {
-        "Label": "elimination.ExtendedInfo.ExtendedInfoDetails.NonDestroyableOriginatingAgencies",
-        "Value": "#elimination.ExtendedInfo.ExtendedInfoDetails.NonDestroyableOriginatingAgencies",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "NonDestroyableOriginatingAgencies"
-    },
-    {
-        "Label": "tenant",
-        "Value": "#tenant",
-        "Type": "LONG",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.055",
-        "LastUpdate": "2020-11-02T14:21:42.543",
-        "ShortName": "Tenant"
-    },
-    {
-        "Label": "unitType",
-        "Value": "#unitType",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.050",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Type d'unité archivistique"
-    },
-    {
-        "Label": "id",
-        "Value": "#id",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Identifiant du groupe d'objets"
-    },
-    {
-        "Label": "glpd",
-        "Value": "#glpd",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Graph last persisted date"
-    },
-    {
-        "Label": "graph",
-        "Value": "#graph",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "graph"
-    },
-    {
-        "Label": "min",
-        "Value": "#min",
-        "Type": "LONG",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "min"
-    },
-    {
-        "Label": "nbc",
-        "Value": "#nbc",
-        "Type": "LONG",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Nombre d’objets"
-    },
-    {
-        "Label": "og",
-        "Value": "#object",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Identifiant du groupe d’objets"
-    },
-    {
-        "Label": "operations",
-        "Value": "#operations",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Opérations"
-    },
-    {
-        "Label": "opi",
-        "Value": "#opi",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Opération initiale"
-    },
-    {
-        "Label": "sp",
-        "Value": "#originating_agency",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Service producteur"
-    },
-    {
-        "Label": "sps",
-        "Value": "#originating_agencies",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Services producteurs liés à l’unité archivistique"
-    },
-    {
-        "Label": "storage._nbc",
-        "Value": "#storage._nbc",
-        "Type": "LONG",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Nombre d’objets"
-    },
-    {
-        "Label": "storage.offerIds",
-        "Value": "#storage.offerIds",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "offerIds"
-    },
-    {
-        "Label": "storage.strategyId",
-        "Value": "#storage.strategyId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "strategyId"
-    },
-    {
-        "Label": "unitType",
-        "Value": "#unitType",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Type d'unité archivistique"
-    },
-    {
-        "Label": "unitups",
-        "Value": "#unitups",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Identifiant(s) des unités archivistiques parentes (parents immédiats)"
-    },
-    {
-        "Label": "allunitups",
-        "Value": "#allunitups",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "LastUpdate": "2020-11-02T14:21:36.934",
-        "ShortName": "Identifiant(s) des unités archivistiques parentes"
-    },
-    {
-        "Label": "management.AccessRule.Inheritance.PreventInheritance",
-        "Value": "#management.AccessRule.Inheritance.PreventInheritance",
-        "Type": "BOOLEAN",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AccessRule PreventInheritance"
-    },
-    {
-        "Label": "management.AccessRule.Inheritance.PreventRulesId",
-        "Value": "#management.AccessRule.Inheritance.PreventRulesId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AccessRule PreventRulesId"
-    },
-    {
-        "Label": "management.AccessRule.Rules.EndDate",
-        "Value": "#management.AccessRule.Rules.EndDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AccessRule EndDate"
-    },
-    {
-        "Label": "management.AccessRule.Rules.Rule",
-        "Value": "#management.AccessRule.Rules.Rule",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AccessRule.Rules.Rule"
-    },
-    {
-        "Label": "management.AccessRule.Rules.StartDate",
-        "Value": "#management.AccessRule.Rules.StartDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AccessRule StartDate"
-    },
-    {
-        "Label": "management.AppraisalRule.FinalAction",
-        "Value": "#management.AppraisalRule.FinalAction",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AppraisalRule FinalAction"
-    },
-    {
-        "Label": "management.AppraisalRule.Inheritance.PreventInheritance",
-        "Value": "#management.AppraisalRule.Inheritance.PreventInheritance",
-        "Type": "BOOLEAN",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AppraisalRule PreventInheritance"
-    },
-    {
-        "Label": "management.AppraisalRule.Inheritance.PreventRulesId",
-        "Value": "#management.AppraisalRule.Inheritance.PreventInheritance",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AppraisalRule PreventRulesId"
-    },
-    {
-        "Label": "management.AppraisalRule.Rules.EndDate",
-        "Value": "#management.AppraisalRule.Rules.EndDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AppraisalRule EndDate"
-    },
-    {
-        "Label": "management.AppraisalRule.Rules.Rule",
-        "Value": "#management.AppraisalRule.Rules.Rule",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AppraisalRule.Rules.Rule"
-    },
-    {
-        "Label": "management.AppraisalRule.Rules.StartDate",
-        "Value": "#management.AppraisalRule.Rules.StartDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "AppraisalRule StartDate"
-    },
-    {
-        "Label": "management.ClassificationRule.Inheritance.PreventInheritance",
-        "Value": "#management.ClassificationRule.Inheritance.PreventInheritance",
-        "Type": "BOOLEAN",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ClassificationRule PreventInheritance"
-    },
-    {
-        "Label": "management.ClassificationRule.Inheritance.PreventRulesId",
-        "Value": "#management.ClassificationRule.Inheritance.PreventRulesId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ClassificationRule PreventRulesId"
-    },
-    {
-        "Label": "management.ClassificationRule.Rules.EndDate",
-        "Value": "#management.ClassificationRule.Rules.EndDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ClassificationRule EndDate"
-    },
-    {
-        "Label": "management.ClassificationRule.Rules.Rule",
-        "Value": "#management.ClassificationRule.Rules.Rule",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ClassificationRule.Rules.Rule"
-    },
-    {
-        "Label": "management.ClassificationRule.Rules.StartDate",
-        "Value": "#management.ClassificationRule.Rules.StartDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ClassificationRule StartDate"
-    },
-    {
-        "Label": "management.DisseminationRule.Inheritance.PreventInheritance",
-        "Value": "#management.DisseminationRule.Inheritance.PreventInheritance",
-        "Type": "BOOLEAN",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "DisseminationRule PreventInheritance"
-    },
-    {
-        "Label": "management.DisseminationRule.Inheritance.PreventRulesId",
-        "Value": "#management.DisseminationRule.Inheritance.PreventRulesId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "DisseminationRule PreventRulesId"
-    },
-    {
-        "Label": "management.ClassificationRule.ClassificationLevel",
-        "Value": "#management.ClassificationRule.ClassificationLevel",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ClassificationRule ClassificationLevel"
-    },
-    {
-        "Label": "management.ClassificationRule.ClassificationAudience",
-        "Value": "#management.ClassificationRule.ClassificationAudience",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ClassificationRule ClassificationAudience"
-    },
-    {
-        "Label": "management.ClassificationRule.ClassificationReassessingDate",
-        "Value": "#management.ClassificationRule.ClassificationReassessingDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ClassificationRule ClassificationReassessingDate"
-    },
-    {
-        "Label": "management.ClassificationRule.NeedReassessingAuthorization",
-        "Value": "#management.ClassificationRule.NeedReassessingAuthorization",
-        "Type": "BOOLEAN",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ClassificationRule NeedReassessingAuthorization"
-    },
-    {
-        "Label": "management.DisseminationRule.Rules.EndDate",
-        "Value": "#management.DisseminationRule.Rules.EndDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "DisseminationRule EndDate"
-    },
-    {
-        "Label": "management.DisseminationRule.Rules.Rule",
-        "Value": "#management.DisseminationRule.Rules.Rule",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "DisseminationRule.Rules.Rule"
-    },
-    {
-        "Label": "management.DisseminationRule.Rules.StartDate",
-        "Value": "#management.DisseminationRule.Rules.StartDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "DisseminationRule StartDate"
-    },
-    {
-        "Label": "management.ReuseRule.Inheritance.PreventInheritance",
-        "Value": "#management.ReuseRule.Inheritance.PreventInheritance",
-        "Type": "BOOLEAN",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ReuseRule PreventInheritance"
-    },
-    {
-        "Label": "management.ReuseRule.Inheritance.PreventRulesId",
-        "Value": "#management.ReuseRule.Inheritance.PreventRulesId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ReuseRule PreventRulesId"
-    },
-    {
-        "Label": "management.ReuseRule.Rules.EndDate",
-        "Value": "#management.ReuseRule.Rules.EndDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ReuseRule EndDate"
-    },
-    {
-        "Label": "management.ReuseRule.Rules.Rule",
-        "Value": "#management.ReuseRule.Rules.Rule",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ReuseRule.Rules.Rule"
-    },
-    {
-        "Label": "management.ReuseRule.Rules.StartDate",
-        "Value": "#management.ReuseRule.Rules.StartDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "ReuseRule StartDate"
-    },
-    {
-        "Label": "management.StorageRule.FinalAction",
-        "Value": "#management.StorageRule.FinalAction",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "StorageRule FinalAction"
-    },
-    {
-        "Label": "management.StorageRule.Inheritance.PreventInheritance",
-        "Value": "#management.StorageRule.Inheritance.PreventInheritance",
-        "Type": "BOOLEAN",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "StorageRule PreventInheritance"
-    },
-    {
-        "Label": "management.StorageRule.Inheritance.PreventRulesId",
-        "Value": "#management.StorageRule.Inheritance.PreventRulesId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "StorageRule PreventRulesId"
-    },
-    {
-        "Label": "management.StorageRule.Rules.EndDate",
-        "Value": "#management.StorageRule.Rules.EndDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "StorageRule EndDate"
-    },
-    {
-        "Label": "management.StorageRule.Rules.Rule",
-        "Value": "#management.StorageRule.Rules.Rule",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "StorageRule.Rules.Rule"
-    },
-    {
-        "Label": "management.StorageRule.Rules.StartDate",
-        "Value": "#management.StorageRule.Rules.StartDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "StorageRule StartDate"
-    },
-    {
-        "Label": "management.HoldRule.Inheritance.PreventInheritance",
-        "Value": "#management.HoldRule.Inheritance.PreventInheritance",
-        "Type": "BOOLEAN",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "HoldRule PreventInheritance"
-    },
-    {
-        "Label": "management.HoldRule.Inheritance.PreventRulesId",
-        "Value": "#management.HoldRule.Inheritance.PreventRulesId",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "HoldRule PreventRulesId"
-    },
-    {
-        "Label": "management.HoldRule.Rules.EndDate",
-        "Value": "#management.HoldRule.Rules.EndDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "HoldRule EndDate"
-    },
-    {
-        "Label": "management.HoldRule.Rules.HoldEndDate",
-        "Value": "#management.HoldRule.Rules.HoldEndDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "HoldRule HoldEndDate"
-    },
-    {
-        "Label": "management.HoldRule.Rules.HoldOwner",
-        "Value": "#management.HoldRule.Rules.HoldOwner",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "HoldRule HoldOwner"
-    },
-    {
-        "Label": "management.HoldRule.Rules.HoldReassessingDate",
-        "Value": "#management.HoldRule.Rules.HoldReassessingDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "HoldRule HoldReassessingDate"
-    },
-    {
-        "Label": "management.HoldRule.Rules.HoldReason",
-        "Value": "#management.HoldRule.Rules.HoldReason",
-        "Type": "TEXT",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "HoldRule HoldReason"
-    },
-    {
-        "Label": "management.HoldRule.Rules.Rule",
-        "Value": "#management.HoldRule.Rules.Rule",
-        "Type": "KEYWORD",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "HoldRule.Rules.Rule"
-    },
-    {
-        "Label": "management.HoldRule.Rules.StartDate",
-        "Value": "#management.HoldRule.Rules.StartDate",
-        "Type": "DATE",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "HoldRule StartDate"
-    },
-    {
-        "Label": "management.NeedAuthorization",
-        "Value": "#management.NeedAuthorization",
-        "Type": "BOOLEAN",
-        "Origin": "INTERNAL",
-        "CreationDate": "2020-11-02T12:25:58.059",
-        "LastUpdate": "2020-11-02T14:21:48.257",
-        "ShortName": "NeedAuthorization"
-    }
+  {
+    "Identifier": "Identifier",
+    "SedaField": "Identifier",
+    "Description": "Mapping : unit-es-mapping.json. UNITE ARCHIVISTIQUE : Dans le PersonGroup, Identifiant de type numéro matricule. Dans le EntityGroup, Identifiant de l'entité. REFERENTIELS : identifiant.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.356",
+    "ShortName": "Identifiant"
+  },
+  {
+    "Identifier": "DataObjectGroupReferenceId",
+    "SedaField": "DataObjectGroupReferenceId",
+    "Description": "Mapping : unit-es-mapping.json. Référence à un groupe d'objets-données listé dans les métadonnées de transport.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.949",
+    "ShortName": "Référence à un groupe d'objets"
+  },
+  {
+    "Identifier": "Geogname",
+    "SedaField": "Geogname",
+    "Description": "Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Nom géographique. Références : ead.geogname",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.676",
+    "ShortName": "Nom géographique"
+  },
+  {
+    "Identifier": "ArchiveUnitProfile",
+    "SedaField": "ArchiveUnitProfile",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.593",
+    "ShortName": "Profil d'unité archivistique"
+  },
+  {
+    "Identifier": "DescriptionLevel",
+    "SedaField": "DescriptionLevel",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.272",
+    "ShortName": "Niveau de description"
+  },
+  {
+    "Identifier": "CreatedDate",
+    "SedaField": "CreatedDate",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.880",
+    "ShortName": "Date de création"
+  },
+  {
+    "Identifier": "GpsAltitudeRef",
+    "SedaField": "GpsAltitudeRef",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.694",
+    "ShortName": "Niveau de la mer"
+  },
+  {
+    "Identifier": "GpsLatitude",
+    "SedaField": "GpsLatitude",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.845",
+    "ShortName": "Latitude"
+  },
+  {
+    "Identifier": "Gender",
+    "SedaField": "Gender",
+    "Description": "Mapping : unit-es-mapping.json. Sexe de la personne.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:45.220",
+    "ShortName": "Sexe"
+  },
+  {
+    "Identifier": "ClassificationOwner",
+    "SedaField": "ClassificationOwner",
+    "Description": "Mapping : unit-es-mapping.json. Propriétaire de la classification. Service émetteur au sens de l'IGI 1300.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.697",
+    "ShortName": "Service émetteur / Propriétaire de la classification"
+  },
+  {
+    "Identifier": "PreventInheritance",
+    "SedaField": "PreventInheritance",
+    "Description": "Mapping : unit-es-mapping.json. Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.256",
+    "ShortName": "Ignorer l'héritage"
+  },
+  {
+    "Identifier": "LinkingAgentIdentifierValue",
+    "SedaField": "LinkingAgentIdentifierValue",
+    "Description": "Mapping : unit-es-mapping.json. LinkingAgentIdentifierValue",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:50.050",
+    "ShortName": "LinkingAgentIdentifierValue"
+  },
+  {
+    "Identifier": "OriginatingSystemIdReplyTo",
+    "SedaField": "OriginatingSystemIdReplyTo",
+    "Description": "Mapping : unit-es-mapping.json. OriginatingSystemIdReplyTo",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:50.162",
+    "ShortName": "OriginatingSystemIdReplyTo"
+  },
+  {
+    "Identifier": "DataObjectProfile",
+    "SedaField": "DataObjectProfile",
+    "Description": "Mapping : unit-es-mapping.json. DataObjectProfile",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:50.292",
+    "ShortName": "DataObjectProfile"
+  },
+  {
+    "Identifier": "ClassificationLevel",
+    "SedaField": "ClassificationLevel",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.618",
+    "ShortName": "Niveau de classification"
+  },
+  {
+    "Identifier": "LinkingAgentRole",
+    "SedaField": "LinkingAgentRole",
+    "Description": "Mapping : unit-es-mapping.json. LinkingAgentRole",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:50.111",
+    "ShortName": "LinkingAgentRole"
+  },
+  {
+    "Identifier": "FinalAction",
+    "SedaField": "FinalAction",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.556",
+    "ShortName": "Sort final"
+  },
+  {
+    "Identifier": "TextContent",
+    "SedaField": "TextContent",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:49.932",
+    "ShortName": "TextContent"
+  },
+  {
+    "Identifier": "_up",
+    "ApiField": "#unitups",
+    "Description": "Mapping : unit-es-mapping.json. Pour une unité archivistique, identifiant(s) des unités archivistiques parentes (parents immédiats). Pour un groupe d'objets, identifiant(s) des unités archivistiques représentées par ce groupe d’objets.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.310",
+    "ShortName": "Identifiant(s) des unités archivistiques parentes (parents immédiats)"
+  },
+  {
+    "Identifier": "ClassificationAudience",
+    "SedaField": "ClassificationAudience",
+    "Description": "Mapping : unit-es-mapping.json. Permet de gérer les questions de 'diffusion restreinte', de 'spécial France' et de 'Confidentiel Industrie'.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.747",
+    "ShortName": "Audience de la classification"
+  },
+  {
+    "Identifier": "NeedReassessingAuthorization",
+    "SedaField": "NeedReassessingAuthorization",
+    "Description": "Mapping : unit-es-mapping.json. Indique si une autorisation humaine est nécessaire pour réévaluer la classification.",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.879",
+    "ShortName": "Autorisation"
+  },
+  {
+    "Identifier": "ClassificationReassessingDate",
+    "SedaField": "ClassificationReassessingDate",
+    "Description": "Mapping : unit-es-mapping.json. Date de réévaluation de la classification.",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.806",
+    "ShortName": "Date de réévaluation"
+  },
+  {
+    "Identifier": "CreatingApplicationVersion",
+    "SedaField": "CreatingApplicationVersion",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.893",
+    "ShortName": "Version de l'application"
+  },
+  {
+    "Identifier": "_og",
+    "ApiField": "#object",
+    "Description": "Mapping : unit-es-mapping.json. Identifiant du groupe d’objets représentant cette unité archivistique.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:52.372",
+    "ShortName": "Identifiant du groupe d’objets"
+  },
+  {
+    "Identifier": "_nbc",
+    "ApiField": "_nbc",
+    "Description": "Mapping : unit-es-mapping.json. Nombre d’objets correspondant à un usage ou à un groupe d'objets.",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:52.312",
+    "ShortName": "Nombre d’objets"
+  },
+  {
+    "Identifier": "LastModified",
+    "SedaField": "LastModified",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.206",
+    "ShortName": "Dernière modification"
+  },
+  {
+    "Identifier": "_av",
+    "ApiField": "_av",
+    "Description": "Version interne de l’enregistrement décrit.",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.761",
+    "ShortName": "Version"
+  },
+  {
+    "Identifier": "HasPriorityOverFileFormatID",
+    "ApiField": "HasPriorityOverFileFormatID",
+    "Description": "Mapping : format-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:00.802",
+    "ShortName": "Priorité sur les versions précédentes"
+  },
+  {
+    "Identifier": "OriginatingAgencies",
+    "ApiField": "OriginatingAgencies",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:57.042",
+    "ShortName": "Liste blanche des services producteurs"
+  },
+  {
+    "Identifier": "_profil",
+    "ApiField": "_profil",
+    "Description": "Mapping : og-es-mapping.json. Catégorie de l’objet. Valeurs possibles : Audio, Document, Text, Image et Video. Des extensions seront possibles (Database, Plan3D, …).",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.434",
+    "ShortName": "Catégorie d'objet"
+  },
+  {
+    "Identifier": "_aud",
+    "ApiField": "#approximate_update_date",
+    "Description": "Approximative updated date, Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.861",
+    "ShortName": "_aud"
+  },
+  {
+    "Identifier": "IngestContracts",
+    "ApiField": "IngestContracts",
+    "Description": "Mapping : context-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:59.880",
+    "ShortName": "Liste contrats d'entrée"
+  },
+  {
+    "Identifier": "Size",
+    "SedaField": "Size",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:55.623",
+    "ShortName": "Taille (en octets)"
+  },
+  {
+    "Identifier": "Debug",
+    "SedaField": "Debug",
+    "Description": "Mapping : preservationscenario-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:58.122",
+    "ShortName": "Debug"
+  },
+  {
+    "Identifier": "Shape",
+    "SedaField": "Shape",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:55.336",
+    "ShortName": "Forme"
+  },
+  {
+    "Identifier": "PUID",
+    "ApiField": "PUID",
+    "Description": "Mapping : format-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:00.865",
+    "ShortName": "PUID"
+  },
+  {
+    "Identifier": "ExternalReference",
+    "SedaField": "ExternalReference",
+    "Description": "Mapping : unit-es-mapping.json. Référence à un objet externe, présent ni dans le message, ni dans le SAE",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.340",
+    "ShortName": "Référence à un objet externe, présent ni dans le message, ni dans le SAE"
+  },
+  {
+    "Identifier": "ExecutableName",
+    "SedaField": "ExecutableName",
+    "Description": "Mapping : griffin-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : ExecutableName.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.465",
+    "ShortName": "ExecutableName"
+  },
+  {
+    "Identifier": "SignedObjectId",
+    "SedaField": "SignedObjectId",
+    "Description": "Mapping : unit-es-mapping.json. Identifiant de l'objet-données signé.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:49.042",
+    "ShortName": "Identifiant"
+  },
+  {
+    "Identifier": "GpsVersionID",
+    "SedaField": "GpsVersionID",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:47.091",
+    "ShortName": "Identifiant de version du GPS"
+  },
+  {
+    "Identifier": "Position",
+    "SedaField": "Position",
+    "Description": "Mapping : unit-es-mapping.json. Intitulé du poste de travail occupé par la personne.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.652",
+    "ShortName": "Intitulé du poste"
+  },
+  {
+    "Identifier": "RegisteredDate",
+    "SedaField": "RegisteredDate",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.028",
+    "ShortName": "Date d'enregistrement"
+  },
+  {
+    "Identifier": "Source",
+    "SedaField": "Source",
+    "Description": "Mapping : unit-es-mapping.json. En cas de substitution numérique, permet de faire référence au papier.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.899",
+    "LastUpdate": "2022-09-30T12:52:49.504",
+    "ShortName": "Source"
+  },
+  {
+    "Identifier": "KeywordType",
+    "SedaField": "KeywordType",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.895",
+    "LastUpdate": "2022-09-30T12:52:47.656",
+    "ShortName": "Type"
+  },
+  {
+    "Identifier": "Tag",
+    "SedaField": "Tag",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.899",
+    "LastUpdate": "2022-09-30T12:52:49.782",
+    "ShortName": "Tag"
+  },
+  {
+    "Identifier": "MinusOneMonthLogbookTraceabilityDate",
+    "ApiField": "MinusOneMonthLogbookTraceabilityDate",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:03.365",
+    "ShortName": "Date de l’opération de sécurisation passée d’un mois"
+  },
+  {
+    "Identifier": "MinusOneYearLogbookTraceabilityDate",
+    "ApiField": "MinusOneYearLogbookTraceabilityDate",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:03.432",
+    "ShortName": "date de l’opération de sécurisation passée d’un an"
+  },
+  {
+    "Identifier": "FormatUnidentifiedAuthorized",
+    "ApiField": "FormatUnidentifiedAuthorized",
+    "Description": "Mapping : ingestcontract-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.276",
+    "ShortName": "Formats non identifiés autorisés"
+  },
+  {
+    "Identifier": "evTypeProc",
+    "SedaField": "EventTypeCode",
+    "ApiField": "evTypeProc",
+    "Description": "Mapping : logbook-es-mapping.json. Type de processus. Equivaut à la traduction du code du type de l'opération.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.666",
+    "ShortName": "Catégorie d'opération"
+  },
+  {
+    "Identifier": "CheckParentLink",
+    "ApiField": "CheckParentLink",
+    "Description": "Mapping : ingestcontract-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.077",
+    "ShortName": "Contrôle sur noeud de rattachement"
+  },
+  {
+    "Identifier": "evIdReq",
+    "ApiField": "evIdReq",
+    "Description": "Mapping : logbook-es-mapping.json. Identifiant de la requête déclenchant l’opération",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.458",
+    "ShortName": "Identifiant de la requête"
+  },
+  {
+    "Identifier": "LinkParentId",
+    "ApiField": "LinkParentId",
+    "Description": "Mapping : ingestcontract-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.425",
+    "ShortName": "Noeud de rattachement"
+  },
+  {
+    "Identifier": "FormatType",
+    "ApiField": "FormatType",
+    "Description": "Mapping : ingestcontract-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.222",
+    "ShortName": "Liste blanche des formats"
+  },
+  {
+    "Identifier": "ServiceLevel",
+    "SedaField": "ServiceLevel",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.400",
+    "ShortName": "Niveau de service"
+  },
+  {
+    "Identifier": "CheckParentId",
+    "ApiField": "CheckParentId",
+    "Description": "Déclaration d’un ou plusieurs cônes de positionnement des rattachements",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.312",
+    "ShortName": "Déclaration d’un ou plusieurs cônes de positionnement des rattachements"
+  },
+  {
+    "Identifier": "obId",
+    "ApiField": "obId",
+    "Description": "Mapping : logbook-es-mapping.json. Identifiant Vitam du lot d’objets auquel s’applique l’opération (lot correspondant à une liste).",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.908",
+    "LastUpdate": "2022-09-30T12:53:04.302",
+    "ShortName": "Identifiant du lot d'objets"
+  },
+  {
+    "Identifier": "DataObjectGroupSystemId",
+    "SedaField": "DataObjectGroupSystemId",
+    "Description": "Mapping : og-es-mapping.json.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.519",
+    "ShortName": "Identifiant du groupe d'objet"
+  },
+  {
+    "Identifier": "BinaryObjectSize",
+    "ApiField": "BinaryObjectSize",
+    "Description": "Volumétrie des objets de fonds symboliques",
+    "Type": "DOUBLE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.891",
+    "ShortName": "Volumétrie des objets"
+  },
+  {
+    "Identifier": "FullAccess",
+    "ApiField": "FullAccess",
+    "Description": "Mapping : securityprofile-es-mapping.json. Mode super-administrateur donnant toutes les permissions.",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:05.683",
+    "ShortName": "Tous les droits"
+  },
+  {
+    "Identifier": "Compressed",
+    "SedaField": "Compressed",
+    "Description": "Indique si l’objet-données est compressé et doit être décompressé.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.559",
+    "ShortName": "Objet compressé"
+  },
+  {
+    "Identifier": "ParentUnitId",
+    "ApiField": "ParentUnitId",
+    "Description": "Mapping : unit-es-mapping.json. Identifiant de l'unité parente",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.281",
+    "ShortName": "ParentUnitId"
+  },
+  {
+    "Identifier": "Path",
+    "ApiField": "Path",
+    "Description": "Mapping : profile-es-mapping.json. Lien vers le profil d'archivage RNG ou XSD.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:05.008",
+    "ShortName": "Fichier"
+  },
+  {
+    "Identifier": "Format",
+    "ApiField": "Format",
+    "Description": "Mapping : profile-es-mapping.json. Liste de valeurs : RNG ou XSD.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:04.948",
+    "ShortName": "Format"
+  },
+  {
+    "Identifier": "ObjectStrategy",
+    "ApiField": "ObjectStrategy",
+    "Description": "Mapping : managementcontract-es-mapping.json. Stratégie de stockage pour les objets",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:08.145",
+    "ShortName": "ObjectStrategy"
+  },
+  {
+    "Identifier": "InitialVersion",
+    "ApiField": "InitialVersion",
+    "Description": "Mapping : managementcontract-es-mapping.json. Politique de conservation des versions initiales",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:08.212",
+    "ShortName": "InitialVersion"
+  },
+  {
+    "Identifier": "CustodialHistoryItem",
+    "SedaField": "CustodialHistoryItem",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.012",
+    "ShortName": "Historique de propriété, de responsabilité et de conservation"
+  },
+  {
+    "Identifier": "PostalCode",
+    "SedaField": "PostalCode",
+    "Description": "Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Code postal.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.739",
+    "ShortName": "Code postal"
+  },
+  {
+    "Identifier": "Region",
+    "SedaField": "Region",
+    "Description": "Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Région.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.791",
+    "ShortName": "Région"
+  },
+  {
+    "Identifier": "Spatial",
+    "SedaField": "Spatial",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.748",
+    "ShortName": "Couverture géographique"
+  },
+  {
+    "Identifier": "Temporal",
+    "SedaField": "Temporal",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.810",
+    "ShortName": "Couverture temporelle"
+  },
+  {
+    "Identifier": "MyText",
+    "ApiField": "MyText",
+    "Description": "Extension au SEDA. Elément de type texte",
+    "Type": "TEXT",
+    "Origin": "EXTERNAL",
+    "CreationDate": "2022-09-30T12:52:44.077",
+    "LastUpdate": "2022-09-30T12:52:44.077"
+  },
+  {
+    "Identifier": "_us",
+    "ApiField": "#allunitups",
+    "Description": "Mapping : unit-es-mapping.json. Tableau contenant la parentalité, c’est à dire l’ensemble des unités archivistiques parentes, indexé de la manière suivante : [ GUID1, GUID2, … ].",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.420",
+    "ShortName": "Identifiant(s) des unités archivistiques parentes"
+  },
+  {
+    "Identifier": "CreatingOsVersion",
+    "SedaField": "CreatingOsVersion",
+    "Description": "Mapping : og-es-mapping.json. Version du système d'exploitation utilisé pour créer le fichier.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:54.024",
+    "ShortName": "Version du système d'exploitation"
+  },
+  {
+    "Identifier": "NeedAuthorization",
+    "SedaField": "NeedAuthorization",
+    "Description": "Mapping : unit-es-mapping.json. Indique si une autorisation humaine est nécessaire pour vérifier ou valider les opérations de gestion des ArchiveUnit.",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.945",
+    "ShortName": "Autorisation"
+  },
+  {
+    "Identifier": "_unitType",
+    "ApiField": "#unitType",
+    "Description": "Mapping : unit-es-mapping.json. Type d’unité archivistique concerné : SIP, plan de classement, arbre de positionnement.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.244",
+    "ShortName": "Type d'unité archivistique"
+  },
+  {
+    "Identifier": "CreatingOs",
+    "SedaField": "CreatingOs",
+    "Description": "Mapping : og-es-mapping.json. Système d'exploitation utilisé pour créer le fichier.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.948",
+    "ShortName": "Système d'exploitation"
+  },
+  {
+    "Identifier": "AccessLog",
+    "ApiField": "AccessLog",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.018",
+    "ShortName": "Log des accès"
+  },
+  {
+    "Identifier": "qualifier",
+    "ApiField": "qualifier",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.495",
+    "ShortName": "Usage"
+  },
+  {
+    "Identifier": "unit",
+    "SedaField": "unit",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:55.216",
+    "ShortName": "Unité"
+  },
+  {
+    "Identifier": "Uri",
+    "SedaField": "Uri",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:55.888",
+    "ShortName": "Uri"
+  },
+  {
+    "Identifier": "Name",
+    "ApiField": "Name",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.978",
+    "ShortName": "Intitulé"
+  },
+  {
+    "Identifier": "DeactivationDate",
+    "ApiField": "DeactivationDate",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.308",
+    "ShortName": "Date de désactivation"
+  },
+  {
+    "Identifier": "WritingRestrictedDesc",
+    "ApiField": "WritingRestrictedDesc",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:57.502",
+    "ShortName": "Restriction d'écriture aux métadonnées de description"
+  },
+  {
+    "Identifier": "RuleCategoryToFilter",
+    "ApiField": "RuleCategoryToFilter",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:57.100",
+    "ShortName": "Liste des catégories de règles à filtrer"
+  },
+  {
+    "Identifier": "EveryOriginatingAgency",
+    "ApiField": "EveryOriginatingAgency",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.449",
+    "ShortName": "Tous les services producteurs"
+  },
+  {
+    "Identifier": "deleted",
+    "ApiField": "deleted",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:57.682",
+    "ShortName": "Supprimé"
+  },
+  {
+    "Identifier": "_acd",
+    "ApiField": "#approximate_creation_date",
+    "Description": "Approximative created date, Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.917",
+    "ShortName": "_acd"
+  },
+  {
+    "Identifier": "Timeout",
+    "SedaField": "Timeout",
+    "Description": "Mapping : preservationscenario-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:57.948",
+    "ShortName": "Timeout"
+  },
+  {
+    "Identifier": "Args",
+    "SedaField": "Args",
+    "Description": "Mapping : preservationscenario-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:58.180",
+    "ShortName": "Extension"
+  },
+  {
+    "Identifier": "Description",
+    "SedaField": "Description",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.099",
+    "ShortName": "Description"
+  },
+  {
+    "Identifier": "ArchiveUnitRefId",
+    "SedaField": "ArchiveUnitRefId",
+    "Description": "Mapping : unit-es-mapping.json. Référence à une ArchiveUnit interne.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.087",
+    "ShortName": "Référence à une ArchiveUnit interne"
+  },
+  {
+    "Identifier": "OriginatingSystemId",
+    "SedaField": "OriginatingSystemId",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:47.897",
+    "ShortName": "Identifiant système (Service producteur)"
+  },
+  {
+    "Identifier": "HoldOwner",
+    "SedaField": "HoldOwner",
+    "Description": "Mapping : unit-es-mapping.json. Propriétaire de la demande de gel.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.895",
+    "LastUpdate": "2022-09-30T12:52:47.200",
+    "ShortName": "Propriétaire de la demande de gel"
+  },
+  {
+    "Identifier": "HoldRuleIds",
+    "ApiField": "HoldRuleIds",
+    "Description": "Mapping : unit-es-mapping.json. Identifiants des règles de gel",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.895",
+    "LastUpdate": "2022-09-30T12:52:47.397",
+    "ShortName": "HoldRuleIds"
+  },
+  {
+    "Identifier": "ReceivedDate",
+    "SedaField": "ReceivedDate",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:47.965",
+    "ShortName": "Date de réception"
+  },
+  {
+    "Identifier": "GpsLatitudeRef",
+    "SedaField": "GpsLatitudeRef",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.900",
+    "ShortName": "Référence"
+  },
+  {
+    "Identifier": "DocumentType",
+    "SedaField": "DocumentType",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.338",
+    "ShortName": "Type de document"
+  },
+  {
+    "Identifier": "HoldReason",
+    "SedaField": "HoldReason",
+    "Description": "Mapping : unit-es-mapping.json. Motif de gel.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.895",
+    "LastUpdate": "2022-09-30T12:52:47.331",
+    "ShortName": "Motif de gel"
+  },
+  {
+    "Identifier": "PreventRearrangement",
+    "SedaField": "PreventRearrangement",
+    "Description": "Mapping : unit-es-mapping.json. Blocage de la reclassification de l'ArchiveUnit lorsque la restriction de gel est effective.",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.341",
+    "ShortName": "Blocage de la reclassification."
+  },
+  {
+    "Identifier": "ExecutableVersion",
+    "SedaField": "ExecutableVersion",
+    "Description": "Mapping : griffin-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : ExecutableVersion.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.515",
+    "ShortName": "ExecutableVersion"
+  },
+  {
+    "Identifier": "Status",
+    "SedaField": "Status",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.899",
+    "LastUpdate": "2022-09-30T12:52:49.638",
+    "ShortName": "Statut"
+  },
+  {
+    "Identifier": "LinkingAgentIdentifierType",
+    "SedaField": "LinkingAgentIdentifierType",
+    "Description": "Mapping : unit-es-mapping.json. LinkingAgentIdentifierType ",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:49.987",
+    "ShortName": "LinkingAgentIdentifierType"
+  },
+  {
+    "Identifier": "Activity",
+    "SedaField": "Activity",
+    "Description": "Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Activité.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.400",
+    "ShortName": "Activité"
+  },
+  {
+    "Identifier": "Function",
+    "SedaField": "Function",
+    "Description": "Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Fonction.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.582",
+    "ShortName": "Fonction"
+  },
+  {
+    "Identifier": "Algorithm",
+    "SedaField": "Algorithm",
+    "Description": "Mapping : unit-es-mapping.json. Attribut SEDA.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.928",
+    "ShortName": "Algorithme"
+  },
+  {
+    "Identifier": "_max",
+    "ApiField": "#max",
+    "Description": "Mapping : unit-es-mapping.json. Profondeur maximale de l’unité archivistique par rapport à une racine.",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.174",
+    "ShortName": "Profondeur maximale"
+  },
+  {
+    "Identifier": "SigningTime",
+    "SedaField": "SigningTime",
+    "Description": "Mapping : unit-es-mapping.json. Date de signature",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.899",
+    "LastUpdate": "2022-09-30T12:52:49.312",
+    "ShortName": "Date"
+  },
+  {
+    "Identifier": "OriginatingAgency",
+    "SedaField": "OriginatingAgencyIdentifier",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:58.962",
+    "ShortName": "Service producteur"
+  },
+  {
+    "Identifier": "Units",
+    "ApiField": "Units",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json. Total des unités archivistiques modifiant le register des fonds suite à une opération (ingest, élimination, ...)",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.904",
+    "LastUpdate": "2022-09-30T12:52:58.708",
+    "ShortName": "Total des unités archivistiques"
+  },
+  {
+    "Identifier": "Opi",
+    "ApiField": "Opi",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json. Identifiant de l’opération d’entrée ayant versé les archives recensées dans ce détail du registre des fonds",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:58.396",
+    "ShortName": "Identifiant de l'opération"
+  },
+  {
+    "Identifier": "ManagementContractId",
+    "ApiField": "ManagementContractId",
+    "Description": "Mapping : ingestcontract-es-mapping.json.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.573",
+    "ShortName": "Identifiant du contrat de gestion"
+  },
+  {
+    "Identifier": "TransferringAgency",
+    "SedaField": "TransferringAgency",
+    "Description": "Mapping : logbook-es-mapping.json. Service en charge du transfert.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.854",
+    "ShortName": "Service versant"
+  },
+  {
+    "Identifier": "evDateTime",
+    "SedaField": "EventDateTime",
+    "ApiField": "evDateTime",
+    "Description": "Mapping : logbook-es-mapping.json. Date de lancement de l’opération",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:01.816",
+    "ShortName": "Date"
+  },
+  {
+    "Identifier": "VersionPronom",
+    "ApiField": "VersionPronom",
+    "Description": "Mapping : format-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:00.917",
+    "ShortName": "Version de Pronom"
+  },
+  {
+    "Identifier": "Fields",
+    "ApiField": "Fields",
+    "Description": "Mapping : archiveunitprofile-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:59.464",
+    "ShortName": "Fields"
+  },
+  {
+    "Identifier": "Group",
+    "ApiField": "Group",
+    "Description": "Mapping : format-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:00.736",
+    "ShortName": "Groupe"
+  },
+  {
+    "Identifier": "EvDateTimeReq",
+    "ApiField": "EvDateTimeReq",
+    "Description": "Mapping : logbook-es-mapping.json. Date de la demande de transfert inscrit dans le champ evDetData",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:03.097",
+    "ShortName": "Date de la demande de transfert"
+  },
+  {
+    "Identifier": "EvDetailReq",
+    "ApiField": "EvDetailReq",
+    "Description": "Mapping : logbook-es-mapping.json. Précisions sur la demande de transfert. Chaîne de caractères. Reprend le champ « Comment » du message ArchiveTransfer.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:03.169",
+    "ShortName": "Précisions"
+  },
+  {
+    "Identifier": "outMessg",
+    "SedaField": "OutcomeDetailMessage",
+    "ApiField": "outMessg",
+    "Description": "Mapping : logbook-es-mapping.json. Détail du résultat de l’événement.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:04.437",
+    "ShortName": "Message"
+  },
+  {
+    "Identifier": "NumberOfElements",
+    "ApiField": "NumberOfElements",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.907",
+    "LastUpdate": "2022-09-30T12:53:03.497",
+    "ShortName": "Nombre d'éléments"
+  },
+  {
+    "Identifier": "ShortName",
+    "ApiField": "ShortName",
+    "Description": "Mapping : ontology-es-mapping.json. Correspond au label, ou traduction d'un enregistrement de la base de données.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:04.872",
+    "ShortName": "Traduction"
+  },
+  {
+    "Identifier": "TimeStampToken",
+    "ApiField": "TimeStampToken",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.907",
+    "LastUpdate": "2022-09-30T12:53:03.636",
+    "ShortName": "Tampon d'horodatage"
+  },
+  {
+    "Identifier": "RuleDescription",
+    "ApiField": "RuleDescription",
+    "Description": "Mapping : rule-es-mapping.json. Description associée à une règle de gestion.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:05.068",
+    "ShortName": "Description"
+  },
+  {
+    "Identifier": "SedaField",
+    "ApiField": "SedaField",
+    "Description": "Mapping : ontology-es-mapping.json. Elémént XML issu du SEDA.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:04.812",
+    "ShortName": "Intitulé"
+  },
+  {
+    "Identifier": "reports",
+    "ApiField": "reports",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.907",
+    "LastUpdate": "2022-09-30T12:53:03.858",
+    "ShortName": "reports"
+  },
+  {
+    "Identifier": "ud",
+    "ApiField": "ud",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:05.817",
+    "ShortName": "Dernière modification"
+  },
+  {
+    "Identifier": "_implementationVersion",
+    "ApiField": "#implementationVersion",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.493",
+    "ShortName": "_implementationVersion"
+  },
+  {
+    "Identifier": "BinaryObject",
+    "ApiField": "BinaryObject",
+    "Description": "Nombre d'objets de fonds symboliques",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.952",
+    "ShortName": "Nombre d'objets"
+  },
+  {
+    "Identifier": "ArchiveUnit",
+    "ApiField": "ArchiveUnit",
+    "Description": "Nombre d'unités archivistiques de fonds symboliques",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.108",
+    "ShortName": "Nombre d'unités archivistiques"
+  },
+  {
+    "Identifier": "DataObjectSystemId",
+    "SedaField": "DataObjectSystemId",
+    "Description": "Mapping : og-es-mapping.json.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.461",
+    "ShortName": "Identifiant de l'objet"
+  },
+  {
+    "Identifier": "_validComputedInheritedRules",
+    "Description": "Indique si les règles calculées sont valides",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.590",
+    "ShortName": "validComputedInheritedRules"
+  },
+  {
+    "Identifier": "IntermediaryVersion",
+    "ApiField": "IntermediaryVersion",
+    "Description": "Mapping : managementcontract-es-mapping.json. Politique de conservation des versions intermédiaries",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:08.273",
+    "ShortName": "IntermediaryVersion"
+  },
+  {
+    "Identifier": "UsageName",
+    "ApiField": "UsageName",
+    "Description": "Mapping : managementcontract-es-mapping.json. Nom d'usage pour la politique de conservation des versions",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.911",
+    "LastUpdate": "2022-09-30T12:53:08.384",
+    "ShortName": "UsageName"
+  },
+  {
+    "Identifier": "_v",
+    "ApiField": "#version",
+    "Description": "Mapping : unit-es-mapping.json. Version de l’enregistrement décrit.",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.488",
+    "ShortName": "Version"
+  },
+  {
+    "Identifier": "CreatingApplicationName",
+    "SedaField": "CreatingApplicationName",
+    "Description": "Mapping : og-es-mapping.json. Version de l'application utilisée pour créer le fichier.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.824",
+    "ShortName": "Nom de l'application"
+  },
+  {
+    "Identifier": "DateCreatedByApplication",
+    "SedaField": "DateCreatedByApplication",
+    "Description": "Mapping : og-es-mapping.json. Date de création du fichier.",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.081",
+    "ShortName": "Date de création"
+  },
+  {
+    "Identifier": "DataObjectVersion",
+    "SedaField": "DataObjectVersion",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.664",
+    "ShortName": "Usage"
+  },
+  {
+    "Identifier": "Filename",
+    "SedaField": "Filename",
+    "Description": "Mapping : og-es-mapping.json. Nom du fichier d'origine.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.145",
+    "ShortName": "Nom du fichier"
+  },
+  {
+    "Identifier": "strategyId",
+    "ApiField": "strategyId",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.118",
+    "ShortName": "strategyId"
+  },
+  {
+    "Identifier": "FormatLitteral",
+    "SedaField": "FormatLitteral",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.873",
+    "ShortName": "Nom litteral"
+  },
+  {
+    "Identifier": "Encoding",
+    "SedaField": "Encoding",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.748",
+    "ShortName": "Encodage"
+  },
+  {
+    "Identifier": "dValue",
+    "SedaField": "Value",
+    "ApiField": "dValue",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "DOUBLE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:55.120",
+    "ShortName": "Valeur"
+  },
+  {
+    "Identifier": "_id",
+    "ApiField": "#id",
+    "Description": "Mapping : og-es-mapping.json. Identifiant du groupe d’objets",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:55.949",
+    "ShortName": "Identifiant du groupe d'objets"
+  },
+  {
+    "Identifier": "LastUpdate",
+    "ApiField": "LastUpdate",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.796",
+    "ShortName": "Dernière modification"
+  },
+  {
+    "Identifier": "Gots",
+    "ApiField": "Gots",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json. Total des groupes d'objets modifiant le register des fonds suite à une opération (ingest, élimination, ...)",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:58.612",
+    "ShortName": "Total des groupes d'objets"
+  },
+  {
+    "Identifier": "EveryDataObjectVersion",
+    "ApiField": "EveryDataObjectVersion",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.373",
+    "ShortName": "Tous les usages"
+  },
+  {
+    "Identifier": "OperationIds",
+    "ApiField": "OperationIds",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.904",
+    "LastUpdate": "2022-09-30T12:52:58.889",
+    "ShortName": "Identifiant de l'opération"
+  },
+  {
+    "Identifier": "GriffinIdentifier",
+    "SedaField": "GriffinIdentifier",
+    "Description": "Mapping : preservationscenario-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:57.874",
+    "ShortName": "GriffinIdentifier"
+  },
+  {
+    "Identifier": "ingested",
+    "ApiField": "ingested",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:58.243",
+    "ShortName": "Total"
+  },
+  {
+    "Identifier": "WritingPermission",
+    "ApiField": "WritingPermission",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:57.435",
+    "ShortName": "Droit d'écriture"
+  },
+  {
+    "Identifier": "FormatList",
+    "SedaField": "FormatList",
+    "Description": "Mapping : preservationscenario-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:57.811",
+    "ShortName": "FormatList"
+  },
+  {
+    "Identifier": "ComputeInheritedRulesAtIngest",
+    "ApiField": "ComputeInheritedRulesAtIngest",
+    "Description": "Mapping : ingestcontract-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.345",
+    "ShortName": "Execute ComputedInheritedRules at ingest"
+  },
+  {
+    "Identifier": "_lastPersistedDate",
+    "ApiField": "#lastPersistedDate",
+    "Description": "Mapping : logbook-es-mapping.json. Date technique de sauvegarde en base.",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.642",
+    "ShortName": "Date de sauvegarde"
+  },
+  {
+    "Identifier": "MasterMandatory",
+    "ApiField": "MasterMandatory",
+    "Description": "Mapping : ingestcontract-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.479",
+    "ShortName": "Présence obligatoire d'un Master"
+  },
+  {
+    "Identifier": "ArchiveProfiles",
+    "ApiField": "ArchiveProfiles",
+    "Description": "Mapping : ingestcontract-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:00.978",
+    "ShortName": "Profils d'archivage"
+  },
+  {
+    "Identifier": "EveryFormatType",
+    "ApiField": "EveryFormatType",
+    "Description": "Mapping : ingestcontract-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.147",
+    "ShortName": "Tous les formats"
+  },
+  {
+    "Identifier": "Extension",
+    "ApiField": "Extension",
+    "Description": "Mapping : format-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:00.437",
+    "ShortName": "Extension(s)"
+  },
+  {
+    "Identifier": "AccessContracts",
+    "ApiField": "AccessContracts",
+    "Description": "Mapping : context-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:59.621",
+    "ShortName": "Liste contrats d'accès"
+  },
+  {
+    "Identifier": "EnableControl",
+    "ApiField": "EnableControl",
+    "Description": "Mapping : context-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:59.540",
+    "ShortName": "Activation des contrôles"
+  },
+  {
+    "Identifier": "SecurityProfile",
+    "ApiField": "SecurityProfile",
+    "Description": "Mapping : context-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:59.987",
+    "ShortName": "Profil de sécurité"
+  },
+  {
+    "Identifier": "PreviousLogbookTraceabilityDate",
+    "ApiField": "PreviousLogbookTraceabilityDate",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.907",
+    "LastUpdate": "2022-09-30T12:53:03.556",
+    "ShortName": "Date de la précédente opération de sécurisation"
+  },
+  {
+    "Identifier": "outDetail",
+    "SedaField": "OutcomeDetail",
+    "ApiField": "outDetail",
+    "Description": "Mapping : logbook-es-mapping.json. Code correspondant au résultat de l’événement.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.908",
+    "LastUpdate": "2022-09-30T12:53:04.370",
+    "ShortName": "Code technique"
+  },
+  {
+    "Identifier": "evId",
+    "SedaField": "EventIdentifier",
+    "ApiField": "evId",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:01.880",
+    "ShortName": "Identifiant de l'événement"
+  },
+  {
+    "Identifier": "evType",
+    "SedaField": "EventType",
+    "ApiField": "evType",
+    "Description": "Mapping : logbook-es-mapping.json. Code du type de l’opération",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.586",
+    "ShortName": "Type d'opération"
+  },
+  {
+    "Identifier": "SecurisationVersion",
+    "ApiField": "SecurisationVersion",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.086",
+    "ShortName": "SecurisationVersion"
+  },
+  {
+    "Identifier": "Collections",
+    "ApiField": "Collections",
+    "Description": "Mapping : ontology-es-mapping.json. Collection(s) de la base de données associée(s) à un vocabulaire ontologique",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:04.660",
+    "ShortName": "Collections"
+  },
+  {
+    "Identifier": "outcome",
+    "SedaField": "Outcome",
+    "ApiField": "outcome",
+    "Description": "Mapping : logbook-es-mapping.json. Statut de l’événement",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:04.519",
+    "ShortName": "Statut"
+  },
+  {
+    "Identifier": "AgIfTrans",
+    "ApiField": "AgIfTrans",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:03.026",
+    "ShortName": "AgIfTrans"
+  },
+  {
+    "Identifier": "errors",
+    "ApiField": "errors",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.907",
+    "LastUpdate": "2022-09-30T12:53:03.799",
+    "ShortName": "Erreurs"
+  },
+  {
+    "Identifier": "FilteredExtractedUnitData",
+    "ApiField": "FilteredExtractedUnitData",
+    "Description": "Métadonnées à extraire dans les unités archivistiques",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.240",
+    "ShortName": "Métadonnées à extraire dans les unités archivistiques"
+  },
+  {
+    "Identifier": "OriginatingAgenciesInConflict",
+    "ApiField": "OriginatingAgenciesInConflict",
+    "Description": "Mapping : unit-es-mapping.json. Services producteurs en conflit",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.352",
+    "ShortName": "OriginatingAgenciesInConflict"
+  },
+  {
+    "Identifier": "ArchivalProfile",
+    "SedaField": "ArchivalProfile",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.383",
+    "ShortName": "Profile d'archivage"
+  },
+  {
+    "Identifier": "ExtendedInfoType",
+    "ApiField": "ExtendedInfoType",
+    "Description": "Mapping : unit-es-mapping.json. Type d'informations étendues",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.205",
+    "ShortName": "ExtendedInfoType"
+  },
+  {
+    "Identifier": "RawMetadata",
+    "ApiField": "RawMetadata",
+    "Description": "Métadonnées brutes, issues d'une extraction de métadonnées",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.813",
+    "ShortName": "Métadonnées extraites"
+  },
+  {
+    "Identifier": "Permissions",
+    "ApiField": "Permissions",
+    "Description": "Mapping : securityprofile-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:05.745",
+    "ShortName": "Permissions"
+  },
+  {
+    "Identifier": "GlobalStatus",
+    "ApiField": "GlobalStatus",
+    "Description": "Mapping : unit-es-mapping.json. Statut global de l'indexation.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:05.965",
+    "ShortName": "GlobalStatus"
+  },
+  {
+    "Identifier": "OperationId",
+    "ApiField": "OperationId",
+    "Description": "Mapping : unit-es-mapping.json. Identifiant de l'operation.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:05.870",
+    "ShortName": "OperationId"
+  },
+  {
+    "Identifier": "InheritedRuleIds",
+    "Description": "Identifiant des règles héritées applicables",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.736",
+    "ShortName": "InheritedRuleIds"
+  },
+  {
+    "Identifier": "ArchivalAgencyArchiveUnitIdentifier",
+    "SedaField": "ArchivalAgencyArchiveUnitIdentifier",
+    "Description": "Mapping : unit-es-mapping.json. Identifiant métier attribué à l'ArchiveUnit par le service d'archives. Peut être comparé à une cote.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.480",
+    "ShortName": "Identifiant métier (Service d'archives)"
+  },
+  {
+    "Identifier": "Address",
+    "SedaField": "Address",
+    "Description": "Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Adresse. Références : ead.address",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.467",
+    "ShortName": "Addresse"
+  },
+  {
+    "Identifier": "MyDate",
+    "ApiField": "MyDate",
+    "Description": "Extension au SEDA. Elément de type date",
+    "Type": "DATE",
+    "Origin": "EXTERNAL",
+    "CreationDate": "2022-09-30T12:52:44.077",
+    "LastUpdate": "2022-09-30T12:52:44.077"
+  },
+  {
+    "Identifier": "MyLong",
+    "ApiField": "MyLong",
+    "Description": "Extension au SEDA. Elément de type chiffre",
+    "Type": "LONG",
+    "Origin": "EXTERNAL",
+    "CreationDate": "2022-09-30T12:52:44.077",
+    "LastUpdate": "2022-09-30T12:52:44.077"
+  },
+  {
+    "Identifier": "MyDouble",
+    "ApiField": "MyDouble",
+    "Description": "Extension au SEDA. Elément de type décimal",
+    "Type": "DOUBLE",
+    "Origin": "EXTERNAL",
+    "CreationDate": "2022-09-30T12:52:44.077",
+    "LastUpdate": "2022-09-30T12:52:44.077"
+  },
+  {
+    "Identifier": "MyGeoPoint",
+    "ApiField": "MyGeoPoint",
+    "Description": "Extension au SEDA. Elément de type gps",
+    "Type": "GEO_POINT",
+    "Origin": "EXTERNAL",
+    "CreationDate": "2022-09-30T12:52:44.077",
+    "LastUpdate": "2022-09-30T12:52:44.077"
+  },
+  {
+    "Identifier": "Country",
+    "SedaField": "Country",
+    "Description": "Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Pays.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.605",
+    "ShortName": "Pays"
+  },
+  {
+    "Identifier": "AcquiredDate",
+    "SedaField": "AcquiredDate",
+    "Description": "Mapping : unit-es-mapping.json. Références : ARKMS.DateAcquired",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.254",
+    "ShortName": "Date de numérisation"
+  },
+  {
+    "Identifier": "City",
+    "SedaField": "City",
+    "Description": "Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Ville.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.524",
+    "ShortName": "Ville"
+  },
+  {
+    "Identifier": "GivenName",
+    "SedaField": "GivenName",
+    "Description": "Mapping : unit-es-mapping.json. Nom d'usage d'une personne.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.277",
+    "ShortName": "Nom d'usage"
+  },
+  {
+    "Identifier": "FirstName",
+    "SedaField": "FirstName",
+    "Description": "Mapping : unit-es-mapping.json. Prénom d'une personne.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:45.132",
+    "ShortName": "Prénom"
+  },
+  {
+    "Identifier": "HoldReassessingDate",
+    "SedaField": "HoldReassessingDate",
+    "Description": "Mapping : unit-es-mapping.json. Date de réévaluation du gel.",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.895",
+    "LastUpdate": "2022-09-30T12:52:47.263",
+    "ShortName": "Date de réévaluation"
+  },
+  {
+    "Identifier": "DescriptionLanguage",
+    "SedaField": "DescriptionLanguage",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.196",
+    "ShortName": "Langue des descriptions"
+  },
+  {
+    "Identifier": "Juridictional",
+    "SedaField": "Juridictional",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.668",
+    "ShortName": "Couverture administrative"
+  },
+  {
+    "Identifier": "KeywordReference",
+    "SedaField": "KeywordReference",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.895",
+    "LastUpdate": "2022-09-30T12:52:47.529",
+    "ShortName": "Référence"
+  },
+  {
+    "Identifier": "GpsDateStamp",
+    "SedaField": "GpsDateStamp",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.759",
+    "ShortName": "Heure et date"
+  },
+  {
+    "Identifier": "KeywordContent",
+    "SedaField": "KeywordContent",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.895",
+    "LastUpdate": "2022-09-30T12:52:47.460",
+    "ShortName": "Mot clé"
+  },
+  {
+    "Identifier": "GpsLongitude",
+    "SedaField": "GpsLongitude",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.966",
+    "ShortName": "Longitude"
+  },
+  {
+    "Identifier": "evTypeDetail",
+    "SedaField": "EventDetail",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.476",
+    "ShortName": "Détail"
+  },
+  {
+    "Identifier": "GpsAltitude",
+    "SedaField": "GpsAltitude",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.612",
+    "ShortName": "Altitude"
+  },
+  {
+    "Identifier": "RepositoryObjectPID",
+    "SedaField": "RepositoryObjectPID",
+    "Description": "Mapping : unit-es-mapping.json. Référence à un un objet-données ou à un groupe d'objets-données déjà conservé(s) dans un système d'archivage.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.273",
+    "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
+  },
+  {
+    "Identifier": "DataObjectReferenceId",
+    "SedaField": "DataObjectReferenceId",
+    "Description": "Mapping : unit-es-mapping.json. Référence à un objet-données ou à un groupe d'objets-données interne(s).",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.148",
+    "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
+  },
+  {
+    "Identifier": "RepositoryArchiveUnitPID",
+    "SedaField": "RepositoryArchiveUnitPID",
+    "Description": "Mapping : unit-es-mapping.json. Référence à un ArchiveUnit déjà conservé dans un système d'archivage.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.214",
+    "ShortName": "Référence à une ArchiveUnit déjà conservée"
+  },
+  {
+    "Identifier": "OriginatingAgencyArchiveUnitIdentifier",
+    "SedaField": "OriginatingAgencyArchiveUnitIdentifier",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:47.798",
+    "ShortName": "Identifiant métier (Service producteur)"
+  },
+  {
+    "Identifier": "Mandate",
+    "SedaField": "Mandate",
+    "Description": "Mapping : unit-es-mapping.json. Mandat octroyé à la personne.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.796",
+    "ShortName": "Mandat octroyé à la personne"
+  },
+  {
+    "Identifier": "Role",
+    "SedaField": "Role",
+    "Description": "Mapping : unit-es-mapping.json. Droits avec lesquels un utilisateur a réalisé une opération, notamment dans une application.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.712",
+    "ShortName": "Droits"
+  },
+  {
+    "Identifier": "Language",
+    "SedaField": "Language",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.897",
+    "LastUpdate": "2022-09-30T12:52:47.716",
+    "ShortName": "Langue des documents"
+  },
+  {
+    "Identifier": "FullName",
+    "SedaField": "FullName",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.899",
+    "LastUpdate": "2022-09-30T12:52:49.124",
+    "ShortName": "Nom / Nom + Prénom"
+  },
+  {
+    "Identifier": "SentDate",
+    "SedaField": "SentDate",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.898",
+    "LastUpdate": "2022-09-30T12:52:48.873",
+    "ShortName": "Date d'envoi"
+  },
+  {
+    "Identifier": "_sp",
+    "SedaField": "OriginatingAgencyIdentifier",
+    "ApiField": "#originating_agency",
+    "Description": "Mapping : unit-es-mapping.json. Service producteur d’origine déclaré lors de la prise en charge de l’unité archivistique par la solution logicielle Vitam.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:52.862",
+    "ShortName": "Service producteur"
+  },
+  {
+    "Identifier": "TransferringAgencyArchiveUnitIdentifier",
+    "SedaField": "TransferringAgencyArchiveUnitIdentifier",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:50.623",
+    "ShortName": "ID métier (Service versant)"
+  },
+  {
+    "Identifier": "_opi",
+    "ApiField": "#opi",
+    "Description": "Mapping : unit-es-mapping.json. Identifiant de l’opération à l’origine de la création de cette unité archivistique.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:52.431",
+    "ShortName": "Opération initiale"
+  },
+  {
+    "Identifier": "_opts",
+    "ApiField": "#opts",
+    "Description": "Mapping : unit-es-mapping.json. Identifiants de l’opération dans laquelle l'unité archivistique est en cours de transfert",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:52.577",
+    "ShortName": "Opérations de transfert"
+  },
+  {
+    "Identifier": "SystemId",
+    "SedaField": "SystemId",
+    "Description": "Mapping : unit-es-mapping.json. Identifiant attribué aux objets. Il est attribué par le SAE et correspond à un identifiant interne.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.899",
+    "LastUpdate": "2022-09-30T12:52:49.700",
+    "ShortName": "GUID"
+  },
+  {
+    "Identifier": "TransactedDate",
+    "SedaField": "TransactedDate",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:50.548",
+    "ShortName": "Date de la transaction"
+  },
+  {
+    "Identifier": "ValidationTime",
+    "SedaField": "ValidationTime",
+    "Description": "Mapping : unit-es-mapping.json. Date de la validation de la signature.",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.899",
+    "LastUpdate": "2022-09-30T12:52:49.405",
+    "ShortName": "Date"
+  },
+  {
+    "Identifier": "Version",
+    "SedaField": "Version",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:50.765",
+    "ShortName": "Version"
+  },
+  {
+    "Identifier": "Title",
+    "SedaField": "Title",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.899",
+    "LastUpdate": "2022-09-30T12:52:49.844",
+    "ShortName": "Intitulé"
+  },
+  {
+    "Identifier": "MaxEndDate",
+    "Description": "Date de fin maximale",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.830",
+    "ShortName": "MaxEndDate"
+  },
+  {
+    "Identifier": "UnitStrategy",
+    "ApiField": "UnitStrategy",
+    "Description": "Mapping : managementcontract-es-mapping.json. Stratégie de stockage pour les métadonnées de type unité archivistique",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:08.004",
+    "ShortName": "UnitStrategy"
+  },
+  {
+    "Identifier": "ObjectGroupStrategy",
+    "ApiField": "ObjectGroupStrategy",
+    "Description": "Mapping : managementcontract-es-mapping.json. Stratégie de stockage pour les métadonnées de type groupe d'objet technique",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:08.080",
+    "ShortName": "ObjectGroupStrategy"
+  },
+  {
+    "Identifier": "BirthDate",
+    "SedaField": "BirthDate",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.317",
+    "ShortName": "Date de naissance"
+  },
+  {
+    "Identifier": "MyKeyword",
+    "ApiField": "MyKeyword",
+    "Description": "Extension au SEDA. Elément de type mot clé",
+    "Type": "KEYWORD",
+    "Origin": "EXTERNAL",
+    "CreationDate": "2022-09-30T12:52:44.077",
+    "LastUpdate": "2022-09-30T12:52:44.077"
+  },
+  {
+    "Identifier": "MyBoolean",
+    "ApiField": "MyBoolean",
+    "Description": "Extension au SEDA. Elément de type booléen",
+    "Type": "BOOLEAN",
+    "Origin": "EXTERNAL",
+    "CreationDate": "2022-09-30T12:52:44.077",
+    "LastUpdate": "2022-09-30T12:52:44.077"
+  },
+  {
+    "Identifier": "MyEnum",
+    "ApiField": "MyEnum",
+    "Description": "Extension au SEDA. Elément de type énumératif",
+    "Type": "ENUM",
+    "Origin": "EXTERNAL",
+    "CreationDate": "2022-09-30T12:52:44.077",
+    "LastUpdate": "2022-09-30T12:52:44.077"
+  },
+  {
+    "Identifier": "FilePlanPosition",
+    "SedaField": "FilePlanPosition",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.546",
+    "ShortName": "Position dans le plan de classement"
+  },
+  {
+    "Identifier": "StartDate",
+    "SedaField": "StartDate",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.899",
+    "LastUpdate": "2022-09-30T12:52:49.572",
+    "ShortName": "Date de début"
+  },
+  {
+    "Identifier": "EndDate",
+    "SedaField": "EndDate",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:46.405",
+    "ShortName": "Date de fin"
+  },
+  {
+    "Identifier": "DeathDate",
+    "SedaField": "DeathDate",
+    "Description": "Mapping : unit-es-mapping.json. Date de décès d'une personne.",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.916",
+    "ShortName": "Date de décès"
+  },
+  {
+    "Identifier": "GpsLongitudeRef",
+    "SedaField": "GpsLongitudeRef",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:47.036",
+    "ShortName": "Référence"
+  },
+  {
+    "Identifier": "HoldEndDate",
+    "SedaField": "HoldEndDate",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.895",
+    "LastUpdate": "2022-09-30T12:52:47.144",
+    "ShortName": "Date de fin de gel"
+  },
+  {
+    "Identifier": "BirthName",
+    "SedaField": "BirthName",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.393",
+    "ShortName": "Nom de naissance"
+  },
+  {
+    "Identifier": "Nationality",
+    "SedaField": "Nationality",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.894",
+    "LastUpdate": "2022-09-30T12:52:45.416",
+    "ShortName": "Nationalité"
+  },
+  {
+    "Identifier": "Corpname",
+    "SedaField": "Corpname",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.893",
+    "LastUpdate": "2022-09-30T12:52:44.842",
+    "ShortName": "Nom d'une entité"
+  },
+  {
+    "Identifier": "_sps",
+    "ApiField": "#originating_agencies",
+    "Description": "Mapping : unit-es-mapping.json. Services producteurs liés à l’unité archivistique suite à un rattachement et ayant des droits d’accès sur celle-ci.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:52.977",
+    "ShortName": "Services producteurs liés à l’unité archivistique"
+  },
+  {
+    "Identifier": "_ops",
+    "ApiField": "#operations",
+    "Description": "Mapping : unit-es-mapping.json. Identifiants d’opérations auxquelles cette unité archivistique a participé.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:52.513",
+    "ShortName": "Opérations"
+  },
+  {
+    "Identifier": "_min",
+    "ApiField": "#min",
+    "Description": "Mapping : unit-es-mapping.json. Profondeur minimum de l’unité archivistique par rapport à une racine.",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:52.036",
+    "ShortName": "Profondeur minimale"
+  },
+  {
+    "Identifier": "_glpd",
+    "ApiField": "#graph_last_persisted_date",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:51.040",
+    "ShortName": "_glpd"
+  },
+  {
+    "Identifier": "PreventRulesId",
+    "SedaField": "RefNonRuleId",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.438",
+    "ShortName": "Bloquer la règle"
+  },
+  {
+    "Identifier": "DateLitteral",
+    "SedaField": "DateLitteral",
+    "Description": "Mapping : unit-es-mapping.json. DateLitteral",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:50.233",
+    "ShortName": "DateLitteral"
+  },
+  {
+    "Identifier": "Type",
+    "SedaField": "Type",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:50.704",
+    "ShortName": "Type"
+  },
+  {
+    "Identifier": "Rule",
+    "SedaField": "Rule",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:51.496",
+    "ShortName": "Règle de gestion"
+  },
+  {
+    "Identifier": "_graph",
+    "ApiField": "#graph",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.900",
+    "LastUpdate": "2022-09-30T12:52:51.108",
+    "ShortName": "_graph"
+  },
+  {
+    "Identifier": "_tenant",
+    "ApiField": "#tenant",
+    "Description": "Mapping : unit-es-mapping.json. Identifiant du tenant.",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.188",
+    "ShortName": "Tenant"
+  },
+  {
+    "Identifier": "ActivationDate",
+    "ApiField": "ActivationDate",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.088",
+    "ShortName": "Date d'activation"
+  },
+  {
+    "Identifier": "DataObjectGroupId",
+    "SedaField": "DataObjectGroupId",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.562",
+    "ShortName": "Identifiant du groupe d'objets techniques"
+  },
+  {
+    "Identifier": "PhysicalId",
+    "SedaField": "PhysicalId",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:55.552",
+    "ShortName": "Identifiant d'objet physique"
+  },
+  {
+    "Identifier": "MessageDigest",
+    "SedaField": "MessageDigest",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:55.056",
+    "ShortName": "Empreinte"
+  },
+  {
+    "Identifier": "offerIds",
+    "ApiField": "offerIds",
+    "Description": "Mapping : unit-es-mapping.json. Deprecated.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.901",
+    "LastUpdate": "2022-09-30T12:52:53.049",
+    "ShortName": "offerIds"
+  },
+  {
+    "Identifier": "MimeType",
+    "SedaField": "MimeType",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.953",
+    "ShortName": "Type Mime"
+  },
+  {
+    "Identifier": "NumberOfPage",
+    "SedaField": "NumberOfPage",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:55.274",
+    "ShortName": "Nombre de pages"
+  },
+  {
+    "Identifier": "FormatId",
+    "SedaField": "FormatId",
+    "Description": "Mapping : og-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:54.812",
+    "ShortName": "PUID du format"
+  },
+  {
+    "Identifier": "CreationDate",
+    "ApiField": "CreationDate",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.245",
+    "ShortName": "Date de création"
+  },
+  {
+    "Identifier": "Opc",
+    "ApiField": "Opc",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json. Identifiant de l’opération courante (Ingest, Elimination,...) ayant modifié les archives recensées dans ce détail du registre des fonds",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:58.465",
+    "ShortName": "Identifiant de l'opération courante"
+  },
+  {
+    "Identifier": "AcquisitionInformation",
+    "SedaField": "AcquisitionInformation",
+    "ApiField": "AcquisitionInformation",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:57.573",
+    "ShortName": "Modalités d'entrée"
+  },
+  {
+    "Identifier": "ArchivalAgreement",
+    "SedaField": "ArchivalAgreement",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:57.618",
+    "ShortName": "Contrat d'entrée"
+  },
+  {
+    "Identifier": "remained",
+    "ApiField": "remained",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:58.326",
+    "ShortName": "Restant"
+  },
+  {
+    "Identifier": "ExcludedRootUnits",
+    "ApiField": "ExcludedRootUnits",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.732",
+    "ShortName": "Noeuds inaccessibles"
+  },
+  {
+    "Identifier": "RootUnits",
+    "ApiField": "RootUnits",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:57.164",
+    "ShortName": "Noeuds de consultation"
+  },
+  {
+    "Identifier": "ActionList",
+    "SedaField": "ActionList",
+    "Description": "Mapping : preservationscenario-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:57.740",
+    "ShortName": "ActionList"
+  },
+  {
+    "Identifier": "MaxSize",
+    "SedaField": "MaxSize",
+    "Description": "Mapping : preservationscenario-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:58.019",
+    "ShortName": "MaxSize"
+  },
+  {
+    "Identifier": "ObjSize",
+    "ApiField": "ObjSize",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json. Total de poids d'objets modifiant le register des fonds suite à une opération (ingest, élimination, ...)",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.904",
+    "LastUpdate": "2022-09-30T12:52:58.832",
+    "ShortName": "Total des poids d'objets"
+  },
+  {
+    "Identifier": "Objects",
+    "ApiField": "Objects",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json. Total des objets modifiant le register des fonds suite à une opération (ingest, élimination, ...)",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.904",
+    "LastUpdate": "2022-09-30T12:52:58.771",
+    "ShortName": "Total des objets"
+  },
+  {
+    "Identifier": "SubmissionAgency",
+    "SedaField": "SubmissionAgencyIdentifier",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:59.256",
+    "ShortName": "Service versant"
+  },
+  {
+    "Identifier": "LegalStatus",
+    "SedaField": "LegalStatus",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:59.321",
+    "ShortName": "Statut légal"
+  },
+  {
+    "Identifier": "OpType",
+    "ApiField": "OpType",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json. Le type de l'opération (Ingest, Elimination, ...)",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.903",
+    "LastUpdate": "2022-09-30T12:52:58.544",
+    "ShortName": "Type de l'opération"
+  },
+  {
+    "Identifier": "Comment",
+    "SedaField": "Comment",
+    "Description": "Mapping : format-es-mapping.json / accessionregisterdetail-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:00.112",
+    "ShortName": "Commentaire"
+  },
+  {
+    "Identifier": "ControlSchema",
+    "ApiField": "ControlSchema",
+    "Description": "Mapping : archiveunitprofile-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:59.410",
+    "ShortName": "Schéma de contrôle"
+  },
+  {
+    "Identifier": "Alert",
+    "ApiField": "Alert",
+    "Description": "Mapping : format-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:00.057",
+    "ShortName": "Alerte"
+  },
+  {
+    "Identifier": "tenant",
+    "ApiField": "tenant",
+    "Description": "Mapping : context-es-mapping.json",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:52:59.932",
+    "ShortName": "Tenant"
+  },
+  {
+    "Identifier": "obIdIn",
+    "SedaField": "MessageIdentifier",
+    "Description": "Mapping : accessionregisterdetail-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:00.166",
+    "ShortName": "Object identifier income"
+  },
+  {
+    "Identifier": "ArchivalAgency",
+    "SedaField": "ArchivalAgency",
+    "ApiField": "ArchivalAgency",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.737",
+    "ShortName": "Service d'archives"
+  },
+  {
+    "Identifier": "agId",
+    "ApiField": "agId",
+    "Description": "Mapping : logbook-es-mapping.json. Identifiant de l’agent interne réalisant l’évènement.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.905",
+    "LastUpdate": "2022-09-30T12:53:01.744",
+    "ShortName": "Identifiant de l'agent interne"
+  },
+  {
+    "Identifier": "evParentId",
+    "ApiField": "evParentId",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.525",
+    "ShortName": "Identifiant de l'événement parent"
+  },
+  {
+    "Identifier": "MaxEntriesReached",
+    "ApiField": "MaxEntriesReached",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "BOOLEAN",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.152",
+    "ShortName": "MaxEntriesReached"
+  },
+  {
+    "Identifier": "LogType",
+    "ApiField": "LogType",
+    "Description": "Mapping : logbook-es-mapping.json. Type de logbook sécurisé : OPERATION ou LIFECYCLE.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:03.301",
+    "ShortName": "Type de journal"
+  },
+  {
+    "Identifier": "evIdProc",
+    "ApiField": "evIdProc",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:02.015",
+    "ShortName": "Identifiant du processus"
+  },
+  {
+    "Identifier": "evDetData",
+    "SedaField": "eventDetailData",
+    "ApiField": "evDetData",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:01.964",
+    "ShortName": "Détails techniques"
+  },
+  {
+    "Identifier": "Hash",
+    "ApiField": "Hash",
+    "Description": "Mapping : logbook-es-mapping.json. Empreinte de la racine de l’arbre de Merkle.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.906",
+    "LastUpdate": "2022-09-30T12:53:03.232",
+    "ShortName": "Empreinte"
+  },
+  {
+    "Identifier": "RuleMeasurement",
+    "ApiField": "RuleMeasurement",
+    "Description": "Mapping : rule-es-mapping.json. Mesure associée à une règle de gestion. Correspond aux valeurs : année, mois, jour. Mesure devant être associée à une durée.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:05.256",
+    "ShortName": "Mesure"
+  },
+  {
+    "Identifier": "Origin",
+    "ApiField": "Origin",
+    "Description": "Mapping : ontology-es-mapping.json. Liste de valeurs : Interne (élément défini par VITAM) ou Externe (extension au SEDA)",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:04.744",
+    "ShortName": "Contexte de création"
+  },
+  {
+    "Identifier": "RuleDuration",
+    "ApiField": "RuleDuration",
+    "Description": "Mapping : rule-es-mapping.json. Durée associée à une règle de gestion, correspond à un entier.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:05.125",
+    "ShortName": "Durée"
+  },
+  {
+    "Identifier": "ApiField",
+    "ApiField": "ApiField",
+    "Description": "Mapping : ontology-es-mapping.json. Correspond au nom donné au vocabulaire ontologique côté API.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:04.588",
+    "ShortName": "Intitulé"
+  },
+  {
+    "Identifier": "RuleId",
+    "ApiField": "RuleId",
+    "Description": "Mapping : rule-es-mapping.json. Identifiant associé à une règle de gestion.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.909",
+    "LastUpdate": "2022-09-30T12:53:05.184",
+    "ShortName": "Identifiant"
+  },
+  {
+    "Identifier": "loadingURI",
+    "ApiField": "loadingURI",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.907",
+    "LastUpdate": "2022-09-30T12:53:03.928",
+    "ShortName": "loadingURI"
+  },
+  {
+    "Identifier": "RuleType",
+    "ApiField": "RuleType",
+    "Description": "Mapping : rule-es-mapping.json. Type associé à une règle de gestion.",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:05.332",
+    "ShortName": "Type"
+  },
+  {
+    "Identifier": "pointer",
+    "SedaField": "pointer",
+    "ApiField": "pointer",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.908",
+    "LastUpdate": "2022-09-30T12:53:04.002",
+    "ShortName": "pointer"
+  },
+  {
+    "Identifier": "diff",
+    "ApiField": "diff",
+    "Description": "Mapping : logbook-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.907",
+    "LastUpdate": "2022-09-30T12:53:03.709",
+    "ShortName": "Différentiel"
+  },
+  {
+    "Identifier": "FilteredExtractedObjectGroupData",
+    "ApiField": "FilteredExtractedObjectGroupData",
+    "Description": "Métadonnées à extraire dans le groupe d'objets techniques",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.170",
+    "ShortName": "Métadonnées à extraire dans le groupe d'objets techniques"
+  },
+  {
+    "Identifier": "NonDestroyableOriginatingAgencies",
+    "ApiField": "NonDestroyableOriginatingAgencies",
+    "Description": "Mapping : unit-es-mapping.json. Services producteurs non éliminables",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.104",
+    "ShortName": "NonDestroyableOriginatingAgencies"
+  },
+  {
+    "Identifier": "DestroyableOriginatingAgencies",
+    "ApiField": "DestroyableOriginatingAgencies",
+    "Description": "Mapping : unit-es-mapping.json. Services producteurs éliminables",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.037",
+    "ShortName": "DestroyableOriginatingAgencies"
+  },
+  {
+    "Identifier": "ObjectGroup",
+    "ApiField": "ObjectGroup",
+    "Description": "Nombre de groupes d'objets techniques de fonds symboliques",
+    "Type": "LONG",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.034",
+    "ShortName": "Nombre de groupes d'objets techniques"
+  },
+  {
+    "Identifier": "RuleValue",
+    "ApiField": "RuleValue",
+    "Description": "Mapping : rule-es-mapping.json. Identifiant, code ou clé définissant une règle de gestion. Doit être unique.",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:05.399",
+    "ShortName": "Identifiant"
+  },
+  {
+    "Identifier": "UpdateDate",
+    "ApiField": "UpdateDate",
+    "Description": "Mapping : rule-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:05.612",
+    "ShortName": "Dernière modification"
+  },
+  {
+    "Identifier": "InheritanceOrigin",
+    "Description": "Origine de définition des règles de gestion",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.660",
+    "ShortName": "InheritanceOrigin"
+  },
+  {
+    "Identifier": "_sedaVersion",
+    "ApiField": "#sedaVersion",
+    "Description": "Mapping : unit-es-mapping.json",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:06.422",
+    "ShortName": "_sedaVersion"
+  },
+  {
+    "Identifier": "indexationDate",
+    "Description": "Date d'indexation'",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.910",
+    "LastUpdate": "2022-09-30T12:53:07.941",
+    "ShortName": "indexationDate"
+  }
 ]

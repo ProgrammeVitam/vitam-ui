@@ -40,7 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, diff, Ontology } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../archive.service';
@@ -64,7 +64,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   otherCriteriaValueEnabled = false;
   otherCriteriaValueType = 'DATE';
   selectedValueOntolonogy: any;
-  ontologies: any;
+  ontologies: Ontology[];
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
   previousSimpleCriteriaValue: {
@@ -108,11 +108,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private translateService: TranslateService
   ) {
-    this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
-      this.ontologies = data;
+    this.archiveService.getOntologiesFromJson().subscribe((data: Ontology[]) => {
+      this.ontologies = data.filter((ontology) => ontology.ApiField !== undefined);
       this.ontologies.sort((a: any, b: any) => {
-        const shortNameA = a.Label;
-        const shortNameB = b.Label;
+        const shortNameA = a.Identifier;
+        const shortNameB = b.Identifier;
         return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
       });
     });
@@ -262,10 +262,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         );
         return true;
       } else if (formData.otherCriteriaValue) {
-        const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === formData.otherCriteria);
+        const ontologyElt = this.ontologies.find((ontoElt) => ontoElt.ApiField === formData.otherCriteria);
         if (this.otherCriteriaValueType === CriteriaDataType.DATE) {
           this.addCriteria(
-            ontologyElt.Value,
+            ontologyElt.ApiField,
             { value: this.simpleCriteriaForm.value.otherCriteriaValue, id: this.simpleCriteriaForm.value.otherCriteriaValue },
             this.simpleCriteriaForm.value.otherCriteriaValue,
             false,
@@ -275,7 +275,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           );
         } else {
           this.addCriteria(
-            ontologyElt.Value,
+            ontologyElt.ApiField,
             { value: formData.otherCriteriaValue.trim(), id: formData.otherCriteriaValue.trim() },
             formData.otherCriteriaValue.trim(),
             false,
@@ -358,9 +358,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         this.simpleCriteriaForm.controls.otherCriteriaValue.setValue('');
         this.otherCriteriaValueEnabled = true;
         const selectedValueOntolonogyValue = this.simpleCriteriaForm.get('otherCriteria').value;
-        const selectedValueOntolonogyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === selectedValueOntolonogyValue);
+        const selectedValueOntolonogyElt = this.ontologies.find((ontoElt) => ontoElt.ApiField === selectedValueOntolonogyValue);
         if (selectedValueOntolonogyElt) {
-          this.selectedValueOntolonogy = selectedValueOntolonogyElt.Label;
+          this.selectedValueOntolonogy = selectedValueOntolonogyElt.Identifier;
           this.otherCriteriaValueType = selectedValueOntolonogyElt.Type;
         }
       }
