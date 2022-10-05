@@ -35,36 +35,33 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, of, Subscription } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { AccessContract, ApplicationId, diff, ExternalParamProfile } from 'ui-frontend-common';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import {  Subscription } from 'rxjs';
+import {  diff, ExternalParamProfile } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
-import { ExternalParamProfileValidators } from '../../external-param-profile.validators';
 
 @Component({
-  selector: 'app-information-tab',
-  templateUrl: './information-tab.component.html'
+  selector: 'app-thresholds-tab',
+  templateUrl: './thresholds-tab.component.html'
 })
-export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
+export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
   constructor(
     private formBuilder: FormBuilder,
-    private externalParamProfileService: ExternalParamProfileService,
-    private externalParamProfileValidators: ExternalParamProfileValidators
+    private externalParamProfileService: ExternalParamProfileService
   ) {}
   form: FormGroup;
   permissionForm: FormGroup;
-  groupsCount: boolean;
-  userLevel: string;
   previousValue: ExternalParamProfile;
-  activeAccessContracts$: Observable<AccessContract[]>;
+  thresholdValues: number[] = [100, 10000, 100000, 10000000, 100000000, 1000000000];
+  isUpdated: boolean;
 
   @Input() externalParamProfile: ExternalParamProfile;
   @Input() readOnly: boolean;
   @Input() tenantIdentifier: string;
 
   private updateFormSub: Subscription;
+
 
   private static initFormActivationState(form: FormGroup, readOnly: boolean) {
     if (readOnly) {
@@ -76,9 +73,12 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   ngOnInit() {
     this.initForm();
-    this.initListenersOnFormsValuesChanges();
+    this.isUpdated = false;
 
-    this.activeAccessContracts$ = this.externalParamProfileService.getAllActiveAccessContracts(this.tenantIdentifier);
+    this.updateFormSub = this.form.valueChanges.subscribe(() => {
+      let updatedModel: any = diff(this.form.value, this.previousValue);
+      this.isUpdated = !isEmpty(updatedModel);
+    });
   }
 
   ngOnDestroy() {
@@ -94,49 +94,40 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   private initForm() {
     this.form = this.formBuilder.group({
-      name: [null, Validators.required],
-      description: [null, Validators.required],
-      enabled: false,
-      accessContract: [null, Validators.required],
+      usePlatformThreshold: true,
+      bulkOperationsThreshold: [null, []],
     });
   }
 
-  private initListenersOnFormsValuesChanges() {
-    this.updateFormSub = this.form.valueChanges
-      .pipe(
-        map(() => diff(this.form.value, this.previousValue)),
-        filter((formData) => !isEmpty(formData)),
-        map((formData) =>
-          extend(
-            {
-              id: this.externalParamProfile.id,
-              idExternalParam: this.externalParamProfile.idExternalParam,
-              idProfile: this.externalParamProfile.idProfile,
-            },
-            formData
-          )
-        ),
-        switchMap((formData) => this.externalParamProfileService.patch(formData).pipe(catchError((error) => of(error)))),
-        catchError((error) => of(error))
-      )
-      .subscribe((externalParamProfile: ExternalParamProfile) => this.resetForm(this.form, externalParamProfile, this.readOnly));
-  }
 
   private resetForm(form: FormGroup, externalParamProfile: ExternalParamProfile, readOnly: boolean) {
     form.reset(externalParamProfile, { emitEvent: false });
-    this.initFormValidators(form, externalParamProfile);
-    InformationTabComponent.initFormActivationState(form, readOnly);
+    ThresholdsTabComponent.initFormActivationState(form, readOnly);
   }
 
-  private initFormValidators(form: FormGroup, externalParamProfile: ExternalParamProfile) {
-    form
-      .get('name')
-      .setAsyncValidators(
-        this.externalParamProfileValidators.nameExists(
-          +this.tenantIdentifier,
-          ApplicationId.EXTERNAL_PARAM_PROFILE_APP,
-          externalParamProfile.name
-        )
+  submitModification() {
+    let updated: any = diff(this.form.value, this.previousValue);
+    if (!isEmpty(updated)) {
+      updated = extend(
+        {
+          id: this.externalParamProfile.id,
+          idExternalParam: this.externalParamProfile.idExternalParam,
+          idProfile: this.externalParamProfile.idProfile,
+        },
+        updated
       );
+      if (updated.usePlatformThreshold) {
+        delete updated.bulkOperationsThreshold;
+      }
+
+      this.externalParamProfileService
+        .patch(updated)
+        .subscribe((externalParamProfile: ExternalParamProfile) => {
+          this.resetForm(this.form, externalParamProfile, this.readOnly);
+          this.isUpdated = false;
+        }
+        );
+    }
   }
+
 }

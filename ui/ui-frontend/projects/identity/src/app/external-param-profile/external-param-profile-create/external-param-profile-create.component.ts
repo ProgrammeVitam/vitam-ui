@@ -53,7 +53,7 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   activeAccessContracts$: Observable<AccessContract[]>;
   private keyPressSubscription: Subscription;
   tenantIdentifier: string;
-  thresholdValues: number[] = [100, 10000, 100000, 10000000, 100000000, 1000000000];
+  thresholdValues: number[] = [100, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
 
   public stepIndex = 0;
   public stepCount = 2;

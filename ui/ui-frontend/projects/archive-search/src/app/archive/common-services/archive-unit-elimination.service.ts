@@ -65,11 +65,14 @@ export class ArchiveUnitEliminationService {
     if (selectedItemCountKnown && itemSelected < DEFAULT_RESULT_THRESHOLD) {
       this.launchEliminationAnalysis(listOfUACriteriaSearch, accessContract, tenantIdentifier, currentPage);
     } else {
-      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
-        confirmSecondActionBigNumberOfResultsActionDialog,
+
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
+      const showConfirmBigNumberOfResultsSuscription = this.dialog.open(
+        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
         { panelClass: 'vitamui-dialog' }
       );
-      showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+
+      showConfirmBigNumberOfResultsSuscription
         .afterClosed()
         .pipe(filter((result) => !!result))
         .subscribe(() => {
@@ -80,8 +83,8 @@ export class ArchiveUnitEliminationService {
             currentPage
           );
         });
-      showConfirmBigNumberOfResultsSuscription?.unsubscribe();
     }
+    showConfirmBigNumberOfResultsSuscription?.unsubscribe();
   }
 
   private launchEliminationAnalysis(

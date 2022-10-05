@@ -51,6 +51,7 @@ import { GroupAttributionModule } from '../user/group-attribution/group-attribut
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail/external-param-profile-detail.component';
 import { InformationTabComponent } from './external-param-profile-detail/information-tab/information-tab.component';
+import { ThresholdsTabComponent } from './external-param-profile-detail/thresholds-tab/thresholds-tab.component';
 import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
 import { ExternalParamProfileRoutingModule } from './external-param-profile-routing.module';
 import { ExternalParamProfileComponent } from './external-param-profile.component';
@@ -81,6 +82,7 @@ import { SharedService } from './shared.service';
     ExternalParamProfileCreateComponent,
     ExternalParamProfileDetailComponent,
     InformationTabComponent,
+    ThresholdsTabComponent
   ],
   providers: [ExternalParamProfileValidators, ProfileValidators, SharedService],
 })

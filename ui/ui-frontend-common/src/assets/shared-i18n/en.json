@@ -3020,6 +3020,10 @@
     "EXT_VITAMUI_UPDATE_USER": "User modification",
     "EXT_VITAMUI_CREATE_USER_INFO": "User info creation",
     "EXT_VITAMUI_UPDATE_USER_INFO": "User info modification",
+    "EXT_VITAMUI_CREATE_EXTERNAL_PARAM_PROFILE": "External setting profile creation",
+    "EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE": "External setting profile update",
+    "EXT_VITAMUI_CREATE_EXTERNAL_PARAM": "External setting creation",
+    "EXT_VITAMUI_UPDATE_EXTERNAL_PARAM": "External setting update",
 
     "TRANSFER_REPLY": "Transfer acknowledgment",
     "STP_TRANSFER_REPLY_PREPARATION.STARTED": "Start of transfer acknowledgment preparation process",
@@ -3186,7 +3190,7 @@
     "STP_TRANSFER_REPLY_FINALIZATION.FATAL": "Technical error during the transfer acknowledgment finalization process",
     "CHECK_ATR_AND_ADD_IT_TO_WORKSPACE" : "Checking and adding ATR to workspace",
     "CHECK_ATR_AND_ADD_IT_TO_WORKSPACE.OK": "Successful verification and addition of the ATR in the workspace"
-    
+
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",

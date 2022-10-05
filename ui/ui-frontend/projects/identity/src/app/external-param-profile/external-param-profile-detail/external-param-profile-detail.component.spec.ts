@@ -40,12 +40,13 @@ import {ComponentFixture,TestBed} from '@angular/core/testing';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatTabsModule} from '@angular/material/tabs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {Subject} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import {AuthService,BASE_URL,LoggerModule,WINDOW_LOCATION} from 'ui-frontend-common';
 import {environment} from '../../../environments/environment.prod';
 import {TestHostComponent} from '../../shared/domains-input/domains-input.component.spec';
 import {ExternalParamProfileService} from '../external-param-profile.service';
 import {ExternalParamProfileDetailComponent} from './external-param-profile-detail.component';
+import {TranslateLoader,TranslateModule} from '@ngx-translate/core';
 
 
 @Component({selector: 'app-information-tab',template: ''})
@@ -56,6 +57,15 @@ class InformationTabStubComponent {
 
 }
 
+const translations: any={TEST: 'Mock translate test'};
+
+class FakeLoader implements TranslateLoader {
+  getTranslation(): Observable<any> {
+    return of(translations);
+  }
+}
+
+
 describe('ExternalParamProfilDetailComponent',() => {
   let component: ExternalParamProfileDetailComponent;
   let fixture: ComponentFixture<ExternalParamProfileDetailComponent>;
@@ -65,6 +75,9 @@ describe('ExternalParamProfilDetailComponent',() => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        TranslateModule.forRoot({
+          loader: {provide: TranslateLoader,useClass: FakeLoader}
+        }),
         MatMenuModule,
         MatTabsModule,
         NoopAnimationsModule,
