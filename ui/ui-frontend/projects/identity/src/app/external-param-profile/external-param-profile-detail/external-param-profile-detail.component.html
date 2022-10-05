@@ -8,11 +8,15 @@
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
-    <mat-tab label="Informations">
+    <mat-tab label="{{ 'EXTERNAL_PARAM_PROFILE.TABS.INFORMATIONS' | translate }}">
       <app-information-tab [tenantIdentifier]="tenantIdentifier" [externalParamProfile]="externalParamProfile" [readOnly]="readOnly"></app-information-tab>
     </mat-tab>
 
-    <mat-tab label="Historique">
+    <mat-tab label="{{ 'EXTERNAL_PARAM_PROFILE.TABS.THRESHOLDS' | translate }}">
+      <app-thresholds-tab [tenantIdentifier]="tenantIdentifier" [externalParamProfile]="externalParamProfile" [readOnly]="readOnly"></app-thresholds-tab>
+    </mat-tab>
+
+    <mat-tab label="{{ 'EXTERNAL_PARAM_PROFILE.TABS.HISTORY' | translate }}">
       <vitamui-common-operation-history-tab
         [id]="externalParamProfile?.idProfile"
         [identifier]="externalParamProfile?.idProfile"

@@ -319,6 +319,10 @@
     "COLLECT_APP": {
       "NAME": "Collecte et préparation des versements",
       "TOOLTIP": "Collecte de données, Application de préparation de versements"
+    },
+    "EXTERNAL_PARAMS": {
+      "NAME": "Profil pour la création des profils paramétrage externe",
+      "TOOLTIP": "Gérer et consulter l'ensemble des profils paramétrage externe"
     }
   },
   "FOOTER": {
@@ -3040,7 +3044,10 @@
     "EXT_VITAMUI_UPDATE_USER": "Modification de l'utilisateur",
     "EXT_VITAMUI_CREATE_USER_INFO": "Création des informations utilisateur",
     "EXT_VITAMUI_UPDATE_USER_INFO": "Modification des informations utilisateur",
-
+    "EXT_VITAMUI_CREATE_EXTERNAL_PARAM_PROFILE": "Création du profil de paramétrages externes",
+    "EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE": "Modification du profil de paramétrages externes",
+    "EXT_VITAMUI_CREATE_EXTERNAL_PARAM": "Création d'un paramétrage externe",
+    "EXT_VITAMUI_UPDATE_EXTERNAL_PARAM": "Modification d'un paramétrages externes",
     "TRANSFER_REPLY" : "Acquittement du transfert",
     "STP_TRANSFER_REPLY_PREPARATION.STARTED" : "Début du processus de prépération de l'acquittement du transfert",
     "STP_TRANSFER_REPLY_PREPARATION" : "Processus de prépération de l'acquittement du transfert",
