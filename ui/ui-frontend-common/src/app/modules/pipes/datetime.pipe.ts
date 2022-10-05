@@ -31,8 +31,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'dateTime',
 })
 export class DateTimePipe implements PipeTransform {
-  constructor(private datePipe: DatePipe) {
-  }
+  constructor(private datePipe: DatePipe) {}
 
   transform(value: any, format?: string, local?: string): any {
     if (value) {
@@ -54,10 +53,9 @@ export class DateTimePipe implements PipeTransform {
   }
 
   private formatDateTime(value): string {
-    if (!String(value).endsWith('Z') && value.includes(':')) {
+    if (!String(value).endsWith('Z') && String(value).includes(':')) {
       value = value + 'Z';
     }
     return value;
   }
-
 }
