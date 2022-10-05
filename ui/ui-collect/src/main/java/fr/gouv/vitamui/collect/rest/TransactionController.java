@@ -41,13 +41,22 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import java.io.InputStream;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 
 @Api(tags = "Collect")
 @RestController
@@ -90,7 +99,7 @@ public class TransactionController extends AbstractUiRestController {
 
 
     @ApiOperation(value = "Get transaction by project")
-    @GetMapping(CommonConstants.PATH_ID )
+    @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public CollectTransactionDto getTransactionById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -102,6 +111,15 @@ public class TransactionController extends AbstractUiRestController {
     }
 
 
-
+    @ApiOperation(value = "Upload on streaming metadata file and update archive units", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PutMapping(value = "/{transactionId}" +
+        UPDATE_UNITS_METADATA_PATH, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void updateArchiveUnitsMetadataFromFile(@PathVariable String transactionId, InputStream inputStream)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The transaction id is a mandatory parameter: ", transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
+        LOGGER.debug("Calling update archive units metadata for transaction Id  {} ", transactionId);
+        transactionService.updateArchiveUnitsMetadataFromFile(transactionId, inputStream, buildUiHttpContext());
+    }
 
 }

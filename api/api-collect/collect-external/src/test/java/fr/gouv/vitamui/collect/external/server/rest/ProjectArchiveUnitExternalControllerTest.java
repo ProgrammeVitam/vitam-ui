@@ -31,7 +31,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.collect.external.server.service.ProjectArchiceUnitExternalService;
+import fr.gouv.vitamui.collect.external.server.service.ProjectArchiveUnitExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
@@ -58,20 +58,20 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = {ProjectArchiveUnitExternalController.class})
-public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectExternalControllerTest<IdDto> {
+public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalControllerTest.class);
 
     @MockBean
-    private ProjectArchiceUnitExternalService projectArchiceUnitExternalService;
+    private ProjectArchiveUnitExternalService projectArchiveUnitExternalService;
 
     private ProjectArchiveUnitExternalController projectArchiveUnitExternalController;
 
     @BeforeEach
     public void setUp() {
         projectArchiveUnitExternalController = new ProjectArchiveUnitExternalController(
-            projectArchiceUnitExternalService);
+            projectArchiveUnitExternalService);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectEx
         query.setCriteriaList(List.of(nodeCriteria));
         ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
         Mockito
-            .when(projectArchiceUnitExternalService.searchCollectProjectArchiveUnits("projectId", query))
+            .when(projectArchiveUnitExternalService.searchCollectProjectArchiveUnits("projectId", query))
             .thenReturn(expectedResponse);
 
         assertThatCode(() -> projectArchiveUnitExternalController.searchArchiveUnits("projectId", query))
@@ -130,7 +130,7 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectEx
         SearchCriteriaDto query = new SearchCriteriaDto();
         ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
         Mockito
-            .when(projectArchiceUnitExternalService.searchCollectProjectArchiveUnits("projectId", query))
+            .when(projectArchiveUnitExternalService.searchCollectProjectArchiveUnits("projectId", query))
             .thenReturn(expectedResponse);
         ArchiveUnitsDto
             responseDto = projectArchiveUnitExternalController.searchArchiveUnits("projectId", query);

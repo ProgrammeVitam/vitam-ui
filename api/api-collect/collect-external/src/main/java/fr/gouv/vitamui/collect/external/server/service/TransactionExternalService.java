@@ -29,12 +29,17 @@ package fr.gouv.vitamui.collect.external.server.service;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.InputStream;
 
 /**
  * The service to manage transactions.
@@ -44,14 +49,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionExternalService extends AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
 
-    private final CollectInternalRestClient collectInternalRestClient;
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(TransactionExternalService.class);
 
+    private final CollectInternalRestClient collectInternalRestClient;
+    private final CollectInternalWebClient collectInternalWebClient;
 
     @Autowired
     public TransactionExternalService(CollectInternalRestClient collectInternalRestClient,
-        ExternalSecurityService externalSecurityService) {
+        ExternalSecurityService externalSecurityService, CollectInternalWebClient collectInternalWebClient) {
         super(externalSecurityService);
         this.collectInternalRestClient = collectInternalRestClient;
+        this.collectInternalWebClient = collectInternalWebClient;
     }
 
 
@@ -72,4 +81,11 @@ public class TransactionExternalService extends AbstractResourceClientService<Co
     public CollectTransactionDto getTransactionById(String transactionId) {
         return collectInternalRestClient.getTransactionById(getInternalHttpContext(), transactionId);
     }
+
+    public void updateArchiveUnitsFromFile(final String transactionId, InputStream inputStream) {
+        LOGGER.debug("start updating archive units from file for transactionId {}", transactionId);
+        collectInternalWebClient.updateArchiveUnitsMetadataFromFile(transactionId, inputStream,
+            getInternalHttpContext());
+    }
+
 }

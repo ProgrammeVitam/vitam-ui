@@ -27,42 +27,37 @@
  *
  */
 
-package fr.gouv.vitamui.collect.external.server.service;
+package fr.gouv.vitamui.collect.internal.server.service;
 
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
-import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
-@Getter
-@Setter
-@Service
-public class ProjectArchiceUnitExternalService extends
-    AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
+import java.io.InputStream;
 
-    private final CollectInternalRestClient collectInternalRestClient;
+/**
+ * service for managing archives units in Vitam
+ */
+public class ArchiveUnitInternalService {
 
-    public ProjectArchiceUnitExternalService(CollectInternalRestClient collectInternalRestClient,
-        ExternalSecurityService externalSecurityService) {
-        super(externalSecurityService);
-        this.collectInternalRestClient = collectInternalRestClient;
-    }
-    public ArchiveUnitsDto searchCollectProjectArchiveUnits(String projectId, SearchCriteriaDto searchQuery) {
-        return collectInternalRestClient.searchCollectProjectArchiveUnits(getInternalHttpContext(), projectId, searchQuery);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(ArchiveUnitInternalService.class);
+
+    public ArchiveUnitInternalService() {
     }
 
-    public Resource exportCsvArchiveUnitsByCriteria(String projectId, final SearchCriteriaDto query) {
-        return collectInternalRestClient.exportCsvArchiveUnitsByCriteria(projectId, query, getInternalHttpContext());
+    public void updateArchiveUnitsFromFile(final String transactionId, InputStream inputStream,
+        VitamContext vitamContext) throws VitamClientException {
+
+        LOGGER.debug("start updating archive units from file for transactionId {}", transactionId);
+        /**
+         * @TODO complete the implementation
+         */
+        RequestResponse<Void> response = null;
+
     }
 
-    @Override
-    protected CollectInternalRestClient getClient() {
-        return collectInternalRestClient;
-    }
+
 }

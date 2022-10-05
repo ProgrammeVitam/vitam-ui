@@ -29,27 +29,36 @@ package fr.gouv.vitamui.collect.service;
 
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
+import fr.gouv.vitamui.collect.external.client.CollectExternalWebClient;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
+
 /**
  * UI Collect Transaction Service
  */
 @Service
 public class TransactionService extends AbstractPaginateService<CollectTransactionDto> {
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionService.class);
 
     private final CollectExternalRestClient collectExternalRestClient;
+    private final CollectExternalWebClient collectExternalWebClient;
 
     private final CommonService commonService;
 
 
     @Autowired
-    public TransactionService(CollectExternalRestClient collectExternalRestClient, CommonService commonService) {
+    public TransactionService(CollectExternalRestClient collectExternalRestClient,
+        CollectExternalWebClient collectExternalWebClient, CommonService commonService) {
         this.commonService = commonService;
         this.collectExternalRestClient = collectExternalRestClient;
+        this.collectExternalWebClient = collectExternalWebClient;
     }
 
 
@@ -74,6 +83,9 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return collectExternalRestClient.getTransactionById(context, projectId);
     }
 
-
-
+    public void updateArchiveUnitsMetadataFromFile(final String transactionId, InputStream inputStream,
+        final ExternalHttpContext context) {
+        LOGGER.debug("start updating archive units from file for transactionId {}", transactionId);
+        collectExternalWebClient.updateArchiveUnitsMetadataFromFile(transactionId, inputStream, context);
+    }
 }

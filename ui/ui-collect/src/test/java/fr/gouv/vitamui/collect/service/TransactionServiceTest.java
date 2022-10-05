@@ -29,10 +29,8 @@
 
 package fr.gouv.vitamui.collect.service;
 
-import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.collect.external.client.CollectExternalWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
@@ -44,40 +42,49 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
-public class ArchiveSearchProjectServiceTest {
+public class TransactionServiceTest {
 
-    private ProjectArchiveUnitService searchCollectUnitService;
+    private TransactionService transactionService;
 
     @Mock
     private CollectExternalRestClient collectExternalRestClient;
+
+    @Mock
+    private CollectExternalWebClient collectExternalWebClient;
 
     @Mock
     private CommonService commonService;
 
     @Before
     public void init() {
-        searchCollectUnitService = new ProjectArchiveUnitService(commonService, collectExternalRestClient);
+        transactionService = new TransactionService(collectExternalRestClient, collectExternalWebClient, commonService);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
     @Test
-    public void search_collect_units_should_call_appropriate_rest_client() {
+    public void update_archive_units_metadata_should_call_appropriate_client() {
         // Given
-        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(searchCollectUnitService.searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(),
-                ArgumentMatchers.any(), any(SearchCriteriaDto.class)))
-            .thenReturn(new ArchiveUnitsDto());
+        doNothing().when(collectExternalWebClient).updateArchiveUnitsMetadataFromFile(anyString(),
+            any(InputStream.class), any(ExternalHttpContext.class));
+        String transactionId = "1";
+        InputStream anyInputStream = new ByteArrayInputStream("test data".getBytes());
 
         // When
-        searchCollectUnitService.searchArchiveUnitsByProjectAndSearchQuery(context, "projectId", searchCriteriaDto);
+        transactionService.updateArchiveUnitsMetadataFromFile(transactionId, anyInputStream, context);
 
         // Then
-        verify(collectExternalRestClient, Mockito.times(1))
-            .searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(), ArgumentMatchers.any() , any(SearchCriteriaDto.class));
+        verify(collectExternalWebClient, Mockito.times(1))
+            .updateArchiveUnitsMetadataFromFile(ArgumentMatchers.any(), ArgumentMatchers.any(),
+                any(ExternalHttpContext.class));
     }
 }

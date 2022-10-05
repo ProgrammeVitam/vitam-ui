@@ -135,7 +135,7 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
 
 
     @Bean
-    public CollectInternalWebClient collectInternalWebClient (
+    public CollectInternalWebClient collectInternalWebClient(
         final CollectInternalWebClientFactory factory) {
         return factory.getCollectInternalWebClient();
     }
@@ -145,5 +145,6 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
         final CollectInternalRestClientFactory collectInternalRestClientFactory) {
         return collectInternalRestClientFactory.getSearchCriteriaHistoryInternalRestClient();
     }
+
 
 }

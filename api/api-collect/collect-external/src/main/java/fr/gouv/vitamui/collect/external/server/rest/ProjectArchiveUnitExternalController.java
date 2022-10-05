@@ -28,8 +28,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.collect.external.server.service.ProjectArchiceUnitExternalService;
+import fr.gouv.vitamui.collect.external.server.service.ProjectArchiveUnitExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -70,12 +69,12 @@ public class ProjectArchiveUnitExternalController {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalController.class);
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
-    private final ProjectArchiceUnitExternalService projectArchiceUnitExternalService;
+    private final ProjectArchiveUnitExternalService projectArchiveUnitExternalService;
 
     @Autowired
     public ProjectArchiveUnitExternalController(
-        ProjectArchiceUnitExternalService projectArchiceUnitExternalService) {
-        this.projectArchiceUnitExternalService = projectArchiceUnitExternalService;
+        ProjectArchiveUnitExternalService projectArchiveUnitExternalService) {
+        this.projectArchiveUnitExternalService = projectArchiveUnitExternalService;
     }
 
     @ApiOperation(value = "find archive units by criteria")
@@ -93,7 +92,7 @@ public class ProjectArchiveUnitExternalController {
         SanityChecker.checkSecureParameter(projectId);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
 
-        return projectArchiceUnitExternalService.searchCollectProjectArchiveUnits(projectId, searchQuery);
+        return projectArchiveUnitExternalService.searchCollectProjectArchiveUnits(projectId, searchQuery);
     }
 
     @PostMapping("/{projectId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
@@ -103,7 +102,7 @@ public class ProjectArchiveUnitExternalController {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling export to csv search archive Units By Criteria {} ", query);
-        return projectArchiceUnitExternalService.exportCsvArchiveUnitsByCriteria(projectId, query);
+        return projectArchiveUnitExternalService.exportCsvArchiveUnitsByCriteria(projectId, query);
     }
 
 }

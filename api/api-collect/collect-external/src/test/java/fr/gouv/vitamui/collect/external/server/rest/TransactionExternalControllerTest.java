@@ -29,19 +29,72 @@
 
 package fr.gouv.vitamui.collect.external.server.rest;
 
-import fr.gouv.vitamui.collect.external.server.security.WebSecurityConfig;
+import fr.gouv.vitamui.collect.external.server.service.TransactionExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestPropertySource;
 
-@Import(value = { WebSecurityConfig.class, ServerIdentityConfiguration.class, RestExceptionHandler.class })
-@TestPropertySource(properties = { "spring.config.name=collect-external-application" })
-public abstract class ApiSearchCollectExternalControllerTest<T extends IdDto> extends ApiControllerTest<T> {
+import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_PATH;
+
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(controllers = {TransactionExternalController.class})
+public class TransactionExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
+
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(TransactionExternalControllerTest.class);
 
     @MockBean
-    private ExternalApiAuthenticationProvider apiAuthenticationProvider;
+    private TransactionExternalService transactionExternalService;
+
+    private TransactionExternalController transactionExternalController;
+
+    @BeforeEach
+    public void setUp() {
+        transactionExternalController = new TransactionExternalController(
+            transactionExternalService);
+    }
+
+    @Override
+    protected String[] getServices() {
+        return new String[] {ServicesData.TRANSACTIONS};
+    }
+
+    @Override
+    protected Class<IdDto> getDtoClass() {
+        return IdDto.class;
+    }
+
+    @Override
+    protected IdDto buildDto() {
+        return null;
+    }
+
+    @Override
+    protected VitamUILogger getLog() {
+        return LOGGER;
+    }
+
+    @Override
+    protected void preparedServices() {
+
+    }
+
+    @Override
+    protected String getRessourcePrefix() {
+        return COLLECT_TRANSACTION_PATH;
+    }
+
+    @Test
+    void update_archive_units_metadata_ko_return_ko() {
+
+
+    }
+
 }

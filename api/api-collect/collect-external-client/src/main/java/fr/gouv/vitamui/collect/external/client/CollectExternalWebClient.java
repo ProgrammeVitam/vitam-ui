@@ -25,23 +25,31 @@
  */
 package fr.gouv.vitamui.collect.external.client;
 
+import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.BaseCrudWebClient;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClientRequest;
+
+import java.io.InputStream;
+import java.time.Duration;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHIVE_UNIT;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.PROJECTS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
 
 public class CollectExternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
@@ -69,8 +77,9 @@ public class CollectExternalWebClient extends BaseWebClient<ExternalHttpContext>
         final ExternalHttpContext context) {
         LOGGER.debug("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + PROJECTS + OBJECT_GROUPS + DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +
-                "&version=" + version);
+            UriComponentsBuilder.fromHttpUrl(
+                getUrl() + PROJECTS + OBJECT_GROUPS + DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +
+                    "&version=" + version);
 
         Flux<DataBuffer> dataBuffer = webClient
             .get()
@@ -83,5 +92,36 @@ public class CollectExternalWebClient extends BaseWebClient<ExternalHttpContext>
             .ok().cacheControl(CacheControl.noCache())
             .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
 
+    }
+
+    /**
+     * function to update archive Units Metadata From File
+     *
+     * @param transactionId the transaction id
+     * @param inputStream thr inputstream file
+     * @param context the internal vitamui context
+     * @return
+     */
+    public Void updateArchiveUnitsMetadataFromFile(final String transactionId, InputStream inputStream,
+        final ExternalHttpContext context) {
+
+        LOGGER.debug("start updating archive units from file for transactionId {}", transactionId);
+
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(
+                getUrl() + RestApi.COLLECT_ARCHIVE_UNITS + "/" + transactionId + UPDATE_UNITS_METADATA_PATH);
+        /**
+         * @TODO
+         * Update timeout and make it as parameter
+         */
+        return webClient.post().uri(uriBuilder.toUriString()).
+            httpRequest(httpRequest -> {
+                HttpClientRequest reactorRequest = httpRequest.getNativeRequest();
+                reactorRequest.responseTimeout(Duration.ofMinutes(4));
+            })
+            .body(BodyInserters.fromValue(inputStream))
+            .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context))).retrieve()
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .bodyToMono(Void.class).block();
     }
 }
