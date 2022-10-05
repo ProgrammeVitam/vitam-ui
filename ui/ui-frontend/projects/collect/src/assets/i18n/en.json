@@ -1,6 +1,6 @@
 {
   "COLLECT": {
-    "SEARCH_PLACEHOLDER": "Communication request, customer code",
+    "SEARCH_PLACEHOLDER": "Code and message identifier, Submission agency",
     "APP_BREADCRUMB": "Collection and Remittance Preparation",
     "NB_ENTRIES": "{{nb}} projects",
     "PROJECT_LIST_TITLE": "Remittance projects",
@@ -61,7 +61,7 @@
       "ADD_FILE_DESCRIPTION": "Max size: 1 GB"
     },
     "TITLE_SEARCH": "Search : ",
-    "TITLE_SEARCH_AREA": "Searching an archive unit in project ",
+    "TITLE_SEARCH_AREA": "Ingest project",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
@@ -146,32 +146,6 @@
       },
       "COMMON_YES": "Yes",
       "COMMON_NO": "No"
-    },
-    "ARCHIVE_UNIT_PREVIEW": {
-      "FIELDS": {
-        "NAME": "Intitulé",
-        "START_DATE": "Date de début",
-        "END_DATE": "Date de fin",
-        "DESCRIPTION": "Description",
-        "GUID": "Identifiant technique du versement",
-        "UAID": "Identifiant technique de l'unité archivistique",
-        "SP": "Service producteur",
-        "SP_CODE": "Identifiant",
-        "SP_LABEL": "Nom",
-        "PATH": "Chemin",
-        "DESCRIPTION_LEVEL": "Niveau de description",
-        "DOWNLOAD_DOC": "Télécharger le document",
-        "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT"
-      },
-      "TABS": {
-        "INFORMATIONS": "Informations",
-        "RULES": "Règles",
-        "OBJECTS": "Objets"
-      },
-      "ACTIONS": {
-        "SHOW_MORE_DETAILS": "Afficher l'ensemble des métadonnées",
-        "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion"
-      }
     },
     "PROJECT_UNIT_PREVIEW": {
       "TABS": {

@@ -109,6 +109,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   hasResults = false;
   pageNumbers = 0;
   canLoadMore = false;
+  projectName: string;
 
   // Facets properties
   pendingGetFixedCount = false;
@@ -184,7 +185,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.route.params.subscribe((params) => {
       this.projectId = params.id;
     });
-
+    this.projectName = this.route.snapshot.queryParamMap.get('projectName');
     this.searchCriteriaKeys = [];
     this.searchCriterias = new Map();
     this.initializeSelectionParams();

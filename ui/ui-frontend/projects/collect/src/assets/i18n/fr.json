@@ -1,6 +1,6 @@
 {
   "COLLECT": {
-    "SEARCH_PLACEHOLDER": "Demande de communication, code client",
+    "SEARCH_PLACEHOLDER": "Code et intitulé du versement, service versant",
     "APP_BREADCRUMB": "Collecte et préparation des versements",
     "NB_ENTRIES": "{{nb}} projets",
     "PROJECT_LIST_TITLE": "Les projets de versements",
@@ -82,7 +82,7 @@
       "ADD_FILE_DESCRIPTION": "Poids maximal conseillé: 1 GB"
     },
     "TITLE_SEARCH": "Recherche : ",
-    "TITLE_SEARCH_AREA": "Rechercher une ou des unité(s) archivistique(s) dans le projet ",
+    "TITLE_SEARCH_AREA": "Projet de versement",
     "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",

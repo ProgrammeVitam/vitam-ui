@@ -38,7 +38,6 @@ import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
 
-
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
@@ -101,8 +100,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     private externalParameterService: ExternalParametersService,
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
-    public dialog: MatDialog,
-  ) { }
+    public dialog: MatDialog
+  ) {}
 
   get linkParentIdControl() {
     return this.projectForm.controls.linkParentIdControl as FormControl;
@@ -145,8 +144,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   }
 
   onCancel() {
-      const dialogToOpen = this.confirmDeleteAddRuleDialog;
-      this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogToOpen = this.confirmDeleteAddRuleDialog;
+    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
   }
 
   onClose() {
@@ -155,12 +154,10 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   onConfirm() {
     if (this.uploadZipCompleted) {
-      this.projectsService.deleteProjectId(this.createdProject.id).subscribe(
-        () => {
-          this.dialogRefToClose.close(true);
-          this.close();
-        }
-      );
+      this.projectsService.deleteProjectId(this.createdProject.id).subscribe(() => {
+        this.dialogRefToClose.close(true);
+        this.close();
+      });
     } else {
       this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TRACKING_TITLE'), null, {
         panelClass: 'vitamui-snack-bar',
@@ -235,7 +232,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       })
       .then((uploadOperation) => {
         uploadOperation.subscribe(
-          () => { },
+          () => {},
           (error: any) => {
             this.logger.error(error);
           },
@@ -275,7 +272,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   updateProject() {
     // Project name should be setted from messageIdentifier field until further notice
     const projectToUpdate = {
-      ...this.projectForm.value,  name: this.projectForm.controls.messageIdentifier.value
+      ...this.projectForm.value,
+      name: this.projectForm.controls.messageIdentifier.value,
     };
     this.mapProjectInternalFields(projectToUpdate);
     this.updateDialogSub = this.projectsService.updateProject(projectToUpdate).subscribe();
@@ -302,7 +300,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       comment: [null],
       originatingAgencyIdentifier: [null, Validators.required],
       submissionAgencyIdentifier: [null, Validators.required],
-      referentialCheckup: [true],
+      referentialCheckup: [false],
       archivalAgencyIdentifier: [null, Validators.required],
       transferringAgencyIdentifier: [null, Validators.required],
       archivalAgreement: [null, Validators.required],
