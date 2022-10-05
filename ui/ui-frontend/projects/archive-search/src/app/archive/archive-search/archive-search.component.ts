@@ -152,15 +152,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveExchangeDataService.receiveAppraisalSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
 
     this.archiveExchangeDataService.receiveAccessSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
-
-    this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
-      this.ontologies = data;
-      this.ontologies.sort((a: any, b: any) => {
-        const shortNameA = a.Label;
-        const shortNameB = b.Label;
-        return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
-      });
-    });
   }
 
   DEFAULT_RESULT_THRESHOLD = 10000;
@@ -228,7 +219,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   rulesFacetsCanBeComputed = false;
   rulesFacetsComputed = false;
   showingFacets = false;
-  ontologies: any;
   selectedItemCount: boolean;
 
   archiveUnitGuidSelected: string;
@@ -457,7 +447,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
 
-    for (let mgtRuleType in SearchCriteriaMgtRuleEnum) {
+    for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
     if (this.hasSearchCriterias()) {

@@ -172,11 +172,11 @@
                 <ng-container *ngFor="let ontology of this.ontologies">
                   <mat-option
                     style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary)"
-                    value="{{ ontology.Value }}"
-                    matTooltip="{{ ontology?.Value }}"
+                    value="{{ ontology.ApiField }}"
+                    matTooltip="{{ ontology?.ApiField }}"
                     matTooltipClass="vitamui-tooltip"
                     [matTooltipShowDelay]="300"
-                    >{{ ontology.Label }}
+                    >{{ ontology.Identifier }}
                   </mat-option>
                 </ng-container>
               </mat-select>
