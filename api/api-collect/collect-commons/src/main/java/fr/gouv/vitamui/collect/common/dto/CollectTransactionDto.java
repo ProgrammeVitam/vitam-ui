@@ -24,31 +24,22 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+package fr.gouv.vitamui.collect.common.dto;
 
-package fr.gouv.vitamui.collect.common.rest;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import lombok.*;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Builder
+public class CollectTransactionDto extends IdDto {
 
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
-public class RestApi {
-
-    public static final String COLLECT_PATH = "/collect-api/v1";
-    public static final String ARCHIVE_UNITS = "/archive-units";
-    public static final String PROJECTS = "/projects";
-
-    public static final String TRANSACTIONS = "/transactions";
-    public static final String OBJECT_GROUPS = "/object-groups";
-    public static final String STREAM_UPLOAD_PATH = "/upload";
-    public static final String SEARCH = "/search";
-
-    public static final String SEND_PATH = "/send";
-    public static final String VALIDATE_PATH = "/validate";
-    public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
-    public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + PROJECTS;
-
-    public static final String COLLECT_TRANSACTION_PATH = COLLECT_PATH + TRANSACTIONS;
-    public static final String COLLECT_PROJECT_ARCHIVE_UNITS_PATH = COLLECT_PATH + PROJECTS;
-    public static final String COLLECT_PROJECT_OBJECT_GROUPS_PATH = COLLECT_PATH + PROJECTS + OBJECT_GROUPS;
-
+    @JsonProperty("id")
+    private String id;
+    private String status;
+    @JsonProperty("tenant")
+    private Integer tenant;
 }

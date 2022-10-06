@@ -25,30 +25,23 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.collect.common.rest;
+package fr.gouv.vitamui.collect.internal.server.service.converters;
 
-
+import fr.gouv.vitam.collect.external.dto.TransactionDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import lombok.experimental.UtilityClass;
 
+import java.util.Optional;
+
 @UtilityClass
-public class RestApi {
+public class TransactionConverter {
+    public static CollectTransactionDto toVitamuiDto(TransactionDto transactionDto) {
+        return CollectTransactionDto.builder()
+            .tenant(Optional.of(transactionDto.getTenant()).orElseThrow())
+            .id(transactionDto.getId())
+            .status(transactionDto.getLegalStatus())
+            .build();
+    }
 
-    public static final String COLLECT_PATH = "/collect-api/v1";
-    public static final String ARCHIVE_UNITS = "/archive-units";
-    public static final String PROJECTS = "/projects";
-
-    public static final String TRANSACTIONS = "/transactions";
-    public static final String OBJECT_GROUPS = "/object-groups";
-    public static final String STREAM_UPLOAD_PATH = "/upload";
-    public static final String SEARCH = "/search";
-
-    public static final String SEND_PATH = "/send";
-    public static final String VALIDATE_PATH = "/validate";
-    public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
-    public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + PROJECTS;
-
-    public static final String COLLECT_TRANSACTION_PATH = COLLECT_PATH + TRANSACTIONS;
-    public static final String COLLECT_PROJECT_ARCHIVE_UNITS_PATH = COLLECT_PATH + PROJECTS;
-    public static final String COLLECT_PROJECT_OBJECT_GROUPS_PATH = COLLECT_PATH + PROJECTS + OBJECT_GROUPS;
 
 }

@@ -98,8 +98,9 @@ public class ProjectInternalService {
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }
-            return toVitamuiDto(JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
-                ProjectDto.class));
+            return toVitamuiDto(
+                JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    ProjectDto.class));
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_CREATE_PROJECT + ": {}", e);
             throw new InternalServerException(UNABLE_TO_CREATE_PROJECT, e);
@@ -277,4 +278,6 @@ public class ProjectInternalService {
             throw new VitamClientException("Unable to delete project : ", e);
         }
     }
+
+
 }

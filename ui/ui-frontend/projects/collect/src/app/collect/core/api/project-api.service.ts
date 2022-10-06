@@ -37,7 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, Project } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction } from 'ui-frontend-common';
 import { SearchCriteriaDto, SearchCriteriaHistory, SearchResponse } from '../models';
 
 
@@ -49,10 +49,12 @@ import { SearchCriteriaDto, SearchCriteriaHistory, SearchResponse } from '../mod
 
 export class ProjectsApiService extends BaseHttpClient<any> {
   baseUrl: string;
+  urlTransaction: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/projects');
     this.baseUrl = baseUrl;
+    this.urlTransaction = baseUrl + '/transactions';
   }
 
   getBaseUrl() {
@@ -116,5 +118,18 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
     return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
+  }
+
+  public getTransactionById(transactionId: string): Observable<Transaction> {
+    return this.http.get<Transaction>(this.urlTransaction + '/' + transactionId);
+  }
+
+  validateTransaction(id: string) {
+    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/close', {});
+
+  }
+
+  sendTransaction(id: string) {
+    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/send', {});
   }
 }

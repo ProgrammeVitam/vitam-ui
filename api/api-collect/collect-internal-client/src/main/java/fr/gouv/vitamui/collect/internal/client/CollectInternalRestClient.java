@@ -29,6 +29,7 @@ package fr.gouv.vitamui.collect.internal.client;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -51,9 +52,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.PROJECTS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
 
 public class CollectInternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectProjectDto, InternalHttpContext> {
@@ -83,6 +82,14 @@ public class CollectInternalRestClient
     public String getPathUrl() {
 
         return RestApi.COLLECT_PROJECT_PATH;
+    }
+
+    private String getTransactionUrl() {
+        if (baseUrl != null) {
+            return baseUrl + RestApi.COLLECT_TRANSACTION_PATH;
+        } else {
+            return RestApi.COLLECT_TRANSACTION_PATH;
+        }
     }
 
     @Override
@@ -133,5 +140,27 @@ public class CollectInternalRestClient
             UriComponentsBuilder.fromHttpUrl(getUrl() + PROJECTS + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
+    }
+
+    public void sendTransaction(final InternalHttpContext context, String id) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID + SEND_PATH);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, Void.class);
+    }
+
+    public void validateTransaction(final InternalHttpContext context, String id) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID + VALIDATE_PATH);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, Void.class);
+    }
+
+    public CollectTransactionDto getTransactionById(InternalHttpContext context, String transactionId) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID );
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.GET, request, CollectTransactionDto.class);
+        return response.getBody();
     }
 }

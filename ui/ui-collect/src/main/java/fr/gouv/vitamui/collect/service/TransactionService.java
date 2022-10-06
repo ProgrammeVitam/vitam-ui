@@ -27,40 +27,31 @@
 
 package fr.gouv.vitamui.collect.service;
 
-import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
-import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-import java.util.Optional;
-
 /**
- * UI Collect Project Service
+ * UI Collect Transaction Service
  */
 @Service
-public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
+public class TransactionService extends AbstractPaginateService<CollectTransactionDto> {
 
     private final CollectExternalRestClient collectExternalRestClient;
-    private final CollectStreamingExternalRestClient collectStreamingExternalRestClient;
+
     private final CommonService commonService;
 
+
     @Autowired
-    public ProjectService(CommonService commonService,
-                          CollectExternalRestClient collectExternalRestClient,
-                          CollectStreamingExternalRestClient collectStreamingExternalRestClient) {
+    public TransactionService(CollectExternalRestClient collectExternalRestClient, CommonService commonService) {
         this.commonService = commonService;
         this.collectExternalRestClient = collectExternalRestClient;
-        this.collectStreamingExternalRestClient = collectStreamingExternalRestClient;
     }
+
 
     @Override
     protected Integer beforePaginate(final Integer page, final Integer size) {
@@ -71,24 +62,18 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
         return collectExternalRestClient;
     }
 
-
-    public CollectProjectDto createProject(ExternalHttpContext context, CollectProjectDto collectProjectDto) {
-        return collectExternalRestClient.create(context, collectProjectDto);
+    public void sendTransaction(ExternalHttpContext context, String transactionId) {
+        collectExternalRestClient.sendTransaction(context, transactionId);
     }
 
-    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(ExternalHttpContext context, final Integer page,
-                                                                         final Integer size, final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-        return collectExternalRestClient.getAllPaginated(context, page, size, criteria, orderBy, direction);
+    public void validateTransaction(ExternalHttpContext context, String transactionId) {
+        collectExternalRestClient.validateTransaction(context, transactionId);
     }
 
-    public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
-                                                String projectId, InputStream inputStream) {
-        return collectStreamingExternalRestClient.streamingUpload(context, fileName, projectId, inputStream);
+    public CollectTransactionDto getTransactionById(ExternalHttpContext context, String projectId) {
+        return collectExternalRestClient.getTransactionById(context, projectId);
     }
 
-    public void deleteProject(String projectId, final ExternalHttpContext context) {
-        collectExternalRestClient.deleteProject(projectId, context);
-    }
 
 
 }

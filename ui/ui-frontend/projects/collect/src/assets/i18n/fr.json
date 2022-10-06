@@ -84,7 +84,12 @@
     "TITLE_SEARCH": "Recherche : ",
     "TITLE_SEARCH_AREA": "Projet de versement",
     "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
+    "INGEST_ACTION": "Verser",
+    "VALIDATE_ACTION": "Valider",
+    "OTHER_ACTION": "Autres actions",
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
+    "INGEST_TRANSACTION_LAUNCHED": "La demande de versement du projet a bien été lancée",
+    "VALIDATE_TRANSACTION_VALIDATED": "La demande de versement du projet a bien été validée",
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "ARCHIVE_UNIT_PREVIEW": {
       "FIELDS": {

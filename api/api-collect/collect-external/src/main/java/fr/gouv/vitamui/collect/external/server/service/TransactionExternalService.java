@@ -24,31 +24,52 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+package fr.gouv.vitamui.collect.external.server.service;
 
-package fr.gouv.vitamui.collect.common.rest;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
+import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
+import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * The service to manage transactions.
+ */
+@Getter
+@Setter
+@Service
+public class TransactionExternalService extends AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
+
+    private final CollectInternalRestClient collectInternalRestClient;
 
 
-import lombok.experimental.UtilityClass;
+    @Autowired
+    public TransactionExternalService(CollectInternalRestClient collectInternalRestClient,
+        ExternalSecurityService externalSecurityService) {
+        super(externalSecurityService);
+        this.collectInternalRestClient = collectInternalRestClient;
+    }
 
-@UtilityClass
-public class RestApi {
 
-    public static final String COLLECT_PATH = "/collect-api/v1";
-    public static final String ARCHIVE_UNITS = "/archive-units";
-    public static final String PROJECTS = "/projects";
+    public void sendTransaction(String projectId) {
+        collectInternalRestClient.sendTransaction(getInternalHttpContext(), projectId);
+    }
 
-    public static final String TRANSACTIONS = "/transactions";
-    public static final String OBJECT_GROUPS = "/object-groups";
-    public static final String STREAM_UPLOAD_PATH = "/upload";
-    public static final String SEARCH = "/search";
+    public void validateTransaction(String projectId) {
+        collectInternalRestClient.validateTransaction(getInternalHttpContext(), projectId);
+    }
 
-    public static final String SEND_PATH = "/send";
-    public static final String VALIDATE_PATH = "/validate";
-    public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
-    public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + PROJECTS;
+    @Override
+    protected CollectInternalRestClient getClient() {
+        return collectInternalRestClient;
+    }
 
-    public static final String COLLECT_TRANSACTION_PATH = COLLECT_PATH + TRANSACTIONS;
-    public static final String COLLECT_PROJECT_ARCHIVE_UNITS_PATH = COLLECT_PATH + PROJECTS;
-    public static final String COLLECT_PROJECT_OBJECT_GROUPS_PATH = COLLECT_PATH + PROJECTS + OBJECT_GROUPS;
 
+    public CollectTransactionDto getTransactionById(String transactionId) {
+        return collectInternalRestClient.getTransactionById(getInternalHttpContext(), transactionId);
+    }
 }

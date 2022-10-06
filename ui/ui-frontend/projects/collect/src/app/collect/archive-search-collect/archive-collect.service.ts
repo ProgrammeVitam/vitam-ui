@@ -40,15 +40,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AccessContract, AccessContractApiService, SearchService } from 'ui-frontend-common';
-import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
+import { AccessContract, AccessContractApiService, SearchService, Transaction } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
+import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArchiveCollectService extends SearchService<any> {
-  projectId: string;
 
   constructor(
     private projectsApiService: ProjectsApiService,
@@ -59,6 +58,7 @@ export class ArchiveCollectService extends SearchService<any> {
   ) {
     super(http, projectsApiService, 'ALL');
   }
+  projectId: string;
 
   headers = new HttpHeaders();
 
@@ -70,12 +70,31 @@ export class ArchiveCollectService extends SearchService<any> {
     return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
   }
 
+  private static buildPagedResults(response: SearchResponse): PagedResult {
+    const pagedResult: PagedResult = {
+      results: response.$results,
+      totalResults: response.$hits.total,
+      pageNumbers:
+        +response.$hits.size !== 0
+          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
+          : 0,
+    };
+    pagedResult.facets = response.$facetResults;
+    return pagedResult;
+  }
+
   public getOntologiesFromJson(): Observable<any> {
     return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
   }
 
   sortByTitle(data: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
     return data.sort(byTitle(this.locale));
+  }
+
+  getTransactionById(transactionId: string): Observable<Transaction> {
+    return this.projectsApiService.getTransactionById(transactionId).pipe(
+      map((result) => result)
+    );
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string): Observable<PagedResult> {
@@ -89,7 +108,7 @@ export class ArchiveCollectService extends SearchService<any> {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
         }
         // Return other errors
-        return of({ $hits: null, $results: [] });
+        return of({$hits: null, $results: []});
       }),
       map((results) => ArchiveCollectService.buildPagedResults(results))
     );
@@ -110,19 +129,6 @@ export class ArchiveCollectService extends SearchService<any> {
         return of(-1);
       })
     );
-  }
-
-  private static buildPagedResults(response: SearchResponse): PagedResult {
-    const pagedResult: PagedResult = {
-      results: response.$results,
-      totalResults: response.$hits.total,
-      pageNumbers:
-        +response.$hits.size !== 0
-          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
-          : 0,
-    };
-    pagedResult.facets = response.$facetResults;
-    return pagedResult;
   }
 
   normalizeTitle(title: string): string {
@@ -171,6 +177,18 @@ export class ArchiveCollectService extends SearchService<any> {
     location.href = url;
   }
 
+  validateTransaction(id: string) {
+    return this.projectsApiService.validateTransaction(id);
+  }
+
+  sendTransaction(id: string) {
+    return this.projectsApiService.sendTransaction(id);
+  }
+
+  getProjectById(projectId: string) {
+    return this.projectsApiService.getById(projectId);
+  }
+
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
@@ -198,7 +216,6 @@ export class ArchiveCollectService extends SearchService<any> {
       }
     );
   }
-
 }
 
 function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingSchemeNode) => number {

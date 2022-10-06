@@ -46,18 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -84,9 +73,9 @@ public class ProjectController extends AbstractUiRestController {
     @GetMapping(params = {"page", "size"})
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
-        @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
+                                                                         @RequestParam final Integer size,
+                                                                         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
+                                                                         @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
             criteria,
@@ -156,5 +145,6 @@ public class ProjectController extends AbstractUiRestController {
         LOGGER.debug("Delete the Project with ID {}", id);
         projectService.deleteProject(id, buildUiHttpContext());
     }
+
 
 }
