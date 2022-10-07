@@ -79,6 +79,10 @@
                     <groupId>io.dropwizard.metrics</groupId>
                     <artifactId>metrics-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.mongodb</groupId>
+                    <artifactId>mongodb-driver-core</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -547,9 +551,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
-					<arguments>
-						<argument>--spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml</argument>
-					</arguments>
+                    <arguments>
+                        <argument>
+                            --spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml
+                        </argument>
+                    </arguments>
                 </configuration>
                 <executions>
                     <execution>
