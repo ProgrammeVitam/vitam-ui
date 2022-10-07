@@ -125,7 +125,7 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   }
 
   validateTransaction(id: string) {
-    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/close', {});
+    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/validate', {});
 
   }
 
