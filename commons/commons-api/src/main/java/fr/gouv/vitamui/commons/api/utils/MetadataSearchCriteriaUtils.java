@@ -48,7 +48,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -63,7 +62,6 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_HOLDING_UNIT;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_WITHOUT_OBJECTS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_WITH_OBJECTS;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CONTEXT_CALL_COLLECT;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
@@ -116,12 +114,12 @@ public final class MetadataSearchCriteriaUtils {
     private MetadataSearchCriteriaUtils() {
     }
 
-    public static JsonNode createDslQueryWithFacets(SearchCriteriaDto searchQuery, String... contextCall)
+    public static JsonNode createDslQueryWithFacets(SearchCriteriaDto searchQuery)
         throws VitamClientException, InvalidCreateOperationException {
 
         fillWaitingToComputeCriteria(searchQuery);
 
-        SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery, contextCall);
+        SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
         addPositionsNodesFacet(searchQuery, selectMultiQuery);
 
         if (searchQuery.isComputeFacets()) {
@@ -176,11 +174,10 @@ public final class MetadataSearchCriteriaUtils {
      * specific cases ( ARCHIVE_UNIT_WITH_OBJECTS && ARCHIVE_UNIT_WITHOUT_OBJECTS )
      *
      * @param searchQuery
-     * @param contextCall
      * @return
      * @throws VitamClientException
      */
-    public static SelectMultiQuery mapRequestToSelectMultiQuery(SearchCriteriaDto searchQuery, String... contextCall)
+    public static SelectMultiQuery mapRequestToSelectMultiQuery(SearchCriteriaDto searchQuery)
         throws VitamClientException {
         if (searchQuery == null) {
             throw new BadRequestException("Can't parse null criteria");
@@ -193,7 +190,7 @@ public final class MetadataSearchCriteriaUtils {
                 direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
                 orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
             }
-            selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList(), contextCall);
+            selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
             if (orderBy.isPresent()) {
                 if (DirectionDto.DESC.equals(direction.get())) {
                     selectMultiQuery.addOrderByDescFilter(orderBy.get());
@@ -214,8 +211,7 @@ public final class MetadataSearchCriteriaUtils {
         return selectMultiQuery;
     }
 
-    public static SelectMultiQuery createSelectMultiQuery(List<SearchCriteriaEltDto> criteriaList,
-        String... contextCall)
+    public static SelectMultiQuery createSelectMultiQuery(List<SearchCriteriaEltDto> criteriaList)
         throws InvalidParseOperationException, InvalidCreateOperationException {
         final BooleanQuery query = and();
         final SelectMultiQuery select = new SelectMultiQuery();
@@ -237,7 +233,7 @@ public final class MetadataSearchCriteriaUtils {
             select.addRoots(nodesCriteriaList.toArray(new String[nodesCriteriaList.size()]));
             query.setDepthLimit(DEFAULT_DEPTH);
         }
-        fillQueryFromCriteriaList(query, simpleCriteriaList, contextCall);
+        fillQueryFromCriteriaList(query, simpleCriteriaList);
         fillQueryFromMgtRulesCriteriaList(query, mgtRulesCriteriaList);
         if (query.isReady()) {
             select.setQuery(query);
@@ -916,8 +912,7 @@ public final class MetadataSearchCriteriaUtils {
             List.of(ArchiveSearchConsts.FALSE_CRITERIA_VALUE));
     }
 
-    public static void fillQueryFromCriteriaList(BooleanQuery queryToFill, List<SearchCriteriaEltDto> criteriaList,
-        String... contextCall)
+    public static void fillQueryFromCriteriaList(BooleanQuery queryToFill, List<SearchCriteriaEltDto> criteriaList)
         throws InvalidCreateOperationException {
         if (!CollectionUtils.isEmpty(criteriaList)) {
             for (SearchCriteriaEltDto searchCriteria : criteriaList) {
@@ -955,7 +950,7 @@ public final class MetadataSearchCriteriaUtils {
                     case ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA:
                         queryToFill.add(buildArchiveUnitTypeQuery(
                             searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
-                                Collectors.toList()), contextCall));
+                                Collectors.toList())));
                         break;
 
                     case ArchiveSearchConsts.DESCRIPTION_LEVEL_CRITERIA:
@@ -1096,10 +1091,14 @@ public final class MetadataSearchCriteriaUtils {
         return subQueryAnd;
     }
 
-    private static Query buildArchiveUnitTypeQuery(final List<String> searchValues, String... contextCall)
+    private static Query buildArchiveUnitTypeQuery(final List<String> searchValues)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryAnd = and();
         BooleanQuery subQueryOr = or();
+        final Query queryForIngestUnitType =
+            VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES,
+                ArchiveSearchConsts.ARCHIVE_UNIT_INGEST,
+                EQ);
         LOGGER.debug("The search criteria is on the unit type");
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
@@ -1118,34 +1117,16 @@ public final class MetadataSearchCriteriaUtils {
                         break;
 
                     case ARCHIVE_UNIT_WITH_OBJECTS:
-                        BooleanQuery subQueryAndForIngestWithObject = and();
-                        if (Arrays.stream(contextCall).noneMatch(elmt -> elmt.equals(CONTEXT_CALL_COLLECT))) {
-                            subQueryAndForIngestWithObject
-                                .add(
-                                    VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES,
-                                        ArchiveSearchConsts.ARCHIVE_UNIT_INGEST,
-                                        ArchiveSearchConsts.CriteriaOperators.EQ));
-                        }
-                        subQueryAndForIngestWithObject
-                            .add(VitamQueryHelper
-                                .buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_OBJECTS, value,
-                                    ArchiveSearchConsts.CriteriaOperators.EXISTS));
-                        subQueryOr.add(subQueryAndForIngestWithObject);
+                        final Query queryForExistedObjects = VitamQueryHelper
+                            .buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_OBJECTS, value,
+                                ArchiveSearchConsts.CriteriaOperators.EXISTS);
+                        subQueryOr.add(and().add(queryForIngestUnitType, queryForExistedObjects));
                         break;
                     case ARCHIVE_UNIT_WITHOUT_OBJECTS:
-                        BooleanQuery subQueryAndForIngestWithoutObjects = and();
-                        if (Arrays.stream(contextCall).noneMatch(elmt -> elmt.equals(CONTEXT_CALL_COLLECT))) {
-                            subQueryAndForIngestWithoutObjects
-                                .add(
-                                    VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES,
-                                        ArchiveSearchConsts.ARCHIVE_UNIT_INGEST,
-                                        ArchiveSearchConsts.CriteriaOperators.EQ));
-                        }
-                        subQueryAndForIngestWithoutObjects
-                            .add(VitamQueryHelper
-                                .buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_OBJECTS, value,
-                                    ArchiveSearchConsts.CriteriaOperators.MISSING));
-                        subQueryOr.add(subQueryAndForIngestWithoutObjects);
+                        final Query queryForMissingObjects = VitamQueryHelper
+                            .buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_OBJECTS, value,
+                                ArchiveSearchConsts.CriteriaOperators.MISSING);
+                        subQueryOr.add(and().add(queryForIngestUnitType, queryForMissingObjects));
                         break;
                     default:
                         LOGGER.error("Can not find binding for value: {}", searchValues);
