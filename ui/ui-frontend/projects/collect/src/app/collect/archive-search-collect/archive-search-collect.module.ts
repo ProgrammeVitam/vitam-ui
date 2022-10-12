@@ -72,6 +72,9 @@ import { SearchCriteriaSaverComponent } from './archive-search-criteria/componen
 import { SearchCriteriaSaverService } from './archive-search-criteria/services/search-criteria-saver.service';
 import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
 import { ConfirmActionModule } from './archive-search-criteria/components/search-criteria-list/confirm-action/confirm-action.module';
+import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
+import { ClassificationTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/classification-tree/classification-tree.component';
+import { MatTreeModule } from '@angular/material/tree';
 
 @NgModule({
   imports: [
@@ -86,7 +89,8 @@ import { ConfirmActionModule } from './archive-search-criteria/components/search
     MatTabsModule,
     MatDatepickerModule,
     MatDialogModule,
-    ConfirmActionModule
+    ConfirmActionModule,
+    MatTreeModule
   ],
   providers: [
     ArchiveSearchHelperService,
@@ -115,7 +119,9 @@ import { ConfirmActionModule } from './archive-search-criteria/components/search
     SearchAppraisalRulesFacetsComponent,
     SearchAccessRulesFacetsComponent,
     SearchCriteriaSaverComponent,
-    SearchCriteriaListComponent
+    SearchCriteriaListComponent,
+    FilingHoldingSchemeComponent,
+    ClassificationTreeComponent
   ],
 })
 export class ArchiveSearchCollectModule { }

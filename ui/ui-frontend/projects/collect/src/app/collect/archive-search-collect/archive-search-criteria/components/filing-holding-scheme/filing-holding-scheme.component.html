@@ -1,0 +1,32 @@
+<div class="vitamui-sidepanel-header">
+  <app-classification-tree
+    [accessContract]="accessContract"
+    [hasMatchesInSearch]="hasMatchesInSearch"
+    [loadingHolding]="loadingHolding"
+    [nestedDataSourceFull]="nestedDataSourceFull"
+    [nestedTreeControlFull]="nestedTreeControlFull"
+    [showEveryNodes]="showEveryNodes"
+    [loadingNodeUnit]="loadingArchiveUnit.TREE"
+    (closePanel)="emitClose()"
+    (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'TREE')"
+    (switchView)="switchViewAllNodes()"
+  ></app-classification-tree>
+
+</div>
+
+<!-- [applicationName]="'COLLECT'"
+     [tenantIdentifier]="tenantIdentifier" -->
+
+<div *ngIf="hasMatchesInSearch" vitamuiVerticalResizeSidebar="top"></div>
+
+<div class="vitamui-sidepanel-header flex-column" *ngIf="hasMatchesInSearch">
+  <!-- <app-leaves-tree
+    [accessContract]="accessContract"
+    [nestedDataSourceLeaves]="nestedDataSourceLeaves"
+    [originalRequestResultFacets]="requestResultFacets"
+    [loadingNodeUnit]="loadingArchiveUnit.LEAVE"
+    (addToSearchCriteria)="addToSearchCriteria($event)"
+    (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')"
+  >
+  </app-leaves-tree> -->
+</div>

@@ -83,6 +83,8 @@ public abstract class RestApi {
 
     public static final String FILING_PLAN_PATH = "/filingplan";
 
+    public static final String FILING_HOLDING_SCHEME_PATH = "/filling-holding-schema";
+
     public static final String PROBATIVE_VALUE_URL = PREFIX + "/probativevalue";
 
     public static final String LOGBOOK_MANAGEMENT_OPERATION_PATH = PREFIX + "/logbook-management-operation";

@@ -40,9 +40,6 @@ import { Observable } from 'rxjs';
 import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction } from 'ui-frontend-common';
 import { SearchCriteriaDto, SearchCriteriaHistory, SearchResponse } from '../models';
 
-
-
-
 @Injectable({
   providedIn: 'root',
 })
@@ -79,6 +76,16 @@ export class ProjectsApiService extends BaseHttpClient<any> {
     return super.getOne(projectId);
   }
 
+  // Manage Object Groups
+
+  getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number): string {
+    return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  }
+
+  public deletebyId(projectId: string) {
+    return this.http.delete<void>(`${this.apiUrl}/${projectId}`);
+  }
+
   // Manage Archive Units
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, headers?: HttpHeaders): Observable<SearchResponse> {
@@ -90,16 +97,6 @@ export class ProjectsApiService extends BaseHttpClient<any> {
       responseType: 'blob',
       headers,
     });
-  }
-
-  // Manage Object Groups
-
-  getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number): string {
-    return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
-  }
-
-  public deletebyId(projectId: string) {
-    return this.http.delete<void>(`${this.apiUrl}/${projectId}`);
   }
 
   // Manage AU search criteria save

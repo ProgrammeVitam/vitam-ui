@@ -49,6 +49,7 @@
     "RESULT": "result",
     "SELECTED": "selected",
     "ONE_SELECTED": "selected",
+    "SHOW_TREES_PLANS": "Show trees and plans",
     "UPLOAD": {
       "TRACKING_TITLE": "Files remittance in progress",
       "TERMINATED": "Files upload complete!",
@@ -522,6 +523,14 @@
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Character limit reached",
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
       "OBJECT_TYPE": "Saved Criterias Searches"
+    },
+    "FILING_SCHEMA": {
+      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "No trees or plans available for the access contract",
+      "SHOW_ENTIRE_TREE": "Show the entire tree",
+      "SHOW_TREE_PARENT": "Show only results",
+      "TREE_TITLE": "Trees and plans",
+      "TREE_LEAVES_TITLE": "Attachment position",
+      "LOAD_MORE_UNITS": "Load more results"
     }
   },
   "ACQUISITION_INFORMATION": {

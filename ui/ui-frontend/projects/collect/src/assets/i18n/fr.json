@@ -51,6 +51,7 @@
     "RESULT": "résultat",
     "SELECTED": "sélectionnés",
     "ONE_SELECTED": "sélectionné",
+    "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "ARCHIVE_UNIT": {
       "FIELDS": {
         "TITLE": "Intitulé",
@@ -564,6 +565,14 @@
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Limite de caractères atteinte",
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "Vous avez atteint le nombre de caractère maximal autorisé.",
       "OBJECT_TYPE": "recherche sauvegardée"
+    },
+    "FILING_SCHEMA": {
+      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbre ou Plan trouvés avec le contrat choisi",
+      "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
+      "SHOW_TREE_PARENT": "Afficher seulement les résultats",
+      "TREE_TITLE": "Arbres et plans",
+      "TREE_LEAVES_TITLE": "Position(s) de rattachement",
+      "LOAD_MORE_UNITS": "Charger plus d'éléments"
     }
   },
   "ACQUISITION_INFORMATION": {
