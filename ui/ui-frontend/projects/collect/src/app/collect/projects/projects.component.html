@@ -1,10 +1,18 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
-  <mat-sidenav [ngClass]="isLPExtended ? 'extended-lateral-panel' : 'normal-lateral-panel'" #panel mode="side"
-    position="end" [fixedInViewport]="true">
-    <app-project-preview *ngIf="projectId" [projectId]="projectId"
-     (previewClose)="closePanel()" (showExtendedLateralPanel)="showExtendedLateralPanel()"
-    (backToNormalLateralPanel)="backToNormalLateralPanel()">
+  <mat-sidenav
+    [ngClass]="isLPExtended ? 'extended-lateral-panel' : 'normal-lateral-panel'"
+    #panel
+    mode="side"
+    position="end"
+    [fixedInViewport]="true"
+  >
+    <app-project-preview
+      *ngIf="projectId"
+      [projectId]="projectId"
+      (previewClose)="closePanel()"
+      (showExtendedLateralPanel)="showExtendedLateralPanel()"
+      (backToNormalLateralPanel)="backToNormalLateralPanel()"
+    >
     </app-project-preview>
   </mat-sidenav>
 
@@ -12,17 +20,23 @@
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>{{ 'COLLECT.APP_BREADCRUMB' | translate }}</vitamui-common-title-breadcrumb>
       <vitamui-common-banner (search)="onSearch($event)" [searchbarPlaceholder]="'COLLECT.SEARCH_PLACEHOLDER' | translate">
-        <button (click)="openCreateProjectDialog()" class="btn primary"
-          matTooltip="{{ 'COLLECT.CREATE_PROJECT_TOOLTIP' | translate }}" matTooltipClass="vitamui-tooltip">
+        <button
+          (click)="openCreateProjectDialog()"
+          class="btn primary"
+          matTooltip="{{ 'COLLECT.CREATE_PROJECT_TOOLTIP' | translate }}"
+          matTooltipClass="vitamui-tooltip"
+        >
           <span>{{ 'COLLECT.CREATE_PROJECT' | translate }}</span>
         </button>
       </vitamui-common-banner>
     </div>
     <div class="vitamui-content">
-      <div>
-      </div>
+      <div></div>
       <div class="mt-3">
-        <app-project-list (previewProjectDetailsPanel)="openProjectDetailsPanel($event)"></app-project-list>
+        <app-project-list
+          [tenantIdentifier]="tenantIdentifier"
+          (previewProjectDetailsPanel)="openProjectDetailsPanel($event)"
+        ></app-project-list>
       </div>
     </div>
   </mat-sidenav-content>

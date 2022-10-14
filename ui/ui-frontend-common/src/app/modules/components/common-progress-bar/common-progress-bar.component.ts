@@ -44,7 +44,6 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./common-progress-bar.component.scss'],
 })
 export class CommonProgressBarComponent implements OnInit {
-
   @Input() hideCounter = false;
 
   @Input() set index(val: number) {
@@ -76,6 +75,6 @@ export class CommonProgressBarComponent implements OnInit {
   ngOnInit() {}
 
   getProgressValue(index: number, count: number): number {
-    return ((index) / count) * PROGRESS_BAR_MULTIPLICATOR;
+    return ((index + 1) / count) * PROGRESS_BAR_MULTIPLICATOR;
   }
 }

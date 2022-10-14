@@ -24,7 +24,7 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project } from 'ui-frontend-common';
@@ -36,6 +36,8 @@ import { ProjectsService } from '../projects.service';
   styleUrls: ['./project-list.component.css'],
 })
 export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
+  @Input()
+  tenantIdentifier: string;
   direction = Direction.DESCENDANT;
   orderBy = 'archivalAgreement';
   orderChange = new BehaviorSubject<string>(this.orderBy);
@@ -66,8 +68,8 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     this.orderChange.next(event);
   }
 
-  searchArchiveUnitsByProject(project: Project) {
-    this.router.navigate(['collect/archive-search-collect', project.id], { queryParams: { projectName: project.messageIdentifier } });
+  searchArchiveUnitsByProject(projectId: string) {
+    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/archive-search', projectId]);
   }
 
   showProjectDetails(projectId: string) {
