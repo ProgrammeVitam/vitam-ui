@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {SearchService, VitamUISnackBarService} from 'ui-frontend-common';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
-import {Agency} from '../../../../vitamui-library/src/lib/models/agency';
-import {AgencyApiService} from '../core/api/agency-api.service';
+import { Agency } from '../../../../vitamui-library/src/lib/models/agency';
+import { AgencyApiService } from '../core/api/agency-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -83,12 +83,9 @@ export class AgencyService extends SearchService<Agency> {
     return this.agencyApiService.create(agency, this.headers)
       .pipe(
         tap(
-          (response: Agency) => {
+          () => {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_CREATED',
-              translateParams:{
-                name: response.identifier,
-              },
               icon: 'vitamui-icon-admin-key'
             });
           },
@@ -104,12 +101,9 @@ export class AgencyService extends SearchService<Agency> {
       .pipe(
         tap((response) => this.updated.next(response)),
         tap(
-          (response) => {
+          () => {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_UPDATED',
-              translateParams:{
-                name: response.identifier,
-              },
               icon: 'vitamui-icon-admin-key'
             });
           },
@@ -126,17 +120,11 @@ export class AgencyService extends SearchService<Agency> {
           if (response === false) {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_DELETE_ERROR',
-              translateParams:{
-                name: agency.id,
-              },
               icon: 'vitamui-icon-admin-key'
             });
           } else {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_DELETED',
-              translateParams:{
-                name: agency.identifier,
-              },
               icon: 'vitamui-icon-admin-key'
             });
           }
@@ -159,7 +147,7 @@ export class AgencyService extends SearchService<Agency> {
         document.body.appendChild(a);
         a.style.display = 'none';
 
-        const blob = new Blob([response], {type: 'octet/stream'});
+        const blob = new Blob([ response ], { type: 'octet/stream' });
         const url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = 'agencies.csv';
@@ -172,6 +160,6 @@ export class AgencyService extends SearchService<Agency> {
   }
 
   setTenantId(tenantIdentifier: number) {
-    this.headers = new HttpHeaders({'X-Tenant-Id': tenantIdentifier.toString()});
+    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
   }
 }

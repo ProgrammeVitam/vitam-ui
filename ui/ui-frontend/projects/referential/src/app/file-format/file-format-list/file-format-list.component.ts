@@ -182,9 +182,6 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     ).subscribe(() => {
       this.snackBarService.open({
         message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETING',
-        translateParams:{
-          param1: fileFormat.puid,
-        },
         duration: 5000,
         icon: 'vitamui-icon-admin-key'
       });
