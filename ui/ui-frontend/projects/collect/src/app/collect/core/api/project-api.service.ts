@@ -40,13 +40,9 @@ import { Observable } from 'rxjs';
 import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction } from 'ui-frontend-common';
 import { SearchCriteriaDto, SearchCriteriaHistory, SearchResponse } from '../models';
 
-
-
-
 @Injectable({
   providedIn: 'root',
 })
-
 export class ProjectsApiService extends BaseHttpClient<any> {
   baseUrl: string;
   urlTransaction: string;
@@ -117,8 +113,25 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   }
 
   updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
-    return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
+    return this.http.put<SearchCriteriaHistory>(
+      `${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`,
+      searchCriteriaHistory
+    );
   }
+
+  updateUnitsAMetadata(transactionId: string, file: Blob, headers: HttpHeaders): Observable<string> {
+    return this.http.put(`${this.urlTransaction}/${transactionId}/update-units-metadata`, file, {
+      responseType: 'text',
+      headers,
+    });
+  }
+
+  // updateUnits(id: string, headers?: HttpHeaders): Observable<string> {
+  //   return this.http.put(`${this.urlTransaction}/${id}/update-units-metadata`, '', {
+  //     responseType: 'text',
+  //     headers,
+  //   });
+  // }
 
   public getTransactionById(transactionId: string): Observable<Transaction> {
     return this.http.get<Transaction>(this.urlTransaction + '/' + transactionId);

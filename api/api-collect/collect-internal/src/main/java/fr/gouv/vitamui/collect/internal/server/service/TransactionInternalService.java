@@ -39,9 +39,11 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 
 import javax.ws.rs.core.Response;
+import java.util.concurrent.TimeUnit;
 
 public class TransactionInternalService {
 
@@ -90,6 +92,17 @@ public class TransactionInternalService {
             throw new VitamClientException("Unable to find transaction : ", e);
         }
 
+
+    }
+
+    public String updateUAMetadata(String transactionId) throws PreconditionFailedException, InterruptedException {
+
+        TimeUnit.SECONDS.sleep(6);
+        if(transactionId.equals("aeeaaaaaaghkr2dfdtfaav4aamdzwrgzoiaaaaq"))
+        {
+            throw new PreconditionFailedException("salam chef", "salam");
+        }
+            return transactionId;
 
     }
 }

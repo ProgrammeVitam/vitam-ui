@@ -95,5 +95,13 @@ public class TransactionExternalController {
         return transactionExternalService.getTransactionById(id);
     }
 
+    @PutMapping(CommonConstants.PATH_ID + "/update-units-metadata")
+    public String updateUAMetadata(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("The project id {} ", id);
+        return transactionExternalService.updateUAMetadata(id);
+    }
 
 }

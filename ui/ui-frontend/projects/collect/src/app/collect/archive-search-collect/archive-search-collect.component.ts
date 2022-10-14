@@ -25,25 +25,27 @@
  * accept its terms.
  */
 
-import {HttpErrorResponse} from '@angular/common/http';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, merge, Subject, Subscription} from 'rxjs';
-import {debounceTime, map, mergeMap} from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, merge, Subject, Subscription } from 'rxjs';
+import { debounceTime, map, mergeMap } from 'rxjs/operators';
 import {
   AccessContract,
   Direction,
   ExternalParameters,
   ExternalParametersService,
   GlobalEventService,
+  Project,
+  ProjectStatus,
   SidenavPage,
   Transaction,
-  TransactionStatus
+  TransactionStatus,
 } from 'ui-frontend-common';
-import {Unit} from 'vitamui-library/lib/models/unit.interface';
+import { Unit } from 'vitamui-library/lib/models/unit.interface';
 import {
   ArchiveSearchResultFacets,
   CriteriaValue,
@@ -56,15 +58,14 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum
+  SearchCriteriaTypeEnum,
 } from '../core/models';
-import {ArchiveCollectService} from './archive-collect.service';
-import {
-  SearchCriteriaSaverComponent
-} from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
-import {ArchiveFacetsService} from './archive-search-criteria/services/archive-facets.service';
-import {ArchiveSearchHelperService} from './archive-search-criteria/services/archive-search-helper.service';
-import {ArchiveSharedDataService} from './archive-search-criteria/services/archive-shared-data.service';
+import { ArchiveCollectService } from './archive-collect.service';
+import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
+import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
+import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
+import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
+import { UpdateUnitsaMetadataComponent } from './update-ua-metadata/update-ua-metadata.component';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -86,6 +87,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   subscriptionSimpleSearchCriteriaAdd: Subscription;
   subscriptionNodes: Subscription;
   searchCriteriaChangeSubscription: Subscription;
+  uaMetadataUpdateDialogSub: Subscription;
 
   transaction: Transaction;
   projectId: string;
@@ -126,7 +128,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   hasResults = false;
   pageNumbers = 0;
   canLoadMore = false;
-  projectName: string;
 
   // Facets properties
   pendingGetFixedCount = false;
@@ -143,6 +144,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   isNotOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   isNotReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
+  projectDetails: Project;
+  tenantIdentifier: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -198,24 +201,29 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.subscriptionNodes?.unsubscribe();
     this.errorMessageSub?.unsubscribe();
     this.searchCriteriaChangeSubscription?.unsubscribe();
+    this.uaMetadataUpdateDialogSub?.unsubscribe();
   }
 
   ngOnInit(): void {
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
-    this.transactionSubscription = this.route.params.pipe(mergeMap((params) => {
-      this.projectId = params.id;
-      return this.archiveUnitCollectService.getProjectById(this.projectId);
-    }), mergeMap(project => {
-      return this.archiveUnitCollectService.getTransactionById(project.transactionId)
-    })).subscribe(transaction => {
-      this.transaction = transaction;
-      this.isNotOpen$.next(this.transaction.status !== TransactionStatus.OPEN);
-      this.isNotReady$.next(this.transaction.status !== TransactionStatus.READY);
-    })
-    ;
-    this.projectName = this.route.snapshot.queryParamMap.get('projectName');
-
+    this.transactionSubscription = this.route.params
+      .pipe(
+        mergeMap((params) => {
+          this.projectId = params.id;
+          this.tenantIdentifier = params.tenantIdentifier;
+          return this.archiveUnitCollectService.getProjectById(this.projectId);
+        }),
+        mergeMap((project) => {
+          this.projectDetails = project;
+          return this.archiveUnitCollectService.getTransactionById(project.transactionId);
+        })
+      )
+      .subscribe((transaction) => {
+        this.transaction = transaction;
+        this.isNotOpen$.next(this.transaction.status !== TransactionStatus.OPEN);
+        this.isNotReady$.next(this.transaction.status !== TransactionStatus.READY);
+      });
 
     this.searchCriteriaKeys = [];
     this.searchCriterias = new Map();
@@ -288,7 +296,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
-    for (let mgtRuleType in SearchCriteriaMgtRuleEnum) {
+    for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
@@ -800,7 +808,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     );
   }
 
-
   validateTransaction() {
     this.archiveUnitCollectService.validateTransaction(this.transaction.id).subscribe(() => {
       this.isNotOpen$.next(true);
@@ -822,5 +829,30 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         duration: 10000,
       });
     });
+  }
+
+  // Udpate UA
+
+  openUpdateUnitsForm() {
+    const dialogRef = this.dialog.open(UpdateUnitsaMetadataComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: true,
+      data: {
+        selectedProject: this.projectDetails,
+        tenantIdentifier: this.tenantIdentifier,
+      },
+    });
+
+    this.uaMetadataUpdateDialogSub = dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        return;
+      }
+    });
+  }
+
+  updateMetadataDisabled(project: Project): boolean {
+    if (project) {
+      return project.status !== ProjectStatus.OPEN;
+    }
   }
 }

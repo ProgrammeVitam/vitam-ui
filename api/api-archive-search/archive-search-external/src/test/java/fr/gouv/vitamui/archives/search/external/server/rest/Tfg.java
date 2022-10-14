@@ -23,56 +23,11 @@
  *
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
+ *
+ *
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project } from 'ui-frontend-common';
-import { ProjectsService } from '../projects.service';
 
-@Component({
-  selector: 'app-project-list',
-  templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.css'],
-})
-export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
-  @Input()
-  tenantIdentifier: string;
-  direction = Direction.DESCENDANT;
-  orderBy = 'archivalAgreement';
-  orderChange = new BehaviorSubject<string>(this.orderBy);
+package fr.gouv.vitamui.archives.search.external.server.rest;
 
-  @Output()
-  previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
-
-  constructor(public projectsService: ProjectsService, private router: Router) {
-    super(projectsService);
-  }
-
-  ngOnInit(): void {
-    this.searchProject();
-  }
-
-  ngOnDestroy(): void {}
-
-  searchProject() {
-    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction);
-    super.search(pageRequest);
-  }
-
-  onScroll() {
-    this.loadMore();
-  }
-
-  emitOrderChange(event: string) {
-    this.orderChange.next(event);
-  }
-
-  searchArchiveUnitsByProject(projectId: string) {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/archive-search', projectId]);
-  }
-
-  showProjectDetails(projectId: string) {
-    this.previewProjectDetailsPanel.emit(projectId);
-  }
+public class Tfg {
 }

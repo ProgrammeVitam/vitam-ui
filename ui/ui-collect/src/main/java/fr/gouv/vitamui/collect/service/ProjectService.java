@@ -28,7 +28,6 @@
 package fr.gouv.vitamui.collect.service;
 
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
-import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;

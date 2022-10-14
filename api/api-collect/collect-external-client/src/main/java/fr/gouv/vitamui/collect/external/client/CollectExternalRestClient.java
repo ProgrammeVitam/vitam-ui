@@ -123,6 +123,14 @@ public class CollectExternalRestClient
             request, Resource.class);
     }
 
+
+    public ResponseEntity<String> updateUAMetadata(final ExternalHttpContext context, String transactionId) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID + "/update-units-metadata" );
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, String.class);
+    }
+
     public void sendTransaction(ExternalHttpContext context, String transactionId) {
 
         final UriComponentsBuilder uriBuilder =

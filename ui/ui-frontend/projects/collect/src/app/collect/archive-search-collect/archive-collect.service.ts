@@ -48,7 +48,6 @@ import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteria
   providedIn: 'root',
 })
 export class ArchiveCollectService extends SearchService<any> {
-
   constructor(
     private projectsApiService: ProjectsApiService,
     http: HttpClient,
@@ -92,9 +91,7 @@ export class ArchiveCollectService extends SearchService<any> {
   }
 
   getTransactionById(transactionId: string): Observable<Transaction> {
-    return this.projectsApiService.getTransactionById(transactionId).pipe(
-      map((result) => result)
-    );
+    return this.projectsApiService.getTransactionById(transactionId).pipe(map((result) => result));
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string): Observable<PagedResult> {
@@ -108,7 +105,7 @@ export class ArchiveCollectService extends SearchService<any> {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
         }
         // Return other errors
-        return of({$hits: null, $results: []});
+        return of({ $hits: null, $results: [] });
       }),
       map((results) => ArchiveCollectService.buildPagedResults(results))
     );
@@ -216,6 +213,27 @@ export class ArchiveCollectService extends SearchService<any> {
       }
     );
   }
+
+  // update metadata CSV file
+
+  updateUnitsAMetadata(tenantIdentifier: string, csvFile: Blob, fileName: string, transactionId: string): Observable<string> {
+    let headers = new HttpHeaders();
+    headers = headers.append('X-Tenant-Id', tenantIdentifier);
+    headers = headers.append('Content-Type', 'application/octet-stream');
+    headers = headers.append('fileName', fileName);
+
+    return this.projectsApiService.updateUnitsAMetadata(transactionId, csvFile, headers);
+  }
+
+  // updateT(tenantIdentifier: string, fileName: string, accessContract: string, transactionId: string): Observable<string> {
+  //   let headers = new HttpHeaders();
+  //   headers = headers.append('X-Tenant-Id', tenantIdentifier);
+  //   headers = headers.append('Content-Type', 'application/octet-stream');
+  //   headers = headers.append('fileName', fileName);
+  //   headers = headers.append('X-Access-Contract-Id', accessContract);
+
+  //   return this.projectsApiService.updateUnits(transactionId, headers);
+  // }
 }
 
 function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingSchemeNode) => number {

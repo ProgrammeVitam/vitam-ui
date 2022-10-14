@@ -41,13 +41,18 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 
 @Api(tags = "Collect")
 @RestController
@@ -97,11 +102,19 @@ public class TransactionController extends AbstractUiRestController {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the transaction with ID {}", id);
-        final HttpServletRequest request = getCurrentHttpRequest();
         return transactionService.getTransactionById(buildUiHttpContext(), id);
     }
 
-
+    @ApiOperation(value = "Delete project")
+    @PutMapping( CommonConstants.PATH_ID + "/update-units-metadata")
+    @ResponseStatus(HttpStatus.OK)
+    public String update(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Delete the Project with ID {}", id);
+        return transactionService.update(id, buildUiHttpContext()).getBody();
+    }
 
 
 }

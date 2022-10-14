@@ -29,6 +29,13 @@
     <ng-container *ngSwitchCase="'thresholdExceeded'">
       {{ 'COLLECT.ELIMINATION.THRESHOLD_EXCEEDED' | translate }}
     </ng-container>
+    <ng-container *ngSwitchCase="'waitMassUpdateUnitsMetadata'">
+      {{ 'COLLECT.UPDATE_UNITS_METADATA.WAIT_MESSAGE' | translate }}
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'massUpdateUnitsMetadata'">
+      {{ 'COLLECT.UPDATE_UNITS_METADATA.SUCCESS_MESSAGE' | translate }}
+    </ng-container>
   </span>
 
   <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
