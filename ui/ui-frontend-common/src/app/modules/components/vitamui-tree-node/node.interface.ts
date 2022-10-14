@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Id} from "../../models";
+import { Id } from '../../models';
 
 export interface FilingHoldingSchemeNode extends Id {
   title: string;
@@ -43,33 +43,39 @@ export interface FilingHoldingSchemeNode extends Id {
   descriptionLevel?: string;
   label?: string;
   children: FilingHoldingSchemeNode[];
-  parents: FilingHoldingSchemeNode[];
   vitamId: string;
+  // DISPLAY
   disabledChild?: boolean;
   disabled?: boolean;
   checked: boolean;
   count?: number;
   hidden?: boolean;
+
   isLoadingChildren?: boolean;
+  // help to keep tracks on what has been loaded
+  childrenLoaded?: number;
   canLoadMoreChildren?: boolean;
+
+  matchingChildrenLoaded?: number;
+  canLoadMoreMatchingChildren?: boolean;
+  toggled?: boolean;
 }
 
 export const nodeHasChildren = (node: FilingHoldingSchemeNode): boolean => {
   return node.children && node.children.length > 0;
-}
+};
 
 export const nodeHasMatch = (node: FilingHoldingSchemeNode): boolean => {
   return node.count && node.count > 0;
-}
+};
 
-export const copyNodeWhithoutChildren = (node: FilingHoldingSchemeNode): FilingHoldingSchemeNode => {
+export const copyNodeWithoutChildren = (node: FilingHoldingSchemeNode): FilingHoldingSchemeNode => {
   return {
     id: node.id,
     title: node.title,
     type: node.type,
     label: node.label,
     children: null,
-    parents: null,
     vitamId: node.vitamId,
     checked: node.checked,
     count: node.count,
@@ -77,5 +83,34 @@ export const copyNodeWhithoutChildren = (node: FilingHoldingSchemeNode): FilingH
     hidden: node.hidden,
     isLoadingChildren: false,
     canLoadMoreChildren: true,
+    canLoadMoreMatchingChildren: true,
   };
+};
+
+
+export class MatchingNodesNumbers {
+  nodesAdded: number;
+  nodesAddedList: FilingHoldingSchemeNode[];
+  nodesUpdated: number;
+  nodesFoundButUnchanged: number;
+
+  constructor() {
+    this.nodesAddedList = [];
+    this.nodesAdded = 0;
+    this.nodesUpdated = 0;
+    this.nodesFoundButUnchanged = 0;
+  }
+
+  addNode(node: FilingHoldingSchemeNode) {
+    this.nodesAddedList.push(node);
+    this.nodesAdded += 1;
+  }
+
+  incrementUpdated() {
+    this.nodesUpdated += 1;
+  }
+
+  incrementFoundButUnchanged() {
+    this.nodesFoundButUnchanged += 1;
+  }
 }
