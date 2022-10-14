@@ -53,7 +53,6 @@ public class SanityCheckerTest {
     private final String TEST_BAD_JSON = "bad_json";
     private final String TEST_GOOD_JSON = "good_json_sanity";
     private final String TEST_GOOD_JSON_CRITERIA = "good_criteria.json";
-    private final String TEST_BAD_JSON_CRITERIA = "bad_criteria.json";
 
     @Before
     public void setUp() {
@@ -141,6 +140,7 @@ public class SanityCheckerTest {
     @Test(expected = InvalidSanitizeCriteriaException.class)
     public void givenCriteriaWhenBadSanityThenReturnException()
         throws FileNotFoundException, InvalidParseOperationException {
+        final String TEST_BAD_JSON_CRITERIA = "bad_criteria.json";
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON_CRITERIA);
         final JsonNode json = JsonHandler.getFromFile(file);
         SanityChecker.sanitizeCriteria(Optional.of(json.toString()));
@@ -267,6 +267,18 @@ public class SanityCheckerTest {
     @Test
     public void isValidParameterName_tests() {
         assertTrue(SanityChecker.isValidParameterName("vitamui-primary"));
+    }
+
+    @Test
+    public void givenJsonWithLongKeyThenReturnTrue()
+        throws FileNotFoundException, InvalidParseOperationException, PreconditionFailedException {
+        final String JSON_WITH_LONG_KEY = "json_with_long_key.json";
+        final File file = PropertiesUtils.findFile(JSON_WITH_LONG_KEY);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        assertThatCode(() ->
+            SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).
+            doesNotThrowAnyException();
+
     }
 
 }
