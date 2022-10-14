@@ -37,6 +37,8 @@ import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestCli
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClientFactory;
 import fr.gouv.vitamui.collect.external.client.SearchCriteriaHistoryExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.SearchCriteriaHistoryExternalRestClientCollectFactory;
+import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClient;
+import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClientFactory;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -117,7 +119,7 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     }
 
     @Bean
-    public CollectExternalWebClient archiveSearchExternalWebClient(
+    public CollectExternalWebClient collectExternalWebClient(
         final CollectExternalWebClientFactory collectExternalWebClientFactory) {
         return collectExternalWebClientFactory.getCollectExternalWebClient();
     }
@@ -137,4 +139,18 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
         return factory.getSearchCriteriaHistoryExternalRestClient();
     }
 
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public UpdateUnitsMetadataExternalRestClientFactory updateUnitsMetadataExternalRestClientFactory(
+        final CollectApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
+        return new UpdateUnitsMetadataExternalRestClientFactory(uiProperties.getUpdateUnitsMetadataExternalClient(), restTemplateBuilder);
+    }
+
+    @Bean
+    public UpdateUnitsMetadataExternalRestClient updateUnitsMetadataExternalRestClient(
+        final UpdateUnitsMetadataExternalRestClientFactory updateUnitsMetadataExternalRestClientFactory) {
+        return updateUnitsMetadataExternalRestClientFactory.getUpdateUnitsMetadataExternalRestClient();
+    }
 }

@@ -1,14 +1,5 @@
 package fr.gouv.vitamui.commons.rest.error;
 
-import javax.ws.rs.HttpMethod;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -17,9 +8,18 @@ import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NoRightsException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.api.exception.RouteNotFoundException;
 import fr.gouv.vitamui.commons.api.exception.ValidationException;
 import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.ws.rs.HttpMethod;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Import(ApiErrorGenerator.class)
@@ -91,6 +91,11 @@ public class ApiErrorTest {
     @Test(expected = NotImplementedException.class)
     public void testNotImplementedException() {
         throw ApiErrorGenerator.getNotImplementedException();
+    }
+
+    @Test(expected = RequestTimeOutException.class)
+    public void testRequestTimeOutException() {
+        throw ApiErrorGenerator.getRequestTimeOutException();
     }
 
 }

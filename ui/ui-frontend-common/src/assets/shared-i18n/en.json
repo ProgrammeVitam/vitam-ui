@@ -48,7 +48,8 @@
       "HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION": "The added object is invalid and not proper, please correct it",
       "CLIENT_ERROR_START": "A technical error has occurred: invalid request",
       "SERVER_ERROR_START": "A technical error has occurred: internal error",
-      "TIME_OUT_ERROR": "A technical error has occurred: the server is not responding."
+      "TIME_OUT_ERROR": "A technical error has occurred: the server is not responding.",
+      "HTTP_STATUS_CODE_REQUEST_TIMEOUT": "Update operation failed. Please review the csv file to verify compliance of expected metadata and referenced archival units."
     }
   },
   "COLOR": {

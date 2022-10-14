@@ -1,0 +1,43 @@
+spring:
+  api:
+    name: API Collect - Collecter des archives
+    description: Ces APIS sont utilisés pour configurer la partie Collect external
+    version: v1
+  cloud:
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
+    consul:
+      enabled: false
+      config:
+        enabled: false
+
+collect-external:
+  security-client:
+    server-host: localhost
+    server-port: 8084
+    secure: false
+  iam-internal-client:
+    server-host: localhost
+    server-port: 7083
+    secure: false
+  collect-internal-client:
+    server-host: localhost
+    server-port: 7090
+    secure: false
+  update-units-metadata-internal-client:
+    server-host: localhost
+    server-port: 7090
+    secure: false
+    connect-time-out: 30   #30 secondes
+    read-time-out: 240000  #4 minutes
+    write-time-out: 240000 #4 minutes
+
+server-identity:
+  identityName: vitamui-test
+  identityRole: iam
+  identityServerId: 1
+
+swagger:
+  layer: api-external

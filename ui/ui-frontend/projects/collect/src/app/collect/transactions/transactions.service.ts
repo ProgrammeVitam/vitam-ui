@@ -24,40 +24,30 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {
-  DEFAULT_PAGE_SIZE, Direction,
-  PageRequest,
-  PaginatedResponse, Project,
-  SearchService,
-  Transaction
-} from 'ui-frontend-common';
-import {ProjectsApiService} from '../core/api/project-api.service';
-import {TransactionApiService} from '../core/api/transaction-api.service';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { DEFAULT_PAGE_SIZE, Direction, PageRequest, PaginatedResponse, Project, SearchService, Transaction } from 'ui-frontend-common';
+import { ProjectsApiService } from '../core/api/project-api.service';
+import { TransactionApiService } from '../core/api/transaction-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionsService extends SearchService<Transaction> {
-
-
   transactions$: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]);
   project$: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
-
 
   constructor(http: HttpClient, private transactionApiService: TransactionApiService, private projectApiService: ProjectsApiService) {
     super(http, transactionApiService, 'ALL');
   }
 
-
-  public getTransactionsByProjectId(projectId: string,
-                                    pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT))
-    : Observable<PaginatedResponse<Transaction>> {
+  public getTransactionsByProjectId(
+    projectId: string,
+    pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT)
+  ): Observable<PaginatedResponse<Transaction>> {
     this.pageRequest = pageRequest;
     return this.projectApiService.getTransactionsByProjectId(this.pageRequest, projectId);
-
   }
 
   public getProject$(): Observable<Project> {

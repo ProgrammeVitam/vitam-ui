@@ -124,6 +124,25 @@ ui-collect:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
+  update-units-metadata-external-client:
+    server-host: {{ vitamui.collect_external.host }}
+    server-port: {{ vitamui.collect_external.port_service }}
+{% if vitamui.collect_external.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.collect_external.secure | default(secure) | lower }}
+    connect-time-out: {{ vitamui.collect_external.connect_timeout | default(30) }}
+    read-time-out: {{ vitamui.collect_external.read_timeout | default(240000) }}
+    write-time-out: {{ vitamui.collect_external.write_timeout | default(240000) }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
+
   assets: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
   base-url:
 {% if vitamui.portal.base_url is defined %}

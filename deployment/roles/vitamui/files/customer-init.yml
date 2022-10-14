@@ -246,6 +246,7 @@ customer-init:
         - ROLE_CREATE_TRANSACTIONS
         - ROLE_UPDATE_TRANSACTIONS
         - ROLE_DELETE_TRANSACTIONS
+        - ROLE_UPDATE_UNITS_METADATA
 
   # Other Default profiles for admin group
   admin-profiles:

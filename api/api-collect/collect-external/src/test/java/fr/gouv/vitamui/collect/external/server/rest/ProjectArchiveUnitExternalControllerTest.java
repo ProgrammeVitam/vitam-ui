@@ -58,7 +58,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = {TransactionArchiveUnitExternalController.class})
-public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectExternalControllerTest<IdDto> {
+public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalControllerTest.class);

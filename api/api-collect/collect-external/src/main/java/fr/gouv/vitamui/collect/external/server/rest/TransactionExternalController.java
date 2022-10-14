@@ -26,9 +26,7 @@
  */
 package fr.gouv.vitamui.collect.external.server.rest;
 
-import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.TransactionExternalService;
@@ -42,10 +40,24 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
+import java.io.InputStream;
+
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.REOPEN_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 
 /**
  * Transaction External controller
@@ -129,4 +141,17 @@ public class TransactionExternalController {
     }
 
 
+    @Secured(ServicesData.ROLE_UPDATE_UNITS_METADATA)
+    @ApiOperation(value = "Upload on streaming metadata file and update archive units", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PutMapping(value = CommonConstants.TRANSACTION_PATH_ID  +  UPDATE_UNITS_METADATA_PATH,
+        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId, InputStream inputStream,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(" [External] The transactionId is a mandatory parameter: ", transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
+        SanityChecker.isValidFileName(originalFileName);
+        LOGGER.debug("[External] Calling update archive units metadata for transaction Id  {} ", transactionId);
+        return transactionExternalService.updateArchiveUnitsFromFile(transactionId, inputStream, originalFileName);
+    }
 }

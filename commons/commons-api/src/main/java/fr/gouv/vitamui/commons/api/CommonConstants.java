@@ -334,6 +334,8 @@ public class CommonConstants {
 
     public static final String APPLICATION_ID = "applicationId";
 
+    public static final String TRANSACTION_PATH_ID = "/{transactionId}";
+
     /**
      * Constants of ingest operations
      */
