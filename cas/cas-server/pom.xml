@@ -517,6 +517,7 @@
                                 <exclude>WEB-INF/lib/oauth2-oidc-sdk-*.jar</exclude>
                                 <exclude>WEB-INF/lib/pac4j-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-webmvc-pac4j-*.jar</exclude>
+                                <exclude>WEB-INF/lib/spring-expression-*.jar</exclude>
                             </excludes>
                         </overlay>
                     </overlays>
