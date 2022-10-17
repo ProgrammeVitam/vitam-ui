@@ -93,7 +93,7 @@ public class IngestGeneratorODTFile {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestGeneratorODTFile.class);
     public static final String FIRST_TITLE = "Bordereau de versement d'archives";
-    public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossiers:";
+    public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossier:";
     private static final String NO_TEXT = "_ _ _ _" ;
     private static final String LOGO_PATH = "/logo_ministere.";
 
