@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {SearchService, VitamUISnackBarService} from 'ui-frontend-common';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
-import {SecurityProfile} from 'projects/vitamui-library/src/lib/models/security-profile';
-import {SecurityProfileApiService} from '../core/api/security-profile-api.service';
+import { SecurityProfile } from 'projects/vitamui-library/src/lib/models/security-profile';
+import { SecurityProfileApiService } from '../core/api/security-profile-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -83,12 +83,9 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
     return this.securityProfileApiService.create(profile, this.headers)
       .pipe(
         tap(
-          (response: SecurityProfile) => {
+          (_: SecurityProfile) => {
             this.snackBarService.open({
               message: 'SNACKBAR.SECURITY_CREATED',
-              translateParams:{
-                name: response.identifier,
-              },
               icon: 'vitamui-icon-admin-key'
             });
           },
@@ -104,12 +101,9 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
       .pipe(
         tap((response) => this.updated.next(response)),
         tap(
-          (response) => {
+          (_) => {
             this.snackBarService.open({
               message: 'SNACKBAR.SECURITY_UPDATED',
-              translateParams:{
-                name: response.identifier,
-              },
               icon: 'vitamui-icon-admin-key'
             });
           },
@@ -125,9 +119,6 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
       tap(() => {
           this.snackBarService.open({
             message: 'SNACKBAR.SECURITY_DELETED',
-            translateParams:{
-              name: profile.identifier,
-            },
             icon: 'vitamui-icon-admin-key'
           });
         },

@@ -48,10 +48,10 @@ import {
   ExternalParameters,
   ExternalParametersService,
   SearchService,
+  VitamUISnackBarService,
 } from 'ui-frontend-common';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
 import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
-import { VitamUISnackBarService } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root',
@@ -90,7 +90,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
         this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.STORED_AND_UPDATED),
         this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.UNSTORED)
       ),
-      map(([storedAndCompleted, storedAndUpdated, unstored]) => {
+      map(([ storedAndCompleted, storedAndUpdated, unstored ]) => {
         const data = [
           { value: AccessionRegisterStatus.STORED_AND_COMPLETED, label: storedAndCompleted },
           { value: AccessionRegisterStatus.STORED_AND_UPDATED, label: storedAndUpdated },
@@ -121,7 +121,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
       (errors: HttpErrorResponse) => {
         if (errors.status === 413) {
           console.log('Please update filter to reduce size of response' + errors.message);
-          
+
           this.snackBarService.open({
             message: 'SNACKBAR.EXPORT_CSV_LIMIT_REACHED',
             icon: 'vitamui-icon vitamui-icon-admin-key',
