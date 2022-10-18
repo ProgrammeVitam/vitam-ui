@@ -38,12 +38,13 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import {TranslateModule} from '@ngx-translate/core';
-import {ConfirmDialogModule} from 'ui-frontend-common';
+import {ConfirmDialogModule, VitamUICommonModule} from 'ui-frontend-common';
 import {ConfirmActionComponent} from './confirm-action.component';
 
 @NgModule({
   declarations: [ConfirmActionComponent],
   imports: [
+    VitamUICommonModule
     CommonModule,
     MatDialogModule,
     ConfirmDialogModule,
