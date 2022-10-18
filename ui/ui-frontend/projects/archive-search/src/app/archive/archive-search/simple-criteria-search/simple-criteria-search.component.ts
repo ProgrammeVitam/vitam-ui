@@ -117,6 +117,16 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       });
     });
 
+    this.translateService.onLangChange.subscribe(() => {
+      if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITH_OBJECTS)) {
+        this.manageUnitObjectUnitCriteria(ARCHIVE_UNIT_WITH_OBJECTS);
+      }
+
+      if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITHOUT_OBJECTS)) {
+        this.manageUnitObjectUnitCriteria(ARCHIVE_UNIT_WITHOUT_OBJECTS);
+      }
+    });
+
     this.previousSimpleCriteriaValue = {
       title: '',
       identifier: '',
@@ -466,6 +476,21 @@ export class SimpleCriteriaSearchComponent implements OnInit {
 
   emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {
     this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.REMOVE });
+  }
+
+  manageUnitObjectUnitCriteria(unitObjectProperty: string) {
+    this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: unitObjectProperty, id: unitObjectProperty });
+    this.addCriteria(
+      ALL_ARCHIVE_UNIT_TYPES,
+      { value: unitObjectProperty, id: unitObjectProperty },
+      this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + unitObjectProperty),
+      true,
+      CriteriaOperator.EQ,
+      false,
+      CriteriaDataType.STRING,
+      SearchCriteriaTypeEnum.FIELDS
+    );
+    this.archiveUnitTypesCriteria.set(unitObjectProperty, true);
   }
 
   get guid() {
