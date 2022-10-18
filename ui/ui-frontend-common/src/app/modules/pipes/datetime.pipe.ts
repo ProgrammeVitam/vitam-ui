@@ -35,19 +35,70 @@ export class DateTimePipe implements PipeTransform {
 
   transform(value: any, format?: string, local?: string): any {
     if (value) {
-      if (!String(value).endsWith('Z')) {
-        value = value + 'Z';
-      }
-      const hours = (new Date().getTimezoneOffset() / 60) * -1;
-      let timezone = 'UTC';
+      value = this.formatDateTime(value);
+      return this.datePipe.transform(value, format, this.getTimezone(), local);
+    }
+  }
 
-      if (hours < 0) {
-        timezone = 'UTC' + hours;
-      } else if (hours > 0) {
-        timezone = 'UTC+' + hours;
-      }
+  private getTimezone(): string {
+    const hours = (new Date().getTimezoneOffset() / 60) * -1;
+    let timezone = 'UTC';
 
-      return this.datePipe.transform(value, format, timezone, local);
+    if (hours < 0) {
+      timezone = 'UTC' + hours;
+    } else if (hours > 0) {
+      timezone = 'UTC+' + hours;
+    }
+    return timezone;
+  }
+
+  formatDateTime(value): string {
+    const day = this.getDay(new Date(value).getDate());
+    const year = new Date(value).getFullYear();
+    const month = this.getMonth(new Date(value).getMonth() + 1);
+    const hour = this.getHour(new Date(value).getHours());
+    const minutes = this.getMinutes(new Date(value).getMinutes());
+    const seconds = this.getSeconds(new Date(value).getSeconds());
+    return year.toString() + '-' + month + '-' + day + 'T' + hour + ':' + minutes + ':' + seconds + '.000Z';
+  }
+
+  getMonth(num: number): string {
+    if (num > 9) {
+      return num.toString();
+    } else {
+      return '0' + num.toString();
+    }
+  }
+
+  getDay(day: number): string {
+    if (day > 9) {
+      return day.toString();
+    } else {
+      return '0' + day.toString();
+    }
+  }
+
+  getHour(hour: number): string {
+    if (hour > 9) {
+      return hour.toString();
+    } else {
+      return '0' + hour.toString();
+    }
+  }
+
+  getSeconds(seconds: number): string {
+    if (seconds > 9) {
+      return seconds.toString();
+    } else {
+      return '0' + seconds.toString();
+    }
+  }
+
+  getMinutes(minutes: number): string {
+    if (minutes > 9) {
+      return minutes.toString();
+    } else {
+      return '0' + minutes.toString();
     }
   }
 }
