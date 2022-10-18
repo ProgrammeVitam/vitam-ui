@@ -325,7 +325,10 @@ public class IngestInternalService {
             RequestResponse<Void> ingestResponse =
                 ingestExternalClient.ingest(vitamContext, inputStream, contextId, action);
 
-            // Response is always OK
+            if (!ingestResponse.isOk()) {
+                LOGGER.debug("Error on ingest streaming Upload ");
+                throw new VitamClientException("Error on ingest streaming Upload");
+            }
             final String operationId = ingestResponse.getVitamHeaders().get(GlobalDataRest.X_REQUEST_ID);
             LOGGER.debug("Ingest passed successfully : " + ingestResponse + " with operationId = " + operationId);
             return operationId;
