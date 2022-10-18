@@ -36,7 +36,6 @@ import fr.gouv.vitamui.collect.internal.server.service.TransactionInternalServic
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -90,12 +89,6 @@ public class TransactionInternalController {
         LOGGER.debug("Project Id  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return transactionInternalService.getTransactionById(id, vitamContext);
-    }
-
-    @PutMapping(CommonConstants.PATH_ID + "/update-units-metadata")
-    public String updateUAMetada(final @PathVariable("id") String id)
-        throws PreconditionFailedException, InterruptedException {
-        return transactionInternalService.updateUAMetadata(id);
     }
 
 

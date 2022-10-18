@@ -33,7 +33,6 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -75,8 +74,6 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return collectExternalRestClient.getTransactionById(context, projectId);
     }
 
-    public ResponseEntity<String> update(String id, final ExternalHttpContext context) {
-        return collectExternalRestClient.updateUAMetadata(context, id);
-    }
+
 
 }

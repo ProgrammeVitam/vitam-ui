@@ -142,16 +142,6 @@ public class CollectInternalRestClient
         restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
     }
 
-    public String updateUAMetadata(final InternalHttpContext context, String transactionId) {
-        //MultiValueMap<String, String> headers = buildSearchHeaders(context);
-        final UriComponentsBuilder uriBuilder =
-        UriComponentsBuilder.fromHttpUrl(getTransactionUrl()  + CommonConstants.PATH_ID + "/update-units-metadata");
-        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<String> response = restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, String.class);
-        return response.getBody();
-    }
-
-
     public void sendTransaction(final InternalHttpContext context, String id) {
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID + SEND_PATH);

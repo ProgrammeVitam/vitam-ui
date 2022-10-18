@@ -132,4 +132,7 @@ public class ProjectInternalController {
         projectInternalService.deleteProjectById(id, vitamContext);
     }
 
+
+
+
 }

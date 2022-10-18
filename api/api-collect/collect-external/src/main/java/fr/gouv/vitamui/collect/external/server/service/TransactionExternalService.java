@@ -72,8 +72,4 @@ public class TransactionExternalService extends AbstractResourceClientService<Co
     public CollectTransactionDto getTransactionById(String transactionId) {
         return collectInternalRestClient.getTransactionById(getInternalHttpContext(), transactionId);
     }
-
-    public String updateUAMetadata(String id) {
-        return collectInternalRestClient.updateUAMetadata(getInternalHttpContext(), id);
-    }
 }
