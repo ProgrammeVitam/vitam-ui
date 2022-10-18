@@ -152,7 +152,7 @@ public class ArchiveSearchInternalService {
         final VitamUISearchResponseDto archivesOriginResponse =
             objectMapper.treeToValue(vitamResponse, VitamUISearchResponseDto.class);
         Set<String> originatingAgenciesCodes = archivesOriginResponse.getResults().stream().map(
-            ResultsDto::getOriginatingAgency).
+                ResultsDto::getOriginatingAgency).
             filter(Objects::nonNull).collect(Collectors.toSet());
         List<AgencyModelDto> originAgenciesFound =
             archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originatingAgenciesCodes);
@@ -305,6 +305,7 @@ public class ArchiveSearchInternalService {
                         .get(ARCHIVE_UNIT_DETAILS)
                         .toString()
                         .substring(1));
+            LOGGER.debug("Object received: {}" + re);
             return objectMapper.readValue(re, ResultsDto.class);
         } catch (JsonProcessingException e) {
             LOGGER.error("Can not get the object group {} ", e);
