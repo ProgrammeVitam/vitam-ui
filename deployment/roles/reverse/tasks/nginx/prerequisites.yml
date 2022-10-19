@@ -5,6 +5,8 @@
     state: present
     name: epel-release
   become: true
+  when:
+    - ansible_os_family == "Centos"
 
 - name: 'Tasks > reverse > prerequisites.yml | Install nginx package'
   package:
@@ -21,6 +23,16 @@
     state: present
     name: nginx-mod-stream
   become: true
+  when:
+    - ansible_os_family == "Centos"
+
+- name: 'Tasks > reverse > prerequisites.yml | Install module libnginx-mod-stream'
+  package:
+    state: present
+    name: libnginx-mod-stream
+  become: true
+  when:
+    - ansible_os_family == "Debian"
 
 - name: 'Tasks > reverse > prerequisites.yml | Set vars user and group'
   set_fact:
