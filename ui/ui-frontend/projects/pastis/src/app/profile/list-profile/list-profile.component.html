@@ -140,7 +140,7 @@
                       <button mat-menu-item (click)="fileInput.click()">
                           <i class="vitamui-icon vitamui-icon-download"></i>
                           &nbsp;&nbsp;&nbsp;
-                          <span class="text normal">Charger un profile</span>
+                          <span class="text normal">{{'PROFILE.LIST_PROFILE.LOAD_PROFILE' | translate}}</span>
                           <input #fileInput (change)="updateProfileNotice(element, $event.target.files)" [uploader]="uploader" accept=".json, .rng" class="buttons"
                           ng2FileSelect style="display:none;" type="file"/>
                       </button>

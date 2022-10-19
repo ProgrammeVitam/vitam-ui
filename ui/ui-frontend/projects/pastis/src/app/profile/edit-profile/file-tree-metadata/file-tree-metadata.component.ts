@@ -930,12 +930,12 @@ export class FileTreeMetadataComponent {
   }
 
   onDeleteControls() {
-    if (this.enumerationControl) {
-      this.clickedNode.puaData.enum = null;
-      this.clickedNode.sedaData.Enumeration = [];
+    if (this.clickedControl) {
+      this.clickedControl.puaData.enum = null;
+      this.clickedControl.sedaData.Enumeration = [];
     }
     if (this.expressionControl) {
-      this.clickedNode.puaData.pattern = null;
+      this.clickedControl.puaData.pattern = null;
     }
     this.resetContols();
   }
@@ -943,10 +943,10 @@ export class FileTreeMetadataComponent {
   onSubmitControls() {
     if (this.enumerationControl) {
 
-      if (this.clickedNode.puaData) {
-        this.clickedNode.puaData.enum = this.enumsControlSeleted;
+      if (this.clickedControl.puaData) {
+        this.clickedControl.puaData.enum = this.enumsControlSeleted;
       } else {
-        this.clickedNode.puaData = {
+        this.clickedControl.puaData = {
           enum: this.enumsControlSeleted
         };
       }

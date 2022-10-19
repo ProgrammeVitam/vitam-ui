@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col-10 form-control">
       <vitamui-common-input [disabled]="editNotice" (change)="checkIdentifier(modePUA)" [(ngModel)]="notice.identifier" class="col-9 px-0"
-                            placeholder="identifier" formControlName="identifier">
+                            placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate }}" formControlName="identifier">
       </vitamui-common-input>
     </div>
   </div>

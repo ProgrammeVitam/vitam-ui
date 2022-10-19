@@ -10,6 +10,7 @@ import { ProfileService } from '../../core/services/profile.service';
 import { Notice } from '../../models/notice.model';
 import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import {PastisDialogDataCreate} from '../save-profile/save-profile.component';
+import {ArchivalProfileUnit} from "../../models/archival-profile-unit";
 
 
 interface Status {
@@ -99,9 +100,8 @@ export class CreateNoticeComponent implements OnInit {
       this.modePUA = true;
     }
     this.information = 'texte d\'information';
-    const identifierForm = [null, Validators.required];
     this.form = this.formBuilder.group({
-      identifier: identifierForm,
+      identifier: [null, Validators.required],
       intitule: [null, Validators.required],
       selectedStatus: [null],
       description: [null],
@@ -159,13 +159,17 @@ export class CreateNoticeComponent implements OnInit {
 
     if (this.notice.identifier.length !== 0) {
       if(modePUA) {
-        this.profileService.getPuaProfile(this.notice.identifier).subscribe(
-          () => {
-            alert('Identifier already exists use another identifier');
-            this.validate = false;
-          }, () => {
-            this.validate = true;
-            this.checkIntitule();
+        const profile = {} as ArchivalProfileUnit;
+        profile.identifier = this.notice.identifier;
+        this.profileService.checkPuaProfile(profile).subscribe(
+          (response: boolean) => {
+            if (response) {
+              alert('Identifier already exists use another identifier');
+              this.validate = false;
+            } else {
+              this.validate = true;
+              this.checkIntitule();
+            }
           }
         );
       }

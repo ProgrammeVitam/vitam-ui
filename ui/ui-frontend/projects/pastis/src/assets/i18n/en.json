@@ -53,7 +53,7 @@
       "TYPE": "Type",
       "PROFILE_ARCHIVAGE": "Archival profile",
       "PROFILE_UNITE_ARCHIVISTIQUE": "Archival Unit Profile",
-      "INTITULE": "Entitled",
+      "INTITULE": "Title",
       "DESCRIPTION": "Description",
       "PROFIL_ATTACHE": "Attached profile",
       "PRESENCE_PROFIL_ATTACHE": "Presence of an attached profile",
@@ -91,6 +91,7 @@
       "AUTORISER_PRESENCE_METADONNEES": "Allow in the manifest the presence of metadata not declared in the PUA?",
       "ENREGISTRER_ACTIF_INACTIF": "Would you like to save it in active or inactive state?",
       "INTITULE": "Title",
+      "IDENTIFIER": "Identifier",
       "DESCRIPTION" : "Description",
       "CHOICE": {
         "PROFIL_ACTIF": "Active Profile",
@@ -231,6 +232,7 @@
         "DERNIERES_MODIFICATIONS": "Latest changes"
       },
       "MODIFIER_PROFIL_TOOLTIP": "Modify the profile",
+      "LOAD_PROFILE": "Load a profile",
       "PROFILE_PREVIEW": {
         "MODIFICATION_SUCCESS": "The modification of the profile has been carried out successfully ",
         "MODIFICATION_ERROR": "Failed to edit profile"

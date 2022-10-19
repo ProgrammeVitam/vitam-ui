@@ -91,6 +91,7 @@
       "AUTORISER_PRESENCE_METADONNEES": "Autoriser dans le manifeste la présence de métadonnées non déclarées dans le PUA ?",
       "ENREGISTRER_ACTIF_INACTIF": "Souhaitez-vous l'enregistrer en état actif ou inactif ?",
       "INTITULE": "Intitulé",
+      "IDENTIFIER": "Identifiant",
       "DESCRIPTION" : "Description",
       "CHOICE": {
         "PROFIL_ACTIF": "Profil actif",
@@ -231,6 +232,7 @@
         "DERNIERES_MODIFICATIONS": "Dernières modifications"
       },
       "MODIFIER_PROFIL_TOOLTIP": "Modifier le profil",
+      "LOAD_PROFILE": "Charger un profil",
       "PROFILE_PREVIEW": {
         "MODIFICATION_SUCCESS": "La modification du profil a bien été effectué",
         "MODIFICATION_ERROR": "Echec de la modification du profil"

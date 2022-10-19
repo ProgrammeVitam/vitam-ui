@@ -269,6 +269,10 @@ export class ProfileService implements OnDestroy  {
     return this.puaService.getOne(id, headers);
   }
 
+  checkPuaProfile(profile: ArchivalProfileUnit, headers?: HttpHeaders): Observable<boolean> {
+    return this.puaService.check(profile, headers);
+  }
+
   getPaProfile(id: string, headers?: HttpHeaders): Observable<Profile> {
     return this.paService.getOne(id, headers);
   }

@@ -250,6 +250,7 @@ customer-init:
       app-name: PASTIS_APP
       level:
       roles:
+        - ROLE_GET_PASTIS
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
         - ROLE_UPDATE_ARCHIVE_PROFILES_UNIT
         - ROLE_CREATE_ARCHIVE_PROFILES_UNIT
