@@ -54,7 +54,6 @@ import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -78,6 +77,10 @@ import javax.ws.rs.QueryParam;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 
 
 @Api(tags = "archives Search")
@@ -148,7 +151,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
 
 
     @ApiOperation(value = "Find the Archive Unit Details")
-    @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.ARCHIVE_UNIT_INFO + PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -159,7 +162,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Find the Object Group by identifier")
-    @GetMapping(RestApi.OBJECTGROUP + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.OBJECTGROUP + PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -170,8 +173,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Download Object from the Archive Unit ")
-    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT +
-        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
         @QueryParam("tenantId") Integer tenantId,
@@ -182,17 +184,20 @@ public class ArchivesSearchController extends AbstractUiRestController {
         SanityChecker.checkSecureParameter(id, contractId, String.valueOf(tenantId));
         LOGGER.debug("Download the Archive Unit Object with ID {}", id);
         ObjectData objectData = new ObjectData();
-        ResponseEntity<Resource> responseResource =
-            archivesSearchService.downloadObjectFromUnit(id, objectData, buildUiHttpContext(tenantId, contractId))
-                .block();
+        ResponseEntity<Resource> responseResource = archivesSearchService.downloadObjectFromUnit(id,
+            objectData,
+            buildUiHttpContext(tenantId, contractId)).block();
         List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
-        String fileNameHeader =
-            StringUtils.isNotEmpty(objectData.getFilename()) ? "attachment;filename=" + objectData.getFilename()
-                : "attachment";
+        String fileNameHeader = isNotEmpty(objectData.getFilename())
+            ? "attachment;filename=" + objectData.getFilename()
+            : "attachment";
+        MediaType contentType = isNotEmpty(objectData.getMimeType())
+            ? new MediaType(MimeType.valueOf(objectData.getMimeType()))
+            : MediaType.APPLICATION_OCTET_STREAM;
 
         return ResponseEntity.ok()
-            .contentType(new MediaType(MimeType.valueOf(objectData.getMimeType())))
+            .contentType(contentType)
             .header(CONTENT_DISPOSITION, fileNameHeader)
             .body(responseResource.getBody());
     }
@@ -308,7 +313,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Update the Archive Unit descriptive metadata")
-    @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    @PutMapping(RestApi.ARCHIVE_UNIT_INFO + PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> updateUnitById(final @PathVariable("id") String id,
         @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
@@ -323,8 +328,8 @@ public class ArchivesSearchController extends AbstractUiRestController {
         return archivesSearchService.updateUnitById(id, unitDescriptiveMetadataDto, buildUiHttpContext());
     }
 
-    @ApiOperation(value = "Transfer Acknowledgment", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ApiOperation(value = "Transfer Acknowledgment", consumes = APPLICATION_OCTET_STREAM_VALUE)
+    @Consumes(APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(RestApi.TRANSFER_ACKNOWLEDGMENT)
     public ResponseEntity<String> transferAcknowledgmentOperation(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final String tenantId,
@@ -333,12 +338,14 @@ public class ArchivesSearchController extends AbstractUiRestController {
         final InputStream inputStream) throws InvalidParseOperationException, PreconditionFailedException {
 
         LOGGER.debug("[UI] : Transfer Acknowledgment Operation");
-        ParameterChecker.checkParameter("The access Contract , the tenant Id and the fileName are mandatory parameters: ",
+        ParameterChecker.checkParameter(
+            "The access Contract , the tenant Id and the fileName are mandatory parameters: ",
             accessContractId, tenantId, fileName);
         SafeFileChecker.checkSafeFilePath(fileName);
         SanityChecker.checkSecureParameter(tenantId, accessContractId);
         LOGGER.debug("Start uploading file ...{} ", fileName);
-        ResponseEntity<String> response = archivesSearchService.transferAcknowledgment(buildUiHttpContext(), fileName, inputStream);
+        ResponseEntity<String> response =
+            archivesSearchService.transferAcknowledgment(buildUiHttpContext(), fileName, inputStream);
         LOGGER.debug("The transfer acknowledgment operation id : {} ", response.toString());
         return response;
     }
