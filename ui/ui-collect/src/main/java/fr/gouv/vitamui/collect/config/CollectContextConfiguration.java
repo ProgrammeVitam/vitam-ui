@@ -100,7 +100,7 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     }
 
     @Bean
-    public CollectExternalWebClient archiveSearchExternalWebClient(
+    public CollectExternalWebClient collectExternalWebClient(
         final CollectExternalWebClientFactory collectExternalWebClientFactory) {
         return collectExternalWebClientFactory.getCollectExternalWebClient();
     }
@@ -120,4 +120,19 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
         return factory.getSearchCriteriaHistoryExternalRestClient();
     }
 
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public CollectExternalWebClientFactory blockedCollectExternalWebClientFactory(
+        final CollectApplicationProperties uiProperties, final WebClient.Builder webClientBuilder) {
+        return new CollectExternalWebClientFactory(uiProperties.getBlockedCollectExternalClient(),
+            webClientBuilder);
+    }
+
+    @Bean
+    public CollectExternalWebClient blockedCollectExternalWebClient(
+        final CollectExternalWebClientFactory blockedCollectExternalWebClientFactory) {
+        return blockedCollectExternalWebClientFactory.getCollectExternalWebClient();
+    }
 }

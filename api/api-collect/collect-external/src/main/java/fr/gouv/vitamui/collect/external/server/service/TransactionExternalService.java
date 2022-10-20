@@ -82,6 +82,13 @@ public class TransactionExternalService extends AbstractResourceClientService<Co
         return collectInternalRestClient.getTransactionById(getInternalHttpContext(), transactionId);
     }
 
+    /**
+     * function to update archive Units Metadata From File
+     *
+     * @param transactionId the transaction id
+     * @param inputStream thr inputstream file
+     * @return
+     */
     public void updateArchiveUnitsFromFile(final String transactionId, InputStream inputStream) {
         LOGGER.debug("start updating archive units from file for transactionId {}", transactionId);
         collectInternalWebClient.updateArchiveUnitsMetadataFromFile(transactionId, inputStream,

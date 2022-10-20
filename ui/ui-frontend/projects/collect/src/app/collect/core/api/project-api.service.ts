@@ -126,12 +126,6 @@ export class ProjectsApiService extends BaseHttpClient<any> {
     });
   }
 
-  // updateUnits(id: string, headers?: HttpHeaders): Observable<string> {
-  //   return this.http.put(`${this.urlTransaction}/${id}/update-units-metadata`, '', {
-  //     responseType: 'text',
-  //     headers,
-  //   });
-  // }
 
   public getTransactionById(transactionId: string): Observable<Transaction> {
     return this.http.get<Transaction>(this.urlTransaction + '/' + transactionId);

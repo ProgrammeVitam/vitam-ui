@@ -136,8 +136,8 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
 
     @Bean
     public CollectInternalWebClient collectInternalWebClient(
-        final CollectInternalWebClientFactory factory) {
-        return factory.getCollectInternalWebClient();
+        final CollectInternalWebClientFactory collectInternalWebClientFactory) {
+        return collectInternalWebClientFactory.getCollectInternalWebClient();
     }
 
     @Bean
@@ -146,5 +146,19 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
         return collectInternalRestClientFactory.getSearchCriteriaHistoryInternalRestClient();
     }
 
+
+    @Bean
+    public CollectInternalWebClientFactory blockedCollectInternalWebClientFactory(
+        final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties,
+        final WebClient.Builder webClientBuilder) {
+        return new CollectInternalWebClientFactory(
+            apiCollectExternalApplicationProperties.getBlockedCollectInternalClient(), webClientBuilder);
+    }
+
+    @Bean
+    public CollectInternalWebClient blockedCollectInternalWebClient(
+        final CollectInternalWebClientFactory blockedCollectInternalWebClientFactory) {
+        return blockedCollectInternalWebClientFactory.getCollectInternalWebClient();
+    }
 
 }

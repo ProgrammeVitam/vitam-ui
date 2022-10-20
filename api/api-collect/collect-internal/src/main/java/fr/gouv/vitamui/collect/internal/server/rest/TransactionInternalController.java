@@ -41,9 +41,18 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
+import java.io.InputStream;
+
+import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 
 @RestController
 @RequestMapping(RestApi.COLLECT_TRANSACTION_PATH)
@@ -56,7 +65,7 @@ public class TransactionInternalController {
 
     @Autowired
     public TransactionInternalController(final TransactionInternalService transactionInternalService,
-                                         final InternalSecurityService securityService) {
+        final InternalSecurityService securityService) {
         this.securityService = securityService;
         this.transactionInternalService = transactionInternalService;
     }
@@ -82,8 +91,9 @@ public class TransactionInternalController {
         transactionInternalService.validateTransaction(id, vitamContext);
     }
 
-    @GetMapping(CommonConstants.PATH_ID )
-    public CollectTransactionDto getTransactionById(final @PathVariable("id") String id) throws VitamClientException, InvalidParseOperationException {
+    @GetMapping(CommonConstants.PATH_ID)
+    public CollectTransactionDto getTransactionById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Project Id  {}", id);
@@ -92,5 +102,14 @@ public class TransactionInternalController {
     }
 
 
-
+    @PutMapping(value = "/{transactionId}" +
+        UPDATE_UNITS_METADATA_PATH, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void updateArchiveUnitsMetadataFromFile(@PathVariable String transactionId, InputStream inputStream)
+        throws InvalidParseOperationException, VitamClientException {
+        ParameterChecker.checkParameter("The transaction Id is a mandatory parameter: ", transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
+        LOGGER.debug("update archiveUnits metadata from file for transaction  {}", transactionId);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        transactionInternalService.updateArchiveUnitsFromFile(vitamContext, inputStream, transactionId);
+    }
 }

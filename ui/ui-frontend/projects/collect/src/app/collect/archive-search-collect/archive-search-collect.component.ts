@@ -65,7 +65,7 @@ import { SearchCriteriaSaverComponent } from './archive-search-criteria/componen
 import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
-import { UpdateUnitsaMetadataComponent } from './update-ua-metadata/update-ua-metadata.component';
+import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';

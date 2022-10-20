@@ -30,7 +30,6 @@ package fr.gouv.vitamui.collect.internal.server.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.collect.internal.server.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.collect.internal.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.collect.internal.server.service.ArchiveUnitInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectArchiveUnitInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectObjectGroupInternalService;
@@ -133,9 +132,6 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
             searchCriteriaHistoryConverter, internalSecurityService);
     }
 
-    @Bean
-    public ArchiveUnitInternalService archiveUnitInternalService() {
-        return new ArchiveUnitInternalService();
-    }
+    
 
 }

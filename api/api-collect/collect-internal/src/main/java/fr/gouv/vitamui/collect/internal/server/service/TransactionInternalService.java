@@ -39,12 +39,17 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 
 public class TransactionInternalService {
 
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalService.class);
 
     private final CollectService collectService;
 
@@ -76,7 +81,8 @@ public class TransactionInternalService {
         }
     }
 
-    public CollectTransactionDto getTransactionById(String transactionId, VitamContext vitamContext) throws VitamClientException {
+    public CollectTransactionDto getTransactionById(String transactionId, VitamContext vitamContext)
+        throws VitamClientException {
         try {
             RequestResponse<JsonNode> requestResponse = collectService.getTransactionById(vitamContext, transactionId);
             if (!requestResponse.isOk()) {
@@ -90,6 +96,16 @@ public class TransactionInternalService {
             throw new VitamClientException("Unable to find transaction : ", e);
         }
 
+    }
 
+    public void updateArchiveUnitsFromFile(VitamContext vitamContext, InputStream inputStream, String transactionId)
+        throws VitamClientException {
+        LOGGER.debug("call update Archive Units From File for transaction Id {}  ", transactionId);
+        try {
+            collectService.uploadProjectZip(vitamContext, transactionId, inputStream);
+        } catch (VitamClientException e) {
+            LOGGER.debug("Enable to update Archive Units From File {}  ", e.getMessage());
+            throw new VitamClientException("Enable to update Archive Units From File " + e.getMessage(), e);
+        }
     }
 }

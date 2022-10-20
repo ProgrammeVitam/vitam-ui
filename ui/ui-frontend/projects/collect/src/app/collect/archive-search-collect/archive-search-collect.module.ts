@@ -72,7 +72,7 @@ import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-sea
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { RuleValidator } from './archive-search-criteria/services/rule.validator';
 import { SearchCriteriaSaverService } from './archive-search-criteria/services/search-criteria-saver.service';
-import { UpdateUnitsaMetadataComponent } from './update-ua-metadata/update-ua-metadata.component';
+import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 
 @NgModule({
   imports: [

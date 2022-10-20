@@ -74,6 +74,28 @@ ui-collect:
         key-path: src/main/resources/dev/truststore_server.jks
         key-password: changeme
       hostname-verification: false
+
+  blocked-collect-external-client:
+    server-host: localhost
+    server-port: 8090
+    secure: true
+    connect-time-out: 30
+    read-time-out: 240000  #4 mins
+    write-time-out: 240000 #4 mins
+    ssl-configuration:
+      keystore:
+        key-path: src/main/resources/dev/keystore_ui-collect.jks
+        key-password: changeme
+        type: JKS
+      truststore:
+        key-path: src/main/resources/dev/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
+
+
+
+
+
   referential-external-client:
     server-host: localhost
     server-port: 8087

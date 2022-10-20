@@ -48,17 +48,17 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionService.class);
 
     private final CollectExternalRestClient collectExternalRestClient;
-    private final CollectExternalWebClient collectExternalWebClient;
-
+    private final CollectExternalWebClient blockedCollectExternalWebClient;
     private final CommonService commonService;
 
 
     @Autowired
     public TransactionService(CollectExternalRestClient collectExternalRestClient,
-        CollectExternalWebClient collectExternalWebClient, CommonService commonService) {
+        CollectExternalWebClient blockedCollectExternalWebClient,
+        CommonService commonService) {
         this.commonService = commonService;
         this.collectExternalRestClient = collectExternalRestClient;
-        this.collectExternalWebClient = collectExternalWebClient;
+        this.blockedCollectExternalWebClient = blockedCollectExternalWebClient;
     }
 
 
@@ -83,9 +83,17 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return collectExternalRestClient.getTransactionById(context, projectId);
     }
 
+    /**
+     * function to update archive Units Metadata From File
+     *
+     * @param transactionId the transaction id
+     * @param inputStream thr inputstream file
+     * @param context the external vitamui context
+     * @return
+     */
     public void updateArchiveUnitsMetadataFromFile(final String transactionId, InputStream inputStream,
         final ExternalHttpContext context) {
         LOGGER.debug("start updating archive units from file for transactionId {}", transactionId);
-        collectExternalWebClient.updateArchiveUnitsMetadataFromFile(transactionId, inputStream, context);
+        blockedCollectExternalWebClient.updateArchiveUnitsMetadataFromFile(transactionId, inputStream, context);
     }
 }

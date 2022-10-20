@@ -59,6 +59,14 @@ collect-external:
     server-port: 7090
     secure: false
 
+  blocked-collect-internal-client:
+    server-host: localhost
+    server-port: 7090
+    secure: false
+    connect-time-out: 30
+    read-time-out: 240000  #4 mins
+    write-time-out: 240000 #4 mins
+
 # Jaeger
 opentracing:
   jaeger:

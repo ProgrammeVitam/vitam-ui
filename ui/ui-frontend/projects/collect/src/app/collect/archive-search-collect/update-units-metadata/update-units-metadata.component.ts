@@ -39,9 +39,9 @@ import { ArchiveCollectService } from '../archive-collect.service';
 const CSV_EXTENSION = '.csv';
 
 @Component({
-  selector: 'app-update-ua-metadata',
-  templateUrl: './update-ua-metadata.component.html',
-  styleUrls: ['./update-ua-metadata.component.scss'],
+  selector: 'app-update-units-metadata',
+  templateUrl: './update-units-metadata.component.html',
+  styleUrls: ['./update-units-metadata.component.scss'],
 })
 export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
   public stepIndex = 0;

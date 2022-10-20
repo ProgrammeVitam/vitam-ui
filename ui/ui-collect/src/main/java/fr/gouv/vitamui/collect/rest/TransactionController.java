@@ -111,6 +111,14 @@ public class TransactionController extends AbstractUiRestController {
     }
 
 
+    /**
+     * service to update archive Units Metadata From File
+     *
+     * @param transactionId the transaction id
+     * @param inputStream thr input stream file
+     * @return
+     */
+
     @ApiOperation(value = "Upload on streaming metadata file and update archive units", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PutMapping(value = "/{transactionId}" +
         UPDATE_UNITS_METADATA_PATH, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)

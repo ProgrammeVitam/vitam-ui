@@ -34,7 +34,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { UpdateUnitsaMetadataComponent } from './update-ua-metadata.component';
+import { UpdateUnitsaMetadataComponent } from './update-units-metadata.component';
 
 const translations: any = { TEST: 'Mock translate test' };
 class FakeLoader implements TranslateLoader {

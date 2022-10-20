@@ -43,7 +43,6 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientRequest;
 
 import java.io.InputStream;
-import java.time.Duration;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHIVE_UNIT;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PATH;
@@ -117,7 +116,7 @@ public class CollectExternalWebClient extends BaseWebClient<ExternalHttpContext>
         return webClient.post().uri(uriBuilder.toUriString()).
             httpRequest(httpRequest -> {
                 HttpClientRequest reactorRequest = httpRequest.getNativeRequest();
-                reactorRequest.responseTimeout(Duration.ofMinutes(4));
+                //reactorRequest.responseTimeout(Duration.ofMinutes(4));
             })
             .body(BodyInserters.fromValue(inputStream))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context))).retrieve()

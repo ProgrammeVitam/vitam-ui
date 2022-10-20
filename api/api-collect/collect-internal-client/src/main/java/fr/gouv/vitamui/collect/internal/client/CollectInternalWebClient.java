@@ -44,7 +44,6 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientRequest;
 
 import java.io.InputStream;
-import java.time.Duration;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHIVE_UNIT;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PATH;
@@ -112,14 +111,14 @@ public class CollectInternalWebClient extends BaseWebClient<InternalHttpContext>
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(
                 getUrl() + RestApi.COLLECT_ARCHIVE_UNITS + "/" + transactionId + UPDATE_UNITS_METADATA_PATH);
-        /**
-         * @TODO
-         * Update timeout and make it as parameter
-         */
         return webClient.post().uri(uriBuilder.toUriString()).
             httpRequest(httpRequest -> {
                 HttpClientRequest reactorRequest = httpRequest.getNativeRequest();
-                reactorRequest.responseTimeout(Duration.ofMinutes(4));
+                /**
+                 * TODO
+                 * Check the timeout
+                 */
+                //reactorRequest.responseTimeout(Duration.ofMinutes(4));
             })
             .body(BodyInserters.fromValue(inputStream))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context))).retrieve()
