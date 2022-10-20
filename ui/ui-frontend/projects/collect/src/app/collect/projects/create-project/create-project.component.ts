@@ -260,7 +260,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     );
   }
 
-  /*** Step 4 : Contexte de versement ***/
+  /*** Step 4 : Contexte du versement ***/
   validateFourStep() {
     return (
       this.projectForm.controls.archivalAgencyIdentifier.invalid ||
