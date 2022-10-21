@@ -89,8 +89,9 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     }
 
     const transferRequestParameters: TransferRequestParameters = this.transferRequestFormGroup.getRawValue();
+    transferRequestParameters.relatedTransferReference = [this.transferRequestFormGroup.get('relatedTransferReference').value];
     const transferRequestDto: TransferRequestDto = {
-      transferRequestParameters: transferRequestParameters,
+      transferRequestParameters,
       searchCriteria: this.data.searchCriteria,
       dataObjectVersions: this.dataObjectVersions,
       lifeCycleLogs: this.transferRequestFormGroup.get('lifeCycleLogs').value === this.translate.instant('ARCHIVE_SEARCH.DIP.INCLUDE'),
@@ -102,6 +103,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
         const serviceUrl =
           this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
         this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.REQUEST_MESSAGE'), serviceUrl);
+        this.transferRequestFormGroup.reset();
       },
       (error: any) => {
         this.logger.error('Error message :', error);
