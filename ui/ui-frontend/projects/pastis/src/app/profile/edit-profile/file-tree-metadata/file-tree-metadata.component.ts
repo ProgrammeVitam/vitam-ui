@@ -159,10 +159,10 @@ export class FileTreeMetadataComponent {
   customRegex: string;
   formatagePredefini: Array<{ label: string, value: string }> =
     [
-      {label: 'AAAA-MM-JJ', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}'},
-      {label: 'AAAA-MM-JJTHH:MM:SS', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}'},
-      {label: 'AAAA', value: '[0-9]{4}'},
-      {label: 'AAAA-MM', value: '[0-9]{4}-[0-9]{2}'}
+      {label: 'AAAA-MM-JJ', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'},
+      {label: 'AAAA-MM-JJTHH:MM:SS', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$'},
+      {label: 'AAAA', value: '^[0-9]{4}$'},
+      {label: 'AAAA-MM', value: '^[0-9]{4}-[0-9]{2}$'}
     ];
   availableRegex: Array<{ label: string, value: string }>;
 

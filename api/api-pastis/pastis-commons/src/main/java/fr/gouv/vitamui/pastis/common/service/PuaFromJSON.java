@@ -76,9 +76,9 @@ public class PuaFromJSON {
         List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
         controlSchema.put("required", puaPastisValidator.getHeadRequired(elementsForTree));
 
-        // 5. Add definitions
-            JSONObject definitionsFromBasePua = puaPastisValidator.getDefinitionsFromExpectedProfile();
-            controlSchema.put("definitions", definitionsFromBasePua);
+        // 5. Add definitions _ not used actually
+          /*  JSONObject definitionsFromBasePua = puaPastisValidator.getDefinitionsFromExpectedProfile();
+            controlSchema.put("definitions", definitionsFromBasePua);*/
         // 6. Add ArchiveUnitProfile and the rest of the tree
 
         JSONArray allElements = puaPastisValidator.getJSONObjectFromAllTree(elementsForTree);
@@ -106,8 +106,15 @@ public class PuaFromJSON {
 
     private void addPatternProperties(ElementProperties elementProperties, JSONObject controlSchema)
         throws IOException {
-        if (!puaPastisValidator.containsManagement(elementProperties)) {
-            controlSchema.put("patternProperties", new JSONObject().put("#management", new JSONObject()));
+        if (puaPastisValidator.managementIsEmpty(elementProperties)) {
+            controlSchema.put("patternProperties", new JSONObject()
+                .put("#management", new JSONObject()
+                    .put(
+                        "additionalProperties",
+                        elementProperties.getChildren().get(0).getChildren().stream()
+                            .filter(e -> e.getName().equals("Management"))
+                            .findAny()
+                            .get().isAdditionalProperties())));
         }
     }
 

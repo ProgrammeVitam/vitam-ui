@@ -71,6 +71,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -181,8 +182,8 @@ public class PuaPastisValidator {
             if (controlSchemaActual.has("patternProperties")) {
                 JSONObject patternProperties = controlSchemaActual.getJSONObject("patternProperties");
                 if (patternProperties.has(MANAGEMENTCONTROL)) {
-                    JSONAssert.assertEquals(new JSONObject(), patternProperties.getJSONObject(MANAGEMENTCONTROL),
-                        JSONCompareMode.STRICT);
+                    /*JSONAssert.assertEquals(new JSONObject(), patternProperties.getJSONObject(MANAGEMENTCONTROL),
+                        JSONCompareMode.STRICT);*/
 
                     // Check that #management is not in both header and 'properties' object
                     JSONObject properties = controlSchemaActual.getJSONObject(PROPERTIES);
@@ -324,7 +325,7 @@ public class PuaPastisValidator {
         for (ElementProperties el : elementsFromTree) {
             setMetadataName(el);
             try {
-                if (el.getName().equals(MANAGEMENT)) {
+                if (el.getName().equals(MANAGEMENT) && !el.getChildren().isEmpty()) {
                     JSONObject management = getJSONFromManagement(el);
                     jsonArray.put(management);
                 }
@@ -687,8 +688,18 @@ public class PuaPastisValidator {
      *
      * @return true if an given ElementProperties object contains a Management metadata
      */
-    public boolean containsManagement(ElementProperties elementProperties) throws IOException {
-        return getJSONObjectFromMetadata(elementProperties).length() > 0;
+    public boolean managementIsEmpty(ElementProperties elementProperties) throws IOException {
+
+        if (elementProperties.getChildren().get(0).getChildren().stream().anyMatch(e -> e.getName().equals(MANAGEMENT))) {
+            return
+                !(elementProperties.getChildren()
+                    .get(0).getChildren()
+                    .stream()
+                    .filter(e -> e.getName().equals(MANAGEMENT))
+                    .findAny().get()
+                    .getChildren().size() > 0);
+        }
+        return true;
     }
 
     /**
@@ -905,10 +916,10 @@ public class PuaPastisValidator {
                     && ((element.getCardinality().equals("1-N") && sedaElement.getCardinality().equals("0-N"))
                     || (element.getCardinality().equals("1") && !sedaElement.getCardinality().equals("1"))
                     || sedaElement.getCardinality().equals("1"))
-                    || element.getName().equals("Management") || element.getName().equals("ArchiveUnitProfile") && element.getCardinality().equals("1")) {
+                    || (element.getName().equals(MANAGEMENT) && element.getCardinality().equals("1")) || element.getName().equals("ArchiveUnitProfile") && element.getCardinality().equals("1")) {
 
-                    if (element.getName().equals("Management")) {
-                        list.add("#management");
+                    if (element.getName().equals(MANAGEMENT) && element.getChildren().size() > 0) {
+                        list.add(MANAGEMENTCONTROL);
                     } else {
                         list.add(element.getName());
                     }

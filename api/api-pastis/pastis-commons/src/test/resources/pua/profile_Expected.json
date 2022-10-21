@@ -12,8 +12,10 @@
   "level": 0,
   "id": 0,
   "parentId": null,
-  "choices": [],
-  "children": [
+  "choices":
+  [],
+  "children":
+  [
     {
       "additionalProperties": false,
       "name": "ArchiveUnit",
@@ -28,8 +30,10 @@
       "level": 1,
       "id": 1,
       "parentId": 0,
-      "choices": [],
-      "children": [
+      "choices":
+      [],
+      "children":
+      [
         {
           "additionalProperties": false,
           "name": "id",
@@ -44,8 +48,10 @@
           "level": 2,
           "id": 2,
           "parentId": 1,
-          "choices": [],
-          "children": [],
+          "choices":
+          [],
+          "children":
+          [],
           "puaData": null
         },
         {
@@ -60,11 +66,44 @@
           "documentation": "DescriptionLevel : cardinalité 0-1 / valeur au choix",
           "editName": null,
           "level": 2,
-          "id": 12,
+          "id": 13,
           "parentId": 1,
-          "choices": [],
-          "children": [],
+          "choices":
+          [],
+          "children":
+          [],
           "puaData": null
+        },
+        {
+          "additionalProperties": false,
+          "name": "Management",
+          "type": "element",
+          "cardinality": "0-1",
+          "groupOrChoice": null,
+          "valueOrData": null,
+          "dataType": null,
+          "value": null,
+          "documentation": null,
+          "editName": null,
+          "level": 2,
+          "id": 3,
+          "parentId": 1,
+          "choices":
+          [],
+          "children":
+          [],
+          "puaData":
+          {
+            "additionalProperties": false,
+            "pattern": null,
+            "minLenght": null,
+            "maxLenght": null,
+            "minimum": null,
+            "maximum": null,
+            "exclusiveMinimum": null,
+            "exclusiveMaximum": null,
+            "enum": null
+          }
         },
         {
           "additionalProperties": false,
@@ -78,10 +117,12 @@
           "documentation": null,
           "editName": null,
           "level": 2,
-          "id": 3,
+          "id": 4,
           "parentId": 1,
-          "choices": [],
-          "children": [
+          "choices":
+          [],
+          "children":
+          [
             {
               "additionalProperties": false,
               "name": "DescriptionLevel",
@@ -94,11 +135,14 @@
               "documentation": "DescriptionLevel : cardinalité 0-1",
               "editName": null,
               "level": 3,
-              "id": 5,
-              "parentId": 3,
-              "choices": [],
-              "children": [],
-              "puaData": {
+              "id": 6,
+              "parentId": 4,
+              "choices":
+              [],
+              "children":
+              [],
+              "puaData":
+              {
                 "additionalProperties": null,
                 "pattern": null,
                 "minLenght": null,
@@ -107,7 +151,8 @@
                 "maximum": null,
                 "exclusiveMinimum": null,
                 "exclusiveMaximum": null,
-                "enum": [
+                "enum":
+                [
                   "Fonds",
                   "Subfonds",
                   "Class",
@@ -134,10 +179,12 @@
               "documentation": "Title : cardinalité 0-N / valeur au choix",
               "editName": null,
               "level": 3,
-              "id": 4,
-              "parentId": 3,
-              "choices": [],
-              "children": [],
+              "id": 5,
+              "parentId": 4,
+              "choices":
+              [],
+              "children":
+              [],
               "puaData": null
             },
             {
@@ -152,10 +199,12 @@
               "documentation": "FilePlanPosition : cardinalité 0-N / valeur au choix",
               "editName": null,
               "level": 3,
-              "id": 8,
-              "parentId": 3,
-              "choices": [],
-              "children": [],
+              "id": 9,
+              "parentId": 4,
+              "choices":
+              [],
+              "children":
+              [],
               "puaData": null
             },
             {
@@ -170,10 +219,12 @@
               "documentation": "Tag : cardinalité 0-N / valeur au choix",
               "editName": null,
               "level": 3,
-              "id": 11,
-              "parentId": 3,
-              "choices": [],
-              "children": [],
+              "id": 12,
+              "parentId": 4,
+              "choices":
+              [],
+              "children":
+              [],
               "puaData": null
             },
             {
@@ -188,10 +239,12 @@
               "documentation": "Keyword : cardinalité 0-N / valeur au choix",
               "editName": null,
               "level": 3,
-              "id": 6,
-              "parentId": 3,
-              "choices": [],
-              "children": [
+              "id": 7,
+              "parentId": 4,
+              "choices":
+              [],
+              "children":
+              [
                 {
                   "additionalProperties": false,
                   "name": "KeywordContent",
@@ -204,14 +257,17 @@
                   "documentation": "Identifier : cardinalité 1 / valeur au choix",
                   "editName": null,
                   "level": 4,
-                  "id": 7,
-                  "parentId": 6,
-                  "choices": [],
-                  "children": [],
+                  "id": 8,
+                  "parentId": 7,
+                  "choices":
+                  [],
+                  "children":
+                  [],
                   "puaData": null
                 }
               ],
-              "puaData": {
+              "puaData":
+              {
                 "additionalProperties": false,
                 "pattern": null,
                 "minLenght": null,
@@ -235,10 +291,12 @@
               "documentation": "OriginatingAgency : cardinalité 0-1 / valeur au choix",
               "editName": null,
               "level": 3,
-              "id": 9,
-              "parentId": 3,
-              "choices": [],
-              "children": [
+              "id": 10,
+              "parentId": 4,
+              "choices":
+              [],
+              "children":
+              [
                 {
                   "additionalProperties": false,
                   "name": "Identifier",
@@ -251,14 +309,17 @@
                   "documentation": "Identifier : cardinalité 1-1 / valeur au choix",
                   "editName": null,
                   "level": 4,
-                  "id": 10,
-                  "parentId": 9,
-                  "choices": [],
-                  "children": [],
+                  "id": 11,
+                  "parentId": 10,
+                  "choices":
+                  [],
+                  "children":
+                  [],
                   "puaData": null
                 }
               ],
-              "puaData": {
+              "puaData":
+              {
                 "additionalProperties": false,
                 "pattern": null,
                 "minLenght": null,
