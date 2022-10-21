@@ -299,18 +299,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     }
   }
 
-  loadMore() {
-    this.canLoadMore = this.currentPage < this.pageNumbers - 1;
-    if (this.canLoadMore && !this.pending) {
-      this.submited = true;
-      this.currentPage = this.currentPage + 1;
-      this.criteriaSearchList = [];
-      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
-        this.searchArchiveUnits(false);
-      }
-    }
-  }
-
   private searchArchiveUnits(includeFacets: boolean) {
     this.pending = true;
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
@@ -674,6 +662,25 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       );
     }
   }
+
+    loadMore() {
+      if (this.pending) {
+        return;
+      }
+      this.canLoadMore = this.currentPage < this.pageNumbers - 1;
+      if (!this.canLoadMore) {
+        return;
+      }
+      this.submited = true;
+      this.currentPage = this.currentPage + 1;
+      if (!this.hasSearchCriterias()) {
+        return;
+      }
+      this.searchArchiveUnits(false);
+    }
+    private hasSearchCriterias() {
+      return (this.criteriaSearchList && this.criteriaSearchList.length > 0) || this.totalResults >= 10;
+    }
 
   showHideFacets(show: boolean) {
     if (show === true) {
