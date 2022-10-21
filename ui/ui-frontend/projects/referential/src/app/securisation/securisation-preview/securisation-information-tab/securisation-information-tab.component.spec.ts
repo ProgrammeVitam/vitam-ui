@@ -36,7 +36,6 @@
  */
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {NgxFilesizeModule} from 'ngx-filesize';
 import {of} from 'rxjs';
 
 import {SecurisationService} from '../../securisation.service';
@@ -101,9 +100,6 @@ describe('SecurisationInformationTabComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        NgxFilesizeModule, VitamUICommonTestModule
-      ],
       declarations: [SecurisationInformationTabComponent],
       providers: [
         {provide: SecurisationService, useValue: securisationServiceMock}
