@@ -422,6 +422,7 @@
     "MESSAGE": "An internal error occured. Please contact an administrator if the problem persists"
   },
   "EVENT_TYPE_LABEL": {
+    "EXPORT_CHECK_RESOURCE_AVAILABILITY": "Checking the availability of binary objects on the storage offer",
     "CHECK_ATTACHEMENT": "Verification of the attachment between existing and new objects, groups of objects and archival units",
     "CHECK_ATTACHEMENT.OK": "Successful verification of the attachment between existing and new objects, groups of objects and archival units",
     "CHECK_ATTACHEMENT.KO": "Failed to verify attachment between existing and new objects, object groups and archival units",
