@@ -44,7 +44,7 @@ import {ConfirmActionComponent} from './confirm-action.component';
 @NgModule({
   declarations: [ConfirmActionComponent],
   imports: [
-    VitamUICommonModule
+    VitamUICommonModule,
     CommonModule,
     MatDialogModule,
     ConfirmDialogModule,
