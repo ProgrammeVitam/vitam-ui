@@ -41,8 +41,9 @@ import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archiv
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AccessContract, AccessContractApiService, SearchService, Transaction } from 'ui-frontend-common';
+import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, Unit } from '../core/models';
 import { ProjectsApiService } from '../core/api/project-api.service';
-import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -51,6 +52,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
   constructor(
     private projectsApiService: ProjectsApiService,
+    private searchUnitApiService: SearchUnitApiService,
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
@@ -216,6 +218,60 @@ export class ArchiveCollectService extends SearchService<any> {
       }
     );
   }
+
+  public loadFilingHoldingSchemeTree(tenantIdentifier: string, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
+    const headers = new HttpHeaders({
+      'X-Tenant-Id': '' + tenantIdentifier,
+      'X-Access-Contract-Id': accessContractId
+    });
+
+    return this.searchUnitApiService.getFilingHoldingScheme(headers).pipe(
+      catchError(() => {
+        return of({ $hits: null, $results: [] });
+      }),
+      map((response) => {
+        return this.buildNestedTreeLevels(response.$results);
+      })
+    );
+  }
+
+  getReferentialUnitDetails(unitId: string, accessContract: string) : Observable<SearchResponse> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.searchUnitApiService.getById(unitId, headers)
+  }
+
+  private buildNestedTreeLevels(arr: any[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
+    const out: FilingHoldingSchemeNode[] = [];
+
+    arr.forEach((unit) => {
+      if (
+        (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId) ||
+        (!parentNode && (!unit['#unitups'] || !unit['#unitups'].length || !idExists(arr, unit['#unitups'][0])))
+      ) {
+        const outNode: FilingHoldingSchemeNode = {
+          id: unit['#id'],
+          title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
+          type: unit.DescriptionLevel,
+          children: [],
+          parents: parentNode ? [parentNode] : [],
+          vitamId: unit['#id'],
+          checked: false,
+          hidden: false,
+        };
+        outNode.children = this.buildNestedTreeLevels(arr, outNode);
+        out.push(outNode);
+      }
+    });
+
+    return this.sortByTitle(out);
+  }
+
+
+}
+
+function idExists(units: Unit[], id: string): boolean {
+  return !!units.find((unit) => unit['#id'] === id);
 }
 
 function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingSchemeNode) => number {

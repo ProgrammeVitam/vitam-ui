@@ -40,31 +40,17 @@ import {
   ExternalParametersService,
   GlobalEventService,
   SidenavPage,
+  CriteriaOperator,
+  CriteriaDataType,
   Transaction,
   TransactionStatus
 } from 'ui-frontend-common';
-import {Unit} from 'vitamui-library/lib/models/unit.interface';
-import {
-  ArchiveSearchResultFacets,
-  CriteriaValue,
-  FilingHoldingSchemeNode,
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaCategory,
-  SearchCriteriaEltDto,
-  SearchCriteriaEltements,
-  SearchCriteriaHistory,
-  SearchCriteriaMgtRuleEnum,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum
-} from '../core/models';
-import {ArchiveCollectService} from './archive-collect.service';
-import {
-  SearchCriteriaSaverComponent
-} from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
-import {ArchiveFacetsService} from './archive-search-criteria/services/archive-facets.service';
-import {ArchiveSearchHelperService} from './archive-search-criteria/services/archive-search-helper.service';
-import {ArchiveSharedDataService} from './archive-search-criteria/services/archive-shared-data.service';
+import { ArchiveCollectService } from './archive-collect.service';
+import { ArchiveSearchResultFacets, CriteriaValue, FilingHoldingSchemeNode, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements, SearchCriteriaHistory, SearchCriteriaMgtRuleEnum, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, Unit } from '../core/models';
+import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
+import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
+import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
+import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -86,6 +72,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   subscriptionSimpleSearchCriteriaAdd: Subscription;
   subscriptionNodes: Subscription;
   searchCriteriaChangeSubscription: Subscription;
+  subscriptions: Subscription = new Subscription();
 
   transaction: Transaction;
   projectId: string;
@@ -93,6 +80,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   hasAccessContractManagementPermissions = false;
   hasUpdateDescriptiveUnitMetadataRole = false;
   isLPExtended = false;
+  show = true;
 
   searchCriteriaKeys: string[];
   searchCriterias: Map<string, SearchCriteria>;
@@ -178,6 +166,29 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }
       });
 
+    this.subscriptions.add(this.archiveExchangeDataService.getNodes()
+      .subscribe((node) => {
+        if (node.checked) {
+          this.archiveHelperService.addCriteria(
+            this.searchCriterias,
+            this.searchCriteriaKeys,
+            this.nbQueryCriteria,
+            'NODE',
+            { id: node.id, value: node.id },
+            node.title,
+            true,
+            CriteriaOperator.EQ,
+            SearchCriteriaTypeEnum.NODES,
+            false,
+            CriteriaDataType.STRING,
+            false
+          );
+        } else {
+          node.count = null;
+          this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
+        }
+      }));
+
     this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
       if (criteria) {
         if (criteria.valueElt) {
@@ -190,14 +201,15 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   ngOnDestroy(): void {
-    this.accessContractSub?.unsubscribe();
-    this.accessContractSubscription?.unsubscribe();
+    this.accessContractSub ?.unsubscribe();
+    this.accessContractSubscription ?.unsubscribe();
+    this.subscriptionSimpleSearchCriteriaAdd ?.unsubscribe();
+    this.subscriptionFilingHoldingSchemeNodes ?.unsubscribe();
+    this.subscriptionNodes ?.unsubscribe();
+    this.errorMessageSub ?.unsubscribe();
+    this.searchCriteriaChangeSubscription ?.unsubscribe();
+    this.subscriptions?.unsubscribe();
     this.transactionSubscription?.unsubscribe();
-    this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
-    this.subscriptionFilingHoldingSchemeNodes?.unsubscribe();
-    this.subscriptionNodes?.unsubscribe();
-    this.errorMessageSub?.unsubscribe();
-    this.searchCriteriaChangeSubscription?.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -224,6 +236,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
     this.searchCriteriaChangeSubscription = searchCriteriaChange.subscribe(() => {
       this.submit();
+    });
+    this.archiveExchangeDataService.getToggle().subscribe((hidden) => {
+      this.show = hidden;
     });
   }
 
@@ -362,6 +377,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.orderChange.next();
   }
 
+  showPreviewArchiveUnit(item: Unit) {
+    this.openPanel(item);
+  }
+
+
   // Manage criteria filters methods
 
   checkParentBoxChange(event: any) {
@@ -486,6 +506,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
+  }
+
+  hiddenTreeBlock(hidden: boolean): void {
+    this.show = !hidden;
   }
 
   // Manage crietria categories
@@ -793,7 +817,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         sortingCriteria,
         language: this.translateService.currentLang,
       };
-      this.archiveUnitCollectService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.projectId, this.accessContract);
+      this.archiveUnitCollectService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria,
+        this.projectId, this.accessContract);
     }
   }
 

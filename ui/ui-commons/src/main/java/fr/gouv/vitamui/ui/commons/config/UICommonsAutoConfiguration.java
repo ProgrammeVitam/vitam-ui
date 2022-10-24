@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClientFactory;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
@@ -46,6 +48,7 @@ import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -101,8 +104,27 @@ public class UICommonsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public UnitExternalRestClient unitExternalRestClient(final ReferentialExternalRestClientFactory referentialRestClientFactory) {
+    public UnitExternalRestClient unitExternalRestClient(
+        final ReferentialExternalRestClientFactory referentialRestClientFactory) {
         return referentialRestClientFactory.getUnitExternalRestClient();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public ArchiveSearchExternalRestClientFactory archiveSearchExternalRestClientFactory(
+        final UIProperties uiProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+        return new ArchiveSearchExternalRestClientFactory(uiProperties.getArchiveSearchExternalClient(),
+            restTemplateBuilder);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public ArchiveSearchExternalRestClient archiveSearchExternalRestClient(
+        final ArchiveSearchExternalRestClientFactory archiveSearchExternalRestClientFactory) {
+        return archiveSearchExternalRestClientFactory.getArchiveSearchExternalRestClient();
     }
 
 }

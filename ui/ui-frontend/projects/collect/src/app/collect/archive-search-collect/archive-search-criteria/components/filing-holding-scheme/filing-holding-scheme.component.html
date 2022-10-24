@@ -1,0 +1,15 @@
+<div class="vitamui-sidepanel-header">
+  <app-classification-tree
+    [accessContract]="accessContract"
+    [hasMatchesInSearch]="hasMatchesInSearch"
+    [loadingHolding]="loadingHolding"
+    [nestedDataSourceFull]="nestedDataSourceFull"
+    [nestedTreeControlFull]="nestedTreeControlFull"
+    [showEveryNodes]="showEveryNodes"
+    [loadingNodeUnit]="loadingArchiveUnit.TREE"
+    (closePanel)="emitClose()"
+    (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'TREE')"
+    (switchView)="switchViewAllNodes()"
+  ></app-classification-tree>
+
+</div>
