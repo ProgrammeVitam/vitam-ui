@@ -61,6 +61,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -136,10 +137,11 @@ public class ProjectInternalService {
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }
-            List<ProjectDto> projectDtos =
-                objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(),
-                    new TypeReference<>() {
-                    });
+            final List<JsonNode> results = ((RequestResponseOK<JsonNode>) requestResponse).getResults();
+            List<ProjectDto> projectDtos = new ArrayList<>();
+            for (JsonNode result : results) {
+                projectDtos.add(objectMapper.treeToValue(result, ProjectDto.class));
+            }
             List<CollectProjectDto> collectProjectDtos = ProjectConverter.toVitamuiDtos(projectDtos);
             return new PaginatedValuesDto<>(collectProjectDtos, 1, MAX_RESULTS, false);
         } catch (VitamClientException e) {
