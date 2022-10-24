@@ -56,9 +56,6 @@ ui-identity:
   archive-search-external-client:
     server-host: localhost
     server-port: 8089
-    connect-time-out: 30
-    read-time-out: 30
-    write-time-out: 30
     secure: true
     ssl-configuration:
       keystore:

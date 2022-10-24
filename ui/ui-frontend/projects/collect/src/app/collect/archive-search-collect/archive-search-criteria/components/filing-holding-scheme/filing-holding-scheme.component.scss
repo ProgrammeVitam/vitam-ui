@@ -18,7 +18,7 @@
 
   .tree-text {
     flex: 1;
-    min-width: 0; /* or some value */
+    min-width: 0;
     p, a {
       white-space: nowrap;
       overflow: hidden;
@@ -27,7 +27,6 @@
   }
 
   .mat-tree-node {
-    //hidde empty node
     flex: 1 1 auto;
     min-height: 0;
   }
@@ -83,7 +82,6 @@
   cursor: pointer;
 
   &:hover {
-    // text-decoration: underline;
     background-color: rgba(250, 250, 250, 1);
   }
 }

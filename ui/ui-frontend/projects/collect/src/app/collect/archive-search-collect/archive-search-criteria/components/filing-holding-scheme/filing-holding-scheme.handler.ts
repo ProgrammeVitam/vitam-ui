@@ -28,7 +28,6 @@ import { DescriptionLevel } from 'projects/vitamui-library/src/lib/models/descri
 import { copyNodeWithoutChildren, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { Unit } from '../../../../core/models/unit.interface';
 import { PagedResult, ResultFacet } from '../../models/search.criteria';
-// import { DescriptionLevel } from '../../../../../vitamui-library/src/lib/models/description-level.enum';
 
 export class FilingHoldingSchemeHandler {
   public static foundNodeAndSetCheck(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {
