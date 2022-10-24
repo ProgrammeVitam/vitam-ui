@@ -24,7 +24,7 @@
     <tbody>
       <tr class="vitamui-table-row" *ngFor="let ingestInfo of ingestList.ingests | keyvalue">
         <td>{{ ingestInfo.value.name }}</td>
-        <td>{{ ingestInfo.value.size | filesize }}</td>
+        <td>{{ ingestInfo.value.size |fileSize }}</td>
         <td>
           <span class="purcent">{{ ingestInfo.value.sizeUploaded | number: '1.0-0' }} %</span>
           <mat-progress-bar mode="determinate" [value]="ingestInfo.value.sizeUploaded" class="stepper-progress-bar"> </mat-progress-bar>

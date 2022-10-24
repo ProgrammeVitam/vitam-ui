@@ -44,7 +44,6 @@ import { LoggerModule } from 'ui-frontend-common';
 import { UploadTrackingComponent } from './upload-tracking.component';
 import { UploadService } from '../../core/common/upload.service';
 import { IngestList } from '../../core/common/ingest-list';
-import { NgxFilesizeModule } from 'ngx-filesize';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -58,7 +57,6 @@ describe('UploadTrackingComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         MatProgressBarModule,
-        NgxFilesizeModule,
         NoopAnimationsModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot()
