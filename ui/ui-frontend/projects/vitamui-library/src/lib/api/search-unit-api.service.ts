@@ -36,4 +36,8 @@ export class SearchUnitApiService {
     return this.http.get<SearchResponse>(this.apiUrl + '/filingplan', {headers});
   }
 
+  // Manage filling and holding units
+  getFilingHoldingScheme(headers?: HttpHeaders): Observable<SearchResponse> {
+    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', { headers });
+  }
 }
