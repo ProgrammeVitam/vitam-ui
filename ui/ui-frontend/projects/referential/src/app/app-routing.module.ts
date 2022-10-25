@@ -47,12 +47,14 @@ const routes: Routes = [
     path: '',
     component: AppComponent,
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'PORTAL_APP' },
   },
   {
     path: 'account',
     component: AccountComponent,
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ACCOUNTS_APP' },
   },
   // =====================================================
@@ -62,6 +64,7 @@ const routes: Routes = [
     path: 'access-contract',
     loadChildren: () => import('./access-contract/access-contract.module').then((m) => m.AccessContractModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ACCESS_APP' },
   },
   // =====================================================
@@ -71,6 +74,7 @@ const routes: Routes = [
     path: 'ingest-contract',
     loadChildren: () => import('./ingest-contract/ingest-contract.module').then((m) => m.IngestContractModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'INGEST_APP' },
   },
   // =====================================================
@@ -80,6 +84,7 @@ const routes: Routes = [
     path: 'agency',
     loadChildren: () => import('./agency/agency.module').then((m) => m.AgencyModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'AGENCIES_APP' },
   },
   // =====================================================
@@ -89,6 +94,7 @@ const routes: Routes = [
     path: 'file-format',
     loadChildren: () => import('./file-format/file-format.module').then((m) => m.FileFormatModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'FILE_FORMATS_APP' },
   },
   // =====================================================
@@ -98,6 +104,7 @@ const routes: Routes = [
     path: 'context',
     loadChildren: () => import('./context/context.module').then((m) => m.ContextModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'CONTEXTS_APP' },
   },
   // =====================================================
@@ -107,6 +114,7 @@ const routes: Routes = [
     path: 'security-profile',
     loadChildren: () => import('./security-profile/security-profile.module').then((m) => m.SecurityProfileModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'SECURITY_PROFILES_APP' },
   },
   // =====================================================
@@ -116,6 +124,7 @@ const routes: Routes = [
     path: 'ontology',
     loadChildren: () => import('./ontology/ontology.module').then((m) => m.OntologyModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ONTOLOGY_APP' },
   },
   // =====================================================
@@ -125,6 +134,7 @@ const routes: Routes = [
     path: 'audit',
     loadChildren: () => import('./audit/audit.module').then((m) => m.AuditModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'AUDIT_APP' },
   },
   // =====================================================
@@ -134,6 +144,7 @@ const routes: Routes = [
     path: 'securisation',
     loadChildren: () => import('./securisation/securisation.module').then((m) => m.SecurisationModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'SECURE_APP' },
   },
   // =====================================================
@@ -143,6 +154,7 @@ const routes: Routes = [
     path: 'probative-value',
     loadChildren: () => import('./probative-value/probative-value.module').then((m) => m.ProbativeValueModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'PROBATIVE_VALUE_APP' },
   },
   // =====================================================
@@ -152,6 +164,7 @@ const routes: Routes = [
     path: 'logbook-operation',
     loadChildren: () => import('./logbook-operation/logbook-operation.module').then((m) => m.LogbookOperationModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'LOGBOOK_OPERATION_APP' },
   },
   // =====================================================
@@ -161,6 +174,7 @@ const routes: Routes = [
     path: 'dsl',
     loadChildren: () => import('./admin-dsl/admin-dsl.module').then((m) => m.AdminDslModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'DSL_APP' },
   },
   // =====================================================
@@ -170,6 +184,7 @@ const routes: Routes = [
     path: 'rule',
     loadChildren: () => import('./rule/rule.module').then((m) => m.RuleModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'RULES_APP' },
   },
   // =====================================================
