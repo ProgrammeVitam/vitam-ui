@@ -58,12 +58,12 @@ describe('ArchiveSearchCollectComponent', () => {
   const archiveSearchCommonService = {
     addCriteria: () => of(),
     buildNodesListForQUery: () => of(),
-    buildFieldsCriteriaListForQUery : () => of(),
-    buildManagementRulesCriteriaListForQuery : () => of(),
-    checkIfRulesFacetsCanBeComputed : () => of(),
-    updateCriteriaStatus : () => of(),
-    removeCriteria : () => of(),
-    recursiveCheck : () => of(),
+    buildFieldsCriteriaListForQUery: () => of(),
+    buildManagementRulesCriteriaListForQuery: () => of(),
+    checkIfRulesFacetsCanBeComputed: () => of(),
+    updateCriteriaStatus: () => of(),
+    removeCriteria: () => of(),
+    recursiveCheck: () => of(),
   };
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -90,7 +90,15 @@ describe('ArchiveSearchCollectComponent', () => {
         { provide: ArchiveSearchHelperService, useValue: archiveSearchCommonService },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'COLLECT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'COLLECT_APP' }),
+            snapshot: {
+              queryParamMap: {
+                get: () => 'project messageIdentifier',
+              },
+            },
+          },
         },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: VitamUISnackBar, useValue: snackBarSpy },
