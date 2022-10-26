@@ -162,7 +162,7 @@ public class AccessRegisterVitamQueryHelper {
         if (isNull(opi)) {
             return;
         }
-        orQuery.add(wildcard("#" + OPI, "*" + opi + "*"));
+        orQuery.add(wildcard(OPI, "*" + opi + "*"));
     }
 
     private static void addFiltersToQuery(BooleanQuery andQuery, Map<String, List<String>> filters)
