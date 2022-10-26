@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.internal.server.accessionregister;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
@@ -53,6 +52,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -107,13 +107,13 @@ public class AccessionRegisterInternalService {
     public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
         RequestResponse<AccessionRegisterSummaryModel> requestResponse;
         try {
-            LOGGER.debug("List of Accession Register EvIdAppSession : {} " , context.getApplicationSessionId());
+            LOGGER.debug("List of Accession Register EvIdAppSession : {} ", context.getApplicationSessionId());
             requestResponse = accessionRegisterService.findAccessionRegisterSummary(context);
             final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);
             return AccessionRegisterConverter.toSummaryDtos(accessionRegisterSymbolicResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException e) {
-            LOGGER.error("Error when getting Accession Register summaries : {} " , e);
+            LOGGER.error("Error when getting Accession Register summaries : {} ", e);
             throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
         }
     }
@@ -135,7 +135,7 @@ public class AccessionRegisterInternalService {
         HitsDto hits = results.getHits();
         Integer resultSize = 0;
         Integer resultTotal = 0;
-        if(hits != null) {
+        if (hits != null) {
             resultSize = hits.getSize();
             resultTotal = hits.getTotal();
         }
@@ -156,12 +156,13 @@ public class AccessionRegisterInternalService {
         Optional<DirectionDto> direction, VitamContext vitamContext, Optional<String> criteria) {
         JsonNode query;
         try {
-            Map<String, Object> vitamCriteria = new HashMap<>();
+            AccessionRegisterSearchDto vitamCriteria = new AccessionRegisterSearchDto();
             LOGGER.debug("List of Accession Registers EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
-                vitamCriteria = objectMapper.readValue(criteria.get(), new TypeReference<HashMap<String, Object>>() {});
+                vitamCriteria = objectMapper.readValue(criteria.get(), AccessionRegisterSearchDto.class);
             }
-            query = AccessRegisterVitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
+            query = AccessRegisterVitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy.orElse(null),
+                direction.orElse(null));
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             LOGGER.error("Can't create dsl query to get paginated accession registers : {}", ioe);
             throw new InternalServerException("Can't create dsl query to get paginated accession registers", ioe);
@@ -172,11 +173,14 @@ public class AccessionRegisterInternalService {
         return query;
     }
 
-    private AccessionRegisterDetailResponseDto fetchingAllPaginatedDataFromVitam(VitamContext vitamContext, JsonNode query) {
+    private AccessionRegisterDetailResponseDto fetchingAllPaginatedDataFromVitam(VitamContext vitamContext,
+        JsonNode query) {
         AccessionRegisterDetailResponseDto results;
         try {
-            RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails = adminExternalClient.findAccessionRegisterDetails(vitamContext, query);
-            results = objectMapper.treeToValue(accessionRegisterDetails.toJsonNode(), AccessionRegisterDetailResponseDto.class);
+            RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails =
+                adminExternalClient.findAccessionRegisterDetails(vitamContext, query);
+            results = objectMapper.treeToValue(accessionRegisterDetails.toJsonNode(),
+                AccessionRegisterDetailResponseDto.class);
         } catch (VitamClientException e) {
             LOGGER.error("Can't fetch data from VITAM : {}", e);
             throw new InternalServerException("Can't fetch data from VITAM", e);
@@ -193,7 +197,8 @@ public class AccessionRegisterInternalService {
         List<AgencyModelDto> agencies;
         try {
             originatingAgencyQuery = buildOriginatingAgencyProjectionQuery(results);
-            RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, originatingAgencyQuery);
+            RequestResponse<AgenciesModel> requestResponse =
+                agencyService.findAgencies(vitamContext, originatingAgencyQuery);
             agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
         } catch (JsonProcessingException e) {
             LOGGER.error("Error parsing query : {}", e);
