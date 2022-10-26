@@ -24,19 +24,19 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
-import { InjectorModule, LoggerModule, FilingHoldingSchemeNode, StartupService } from 'ui-frontend-common';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { of } from 'rxjs';
-import { ArchiveCollectService } from '../../../archive-collect.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/collect/src/environments/environment.prod';
+import { of } from 'rxjs';
+import { FilingHoldingSchemeNode, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
+import { ArchiveCollectService } from '../../../archive-collect.service';
+import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
 
 describe('FilingHoldingSchemeComponent', () => {
   let component: FilingHoldingSchemeComponent;
@@ -46,7 +46,6 @@ describe('FilingHoldingSchemeComponent', () => {
     id: 'rootId',
     title: 'RootTitle',
     type: 'RecordGrp',
-    parents: [],
     children: [],
     vitamId: 'rootId',
     checked: false,
@@ -60,7 +59,6 @@ describe('FilingHoldingSchemeComponent', () => {
       type: 'RecordGrp',
       children: [],
       vitamId: 'rootChild-1',
-      parents: [rootNode],
       checked: false,
       hidden: false,
     },
@@ -70,7 +68,6 @@ describe('FilingHoldingSchemeComponent', () => {
       type: 'RecordGrp',
       children: [],
       vitamId: 'rootChild-2',
-      parents: [rootNode],
       checked: false,
       hidden: false,
     },
@@ -84,7 +81,6 @@ describe('FilingHoldingSchemeComponent', () => {
       type: 'RecordGrp',
       children: [],
       vitamId: 'leaf-1',
-      parents: [rootChildren[0]],
       checked: false,
       hidden: false,
     },
@@ -94,7 +90,6 @@ describe('FilingHoldingSchemeComponent', () => {
       type: 'RecordGrp',
       children: [],
       vitamId: 'leaf-2',
-      parents: [rootChildren[0]],
       checked: false,
       hidden: false,
     },
@@ -143,12 +138,12 @@ describe('FilingHoldingSchemeComponent', () => {
     expect(component).toBeTruthy();
   });
   describe('Display Filling and holding units', () => {
-    let nodes: FilingHoldingSchemeNode[] = [];
+    const filingHoldingSchemeNodes: FilingHoldingSchemeNode[] = [];
 
     beforeEach(() => {
       // Given
-      component.nestedDataSourceFull.data = nodes;
-      component.nestedTreeControlFull.dataNodes = nodes;
+      component.nestedDataSourceFull.data = filingHoldingSchemeNodes;
+      component.nestedTreeControlFull.dataNodes = filingHoldingSchemeNodes;
     });
     describe('showAllTreeNodes', () => {
       it('should get All nodes disabled and noot checkable', () => {

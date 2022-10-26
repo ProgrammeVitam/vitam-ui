@@ -28,13 +28,13 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
-import { ResultFacet } from '../../models/search.criteria';
 import { FilingHoldingSchemeNode, StartupService } from 'ui-frontend-common';
-import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 import { Unit } from '../../../../core/models/unit.interface';
-import { NodeData } from '../../models/nodedata.interface';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { ArchiveCollectService } from '../../../archive-collect.service';
+import { NodeData } from '../../models/nodedata.interface';
+import { ResultFacet } from '../../models/search.criteria';
+import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 
 @Component({
   selector: 'app-filing-holding-scheme',
@@ -141,22 +141,21 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   initFilingHoldingSchemeTree() {
     this.loadingHolding = true;
     this.subscriptions.add(
-      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract)
-        .subscribe((nodes) => {
-          // Disable checkbox use to prevent add unit to search criteria
-          this.disableCheckingUnitsRecursive(nodes);
-          this.fullNodes = nodes;
-          this.nestedDataSourceFull.data = nodes;
-          this.nestedTreeControlFull.dataNodes = nodes;
-          this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
-          this.loadingHolding = false;
-        })
+      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract).subscribe((nodes) => {
+        // Disable checkbox use to prevent add unit to search criteria
+        this.disableCheckingUnitsRecursive(nodes);
+        this.fullNodes = nodes;
+        this.nestedDataSourceFull.data = nodes;
+        this.nestedTreeControlFull.dataNodes = nodes;
+        this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
+        this.loadingHolding = false;
+      })
     );
   }
 
   disableCheckingUnitsRecursive(nodes: FilingHoldingSchemeNode[]) {
-    nodes.forEach(unitNode => {
-      unitNode.disabled = true
+    nodes.forEach((unitNode) => {
+      unitNode.disabled = true;
       if (unitNode.children) {
         this.disableCheckingUnitsRecursive(unitNode.children);
       }
@@ -186,7 +185,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   fetchUaFromNodeAndShowDetails(archiveUnitId: string, from: string) {
     this.loadingArchiveUnit[from] = true;
     this.subscriptions.add(
-      this.archiveService.getReferentialUnitDetails(archiveUnitId, this.accessContract).subscribe( (searchResponse) => {
+      this.archiveService.getReferentialUnitDetails(archiveUnitId, this.accessContract).subscribe((searchResponse) => {
         this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
         this.loadingArchiveUnit[`${from}`] = false;
       })
