@@ -30,9 +30,9 @@ pipeline {
         )
     }
 
-//    triggers {
-//        cron('45 2 * * *')
-//    }
+    triggers {
+        cron( env.BRANCH_NAME == 'develop' ? '00 20 * * *' : '')
+    }
 
     stages {
         stage('Set variables for automatic run') {
