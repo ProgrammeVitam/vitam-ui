@@ -48,11 +48,17 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
 
     if (this.appraisalRuleFacets.expiredRulesListFacets && this.appraisalRuleFacets.expiredRulesListFacets.length > 0) {
       this.appraisalRuleFacets.expiredRulesListFacets.forEach((elt) => {
-        if (elt.node === 'UNEXPIRED') {
-          unexpiredRulesNb = elt.count ? elt.count : 0;
-        } else if (elt && elt.node && elt.node.length > 10) {
+        if (elt && elt.node && elt.node.length > 10) {
           this.dateFilterValue = ' ' + elt.node.substring(elt.node.length - 10, elt.node.length);
           expiredRulesNb = elt.count ? elt.count : 0;
+        }
+      });
+    }
+
+    if (this.appraisalRuleFacets.unexpiredRulesListFacets && this.appraisalRuleFacets.unexpiredRulesListFacets.length > 0) {
+      this.appraisalRuleFacets.unexpiredRulesListFacets.forEach((elt) => {
+        if (elt && elt.node && elt.node.length > 10) {
+          unexpiredRulesNb = elt.count ? elt.count : 0;
         }
       });
     }
