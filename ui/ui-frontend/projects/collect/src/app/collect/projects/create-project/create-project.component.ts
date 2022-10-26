@@ -27,7 +27,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
@@ -78,11 +78,13 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.translationService.instant('ACQUISITION_INFORMATION.OTHER'),
     this.translationService.instant('ACQUISITION_INFORMATION.UNKNOWN'),
   ];
+
   legalStatusList = [
-    this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE'),
-    this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE'),
-    this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE'),
+    { id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE') },
+    { id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
+    { id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
   ];
+
   closeModal = false;
   uploadZipCompleted = false;
 
