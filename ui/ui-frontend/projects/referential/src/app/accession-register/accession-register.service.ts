@@ -160,7 +160,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     const stateFacetDetails: FacetDetails[] = [];
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OPERATION_ENTRIES'),
-      totalResults: this.data?.length,
+      totalResults: this.totalElements,
       clickable: false,
       color: Colors.BLACK,
       backgroundColor: Colors.DISABLED,
