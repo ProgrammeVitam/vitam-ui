@@ -110,7 +110,7 @@
       </td>
       <td>
         <div class="vitamui-cell-content cell-content-bold break-content" [ngClass]="event | eventTypeColorClass">
-          {{ (event | lastEvent)?.type }}
+          <vitamui-common-event-type-label [key]="(event | lastEvent)?.type"></vitamui-common-event-type-label>
         </div>
       </td>
     </tr>
