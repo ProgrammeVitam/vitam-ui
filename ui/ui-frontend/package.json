@@ -169,6 +169,7 @@
     "webpack-bundle-analyzer": "^3.8.0"
   },
   "overrides": {
-    "colors": "1.4.0"
+    "colors": "1.4.0",
+    "@babel/traverse": "7.19.6"
   }
 }

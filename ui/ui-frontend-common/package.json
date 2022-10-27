@@ -141,5 +141,8 @@
   },
   "resolutions": {
     "moment": "2.26.0"
+  },
+  "overrides": {
+    "@babel/traverse": "7.19.6"
   }
 }
