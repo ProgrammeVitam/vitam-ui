@@ -31,10 +31,12 @@ package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.external.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
+import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -45,7 +47,10 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter;
+import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
@@ -78,6 +83,7 @@ public class ProjectInternalService {
 
     public static final int MAX_RESULTS = 10000;
     public static final String UNABLE_TO_CREATE_PROJECT = "Unable to create project";
+    public static final String UNABLE_TO_CREATE_TRANSACTION= "Unable to create transaction";
     public static final String UNABLE_TO_PROCESS_RESPONSE = "Unable to process response";
     public static final String UNABLE_TO_UPDATE_PROJECT = "Unable to update project";
     public static final String UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE = "Unable to upload project zip file";
@@ -105,6 +111,28 @@ public class ProjectInternalService {
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_CREATE_PROJECT + ": {}", e);
             throw new InternalServerException(UNABLE_TO_CREATE_PROJECT, e);
+        } catch (InvalidParseOperationException e) {
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
+            throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
+        }
+    }
+
+    public CollectTransactionDto createTransactionForProject(VitamContext vitamContext, CollectTransactionDto collectTransactionDto, String projectId) {
+        LOGGER.debug("CollectTransactionDto: ", collectTransactionDto);
+        try {
+            SanityChecker.checkSecureParameter(projectId);
+            TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
+            RequestResponse<JsonNode> requestResponse = collectService.initTransaction(vitamContext, transactionDto, projectId);
+            if (!requestResponse.isOk()) {
+                LOGGER.error("Error occurs when creating transaction");
+                throw new VitamClientException("Error occurs when creating transaction");
+            }
+            return TransactionConverter.toVitamuiDto(
+                JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    TransactionDto.class));
+        } catch (VitamClientException e) {
+            LOGGER.debug(UNABLE_TO_CREATE_TRANSACTION + ": {}", e);
+            throw new InternalServerException(UNABLE_TO_CREATE_TRANSACTION, e);
         } catch (InvalidParseOperationException e) {
             LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
@@ -153,12 +181,12 @@ public class ProjectInternalService {
         }
     }
 
-    public void streamingUpload(VitamContext vitamContext, InputStream inputStream, String projectId,
+    public void streamingUpload(VitamContext vitamContext, InputStream inputStream, String transactionId,
         String originalFileName) {
-        LOGGER.debug("ProjectId: ", projectId);
+        LOGGER.debug("TransactionId: ", transactionId);
         LOGGER.debug("OriginalFileName: ", originalFileName);
         try {
-            collectService.uploadProjectZip(vitamContext, projectId, inputStream);
+            collectService.uploadProjectZip(vitamContext, transactionId, inputStream);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE + ": {}", e);
             throw new InternalServerException(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);
@@ -281,5 +309,23 @@ public class ProjectInternalService {
         }
     }
 
-
+    public CollectTransactionDto getLastTransactionForProjectId(String id, VitamContext vitamContext) throws VitamClientException {
+        try {
+            RequestResponse<JsonNode> requestResponse = collectService.getLastTransactionForProjectId(vitamContext, id);
+            if (!requestResponse.isOk()) {
+                throw new VitamClientException("Error occurs when getting last transaction by project!");
+            }
+            List<TransactionDto> transactionDtos =
+                objectMapper.readValue(((RequestResponseOK) requestResponse).getResults().toString(),
+                    new TypeReference<>() {
+                    });
+            List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos);
+            if(collectTransactionDtos.isEmpty()){
+                throw new VitamClientException("Unable to find transactions by project");
+            }
+            return collectTransactionDtos.get(collectTransactionDtos.size() -1);
+        } catch (VitamClientException | JsonProcessingException e) {
+            throw new VitamClientException("Unable to find transactions by project : ", e);
+        }
+    }
 }

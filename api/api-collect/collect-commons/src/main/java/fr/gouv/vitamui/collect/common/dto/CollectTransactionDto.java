@@ -28,7 +28,11 @@ package fr.gouv.vitamui.collect.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -36,10 +40,23 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 public class CollectTransactionDto extends IdDto {
-
-    @JsonProperty("id")
     private String id;
-    private String status;
-    @JsonProperty("tenant")
+    private String name;
+    private String archivalAgreement;
+    private String messageIdentifier;
+    private String archivalAgencyIdentifier;
+    private String transferringAgencyIdentifier;
+    private String originatingAgencyIdentifier;
+    private String submissionAgencyIdentifier;
+    private String archivalProfile;
+    private String acquisitionInformation;
+    private String legalStatus;
+    private String comment;
+    private String unitUp;
     private Integer tenant;
+    private String creationDate;
+    private String lastUpdate;
+    private String status;
+    private String projectId;
+
 }

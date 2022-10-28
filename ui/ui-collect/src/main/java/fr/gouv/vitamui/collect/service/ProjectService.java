@@ -55,8 +55,8 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
 
     @Autowired
     public ProjectService(CommonService commonService,
-                          CollectExternalRestClient collectExternalRestClient,
-                          CollectStreamingExternalRestClient collectStreamingExternalRestClient) {
+        CollectExternalRestClient collectExternalRestClient,
+        CollectStreamingExternalRestClient collectStreamingExternalRestClient) {
         this.commonService = commonService;
         this.collectExternalRestClient = collectExternalRestClient;
         this.collectStreamingExternalRestClient = collectStreamingExternalRestClient;
@@ -76,18 +76,28 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
         return collectExternalRestClient.create(context, collectProjectDto);
     }
 
-    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(ExternalHttpContext context, final Integer page,
-                                                                         final Integer size, final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(ExternalHttpContext context,
+        final Integer page,
+        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
+        final Optional<DirectionDto> direction) {
         return collectExternalRestClient.getAllPaginated(context, page, size, criteria, orderBy, direction);
     }
 
     public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
-                                                String projectId, InputStream inputStream) {
-        return collectStreamingExternalRestClient.streamingUpload(context, fileName, projectId, inputStream);
+        String transactionId, InputStream inputStream) {
+        return collectStreamingExternalRestClient.streamingUpload(context, fileName, transactionId, inputStream);
     }
 
     public void deleteProject(String projectId, final ExternalHttpContext context) {
         collectExternalRestClient.deleteProject(projectId, context);
+    }
+
+    public CollectTransactionDto createTransactionForProject(final ExternalHttpContext context, CollectTransactionDto collectTransactionDto, String id) {
+        return collectExternalRestClient.createTransactionForProject(context, collectTransactionDto, id);
+    }
+
+    public CollectTransactionDto getLastTransactionForProjectId(final ExternalHttpContext context, String id) {
+        return collectExternalRestClient.getLastTransactionForProjectId(id, context);
     }
 
 

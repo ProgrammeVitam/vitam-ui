@@ -429,11 +429,15 @@ public class ServicesData {
     public static final String TRANSACTIONS = "TRANSACTIONS";
     public static final String ROLE_GET_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
     public static final String ROLE_CREATE_PROJECTS = CREATE_ROLE_PREFIX + PROJECTS;
+    public static final String ROLE_CREATE_TRANSACTIONS = CREATE_ROLE_PREFIX + TRANSACTIONS;
     public static final String ROLE_UPDATE_PROJECTS = UPDATE_ROLE_PREFIX + PROJECTS;
+    public static final String ROLE_UPDATE_TRANSACTIONS = UPDATE_ROLE_PREFIX + TRANSACTIONS;
 
     public static final String ROLE_CLOSE_TRANSACTIONS = CLOSE_ROLE_PREFIX + TRANSACTIONS;
 
     public static final String ROLE_SEND_TRANSACTIONS = SEND_ROLE_PREFIX + TRANSACTIONS;
+    public static final String ROLE_GET_TRANSACTIONS = GET_ROLE_PREFIX + TRANSACTIONS;
+    public static final String ROLE_DELETE_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
 
 
     //@formatter:off
@@ -567,7 +571,11 @@ public class ServicesData {
         ROLE_UPDATE_PROJECTS,
 
         ROLE_CLOSE_TRANSACTIONS,
-        ROLE_SEND_TRANSACTIONS
+        ROLE_SEND_TRANSACTIONS,
+        ROLE_CREATE_TRANSACTIONS,
+        ROLE_UPDATE_TRANSACTIONS,
+        ROLE_GET_TRANSACTIONS,
+        ROLE_DELETE_PROJECTS
     );
 
     /**
@@ -715,7 +723,11 @@ public class ServicesData {
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
         ROLE_RECLASSIFICATION,
-        ROLE_UPDATE_UNIT_DESC_METADATA
+        ROLE_UPDATE_UNIT_DESC_METADATA,
+        ROLE_CREATE_TRANSACTIONS,
+        ROLE_UPDATE_TRANSACTIONS,
+        ROLE_GET_TRANSACTIONS,
+        ROLE_DELETE_PROJECTS
     );
     //@formatter:on
 

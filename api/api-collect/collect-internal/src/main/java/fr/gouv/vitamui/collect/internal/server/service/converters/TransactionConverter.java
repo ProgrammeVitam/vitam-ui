@@ -27,11 +27,15 @@
 
 package fr.gouv.vitamui.collect.internal.server.service.converters;
 
+import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.collect.external.dto.TransactionDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class TransactionConverter {
@@ -43,5 +47,60 @@ public class TransactionConverter {
             .build();
     }
 
+    public static List<CollectTransactionDto> toVitamuiDtos(List<TransactionDto> transactionDtos) {
+        return transactionDtos.stream().map(TransactionConverter::toVitamUiDto).collect(Collectors.toList());
+    }
+
+    public static CollectTransactionDto toVitamUiDto(TransactionDto transactionDto) {
+        CollectTransactionDto collectTransactionDto = new CollectTransactionDto();
+        collectTransactionDto.setArchivalAgencyIdentifier(transactionDto.getArchivalAgencyIdentifier());
+        collectTransactionDto.setArchivalAgreement(transactionDto.getArchivalAgreement());
+        collectTransactionDto.setComment(transactionDto.getComment());
+        collectTransactionDto.setArchivalProfile(transactionDto.getArchivalProfile());
+        collectTransactionDto.setId(transactionDto.getId());
+        collectTransactionDto.setMessageIdentifier(transactionDto.getMessageIdentifier());
+        collectTransactionDto.setOriginatingAgencyIdentifier(transactionDto.getOriginatingAgencyIdentifier());
+        collectTransactionDto.setSubmissionAgencyIdentifier(transactionDto.getSubmissionAgencyIdentifier());
+        collectTransactionDto.setTransferringAgencyIdentifier(transactionDto.getTransferringAgencyIdentifier());
+        collectTransactionDto.setAcquisitionInformation(transactionDto.getAcquisitionInformation());
+        collectTransactionDto.setLegalStatus(transactionDto.getLegalStatus());
+        collectTransactionDto.setCreationDate(transactionDto.getCreationDate());
+        collectTransactionDto.setLastUpdate(transactionDto.getLastUpdate());
+        collectTransactionDto.setProjectId(transactionDto.getProjectId());
+        return collectTransactionDto;
+    }
+
+    public static TransactionDto toVitamDto(CollectTransactionDto collectTransactionDto) {
+        TransactionDto externalDto = new TransactionDto();
+        externalDto.setArchivalAgencyIdentifier(collectTransactionDto.getArchivalAgencyIdentifier());
+        externalDto.setArchivalAgreement(collectTransactionDto.getArchivalAgreement());
+        externalDto.setComment(collectTransactionDto.getComment());
+        externalDto.setArchivalProfile(collectTransactionDto.getArchivalProfile());
+        externalDto.setId(collectTransactionDto.getId());
+        externalDto.setMessageIdentifier(collectTransactionDto.getMessageIdentifier());
+        externalDto.setOriginatingAgencyIdentifier(collectTransactionDto.getOriginatingAgencyIdentifier());
+        externalDto.setSubmissionAgencyIdentifier(collectTransactionDto.getSubmissionAgencyIdentifier());
+        externalDto.setTransferringAgencyIdentifier(collectTransactionDto.getTransferringAgencyIdentifier());
+        externalDto.setAcquisitionInformation(collectTransactionDto.getAcquisitionInformation());
+        externalDto.setLegalStatus(collectTransactionDto.getLegalStatus());
+        externalDto.setCreationDate(collectTransactionDto.getCreationDate());
+        externalDto.setLastUpdate(collectTransactionDto.getLastUpdate());
+        return externalDto;
+    }
+
+    public static TransactionDto updateContextFromProject(ProjectDto projectDto, TransactionDto transactionDto) {
+        transactionDto.setArchivalAgencyIdentifier(projectDto.getArchivalAgencyIdentifier());
+        transactionDto.setArchivalAgreement(projectDto.getArchivalAgreement());
+        transactionDto.setComment(projectDto.getComment());
+        transactionDto.setArchivalProfile(projectDto.getArchivalProfile());
+        transactionDto.setMessageIdentifier(projectDto.getMessageIdentifier());
+        transactionDto.setOriginatingAgencyIdentifier(projectDto.getOriginatingAgencyIdentifier());
+        transactionDto.setSubmissionAgencyIdentifier(projectDto.getSubmissionAgencyIdentifier());
+        transactionDto.setTransferringAgencyIdentifier(projectDto.getTransferringAgencyIdentifier());
+        transactionDto.setAcquisitionInformation(projectDto.getAcquisitionInformation());
+        transactionDto.setLegalStatus(projectDto.getLegalStatus());
+        transactionDto.setLastUpdate(projectDto.getLastUpdate());
+        return transactionDto;
+    }
 
 }

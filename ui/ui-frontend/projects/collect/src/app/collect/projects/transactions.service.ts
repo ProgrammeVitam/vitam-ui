@@ -24,22 +24,26 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Id} from '../id.interface';
-import {FacetDetails} from '../operation';
-import { ProjectStatus } from './project-status';
+import { Injectable } from '@angular/core';
+import { Transaction } from 'ui-frontend-common';
+import { Observable } from 'rxjs';
+import { ProjectsApiService } from '../core/api/project-api.service';
 
-export interface Project extends Id {
-  archivalAgreement: string;
-  messageIdentifier: string;
-  archivalAgencyIdentifier: string;
-  transferringAgencyIdentifier: string;
-  originatingAgencyIdentifier: string;
-  submissionAgencyIdentifier: string;
-  archivalProfile: string;
-  unitUp: string;
-  comment: string;
-  status: ProjectStatus;
-  createdOn?: Date;
-  lastModifyOn?: Date;
-  facets?: FacetDetails[];
+@Injectable({
+  providedIn: 'root',
+})
+export class TransactionsService {
+
+  constructor(private projectsApiService: ProjectsApiService) {
+    
+  }
+
+  public create(transaction: Transaction): Observable<any> {
+    return this.projectsApiService.createTransaction(transaction);
+  }
+
+  public updateTransaction(transaction: Transaction): Observable<any> {
+    return this.projectsApiService.updateTransaction(transaction);
+  }
+
 }

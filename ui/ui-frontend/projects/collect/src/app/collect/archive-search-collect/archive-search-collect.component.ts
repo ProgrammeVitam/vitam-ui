@@ -219,7 +219,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.projectId = params.id;
       return this.archiveUnitCollectService.getProjectById(this.projectId);
     }), mergeMap(project => {
-      return this.archiveUnitCollectService.getTransactionById(project.transactionId)
+      return this.archiveUnitCollectService.getLastTransactionByProjectId(project.id)
     })).subscribe(transaction => {
       this.transaction = transaction;
       this.isNotOpen$.next(this.transaction.status !== TransactionStatus.OPEN);

@@ -81,14 +81,14 @@ public class CollectStreamingInternalRestClient
     }
 
     public ResponseEntity<Void> streamingUpload(final InternalHttpContext context, InputStream inputStream,
-        String projectId,  String originalFileName) {
+        String transactionId,  String originalFileName) {
         LOGGER.debug("Calling upload using streaming process");
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + "/upload");
 
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));
-        headersList.add(CommonConstants.X_PROJECT_ID_HEADER, projectId);
+        headersList.add(CommonConstants.X_TRANSACTION_ID_HEADER, transactionId);
         headersList.add(CommonConstants.X_ORIGINAL_FILENAME_HEADER, originalFileName);
 
         HttpHeaders headersParams = new HttpHeaders();

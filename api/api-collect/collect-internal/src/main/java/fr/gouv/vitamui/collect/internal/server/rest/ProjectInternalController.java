@@ -31,6 +31,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -38,6 +39,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -87,19 +89,30 @@ public class ProjectInternalController {
         return projectInternalService.createProject(vitamContext, collectProjectDto);
     }
 
+    @PostMapping(value = CommonConstants.PATH_ID+ "/transactions")
+    public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody CollectTransactionDto collectTransactionDto)
+        throws InvalidParseOperationException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(collectTransactionDto);
+        LOGGER.debug("Transaction to create {}", collectTransactionDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return projectInternalService.createTransactionForProject(vitamContext, collectTransactionDto, id);
+    }
+
     @ApiOperation(value = "Upload and stream collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = "/upload", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void streamingUpload(
         InputStream inputStream,
-        @RequestHeader(value = CommonConstants.X_PROJECT_ID_HEADER) final String projectId,
+        @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
     ) throws InvalidParseOperationException {
-        ParameterChecker.checkParameter("The project ID is a mandatory parameter: ", projectId);
+        ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
         SanityChecker.isValidFileName(originalFileName);
-        SanityChecker.checkSecureParameter(projectId);
+        SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("[Internal] upload collect zip file : {}", originalFileName);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        projectInternalService.streamingUpload(vitamContext, inputStream, projectId, originalFileName);
+        projectInternalService.streamingUpload(vitamContext, inputStream, transactionId, originalFileName);
     }
 
     @PutMapping(CommonConstants.PATH_ID)
@@ -132,6 +145,15 @@ public class ProjectInternalController {
         projectInternalService.deleteProjectById(id, vitamContext);
     }
 
+    @GetMapping(CommonConstants.PATH_ID  + "/last-transaction")
+    public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find the transaction by project with ID {}", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return projectInternalService.getLastTransactionForProjectId(id, vitamContext);
+    }
 
 
 

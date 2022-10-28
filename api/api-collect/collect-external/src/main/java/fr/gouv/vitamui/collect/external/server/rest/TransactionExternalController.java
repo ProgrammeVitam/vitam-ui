@@ -26,7 +26,9 @@
  */
 package fr.gouv.vitamui.collect.external.server.rest;
 
+import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.TransactionExternalService;
@@ -93,6 +95,17 @@ public class TransactionExternalController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the Transactions with project Id {}", id);
         return transactionExternalService.getTransactionById(id);
+    }
+
+    @Secured(ServicesData.ROLE_UPDATE_TRANSACTIONS)
+    @PutMapping
+    public CollectTransactionDto updateTransaction(@RequestBody CollectTransactionDto transactionDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, transactionDto.getId());
+        SanityChecker.checkSecureParameter(transactionDto.getId());
+        SanityChecker.sanitizeCriteria(transactionDto);
+        LOGGER.debug("[External] Transaction to update : {}", transactionDto);
+        return transactionExternalService.updateTransaction(transactionDto);
     }
 
 

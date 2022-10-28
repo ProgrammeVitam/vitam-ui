@@ -26,7 +26,9 @@
  */
 package fr.gouv.vitamui.collect.external.server.service;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClient;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -80,9 +82,13 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
         return collectInternalRestClient.create(getInternalHttpContext(), collectProjectDto);
     }
 
-    public ResponseEntity<Void> streamingUpload(InputStream inputStream, String projectId, String originalFileName) {
+    public CollectTransactionDto createTransactionForProject(CollectTransactionDto collectTransactionDto, String projectId) {
+        return collectInternalRestClient.createTransaction(getInternalHttpContext(), collectTransactionDto, projectId);
+    }
+
+    public ResponseEntity<Void> streamingUpload(InputStream inputStream, String transactionId, String originalFileName) {
         return collectStreamingInternalRestClient
-            .streamingUpload(getInternalHttpContext(), inputStream, projectId, originalFileName);
+            .streamingUpload(getInternalHttpContext(), inputStream, transactionId, originalFileName);
     }
 
     public CollectProjectDto updateProject(CollectProjectDto collectProjectDto) {
@@ -97,6 +103,7 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
         collectInternalRestClient.deleteProject(getInternalHttpContext(), projectId);
     }
 
-
-
+    public CollectTransactionDto getLastTransactionForProjectId(String projectId) {
+        return collectInternalRestClient.getLastTransactionForProjectId(getInternalHttpContext(), projectId);
+    }
 }
