@@ -47,6 +47,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PuaFromJSON {
@@ -55,8 +56,9 @@ public class PuaFromJSON {
     private static final String TYPE = "object";
 
     private final PuaPastisValidator puaPastisValidator;
+
     @Autowired
-    public PuaFromJSON(final PuaPastisValidator puaPastisValidator){
+    public PuaFromJSON(final PuaPastisValidator puaPastisValidator) {
         this.puaPastisValidator = puaPastisValidator;
     }
 
@@ -72,7 +74,7 @@ public class PuaFromJSON {
         // 3. Add additionProperties
         controlSchema.put("additionalProperties", elementProperties.isAdditionalProperties());
         // 4. Check if tree contains Management metadata
-        addPatternProperties(elementProperties, controlSchema);
+        addPatternPropertiesForManagement(elementProperties, controlSchema);
         List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
         controlSchema.put("required", puaPastisValidator.getHeadRequired(elementsForTree));
 
@@ -104,18 +106,19 @@ public class PuaFromJSON {
         return sortedJSONObject;
     }
 
-    private void addPatternProperties(ElementProperties elementProperties, JSONObject controlSchema)
-        throws IOException {
-        if (puaPastisValidator.managementIsEmpty(elementProperties)) {
-            controlSchema.put("patternProperties", new JSONObject()
-                .put("#management", new JSONObject()
-                    .put(
-                        "additionalProperties",
-                        elementProperties.getChildren().get(0).getChildren().stream()
-                            .filter(e -> e.getName().equals("Management"))
-                            .findAny()
-                            .get().isAdditionalProperties())));
+    private void addPatternPropertiesForManagement(ElementProperties elementProperties, JSONObject controlSchema) {
+        ElementProperties managementElementProperties = puaPastisValidator
+            .getManagementElementProperties(elementProperties);
+        // set when it's null ?
+        if (Objects.isNull(managementElementProperties) || managementElementProperties.getChildren().size() > 0) {
+            return;
         }
+        controlSchema
+            .put("patternProperties", new JSONObject()
+                .put("#management", new JSONObject()
+                    .put("additionalProperties", managementElementProperties.isAdditionalProperties())));
+
+
     }
 
 }

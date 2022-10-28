@@ -65,6 +65,7 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.dto.ProfileResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamProfileService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,6 +78,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -94,7 +96,8 @@ public class ProfileInternalService {
 
 
     @Autowired
-    public ProfileInternalService(ObjectMapper objectMapper, ProfileConverter converter, VitamProfileService vitamProfileService) {
+    public ProfileInternalService(ObjectMapper objectMapper, ProfileConverter converter,
+        VitamProfileService vitamProfileService) {
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.vitamProfileService = vitamProfileService;
@@ -117,7 +120,8 @@ public class ProfileInternalService {
     public ProfileDto getOne(VitamContext vitamContext, String identifier) {
         try {
             LOGGER.info("Archival Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            RequestResponse<ProfileModel> requestResponse = vitamProfileService.findArchivalProfileById(vitamContext, identifier);
+            RequestResponse<ProfileModel> requestResponse =
+                vitamProfileService.findArchivalProfileById(vitamContext, identifier);
             final ProfileResponseDto profileResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), ProfileResponseDto.class);
             if (profileResponseDto.getResults().size() == 0) {
@@ -131,8 +135,8 @@ public class ProfileInternalService {
     }
 
     public PaginatedValuesDto<ProfileDto> getAllPaginated(final Integer pageNumber, final Integer size,
-                                                          final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-                                                          Optional<String> criteria) {
+        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
+        Optional<String> criteria) {
         LOGGER.info("All Archival Profiles EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
@@ -158,7 +162,8 @@ public class ProfileInternalService {
         return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
     }
 
-    public Response download(VitamContext context, String id) throws AccessExternalNotFoundException, AccessExternalClientException {
+    public Response download(VitamContext context, String id)
+        throws AccessExternalNotFoundException, AccessExternalClientException {
         try {
             LOGGER.info("Download EvIdAppSession : {} ", context.getApplicationSessionId());
 
@@ -169,7 +174,8 @@ public class ProfileInternalService {
         }
     }
 
-    public JsonNode updateProfileFile(VitamContext context, String id, MultipartFile file) throws AccessExternalClientException {
+    public JsonNode updateProfileFile(VitamContext context, String id, MultipartFile file)
+        throws AccessExternalClientException {
         try {
             LOGGER.info("Upload Profile File EvIdAppSession : {} ", context.getApplicationSessionId());
             return vitamProfileService.updateProfileFile(context, id, file).toJsonNode();
@@ -194,13 +200,18 @@ public class ProfileInternalService {
         query.set("$action", actions);
         try {
             RequestResponse<?> requestResponse = vitamProfileService.updateProfile(vitamContext, id, query);
-
-            return ((JsonNode) (((RequestResponseOK) requestResponse).getResults().get(0))).get("diffs");
+            List results = ((RequestResponseOK) requestResponse).getResults();
+            if (CollectionUtils.isNotEmpty(results)) {
+                Object firstResult = results.get(0);
+                if (Objects.nonNull(firstResult)) {
+                    return ((JsonNode) firstResult).get("diffs");
+                }
+            }
+            return null;
         } catch (AccessExternalClientException e) {
             throw new InternalServerException("Can't update Archival Profile", e);
         }
     }
-
 
     private JsonNode convertMapDtoToUpperCaseVitamFields(ProfileDto dto) {
         ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
@@ -241,16 +252,18 @@ public class ProfileInternalService {
         try {
             LOGGER.info("Create Profile EvIdAppSession : {} ", context.getApplicationSessionId());
 
-            RequestResponse<?> requestResponse = vitamProfileService.create(context, converter.convertDtoToVitam(archivalProfileDto));
-            if ( requestResponse.isOk() ) {
+            RequestResponse<?> requestResponse =
+                vitamProfileService.create(context, converter.convertDtoToVitam(archivalProfileDto));
+            if (requestResponse.isOk()) {
                 final ProfileModel archivalProfileVitamDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode().get("$results").get(0), ProfileModel.class);
                 return converter.convertVitamToDto(archivalProfileVitamDto);
-            }	else {
+            } else {
                 return null;
             }
 
-        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException | JAXBException e) {
+        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException |
+                 JAXBException e) {
             e.printStackTrace();
         }
         return null;
@@ -260,12 +273,13 @@ public class ProfileInternalService {
     public ResponseEntity<JsonNode> importProfile(VitamContext vitamContext, String fileName, MultipartFile file) {
         try {
             RequestResponse<?> response = vitamProfileService.importProfileByFile(vitamContext, fileName, file);
-            if ( response.isOk() ) {
+            if (response.isOk()) {
                 return ResponseEntity.ok(response.toJsonNode());
-            }	else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
+        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException |
+                 IOException e) {
             LOGGER.error("Unable to import archival profile by file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import archival profile by file " + fileName + " : ", e);
         }
