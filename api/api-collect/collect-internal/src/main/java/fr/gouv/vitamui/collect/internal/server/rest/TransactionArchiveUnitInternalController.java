@@ -33,10 +33,8 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.collect.internal.server.service.ProjectArchiveUnitInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.TransactionArchiveUnitInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -60,29 +58,29 @@ import java.io.IOException;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_ARCHIVE_UNITS_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
 
 @RestController
-@RequestMapping(COLLECT_PROJECT_ARCHIVE_UNITS_PATH)
+@RequestMapping(COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH)
 @Api(tags = "collect", value = "Unités archivistiques d'un projet")
-public class ProjectArchiveUnitInternalController {
+public class TransactionArchiveUnitInternalController {
 
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ProjectArchiveUnitInternalController.class);
+        VitamUILoggerFactory.getInstance(TransactionArchiveUnitInternalController.class);
     private final InternalSecurityService securityService;
-    private final ProjectArchiveUnitInternalService projectArchiveUnitInternalService;
+    private final TransactionArchiveUnitInternalService transactionArchiveUnitInternalService;
 
-    public ProjectArchiveUnitInternalController(InternalSecurityService securityService,
-        ProjectArchiveUnitInternalService projectArchiveUnitInternalService) {
+    public TransactionArchiveUnitInternalController(InternalSecurityService securityService,
+        TransactionArchiveUnitInternalService transactionArchiveUnitInternalService) {
         this.securityService = securityService;
-        this.projectArchiveUnitInternalService = projectArchiveUnitInternalService;
+        this.transactionArchiveUnitInternalService = transactionArchiveUnitInternalService;
     }
 
-    @PostMapping("/{projectId}" + ARCHIVE_UNITS)
+    @PostMapping("/{transactionId}" + ARCHIVE_UNITS)
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @PathVariable("projectId") final String projectId,
+        @PathVariable("transactionId") final String transactionId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException,
         InvalidCreateOperationException {
@@ -91,21 +89,21 @@ public class ProjectArchiveUnitInternalController {
         ParameterChecker
             .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, searchQuery);
-        SanityChecker.checkSecureParameter(accessContractId, projectId);
+        SanityChecker.checkSecureParameter(accessContractId, transactionId);
         LOGGER.debug("Calling service searchArchiveUnits for tenantId {}, accessContractId {} By Criteria {} ",
             tenantId,
             accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         ArchiveUnitsDto archiveUnitsDto =
-            projectArchiveUnitInternalService.searchArchiveUnitsByCriteria(projectId, searchQuery, vitamContext);
+            transactionArchiveUnitInternalService.searchArchiveUnitsByCriteria(transactionId, searchQuery, vitamContext);
         return archiveUnitsDto;
     }
 
-    @PostMapping("/{projectId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
+    @PostMapping("/{transactionId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @PathVariable("projectId") final String projectId,
+        @PathVariable("transactionId") final String transactionId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(accessContractId);
@@ -113,8 +111,8 @@ public class ProjectArchiveUnitInternalController {
         LOGGER.debug("Export to CSV file Archive Units by criteria {}", searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         Resource exportedResult =
-            projectArchiveUnitInternalService
-                .exportToCsvSearchArchiveUnitsByCriteria(projectId, searchQuery, vitamContext);
+            transactionArchiveUnitInternalService
+                .exportToCsvSearchArchiveUnitsByCriteria(transactionId, searchQuery, vitamContext);
         return new ResponseEntity<>(exportedResult, HttpStatus.OK);
     }
 

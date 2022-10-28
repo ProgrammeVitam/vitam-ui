@@ -30,6 +30,7 @@
 package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -54,7 +55,11 @@ import static fr.gouv.vitamui.collect.internal.server.service.converters.Project
 public class TransactionInternalService {
 
 
+    public static final int MAX_RESULTS = 10000;
+
     private final CollectService collectService;
+
+    private final ObjectMapper objectMapper;
 
     public static final String UNABLE_TO_UPDATE_TRANSACTION = "Unable to update transaction";
 
@@ -63,8 +68,12 @@ public class TransactionInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalService.class);
 
 
-    public TransactionInternalService(CollectService collectService) {
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalService.class);
+
+
+    public TransactionInternalService(CollectService collectService, ObjectMapper objectMapper) {
         this.collectService = collectService;
+        this.objectMapper = objectMapper;
     }
 
 
@@ -90,7 +99,30 @@ public class TransactionInternalService {
         }
     }
 
-    public CollectTransactionDto getTransactionById(String transactionId, VitamContext vitamContext) throws VitamClientException {
+    public void abortTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
+        try {
+            Response requestResponse = collectService.abortTransaction(vitamContext, idTransaction);
+            if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new VitamClientException("Error occurs when aborting transaction!");
+            }
+        } catch (VitamClientException e) {
+            throw new VitamClientException("Unable to abort transaction : ", e);
+        }
+    }
+
+    public void reopenTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
+        try {
+            Response requestResponse = collectService.reopenTransaction(vitamContext, idTransaction);
+            if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new VitamClientException("Error occurs when reopening transaction!");
+            }
+        } catch (VitamClientException e) {
+            throw new VitamClientException("Unable to reopen transaction : ", e);
+        }
+    }
+
+    public CollectTransactionDto getTransactionById(String transactionId, VitamContext vitamContext)
+        throws VitamClientException {
         try {
             RequestResponse<JsonNode> requestResponse = collectService.getTransactionById(vitamContext, transactionId);
             if (!requestResponse.isOk()) {

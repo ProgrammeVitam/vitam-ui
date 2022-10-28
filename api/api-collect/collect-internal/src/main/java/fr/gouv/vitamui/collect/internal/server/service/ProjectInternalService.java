@@ -309,6 +309,41 @@ public class ProjectInternalService {
         }
     }
 
+
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(String projectId, Integer page,
+        Integer size,
+        Optional<String> orderBy, Optional<DirectionDto> direction, VitamContext vitamContext)
+        throws VitamClientException {
+
+        LOGGER.debug("Page: ", page);
+        LOGGER.debug("Size: ", size);
+        LOGGER.debug("OrderBy: ", orderBy.orElse(null));
+        LOGGER.debug("Direction: ", direction.orElse(null));
+        try {
+            RequestResponse<JsonNode> requestResponse =
+                collectService.getTransactionsByProject(projectId, vitamContext);
+            if (!requestResponse.isOk()) {
+                throw new VitamClientException("Error occurs when getting transaction!");
+            }
+
+            final List<JsonNode> results = ((RequestResponseOK<JsonNode>) requestResponse).getResults();
+            List<TransactionDto> transactionDtos = new ArrayList<>();
+            for (JsonNode result : results) {
+                TransactionDto transactionDto = JsonHandler.getFromString(result.toString(),
+                    TransactionDto.class);
+                transactionDtos.add(transactionDto);
+            }
+            List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos);
+
+            return new PaginatedValuesDto<>(collectTransactionDtos, 1, MAX_RESULTS, false);
+
+        } catch (VitamClientException | InvalidParseOperationException e) {
+            throw new VitamClientException("Unable to find transaction : ", e);
+        }
+
+
+    }
+
     public CollectTransactionDto getLastTransactionForProjectId(String id, VitamContext vitamContext) throws VitamClientException {
         try {
             RequestResponse<JsonNode> requestResponse = collectService.getLastTransactionForProjectId(vitamContext, id);

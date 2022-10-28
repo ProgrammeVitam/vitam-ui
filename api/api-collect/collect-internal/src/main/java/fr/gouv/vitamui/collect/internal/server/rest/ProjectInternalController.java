@@ -52,6 +52,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.InputStream;
 import java.util.Optional;
 
+import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
+
 @RestController
 @RequestMapping(RestApi.COLLECT_PROJECT_PATH)
 @Api(tags = "collect", value = "Préparation de versements")
@@ -117,8 +119,7 @@ public class ProjectInternalController {
 
     @PutMapping(CommonConstants.PATH_ID)
     public CollectProjectDto updateProject(final @PathVariable("id") String id,
-        @RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException {
+        @RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         SanityChecker.checkSecureParameter(id);
@@ -153,6 +154,19 @@ public class ProjectInternalController {
         LOGGER.debug("Find the transaction by project with ID {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return projectInternalService.getLastTransactionForProjectId(id, vitamContext);
+    }
+
+    @ApiOperation(value = "Get transactions by project paginated")
+    @GetMapping(params = {"page", "size"}, value = "/{id}" + TRANSACTIONS)
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction, @PathVariable("id") String projectId)
+        throws VitamClientException {
+
+        LOGGER.debug("getPaginateEntities page={}, size={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return projectInternalService.getTransactionsByProjectPaginated(projectId, page, size, orderBy, direction,
+            vitamContext);
     }
 
 

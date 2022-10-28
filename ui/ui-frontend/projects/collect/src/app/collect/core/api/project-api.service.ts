@@ -34,11 +34,11 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction } from 'ui-frontend-common';
-import { SearchCriteriaDto, SearchCriteriaHistory, SearchResponse } from '../models';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction} from 'ui-frontend-common';
+import {SearchCriteriaHistory} from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -89,20 +89,6 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   public deletebyId(projectId: string) {
     return this.http.delete<void>(`${this.apiUrl}/${projectId}`);
   }
-
-  // Manage Archive Units
-
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${projectId}/search`, criteriaDto, { headers });
-  }
-
-  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, headers?: HttpHeaders): Observable<Blob> {
-    return this.http.post(`${this.apiUrl}/archive-units/${projectId}/export-csv-search`, criteriaDto, {
-      responseType: 'blob',
-      headers,
-    });
-  }
-
   // Manage AU search criteria save
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
@@ -118,11 +104,18 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   }
 
   updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
-    return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
+    return this.http.put<SearchCriteriaHistory>
+    (`${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
   }
 
   public getTransactionById(transactionId: string): Observable<Transaction> {
     return this.http.get<Transaction>(this.urlTransaction + '/' + transactionId);
+  }
+
+  public getTransactionsByProjectId(pageRequest: PageRequest,
+                                       projectId?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Transaction>> {
+    const params = pageRequest.httpParams;
+    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, {params, headers});
   }
 
   validateTransaction(id: string) {

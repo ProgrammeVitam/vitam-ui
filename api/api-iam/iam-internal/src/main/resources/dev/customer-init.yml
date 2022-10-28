@@ -241,6 +241,8 @@ customer-init:
         - ROLE_GET_RULES
         - ROLE_SEND_TRANSACTIONS
         - ROLE_CLOSE_TRANSACTIONS
+        - ROLE_REOPEN_TRANSACTIONS
+        - ROLE_ABORT_TRANSACTIONS
 
   #- name: profileName
   #  description: desc

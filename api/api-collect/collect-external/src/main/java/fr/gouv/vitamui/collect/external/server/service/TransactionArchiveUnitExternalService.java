@@ -32,6 +32,7 @@ package fr.gouv.vitamui.collect.external.server.service;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
@@ -43,22 +44,25 @@ import org.springframework.stereotype.Service;
 @Getter
 @Setter
 @Service
-public class ProjectArchiceUnitExternalService extends
+public class TransactionArchiveUnitExternalService extends
     AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
 
     private final CollectInternalRestClient collectInternalRestClient;
+    private final CollectTransactionInternalRestClient collectTransactionInternalRestClient;
 
-    public ProjectArchiceUnitExternalService(CollectInternalRestClient collectInternalRestClient,
-        ExternalSecurityService externalSecurityService) {
+    public TransactionArchiveUnitExternalService(CollectInternalRestClient collectInternalRestClient,
+        ExternalSecurityService externalSecurityService,
+        CollectTransactionInternalRestClient collectTransactionInternalRestClient) {
         super(externalSecurityService);
         this.collectInternalRestClient = collectInternalRestClient;
+        this.collectTransactionInternalRestClient = collectTransactionInternalRestClient;
     }
-    public ArchiveUnitsDto searchCollectProjectArchiveUnits(String projectId, SearchCriteriaDto searchQuery) {
-        return collectInternalRestClient.searchCollectProjectArchiveUnits(getInternalHttpContext(), projectId, searchQuery);
+    public ArchiveUnitsDto searchCollectTransactionArchiveUnits(String transactionId, SearchCriteriaDto searchQuery) {
+        return collectTransactionInternalRestClient.searchCollectProjectArchiveUnits(getInternalHttpContext(), transactionId, searchQuery);
     }
 
-    public Resource exportCsvArchiveUnitsByCriteria(String projectId, final SearchCriteriaDto query) {
-        return collectInternalRestClient.exportCsvArchiveUnitsByCriteria(projectId, query, getInternalHttpContext());
+    public Resource exportCsvArchiveUnitsByCriteria(String transactionId, final SearchCriteriaDto query) {
+        return collectTransactionInternalRestClient.exportCsvArchiveUnitsByCriteria(transactionId, query, getInternalHttpContext());
     }
 
     @Override

@@ -24,37 +24,36 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Project, SearchService } from 'ui-frontend-common';
-import { ProjectsApiService } from '../core/api/project-api.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {ApplicationId, BreadCrumbData, GlobalEventService, SidenavPage, Transaction} from 'ui-frontend-common';
+import {TransactionsService} from './transactions.service';
 
-@Injectable({
-  providedIn: 'root',
+@Component({
+  selector: 'app-projects',
+  templateUrl: './transactions.component.html',
+  styleUrls: ['./transactions.component.scss'],
 })
-export class ProjectsService extends SearchService<Project> {
-  pageEvent = new Subject<string>();
-  tenantEvent = new Subject<string>();
-  customerEvent = new Subject<string>();
+export class TransactionsComponent extends SidenavPage<any> implements OnInit {
 
-  constructor(http: HttpClient, private projectsApiService: ProjectsApiService) {
-    super(http, projectsApiService, 'ALL');
+  tenantIdentifier: string;
+  projectName: string;
+  transactions$: Observable<Transaction[]>;
+  dataBreadcrumb: BreadCrumbData[];
+
+
+  constructor(route: ActivatedRoute, globalEventService: GlobalEventService, private transactionsService: TransactionsService) {
+    super(route, globalEventService);
   }
 
-  public create(project: Project): Observable<any> {
-    return this.projectsApiService.create(project);
+  ngOnInit(): void {
+    this.dataBreadcrumb = [{identifier: ApplicationId.PORTAL_APP},
+      {identifier: ApplicationId.COLLECT_APP},
+      {identifier: ApplicationId.EXTERNAL_PARAM_PROFILE_APP}];
+    this.transactions$ = this.transactionsService.search();
+
   }
 
-  public updateProject(project: Project) {
-    return this.projectsApiService.update(project);
-  }
 
-  public getProjectById(projectId: string) {
-    return this.projectsApiService.getById(projectId);
-  }
-
-  public deleteProjectId(projectId: string) : Observable<void> {
-    return this.projectsApiService.deletebyId(projectId);
-  }
 }

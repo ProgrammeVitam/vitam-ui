@@ -29,5 +29,8 @@ export enum TransactionStatus {
   READY = 'READY',
   CLOSE = 'CLOSE',
   SENT = 'SENT',
-  SENDING = 'SENDING'
+  SENDING = 'SENDING',
+  ACK_KO = 'ACK_KO',
+  KO = 'KO',
+  ABORTED = 'ABORTED'
 }

@@ -34,34 +34,40 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export enum ApplicationId {
-  STARTER_KIT_APP = 'STARTER_KIT_APP',
-  PORTAL_APP = 'PORTAL_APP',
-  CUSTOMERS_APP = 'CUSTOMERS_APP',
-  USERS_APP = 'USERS_APP',
-  GROUPS_APP = 'GROUPS_APP',
-  PROFILES_APP = 'PROFILES_APP',
-  SUBROGATIONS_APP = 'SUBROGATIONS_APP',
-  ACCOUNTS_APP = 'ACCOUNTS_APP',
-  HIERARCHY_PROFILE_APP = 'HIERARCHY_PROFILE_APP',
-  INGEST_APP = 'INGEST_MANAGEMENT_APP',
-  ARCHIVE_SEARCH_APP = 'ARCHIVE_SEARCH_MANAGEMENT_APP',
-  RULES_APP = 'RULES_APP',
-  HOLDING_FILLING_SCHEME_APP = 'HOLDING_FILLING_SCHEME_APP',
-  LOGBOOK_OPERATION_APP = 'LOGBOOK_OPERATION_APP',
-  PROBATIVE_VALUE_APP = 'PROBATIVE_VALUE_APP',
-  DSL_APP = 'DSL_APP',
-  SECURE_APP = 'SECURE_APP',
-  AUDIT_APP = 'AUDIT_APP',
-  ONTOLOGY_APP = 'ONTOLOGY_APP',
-  SECURITY_PROFILES_APP = 'SECURITY_PROFILES_APP',
-  CONTEXTS_APP = 'CONTEXTS_APP',
-  FILE_FORMATS_APP = 'FILE_FORMATS_APP',
-  AGENCIES_APP = 'AGENCIES_APP',
-  ACCESS_APP = 'ACCESS_APP',
-  INGEST_APP_REF = 'INGEST_APP',
-  LOGBOOK_MANAGEMENT_OPERATION_APP = 'LOGBOOK_MANAGEMENT_OPERATION_APP',
-  EXTERNAL_PARAM_PROFILE_APP = 'EXTERNAL_PARAM_PROFILE_APP',
-  COLLECT_APP = 'COLLECT_APP'
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {map, take} from 'rxjs/operators';
+
+import {PaginatedResponse, Transaction} from 'ui-frontend-common';
+import {TransactionsService} from './transactions.service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class TransactionResolver implements Resolve<boolean> {
+
+  constructor(private transactionsService: TransactionsService, private router: Router) {
+  }
+
+  resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
+    const id = route.paramMap.get('id');
+
+    return this.transactionsService.getTransactionsByProjectId(id)
+      .pipe(
+        take(1),
+        map((paginated: PaginatedResponse<Transaction>) => {
+          const transactions = paginated.values;
+          if (transactions) {
+            this.transactionsService.setTransactions(transactions);
+            return true;
+          } else {
+            this.router.navigate(['/']);
+
+            return false;
+          }
+        })
+      );
+  }
 
 }

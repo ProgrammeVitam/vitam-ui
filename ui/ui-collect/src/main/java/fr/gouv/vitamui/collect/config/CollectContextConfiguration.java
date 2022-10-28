@@ -33,6 +33,8 @@ import fr.gouv.vitamui.collect.external.client.CollectExternalWebClient;
 import fr.gouv.vitamui.collect.external.client.CollectExternalWebClientFactory;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClientFactory;
+import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
+import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClientFactory;
 import fr.gouv.vitamui.collect.external.client.SearchCriteriaHistoryExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.SearchCriteriaHistoryExternalRestClientCollectFactory;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
@@ -74,6 +76,21 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     public CollectExternalRestClient collectExternalRestClient(
         final CollectExternalRestClientFactory collectExternalRestClientFactory) {
         return collectExternalRestClientFactory.getCollectExternalRestClient();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public CollectTransactionExternalRestClientFactory collectTransactionExternalRestClientFactory(
+        final CollectApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
+        return new CollectTransactionExternalRestClientFactory(uiProperties.getCollectExternalClient(),
+            restTemplateBuilder);
+    }
+
+    @Bean
+    public CollectTransactionExternalRestClient collectTransactionExternalRestClient(
+        final CollectTransactionExternalRestClientFactory collectTransactionExternalRestClientFactory) {
+        return collectTransactionExternalRestClientFactory.getCollectExternalRestClient();
     }
 
     @Bean

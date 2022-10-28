@@ -44,10 +44,17 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.REOPEN_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 
 @RestController
 @RequestMapping(RestApi.COLLECT_TRANSACTION_PATH)
@@ -83,6 +90,26 @@ public class TransactionInternalController {
         LOGGER.debug("Transaction to close  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         transactionInternalService.validateTransaction(id, vitamContext);
+    }
+
+    @PutMapping(CommonConstants.PATH_ID + REOPEN_PATH)
+    public void reopenTransaction(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Transaction to reopen  {}", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        transactionInternalService.reopenTransaction(id, vitamContext);
+    }
+
+    @PutMapping(CommonConstants.PATH_ID + ABORT_PATH)
+    public void abortTransaction(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Transaction to abort  {}", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        transactionInternalService.abortTransaction(id, vitamContext);
     }
 
     @GetMapping(CommonConstants.PATH_ID )

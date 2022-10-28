@@ -30,7 +30,7 @@ package fr.gouv.vitamui.collect.internal.server.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.collect.internal.server.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.collect.internal.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.collect.internal.server.service.ProjectArchiveUnitInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.TransactionArchiveUnitInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectObjectGroupInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.SearchCriteriaHistoryInternalService;
@@ -105,15 +105,16 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
     }
 
     @Bean
-    public TransactionInternalService transactionInternalService(final CollectService collectService) {
-        return new TransactionInternalService(collectService);
+    public TransactionInternalService transactionInternalService(final CollectService collectService,
+        ObjectMapper objectMapper) {
+        return new TransactionInternalService(collectService, objectMapper);
     }
 
 
     @Bean
-    public ProjectArchiveUnitInternalService projectArchiveUnitInternalService(final CollectService collectService,
+    public TransactionArchiveUnitInternalService projectArchiveUnitInternalService(final CollectService collectService,
         AgencyService agencyService, ObjectMapper objectMapper) {
-        return new ProjectArchiveUnitInternalService(collectService, agencyService, objectMapper);
+        return new TransactionArchiveUnitInternalService(collectService, agencyService, objectMapper);
     }
 
     @Bean

@@ -28,8 +28,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.collect.external.server.service.ProjectArchiceUnitExternalService;
+import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -56,54 +55,54 @@ import javax.ws.rs.Consumes;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_ARCHIVE_UNITS_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
 
 /**
  * Project Archive units External controller
  */
 @Api(tags = "Collect")
-@RequestMapping(COLLECT_PROJECT_ARCHIVE_UNITS_PATH)
+@RequestMapping(COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH)
 @RestController
 @ResponseBody
-public class ProjectArchiveUnitExternalController {
+public class TransactionArchiveUnitExternalController {
 
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalController.class);
+        VitamUILoggerFactory.getInstance(TransactionArchiveUnitExternalController.class);
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
-    private final ProjectArchiceUnitExternalService projectArchiceUnitExternalService;
+    private final TransactionArchiveUnitExternalService transactionArchiveUnitExternalService;
 
     @Autowired
-    public ProjectArchiveUnitExternalController(
-        ProjectArchiceUnitExternalService projectArchiceUnitExternalService) {
-        this.projectArchiceUnitExternalService = projectArchiceUnitExternalService;
+    public TransactionArchiveUnitExternalController(
+        TransactionArchiveUnitExternalService transactionArchiveUnitExternalService) {
+        this.transactionArchiveUnitExternalService = transactionArchiveUnitExternalService;
     }
 
     @ApiOperation(value = "find archive units by criteria")
     @Secured(ServicesData.ROLE_GET_PROJECTS)
-    @PostMapping("/{projectId}" + ARCHIVE_UNITS)
+    @PostMapping("/{transactionId}" + ARCHIVE_UNITS)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ArchiveUnitsDto searchArchiveUnits(final @PathVariable("projectId") String projectId,
+    public ArchiveUnitsDto searchArchiveUnits(final @PathVariable("transactionId") String transactionId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        ParameterChecker.checkParameter("The Query and the projectId are mandatories parameters: ", projectId,
+        ParameterChecker.checkParameter("The Query and the transactionId are mandatories parameters: ", transactionId,
             searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
-        SanityChecker.checkSecureParameter(projectId);
+        SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
 
-        return projectArchiceUnitExternalService.searchCollectProjectArchiveUnits(projectId, searchQuery);
+        return transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits(transactionId, searchQuery);
     }
 
-    @PostMapping("/{projectId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
-    public Resource exportCsvArchiveUnitsByCriteria(final @PathVariable("projectId") String projectId,
+    @PostMapping("/{transactionId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
+    public Resource exportCsvArchiveUnitsByCriteria(final @PathVariable("transactionId") String transactionId,
         final @RequestBody SearchCriteriaDto query)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling export to csv search archive Units By Criteria {} ", query);
-        return projectArchiceUnitExternalService.exportCsvArchiveUnitsByCriteria(projectId, query);
+        return transactionArchiveUnitExternalService.exportCsvArchiveUnitsByCriteria(transactionId, query);
     }
 
 }

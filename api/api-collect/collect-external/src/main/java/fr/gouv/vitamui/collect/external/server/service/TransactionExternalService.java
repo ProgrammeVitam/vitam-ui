@@ -29,7 +29,7 @@ package fr.gouv.vitamui.collect.external.server.service;
 import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
-import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
@@ -43,38 +43,48 @@ import org.springframework.stereotype.Service;
 @Getter
 @Setter
 @Service
-public class TransactionExternalService extends AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
+public class TransactionExternalService extends AbstractResourceClientService<CollectTransactionDto, CollectTransactionDto> {
 
-    private final CollectInternalRestClient collectInternalRestClient;
+    private final CollectTransactionInternalRestClient collectTransactionInternalRestClient;
 
 
     @Autowired
-    public TransactionExternalService(CollectInternalRestClient collectInternalRestClient,
+    public TransactionExternalService(CollectTransactionInternalRestClient collectInternalRestClient,
         ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
-        this.collectInternalRestClient = collectInternalRestClient;
+        this.collectTransactionInternalRestClient = collectInternalRestClient;
     }
 
 
     public void sendTransaction(String projectId) {
-        collectInternalRestClient.sendTransaction(getInternalHttpContext(), projectId);
+        collectTransactionInternalRestClient.sendTransaction(getInternalHttpContext(), projectId);
     }
 
     public void validateTransaction(String projectId) {
-        collectInternalRestClient.validateTransaction(getInternalHttpContext(), projectId);
+        collectTransactionInternalRestClient.validateTransaction(getInternalHttpContext(), projectId);
+    }
+
+    public void reopenTransaction(String projectId) {
+        collectTransactionInternalRestClient.reopenTransaction(getInternalHttpContext(), projectId);
+    }
+
+    public void abortTransaction(String projectId) {
+        collectTransactionInternalRestClient.abortTransaction(getInternalHttpContext(), projectId);
     }
 
     @Override
-    protected CollectInternalRestClient getClient() {
-        return collectInternalRestClient;
+    protected CollectTransactionInternalRestClient getClient() {
+        return collectTransactionInternalRestClient;
     }
 
 
     public CollectTransactionDto getTransactionById(String transactionId) {
-        return collectInternalRestClient.getTransactionById(getInternalHttpContext(), transactionId);
+        return collectTransactionInternalRestClient.getTransactionById(getInternalHttpContext(), transactionId);
     }
 
+
+
     public CollectTransactionDto updateTransaction(CollectTransactionDto collectTransactionDto) {
-        return collectInternalRestClient.updateTransaction(getInternalHttpContext(), collectTransactionDto);
+        return collectTransactionInternalRestClient.updateTransaction(getInternalHttpContext(), collectTransactionDto);
     }
 }

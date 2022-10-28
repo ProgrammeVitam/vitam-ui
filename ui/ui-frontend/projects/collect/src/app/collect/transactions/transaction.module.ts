@@ -34,42 +34,32 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import {CommonModule, DatePipe} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
+
+import {MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+
+import {CommonModule} from '@angular/common';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTabsModule} from '@angular/material/tabs';
-import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
-import {VitamUILibraryModule} from 'vitamui-library';
-import {CollectRoutingModule} from './collect-routing.module';
+import {VitamUICommonModule} from 'ui-frontend-common';
+import { TransactionListComponent } from './transaction-list/transaction-list.component';
+import {TransactionResolver} from './transaction-resolver.service';
+import {TransactionRoutingModule} from './transaction-routing.module';
+import {TransactionsComponent} from './transactions.component';
+
 
 @NgModule({
-  imports: [
-    CommonModule,
-    CollectRoutingModule,
-    VitamUICommonModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    TableFilterModule,
-    VitamUILibraryModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    MatTabsModule,
-    MatNativeDateModule,
-  ],
-  providers: [DatePipe],
+    imports: [
+        CommonModule,
+        TransactionRoutingModule,
+        MatMenuModule,
+        MatSidenavModule,
+        VitamUICommonModule,
+        MatProgressSpinnerModule,
+    ],
+  providers: [TransactionResolver, {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: true}}],
+  declarations: [TransactionsComponent, TransactionListComponent],
 })
-export class CollectModule {}
+export class TransactionModule {
+}

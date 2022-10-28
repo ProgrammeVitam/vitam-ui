@@ -113,6 +113,10 @@ public class CommonConstants {
     public static final String SEND_ROLE_PREFIX = ROLE_PREFIX + "SEND_";
     public static final String CLOSE_ROLE_PREFIX = ROLE_PREFIX + "CLOSE_";
 
+    public static final String REOPEN_ROLE_PREFIX = ROLE_PREFIX + "REOPEN_";
+
+    public static final String ABORT_ROLE_PREFIX = ROLE_PREFIX + "ABORT_";
+
     public static final String UPDATE_ROLE_PREFIX = ROLE_PREFIX + "UPDATE_";
 
     public static final String UPDATE_ME_ROLE_PREFIX = ROLE_PREFIX + "UPDATE_ME_";

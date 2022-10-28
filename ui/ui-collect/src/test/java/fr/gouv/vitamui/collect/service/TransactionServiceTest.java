@@ -29,30 +29,55 @@
 
 package fr.gouv.vitamui.collect.service;
 
-import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-public class ArchiveSearchProjectServiceTest {
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
-    private ProjectArchiveUnitService searchCollectUnitService;
+@RunWith(SpringRunner.class)
+public class TransactionServiceTest {
+
+    private TransactionService transactionService;
 
     @Mock
-    private CollectExternalRestClient collectExternalRestClient;
+    private CollectTransactionExternalRestClient collectTransactionExternalRestClient;
 
     @Mock
     private CommonService commonService;
 
     @Before
     public void init() {
-        searchCollectUnitService = new ProjectArchiveUnitService(commonService, collectExternalRestClient);
+        transactionService = new TransactionService(collectTransactionExternalRestClient, commonService);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
+    @Test
+    public void search_collect_units_should_call_appropriate_rest_client() {
+        // Given
+        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        Mockito.when(transactionService.searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(),
+                ArgumentMatchers.any(), any(SearchCriteriaDto.class)))
+            .thenReturn(new ArchiveUnitsDto());
 
+        // When
+        transactionService.searchArchiveUnitsByProjectAndSearchQuery(context, "projectId", searchCriteriaDto);
+
+        // Then
+        verify(collectTransactionExternalRestClient, Mockito.times(1))
+            .searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(), ArgumentMatchers.any(),
+                any(SearchCriteriaDto.class));
+    }
 }

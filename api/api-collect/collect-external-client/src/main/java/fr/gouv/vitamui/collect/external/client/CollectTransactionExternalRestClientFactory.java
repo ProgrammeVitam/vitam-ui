@@ -24,37 +24,28 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Project, SearchService } from 'ui-frontend-common';
-import { ProjectsApiService } from '../core/api/project-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ProjectsService extends SearchService<Project> {
-  pageEvent = new Subject<string>();
-  tenantEvent = new Subject<string>();
-  customerEvent = new Subject<string>();
+package fr.gouv.vitamui.collect.external.client;
 
-  constructor(http: HttpClient, private projectsApiService: ProjectsApiService) {
-    super(http, projectsApiService, 'ALL');
-  }
+import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 
-  public create(project: Project): Observable<any> {
-    return this.projectsApiService.create(project);
-  }
+/**
+ * A Rest client factory to create Collect Rest clients
+ */
+public class CollectTransactionExternalRestClientFactory extends BaseRestClientFactory {
+    public CollectTransactionExternalRestClientFactory(RestClientConfiguration restClientConfiguration, RestTemplateBuilder restTemplateBuilder) {
+        super(restClientConfiguration, restTemplateBuilder);
+    }
 
-  public updateProject(project: Project) {
-    return this.projectsApiService.update(project);
-  }
+    public CollectTransactionExternalRestClientFactory(RestClientConfiguration restClientConfig, HttpPoolConfiguration httpPoolConfig,
+        RestTemplateBuilder restTemplateBuilder) {
+        super(restClientConfig, httpPoolConfig, restTemplateBuilder);
+    }
 
-  public getProjectById(projectId: string) {
-    return this.projectsApiService.getById(projectId);
-  }
-
-  public deleteProjectId(projectId: string) : Observable<void> {
-    return this.projectsApiService.deletebyId(projectId);
-  }
+    public CollectTransactionExternalRestClient getCollectExternalRestClient() {
+        return new CollectTransactionExternalRestClient(getRestTemplate(), getBaseUrl());
+    }
 }

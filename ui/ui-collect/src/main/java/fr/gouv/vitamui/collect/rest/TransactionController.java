@@ -28,12 +28,15 @@
 package fr.gouv.vitamui.collect.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.service.TransactionService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -41,13 +44,17 @@ import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
 
 @Api(tags = "Collect")
@@ -68,6 +75,49 @@ public class TransactionController extends AbstractUiRestController {
         this.transactionService = service;
     }
 
+
+
+    @ApiOperation(value = "Get AU collect paginated")
+    @PostMapping(ARCHIVE_UNITS + "/{transactionId}" + SEARCH)
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public VitamUIArchiveUnitResponseDto searchArchiveUnits(final @PathVariable("transactionId") String transactionId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Query  and the transactionId are mandatories parameters: ",
+            searchQuery, transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
+        SanityChecker.sanitizeCriteria(searchQuery);
+        LOGGER.debug("search archives Units by criteria = {}", searchQuery);
+        VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
+        ArchiveUnitsDto archiveUnits =
+            transactionService.searchArchiveUnitsByProjectAndSearchQuery(buildUiHttpContext(), transactionId,
+                searchQuery);
+
+        if (archiveUnits != null) {
+            archiveResponseDtos = archiveUnits.getArchives();
+        }
+        return archiveResponseDtos;
+
+    }
+
+    @ApiOperation(value = "export into csv format archive units by criteria")
+    @PostMapping(ARCHIVE_UNITS + "/{transactionId}" + EXPORT_CSV_SEARCH_PATH)
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(final @PathVariable("transactionId") String transactionId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+        SanityChecker.sanitizeCriteria(searchQuery);
+        LOGGER.debug("Export search archives Units by criteria into csv format = {}", searchQuery);
+        Resource exportedCsvResult =
+            transactionService.exportCsvArchiveUnitsByCriteria(transactionId, searchQuery, buildUiHttpContext()).getBody();
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", "attachment")
+            .body(exportedCsvResult);
+    }
 
     @ApiOperation(value = "Send transaction operation")
     @PutMapping(CommonConstants.PATH_ID + SEND_PATH)
@@ -100,9 +150,29 @@ public class TransactionController extends AbstractUiRestController {
         transactionService.validateTransaction(buildUiHttpContext(), transactionId);
     }
 
+    @ApiOperation(value = "Reopen transaction operation")
+    @PutMapping(CommonConstants.PATH_ID + REOPEN_PATH)
+    public void reopenTransaction(@PathVariable("id") String transactionId) throws InvalidParseOperationException {
+        SanityChecker.checkSecureParameter(transactionId);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
+        LOGGER.debug("Reopen the Transaction with ID {}", transactionId);
+        transactionService.reopenTransaction(buildUiHttpContext(), transactionId);
+    }
+
+    @ApiOperation(value = "Abort transaction operation")
+    @PutMapping(CommonConstants.PATH_ID + ABORT_PATH)
+    public void abortTransaction(@PathVariable("id") String transactionId) throws InvalidParseOperationException {
+        SanityChecker.checkSecureParameter(transactionId);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
+        LOGGER.debug("Abort the Transaction with ID {}", transactionId);
+        transactionService.abortTransaction(buildUiHttpContext(), transactionId);
+    }
+
 
     @ApiOperation(value = "Get transaction by project")
-    @GetMapping(CommonConstants.PATH_ID )
+    @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public CollectTransactionDto getTransactionById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -112,7 +182,6 @@ public class TransactionController extends AbstractUiRestController {
         final HttpServletRequest request = getCurrentHttpRequest();
         return transactionService.getTransactionById(buildUiHttpContext(), id);
     }
-
 
 
 

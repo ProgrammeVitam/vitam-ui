@@ -60,6 +60,16 @@ const routes: Route[] = [
     loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
     canActivate: [AppGuard],
   },
+  {
+    path: 'archive-search-collect/:id/:transactionId',
+    loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
+    canActivate: [AppGuard],
+  },
+  {
+    path: 'transactions/:id',
+    loadChildren: () => import('./transactions/transaction.module').then((m) => m.TransactionModule),
+    canActivate: [AppGuard],
+  }
 ];
 
 @NgModule({

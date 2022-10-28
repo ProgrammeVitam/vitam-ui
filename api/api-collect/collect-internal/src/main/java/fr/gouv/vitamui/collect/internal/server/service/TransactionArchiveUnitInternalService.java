@@ -139,7 +139,7 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.getB
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class ProjectArchiveUnitInternalService {
+public class TransactionArchiveUnitInternalService {
 
     public static final String TITLE_FIELD = "Title";
     private final CollectService collectService;
@@ -147,16 +147,16 @@ public class ProjectArchiveUnitInternalService {
     private AgencyService agencyService;
     private final ObjectMapper objectMapper;
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ProjectArchiveUnitInternalService.class);
+        VitamUILoggerFactory.getInstance(TransactionArchiveUnitInternalService.class);
 
-    public ProjectArchiveUnitInternalService(CollectService collectService, AgencyService agencyService,
+    public TransactionArchiveUnitInternalService(CollectService collectService, AgencyService agencyService,
         ObjectMapper objectMapper) {
         this.collectService = collectService;
         this.agencyService = agencyService;
         this.objectMapper = objectMapper;
     }
 
-    public ArchiveUnitsDto searchArchiveUnitsByCriteria(String projectId, SearchCriteriaDto searchQuery,
+    public ArchiveUnitsDto searchArchiveUnitsByCriteria(String transactionId, SearchCriteriaDto searchQuery,
         VitamContext vitamContext)
         throws VitamClientException, JsonProcessingException, InvalidParseOperationException,
         InvalidCreateOperationException {
@@ -166,7 +166,7 @@ public class ProjectArchiveUnitInternalService {
             getBasicQuery(searchQuery).getFinalSelect() :
             createDslQueryWithFacets(searchQuery);
         final RequestResponse<JsonNode> result =
-            collectService.searchUnitsByProjectId(projectId, searchQueryToDSL, vitamContext);
+            collectService.searchUnitsByTransactionId(transactionId, searchQueryToDSL, vitamContext);
         VitamRestUtils.checkResponse(result);
         final VitamUISearchResponseDto archivesOriginResponse =
             objectMapper.treeToValue(result.toJsonNode(), VitamUISearchResponseDto.class);
@@ -179,12 +179,12 @@ public class ProjectArchiveUnitInternalService {
         responseFilled.setHits(archivesOriginResponse.getHits());
         ArchiveUnitsDto resultedArchiveUnits = new ArchiveUnitsDto(responseFilled);
 
-        fillFacets(projectId, searchQuery, resultedArchiveUnits, vitamContext);
+        fillFacets(transactionId, searchQuery, resultedArchiveUnits, vitamContext);
 
         return resultedArchiveUnits;
     }
 
-    public Resource exportToCsvSearchArchiveUnitsByCriteria(String projectId, final SearchCriteriaDto searchQuery,
+    public Resource exportToCsvSearchArchiveUnitsByCriteria(String transactionId, final SearchCriteriaDto searchQuery,
         final VitamContext vitamContext) throws VitamClientException {
         LOGGER.info("Calling exportToCsvSearchArchiveUnitsByCriteria with query {} ", searchQuery);
         Locale locale = Locale.FRENCH;
@@ -193,7 +193,7 @@ public class ProjectArchiveUnitInternalService {
             locale = Locale.forLanguageTag(searchQuery.getLanguage());
         }
         ExportSearchResultParam exportSearchResultParam = new ExportSearchResultParam(locale);
-        return exportToCsvSearchArchiveUnitsByCriteriaAndParams(projectId, searchQuery, exportSearchResultParam,
+        return exportToCsvSearchArchiveUnitsByCriteriaAndParams(transactionId, searchQuery, exportSearchResultParam,
             vitamContext);
     }
 
@@ -242,7 +242,7 @@ public class ProjectArchiveUnitInternalService {
     }
 
 
-    private void fillFacets(String projectId, SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto,
+    private void fillFacets(String transactionId, SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto,
         VitamContext
             vitamContext)
         throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
@@ -252,13 +252,13 @@ public class ProjectArchiveUnitInternalService {
                 facetResults = new ArrayList<>();
             }
             facetResults.addAll(
-                computeFacetsForIndexedRulesCriteria(projectId, searchQuery.getCriteriaList(),
+                computeFacetsForIndexedRulesCriteria(transactionId, searchQuery.getCriteriaList(),
                     vitamContext));
             archiveUnitsDto.getArchives().setFacetResults(facetResults);
         }
     }
 
-    private List<FacetResultsDto> computeFacetsForIndexedRulesCriteria(String projectId,
+    private List<FacetResultsDto> computeFacetsForIndexedRulesCriteria(String transactionId,
         List<SearchCriteriaEltDto> initialArchiveUnitsCriteriaList, final VitamContext vitamContext)
         throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
         LOGGER.debug("Start finding facets for computed rules  ");
@@ -275,7 +275,7 @@ public class ProjectArchiveUnitInternalService {
             selectMultiQuery.addUsedProjection("#id");
             selectMultiQuery.setLimitFilter(0, 1);
             RequestResponseOK<JsonNode> result =
-                collectService.searchUnitsByProjectId(projectId, selectMultiQuery.getFinalSelect(), vitamContext);
+                collectService.searchUnitsByTransactionId(transactionId, selectMultiQuery.getFinalSelect(), vitamContext);
             VitamRestUtils.checkResponse(result);
             final VitamUISearchResponseDto archivesUnitsResults =
                 objectMapper.treeToValue(result.toJsonNode(), VitamUISearchResponseDto.class);
@@ -284,10 +284,10 @@ public class ProjectArchiveUnitInternalService {
 
             for (ArchiveSearchConsts.CriteriaCategory category : categories) {
                 FacetResultsDto withoutRulesByCategoryFacet =
-                    computeNoRulesFacets(projectId, indexedArchiveUnitsCriteriaList, category, vitamContext);
+                    computeNoRulesFacets(transactionId, indexedArchiveUnitsCriteriaList, category, vitamContext);
                 globalRulesFacets.add(withoutRulesByCategoryFacet);
                 List<FacetResultsDto> facetsForAuHavingRules =
-                    computeFacetsForAuHavingRules(projectId, indexedArchiveUnitsCriteriaList, category, vitamContext);
+                    computeFacetsForAuHavingRules(transactionId, indexedArchiveUnitsCriteriaList, category, vitamContext);
                 globalRulesFacets.addAll(facetsForAuHavingRules);
             }
         } catch (InvalidParseOperationException e) {
@@ -296,7 +296,7 @@ public class ProjectArchiveUnitInternalService {
         return globalRulesFacets;
     }
 
-    private FacetResultsDto computeNoRulesFacets(String projectId, List<SearchCriteriaEltDto> indexedCriteriaList,
+    private FacetResultsDto computeNoRulesFacets(String transactionId, List<SearchCriteriaEltDto> indexedCriteriaList,
         ArchiveSearchConsts.CriteriaCategory category, VitamContext vitamContext)
         throws VitamClientException, JsonProcessingException, InvalidCreateOperationException,
         InvalidParseOperationException {
@@ -312,11 +312,11 @@ public class ProjectArchiveUnitInternalService {
         noRuleFacet.setName(FACETS_COUNT_WITHOUT_RULES + "_" + category.name());
         noRuleFacet.setBuckets(
             List.of(new FacetBucketDto(FACETS_COUNT_WITHOUT_RULES,
-                Long.valueOf(countArchiveUnitByCriteriaList(projectId, criteriaListFacet, vitamContext)))));
+                Long.valueOf(countArchiveUnitByCriteriaList(transactionId, criteriaListFacet, vitamContext)))));
         return noRuleFacet;
     }
 
-    private Integer countArchiveUnitByCriteriaList(String projectId, List<SearchCriteriaEltDto> criteriaList,
+    private Integer countArchiveUnitByCriteriaList(String transactionId, List<SearchCriteriaEltDto> criteriaList,
         VitamContext
             vitamContext)
         throws VitamClientException, JsonProcessingException, InvalidCreateOperationException,
@@ -324,11 +324,11 @@ public class ProjectArchiveUnitInternalService {
         SearchCriteriaDto facetSearchQuery = new SearchCriteriaDto();
         facetSearchQuery.setCriteriaList(criteriaList);
         facetSearchQuery.setFieldsList(List.of(TITLE_FIELD));
-        ArchiveUnitsDto vitamResponse = searchArchiveUnitsByCriteria(projectId, facetSearchQuery, vitamContext);
+        ArchiveUnitsDto vitamResponse = searchArchiveUnitsByCriteria(transactionId, facetSearchQuery, vitamContext);
         return vitamResponse.getArchives().getHits().getTotal();
     }
 
-    private List<FacetResultsDto> computeFacetsForAuHavingRules(String projectId,
+    private List<FacetResultsDto> computeFacetsForAuHavingRules(String transactionId,
         List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList, ArchiveSearchConsts.CriteriaCategory
         category,
         VitamContext vitamContext)
@@ -374,7 +374,7 @@ public class ProjectArchiveUnitInternalService {
         }
 
         RequestResponseOK<JsonNode> result =
-            collectService.searchUnitsByProjectId(projectId, selectMultiQuery.getFinalSelect(), vitamContext);
+            collectService.searchUnitsByTransactionId(transactionId, selectMultiQuery.getFinalSelect(), vitamContext);
         VitamRestUtils.checkResponse(result);
         final VitamUISearchResponseDto archivesUnitsResults =
             objectMapper.treeToValue(result.toJsonNode(), VitamUISearchResponseDto.class);
@@ -382,7 +382,7 @@ public class ProjectArchiveUnitInternalService {
 
         if (APPRAISAL_RULE.equals(category) || STORAGE_RULE.equals(category)) {
             FacetResultsDto finalActionIndexedFacet = buildComputedAuFinalActionFacet(
-                projectId,
+                transactionId,
                 indexedArchiveUnitsCriteriaList, category,
                 auWithRulesFacets, vitamContext);
             auWithRulesFacets = auWithRulesFacets.stream()
@@ -411,7 +411,7 @@ public class ProjectArchiveUnitInternalService {
             List.of(new RangeFacetValue(strDateExpirationCriteria, SOME_FUTUR_DATE))));
     }
 
-    private FacetResultsDto buildComputedAuFinalActionFacet(String projectId,
+    private FacetResultsDto buildComputedAuFinalActionFacet(String transactionId,
         List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList,
         ArchiveSearchConsts.CriteriaCategory category, List<FacetResultsDto> indexedRulesFacets,
         VitamContext vitamContext)
@@ -419,7 +419,7 @@ public class ProjectArchiveUnitInternalService {
         InvalidParseOperationException {
         FacetResultsDto finalActionIndexedFacet = new FacetResultsDto();
         if (APPRAISAL_RULE.equals(category)) {
-            List<FacetBucketDto> finalActionBuckets = computeFinalActionFacetsForComputedAppraisalRules(projectId,
+            List<FacetBucketDto> finalActionBuckets = computeFinalActionFacetsForComputedAppraisalRules(transactionId,
                 indexedArchiveUnitsCriteriaList, indexedRulesFacets, category, vitamContext);
             finalActionIndexedFacet.setName(FACETS_FINAL_ACTION_COMPUTED + "_" + category.name());
             finalActionIndexedFacet.setBuckets(finalActionBuckets);
@@ -438,7 +438,7 @@ public class ProjectArchiveUnitInternalService {
     }
 
     @NotNull
-    private List<FacetBucketDto> computeFinalActionFacetsForComputedAppraisalRules(String projectId,
+    private List<FacetBucketDto> computeFinalActionFacetsForComputedAppraisalRules(String transactionId,
         List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList, List<FacetResultsDto>
         indexedRulesFacets,
         ArchiveSearchConsts.CriteriaCategory category, VitamContext vitamContext)
@@ -453,7 +453,7 @@ public class ProjectArchiveUnitInternalService {
             .findAny();
         facetFinalActionValue.ifPresent(facetResultsDto -> facetResultsDto.getBuckets().stream()
             .forEach(bucket -> finalActionCountMap.put(bucket.getValue(), bucket.getCount())));
-        Integer withConflictFinalActionUnitsCount = computeFinalActionCountByValue(projectId,
+        Integer withConflictFinalActionUnitsCount = computeFinalActionCountByValue(transactionId,
             indexedArchiveUnitsCriteriaList, FINAL_ACTION_TYPE_CONFLICT, category, vitamContext);
         finalActionCountMap
             .put(FINAL_ACTION_CONFLICT_FIELD_VALUE,
@@ -480,7 +480,7 @@ public class ProjectArchiveUnitInternalService {
         return finalActionBuckets;
     }
 
-    private Integer computeFinalActionCountByValue(String projectId, List<SearchCriteriaEltDto> initialCriteriaList,
+    private Integer computeFinalActionCountByValue(String transactionId, List<SearchCriteriaEltDto> initialCriteriaList,
         String
             value,
         ArchiveSearchConsts.CriteriaCategory category,
@@ -505,7 +505,7 @@ public class ProjectArchiveUnitInternalService {
 
         countSearchQuery.setCriteriaList(criteriaListFacet);
         countSearchQuery.setFieldsList(List.of(TITLE_FIELD));
-        ArchiveUnitsDto archiveUnitsDto = searchArchiveUnitsByCriteria(projectId, countSearchQuery, vitamContext);
+        ArchiveUnitsDto archiveUnitsDto = searchArchiveUnitsByCriteria(transactionId, countSearchQuery, vitamContext);
         return archiveUnitsDto.getArchives().getHits().getTotal();
     }
 
@@ -548,14 +548,14 @@ public class ProjectArchiveUnitInternalService {
         return strDateExpirationCriteria;
     }
 
-    private Resource exportToCsvSearchArchiveUnitsByCriteriaAndParams(String projectId,
+    private Resource exportToCsvSearchArchiveUnitsByCriteriaAndParams(String transactionId,
         final SearchCriteriaDto searchQuery, final
     ExportSearchResultParam exportSearchResultParam, final VitamContext vitamContext)
         throws VitamClientException {
         try {
             mapAgenciesNameToCodes(searchQuery, vitamContext);
             List<ArchiveUnitCsv> unitCsvList =
-                exportArchiveUnitsByCriteriaToCsvFile(projectId, searchQuery, vitamContext);
+                exportArchiveUnitsByCriteriaToCsvFile(transactionId, searchQuery, vitamContext);
             // create a write
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8.name());
@@ -607,15 +607,15 @@ public class ProjectArchiveUnitInternalService {
         }
     }
 
-    private List<ArchiveUnitCsv> exportArchiveUnitsByCriteriaToCsvFile(String projectId,
+    private List<ArchiveUnitCsv> exportArchiveUnitsByCriteriaToCsvFile(String transactionId,
         final SearchCriteriaDto searchQuery,
         final VitamContext vitamContext) throws VitamClientException {
         try {
             LOGGER.info("Calling exporting  export ArchiveUnits to CSV with criteria {}", searchQuery);
-            checkSizeLimit(projectId, vitamContext, searchQuery);
+            checkSizeLimit(transactionId, vitamContext, searchQuery);
             searchQuery.setPageNumber(0);
             searchQuery.setSize(EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS);
-            ArchiveUnitsDto archiveUnitsResult = searchArchiveUnitsByCriteria(projectId, searchQuery, vitamContext);
+            ArchiveUnitsDto archiveUnitsResult = searchArchiveUnitsByCriteria(transactionId, searchQuery, vitamContext);
             LOGGER.info("archivesResponse found {} ", archiveUnitsResult.getArchives().getResults().size());
             Set<String> originesAgenciesCodes = archiveUnitsResult.getArchives().getResults().stream().map(
                     ResultsDto::getOriginatingAgency).
@@ -648,11 +648,11 @@ public class ProjectArchiveUnitInternalService {
         return archiveUnit;
     }
 
-    private void checkSizeLimit(String projectId, VitamContext vitamContext, SearchCriteriaDto searchQuery)
+    private void checkSizeLimit(String transactionId, VitamContext vitamContext, SearchCriteriaDto searchQuery)
         throws VitamClientException, IOException, InvalidCreateOperationException, InvalidParseOperationException {
         SearchCriteriaDto searchQueryCounting = new SearchCriteriaDto();
         searchQueryCounting.setCriteriaList(searchQuery.getCriteriaList());
-        ArchiveUnitsDto archiveUnitsResult = searchArchiveUnitsByCriteria(projectId, searchQueryCounting, vitamContext);
+        ArchiveUnitsDto archiveUnitsResult = searchArchiveUnitsByCriteria(transactionId, searchQueryCounting, vitamContext);
         Integer nbResults = archiveUnitsResult.getArchives().getHits().getTotal();
         if (nbResults >= EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS) {
             LOGGER.error("The archives units result found is greater than allowed {} ",

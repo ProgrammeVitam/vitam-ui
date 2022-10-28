@@ -24,11 +24,11 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project } from 'ui-frontend-common';
-import { ProjectsService } from '../projects.service';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Router} from '@angular/router';
+import {BehaviorSubject} from 'rxjs';
+import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project} from 'ui-frontend-common';
+import {ProjectsService} from '../projects.service';
 
 @Component({
   selector: 'app-project-list',
@@ -51,7 +51,8 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     this.searchProject();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+  }
 
   searchProject() {
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction);
@@ -67,7 +68,11 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   }
 
   searchArchiveUnitsByProject(project: Project) {
-    this.router.navigate(['collect/archive-search-collect', project.id], { queryParams: { projectName: project.messageIdentifier } });
+    this.router.navigate(['collect/archive-search-collect', project.id], {queryParams: {projectName: project.messageIdentifier}});
+  }
+
+  searchTransactions(project: Project) {
+    this.router.navigate(['collect/transactions', project.id], {queryParams: {projectName: project.messageIdentifier}});
   }
 
   showProjectDetails(projectId: string) {
