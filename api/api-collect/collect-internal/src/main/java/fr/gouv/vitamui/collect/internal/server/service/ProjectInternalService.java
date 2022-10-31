@@ -31,7 +31,6 @@ package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.external.dto.CriteriaProjectDto;
@@ -127,7 +126,7 @@ public class ProjectInternalService {
                 LOGGER.error("Error occurs when creating transaction");
                 throw new VitamClientException("Error occurs when creating transaction");
             }
-            return TransactionConverter.toVitamuiDto(
+            return TransactionConverter.toVitamUiDto(
                 JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     TransactionDto.class));
         } catch (VitamClientException e) {

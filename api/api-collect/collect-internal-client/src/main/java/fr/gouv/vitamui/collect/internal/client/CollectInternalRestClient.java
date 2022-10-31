@@ -152,13 +152,7 @@ public class CollectInternalRestClient
     }
 
 
-    public CollectTransactionDto updateTransaction(final InternalHttpContext context, CollectTransactionDto transactionDto) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getTransactionUrl());
-        final HttpEntity<?> request = new HttpEntity<>(transactionDto, buildHeaders(context));
-        ResponseEntity<CollectTransactionDto> response =  restTemplate.exchange(getTransactionUrl(), HttpMethod.PUT, request, CollectTransactionDto.class);
-        return response.getBody();
-    }
+
 
     public CollectTransactionDto getTransactionById(InternalHttpContext context, String transactionId) {
         final UriComponentsBuilder uriBuilder =

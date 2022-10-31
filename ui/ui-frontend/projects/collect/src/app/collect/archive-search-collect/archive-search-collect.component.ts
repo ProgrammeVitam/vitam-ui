@@ -235,8 +235,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.searchCriterias = new Map();
     this.initializeSelectionParams();
     this.transactionSubscription = this.route.params.pipe(mergeMap((params) => {
-      this.projectId = params.id;
-      return this.archiveUnitCollectService.getLastTransactionByProjectId(this.projectId);
+      this.projectId = params.projectId;
+      return (params.transactionId) ? this.archiveUnitCollectService.getTransactionById(params.transactionId) :
+        this.archiveUnitCollectService.getLastTransactionByProjectId(this.projectId);
     })).subscribe(transaction => {
       this.transaction = transaction;
 

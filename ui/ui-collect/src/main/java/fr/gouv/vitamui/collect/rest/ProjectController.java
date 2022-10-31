@@ -109,6 +109,8 @@ public class ProjectController extends AbstractUiRestController {
         @RequestParam final Optional<DirectionDto> direction,
         @PathVariable("id") final String projectId) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(criteria);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", projectId);
+        SanityChecker.checkSecureParameter(projectId);
         LOGGER.debug("getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
             criteria,
             orderBy, direction);

@@ -116,7 +116,8 @@ public class ProjectExternalController {
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction, @PathVariable("id") String projectId)
         throws InvalidParseOperationException, PreconditionFailedException {
-
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, projectId);
+        SanityChecker.checkSecureParameter(projectId);
         SanityChecker.sanitizeCriteria(direction);
         SanityChecker.sanitizeCriteria(criteria);
         if (orderBy.isPresent()) {

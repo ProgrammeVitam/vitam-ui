@@ -146,5 +146,10 @@ public class CollectTransactionInternalRestClient
 
     }
 
+    public CollectTransactionDto updateTransaction(final InternalHttpContext context, CollectTransactionDto transactionDto) {
+        final HttpEntity<?> request = new HttpEntity<>(transactionDto, buildHeaders(context));
+        ResponseEntity<CollectTransactionDto> response =  restTemplate.exchange(getUrl(), HttpMethod.PUT, request, CollectTransactionDto.class);
+        return response.getBody();
+    }
 
 }

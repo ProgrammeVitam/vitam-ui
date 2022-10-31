@@ -44,6 +44,7 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
@@ -68,16 +69,37 @@ public class TransactionServiceTest {
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(transactionService.searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(),
+        Mockito.when(transactionService.searchArchiveUnitsByTransactionAndSearchQuery(ArgumentMatchers.any(),
                 ArgumentMatchers.any(), any(SearchCriteriaDto.class)))
             .thenReturn(new ArchiveUnitsDto());
 
         // When
-        transactionService.searchArchiveUnitsByProjectAndSearchQuery(context, "projectId", searchCriteriaDto);
+        transactionService.searchArchiveUnitsByTransactionAndSearchQuery(context, "projectId", searchCriteriaDto);
 
         // Then
         verify(collectTransactionExternalRestClient, Mockito.times(1))
             .searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(), ArgumentMatchers.any(),
                 any(SearchCriteriaDto.class));
     }
+
+    @Test
+    public void when_abortTransaction_ok() {
+
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+
+        Mockito.doNothing().when(collectTransactionExternalRestClient).abortTransaction(context, "transactionId");
+        transactionService.abortTransaction(context, "transactionId");
+        verify(collectTransactionExternalRestClient, times(1)).abortTransaction(context, "transactionId");
+    }
+
+    @Test
+    public void when_repenTransaction_ok() {
+
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+
+        Mockito.doNothing().when(collectTransactionExternalRestClient).reopenTransaction(context, "transactionId");
+        transactionService.reopenTransaction(context, "transactionId");
+        verify(collectTransactionExternalRestClient, times(1)).reopenTransaction(context, "transactionId");
+    }
+
 }

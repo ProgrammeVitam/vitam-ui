@@ -56,6 +56,7 @@ import javax.ws.rs.Produces;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
+import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_MANDATORY_PARAMETER;
 
 @Api(tags = "Collect")
 @RestController
@@ -91,7 +92,7 @@ public class TransactionController extends AbstractUiRestController {
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
         VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
         ArchiveUnitsDto archiveUnits =
-            transactionService.searchArchiveUnitsByProjectAndSearchQuery(buildUiHttpContext(), transactionId,
+            transactionService.searchArchiveUnitsByTransactionAndSearchQuery(buildUiHttpContext(), transactionId,
                 searchQuery);
 
         if (archiveUnits != null) {
@@ -123,7 +124,7 @@ public class TransactionController extends AbstractUiRestController {
     @PutMapping(CommonConstants.PATH_ID + SEND_PATH)
     public void sendTransaction(@PathVariable("id") String transactionId) throws InvalidParseOperationException {
         SanityChecker.checkSecureParameter(transactionId);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", transactionId);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("Send the Transaction with ID {}", transactionId);
         transactionService.sendTransaction(buildUiHttpContext(), transactionId);
@@ -144,7 +145,7 @@ public class TransactionController extends AbstractUiRestController {
     @PutMapping(CommonConstants.PATH_ID + VALIDATE_PATH)
     public void validateTransaction(@PathVariable("id") String transactionId) throws InvalidParseOperationException {
         SanityChecker.checkSecureParameter(transactionId);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", transactionId);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("Validate the Transaction with ID {}", transactionId);
         transactionService.validateTransaction(buildUiHttpContext(), transactionId);
@@ -154,8 +155,7 @@ public class TransactionController extends AbstractUiRestController {
     @PutMapping(CommonConstants.PATH_ID + REOPEN_PATH)
     public void reopenTransaction(@PathVariable("id") String transactionId) throws InvalidParseOperationException {
         SanityChecker.checkSecureParameter(transactionId);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", transactionId);
-        SanityChecker.checkSecureParameter(transactionId);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, transactionId);
         LOGGER.debug("Reopen the Transaction with ID {}", transactionId);
         transactionService.reopenTransaction(buildUiHttpContext(), transactionId);
     }
@@ -164,8 +164,7 @@ public class TransactionController extends AbstractUiRestController {
     @PutMapping(CommonConstants.PATH_ID + ABORT_PATH)
     public void abortTransaction(@PathVariable("id") String transactionId) throws InvalidParseOperationException {
         SanityChecker.checkSecureParameter(transactionId);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", transactionId);
-        SanityChecker.checkSecureParameter(transactionId);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, transactionId);
         LOGGER.debug("Abort the Transaction with ID {}", transactionId);
         transactionService.abortTransaction(buildUiHttpContext(), transactionId);
     }
@@ -176,7 +175,7 @@ public class TransactionController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public CollectTransactionDto getTransactionById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the transaction with ID {}", id);
         final HttpServletRequest request = getCurrentHttpRequest();

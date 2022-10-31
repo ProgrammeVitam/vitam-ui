@@ -83,13 +83,13 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         collectTransactionExternalRestClient.abortTransaction(context, transactionId);
     }
 
-    public CollectTransactionDto getTransactionById(ExternalHttpContext context, String projectId) {
-        return collectTransactionExternalRestClient.getTransactionById(context, projectId);
+    public CollectTransactionDto getTransactionById(ExternalHttpContext context, String transactionId) {
+        return collectTransactionExternalRestClient.getTransactionById(context, transactionId);
     }
 
-    public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String projectId,
+    public ArchiveUnitsDto searchArchiveUnitsByTransactionAndSearchQuery(ExternalHttpContext context, String transactionId,
         SearchCriteriaDto searchQuery) {
-        return collectTransactionExternalRestClient.searchArchiveUnitsByProjectAndSearchQuery(context, projectId,
+        return collectTransactionExternalRestClient.searchArchiveUnitsByProjectAndSearchQuery(context, transactionId,
             searchQuery);
     }
 

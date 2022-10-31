@@ -33,8 +33,6 @@ import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import org.springframework.core.ParameterizedTypeReference;
@@ -58,9 +56,6 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 
 public class CollectTransactionExternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectTransactionDto, ExternalHttpContext> {
-
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(CollectTransactionExternalRestClient.class);
 
     public CollectTransactionExternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
@@ -90,12 +85,12 @@ public class CollectTransactionExternalRestClient
 
 
 
-    public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String projectId,
+    public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String transactionId,
         SearchCriteriaDto searchQuery) {
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
-            restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST, request,
+            restTemplate.exchange(getUrl() + "/" + transactionId + ARCHIVE_UNITS, HttpMethod.POST, request,
                 ArchiveUnitsDto.class);
         checkResponse(response);
         return response.getBody();
@@ -142,19 +137,24 @@ public class CollectTransactionExternalRestClient
         restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, Void.class);
     }
 
-    public CollectTransactionDto getTransactionById(ExternalHttpContext context, String projectId) {
+    public CollectTransactionDto getTransactionById(ExternalHttpContext context, String transactionId) {
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         ResponseEntity<CollectTransactionDto> response =
-            restTemplate.exchange(uriBuilder.build(projectId), HttpMethod.GET, request, CollectTransactionDto.class);
+            restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.GET, request, CollectTransactionDto.class);
         return response.getBody();
     }
 
-    protected ParameterizedTypeReference<PaginatedValuesDto<CollectTransactionDto>> getTransactionDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+    public CollectTransactionDto updateTransaction(ExternalHttpContext context,
+        CollectTransactionDto collectTransactionDto) {
+        final HttpEntity<?> request = new HttpEntity<>(collectTransactionDto, buildHeaders(context));
+        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange( getUrl(), HttpMethod.PUT,
+            request, CollectTransactionDto.class);
+        checkResponse(response);
+        return response.getBody();
     }
+
 
 
 }

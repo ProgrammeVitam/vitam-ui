@@ -158,9 +158,10 @@ public class CollectService {
     }
 
     /**
-     * get all created projects from Vitam
+     * get all created transactions from Vitam
      *
      * @param vitamContext
+     * @param projectId
      * @return
      * @throws VitamClientException
      */
