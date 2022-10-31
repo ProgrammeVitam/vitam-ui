@@ -40,7 +40,7 @@ public class ArchiveSearchConsts {
     public static final String APPRAISAL_RULE_TYPE = "AppraisalRule";
     public static final String ARCHIVE_UNIT_INGEST = "INGEST";
     public static final String ACCESS_RULE_TYPE = "AccessRule";
-
+    public final static String RULES_COMPUTED = "RULES_COMPUTED";
 
     public final static String FINAL_ACTION_TYPE_ELIMINATION =
         "FINAL_ACTION_TYPE_ELIMINATION";
@@ -88,7 +88,7 @@ public class ArchiveSearchConsts {
 
 
     public enum RuleOriginValues {
-        ORIGIN_WAITING_RECALCULATE, ORIGIN_INHERITE_AT_LEAST_ONE, ORIGIN_HAS_NO_ONE, ORIGIN_HAS_AT_LEAST_ONE;
+        ORIGIN_WAITING_RECALCULATE, ORIGIN_INHERITE_AT_LEAST_ONE, ORIGIN_HAS_NO_ONE, ORIGIN_HAS_AT_LEAST_ONE, ORIGIN_LOCAL_OR_INHERIT_RULES;
 
         public static boolean contains(String s) {
             for (RuleOriginValues ruleOriginValues : values())
@@ -113,8 +113,6 @@ public class ArchiveSearchConsts {
     public final static String RULE_END_DATE = "RULE_END_DATE";
     public final static String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
     public final static String WAITING_RECALCULATE = "WAITING_RECALCULATE";
-    public final static String RULES_COMPUTED = "RULES_COMPUTED";
-
 
     public final static String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
     public final static String APPRAISAL_RULE_IDENTIFIER = "#management.AppraisalRule.Rules.Rule";
@@ -123,6 +121,9 @@ public class ArchiveSearchConsts {
     public static final String ONLY_DATE_FORMAT = "yyyy-MM-dd";
     public static final String FR_DATE_FORMAT_WITH_SLASH = "dd/MM/yyyy";
 
+    public static final String SOME_FUTUR_DATE = "31/12/9999";
+
+    public static final String SOME_OLD_DATE = "01/01/0001";
     public static final String TRUE_CRITERIA_VALUE = "true";
     public static final String FALSE_CRITERIA_VALUE = "false";
     public static final String FINAL_ACTION_KEEP_FIELD_VALUE = "Keep";
@@ -203,6 +204,7 @@ public class ArchiveSearchConsts {
 
 
     public static final String FACETS_EXPIRED_RULES_COMPUTED = "EXPIRED_RULES_COMPUTED";
+    public static final String FACETS_UNEXPIRED_RULES_COMPUTED = "UNEXPIRED_RULES_COMPUTED";
     public static final String FACETS_RULES_COMPUTED_NUMBER = "RULES_COMPUTED_NUMBER";
     public static final String FACETS_FINAL_ACTION_COMPUTED = "FINAL_ACTION_COMPUTED";
     public static final String FACETS_COMPUTE_RULES_AU_NUMBER = "COMPUTE_RULES_AU_NUMBER";

@@ -250,130 +250,184 @@ public class ArchiveSearchInternalService {
             JsonNode dslQuery = selectMultiQuery.getFinalSelect();
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
             ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
-            if (computeFacets(searchQuery)) {
-                List<FacetResultsDto> facetResults = archiveUnitsDto.getArchives().getFacetResults();
-                if (CollectionUtils.isEmpty(facetResults)) {
-                    facetResults = new ArrayList<>();
-                }
-                FacetResultsDto computedRulesStatusFacet =
-                    computeRulesCountByComputedRulesStatusFacets(archiveUnitsDto);
-                Optional<FacetBucketDto> indexedAuCountBucket =
-                    computedRulesStatusFacet.getBuckets().stream()
-                        .filter(bucket -> ArchiveSearchConsts.TRUE_CRITERIA_VALUE.equals(bucket.getValue()))
-                        .findAny();
-                Long indexedArchiveUnitCount = 0l;
-                if (indexedAuCountBucket.isPresent()) {
-                    indexedArchiveUnitCount = indexedAuCountBucket.get().getCount();
-                }
-                facetResults.addAll(
-                    computeFacetsForIndexedRulesCriteria(searchQuery.getCriteriaList(), indexedArchiveUnitCount,
-                        vitamContext));
-                archiveUnitsDto.getArchives().setFacetResults(facetResults);
-            }
+            fillFacets(searchQuery, archiveUnitsDto, vitamContext);
+
             return archiveUnitsDto;
         } catch (InvalidCreateOperationException ioe) {
             throw new VitamClientException("Unable to find archive units with pagination", ioe);
         }
     }
 
+
+    public void fillFacets(SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto, VitamContext
+        vitamContext)
+        throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+        if (computeFacets(searchQuery)) {
+            List<FacetResultsDto> facetResults = archiveUnitsDto.getArchives().getFacetResults();
+            if (CollectionUtils.isEmpty(facetResults)) {
+                facetResults = new ArrayList<>();
+            }
+            facetResults.addAll(computeFacetsForIndexedRulesCriteria(searchQuery.getCriteriaList(), vitamContext));
+            archiveUnitsDto.getArchives().setFacetResults(facetResults);
+        }
+    }
+
     private List<FacetResultsDto> computeFacetsForIndexedRulesCriteria(
-        List<SearchCriteriaEltDto> initialArchiveUnitsCriteriaList, Long indexedArchiveUnitCount,
-        final VitamContext vitamContext)
-        throws InvalidCreateOperationException, VitamClientException,
-        JsonProcessingException {
+        List<SearchCriteriaEltDto> initialArchiveUnitsCriteriaList, final VitamContext vitamContext)
+        throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+        LOGGER.debug("Start finding facets for computed rules  ");
+
+        List<FacetResultsDto> globalRulesFacets = new ArrayList<>();
         try {
-            List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList =
-                new ArrayList<>(initialArchiveUnitsCriteriaList);
-            indexedArchiveUnitsCriteriaList.add(new SearchCriteriaEltDto(
-                ArchiveSearchConsts.RULES_COMPUTED,
+            List<ArchiveSearchConsts.CriteriaCategory> categories =
+                List.of(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
+            List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList = new ArrayList<>(
+                initialArchiveUnitsCriteriaList);
+            indexedArchiveUnitsCriteriaList.add(new SearchCriteriaEltDto(ArchiveSearchConsts.RULES_COMPUTED,
                 ArchiveSearchConsts.CriteriaCategory.FIELDS, ArchiveSearchConsts.CriteriaOperators.EQ.name(),
-                List.of(new CriteriaValue(TRUE)),
-                ArchiveSearchConsts.CriteriaDataType.STRING.name()));
+                List.of(new CriteriaValue(TRUE)), ArchiveSearchConsts.CriteriaDataType.STRING.name()));
             SelectMultiQuery selectMultiQuery = createSelectMultiQuery(indexedArchiveUnitsCriteriaList);
-            fillAppraisalRulesFacetsForIndexedRules(indexedArchiveUnitsCriteriaList,
-                ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE,
-                selectMultiQuery);
+            selectMultiQuery.addUsedProjection("#id");
+            selectMultiQuery.setLimitFilter(0, 1);
+            JsonNode vitamResponse =
+                this.searchArchiveUnits(selectMultiQuery.getFinalSelect(), vitamContext);
+            VitamUISearchResponseDto archivesUnitsResults = objectMapper.treeToValue(vitamResponse,
+                VitamUISearchResponseDto.class);
+            List<FacetResultsDto> indexedAuFacets = archivesUnitsResults.getFacetResults();
+            globalRulesFacets.addAll(indexedAuFacets);
 
-            JsonNode dslQuery = selectMultiQuery.getFinalSelect();
-            LOGGER.debug(dslQuery.toPrettyString());
-            JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
-            VitamUISearchResponseDto archivesUnitsResults =
-                objectMapper.treeToValue(vitamResponse, VitamUISearchResponseDto.class);
-
-            List<FacetResultsDto> indexedRulesFacets = archivesUnitsResults.getFacetResults();
-            FacetResultsDto noRulesIndexedFacets = computeNoRulesFacets(indexedArchiveUnitsCriteriaList, vitamContext);
-
-            List<FacetBucketDto> finalActionBuckets =
-                computeFinalActionFacetsForComputedRules(indexedArchiveUnitsCriteriaList, indexedRulesFacets,
-                    vitamContext);
-            List<FacetResultsDto> mergedIndexedRulesFacets = new ArrayList<>(indexedRulesFacets.stream()
-                .filter(facet -> !ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED.equals(facet.getName())).collect(
-                    Collectors.toList()));
-            FacetResultsDto finalActionIndexedFacet = new FacetResultsDto();
-            finalActionIndexedFacet.setName(ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED);
-            finalActionIndexedFacet.setBuckets(finalActionBuckets);
-            mergedIndexedRulesFacets.add(finalActionIndexedFacet);
-            mergedIndexedRulesFacets.add(noRulesIndexedFacets);
-
-            computeExpirationFacetsForComputedRules(indexedArchiveUnitCount, mergedIndexedRulesFacets);
-            return mergedIndexedRulesFacets;
+            for (ArchiveSearchConsts.CriteriaCategory category : categories) {
+                FacetResultsDto withoutRulesByCategoryFacet =
+                    computeNoRulesFacets(indexedArchiveUnitsCriteriaList, category, vitamContext);
+                globalRulesFacets.add(withoutRulesByCategoryFacet);
+                List<FacetResultsDto> facetsForAuHavingRules =
+                    computeFacetsForAuHavingRules(indexedArchiveUnitsCriteriaList, category, vitamContext);
+                globalRulesFacets.addAll(facetsForAuHavingRules);
+            }
         } catch (InvalidParseOperationException e) {
             throw new BadRequestException("Can't parse criteria as Vitam query" + e.getMessage());
         }
+        return globalRulesFacets;
     }
 
-    private void computeExpirationFacetsForComputedRules(Long indexedArchiveUnitCount,
-        List<FacetResultsDto> indexedRulesFacets) {
-        Optional<FacetResultsDto> expirationArchiveUnitFacet = indexedRulesFacets.stream()
-            .filter(facet -> ArchiveSearchConsts.FACETS_EXPIRED_RULES_COMPUTED.equals(facet.getName())).findAny();
-        if (expirationArchiveUnitFacet.isPresent()) {
-            List<FacetBucketDto> expiredArchiveUnitBuckets = expirationArchiveUnitFacet.get().getBuckets();
-            if (!CollectionUtils.isEmpty(expiredArchiveUnitBuckets)) {
-                FacetBucketDto expiredArchiveUnitBucket = expiredArchiveUnitBuckets.get(0);
-                if (expiredArchiveUnitBucket != null) {
-                    expirationArchiveUnitFacet.get().getBuckets().add(new FacetBucketDto("UNEXPIRED",
-                        indexedArchiveUnitCount - expiredArchiveUnitBucket.getCount()));
-                }
+    private List<FacetResultsDto> computeFacetsForAuHavingRules(
+        List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList, ArchiveSearchConsts.CriteriaCategory
+        category,
+        VitamContext vitamContext)
+        throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException,
+        JsonProcessingException {
+
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>(indexedArchiveUnitsCriteriaList);
+
+        criteriaList.add(new SearchCriteriaEltDto(
+            ArchiveSearchConsts.RULE_ORIGIN_CRITERIA,
+            category, ArchiveSearchConsts.CriteriaOperators.EQ.name(),
+            List.of(new CriteriaValue(ArchiveSearchConsts.RuleOriginValues.ORIGIN_LOCAL_OR_INHERIT_RULES.name())),
+            ArchiveSearchConsts.CriteriaDataType.STRING.name()));
+
+        SelectMultiQuery selectMultiQuery = createSelectMultiQuery(criteriaList);
+
+        selectMultiQuery.setLimitFilter(0, 1);
+        selectMultiQuery.trackTotalHits(true);
+
+        try {
+            List<SearchCriteriaEltDto> rulesCriteriaList =
+                indexedArchiveUnitsCriteriaList.stream().filter(Objects::nonNull)
+                    .filter(searchCriteriaEltDto -> (category.equals(searchCriteriaEltDto.getCategory())))
+                    .collect(Collectors.toList());
+            String computedRulesIdentifierMapping =
+                ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS
+                    +
+                    ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
+                    ArchivesSearchManagementRulesQueryBuilderService.RULES_RULE_ID_FIELD;
+            if (ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE.equals(category)) {
+                String computedRulesFinalActionMapping =
+                    ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS
+                        + ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name())
+                        .getFieldMapping() + ArchivesSearchManagementRulesQueryBuilderService.FINAL_ACTION_FIELD;
+                selectMultiQuery.addFacets(
+                    FacetHelper.terms(ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED + "_" + category.name(),
+                        computedRulesFinalActionMapping, 3, FacetOrder.ASC));
             }
+            selectMultiQuery.addFacets(
+                FacetHelper.terms(ArchiveSearchConsts.FACETS_RULES_COMPUTED_NUMBER + "_" + category.name(),
+                    computedRulesIdentifierMapping, 100, FacetOrder.ASC));
+            addExpirationRulesFacet(rulesCriteriaList, category, selectMultiQuery);
+
+        } catch (DateTimeParseException e) {
+            throw new InvalidCreateOperationException(e);
         }
+
+        JsonNode dslQuery = selectMultiQuery.getFinalSelect();
+        LOGGER.debug(dslQuery.toPrettyString());
+        JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
+        VitamUISearchResponseDto archivesUnitsResults = objectMapper.treeToValue(vitamResponse,
+            VitamUISearchResponseDto.class);
+        List<FacetResultsDto> auWithRulesFacets = archivesUnitsResults.getFacetResults();
+
+        if (ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE.equals(category)) {
+            FacetResultsDto finalActionIndexedFacet = buildComputedAuFinalActionFacet(
+                indexedArchiveUnitsCriteriaList, category,
+                auWithRulesFacets, vitamContext);
+            auWithRulesFacets = auWithRulesFacets.stream()
+                .filter(facet -> !(ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED + "_" + category.name())
+                    .equals(facet.getName()))
+                .collect(Collectors.toList());
+            auWithRulesFacets.add(finalActionIndexedFacet);
+        }
+        return auWithRulesFacets;
+    }
+
+
+    public FacetResultsDto buildComputedAuFinalActionFacet
+        (List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList,
+            ArchiveSearchConsts.CriteriaCategory category, List<FacetResultsDto> indexedRulesFacets,
+            VitamContext vitamContext)
+        throws VitamClientException, JsonProcessingException {
+        FacetResultsDto finalActionIndexedFacet = new FacetResultsDto();
+        if (ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE.equals(category)) {
+            List<FacetBucketDto> finalActionBuckets = computeFinalActionFacetsForComputedAppraisalRules(
+                indexedArchiveUnitsCriteriaList, indexedRulesFacets, category, vitamContext);
+            finalActionIndexedFacet.setName(ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED + "_" + category.name());
+            finalActionIndexedFacet.setBuckets(finalActionBuckets);
+        }
+        return finalActionIndexedFacet;
     }
 
     @NotNull
-    private List<FacetBucketDto> computeFinalActionFacetsForComputedRules(
-        List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList, List<FacetResultsDto> indexedRulesFacets,
-        VitamContext vitamContext)
+    private List<FacetBucketDto> computeFinalActionFacetsForComputedAppraisalRules(
+        List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList, List<FacetResultsDto>
+        indexedRulesFacets,
+        ArchiveSearchConsts.CriteriaCategory category, VitamContext vitamContext)
         throws VitamClientException, JsonProcessingException {
         Map<String, Long> finalActionCountMap = new HashMap<>();
         finalActionCountMap.put(ArchiveSearchConsts.FINAL_ACTION_KEEP_FIELD_VALUE, 0l);
         finalActionCountMap.put(ArchiveSearchConsts.FINAL_ACTION_DESTROY_FIELD_VALUE, 0l);
         finalActionCountMap.put(ArchiveSearchConsts.FINAL_ACTION_CONFLICT_FIELD_VALUE, 0l);
         Optional<FacetResultsDto> facetFinalActionValue = indexedRulesFacets.stream()
-            .filter(facet -> ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED.equals(facet.getName())).findAny();
-        if (facetFinalActionValue.isPresent()) {
-            facetFinalActionValue.get().getBuckets().stream().forEach(bucket -> {
-                    finalActionCountMap.put(bucket.getValue(), bucket.getCount());
-                }
-            );
-        }
-        Integer withConflictFinalActionAppraisalRulesUnitsCount =
-            computeFinalActionCountByValue(indexedArchiveUnitsCriteriaList,
-                ArchiveSearchConsts.FINAL_ACTION_TYPE_CONFLICT, vitamContext);
+            .filter(facet -> (ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED + "_" + category.name()).equals(
+                facet.getName()))
+            .findAny();
+        facetFinalActionValue.ifPresent(facetResultsDto -> facetResultsDto.getBuckets().stream()
+            .forEach(bucket -> finalActionCountMap.put(bucket.getValue(), bucket.getCount())));
+        Integer withConflictFinalActionUnitsCount = computeFinalActionCountByValue(
+            indexedArchiveUnitsCriteriaList, ArchiveSearchConsts.FINAL_ACTION_TYPE_CONFLICT, category, vitamContext);
         finalActionCountMap
             .put(ArchiveSearchConsts.FINAL_ACTION_CONFLICT_FIELD_VALUE,
-                Long.valueOf(withConflictFinalActionAppraisalRulesUnitsCount));
-        if (withConflictFinalActionAppraisalRulesUnitsCount != 0) {
+                Long.valueOf(withConflictFinalActionUnitsCount));
+        if (withConflictFinalActionUnitsCount != 0) {
             Long withKeepFinalActionAppraisalRulesUnitsCount =
                 finalActionCountMap.get(ArchiveSearchConsts.FINAL_ACTION_KEEP_FIELD_VALUE);
-            Long withDestroyFinalActionAppraisalRulesUnitsCount =
-                finalActionCountMap.get(ArchiveSearchConsts.FINAL_ACTION_DESTROY_FIELD_VALUE);
+            Long withDestroyFinalActionAppraisalRulesUnitsCount = finalActionCountMap
+                .get(ArchiveSearchConsts.FINAL_ACTION_DESTROY_FIELD_VALUE);
             if (withKeepFinalActionAppraisalRulesUnitsCount > 0) {
                 finalActionCountMap.put(ArchiveSearchConsts.FINAL_ACTION_KEEP_FIELD_VALUE,
-                    withKeepFinalActionAppraisalRulesUnitsCount - withConflictFinalActionAppraisalRulesUnitsCount);
+                    withKeepFinalActionAppraisalRulesUnitsCount - withConflictFinalActionUnitsCount);
             }
             if (withDestroyFinalActionAppraisalRulesUnitsCount > 0) {
                 finalActionCountMap.put(ArchiveSearchConsts.FINAL_ACTION_DESTROY_FIELD_VALUE,
                     withDestroyFinalActionAppraisalRulesUnitsCount -
-                        withConflictFinalActionAppraisalRulesUnitsCount);
+                        withConflictFinalActionUnitsCount);
             }
         }
         List<FacetBucketDto> finalActionBuckets = new ArrayList<>();
@@ -453,21 +507,22 @@ public class ArchiveSearchInternalService {
         return computeAuFacetUpdated;
     }
 
-    private FacetResultsDto computeNoRulesFacets(List<SearchCriteriaEltDto> indexedCriteriaList,
-        VitamContext vitamContext)
+    public FacetResultsDto computeNoRulesFacets(List<SearchCriteriaEltDto> indexedCriteriaList,
+        ArchiveSearchConsts.CriteriaCategory category, VitamContext vitamContext)
         throws VitamClientException, JsonProcessingException {
         List<SearchCriteriaEltDto> criteriaListFacet = new ArrayList<>(indexedCriteriaList);
 
         criteriaListFacet.add(new SearchCriteriaEltDto(
             ArchiveSearchConsts.RULE_ORIGIN_CRITERIA,
-            ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE, ArchiveSearchConsts.CriteriaOperators.EQ.name(),
+            category, ArchiveSearchConsts.CriteriaOperators.EQ.name(),
             List.of(new CriteriaValue(ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_NO_ONE.name())),
             ArchiveSearchConsts.CriteriaDataType.STRING.name()));
 
         FacetResultsDto noRuleFacet = new FacetResultsDto();
-        noRuleFacet.setName(ArchiveSearchConsts.FACETS_COUNT_WITHOUT_RULES);
-        noRuleFacet.setBuckets(List.of(new FacetBucketDto(ArchiveSearchConsts.FACETS_COUNT_WITHOUT_RULES,
-            Long.valueOf(countArchiveUnitByCriteriaList(criteriaListFacet, vitamContext)))));
+        noRuleFacet.setName(ArchiveSearchConsts.FACETS_COUNT_WITHOUT_RULES + "_" + category.name());
+        noRuleFacet.setBuckets(
+            List.of(new FacetBucketDto(ArchiveSearchConsts.FACETS_COUNT_WITHOUT_RULES,
+                Long.valueOf(countArchiveUnitByCriteriaList(criteriaListFacet, vitamContext)))));
         return noRuleFacet;
     }
 
@@ -483,8 +538,8 @@ public class ArchiveSearchInternalService {
         return archivesUnitsResults.getHits().getTotal();
     }
 
-    private Integer computeFinalActionCountByValue(List<SearchCriteriaEltDto> initialCriteriaList, String value,
-        VitamContext vitamContext)
+    private Integer computeFinalActionCountByValue(List<SearchCriteriaEltDto> initialCriteriaList, String
+        value, ArchiveSearchConsts.CriteriaCategory category, VitamContext vitamContext)
         throws VitamClientException, JsonProcessingException {
 
         List<SearchCriteriaEltDto> criteriaListFacet = new ArrayList<>();
@@ -492,7 +547,7 @@ public class ArchiveSearchInternalService {
         SearchCriteriaDto countSearchQuery = new SearchCriteriaDto();
         criteriaListFacet.add(new SearchCriteriaEltDto(
             ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE,
-            ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE, ArchiveSearchConsts.CriteriaOperators.EQ.name(),
+            category, ArchiveSearchConsts.CriteriaOperators.EQ.name(),
             List.of(new CriteriaValue(value)),
             ArchiveSearchConsts.CriteriaDataType.STRING.name()));
 
@@ -503,11 +558,11 @@ public class ArchiveSearchInternalService {
             ArchiveSearchConsts.CriteriaDataType.STRING.name()));
 
         countSearchQuery.setCriteriaList(criteriaListFacet);
-        countSearchQuery.setFieldsList(List.of(TITLE_FIELD));
+        countSearchQuery.setFieldsList(List.of(ArchiveSearchInternalService.TITLE_FIELD));
         JsonNode dslQuery = mapRequestToDslQuery(countSearchQuery);
         JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
-        VitamUISearchResponseDto archivesUnitsResults =
-            objectMapper.treeToValue(vitamResponse, VitamUISearchResponseDto.class);
+        VitamUISearchResponseDto archivesUnitsResults = objectMapper.treeToValue(vitamResponse,
+            VitamUISearchResponseDto.class);
         return archivesUnitsResults.getHits().getTotal();
     }
 
@@ -517,7 +572,7 @@ public class ArchiveSearchInternalService {
         final VitamUISearchResponseDto archivesOriginResponse =
             objectMapper.treeToValue(vitamResponse, VitamUISearchResponseDto.class);
         Set<String> originatingAgenciesCodes = archivesOriginResponse.getResults().stream().map(
-            ResultsDto::getOriginatingAgency).
+                ResultsDto::getOriginatingAgency).
             filter(Objects::nonNull).collect(Collectors.toSet());
         List<AgencyModelDto> originAgenciesFound =
             archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originatingAgenciesCodes);
@@ -834,7 +889,7 @@ public class ArchiveSearchInternalService {
                 objectMapper.treeToValue(archiveUnitsResult, VitamUISearchResponseDto.class);
             LOGGER.info("archivesResponse found {} ", archivesResponse.getResults().size());
             Set<String> originesAgenciesCodes = archivesResponse.getResults().stream().map(
-                ResultsDto::getOriginatingAgency).
+                    ResultsDto::getOriginatingAgency).
                 filter(Objects::nonNull).collect(Collectors.toSet());
 
             List<AgencyModelDto> originAgenciesFound =
@@ -842,9 +897,9 @@ public class ArchiveSearchInternalService {
             Map<String, AgencyModelDto> agenciesMapByIdentifier =
                 originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
             return archivesResponse.getResults().stream().map(
-                archiveUnit -> archiveSearchAgenciesInternalService
-                    .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
-            ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit, searchQuery.getLanguage()))
+                    archiveUnit -> archiveSearchAgenciesInternalService
+                        .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
+                ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit, searchQuery.getLanguage()))
                 .collect(Collectors.toList());
 
         } catch (IOException e) {
@@ -969,8 +1024,8 @@ public class ArchiveSearchInternalService {
             Objects::nonNull).filter(searchCriteriaEltDto -> ArchiveSearchConsts.CriteriaCategory.FIELDS
             .equals(searchCriteriaEltDto.getCategory())).collect(Collectors.toList());
         List<String> nodesCriteriaList = criteriaList.stream().filter(
-            Objects::nonNull).filter(searchCriteriaEltDto -> ArchiveSearchConsts.CriteriaCategory.NODES
-            .equals(searchCriteriaEltDto.getCategory())).flatMap(criteria -> criteria.getValues().stream())
+                Objects::nonNull).filter(searchCriteriaEltDto -> ArchiveSearchConsts.CriteriaCategory.NODES
+                .equals(searchCriteriaEltDto.getCategory())).flatMap(criteria -> criteria.getValues().stream())
             .map(CriteriaValue::getValue).collect(Collectors.toList());
 
         if (!CollectionUtils.isEmpty(nodesCriteriaList)) {
@@ -987,55 +1042,42 @@ public class ArchiveSearchInternalService {
         return select;
     }
 
-
-    private void fillAppraisalRulesFacetsForIndexedRules(List<SearchCriteriaEltDto> mgtRulesCriteriaList,
+    private void addExpirationRulesFacet(List<SearchCriteriaEltDto> mgtRulesCriteriaList,
         ArchiveSearchConsts.CriteriaCategory category, SelectMultiQuery select)
         throws InvalidCreateOperationException {
-        try {
-            List<SearchCriteriaEltDto> appraisalRulesCriteriaList =
-                mgtRulesCriteriaList.stream().filter(Objects::nonNull)
-                    .filter(searchCriteriaEltDto -> (ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE
-                        .equals(searchCriteriaEltDto.getCategory()))).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(appraisalRulesCriteriaList)) {
-                String COMPUTED_APPRAISAL_RULE_FINAL_ACTION_MAPPING =
-                    ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS +
-                        ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
-                        ArchivesSearchManagementRulesQueryBuilderService.FINAL_ACTION_FIELD;
-                String COMPUTED_APPRAISAL_RULE_IDENTIFIER_MAPPING =
-                    ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS +
-                        ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
-                        ArchivesSearchManagementRulesQueryBuilderService.RULES_RULE_ID_FIELD;
-                select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED,
-                    COMPUTED_APPRAISAL_RULE_FINAL_ACTION_MAPPING, 3, FacetOrder.ASC));
-                select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_RULES_COMPUTED_NUMBER,
-                    COMPUTED_APPRAISAL_RULE_IDENTIFIER_MAPPING, 100, FacetOrder.ASC));
-                addExpirationRulesFacet(appraisalRulesCriteriaList, category,
-                    select);
-            }
-        } catch (DateTimeParseException e) {
-            throw new InvalidCreateOperationException(e);
-        }
+        String strDateExpirationCriteria =
+            extractRuleExpirationDateFromCriteria(mgtRulesCriteriaList, category);
+        String managementRuleEndDateMapping = ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS +
+            ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
+            ArchivesSearchManagementRulesQueryBuilderService.MAX_END_DATE_FIELD;
+        select.addFacets(
+            FacetHelper.dateRange(ArchiveSearchConsts.FACETS_EXPIRED_RULES_COMPUTED + "_" + category.name(),
+                managementRuleEndDateMapping, ArchiveSearchConsts.FR_DATE_FORMAT_WITH_SLASH,
+                List.of(new RangeFacetValue(SOME_OLD_DATE, strDateExpirationCriteria))));
+
+        select.addFacets(
+            FacetHelper.dateRange(ArchiveSearchConsts.FACETS_UNEXPIRED_RULES_COMPUTED + "_" + category.name(),
+                managementRuleEndDateMapping, ArchiveSearchConsts.FR_DATE_FORMAT_WITH_SLASH,
+                List.of(new RangeFacetValue(strDateExpirationCriteria, ArchiveSearchConsts.SOME_FUTUR_DATE))));
     }
 
-    private void addExpirationRulesFacet(List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaList,
-        ArchiveSearchConsts.CriteriaCategory category,
-        SelectMultiQuery select) throws InvalidCreateOperationException {
+    @NotNull
+    private String extractRuleExpirationDateFromCriteria(List<SearchCriteriaEltDto> mgtRulesCriteriaList,
+        ArchiveSearchConsts.CriteriaCategory category) {
         String strDateExpirationCriteria;
-        Optional<SearchCriteriaEltDto> appraisalEndDateCriteria =
-            appraisalMgtRulesCriteriaList.stream().filter(
+        Optional<SearchCriteriaEltDto> endDateCriteria = mgtRulesCriteriaList.stream().filter(
                 searchCriteriaEltDto -> (category.equals(searchCriteriaEltDto.getCategory()) &&
                     ArchiveSearchConsts.RULE_END_DATE
-                        .equals(searchCriteriaEltDto.getCriteria()))).findAny();
+                        .equals(searchCriteriaEltDto.getCriteria())))
+            .findAny();
+        if (endDateCriteria.isPresent() &&
+            !CollectionUtils.isEmpty(endDateCriteria.get().getValues())) {
 
-        if (appraisalEndDateCriteria.isPresent() &&
-            !CollectionUtils.isEmpty(appraisalEndDateCriteria.get().getValues())) {
-
-            String beginDtStr = appraisalEndDateCriteria.get().getValues().get(0).getBeginInterval();
-            String endDtStr = appraisalEndDateCriteria.get().getValues().get(0).getEndInterval();
+            String beginDtStr = endDateCriteria.get().getValues().get(0).getBeginInterval();
+            String endDtStr = endDateCriteria.get().getValues().get(0).getEndInterval();
             LocalDateTime beginDt = null;
             if (!StringUtils.isEmpty(beginDtStr)) {
-                beginDt =
-                    LocalDateTime.parse(beginDtStr, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
+                beginDt = LocalDateTime.parse(beginDtStr, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
             }
             LocalDateTime endDt = null;
             if (!StringUtils.isEmpty(endDtStr)) {
@@ -1043,18 +1085,15 @@ public class ArchiveSearchInternalService {
             }
             if (beginDt != null && endDt != null) {
                 if (endDt.isAfter(beginDt)) {
-                    strDateExpirationCriteria =
-                        ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH.format(endDt);
+                    strDateExpirationCriteria = ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH.format(endDt);
                 } else {
                     strDateExpirationCriteria =
                         ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH.format(beginDt);
                 }
             } else if (beginDt != null) {
-                strDateExpirationCriteria =
-                    ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH.format(beginDt);
+                strDateExpirationCriteria = ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH.format(beginDt);
             } else if (endDt != null) {
-                strDateExpirationCriteria =
-                    ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH.format(endDt);
+                strDateExpirationCriteria = ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH.format(endDt);
             } else {
                 strDateExpirationCriteria =
                     ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH.format(LocalDateTime.now());
@@ -1063,11 +1102,7 @@ public class ArchiveSearchInternalService {
             strDateExpirationCriteria =
                 ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH.format(LocalDateTime.now());
         }
-        String APPRAISAL_RULE_END_DATE_MAPPING = "#computedInheritedRules." +
-            ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() + ".Rules.EndDate";
-        select.addFacets(FacetHelper.dateRange(ArchiveSearchConsts.FACETS_EXPIRED_RULES_COMPUTED,
-            APPRAISAL_RULE_END_DATE_MAPPING, ArchiveSearchConsts.FR_DATE_FORMAT_WITH_SLASH,
-            List.of(new RangeFacetValue(SOME_OLD_DATE, strDateExpirationCriteria))));
+        return strDateExpirationCriteria;
     }
 
     public String requestToExportDIP(final ExportDipCriteriaDto exportDipCriteriaDto,
