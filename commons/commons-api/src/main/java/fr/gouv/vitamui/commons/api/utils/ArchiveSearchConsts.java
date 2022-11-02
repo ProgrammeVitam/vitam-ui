@@ -253,8 +253,4 @@ public class ArchiveSearchConsts {
     public static final String START_DATE_CRITERIA = "START_DATE";
     public static final String END_DATE = "EndDate";
     public static final String END_DATE_CRITERIA = "END_DATE";
-
-    // CONTEXT CALL
-    public static final String CONTEXT_CALL_COLLECT = "COLLECT";
-
 }

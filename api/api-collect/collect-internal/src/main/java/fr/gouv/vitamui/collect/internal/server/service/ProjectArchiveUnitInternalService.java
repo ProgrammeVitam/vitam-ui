@@ -98,7 +98,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CONTEXT_CALL_COLLECT;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
@@ -138,7 +137,6 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.crea
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createSelectMultiQuery;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.getBasicQuery;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ProjectArchiveUnitInternalService {
@@ -166,7 +164,7 @@ public class ProjectArchiveUnitInternalService {
         LOGGER.debug("get units by query {}", searchQuery);
         JsonNode searchQueryToDSL = isEmpty(searchQuery.getCriteriaList()) ?
             getBasicQuery(searchQuery).getFinalSelect() :
-            createDslQueryWithFacets(searchQuery, CONTEXT_CALL_COLLECT);
+            createDslQueryWithFacets(searchQuery);
         final RequestResponse<JsonNode> result =
             collectService.searchUnitsByProjectId(projectId, searchQueryToDSL, vitamContext);
         VitamRestUtils.checkResponse(result);
