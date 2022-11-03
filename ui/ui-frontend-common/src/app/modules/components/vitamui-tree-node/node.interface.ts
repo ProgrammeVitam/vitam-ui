@@ -53,11 +53,12 @@ export interface FilingHoldingSchemeNode extends Id {
 
   isLoadingChildren?: boolean;
   // help to keep tracks on what has been loaded
-  childrenLoaded?: number;
+  paginatedChildrenLoaded?: number;
   canLoadMoreChildren?: boolean;
 
-  matchingChildrenLoaded?: number;
+  paginatedMatchingChildrenLoaded?: number;
   canLoadMoreMatchingChildren?: boolean;
+
   toggled?: boolean;
 }
 
@@ -95,15 +96,15 @@ export class MatchingNodesNumbers {
   nodesFoundButUnchanged: number;
 
   constructor() {
-    this.nodesAddedList = [];
     this.nodesAdded = 0;
+    this.nodesAddedList = [];
     this.nodesUpdated = 0;
     this.nodesFoundButUnchanged = 0;
   }
 
   addNode(node: FilingHoldingSchemeNode) {
-    this.nodesAddedList.push(node);
     this.nodesAdded += 1;
+    this.nodesAddedList.push(node);
   }
 
   incrementUpdated() {
@@ -112,5 +113,12 @@ export class MatchingNodesNumbers {
 
   incrementFoundButUnchanged() {
     this.nodesFoundButUnchanged += 1;
+  }
+
+  mergeWith(matchingNodesNumbers: MatchingNodesNumbers) {
+    this.nodesAdded += matchingNodesNumbers.nodesAdded;
+    this.nodesAddedList.push(...matchingNodesNumbers.nodesAddedList);
+    this.nodesUpdated += matchingNodesNumbers.nodesUpdated;
+    this.nodesFoundButUnchanged += matchingNodesNumbers.nodesFoundButUnchanged;
   }
 }
