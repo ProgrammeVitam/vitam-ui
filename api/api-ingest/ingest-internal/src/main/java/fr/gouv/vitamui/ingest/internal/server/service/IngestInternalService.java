@@ -69,7 +69,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -316,11 +319,9 @@ public class IngestInternalService {
             ingestResponse =
                 ingestExternalClient.ingest(vitamContext, inputStream, contextId, action);
 
-            if (ingestResponse.isOk()) {
-                LOGGER.debug("Ingest passed successfully : " + ingestResponse.toString());
-            } else {
-                LOGGER.debug("Ingest failed with status : " + ingestResponse.getHttpCode());
-
+            if (!ingestResponse.isOk()) {
+                LOGGER.debug("Error on ingest streaming Upload with status  {} ", ingestResponse.getHttpCode());
+                throw new VitamClientException("Error on ingest streaming Upload ");
             }
         } catch (Exception e) {
             LOGGER.debug("Error sending upload to vitam ", e);
