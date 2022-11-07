@@ -35,20 +35,20 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {ComponentType} from '@angular/cdk/portal';
-import {Injectable, OnDestroy} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {BehaviorSubject, ReplaySubject, Subscription} from 'rxjs';
-import {FileNode, TypeConstants} from '../../models/file-node';
+import { ComponentType } from '@angular/cdk/portal';
+import { Injectable, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
+import { FileNode, TypeConstants } from '../../models/file-node';
 import { Notice } from '../../models/notice.model';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
-import {SedaCardinalityConstants, SedaData, SedaElementConstants} from '../../models/seda-data';
+import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
 import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import {PastisDialogConfirmComponent} from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
-import {ProfileService} from './profile.service';
-import {SedaService} from './seda.service';
+import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
+import { ProfileService } from './profile.service';
+import { SedaService } from './seda.service';
 
 @Injectable({
   providedIn: 'root'
@@ -119,6 +119,9 @@ export class FileService implements OnDestroy {
    * @param sedaData
    */
   linkFileNodeToSedaData(parent: FileNode, nodes: FileNode[], sedaData: SedaData[]) {
+    if (!sedaData) {
+      sedaData = [];
+    }
     Array.prototype.forEach.call(nodes, (node: FileNode) => {
       if (parent) {
         node.parent = parent;
@@ -128,11 +131,10 @@ export class FileService implements OnDestroy {
         let sedaDataMatch: SedaData;
 
         // Si le node en cours est une ArchiveUnit, lui même enfant d'une ArchiveUnit...
-        if (nodeName === 'ArchiveUnit' && this.sedaDataArchiveUnit != undefined) {
+        if (nodeName === 'ArchiveUnit' && this.sedaDataArchiveUnit !== undefined) {
           // Alors on utilise la définition SEDA de l'ArchiveUnit mère..
           sedaDataMatch = this.sedaDataArchiveUnit;
-        }
-        else {
+        } else {
           // Sinon on recherche la définition SEDA dans l'arbre
           sedaDataMatch = sedaData.find(seda => seda.Name === nodeName);
           // sedaDataMatch = this.sedaService.getSedaNodeRecursively(sedaData[0],nodeName)
@@ -150,15 +152,17 @@ export class FileService implements OnDestroy {
           }
         } else {
           // Si le node en cours est l'achive ArchiveUnit mère, on la sauvegarde pour l'utiliser pour les ArchivesUnit enfants
-          if (sedaDataMatch.Name === 'ArchiveUnit' && this.sedaDataArchiveUnit == undefined) {
+          if (sedaDataMatch.Name === 'ArchiveUnit' && this.sedaDataArchiveUnit === undefined) {
             this.sedaDataArchiveUnit = sedaDataMatch;
             // On introduit la récursivité sur les ArchivesUnit
-            this.sedaDataArchiveUnit.Children.find((c: { Name: string; }) => c.Name == 'ArchiveUnit').Children = this.sedaDataArchiveUnit.Children;
+            this.sedaDataArchiveUnit.Children
+              .find((c: { Name: string; }) => c.Name === 'ArchiveUnit')
+              .Children = this.sedaDataArchiveUnit.Children;
           }
         }
         node.sedaData = sedaDataMatch;
         if (node.children.length > 0) {
-          this.linkFileNodeToSedaData(node, node.children, node.sedaData.Children);
+          this.linkFileNodeToSedaData(node, node.children, node.sedaData?.Children);
         }
       }
     });

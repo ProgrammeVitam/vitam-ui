@@ -37,12 +37,13 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.dto;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.util.RNGConstants;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -115,7 +116,7 @@ public class ElementRNG {
     public static void buildElementPropertiesTree(ElementRNG node, int profondeur,
         ElementProperties parentNode) {
         ElementProperties local = new ElementProperties();
-        LOGGER.debug("Generating JSON element {}", node.getName());
+        LOGGER.trace("Generating JSON element {}", node.getName());
         if (null != node.getType() && RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(node.getType())
             || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(node.getType())) {
 

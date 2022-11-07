@@ -35,22 +35,22 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {CdkTextareaAutosize} from '@angular/cdk/text-field';
-import {Component, EventEmitter, Output, ViewChild, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatCheckboxChange} from '@angular/material/checkbox';
-import {MatTableDataSource} from '@angular/material/table';
-import {Router} from '@angular/router';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {environment} from 'projects/pastis/src/environments/environment';
-import {Subscription} from 'rxjs';
-import {StartupService} from 'ui-frontend-common';
-import {FileService} from '../../../core/services/file.service';
-import {NotificationService} from '../../../core/services/notification.service';
-import {ProfileService} from '../../../core/services/profile.service';
-import {SedaService} from '../../../core/services/seda.service';
-import {BreadcrumbDataMetadata, BreadcrumbDataTop} from '../../../models/breadcrumb';
-import {AttributeData} from '../../../models/edit-attribute-models';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { Component, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { environment } from 'projects/pastis/src/environments/environment';
+import { Subscription } from 'rxjs';
+import { StartupService } from 'ui-frontend-common';
+import { FileService } from '../../../core/services/file.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { ProfileService } from '../../../core/services/profile.service';
+import { SedaService } from '../../../core/services/seda.service';
+import { BreadcrumbDataMetadata, BreadcrumbDataTop } from '../../../models/breadcrumb';
+import { AttributeData } from '../../../models/edit-attribute-models';
 import {
   CardinalityConstants,
   DataTypeConstants,
@@ -62,18 +62,16 @@ import {
   TypeConstants,
   ValueOrDataConstants
 } from '../../../models/file-node';
-import {CardinalityValues, MetadataHeaders} from '../../../models/models';
-import {SedaData, SedaElementConstants} from '../../../models/seda-data';
-import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
-import {
-  PastisPopupMetadataLanguageService
-} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import {FileTreeService} from '../file-tree/file-tree.service';
-import {UserActionAddPuaControlComponent} from '../../../user-actions/add-pua-control/add-pua-control.component';
-import {AttributesPopupComponent} from './attributes/attributes.component';
-import {FileTreeMetadataService} from './file-tree-metadata.service';
-import {PuaData} from '../../../models/pua-data';
-import {FileTreeComponent} from '../file-tree/file-tree.component';
+import { CardinalityValues, MetadataHeaders } from '../../../models/models';
+import { SedaData, SedaElementConstants } from '../../../models/seda-data';
+import { PastisDialogData } from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { PastisPopupMetadataLanguageService } from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { FileTreeService } from '../file-tree/file-tree.service';
+import { UserActionAddPuaControlComponent } from '../../../user-actions/add-pua-control/add-pua-control.component';
+import { AttributesPopupComponent } from './attributes/attributes.component';
+import { FileTreeMetadataService } from './file-tree-metadata.service';
+import { PuaData } from '../../../models/pua-data';
+import { FileTreeComponent } from '../file-tree/file-tree.component';
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -94,7 +92,7 @@ function constantToTranslate() {
 @Component({
   selector: 'pastis-file-tree-metadata',
   templateUrl: './file-tree-metadata.component.html',
-  styleUrls: ['./file-tree-metadata.component.scss'],
+  styleUrls: [ './file-tree-metadata.component.scss' ],
   // Encapsulation has to be disabled in order for the
   // component style to apply to the select panel.
   encapsulation: ViewEncapsulation.None,
@@ -112,9 +110,9 @@ export class FileTreeMetadataComponent {
   // Mat table
   matDataSource: MatTableDataSource<MetadataHeaders>;
 
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
-  displayedColumns: string[] = ['nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption'];
+  displayedColumns: string[] = [ 'nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption' ];
 
   selectedRegex = '';
 
@@ -159,10 +157,10 @@ export class FileTreeMetadataComponent {
   customRegex: string;
   formatagePredefini: Array<{ label: string, value: string }> =
     [
-      {label: 'AAAA-MM-JJ', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'},
-      {label: 'AAAA-MM-JJTHH:MM:SS', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$'},
-      {label: 'AAAA', value: '^[0-9]{4}$'},
-      {label: 'AAAA-MM', value: '^[0-9]{4}-[0-9]{2}$'}
+      { label: 'AAAA-MM-JJ', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' },
+      { label: 'AAAA-MM-JJTHH:MM:SS', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$' },
+      { label: 'AAAA', value: '^[0-9]{4}$' },
+      { label: 'AAAA-MM', value: '^[0-9]{4}-[0-9]{2}$' }
     ];
   availableRegex: Array<{ label: string, value: string }>;
 
@@ -214,10 +212,10 @@ export class FileTreeMetadataComponent {
 
   languagePopup: boolean;
 
-  metadatadaValueFormControl = new FormControl('', [Validators.required, Validators.pattern(this.regexPattern)]);
+  metadatadaValueFormControl = new FormControl('', [ Validators.required, Validators.pattern(this.regexPattern) ]);
 
   valueForm = this.fb.group({
-    valeurFixe: ['', [Validators.pattern(this.regexPattern)]],
+    valeurFixe: [ '', [ Validators.pattern(this.regexPattern) ] ],
   });
   public searchForm: FormGroup;
   id: number;
@@ -279,21 +277,21 @@ export class FileTreeMetadataComponent {
         this.fileService.tabRootNode.subscribe(tabRootNode => {
           if (tabRootNode) {
             const tabLabel = (nodeNameToLabel as any)[tabRootNode.name];
-            this.breadcrumbDataMetadata = [{label: tabLabel, node: tabRootNode}];
+            this.breadcrumbDataMetadata = [ { label: tabLabel, node: tabRootNode } ];
             if (tabRootNode.name !== breadCrumbNodeLabel) {
               if (node.parent) {
                 if (node.parent.name !== tabRootNode.name) {
                   if (node.parent.parent) {
                     if (node.parent.parent.name !== tabRootNode.name) {
-                      this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{label: '...'}]);
+                      this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: '...' } ]);
                     }
                   }
-                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{
+                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ {
                     label: node.parent.name,
                     node: node.parent
-                  }]);
+                  } ]);
                 }
-                this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{label: breadCrumbNodeLabel, node}]);
+                this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: breadCrumbNodeLabel, node } ]);
               }
             }
           }
@@ -302,11 +300,11 @@ export class FileTreeMetadataComponent {
     });
     // BreadCrump Top for navigation
     this.profileModeLabel = this.profileService.profileMode === 'PUA' ? 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA' : 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA';
-    this.breadcrumbDataTop = [{
+    this.breadcrumbDataTop = [ {
       label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL',
       url: this.startupService.getPortalUrl(),
       external: true
-    }, {label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/'}, {label: this.profileModeLabel}];
+    }, { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/' }, { label: this.profileModeLabel } ];
 
     this._fileServiceSubscription = this.fileService.currentTree.subscribe(fileTree => {
       if (fileTree) {
@@ -344,14 +342,16 @@ export class FileTreeMetadataComponent {
       this.matDataSource = new MatTableDataSource<MetadataHeaders>(data);
     });
 
-    this.rootAdditionalProperties = this.clickedNode.additionalProperties;
+    if (this.clickedNode) {
+      this.rootAdditionalProperties = this.clickedNode.additionalProperties;
+    }
   }
 
   navigate(d: BreadcrumbDataTop) {
     if (d.external) {
       window.location.assign(d.url);
     } else {
-      this.router.navigate([d.url], {skipLocationChange: false});
+      this.router.navigate([ d.url ], { skipLocationChange: false });
     }
   }
 
@@ -839,7 +839,7 @@ export class FileTreeMetadataComponent {
   }
 
   goBack() {
-    this.router.navigate(['/'], {skipLocationChange: false});
+    this.router.navigate([ '/' ], { skipLocationChange: false });
   }
 
   ngOnDestroy() {
@@ -997,7 +997,7 @@ export class FileTreeMetadataComponent {
 
 
   isElementNameNotContentManagement(nomDuChamp: string) {
-    return !(nomDuChamp === 'Content' );
+    return !(nomDuChamp === 'Content');
   }
 
   changeAutorisation($event: MatCheckboxChange, element: any) {
