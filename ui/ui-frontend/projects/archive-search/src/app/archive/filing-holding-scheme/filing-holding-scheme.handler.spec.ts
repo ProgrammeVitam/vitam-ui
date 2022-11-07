@@ -24,7 +24,7 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { FilingHoldingSchemeNode, MatchingNodesNumbers } from 'ui-frontend-common';
 import { DescriptionLevel } from '../../../../../vitamui-library/src/lib/models/description-level.enum';
 import { ResultFacet } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
@@ -146,15 +146,15 @@ describe('FilingHoldingSchemeHandler', () => {
     expect(node.id).toEqual('node-0-2')
     expect(node.children.length).toEqual(0)
 
-    FilingHoldingSchemeHandler.addChildren(node, units)
+    FilingHoldingSchemeHandler.addDirectChildrenOnly(node, units)
     expect(node.children.length).toEqual(2)
 
     units = [ newUnit('node-0-2-0'), newUnit('node-0-2-1'), newUnit('node-0-2-3'), ];
-    FilingHoldingSchemeHandler.addChildren(node, units)
+    FilingHoldingSchemeHandler.addDirectChildrenOnly(node, units)
     expect(node.children.length).toEqual(3)
 
     units = [ newUnit('node-0-2-3'), ];
-    FilingHoldingSchemeHandler.addChildren(node, units)
+    FilingHoldingSchemeHandler.addDirectChildrenOnly(node, units)
     expect(node.children.length).toEqual(3)
   });
 
@@ -297,53 +297,94 @@ describe('FilingHoldingSchemeHandler', () => {
     expect(leaves[4].count).toEqual(1)
   });
 
-  it('test filter facets 2', () => {
-    const originalFacets: ResultFacet[] = [
-      {
-        node: 'aeaqaaaaaehi34lxabyiiamdva6h5eaaaahq',
-        count: 249
-      },
-      {
-        node: 'aeaqaaaaaehi34lxabyiiamdva6h5oaaaakq',
-        count: 50
-      },
-      {
-        node: 'aeaqaaaaaehi34lxabyiiamdva6h5oaaaalq',
-        count: 249
-      },
-      {
-        node: 'aeaqaaaaaehi34lxabyiiamdva6mqhiaaafa',
-        count: 249
-      },
-      {
-        node: 'aeaqaaaaaehi34lxabyiiamduvlucsqaaaba',
-        count: 1
-      },
-      {
-        node: 'aeaqaaaaaehi34lxabyiiamduvlucsyaaaba',
-        count: 1
-      }
-    ];
-    const receivedFacets: ResultFacet[] = [
-      {
-        node: 'aeaqaaaaaehi34lxabyiiamdva6h5eaaaahq',
-        count: 249
-      },
-      {
-        node: 'aeaqaaaaaehi34lxabyiiamdva6h5oaaaakq',
-        count: 249
-      }
-    ];
-
-    const filteredFacets = receivedFacets
-      .filter(facet => originalFacets.findIndex(originalFacet => originalFacet.node === facet.node
-        && originalFacet.count === facet.count) === -1);
-
-    expect(filteredFacets.length).toEqual(1);
-    const filingHoldingSchemeNode: FilingHoldingSchemeNode = {
-      checked: false, children: [], id: '', title: '', type: '', vitamId: ''
-    };
-    filingHoldingSchemeNode.matchingChildrenLoaded += 1;
-    expect(filingHoldingSchemeNode.matchingChildrenLoaded).toEqual(1);
+  it('unitHasDirectParent test', () => {
+    const unit = newUnit('node-2-3', 'node-2');
+    expect(FilingHoldingSchemeHandler.unitHasDirectParent(unit, 'whatever')).toBeFalsy();
+    expect(FilingHoldingSchemeHandler.unitHasDirectParent(unit, 'node-2')).toBeTruthy();
   });
+
+  it('foundChild test', () => {
+    node = newNode('node-0');
+    expect(FilingHoldingSchemeHandler.foundChild(node, 'whatever')).toBeUndefined();
+
+    const child = newNode('node-0-0');
+    node = newNode('node-0', [ child ]);
+    expect(FilingHoldingSchemeHandler.foundChild(node, 'node-0-0')).toBe(child);
+
+    node = newNode('node-0', [
+      newNode('node-0-0', [
+        newNode('node-0-0-0'),
+        newNode('node-0-0-1', [
+          newNode('node-0-0-1-0'),
+        ]),
+      ]),
+      newNode('node-0-1'),
+      newNode('node-0-2'),
+    ]);
+    expect(FilingHoldingSchemeHandler.foundChild(node, 'whatever')).toBeUndefined();
+    expect(FilingHoldingSchemeHandler.foundChild(node, 'node-0-0')).toBeDefined();
+    expect(FilingHoldingSchemeHandler.foundChild(node, 'node-0-0-0')).toBeUndefined();
+    expect(FilingHoldingSchemeHandler.foundChild(node, 'node-0-0-1-0')).toBeUndefined();
+  });
+
+  it('addDirectChildrenOnly should not add already presents nodes nor add node of other parents', () => {
+    const toggleNode = uaNodes[0];
+    expect(toggleNode.children.length).toEqual(5);
+    const resturnedUnits = [
+      newUnit('node-0-0', 'node-0'), // already present
+      newUnit('node-0-5', 'node-0'), // new
+      newUnit('new-node', 'node-0-1'), // wrong parent
+    ];
+    const matchingNodesNumbers: MatchingNodesNumbers = FilingHoldingSchemeHandler
+      .addDirectChildrenOnly(toggleNode, resturnedUnits);
+
+    expect(matchingNodesNumbers.nodesAdded).toEqual(1);
+    expect(matchingNodesNumbers.nodesUpdated).toEqual(0);
+    expect(matchingNodesNumbers.nodesFoundButUnchanged).toEqual(1);
+    expect(toggleNode.children.length).toEqual(6);
+    expect(toggleNode.children[0].count).toEqual(undefined); // unchanged
+    expect(toggleNode.children[5].count).toEqual(0); // new
+  });
+
+  it('addDirectChildrenOnly ', () => {
+    const toggleNode = uaNodes[0];
+    expect(toggleNode.children.length).toEqual(5);
+    const resturnedUnits = [
+      newUnit('node-0-2', 'node-0'), // already present
+      newUnit('new-node-0-5', 'node-0'), // new
+      newUnit('new-node-0-6', 'node-0'), // new
+      newUnit('new-node', 'node-0-1'), // wrong parent
+    ];
+    const matchingNodesNumbers: MatchingNodesNumbers = FilingHoldingSchemeHandler
+      .addDirectChildrenOnly(toggleNode, resturnedUnits, true);
+
+    expect(matchingNodesNumbers.nodesAdded).toEqual(2);
+    expect(matchingNodesNumbers.nodesAddedList.length).toEqual(2);
+    expect(matchingNodesNumbers.nodesAddedList[0].id).toEqual('new-node-0-5');
+    expect(matchingNodesNumbers.nodesAddedList[1].id).toEqual('new-node-0-6');
+    expect(matchingNodesNumbers.nodesUpdated).toEqual(0);
+    expect(matchingNodesNumbers.nodesFoundButUnchanged).toEqual(1);
+    expect(toggleNode.children[0].count).toEqual(undefined); // unchanged
+    expect(toggleNode.children[5].count).toEqual(1);
+    expect(toggleNode.children[6].count).toEqual(1);
+  });
+
+  it('filterUnknownFacets filter unknown ids', () => {
+    let oldFacets = [ { node: 'node-0', count: 1 }, { node: 'node-1', count: 65 } ]
+    let newFacets = [ { node: 'node-0', count: 5 }, { node: 'node-1', count: 42 } ]
+    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([])
+
+    oldFacets = [ { node: 'node-0', count: 1 }, { node: 'node-1', count: 65 } ]
+    newFacets = [ { node: 'node-2', count: 5 } ]
+    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([ { node: 'node-2', count: 5 } ])
+
+    oldFacets = []
+    newFacets = [ { node: 'node-2', count: 5 } ]
+    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([ { node: 'node-2', count: 5 } ])
+
+    oldFacets = [ { node: 'node-0', count: 1 }, { node: 'node-1', count: 65 } ]
+    newFacets = []
+    expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([])
+  });
+
 });
