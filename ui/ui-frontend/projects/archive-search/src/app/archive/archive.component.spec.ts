@@ -84,6 +84,13 @@ describe('ArchiveComponent', () => {
     lastUpdate: 'string',
     activationDate: 'string',
     rootUnits: [],
+    accessLog: '',
+    ruleFilter: true,
+    ruleCategoryToFilter: ['rule'],
+    excludedRootUnits: [],
+    deactivationDate: 'date',
+    dataObjectVersion: [],
+    originatingAgencies: [],
   };
 
   const archiveServiceMock = {
