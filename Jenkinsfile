@@ -113,7 +113,7 @@ pipeline {
                 sh 'npmrc default'
 
                 sh '''
-                    $MVN_COMMAND clean verify -U -DskipAllFrontendTests=true -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+                    $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
                 '''
             }
             post {
