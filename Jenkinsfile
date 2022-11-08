@@ -32,6 +32,9 @@ pipeline {
 
     triggers {
         cron( env.BRANCH_NAME == 'develop' ? '00 20 * * *' : '')
+        cron( env.BRANCH_NAME == 'master_5.x' ? '30 20 * * *' : '')
+        cron( env.BRANCH_NAME == 'master_5.rc.x' ? '30 20 * * *' : '')
+        cron( env.BRANCH_NAME == 'vas_build_vitamui_branches' ? '00 13 * * *' : '')
     }
 
     stages {
