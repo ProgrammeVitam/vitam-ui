@@ -54,15 +54,6 @@
     "ShortName": "Recipient.Mandate"
   },
   {
-    "Identifier": "Recipient.Nationality",
-    "ApiField": "Recipient.Nationality",
-    "Type": "KEYWORD",
-    "Origin": "INTERNAL",
-    "CreationDate": "2020-11-02T12:25:58.042",
-    "LastUpdate": "2020-11-02T14:21:29.887",
-    "ShortName": "Recipient.Nationality"
-  },
-  {
     "Identifier": "Recipient.DeathPlace.City",
     "ApiField": "Recipient.DeathPlace.City",
     "Type": "KEYWORD",
@@ -1223,15 +1214,6 @@
     "ShortName": "AuthorizedAgent.Corpname"
   },
   {
-    "Identifier": "AuthorizedAgent.Nationality",
-    "ApiField": "AuthorizedAgent.Nationality",
-    "Type": "KEYWORD",
-    "Origin": "INTERNAL",
-    "CreationDate": "2020-11-02T12:25:58.042",
-    "LastUpdate": "2020-11-02T14:21:29.887",
-    "ShortName": "AuthorizedAgent.Nationality"
-  },
-  {
     "Identifier": "AuthorizedAgent.FirstName",
     "ApiField": "AuthorizedAgent.FirstName",
     "Type": "KEYWORD",
@@ -1668,15 +1650,6 @@
     "ShortName": "Addressee.Gender"
   },
   {
-    "Identifier": "Addressee.DeathPlace.Adress",
-    "ApiField": "Addressee.DeathPlace.Adress",
-    "Type": "KEYWORD",
-    "Origin": "INTERNAL",
-    "CreationDate": "2020-11-02T12:25:58.042",
-    "LastUpdate": "2020-11-02T14:21:29.887",
-    "ShortName": "Addressee.DeathPlace.Adress"
-  },
-  {
     "Identifier": "Addressee.DeathPlace.Geogname",
     "ApiField": "Addressee.DeathPlace.Geogname",
     "Type": "KEYWORD",
@@ -1684,15 +1657,6 @@
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
     "ShortName": "Addressee.DeathPlace.Geogname"
-  },
-  {
-    "Identifier": "Addressee.Nationality",
-    "ApiField": "Addressee.Nationality",
-    "Type": "KEYWORD",
-    "Origin": "INTERNAL",
-    "CreationDate": "2020-11-02T12:25:58.042",
-    "LastUpdate": "2020-11-02T14:21:29.887",
-    "ShortName": "Addressee.Nationality"
   },
   {
     "Identifier": "Addressee.Nationality",
@@ -3891,15 +3855,6 @@
     "CreationDate": "2020-11-02T12:25:58.059",
     "LastUpdate": "2020-11-02T14:21:48.257",
     "ShortName": "AppraisalRule FinalAction"
-  },
-  {
-    "Identifier": "management.AppraisalRule.Inheritance.PreventInheritance",
-    "ApiField": "#management.AppraisalRule.Inheritance.PreventInheritance",
-    "Type": "BOOLEAN",
-    "Origin": "INTERNAL",
-    "CreationDate": "2020-11-02T12:25:58.059",
-    "LastUpdate": "2020-11-02T14:21:48.257",
-    "ShortName": "AppraisalRule PreventInheritance"
   },
   {
     "Identifier": "management.AppraisalRule.Inheritance.PreventRulesId",
