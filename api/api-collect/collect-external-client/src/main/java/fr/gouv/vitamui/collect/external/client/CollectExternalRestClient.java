@@ -49,7 +49,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 
 
 public class CollectExternalRestClient
@@ -147,4 +150,32 @@ public class CollectExternalRestClient
             restTemplate.exchange(uriBuilder.build(projectId), HttpMethod.GET, request, CollectTransactionDto.class);
         return response.getBody();
     }
+
+    public CollectTransactionDto createTransactionForProject(ExternalHttpContext context,
+        CollectTransactionDto collectTransactionDto, String projectId) {
+        final HttpEntity<?> request = new HttpEntity<>(collectTransactionDto, buildHeaders(context));
+        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(getUrl() + "/"+ projectId + "/transactions", HttpMethod.POST,
+            request, CollectTransactionDto.class);
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public CollectTransactionDto updateTransaction(ExternalHttpContext context,
+        CollectTransactionDto collectTransactionDto) {
+        final HttpEntity<?> request = new HttpEntity<>(collectTransactionDto, buildHeaders(context));
+        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange( getTransactionUrl(), HttpMethod.PUT,
+            request, CollectTransactionDto.class);
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public CollectTransactionDto getLastTransactionForProjectId(String id, ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + "/last-transaction");
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, CollectTransactionDto.class);
+        checkResponse(response);
+        return response.getBody();
+    }
+
 }

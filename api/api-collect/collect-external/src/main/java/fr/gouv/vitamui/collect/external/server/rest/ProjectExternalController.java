@@ -28,6 +28,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.ProjectExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -42,12 +43,14 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -107,18 +110,31 @@ public class ProjectExternalController {
         return projectExternalService.createProject(collectProjectDto);
     }
 
+    @Secured(ServicesData.ROLE_CREATE_TRANSACTIONS)
+    @PostMapping(value = CommonConstants.PATH_ID+ "/transactions")
+    public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody
+        CollectTransactionDto collectTransactionDto)
+        throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(collectTransactionDto);
+        LOGGER.debug("Transaction to create : {}", collectTransactionDto);
+        return projectExternalService.createTransactionForProject(collectTransactionDto, id);
+    }
+
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @ApiOperation(value = "Upload and stream collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = "/upload", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Void> streamingUpload(InputStream inputStream,
-        @RequestHeader(value = CommonConstants.X_PROJECT_ID_HEADER) final String projectId,
-        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+        @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName,
+        @RequestHeader Map<String, String> headers
     ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The project ID is a mandatory parameter: ", projectId);
-        SanityChecker.checkSecureParameter(projectId);
+        ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(originalFileName);
         LOGGER.debug("[External] upload collect zip file : {}", originalFileName);
-        return projectExternalService.streamingUpload(inputStream, projectId, originalFileName);
+        return projectExternalService.streamingUpload(inputStream, transactionId, originalFileName);
     }
 
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
@@ -143,8 +159,7 @@ public class ProjectExternalController {
         return projectExternalService.findProjectById(id);
     }
 
-
-
+    @Secured(ServicesData.ROLE_DELETE_PROJECTS)
     @DeleteMapping(CommonConstants.PATH_ID)
     public void deleteProjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -152,6 +167,16 @@ public class ProjectExternalController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("The project id {} ", id);
         projectExternalService.deleteProjectById(id);
+    }
+
+    @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
+    @GetMapping(CommonConstants.PATH_ID  + "/last-transaction")
+    public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find the transaction by project with ID {}", id);
+        return projectExternalService.getLastTransactionForProjectId(id);
     }
 
 

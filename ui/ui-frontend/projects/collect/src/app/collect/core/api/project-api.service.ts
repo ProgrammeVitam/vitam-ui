@@ -68,6 +68,10 @@ export class ProjectsApiService extends BaseHttpClient<any> {
     return super.create(data);
   }
 
+  public createTransaction(data: Transaction): Observable<Transaction> {
+    return this.http.post<Transaction>(`${this.apiUrl}/${data.projectId}/transactions`, data);
+  }
+
   public update(data: Project): Observable<Project> {
     return super.update(data);
   }
@@ -128,5 +132,13 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   sendTransaction(id: string) {
     return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/send', {});
+  }
+
+  updateTransaction(data: Transaction): Observable<Transaction> {
+    return this.http.put<Transaction>(this.urlTransaction + '/' + data.id, data);
+  }
+
+  getLastTransactionByProjectId(projectId: string): Observable<Transaction> {
+    return this.http.get<Transaction>(`${this.apiUrl}/${projectId}/last-transaction`);
   }
 }

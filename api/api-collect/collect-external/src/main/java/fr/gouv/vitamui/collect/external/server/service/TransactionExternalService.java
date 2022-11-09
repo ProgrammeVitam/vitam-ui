@@ -26,6 +26,7 @@
  */
 package fr.gouv.vitamui.collect.external.server.service;
 
+import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
@@ -71,5 +72,9 @@ public class TransactionExternalService extends AbstractResourceClientService<Co
 
     public CollectTransactionDto getTransactionById(String transactionId) {
         return collectInternalRestClient.getTransactionById(getInternalHttpContext(), transactionId);
+    }
+
+    public CollectTransactionDto updateTransaction(CollectTransactionDto collectTransactionDto) {
+        return collectInternalRestClient.updateTransaction(getInternalHttpContext(), collectTransactionDto);
     }
 }

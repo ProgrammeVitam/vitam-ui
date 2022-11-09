@@ -29,6 +29,7 @@ package fr.gouv.vitamui.collect.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.service.ProjectService;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -36,6 +37,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -46,6 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
@@ -96,18 +99,18 @@ public class ProjectController extends AbstractUiRestController {
     @PostMapping("/upload")
     public ResponseEntity<Void> upload(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final String tenantId,
-        @RequestHeader(value = CommonConstants.X_PROJECT_ID_HEADER) final String projectId,
+        @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String filename,
         final InputStream inputStream) throws InvalidParseOperationException {
         ParameterChecker
-            .checkParameter("The tenantId and projectId are mandatory parameters : ",
-                tenantId, projectId);
+            .checkParameter("The tenantId and transactionId are mandatory parameters : ",
+                tenantId, transactionId);
         SanityChecker.checkSecureParameter(tenantId);
-        SanityChecker.checkSecureParameter(projectId);
+        SanityChecker.checkSecureParameter(transactionId);
         SafeFileChecker.checkSafeFilePath(filename);
         LOGGER.debug("Start uploading file ...{} ", filename);
         ResponseEntity<Void> response =
-            projectService.streamingUpload(buildUiHttpContext(), filename, projectId, inputStream);
+            projectService.streamingUpload(buildUiHttpContext(), filename, transactionId, inputStream);
 
         LOGGER.debug("The response in ui Ingest is {} ", response.toString());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -123,6 +126,19 @@ public class ProjectController extends AbstractUiRestController {
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
         return projectService.update(buildUiHttpContext(), collectProjectDto);
     }
+
+    @PostMapping(value = CommonConstants.PATH_ID+ "/transactions")
+    public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody
+        CollectTransactionDto collectTransactionDto)
+        throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.checkSecureParameter(id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.sanitizeCriteria(collectTransactionDto);
+        LOGGER.debug("Transaction to create : {}", collectTransactionDto);
+        return projectService.createTransactionForProject(buildUiHttpContext(), collectTransactionDto, id);
+    }
+
 
     @ApiOperation(value = "Get project Details")
     @GetMapping(CommonConstants.PATH_ID)
@@ -144,6 +160,17 @@ public class ProjectController extends AbstractUiRestController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete the Project with ID {}", id);
         projectService.deleteProject(id, buildUiHttpContext());
+    }
+
+    @ApiOperation(value = "Get last Transaction for project")
+    @GetMapping(CommonConstants.PATH_ID  + "/last-transaction")
+    public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find the transaction by project with ID {}", id);
+        CollectTransactionDto collectTransactionDto = projectService.getLastTransactionForProjectId(buildUiHttpContext(), id);
+        return collectTransactionDto;
     }
 
 

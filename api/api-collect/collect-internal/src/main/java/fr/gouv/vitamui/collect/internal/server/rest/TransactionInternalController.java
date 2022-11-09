@@ -30,17 +30,21 @@ package fr.gouv.vitamui.collect.internal.server.rest;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.TransactionInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
@@ -60,7 +64,6 @@ public class TransactionInternalController {
         this.securityService = securityService;
         this.transactionInternalService = transactionInternalService;
     }
-
 
     @PutMapping(CommonConstants.PATH_ID + SEND_PATH)
     public void sendTransaction(final @PathVariable("id") String id)
@@ -91,6 +94,14 @@ public class TransactionInternalController {
         return transactionInternalService.getTransactionById(id, vitamContext);
     }
 
-
+    @PutMapping
+    public CollectTransactionDto updateTransaction(@RequestBody CollectTransactionDto transactionDto)
+        throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", transactionDto.getId());
+        SanityChecker.checkSecureParameter(transactionDto.getId());
+        LOGGER.debug("[External] Transaction to update : {}", transactionDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return transactionInternalService.updateTransaction(transactionDto, vitamContext);
+    }
 
 }

@@ -74,6 +74,9 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return collectExternalRestClient.getTransactionById(context, projectId);
     }
 
+    public CollectTransactionDto updateTransaction(ExternalHttpContext context, CollectTransactionDto transactionDto) {
+        return collectExternalRestClient.updateTransaction(context, transactionDto);
+    }
 
 
 }

@@ -28,6 +28,7 @@
 package fr.gouv.vitamui.collect.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.service.TransactionService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -76,6 +77,17 @@ public class TransactionController extends AbstractUiRestController {
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("Send the Transaction with ID {}", transactionId);
         transactionService.sendTransaction(buildUiHttpContext(), transactionId);
+    }
+
+    @PutMapping(CommonConstants.PATH_ID)
+    public CollectTransactionDto updateTransaction(final @PathVariable("id") String id,
+        @RequestBody CollectTransactionDto collectTransactionDto)
+        throws InvalidParseOperationException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(collectTransactionDto);
+        LOGGER.debug("[Internal] Transaction to update : {}", collectTransactionDto);
+        return transactionService.updateTransaction(buildUiHttpContext(), collectTransactionDto);
     }
 
     @ApiOperation(value = "Validate transaction operation")

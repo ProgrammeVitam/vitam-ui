@@ -99,6 +99,12 @@ export class ArchiveCollectService extends SearchService<any> {
     );
   }
 
+  getLastTransactionByProjectId(projectId: string): Observable<Transaction> {
+    return this.projectsApiService.getLastTransactionByProjectId(projectId).pipe(
+      map((result) => result)
+    );
+  }
+
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string): Observable<PagedResult> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
