@@ -207,7 +207,7 @@ public class ArchiveSearchConsts {
     public static final String FACETS_UNEXPIRED_RULES_COMPUTED = "UNEXPIRED_RULES_COMPUTED";
     public static final String FACETS_RULES_COMPUTED_NUMBER = "RULES_COMPUTED_NUMBER";
     public static final String FACETS_FINAL_ACTION_COMPUTED = "FINAL_ACTION_COMPUTED";
-    public static final String FACETS_COMPUTE_RULES_AU_NUMBER = "COMPUTE_RULES_AU_NUMBER";
+    public static final String FACETS_AU_COUNT_WITH_COMPUTED_INHERITANCE = "AU_COUNT_WITH_COMPUTED_INHERITANCE";
     public static final String FACETS_COUNT_BY_NODE = "COUNT_BY_NODE";
     public static final String FACETS_COUNT_WITHOUT_RULES = "COUNT_WITHOUT_RULES";
     public static final String COUNT_CONFLICT_RULES = "Conflict";

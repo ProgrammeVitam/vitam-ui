@@ -249,15 +249,8 @@ export class ArchiveService extends SearchService<any> {
           }
           appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
         }
-        if (facet.name === "UNEXPIRED_RULES_COMPUTED_APPRAISAL_RULE") {
-          const unexpiredRulesListFacets = [];
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            unexpiredRulesListFacets.push({node: bucket.value, count: bucket.count});
-          }
-          appraisalRulesFacets.unexpiredRulesListFacets = unexpiredRulesListFacets;
-        }
-        if (facet.name === 'COMPUTE_RULES_AU_NUMBER') {
+
+        if (facet.name === 'AU_COUNT_WITH_COMPUTED_INHERITANCE') {
           let buckets = facet.buckets;
           let waitingToRecalculateRulesListFacets = [];
           for (let bucket of buckets) {

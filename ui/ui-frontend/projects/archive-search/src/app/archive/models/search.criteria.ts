@@ -148,7 +148,6 @@ export class ArchiveSearchResultFacets {
 export class AppraisalRuleFacets {
   waitingToRecalculateRulesListFacets: ResultFacet[];
   expiredRulesListFacets: ResultFacet[];
-  unexpiredRulesListFacets: ResultFacet[];
   rulesListFacets: ResultFacet[];
   finalActionsFacets: ResultFacet[];
   noAppraisalRulesFacets: ResultFacet[];
