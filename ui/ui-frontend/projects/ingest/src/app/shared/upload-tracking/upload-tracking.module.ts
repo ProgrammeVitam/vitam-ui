@@ -43,7 +43,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { NgxFilesizeModule } from 'ngx-filesize';
+
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
@@ -62,8 +62,8 @@ import { UploadTrackingComponent } from './upload-tracking.component';
     ReactiveFormsModule,
     VitamUICommonModule,
     MatProgressBarModule,
-    NgxFilesizeModule,
   ],
+
   declarations: [UploadTrackingComponent],
   exports: [UploadTrackingComponent],
 })
