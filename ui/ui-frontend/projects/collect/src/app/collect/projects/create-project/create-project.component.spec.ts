@@ -180,9 +180,9 @@ describe('CreateProjectComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 8 buttons ', () => {
+    it('should have 10 buttons ', () => {
       const elementBtn = fixture.nativeElement.querySelectorAll('button[type=button]');
-      expect(elementBtn.length).toBe(11);
+      expect(elementBtn.length).toBe(10);
     });
 
     it('should have an input file', () => {
