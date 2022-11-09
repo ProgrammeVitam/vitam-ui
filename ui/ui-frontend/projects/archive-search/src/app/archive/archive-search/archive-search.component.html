@@ -61,6 +61,7 @@
   <div class="row" *ngIf="!pending && submited && showFacets">
     <app-archive-search-rules-facets
       class="facet-div"
+      [exactCount]="!waitingToGetFixedCount"
       [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
       [tenantIdentifier]="tenantIdentifier"
       [totalResults]="totalResults"

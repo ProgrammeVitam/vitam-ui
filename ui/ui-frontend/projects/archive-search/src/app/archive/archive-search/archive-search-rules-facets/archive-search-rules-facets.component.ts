@@ -14,6 +14,9 @@ export class ArchiveSearchRulesFacetsComponent implements OnInit {
   appraisalRuleFacets: AppraisalRuleFacets;
 
   @Input()
+  exactCount: boolean;
+
+  @Input()
   tenantIdentifier: number;
 
   facetsVisibles = true;

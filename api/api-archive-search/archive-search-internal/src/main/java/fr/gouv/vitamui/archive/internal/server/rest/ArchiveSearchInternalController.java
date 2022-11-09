@@ -164,9 +164,9 @@ public class ArchiveSearchInternalController {
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         return Mono.<Resource>fromCallable(() -> {
-            Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
-            return new InputStreamResource((InputStream) response.getEntity());
-        }).subscribeOn(Schedulers.boundedElastic())
+                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
+                return new InputStreamResource((InputStream) response.getEntity());
+            }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
                 .ok().cacheControl(CacheControl.noCache())
                 .body(resource)));
@@ -274,7 +274,9 @@ public class ArchiveSearchInternalController {
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, IOException {
-        LOGGER.debug("Calling service select Unit With Inherited Rules for tenantId {}, accessContractId {} By Criteria {} ", tenantId,
+        LOGGER.debug(
+            "Calling service select Unit With Inherited Rules for tenantId {}, accessContractId {} By Criteria {} ",
+            tenantId,
             accessContractId, searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker

@@ -14,6 +14,7 @@
 
       <div *ngIf="facetsVisibles" id="facet-content">
         <app-search-appraisal-rules-facets
+          [exactCount]="exactCount"
           [totalResults]="totalResults"
           [appraisalRuleFacets]="appraisalRuleFacets"
         ></app-search-appraisal-rules-facets>

@@ -79,6 +79,7 @@ import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
@@ -238,17 +239,18 @@ public class ArchiveSearchInternalService {
                 searchQuery.setCriteriaList(initialCriteriaList);
             }
             SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
+            //we choose a count of :  100 * (1+ nb of nodes criteria) for example to compute the number of facets in holding schema
             selectMultiQuery
                 .addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_COUNT_BY_NODE, ArchiveSearchConsts.UNITS_UPS,
                     (nodesCriteriaList.size() + 1) * ArchiveSearchConsts.FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
 
             if (computeFacets(searchQuery)) {
-                selectMultiQuery.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER,
-                    ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.get(ArchiveSearchConsts.RULES_COMPUTED), 3,
-                    FacetOrder.ASC));
+                selectMultiQuery.addFacets(
+                    FacetHelper.terms(ArchiveSearchConsts.FACETS_AU_COUNT_WITH_COMPUTED_INHERITANCE,
+                        ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.get(ArchiveSearchConsts.RULES_COMPUTED), 3,
+                        FacetOrder.ASC));
             }
-            JsonNode dslQuery = selectMultiQuery.getFinalSelect();
-            JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
+            JsonNode vitamResponse = searchArchiveUnits(selectMultiQuery.getFinalSelect(), vitamContext);
             ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
             fillFacets(searchQuery, archiveUnitsDto, vitamContext);
 
@@ -260,20 +262,23 @@ public class ArchiveSearchInternalService {
 
 
     public void fillFacets(SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto, VitamContext
-        vitamContext)
-        throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+        vitamContext) throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
         if (computeFacets(searchQuery)) {
-            List<FacetResultsDto> facetResults = archiveUnitsDto.getArchives().getFacetResults();
-            if (CollectionUtils.isEmpty(facetResults)) {
-                facetResults = new ArrayList<>();
+            try {
+                List<FacetResultsDto> facetResults = archiveUnitsDto.getArchives().getFacetResults();
+                if (CollectionUtils.isEmpty(facetResults)) {
+                    facetResults = new ArrayList<>();
+                }
+                facetResults.addAll(computeFacetsForIndexedRulesCriteria(searchQuery, vitamContext));
+                archiveUnitsDto.getArchives().setFacetResults(facetResults);
+            } catch (UnexpectedSettingsException e) {
+                LOGGER.info("Could not compute facets,the setting track total hits is not allowed in  vitam ");
             }
-            facetResults.addAll(computeFacetsForIndexedRulesCriteria(searchQuery.getCriteriaList(), vitamContext));
-            archiveUnitsDto.getArchives().setFacetResults(facetResults);
         }
     }
 
-    private List<FacetResultsDto> computeFacetsForIndexedRulesCriteria(
-        List<SearchCriteriaEltDto> initialArchiveUnitsCriteriaList, final VitamContext vitamContext)
+    private List<FacetResultsDto> computeFacetsForIndexedRulesCriteria(SearchCriteriaDto searchQuery,
+        final VitamContext vitamContext)
         throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
         LOGGER.debug("Start finding facets for computed rules  ");
 
@@ -282,13 +287,14 @@ public class ArchiveSearchInternalService {
             List<ArchiveSearchConsts.CriteriaCategory> categories =
                 List.of(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
             List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList = new ArrayList<>(
-                initialArchiveUnitsCriteriaList);
+                searchQuery.getCriteriaList());
             indexedArchiveUnitsCriteriaList.add(new SearchCriteriaEltDto(ArchiveSearchConsts.RULES_COMPUTED,
                 ArchiveSearchConsts.CriteriaCategory.FIELDS, ArchiveSearchConsts.CriteriaOperators.EQ.name(),
                 List.of(new CriteriaValue(TRUE)), ArchiveSearchConsts.CriteriaDataType.STRING.name()));
             SelectMultiQuery selectMultiQuery = createSelectMultiQuery(indexedArchiveUnitsCriteriaList);
             selectMultiQuery.addUsedProjection("#id");
             selectMultiQuery.setLimitFilter(0, 1);
+            selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
             JsonNode vitamResponse =
                 this.searchArchiveUnits(selectMultiQuery.getFinalSelect(), vitamContext);
             VitamUISearchResponseDto archivesUnitsResults = objectMapper.treeToValue(vitamResponse,
@@ -298,10 +304,10 @@ public class ArchiveSearchInternalService {
 
             for (ArchiveSearchConsts.CriteriaCategory category : categories) {
                 FacetResultsDto withoutRulesByCategoryFacet =
-                    computeNoRulesFacets(indexedArchiveUnitsCriteriaList, category, vitamContext);
+                    computeNoRulesFacets(searchQuery, indexedArchiveUnitsCriteriaList, category, vitamContext);
                 globalRulesFacets.add(withoutRulesByCategoryFacet);
                 List<FacetResultsDto> facetsForAuHavingRules =
-                    computeFacetsForAuHavingRules(indexedArchiveUnitsCriteriaList, category, vitamContext);
+                    computeFacetsForAuHavingRules(searchQuery, indexedArchiveUnitsCriteriaList, category, vitamContext);
                 globalRulesFacets.addAll(facetsForAuHavingRules);
             }
         } catch (InvalidParseOperationException e) {
@@ -310,7 +316,7 @@ public class ArchiveSearchInternalService {
         return globalRulesFacets;
     }
 
-    private List<FacetResultsDto> computeFacetsForAuHavingRules(
+    private List<FacetResultsDto> computeFacetsForAuHavingRules(SearchCriteriaDto searchQuery,
         List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList, ArchiveSearchConsts.CriteriaCategory
         category,
         VitamContext vitamContext)
@@ -328,7 +334,7 @@ public class ArchiveSearchInternalService {
         SelectMultiQuery selectMultiQuery = createSelectMultiQuery(criteriaList);
 
         selectMultiQuery.setLimitFilter(0, 1);
-        selectMultiQuery.trackTotalHits(true);
+        selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
 
         try {
             List<SearchCriteriaEltDto> rulesCriteriaList =
@@ -478,7 +484,8 @@ public class ArchiveSearchInternalService {
             Integer totalCount = archiveUnitsDto.getArchives().getHits().getTotal();
             Optional<FacetResultsDto> computeRulesAuCountFacetOpt =
                 archiveUnitsDto.getArchives().getFacetResults().stream().filter(
-                    (facet -> facet.getName().equals(ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER))).findAny();
+                        (facet -> facet.getName().equals(ArchiveSearchConsts.FACETS_AU_COUNT_WITH_COMPUTED_INHERITANCE)))
+                    .findAny();
             if (computeRulesAuCountFacetOpt.isPresent() &&
                 !CollectionUtils.isEmpty(computeRulesAuCountFacetOpt.get().getBuckets())) {
                 computeRulesAuCountFacetOpt.get().getBuckets().stream().forEach(
@@ -494,7 +501,7 @@ public class ArchiveSearchInternalService {
             } else {
                 countByStatusMap.put(FALSE, Long.valueOf(totalCount));
             }
-            computeAuFacetUpdated.setName(ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER);
+            computeAuFacetUpdated.setName(ArchiveSearchConsts.FACETS_AU_COUNT_WITH_COMPUTED_INHERITANCE);
             List<FacetBucketDto> bucketDtos = new ArrayList<>();
             for (Map.Entry<String, Long> entry : countByStatusMap.entrySet()) {
                 FacetBucketDto bucketDto = new FacetBucketDto();
@@ -507,7 +514,8 @@ public class ArchiveSearchInternalService {
         return computeAuFacetUpdated;
     }
 
-    public FacetResultsDto computeNoRulesFacets(List<SearchCriteriaEltDto> indexedCriteriaList,
+    public FacetResultsDto computeNoRulesFacets(SearchCriteriaDto searchQuery,
+        List<SearchCriteriaEltDto> indexedCriteriaList,
         ArchiveSearchConsts.CriteriaCategory category, VitamContext vitamContext)
         throws VitamClientException, JsonProcessingException {
         List<SearchCriteriaEltDto> criteriaListFacet = new ArrayList<>(indexedCriteriaList);
@@ -522,14 +530,19 @@ public class ArchiveSearchInternalService {
         noRuleFacet.setName(ArchiveSearchConsts.FACETS_COUNT_WITHOUT_RULES + "_" + category.name());
         noRuleFacet.setBuckets(
             List.of(new FacetBucketDto(ArchiveSearchConsts.FACETS_COUNT_WITHOUT_RULES,
-                Long.valueOf(countArchiveUnitByCriteriaList(criteriaListFacet, vitamContext)))));
+                Long.valueOf(countArchiveUnitByCriteriaList(searchQuery, criteriaListFacet, vitamContext)))));
         return noRuleFacet;
     }
 
-    private Integer countArchiveUnitByCriteriaList(List<SearchCriteriaEltDto> criteriaList, VitamContext vitamContext)
+    private Integer countArchiveUnitByCriteriaList(SearchCriteriaDto searchQuery,
+        List<SearchCriteriaEltDto> criteriaList, VitamContext vitamContext)
         throws VitamClientException, JsonProcessingException {
         SearchCriteriaDto facetSearchQuery = new SearchCriteriaDto();
         facetSearchQuery.setCriteriaList(criteriaList);
+        facetSearchQuery.setFieldsList(List.of("#id"));
+        facetSearchQuery.setSize(1);
+        facetSearchQuery.setTrackTotalHits(searchQuery.isTrackTotalHits());
+
         facetSearchQuery.setFieldsList(List.of(TITLE_FIELD));
         JsonNode dslQuery = mapRequestToDslQuery(facetSearchQuery);
         JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);

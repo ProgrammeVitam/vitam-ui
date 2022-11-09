@@ -5,6 +5,9 @@ import { Colors } from 'ui-frontend-common';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
 import { AppraisalRuleFacets } from '../../../models/search.criteria';
 
+const MAX_RESULTS_WITHOUT_TRACK_TOTAL_HITS = 10000;
+const MAX_RESULTS_FACET_TEXT = '-';
+
 @Component({
   selector: 'app-search-appraisal-rules-facets',
   templateUrl: './search-appraisal-rules-facets.component.html',
@@ -18,6 +21,9 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
 
   @Input()
   totalResults: number;
+
+  @Input()
+  exactCount: boolean;
 
   dateFilterValue: string;
   rulesFacetDetails: FacetDetails[] = [];
@@ -33,16 +39,23 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
     this.expiredRulesFacetDetails = [];
     this.finalActionFacetDetails = [];
     this.archiveUnitsCountFacetDetails = [];
+    let archiveUnitWithRules = 0;
     if (this.appraisalRuleFacets) {
-      this.handleWaitingToRecalculateRulesFacets();
+      archiveUnitWithRules = this.handleWaitingToRecalculateRulesFacets();
       this.handleFinalActionsRulesFacets();
       this.handleRulesDisctinctsFacets();
-      this.handleRulesExpirationFacets();
+      this.handleRulesExpirationFacets(archiveUnitWithRules);
     }
   }
 
-  private handleRulesExpirationFacets() {
-    let unexpiredRulesNb = 0;
+  getFacetTextByExactCountFlag(count: number, exactCount: boolean): string {
+    let facetContentValue = count.toString();
+    if (!exactCount && this.totalResults >= MAX_RESULTS_WITHOUT_TRACK_TOTAL_HITS) {
+      facetContentValue = MAX_RESULTS_FACET_TEXT;
+    }
+    return facetContentValue;
+  }
+  private handleRulesExpirationFacets(archiveUnitWithRules: number) {
     let expiredRulesNb = 0;
     this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
@@ -55,17 +68,9 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
       });
     }
 
-    if (this.appraisalRuleFacets.unexpiredRulesListFacets && this.appraisalRuleFacets.unexpiredRulesListFacets.length > 0) {
-      this.appraisalRuleFacets.unexpiredRulesListFacets.forEach((elt) => {
-        if (elt && elt.node && elt.node.length > 10) {
-          unexpiredRulesNb = elt.count ? elt.count : 0;
-        }
-      });
-    }
-
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.EXPIRED'),
-      totalResults: expiredRulesNb,
+      totalResults: this.getFacetTextByExactCountFlag(expiredRulesNb, this.exactCount),
       clickable: false,
       color: 'gray',
       filter: '>' + this.dateFilterValue,
@@ -74,7 +79,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
 
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.NOT_EXPIRED'),
-      totalResults: unexpiredRulesNb,
+      totalResults: this.getFacetTextByExactCountFlag(archiveUnitWithRules - expiredRulesNb, this.exactCount),
       clickable: false,
       color: 'gray',
       filter: '<' + this.dateFilterValue,
@@ -86,7 +91,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
     if (this.appraisalRuleFacets.rulesListFacets && this.appraisalRuleFacets.rulesListFacets.length > 0) {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.DISTINCT_RULES'),
-        totalResults: this.appraisalRuleFacets.rulesListFacets.length,
+        totalResults: this.getFacetTextByExactCountFlag(this.appraisalRuleFacets.rulesListFacets.length, this.exactCount),
         clickable: false,
         color: 'gray',
         backgroundColor: Colors.DISABLED,
@@ -94,7 +99,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
     } else {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.DISTINCT_RULES'),
-        totalResults: 0,
+        totalResults: this.getFacetTextByExactCountFlag(0, this.exactCount),
         clickable: false,
         color: 'gray',
         backgroundColor: Colors.DISABLED,
@@ -115,7 +120,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
 
     this.finalActionFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.KEEP'),
-      totalResults: this.finalActionsFacetsValues.get('KEEP'),
+      totalResults: this.getFacetTextByExactCountFlag(this.finalActionsFacetsValues.get('KEEP'), this.exactCount),
       clickable: false,
       color: 'green',
       filter: 'KEEP',
@@ -124,7 +129,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
 
     this.finalActionFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.DESTROY'),
-      totalResults: this.finalActionsFacetsValues.get('DESTROY'),
+      totalResults: this.getFacetTextByExactCountFlag(this.finalActionsFacetsValues.get('DESTROY'), this.exactCount),
       clickable: false,
       color: 'orange',
       filter: 'DESTROY',
@@ -133,7 +138,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
 
     this.finalActionFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.CONFLICT'),
-      totalResults: this.finalActionsFacetsValues.get('CONFLICT'),
+      totalResults: this.getFacetTextByExactCountFlag(this.finalActionsFacetsValues.get('CONFLICT'), this.exactCount),
       clickable: false,
       color: 'red',
       filter: 'CONFLICT',
@@ -142,6 +147,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
   }
 
   private handleWaitingToRecalculateRulesFacets() {
+    let archiveUnitWithRules = 0;
     if (
       this.appraisalRuleFacets.waitingToRecalculateRulesListFacets &&
       this.appraisalRuleFacets.waitingToRecalculateRulesListFacets.length > 0
@@ -150,57 +156,72 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
         .filter((elt) => elt.node === 'true')
         .forEach((elt) => {
           let calculatedCount = elt.count ? elt.count : 0;
-          let notCalculatedCount = this.totalResults - calculatedCount;
+
+          let notCalculatedCount = '';
+          if (
+            !this.exactCount &&
+            (this.totalResults >= MAX_RESULTS_WITHOUT_TRACK_TOTAL_HITS || calculatedCount >= MAX_RESULTS_WITHOUT_TRACK_TOTAL_HITS)
+          ) {
+            notCalculatedCount = MAX_RESULTS_FACET_TEXT;
+          } else {
+            notCalculatedCount = (this.totalResults - calculatedCount).toString();
+          }
+
           this.archiveUnitsCountFacetDetails.push({
             title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WAITING_TO_RECALCULATE'),
             totalResults: notCalculatedCount,
             clickable: false,
-            color: notCalculatedCount === 0 ? 'gray' : 'orange',
+            color: notCalculatedCount === '0' ? 'gray' : 'orange',
             backgroundColor: Colors.DISABLED,
           });
+
           this.archiveUnitsCountFacetDetails.push({
             title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.CALCULATED'),
-            totalResults: calculatedCount,
+            totalResults: this.getFacetTextByExactCountFlag(calculatedCount, this.exactCount),
             clickable: false,
             color: 'gray',
             backgroundColor: Colors.DISABLED,
           });
+          archiveUnitWithRules = calculatedCount;
         });
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WAITING_TO_RECALCULATE'),
-        totalResults: this.totalResults,
+        totalResults: this.getFacetTextByExactCountFlag(this.totalResults, this.exactCount),
         clickable: false,
         color: this.totalResults === 0 ? 'gray' : 'orange',
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.CALCULATED'),
-        totalResults: 0,
+        totalResults: this.getFacetTextByExactCountFlag(0, this.exactCount),
         clickable: false,
         color: 'gray',
         backgroundColor: Colors.DISABLED,
       });
+      archiveUnitWithRules = 0;
     }
 
     if (this.appraisalRuleFacets.noAppraisalRulesFacets && this.appraisalRuleFacets.noAppraisalRulesFacets.length > 0) {
       this.appraisalRuleFacets.noAppraisalRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
           title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WITHOUT_RULES'),
-          totalResults: elt.count ? elt.count : 0,
+          totalResults: this.getFacetTextByExactCountFlag(elt.count, this.exactCount),
           clickable: false,
           color: 'gray',
           backgroundColor: Colors.DISABLED,
         });
+        archiveUnitWithRules -= elt.count ? elt.count : 0;
       });
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WITHOUT_RULES'),
-        totalResults: 0,
+        totalResults: this.getFacetTextByExactCountFlag(0, this.exactCount),
         clickable: false,
         color: 'gray',
         backgroundColor: Colors.DISABLED,
       });
     }
+    return archiveUnitWithRules;
   }
 }
