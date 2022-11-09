@@ -142,12 +142,6 @@
           </vitamui-common-input>
         </div>
         <div class="actions">
-          <button type="button" class="btn link back" (click)="back()">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <ng-container
-              ><span class="underline">{{ 'COMMON.BACK' | translate }}</span></ng-container
-            >
-          </button>
           <button (click)="move()" [disabled]="validateThirdStep()" class="btn primary" type="button">
             {{ 'COMMON.NEXT' | translate }}
           </button>
