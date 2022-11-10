@@ -40,6 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { VitamUILibraryModule } from 'vitamui-library';
 
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -48,14 +49,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { NgxFilesizeModule } from 'ngx-filesize';
-import { ProjectRoutingModule } from './project-routing.module';
+import { MatTabsModule } from '@angular/material/tabs';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ProjectListComponent } from './project-list/project-list.component';
-import { ProjectsComponent } from './projects.component';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { ProjectPreviewComponent } from './project-preview/project-preview.component';
-import { MatTabsModule } from '@angular/material/tabs';
+import { ProjectRoutingModule } from './project-routing.module';
+import { ProjectsComponent } from './projects.component';
 
 @NgModule({
   imports: [
@@ -70,11 +69,10 @@ import { MatTabsModule } from '@angular/material/tabs';
     TableFilterModule,
     VitamUILibraryModule,
     ReactiveFormsModule,
-    NgxFilesizeModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatSelectModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
   declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent, ProjectPreviewComponent],
