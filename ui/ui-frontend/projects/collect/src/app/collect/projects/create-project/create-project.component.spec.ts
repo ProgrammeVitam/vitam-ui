@@ -41,8 +41,8 @@ import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, Project, ProjectSt
 import { ProjectsService } from '../projects.service';
 import { CreateProjectComponent } from './create-project.component';
 
-@Pipe({ name: 'filesize' })
-export class MockFilesizePipe implements PipeTransform {
+@Pipe({ name: 'fileSize' })
+export class MockFileSizePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
@@ -70,7 +70,7 @@ describe('CreateProjectComponent', () => {
         MatSnackBarModule,
         LoggerModule.forRoot(),
       ],
-      declarations: [CreateProjectComponent, MockFilesizePipe],
+      declarations: [CreateProjectComponent, MockFileSizePipe],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

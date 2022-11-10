@@ -278,7 +278,7 @@
           <tbody>
             <tr class="vitamui-table-row">
               <td>{{ (zippedFile$ | async)?.name }}</td>
-              <td>{{ (zippedFile$ | async)?.size | filesize }}</td>
+              <td>{{ (zippedFile$ | async)?.size | fileSize }}</td>
               <td>
                 <span class="purcent">{{ (zippedFile$ | async)?.currentFileUploadedSize | number: '1.0-0' }} %</span>
                 <mat-progress-bar
