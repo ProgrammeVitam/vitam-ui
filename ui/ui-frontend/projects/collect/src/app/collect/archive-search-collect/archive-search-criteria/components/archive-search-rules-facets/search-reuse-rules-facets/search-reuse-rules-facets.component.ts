@@ -39,7 +39,9 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Colors } from 'ui-frontend-common';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleFacets } from '../../../models/search.criteria';
+import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 
 @Component({
   selector: 'app-search-reuse-rules-facets',
@@ -47,13 +49,16 @@ import { RuleFacets } from '../../../models/search.criteria';
   styleUrls: ['./search-reuse-rules-facets.component.scss'],
 })
 export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private translateService: TranslateService, private datePipe: DatePipe) {}
+  constructor(private facetsService: ArchiveFacetsService, private translateService: TranslateService, private datePipe: DatePipe) {}
 
   @Input()
   reuseRuleFacets: RuleFacets;
 
   @Input()
   totalResults: number;
+
+  @Input()
+  exactCount: boolean;
 
   dateFilterValue: string;
   rulesFacetDetails: FacetDetails[] = [];
@@ -69,15 +74,23 @@ export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
     this.expiredRulesFacetDetails = [];
     this.finalActionFacetDetails = [];
     this.archiveUnitsCountFacetDetails = [];
+    let archiveUnitWithRules = 0;
     if (this.reuseRuleFacets) {
-      this.handleWaitingToRecalculateRulesFacets();
+      archiveUnitWithRules = this.handleWaitingToRecalculateRulesFacets();
       this.handleRulesDisctinctsFacets();
-      this.handleRulesExpirationFacets();
+      this.handleRulesExpirationFacets(archiveUnitWithRules);
     }
   }
 
-  private handleRulesExpirationFacets() {
-    let unexpiredRulesNb = 0;
+  getFacetTextByExactCountFlag(count: number, exactCount: boolean): string {
+    let facetContentValue = count.toString();
+    if (!exactCount && this.totalResults >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER) {
+      facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
+    }
+    return facetContentValue;
+  }
+
+  private handleRulesExpirationFacets(archiveUnitWithRules: number) {
     let expiredRulesNb = 0;
     this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
@@ -90,17 +103,9 @@ export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
       });
     }
 
-    if (this.reuseRuleFacets.unexpiredRulesListFacets && this.reuseRuleFacets.unexpiredRulesListFacets.length > 0) {
-      this.reuseRuleFacets.unexpiredRulesListFacets.forEach((elt) => {
-        if (elt && elt.node && elt.node.length > 10) {
-          unexpiredRulesNb = elt.count ? elt.count : 0;
-        }
-      });
-    }
-
     this.expiredRulesFacetDetails.push({
-      title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.EXPIRED'),
-      totalResults: expiredRulesNb,
+      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.EXPIRED'),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, this.exactCount, this.totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '>' + this.dateFilterValue,
@@ -108,8 +113,12 @@ export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
     });
 
     this.expiredRulesFacetDetails.push({
-      title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.NOT_EXPIRED'),
-      totalResults: unexpiredRulesNb,
+      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.NOT_EXPIRED'),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(
+        archiveUnitWithRules - expiredRulesNb,
+        this.exactCount,
+        this.totalResults
+      ),
       clickable: false,
       color: Colors.GRAY,
       filter: '<' + this.dateFilterValue,
@@ -120,16 +129,20 @@ export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
   private handleRulesDisctinctsFacets() {
     if (this.reuseRuleFacets.rulesListFacets && this.reuseRuleFacets.rulesListFacets.length > 0) {
       this.rulesFacetDetails.push({
-        title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.DISTINCT_RULES'),
-        totalResults: this.reuseRuleFacets.rulesListFacets.length,
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.DISTINCT_RULES'),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(
+          this.reuseRuleFacets.rulesListFacets.length,
+          this.exactCount,
+          this.totalResults
+        ),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
       });
     } else {
       this.rulesFacetDetails.push({
-        title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.DISTINCT_RULES'),
-        totalResults: 0,
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.DISTINCT_RULES'),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -137,39 +150,53 @@ export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
     }
   }
 
-  private handleWaitingToRecalculateRulesFacets() {
+  private handleWaitingToRecalculateRulesFacets(): number {
+    let archiveUnitWithRules = 0;
     if (this.reuseRuleFacets.waitingToRecalculateRulesListFacets && this.reuseRuleFacets.waitingToRecalculateRulesListFacets.length > 0) {
-      this.reuseRuleFacets.waitingToRecalculateRulesListFacets
-        .filter((elt) => elt.node === 'true')
-        .forEach((elt) => {
-          let calculatedCount = elt.count ? elt.count : 0;
-          let notCalculatedCount = this.totalResults - calculatedCount;
-          this.archiveUnitsCountFacetDetails.push({
-            title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.WAITING_TO_RECALCULATE'),
-            totalResults: notCalculatedCount,
-            clickable: false,
-            color: notCalculatedCount === 0 ? Colors.GRAY : Colors.ORANGE,
-            backgroundColor: Colors.DISABLED,
-          });
-          this.archiveUnitsCountFacetDetails.push({
-            title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.CALCULATED'),
-            totalResults: calculatedCount,
-            clickable: false,
-            color: Colors.GRAY,
-            backgroundColor: Colors.DISABLED,
-          });
-        });
+      let facetComputedUnits = this.reuseRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+      let computedCount = 0;
+
+      if (facetComputedUnits.length > 0) {
+        computedCount = facetComputedUnits[0].count ? facetComputedUnits[0].count : 0;
+      } else {
+        computedCount = 0;
+      }
+      let notComputedCount = '';
+      if (
+        !this.exactCount &&
+        (this.totalResults >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER || computedCount >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER)
+      ) {
+        notComputedCount = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
+      } else {
+        notComputedCount = (this.totalResults - computedCount).toString();
+      }
+
+      this.archiveUnitsCountFacetDetails.push({
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.WAITING_TO_RECALCULATE'),
+        totalResults: notComputedCount,
+        clickable: false,
+        color: notComputedCount === '0' ? Colors.GRAY : Colors.ORANGE,
+        backgroundColor: Colors.DISABLED,
+      });
+      this.archiveUnitsCountFacetDetails.push({
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.CALCULATED'),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, this.exactCount, this.totalResults),
+        clickable: false,
+        color: Colors.GRAY,
+        backgroundColor: Colors.DISABLED,
+      });
+      archiveUnitWithRules = computedCount;
     } else {
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.WAITING_TO_RECALCULATE'),
-        totalResults: this.totalResults,
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.WAITING_TO_RECALCULATE'),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(this.totalResults, this.exactCount, this.totalResults),
         clickable: false,
         color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.CALCULATED'),
-        totalResults: 0,
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.CALCULATED'),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -179,21 +206,23 @@ export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
     if (this.reuseRuleFacets.noRulesFacets && this.reuseRuleFacets.noRulesFacets.length > 0) {
       this.reuseRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
-          title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.WITHOUT_RULES'),
-          totalResults: elt.count ? elt.count : 0,
+          title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.WITHOUT_RULES'),
+          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount, this.totalResults),
           clickable: false,
           color: Colors.GRAY,
           backgroundColor: Colors.DISABLED,
         });
+        archiveUnitWithRules -= elt.count ? elt.count : 0;
       });
     } else {
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.WITHOUT_RULES'),
-        totalResults: 0,
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.REUSE_RULE.WITHOUT_RULES'),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
       });
     }
+    return archiveUnitWithRules;
   }
 }

@@ -34,6 +34,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
+import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
 import {
   ArchiveSearchResultFacets,
   ResultFacet,
@@ -166,5 +167,17 @@ export class ArchiveFacetsService {
       }
     }
     return rulesFacets;
+  }
+
+  getFacetTextByExactCountFlag(count: number, isExactCount: boolean, totalResults: number): string {
+    let facetContentValue = count.toString();
+    if (count < 0) {
+      facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
+    }
+    if (!isExactCount && totalResults >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER) {
+      facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
+    }
+
+    return facetContentValue;
   }
 }

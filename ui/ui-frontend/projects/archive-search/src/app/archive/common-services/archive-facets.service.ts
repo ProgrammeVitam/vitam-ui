@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { ArchiveSearchResultFacets, ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaMgtRuleEnum, } from '../models/search.criteria';
+import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
+import { ArchiveSearchResultFacets, ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaMgtRuleEnum } from '../models/search.criteria';
 
 @Injectable({
   providedIn: 'root',
@@ -133,14 +134,7 @@ export class ArchiveFacetsService {
           }
           rulesFacets.expiredRulesListFacets = expiredRulesListFacets;
         }
-        if (facet.name === this.UNEXPIRED_RULES_COMPUTED_PREFIX + category) {
-          const unexpiredRulesListFacets = [];
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            unexpiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          rulesFacets.unexpiredRulesListFacets = unexpiredRulesListFacets;
-        }
+
         if (facet.name === this.COMPUTE_RULES_AU_NUMBER) {
           const buckets = facet.buckets;
           const waitingToRecalculateRulesListFacets = [];
@@ -161,5 +155,17 @@ export class ArchiveFacetsService {
       }
     }
     return rulesFacets;
+  }
+
+  getFacetTextByExactCountFlag(count: number, isExactCount: boolean, totalResults: number): string {
+    let facetContentValue = count.toString();
+    if (count < 0) {
+      facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
+    }
+    if (!isExactCount && totalResults >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER) {
+      facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
+    }
+
+    return facetContentValue;
   }
 }

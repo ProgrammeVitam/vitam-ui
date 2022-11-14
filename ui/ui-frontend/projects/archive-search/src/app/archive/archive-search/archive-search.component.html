@@ -78,6 +78,7 @@
     ></i>
     <app-archive-search-rules-facets
       class="facet-div"
+      [exactCount]="!waitingToGetFixedCount"
       [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
       [accessRuleFacets]="archiveSearchResultFacets?.accessRuleFacets"
       [storageRuleFacets]="archiveSearchResultFacets?.storageRuleFacets"
@@ -464,14 +465,13 @@
           <div class="col-1 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
             <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
               <ng-container *ngSwitchCase="'INGEST'">
-                <span class="table-filter-icon" >
+                <span class="table-filter-icon">
                   <ng-container *ngIf="!archiveUnit['#object']">
                     <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
                   </ng-container>
                   <ng-container *ngIf="!!archiveUnit['#object']">
                     <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
                   </ng-container>
-
                 </span>
               </ng-container>
               <ng-container *ngSwitchCase="'HOLDING_UNIT'">

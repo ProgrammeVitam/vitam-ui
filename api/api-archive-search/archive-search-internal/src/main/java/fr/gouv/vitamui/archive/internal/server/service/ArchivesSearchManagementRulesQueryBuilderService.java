@@ -29,14 +29,13 @@ package fr.gouv.vitamui.archive.internal.server.service;
 
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.common.MgtRuleOriginRuleCriteria;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.exception.InvalidCreateOperationVitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -44,7 +43,6 @@ import org.springframework.util.ObjectUtils;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -70,8 +68,6 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
     public static final String LOCAL_OR_INHERITED_ORIGIN_TYPE = "LocalAndInherited";
     public static final String LOCAL_ORIGIN_TYPE = "Local";
     public static final String WAITING_TO_COMPUTE_RULES_STATUS = "#validComputedInheritedRules";
-    private static final String INVALID_CREATION_OPERATION = "Invalid creation operation exception {}";
-    private static final String COULD_NOT_CREATE_OPERATION = "Invalid creation operation exception ";
 
 
 
@@ -208,7 +204,7 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
             List<String> rulesIdentifiers =
                 rulesIdentifiersCriteria.stream().map(SearchCriteriaEltDto::getValues).flatMap(Collection::stream)
                     .map(CriteriaValue::getValue).collect(
-                    Collectors.toList());
+                        Collectors.toList());
             VitamQueryHelper
                 .addParameterCriteria(mgtRulesSubQuery, ArchiveSearchConsts.CriteriaOperators.NOT_EQ,
                     COMPUTED_FIELDS + ruleCategory + INHERITED_RULE_IDS_FIELD, rulesIdentifiers);
@@ -269,126 +265,6 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         return mgtRuleOriginRuleCriteria;
     }
 
-    private void buildMgtRulesSimpleCriteria(String ruleCategory, BooleanQuery subQuery,
-        List<SearchCriteriaEltDto> mgtRulesSimpleCriteriaList) throws InvalidCreateOperationException {
-
-        BooleanQuery simpleCriteriaByOrigin = or();
-        buildMgtRulesSimpleCriteriaByOrigin(ruleCategory, simpleCriteriaByOrigin,
-            mgtRulesSimpleCriteriaList,
-            ArchiveSearchConsts.RuleOrigin.SCOPED);
-        buildMgtRulesSimpleCriteriaByOrigin(ruleCategory, simpleCriteriaByOrigin,
-            mgtRulesSimpleCriteriaList,
-            ArchiveSearchConsts.RuleOrigin.INHERITED);
-        if (simpleCriteriaByOrigin.isReady()) {
-            subQuery.add(simpleCriteriaByOrigin);
-        }
-    }
-
-    public void buildMgtRulesFinalActionCriteria(String ruleCategory, BooleanQuery mainQuery,
-        List<SearchCriteriaEltDto> mgtRulesCriteriaList)
-        throws InvalidCreateOperationException {
-        if (!CollectionUtils.isEmpty(mgtRulesCriteriaList)) {
-            List<SearchCriteriaEltDto> mgtRulesFinalActionCriteria = mgtRulesCriteriaList.stream()
-                .filter(criteria -> ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE.equals(criteria.getCriteria()))
-                .collect(Collectors.toList());
-            BooleanQuery subQueryMgtRuleOriginFinalAction = or();
-            for (SearchCriteriaEltDto finalActionCriteria : mgtRulesFinalActionCriteria) {
-                for (CriteriaValue value : finalActionCriteria.getValues()) {
-                    if (value.getValue() != null &&
-                        ArchiveSearchConsts.FINAL_ACTION_TYPE_CONFLICT.equals(value.getValue())) {
-                        BooleanQuery subQueryMgtRuleConflictFinalAction = and();
-                        VitamQueryHelper.addParameterCriteria(subQueryMgtRuleConflictFinalAction,
-                            ArchiveSearchConsts.CriteriaOperators.EQ,
-                            COMPUTED_FIELDS + ruleCategory + FINAL_ACTION_FIELD,
-                            List.of(ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING
-                                .get(ArchiveSearchConsts.FINAL_ACTION_TYPE_KEEP)));
-                        VitamQueryHelper.addParameterCriteria(subQueryMgtRuleConflictFinalAction,
-                            ArchiveSearchConsts.CriteriaOperators.EQ,
-                            COMPUTED_FIELDS + ruleCategory + FINAL_ACTION_FIELD,
-                            List.of(ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING
-                                .get(ArchiveSearchConsts.FINAL_ACTION_TYPE_ELIMINATION)));
-                        if (subQueryMgtRuleConflictFinalAction.isReady()) {
-                            mainQuery.add(subQueryMgtRuleConflictFinalAction);
-                        }
-                    } else {
-                        String mappedValue =
-                            ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING
-                                .get(value.getValue());
-                        if (mappedValue != null) {
-                            VitamQueryHelper.addParameterCriteria(subQueryMgtRuleOriginFinalAction,
-                                ArchiveSearchConsts.CriteriaOperators.EQ,
-                                SCOPED_FIELDS + ruleCategory + FINAL_ACTION_FIELD, List.of(mappedValue));
-                            VitamQueryHelper.addParameterCriteria(subQueryMgtRuleOriginFinalAction,
-                                ArchiveSearchConsts.CriteriaOperators.IN,
-                                COMPUTED_FIELDS + ruleCategory + FINAL_ACTION_FIELD, List.of(mappedValue));
-                        }
-                    }
-                }
-            }
-            if (subQueryMgtRuleOriginFinalAction.isReady()) {
-                mainQuery.add(subQueryMgtRuleOriginFinalAction);
-            }
-        }
-    }
-
-    private void buildMgtRulesFinalActionOriginCriteria(String ruleCategory, BooleanQuery query,
-        List<SearchCriteriaEltDto> mgtRulesCriteriaList)
-        throws InvalidCreateOperationException {
-        if (!CollectionUtils.isEmpty(mgtRulesCriteriaList)) {
-            List<SearchCriteriaEltDto> mgtRulesFinalActionCriteria = mgtRulesCriteriaList.stream()
-                .filter(criteria -> ArchiveSearchConsts.RULE_FINAL_ACTION.equals(criteria.getCriteria()))
-                .collect(Collectors.toList());
-            BooleanQuery mgtRuleOriginFinalActionSubQuery = or();
-            for (SearchCriteriaEltDto finalActionCriteria : mgtRulesFinalActionCriteria) {
-                for (CriteriaValue value : finalActionCriteria.getValues()) {
-                    String fieldName = null;
-                    if (ArchiveSearchConsts.FINAL_ACTION_INHERITE_FINAL_ACTION
-                        .equals(value.getValue())) {
-                        fieldName = COMPUTED_FIELDS + ruleCategory + FINAL_ACTION_FIELD;
-                    } else if (ArchiveSearchConsts.FINAL_ACTION_HAS_FINAL_ACTION
-                        .equals(value.getValue())) {
-                        fieldName = SCOPED_FIELDS + ruleCategory + FINAL_ACTION_FIELD;
-                    }
-                    VitamQueryHelper.addParameterCriteria(mgtRuleOriginFinalActionSubQuery,
-                        ArchiveSearchConsts.CriteriaOperators.EXISTS,
-                        fieldName, List.of());
-                }
-            }
-            if (mgtRuleOriginFinalActionSubQuery.isReady()) {
-                query.add(mgtRuleOriginFinalActionSubQuery);
-            }
-        }
-    }
-
-    private void buildMgtRulesSimpleCriteriaByOrigin(String ruleCategory,
-        BooleanQuery mgtRulesSubQuery, List<SearchCriteriaEltDto> mgtRulesSimpleCriteriaList,
-        ArchiveSearchConsts.RuleOrigin origin)
-        throws InvalidCreateOperationException {
-        handleSearchCriteriaByRuleIdentifier(ruleCategory, mgtRulesSubQuery,
-            mgtRulesSimpleCriteriaList, origin);
-        handleSearchCriterieByRuleMaxEndDates(ruleCategory, mgtRulesSubQuery,
-            mgtRulesSimpleCriteriaList, origin);
-    }
-
-    private void handleSearchCriterieByRuleMaxEndDates(String ruleCategory, BooleanQuery mgtRulesSubQuery,
-        List<SearchCriteriaEltDto> mgtRulesSimpleCriteriaList,
-        ArchiveSearchConsts.RuleOrigin origin)
-        throws InvalidCreateOperationException {
-        List<SearchCriteriaEltDto> mgtRuleEndDatesCriteria = mgtRulesSimpleCriteriaList.stream().filter(
-            searchCriteriaEltDto -> ArchiveSearchConsts.RULE_END_DATE
-                .equals(searchCriteriaEltDto.getCriteria())).collect(Collectors.toList());
-        if (!CollectionUtils.isEmpty(mgtRuleEndDatesCriteria)) {
-            String endDtVitamFieldName;
-            if (ArchiveSearchConsts.RuleOrigin.SCOPED.equals(origin)) {
-                endDtVitamFieldName = SCOPED_FIELDS + ruleCategory + RULES_END_DATE_FIELD;
-            } else {
-                endDtVitamFieldName = COMPUTED_FIELDS + ruleCategory + MAX_END_DATE_FIELD;
-            }
-            buildMgtRulesEndDatesCriteria(mgtRulesSubQuery, mgtRuleEndDatesCriteria,
-                endDtVitamFieldName);
-        }
-    }
-
     private void buildMgtRulesEndDatesCriteria(BooleanQuery mgtRulesSubQuery,
         List<SearchCriteriaEltDto> mgtRuleEndDatesCriteria,
         String fieldName) throws InvalidCreateOperationException {
@@ -421,33 +297,6 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         }
         if (ruleEndQuery.isReady()) {
             mgtRulesSubQuery.add(ruleEndQuery);
-        }
-    }
-
-    private void handleSearchCriteriaByRuleIdentifier(String ruleCategory, BooleanQuery mgtRulesSubQuery,
-        List<SearchCriteriaEltDto> mgtRulesSimpleCriteriaList, ArchiveSearchConsts.RuleOrigin origin)
-        throws InvalidCreateOperationException {
-        List<SearchCriteriaEltDto> identifierCriteria =
-            mgtRulesSimpleCriteriaList.stream().filter(
-                searchCriteriaEltDto -> ArchiveSearchConsts.RULE_IDENTIFIER
-                    .equals(searchCriteriaEltDto.getCriteria())).collect(Collectors.toList());
-        if (!CollectionUtils.isEmpty(identifierCriteria)) {
-            String ruleIdVitamFieldName;
-            if (ArchiveSearchConsts.RuleOrigin.SCOPED.equals(origin)) {
-                ruleIdVitamFieldName = SCOPED_FIELDS + ruleCategory + RULES_RULE_ID_FIELD;
-            } else {
-                ruleIdVitamFieldName = COMPUTED_FIELDS + ruleCategory + RULES_RULE_ID_FIELD;
-            }
-            BooleanQuery identifierQuery = or();
-            for (SearchCriteriaEltDto criteria : identifierCriteria) {
-                for (CriteriaValue valueIdentifier : criteria.getValues()) {
-                    VitamQueryHelper.addParameterCriteria(identifierQuery, ArchiveSearchConsts.CriteriaOperators.EQ,
-                        ruleIdVitamFieldName, List.of(valueIdentifier.getValue()));
-                }
-            }
-            if (identifierQuery.isReady()) {
-                mgtRulesSubQuery.add(identifierQuery);
-            }
         }
     }
 }

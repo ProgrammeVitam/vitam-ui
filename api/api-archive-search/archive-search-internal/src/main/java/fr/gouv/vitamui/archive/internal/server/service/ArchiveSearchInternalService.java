@@ -51,6 +51,7 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
@@ -92,6 +93,8 @@ public class ArchiveSearchInternalService {
     public static final String OPERATION_IDENTIFIER = "itemId";
 
     public static final String TITLE_FIELD = "Title";
+
+    private static final Integer SEARCH_UNIT_MAX_RESULTS = 10000;
 
     private static final String[] FILING_PLAN_PROJECTION =
         new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups"};
@@ -140,10 +143,33 @@ public class ArchiveSearchInternalService {
             JsonNode dslQuery = createDslQueryWithFacets(searchQuery);
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
             ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
-            archiveSearchFacetsInternalService.fillFacets(searchQuery, archiveUnitsDto, vitamContext);
+            Integer totalResults = archiveUnitsDto.getArchives().getHits().getTotal();
+            boolean trackTotalHits = false;
+            if (totalResults >= SEARCH_UNIT_MAX_RESULTS) {
+                trackTotalHits = true;
+            }
+            fillManagementRulesFacets(searchQuery, archiveUnitsDto, trackTotalHits, vitamContext);
             return archiveUnitsDto;
         } catch (InvalidCreateOperationException ioe) {
             throw new VitamClientException("Unable to find archive units with pagination", ioe);
+        }
+    }
+
+    private void fillManagementRulesFacets(SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto,
+        boolean trackTotalHits, VitamContext vitamContext)
+        throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+        try {
+            archiveUnitsDto.getArchives().getFacetResults()
+                .addAll(archiveSearchFacetsInternalService.fillManagementRulesFacets(searchQuery, trackTotalHits,
+                    vitamContext));
+        } catch (UnexpectedSettingsException e) {
+            if (!searchQuery.isComputeFacets()) {
+                LOGGER.error(
+                    "Could not compute facets,the setting track total hits is not allowed in vitam, we return units without facets");
+            } else {
+                LOGGER.error("Could not compute facets,the setting track total hits is not allowed in vitam, ");
+                throw new UnexpectedSettingsException(e.getMessage());
+            }
         }
     }
 
