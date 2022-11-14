@@ -439,6 +439,10 @@ public class ServicesData {
     public static final String ROLE_GET_TRANSACTIONS = GET_ROLE_PREFIX + TRANSACTIONS;
     public static final String ROLE_DELETE_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
 
+    public static final String ROLE_REOPEN_TRANSACTIONS = REOPEN_ROLE_PREFIX + TRANSACTIONS;
+
+    public static final String ROLE_ABORT_TRANSACTIONS = ABORT_ROLE_PREFIX + TRANSACTIONS;
+
 
     //@formatter:off
 

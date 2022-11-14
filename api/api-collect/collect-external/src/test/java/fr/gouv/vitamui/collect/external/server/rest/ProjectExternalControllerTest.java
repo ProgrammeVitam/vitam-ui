@@ -30,18 +30,14 @@
 package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExternalService;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
+import fr.gouv.vitamui.collect.external.server.service.ProjectExternalService;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,31 +48,49 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
-
-import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = {TransactionArchiveUnitExternalController.class})
-public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectExternalControllerTest<IdDto> {
+@WebMvcTest(controllers = {ProjectExternalController.class})
+public class ProjectExternalControllerTest extends ApiSearchCollectExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalControllerTest.class);
+        VitamUILoggerFactory.getInstance(ProjectExternalControllerTest.class);
 
     @MockBean
-    private TransactionArchiveUnitExternalService transactionArchiveUnitExternalService;
+    private ProjectExternalService projectExternalService;
 
-    private TransactionArchiveUnitExternalController transactionArchiveUnitExternalController;
+    private ProjectExternalController projectExternalController;
 
     @BeforeEach
     public void setUp() {
-        transactionArchiveUnitExternalController = new TransactionArchiveUnitExternalController(
-            transactionArchiveUnitExternalService);
+        projectExternalController = new ProjectExternalController(
+            projectExternalService);
     }
+
+
+    @Test
+    void when_abortTransaction_ok() throws InvalidParseOperationException {
+
+        PaginatedValuesDto<CollectTransactionDto> listTransactions = new PaginatedValuesDto<>();
+        CollectTransactionDto transactionDto = CollectTransactionDto
+            .builder().id("transactionId").projectId("projectId").build();
+        listTransactions.setValues(List.of(transactionDto));
+        Mockito
+            .when(projectExternalService.getTransactionsByProjectPaginated(0, 10, Optional.empty(), Optional.of("id"),
+                Optional.of(DirectionDto.ASC), "projectId"))
+            .thenReturn(listTransactions);
+
+        PaginatedValuesDto<CollectTransactionDto> transactionsReturned= this.projectExternalController.getTransactionsByProjectPaginated(0, 10, Optional.empty(), Optional.of("id"),
+            Optional.of(DirectionDto.ASC), "projectId");
+        Assertions.assertEquals(transactionsReturned, listTransactions);
+    }
+
+
 
     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.PROJECTS};
+        return new String[] {ServicesData.TRANSACTIONS};
     }
 
     @Override
@@ -101,39 +115,6 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectEx
 
     @Override
     protected String getRessourcePrefix() {
-        return COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
-    }
-
-    @Test
-    void when_searchCollectUnitsByCriteria_Service_ko_should_return_ko() {
-
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        SearchCriteriaEltDto nodeCriteria = new SearchCriteriaEltDto();
-        nodeCriteria.setCriteria("NODES");
-        nodeCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        nodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
-        nodeCriteria.setValues(List.of(new CriteriaValue("<s>insecure</s>")));
-        query.setCriteriaList(List.of(nodeCriteria));
-        ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
-        Mockito
-            .when(transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query))
-            .thenReturn(expectedResponse);
-
-        assertThatCode(() -> transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query))
-            .isInstanceOf(InvalidSanitizeCriteriaException.class);
-    }
-
-    @Test
-    void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws InvalidParseOperationException,
-        PreconditionFailedException {
-
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
-        Mockito
-            .when(transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query))
-            .thenReturn(expectedResponse);
-        ArchiveUnitsDto
-            responseDto = transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query);
-        Assertions.assertEquals(responseDto, expectedResponse);
+        return null;
     }
 }

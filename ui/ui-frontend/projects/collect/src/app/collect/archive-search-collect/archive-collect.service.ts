@@ -38,12 +38,13 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AccessContract, AccessContractApiService, SearchService, Transaction } from 'ui-frontend-common';
-import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, Unit } from '../core/models';
 import { ProjectsApiService } from '../core/api/project-api.service';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
+import {TransactionApiService} from '../core/api/transaction-api.service';
+import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, Unit } from '../core/models';
 
 @Injectable({
   providedIn: 'root',
@@ -52,6 +53,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
   constructor(
     private projectsApiService: ProjectsApiService,
+    private transactionApiService: TransactionApiService,
     private searchUnitApiService: SearchUnitApiService,
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
@@ -105,11 +107,11 @@ export class ArchiveCollectService extends SearchService<any> {
     );
   }
 
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string): Observable<PagedResult> {
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, accessContract: string): Observable<PagedResult> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
 
-    return this.projectsApiService.searchArchiveUnitsByCriteria(criteriaDto, projectId, headers).pipe(
+    return this.transactionApiService.searchArchiveUnitsByCriteria(criteriaDto, transactionId, headers).pipe(
       //   timeout(TIMEOUT_SEC),
       catchError((error) => {
         if (error instanceof TimeoutError) {
@@ -122,14 +124,14 @@ export class ArchiveCollectService extends SearchService<any> {
     );
   }
 
-  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], projectId: string, accessContract: string): Observable<number> {
+  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], transactionId: string, accessContract: string): Observable<number> {
     const searchCriteria = {
       criteriaList: criteriaElts,
       pageNumber: 0,
       size: 1,
       trackTotalHits: true,
     };
-    return this.searchArchiveUnitsByCriteria(searchCriteria, projectId, accessContract).pipe(
+    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId, accessContract).pipe(
       map((pagedResult: PagedResult) => {
         return pagedResult.totalResults;
       }),
@@ -201,7 +203,7 @@ export class ArchiveCollectService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
 
-    return this.projectsApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, projectId, headers).subscribe(
+    return this.transactionApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, projectId, headers).subscribe(
       (file) => {
         const element = document.createElement('a');
         element.href = window.URL.createObjectURL(file);

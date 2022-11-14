@@ -41,7 +41,7 @@ import { ArchiveSharedDataService } from './archive-shared-data.service';
 import { ManagementRulesSharedDataService } from './management-rules-shared-data.service';
 
 @Injectable()
-export class RuleValidator {
+export class  RuleValidator {
   private debounceTime = 400;
   ruleCategorySelected: string;
 

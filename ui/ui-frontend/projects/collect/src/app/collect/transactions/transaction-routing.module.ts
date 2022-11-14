@@ -34,42 +34,19 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, AppGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {Route, RouterModule} from '@angular/router';
+
+import {TransactionResolver} from './transaction-resolver.service';
+import {TransactionsComponent} from './transactions.component';
 
 const routes: Route[] = [
   {
     path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full',
+    component: TransactionsComponent,
+    resolve: {transaction: TransactionResolver}
   },
-  {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    loadChildren: () => import('./projects/project.module').then((m) => m.ProjectModule),
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'archive-search-collect/:projectId',
-    loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
-    canActivate: [AppGuard],
-  },
-  {
-    path: 'archive-search-collect/:projectId/:transactionId',
-    loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
-    canActivate: [AppGuard],
-  },
-  {
-    path: 'transactions/:projectId',
-    loadChildren: () => import('./transactions/transaction.module').then((m) => m.TransactionModule),
-    canActivate: [AppGuard],
-  }
 ];
 
 @NgModule({
@@ -77,4 +54,5 @@ const routes: Route[] = [
   imports: [CommonModule, RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CollectRoutingModule {}
+export class TransactionRoutingModule {
+}

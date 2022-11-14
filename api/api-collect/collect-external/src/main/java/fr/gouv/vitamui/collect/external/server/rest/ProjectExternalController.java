@@ -47,11 +47,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
+
+import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
 
 /**
  * Project External controller
@@ -76,21 +88,18 @@ public class ProjectExternalController {
     @Secured(ServicesData.ROLE_GET_PROJECTS)
     @GetMapping(params = {"page", "size"})
     public PaginatedValuesDto<CollectProjectDto> getAllPaginated(@RequestParam final Integer page,
-        @RequestParam final Integer size,
-        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        direction.ifPresent(directionDto ->
-            {
-                try {
-                    SanityChecker.sanitizeCriteria(directionDto);
-                } catch (InvalidParseOperationException exception) {
-                    LOGGER.error("Exception error : {}", exception.getMessage());
-                    throw new PreconditionFailedException("Exception error", exception);
-                }
+        @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        direction.ifPresent(directionDto -> {
+            try {
+                SanityChecker.sanitizeCriteria(directionDto);
+            } catch (InvalidParseOperationException exception) {
+                LOGGER.error("Exception error : {}", exception.getMessage());
+                throw new PreconditionFailedException("Exception error", exception);
             }
-        );
+        });
         if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
@@ -100,11 +109,31 @@ public class ProjectExternalController {
         return projectExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
+    @ApiOperation(value = "Get transactions by project paginated")
+    @GetMapping(params = {"page", "size"}, value = "/{id}" + TRANSACTIONS)
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction, @PathVariable("id") String projectId)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, projectId);
+        SanityChecker.checkSecureParameter(projectId);
+        SanityChecker.sanitizeCriteria(direction);
+        SanityChecker.sanitizeCriteria(criteria);
+        if (orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
+            direction);
+        return projectExternalService.getTransactionsByProjectPaginated(page, size, criteria, orderBy, direction,
+            projectId);
+    }
+
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @PostMapping()
     public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException,
-        PreconditionFailedException {
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create : {}", collectProjectDto);
         return projectExternalService.createProject(collectProjectDto);

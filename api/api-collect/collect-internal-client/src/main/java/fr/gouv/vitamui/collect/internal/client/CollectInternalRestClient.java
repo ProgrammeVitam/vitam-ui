@@ -27,37 +27,38 @@
 
 package fr.gouv.vitamui.collect.internal.client;
 
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.apache.http.client.utils.URIBuilder;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
 
-import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
 
 public class CollectInternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectProjectDto, InternalHttpContext> {
+
+    private static final String TRANNSACTIONS = "/transactions";
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(CollectInternalRestClient.class);
 
     public CollectInternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
@@ -107,28 +108,6 @@ public class CollectInternalRestClient
         return getAllPaginated(builder, context, page, size, criteria, orderBy, direction, Optional.empty());
     }
 
-    public ArchiveUnitsDto searchCollectProjectArchiveUnits(InternalHttpContext context, String projectId,
-        SearchCriteriaDto searchQuery) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
-        final ResponseEntity<ArchiveUnitsDto> response =
-            restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST,
-                request, ArchiveUnitsDto.class);
-        checkResponse(response);
-        return response.getBody();
-    }
-
-    public Resource exportCsvArchiveUnitsByCriteria(String projectId, final SearchCriteriaDto query,
-        final InternalHttpContext context) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<Resource> response =
-            restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
-                request, Resource.class);
-        checkResponse(response);
-        return response.getBody();
-
-    }
 
     public ResponseEntity<ResultsDto> findObjectById(String id, final InternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
@@ -144,27 +123,36 @@ public class CollectInternalRestClient
         restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
     }
 
-    public void sendTransaction(final InternalHttpContext context, String id) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID + SEND_PATH);
-        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, Void.class);
+
+    protected ParameterizedTypeReference<PaginatedValuesDto<CollectTransactionDto>> getTransactionDtoPaginatedClass() {
+        return new ParameterizedTypeReference<>() {
+        };
     }
 
-    public void validateTransaction(final InternalHttpContext context, String id) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID + VALIDATE_PATH);
-        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, Void.class);
-    }
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
+        final InternalHttpContext context,
+        final Integer page,
+        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
+        final Optional<DirectionDto> direction, final String projectId) {
+        final URIBuilder builder = getUriBuilder(getUrl() + "/" + projectId + TRANNSACTIONS);
+        SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}", page, size, criteria,
+            orderBy, direction);
+        builder.addParameter("page", page.toString());
+        builder.addParameter("size", size.toString());
+        criteria.ifPresent(o -> builder.addParameter("criteria", o));
+        orderBy.ifPresent(o -> builder.addParameter("orderBy", o));
+        direction.ifPresent(o -> builder.addParameter("direction", o.toString()));
 
-    public CollectTransactionDto updateTransaction(final InternalHttpContext context, CollectTransactionDto transactionDto) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getTransactionUrl());
-        final HttpEntity<?> request = new HttpEntity<>(transactionDto, buildHeaders(context));
-        ResponseEntity<CollectTransactionDto> response =  restTemplate.exchange(getTransactionUrl(), HttpMethod.PUT, request, CollectTransactionDto.class);
+        final HttpEntity<CollectTransactionDto> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<PaginatedValuesDto<CollectTransactionDto>> response =
+            restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, getTransactionDtoPaginatedClass());
+        checkResponse(response);
         return response.getBody();
     }
+
+
+
 
     public CollectTransactionDto getTransactionById(InternalHttpContext context, String transactionId) {
         final UriComponentsBuilder uriBuilder =
@@ -190,5 +178,4 @@ public class CollectInternalRestClient
         ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, CollectTransactionDto.class);
         return response.getBody();
     }
-
 }

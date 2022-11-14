@@ -29,9 +29,8 @@
 
 package fr.gouv.vitamui.collect.service;
 
-import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
+import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -45,22 +44,23 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
-public class ArchiveSearchProjectServiceTest {
+public class TransactionServiceTest {
 
-    private ProjectArchiveUnitService searchCollectUnitService;
+    private TransactionService transactionService;
 
     @Mock
-    private CollectExternalRestClient collectExternalRestClient;
+    private CollectTransactionExternalRestClient collectTransactionExternalRestClient;
 
     @Mock
     private CommonService commonService;
 
     @Before
     public void init() {
-        searchCollectUnitService = new ProjectArchiveUnitService(commonService, collectExternalRestClient);
+        transactionService = new TransactionService(collectTransactionExternalRestClient, commonService);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
@@ -69,15 +69,37 @@ public class ArchiveSearchProjectServiceTest {
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(searchCollectUnitService.searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(),
+        Mockito.when(transactionService.searchArchiveUnitsByTransactionAndSearchQuery(ArgumentMatchers.any(),
                 ArgumentMatchers.any(), any(SearchCriteriaDto.class)))
             .thenReturn(new ArchiveUnitsDto());
 
         // When
-        searchCollectUnitService.searchArchiveUnitsByProjectAndSearchQuery(context, "projectId", searchCriteriaDto);
+        transactionService.searchArchiveUnitsByTransactionAndSearchQuery(context, "projectId", searchCriteriaDto);
 
         // Then
-        verify(collectExternalRestClient, Mockito.times(1))
-            .searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(), ArgumentMatchers.any() , any(SearchCriteriaDto.class));
+        verify(collectTransactionExternalRestClient, Mockito.times(1))
+            .searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(), ArgumentMatchers.any(),
+                any(SearchCriteriaDto.class));
     }
+
+    @Test
+    public void when_abortTransaction_ok() {
+
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+
+        Mockito.doNothing().when(collectTransactionExternalRestClient).abortTransaction(context, "transactionId");
+        transactionService.abortTransaction(context, "transactionId");
+        verify(collectTransactionExternalRestClient, times(1)).abortTransaction(context, "transactionId");
+    }
+
+    @Test
+    public void when_repenTransaction_ok() {
+
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+
+        Mockito.doNothing().when(collectTransactionExternalRestClient).reopenTransaction(context, "transactionId");
+        transactionService.reopenTransaction(context, "transactionId");
+        verify(collectTransactionExternalRestClient, times(1)).reopenTransaction(context, "transactionId");
+    }
+
 }

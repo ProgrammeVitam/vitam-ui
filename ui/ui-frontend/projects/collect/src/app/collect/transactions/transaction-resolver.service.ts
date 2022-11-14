@@ -24,37 +24,40 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Project, SearchService } from 'ui-frontend-common';
-import { ProjectsApiService } from '../core/api/project-api.service';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {map, take} from 'rxjs/operators';
+
+import {PaginatedResponse, Transaction} from 'ui-frontend-common';
+import {TransactionsService} from './transactions.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectsService extends SearchService<Project> {
-  pageEvent = new Subject<string>();
-  tenantEvent = new Subject<string>();
-  customerEvent = new Subject<string>();
+export class TransactionResolver implements Resolve<boolean> {
 
-  constructor(http: HttpClient, private projectsApiService: ProjectsApiService) {
-    super(http, projectsApiService, 'ALL');
+  constructor(private transactionsService: TransactionsService, private router: Router) {
   }
 
-  public create(project: Project): Observable<any> {
-    return this.projectsApiService.create(project);
+  resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
+    const id = route.paramMap.get('projectId');
+
+    return this.transactionsService.getTransactionsByProjectId(id)
+      .pipe(
+        take(1),
+        map((paginated: PaginatedResponse<Transaction>) => {
+          const transactions = paginated.values;
+          if (transactions) {
+            this.transactionsService.setTransactions(transactions);
+            return true;
+          } else {
+            this.router.navigate(['/']);
+
+            return false;
+          }
+        })
+      );
   }
 
-  public updateProject(project: Project) {
-    return this.projectsApiService.update(project);
-  }
-
-  public getProjectById(projectId: string) {
-    return this.projectsApiService.getById(projectId);
-  }
-
-  public deleteProjectId(projectId: string) : Observable<void> {
-    return this.projectsApiService.deletebyId(projectId);
-  }
 }

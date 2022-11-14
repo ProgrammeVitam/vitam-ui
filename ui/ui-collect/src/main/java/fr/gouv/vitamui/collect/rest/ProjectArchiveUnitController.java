@@ -28,14 +28,9 @@
 package fr.gouv.vitamui.collect.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
-import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.collect.service.ProjectArchiveUnitService;
 import fr.gouv.vitamui.collect.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.common.security.SanityChecker;
-import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -44,10 +39,7 @@ import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,10 +54,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.util.List;
 
-import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.PROJECTS;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH_CRITERIA_HISTORY;
 import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 
@@ -89,47 +79,6 @@ public class ProjectArchiveUnitController extends AbstractUiRestController {
         this.searchCriteriaHistoryService = searchCriteriaHistoryService;
     }
 
-    @ApiOperation(value = "Get AU collect paginated")
-    @PostMapping("/{projectId}" + SEARCH)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public VitamUIArchiveUnitResponseDto searchArchiveUnits(final @PathVariable("projectId") String projectId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query  and the projectId are mandatories parameters: ",
-            searchQuery, projectId);
-        SanityChecker.checkSecureParameter(projectId);
-        SanityChecker.sanitizeCriteria(searchQuery);
-        LOGGER.debug("search archives Units by criteria = {}", searchQuery);
-        VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
-        ArchiveUnitsDto archiveUnits =
-            projectArchiveUnitService.searchArchiveUnitsByProjectAndSearchQuery(buildUiHttpContext(), projectId,
-                searchQuery);
-
-        if (archiveUnits != null) {
-            archiveResponseDtos = archiveUnits.getArchives();
-        }
-        return archiveResponseDtos;
-
-    }
-
-    @ApiOperation(value = "export into csv format archive units by criteria")
-    @PostMapping("/{projectId}" + EXPORT_CSV_SEARCH_PATH)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(final @PathVariable("projectId") String projectId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
-        SanityChecker.sanitizeCriteria(searchQuery);
-        LOGGER.debug("Export search archives Units by criteria into csv format = {}", searchQuery);
-        Resource exportedCsvResult =
-            projectArchiveUnitService.exportCsvArchiveUnitsByCriteria(projectId, searchQuery, buildUiHttpContext()).getBody();
-        return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .header("Content-Disposition", "attachment")
-            .body(exportedCsvResult);
-    }
 
     @ApiOperation(value = "Create search criteria history for collect")
     @PostMapping(SEARCH_CRITERIA_HISTORY)

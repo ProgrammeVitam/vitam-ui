@@ -47,6 +47,12 @@ public class CommonConstants {
 
     public static final String ERROR_REQUIRED_VALUE_EMPTY_OR_NULL = "ERROR_REQUIRED_VALUE_EMPTY_OR_NULL";
 
+
+    public static final String IDENTIFIER_MANDATORY_PARAMETER = "The Identifier is a mandatory parameter: ";
+
+
+
+
     public static final String ADMIN_PATH = "/admin/v0";
 
     public static final String PATH_ID = "/{id}";
@@ -112,6 +118,10 @@ public class CommonConstants {
     public static final String CREATE_ROLE_PREFIX = ROLE_PREFIX + "CREATE_";
     public static final String SEND_ROLE_PREFIX = ROLE_PREFIX + "SEND_";
     public static final String CLOSE_ROLE_PREFIX = ROLE_PREFIX + "CLOSE_";
+
+    public static final String REOPEN_ROLE_PREFIX = ROLE_PREFIX + "REOPEN_";
+
+    public static final String ABORT_ROLE_PREFIX = ROLE_PREFIX + "ABORT_";
 
     public static final String UPDATE_ROLE_PREFIX = ROLE_PREFIX + "UPDATE_";
 

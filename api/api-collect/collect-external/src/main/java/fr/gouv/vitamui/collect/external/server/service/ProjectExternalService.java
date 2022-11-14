@@ -103,6 +103,18 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
         collectInternalRestClient.deleteProject(getInternalHttpContext(), projectId);
     }
 
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(final Integer page,
+        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
+        final Optional<DirectionDto> direction, String projectId) {
+        ParameterChecker.checkPagination(size, page);
+        final PaginatedValuesDto<CollectTransactionDto> result =
+            getClient().getTransactionsByProjectPaginated(getInternalHttpContext(), page, size,
+                checkAuthorization(criteria), orderBy, direction, projectId);
+        return new PaginatedValuesDto<>(result.getValues(), result.getPageNum(), result.getPageSize(),
+            result.isHasMore());
+    }
+
+
     public CollectTransactionDto getLastTransactionForProjectId(String projectId) {
         return collectInternalRestClient.getLastTransactionForProjectId(getInternalHttpContext(), projectId);
     }

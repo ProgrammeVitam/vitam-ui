@@ -27,12 +27,16 @@
 
 package fr.gouv.vitamui.collect.service;
 
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
-import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
+import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,15 +45,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionService extends AbstractPaginateService<CollectTransactionDto> {
 
-    private final CollectExternalRestClient collectExternalRestClient;
+    private final CollectTransactionExternalRestClient collectTransactionExternalRestClient;
 
     private final CommonService commonService;
 
 
     @Autowired
-    public TransactionService(CollectExternalRestClient collectExternalRestClient, CommonService commonService) {
+    public TransactionService(CollectTransactionExternalRestClient collectTransactionExternalRestClient,
+        CommonService commonService) {
         this.commonService = commonService;
-        this.collectExternalRestClient = collectExternalRestClient;
+        this.collectTransactionExternalRestClient = collectTransactionExternalRestClient;
     }
 
 
@@ -58,24 +63,43 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return commonService.checkPagination(page, size);
     }
 
-    public CollectExternalRestClient getClient() {
-        return collectExternalRestClient;
+    public CollectTransactionExternalRestClient getClient() {
+        return collectTransactionExternalRestClient;
     }
 
     public void sendTransaction(ExternalHttpContext context, String transactionId) {
-        collectExternalRestClient.sendTransaction(context, transactionId);
+        collectTransactionExternalRestClient.sendTransaction(context, transactionId);
     }
 
     public void validateTransaction(ExternalHttpContext context, String transactionId) {
-        collectExternalRestClient.validateTransaction(context, transactionId);
+        collectTransactionExternalRestClient.validateTransaction(context, transactionId);
     }
 
-    public CollectTransactionDto getTransactionById(ExternalHttpContext context, String projectId) {
-        return collectExternalRestClient.getTransactionById(context, projectId);
+    public void reopenTransaction(ExternalHttpContext context, String transactionId) {
+        collectTransactionExternalRestClient.reopenTransaction(context, transactionId);
+    }
+
+    public void abortTransaction(ExternalHttpContext context, String transactionId) {
+        collectTransactionExternalRestClient.abortTransaction(context, transactionId);
+    }
+
+    public CollectTransactionDto getTransactionById(ExternalHttpContext context, String transactionId) {
+        return collectTransactionExternalRestClient.getTransactionById(context, transactionId);
+    }
+
+    public ArchiveUnitsDto searchArchiveUnitsByTransactionAndSearchQuery(ExternalHttpContext context, String transactionId,
+        SearchCriteriaDto searchQuery) {
+        return collectTransactionExternalRestClient.searchArchiveUnitsByProjectAndSearchQuery(context, transactionId,
+            searchQuery);
+    }
+
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(String transactionId,
+        final SearchCriteriaDto searchQuery, ExternalHttpContext context) {
+        return collectTransactionExternalRestClient.exportCsvArchiveUnitsByCriteria(transactionId, searchQuery, context);
     }
 
     public CollectTransactionDto updateTransaction(ExternalHttpContext context, CollectTransactionDto transactionDto) {
-        return collectExternalRestClient.updateTransaction(context, transactionDto);
+        return collectTransactionExternalRestClient.updateTransaction(context, transactionDto);
     }
 
 

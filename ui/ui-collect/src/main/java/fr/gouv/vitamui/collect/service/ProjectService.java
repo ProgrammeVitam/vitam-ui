@@ -101,4 +101,12 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
     }
 
 
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(final Integer page, Integer size,
+        final Optional<String> criteria, final Optional<String> orderBy,
+        final Optional<DirectionDto> direction, final ExternalHttpContext context, String projectId) {
+        size = beforePaginate(page, size);
+        return getClient().getTransactionsByProjectPaginated(context, page, size, criteria, orderBy, direction,
+            projectId);
+    }
+
 }

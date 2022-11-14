@@ -52,4 +52,8 @@ public class CollectInternalRestClientFactory extends BaseRestClientFactory {
     public SearchCriteriaHistoryInternalRestClient getSearchCriteriaHistoryInternalRestClient() {
         return new SearchCriteriaHistoryInternalRestClient(getRestTemplate(), getBaseUrl());
     }
+
+    public CollectTransactionInternalRestClient getCollectTransactionInternalRestClient() {
+        return new CollectTransactionInternalRestClient(getRestTemplate(), getBaseUrl());
+    }
 }

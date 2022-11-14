@@ -34,47 +34,32 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, AppGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import {NgModule} from '@angular/core';
 
-const routes: Route[] = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full',
-  },
-  {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    loadChildren: () => import('./projects/project.module').then((m) => m.ProjectModule),
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'archive-search-collect/:projectId',
-    loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
-    canActivate: [AppGuard],
-  },
-  {
-    path: 'archive-search-collect/:projectId/:transactionId',
-    loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
-    canActivate: [AppGuard],
-  },
-  {
-    path: 'transactions/:projectId',
-    loadChildren: () => import('./transactions/transaction.module').then((m) => m.TransactionModule),
-    canActivate: [AppGuard],
-  }
-];
+import {MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+
+import {CommonModule} from '@angular/common';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {VitamUICommonModule} from 'ui-frontend-common';
+import { TransactionListComponent } from './transaction-list/transaction-list.component';
+import {TransactionResolver} from './transaction-resolver.service';
+import {TransactionRoutingModule} from './transaction-routing.module';
+import {TransactionsComponent} from './transactions.component';
+
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    imports: [
+        CommonModule,
+        TransactionRoutingModule,
+        MatMenuModule,
+        MatSidenavModule,
+        VitamUICommonModule,
+        MatProgressSpinnerModule,
+    ],
+  providers: [TransactionResolver, {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: true}}],
+  declarations: [TransactionsComponent, TransactionListComponent],
 })
-export class CollectRoutingModule {}
+export class TransactionModule {
+}

@@ -30,7 +30,7 @@
 package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitam.collect.external.dto.ProjectDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -39,8 +39,6 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
-import fr.gouv.vitamui.collect.internal.server.rest.ProjectInternalController;
-import fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter;
 import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -49,12 +47,14 @@ import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 
 import javax.ws.rs.core.Response;
 
-import static fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter.toVitamuiDto;
-
 public class TransactionInternalService {
 
 
+    public static final int MAX_RESULTS = 10000;
+
     private final CollectService collectService;
+
+    private final ObjectMapper objectMapper;
 
     public static final String UNABLE_TO_UPDATE_TRANSACTION = "Unable to update transaction";
 
@@ -63,8 +63,11 @@ public class TransactionInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalService.class);
 
 
-    public TransactionInternalService(CollectService collectService) {
+
+
+    public TransactionInternalService(CollectService collectService, ObjectMapper objectMapper) {
         this.collectService = collectService;
+        this.objectMapper = objectMapper;
     }
 
 
@@ -90,14 +93,37 @@ public class TransactionInternalService {
         }
     }
 
-    public CollectTransactionDto getTransactionById(String transactionId, VitamContext vitamContext) throws VitamClientException {
+    public void abortTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
+        try {
+            Response requestResponse = collectService.abortTransaction(vitamContext, idTransaction);
+            if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new VitamClientException("Error occurs when aborting transaction!");
+            }
+        } catch (VitamClientException e) {
+            throw new VitamClientException("Unable to abort transaction : ", e);
+        }
+    }
+
+    public void reopenTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
+        try {
+            Response requestResponse = collectService.reopenTransaction(vitamContext, idTransaction);
+            if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new VitamClientException("Error occurs when reopening transaction!");
+            }
+        } catch (VitamClientException e) {
+            throw new VitamClientException("Unable to reopen transaction : ", e);
+        }
+    }
+
+    public CollectTransactionDto getTransactionById(String transactionId, VitamContext vitamContext)
+        throws VitamClientException {
         try {
             RequestResponse<JsonNode> requestResponse = collectService.getTransactionById(vitamContext, transactionId);
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when getting transaction!");
             }
 
-            return TransactionConverter.toVitamuiDto(
+            return TransactionConverter.toVitamUiDto(
                 JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     TransactionDto.class));
         } catch (VitamClientException | InvalidParseOperationException e) {
@@ -116,7 +142,7 @@ public class TransactionInternalService {
             TransactionDto responseTransactionDto =
                 JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     TransactionDto.class);
-            return TransactionConverter.toVitamuiDto(responseTransactionDto);
+            return TransactionConverter.toVitamUiDto(responseTransactionDto);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPDATE_TRANSACTION + ": {}", e);
             throw new InternalServerException(UNABLE_TO_UPDATE_TRANSACTION, e);

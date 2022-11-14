@@ -39,13 +39,7 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class TransactionConverter {
-    public static CollectTransactionDto toVitamuiDto(TransactionDto transactionDto) {
-        return CollectTransactionDto.builder()
-            .tenant(Optional.of(transactionDto.getTenant()).orElseThrow())
-            .id(transactionDto.getId())
-            .status(transactionDto.getLegalStatus())
-            .build();
-    }
+
 
     public static List<CollectTransactionDto> toVitamuiDtos(List<TransactionDto> transactionDtos) {
         return transactionDtos.stream().map(TransactionConverter::toVitamUiDto).collect(Collectors.toList());
@@ -58,6 +52,7 @@ public class TransactionConverter {
         collectTransactionDto.setComment(transactionDto.getComment());
         collectTransactionDto.setArchivalProfile(transactionDto.getArchivalProfile());
         collectTransactionDto.setId(transactionDto.getId());
+        collectTransactionDto.setStatus(transactionDto.getStatus());
         collectTransactionDto.setMessageIdentifier(transactionDto.getMessageIdentifier());
         collectTransactionDto.setOriginatingAgencyIdentifier(transactionDto.getOriginatingAgencyIdentifier());
         collectTransactionDto.setSubmissionAgencyIdentifier(transactionDto.getSubmissionAgencyIdentifier());

@@ -77,6 +77,26 @@ public class TransactionExternalController {
         transactionExternalService.sendTransaction(id);
     }
 
+    @Secured(ServicesData.ROLE_REOPEN_TRANSACTIONS)
+    @PutMapping(CommonConstants.PATH_ID + REOPEN_PATH)
+    public void reopenTransaction(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("The transaction id {} ", id);
+        transactionExternalService.reopenTransaction(id);
+    }
+
+    @Secured(ServicesData.ROLE_ABORT_TRANSACTIONS)
+    @PutMapping(CommonConstants.PATH_ID + ABORT_PATH)
+    public void abortTransaction(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("The transaction id {} ", id);
+        transactionExternalService.abortTransaction(id);
+    }
+
     @Secured(ServicesData.ROLE_CLOSE_TRANSACTIONS)
     @PutMapping(CommonConstants.PATH_ID + VALIDATE_PATH)
     public void validateTransaction(final @PathVariable("id") String id)

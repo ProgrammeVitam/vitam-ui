@@ -52,6 +52,10 @@ import org.springframework.web.bind.annotation.*;
 import java.io.InputStream;
 import java.util.Optional;
 
+import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
+import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_MANDATORY_PARAMETER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
+
 @RestController
 @RequestMapping(RestApi.COLLECT_PROJECT_PATH)
 @Api(tags = "collect", value = "Préparation de versements")
@@ -115,11 +119,10 @@ public class ProjectInternalController {
         projectInternalService.streamingUpload(vitamContext, inputStream, transactionId, originalFileName);
     }
 
-    @PutMapping(CommonConstants.PATH_ID)
+    @PutMapping(PATH_ID)
     public CollectProjectDto updateProject(final @PathVariable("id") String id,
-        @RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        @RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
@@ -127,18 +130,18 @@ public class ProjectInternalController {
         return projectInternalService.update(vitamContext, id, collectProjectDto);
     }
 
-    @GetMapping(CommonConstants.PATH_ID)
+    @GetMapping(PATH_ID)
     public CollectProjectDto findProjectById(final @PathVariable("id") String id) throws VitamClientException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         LOGGER.debug("Project to get  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return projectInternalService.getProjectById(id, vitamContext);
     }
 
-    @DeleteMapping(CommonConstants.PATH_ID)
+    @DeleteMapping(PATH_ID)
     public void deleteProjectById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Project to delete  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -153,6 +156,20 @@ public class ProjectInternalController {
         LOGGER.debug("Find the transaction by project with ID {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return projectInternalService.getLastTransactionForProjectId(id, vitamContext);
+    }
+
+    @ApiOperation(value = "Get transactions by project paginated")
+    @GetMapping(params = {"page", "size"}, value = PATH_ID + TRANSACTIONS)
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction, @PathVariable("id") String projectId)
+        throws VitamClientException, InvalidParseOperationException {
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, projectId);
+        SanityChecker.checkSecureParameter(projectId);
+        LOGGER.debug("getPaginateEntities page={}, size={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return projectInternalService.getTransactionsByProjectPaginated(projectId, page, size, orderBy, direction,
+            vitamContext);
     }
 
 

@@ -31,7 +31,6 @@ package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.external.dto.CriteriaProjectDto;
@@ -127,7 +126,7 @@ public class ProjectInternalService {
                 LOGGER.error("Error occurs when creating transaction");
                 throw new VitamClientException("Error occurs when creating transaction");
             }
-            return TransactionConverter.toVitamuiDto(
+            return TransactionConverter.toVitamUiDto(
                 JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     TransactionDto.class));
         } catch (VitamClientException e) {
@@ -307,6 +306,41 @@ public class ProjectInternalService {
         } catch (VitamClientException e) {
             throw new VitamClientException("Unable to delete project : ", e);
         }
+    }
+
+
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(String projectId, Integer page,
+        Integer size,
+        Optional<String> orderBy, Optional<DirectionDto> direction, VitamContext vitamContext)
+        throws VitamClientException {
+
+        LOGGER.debug("Page: ", page);
+        LOGGER.debug("Size: ", size);
+        LOGGER.debug("OrderBy: ", orderBy.orElse(null));
+        LOGGER.debug("Direction: ", direction.orElse(null));
+        try {
+            RequestResponse<JsonNode> requestResponse =
+                collectService.getTransactionsByProject(projectId, vitamContext);
+            if (!requestResponse.isOk()) {
+                throw new VitamClientException("Error occurs when getting transaction!");
+            }
+
+            final List<JsonNode> results = ((RequestResponseOK<JsonNode>) requestResponse).getResults();
+            List<TransactionDto> transactionDtos = new ArrayList<>();
+            for (JsonNode result : results) {
+                TransactionDto transactionDto = JsonHandler.getFromString(result.toString(),
+                    TransactionDto.class);
+                transactionDtos.add(transactionDto);
+            }
+            List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos);
+
+            return new PaginatedValuesDto<>(collectTransactionDtos, 1, MAX_RESULTS, false);
+
+        } catch (VitamClientException | InvalidParseOperationException e) {
+            throw new VitamClientException("Unable to find transaction : ", e);
+        }
+
+
     }
 
     public CollectTransactionDto getLastTransactionForProjectId(String id, VitamContext vitamContext) throws VitamClientException {
