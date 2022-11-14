@@ -53,6 +53,7 @@ import { SearchCriteriaSaverService } from '../../services/search-criteria-saver
 import { environment } from 'projects/collect/src/environments/environment';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
+import { VitamInternalFields } from '../../models/utils';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -168,7 +169,7 @@ describe('SearchCriteriaSaverComponent', () => {
           valueTranslated: false,
         },
         {
-          criteria: '#opi',
+          criteria: VitamInternalFields.OPI,
           values: [
             { value: 'dfgdfgdfgdfgdfgfdg', id: 'dfgdfgdfgdfgdfgfdg' },
             { value: 'gggggggggg', id: 'gggggggggg' },

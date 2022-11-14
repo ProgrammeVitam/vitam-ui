@@ -89,6 +89,7 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   public deletebyId(projectId: string) {
     return this.http.delete<void>(`${this.apiUrl}/${projectId}`);
   }
+
   // Manage AU search criteria save
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {

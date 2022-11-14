@@ -28,6 +28,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch } from 'ui-frontend-common';
+import { Pair } from '../../../models/utils';
 
 @Component({
   selector: 'app-classification-tree',
@@ -44,7 +45,7 @@ export class ClassificationTreeComponent {
   @Input() loadingNodeUnit: boolean;
 
   @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
-  @Output() showNodeDetail: EventEmitter<string> = new EventEmitter();
+  @Output() showNodeDetail: EventEmitter<Pair> = new EventEmitter();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
   @Output() closePanel: EventEmitter<void> = new EventEmitter();
 
@@ -53,7 +54,7 @@ export class ClassificationTreeComponent {
   }
 
   onShowNodeDetails(archiveUnitId: string) {
-    this.showNodeDetail.emit(archiveUnitId);
+    this.showNodeDetail.emit(new Pair(archiveUnitId, false));
   }
 
   onViewSwitched() {

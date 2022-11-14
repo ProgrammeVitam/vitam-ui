@@ -36,6 +36,7 @@ import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -297,6 +298,13 @@ public class CollectService {
         throws VitamClientException {
         LOGGER.debug("transactionId : {}", transactionId);
         final RequestResponse<JsonNode> result = collectClient.getTransactionById(vitamContext, transactionId);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+    public RequestResponse<JsonNode> findUnitById(String unitId, VitamContext vitamContext) throws VitamClientException {
+        LOGGER.debug("Unit ID : {}", unitId);
+        RequestResponseOK<JsonNode> result = collectClient.getUnitById(vitamContext, unitId);
         VitamRestUtils.checkResponse(result);
         return result;
     }

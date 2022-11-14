@@ -68,17 +68,13 @@ public class ProjectArchiveUnitController extends AbstractUiRestController {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectArchiveUnitController.class);
 
-    private final ProjectArchiveUnitService projectArchiveUnitService;
-
     private final SearchCriteriaHistoryService searchCriteriaHistoryService;
 
     @Autowired
     public ProjectArchiveUnitController(final ProjectArchiveUnitService projectArchiveUnitService,
         final SearchCriteriaHistoryService searchCriteriaHistoryService) {
-        this.projectArchiveUnitService = projectArchiveUnitService;
         this.searchCriteriaHistoryService = searchCriteriaHistoryService;
     }
-
 
     @ApiOperation(value = "Create search criteria history for collect")
     @PostMapping(SEARCH_CRITERIA_HISTORY)

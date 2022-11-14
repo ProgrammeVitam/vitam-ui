@@ -2,7 +2,7 @@
 
   <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract"
     vitamuiCommonResizeSidebar="left">
-    <app-filing-holding-scheme [accessContract]="accessContract" [projectId]="projectId"
+    <app-filing-holding-scheme [accessContract]="accessContract" [transactionId]="transaction.id"
       (showArchiveUnitDetails)="showPreviewArchiveUnit($event)">
     </app-filing-holding-scheme>
   </mat-sidenav>
@@ -18,7 +18,8 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectName }} </vitamui-common-title-breadcrumb>
+      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectName }}
+      </vitamui-common-title-breadcrumb>
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
 
@@ -41,24 +42,17 @@
             [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)" (click)="submit()">
             {{ 'COLLECT.LAUNCH_SEARCH_ACTION' | translate }}
           </button>
-
         </div>
 
         <div class="col-3 form-control text-right">
-          <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
-            <i class="material-icons">more_horiz</i> <span
-            i18n="More actions button label@@customerListMoreActionsButton">{{ 'COLLECT.OTHER_ACTION' | translate }} </span>
-          </button>
-          <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu"
-                    xPosition="before">
+          <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
             <button mat-menu-item i18n="Import@@RuleImportButton" (click)="validateTransaction()"
-                    [disabled]="isNotOpen$ | async"> {{ 'COLLECT.VALIDATE_ACTION' | translate }}
+              [disabled]="isNotOpen$ | async"> {{ 'COLLECT.VALIDATE_ACTION' | translate }}
             </button>
-
             <button mat-menu-item i18n="Export@@RuleExportButton" (click)="sendTransaction()"
-                    [disabled]="isNotReady$ | async">{{ 'COLLECT.INGEST_ACTION' | translate }}
+              [disabled]="isNotReady$ | async">{{ 'COLLECT.INGEST_ACTION' | translate }}
             </button>
-          </mat-menu>
+          </vitamui-common-menu-button>
         </div>
       </div>
 
@@ -124,7 +118,8 @@
       <div class="row" *ngIf="!pending">
         <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{ 'COLLECT.SHOW_SEARCH_CRITERIA' |
           translate }}</a>
-        <a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
+        <a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited"
+          (click)="showHideFacets(true)">{{
           'COLLECT.COMPUTE_RULES_FACETS' | translate
           }}</a>
       </div>

@@ -66,7 +66,7 @@
       "ADD_FILE_DESCRIPTION": "Max size: 1 GB"
     },
     "TITLE_SEARCH": "Search : ",
-    "TITLE_SEARCH_AREA": "Ingest project",
+    "TITLE_SEARCH_AREA": "Searching by title or description",
     "TITLE_TRANSACTIONS_MONITORING": "Transaction monitoring",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
     "INGEST_ACTION": "Ingest",

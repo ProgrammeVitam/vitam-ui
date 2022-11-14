@@ -88,6 +88,10 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
 
   // Manage Archive Units
 
+  getCollectUnitById(unitId: string, headers?: HttpHeaders) {
+    return this.http.get<any>(this.apiUrl + '/archive-units/archiveunit/' + unitId, {headers});
+  }
+
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, tranasctionId: string, headers?: HttpHeaders): Observable<SearchResponse> {
     return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${tranasctionId}/search`, criteriaDto, {headers});
   }

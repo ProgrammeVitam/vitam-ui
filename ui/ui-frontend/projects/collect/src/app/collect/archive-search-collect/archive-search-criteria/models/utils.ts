@@ -1,5 +1,5 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,40 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+/**
+ * This class is used as a tuple of 2 values to represent a Pair structure. 
+ * Both key and value have the native object type in order to apply polymorphism 
+ * on the wanted types!
+ */
+export class Pair {
+  key: Object;
+  value: Object;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
-public class ManagementDto {
-
-    @JsonProperty("AppraisalRule")
-    private RuleCategoryVitamUiDto appraisalRule;
-
-    @JsonProperty("HoldRule")
-    private RuleCategoryVitamUiDto holdRule;
-
-    @JsonProperty("StorageRule")
-    private RuleCategoryVitamUiDto storageRule;
-
-    @JsonProperty("ReuseRule")
-    private RuleCategoryVitamUiDto reuseRule;
-
-    @JsonProperty("ClassificationRule")
-    private RuleCategoryVitamUiDto classificationRule;
-
-    @JsonProperty("DisseminationRule")
-    private RuleCategoryVitamUiDto disseminationRule;
-
-    @JsonProperty("AccessRule")
-    private RuleCategoryVitamUiDto accessRule;
-
-    @JsonProperty("UpdateOperation")
-    private UpdateOperationDto updateOperationDto;
+  constructor(key: Object, value: Object) {
+    this.key = key;
+    this.value = value;
+  }
 }
+
+/**
+ * Specify here the vitam internal fields for all models to communize use
+ * and optimize code !
+ */
+export enum VitamInternalFields {
+  
+  // UNITS
+  ID = '#id',
+  MANAGEMENT = '#management',
+  ALL_UNIT_UPS = '#allunitups',
+  UNIT_UPS = '#unitups',
+  OPI = '#opi',
+  UNIT_TYPE = '#unitType'
+}
+

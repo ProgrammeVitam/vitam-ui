@@ -197,6 +197,19 @@ public class TransactionArchiveUnitInternalService {
             vitamContext);
     }
 
+    public ResultsDto findArchiveUnitById(String id, VitamContext vitamContext) throws VitamClientException {
+        try {
+            LOGGER.debug("Archive Unit Id : {}", id);
+            String re = StringUtils
+                .chop(collectService.findUnitById(id, vitamContext).toJsonNode().get("$results").toString()
+                    .substring(1));
+            return objectMapper.readValue(re, ResultsDto.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Can not get the archive unit {} ", e);
+            throw new VitamClientException("Unable to find the UA", e);
+        }
+    }
+
     public static String getArchiveUnitTitle(ArchiveUnit archiveUnit) {
         if (archiveUnit == null) {
             return null;

@@ -75,6 +75,7 @@ import { ConfirmActionModule } from './archive-search-criteria/components/search
 import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
 import { ClassificationTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/classification-tree/classification-tree.component';
 import { MatTreeModule } from '@angular/material/tree';
+import { LeavesTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/leaves-tree/leaves-tree.component';
 
 @NgModule({
   imports: [
@@ -121,7 +122,8 @@ import { MatTreeModule } from '@angular/material/tree';
     SearchCriteriaSaverComponent,
     SearchCriteriaListComponent,
     FilingHoldingSchemeComponent,
-    ClassificationTreeComponent
+    ClassificationTreeComponent,
+    LeavesTreeComponent
   ],
 })
 export class ArchiveSearchCollectModule { }

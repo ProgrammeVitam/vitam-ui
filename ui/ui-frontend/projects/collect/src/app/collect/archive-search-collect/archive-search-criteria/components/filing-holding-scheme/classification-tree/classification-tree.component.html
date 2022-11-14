@@ -62,12 +62,6 @@
     {{'COLLECT.FILING_SCHEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate}}
   </div>
 
-  <div class="tree-text">
-    <a *ngIf="hasMatchesInSearch" class="tree-show-link"
-       (click)="onViewSwitched()">
-      {{(this.showEveryNodes ? 'COLLECT.FILING_SCHEMA.SHOW_TREE_PARENT' : 'COLLECT.FILING_SCHEMA.SHOW_ENTIRE_TREE') | translate}}
-    </a>
-  </div>
 </div>
 
 <div *ngIf="loadingHolding">

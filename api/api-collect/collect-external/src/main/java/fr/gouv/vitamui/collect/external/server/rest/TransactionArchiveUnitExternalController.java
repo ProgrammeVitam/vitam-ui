@@ -28,21 +28,26 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,6 +74,7 @@ public class TransactionArchiveUnitExternalController {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(TransactionArchiveUnitExternalController.class);
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
+    private static final String MANDATORY_IDENTIFIER = "The identifier is a mandatory parameter: ";
     private final TransactionArchiveUnitExternalService transactionArchiveUnitExternalService;
 
     @Autowired
@@ -103,6 +109,16 @@ public class TransactionArchiveUnitExternalController {
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling export to csv search archive Units By Criteria {} ", query);
         return transactionArchiveUnitExternalService.exportCsvArchiveUnitsByCriteria(transactionId, query);
+    }
+
+    @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("the UA by id {} ", id);
+        return transactionArchiveUnitExternalService.findUnitById(id);
     }
 
 }
