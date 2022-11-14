@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +55,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
 import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_MANDATORY_PARAMETER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 
 @Api(tags = "Collect")
 @RestController
@@ -118,6 +121,17 @@ public class TransactionController extends AbstractUiRestController {
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .header("Content-Disposition", "attachment")
             .body(exportedCsvResult);
+    }
+
+    @ApiOperation(value = "Find the Archive Unit Details")
+    @GetMapping(ARCHIVE_UNITS + ARCHIVE_UNIT_INFO + PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find the Archive Unit with ID {}", id);
+        return transactionService.findUnitById(id, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Send transaction operation")

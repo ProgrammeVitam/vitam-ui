@@ -34,11 +34,13 @@ import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Getter
@@ -63,6 +65,10 @@ public class TransactionArchiveUnitExternalService extends
 
     public Resource exportCsvArchiveUnitsByCriteria(String transactionId, final SearchCriteriaDto query) {
         return collectTransactionInternalRestClient.exportCsvArchiveUnitsByCriteria(transactionId, query, getInternalHttpContext());
+    }
+
+    public ResponseEntity<ResultsDto> findUnitById(String id) {
+        return collectTransactionInternalRestClient.findUnitById(id, getInternalHttpContext());
     }
 
     @Override

@@ -32,6 +32,7 @@ import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,10 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
 
     public CollectTransactionDto updateTransaction(ExternalHttpContext context, CollectTransactionDto transactionDto) {
         return collectTransactionExternalRestClient.updateTransaction(context, transactionDto);
+    }
+
+    public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
+        return collectTransactionExternalRestClient.findUnitById(id, context);
     }
 
 

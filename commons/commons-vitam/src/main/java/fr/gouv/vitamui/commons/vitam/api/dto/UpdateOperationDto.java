@@ -1,5 +1,5 @@
 /**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -45,29 +44,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ManagementDto {
+public class UpdateOperationDto {
 
-    @JsonProperty("AppraisalRule")
-    private RuleCategoryVitamUiDto appraisalRule;
-
-    @JsonProperty("HoldRule")
-    private RuleCategoryVitamUiDto holdRule;
-
-    @JsonProperty("StorageRule")
-    private RuleCategoryVitamUiDto storageRule;
-
-    @JsonProperty("ReuseRule")
-    private RuleCategoryVitamUiDto reuseRule;
-
-    @JsonProperty("ClassificationRule")
-    private RuleCategoryVitamUiDto classificationRule;
-
-    @JsonProperty("DisseminationRule")
-    private RuleCategoryVitamUiDto disseminationRule;
-
-    @JsonProperty("AccessRule")
-    private RuleCategoryVitamUiDto accessRule;
-
-    @JsonProperty("UpdateOperation")
-    private UpdateOperationDto updateOperationDto;
+    @JsonProperty("SystemId")
+    private String systemId;
 }

@@ -50,7 +50,6 @@ public class ProjectArchiveUnitService extends AbstractPaginateService<CollectPr
         this.collectExternalRestClient = collectExternalRestClient;
     }
 
-
     @Override
     protected Integer beforePaginate(final Integer page, final Integer size) {
         return commonService.checkPagination(page, size);

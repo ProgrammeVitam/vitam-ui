@@ -57,7 +57,6 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
 
-
 public class CollectExternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectProjectDto, ExternalHttpContext> {
 
@@ -155,8 +154,6 @@ public class CollectExternalRestClient
         checkResponse(response);
         return response.getBody();
     }
-
-
 
     public CollectTransactionDto getLastTransactionForProjectId(String id, ExternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =

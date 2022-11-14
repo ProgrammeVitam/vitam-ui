@@ -249,6 +249,12 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.searchUnitApiService.getById(unitId, headers)
   }
 
+  getCollectUnitDetails(unitId: string, accessContract: string) : Observable<Unit> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.transactionApiService.getCollectUnitById(unitId, headers)
+  }
+
   private buildNestedTreeLevels(arr: any[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
     const out: FilingHoldingSchemeNode[] = [];
 

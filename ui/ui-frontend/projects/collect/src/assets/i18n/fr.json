@@ -87,7 +87,7 @@
       "ADD_FILE_DESCRIPTION": "Poids maximal conseillé: 1 GB"
     },
     "TITLE_SEARCH": "Recherche : ",
-    "TITLE_SEARCH_AREA": "Projet de versement",
+    "TITLE_SEARCH_AREA": "Recherche par intitulé ou description ",
     "TITLE_TRANSACTIONS_MONITORING": "Suivi des versements du project",
     "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
     "INGEST_ACTION": "Verser",

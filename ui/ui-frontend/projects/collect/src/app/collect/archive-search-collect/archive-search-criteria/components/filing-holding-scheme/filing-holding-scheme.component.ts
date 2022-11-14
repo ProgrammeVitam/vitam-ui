@@ -28,11 +28,12 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
-import { FilingHoldingSchemeNode, StartupService } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeNode, StartupService } from 'ui-frontend-common';
 import { Unit } from '../../../../core/models/unit.interface';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { NodeData } from '../../models/nodedata.interface';
-import { ResultFacet } from '../../models/search.criteria';
+import { PagedResult, ResultFacet, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { Pair, VitamInternalFields } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 
@@ -43,7 +44,7 @@ import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() accessContract: string;
-  @Input() projectId: string;
+  @Input() transactionId: string;
 
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
@@ -59,8 +60,9 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   loadingHolding = true;
   node: string;
   nodeData: NodeData;
-  hasMatchesInSearch = false;
+  projectHasRattachmentUnit = false;
   fullNodes: FilingHoldingSchemeNode[] = [];
+  unitsResults: Unit[] = [];
   showEveryNodes = true;
   requestResultFacets: ResultFacet[];
   loadingArchiveUnit: { [key: string]: boolean } = {
@@ -111,20 +113,77 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
       this.archiveSharedDataService.getFacets().subscribe((facets) => {
         if (facets && facets.length > 0) {
           this.requestResultFacets = facets;
-          this.hasMatchesInSearch = true;
-          for (const node of this.nestedDataSourceFull.data) {
-            FilingHoldingSchemeHandler.setCountRecursively(node, facets);
-          }
+          // Re-init attachment units to render children by criteria
+          this.nestedDataSourceLeaves.data.forEach(node => {
+            node.toggled = undefined;
+            node.children = [];
+          });
         } else {
-          this.hasMatchesInSearch = false;
-          for (const node of this.nestedDataSourceFull.data) {
-            node.count = 0;
-            node.hidden = true;
-          }
+          this.requestResultFacets = [];
         }
-        this.filterNodesToLeavesOnly();
       })
     );
+  }
+
+  addToSearchCriteria(node: FilingHoldingSchemeNode) {
+    this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
+    FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
+    FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.id);
+    this.archiveSharedDataService.emitNode(this.nodeData);
+  }
+
+  initialRattachementUnitIdsState() {
+    const sortingCriteria = { criteria: "Title", sorting: Direction.ASCENDANT };
+    const criteriaWithId: SearchCriteriaEltDto = {
+      criteria: "#management.UpdateOperation.SystemId",
+      values: [{ id: "true", value: "true" }],
+      category: SearchCriteriaTypeEnum.FIELDS,
+      operator: CriteriaOperator.EXISTS,
+      dataType: CriteriaDataType.STRING,
+    };
+    const searchCriteria = {
+      criteriaList: Array.of(criteriaWithId),
+      pageNumber: 0,
+      size: 100,
+      sortingCriteria,
+      trackTotalHits: false,
+      computeFacets: false,
+    };
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId, this.accessContract)
+      .subscribe((pagedResult: PagedResult) => {
+        this.filterNodesToLeavesOnly(pagedResult.results);
+      });
+  }
+
+  private filterNodesToLeavesOnly(attachmenUnitsFromCollect: Unit[]) {
+    let list: any[] = [];
+    const unflattedNodes = FilingHoldingSchemeHandler.unflatAndFilterTreeNodes(this.fullNodes, attachmenUnitsFromCollect);
+    unflattedNodes.forEach((unitParent) => {
+      const collectAttachmentUnit = attachmenUnitsFromCollect.find(
+        unitFromCollect => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId == unitParent.id);
+      if (collectAttachmentUnit) {
+        const outNode: FilingHoldingSchemeNode = {
+          id: collectAttachmentUnit[VitamInternalFields.ID],
+          title: unitParent.title,
+          type: collectAttachmentUnit.DescriptionLevel,
+          children: [],
+          vitamId: unitParent.id,
+          checked: false,
+          hidden: false
+        };
+        let unitsresults: Unit[] = []
+        FilingHoldingSchemeHandler.addChildrenRecursively(Array.of(outNode), unitsresults);
+        list.push(outNode);
+      }
+    });
+    if (list.length > 0) {
+      this.projectHasRattachmentUnit = true;
+      this.nestedDataSourceLeaves.data = list;
+      this.showEveryNodes = true;
+    } else {
+      this.nestedDataSourceLeaves.data = [];
+      this.showEveryNodes = false;
+    }
   }
 
   private initialNodesState(): void {
@@ -133,6 +192,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
         if (nodes) {
           this.fullNodes = nodes;
           this.switchViewAllNodes();
+          this.initialRattachementUnitIdsState();
         }
       })
     );
@@ -162,18 +222,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     });
   }
 
-  filterNodesToLeavesOnly() {
-    let leaves: FilingHoldingSchemeNode[] = [];
-    for (const node of this.fullNodes) {
-      const filtredNode = FilingHoldingSchemeHandler.buildRecursiveTree(node);
-      if (filtredNode != null) {
-        leaves = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(filtredNode);
-      }
-    }
-    this.nestedDataSourceLeaves.data = [...leaves];
-    this.showEveryNodes = false;
-  }
-
   switchViewAllNodes() {
     this.showEveryNodes = !this.showEveryNodes;
   }
@@ -182,13 +230,25 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.archiveSharedDataService.emitToggle(false);
   }
 
-  fetchUaFromNodeAndShowDetails(archiveUnitId: string, from: string) {
+  /**
+   * The param "archiveUniParams" is a Pair of a string that refers to AU ID and a boolean
+   * that refers to the type of the AU wich is a collect unit or Vitam unit :
+   * (auId : string, isCollectUnit : boolean)
+   * @param archiveUniParams
+   * @param from
+   */
+  fetchUaFromNodeAndShowDetails(archiveUniParams: Pair, from: string) {
     this.loadingArchiveUnit[from] = true;
     this.subscriptions.add(
-      this.archiveService.getReferentialUnitDetails(archiveUnitId, this.accessContract).subscribe((searchResponse) => {
-        this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
-        this.loadingArchiveUnit[`${from}`] = false;
-      })
+      Boolean(archiveUniParams.value) ?
+        this.archiveService.getCollectUnitDetails(archiveUniParams.key.toString(), this.accessContract).subscribe((unit) => {
+          this.showArchiveUnitDetails.emit(unit);
+          this.loadingArchiveUnit[`${from}`] = false;
+        }) :
+        this.archiveService.getReferentialUnitDetails(archiveUniParams.key.toString(), this.accessContract).subscribe((searchResponse) => {
+          this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
+          this.loadingArchiveUnit[`${from}`] = false;
+        })
     );
   }
 }

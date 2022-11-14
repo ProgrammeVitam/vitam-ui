@@ -25,14 +25,14 @@
  * accept its terms.
  */
 
-import {HttpErrorResponse} from '@angular/common/http';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, merge, Subject, Subscription} from 'rxjs';
-import {debounceTime, map, mergeMap} from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, merge, Subject, Subscription } from 'rxjs';
+import { debounceTime, map, mergeMap } from 'rxjs/operators';
 import {
   AccessContract,
   CriteriaDataType,
@@ -278,7 +278,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         this.foundAccessContract = true;
         this.fetchVitamAccessContract();
         if (this.archiveUnits.length === 0) {
-          this.searchArchiveUnits(false);
+          this.searchArchiveUnits(true);
         }
       } else {
         this.errorMessageSub = this.translateService
@@ -329,6 +329,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   private searchArchiveUnits(includeFacets: boolean) {
+    if (includeFacets) {
+      this.pendingComputeFacets = true;
+      this.showingFacets = false;
+    }
+    // Prepare criteria and store them to use for lateral panel
     this.pending = true;
     const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
     const searchCriteria = {
@@ -339,10 +344,19 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       trackTotalHits: false,
       computeFacets: includeFacets,
     };
+    this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
     this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction.id, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
+        if (includeFacets) {
+          this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
+          this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
+          this.pendingComputeFacets = false;
+          this.rulesFacetsComputed = true;
+        }
         if (this.currentPage === 0) {
           this.archiveUnits = pagedResult.results;
+          this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
+          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
           this.hasResults = true;
           this.totalResults = pagedResult.totalResults;
         } else {
@@ -351,7 +365,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
           }
         }
-
         this.pageNumbers = pagedResult.pageNumbers;
 
         this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
@@ -373,6 +386,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         this.logger.error('Error message :', error.message);
         this.canLoadMore = false;
         this.pending = false;
+        if (includeFacets) {
+          this.pendingComputeFacets = false;
+          this.archiveExchangeDataService.emitFacets([]);
+        }
       }
     );
   }
@@ -873,3 +890,4 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     });
   }
 }
+

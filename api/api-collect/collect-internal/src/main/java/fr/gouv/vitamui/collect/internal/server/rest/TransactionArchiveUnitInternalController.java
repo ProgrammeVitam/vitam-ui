@@ -42,11 +42,13 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +58,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
@@ -114,6 +117,20 @@ public class TransactionArchiveUnitInternalController {
             transactionArchiveUnitInternalService
                 .exportToCsvSearchArchiveUnitsByCriteria(transactionId, searchQuery, vitamContext);
         return new ResponseEntity<>(exportedResult, HttpStatus.OK);
+    }
+
+    @GetMapping(ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    public ResultsDto findUnitById(final @PathVariable("id") String id,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker
+            .checkParameter("The Id and the accessContract Id are mandatory parameters: ",
+                id, accessContractId);
+        SanityChecker.checkSecureParameter(id, accessContractId);
+        LOGGER.debug("UA Details  {}", id);
+        VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return transactionArchiveUnitInternalService.findArchiveUnitById(id, vitamContext);
     }
 
 }
