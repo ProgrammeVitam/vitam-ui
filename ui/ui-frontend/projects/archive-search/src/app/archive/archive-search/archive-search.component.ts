@@ -505,11 +505,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       pageNumber: 0,
       size: 1,
       sortingCriteria,
-      trackTotalHits: false,
+      trackTotalHits: this.totalResults > 10000,
       computeFacets: true,
     };
-
-    this.loadExactCount();
 
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {

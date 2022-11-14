@@ -78,7 +78,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     private translateService: TranslateService,
     private externalParameterService: ExternalParametersService,
     private bytesPipe: BytesPipe,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: VitamUISnackBarService
   ) {
     super(http, accessionRegisterApiService, 'ALL');
   }
@@ -90,7 +90,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
         this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.STORED_AND_UPDATED),
         this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.UNSTORED)
       ),
-      map(([ storedAndCompleted, storedAndUpdated, unstored ]) => {
+      map(([storedAndCompleted, storedAndUpdated, unstored]) => {
         const data = [
           { value: AccessionRegisterStatus.STORED_AND_COMPLETED, label: storedAndCompleted },
           { value: AccessionRegisterStatus.STORED_AND_UPDATED, label: storedAndUpdated },
@@ -126,8 +126,8 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
             message: 'SNACKBAR.EXPORT_CSV_LIMIT_REACHED',
             icon: 'vitamui-icon vitamui-icon-admin-key',
             translateParams: {
-              limit: '10 000'
-            }
+              limit: '10 000',
+            },
           });
         }
       }
@@ -160,28 +160,28 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     const stateFacetDetails: FacetDetails[] = [];
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OPERATION_ENTRIES'),
-      totalResults: this.totalElements,
+      totalResults: this.totalElements.toString(),
       clickable: false,
       color: Colors.BLACK,
       backgroundColor: Colors.DISABLED,
     });
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_UNITS'),
-      totalResults: accessionRegisterStats.totalUnits,
+      totalResults: accessionRegisterStats.totalUnits.toString(),
       clickable: false,
       color: Colors.BLACK,
       backgroundColor: Colors.DISABLED,
     });
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS_GROUP'),
-      totalResults: accessionRegisterStats.totalObjectsGroups,
+      totalResults: accessionRegisterStats.totalObjectsGroups.toString(),
       clickable: false,
       color: Colors.BLACK,
       backgroundColor: Colors.DISABLED,
     });
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS'),
-      totalResults: accessionRegisterStats.totalObjects,
+      totalResults: accessionRegisterStats.totalObjects.toString(),
       clickable: false,
       color: Colors.BLACK,
       backgroundColor: Colors.DISABLED,

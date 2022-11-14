@@ -112,7 +112,8 @@ public class ArchiveSearchInternalController {
         final ObjectMapper objectMapper,
         final ArchiveSearchUnitExportCsvInternalService archiveSearchUnitExportCsvInternalService,
         final ExportDipInternalService exportDipInternalService,
-        TransferVitamOperationsInternalService transferVitamOperationsInternalService, final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService,
+        TransferVitamOperationsInternalService transferVitamOperationsInternalService,
+        final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService,
         final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService) {
         this.archiveInternalService = archiveInternalService;
         this.securityService = securityService;
@@ -198,9 +199,9 @@ public class ArchiveSearchInternalController {
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         return Mono.<Resource>fromCallable(() -> {
-            Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
-            return new InputStreamResource((InputStream) response.getEntity());
-        }).subscribeOn(Schedulers.boundedElastic())
+                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
+                return new InputStreamResource((InputStream) response.getEntity());
+            }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
                 .ok().cacheControl(CacheControl.noCache())
                 .body(resource)));
@@ -398,7 +399,8 @@ public class ArchiveSearchInternalController {
         VitamClientException {
 
         LOGGER.debug("[INTERNAL] : Transfer Acknowledgment Operation");
-        ParameterChecker.checkParameter("The access contract and the fileName are mandatory parameters: ", accessContractId,
+        ParameterChecker.checkParameter("The access contract and the fileName are mandatory parameters: ",
+            accessContractId,
             originalFileName);
         SanityChecker.isValidFileName(originalFileName);
         SanityChecker.checkSecureParameter(accessContractId);

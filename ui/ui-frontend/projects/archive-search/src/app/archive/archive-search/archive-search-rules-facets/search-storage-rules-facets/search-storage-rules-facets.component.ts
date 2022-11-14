@@ -40,6 +40,8 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Colors } from 'ui-frontend-common';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import { ArchiveFacetsService } from '../../../common-services/archive-facets.service';
+import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleFacets } from '../../../models/search.criteria';
 
 @Component({
@@ -48,13 +50,16 @@ import { RuleFacets } from '../../../models/search.criteria';
   styleUrls: ['./search-storage-rules-facets.component.scss'],
 })
 export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private translateService: TranslateService, private datePipe: DatePipe) {}
+  constructor(private facetsService: ArchiveFacetsService, private translateService: TranslateService, private datePipe: DatePipe) {}
 
   @Input()
   storageRuleFacets: RuleFacets;
 
   @Input()
   totalResults: number;
+
+  @Input()
+  exactCount: boolean;
 
   dateFilterValue: string;
   rulesFacetDetails: FacetDetails[] = [];
@@ -64,22 +69,23 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
   finalActionsFacetsValues: Map<string, number>;
 
   ngOnInit(): void {}
+
   ngOnChanges(): void {
     this.finalActionsFacetsValues = new Map();
     this.rulesFacetDetails = [];
     this.expiredRulesFacetDetails = [];
     this.finalActionFacetDetails = [];
     this.archiveUnitsCountFacetDetails = [];
+    let archiveUnitWithRules = 0;
     if (this.storageRuleFacets) {
-      this.handleWaitingToRecalculateRulesFacets();
+      archiveUnitWithRules = this.handleWaitingToRecalculateRulesFacets();
       this.handleFinalActionsRulesFacets();
       this.handleRulesDisctinctsFacets();
-      this.handleRulesExpirationFacets();
+      this.handleRulesExpirationFacets(archiveUnitWithRules);
     }
   }
 
-  private handleRulesExpirationFacets() {
-    let unexpiredRulesNb = 0;
+  private handleRulesExpirationFacets(archiveUnitWithRules: number) {
     let expiredRulesNb = 0;
     this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
@@ -92,17 +98,9 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
       });
     }
 
-    if (this.storageRuleFacets.unexpiredRulesListFacets && this.storageRuleFacets.unexpiredRulesListFacets.length > 0) {
-      this.storageRuleFacets.unexpiredRulesListFacets.forEach((elt) => {
-        if (elt && elt.node && elt.node.length > 10) {
-          unexpiredRulesNb = elt.count ? elt.count : 0;
-        }
-      });
-    }
-
     this.expiredRulesFacetDetails.push({
-      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.EXPIRED'),
-      totalResults: expiredRulesNb,
+      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.EXPIRED'),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, this.exactCount, this.totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '>' + this.dateFilterValue,
@@ -110,8 +108,12 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
     });
 
     this.expiredRulesFacetDetails.push({
-      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.NOT_EXPIRED'),
-      totalResults: unexpiredRulesNb,
+      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.NOT_EXPIRED'),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(
+        archiveUnitWithRules - expiredRulesNb,
+        this.exactCount,
+        this.totalResults
+      ),
       clickable: false,
       color: Colors.GRAY,
       filter: '<' + this.dateFilterValue,
@@ -123,7 +125,11 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
     if (this.storageRuleFacets.rulesListFacets && this.storageRuleFacets.rulesListFacets.length > 0) {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.DISTINCT_RULES'),
-        totalResults: this.storageRuleFacets.rulesListFacets.length,
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(
+          this.storageRuleFacets.rulesListFacets.length,
+          this.exactCount,
+          this.totalResults
+        ),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -131,7 +137,7 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
     } else {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.DISTINCT_RULES'),
-        totalResults: 0,
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -152,7 +158,11 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
 
     this.finalActionFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.COPY'),
-      totalResults: this.finalActionsFacetsValues.get('COPY'),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(
+        this.finalActionsFacetsValues.get('COPY'),
+        this.exactCount,
+        this.totalResults
+      ),
       clickable: false,
       color: Colors.GRAY,
       backgroundColor: Colors.DISABLED,
@@ -160,7 +170,11 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
 
     this.finalActionFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.TRANSFER'),
-      totalResults: this.finalActionsFacetsValues.get('TRANSFER'),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(
+        this.finalActionsFacetsValues.get('TRANSFER'),
+        this.exactCount,
+        this.totalResults
+      ),
       clickable: false,
       color: Colors.GRAY,
       backgroundColor: Colors.DISABLED,
@@ -168,49 +182,67 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
 
     this.finalActionFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.RESTRICT_ACCESS'),
-      totalResults: this.finalActionsFacetsValues.get('RESTRICTACCESS'),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(
+        this.finalActionsFacetsValues.get('RESTRICTACCESS'),
+        this.exactCount,
+        this.totalResults
+      ),
       clickable: false,
       color: Colors.GRAY,
       backgroundColor: Colors.DISABLED,
     });
   }
 
-  private handleWaitingToRecalculateRulesFacets() {
+  private handleWaitingToRecalculateRulesFacets(): number {
+    let archiveUnitWithRules = 0;
     if (
       this.storageRuleFacets.waitingToRecalculateRulesListFacets &&
       this.storageRuleFacets.waitingToRecalculateRulesListFacets.length > 0
     ) {
-      this.storageRuleFacets.waitingToRecalculateRulesListFacets
-        .filter((elt) => elt.node === 'true')
-        .forEach((elt) => {
-          let calculatedCount = elt.count ? elt.count : 0;
-          let notCalculatedCount = this.totalResults - calculatedCount;
-          this.archiveUnitsCountFacetDetails.push({
-            title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WAITING_TO_RECALCULATE'),
-            totalResults: notCalculatedCount,
-            clickable: false,
-            color: notCalculatedCount === 0 ? Colors.GRAY : Colors.ORANGE,
-            backgroundColor: Colors.DISABLED,
-          });
-          this.archiveUnitsCountFacetDetails.push({
-            title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.CALCULATED'),
-            totalResults: calculatedCount,
-            clickable: false,
-            color: Colors.GRAY,
-            backgroundColor: Colors.DISABLED,
-          });
-        });
+      let facetComputedUnits = this.storageRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+      let computedCount = 0;
+
+      if (facetComputedUnits.length > 0) {
+        computedCount = facetComputedUnits[0].count ? facetComputedUnits[0].count : 0;
+      } else {
+        computedCount = 0;
+      }
+      let notComputedCount = '';
+      if (
+        !this.exactCount &&
+        (this.totalResults >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER || computedCount >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER)
+      ) {
+        notComputedCount = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
+      } else {
+        notComputedCount = (this.totalResults - computedCount).toString();
+      }
+
+      this.archiveUnitsCountFacetDetails.push({
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WAITING_TO_RECALCULATE'),
+        totalResults: notComputedCount,
+        clickable: false,
+        color: notComputedCount === '0' ? Colors.GRAY : Colors.ORANGE,
+        backgroundColor: Colors.DISABLED,
+      });
+      this.archiveUnitsCountFacetDetails.push({
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.CALCULATED'),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, this.exactCount, this.totalResults),
+        clickable: false,
+        color: Colors.GRAY,
+        backgroundColor: Colors.DISABLED,
+      });
+      archiveUnitWithRules = computedCount;
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WAITING_TO_RECALCULATE'),
-        totalResults: this.totalResults,
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(this.totalResults, this.exactCount, this.totalResults),
         clickable: false,
         color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.CALCULATED'),
-        totalResults: 0,
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -221,20 +253,22 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
       this.storageRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
           title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WITHOUT_RULES'),
-          totalResults: elt.count ? elt.count : 0,
+          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount, this.totalResults),
           clickable: false,
           color: Colors.GRAY,
           backgroundColor: Colors.DISABLED,
         });
+        archiveUnitWithRules -= elt.count ? elt.count : 0;
       });
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WITHOUT_RULES'),
-        totalResults: 0,
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
       });
     }
+    return archiveUnitWithRules;
   }
 }

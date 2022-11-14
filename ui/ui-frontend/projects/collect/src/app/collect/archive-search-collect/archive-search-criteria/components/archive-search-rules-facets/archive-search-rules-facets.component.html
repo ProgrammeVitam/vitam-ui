@@ -7,6 +7,7 @@
     <div *ngIf="facetsVisibles" id="facet-content">
       <app-search-storage-rules-facets
         [totalResults]="totalResults"
+        [exactCount]="exactCount"
         [storageRuleFacets]="storageRuleFacets"
       ></app-search-storage-rules-facets>
     </div>
@@ -19,6 +20,7 @@
     <div *ngIf="facetsVisibles" id="facet-content">
       <app-search-appraisal-rules-facets
         [totalResults]="totalResults"
+        [exactCount]="exactCount"
         [appraisalRuleFacets]="appraisalRuleFacets"
       ></app-search-appraisal-rules-facets>
     </div>
@@ -29,7 +31,11 @@
     </ng-template>
 
     <div *ngIf="facetsVisibles" id="facet-content">
-      <app-search-access-rules-facets [totalResults]="totalResults" [accessRuleFacets]="accessRuleFacets"></app-search-access-rules-facets>
+      <app-search-access-rules-facets
+        [exactCount]="exactCount"
+        [totalResults]="totalResults"
+        [accessRuleFacets]="accessRuleFacets"
+      ></app-search-access-rules-facets>
     </div>
   </mat-tab>
   <mat-tab>
@@ -40,6 +46,7 @@
     <div *ngIf="facetsVisibles" id="facet-content">
       <app-search-dissemination-rules-facets
         [totalResults]="totalResults"
+        [exactCount]="exactCount"
         [disseminationRuleFacets]="disseminationRuleFacets"
       ></app-search-dissemination-rules-facets>
     </div>
@@ -50,7 +57,11 @@
     </ng-template>
 
     <div *ngIf="facetsVisibles" id="facet-content">
-      <app-search-reuse-rules-facets [totalResults]="totalResults" [reuseRuleFacets]="reuseRuleFacets"></app-search-reuse-rules-facets>
+      <app-search-reuse-rules-facets
+        [exactCount]="exactCount"
+        [totalResults]="totalResults"
+        [reuseRuleFacets]="reuseRuleFacets"
+      ></app-search-reuse-rules-facets>
     </div>
   </mat-tab>
 </mat-tab-group>

@@ -70,6 +70,9 @@ export class ArchiveSearchRulesFacetsComponent implements OnInit {
   @Input()
   tenantIdentifier: number;
 
+  @Input()
+  exactCount: boolean;
+
   facetsVisibles = true;
 
   @Input()

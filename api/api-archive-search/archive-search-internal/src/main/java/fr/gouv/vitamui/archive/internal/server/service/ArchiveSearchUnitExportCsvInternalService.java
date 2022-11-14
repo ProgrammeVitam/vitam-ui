@@ -35,8 +35,8 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitCsv;
-import fr.gouv.vitamui.commons.api.dtos.ExportSearchResultParam;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.api.dtos.ExportSearchResultParam;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
@@ -208,7 +208,7 @@ public class ArchiveSearchUnitExportCsvInternalService {
                 objectMapper.treeToValue(archiveUnitsResult, VitamUISearchResponseDto.class);
             LOGGER.info("archivesResponse found {} ", archivesResponse.getResults().size());
             Set<String> originesAgenciesCodes = archivesResponse.getResults().stream().map(
-                ResultsDto::getOriginatingAgency).
+                    ResultsDto::getOriginatingAgency).
                 filter(Objects::nonNull).collect(Collectors.toSet());
 
             List<AgencyModelDto> originAgenciesFound =
@@ -216,9 +216,9 @@ public class ArchiveSearchUnitExportCsvInternalService {
             Map<String, AgencyModelDto> agenciesMapByIdentifier =
                 originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
             return archivesResponse.getResults().stream().map(
-                archiveUnit -> archiveSearchAgenciesInternalService
-                    .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
-            ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit, searchQuery.getLanguage()))
+                    archiveUnit -> archiveSearchAgenciesInternalService
+                        .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
+                ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit, searchQuery.getLanguage()))
                 .collect(Collectors.toList());
 
         } catch (IOException e) {
