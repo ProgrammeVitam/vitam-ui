@@ -24,33 +24,27 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DatePipe} from '@angular/common';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
-import {RouterTestingModule} from '@angular/router/testing';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {Observable, of} from 'rxjs';
-import {
-  BASE_URL,
-  InjectorModule,
-  LoggerModule, Transaction, TransactionStatus,
-  WINDOW_LOCATION
-} from 'ui-frontend-common';
-import {environment} from '../../../../../../archive-search/src/environments/environment';
-import {VitamUISnackBar} from '../../shared/vitamui-snack-bar';
-import {TransactionResolver} from '../transaction-resolver.service';
-import {TransactionsService} from '../transactions.service';
-import {TransactionListComponent} from './transaction-list.component';
+import { DatePipe } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
+import { BASE_URL, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'ui-frontend-common';
+import { environment } from '../../../../../../archive-search/src/environments/environment';
+import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
+import { TransactionResolver } from '../transaction-resolver.service';
+import { TransactionsService } from '../transactions.service';
+import { TransactionListComponent } from './transaction-list.component';
 
-
-const translations: any = {TEST: 'Mock translate test'};
+const translations: any = { TEST: 'Mock translate test' };
 
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
@@ -61,33 +55,45 @@ class FakeLoader implements TranslateLoader {
 describe('TransactionListComponent', () => {
   let component: TransactionListComponent;
   let fixture: ComponentFixture<TransactionListComponent>;
-  const transaction: Transaction = {id: '', projectId: '', messageIdentifier: '', status: TransactionStatus.OPEN};
+  const transaction: Transaction = {
+    id: 'transactionId',
+    projectId: 'projectId',
+    status: TransactionStatus.OPEN,
+    archivalAgreement: 'archivalAgreement',
+    messageIdentifier: 'messageIdentifier',
+    archivalAgencyIdentifier: 'archivalAgencyIdentifier',
+    transferringAgencyIdentifier: 'transferringAgencyIdentifier',
+    originatingAgencyIdentifier: 'originatingAgencyIdentifier',
+    submissionAgencyIdentifier: 'submissionAgencyIdentifier',
+    archivalProfile: 'archivalProfile',
+    comment: 'comment',
+  };
 
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
-  matDialogRefSpy.open.and.returnValue({afterClosed: () => of(true)});
+  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({afterClosed: () => of(true)});
+  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
   const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
-  const TransactionsServiceStub = jasmine.createSpyObj('TransactionsService',
+  const TransactionsServiceStub = jasmine.createSpyObj(
+    'TransactionsService',
 
     {
       sendTransaction: of({}),
       abortTransaction: of({}),
       editTransaction: of({}),
       validateTransaction: of({}),
-      search: of([transaction])
-    });
-
+      search: of([transaction]),
+    }
+  );
 
   const TransactionResolverStub = {
-
     resolve: (route: ActivatedRouteSnapshot) => {
       console.log(route);
       return of(true);
-    }
+    },
   };
 
   beforeEach(async () => {
@@ -102,21 +108,21 @@ describe('TransactionListComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         TranslateModule.forRoot({
-          loader: {provide: TranslateLoader, useClass: FakeLoader},
-        })
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
+        }),
       ],
       providers: [
         DatePipe,
-        {provide: MatDialogRef, useValue: matDialogRefSpy},
-        {provide: MatDialog, useValue: matDialogRefSpy},
-        {provide: VitamUISnackBar, useValue: snackBarSpy},
-        {provide: TransactionsService, useValue: TransactionsServiceStub},
-        {provide: TransactionResolver, useValue: TransactionResolverStub},
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MatDialog, useValue: matDialogRefSpy },
+        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: TransactionsService, useValue: TransactionsServiceStub },
+        { provide: TransactionResolver, useValue: TransactionResolverStub },
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({tenantIdentifier: 1}),
-            data: of({appId: 'COLLECT_APP'}),
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'COLLECT_APP' }),
             snapshot: {
               queryParamMap: {
                 get: () => 'project messageIdentifier',
@@ -124,13 +130,12 @@ describe('TransactionListComponent', () => {
             },
           },
         },
-        {provide: BASE_URL, useValue: '/fake-api'},
-        {provide: WINDOW_LOCATION, useValue: window.location},
-        {provide: environment, useValue: environment},
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: environment, useValue: environment },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -140,37 +145,30 @@ describe('TransactionListComponent', () => {
   });
 
   it('should create', () => {
-
     expect(component).toBeTruthy();
-
   });
 
   it('should send Transaction', () => {
     const transactionService = TestBed.inject(TransactionsService);
     component.sendTransaction(transaction);
     expect(transactionService.sendTransaction).toHaveBeenCalled();
-
   });
 
   it('should validate Transaction', () => {
-
     const transactionService = TestBed.inject(TransactionsService);
     component.validateTransaction(transaction);
     expect(transactionService.validateTransaction).toHaveBeenCalled();
-
   });
 
   it('should abort Transaction', () => {
     const transactionService = TestBed.inject(TransactionsService);
     component.abortTransaction(transaction);
     expect(transactionService.abortTransaction).toHaveBeenCalled();
-
   });
 
   it('should edit Transaction', () => {
     const transactionService = TestBed.inject(TransactionsService);
     component.editTransaction(transaction);
     expect(transactionService.editTransaction).toHaveBeenCalled();
-
   });
 });

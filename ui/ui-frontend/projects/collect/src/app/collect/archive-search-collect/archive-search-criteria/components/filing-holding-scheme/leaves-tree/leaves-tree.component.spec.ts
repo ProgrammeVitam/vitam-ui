@@ -26,20 +26,22 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { TranslateModule } from '@ngx-translate/core';
 import { DescriptionLevel } from 'projects/vitamui-library/src/lib/models/description-level.enum';
+import { of } from 'rxjs';
+import { FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { ResultFacet, SearchCriteriaDto } from '../../../models/search.criteria';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
 import { LeavesTreeComponent } from './leaves-tree.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
 
-export function newNode(currentId: string,
+export function newNode(
+  currentId: string,
   currentChildren: FilingHoldingSchemeNode[] = [],
   currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
-  currentCount?: number): FilingHoldingSchemeNode {
+  currentCount?: number
+): FilingHoldingSchemeNode {
   return {
     id: currentId,
     title: currentId,
@@ -49,7 +51,7 @@ export function newNode(currentId: string,
     children: currentChildren,
     vitamId: 'whatever',
     count: currentCount,
-  }
+  };
 }
 
 export function newTreeNode(currentId: string, count: number, currentChildren: FilingHoldingSchemeNode[] = []): FilingHoldingSchemeNode {
@@ -64,23 +66,23 @@ describe('LeavesTreeComponent', () => {
 
   let archiveServiceStub: Partial<ArchiveCollectService>;
   let archiveFacetsServicStube: Partial<ArchiveFacetsService>;
-  const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>
-    ('ArchiveSharedDataService', ['getLastSearchCriteriaDtoSubject']);
+  const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>('ArchiveSharedDataService', [
+    'getLastSearchCriteriaDtoSubject',
+  ]);
   const searchCriteria: SearchCriteriaDto = {
     pageNumber: 0,
     size: 1,
     criteriaList: [],
     sortingCriteria: null,
     trackTotalHits: false,
-    computeFacets: false
+    computeFacets: false,
   };
 
   beforeEach(async () => {
-    archiveServiceStub = {}
-    archiveFacetsServicStube = {}
+    archiveServiceStub = {};
+    archiveFacetsServicStube = {};
 
-    archiveSharedDataServiceStub.getLastSearchCriteriaDtoSubject.and.
-      returnValue(of(searchCriteria));
+    archiveSharedDataServiceStub.getLastSearchCriteriaDtoSubject.and.returnValue(of(searchCriteria));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -97,7 +99,6 @@ describe('LeavesTreeComponent', () => {
     fixture = TestBed.createComponent(LeavesTreeComponent);
     component = fixture.componentInstance;
     component.accessContract = 'accessContractForTest';
-    component.projectId = 'This is my project ID';
     component.loadingNodeUnit = true;
     nestedDataSource = new MatTreeNestedDataSource();
     nestedDataSource.data = [
@@ -109,17 +110,19 @@ describe('LeavesTreeComponent', () => {
         newTreeNode('node-0-4', 0),
       ]),
     ];
-    component.nestedDataSourceLeaves = nestedDataSource
-    resultFacets = [{ node: 'node-0', count: 1 }, { node: 'node-0-1', count: 1 }];
-    component.searchRequestResultFacets = resultFacets
+    component.nestedDataSourceLeaves = nestedDataSource;
+    resultFacets = [
+      { node: 'node-0', count: 1 },
+      { node: 'node-0-1', count: 1 },
+    ];
+    component.searchRequestResultFacets = resultFacets;
     fixture.detectChanges();
   });
 
   it('LeavesTreeComponent should be stable after creation', () => {
     expect(component).toBeTruthy();
-    expect(component.projectId).toBeDefined();
+    // expect(component.projectId).toBeDefined();
     expect(component.accessContract).toBeDefined();
     expect(component.nestedTreeControlLeaves).toBeDefined();
   });
-
 });
