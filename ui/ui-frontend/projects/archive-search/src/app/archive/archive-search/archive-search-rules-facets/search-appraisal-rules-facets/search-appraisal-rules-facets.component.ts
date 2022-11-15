@@ -176,14 +176,14 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WAITING_TO_RECALCULATE'),
         totalResults: notComputedCount,
         clickable: false,
-        color: notComputedCount === '0' ? Colors.GRAY : Colors.ORANGE,
+        color: notComputedCount === '0' ? 'gray' : 'orange',
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.CALCULATED'),
         totalResults: this.getFacetTextByExactCountFlag(computedCount, this.exactCount),
         clickable: false,
-        color: Colors.GRAY,
+        color: 'gray',
         backgroundColor: Colors.DISABLED,
       });
       archiveUnitWithRules = computedCount;
@@ -192,14 +192,14 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WAITING_TO_RECALCULATE'),
         totalResults: this.getFacetTextByExactCountFlag(this.totalResults, this.exactCount),
         clickable: false,
-        color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
+        color: this.totalResults === 0 ? 'gray' : 'orange',
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.CALCULATED'),
         totalResults: this.getFacetTextByExactCountFlag(0, this.exactCount),
         clickable: false,
-        color: Colors.GRAY,
+        color: 'gray',
         backgroundColor: Colors.DISABLED,
       });
     }
@@ -210,7 +210,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
           title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WITHOUT_RULES'),
           totalResults: this.getFacetTextByExactCountFlag(elt.count, this.exactCount),
           clickable: false,
-          color: Colors.GRAY,
+          color: 'gray',
           backgroundColor: Colors.DISABLED,
         });
         archiveUnitWithRules -= elt.count ? elt.count : 0;
@@ -220,7 +220,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WITHOUT_RULES'),
         totalResults: this.getFacetTextByExactCountFlag(0, this.exactCount),
         clickable: false,
-        color: Colors.GRAY,
+        color: 'gray',
         backgroundColor: Colors.DISABLED,
       });
     }
