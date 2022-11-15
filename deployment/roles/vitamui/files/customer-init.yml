@@ -242,6 +242,7 @@ customer-init:
         - ROLE_CLOSE_TRANSACTIONS
         - ROLE_REOPEN_TRANSACTIONS
         - ROLE_ABORT_TRANSACTIONS
+        - ROLE_GET_TRANSACTIONS
 
   # Other Default profiles for admin group
   admin-profiles:
