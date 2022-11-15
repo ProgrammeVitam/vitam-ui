@@ -10,7 +10,12 @@
       <div class="vitamui-table">
         <div class="vitamui-table-head title-text result-layout">
           <div class="col-13">
-            {{ 'COLLECT.NB_ENTRIES_TRANSACTIONS' | translate: {nb: dataSource?.length} }}
+            <ng-container *ngIf="dataSource?.length <= 1">
+              {{ 'COLLECT.SINGLE_TRANSACTION' | translate: {nb: dataSource?.length} }}
+            </ng-container>
+            <ng-container *ngIf="dataSource?.length >1 ">
+              {{ 'COLLECT.NB_ENTRIES_TRANSACTIONS' | translate: {nb: dataSource?.length} }}
+            </ng-container>
           </div>
         </div>
         <div class="vitamui-table-head">
@@ -39,7 +44,7 @@
 
         <div class="vitamui-table-body">
           <div *ngFor="let transaction of dataSource" class="vitamui-table-rows">
-            <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="vitamui-row d-flex align-items-center">
               <div class="col-1">
                 <i class="vitamui-icon vitamui-icon-flux-manuel-refus">
                   <span class="path1"></span>
@@ -79,7 +84,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
 
     <ng-template #noResults>
