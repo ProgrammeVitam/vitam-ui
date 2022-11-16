@@ -91,7 +91,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   DEFAULT_DIP_EXPORT_THRESHOLD = 100000;
   DEFAULT_ELIMINATION_THRESHOLD = 10000;
   DEFAULT_TRANSFER_THRESHOLD = 100000;
-  DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 5;
+  DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 100000;
 
   constructor(
     private archiveService: ArchiveService,
@@ -992,59 +992,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   async goToUpdateManagementRule() {
     await this.prepareToLaunchVitamAction();
-    this.selectedItemCount = this.selectedItemCountKnown();
-    if (!this.hasItemsSelected()) {
-      return;
-    }
-    // We know the count
-    if (this.bulkOperationsThreshold !== -1) {
-      // We defined a threshold
-      if (this.itemSelected > this.bulkOperationsThreshold) {
-        // error message prohibited
-        const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
-        this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
-          .afterClosed()
-          .pipe(filter((result) => !!result))
-          .subscribe(() => {});
-        this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
-      } else {
-        if (this.itemSelected > this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD) {
-          // Warning and confirmation
-
-          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-            panelClass: 'vitamui-dialog',
-          });
-          dialogConfirmActionWithImportantAllowedCountRef
-            .afterClosed()
-            .pipe(filter((result) => !!result))
-            .subscribe(() => {
-              this.updateManagementRuleWithThresholds();
-            });
-        } else {
-          // normal process
-          this.updateManagementRuleWithThresholds();
-        }
-      }
-    } else {
-      // no threshold defined
-      if (this.itemSelected > this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD) {
-        // Warning and confirmation
-        const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-        const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-          panelClass: 'vitamui-dialog',
-        });
-        dialogConfirmActionWithImportantAllowedCountRef
-          .afterClosed()
-          .pipe(filter((result) => !!result))
-          .subscribe(() => {
-            this.updateManagementRuleWithThresholds();
-          });
-      } else {
-        // normal process
-        this.updateManagementRuleWithThresholds();
-      }
-    }
+    this.updateManagementRuleWithThresholds();
   }
 
   private hasItemsSelected() {

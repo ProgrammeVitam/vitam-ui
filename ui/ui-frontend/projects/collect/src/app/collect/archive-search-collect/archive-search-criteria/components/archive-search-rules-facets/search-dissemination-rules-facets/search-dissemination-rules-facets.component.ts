@@ -104,7 +104,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
     }
 
     this.expiredRulesFacetDetails.push({
-      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.EXPIRED'),
+      title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.EXPIRED'),
       totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, this.exactCount, this.totalResults),
       clickable: false,
       color: Colors.GRAY,
@@ -113,7 +113,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
     });
 
     this.expiredRulesFacetDetails.push({
-      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.NOT_EXPIRED'),
+      title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.NOT_EXPIRED'),
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         archiveUnitWithRules - expiredRulesNb,
         this.exactCount,
@@ -129,7 +129,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
   private handleRulesDisctinctsFacets() {
     if (this.disseminationRuleFacets.rulesListFacets && this.disseminationRuleFacets.rulesListFacets.length > 0) {
       this.rulesFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.DISTINCT_RULES'),
+        title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.DISTINCT_RULES'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
           this.disseminationRuleFacets.rulesListFacets.length,
           this.exactCount,
@@ -141,7 +141,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
       });
     } else {
       this.rulesFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.DISTINCT_RULES'),
+        title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.DISTINCT_RULES'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,
@@ -175,14 +175,14 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
       }
 
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.WAITING_TO_RECALCULATE'),
+        title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.WAITING_TO_RECALCULATE'),
         totalResults: notComputedCount,
         clickable: false,
         color: notComputedCount === '0' ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.CALCULATED'),
+        title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.CALCULATED'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,
@@ -191,14 +191,14 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
       archiveUnitWithRules = computedCount;
     } else {
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.WAITING_TO_RECALCULATE'),
+        title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.WAITING_TO_RECALCULATE'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(this.totalResults, this.exactCount, this.totalResults),
         clickable: false,
         color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.CALCULATED'),
+        title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.CALCULATED'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,
@@ -209,7 +209,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
     if (this.disseminationRuleFacets.noRulesFacets && this.disseminationRuleFacets.noRulesFacets.length > 0) {
       this.disseminationRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
-          title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.WITHOUT_RULES'),
+          title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.WITHOUT_RULES'),
           totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount, this.totalResults),
           clickable: false,
           color: Colors.GRAY,
@@ -219,7 +219,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
       });
     } else {
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.WITHOUT_RULES'),
+        title: this.translateService.instant('COLLECT.FACETS.DISSEMINATION_RULE.WITHOUT_RULES'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
         clickable: false,
         color: Colors.GRAY,

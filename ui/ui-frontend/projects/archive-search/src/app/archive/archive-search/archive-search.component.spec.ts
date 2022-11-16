@@ -187,7 +187,7 @@ describe('ArchiveSearchComponent', () => {
     expect(component.DEFAULT_DIP_EXPORT_THRESHOLD).toEqual(100000);
     expect(component.DEFAULT_ELIMINATION_THRESHOLD).toEqual(10000);
     expect(component.DEFAULT_TRANSFER_THRESHOLD).toEqual(100000);
-    expect(component.DEFAULT_UPDATE_MGT_RULES_THRESHOLD).toEqual(5);
+    expect(component.DEFAULT_UPDATE_MGT_RULES_THRESHOLD).toEqual(100000);
   });
 
   describe('Submit-Click', () => {

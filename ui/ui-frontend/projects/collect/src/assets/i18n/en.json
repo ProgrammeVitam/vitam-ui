@@ -4,6 +4,7 @@
     "APP_BREADCRUMB": "Collection and Remittance Preparation",
     "NB_ENTRIES": "{{nb}} projects",
     "NB_ENTRIES_TRANSACTIONS": "{{nb}} transactions",
+    "SINGLE_TRANSACTION": "{{nb}} transaction",
     "PROJECT_LIST_TITLE": "Remittance projects",
     "INGEST_LIST_TITLE": "Ingests of project",
     "CREATE_PROJECT": "Create a remittance project",
