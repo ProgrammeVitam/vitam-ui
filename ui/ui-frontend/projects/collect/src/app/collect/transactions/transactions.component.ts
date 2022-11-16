@@ -27,7 +27,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
-import {ApplicationId, BreadCrumbData, GlobalEventService, SidenavPage, Transaction} from 'ui-frontend-common';
+import {map} from 'rxjs/operators';
+import {ApplicationId, BreadCrumbData, GlobalEventService, Project, SidenavPage, Transaction} from 'ui-frontend-common';
 import {TransactionsService} from './transactions.service';
 
 @Component({
@@ -38,7 +39,7 @@ import {TransactionsService} from './transactions.service';
 export class TransactionsComponent extends SidenavPage<any> implements OnInit {
 
   tenantIdentifier: string;
-  projectName: string;
+  projectName$: Observable<string>;
   transactions$: Observable<Transaction[]>;
   dataBreadcrumb: BreadCrumbData[];
 
@@ -48,9 +49,12 @@ export class TransactionsComponent extends SidenavPage<any> implements OnInit {
   }
 
   ngOnInit(): void {
+    const TRANSACTION_MONITORING = 'TRANSACTIONS_MONITORING';
+    this.projectName$ = this.transactionsService.getProject$()
+      .pipe(map((project: Project) => project.messageIdentifier));
     this.dataBreadcrumb = [{identifier: ApplicationId.PORTAL_APP},
       {identifier: ApplicationId.COLLECT_APP},
-      {identifier: ApplicationId.EXTERNAL_PARAM_PROFILE_APP}];
+      {identifier: TRANSACTION_MONITORING}];
     this.transactions$ = this.transactionsService.search();
 
   }

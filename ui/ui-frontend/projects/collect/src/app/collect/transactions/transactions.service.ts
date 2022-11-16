@@ -30,7 +30,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {
   DEFAULT_PAGE_SIZE, Direction,
   PageRequest,
-  PaginatedResponse,
+  PaginatedResponse, Project,
   SearchService,
   Transaction
 } from 'ui-frontend-common';
@@ -44,21 +44,24 @@ export class TransactionsService extends SearchService<Transaction> {
 
 
   transactions$: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]);
+  project$: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
+
 
   constructor(http: HttpClient, private transactionApiService: TransactionApiService, private projectApiService: ProjectsApiService) {
     super(http, transactionApiService, 'ALL');
   }
 
 
-  public getTransactionsByProjectId(projectId: string, pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT))
+  public getTransactionsByProjectId(projectId: string,
+                                    pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT))
     : Observable<PaginatedResponse<Transaction>> {
     this.pageRequest = pageRequest;
     return this.projectApiService.getTransactionsByProjectId(this.pageRequest, projectId);
 
   }
 
-  public setTransactions(transactions: Transaction[]) {
-    this.transactions$.next(transactions);
+  public getProject$(): Observable<Project> {
+    return this.project$;
   }
 
   public search(pageRequest: PageRequest = null): Observable<Transaction[]> {
@@ -84,5 +87,10 @@ export class TransactionsService extends SearchService<Transaction> {
 
   abortTransaction(id: string) {
     return this.transactionApiService.abortTransaction(id);
+  }
+
+  loadDataForTransactions(transactions: Transaction[], project: Project) {
+    this.transactions$.next(transactions);
+    this.project$.next(project);
   }
 }

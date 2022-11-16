@@ -33,7 +33,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
@@ -90,9 +90,8 @@ describe('TransactionListComponent', () => {
   );
 
   const TransactionResolverStub = {
-    resolve: (route: ActivatedRouteSnapshot) => {
-      console.log(route);
-      return of(true);
+    resolve: () => {
+      return true;
     },
   };
 

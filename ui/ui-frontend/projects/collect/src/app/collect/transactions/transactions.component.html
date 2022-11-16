@@ -5,7 +5,7 @@
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb
         [data]="dataBreadcrumb"> {{ 'COLLECT.TITLE_TRANSACTIONS_MONITORING' | translate }}
-        : {{ projectName }} </vitamui-common-title-breadcrumb>
+        : {{ projectName$ | async }} </vitamui-common-title-breadcrumb>
     </div>
     <div class="vitamui-content">
       <div>
