@@ -25,11 +25,11 @@
  * accept its terms.
  */
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
+import {combineLatest, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import {PaginatedResponse, Transaction} from 'ui-frontend-common';
+import {ProjectsService} from '../projects/projects.service';
 import {TransactionsService} from './transactions.service';
 
 @Injectable({
@@ -37,27 +37,20 @@ import {TransactionsService} from './transactions.service';
 })
 export class TransactionResolver implements Resolve<boolean> {
 
-  constructor(private transactionsService: TransactionsService, private router: Router) {
+  constructor(private transactionsService: TransactionsService, private projectService: ProjectsService) {
   }
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
     const id = route.paramMap.get('projectId');
 
-    return this.transactionsService.getTransactionsByProjectId(id)
-      .pipe(
-        take(1),
-        map((paginated: PaginatedResponse<Transaction>) => {
-          const transactions = paginated.values;
-          if (transactions) {
-            this.transactionsService.setTransactions(transactions);
-            return true;
-          } else {
-            this.router.navigate(['/']);
-
-            return false;
-          }
-        })
-      );
+    return combineLatest([this.transactionsService.getTransactionsByProjectId(id),
+      this.projectService.getProjectById(id)]).pipe(
+      map(([paginated, project]) => {
+        const transactions = paginated.values;
+        this.transactionsService.loadDataForTransactions(transactions, project);
+        return true;
+      })
+    );
   }
 
 }

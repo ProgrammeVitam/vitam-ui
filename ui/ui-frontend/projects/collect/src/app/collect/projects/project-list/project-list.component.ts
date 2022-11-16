@@ -72,7 +72,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   }
 
   searchTransactions(project: Project) {
-    this.router.navigate(['collect/transactions', project.id], {queryParams: {projectName: project.messageIdentifier}});
+    this.router.navigate(['collect/transactions', project.id]);
   }
 
   showProjectDetails(projectId: string) {

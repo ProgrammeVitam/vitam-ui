@@ -325,6 +325,10 @@
     "EXTERNAL_PARAMS": {
       "NAME": "Profil pour la création des profils paramétrage externe",
       "TOOLTIP": "Gérer et consulter l'ensemble des profils paramétrage externe"
+    },
+    "TRANSACTIONS_MONITORING": {
+      "NAME": "Suivi des versements",
+      "TOOLTIP": "Suivi des versements"
     }
   },
   "FOOTER": {
