@@ -48,5 +48,4 @@ public class TransferRequestDto implements Serializable {
     private SearchCriteriaDto searchCriteria;
     private Set<String> dataObjectVersions;
     private boolean lifeCycleLogs;
-    private Long maxSizeThreshold;
 }
