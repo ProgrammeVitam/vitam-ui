@@ -93,7 +93,7 @@
         <http.client.version>4.5.13</http.client.version>
         <http.core.version>4.4.14</http.core.version>
         <glassfish.jaxb.version>2.3.2</glassfish.jaxb.version>
-        <jackson.version>2.12.7</jackson.version>
+        <jackson.version>2.12.7.1</jackson.version>
         <jaeger.tracing.version>3.2.2</jaeger.tracing.version>
         <jakarta.xml.binding.version>2.3.2</jakarta.xml.binding.version>
         <javax.el.version.version>3.0.1-b06</javax.el.version.version>
