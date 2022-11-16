@@ -89,7 +89,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
       this.show = hidden;
     });
 
-    this.fetchUserAccessContractFromExternalParameters();
+    this.fetchUserExternalParameters();
     this.hasUpdateUnitDescriptiveMetadataPermission();
   }
 
@@ -106,7 +106,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     }
   }
 
-  fetchUserAccessContractFromExternalParameters() {
+  fetchUserExternalParameters() {
     this.accessContractSub = this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessConctractId && accessConctractId.length > 0) {
@@ -128,7 +128,6 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
           .subscribe();
       }
       const thresholdParams: any = parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD);
-
       if (thresholdParams && thresholdParams.length > 0) {
         this.bulkOperationsThreshold = Number(thresholdParams);
         this.managementRulesSharedDataService.emitBulkOperationsThreshold(Number(thresholdParams));
