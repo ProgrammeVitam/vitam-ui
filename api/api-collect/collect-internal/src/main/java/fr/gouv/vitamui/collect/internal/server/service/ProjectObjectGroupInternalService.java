@@ -46,7 +46,8 @@ public class ProjectObjectGroupInternalService {
 
     private final CollectService collectService;
     private final ObjectMapper objectMapper;
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectObjectGroupInternalService.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(ProjectObjectGroupInternalService.class);
 
     private static final String RESULTS = "$results";
 
@@ -77,4 +78,5 @@ public class ProjectObjectGroupInternalService {
             throw new InternalServerException("Unable to find the ObjectGroup", e);
         }
     }
+
 }

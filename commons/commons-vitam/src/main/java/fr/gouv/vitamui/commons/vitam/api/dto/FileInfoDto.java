@@ -37,14 +37,11 @@
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
+@Data
+@Accessors(chain = true)
 public class FileInfoDto {
 
     @JsonProperty("Filename")
