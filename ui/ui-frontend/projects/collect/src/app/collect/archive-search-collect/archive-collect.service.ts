@@ -43,7 +43,7 @@ import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AccessContract, AccessContractApiService, SearchService, Transaction } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
-import {TransactionApiService} from '../core/api/transaction-api.service';
+import { TransactionApiService } from '../core/api/transaction-api.service';
 import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, Unit } from '../core/models';
 
 @Injectable({
@@ -62,6 +62,7 @@ export class ArchiveCollectService extends SearchService<any> {
   ) {
     super(http, projectsApiService, 'ALL');
   }
+
   projectId: string;
 
   headers = new HttpHeaders();
@@ -118,7 +119,7 @@ export class ArchiveCollectService extends SearchService<any> {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
         }
         // Return other errors
-        return of({$hits: null, $results: []});
+        return of({ $hits: null, $results: [] });
       }),
       map((results) => ArchiveCollectService.buildPagedResults(results))
     );
@@ -174,16 +175,18 @@ export class ArchiveCollectService extends SearchService<any> {
     });
   }
 
-  launchDownloadObjectFromUnit(unitId: string, tenantIdentifier: number, accessContract: string) {
-    this.downloadFile(this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, accessContract, tenantIdentifier));
+  launchDownloadObjectFromUnit(unitId: string, objectId: string, tenantIdentifier: number, accessContract: string) {
+    this.downloadFile(this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, accessContract, tenantIdentifier));
   }
 
   downloadFile(url: string) {
     window.addEventListener('focus', window_focus, false);
+
     function window_focus() {
       window.removeEventListener('focus', window_focus, false);
       URL.revokeObjectURL(url);
     }
+
     location.href = url;
   }
 
@@ -243,13 +246,13 @@ export class ArchiveCollectService extends SearchService<any> {
     );
   }
 
-  getReferentialUnitDetails(unitId: string, accessContract: string) : Observable<SearchResponse> {
+  getReferentialUnitDetails(unitId: string, accessContract: string): Observable<SearchResponse> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.searchUnitApiService.getById(unitId, headers)
   }
 
-  getCollectUnitDetails(unitId: string, accessContract: string) : Observable<Unit> {
+  getCollectUnitDetails(unitId: string, accessContract: string): Observable<Unit> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.transactionApiService.getCollectUnitById(unitId, headers)
@@ -268,7 +271,7 @@ export class ArchiveCollectService extends SearchService<any> {
           title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
           type: unit.DescriptionLevel,
           children: [],
-          parents: parentNode ? [parentNode] : [],
+          parents: parentNode ? [ parentNode ] : [],
           vitamId: unit['#id'],
           checked: false,
           hidden: false,

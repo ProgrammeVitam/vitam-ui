@@ -34,11 +34,11 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction} from 'ui-frontend-common';
-import {SearchCriteriaHistory} from '../models';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction } from 'ui-frontend-common';
+import { SearchCriteriaHistory } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -82,8 +82,8 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   // Manage Object Groups
 
-  getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number): string {
-    return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  getDownloadObjectFromUnitUrl(unitId: string, objectId: string, accessContractId: string, tenantId: number): string {
+    return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}&tenantId=${tenantId}&contractId=${accessContractId}`;
   }
 
   public deletebyId(projectId: string) {
@@ -114,9 +114,9 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   }
 
   public getTransactionsByProjectId(pageRequest: PageRequest,
-                                       projectId?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Transaction>> {
+                                    projectId?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Transaction>> {
     const params = pageRequest.httpParams;
-    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, {params, headers});
+    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, { params, headers });
   }
 
   validateTransaction(id: string) {

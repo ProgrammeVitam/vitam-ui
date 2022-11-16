@@ -68,13 +68,13 @@ public class ProjectObjectGroupService extends AbstractPaginateService<CollectPr
         this.collectExternalWebClient = collectExternalWebClient;
     }
 
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, ObjectData objectData,
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String unitId, String objectId, ObjectData objectData,
         ExternalHttpContext context) {
-        LOGGER.debug("Download the Archive Unit Object with id {}", id);
+        LOGGER.debug("Download the Archive Unit Object with id {}", unitId);
 
-        ResultsDto got = findObjectById(id, context).getBody();
+        ResultsDto got = findObjectById(objectId, context).getBody();
         setObjectData(Objects.requireNonNull(got), objectData);
-        return collectExternalWebClient.downloadObjectFromUnit(id,
+        return collectExternalWebClient.downloadObjectFromUnit(unitId,
             objectData.getQualifier(),
             objectData.getVersion(),
             context);

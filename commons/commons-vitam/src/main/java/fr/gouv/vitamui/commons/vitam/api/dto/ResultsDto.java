@@ -36,28 +36,26 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
+@Accessors(chain = true)
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ResultsDto {
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
+    @JsonProperty("#id")
+    @JsonAlias({"_id"})
     private String id;
 
     @JsonProperty("Title")
@@ -88,6 +86,7 @@ public class ResultsDto {
     private Integer nbunits;
 
     @JsonProperty("#tenant")
+    @JsonAlias({"_tenant"})
     private Integer tenant;
 
     @JsonProperty("#object")
@@ -105,14 +104,14 @@ public class ResultsDto {
     @JsonProperty("#allunitups")
     private List<String> allunitups = new ArrayList<>();
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
+    @JsonProperty("#unitType")
     private String unitType;
 
     @JsonProperty("#operations")
     private List<String> operations = new ArrayList<>();
 
     @JsonProperty("#opi")
+    @JsonAlias({"_opi"})
     private String opi;
 
     @JsonProperty("#originating_agency")
@@ -146,6 +145,7 @@ public class ResultsDto {
     private String createdDate;
 
     @JsonProperty("AcquiredDate")
+    @JsonAlias({"_acd"})
     private String acquiredDate;
 
     @JsonProperty("SentDate")
@@ -170,6 +170,7 @@ public class ResultsDto {
     private FileInfoDto fileInfo;
 
     @JsonProperty("#qualifiers")
+    @JsonAlias({"_qualifiers"})
     private List<QualifiersDto> qualifiers = new ArrayList<>();
 
     @JsonProperty("SubmissionAgency")
@@ -196,47 +197,11 @@ public class ResultsDto {
     @JsonProperty("#approximate_update_date")
     private String approximateEndDate;
 
-    @JsonProperty("#id")
-    public String getId() {
-        return id;
-    }
-
-    @JsonProperty("#id")
-    public void setId(final String id) {
-        this.id = id;
-    }
-
     @JsonProperty("id")
     private void setIdV2(final String id) {
         if (this.id == null) {
             setId(id);
         }
-    }
-
-    public List<String> getUnitups() {
-        return unitups;
-    }
-
-    public void setUnitups(final List<String> unitups) {
-        this.unitups = unitups;
-    }
-
-    public List<String> getAllunitups() {
-        return allunitups;
-    }
-
-    public void setAllunitups(final List<String> allunitups) {
-        this.allunitups = allunitups;
-    }
-
-    @JsonProperty("#unitType")
-    public String getUnitType() {
-        return unitType;
-    }
-
-    @JsonProperty("#unitType")
-    public void setUnitType(final String unitType) {
-        this.unitType = unitType;
     }
 
     @JsonProperty("unitType")

@@ -80,18 +80,19 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
     @ApiOperation(value = "Download Archive Unit Object")
     @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
+    public ResponseEntity<Resource> downloadObjectFromUnit(
+        final @PathVariable("id") String unitId,
+        @QueryParam("objectId") String objectId,
         @QueryParam("tenantId") Integer tenantId,
         @QueryParam("contractId") String contractId) throws PreconditionFailedException,
         InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier, The contractId and The tenantId are mandatory parameters: ",
-            id, contractId, String.valueOf(tenantId));
-        SanityChecker.checkSecureParameter(id, contractId, String.valueOf(tenantId));
-        LOGGER.debug("Download the Archive Unit Object with Unit ID {}", id);
+            unitId, objectId, contractId, String.valueOf(tenantId));
+        SanityChecker.checkSecureParameter(unitId, contractId, String.valueOf(tenantId));
+        LOGGER.debug("Download the Archive Unit Object with Unit ID {}", unitId);
         ObjectData objectData = new ObjectData();
-        ResponseEntity<Resource> responseResource = projectObjectGroupService.downloadObjectFromUnit(id,
-            objectData,
-            buildUiHttpContext(tenantId, contractId)).block();
+        ResponseEntity<Resource> responseResource = projectObjectGroupService.downloadObjectFromUnit(unitId, objectId,
+            objectData, buildUiHttpContext(tenantId, contractId)).block();
         List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
         String fileNameHeader = isNotEmpty(objectData.getFilename())
