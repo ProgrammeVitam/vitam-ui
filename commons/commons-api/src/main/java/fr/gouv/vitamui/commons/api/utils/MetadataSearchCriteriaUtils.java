@@ -203,6 +203,9 @@ public final class MetadataSearchCriteriaUtils {
             selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
             LOGGER.debug("Final query: {}", selectMultiQuery.getFinalSelect().toPrettyString());
 
+            if (searchQuery.getThreshold() != null) {
+                selectMultiQuery.setThreshold(searchQuery.getThreshold());
+            }
         } catch (InvalidCreateOperationException ioe) {
             throw new VitamClientException("Unable to find archive units with pagination", ioe);
         } catch (InvalidParseOperationException e) {

@@ -77,7 +77,7 @@ public class ArchiveSearchEliminationInternalService {
         LOGGER.debug("Elimination action by criteria {} ", searchQuery.toString());
         JsonNode dslQuery = archiveSearchInternalService.prepareDslQuery(searchQuery, vitamContext);
         EliminationRequestBody eliminationRequestBody = null;
-        eliminationRequestBody = getEliminationRequestBody(dslQuery, searchQuery.getMaxSizeThreshold());
+        eliminationRequestBody = getEliminationRequestBody(dslQuery, searchQuery.getThreshold());
         LOGGER.debug("Elimination action final query {} ",
             JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
         RequestResponse<JsonNode> jsonNodeRequestResponse =
@@ -105,7 +105,7 @@ public class ArchiveSearchEliminationInternalService {
         LOGGER.debug("Elimination analysis by criteria {} ", searchQuery.toString());
         JsonNode dslQuery = archiveSearchInternalService.prepareDslQuery(searchQuery, vitamContext);
         EliminationRequestBody eliminationRequestBody =
-            getEliminationRequestBody(dslQuery, searchQuery.getMaxSizeThreshold());
+            getEliminationRequestBody(dslQuery, searchQuery.getThreshold());
 
         LOGGER.debug("Elimination analysis final query {} ",
             JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
