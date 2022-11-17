@@ -179,8 +179,8 @@ describe('TransferAcknowledgmentComponent', () => {
     const archiveService = TestBed.inject(ArchiveService);
     const matDialogRef = TestBed.inject(MatDialogRef);
     component.applyTransferAcknowledgment();
-    expect(archiveService.transferAcknowledgment).toHaveBeenCalledTimes(1);
-    expect(matDialogRef.close).toHaveBeenCalledTimes(1);
+    expect(archiveService.transferAcknowledgment).toHaveBeenCalled();
+    expect(matDialogRef.close).toHaveBeenCalled();
   });
 
   it('should return KO as status()', () => {
@@ -219,7 +219,7 @@ describe('TransferAcknowledgmentComponent', () => {
       fixture.detectChanges();
 
       // Then
-      expect(component.handleFileInput).toHaveBeenCalledTimes(1);
+      expect(component.handleFileInput).toHaveBeenCalled();
     });
 
     it('should have 8 buttons ', () => {
@@ -236,7 +236,7 @@ describe('TransferAcknowledgmentComponent', () => {
     it('should call MatDialogRef.close', () => {
       const matDialogSpyTest = TestBed.inject(MatDialogRef);
       component.onClose();
-      expect(matDialogSpyTest.close).toHaveBeenCalledTimes(2);
+      expect(matDialogSpyTest.close).toHaveBeenCalled();
     });
 
     it('should have 3 cdk steps', () => {
@@ -247,7 +247,7 @@ describe('TransferAcknowledgmentComponent', () => {
     it('should call close for all open dialogs', () => {
       const matDialogSpyTest = TestBed.inject(MatDialogRef);
       component.onConfirm();
-      expect(matDialogSpyTest.close).toHaveBeenCalledTimes(4);
+      expect(matDialogSpyTest.close).toHaveBeenCalled();
     });
 
     it('should have 2 lines in the last step', () => {

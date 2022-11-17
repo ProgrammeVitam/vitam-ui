@@ -142,8 +142,9 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptionDisseminationFromMainSearchCriteria =
-      this.archiveExchangeDataService.disseminationFromMainSearchCriteriaObservable.subscribe((criteria) => {
+    this.subscriptionDisseminationFromMainSearchCriteria = this.archiveExchangeDataService
+      .receiveDisseminationFromMainSearchCriteriaSubject()
+      .subscribe((criteria) => {
         if (criteria) {
           if (this.disseminationAdditionalCriteria && criteria.action === ActionOnCriteria.ADD) {
             this.disseminationAdditionalCriteria.set(criteria.valueElt.value, true);

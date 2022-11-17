@@ -125,8 +125,9 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptionAppraisalFromMainSearchCriteria = this.archiveExchangeDataService.appraisalFromMainSearchCriteriaObservable.subscribe(
-      (criteria) => {
+    this.subscriptionAppraisalFromMainSearchCriteria = this.archiveExchangeDataService
+      .receiveAppraisalFromMainSearchCriteriaSubject()
+      .subscribe((criteria) => {
         if (criteria) {
           if (criteria.action === ActionOnCriteria.ADD) {
             this.appraisalAdditionalCriteria.set(criteria.valueElt.value, true);
@@ -136,8 +137,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             }
           }
         }
-      }
-    );
+      });
   }
 
   checkBoxChange(field: string, event: any) {

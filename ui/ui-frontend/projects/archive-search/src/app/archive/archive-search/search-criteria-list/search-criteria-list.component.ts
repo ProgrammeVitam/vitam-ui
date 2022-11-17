@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
@@ -51,7 +51,7 @@ import { SearchCriteriaListService } from './search-criteria-list.service';
   templateUrl: './search-criteria-list.component.html',
   styleUrls: ['./search-criteria-list.component.css'],
 })
-export class SearchCriteriaListComponent implements OnInit {
+export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   @Output()
   storedSearchCriteriaHistory = new EventEmitter<any>();
 
@@ -59,6 +59,7 @@ export class SearchCriteriaListComponent implements OnInit {
   private readonly orderChange = new Subject<string>();
   direction: Direction = Direction.ASCENDANT;
 
+  subscriptionSearchCriteriaHistoryShared: Subscription;
   subscriptionSearchCriteriaHistory: Subscription;
   keyPressSubscription: Subscription;
 
@@ -73,7 +74,7 @@ export class SearchCriteriaListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.subscriptionSearchCriteriaHistory = this.archiveSharedDataService
+    this.subscriptionSearchCriteriaHistoryShared = this.archiveSharedDataService
       .getSearchCriteriaHistoryShared()
       .subscribe((searchCriteriaHistoryResults) => {
         if (searchCriteriaHistoryResults) {
@@ -85,13 +86,18 @@ export class SearchCriteriaListComponent implements OnInit {
     this.direction = Direction.ASCENDANT;
   }
 
+  ngOnDestroy(): void {
+    this.subscriptionSearchCriteriaHistoryShared?.unsubscribe();
+    this.subscriptionSearchCriteriaHistory?.unsubscribe();
+  }
+
   emitOrderChange() {
     this.orderChange.next();
   }
 
   getSearchCriteriaHistory() {
     this.pending = true;
-    this.searchCriteriaListService.getSearchCriteriaHistory().subscribe((data) => {
+    this.subscriptionSearchCriteriaHistory = this.searchCriteriaListService.getSearchCriteriaHistory().subscribe((data) => {
       this.searchCriteriaHistory = data;
       this.archiveSharedDataService.sort(Direction.ASCENDANT, this.searchCriteriaHistory);
       this.archiveSharedDataService.emitAllSearchCriteriaHistory(data);

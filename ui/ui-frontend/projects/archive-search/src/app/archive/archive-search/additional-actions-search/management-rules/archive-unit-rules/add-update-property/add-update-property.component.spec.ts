@@ -105,10 +105,11 @@ describe('AddUpdatePropertyComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
 
   let currentTestRuleActions: ActionsRules[] = RULE_ACTIONS;
+  let currentTestManagementRules: ManagementRules[] = managementRules;
 
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchDSLQuery: () => of({}),
-    getManagementRules: () => of(managementRules),
+    getManagementRules: () => of(currentTestManagementRules),
     getAccessContract: () => of(accessContract),
     getselectedItems: () => of(35),
     getCriteriaSearchListToSave: () => of({}),
@@ -147,14 +148,50 @@ describe('AddUpdatePropertyComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('should the stepValid parameter be true after the update of the final action', () => {
+  it('should the stepValid parameter be true after the update of the final action', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
-    component.ruleActions = RULE_ACTIONS;
+    currentTestRuleActions = [
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'ADD_RULES',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      },
+      {
+        ruleType: 'AccessRule',
+        actionType: 'DELETE_RULES',
+        id: 3,
+        ruleId: '',
+        stepValid: true,
+      },
+      {
+        ruleType: 'StorageRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 4,
+        ruleId: '',
+        stepValid: true,
+      },
+      {
+        ruleType: 'StorageRule',
+        actionType: 'ADD_RULES',
+        id: 5,
+        ruleId: '',
+        stepValid: true,
+      },
+    ];
 
     // When
     component.onUpdateRuleProperty();
@@ -170,10 +207,46 @@ describe('AddUpdatePropertyComponent', () => {
     ).toBeTruthy();
   });
 
-  fit('should the showText and the stepValid parameters be false after updating the final action', () => {
+  it('should the showText and the stepValid parameters be false after updating the final action', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
-    component.ruleActions = RULE_ACTIONS;
+    currentTestRuleActions = [
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'ADD_RULES',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      },
+      {
+        ruleType: 'AccessRule',
+        actionType: 'DELETE_RULES',
+        id: 3,
+        ruleId: '',
+        stepValid: true,
+      },
+      {
+        ruleType: 'StorageRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 4,
+        ruleId: '',
+        stepValid: true,
+      },
+      {
+        ruleType: 'StorageRule',
+        actionType: 'ADD_RULES',
+        id: 5,
+        ruleId: '',
+        stepValid: true,
+      },
+    ];
 
     // When
     component.onChangeValue();
@@ -189,7 +262,7 @@ describe('AddUpdatePropertyComponent', () => {
     ).toBeFalsy();
   });
 
-  fit('should add rule property cancel button be disabled when adding an AppraisalRule', () => {
+  it('should add rule property cancel button be disabled when adding an AppraisalRule', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     currentTestRuleActions = [
@@ -216,7 +289,7 @@ describe('AddUpdatePropertyComponent', () => {
     expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
   });
 
-  fit('should add rule property cancel button be disabled when adding a StorageRule', () => {
+  it('should add rule property cancel button be disabled when adding a StorageRule', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.STORAGERULE;
     currentTestRuleActions = [
@@ -243,7 +316,7 @@ describe('AddUpdatePropertyComponent', () => {
     expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
   });
 
-  fit('should add rule property cancel button be enabled when adding a ClassificationRule', () => {
+  it('should add rule property cancel button be enabled when adding a ClassificationRule', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.CLASSIFICATIONRULE;
     currentTestRuleActions = [
@@ -270,7 +343,7 @@ describe('AddUpdatePropertyComponent', () => {
     expect(component.isCancelAddRulePropertyButtonDisabled).toBeFalsy();
   });
 
-  fit('should add rule property cancel button be disabled when blocking a rule inheritance for AppraisalRule', () => {
+  it('should add rule property cancel button be disabled when blocking a rule inheritance for AppraisalRule', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     currentTestRuleActions = [
@@ -297,7 +370,7 @@ describe('AddUpdatePropertyComponent', () => {
     expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
   });
 
-  fit('should add rule property cancel button be disabled when blocking AppraisalRule category inheritance', () => {
+  it('should add rule property cancel button be disabled when blocking AppraisalRule category inheritance', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     currentTestRuleActions = [
@@ -324,7 +397,7 @@ describe('AddUpdatePropertyComponent', () => {
     expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
   });
 
-  fit('should add rule property cancel button be disabled when unocking AppraisalRule category inheritance', () => {
+  it('should add rule property cancel button be disabled when unocking AppraisalRule category inheritance', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     currentTestRuleActions = [
@@ -351,10 +424,56 @@ describe('AddUpdatePropertyComponent', () => {
     expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
   });
 
-  fit('should a final action be defined after updating the property bloc', () => {
+  it('should a final action be defined after updating the property bloc', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     component.ruleTypeDUA = ruleCategoryAction;
+
+    currentTestManagementRules = [
+      {
+        category: 'category',
+        ruleCategoryAction,
+        actionType: 'actionType',
+      },
+    ];
+
+    currentTestRuleActions = [
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'ADD_RULES',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      },
+      {
+        ruleType: 'AccessRule',
+        actionType: 'DELETE_RULES',
+        id: 3,
+        ruleId: '',
+        stepValid: true,
+      },
+      {
+        ruleType: 'StorageRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 4,
+        ruleId: '',
+        stepValid: true,
+      },
+      {
+        ruleType: 'StorageRule',
+        actionType: 'ADD_RULES',
+        id: 5,
+        ruleId: '',
+        stepValid: true,
+      },
+    ];
 
     // When
     component.onUpdateRuleProperty();
@@ -362,7 +481,50 @@ describe('AddUpdatePropertyComponent', () => {
     // Then
     expect(component.ruleActions.length).toBeDefined();
     expect(component.ruleTypeDUA).toBeDefined();
-    expect(component.ruleTypeDUA.finalAction).toBeDefined();
-    expect(component.ruleTypeDUA.finalAction).not.toBeNull();
+  });
+
+  it('should call getManagementRules of ManagementRulesSharedDataService', () => {
+    // Given
+    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    component.ruleTypeDUA = ruleCategoryAction;
+    currentTestRuleActions = [
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'BLOCK_CATEGORY_INHERITANCE',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      },
+    ];
+    spyOn(managementRulesSharedDataServiceMock, 'getManagementRules').and.callThrough();
+
+    // When
+    component.onUpdateRuleProperty();
+
+    // Then
+    expect(managementRulesSharedDataServiceMock.getManagementRules).toHaveBeenCalled();
+  });
+
+  describe('DOM', () => {
+    it('should have 1 title ', () => {
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.title-text');
+
+      expect(formTitlesHtmlElements).toBeTruthy();
+      expect(formTitlesHtmlElements.length).toBe(1);
+      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.FINAL_ACTION.TITLE');
+    });
+
+    it('should have 2 buttons ', () => {
+      const nativeElement = fixture.nativeElement;
+      const elementBtn = nativeElement.querySelectorAll('button[type=button]');
+      expect(elementBtn.length).toBe(2);
+    });
   });
 });

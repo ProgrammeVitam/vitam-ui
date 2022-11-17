@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 
@@ -45,13 +45,12 @@ describe('VitamUISnackbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VitamUISnackBarComponent ],
+      declarations: [VitamUISnackBarComponent],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -62,5 +61,16 @@ describe('VitamUISnackbarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('DOM', () => {
+    it('should have one button ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementBtn = nativeElement.querySelectorAll('.close-btn');
+
+      // Then
+      expect(elementBtn.length).toBe(1);
+    });
   });
 });

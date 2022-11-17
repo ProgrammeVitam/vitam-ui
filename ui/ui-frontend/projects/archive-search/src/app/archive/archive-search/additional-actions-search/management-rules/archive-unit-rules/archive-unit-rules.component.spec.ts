@@ -288,4 +288,22 @@ describe('ArchiveUnitRulesComponent', () => {
     expect(component.getActionByRuleType().length).toBe(2);
     expect(component.getActionByRuleType()).toEqual(['UPDATE_PROPERTY', 'UNLOCK_CATEGORY_INHERITANCE']);
   });
+
+  it('should call getRuleActions of ManagementRulesSharedDataService', () => {
+    spyOn(managementRulesSharedDataServiceMock, 'getRuleActions').and.callThrough();
+    // When
+    component.cancelStep(1);
+
+    // Then
+    expect(managementRulesSharedDataServiceMock.getRuleActions).toHaveBeenCalled();
+  });
+
+  it('should call getRuleActions of ManagementRulesSharedDataService', () => {
+    spyOn(managementRulesSharedDataServiceMock, 'getRuleActions').and.callThrough();
+    // When
+    component.deleteForm(1, 'ruleId', 'ADD_PROPERTY');
+
+    // Then
+    expect(managementRulesSharedDataServiceMock.getRuleActions).toHaveBeenCalled();
+  });
 });

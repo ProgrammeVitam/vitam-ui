@@ -24,15 +24,31 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
+import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';
-import { ResultFacet } from '../../models/search.criteria';
+import { PagedResult, ResultFacet } from '../../models/search.criteria';
 import { newTreeNode } from '../filing-holding-scheme.handler.spec';
 import { LeavesTreeComponent } from './leaves-tree.component';
+
+const translations: any = { TEST: 'Mock translate test' };
+
+class FakeLoader implements TranslateLoader {
+  getTranslation(): Observable<any> {
+    return of(translations);
+  }
+}
 
 describe('LeavesTreeComponent', () => {
   let component: LeavesTreeComponent;
@@ -41,17 +57,42 @@ describe('LeavesTreeComponent', () => {
   let nestedDataSource: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
   let resultFacets: ResultFacet[];
 
-  let archiveServiceStub: Partial<ArchiveService>;
-  let archiveSharedDataServiceStub: Partial<ArchiveSharedDataService>;
-  let archiveFacetsServicStube: Partial<ArchiveFacetsService>;
+  const pagedResult: PagedResult = { pageNumbers: 1, facets: [], results: [], totalResults: 1 };
+
+  const archiveServiceStub = {
+    loadFilingHoldingSchemeTree: () => of([]),
+    getOntologiesFromJson: () => of([]),
+    searchArchiveUnitsByCriteria: () => of(pagedResult),
+    hasArchiveSearchRole: () => of(true),
+    getAccessContractById: () => of({}),
+    hasAccessContractPermissions: () => of(true),
+    hasAccessContractManagementPermissions: () => of(true),
+  };
+  const archiveFacetsServicStube = {
+    extractNodesFacetsResults: () => of(),
+    extractRulesFacetsResults: () => of(),
+  };
+  const archiveSharedDataServiceStub = {
+    getLastSearchCriteriaDtoSubject: () => of(),
+  };
 
   beforeEach(async () => {
-    archiveServiceStub = {}
-    archiveSharedDataServiceStub = {}
-    archiveFacetsServicStube = {}
-
     await TestBed.configureTestingModule({
-      declarations: [ LeavesTreeComponent ],
+      imports: [
+        MatMenuModule,
+        MatTreeModule,
+        MatProgressSpinnerModule,
+        MatSidenavModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
+        }),
+        MatSnackBarModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+      ],
+      declarations: [LeavesTreeComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },
@@ -75,16 +116,187 @@ describe('LeavesTreeComponent', () => {
         newTreeNode('node-0-4', 0),
       ]),
     ];
-    component.nestedDataSourceLeaves = nestedDataSource
-    resultFacets = [ { node: 'node-0', count: 1 }, { node: 'node-0-1', count: 1 } ];
-    component.searchRequestResultFacets = resultFacets
+    component.nestedDataSourceLeaves = nestedDataSource;
+    resultFacets = [
+      { node: 'node-0', count: 1 },
+      { node: 'node-0-1', count: 1 },
+    ];
+    component.searchRequestResultFacets = resultFacets;
     fixture.detectChanges();
   });
 
+  it('component should be created', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should return true when isLoadingChildren', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'INGEST',
+      descriptionLevel: 'Item',
+      label: 'string',
+      children: [],
+      count: 55,
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: false,
+      isLoadingChildren: true,
+      paginatedChildrenLoaded: 5,
+      canLoadMoreMatchingChildren: true,
+    };
+    component.showEveryNodes = false;
+    const response = component.canLoadMoreUAForNode(filingHoldingSchemaNode);
+    expect(response).toBeFalsy();
+  });
+
+  it('should return true when count is defined', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'HoldingSchema',
+      label: 'string',
+      children: [],
+      vitamId: 'string',
+      checked: true,
+      count: 19,
+      hidden: false,
+      isLoadingChildren: false,
+      paginatedChildrenLoaded: 5,
+    };
+    const response = component.nodeHasPositiveCount(filingHoldingSchemaNode);
+    expect(response).toBeTruthy();
+  });
+
   it('LeavesTreeComponent should be stable after creation', () => {
-    expect(component).toBeFalsy();
     expect(component.showEveryNodes).toBeFalsy();
     expect(component.nestedTreeControlLeaves).toBeDefined();
   });
 
+  it('should return false when the unit type is not an Ingest', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'HoldingSchema',
+      label: 'string',
+      children: [],
+      count: 55,
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: false,
+      isLoadingChildren: false,
+      paginatedChildrenLoaded: 5,
+    };
+    const response = component.nodeIsUAWithoutChildren(1, filingHoldingSchemaNode);
+    expect(response).toBeFalsy();
+  });
+
+  it('should return false when the count is not defined', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'INGEST',
+      label: 'string',
+      children: [],
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: false,
+      isLoadingChildren: false,
+      paginatedChildrenLoaded: 5,
+    };
+    const response = component.nodeHasPositiveCount(filingHoldingSchemaNode);
+    expect(response).toBeFalsy();
+  });
+
+  it('should return true when the unit type is an Ingest', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'INGEST',
+      label: 'string',
+      children: [],
+      count: 55,
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: false,
+      isLoadingChildren: false,
+      paginatedChildrenLoaded: 5,
+    };
+    const response = component.nodeIsUAWithChildren(1, filingHoldingSchemaNode);
+    expect(response).toBeTruthy();
+  });
+
+  it('showEveryNodes should be true', () => {
+    component.showEveryNodes = false;
+    component.switchViewAllNodes();
+    expect(component.showEveryNodes).toBeTruthy();
+  });
+
+  it('should return false when the unit type is not an Ingest', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'HoldingSchema',
+      label: 'string',
+      children: [],
+      count: 55,
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: false,
+      isLoadingChildren: false,
+      paginatedChildrenLoaded: 5,
+    };
+    const response = component.nodeIsUAWithChildren(1, filingHoldingSchemaNode);
+    expect(response).toBeFalsy();
+  });
+
+  it('should return true when the unit type is an Ingest', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'INGEST',
+      descriptionLevel: 'Item',
+      label: 'string',
+      children: [],
+      count: 55,
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: false,
+      isLoadingChildren: false,
+      paginatedChildrenLoaded: 5,
+    };
+    const response = component.nodeIsUAWithoutChildren(1, filingHoldingSchemaNode);
+    expect(response).toBeTruthy();
+  });
+
+  it('should return false when isLoadingChildren', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'INGEST',
+      descriptionLevel: 'Item',
+      label: 'string',
+      children: [],
+      count: 55,
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: false,
+      isLoadingChildren: true,
+      paginatedChildrenLoaded: 5,
+    };
+    const response = component.canLoadMoreUAForNode(filingHoldingSchemaNode);
+    expect(response).toBeFalsy();
+  });
+
+  describe('DOM', () => {
+    it('should have 1 tree title ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementTitle = nativeElement.querySelectorAll('.tree-title');
+
+      // Then
+      expect(elementTitle.length).toBe(1);
+      expect(elementTitle[0].textContent).toContain('ARCHIVE_SEARCH.FILING_SHCEMA.TREE_LEAVES_TITLE');
+    });
+  });
 });
