@@ -40,19 +40,29 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { InjectorModule } from 'ui-frontend-common';
+import { CriteriaOperator, InjectorModule } from 'ui-frontend-common';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { CriteriaValue } from '../../models/search.criteria';
 import { TitleAndDescriptionCriteriaSearchComponent } from './title-and-description-criteria-search.component';
 
 describe('TitleAndDescriptionCriteriaSearchComponent', () => {
   let component: TitleAndDescriptionCriteriaSearchComponent;
   let fixture: ComponentFixture<TitleAndDescriptionCriteriaSearchComponent>;
 
+  const archiveExchangeDataServiceMock = {
+    addSimpleSearchCriteriaSubject: () => of(),
+  };
+
   beforeEach(async () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
       declarations: [TitleAndDescriptionCriteriaSearchComponent],
-      providers: [FormBuilder, { provide: MatDialog, useValue: matDialogSpy }],
+      providers: [
+        FormBuilder,
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: ArchiveSharedDataService, useValue: archiveExchangeDataServiceMock },
+      ],
       imports: [InjectorModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
@@ -63,7 +73,7 @@ describe('TitleAndDescriptionCriteriaSearchComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('component should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -71,7 +81,48 @@ describe('TitleAndDescriptionCriteriaSearchComponent', () => {
     expect(component.previousTitleDescriptionCriteriaValue).not.toBeNull();
   });
 
+  it('should not call addSimpleSearchCriteriaSubject when keyElt is null', () => {
+    // Given
+    const criteriaValue: CriteriaValue = {
+      id: 'criteriaId',
+      value: 'criteriaValue',
+    };
+    spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
+
+    // When
+    component.addCriteria(null, criteriaValue, 'labelElt', true, CriteriaOperator.EQ, true);
+
+    // Then
+    expect(archiveExchangeDataServiceMock.addSimpleSearchCriteriaSubject).not.toHaveBeenCalled();
+  });
+
   it('should emptyTitleDescriptionCriteriaForm to be not null', () => {
     expect(component.emptyTitleDescriptionCriteriaForm).not.toBeNull();
+  });
+
+  it('should call addSimpleSearchCriteriaSubject when keyElt and CriteriaValue are not null', () => {
+    // Given
+    const criteriaValue: CriteriaValue = {
+      id: 'criteriaId',
+      value: 'criteriaValue',
+    };
+    spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
+
+    // When
+    component.addCriteria('keyElt', criteriaValue, 'labelElt', true, CriteriaOperator.EQ, true);
+
+    // Then
+    expect(archiveExchangeDataServiceMock.addSimpleSearchCriteriaSubject).toHaveBeenCalled();
+  });
+
+  describe('DOM', () => {
+    it('should have 1 vitamui editable input ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementRow = nativeElement.querySelectorAll('vitamui-common-editable-input');
+
+      // Then
+      expect(elementRow.length).toBe(1);
+    });
   });
 });

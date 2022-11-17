@@ -34,14 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, Operators, Owner, SearchQuery, Tenant } from 'ui-frontend-common';
+import { BASE_URL, Operators, Owner, SearchQuery, Tenant, VitamUISnackBarService } from 'ui-frontend-common';
+
+import { EMPTY } from 'rxjs';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
-import { Type } from '@angular/core';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { TenantService } from './tenant.service';
+
+import { TranslateService } from '@ngx-translate/core';
+
+import { Type } from '@angular/core';
+
 
 const expectedTenant: Tenant = {
   id: '42',
@@ -122,16 +127,16 @@ const expectedTenants = [
 describe('TenantService', () => {
   let httpTestingController: HttpTestingController;
   let tenantService: TenantService;
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
-
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         TenantService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
       ]
     });
 
@@ -161,15 +166,17 @@ describe('TenantService', () => {
   });
 
   it('should call /fake-api/tenants and display a success message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBarService);
     tenantService.create(expectedTenant, expectedOwner.name).subscribe(
       (response: Tenant) => {
         expect(response).toEqual(expectedTenant);
-        expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-        expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: { type: 'tenantCreate', tenantName: expectedTenant.name, ownerName: expectedOwner.name },
-          duration: 10000
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.SAFE_CREATE',
+          translateParams:{
+            param1: expectedTenant.name,
+            param2: expectedOwner.name,
+          },
+          icon: 'vitamui-icon-safe'
         });
       },
       fail
@@ -180,15 +187,13 @@ describe('TenantService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBarService);
     tenantService.create(expectedTenant, expectedOwner.name).subscribe(
       fail,
       () => {
-        expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-        expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: { type: 'tenantCreateError' },
-          duration: 10000
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.SAFE_CREATE_ERROR',
+          icon: 'vitamui-icon-danger'
         });
       }
     );

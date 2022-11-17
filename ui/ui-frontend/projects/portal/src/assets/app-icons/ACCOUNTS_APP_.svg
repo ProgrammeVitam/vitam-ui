@@ -10,9 +10,9 @@
 	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
 	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
 ]>
-<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
-	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<svg version="1.1" id="Calque_1"
+     xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
 <style type="text/css">
 	.acct0{fill-rule:evenodd;clip-rule:evenodd;}
 	.acct1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
@@ -206,7 +206,7 @@
 	.acct189{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-900);}
 	.acct190{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
 	.acct191{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-600);}
-	.acct192{fill-rule:evenodd;clip-rule:evenodd;fill:#CB7EDD;}
+	.acct192{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-50);}
 	.acct193{fill:url(#ACCT_ID_5_);}
 	.acct194{fill:url(#ACCT_ID_6_);}
 	.acct195{fill:var(--vitamui-primary-900);}
@@ -457,7 +457,7 @@
 		<stop  offset="1" style="stop-color:#000000"/>
 	</linearGradient>
 	<path class="acct187" d="M75.4,170.4l-0.2,4.6h18.2l5.8-8H78.8C76.9,167,75.4,168.6,75.4,170.4z"/>
-	
+
 		<linearGradient id="ACCT_ID_4_" gradientUnits="userSpaceOnUse" x1="84.2335" y1="-565.6381" x2="84.2335" y2="-570.4886" gradientTransform="matrix(1 0 0 -1 0 -390.6143)">
 		<stop  offset="0" style="stop-color:#4C4C4C"/>
 		<stop  offset="1" style="stop-color:#000000"/>
@@ -531,7 +531,7 @@
 			c-0.1,0.6-0.2,1.2-0.2,1.9c-0.2,11.1-2.1,23.5,2.5,30.4c5.2,7.7,8.7,15.3,17.2,17c3.3,0.5,6.7,0.5,10,0c8.5-1.8,12-9.3,17.2-17
 			C127.7,61.9,125.7,49.6,125.6,38.4z"/>
 		<g>
-			
+
 				<linearGradient id="ACCT_ID_10_" gradientUnits="userSpaceOnUse" x1="-20760.0332" y1="-3493.7173" x2="-20754.7441" y2="-3479.074" gradientTransform="matrix(-1 0 0 -1 -20658 -3455.3984)">
 				<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
 				<stop  offset="1" style="stop-color:#FFFFFF"/>

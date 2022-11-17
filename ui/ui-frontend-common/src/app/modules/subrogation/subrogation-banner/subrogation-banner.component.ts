@@ -40,7 +40,7 @@ import { filter } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../auth.service';
-import { Subrogation } from '../../models';
+import { AuthUser, Subrogation  } from '../../models';
 import { SubrogationService } from '../subrogation.service';
 
 const moment = moment_;
@@ -63,7 +63,7 @@ export class SubrogationBannerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.userLoaded.pipe(filter((user) => !!user && !!user.superUser))
+    this.authService.user$.pipe(filter((user: AuthUser) => !!user.superUser))
       .subscribe(() => {
         this.subrogationService.getCurrent().pipe(filter((data) => !!data))
           .subscribe((data) => {

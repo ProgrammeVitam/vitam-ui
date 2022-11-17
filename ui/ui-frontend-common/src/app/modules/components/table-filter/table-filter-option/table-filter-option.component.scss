@@ -1,19 +1,27 @@
 :host {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    cursor: pointer;
+   > div {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        cursor: pointer;
 
-    &:hover, &:active {
-        background: rgba(var(--vitamui-primary-rgb), 0.15);
-    }
+        &.disabled {
+            pointer-events: none;
+            background-color: var(--vitamui-grey-300);
+        }
 
-    &.table-filter-option-separator:not(:first-child) {
-        border-top: 1px solid var(--vitamui-grey-300);
-    }
+        &:hover,
+        &:active {
+            background: rgba(var(--vitamui-primary-rgb), 0.15);
+        }
 
-    &.table-filter-option-separator:not(:last-child) {
-        border-bottom: 1px solid var(--vitamui-grey-300);
+        &.table-filter-option-separator:not(:first-child) {
+            border-top: 1px solid var(--vitamui-grey-300);
+        }
+
+        &.table-filter-option-separator:not(:last-child) {
+            border-bottom: 1px solid var(--vitamui-grey-300);
+        }
     }
 }
 

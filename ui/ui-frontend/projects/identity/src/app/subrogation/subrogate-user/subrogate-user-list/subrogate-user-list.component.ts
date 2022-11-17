@@ -59,12 +59,13 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
 
   @Input() emailDomains: string[];
 
+  // tslint:disable-next-line:no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
-
+  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   private groups: Array<{id: string, group: any}> = [];
@@ -100,6 +101,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
     this.refreshDataList();
     this.activatedRoute.params.subscribe(() => this.refreshDataList());
 
+    // when the list is reloaded, we retrieve the groups .
     this.updatedData.subscribe(() => {
 
       const groupIds = new Set (this.dataSource.map((subrogationUser: SubrogationUser) => subrogationUser.groupId));

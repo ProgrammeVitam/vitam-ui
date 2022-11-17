@@ -65,6 +65,11 @@ $anim-timing: 150ms ease-out;
     .mat-form-field-underline {
       display: none;
     }
+    .mat-form-field-label {
+      .mat-placeholder-required {
+        color: $red;
+      }
+    }
     .mat-icon-button {
       font-size: 25px !important;
       .mat-icon {

@@ -126,3 +126,6 @@ opentracing:
 # Password configuration
 password:
   max-old-password: {{ vitamui_password_configurations.password.max_old_password | default('12') }}
+
+address:
+  max-street-length: {{ vitamui_platform_informations.address.max_street_length }}

@@ -45,12 +45,12 @@ import fr.gouv.vitam.common.model.massupdate.RuleActions;
 import fr.gouv.vitam.common.model.massupdate.RuleCategoryAction;
 import fr.gouv.vitam.common.model.massupdate.RuleCategoryActionDeletion;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.RuleUpdateUtils;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiManagementMetadataAction;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleAction;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleActions;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleCategoryAction;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleCategoryActionDeletion;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -162,14 +162,15 @@ class RuleOperationsConverterTest {
 
             RuleAction ruleActionResult = ruleOperationsConverter.convertToVitamRuleAction(vitamUiRuleAction);
             LocalDateTime startDate =
-                LocalDateTime.parse(vitamUiRuleAction.getStartDate(), ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
+                LocalDateTime.parse(vitamUiRuleAction.getStartDate(), ArchiveSearchConsts.ISO_FRENCH_FORMATER)
+                    .withHour(0)
                     .withMinute(0).withSecond(0).withNano(0);
             vitamUiRuleAction.setStartDate(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)));
 
             assertThat(ruleActionResult)
                 .isEqualToComparingFieldByField(vitamUiRuleAction);
 
-            });
+        });
 
 
     }

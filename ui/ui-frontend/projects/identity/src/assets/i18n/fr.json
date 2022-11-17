@@ -16,18 +16,21 @@
       "NO_HISTORY": "Aucun historique"
     },
     "NEXT": "Suivant",
-    "REQUIRED": "Champ requis",
     "LANGUAGE": {
       "TITLE": "Langue",
       "ENGLISH": "Anglais",
       "FRENCH": "Français",
       "GERMAN": "Allemand"
     },
-    "REQUIRED_FIELD": "Champ requis",
-    "NAME_ALREADY_EXISTS": "Nom déjà existant",
     "ACTIVE": "actif",
     "NO_RESULT": "Aucun résultat",
-    "MORE_RESULT": "Afficher plus de résultats..."
+    "MORE_RESULT": "Afficher plus de résultats...",
+    "ERROR": {
+      "WRONG_FORMAT": "Format incorrect",
+      "STRING_MAX_LENGTH": "{{max}} caractères maximum",
+      "NAME_ALREADY_EXISTS": "Nom déjà existant",
+      "REQUIRED": "Champ requis"
+    }
   },
   "MISC": {
     "NO_DESC": "Aucune description"
@@ -66,6 +69,7 @@
       "GROUP_UPDATE": "Le groupe {{ param1 }} a bien été modifié",
       "USER_CREATE": "L'utilisateur {{ param1 }} {{ param2 }} a bien été créé",
       "USER_UPDATE": "L'utilisateur {{ param1 }} {{ param2 }} a bien été modifié",
+      "USER_DELETE": "L'utilisateur {{ param1 }} {{ param2 }} a bien été supprimé",
       "PROFILE_CREATE": "Le profil {{ param1 }} a bien été créé",
       "PROFILE_CREATE_ERROR": "Le profil administrateur {{ param1 }} a bien été créé",
       "PROFILE_UPDATE": "Le profil {{ param1 }} a bien été modifié",
@@ -74,7 +78,9 @@
       "SUBROGATION_DENIED": "Votre demande de subrogation a été refusée",
       "SUBROGATION_UNAVAILABLE": "La subrogation pour cet utilisateur est momentanément impossible",
       "ACCOUNT_UPDATE": "Les informations ont été mises à jour",
-      "OIDC_UPDATE": "Pour le protocole OIDC, ces champs doivent être renseignés : url discovery, client identifier et client secret pour que la modification aurait lieu"
+      "OIDC_UPDATE": "Pour le protocole OIDC, ces champs doivent être renseignés : url discovery, client identifier et client secret pour que la modification aurait lieu",
+      "USER_ALREADY_DELETED": "L'utilisateur que vous cherchez est déja supprimé",
+      "USER_TO_DELETE": "Un ou plusieurs utilisateur(s) inactif (s) dans votre organisation qui nécessitent l'effacement de leurs données personnelles"
     }
   },
   "CUSTOMER": {
@@ -105,7 +111,6 @@
     },
     "INFORMATIONS": {
       "CODE": "Code organisation",
-      "CODE_CREATION": "Code organisation (4 chiffres)",
       "NAME": "Nom",
       "SOCIAL_REASON": "Raison sociale",
       "INTERNAL_CODE": "Code interne",
@@ -119,7 +124,6 @@
       "VALIDATIONS_TOOLTIP": "Afin de pouvoir activer la validation en deux étapes vous devez au préalable renseigner le numéro de mobile",
       "VALIDATIONS": "Validation en deux étapes",
       "DOMAINS": "Domaines",
-      "WRONG_FORMAT": "Format incorrect (4 chiffres minimum)",
       "CODE_ALREADY_EXIST": "Code déjà existant",
       "PWD_REVOCATION_THREE": "3 mois",
       "PWD_REVOCATION_SIX": "6 mois",
@@ -132,7 +136,6 @@
         "DOMAINS_RESTRICTION": "Restriction de domaine e-mail",
         "DOMAINS_RESTRICTION_DESC": "(cliquer sur l'étiquette pour définir le domaine par défaut)",
         "DOMAINS_PLACEHOLDER": "domaine.xyz",
-        "WRONG_FORMAT": "Format incorrect (4 chiffres minimum)",
         "CODE_ALREADY_EXIST": "Code déjà existant",
         "ACCESS_TITLE": "Accès organisation",
         "PWD_REVOCATION_THREE": "3 mois",
@@ -184,7 +187,7 @@
     },
     "GRAPHIC_IDENTITY": {
       "TOGGLE_TITLE": "Identité graphique personnalisée",
-      "COLOR_TITLE": "Paramétrage des couleurs",
+      "COLOR_TITLE": "Paramètrage des couleurs",
       "LOGO_TITLE": "Gestion des logos",
       "LOGO_HEADER_TITLE": "Logo d'entête",
       "LOGO_FOOTER_TITLE": "Logo pied de page",
@@ -223,7 +226,6 @@
       "LOGBOOK_ACCESS_CONTRACT": "Contrat d'accès logbook",
       "SLIPS_INGEST_CONTRACT": "Contrat d'entrée des bordereaux",
       "NAME_ALREADY_EXIST": "Nom déjà existant",
-      "WRONG_FORMAT": "Format incorrect (6 chiffres minimum)",
       "CODE_ALREADY_EXIST": "Code déjà existant",
       "CREATE": {
         "TITLE": "Création d'un propriétaire pour",
@@ -236,7 +238,6 @@
         "SAFE_TITLE": "Création du coffre pour",
         "ACTION_BUTTON": "Créer un coffre",
         "NAME_ALREADY_EXIST": "Nom déjà existant",
-        "WRONG_FORMAT": "Format incorrect (6 chiffres minimum)",
         "CODE_ALREADY_EXIST": "Code déjà existant"
       }
     }
@@ -268,7 +269,7 @@
       "ACTION_BUTTON": "Créer un utilisateur",
       "RESULTS_TABLE": {
         "NAME": "Nom / Prénom",
-        "LAST_CONNEXION": "Dernières connexion",
+        "LAST_CONNEXION": "Dernière connexion",
         "EMPTY_LEVEL": "-Niveau vide-",
         "GROUP_LEVEL": "Niveau du groupe",
         "GROUP": "Groupe de profils",
@@ -506,6 +507,14 @@
     "EXTERNAL_PARAM_PROFILE_NAME_POPUP": "Nom du profil paramétrages externes",
     "SELECT_ACCESS_CONTRACT": "Sélectionner un contrat d'accès",
     "NOTIF_EXTERNAL_PARAM_PROFILE_CREATED": "Le profil paramétrage externe {{ name }} a bien été créé",
-    "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "Le profil paramétrage externe {{ name }} a bien été modifié"
+    "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "Le profil paramétrage externe {{ name }} a bien été modifié",
+    "MAX_BULK_OPERATIONS_THRESHOLD_TITLE": "Seuil maximal des opérations de masse autorisé",
+    "USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE": "Application des seuils de plateforme",
+    "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{threshold}} unités archivistiques",
+    "TABS": {
+      "INFORMATIONS":"Informations",
+      "THRESHOLDS":"Seuils",
+      "HISTORY":"Historique"
+    }
   }
 }

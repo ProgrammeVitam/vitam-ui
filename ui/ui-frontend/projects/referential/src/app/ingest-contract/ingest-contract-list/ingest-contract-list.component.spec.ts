@@ -34,46 +34,47 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
-import {of,Subject} from 'rxjs';
-import {IngestContractService} from '../ingest-contract.service';
-import {IngestContractListComponent} from './ingest-contract-list.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { of, Subject } from 'rxjs';
+import { IngestContractService } from '../ingest-contract.service';
+import { IngestContractListComponent } from './ingest-contract-list.component';
 
-
-describe('IngestContractListComponent',() => {
+describe('IngestContractListComponent', () => {
   let component: IngestContractListComponent;
   let fixture: ComponentFixture<IngestContractListComponent>;
 
-  const ingestContractServiceSpy={
+  const ingestContractServiceSpy = {
     search: () => of([]),
     canLoadMore: true,
     loadMore: () => of([]),
-    updated: new Subject()
+    updated: new Subject(),
   };
 
   beforeEach(
     waitForAsync(() => {
-      const ingestContractServiceMock={
+      const ingestContractServiceMock = {
         search: () => of(null),
       };
 
       TestBed.configureTestingModule({
         declarations: [IngestContractListComponent],
-        providers: [{provide: IngestContractService,useValue: ingestContractServiceMock},
-        {provide: IngestContractService,useValue: ingestContractServiceSpy}],
+        providers: [
+          { provide: IngestContractService, useValue: ingestContractServiceMock },
+          { provide: IngestContractService, useValue: ingestContractServiceSpy },
+        ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture=TestBed.createComponent(IngestContractListComponent);
-    component=fixture.componentInstance;
+    fixture = TestBed.createComponent(IngestContractListComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create',() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

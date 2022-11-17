@@ -49,7 +49,7 @@ import { ArchiveCollectService } from '../../archive-collect.service';
 @Component({
   selector: 'app-archive-unit-information-tab',
   templateUrl: './archive-unit-information-tab.component.html',
-  styleUrls: ['./archive-unit-information-tab.component.css'],
+  styleUrls: [ './archive-unit-information-tab.component.css' ],
 })
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
@@ -94,7 +94,8 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private translateService: TranslateService
-  ) {}
+  ) {
+  }
 
   descriptionLevels: Option[] = [
     { key: 'Item', label: this.translateService.instant('UNIT_UPDATE.ITEM') },
@@ -116,11 +117,11 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     // this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
 
     this.form = this.formBuilder.group({
-      title: [null, [Validators.required]],
-      description: [null],
-      descriptionLevel: [null, [Validators.required]],
-      startDate: [this.archiveUnit.StartDate],
-      endDate: [this.archiveUnit.EndDate],
+      title: [ null, [ Validators.required ] ],
+      description: [ null ],
+      descriptionLevel: [ null, [ Validators.required ] ],
+      startDate: [ this.archiveUnit.StartDate ],
+      endDate: [ this.archiveUnit.EndDate ],
     });
 
     this.previousValue = {
@@ -395,14 +396,15 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     return unit?.Description
       ? unit?.Description
       : unit.Description_
-      ? unit.Description_?.fr
         ? unit.Description_?.fr
-        : unit.Description_?.en
-      : unit.Description_?.en;
+          ? unit.Description_?.fr
+          : unit.Description_?.en
+        : unit.Description_?.en;
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit["#tenant"], this.accessContract);
+    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit['#object'], this.archiveUnit['#tenant'],
+      this.accessContract);
   }
 
   showArchiveUniteFullPath() {

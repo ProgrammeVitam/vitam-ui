@@ -35,28 +35,36 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
 import { VitamUICommonTestModule } from '../../../../../../testing/src';
 
 import { ApplicationService } from '../../../application.service';
+import { CommonMenuComponent } from '../common-menu/common-menu.component';
 import { ApplicationMenuComponent } from './application-menu.component';
 
 describe('ApplicationMenuComponent', () => {
   let component: ApplicationMenuComponent;
   let fixture: ComponentFixture<ApplicationMenuComponent>;
 
+  const applicationServiceStub = {
+    getApplications$: () => of([]),
+  };
+
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ ApplicationMenuComponent ],
+      imports: [MatDialogModule, VitamUICommonTestModule, MatMenuModule, MatSidenavModule, NoopAnimationsModule],
+      declarations: [ApplicationMenuComponent],
       providers: [
-        { provide: ApplicationService, useValue: { applications: [] } },
-      ]
-    })
-    .compileComponents();
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: ApplicationService, useValue: applicationServiceStub },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -65,7 +73,23 @@ describe('ApplicationMenuComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call open ', () => {
+    component.openApplicationMenu();
+    expect(matDialogSpy.open).toHaveBeenCalled();
+  });
+
+  it('should open a modal with CommonMenuComponent', () => {
+    component.openApplicationMenu();
+    expect(matDialogSpy.open).toHaveBeenCalledWith(CommonMenuComponent, {
+      data: {
+        menuType: 'APPLICATION',
+        applicationConfig: Object({ applications: [], categories: undefined }),
+      },
+      panelClass: 'vitamui-modal',
+    });
   });
 });

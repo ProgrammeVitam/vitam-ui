@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { of } from 'rxjs';
+import {EMPTY, of} from 'rxjs';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -54,7 +54,7 @@ describe('SubrogationBannerComponent', () => {
       imports: [MatDialogModule, VitamUICommonTestModule],
       declarations: [ SubrogationBannerComponent ],
       providers: [
-        { provide: AuthService, useValue: { userLoaded: of(null) } },
+        { provide: AuthService, useValue: { user$: of(EMPTY) } },
         { provide: SubrogationService, useValue: { getCurrent: () => of(null), stop: () => of(null) } },
       ],
       schemas: [NO_ERRORS_SCHEMA]

@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.portal.config;
 
+import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class PortalApplicationPropertiesTest {
 
-    @Autowired
-    private PortalApplicationProperties applicationProperties;
+    @MockBean
+    private CasLogoutUrl casLogoutUrl;
 
     @MockBean
-    BuildProperties buildProperties;
+    private BuildProperties buildProperties;
+
+    @Autowired
+    private PortalApplicationProperties applicationProperties;
 
     @Test
     public void testApplicationProperties() {

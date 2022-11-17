@@ -36,8 +36,10 @@
  */
 /* tslint:disable: no-use-before-declare */
 
-import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Component, ElementRef, forwardRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Option } from './option.interface';
@@ -48,25 +50,30 @@ export const VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR: any = {
   multi: true
 };
 
+export const VITAMUI_AUTOCOMPLETE_NG_VALIDATORS: any = {
+  provide: NG_VALIDATORS,
+  useExisting: forwardRef(() => VitamUIAutocompleteComponent),
+  multi: true
+};
+
 @Component({
   selector: 'vitamui-common-vitamui-autocomplete',
   templateUrl: './vitamui-autocomplete.component.html',
   styleUrls: ['./vitamui-autocomplete.component.scss'],
-  providers: [VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR]
+  providers: [VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR, VITAMUI_AUTOCOMPLETE_NG_VALIDATORS]
 })
-export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnInit {
+export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnInit, Validator {
 
   @Input()
   set options(options: Option[]) {
-    this._options = options.sort((a, b) => a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1);
+    this._options = options
+    this.sortedOption()
     this.optionsChanges.next(this._options);
 
-    if (this._options.length === 1) {
-      // Re-setting the value so the input shows the updated option's label.
-      this.control.setValue(this.control.value, { emitEvent: false });
-    } else {
-      this.control.reset(null, { emitEvent: false });
-    }
+    // Re-setting the value so the input shows the updated option's label.
+    this.control.setValue(this.control.value, { emitEvent: false });
+    this.onChange(this.control.value);
+
     this.updatePlaceholderPosition();
   }
   get options(): Option[] { return this._options; }
@@ -74,16 +81,46 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
   private _options: Option[] = [];
 
   @Input() placeholder: string;
-  @Input() required: boolean;
+
+  @Input()
+  get required(): boolean {
+    return this._required;
+  }
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
+  // tslint:disable-next-line:variable-name
+  private _required = false;
+
+  private _customSorting: (a: Option, b: Option) => number;
+  @Input()
+  set customSorting(customSorting : (a: Option, b: Option) => number) {
+    this._customSorting = customSorting
+    this.sortedOption()
+  }
+
+  get customSorting(): (a: Option, b: Option) => number {
+    return this._customSorting;
+  }
+
+  private sortedOption(){
+    if (this._customSorting){
+      this._options?.sort(this._customSorting);
+    }else {
+      this._options?.sort((a, b) => a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1);
+    }
+  }
 
   @ViewChild('input', { read: ElementRef, static: true }) inputElement: ElementRef;
 
+  @ViewChild('input', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
+
   control = new FormControl('');
-  optionsChanges = new Subject<Option[]>();
   filteredOptions: Observable<Option[]>;
   labelUp = false;
 
   private focused = false;
+  private optionsChanges = new Subject<Option[]>();
 
   constructor() { }
 
@@ -101,15 +138,29 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
         map((name) => name ? this.filter(name) : this.options.slice()),
       );
     this.filteredOptions = merge(valueChanges, this.optionsChanges);
-    this.control.valueChanges.subscribe((value) => this.onChange(value));
-    this.control.valueChanges.subscribe(() => this.updatePlaceholderPosition());
   }
 
-  onChange = (_: any) => {};
-  onTouched = () => {};
+
+  @HostListener('window:scroll', ['$event'])
+  scrollEvent = (event: any): void => {
+    if (this.autoComplete.panelOpen) {
+      this.autoComplete.updatePosition();
+    }
+  }
+
+  inputChange(value: string) {
+    this.onChange(this.findKeyByLabel(value));
+    this.updatePlaceholderPosition();
+  }
+
+  selectionChange(event: MatAutocompleteSelectedEvent) {
+    this.onChange(event?.option?.value);
+    this.updatePlaceholderPosition();
+  }
 
   writeValue(value: string) {
     this.control.setValue(value);
+    this.updatePlaceholderPosition();
   }
 
   registerOnChange(fn: any): void {
@@ -122,14 +173,13 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
 
   filter(name: string): Option[] {
     return this.options.filter((option) => {
-      return option.label ? option.label.toLowerCase().indexOf(name.toLowerCase()) === 0 : false;
+      return option.label ? option.label.toLowerCase().indexOf(name.toLowerCase()) !== -1 : false;
     });
   }
 
   displayFn(options: Option[]): (value: string) => string | undefined {
-    return (key: string) => {
+    return (key: any) => {
       const selected = options.find((option) => option.key === key);
-
       return selected ? selected.label : undefined;
     };
   }
@@ -154,12 +204,34 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
 
   onBlur() {
     this.focused = false;
+    this.onTouched();
     this.updatePlaceholderPosition();
   }
 
   onFocus() {
     this.focused = true;
+    this.optionsChanges.next(this._options);
     this.updatePlaceholderPosition();
   }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    if (!this.control.value || this.control.hasError('required')) {
+      return null;
+    }
+
+    const isOptionValid = this.isOptionValid(control.value);
+    return isOptionValid  ? null : { match: true };
+  }
+
+  private isOptionValid(value: string): boolean {
+    return this._options.filter((option) => option.key === value).length > 0;
+  }
+
+  private findKeyByLabel(value: string): string {
+    return this._options.find((option) => option.label === value)?.key || value;
+  }
+
+  private onChange = (_: any) => {};
+  private onTouched = () => {};
 
 }

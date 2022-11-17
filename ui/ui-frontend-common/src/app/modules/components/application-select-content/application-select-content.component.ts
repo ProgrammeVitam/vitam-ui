@@ -61,15 +61,15 @@ export class ApplicationSelectContentComponent {
   private _applications: Application[];
 
   @Input()
-  set categories(categories: { [categoryId: string]: Category }) {
+  set categories(categories: Category[]) {
     this._categories = categories;
     if (this._applications) {
       this.computeAppCategories();
     }
   }
-  get categories(): { [categoryId: string]: Category } { return this._categories; }
+  get categories(): Category[] { return this._categories; }
   // tslint:disable-next-line:variable-name
-  private _categories: { [categoryId: string]: Category };
+  private _categories: Category[];
 
   @Output() applicationSelected = new EventEmitter<string>();
 
@@ -83,7 +83,11 @@ export class ApplicationSelectContentComponent {
     apps.forEach((application) => {
       const app = this.authService.user.tenantsByApp.find((appToTest) => appToTest.name === application.id);
       if (app) {
-          application.hasTenantList = app.tenants && app.tenants.length > 1 && application.hasTenantList;
+        if (app.tenants && app.tenants.length > 1 && application.hasTenantList) {
+          application.hasTenantList = true;
+        } else {
+          application.hasTenantList = false;
+        }
       }
     });
   }
@@ -91,34 +95,36 @@ export class ApplicationSelectContentComponent {
   computeAppCategories() {
     const sortedApps = this._applications.sort((app1, app2) => app1.position - app2.position);
     this.categoryList = [];
-    const ids = [];
+    const identifiers = [];
 
     const defaultCategory = {
-      id: 'default',
-      title: 'Autres',
+      identifier: 'default',
+      title: 'Autres', // FIXME : MDI - handle this property when translating categories
       displayTitle: true,
       order: 99,
       applications: []
     };
     this.categoryList.push(defaultCategory);
 
-    for (const id in this._categories) {
-      if (!this._categories.hasOwnProperty(id) || id === 'default') {
-        continue;
+    // recreate categories list before assembling applications by categories
+    // add a default category in order to view applications linked to a non existent category
+    this.categories.forEach(category => {
+      if (category.identifier === 'default') {
+        // do not compute category when identifier is the default ;
+      } else {
+        const categoryTmp: any = this._categories.find(tmp => tmp.identifier === category.identifier);
+        categoryTmp.identifier = category.identifier;
+        categoryTmp.applications = [];
+        this.categoryList.push(categoryTmp);
+        identifiers.push(category.identifier);
       }
-
-      const category: any = this._categories[id];
-      category.id = id;
-      category.applications = [];
-      this.categoryList.push(category);
-      ids.push(id);
-    }
+    });
 
     this.categoryList.forEach(category => {
-      if (category.id === 'default') {
-        category.applications = sortedApps.filter((app) => !ids.includes(app.category));
+      if (category.identifier === 'default') {
+        category.applications = sortedApps.filter((app) => !identifiers.includes(app.category));
       } else {
-        category.applications = sortedApps.filter((app) => app.category === category.id);
+        category.applications = sortedApps.filter((app) => app.category === category.identifier);
       }
     });
 

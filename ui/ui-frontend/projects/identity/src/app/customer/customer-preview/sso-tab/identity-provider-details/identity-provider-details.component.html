@@ -16,7 +16,7 @@
         <vitamui-common-editable-button-toggle value="SAML" content="SAML"></vitamui-common-editable-button-toggle>
         <vitamui-common-editable-button-toggle value="OIDC" content="OIDC"></vitamui-common-editable-button-toggle>
         <vitamui-common-editable-button-toggle value="CERTIFICAT" content="CERTIFICAT"></vitamui-common-editable-button-toggle>
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
       </vitamui-common-editable-toggle-group>
     </div>
   </div>
@@ -59,7 +59,7 @@
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -88,7 +88,7 @@
         [validator]="form?.get('patterns')?.validator"
         [asyncValidator]="form?.get('patterns')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
       </app-editable-patterns>
     </div>
   </div>
@@ -110,7 +110,7 @@
           <vitamui-common-editable-button-toggle value="GET" content="GET"></vitamui-common-editable-button-toggle>
           <vitamui-common-editable-button-toggle value="POST" content="POST"></vitamui-common-editable-button-toggle>
 
-          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-toggle-group>
       </div>
     </div>
@@ -126,7 +126,7 @@
           [validator]="idpMetadata?.validator"
           [asyncValidator]="idpMetadata?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-file>
       </div>
     </div>
@@ -139,7 +139,7 @@
           [validator]="form?.get('clientId')?.validator"
           [label]="'CUSTOMER.SSO.CLIENT_IDENTIFIER' | translate"
         >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
       <div class="col-6">
@@ -148,7 +148,7 @@
           [validator]="form?.get('clientSecret')?.validator"
           [label]="'CUSTOMER.SSO.CLIENT_SECRET' | translate"
         >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
@@ -159,7 +159,7 @@
           [validator]="form?.get('discoveryUrl')?.validator"
           [label]="'CUSTOMER.SSO.URL_DISCOVERY' | translate"
         >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>

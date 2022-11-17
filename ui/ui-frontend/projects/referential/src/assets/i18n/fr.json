@@ -32,6 +32,9 @@
       "IN_PROGRESS": "En cours"
     }
   },
+  "LOGBOOK_OPERATION_DETAIL": {
+    "DOWNLOAD_ATR": "Télécharger l'ATR"
+  },
   "LOGBOOK_OPERATION_PAGE": {
     "TITLE": "Gestion des opérations",
     "SEARCH": "Rechercher par identifiant d'opération",
@@ -179,5 +182,43 @@
         }
       }
     }
+  },
+  "SNACKBAR": {
+    "ACCESS_CONTRACT_CREATED": "Le contrat d'accès a bien été créé",
+    "ACCESS_CONTRACT_UPDATED": "Le contrat d'accès a bien été mis à jour",
+    "INGEST_CONTRACT_CREATED": "Le contrat d'entrée a bien été créé",
+    "INGEST_CONTRACT_UPDATED": "Le contrat d'entrée a bien été mis à jour",
+    "AGENCY_CONTRACT_CREATED": "Le service agent a bien été créé",
+    "AGENCY_CONTRACT_UPDATED": "Le service agent a bien été mis à jour",
+    "AGENCY_CONTRACT_DELETED": "Le service agent a bien été supprimé",
+    "AGENCY_CONTRACT_DELETE_ERROR": "Erreur lors de la suppression du Service Agent",
+    "AGENCY_CONTRACT_EXPORT_ALL": "Export des services agent en cours...",
+    "FILE_FORMAT_CONTRACT_CREATED": "Le format de fichier a bien été créé",
+    "FILE_FORMAT_CONTRACT_UPDATED": "Le format de fichier a bien été mis à jour",
+    "FILE_FORMAT_CONTRACT_DELETED": "Le format de fichier a bien été supprimé",
+    "FILE_FORMAT_CONTRACT_DELETING": "Suppression du format de fichier en cours...",
+    "CONTEXT_CREATED": "Le contexte applicatif a bien été créé",
+    "CONTEXT_UPDATED": "Le contexte applicatif a bien été mis à jour",
+    "SECURITY_CREATED": "Le profil de sécurité a bien été créé",
+    "SECURITY_UPDATED": "Le profil de sécurité a bien été mis à jour",
+    "SECURITY_DELETED": "Le profil de sécurité a bien été supprimé",
+    "ONTOLOGY_CREATED": "L'ontologie a bien été créé",
+    "ONTOLOGY_UPDATED": "L'ontologie a bien été mis à jour",
+    "ONTOLOGY_DELETED": "L'ontologie a bien été supprimé",
+    "AUDIT_RUN": "L'audit a bien été lancé",
+    "PROBATIVE_VALUE_RUN": "Le relevé de valeur probante a bien été lancé",
+    "FORMAT_INVALID": "Format de la requête invalide",
+    "RULE_DELETION_START": "Suppression de la règle de gestion {{ name }} en cours...",
+    "DOWNLOAD_NOT_ALLOWED": "Impossible de télécharger le rapport pour cette opération",
+    "IMPORT_REFERENTIAL_SUCCESSED": "Import terminé avec succès. Veuillez-consulter le détail de l'import dans le journal des opérations",
+    "IMPORT_REFERENTIAL_FAILED": "L'import a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations",
+    "RULE_CREATE_SUCCESS": "La règle de gestion {{ name }} a bien été créée.",
+    "RULE_CREATE_FAILED": "La règle de gestion {{ name }} n'a pu être créée",
+    "RULE_UPDATE_SUCCESS": "La règle de gestion {{ name }} a bien été mise à jour.",
+    "RULE_UPDATE_FAILED": "La règle de gestion {{ name }} n'a pu être mise à jour.",
+    "RULE_DELETE_SUCCESS": "La règle de gestion {{ name }} a bien été supprimée.",
+    "RULE_DELETE_FAILED": "La règle de gestion {{ name }} n'a pu être supprimée.",
+    "RULE_EXPORT_ALL": "Export des règles de gestion en cours...",
+    "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de {{ limit }} résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
   }
 }

@@ -11,8 +11,20 @@ import java.util.List;
 import java.util.Optional;
 
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
+import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
+import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
+import fr.gouv.vitamui.iam.internal.server.provisioning.service.ProvisioningInternalService;
+import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +47,16 @@ import fr.gouv.vitamui.iam.internal.server.provisioning.service.ProvisioningInte
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CasInternalServiceTest {
@@ -92,8 +114,8 @@ class CasInternalServiceTest {
         when(identityProviderInternalService.getOne(IDP))
                 .thenReturn(buildIDP(true));
 
-        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, null, null, null))
-                .thenReturn(buildProvidedUser("jean-vitam","RH"));
+        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, null, null, null, CUSTOMER_ID))
+            .thenReturn(buildProvidedUser("jean-vitam", "RH"));
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
 
@@ -125,8 +147,8 @@ class CasInternalServiceTest {
         when(identityProviderInternalService.getOne(IDP))
                 .thenReturn(buildIDP(true));
 
-        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, GROUP_ID, null, null))
-                .thenReturn(buildProvidedUser("jean vitam", "RH"));
+        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, GROUP_ID, null, null, CUSTOMER_ID))
+            .thenReturn(buildProvidedUser("jean vitam", "RH"));
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
 
@@ -184,6 +206,7 @@ class CasInternalServiceTest {
     private IdentityProviderDto buildIDP(final boolean autoProvisioningEnabled) {
         final IdentityProviderDto idp = new IdentityProviderDto();
         idp.setId(IDP);
+        idp.setCustomerId(CUSTOMER_ID);
         idp.setAutoProvisioningEnabled(autoProvisioningEnabled);
         return idp;
     }

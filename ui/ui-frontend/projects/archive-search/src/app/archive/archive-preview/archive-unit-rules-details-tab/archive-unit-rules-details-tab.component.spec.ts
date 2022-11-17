@@ -41,14 +41,35 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import { BASE_URL, InjectorModule, VitamUISnackBar, WINDOW_LOCATION } from 'ui-frontend-common';
+import { of } from 'rxjs';
+import { BASE_URL, InjectorModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { ArchiveService } from '../../archive.service';
+import { Unit } from '../../models/unit.interface';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab.component';
 
 describe('ArchiveUnitRulesDetailsTabComponent', () => {
   let component: ArchiveUnitRulesDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitRulesDetailsTabComponent>;
 
-  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+  const unitResponse: Unit = {
+    '#allunitups': [],
+    '#id': 'id',
+    '#object': '',
+    '#unitType': '',
+    '#unitups': [],
+    '#opi': '',
+    StartDate: new Date(),
+    EndDate: new Date(),
+    Title_: { fr: 'Teste', en: 'Test' },
+    Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+  };
+
+  const archiveServiceMock = {
+    getBaseUrl: () => '/fake-api',
+    selectUnitWithInheritedRules: () => of(unitResponse),
+    openSnackBarForWorkflow: () => of({}),
+    launchDownloadObjectFromUnit: () => of({}),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -56,9 +77,9 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
       imports: [InjectorModule, MatSnackBarModule, HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
+        { provide: ArchiveService, useValue: archiveServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -84,13 +105,43 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should the length of listOfCriteriaSearch to be 1', () => {
+  it('should the length of listOfCriteriaSearch to be 0', () => {
     component.selectUnitWithInheritedRules(component.archiveUnit);
-    expect(component.listOfCriteriaSearch.length).toEqual(1);
+    expect(component.listOfCriteriaSearch.length).toEqual(0);
   });
 
   it('should the archiveUnitRules exists ', () => {
     component.selectUnitWithInheritedRules(component.archiveUnit);
     expect(component.archiveUnitRules).not.toBeNull();
+  });
+
+  it('should call selectUnitWithInheritedRules of archiveService', () => {
+    // Given
+    spyOn(archiveServiceMock, 'selectUnitWithInheritedRules').and.callThrough();
+
+    // When
+    component.selectUnitWithInheritedRules(component.archiveUnit);
+
+    // Then
+    expect(archiveServiceMock.selectUnitWithInheritedRules).toHaveBeenCalled();
+  });
+
+  describe('DOM', () => {
+    it('should have 8 rows ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementRow = nativeElement.querySelectorAll('.row');
+
+      // Then
+      expect(elementRow.length).toBe(8);
+    });
+    it('should have 7 columns ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementColumn = nativeElement.querySelectorAll('.col');
+
+      // Then
+      expect(elementColumn.length).toBe(7);
+    });
   });
 });

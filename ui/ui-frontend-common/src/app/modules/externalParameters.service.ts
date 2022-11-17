@@ -34,38 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL } from './injection-tokens';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ExternalParametersService {
-
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, @Inject(BASE_URL) private baseUrl: string) {
     this.apiUrl = this.baseUrl + '/externalparameters';
   }
 
-
   /**
    * Get the external parameters for the authenticated user
    * @returns the user parameters map
    */
   getUserExternalParameters(): Observable<Map<string, string>> {
-    return this.http.get<Map<String, String>>(this.apiUrl).pipe(
-      map(response =>  {
-        const map = new Map<string, string>();
+    return this.http.get<Map<string, string>>(this.apiUrl).pipe(
+      map((response: Map<string, string>) => {
+        const userMap = new Map<string, string>();
         if (response) {
-          for (const value in response) {  
-            map.set(value,response[value])  
+          for (const value in response) {
+            if (response.hasOwnProperty(value)) {
+              userMap.set(value, response[value]);
+            }
           }
-        }  
-        return map;
+        }
+        return userMap;
       })
     );
   }

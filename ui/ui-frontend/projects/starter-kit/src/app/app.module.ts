@@ -1,4 +1,3 @@
-import { TranslationModule } from './components/translation/translation.module';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -50,7 +49,7 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ng
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule,
-  VitamUICommonModule, WINDOW_LOCATION, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
+  VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -64,6 +63,7 @@ import { InputsModule } from './components/inputs/inputs.module';
 import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { TooltipModule } from './components/tooltip/tooltip.module';
+import { TranslationModule } from './components/translation/translation.module';
 import { TypographyModule } from './components/typography/typography.module';
 import { StarterKitModule } from './starter-kit/starter-kit.module';
 

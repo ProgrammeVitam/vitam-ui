@@ -131,5 +131,9 @@
             <groupId>org.owasp.antisamy</groupId>
             <artifactId>antisamy</artifactId>
         </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitam</groupId>
+            <artifactId>common-database-public</artifactId>
+        </dependency>
     </dependencies>
 </project>

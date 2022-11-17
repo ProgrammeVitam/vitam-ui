@@ -44,6 +44,7 @@ import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -284,7 +285,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         final Optional<Customer> customer = customerRepository.findById(customerId);
         Assert.isTrue(customer.isPresent(), "Customer does not exist");
 
-        return OffsetDateTime.now().plusDays(customer.get().getPasswordRevocationDelay());
+        return OffsetDateTime.now().plusMonths(customer.get().getPasswordRevocationDelay());
     }
 
     @Override
@@ -426,6 +427,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         try {
             LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
 
+            // replacing the email with the lowercase version during update
             String email = CastUtils.toString(partialDto.get("email"));
             if (email != null) {
                 partialDto.put("email", email.toLowerCase());
@@ -557,19 +559,16 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     logbooks.add(new EventDiffDto(UserConverter.PHONE_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setPhone(CastUtils.toString(entry.getValue()));
                     break;
-
                 case "groupId":
                     final GroupDto oldGroup = groupInternalService.getOne(user.getGroupId(), Optional.empty(), Optional.empty());
-
                     if(CastUtils.toString(entry.getValue()).isEmpty()) {
                         logbooks.add(new EventDiffDto(UserConverter.GROUP_IDENTIFIER_KEY, oldGroup.getIdentifier(), Optional.empty()));
                         user.setGroupId(CastUtils.toString(entry.getValue()));
+                    } else {
+                        final GroupDto newGroup = groupInternalService.getOne(CastUtils.toString(entry.getValue()), Optional.empty(), Optional.empty());
+                        logbooks.add(new EventDiffDto(UserConverter.GROUP_IDENTIFIER_KEY, oldGroup.getIdentifier(), newGroup.getIdentifier()));
+                        user.setGroupId(CastUtils.toString(entry.getValue()));
                     }
-                    else {
-                    final GroupDto newGroup = groupInternalService.getOne(CastUtils.toString(entry.getValue()), Optional.empty(), Optional.empty());
-                    logbooks.add(new EventDiffDto(UserConverter.GROUP_IDENTIFIER_KEY, oldGroup.getIdentifier(), newGroup.getIdentifier()));
-                    user.setGroupId(CastUtils.toString(entry.getValue()));
-            }
                     break;
                 case "status" :
                     final String status = CastUtils.toString(entry.getValue());
@@ -648,8 +647,11 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     private User find(final String id, final String customerId, final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
 
-        Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
-
+        // We enforce session customerId (no cross customer allowed for user
+        // We make exception for cas user to be allowed for updating all users during provisioning process
+        if(!internalSecurityService.hasRole(ServicesData.ROLE_PROVISIONING_USER)){
+            Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
+        }
         return getRepository().findByIdAndCustomerId(id, customerId)
                 .orElseThrow(() -> new IllegalArgumentException(message + ": no user found for id " + id + " - customerId " + customerId));
     }
@@ -897,7 +899,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
-        LOGGER.debug("findHistoryById for id" + id);
+        LOGGER.debug("findHistoryById for id " + id);
         final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
                 .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())

@@ -111,9 +111,12 @@
     <h4>Auto complete</h4>
 
     <div class="d-flex justify-content-around">
-        <vitamui-common-vitamui-autocomplete [options]="countries" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate">
+        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompleteSelect" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate" required>
+            <vitamui-common-input-error *ngIf="autoCompleteSelect.touched && autoCompleteSelect.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="autoCompleteSelect.touched && autoCompleteSelect.hasError('match')">{{'COMMON.INCORRECT_VALUE' | translate}}</vitamui-common-input-error>
         </vitamui-common-vitamui-autocomplete>
-        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompletSelect" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate" disable="true">
+
+        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompleteSelectDisabled" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate" disable="true">
         </vitamui-common-vitamui-autocomplete>
     </div>
     <h4>Textarea</h4>

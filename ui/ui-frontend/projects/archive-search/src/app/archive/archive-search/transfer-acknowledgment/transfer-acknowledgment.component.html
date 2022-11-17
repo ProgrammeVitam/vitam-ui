@@ -1,0 +1,228 @@
+<div class="header">
+  <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
+</div>
+
+<vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
+  <!-- Step 1 -->
+  <cdk-step>
+    <div class="content">
+      <h2>{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TITLE_FIRST_STEP' | translate }}</h2>
+      <div>
+        <h4>
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.DOWNLOAD_ATR_FILE' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info"
+            matTooltip=" {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.DOWNLOAD_ATR_FILE_TEXT' | translate }}"
+            matTooltipClass="vitamui-tooltip"
+          ></i>
+        </h4>
+      </div>
+
+      <div *ngIf="isLoadingData; then loadingMode; else dragAndDropArea"></div>
+
+      <div class="actions">
+        <button
+          (click)="validateAndParseXmlFile()"
+          [disabled]="isDisabled || hasError || hasFileSizeError || isAtrNotValid || isLoadingData"
+          class="btn primary"
+          type="button"
+        >
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.NEXT_STEP' | translate }}
+        </button>
+        <button (click)="onClose()" class="btn link" type="button" [disabled]="isLoadingData">{{ 'COMMON.UNDO' | translate }}</button>
+      </div>
+    </div>
+  </cdk-step>
+
+  <!-- Step 2 -->
+  <cdk-step>
+    <div class="content">
+      <h2>{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TRANSFER_REPLY_OPERATION' | translate }}</h2>
+      <div>
+        <p class="detail-text">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.OPERATION_MESSAGE_IDENTIFIER' | translate }}
+        </p>
+        <p>{{ transfertDetails.messageRequestIdentifier }}</p>
+      </div>
+
+      <div>
+        <p class="detail-text">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TRANSFER_REALISATION_DATE' | translate }}
+        </p>
+        <p>{{ transfertDetails.date | dateTime: 'dd/MM/yyyy' }}</p>
+      </div>
+
+      <div>
+        <p class="detail-text">{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ENTRY_CONTRACT' | translate }}</p>
+        <p>{{ transfertDetails.archivalAgreement }}</p>
+      </div>
+
+      <div>
+        <p class="detail-text">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ARCHIVAL_AGENCY_IDENTIFIER' | translate }}
+        </p>
+        <p>{{ transfertDetails.archivalAgency }}</p>
+      </div>
+
+      <div>
+        <p class="detail-text">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TRANSFERRING_AGENCY_IDENTIFIER' | translate }}
+        </p>
+        <p>{{ transfertDetails.transferringAgency }}</p>
+      </div>
+
+      <div>
+        <p class="detail-text">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TRANSFER_ACKNOWLEDGMENT_STATUS' | translate }}
+        </p>
+        <p>{{ transfertDetails.archiveTransferReply }}</p>
+      </div>
+
+      <div class="actions">
+        <button (click)="goToNextStep()" class="btn primary" type="button">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.NEXT_STEP' | translate }}
+        </button>
+        <button (click)="onCancel()" class="btn link" type="button">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_ACTION' | translate }}
+        </button>
+      </div>
+
+      <button type="button" class="btn link" (click)="backToPreviousStep()">
+        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+        <ng-container
+          ><span class="underline"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.PREVIOUS_STEP' | translate }}</span></ng-container
+        >
+      </button>
+    </div>
+  </cdk-step>
+
+  <!-- Step 3 -->
+  <cdk-step>
+    <div class="content">
+      <h2>{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACKNOWLEDGMENT_TRANSFER_VALIDATION' | translate }}</h2>
+
+      <div *ngIf="isSubmitBtnDisabled; then loadingMode; else transferReplyStatusDetails"></div>
+
+      <div class="actions">
+        <button (click)="applyTransferAcknowledgment()" class="btn primary" type="button" [disabled]="isSubmitBtnDisabled">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.REPLY_TRANSFER' | translate }}
+        </button>
+        <button (click)="onCancel()" class="btn link" type="button" [disabled]="isSubmitBtnDisabled">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_ACTION' | translate }}
+        </button>
+      </div>
+
+      <button type="button" class="btn link" (click)="backToPreviousStep()" [disabled]="isSubmitBtnDisabled">
+        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+        <ng-container
+          ><span class="underline"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.PREVIOUS_STEP' | translate }}</span></ng-container
+        >
+      </button>
+    </div>
+  </cdk-step>
+</vitamui-common-stepper>
+
+<ng-template #confirmDeleteTransferAcknowledgmentDialog>
+  <mat-dialog-content>
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACKNOWLEDGMENT_TRANSFER' | translate }}</div>
+    <br />
+
+    <div class="text large bold">
+      {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_TRANSFER_OPERATION' | translate }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TRANSFER_CONFIRM' | translate }}
+    </button>
+    <button type="button" (click)="onClose()" class="btn cancel">
+      {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_ACTION' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #loadingMode>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner large"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #transferReplyStatusDetails>
+  <div>
+    <p class="detail-text">
+      {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACKNOWLEDGMENT_TRANSFER_CONTROL' | translate }}
+    </p>
+    <p class="text-size">
+      {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACKNOWLEDGMENT_TRANSFER_REPLY_CODE' | translate }}
+      {{ transfertDetails.archiveTransferReply }}
+    </p>
+    <p class="text-size" [ngSwitch]="transfertDetailsCode">
+      <ng-container *ngSwitchCase="'OK'"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CONFIRM_SUCCESS_TRANSFER' | translate }}</ng-container>
+      <ng-container *ngSwitchCase="'WARNING'">
+        {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CONFIRM_SUCCESS_TRANSFER' | translate }}
+      </ng-container>
+      <ng-container *ngSwitchCase="'KO'">
+        {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CONFIRM_FAILURE_TRANSFER' | translate }}
+      </ng-container>
+    </p>
+  </div>
+</ng-template>
+
+<ng-template #dragAndDropArea>
+  <div class="d-flex">
+    <div
+      class="drag-and-drop-area"
+      [ngClass]="{ 'on-over': hasDropZoneOver }"
+      vitamuiCommonDragAndDrop
+      (fileToUploadEmitter)="onDropped($event)"
+      (fileDragOverEmitter)="onDragOver($event)"
+      (fileDragLeaveEmitter)="onDragLeave($event)"
+    >
+      <div *ngIf="fileName && fileSize > 0 && fileSizeString" class="drag-container">
+        <div class="file-info-class">
+          {{ fileName }}
+          <span class="text-grey"> | {{ fileSizeString }} </span>
+          <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
+          <div>
+            <span class="text-red">{{ message }} </span>
+            <i class="material-icons error-icon" *ngIf="hasError">cancel </i>
+          </div>
+
+          <div *ngIf="hasFileSizeError">
+            <div>
+              <span class="text-red"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.AUTHORIZED_SIZE' | translate }}</span>
+              <i class="material-icons error-icon">cancel </i>
+            </div>
+          </div>
+
+          <div *ngIf="isAtrNotValid">
+            <div>
+              <span class="text-red"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ATR_NOT_VALID' | translate }}</span>
+              <i class="material-icons error-icon">cancel </i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <input type="file" #atrXmlFile class="input-file" (change)="handleFileInput($event.target.files)" />
+
+      <div class="drop-area">
+        <div class="atr-drop">{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.DRAG_AND_DROP' | translate }}<br /></div>
+
+        <div class="atr-drop">
+          <div class="upload">
+            <span class="url-select" (click)="addTransferAtrFile()">
+              {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.BROWSE' | translate }}</span
+            >
+          </div>
+        </div>
+        <div class="atr-drop-small">
+          <span> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACCEPTED_FORMAT' | translate }}</span
+          ><br /><br />
+          <span> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.MAX_SIZE' | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

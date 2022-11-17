@@ -1,0 +1,31 @@
+.icon-information {
+    position: absolute;
+    float: right;
+    top: 15px;
+    right: -45px;
+    width: 30px;
+    height: 31px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.title-text {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--vitamui-primary) !important;
+}
+.margin-row {
+    margin-left: 10px;
+}
+.margin-bottom {
+    margin-bottom: 15px;
+}
+
+.padding-row {
+    padding-left: 13px;
+}
+
+.icon-large {
+    font-size: larger;
+}

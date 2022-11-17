@@ -44,7 +44,7 @@ import { SecurityService } from './security.service';
 describe('SecurityService', () => {
   beforeEach(() => {
     const authStubService = {
-      userLoaded:  of({
+      user$:  of({
         profileGroup : {
           profiles: [
             {

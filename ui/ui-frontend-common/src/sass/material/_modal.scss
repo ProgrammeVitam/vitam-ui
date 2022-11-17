@@ -44,6 +44,7 @@ $footer-height: 100px !default;
 
         .vitamui-table {
             overflow: auto;
+            max-height: 43vh;
 
             &::-webkit-scrollbar {
                 display: none;
@@ -69,6 +70,7 @@ $footer-height: 100px !default;
             background: var(--vitamui-grey-200);
             padding: 65px 38px;
             position: relative;
+            flex-basis: 30%;
 
             &:before {
                 content: '';
@@ -136,6 +138,7 @@ $footer-height: 100px !default;
 
         .vitamui-form-right-panel {
             padding: 50px 70px 110px 50px;
+            flex-basis: 70%;
 
             &-header {
                 margin-top: -30px;

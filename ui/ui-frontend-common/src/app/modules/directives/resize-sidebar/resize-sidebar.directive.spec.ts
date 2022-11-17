@@ -34,41 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ResizeSidebarDirective} from './resize-sidebar.directive';
-import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
-import {Component} from "@angular/core";
-import {By} from "@angular/platform-browser";
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { ResizeSidebarDirective } from './resize-sidebar.directive';
 
 @Component({
   template: `
     <div>
-      <div class="cadre" vitamuiCommonResizeSidebar="left">
-        Test component
-      </div>
+      <div class="cadre" vitamuiCommonResizeSidebar="left">Test component</div>
     </div>
   `,
-  styles: [`
-    .cadre {
-      width: 500px;
-      height: 600px;
-      border: 1px solid #000000;
-      position: relative;
-    }
-  `]
+  styles: [
+    `
+      .cadre {
+        width: 500px;
+        height: 600px;
+        border: 1px solid #000000;
+        position: relative;
+      }
+    `,
+  ],
 })
-class ResizeSidebarTestComponent {
-}
+class ResizeSidebarTestComponent {}
 
 describe('ResizeSidebarDirective', () => {
-
   let fixture: ComponentFixture<ResizeSidebarTestComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [ResizeSidebarDirective, ResizeSidebarTestComponent]
+      declarations: [ResizeSidebarDirective, ResizeSidebarTestComponent],
     }).createComponent(ResizeSidebarTestComponent);
     fixture.detectChanges();
-  }));
+  });
 
   it('should have one element resizeable', () => {
     const div = fixture.debugElement.queryAll(By.directive(ResizeSidebarDirective));

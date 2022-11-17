@@ -37,6 +37,7 @@
 export interface PaginatedResponse<T> {
   pageNum: number;
   pageSize: number;
+  totalElements: number;
   hasMore: boolean;
   values: T[];
   optionalValues?: Map<string, any>;

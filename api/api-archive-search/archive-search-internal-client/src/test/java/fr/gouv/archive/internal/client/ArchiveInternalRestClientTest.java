@@ -27,8 +27,8 @@
 package fr.gouv.archive.internal.client;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;

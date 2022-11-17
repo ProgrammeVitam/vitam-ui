@@ -36,7 +36,7 @@ import { catchError, tap } from 'rxjs/operators';
 })
 export class CollectUploadService {
   private static X_TENANT_KEY = 'X-Tenant-Id';
-  private static X_PROJECT_ID_KEY = 'X-Project-Id';
+  private static X_TRANSACTION_ID_KEY = 'X-Transaction-Id';
   private static X_ORIGINAL_FILENAME_HEADER = 'X-Original-Filename';
   private static COLLECT_UPLOAD_URL = './collect-api/projects/upload';
   zipFile: JSZip;
@@ -103,16 +103,16 @@ export class CollectUploadService {
     return indexName !== -1;
   }
 
-  uploadZip(tenantIdentifier: number, projectId: string) {
+  uploadZip(tenantIdentifier: number, transactionId: string) {
     this.zippedFile = {
-      name: `${projectId}.zip`,
+      name: `${transactionId}.zip`,
       size: this.filesToUpload.map((f) => f.size).reduce((prev, cur) => prev + cur, 0),
       uploadedSize: 0,
     };
     this.watchZippedFile$.next(this.zippedFile);
     let headers = new HttpHeaders();
     headers = headers.set(CollectUploadService.X_TENANT_KEY, tenantIdentifier.toString());
-    headers = headers.set(CollectUploadService.X_PROJECT_ID_KEY, projectId);
+    headers = headers.set(CollectUploadService.X_TRANSACTION_ID_KEY, transactionId);
     headers = headers.set(CollectUploadService.X_ORIGINAL_FILENAME_HEADER, this.zippedFile.name);
     headers = headers.set('Content-Type', 'application/octet-stream');
     headers = headers.set('reportProgress', 'true');
@@ -139,7 +139,6 @@ export class CollectUploadService {
         );
       });
   }
-
   reinitializeZip() {
     for (let file of this.filesToUpload) {
       this.zipFile.remove(file.name);

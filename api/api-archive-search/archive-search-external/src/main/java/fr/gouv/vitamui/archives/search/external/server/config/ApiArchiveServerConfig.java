@@ -36,6 +36,7 @@ import fr.gouv.archive.internal.client.SearchCriteriaHistoryInternalRestClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
@@ -43,10 +44,12 @@ import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 
 @Configuration
@@ -147,6 +150,12 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     public SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient(
         final ArchiveInternalRestClientFactory archiveInternalRestClientFactory) {
         return archiveInternalRestClientFactory.getSearchCriteriaHistoryInternalRestClient();
+    }
+
+    @Bean
+    public ExternalParametersInternalRestClient externalParametersInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
     }
 
 }

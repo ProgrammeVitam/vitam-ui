@@ -1,0 +1,182 @@
+<div class="container">
+  <form [formGroup]="accessRuleCriteriaForm">
+    <div class="row justify-content-start">
+      <div class="form-control">
+        <p class="title-text">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.ACCESS_TITLE' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-5 form-control">
+        <vitamui-common-editable-input
+          formControlName="accessRuleIdentifier"
+          [validator]="accessRuleCriteriaForm?.get('accessRuleIdentifier')?.validator"
+          [asyncValidator]="accessRuleCriteriaForm?.get('accessRuleIdentifier')?.asyncValidator"
+          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ID_ACCESS' | translate }}"
+          minlength="1"
+        >
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="ruleIdPattern"
+            >{{ 'COLLECT.RULE.WRONG_FORMAT' | translate }}
+          </vitamui-common-field-error>
+
+          <vitamui-common-field-error errorKey="ruleIdExists"
+            >{{ 'COLLECT.RULE.CODE_NOT_EXIST' | translate }}
+          </vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-1 form-control"></div>
+      <div class="col-5 form-control">
+        <vitamui-common-editable-input
+          formControlName="accessRuleTitle"
+          [validator]="accessRuleCriteriaForm?.get('accessRuleTitle')?.validator"
+          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.TITLE_ACCESS' | translate }}"
+        >
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-1 form-control"></div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-11 form-control">
+        <p class="title-text">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-5 form-control">
+        <div class="vitamui-input" (click)="pickerBeginAccessRule.open()">
+          <span
+            *ngIf="!accessRuleCriteriaForm.get('accessRuleStartDate').value; else showBeginDtAccessRule"
+            (click)="pickerBeginAccessRule.open()"
+            class="search-date-label"
+            >{{
+              (endDateInterval
+                ? 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS_BEGIN'
+                : 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS_EQUAL'
+              ) | translate
+            }}</span
+          >
+          <ng-template #showBeginDtAccessRule
+            ><span (click)="pickerBeginAccessRule.open()"
+              >{{ accessRuleCriteriaForm.get('accessRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
+            </span>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerBeginAccessRule"
+            formControlName="accessRuleStartDate"
+            [max]="accessRuleCriteriaForm.get('accessRuleEndDate').value"
+          />
+          <mat-datepicker #pickerBeginAccessRule></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-1 form-control">
+        <button
+          class="validate-date-small-button"
+          *ngIf="!endDateInterval && accessRuleCriteriaForm.get('accessRuleStartDate').value"
+          type="button"
+          mat-mini-fab
+          (click)="addBeginDtAccessRuleCriteria()"
+        >
+          <i class="material-icons">check</i>
+        </button>
+      </div>
+
+      <div class="col-4 form-control">
+        <p *ngIf="!endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
+          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.ACCESS_RULE.CREATE_INTERVAL' | translate }}
+        </p>
+
+        <div class="vitamui-input" (click)="pickerEndAccessRule.open()" *ngIf="endDateInterval">
+          <span
+            *ngIf="!accessRuleCriteriaForm.get('accessRuleEndDate').value; else showEndDtAccessRule"
+            (click)="pickerEndAccessRule.open()"
+            class="search-date-label"
+            >{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS_END' | translate }}</span
+          >
+          <ng-template #showEndDtAccessRule
+            ><span (click)="pickerEndAccessRule.open()"
+              >{{ accessRuleCriteriaForm.get('accessRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
+            </span>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerEndAccessRule"
+            formControlName="accessRuleEndDate"
+            [min]="accessRuleCriteriaForm.get('accessRuleStartDate').value"
+          />
+          <mat-datepicker #pickerEndAccessRule></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-1 form-control">
+        <button
+           class="validate-date-small-button"
+          *ngIf="
+            endDateInterval &&
+            accessRuleCriteriaForm.get('accessRuleStartDate').value &&
+            accessRuleCriteriaForm.get('accessRuleEndDate').value
+          "
+          type="button"
+          mat-mini-fab
+          (click)="addIntervalDtAccessRuleCriteria()"
+        >
+          <i class="material-icons">check</i>
+        </button>
+      </div>
+      <div class="col-1 form-control">
+        <p *ngIf="endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
+          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.ACCESS_RULE.DELETE_INTERVAL' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row justify-content-around">
+      <div class="col-4 form-control">
+        <div class="row criteria-choice">
+          <p class="title-text">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.TITLE' | translate }}
+          </p>
+        </div>
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              type="checkbox"
+              (click)="checkBoxChange('ORIGIN_HAS_AT_LEAST_ONE', $event)"
+              id="HAS_AT_LEAST_ONE_ACCESS_RULE_ORIGIN"
+              [checked]="accessAdditionalCriteria.get('ORIGIN_HAS_AT_LEAST_ONE')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_AT_LEAST_ONE_ACCESS_RULE' | translate }}</span>
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              id="HAS_NO_ACCESS_RULE_ORIGIN"
+              type="checkbox"
+              (click)="checkBoxChange('ORIGIN_HAS_NO_ONE', $event)"
+              [checked]="accessAdditionalCriteria.get('ORIGIN_HAS_NO_ONE')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_NO_ACCESS_RULE' | translate }}</span>
+          </label>
+        </div>
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              id="WAITING_TO_RE_CALCULATE_ACCESS_RULE_ORIGIN"
+              type="checkbox"
+              (click)="checkBoxChange('ORIGIN_WAITING_RECALCULATE', $event)"
+              [checked]="accessAdditionalCriteria.get('ORIGIN_WAITING_RECALCULATE')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.WAITING_TO_RE_CALCULATE_ACCESS_RULE' | translate }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-4 form-control"></div>
+      <div class="col-3 form-control"></div>
+    </div>
+  </form>
+</div>

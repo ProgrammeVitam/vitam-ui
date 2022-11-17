@@ -47,6 +47,7 @@ import fr.gouv.vitamui.iam.internal.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.internal.server.subrogation.converter.SubrogationConverter;
 import fr.gouv.vitamui.iam.internal.server.tenant.converter.TenantConverter;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
+import fr.gouv.vitamui.iam.internal.server.user.converter.UserInfoConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -55,6 +56,8 @@ import lombok.Getter;
 public class Converters {
 
     private UserConverter userConverter;
+
+    private UserInfoConverter userInfoConverter;
 
     private TenantConverter tenantConverter;
 

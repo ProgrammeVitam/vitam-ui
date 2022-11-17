@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.service;
 
 import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
@@ -61,11 +62,13 @@ import static org.mockito.Mockito.when;
 public class UnitServiceTest {
     @Mock
     private UnitExternalRestClient client;
+    @Mock
+    private ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
     private UnitService service;
 
     @Before
     public void setUp() {
-        service = new UnitService(client);
+        service = new UnitService(client, archiveSearchExternalRestClient);
     }
 
     @Test

@@ -1,0 +1,146 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  margin: 0;
+  width: 100%;
+
+  div, mat-tree, mat-tree-node, mat-nested-tree-node {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+    width: 100%;
+  }
+
+  .tree-text {
+    flex: 1;
+    min-width: 0;
+    p, a {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .mat-tree-node {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  mat-nested-tree-node .childs {
+    padding-left: 27px;
+  }
+
+
+  .vitamui-sidepanel-resize-sidebar {
+    border-top: 4px solid rgb(112, 35, 130);
+    height: 0;
+    padding: 0;
+    margin: 0;
+    cursor: ns-resize;
+    flex: 0 0 auto;
+  }
+
+  .vitamui-sidepanel-header {
+    flex-grow: 1;
+    overflow: auto;
+  }
+
+  .tree-filing-scheme {
+    flex: 1;
+    flex-direction: column;
+    background-color: #fafafa;
+
+    mat-tree-node, mat-nested-tree-node {
+      flex-direction: column;
+    }
+  }
+
+  .load-more-ua {
+    cursor: pointer;
+    color: #979797;
+    text-decoration: underline;
+  }
+
+  .tree-title {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.filing-holding-scheme-tree-invisible {
+  display: none;
+}
+
+.filing-holding-scheme-tree-node {
+  position: relative;
+  border-bottom: 1px solid transparentize(#979797, 0.7);
+  color: var(--vitamui-secondary-dark-5);
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(250, 250, 250, 1);
+  }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.icon-greeny-blue {
+  color: var(--vitamui-secondary);
+}
+
+.tree-show-link {
+  cursor: pointer;
+  color: #979797;
+  text-decoration: underline;
+}
+
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 1.5em;
+  font-size: 100%;
+  font-weight: 700;
+  line-height: 1;
+  position: absolute;
+  top: 14px;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 1.25rem;
+  right: 2px;
+  width: 54px;
+  text-align: right;
+}
+
+.badge-secondary {
+  color: #2c76c9;
+  background-color: #abcaed;
+}
+
+.area-show-tree {
+  padding-top: 20px;
+}
+
+.badge-parent {
+  position: relative;
+}

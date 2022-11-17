@@ -85,7 +85,7 @@ public class PmMessageToSend {
                     new Object[] { firstname, lastname, "24", url, platformName }, locale);
         } else {
             final long validityDurationInMinutes = Long.valueOf(ttlInMinutes);
-            if (validityDurationInMinutes % 60 == 0) {
+            if (validityDurationInMinutes >= 120) {
                 text = messageSource.getMessage(PM_RESET_TEXT_KEY_2, new Object[] { firstname, lastname, validityDurationInMinutes / 60, url, platformName},
                     locale);
             } else {

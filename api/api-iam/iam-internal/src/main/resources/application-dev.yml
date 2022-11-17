@@ -92,9 +92,9 @@ gdpr_alert_readonly: true
 provisioning-client:
   identity-providers:
     - idp-identifier: system_idp
-      uri: https://localhost:8090/provisioning/v1/users
+      uri: "http://localhost:1080/provisioning/v1/users"
       client:
-        secure: true
+        secure: false
         ssl-configuration:
           keystore:
             key-path: src/main/resources/dev/keystore_iam-internal.jks
@@ -120,6 +120,8 @@ provisioning-client:
             type: JKS
           hostname-verification: false
 
+address:
+  max-street-length: 250
 
 # Password configuration
 password:

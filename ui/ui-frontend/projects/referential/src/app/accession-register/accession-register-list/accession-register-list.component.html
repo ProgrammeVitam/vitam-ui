@@ -3,7 +3,9 @@
     <div class="vitamui-table">
       <div class="vitamui-table-head title-text result-layout">
         <div class="col-11">
-          {{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: { nb: dataSource?.length } }}
+          <ng-template [ngIf]="getTotalElements()">
+            {{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: {nb: getTotalElements()} }}
+          </ng-template>
         </div>
         <div class="col-1 area-download" [ngClass]="dataSource?.length > 0 ? 'enabled-div' : 'disabled-div'">
           <i (click)="exportAccessionRegisterCsv()"

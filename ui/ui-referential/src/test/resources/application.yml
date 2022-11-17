@@ -41,6 +41,17 @@ ui-referential:
         key-path: "@project.build.testOutputDirectory@/truststore_sae-app.jks"
         key-password: azerty
       hostname-verification: true
+  archive-search-external-client:
+      server-host: localhost
+      secure: false
+      ssl-configuration:
+        keystore:
+          key-path: "@project.build.testOutputDirectory@/keystore_sae-app.p12"
+          key-password: azerty
+        truststore:
+          key-path: "@project.build.testOutputDirectory@/truststore_sae-app.jks"
+          key-password: azerty
+        hostname-verification: true
   base-url:
     portal: "https://localhost:4200"
     referential: "${ui.url}"

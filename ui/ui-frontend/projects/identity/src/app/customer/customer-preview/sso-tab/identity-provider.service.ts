@@ -36,12 +36,11 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Criterion, IdentityProvider, Operators, SearchQuery, StartupService } from 'ui-frontend-common';
+import { Criterion, IdentityProvider, Operators, SearchQuery, StartupService, VitamUISnackBarService } from 'ui-frontend-common';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar';
 import { ProviderApiService } from './provider-api.service';
 
 @Injectable()
@@ -51,7 +50,7 @@ export class IdentityProviderService {
 
   constructor(
     private providerApi: ProviderApiService,
-    private snackBar: VitamUISnackBar,
+    private snackBarService: VitamUISnackBarService,
     private startupService: StartupService
     ) { }
 
@@ -61,17 +60,15 @@ export class IdentityProviderService {
         map((newIDP: IdentityProvider) => this.addMetadataUrl(newIDP)),
         tap(
           (newIDP: IdentityProvider) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'providerCreate', name: newIDP.name },
-              duration: 10000
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.PROVIDER_CREATE',
+              translateParams:{
+                param1: newIDP.name,
+              }
             });
           },
           (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
+          this.snackBarService.open({ message: error.error.message, translate: false });
           }
         )
       );
@@ -84,17 +81,15 @@ export class IdentityProviderService {
         tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
         tap(
           (updatedIdp: IdentityProvider) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'providerUpdate', name: updatedIdp.name },
-              duration: 10000
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+              translateParams:{
+                param1: updatedIdp.name,
+              }
             });
           },
           (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
+          this.snackBarService.open({ message: error.error.message, translate: false });
           }
         )
       );
@@ -107,17 +102,15 @@ export class IdentityProviderService {
         tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
         tap(
           (updatedIdp: IdentityProvider) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'providerUpdate', name: updatedIdp.name },
-              duration: 10000
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+              translateParams:{
+                param1: updatedIdp.name,
+              }
             });
           },
           (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
+            this.snackBarService.open({ message: error.error.message, translate: false });
           }
         )
       );
@@ -130,17 +123,15 @@ export class IdentityProviderService {
         tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
         tap(
           (updatedIdp: IdentityProvider) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'providerUpdate', name: updatedIdp.name },
-              duration: 10000
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+              translateParams:{
+                param1: updatedIdp.name,
+              }
             });
           },
           (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
+            this.snackBarService.open({ message: error.error.message, translate: false });
           }
         )
       );

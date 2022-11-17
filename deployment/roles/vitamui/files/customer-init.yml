@@ -185,6 +185,7 @@ customer-init:
         - ROLE_GET_ALL_ARCHIVE_SEARCH
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
 
     - name: Archiviste
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
@@ -197,9 +198,10 @@ customer-init:
         - ROLE_EXPORT_DIP
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
 
     - name: Archiviste administrateur
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination
+      description: Profil pour la recherche et consultation des archives dans Vitam avec mise à jour des règles, export DIP, opérations d'élimination, reclassement, demande de transfert et acquittement de transfert
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
@@ -215,6 +217,8 @@ customer-init:
         - ROLE_RECLASSIFICATION
         - ROLE_UPDATE_UNIT_DESC_METADATA
         - ROLE_TRANSFER_REQUEST
+        - ROLE_TRANSFER_ACKNOWLEDGMENT
+        - ROLE_GET_RULES
 
     - name: Registre des fonds
       description: Visualisation de l'ensemble des données du registre des fonds
@@ -252,6 +256,15 @@ customer-init:
         - ROLE_UPDATE_PROJECTS
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
+        - ROLE_SEND_TRANSACTIONS
+        - ROLE_CLOSE_TRANSACTIONS
+        - ROLE_REOPEN_TRANSACTIONS
+        - ROLE_ABORT_TRANSACTIONS
+        - ROLE_GET_TRANSACTIONS
+        - ROLE_CREATE_TRANSACTIONS
+        - ROLE_UPDATE_TRANSACTIONS
+        - ROLE_DELETE_TRANSACTIONS
 
   # Other Default profiles for admin group
   admin-profiles:

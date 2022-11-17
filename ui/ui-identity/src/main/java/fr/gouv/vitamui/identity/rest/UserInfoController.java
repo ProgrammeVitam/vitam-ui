@@ -60,6 +60,7 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.identity.service.UserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -120,5 +121,13 @@ public class UserInfoController extends AbstractUiRestController {
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
+
+    @ApiOperation(value = "get history by user info id")
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException {
+        LOGGER.debug("get logbook for user info with id :{}", id);
+        return service.findHistoryById(buildUiHttpContext(), id);
+    }
 
 }

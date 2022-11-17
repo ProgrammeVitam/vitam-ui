@@ -46,7 +46,7 @@ import { OrderOptionComponent } from './order-option/order-option.component';
 @Component({
   selector: 'vitamui-common-order-dropdown',
   templateUrl: './order-dropdown.component.html',
-  styleUrls: ['./order-dropdown.component.scss']
+  styleUrls: ['./order-dropdown.component.scss'],
 })
 export class OrderDropdownComponent implements AfterContentInit, OnInit, OnChanges {
 

@@ -56,10 +56,20 @@ const routes: Route[] = [
     canActivate: [ActiveTenantGuard],
   },
   {
-    path: 'archive-search-collect/:id',
+    path: 'archive-search-collect/:projectId',
     loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
     canActivate: [AppGuard],
   },
+  {
+    path: 'archive-search-collect/:projectId/:transactionId',
+    loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
+    canActivate: [AppGuard],
+  },
+  {
+    path: 'transactions/:projectId',
+    loadChildren: () => import('./transactions/transaction.module').then((m) => m.TransactionModule),
+    canActivate: [AppGuard],
+  }
 ];
 
 @NgModule({

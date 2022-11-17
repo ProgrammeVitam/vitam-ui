@@ -7,7 +7,7 @@
           placeholder="{{ getRuleTypeLabel() }}"
           panelclass="vitamui-mat-select"
           required="required"
-          [disabled]="true"
+          [disabled]="!(hasUpdateAgencyRole$ | async)"
         >
         </mat-select>
         <div class="select-arrow">
@@ -24,6 +24,7 @@
         required
         placeholder="Intitulé de la règle"
         i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder"
+        [disabled]="!(hasUpdateAgencyRole$ | async)"
       >
         <ng-container *ngIf="form.get('ruleValue')?.touched">
           <vitamui-common-input-error
@@ -44,6 +45,7 @@
         required
         placeholder="Durée"
         i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder"
+        [disabled]="!(hasUpdateAgencyRole$ | async)"
       >
         <ng-container *ngIf="form.get('ruleDuration')?.touched">
           <vitamui-common-input-error
@@ -60,6 +62,7 @@
           panelclass="vitamui-mat-select"
           required="required"
           i18n-placeholder="Identifier@@rulePreviewRuleMeasurementPlaceholder"
+          [disabled]="!(hasUpdateAgencyRole$ | async)"
         >
           <mat-option *ngFor="let ruleMeasurement of ruleMeasurements" [value]="ruleMeasurement.key">
             {{ ruleMeasurement.label }}</mat-option
@@ -73,7 +76,13 @@
     </div>
 
     <div class="col-12 form-control">
-      <vitamui-common-textarea formControlName="ruleDescription" required="required" placeholder="Description" [rows]="2">
+      <vitamui-common-textarea
+        formControlName="ruleDescription"
+        [disabled]="!(hasUpdateAgencyRole$ | async)"
+        required="required"
+        placeholder="Description"
+        [rows]="2"
+      >
         <ng-container *ngIf="form.get('ruleDescription')?.touched">
           <vitamui-common-input-error
             *ngIf="!!form.get('ruleDescription')?.errors?.required"
@@ -86,6 +95,8 @@
   </div>
 
   <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited  || hasUpdateAgencyRole$ | async">Enregistrer</button>
+    <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited || !(hasUpdateAgencyRole$ | async)">
+      Enregistrer
+    </button>
   </div>
 </form>

@@ -117,10 +117,4 @@ describe('HierarchyListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should compute correctly application name', () => {
-    expect(component.getApplicationName('USERS_APP')).toBe('Utilisateurs');
-    expect(component.getApplicationName('BAD_APP')).toBe('BAD_APP');
-    expect(component.getApplicationName(null)).toBe('');
-  });
 });

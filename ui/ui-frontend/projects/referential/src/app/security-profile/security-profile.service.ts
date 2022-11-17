@@ -34,15 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
-import {SecurityProfile} from 'projects/vitamui-library/src/lib/models/security-profile';
-import {SecurityProfileApiService} from '../core/api/security-profile-api.service';
-import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
+import { SecurityProfile } from 'projects/vitamui-library/src/lib/models/security-profile';
+import { SecurityProfileApiService } from '../core/api/security-profile-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +52,7 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
 
   constructor(
     private securityProfileApiService: SecurityProfileApiService,
-    private snackBar: VitamUISnackBar,
+    private snackBarService: VitamUISnackBarService,
     http: HttpClient) {
     super(http, securityProfileApiService, 'ALL');
   }
@@ -84,18 +83,14 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
     return this.securityProfileApiService.create(profile, this.headers)
       .pipe(
         tap(
-          (response: SecurityProfile) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: {type: 'securityProfileCreate', name: response.identifier},
-              duration: 10000
+          (_: SecurityProfile) => {
+            this.snackBarService.open({
+              message: 'SNACKBAR.SECURITY_CREATED',
+              icon: 'vitamui-icon-admin-key'
             });
           },
-          (error: any) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
+          (error) => {
+            this.snackBarService.open({ message: error.error.message, translate: false });
           }
         )
       );
@@ -106,18 +101,14 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
       .pipe(
         tap((response) => this.updated.next(response)),
         tap(
-          (response) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000,
-              data: {type: 'securityProfileUpdate', name: response.identifier}
+          (_) => {
+            this.snackBarService.open({
+              message: 'SNACKBAR.SECURITY_UPDATED',
+              icon: 'vitamui-icon-admin-key'
             });
           },
           (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
+            this.snackBarService.open({ message: error.error.message, translate: false });
           }
         )
       );
@@ -126,17 +117,13 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
   delete(profile: SecurityProfile): Observable<any> {
     return this.securityProfileApiService.delete(profile.id).pipe(
       tap(() => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-            data: {type: 'securityProfileDelete', name: profile.identifier}
+          this.snackBarService.open({
+            message: 'SNACKBAR.SECURITY_DELETED',
+            icon: 'vitamui-icon-admin-key'
           });
         },
         (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
+          this.snackBarService.open({ message: error.error.message, translate: false });
         })
     );
   }

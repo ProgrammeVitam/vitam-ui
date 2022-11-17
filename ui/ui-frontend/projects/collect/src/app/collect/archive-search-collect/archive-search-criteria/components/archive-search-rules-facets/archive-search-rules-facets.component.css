@@ -1,0 +1,18 @@
+ #show-hide-facet-button {
+    position: relative;
+    float: right;
+    cursor: pointer;
+    width: 40px;
+    border: 1px solid #bdbdbd;
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 10px 10px;
+    font-size: large;
+    font-weight: bold;
+  
+ }
+
+ #facet-content{
+    margin: 0 5px;
+    padding: 0 5px;  
+ }

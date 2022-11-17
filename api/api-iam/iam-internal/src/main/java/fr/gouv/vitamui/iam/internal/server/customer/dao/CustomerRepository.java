@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.iam.internal.server.customer.dao;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Repository;
-
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * MongoDB repository for the customers.
@@ -54,4 +53,6 @@ public interface CustomerRepository extends VitamUIRepository<Customer, String> 
     Optional<Customer> findByCode(String code);
 
     Optional<Customer> findByEmailDomainsContainsIgnoreCase(String email);
+
+    Optional<Customer> findByEmailDomainsIgnoreCase(String email);
 }

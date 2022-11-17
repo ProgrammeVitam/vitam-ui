@@ -28,16 +28,19 @@ package fr.gouv.vitamui.archives.search.service;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.model.objectgroup.FileInfoModel;
+import fr.gouv.vitam.common.model.objectgroup.FormatIdentificationModel;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -48,14 +51,13 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,15 +73,19 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
     private final ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
     private final ArchiveSearchExternalWebClient archiveSearchExternalWebClient;
+
+    private final ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient;
     private final CommonService commonService;
 
     @Autowired
     public ArchivesSearchService(final CommonService commonService,
         final ArchiveSearchExternalRestClient archiveSearchExternalRestClient,
-        final ArchiveSearchExternalWebClient archiveSearchExternalWebClient) {
+        final ArchiveSearchExternalWebClient archiveSearchExternalWebClient,
+        ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient) {
         this.commonService = commonService;
         this.archiveSearchExternalRestClient = archiveSearchExternalRestClient;
         this.archiveSearchExternalWebClient = archiveSearchExternalWebClient;
+        this.archiveSearchStreamingExternalRestClient = archiveSearchStreamingExternalRestClient;
     }
 
     @Override
@@ -106,9 +112,11 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         LOGGER.debug("Download the Archive Unit Object with id {}", id);
 
         ResultsDto got = findObjectById(id, context).getBody();
-        String usage = getUsage(Objects.requireNonNull(got), objectData);
-        return archiveSearchExternalWebClient
-                .downloadObjectFromUnit(id, usage, getVersion(got.getQualifiers(), usage), context);
+        setObjectData(Objects.requireNonNull(got), objectData);
+        return archiveSearchExternalWebClient.downloadObjectFromUnit(id,
+            objectData.getQualifier(),
+            objectData.getVersion(),
+            context);
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
@@ -127,36 +135,48 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(searchQuery, context);
     }
 
-    public String getUsage(ResultsDto got, ObjectData objectData) {
-        String finalUsage = null;
-        for (QualifiersDto qualifier : got.getQualifiers()) {
-            finalUsage = Arrays.stream(ObjectQualifierTypeEnum.values())
-                .map(ObjectQualifierTypeEnum::getValue)
-                .filter(value -> value.equals(qualifier.getQualifier()))
-                .findFirst().orElse(null);
-            String filename = getObjectDataFilename(objectData, qualifier);
-            if (filename == null) {
-                LOGGER.debug("Objectdata with first FileInfoModel.filename null : {}", objectData);
-                continue;
-            }
-            objectData.setFilename(filename);
-            objectData.setMimeType(qualifier.getVersions().get(0).getFormatIdentification().getMimeType());
-        }
-        return finalUsage;
+    public void setObjectData(ResultsDto got, ObjectData objectData) {
+        objectData.setQualifier(getQualifier(got));
+        objectData.setFilename(getFilename(got));
+        objectData.setMimeType(getMimeType(got));
+        objectData.setVersion(getVersion(got));
     }
 
-    private String getObjectDataFilename(ObjectData objectData, QualifiersDto qualifier) {
-        if (qualifier.getVersions() != null && qualifier.getVersions().get(0).getFileInfoModel() == null
-            || StringUtils.isNotEmpty(objectData.getFilename())) {
-            return null;
-        }
-        return qualifier.getVersions().get(0).getFileInfoModel().getFilename();
+    private String getQualifier(ResultsDto got) {
+        return got.getQualifiers().stream()
+            .map(QualifiersDto::getQualifier)
+            .filter(ObjectQualifierTypeEnum.allValues::contains)
+            .reduce((first, second) -> second)
+            .orElse(null);
     }
 
-    public Integer getVersion(List<QualifiersDto> qualifiers, String usage) {
-        List<VersionsDto> versions =
-            qualifiers.stream().filter(q -> q.getQualifier().equals(usage)).findFirst().orElseThrow().getVersions();
-        return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
+    private String getFilename(ResultsDto got) {
+        return got.getQualifiers().stream()
+            .map(QualifiersDto::getVersions)
+            .flatMap(List::stream)
+            .map(VersionsDto::getFileInfoModel).filter(Objects::nonNull)
+            .map(FileInfoModel::getFilename).filter(Objects::nonNull)
+            .findFirst().orElse(null);
+    }
+
+    private String getMimeType(ResultsDto got) {
+        return got.getQualifiers().stream()
+            .map(QualifiersDto::getVersions)
+            .flatMap(List::stream)
+            .map(VersionsDto::getFormatIdentification).filter(Objects::nonNull)
+            .map(FormatIdentificationModel::getMimeType).filter(Objects::nonNull)
+            .findFirst().orElse(null);
+    }
+
+    private Integer getVersion(ResultsDto got) {
+        return got.getQualifiers().stream()
+            .filter(qualifierDto -> ObjectQualifierTypeEnum.allValues.contains(qualifierDto.getQualifier()))
+            .map(QualifiersDto::getVersions)
+            .flatMap(List::stream)
+            .map(VersionsDto::getDataObjectVersion).filter(Objects::nonNull)
+            .reduce((first, second) -> second)
+            .map(version -> Integer.parseInt(version.split("_")[1]))
+            .orElse(null);
     }
 
     public ResponseEntity<String> exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
@@ -211,5 +231,12 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         ExternalHttpContext context) {
         LOGGER.debug("Update the Archive Unit with id {}", id);
         return archiveSearchExternalRestClient.updateUnitById(id, unitDescriptiveMetadataDto, context);
+    }
+
+    public ResponseEntity<String> transferAcknowledgment(final ExternalHttpContext context, String fileName,
+        InputStream inputStream) {
+        LOGGER.debug("transfer acknowledgment");
+        return archiveSearchStreamingExternalRestClient
+            .transferAcknowledgment(context, fileName, inputStream);
     }
 }

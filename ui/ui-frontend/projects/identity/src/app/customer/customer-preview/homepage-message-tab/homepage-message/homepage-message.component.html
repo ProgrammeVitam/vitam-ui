@@ -12,7 +12,7 @@
             homepageMessageForm.get('portalTitle')?.touched &&
             !!homepageMessageForm.get('portalTitle')?.errors?.required
           ">
-          {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
+          {{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
       </vitamui-common-input>
 
       <vitamui-common-textarea class="pb-2" formControlName="portalMessage" required [placeholder]="
@@ -22,7 +22,7 @@
             homepageMessageForm.get('portalMessage')?.touched &&
             !!homepageMessageForm.get('portalMessage')?.errors?.required
           ">
-          {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
+          {{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
       </vitamui-common-textarea>
       <small class="d-flex justify-content-end">{{ homepageMessageForm.get("portalMessage")?.value?.length }}
         {{

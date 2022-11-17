@@ -63,7 +63,7 @@ function getTestElement(fixture: ComponentFixture<TestHostComponent>) {
 describe('HasAnyRoleDirective', () => {
   beforeEach(() => {
     const authStubService = {
-      userLoaded: new Subject()
+      user$: new Subject()
     };
     TestBed.configureTestingModule({
       declarations: [TestHostComponent, HasAnyRoleDirective],
@@ -83,7 +83,7 @@ describe('HasAnyRoleDirective', () => {
     expect(getTestElement(fixture)).toBeNull();
 
     // Sets a logged user with the required role
-    authService.userLoaded.next({
+    authService.user$.next({
       profileGroup : {
         profiles: [
           {
@@ -98,7 +98,7 @@ describe('HasAnyRoleDirective', () => {
     // The element should now be displayed
     expect(getTestElement(fixture)).toBeTruthy();
     // Sets a logged user without the required roles
-    authService.userLoaded.next({
+    authService.user$.next({
       profileGroup : {
         profiles: [
           {
@@ -123,7 +123,7 @@ describe('HasAnyRoleDirective', () => {
     const testHost = fixture.componentInstance;
     const authService = TestBed.inject(AuthService);
     // Sets a logged user with the required role
-    authService.userLoaded = new BehaviorSubject({
+    authService.user$ = new BehaviorSubject({
       profileGroup : {
         profiles: [
           {
@@ -154,7 +154,7 @@ describe('HasAnyRoleDirective', () => {
     const fixture = TestBed.createComponent(TestHostComponent);
     const authService = TestBed.inject(AuthService);
 
-    authService.userLoaded = new BehaviorSubject({
+    authService.user$ = new BehaviorSubject({
       profileGroup : {
         profiles: [
           {
@@ -171,7 +171,7 @@ describe('HasAnyRoleDirective', () => {
 
     fixture.detectChanges();
 
-    authService.userLoaded.next({
+    authService.user$.next({
       profileGroup : {
         profiles: [
           {

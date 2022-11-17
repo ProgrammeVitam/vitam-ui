@@ -38,18 +38,18 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
   CriteriaDataType,
   CriteriaOperator,
+  FilingHoldingSchemeNode,
   SearchService,
   SecurityService,
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
-import { FilingHoldingSchemeNode } from './models/node.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
@@ -99,7 +99,6 @@ export class ArchiveService extends SearchService<any> {
         return of({ $hits: null, $results: [] });
       }),
       map((response) => response.$results),
-      tap(() => {}),
       map((results) => this.buildNestedTreeLevels(results))
     );
   }
@@ -117,7 +116,6 @@ export class ArchiveService extends SearchService<any> {
           title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
           type: unit.DescriptionLevel,
           children: [],
-          parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
           hidden: false,
@@ -126,7 +124,6 @@ export class ArchiveService extends SearchService<any> {
         out.push(outNode);
       }
     });
-
     return this.sortByTitle(out);
   }
 
@@ -182,6 +179,7 @@ export class ArchiveService extends SearchService<any> {
   launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
     this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
   }
+
   private buildPagedResults(response: SearchResponse): PagedResult {
     const pagedResult: PagedResult = {
       results: response.$results,
@@ -273,10 +271,12 @@ export class ArchiveService extends SearchService<any> {
 
   downloadFile(url: string) {
     window.addEventListener('focus', window_focus, false);
+
     function window_focus() {
       window.removeEventListener('focus', window_focus, false);
       URL.revokeObjectURL(url);
     }
+
     location.href = url;
   }
 
@@ -377,9 +377,20 @@ export class ArchiveService extends SearchService<any> {
     return this.archiveApiService.updateUnit(id, unitMDDDto, headers);
   }
 
+  transferAcknowledgment(tenantIdentifier: string, xmlFile: Blob, fileName: string, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders();
+    headers = headers.append('X-Tenant-Id', tenantIdentifier);
+    headers = headers.append('Content-Type', 'application/octet-stream');
+    headers = headers.append('fileName', fileName);
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+
+    return this.archiveApiService.transferAcknowledgment(xmlFile, headers);
+  }
+
   isWaitingToRecalculateCriteria(criteriaKey: string): boolean {
     return criteriaKey === 'WAITING_RECALCULATE' || criteriaKey === 'ORIGIN_WAITING_RECALCULATE';
   }
+
   isEliminationTenchnicalIdCriteria(criteriaKey: string): boolean {
     return criteriaKey === 'ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE';
   }
@@ -387,9 +398,11 @@ export class ArchiveService extends SearchService<any> {
   isAppraisalRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.APPRAISAL_RULE;
   }
+
   isAccessRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.ACCESS_RULE;
   }
+
   isStorageRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.STORAGE_RULE;
   }
@@ -397,9 +410,11 @@ export class ArchiveService extends SearchService<any> {
   isClassificationRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.CLASSIFICATION_RULE;
   }
+
   isDisseminationRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.DISSEMINATION_RULE;
   }
+
   isReuseRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.REUSE_RULE;
   }

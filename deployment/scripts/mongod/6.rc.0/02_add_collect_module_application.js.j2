@@ -47,6 +47,8 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
             {"name": "ROLE_CREATE_PROJECTS"},
             {"name": "ROLE_UPDATE_PROJECTS"},
             {"name": "ROLE_GET_ACCESS_CONTRACTS"},
+            {"name": "ROLE_GET_RULES"},
+            {"name": "ROLE_GET_ARCHIVE_SEARCH"}
         ]
     });
 

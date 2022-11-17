@@ -1,12 +1,14 @@
 <vitamui-common-confirm-dialog *ngIf="dialogType === 'delete'"
-                               dialogTitle="Suppression d'un {{objectType}}" i18n-dialogTitle="@@closePopupConfirmDialogTitle"
+                               dialogTitle="Suppression {{objectGender==='M'?'d\'un':'d\'une'}} {{objectType}}"
+                               i18n-dialogTitle="@@closePopupConfirmDialogTitle"
                                confirmLabel="Valider" i18n-confirmLabel="@@confirmActionConfirmDialogConfirmLabel"
                                cancelLabel="Annuler" i18n-cancelLabel="@@confirmActionCancelDialogCancelLabel">
-  Confirmez-vous la suppression du {{objectType}} "{{objectName}}" ?
+  Confirmez-vous la suppression {{objectGender === 'M' ? 'du' : 'de la'}} {{objectType}} "{{objectName}}" ?
 </vitamui-common-confirm-dialog>
 
 <vitamui-common-confirm-dialog *ngIf="dialogType === 'changeTab'"
-                               dialogTitle="modifications non sauvegardées" i18n-dialogTitle="@@closePopupConfirmDialogTitle"
+                               dialogTitle="modifications non sauvegardées"
+                               i18n-dialogTitle="@@closePopupConfirmDialogTitle"
                                confirmLabel="Oui" i18n-confirmLabel="@@confirmActionConfirmDialogConfirmLabel"
                                cancelLabel="Non" i18n-cancelLabel="@@confirmActionCancelDialogCancelLabel">
   Voulez-vous sauvegarder les modifications ?

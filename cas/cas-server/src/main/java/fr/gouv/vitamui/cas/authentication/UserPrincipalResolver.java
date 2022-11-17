@@ -62,6 +62,7 @@ import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.util.CommonHelper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import fr.gouv.vitamui.cas.util.Constants;
@@ -223,7 +224,9 @@ public class UserPrincipalResolver implements PrincipalResolver {
             embedded += "," + API_PARAMETER;
         }
         LOGGER.debug("Computed embedded: {}", embedded);
+
         final UserDto user = casExternalRestClient.getUser(utils.buildContext(username), username, userProviderId, technicalUserId, Optional.ofNullable(embedded));
+
         if (user == null) {
             LOGGER.debug("No user resolved for: {}", username);
             return null;
@@ -232,6 +235,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
             LOGGER.debug("User cannot login: {} - User {}", username, user.toString());
             return null;
         }
+
+        if (Objects.isNull(username)) {
+            username = user.getEmail();
+        }
+
         val attributes = new HashMap<String, List<Object>>();
         attributes.put(USER_ID_ATTRIBUTE, Collections.singletonList(user.getId()));
         attributes.put(CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(user.getCustomerId()));
@@ -279,6 +287,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             attributes.put(PROOF_TENANT_ID_ATTRIBUTE, Collections.singletonList(authUser.getProofTenantIdentifier()));
             attributes.put(TENANTS_BY_APP_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp())));
             attributes.put(SITE_CODE, Collections.singletonList(user.getSiteCode()));
+            attributes.put(CENTER_CODE, Collections.singletonList(user.getCenterCode()));
             final Set<String> roles = new HashSet<>();
             final List<ProfileDto> profiles = authUser.getProfileGroup().getProfiles();
             profiles.forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));

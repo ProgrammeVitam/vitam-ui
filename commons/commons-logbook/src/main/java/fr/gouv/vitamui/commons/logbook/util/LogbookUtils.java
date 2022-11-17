@@ -39,6 +39,17 @@ package fr.gouv.vitamui.commons.logbook.util;
 import java.io.IOException;
 import java.util.Collection;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.logbook.LogbookOperation;
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -60,6 +71,15 @@ public class LogbookUtils {
     private static final String DIFF_KEY_WORDS = "diff";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookUtils.class);
+
+    private static final ObjectMapper objectMapper;
+
+    static {
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new Jdk8Module());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     /**
      * Method for get evData from a list of logbookDataUpdateDto
@@ -88,6 +108,32 @@ public class LogbookUtils {
             LOGGER.error(e.getMessage(), e);
             throw ApiErrorGenerator.getInternalServerException(e);
         }
+    }
+
+    /**
+     * Extract the last event of a logbook operation response
+     *
+     * @param response Logbook operation response
+     * @return the last event
+     */
+    public static LogbookEventDto getLastEvent(final RequestResponse<LogbookOperation> response) throws JsonProcessingException {
+        final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper.treeToValue(response.toJsonNode(), LogbookOperationsResponseDto.class);
+        final LogbookOperationDto logbookOperation = logbookOperationsResponseDto.getResults()
+            .stream()
+            .findFirst()
+            .orElseThrow(() -> new ApplicationServerException(
+                String.format("No logbook returned in the following response : %s",
+                    response)));
+
+        // Initialized with the first element by default
+        LogbookEventDto lastLogbookEvent = logbookOperation;
+        if (logbookOperation.getEvents() != null && !logbookOperation.getEvents()
+            .isEmpty()) {
+            lastLogbookEvent = logbookOperation.getEvents()
+                .get(logbookOperation.getEvents()
+                    .size() - 1);
+        }
+        return lastLogbookEvent;
     }
 
     public static String getValue(final Object value) {

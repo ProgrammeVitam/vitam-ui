@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import {
   AuthService,
   Event,
@@ -44,14 +45,15 @@ import {
   ExternalParametersService,
   fadeInOutAnimation,
   LogbookOperationReportState,
-  LogbookService
+  LogbookOperationTypeProc,
+  LogbookService,
 } from 'ui-frontend-common';
-import {LogbookDownloadService} from '../logbook-download.service';
+import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
+import { LogbookDownloadService } from '../logbook-download.service';
 
-
-const msgForDownload : { [key: string]: string } ={
-  'EXPORT_DIP':'Télécharger le DIP',
-  'ARCHIVE_TRANSFER' :'Télécharger le DIP de transfert'
+const msgForDownload: { [key: string]: string } = {
+  EXPORT_DIP: 'Télécharger le DIP',
+  ARCHIVE_TRANSFER: 'Télécharger le DIP de transfert',
 };
 
 const DOWNLOAD_REPORT = 'Télécharger le rapport';
@@ -62,7 +64,7 @@ const DOWNLOAD_REPORT = 'Télécharger le rapport';
   styleUrls: ['./logbook-operation-detail.component.scss'],
   animations: [fadeInOutAnimation],
 })
-export class LogbookOperationDetailComponent implements OnInit, OnChanges {
+export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
   @Input() eventId: string;
   @Input() tenantIdentifier: number;
   @Input() isPopup: boolean;
@@ -78,9 +80,10 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   accessContractLogbookIdentifier: string;
 
   downloadButtonTitle: string;
-  showDownloadButton: boolean = false;
-  disableDownloadButton: boolean = true;
+  showDownloadButton = false;
+  disableDownloadButton = true;
 
+  private subscriptions = new Subscription();
 
   constructor(
     private logbookService: LogbookService,
@@ -89,14 +92,20 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
     private logbookDownloadService: LogbookDownloadService,
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters()
-      .subscribe(parameters => this.setAccessContractId(parameters));
-    this.logbookDownloadService.logbookOperationsReloaded.subscribe(logbookOperations => this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations));
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => this.setAccessContractId(parameters));
+    this.subscriptions.add(
+      this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperations) =>
+        this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations)
+      )
+    );
     this.refreshLogbookOperation();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   ngOnChanges() {
@@ -104,7 +113,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   }
 
   setLogbookOperationIfIfHasBeenReloaded(logbookOperations: Event[]) {
-    const logbookOperationUpdated = logbookOperations.find(e => e.id == this.eventId);
+    const logbookOperationUpdated = logbookOperations.find((e) => e.id === this.eventId);
     if (logbookOperationUpdated) {
       this.event = logbookOperationUpdated;
       this.updateDownloadButton();
@@ -130,7 +139,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   }
 
   private doesNotHaveTenant(): boolean {
-    return this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId
+    return this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId;
   }
 
   downloadReports() {
@@ -140,13 +149,13 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
     this.logbookDownloadService.launchDownloadReport(this.event, this.tenantIdentifier, this.accessContractId);
   }
 
-
-
   private updateDownloadButton() {
     this.downloadButtonTitle = msgForDownload[this.event.typeProc] ?? DOWNLOAD_REPORT;
     const logbookOperationReportState = this.logbookDownloadService.logbookOperationReportState(this.event);
-    this.showDownloadButton = logbookOperationReportState == LogbookOperationReportState.IN_PROGRESS || logbookOperationReportState == LogbookOperationReportState.DOWNLOADABLE;
-    this.disableDownloadButton = !(logbookOperationReportState == LogbookOperationReportState.DOWNLOADABLE && this.hasAccessContractId);
+    this.showDownloadButton =
+      logbookOperationReportState === LogbookOperationReportState.IN_PROGRESS ||
+      logbookOperationReportState === LogbookOperationReportState.DOWNLOADABLE;
+    this.disableDownloadButton = !(logbookOperationReportState === LogbookOperationReportState.DOWNLOADABLE && this.hasAccessContractId);
   }
 
   private updateReportFilename() {
@@ -177,12 +186,49 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
     if (this.doesNotHaveTenant()) {
       return;
     }
-    this.setAccessContractLogbookIdentifier()
+    this.setAccessContractLogbookIdentifier();
     this.loading = true;
-    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier)
-      .subscribe((event) => {
-        this.logbookDownloadService.logbookOperationsReloaded.next([event]);
-        this.loading = false;
-      });
+    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier).subscribe((event) => {
+      this.logbookDownloadService.logbookOperationsReloaded.next([event]);
+      this.loading = false;
+    });
+  }
+
+  hasATRDownloadable(): boolean {
+    if (!this.event) {
+      return false;
+    }
+    return this.event.typeProc === LogbookOperationTypeProc.INGEST_TEST && this.ingestIsFinish();
+  }
+
+  ingestIsFinish(): boolean {
+    const eventStatus = this.eventStatus(this.event);
+    return eventStatus !== IngestStatus.STARTED && eventStatus !== IngestStatus.IN_PROGRESS;
+  }
+
+  // refacto: mettre en commun avec logbook-event.interface.ts
+  eventStatus(ingest: Event): IngestStatus {
+    const lastEvent: Event = this.eventLastEvent(ingest);
+    if (ingest.type === lastEvent.type) {
+      return lastEvent.outcome as IngestStatus;
+    }
+    return IngestStatus.IN_PROGRESS;
+  }
+
+  // refacto: mettre en commun avec logbook-event.interface.ts
+  eventLastEvent(ingest: Event): Event {
+    if (!this.eventHasEvents(ingest)) {
+      return ingest;
+    }
+    return ingest.events[ingest.events.length - 1];
+  }
+
+  // refacto: mettre en commun avec logbook-event.interface.ts
+  eventHasEvents(ingest: Event): boolean {
+    return ingest.events !== undefined && ingest.events.length > 0;
+  }
+
+  downloadATR() {
+    this.logbookService.downloadATR(this.event.objectId);
   }
 }

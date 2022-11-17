@@ -1,0 +1,319 @@
+<ng-container *ngIf="criteriaKey && criteriaVal">
+  <div id="chip">
+    <ul class="vitamui-search-criteria-list">
+      <li class="vitamui-search-criteria">
+        <ng-container *ngIf="criteriaVal.dataType === 'DATE'">
+          <ng-container
+            *ngFor="let criteriaValue of criteriaVal.values; let index = index; let isFirst = first; let isLast = last">
+            <div
+              class="vitamui-search-criteria-content"
+              matTooltip="{{
+                criteriaValue.keyTranslated
+                  ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
+                  : criteriaVal.key
+              }}:{{
+                criteriaVal.dataType === 'DATE'
+                  ? (criteriaValue.value.value | date: 'dd/MM/yyyy')
+                  : criteriaValue.valueTranslated
+                  ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
+                    | translate)
+                  : criteriaValue.label
+              }}"
+              matTooltipClass="vitamui-tooltip"
+              [matTooltipShowDelay]="300"
+              [ngClass]="[
+                isFirst ? 'left-arround' : 'left-not-arround',
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+              ]"
+              class="button-content right-button"
+            >
+              <ng-container *ngIf="isFirst">
+                {{
+                (criteriaValue.keyTranslated
+                ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' +
+                criteriaVal.key | translate)
+                : criteriaVal.key) + ' : '
+                }}
+              </ng-container>
+              {{ criteriaValue.value.value | date: 'dd/MM/yyyy' }}
+            </div>
+            <div
+              class="vitamui-remove-search-criteria"
+              *ngIf="criteriaValue.status !== 'IN_PROGRESS'"
+              (click)="removeCriteria(criteriaKey, criteriaValue.value)"
+              [ngClass]="[
+                isLast ? 'right-arround' : 'right-button',
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+              ]"
+            >
+              <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
+            </div>
+
+            <div
+              *ngIf="criteriaValue.status === 'IN_PROGRESS'"
+              class="vitamui-remove-search-criteria"
+              [ngClass]="[
+                isLast ? 'right-arround' : 'right-button',
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+              ]"
+            >
+              <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
+            </div>
+
+            <ng-container *ngIf="!isLast">
+              <div
+                class="vitamui-or-criteria-content"
+                [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button']"
+                class="button-or left-not-arround right-button"
+              >
+                {{ 'COLLECT.SEARCH_CRITERIA_OR' | translate }}
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="criteriaVal.dataType === 'INTERVAL'">
+          <ng-container
+            *ngFor="let criteriaValue of criteriaVal.values; let index = index; let isFirst = first; let isLast = last">
+            <div
+              class="vitamui-search-criteria-content"
+              matTooltip="{{
+                criteriaValue.keyTranslated
+                  ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
+                  : criteriaVal.key
+              }}"
+              matTooltipClass="vitamui-tooltip"
+              [matTooltipShowDelay]="300"
+              [ngClass]="[
+                isFirst ? 'left-arround' : 'left-not-arround',
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+              ]"
+              class="button-content right-button"
+            >
+              <ng-container *ngIf="isFirst">
+                {{
+                (criteriaValue.keyTranslated
+                ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' +
+                criteriaVal.key | translate)
+                : criteriaVal.key) + ' : '
+                }}
+              </ng-container>
+              <ng-container *ngIf="criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
+                {{ 'COLLECT.SEARCH_CRITERIA_BETWEEN' | translate }} {{ criteriaValue.value.beginInterval | date:
+                'dd/MM/yyyy' }}
+                {{ 'COLLECT.SEARCH_CRITERIA_AND' | translate }} {{ criteriaValue.value.endInterval | date:
+                'dd/MM/yyyy' }}
+              </ng-container>
+              <ng-container *ngIf="criteriaValue.value.beginInterval && !criteriaValue.value.endInterval">
+                {{ 'COLLECT.SEARCH_CRITERIA_GTE' | translate }} {{ criteriaValue.value.beginInterval | date:
+                'dd/MM/yyyy' }}
+              </ng-container>
+              <ng-container *ngIf="!criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
+                {{ 'COLLECT.SEARCH_CRITERIA_LTE' | translate }} {{ criteriaValue.value.endInterval | date:
+                'dd/MM/yyyy' }}
+              </ng-container>
+            </div>
+            <div
+              class="vitamui-remove-search-criteria"
+              *ngIf="criteriaValue.status !== 'IN_PROGRESS'"
+              (click)="removeCriteria(criteriaKey, criteriaValue.value)"
+              [ngClass]="[
+                isLast ? 'right-arround' : 'right-button',
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+              ]"
+            >
+              <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
+            </div>
+
+            <div
+              *ngIf="criteriaValue.status === 'IN_PROGRESS'"
+              class="vitamui-remove-search-criteria"
+              [ngClass]="[
+                isLast ? 'right-arround' : 'right-button',
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+              ]"
+            >
+              <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
+            </div>
+
+            <ng-container *ngIf="!isLast">
+              <div
+                class="vitamui-or-criteria-content"
+                [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button']"
+                class="button-or left-not-arround right-button"
+              >
+                {{ 'COLLECT.SEARCH_CRITERIA_OR' | translate }}
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="criteriaVal.dataType === 'STRING'">
+          <ng-container *ngIf="criteriaVal.key === 'GUID'">
+            <ng-container *ngIf="criteriaVal.values.length === 1">
+              <div
+                class="vitamui-search-criteria-content"
+                [matTooltip]="
+                  (criteriaVal.operator === 'EQ'
+                    ? ('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_INCLUDE' | translate)
+                    : ('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_EXCLUDE' | translate)) +
+                  ' : ' +
+                  criteriaVal.values[0].label
+                "
+                matTooltipClass="vitamui-tooltip"
+                [matTooltipShowDelay]="300"
+                [ngClass]="[
+                  isFirst ? 'left-arround' : 'left-not-arround',
+                  criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
+                    ? 'after-search-launched-button'
+                    : 'before-search-launched-button'
+                ]"
+                class="button-content right-button"
+              >
+                {{
+                (criteriaVal.operator === 'EQ'
+                ? ('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_INCLUDE' | translate)
+                : ('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_EXCLUDE' | translate)) +
+                ' : ' +
+                criteriaVal.values[criteriaVal.values.length - 1].label
+                }}
+              </div>
+            </ng-container>
+            <ng-container *ngIf="criteriaVal.values.length > 1">
+              <div
+                class="vitamui-search-criteria-content"
+                [matTooltip]="
+                  (criteriaVal.operator === 'EQ'
+                    ? ('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_INCLUDE' | translate)
+                    : ('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_EXCLUDE' | translate)) +
+                  ' : ' +
+                  criteriaVal.values.length
+                "
+                matTooltipClass="vitamui-tooltip"
+                [matTooltipShowDelay]="300"
+                [ngClass]="[
+                  isFirst ? 'left-arround' : 'left-not-arround',
+                  criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
+                    ? 'after-search-launched-button'
+                    : 'before-search-launched-button'
+                ]"
+                class="button-content right-button"
+              >
+                {{
+                (criteriaVal.operator === 'EQ'
+                ? ('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_INCLUDE' | translate)
+                : ('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_EXCLUDE' | translate)) +
+                ' : ' +
+                criteriaVal.values.length
+                }}
+              </div>
+            </ng-container>
+
+            <div
+              class="vitamui-remove-search-criteria"
+              *ngIf="criteriaVal.values[criteriaVal.values.length - 1].status !== 'IN_PROGRESS'"
+              (click)="removeCriteriaAllValues(criteriaKey)"
+              [ngClass]="[
+                isLast ? 'right-arround' : 'right-button',
+                criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
+                  ? 'after-search-launched-button'
+                  : 'before-search-launched-button'
+              ]"
+            >
+              <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
+            </div>
+
+            <div
+              *ngIf="criteriaVal.values[criteriaVal.values.length - 1].status === 'IN_PROGRESS'"
+              class="vitamui-remove-search-criteria"
+              [ngClass]="[
+                isLast ? 'right-arround' : 'right-button',
+                criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
+                  ? 'after-search-launched-button'
+                  : 'before-search-launched-button'
+              ]"
+            >
+              <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="criteriaVal.key !== 'GUID'">
+            <ng-container
+              *ngFor="let criteriaValue of criteriaVal.values; let index = index; let isFirst = first; let isLast = last">
+              <div
+                class="vitamui-search-criteria-content"
+                matTooltip="{{
+                  criteriaValue.keyTranslated
+                    ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
+                    : criteriaVal.key
+                }}:{{
+                  criteriaValue.valueTranslated
+                    ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
+                      | translate)
+                    : criteriaValue.label
+                }}"
+                matTooltipClass="vitamui-tooltip"
+                [matTooltipShowDelay]="300"
+                [ngClass]="[
+                  isFirst ? 'left-arround' : 'left-not-arround',
+                  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                ]"
+                class="button-content right-button"
+              >
+                <ng-container *ngIf="isFirst">
+                  <i *ngIf="criteriaKey === 'NODE'"
+                     class="vitamui-icon vitamui-icon-radio-checked vitamui-row-icon"></i>
+                  {{
+                  (criteriaValue.keyTranslated
+                  ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' +
+                  criteriaVal.key
+                  | translate)
+                  : criteriaVal.key) + ' : '
+                  }}
+                </ng-container>
+
+                {{
+                criteriaValue.valueTranslated
+                ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' +
+                criteriaValue.label
+                | translate)
+                : (criteriaValue.label | truncate: 50)
+                }}
+              </div>
+              <div
+                class="vitamui-remove-search-criteria"
+                *ngIf="criteriaValue.status !== 'IN_PROGRESS'"
+                (click)="removeCriteria(criteriaKey, criteriaValue.value)"
+                [ngClass]="[
+                  isLast ? 'right-arround' : 'right-button',
+                  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                ]"
+              >
+                <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
+              </div>
+
+              <div
+                *ngIf="criteriaValue.status === 'IN_PROGRESS'"
+                class="vitamui-remove-search-criteria"
+                [ngClass]="[
+                  isLast ? 'right-arround' : 'right-button',
+                  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                ]"
+              >
+                <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
+              </div>
+
+              <div
+                class="vitamui-or-criteria-content"
+                *ngIf="!isLast"
+                [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button']"
+                class="button-or left-not-arround right-button"
+              >
+                {{ 'COLLECT.SEARCH_CRITERIA_OR' | translate }}
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </li>
+    </ul>
+  </div>
+</ng-container>

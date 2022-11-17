@@ -38,15 +38,15 @@ import { DatePipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, VitamUISnackBar } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
+import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 
@@ -75,18 +75,16 @@ describe('SearchCriteriaListComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+  const vitamUIsnackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open']);
 
   const SearchCriteriaListServiceStub = {
     getSearchCriteriaHistory: () => of([]),
-
     deleteSearchCriteriaHistory: () => of(),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        MatSnackBarModule,
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
@@ -100,8 +98,8 @@ describe('SearchCriteriaListComponent', () => {
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogRefSpy },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: SearchCriteriaListService, useValue: SearchCriteriaListServiceStub },
+        { provide: VitamUISnackBar, useValue: vitamUIsnackBarSpy },
         {
           provide: ActivatedRoute,
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
@@ -118,7 +116,7 @@ describe('SearchCriteriaListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
   });
 
@@ -180,13 +178,13 @@ describe('SearchCriteriaListComponent', () => {
       searchCriteriaHistory$ = [
         {
           id: 'id1',
-          name: 'First Svae',
+          name: 'First Save',
           savingDate: new Date().toISOString(),
           searchCriteriaList: criteriaList$,
         },
         {
           id: 'id2',
-          name: 'Second Svae',
+          name: 'Second Save',
           savingDate: new Date().toISOString(),
           searchCriteriaList: criteriaList$,
         },
@@ -195,12 +193,22 @@ describe('SearchCriteriaListComponent', () => {
       component.searchCriteriaHistory = searchCriteriaHistory$;
     });
 
-    describe('deleteSearchCriteriaHistory', () => {
-      it('should delete searchCriteria', () => {
-        component.clearElement(searchCriteriaHistory$[0].id);
-        expect(component.searchCriteriaHistory.length).toEqual(1);
-        expect(component.searchCriteriaHistory[0].name).toEqual('Second Svae');
-      });
+    it('should call getSearchCriteriaHistory of SearchCriteriaListService', () => {
+      // Given
+      spyOn(SearchCriteriaListServiceStub, 'getSearchCriteriaHistory').and.callThrough();
+
+      // When
+      component.getSearchCriteriaHistory();
+
+      // Then
+      expect(component.pending).toBeFalsy();
+      expect(SearchCriteriaListServiceStub.getSearchCriteriaHistory).toHaveBeenCalled();
+    });
+
+    it('should delete searchCriteria', () => {
+      component.clearElement(searchCriteriaHistory$[0].id);
+      expect(component.searchCriteriaHistory.length).toEqual(1);
+      expect(component.searchCriteriaHistory[0].name).toEqual('Second Save');
     });
   });
 });

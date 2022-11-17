@@ -1,59 +1,9 @@
 <div class="vitamui-snack-bar-container">
-  <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
-    <ng-container *ngSwitchCase="'accountUpdate'">
-      <i class="vitamui-icon vitamui-icon-user"></i> {{ 'SNACKBAR.UPDATED_ACCOUNT' | translate }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'subrogationFinish'">
-      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> {{ 'SNACKBAR.FINISHED_SUBROGATION' | translate }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'subrogationActivated'">
-      <i class="vitamui-icon vitamui-icon-link banner-icon"></i>
-      {{
-        'SNACKBAR.ACTIVATED_SUBROGATION'
-          | translate: { duration: data.duration, hours: data.endTime | dateTime: 'H', minutes: data.endTime | dateTime: 'mm' }
-      }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'ruleCreateSuccess'">
-      <i class="vitamui-icon vitamui-icon-rules"></i> {{ 'APPLICATION.RULES_APP.MESSAGES.COMMON_RULE_MESSAGE' | translate }}
-      {{ data?.name }} {{ 'APPLICATION.RULES_APP.MESSAGES.CREATION_SUCCESS' | translate }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'ruleCreateFailed'">
-      <i class="vitamui-icon vitamui-icon-rules"></i> {{ 'APPLICATION.RULES_APP.MESSAGES.COMMON_RULE_MESSAGE' | translate }}
-      {{ data?.name }} {{ 'APPLICATION.RULES_APP.MESSAGES.CREATION_FAILED' | translate }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'ruleUpdateSuccess'">
-      <i class="vitamui-icon vitamui-icon-admin-rules"></i> {{ 'APPLICATION.RULES_APP.MESSAGES.COMMON_RULE_MESSAGE' | translate }}
-      {{ data?.name }} {{ 'APPLICATION.RULES_APP.MESSAGES.UPDATE_SUCCESS' | translate }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'ruleUpdateFailed'">
-      <i class="vitamui-icon vitamui-icon-admin-rules"></i> {{ 'APPLICATION.RULES_APP.MESSAGES.COMMON_RULE_MESSAGE' | translate }}
-      {{ data?.name }} {{ 'APPLICATION.RULES_APP.MESSAGES.UPDATE_FAILED' | translate }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'ruleDeleteSuccess'">
-      <i class="vitamui-icon vitamui-icon-admin-rules"></i> {{ 'APPLICATION.RULES_APP.MESSAGES.COMMON_RULE_MESSAGE' | translate }}
-      {{ data?.name }} {{ 'APPLICATION.RULES_APP.MESSAGES.DELETION_SUCCESS' | translate }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'ruleDeleteFailed'">
-      <i class="vitamui-icon vitamui-icon-admin-rules"></i> {{ 'APPLICATION.RULES_APP.MESSAGES.COMMON_RULE_MESSAGE' | translate }}
-      {{ data?.name }} {{ 'APPLICATION.RULES_APP.MESSAGES.DELETION_FAILED' | translate }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'ruleDeleteStart'">
-      <i class="vitamui-icon vitamui-icon-admin-rules"></i> {{ 'APPLICATION.RULES_APP.MESSAGES.DELETION' | translate }} {{ data?.name }}
-      {{ 'APPLICATION.RULES_APP.MESSAGES.OPERATION_IN_PROGRESS' | translate }}
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'ruleExportAll'">
-      <i class="vitamui-icon vitamui-icon-rules"></i> {{ 'APPLICATION.RULES_APP.MESSAGES.EXPORT_IN_PROGRESS' | translate }}
-    </ng-container>
-  </span>
-  <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
+  <div  class="vitamui-snack-bar-content">
+    <i *ngIf="data?.icon" class="vitamui-icon {{ data.icon }}"></i>
+    <span [innerHTML]="data.message"></span>
+  </div>
+  <button class="close-btn" (click)="close()">
+    <i class="material-icons">clear</i>
+  </button>
 </div>

@@ -55,6 +55,8 @@ public class BaseUrl {
 
     private String identity;
 
+    private String collect;
+
     private String pastis;
 
 }

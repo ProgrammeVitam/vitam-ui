@@ -10,16 +10,16 @@
 	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
 	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
 ]>
-<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
-	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<svg version="1.1" id="Calque_1"
+     xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
 <style type="text/css">
 	.artyp0{fill-rule:evenodd;clip-rule:evenodd;}
 	.artyp1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
 	.artyp2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
 	.artyp3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
 	.artyp4{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARTYP_ID_1_);}
-	.artyp5{fill-rule:evenodd;clip-rule:evenodd;fill:#130005;}
+	.artyp5{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-900);}
 	.artyp6{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARTYP_ID_2_);}
 	.artyp7{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARTYP_ID_3_);}
 	.artyp8{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#4C4C4C;stroke-width:0.3517;stroke-miterlimit:10;}

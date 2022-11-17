@@ -1,33 +1,36 @@
-@import "~ui-frontend-common/sass/variables/colors";
+@import '~ui-frontend-common/sass/variables/colors';
 
 .cell-content-bold {
-    color: var(--vitamui-grey-900);
-    font-size: 15px;
-    font-weight: bold;
+  color: var(--vitamui-grey-900);
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .vitamui-cell-content {
-    &.success {
-        color: #74C31C;
-    }
+  &.success {
+    color: #74c31c;
+  }
 
-    &.warning {
-        color: $mustard-yellow;
-    }
+  &.warning {
+    color: $mustard-yellow;
+  }
 
-    &.error {
-        color: $red;
-    }
+  &.error {
+    color: $red;
+  }
 }
 
 .break-content {
-    word-break: break-all;
+  word-break: break-all;
 }
 
 .fixed-layout {
-    table-layout: auto;
+  table-layout: auto;
 }
 
-.width60{
-   width:60px;
+.width60 {
+  width: 60px;
+}
+.cursor-pointer {
+  cursor: pointer;
 }

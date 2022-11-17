@@ -37,18 +37,21 @@
 
 package fr.gouv.vitamui.iam.internal.server.provisioning.service;
 
-import java.util.Optional;
+import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
+import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
+import fr.gouv.vitamui.iam.internal.server.provisioning.client.ProvisioningWebClient;
+import fr.gouv.vitamui.iam.internal.server.provisioning.config.IdPProvisioningClientConfiguration;
+import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
-import fr.gouv.vitamui.iam.internal.server.provisioning.config.IdPProvisioningClientConfiguration;
-import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
-import fr.gouv.vitamui.iam.internal.server.provisioning.client.ProvisioningWebClient;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import javax.validation.constraints.NotNull;
 
 /**
  * Customer provisioning service.
@@ -64,6 +67,10 @@ public class ProvisioningInternalService {
 
     private final InternalSecurityService securityService;
 
+    @Value("${address.max-street-length}")
+    @NotNull
+    private int maxStreetLength;
+
     public ProvisioningInternalService(final WebClient.Builder webClientBuilder, final ProvisioningClientConfiguration provisioningClientConfiguration,
         final InternalSecurityService securityService) {
         this.webClientBuilder = webClientBuilder;
@@ -71,12 +78,19 @@ public class ProvisioningInternalService {
         this.securityService = securityService;
     }
 
-    public ProvidedUserDto getUserInformation(final String idp, final String email, final String groupId, final String unit, final String technicalUserId) {
+    public ProvidedUserDto getUserInformation(final String idp, final String email, final String groupId, final String unit, final String userIdentifier, final String customerId) {
         final IdPProvisioningClientConfiguration idpProvisioningClient = getProvisioningClientConfiguration(idp);
 
         var webClient = buildWebClient(idpProvisioningClient);
 
-        return webClient.getProvidedUser(securityService.getHttpContext(), email, groupId, unit, technicalUserId);
+        ProvidedUserDto providedUser = webClient.getProvidedUser(securityService.getHttpContext(), email, groupId, unit, userIdentifier, customerId);
+        AddressDto address = providedUser.getAddress();
+        if(address != null){
+            var shortStreetAddress = StringUtils.substring(address.getStreet(), 0, maxStreetLength);
+            address.setStreet(shortStreetAddress);
+            providedUser.setAddress(address);
+        }
+        return providedUser;
     }
 
     /**

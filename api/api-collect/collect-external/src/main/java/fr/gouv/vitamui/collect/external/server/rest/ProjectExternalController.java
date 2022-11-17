@@ -28,6 +28,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.ProjectExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -42,9 +43,11 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +60,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Optional;
+
+import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
 
 /**
  * Project External controller
@@ -82,21 +88,18 @@ public class ProjectExternalController {
     @Secured(ServicesData.ROLE_GET_PROJECTS)
     @GetMapping(params = {"page", "size"})
     public PaginatedValuesDto<CollectProjectDto> getAllPaginated(@RequestParam final Integer page,
-        @RequestParam final Integer size,
-        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        direction.ifPresent(directionDto ->
-            {
-                try {
-                    SanityChecker.sanitizeCriteria(directionDto);
-                } catch (InvalidParseOperationException exception) {
-                    LOGGER.error("Exception error : {}", exception.getMessage());
-                    throw new PreconditionFailedException("Exception error", exception);
-                }
+        @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        direction.ifPresent(directionDto -> {
+            try {
+                SanityChecker.sanitizeCriteria(directionDto);
+            } catch (InvalidParseOperationException exception) {
+                LOGGER.error("Exception error : {}", exception.getMessage());
+                throw new PreconditionFailedException("Exception error", exception);
             }
-        );
+        });
         if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
@@ -106,28 +109,61 @@ public class ProjectExternalController {
         return projectExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
+    @ApiOperation(value = "Get transactions by project paginated")
+    @GetMapping(params = {"page", "size"}, value = "/{id}" + TRANSACTIONS)
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction, @PathVariable("id") String projectId)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, projectId);
+        SanityChecker.checkSecureParameter(projectId);
+        SanityChecker.sanitizeCriteria(direction);
+        SanityChecker.sanitizeCriteria(criteria);
+        if (orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
+            direction);
+        return projectExternalService.getTransactionsByProjectPaginated(page, size, criteria, orderBy, direction,
+            projectId);
+    }
+
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @PostMapping()
     public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException,
-        PreconditionFailedException {
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create : {}", collectProjectDto);
         return projectExternalService.createProject(collectProjectDto);
+    }
+
+    @Secured(ServicesData.ROLE_CREATE_TRANSACTIONS)
+    @PostMapping(value = CommonConstants.PATH_ID+ "/transactions")
+    public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody
+        CollectTransactionDto collectTransactionDto)
+        throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(collectTransactionDto);
+        LOGGER.debug("Transaction to create : {}", collectTransactionDto);
+        return projectExternalService.createTransactionForProject(collectTransactionDto, id);
     }
 
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @ApiOperation(value = "Upload and stream collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = "/upload", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Void> streamingUpload(InputStream inputStream,
-        @RequestHeader(value = CommonConstants.X_PROJECT_ID_HEADER) final String projectId,
-        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+        @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName,
+        @RequestHeader Map<String, String> headers
     ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The project ID is a mandatory parameter: ", projectId);
-        SanityChecker.checkSecureParameter(projectId);
+        ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(originalFileName);
         LOGGER.debug("[External] upload collect zip file : {}", originalFileName);
-        return projectExternalService.streamingUpload(inputStream, projectId, originalFileName);
+        return projectExternalService.streamingUpload(inputStream, transactionId, originalFileName);
     }
 
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
@@ -151,4 +187,26 @@ public class ProjectExternalController {
         LOGGER.debug("The project id {} ", id);
         return projectExternalService.findProjectById(id);
     }
+
+    @Secured(ServicesData.ROLE_DELETE_PROJECTS)
+    @DeleteMapping(CommonConstants.PATH_ID)
+    public void deleteProjectById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("The project id {} ", id);
+        projectExternalService.deleteProjectById(id);
+    }
+
+    @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
+    @GetMapping(CommonConstants.PATH_ID  + "/last-transaction")
+    public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find the transaction by project with ID {}", id);
+        return projectExternalService.getLastTransactionForProjectId(id);
+    }
+
+
 }

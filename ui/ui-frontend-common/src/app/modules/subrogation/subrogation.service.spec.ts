@@ -40,7 +40,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { VitamUICommonTestModule } from '../../../../testing/src';
 import { environment } from './../../../environments/environment';
-import { VitamUISnackBar } from './../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { ENVIRONMENT } from './../injection-tokens';
 import { SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './../injection-tokens';
 
@@ -49,8 +48,12 @@ import { BASE_URL } from '../injection-tokens';
 import { LoggerModule } from '../logger';
 import { SubrogationService } from './subrogation.service';
 
+import { EMPTY } from 'rxjs';
+
+import { TranslateService } from '@ngx-translate/core';
+import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
+
 describe('SubrogationService', () => {
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -63,12 +66,13 @@ describe('SubrogationService', () => {
       providers: [
         SubrogationService,
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: Router, useValue: { navigate: () => {},  navigateByUrl: () => {}, url : 'subrogations/customers/customerId' } },
         { provide: BASE_URL, useValue: 'fake-api' },
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
         { provide: AuthService, useValue: {} },
-        { provide: ENVIRONMENT, useValue: environment }
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } }
       ]
     });
   });

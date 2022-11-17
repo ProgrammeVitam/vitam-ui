@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.archive.internal.server.searchcriteria.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaElementsDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaElementsDto;
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

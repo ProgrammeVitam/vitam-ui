@@ -22,7 +22,7 @@
 
         <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
           <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('required')">
-            {{'COMMON.REQUIRED' | translate}}
+            {{'COMMON.ERROR.REQUIRED' | translate}}
           </vitamui-common-input-error>
           <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')">
             {{'HIERARCHY.INFORMATIONS.MODAL.WRONG_FORMAT' | translate}}

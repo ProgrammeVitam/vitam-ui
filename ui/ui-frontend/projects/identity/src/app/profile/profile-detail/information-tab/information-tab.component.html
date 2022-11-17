@@ -25,7 +25,7 @@
         [label]="'USER_PROFILE.INFORMATIONS.NAME' | translate"
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="nameExists">{{'USER_PROFILE.INFORMATIONS.EXISTING_NAME' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -45,7 +45,7 @@
             [prefix]="userLevel"
             [label]="'USER_PROFILE.INFORMATIONS.SUBLEVEL' | translate"
             [validator]="form?.get('level')?.validator">
-            <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+            <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
             <vitamui-common-field-error errorKey="nameExists">{{'USER_PROFILE.INFORMATIONS.WRONG_FORMAT' | translate}}</vitamui-common-field-error>
           </vitamui-common-editable-level-input>
         </div>
@@ -58,7 +58,7 @@
         maxlength="380"
         [label]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate"
         [validator]="form?.get('description')?.validator">
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
 

@@ -40,7 +40,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
-  AdminUserProfile, AuthService, ConfirmDialogService, CountryOption, CountryService, Customer, Group, isRootLevel, OtpState
+  AdminUserProfile, AuthService, ConfirmDialogService, CountryOption, CountryService, Customer, Group, isRootLevel, OtpState, StartupService
 } from 'ui-frontend-common';
 import { UserInfo } from 'ui-frontend-common';
 import { GroupSelection } from './../group-selection.interface';
@@ -62,6 +62,7 @@ const emailValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
 
+  public maxStreetLength: number;
   public form: FormGroup;
   public formEmail: FormGroup;
   public customer: Customer;
@@ -76,7 +77,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   private keyPressSubscription: Subscription;
   public countries: CountryOption[];
 
-
   constructor(
     public dialogRef: MatDialogRef<UserCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { userInfo: AdminUserProfile, customer: Customer, groups: Group[] },
@@ -87,16 +87,27 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     private userCreateValidators: UserCreateValidators,
     private confirmDialogService: ConfirmDialogService,
     private countryService: CountryService,
+    private startupService: StartupService
   ) { }
 
   ngOnInit() {
-
-    // tslint:disable-next-line: max-line-length
-    this.groups = this.data.groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false, profiles: group.profiles }));
     this.fullGroup = this.data.groups;
+    this.groups = this.fullGroup.map((group) => {
+      return {
+        id: group.id,
+        name: group.name,
+        description: group.description,
+        selected: false,
+        profiles: group.profiles,
+        level: group.level
+      };
+    }) as GroupSelection[];
+
+    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     if (!isRootLevel(this.authService.user)) {
-      this.groups = this.groups.filter((g) => g.id !== this.authService.user.groupId);
+      this.groups = this.groups.filter((group: GroupSelection) => group.id !== this.authService.user.groupId);
     }
+
     this.groups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0);
 
     this.customer = this.data.customer;
@@ -132,7 +143,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         status: null,
         userInfoId: null,
         address: this.formBuilder.group({
-          street: [null],
+          street: [null, Validators.maxLength(this.maxStreetLength)],
           zipCode: [null],
           city: [null],
           country: ['FR']

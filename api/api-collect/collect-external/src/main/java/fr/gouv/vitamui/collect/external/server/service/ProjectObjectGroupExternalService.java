@@ -31,8 +31,8 @@ package fr.gouv.vitamui.collect.external.server.service;
 
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
-import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;

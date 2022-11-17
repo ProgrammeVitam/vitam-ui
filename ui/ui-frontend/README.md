@@ -53,6 +53,21 @@ You also need to update the `vitamui-icons.css` file. Open the `style.css` from 
 
 Please add each new icon to the icon category in the starter-kit project.
 
+
+## How to add application icons to the portal
+
+Place you new svg icon file in the `ui/ui-frontend/projects/portal/src/assets/app-icons` folder.
+
+> Attention: Make sure your svg icon file name corresponds to the concerned application identifier (ex: PORTAL_APP.svg), you can find your application identifier by checking database.
+
+Replace each static hex/rgb colors inside the svg file by the right css variable theme colors.
+
+Replace each css class ids (for example .stXXX) and svgids (for example #SVGID_XX) by unique identifier compared to the others svg.
+
+> Attention: If an other application svg have the same class identifiers, your svg will not be displayed properly. **Also, do not forget to rename the css class & svgids usage in the whole file**.
+
+Please add each new icon to the icon category in the starter-kit project.
+
 ## Format front end code
 
 # Recommended Extensions for Visual studio code :

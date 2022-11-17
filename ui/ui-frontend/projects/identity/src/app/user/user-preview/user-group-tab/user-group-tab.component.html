@@ -24,7 +24,7 @@
 </div>
 
 <p class="text normal spaced light mt-5">{{'USER.GROUP.PROFILE' | translate}}</p>
-<div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list" *ngFor="let profile of userGroup?.profiles">
+<div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list" *ngFor="let profile of groupProfiles">
     <div>
         <div class="text medium">{{ profile?.name }}</div>
     </div>
@@ -34,10 +34,9 @@
         matTooltipClass="vitamui-tooltip"></i>
     </div>
 </div>
-
 </div>
 
 <div *ngIf="user?.status === 'REMOVED'">
   <h2>ATTENTION</h2>
- L'utilisateur que vous cherchez est déja supprimé
+  L'utilisateur que vous cherchez est déja supprimé
 </div>

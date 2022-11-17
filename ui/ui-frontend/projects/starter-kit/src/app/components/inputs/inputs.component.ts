@@ -1,7 +1,7 @@
-import { extend } from 'underscore';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { CountryOption, CountryService, Option} from 'ui-frontend-common';
+import { extend } from 'underscore';
 
 @Component({
   selector: 'starter-kit-inputs',
@@ -30,7 +30,8 @@ export class InputsComponent implements OnInit {
 
   public countries: Option[];
 
-  autoCompletSelect = new FormControl();
+  autoCompleteSelect = new FormControl();
+  autoCompleteSelectDisabled = new FormControl();
 
   constructor(private countryService: CountryService) { }
 
@@ -47,11 +48,12 @@ export class InputsComponent implements OnInit {
 
   ngOnInit() {
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
-      this.countries = values.map(value  =>extend( {
+      this.countries = values.map(value  => extend( {
         key: value.code,
         label: value.name
     }));
+      this.autoCompleteSelect.setValue('DE');
     });
-    this.autoCompletSelect.disable({ emitEvent: false });
+    this.autoCompleteSelectDisabled.disable({ emitEvent: false });
   }
 }

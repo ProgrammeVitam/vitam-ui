@@ -40,8 +40,30 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VitamUICommonTestModule } from '../../../../../../testing/src';
 import { AuthService } from '../../../auth.service';
+import { Event } from '../../../models';
 import { LogbookService } from '../../logbook.service';
 import { OperationHistoryTabComponent } from './operation-history-tab.component';
+
+const logbookEvent: Event = {
+  id: 'eventObjectId',
+  idRequest: 'aedqaaaaaghc5pzqaayl2amc3mdleuiaaaaq',
+  parentId: null,
+  type: 'STORAGE_SECURISATION_TIMESTAMP',
+  typeProc: 'TRACEABILITY',
+  dateTime: new Date(),
+  outcome: 'OK',
+  outDetail: 'STORAGE_SECURISATION_TIMESTAMP.OK',
+  outMessage: "Succès de la création du tampon d'horodatage de l'ensemble des journaux d'écriture",
+  data: null,
+  parsedData: {},
+  objectId: 'eventId',
+  collectionName: 'LogbookOperations',
+  agId: null,
+  agIdApp: 'agIdApp',
+  agIdExt: null,
+  rightsStatementIdentifier: null,
+  obIdReq: null,
+};
 
 describe('OperationHistoryTabComponent', () => {
   let component: OperationHistoryTabComponent;
@@ -50,15 +72,14 @@ describe('OperationHistoryTabComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
-      declarations: [ OperationHistoryTabComponent ],
+      declarations: [OperationHistoryTabComponent],
       providers: [
-        { provide: AuthService, useValue: {}},
-        { provide: LogbookService, useValue: {}},
+        { provide: AuthService, useValue: {} },
+        { provide: LogbookService, useValue: {} },
         { provide: ActivatedRoute, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -69,5 +90,60 @@ describe('OperationHistoryTabComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Component should return true when all conditions are respected', () => {
+    //Given
+    const event = logbookEvent;
+
+    //When
+    component.identifier = 'eventId';
+
+    //Then
+    expect(component.filterByIdentifier(event)).toBeDefined();
+    expect(component.filterByIdentifier(event)).toBeTruthy();
+  });
+
+  it('Component should return fakse when all conditions are not respected', () => {
+    //Given
+    const event = logbookEvent;
+
+    //When
+    component.identifier = 'identifier';
+
+    //Then
+    expect(component.filterByIdentifier(event)).toBeDefined();
+    expect(component.filterByIdentifier(event)).toBeFalsy();
+  });
+
+  it('Component should return false when objectId is null', () => {
+    //Given
+    const event: Event = {
+      id: 'eventObjectId',
+      idRequest: 'aeeaaaaaaghkyonpaa3fsamcys3raeiaaaaq',
+      parentId: null,
+      type: 'STP_SANITY_CHECK_SIP.STARTED',
+      typeProc: 'INGEST',
+      dateTime: new Date(),
+      outcome: 'OK',
+      outDetail: 'STP_SANITY_CHECK_SIP.STARTED.OK',
+      outMessage: "Succès du début du processus des contrôles préalables à l'entrée",
+      data: null,
+      parsedData: {},
+      objectId: null,
+      collectionName: 'IngestCollection',
+      agId: null,
+      agIdApp: 'agIdApp',
+      agIdExt: null,
+      rightsStatementIdentifier: null,
+      obIdReq: null,
+    };
+
+    //When
+    component.identifier = 'identifier';
+
+    //Then
+    expect(component.filterByIdentifier(event)).toBeDefined();
+    expect(component.filterByIdentifier(event)).toBeFalsy();
   });
 });

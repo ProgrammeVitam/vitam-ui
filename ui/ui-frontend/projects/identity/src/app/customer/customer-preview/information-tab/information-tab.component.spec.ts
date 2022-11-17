@@ -34,60 +34,59 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY } from 'rxjs';
 import { of } from 'rxjs';
-
-import {CountryService, Customer, OtpState} from 'ui-frontend-common';
+import { BASE_URL, CountryService, Customer, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
 import { InformationTabComponent } from './information-tab.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 let expectedCustomer: Customer = {
-    id: '11',
-    identifier : '11',
-    code: '011000',
-    name: 'Kouygues Telecom',
-    companyName: 'Kouygues Telecom',
-    enabled: true,
-    readonly: false,
-    hasCustomGraphicIdentity: false,
-    language: 'FRENCH',
-    passwordRevocationDelay: 1,
-    otp: OtpState.OPTIONAL,
-    idp: false,
-    emailDomains: [
-        'kouygues.com',
-    ],
-    defaultEmailDomain: 'kouygues.com',
-    address: {
-        street: '13 rue faubourg',
-        zipCode: '75009',
-        city: 'paris',
-        country: 'france'
-    },
-    internalCode: '1',
-    owners: [],
-    themeColors: {},
-    portalTitles: {},
-    portalMessages: {},
-    gdprAlert : false,
-    gdprAlertDelay : 72
+  id: '11',
+  identifier: '11',
+  code: '011000',
+  name: 'Kouygues Telecom',
+  companyName: 'Kouygues Telecom',
+  enabled: true,
+  readonly: false,
+  hasCustomGraphicIdentity: false,
+  language: 'FRENCH',
+  passwordRevocationDelay: 1,
+  otp: OtpState.OPTIONAL,
+  idp: false,
+  emailDomains: ['kouygues.com'],
+  defaultEmailDomain: 'kouygues.com',
+  address: {
+    street: '13 rue faubourg',
+    zipCode: '75009',
+    city: 'paris',
+    country: 'france',
+  },
+  internalCode: '1',
+  owners: [],
+  themeColors: {},
+  portalTitles: {},
+  portalMessages: {},
+  gdprAlert: false,
+  gdprAlertDelay: 72,
 };
 
 @Component({
   selector: 'app-editable-domain-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => EditableDomainInputStubComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => EditableDomainInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 class EditableDomainInputStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
@@ -101,94 +100,90 @@ class EditableDomainInputStubComponent implements ControlValueAccessor {
 @Component({
   selector: 'app-customer-colors-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => CustomerColorsInputStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CustomerColorsInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
-    @Input() placeholder: string;
-    @Input() spinnerDiameter = 25;
-    writeValue() {}
-    registerOnChange() {}
-    registerOnTouched() {}
+  @Input() placeholder: string;
+  @Input() spinnerDiameter = 25;
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
 }
 
 @Component({
-  template: `<app-information-tab [customer]="customer" [readOnly]="readOnly" [gdprReadOnlyStatus]="gdprReadOnlyStatus">></app-information-tab>`
+  template: `<app-information-tab [customer]="customer" [readOnly]="readOnly" [gdprReadOnlyStatus]="gdprReadOnlyStatus"
+    >></app-information-tab
+  >`,
 })
 class TestHostComponent {
-    customer = expectedCustomer;
-    readOnly = false;
-    gdprReadOnlyStatus = false;
+  customer = expectedCustomer;
+  readOnly = false;
+  gdprReadOnlyStatus = false;
 
-    @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
+  @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
 }
 
 describe('Customer InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync(() => {
-    expectedCustomer = {
-      id: '11',
-      identifier : '11',
-      code: '011000',
-      name: 'Kouygues Telecom',
-      companyName: 'Kouygues Telecom',
-      enabled: true,
-      readonly: false,
-      hasCustomGraphicIdentity: false,
-      language: 'FRENCH',
-      passwordRevocationDelay: 1,
-      otp: OtpState.OPTIONAL,
-      idp: false,
-      emailDomains: [
-        'kouygues.com',
-      ],
-      defaultEmailDomain: 'kouygues.com',
-      address: {
-        street: '13 rue faubourg',
-        zipCode: '75009',
-        city: 'paris',
-        country: 'france'
-      },
-      internalCode: '1',
-      owners: [],
-      themeColors: {},
-      portalMessages: {},
-      portalTitles: {},
-      gdprAlert : false,
-      gdprAlertDelay : 72
-    };
-    const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
-    const customerCreateValidatorsSpy = jasmine.createSpyObj(
-      'CustomerCreateValidators',
-    { uniqueCode: () => of(null), uniqueDomain: () => of(null) }
-    );
+  beforeEach(
+    waitForAsync(() => {
+      expectedCustomer = {
+        id: '11',
+        identifier: '11',
+        code: '011000',
+        name: 'Kouygues Telecom',
+        companyName: 'Kouygues Telecom',
+        enabled: true,
+        readonly: false,
+        hasCustomGraphicIdentity: false,
+        language: 'FRENCH',
+        passwordRevocationDelay: 1,
+        otp: OtpState.OPTIONAL,
+        idp: false,
+        emailDomains: ['kouygues.com'],
+        defaultEmailDomain: 'kouygues.com',
+        address: {
+          street: '13 rue faubourg',
+          zipCode: '75009',
+          city: 'paris',
+          country: 'france',
+        },
+        internalCode: '1',
+        owners: [],
+        themeColors: {},
+        portalMessages: {},
+        portalTitles: {},
+        gdprAlert: false,
+        gdprAlertDelay: 72,
+      };
+      const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
+      const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
+        uniqueCode: () => of(null),
+        uniqueDomain: () => of(null),
+      });
 
-    TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [
-        InformationTabComponent,
-        TestHostComponent,
-        EditableDomainInputStubComponent,
-        CustomerColorsInputStubComponent,
-      ],
-      providers: [
-        { provide: CustomerService, useValue: customerServiceSpy },
-        { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
-        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-
-      ]
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, HttpClientTestingModule, LoggerModule.forRoot()],
+        declarations: [InformationTabComponent, TestHostComponent, EditableDomainInputStubComponent, CustomerColorsInputStubComponent],
+        providers: [
+          { provide: WINDOW_LOCATION, useValue: window.location },
+          { provide: BASE_URL, useValue: '/fake-api' },
+          { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
+          { provide: CustomerService, useValue: customerServiceSpy },
+          { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
+          { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        ],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
@@ -232,14 +227,14 @@ describe('Customer InformationTabComponent', () => {
         street: null,
         zipCode: null,
         city: null,
-        country: null
+        country: null,
       },
       internalCode: null,
       language: null,
       emailDomains: null,
       defaultEmailDomain: null,
-      gdprAlert : null,
-      gdprAlertDelay : null
+      gdprAlert: null,
+      gdprAlertDelay: null,
     });
     expect(testhost.component.form.get('id').valid).toBeFalsy('id');
     expect(testhost.component.form.get('code').valid).toBeFalsy('code');
@@ -259,13 +254,17 @@ describe('Customer InformationTabComponent', () => {
   it('should have the pattern validator', () => {
     const codeControl = testhost.component.form.get('code');
     codeControl.setValue('a');
-    expect(codeControl.valid).toBeFalsy();
+    expect(codeControl.valid).toBeTruthy();
     codeControl.setValue('123456a');
-    expect(codeControl.valid).toBeFalsy();
+    expect(codeControl.valid).toBeTruthy();
     codeControl.setValue('aaaaaa');
-    expect(codeControl.valid).toBeFalsy();
+    expect(codeControl.valid).toBeTruthy();
     codeControl.setValue('1234');
     expect(codeControl.valid).toBeTruthy();
+    codeControl.setValue('1234_');
+    expect(codeControl.valid).toBeFalsy();
+    codeControl.setValue('1234_qzdqzdzqdzqd48d5zq41d5qz1d654');
+    expect(codeControl.valid).toBeFalsy();
   });
 
   it('should be valid and call update()', () => {
@@ -287,8 +286,8 @@ describe('Customer InformationTabComponent', () => {
       language: expectedCustomer.language,
       emailDomains: expectedCustomer.emailDomains,
       defaultEmailDomain: expectedCustomer.defaultEmailDomain,
-      gdprAlert : expectedCustomer.gdprAlert,
-      gdprAlertDelay : expectedCustomer.gdprAlertDelay
+      gdprAlert: expectedCustomer.gdprAlert,
+      gdprAlertDelay: expectedCustomer.gdprAlertDelay,
     });
     expect(testhost.component.form.valid).toBeTruthy();
   });

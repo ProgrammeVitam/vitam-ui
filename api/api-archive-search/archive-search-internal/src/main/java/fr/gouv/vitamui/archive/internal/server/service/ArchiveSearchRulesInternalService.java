@@ -38,19 +38,15 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.FileRulesModel;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.administration.RuleService;
-import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -59,7 +55,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -161,27 +156,6 @@ public class ArchiveSearchRulesInternalService {
     }
 
 
-    /**
-     * fill archive unit by adding originResponse
-     *
-     * @param originResponse
-     * @param actualAgenciesMapById
-     * @return
-     */
-    public ArchiveUnit fillOriginatingAgencyName(ResultsDto originResponse,
-        Map<String, AgencyModelDto> actualAgenciesMapById) {
-        ArchiveUnit archiveUnit = new ArchiveUnit();
-        BeanUtils.copyProperties(originResponse, archiveUnit);
-        if (actualAgenciesMapById != null && !actualAgenciesMapById.isEmpty()) {
-            AgencyModelDto agencyModel = actualAgenciesMapById.get(originResponse.getOriginatingAgency());
-            if (agencyModel != null) {
-                archiveUnit.setOriginatingAgencyName(agencyModel.getName());
-            }
-        }
-        return archiveUnit;
-    }
-
-
     public List<FileRulesModel> findRulesByCriteria(VitamContext vitamContext, String field,
         List<String> rulesIdentifiers, String ruleType) throws VitamClientException {
         List<FileRulesModel> rules = new ArrayList<>();
@@ -219,22 +193,6 @@ public class ArchiveSearchRulesInternalService {
         }
         LOGGER.debug("management rules  found {} ", rules);
         return rules;
-    }
-
-    /**
-     * Search origin agencies by theirs codes
-     *
-     * @param vitamContext
-     * @param rulesIdentifiers
-     * @return
-     * @throws InvalidParseOperationException
-     * @throws VitamClientException
-     */
-    public List<FileRulesModel> findRulesByIdentifiers(VitamContext vitamContext, Set<String> rulesIdentifiers,
-        String ruleType)
-        throws VitamClientException {
-        List<String> rulesIdentifiersList = new ArrayList<>(rulesIdentifiers);
-        return findRulesByCriteria(vitamContext, ArchiveSearchConsts.RULE_ID_FIELD, rulesIdentifiersList, ruleType);
     }
 
     /**

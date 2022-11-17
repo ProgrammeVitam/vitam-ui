@@ -28,14 +28,20 @@
 package fr.gouv.vitamui.collect.internal.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.collect.internal.server.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.collect.internal.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.collect.internal.server.service.ProjectArchiveUnitInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.TransactionArchiveUnitInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectObjectGroupInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.SearchCriteriaHistoryInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.converters.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.collect.internal.server.service.TransactionInternalService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -93,16 +99,38 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
     }
 
     @Bean
-    public ProjectInternalService collectInternalService(final CollectService collectService, ObjectMapper objectMapper) {
+    public ProjectInternalService collectInternalService(final CollectService collectService,
+        ObjectMapper objectMapper) {
         return new ProjectInternalService(collectService, objectMapper);
-    }
-    @Bean
-    public ProjectArchiveUnitInternalService projectArchiveUnitInternalService(final CollectService collectService, ObjectMapper objectMapper) {
-        return new ProjectArchiveUnitInternalService(collectService, objectMapper);
     }
 
     @Bean
-    public ProjectObjectGroupInternalService projectObjectGroupInternalService(final CollectService collectService, ObjectMapper objectMapper) {
+    public TransactionInternalService transactionInternalService(final CollectService collectService,
+        ObjectMapper objectMapper) {
+        return new TransactionInternalService(collectService, objectMapper);
+    }
+
+
+    @Bean
+    public TransactionArchiveUnitInternalService projectArchiveUnitInternalService(final CollectService collectService,
+        AgencyService agencyService, ObjectMapper objectMapper) {
+        return new TransactionArchiveUnitInternalService(collectService, agencyService, objectMapper);
+    }
+
+    @Bean
+    public ProjectObjectGroupInternalService projectObjectGroupInternalService(final CollectService collectService,
+        ObjectMapper objectMapper) {
         return new ProjectObjectGroupInternalService(collectService, objectMapper);
     }
+
+    @Bean
+    public SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService(
+        final CustomSequenceRepository sequenceRepository,
+        final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
+        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
+        final InternalSecurityService internalSecurityService) {
+        return new SearchCriteriaHistoryInternalService(sequenceRepository, searchCriteriaHistoryRepository,
+            searchCriteriaHistoryConverter, internalSecurityService);
+    }
+
 }

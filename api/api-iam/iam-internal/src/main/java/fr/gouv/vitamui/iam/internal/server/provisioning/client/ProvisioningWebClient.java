@@ -36,19 +36,15 @@
  */
 package fr.gouv.vitamui.iam.internal.server.provisioning.client;
 
-import java.net.URI;
-import java.util.Optional;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.client.utils.URIBuilder;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseCrudWebClient;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.utils.URIBuilder;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * External WebClient for Customer operations.
@@ -63,7 +59,7 @@ public class ProvisioningWebClient extends BaseWebClient<InternalHttpContext> {
         super(webClient, baseUrl);
     }
 
-    public ProvidedUserDto getProvidedUser(final InternalHttpContext context, final String email, final String groupId, final String unit, final String technicalUserId)  {
+    public ProvidedUserDto getProvidedUser(final InternalHttpContext context, final String email, final String groupId, final String unit, final String userIdentifier, final String customerId)  {
 
         final URIBuilder builder = getUriBuilderFromUrl();
 
@@ -76,14 +72,18 @@ public class ProvisioningWebClient extends BaseWebClient<InternalHttpContext> {
         if (StringUtils.isNotBlank(unit)) {
             builder.addParameter("unit", unit);
         }
-        if (StringUtils.isNotBlank(technicalUserId)) {
-            builder.addParameter("technicalUserId", technicalUserId);
+        if (StringUtils.isNotBlank(userIdentifier)) {
+            builder.addParameter("technicalUserId", userIdentifier);
+        }
+
+        if (StringUtils.isNotBlank(customerId)) {
+            builder.addParameter("customerId", customerId);
         }
 
         return webClient.get().uri(buildUriBuilder(builder)).headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context))).retrieve().onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
             .bodyToMono(ProvidedUserDto.class).block();
     }
-    
+
     //PATH URL is given by configuration
     @Override
     public String getPathUrl() {

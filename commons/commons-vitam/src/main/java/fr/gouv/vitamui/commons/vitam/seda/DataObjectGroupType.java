@@ -1,8 +1,8 @@
 //
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2 
-// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.07.15 à 03:41:18 PM CEST 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2
+// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
 
 
@@ -13,16 +13,19 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
  * <p>Classe Java pour DataObjectGroupType complex type.
- * 
+ *
  * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
- * 
+ *
  * <pre>
  * &lt;complexType name="DataObjectGroupType"&gt;
  *   &lt;complexContent&gt;
@@ -39,8 +42,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DataObjectGroupType", propOrder = {
@@ -57,30 +60,32 @@ public class DataObjectGroupType {
     @XmlElement(name = "LogBook")
     protected LogBookOgType logBook;
     @XmlAttribute(name = "id", required = true)
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlID
     protected String id;
 
     /**
      * Gets the value of the binaryDataObjectOrPhysicalDataObject property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the binaryDataObjectOrPhysicalDataObject property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getBinaryDataObjectOrPhysicalDataObject().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link BinaryDataObjectType }
      * {@link PhysicalDataObjectType }
-     * 
-     * 
+     *
+     *
      */
     public List<MinimalDataObjectType> getBinaryDataObjectOrPhysicalDataObject() {
         if (binaryDataObjectOrPhysicalDataObject == null) {
@@ -91,11 +96,11 @@ public class DataObjectGroupType {
 
     /**
      * Obtient la valeur de la propriété logBook.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link LogBookOgType }
-     *     
+     *
      */
     public LogBookOgType getLogBook() {
         return logBook;
@@ -103,11 +108,11 @@ public class DataObjectGroupType {
 
     /**
      * Définit la valeur de la propriété logBook.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link LogBookOgType }
-     *     
+     *
      */
     public void setLogBook(LogBookOgType value) {
         this.logBook = value;
@@ -115,11 +120,11 @@ public class DataObjectGroupType {
 
     /**
      * Obtient la valeur de la propriété id.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getId() {
         return id;
@@ -127,11 +132,11 @@ public class DataObjectGroupType {
 
     /**
      * Définit la valeur de la propriété id.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setId(String value) {
         this.id = value;

@@ -45,6 +45,7 @@ import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEv
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
+import { Unit } from './models/unit.interface';
 
 @Component({
   selector: 'app-archive',
@@ -56,6 +57,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   tenantIdentifier: string;
   foundAccessContract = false;
   accessContract: string;
+  bulkOperationsThreshold: number;
   accessContractSub: Subscription;
   errorMessageSub: Subscription;
   isLPExtended = false;
@@ -87,7 +89,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
       this.show = hidden;
     });
 
-    this.fetchUserAccessContractFromExternalParameters();
+    this.fetchUserExternalParameters();
     this.hasUpdateUnitDescriptiveMetadataPermission();
   }
 
@@ -104,7 +106,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     }
   }
 
-  fetchUserAccessContractFromExternalParameters() {
+  fetchUserExternalParameters() {
     this.accessContractSub = this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessConctractId && accessConctractId.length > 0) {
@@ -124,6 +126,14 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
             })
           )
           .subscribe();
+      }
+      const thresholdParams: any = parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD);
+      if (thresholdParams && thresholdParams.length > 0) {
+        this.bulkOperationsThreshold = Number(thresholdParams);
+        this.managementRulesSharedDataService.emitBulkOperationsThreshold(Number(thresholdParams));
+      } else {
+        this.bulkOperationsThreshold = -1;
+        this.managementRulesSharedDataService.emitBulkOperationsThreshold(-1);
       }
     });
   }
@@ -152,7 +162,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
-  showPreviewArchiveUnit(item: Event) {
+  showPreviewArchiveUnit(item: Unit) {
     this.openPanel(item);
   }
   showExtendedLateralPanel() {

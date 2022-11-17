@@ -1,20 +1,34 @@
 <div class="d-flex align-items-center">
   <div>
-    <div class="mb-3">
       <vitamui-common-vitamui-autocomplete [options]="applications" [formControl]="appSelect"
         [placeholder]="'GROUP.PROFILE.MODAL.APP' | translate">
+        <vitamui-common-input-error *ngIf="appSelect.touched && appSelect.hasError('required')">{{
+          'COMMON.ERROR.REQUIRED' | translate
+        }}</vitamui-common-input-error>
+        <vitamui-common-input-error *ngIf="appSelect.touched && appSelect.hasError('match')">{{
+          'COMMON.INCORRECT_VALUE' | translate
+        }}</vitamui-common-input-error>
       </vitamui-common-vitamui-autocomplete>
-    </div>
-    <div class="mb-3" *ngIf="!tenantIdentifier" >
+    <ng-container *ngIf="!tenantIdentifier" >
       <vitamui-common-vitamui-autocomplete [options]="filteredTenants" [formControl]="tenantSelect"
         #tenantInput [placeholder]="'GROUP.PROFILE.MODAL.SAFE' | translate">
+        <vitamui-common-input-error *ngIf="tenantSelect.touched && tenantSelect.hasError('required')">{{
+          'COMMON.ERROR.REQUIRED' | translate
+        }}</vitamui-common-input-error>
+        <vitamui-common-input-error *ngIf="tenantSelect.touched && tenantSelect.hasError('match')">{{
+          'COMMON.INCORRECT_VALUE' | translate
+        }}</vitamui-common-input-error>
       </vitamui-common-vitamui-autocomplete>
-    </div>
-    <div class="mb-3">
-      <vitamui-common-vitamui-autocomplete [options]="filteredProfiles" [formControl]="profileSelect"
+    </ng-container >
+    <vitamui-common-vitamui-autocomplete [options]="filteredProfiles" [formControl]="profileSelect"
         [placeholder]="'GROUP.PROFILE.MODAL.PROFILE' | translate" #profileInput>
+        <vitamui-common-input-error *ngIf="profileSelect.touched && profileSelect.hasError('required')">{{
+          'COMMON.ERROR.REQUIRED' | translate
+        }}</vitamui-common-input-error>
+        <vitamui-common-input-error *ngIf="profileSelect.touched && profileSelect.hasError('match')">{{
+          'COMMON.INCORRECT_VALUE' | translate
+        }}</vitamui-common-input-error>
       </vitamui-common-vitamui-autocomplete>
-    </div>
   </div>
 
   <div>

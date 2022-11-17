@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, Customer, ENVIRONMENT, LoggerModule, Operators, OtpState, SearchQuery } from 'ui-frontend-common';
+import { BASE_URL, Customer, ENVIRONMENT, LoggerModule, Operators, OtpState, SearchQuery, VitamUISnackBarService } from 'ui-frontend-common';
 import { environment } from './../../environments/environment';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -43,7 +43,6 @@ import { inject, TestBed } from '@angular/core/testing';
 import { Type } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { CustomerService } from './customer.service';
 
 const expectedCustomer: Customer = {
@@ -94,18 +93,17 @@ const expectedCustomer: Customer = {
 describe('CustomerService', () => {
   let httpTestingController: HttpTestingController;
   let customerService: CustomerService;
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
-
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, LoggerModule.forRoot()],
       providers: [
         CustomerService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
       ],
     });
 
@@ -118,14 +116,15 @@ describe('CustomerService', () => {
   }));
 
   it('should call /fake-api/customers and display a success message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBarService);
     customerService.create(expectedCustomer).subscribe((response: Customer) => {
       expect(response).toEqual(expectedCustomer);
-      expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-      expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-        panelClass: 'vitamui-snack-bar',
-        data: { type: 'customerCreate', code: expectedCustomer.code },
-        duration: 10000,
+      expect(snackBar.open).toHaveBeenCalledWith({
+        message: 'SHARED.SNACKBAR.CUSTOMER_CREATE',
+        icon: 'vitamui-icon-bank',
+        translateParams: {
+          param1: expectedCustomer.code,
+        },
       });
     }, fail);
     const req = httpTestingController.expectOne('/fake-api/customers');
@@ -134,13 +133,11 @@ describe('CustomerService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBarService);
     customerService.create(expectedCustomer).subscribe(fail, () => {
-      expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-      expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-        panelClass: 'vitamui-snack-bar',
-        data: { type: 'customerCreateError' },
-        duration: 10000,
+      expect(snackBar.open).toHaveBeenCalledWith({
+        message: 'SHARED.SNACKBAR.CUSTOMER_CREATE_ERROR',
+        icon: 'vitamui-icon-danger',
       });
     });
     const req = httpTestingController.expectOne('/fake-api/customers');

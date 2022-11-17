@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archives.search.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequestParameters;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -47,5 +48,5 @@ public class TransferRequestDto implements Serializable {
     private SearchCriteriaDto searchCriteria;
     private Set<String> dataObjectVersions;
     private boolean lifeCycleLogs;
-
+    private Long maxSizeThreshold;
 }

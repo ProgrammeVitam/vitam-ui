@@ -80,6 +80,7 @@ export * from './components/vitamui-menu-tile/index';
 export * from './components/vitamui-snack-bar/index';
 export * from './components/vitamui-tenant-select/index';
 export * from './components/vitamui-multi-inputs/index';
+export * from './components/vitamui-tree-node/index';
 export * from './country.service';
 export * from './customer-selection.service';
 export * from './directives/collapse/index';

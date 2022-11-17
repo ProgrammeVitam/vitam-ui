@@ -53,6 +53,11 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   activeAccessContracts$: Observable<AccessContract[]>;
   private keyPressSubscription: Subscription;
   tenantIdentifier: string;
+  thresholdValues: number[] = [100, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
+
+  public stepIndex = 0;
+  public stepCount = 2;
+  public selectedThreshold = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -81,6 +86,8 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
       accessContract: [null, Validators.required],
       description: [null, Validators.required],
       name: [null, Validators.required],
+      usePlatformThreshold: true,
+      bulkOperationsThreshold: [null, []],
     });
 
     this.externalParamProfileForm
@@ -93,6 +100,10 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
       return;
     }
     const externalParamProfile: ExternalParamProfile = this.externalParamProfileForm.getRawValue();
+    if (externalParamProfile.usePlatformThreshold) {
+      externalParamProfile.bulkOperationsThreshold = null;
+    }
+
     this.externalParamProfileService.create(externalParamProfile).subscribe(
       (response: ExternalParamProfile) => {
         console.log('response = ', response);
@@ -114,5 +125,13 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
 
   onValidate() {
     return false;
+  }
+
+  firstStepInvalid(): boolean {
+    return this.externalParamProfileForm.get('name').invalid || this.externalParamProfileForm.get('description').invalid;
+  }
+
+  formValid(): boolean {
+    return this.externalParamProfileForm.pending || this.externalParamProfileForm.invalid;
   }
 }

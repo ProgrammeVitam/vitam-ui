@@ -140,7 +140,7 @@ describe('ArchiveComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('component should be created', () => {
+  it('component should be created', () => {
     expect(component).toBeTruthy();
   });
 

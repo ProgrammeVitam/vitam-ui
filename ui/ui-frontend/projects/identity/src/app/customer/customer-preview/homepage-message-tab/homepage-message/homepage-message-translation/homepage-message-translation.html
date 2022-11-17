@@ -10,7 +10,7 @@
                 form.get('language')?.touched &&
                 !!form.get('language')?.errors?.required
               ">
-                    {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error></div>
+                    {{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error></div>
         </label>
 
         <mat-form-field class="mt-4 mb-4 vitamui-mat-select">
@@ -39,7 +39,7 @@
             form.get('portalTitle')?.touched &&
             !!form.get('portalTitle')?.errors?.required
           ">
-                {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
+                {{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
         </vitamui-common-input>
 
         <vitamui-common-textarea class="pb-2" formControlName="portalMessage" required
@@ -49,7 +49,7 @@
         form.get('portalMessage')?.touched &&
         !!form.get('portalMessage')?.errors?.required
       ">
-                {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
+                {{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
         </vitamui-common-textarea>
         <small class="d-flex justify-content-end">{{ form.get("portalMessage")?.value?.length }} {{
       "CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH" | translate }}</small>

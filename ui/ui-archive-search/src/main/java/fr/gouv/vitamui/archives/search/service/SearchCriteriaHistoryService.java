@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.archives.search.service;
 
 import fr.gouv.vitamui.archives.search.external.client.SearchCriteriaHistoryExternalRestClient;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;

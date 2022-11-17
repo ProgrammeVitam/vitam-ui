@@ -39,6 +39,7 @@ export class LogbookManagementOperationInformationTabComponent implements OnInit
   @Input() tenantIdentifier: number;
   @Input() tenant: any;
   event: Event;
+
   constructor(private logbookService: LogbookService) {}
 
   ngOnInit(): void {

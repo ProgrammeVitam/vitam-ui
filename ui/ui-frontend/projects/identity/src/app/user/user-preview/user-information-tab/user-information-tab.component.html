@@ -24,13 +24,13 @@
     <div class="col-6">
       <vitamui-common-editable-input formControlName="lastname" [validator]="form?.get('lastname')?.validator"
         [label]="'USER.INFORMATIONS.LASTNAME' | translate">
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6">
       <vitamui-common-editable-input formControlName="firstname" [validator]="form?.get('firstname')?.validator"
         [label]="'USER.INFORMATIONS.FIRSTNAME' | translate">
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -39,7 +39,7 @@
     <div class="col-12">
       <vitamui-common-editable-email-input formControlName="email" [validator]="form?.get('email')?.validator"
         [asyncValidator]="form?.get('email')?.asyncValidator" [domains]="customerEmailDomains" [label]="'USER.INFORMATIONS.MAIL' | translate">
-        <vitamui-common-field-error errorKey="email">{{'COMMON.REQUIRED' | translate}}
+        <vitamui-common-field-error errorKey="email">{{'COMMON.ERROR.REQUIRED' | translate}}
         </vitamui-common-field-error>
         <vitamui-common-field-error errorKey="uniqueEmail">
           {{'USER.INFORMATIONS.MAIL_ALREADY_EXIST' | translate}}</vitamui-common-field-error>
@@ -51,7 +51,7 @@
     <div class="col-6">
       <vitamui-common-editable-input formControlName="mobile" [validator]="form?.get('mobile')?.validator"
         [label]="'USER.INFORMATIONS.PHONE.MOBILE' | translate">
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="pattern">{{'USER.INFORMATIONS.PHONE_FIELD_FORMAT' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -66,11 +66,11 @@
   <ng-container formGroupName="address">
     <div class="row">
       <div class="col-12">
-        <vitamui-common-editable-input formControlName="street" maxlength="250"
+        <vitamui-common-editable-input formControlName="street" maxlength="{{maxStreetLength}}"
         [label]="'COMMON.ADRESS.STREET' | translate"
           [validator]="form?.get('address.street')?.validator"
           [asyncValidator]="form?.get('address.street')?.asyncValidator">
-          <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
@@ -79,13 +79,13 @@
       <div class="col-6">
         <vitamui-common-editable-input formControlName="zipCode" maxlength="10" [label]="'COMMON.ADRESS.ZIPCODE' | translate" [validator]="form?.get('address.zipCode')?.validator"
           [asyncValidator]="form?.get('address.zipCode')?.asyncValidator">
-          <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
       <div class="col-6">
         <vitamui-common-editable-input formControlName="city" maxlength="100" [label]="'COMMON.ADRESS.CITY' | translate" [validator]="form?.get('address.city')?.validator"
           [asyncValidator]="form?.get('address.city')?.asyncValidator">
-          <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
@@ -172,6 +172,6 @@
 
 <div *ngIf="user?.status === 'REMOVED'">
   <h2>ATTENTION</h2>
- L'utilisateur que vous cherchez est déja supprimé
+    L'utilisateur que vous cherchez est déja supprimé
 </div>
 

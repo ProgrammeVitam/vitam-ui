@@ -46,7 +46,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTabsModule} from '@angular/material/tabs';
 import {RouterModule} from '@angular/router';
-import {NgxFilesizeModule} from 'ngx-filesize';
 import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
 import {VitamUICommonModule} from 'ui-frontend-common';
 import {SecurisationCheckTabComponent} from './securisation-check-tab/securisation-check-tab.component';
@@ -62,7 +61,6 @@ import {SecurisationPreviewComponent} from './securisation-preview.component';
     VitamUILibraryModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxFilesizeModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

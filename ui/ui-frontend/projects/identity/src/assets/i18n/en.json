@@ -4,7 +4,6 @@
     "SUBMIT": "Submit",
     "UPDATE": "Update",
     "NEXT": "Next",
-    "REQUIRED": "Required param",
     "LANGUAGE": {
       "TITLE": "Language",
       "ENGLISH": "English",
@@ -12,7 +11,6 @@
       "GERMAN": "German"
     },
     "APPLY_UPDATE": "Apply changes",
-    "REQUIRED_FIELD": "Required field",
     "NAME_ALREADY_EXISTS": "Name already exists",
     "ACTIVE": "activated",
     "NO_RESULT": "No Result",
@@ -27,6 +25,12 @@
     "HISTORY": {
       "OPERATIONS": "Logbook",
       "NO_HISTORY": "No history"
+    },
+    "ERROR": {
+      "WRONG_FORMAT": "Wrong format",
+      "STRING_MAX_LENGTH": "{{max}} characters maximum",
+      "NAME_ALREADY_EXISTS": "Name already exists",
+      "REQUIRED": "Required field"
     }
   },
   "MISC": {
@@ -66,6 +70,7 @@
       "GROUP_UPDATE": "The group {{ param1 }} has been successfully modified",
       "USER_CREATE": "The user {{ param1 }} {{ param2 }} has been successfully created",
       "USER_UPDATE": "The user {{ param1 }} {{ param2 }} has been successfully modified",
+      "USER_DELETE": "The user {{ param1 }} {{ param2 }} has been successfully deleted",
       "PROFILE_CREATE": "The profile {{ param1 }} has been successfully created",
       "PROFILE_CREATE_ERROR": "The administrator profile {{ param1 }} has been successfully created",
       "PROFILE_UPDATE": "The profile {{ param1 }} has been successfully modified",
@@ -74,7 +79,9 @@
       "SUBROGATION_DENIED": "Your subrogation request has been refused",
       "SUBROGATION_UNAVAILABLE": "Subrogation for this user is temporarily impossible",
       "ACCOUNT_UPDATE": "Information has been updated",
-      "OIDC_UPDATE":"For the OIDC protocol, these fields must be filled in: url discovery, client identifier and client secret for the modification to take place"
+      "OIDC_UPDATE": "For the OIDC protocol, these fields must be filled in: url discovery, client identifier and client secret for the modification to take place",
+      "USER_ALREADY_DELETED": "User already deleted",
+      "USER_TO_DELETE": "One or several inactif user in your organization need to clean personal info"
     }
   },
   "CUSTOMER": {
@@ -105,7 +112,6 @@
     },
     "INFORMATIONS": {
       "CODE": "Organization code",
-      "CODE_CREATION": "Organization code (4 numbers)",
       "NAME": "Name",
       "SOCIAL_REASON": "Company name",
       "INTERNAL_CODE": "Internal code",
@@ -119,7 +125,6 @@
       "VALIDATIONS_TOOLTIP": "In order to be able to activate the two-step validation you must first enter the mobile number",
       "VALIDATIONS": "Two-step validation",
       "DOMAINS": "Domains",
-      "WRONG_FORMAT": "Wrong format (4 digits minimum)",
       "CODE_ALREADY_EXIST": "Code already exists",
       "PWD_REVOCATION_THREE": "3 months",
       "PWD_REVOCATION_SIX": "6 months",
@@ -132,7 +137,6 @@
         "DOMAINS_RESTRICTION": "Email domain restriction",
         "DOMAINS_RESTRICTION_DESC": "(click on the label to define the default domain)",
         "DOMAINS_PLACEHOLDER": "domain.xyz",
-        "WRONG_FORMAT": "Wrong format (4 digits minimum)",
         "CODE_ALREADY_EXIST": "Code already exists",
         "ACCESS_TITLE": "Organization access",
         "PWD_REVOCATION_THREE": "3 months",
@@ -223,7 +227,6 @@
       "LOGBOOK_ACCESS_CONTRACT": "Logbook access contract",
       "SLIPS_INGEST_CONTRACT": "Slips ingest contract",
       "NAME_ALREADY_EXIST": "Name already exists",
-      "WRONG_FORMAT": "Wrong formats (6 digits minimum)",
       "CODE_ALREADY_EXIST": "Code already exists",
       "CREATE": {
         "TITLE": "Creation of an owner for",
@@ -236,7 +239,6 @@
         "SAFE_TITLE": "Safe creation for ",
         "ACTION_BUTTON": "Create a safe",
         "NAME_ALREADY_EXIST": "Name already exists",
-        "WRONG_FORMAT": "Wrong formats (6 digits minimum)",
         "CODE_ALREADY_EXIST": "Code already exists"
       }
     }
@@ -506,6 +508,14 @@
     "EXTERNAL_PARAM_PROFILE_NAME_POPUP": "Name of external settings profile",
     "SELECT_ACCESS_CONTRACT": "Select an access contract",
     "NOTIF_EXTERNAL_PARAM_PROFILE_CREATED": "External settings profile {{ name }} has been created",
-    "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "External settings profile {{ name }} has been updated"
+    "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "External settings profile {{ name }} has been updated",
+    "MAX_BULK_OPERATIONS_THRESHOLD_TITLE": "Max allowed threshold for bulk operations",
+    "USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE": "Set plateform thresholds",
+    "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{threshold}} archive units",
+    "TABS": {
+      "INFORMATIONS":"Informations",
+      "THRESHOLDS":"Thresholds",
+      "HISTORY":"History"
+    }
   }
 }

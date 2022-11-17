@@ -1,40 +1,33 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
- * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
- * contact@programmevitam.fr
+ * contact.vitam@culture.gouv.fr
  *
- * This software is a computer program whose purpose is to implement
- * implement a digital archiving front-office system for the secure and
- * efficient high volumetry VITAM solution.
+ * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
+ * high volumetry securely and efficiently.
  *
- * This software is governed by the CeCILL-C license under French law and
- * abiding by the rules of distribution of free software.  You can  use,
- * modify and/ or redistribute the software under the terms of the CeCILL-C
- * license as circulated by CEA, CNRS and INRIA at the following URL
- * "http://www.cecill.info".
+ * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
+ * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
- * As a counterpart to the access to the source code and  rights to copy,
- * modify and redistribute granted by the license, users are provided only
- * with a limited warranty  and the software's author,  the holder of the
- * economic rights,  and the successive licensors  have only  limited
- * liability.
+ * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
+ * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
+ * successive licensors have only limited liability.
  *
- * In this respect, the user's attention is drawn to the risks associated
- * with loading,  using,  modifying and/or developing or reproducing the
- * software by the user in light of its specific status of free software,
- * that may mean  that it is complicated to manipulate,  and  that  also
- * therefore means  that it is reserved for developers  and  experienced
- * professionals having in-depth computer knowledge. Users are therefore
- * encouraged to load and test the software's suitability as regards their
- * requirements in conditions enabling the security of their systems and/or
- * data to be ensured and,  more generally, to use and operate it in the
- * same conditions as regards security.
+ * In this respect, the user's attention is drawn to the risks associated with loading, using, modifying and/or
+ * developing or reproducing the software by the user in light of its specific status of free software, that may mean
+ * that it is complicated to manipulate, and that also therefore means that it is reserved for developers and
+ * experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the
+ * software's suitability as regards their requirements in conditions enabling the security of their systems and/or data
+ * to be ensured and, more generally, to use and operate it in the same conditions as regards security.
  *
- * The fact that you are presently reading this means that you have had
- * knowledge of the CeCILL-C license and that you accept its terms.
+ * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
+ * accept its terms.
  */
 package fr.gouv.vitamui.commons.api.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -46,6 +39,8 @@ import java.util.Map;
  *
  * @param <T> The class to be returned, it should be a Dto class.
  */
+@Data
+@AllArgsConstructor
 public class PaginatedValuesDto<T> implements Serializable {
 
     /**
@@ -59,6 +54,8 @@ public class PaginatedValuesDto<T> implements Serializable {
 
     private int pageSize;
 
+    private int totalElements;
+
     private boolean hasMore;
 
     private transient Map<String, Object> optionalValues;
@@ -67,8 +64,11 @@ public class PaginatedValuesDto<T> implements Serializable {
         // Intentionally empty.
     }
 
-    public PaginatedValuesDto(final Collection<T> values, final int pageNum, final int maxResults,
-            final boolean hasMore) {
+    public PaginatedValuesDto(final Collection<T> values,
+        final int pageNum,
+        final int maxResults,
+        final boolean hasMore
+    ) {
         this.values = values;
         this.pageNum = pageNum;
         this.pageSize = maxResults;
@@ -76,8 +76,12 @@ public class PaginatedValuesDto<T> implements Serializable {
         this.optionalValues = new HashMap<>();
     }
 
-    public PaginatedValuesDto(final Collection<T> values, final int pageNum, final int maxResults,
-        final boolean hasMore, Map<String, Object> optionalValues) {
+    public PaginatedValuesDto(final Collection<T> values,
+        final int pageNum,
+        final int maxResults,
+        final boolean hasMore,
+        Map<String, Object> optionalValues
+    ) {
         this.values = values;
         this.pageNum = pageNum;
         this.pageSize = maxResults;
@@ -85,39 +89,4 @@ public class PaginatedValuesDto<T> implements Serializable {
         this.optionalValues = optionalValues;
     }
 
-    public int getPageNum() {
-        return pageNum;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public boolean isHasMore() {
-        return hasMore;
-    }
-
-    public Map<String, Object> getOptionalValues() {
-        return optionalValues;
-    }
-
-    public void setHasMore(final boolean hasMore) {
-        this.hasMore = hasMore;
-    }
-
-    public void setPageNum(final int pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public void setPageSize(final int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public void setOptionalValues(Map<String, Object> optionalValues) {
-        this.optionalValues = optionalValues;
-    }
-
-    public Collection<T> getValues() {
-        return values;
-    }
 }

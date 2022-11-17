@@ -234,6 +234,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       ClassificationRule: classificationRule,
       DisseminationRule: null,
       AccessRule: null,
+      UpdateOperation: null
     };
     const archiveUnit: Unit = {
       '#management': unitManagementRules,

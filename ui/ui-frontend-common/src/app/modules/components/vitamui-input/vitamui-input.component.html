@@ -5,7 +5,7 @@
   </label>
 
   <input #vitamUIInput [type]="type" [required]="required" [disabled]="disabled" [autofocus]="autofocus"
-    [attr.maxlength]="maxlength" (blur)="onBlur()" (focus)="onFocus()" [(ngModel)]="value" 
+    [attr.maxlength]="maxlength" [attr.min]="minValue" [attr.max]="maxValue" (blur)="onBlur()" (focus)="onFocus()" [(ngModel)]="value"
     (ngModelChange)="onValueChange($event)">
 
   <mat-spinner diameter="25" color="accent"></mat-spinner>

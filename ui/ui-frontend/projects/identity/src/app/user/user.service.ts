@@ -37,8 +37,15 @@
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
-  AdminUserProfile, AuthUser, Criterion, Operators, Profile, SearchQuery,
-  SearchService, User
+  AdminUserProfile,
+  AuthUser,
+  Criterion,
+  Operators,
+  Profile,
+  SearchQuery,
+  SearchService,
+  User,
+  VitamUISnackBarService,
 } from 'ui-frontend-common';
 
 import { HttpClient } from '@angular/common/http';
@@ -46,16 +53,14 @@ import { Injectable } from '@angular/core';
 
 import { UserApiService } from '../core/api/user-api.service';
 import { ProfileService } from '../profile/profile.service';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable()
 export class UserService extends SearchService<User> {
-
   userUpdated = new Subject<User>();
 
   constructor(
     private userApi: UserApiService,
-    private snackBar: VitamUISnackBar,
+    private snackBarService: VitamUISnackBarService,
     private rngProfileService: ProfileService,
     http: HttpClient
   ) {
@@ -68,18 +73,16 @@ export class UserService extends SearchService<User> {
     return this.userApi.create(user).pipe(
       tap(
         (response: User) => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'userCreate', firstname: response.firstname, lastname: response.lastname },
-            duration: 10000
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.USER_CREATE',
+            icon: 'vitamui-icon-key',
+            translateParams: {
+              param1: response.firstname,
+              param2: response.lastname,
+            },
           });
         },
-        (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
-        }
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
     );
   }
@@ -98,49 +101,39 @@ export class UserService extends SearchService<User> {
     return this.userApi.checkExistsByParam(params);
   }
 
-  patch(partialUser: { id: string, [key: string]: any }): Observable<User> {
+  patch(partialUser: { id: string; [key: string]: any }): Observable<User> {
     return this.userApi.patch(partialUser).pipe(
       tap((response) => this.userUpdated.next(response)),
       tap(
         (updatedUser: User) => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-            data: { type: 'userUpdate', firstname: updatedUser.firstname, lastname: updatedUser.lastname },
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.USER_UPDATE',
+            icon: 'vitamui-icon-key',
+            translateParams: {
+              param1: updatedUser.firstname,
+              param2: updatedUser.lastname,
+            },
           });
         },
-        (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
-        }
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
     );
   }
 
-
-  deleteUser(partialUser: { id: string, [key: string]: any }) : Observable<User>{
+  deleteUser(partialUser: { id: string; [key: string]: any }): Observable<User> {
     return this.userApi.patch(partialUser).pipe(
       tap((response) => this.userUpdated.next(response)),
       tap(
         (user: User) => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-            data: { type: 'userDelete', firstname: user.firstname, lastname: user.lastname },
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.USER_DELETE',
+            icon: 'vitamui-icon-key',
+            translateParams: { param1: user.firstname, param2: user.lastname },
           });
         },
-        (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
-        }
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
     );
-
-
   }
 
   getUserProfileInfo(connectedUser: AuthUser): AdminUserProfile | null {
@@ -155,10 +148,6 @@ export class UserService extends SearchService<User> {
   }
 
   getLevelsNoEmpty(query?: SearchQuery): Observable<string[]> {
-    return this.userApi.getLevels(query)
-      .pipe(
-        map((levels) => levels.filter((l) => !!l))
-      );
+    return this.userApi.getLevels(query).pipe(map((levels) => levels.filter((l) => !!l)));
   }
-
 }

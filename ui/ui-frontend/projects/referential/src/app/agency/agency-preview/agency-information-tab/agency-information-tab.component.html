@@ -16,6 +16,10 @@
     <div class="col-10 form-control">
       <vitamui-common-input formControlName="description" placeholder="Description"
         i18n-placeholder="description@@agencyPreviewLabelName" [disabled]="!(checkUpdateRole | async)">
+        <ng-container *ngIf="form.get('description')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
+          </vitamui-common-input-error>
+        </ng-container>
       </vitamui-common-input>
     </div>
   </div>

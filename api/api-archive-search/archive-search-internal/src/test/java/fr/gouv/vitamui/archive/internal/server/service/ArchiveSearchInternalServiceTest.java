@@ -55,14 +55,14 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationAction;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationQueryActionType;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
@@ -122,7 +122,6 @@ public class ArchiveSearchInternalServiceTest {
     @MockBean(name = "archiveSearchInternalService")
     private ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
-
     @InjectMocks
     private RulesUpdateCommonService rulesUpdateCommonService;
 
@@ -141,8 +140,8 @@ public class ArchiveSearchInternalServiceTest {
         archiveSearchInternalService =
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
                 archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
-                archivesSearchManagementRulesQueryBuilderService,
-                rulesUpdateCommonService, archiveSearchFacetsInternalService);
+                archivesSearchManagementRulesQueryBuilderService, rulesUpdateCommonService,
+                archiveSearchFacetsInternalService);
     }
 
     @Test

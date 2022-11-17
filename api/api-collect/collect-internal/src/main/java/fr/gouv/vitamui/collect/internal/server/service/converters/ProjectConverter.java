@@ -28,6 +28,7 @@
 package fr.gouv.vitamui.collect.internal.server.service.converters;
 
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
+import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import lombok.experimental.UtilityClass;
 
@@ -47,7 +48,6 @@ public class ProjectConverter {
             .id(projectDto.getId())
             .messageIdentifier(projectDto.getMessageIdentifier())
             .unitUp(projectDto.getUnitUp())
-            .transactionId(projectDto.getTransactionId())
             .originatingAgencyIdentifier(projectDto.getOriginatingAgencyIdentifier())
             .submissionAgencyIdentifier(projectDto.getSubmissionAgencyIdentifier())
             .transferringAgencyIdentifier(projectDto.getTransferringAgencyIdentifier())
@@ -75,7 +75,6 @@ public class ProjectConverter {
         externalDto.setOriginatingAgencyIdentifier(collectProjectDto.getOriginatingAgencyIdentifier());
         externalDto.setSubmissionAgencyIdentifier(collectProjectDto.getSubmissionAgencyIdentifier());
         externalDto.setTransferringAgencyIdentifier(collectProjectDto.getTransferringAgencyIdentifier());
-        externalDto.setTransactionId(collectProjectDto.getTransactionId());
         externalDto.setUnitUp(collectProjectDto.getUnitUp());
         externalDto.setAcquisitionInformation(collectProjectDto.getAcquisitionInformation());
         externalDto.setLegalStatus(collectProjectDto.getLegalStatus());

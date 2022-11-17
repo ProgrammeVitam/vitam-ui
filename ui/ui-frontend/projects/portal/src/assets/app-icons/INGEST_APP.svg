@@ -364,9 +364,9 @@
 	.ingest_app_347{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000034806380720999360880000014570730240497110430_);}
 	.ingest_app_348{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000052783814146111478970000005125047692891313341_);}
 	.ingest_app_349{fill:#2A2C2B;}
-	.ingest_app_350{fill-rule:evenodd;clip-rule:evenodd;fill:#1D487A;}
-	.ingest_app_351{fill-rule:evenodd;clip-rule:evenodd;fill:#8DB6E6;}
-	.ingest_app_352{fill:#1D487A;}
+	.ingest_app_350{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-secondary-600);}
+	.ingest_app_351{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-secondary-100);}
+	.ingest_app_352{fill:var(--vitamui-secondary-600);}
 	.ingest_app_353{fill:url(#SVGID_00000178181198361656275800000014383318695839006606_);}
 	.ingest_app_354{fill:url(#SVGID_00000176012278861629518240000012244745212304215973_);}
 	.ingest_app_355{fill:#FFFFFF;}

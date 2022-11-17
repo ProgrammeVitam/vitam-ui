@@ -29,7 +29,7 @@ import { Colors } from './facet-colors.enum';
 
 export interface FacetDetails {
   title: string;
-  totalResults: number;
+  totalResults: string;
   clickable: boolean;
   color: string;
   filter?: string;

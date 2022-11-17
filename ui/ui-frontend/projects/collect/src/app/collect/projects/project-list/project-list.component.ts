@@ -24,13 +24,11 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject } from 'rxjs';
-import { Colors, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project } from 'ui-frontend-common';
-import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
-import { ProjectsService } from '../projects.service';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Router} from '@angular/router';
+import {BehaviorSubject} from 'rxjs';
+import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project} from 'ui-frontend-common';
+import {ProjectsService} from '../projects.service';
 
 @Component({
   selector: 'app-project-list',
@@ -41,48 +39,11 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   direction = Direction.DESCENDANT;
   orderBy = 'archivalAgreement';
   orderChange = new BehaviorSubject<string>(this.orderBy);
-  facetDetails: FacetDetails[] = [
-    {
-      title: this.translationService.instant('COLLECT.FACETS.OPEN'),
-      totalResults: 0,
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    },
-    {
-      title: this.translationService.instant('COLLECT.FACETS.WAITING_ACK'),
-      totalResults: 0,
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    },
-    {
-      title: this.translationService.instant('COLLECT.COMMENTS'),
-      totalResults: 0,
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    },
-    {
-      title: this.translationService.instant('COLLECT.FACETS.ACK_OK'),
-      totalResults: 0,
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    },
-    {
-      title: this.translationService.instant('COLLECT.FACETS.ACK_ERROR'),
-      totalResults: 0,
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    },
-  ];
 
   @Output()
   previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
 
-  constructor(public projectsService: ProjectsService, private translationService: TranslateService, private router: Router) {
+  constructor(public projectsService: ProjectsService, private router: Router) {
     super(projectsService);
   }
 
@@ -90,7 +51,8 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     this.searchProject();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+  }
 
   searchProject() {
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction);
@@ -105,8 +67,12 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     this.orderChange.next(event);
   }
 
-  searchArchiveUnitsByProject(projectId: string) {
-    this.router.navigate(['collect/archive-search-collect', projectId]);
+  searchArchiveUnitsByProject(project: Project) {
+    this.router.navigate(['collect/archive-search-collect', project.id], {queryParams: {projectName: project.messageIdentifier}});
+  }
+
+  searchTransactions(project: Project) {
+    this.router.navigate(['collect/transactions', project.id]);
   }
 
   showProjectDetails(projectId: string) {

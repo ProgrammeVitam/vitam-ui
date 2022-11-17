@@ -36,13 +36,7 @@
  */
 package fr.gouv.vitamui.commons.logbook.service;
 
-import java.util.Collection;
-
 import fr.gouv.vitam.common.LocalDateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import fr.gouv.vitam.common.guid.GUID;
 import fr.gouv.vitam.common.guid.GUIDFactory;
 import fr.gouv.vitam.common.model.StatusCode;
@@ -59,6 +53,12 @@ import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.logbook.scheduler.SendEventToVitamTasks;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * Service for CRUD operation on events Collection.
@@ -166,7 +166,11 @@ public class EventService {
         event.setOutcome(outcome);
         final String outDetail = "" + evType + "." + outcome;
         event.setOutDetail(outDetail);
-        event.setOutMessg(messages.getOutMessg().get(outDetail));
+        String outMessage = messages.getOutMessg().get(outDetail);
+        if (StringUtils.isEmpty(outMessage)) {
+            LOGGER.warn("No logbook message found for outcome : {}", outDetail);
+        }
+        event.setOutMessg(outMessage);
         event.setEvIdReq(evIdReq);
         event.setEvIdAppSession(evIdAppSession);
         event.setEvDateTime(LocalDateUtil.now().toString());

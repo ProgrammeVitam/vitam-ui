@@ -368,7 +368,7 @@
   .security_profiles_app_352{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
   .security_profiles_app_353{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURITY_PROFILES_APP_21);}
   .security_profiles_app_354{fill:none;stroke:#4C4C4C;stroke-miterlimit:10;}
-  .security_profiles_app_355{fill:#478AD7;}
+  .security_profiles_app_355{fill:var(--vitamui-secondary-300);}
   .security_profiles_app_356{fill:var(--vitamui-primary-dark);}
   .security_profiles_app_357{fill:url(#SVGID_SECURITY_PROFILES_APP_22);}
   .security_profiles_app_358{fill:url(#SVGID_SECURITY_PROFILES_APP_23);}

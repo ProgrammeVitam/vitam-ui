@@ -200,6 +200,11 @@ public class InitCustomerServiceIntegrationTest {
         customSequence7.setName(SequencesConstants.TENANT_IDENTIFIER);
         sequenceRepository.save(customSequence7);
 
+        final CustomSequence customSequence8 = new CustomSequence();
+        customSequence8.setName(SequencesConstants.USER_INFOS_IDENTIFIER);
+        sequenceRepository.save(customSequence8);
+
+        // retrieve sequences
         customerInternalService.getNextSequenceId(SequencesConstants.CUSTOMER_IDENTIFIER);
         customerInternalService.getNextSequenceId(SequencesConstants.IDP_IDENTIFIER);
         customerInternalService.getNextSequenceId(SequencesConstants.GROUP_IDENTIFIER);
@@ -207,6 +212,7 @@ public class InitCustomerServiceIntegrationTest {
         customerInternalService.getNextSequenceId(SequencesConstants.OWNER_IDENTIFIER);
         customerInternalService.getNextSequenceId(SequencesConstants.USER_IDENTIFIER);
         customerInternalService.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER);
+        customerInternalService.getNextSequenceId(SequencesConstants.USER_INFOS_IDENTIFIER);
     }
 
     @Test
@@ -248,6 +254,11 @@ public class InitCustomerServiceIntegrationTest {
 
         criteria =
             Criteria.where("obIdReq").is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_CREATE_USER);
+        ev = eventRepository.findAll(Query.query(criteria));
+        assertThat(ev).isNotEmpty();
+        assertThat(ev).hasSize(2);
+
+        criteria = Criteria.where("obIdReq").is(MongoDbCollections.USER_INFOS).and("evType").is(EventType.EXT_VITAMUI_CREATE_USER_INFO);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(2);

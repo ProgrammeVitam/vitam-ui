@@ -33,6 +33,8 @@ import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClientFactory;
 import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClientFactory;
+import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.SearchCriteriaHistoryInternalRestClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -112,6 +114,13 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
     }
 
     @Bean
+    public CollectTransactionInternalRestClient collectTransactionInternalRestClient(final CollectInternalRestClientFactory factory) {
+        return factory.getCollectTransactionInternalRestClient();
+    }
+
+
+
+    @Bean
     public CollectStreamingInternalRestClientFactory collectStreamingInternalRestClientFactory(
         final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties) {
         return new CollectStreamingInternalRestClientFactory(
@@ -137,6 +146,12 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
     public CollectInternalWebClient collectInternalWebClient (
         final CollectInternalWebClientFactory factory) {
         return factory.getCollectInternalWebClient();
+    }
+
+    @Bean
+    public SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient(
+        final CollectInternalRestClientFactory collectInternalRestClientFactory) {
+        return collectInternalRestClientFactory.getSearchCriteriaHistoryInternalRestClient();
     }
 
 }

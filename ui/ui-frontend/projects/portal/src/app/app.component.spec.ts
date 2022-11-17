@@ -71,8 +71,6 @@ describe('AppComponent', () => {
       getPlatformName: () => '',
       load: () => { },
       getPortalUrl: () => '',
-      getCustomerTechnicalReferentEmail: () => '',
-      getCustomerWebsiteUrl: () => '',
       getConfigStringValue: () => '',
     };
 

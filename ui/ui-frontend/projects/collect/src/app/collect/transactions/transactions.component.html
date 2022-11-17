@@ -1,0 +1,25 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+
+
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb
+        [data]="dataBreadcrumb"> {{ 'COLLECT.TITLE_TRANSACTIONS_MONITORING' | translate }}
+        : {{ projectName$ | async }} </vitamui-common-title-breadcrumb>
+    </div>
+    <div class="vitamui-content">
+      <div>
+      </div>
+      <div class="mt-3">
+        <!--List projects-->
+        <div class="vitamui-content">
+          <div>
+          </div>
+          <div class="mt-3">
+            <app-transaction-list></app-transaction-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

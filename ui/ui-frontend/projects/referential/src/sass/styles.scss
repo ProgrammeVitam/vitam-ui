@@ -39,8 +39,8 @@ vitamui-common-slide-toggle {
   color: var(--vitamui-secondary);
   border-color: var(--vitamui-secondary) !important;
   &:disabled {
-      @include disabled(transparent, var(--vitamui-grey), transparent);
-    }
+    @include disabled(transparent, var(--vitamui-grey), transparent);
+  }
 }
 .btn-container {
   display: flex;

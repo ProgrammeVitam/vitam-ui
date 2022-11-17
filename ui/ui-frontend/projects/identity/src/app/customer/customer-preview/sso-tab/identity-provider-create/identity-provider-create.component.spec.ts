@@ -36,10 +36,7 @@
  */
 
 
-import { EMPTY, of, throwError as observableThrowError } from 'rxjs';
-import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
+import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -47,10 +44,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { EMPTY, of, throwError as observableThrowError } from 'rxjs';
+import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderCreateComponent } from './identity-provider-create.component';
+
 @Component({
   selector: 'app-pattern',
   template: '',

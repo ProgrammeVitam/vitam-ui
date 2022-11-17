@@ -50,5 +50,6 @@ public enum CriterionOperator {
     CONTAINSIGNORECASE,
     BETWEEN,
     STARTWITH,
-    ELEMMATCH
+    ELEMMATCH,
+    ISNULL
 }

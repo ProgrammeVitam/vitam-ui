@@ -1,41 +1,8 @@
 {
-  "$query" : {
-    "$and" : [ {
-      "$in" : {
-        "Status" : [ "status1", "status2", "status3" ]
-      }
-    }, {
-      "$range" : {
-        "EndDate" : {
-          "$gte" : "1988-03-13",
-          "$lte" : "1999-04-14"
-        }
-      }
-    }, {
-      "$or" : [ {
-        "$in" : {
-          "ArchivalAgreement" : [ "archival agreement 01", "archival agreement 02", "archival agreement 03" ]
-        }
-      }, {
-        "$in" : {
-          "OriginatingAgency" : [ "agence 01", "agence 02" ]
-        }
-      }, {
-        "$in" : {
-          "ArchivalProfile" : [ "archival profile 01", "archival profile 02", "archival profile 03", "archival profile 04" ]
-        }
-      }, {
-        "$wildcard" : {
-          "#Opi" : "*operation_technical_id*"
-        }
-      }, {
-        "$wildcard" : {
-          "OriginatingAgency" : "*agence de recencement de rien*"
-        }
-      } ]
-    } ]
-  },
+  "$query" : { },
   "$filter" : {
+    "$offset" : 12,
+    "$limit" : 1,
     "$orderby" : {
       "messageIdentifierOrder" : -1
     }

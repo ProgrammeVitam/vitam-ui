@@ -30,17 +30,16 @@ package fr.gouv.vitamui.archive.internal.server.service;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitamui.archive.internal.server.utils.FileReader;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
@@ -49,6 +48,7 @@ import java.util.List;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.fillQueryFromMgtRulesCriteriaList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -72,13 +72,9 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchivesSearchAccessMgtRulesQueryBuilderServiceTest.class);
 
-    @InjectMocks
-    private ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService;
-
     @BeforeEach
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        archivesSearchManagementRulesQueryBuilderService = new ArchivesSearchManagementRulesQueryBuilderService();
     }
 
 
@@ -87,8 +83,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         //Given
         //When
         BooleanQuery query = or();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, null);
+        fillQueryFromMgtRulesCriteriaList(query, null);
 
         //then
         Assertions.assertTrue(query.getQueries().isEmpty());
@@ -99,8 +94,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         //Given
         //When
         BooleanQuery query = or();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, List.of());
+        fillQueryFromMgtRulesCriteriaList(query, List.of());
 
         //then
         Assertions.assertTrue(query.getQueries().isEmpty());
@@ -120,8 +114,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         criteriaList.add(searchCriteriaEltDto);
         //When
         BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
@@ -146,8 +139,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
@@ -172,8 +164,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
@@ -207,8 +198,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
@@ -249,8 +239,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
@@ -292,8 +281,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
@@ -333,8 +321,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
@@ -359,8 +346,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        fillQueryFromMgtRulesCriteriaList(query, criteriaList);
 
 
         //then
@@ -394,8 +380,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        fillQueryFromMgtRulesCriteriaList(query, criteriaList);
 
 
         //then

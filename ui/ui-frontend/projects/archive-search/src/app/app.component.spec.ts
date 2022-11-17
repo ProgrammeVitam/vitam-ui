@@ -63,17 +63,21 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', async(() => {
+  it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    console.log('Create App: ', app);
     expect(app).toBeTruthy();
-  }));
+  });
 
-  it(`should have as title 'Archive Search Application'`, async(() => {
+  it('should have as title Archive Search Application ', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    console.log('Title App: ', app);
     expect(app.title).toEqual('Archive Search Application');
-  }));
+  });
+
+  it('should be false ', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const component = fixture.debugElement.componentInstance;
+    expect(component.subrogating).toBeFalsy();
+  });
 });

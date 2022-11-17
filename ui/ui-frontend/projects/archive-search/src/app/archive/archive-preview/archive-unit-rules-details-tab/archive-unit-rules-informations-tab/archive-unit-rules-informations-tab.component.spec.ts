@@ -239,7 +239,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       DisseminationRule: null,
       AccessRule: null,
     };
-    const archiveUnit: Unit = {
+    const archiveUnitDetails: Unit = {
       '#management': unitManagementRules,
       '#allunitups': [],
       '#id': 'id',
@@ -251,7 +251,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
     // When
-    component.archiveUnitRules = archiveUnit;
+    component.archiveUnitRules = archiveUnitDetails;
 
     // Then
     expect(component.getClassificationRulePropertyStatus(property)).toBeDefined();
@@ -259,5 +259,16 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     expect(component.getClassificationRulePropertyStatus(property)).toEqual(
       'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED'
     );
+  });
+
+  describe('DOM', () => {
+    it('should have 2 columns ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementColumn = nativeElement.querySelectorAll('.col');
+
+      // Then
+      expect(elementColumn.length).toBe(2);
+    });
   });
 });

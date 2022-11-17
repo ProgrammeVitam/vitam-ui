@@ -14,12 +14,12 @@
         </div>
 
         <vitamui-common-input class="col-9 px-0" formControlName="name" minlength="2" maxlength="100" required [placeholder]="'USER_PROFILE.HOME.TITLE_PLACEHOLDER' | translate">
-            <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
             <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.nameExists">{{'USER_PROFILE.INFORMATIONS.MODAL.EXISTING_NAME' | translate}}</vitamui-common-input-error>
         </vitamui-common-input>
 
         <vitamui-common-input class="col-9 px-0" formControlName="description" minlength="2" maxlength="250" required [placeholder]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate">
-            <vitamui-common-input-error *ngIf="adminProfileForm?.get('description')?.touched && !!adminProfileForm?.get('description')?.errors?.required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="adminProfileForm?.get('description')?.touched && !!adminProfileForm?.get('description')?.errors?.required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
         </vitamui-common-input>
 
         <div class="d-flex">
@@ -28,7 +28,7 @@
                 <div class="text medium bold">{{authService.user.level}}</div>
             </div>
             <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
-                <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
                 <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('pattern')">{{'USER_PROFILE.INFORMATIONS.MODAL.WRONG_FORMAT' | translate}}</vitamui-common-input-error>
             </vitamui-common-level-input>
         </div>

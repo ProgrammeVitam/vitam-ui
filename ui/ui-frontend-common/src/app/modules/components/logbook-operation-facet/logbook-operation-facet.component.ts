@@ -26,13 +26,13 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FacetDetails } from '../../models/operation/facet-details.interface';
+import { FacetDetails } from '../../models';
 
 @Component({
   // tslint:disable-next-line: component-selector
   selector: 'app-logbook-operation-facet',
   templateUrl: './logbook-operation-facet.component.html',
-  styleUrls: ['./logbook-operation-facet.component.scss'],
+  styleUrls: [ './logbook-operation-facet.component.scss' ],
 })
 export class LogbookOperationFacetComponent implements OnInit {
   /**
@@ -63,9 +63,11 @@ export class LogbookOperationFacetComponent implements OnInit {
   @Input()
   facetDetails: FacetDetails[];
 
-  constructor() {}
+  constructor() {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   onFilter(facet: FacetDetails) {
     if (facet.clickable) {

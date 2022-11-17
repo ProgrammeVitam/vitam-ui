@@ -8,9 +8,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import reactor.netty.transport.ProxyProvider;
 
 import java.util.ListIterator;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -71,6 +73,19 @@ public class RestConfigurationTest extends AbstractServerIdentityBuilder {
         assertNotNull(ts);
         assertTrue(ts.getKeyPath().endsWith("truststore_rest-app.jks"));
         assertTrue(ts.getKeyPassword().equals("azerty"));
+    }
+
+    @Test
+    public void testProxyProperties() {
+        ProxyProperties proxyProperties = restClientConfiguration1.getProxy();
+        assertThat(proxyProperties).isNotNull();
+        assertThat(proxyProperties.isEnabled()).isTrue();
+
+        assertThat(proxyProperties.getHost()).isEqualTo("vitamui.test.com");
+        assertThat(proxyProperties.getPort()).isEqualTo(80);
+        assertThat(proxyProperties.getType()).isEqualTo(ProxyProvider.Proxy.SOCKS4);
+        assertThat(proxyProperties.getPassword()).isEqualTo("password");
+        assertThat(proxyProperties.getUsername()).isEqualTo("username");
     }
 
     @Test

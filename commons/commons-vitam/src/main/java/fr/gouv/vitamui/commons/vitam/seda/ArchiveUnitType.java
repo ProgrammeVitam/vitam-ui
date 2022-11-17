@@ -1,8 +1,8 @@
 //
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2 
-// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.07.15 à 03:41:18 PM CEST 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2
+// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
 
 
@@ -13,11 +13,9 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlElementRefs;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSchemaType;
@@ -29,11 +27,11 @@ import org.w3c.dom.Element;
 
 /**
  * Unité de base des métadonnées de description contenant la gestion de l'arborescence.
- * 
+ *
  * <p>Classe Java pour ArchiveUnitType complex type.
- * 
+ *
  * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
- * 
+ *
  * <pre>
  * &lt;complexType name="ArchiveUnitType"&gt;
  *   &lt;complexContent&gt;
@@ -57,8 +55,8 @@ import org.w3c.dom.Element;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArchiveUnitType", propOrder = {
@@ -80,12 +78,11 @@ public class ArchiveUnitType {
     protected ManagementType management;
     @XmlElement(name = "Content")
     protected DescriptiveMetadataContentType content;
-    @XmlElementRefs({
-        @XmlElementRef(name = "ArchiveUnit", namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", type = JAXBElement.class, required = false),
-        @XmlElementRef(name = "DataObjectReference", namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", type = JAXBElement.class, required = false),
-        @XmlElementRef(name = "DataObjectGroup", namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", type = JAXBElement.class, required = false)
+    @XmlElements({
+        @XmlElement(name = "ArchiveUnit", type = ArchiveUnitType.class),
+        @XmlElement(name = "DataObjectReference", type = DataObjectRefType.class),
+        @XmlElement(name = "DataObjectGroup", type = DataObjectGroupType.class)
     })
-    @XmlAnyElement(lax = true)
     protected List<Object> archiveUnitOrDataObjectReferenceOrDataObjectGroup;
     @XmlAttribute(name = "id", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
@@ -94,11 +91,11 @@ public class ArchiveUnitType {
 
     /**
      * Obtient la valeur de la propriété archiveUnitRefId.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link Object }
-     *     
+     *
      */
     public Object getArchiveUnitRefId() {
         return archiveUnitRefId;
@@ -106,11 +103,11 @@ public class ArchiveUnitType {
 
     /**
      * Définit la valeur de la propriété archiveUnitRefId.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link Object }
-     *     
+     *
      */
     public void setArchiveUnitRefId(Object value) {
         this.archiveUnitRefId = value;
@@ -118,11 +115,11 @@ public class ArchiveUnitType {
 
     /**
      * Obtient la valeur de la propriété archiveUnitProfile.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link IdentifierType }
-     *     
+     *
      */
     public IdentifierType getArchiveUnitProfile() {
         return archiveUnitProfile;
@@ -130,11 +127,11 @@ public class ArchiveUnitType {
 
     /**
      * Définit la valeur de la propriété archiveUnitProfile.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link IdentifierType }
-     *     
+     *
      */
     public void setArchiveUnitProfile(IdentifierType value) {
         this.archiveUnitProfile = value;
@@ -142,11 +139,11 @@ public class ArchiveUnitType {
 
     /**
      * Obtient la valeur de la propriété management.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link ManagementType }
-     *     
+     *
      */
     public ManagementType getManagement() {
         return management;
@@ -154,11 +151,11 @@ public class ArchiveUnitType {
 
     /**
      * Définit la valeur de la propriété management.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link ManagementType }
-     *     
+     *
      */
     public void setManagement(ManagementType value) {
         this.management = value;
@@ -166,11 +163,11 @@ public class ArchiveUnitType {
 
     /**
      * Obtient la valeur de la propriété content.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link DescriptiveMetadataContentType }
-     *     
+     *
      */
     public DescriptiveMetadataContentType getContent() {
         return content;
@@ -178,11 +175,11 @@ public class ArchiveUnitType {
 
     /**
      * Définit la valeur de la propriété content.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link DescriptiveMetadataContentType }
-     *     
+     *
      */
     public void setContent(DescriptiveMetadataContentType value) {
         this.content = value;
@@ -190,20 +187,20 @@ public class ArchiveUnitType {
 
     /**
      * Gets the value of the archiveUnitOrDataObjectReferenceOrDataObjectGroup property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the archiveUnitOrDataObjectReferenceOrDataObjectGroup property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getArchiveUnitOrDataObjectReferenceOrDataObjectGroup().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXBElement }{@code <}{@link ArchiveUnitType }{@code >}
@@ -211,8 +208,8 @@ public class ArchiveUnitType {
      * {@link JAXBElement }{@code <}{@link ObjectGroupRefType }{@code >}
      * {@link Element }
      * {@link Object }
-     * 
-     * 
+     *
+     *
      */
     public List<Object> getArchiveUnitOrDataObjectReferenceOrDataObjectGroup() {
         if (archiveUnitOrDataObjectReferenceOrDataObjectGroup == null) {
@@ -223,11 +220,11 @@ public class ArchiveUnitType {
 
     /**
      * Obtient la valeur de la propriété id.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getId() {
         return id;
@@ -235,11 +232,11 @@ public class ArchiveUnitType {
 
     /**
      * Définit la valeur de la propriété id.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setId(String value) {
         this.id = value;

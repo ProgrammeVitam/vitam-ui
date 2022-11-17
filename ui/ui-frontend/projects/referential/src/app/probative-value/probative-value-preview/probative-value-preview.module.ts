@@ -46,7 +46,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTabsModule} from '@angular/material/tabs';
 import {RouterModule} from '@angular/router';
-import {NgxFilesizeModule} from 'ngx-filesize';
 import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
 import {VitamUICommonModule} from 'ui-frontend-common';
 import {ProbativeValuePreviewComponent} from './probative-value-preview.component';
@@ -61,7 +60,6 @@ import {ProbativeValuePreviewComponent} from './probative-value-preview.componen
     VitamUILibraryModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxFilesizeModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

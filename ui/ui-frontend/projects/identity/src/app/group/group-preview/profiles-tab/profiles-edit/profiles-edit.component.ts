@@ -34,13 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Group } from 'ui-frontend-common';
-
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService, Group } from 'ui-frontend-common';
 import { GroupService } from '../../../group.service';
 
 @Component({

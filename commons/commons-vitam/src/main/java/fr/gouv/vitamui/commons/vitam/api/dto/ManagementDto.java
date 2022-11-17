@@ -68,4 +68,6 @@ public class ManagementDto {
     @JsonProperty("AccessRule")
     private RuleCategoryVitamUiDto accessRule;
 
+    @JsonProperty("UpdateOperation")
+    private UpdateOperationDto updateOperationDto;
 }

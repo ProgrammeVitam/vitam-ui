@@ -36,19 +36,16 @@
  */
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-
 import {VitamUIImportDialogModule} from './vitamui-import-dialog/vitamui-import-dialog.module';
-import {VitamUISnackBarModule} from './vitamui-snack-bar';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
+    VitamUIImportDialogModule,
   ],
   exports: [
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
+    VitamUIImportDialogModule,
   ]
 })
 export class SharedModule {

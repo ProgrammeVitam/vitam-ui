@@ -114,7 +114,7 @@
               <goal>npm</goal>
             </goals>
             <configuration>
-              <skip>${skipAllFrontend}</skip>
+              <skip>${skipAllFrontendTests}</skip>
               <arguments>run test:conf-ci</arguments>
             </configuration>
           </execution>-->

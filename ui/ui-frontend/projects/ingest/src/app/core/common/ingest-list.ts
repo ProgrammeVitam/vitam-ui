@@ -22,7 +22,6 @@ export class IngestList {
     if (!this.ingests[requestId]) {
       return;
     }
-
     if (status) {
       // status defined and value > 0 ( FINISHED or ERROR )
       this.ingests[requestId].status = status;

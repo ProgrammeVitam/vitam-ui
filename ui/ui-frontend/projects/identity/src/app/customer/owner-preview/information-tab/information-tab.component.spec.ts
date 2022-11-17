@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, Subject } from 'rxjs';
-import { CountryService } from 'ui-frontend-common';
+import { BASE_URL, CountryService, LoggerModule, StartupService, VitamUISnackBarService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { Owner, Tenant } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { VitamUISnackBar } from '../../../shared/vitamui-snack-bar';
 import { OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';
 import { TenantFormValidators } from '../../tenant-create/tenant-form.validators';
@@ -130,7 +130,6 @@ describe('Owner InformationTabComponent', () => {
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
       uniqueName: () => of(null)
     });
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -138,17 +137,22 @@ describe('Owner InformationTabComponent', () => {
         MatDividerModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
+        HttpClientTestingModule,
+        LoggerModule.forRoot()
       ],
       declarations: [
         TestHostComponent,
         InformationTabComponent,
       ],
       providers: [
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: OwnerService, useValue: ownerServiceSpy },
         { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: TenantService, useValue: { patch: () => of(expectedTenant) } },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: StartupService, useValue: { getConfigNumberValue: () => 100 }},
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
 
       ]
@@ -214,12 +218,16 @@ describe('Owner InformationTabComponent', () => {
     it('should have the pattern validator', () => {
       const codeControl = testhost.component.ownerForm.get('code');
       codeControl.setValue('a');
-      expect(codeControl.valid).toBeFalsy();
+      expect(codeControl.valid).toBeTruthy();
       codeControl.setValue('123456a');
-      expect(codeControl.valid).toBeFalsy();
+      expect(codeControl.valid).toBeTruthy();
       codeControl.setValue('aaaaaa');
-      expect(codeControl.valid).toBeFalsy();
+      expect(codeControl.valid).toBeTruthy();
       codeControl.setValue('1234');
+      expect(codeControl.valid).toBeTruthy();
+      codeControl.setValue('1234_');
+      expect(codeControl.valid).toBeFalsy();
+      codeControl.setValue('1234_qzdqzdzqdzqd48d5zq41d5qz1d654');
       expect(codeControl.valid).toBeFalsy();
     });
 

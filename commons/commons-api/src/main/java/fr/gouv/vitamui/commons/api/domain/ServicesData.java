@@ -1,25 +1,25 @@
 /**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
- *
+ * <p>
  * contact@programmevitam.fr
- *
+ * <p>
  * This software is a computer program whose purpose is to implement
  * implement a digital archiving front-office system for the secure and
  * efficient high volumetry VITAM solution.
- *
+ * <p>
  * This software is governed by the CeCILL-C license under French law and
  * abiding by the rules of distribution of free software.  You can  use,
  * modify and/ or redistribute the software under the terms of the CeCILL-C
  * license as circulated by CEA, CNRS and INRIA at the following URL
  * "http://www.cecill.info".
- *
+ * <p>
  * As a counterpart to the access to the source code and  rights to copy,
  * modify and redistribute granted by the license, users are provided only
  * with a limited warranty  and the software's author,  the holder of the
  * economic rights,  and the successive licensors  have only  limited
  * liability.
- *
+ * <p>
  * In this respect, the user's attention is drawn to the risks associated
  * with loading,  using,  modifying and/or developing or reproducing the
  * software by the user in light of its specific status of free software,
@@ -30,7 +30,7 @@
  * requirements in conditions enabling the security of their systems and/or
  * data to be ensured and,  more generally, to use and operate it in the
  * same conditions as regards security.
- *
+ * <p>
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
@@ -43,15 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.IMPORT_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
 /**
  * All the services.
@@ -416,6 +408,8 @@ public class ServicesData {
     public static final String ROLE_RECLASSIFICATION = ROLE_PREFIX + "RECLASSIFICATION";
     public static final String ROLE_UPDATE_UNIT_DESC_METADATA = ROLE_PREFIX + "UPDATE_UNIT_DESC_METADATA";
 
+    public static final String ROLE_TRANSFER_ACKNOWLEDGMENT = ROLE_PREFIX + "TRANSFER_ACKNOWLEDGMENT";
+
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
     public static final String SERVICE_HOLDING_FILLING_SCHEME_ROLE = "HOLDING_FILLING_SCHEME";
@@ -464,11 +458,30 @@ public class ServicesData {
 
     //------------------------------------ COLLECT -----------------------------------------
     public static final String PROJECTS = "PROJECTS";
+
+    public static final String TRANSACTIONS = "TRANSACTIONS";
     public static final String ROLE_GET_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
     public static final String ROLE_CREATE_PROJECTS = CREATE_ROLE_PREFIX + PROJECTS;
+    public static final String ROLE_CREATE_TRANSACTIONS = CREATE_ROLE_PREFIX + TRANSACTIONS;
     public static final String ROLE_UPDATE_PROJECTS = UPDATE_ROLE_PREFIX + PROJECTS;
+    public static final String ROLE_UPDATE_TRANSACTIONS = UPDATE_ROLE_PREFIX + TRANSACTIONS;
+
+    public static final String ROLE_CLOSE_TRANSACTIONS = CLOSE_ROLE_PREFIX + TRANSACTIONS;
+
+    public static final String ROLE_SEND_TRANSACTIONS = SEND_ROLE_PREFIX + TRANSACTIONS;
+    public static final String ROLE_GET_TRANSACTIONS = GET_ROLE_PREFIX + TRANSACTIONS;
+    public static final String ROLE_DELETE_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
+
+    public static final String ROLE_REOPEN_TRANSACTIONS = REOPEN_ROLE_PREFIX + TRANSACTIONS;
+
+    public static final String ROLE_ABORT_TRANSACTIONS = ABORT_ROLE_PREFIX + TRANSACTIONS;
+
 
     //@formatter:off
+
+    //------------------------------ PROVISIONING USERS ------------------------------------------------
+
+    public static final String ROLE_PROVISIONING_USER = ROLE_PREFIX + "PROVISIONING_USER";
 
     /**
      * List of the admin roles for the VITAMUI application.
@@ -567,6 +580,7 @@ public class ServicesData {
         ROLE_ELIMINATION,
         ROLE_UPDATE_MANAGEMENT_RULES,
         ROLE_COMPUTED_INHERITED_RULES,
+        ROLE_TRANSFER_ACKNOWLEDGMENT,
 
         ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
         ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
@@ -589,9 +603,16 @@ public class ServicesData {
         ROLE_RECLASSIFICATION,
         ROLE_UPDATE_UNIT_DESC_METADATA,
 
-            ROLE_GET_PROJECTS,
-            ROLE_CREATE_PROJECTS,
-            ROLE_UPDATE_PROJECTS
+        ROLE_GET_PROJECTS,
+        ROLE_CREATE_PROJECTS,
+        ROLE_UPDATE_PROJECTS,
+
+        ROLE_CLOSE_TRANSACTIONS,
+        ROLE_SEND_TRANSACTIONS,
+        ROLE_CREATE_TRANSACTIONS,
+        ROLE_UPDATE_TRANSACTIONS,
+        ROLE_GET_TRANSACTIONS,
+        ROLE_DELETE_PROJECTS
     );
 
     /**
@@ -718,6 +739,7 @@ public class ServicesData {
         ROLE_ELIMINATION,
         ROLE_UPDATE_MANAGEMENT_RULES,
         ROLE_COMPUTED_INHERITED_RULES,
+        ROLE_TRANSFER_ACKNOWLEDGMENT,
 
         ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
         ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
@@ -738,7 +760,11 @@ public class ServicesData {
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
         ROLE_RECLASSIFICATION,
-        ROLE_UPDATE_UNIT_DESC_METADATA
+        ROLE_UPDATE_UNIT_DESC_METADATA,
+        ROLE_CREATE_TRANSACTIONS,
+        ROLE_UPDATE_TRANSACTIONS,
+        ROLE_GET_TRANSACTIONS,
+        ROLE_DELETE_PROJECTS
     );
     //@formatter:on
 

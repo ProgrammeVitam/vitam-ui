@@ -1,4 +1,3 @@
-import { AfterViewInit } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -37,6 +36,7 @@ import { AfterViewInit } from '@angular/core';
  */
 /* tslint:disable: no-use-before-declare */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { AfterViewInit } from '@angular/core';
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -55,6 +55,8 @@ export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
 export class VitamUIInputComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
   @Input() type = 'text';
+  @Input() minValue;
+  @Input() maxValue;
   @Input() maxlength: number;
   @Input() placeholder: string;
   @Input() autofocus: boolean;

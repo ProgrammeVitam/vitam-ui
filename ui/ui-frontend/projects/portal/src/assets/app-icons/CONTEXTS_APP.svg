@@ -202,9 +202,9 @@
   .contexts_app_186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_01);}
   .contexts_app_187{fill-rule:evenodd;clip-rule:evenodd;fill:#2A2C2B;}
   .contexts_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:#4C4C4C;}
-  .contexts_app_189{fill:#2563A9;}
-  .contexts_app_190{fill:#478AD7;}
-  .contexts_app_191{fill:#8DB6E6;}
+  .contexts_app_189{fill:var(--vitamui-secondary);}
+  .contexts_app_190{fill:var(--vitamui-secondary-300);}
+  .contexts_app_191{fill:var(--vitamui-secondary-100);}
   .contexts_app_192{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_02);}
   .contexts_app_193{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_03);}
   .contexts_app_194{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_04);}

@@ -39,6 +39,7 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
+import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
@@ -109,6 +110,11 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
     @Bean
     public TransferRequestService transferRequestService(final AccessExternalClient accessExternalClient) {
         return new TransferRequestService(accessExternalClient);
+    }
+
+    @Bean
+    public TransferAcknowledgmentService transferAcknowledgmentService(final AccessExternalClient accessExternalClient) {
+        return new TransferAcknowledgmentService(accessExternalClient);
     }
 
     @Bean

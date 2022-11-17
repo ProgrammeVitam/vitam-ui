@@ -52,6 +52,10 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>referential-external-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>archive-search-external-client</artifactId>
+        </dependency>
 		<!-- Utils -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>

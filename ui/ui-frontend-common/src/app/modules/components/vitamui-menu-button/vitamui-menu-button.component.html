@@ -1,5 +1,5 @@
 <button #trigger="matMenuTrigger" [matMenuTriggerFor]="moreMenu" class="btn outline secondary"
-  [ngClass]="{'btn-circle large' : icon && !label}" [class.hidden]="trigger.menuOpen" [disabled] = "disabled" aria-label="more menu">
+  [ngClass]="{'btn-circle' : icon && !label, 'large': icon && !label && isLarge}" [class.hidden]="trigger.menuOpen" [disabled] = "disabled" aria-label="more menu">
     <i *ngIf="icon" class="vitamui-icon {{icon}}" [class.mr-3]="label"></i>
     {{label}}
 </button>

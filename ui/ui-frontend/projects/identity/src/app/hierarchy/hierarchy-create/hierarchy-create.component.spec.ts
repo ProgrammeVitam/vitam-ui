@@ -1,4 +1,3 @@
-import { TranslateModule } from '@ngx-translate/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -35,17 +34,16 @@ import { TranslateModule } from '@ngx-translate/core';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, LevelInputModule } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
 import { Component, forwardRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
+import { TranslateModule } from '@ngx-translate/core';
+import { EMPTY, of } from 'rxjs';
+import { AuthService, ConfirmDialogService, LevelInputModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyCreateComponent } from './hierarchy-create.component';
 

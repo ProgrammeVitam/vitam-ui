@@ -658,6 +658,24 @@
                 <groupId>org.thymeleaf</groupId>
                 <artifactId>thymeleaf-spring5</artifactId>
                 <version>${thymeleaf-spring5.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-webflux</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-spring-webmvc</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-expression</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Apereo CAS Server Core Api Ticket -->
@@ -835,6 +853,11 @@
             <dependency>
                 <groupId>fr.gouv.vitam</groupId>
                 <artifactId>common-public</artifactId>
+                <version>${vitam.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitam</groupId>
+                <artifactId>common-database-public</artifactId>
                 <version>${vitam.version}</version>
             </dependency>
             <dependency>

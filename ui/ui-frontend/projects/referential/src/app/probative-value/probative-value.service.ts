@@ -38,15 +38,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Event } from 'projects/vitamui-library/src/public-api';
 import { tap } from 'rxjs/operators';
-import { SearchService } from 'ui-frontend-common';
+import { SearchService , VitamUISnackBarService} from 'ui-frontend-common';
 import { OperationApiService } from '../core/api/operation-api.service';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProbativeValueService extends SearchService<Event> {
-  constructor(private operationApiService: OperationApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+  constructor(private operationApiService: OperationApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
     super(http, operationApiService, 'ALL');
   }
 
@@ -60,21 +59,16 @@ export class ProbativeValueService extends SearchService<Event> {
     return this.operationApiService.runProbativeValue(probativeValueRequest, headers).pipe(
       tap(
         () => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'probativeValueRun' },
-            duration: 10000,
+            this.snackBarService.open({
+              message: 'SNACKBAR.PROBATIVE_VALUE_RUN',
           });
         },
-        (error: any) => {
+          (error) => {
           console.log('error: ', error);
           if (!error || !error.error) {
             return;
           }
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          });
+          this.snackBarService.open({ message: error.error.message, translate: false });
         }
       )
     );

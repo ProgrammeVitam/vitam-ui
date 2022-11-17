@@ -40,6 +40,9 @@ server:
         file-date-format: ".yyyy-MM-dd"
         suffix: ".log"
 
+address:
+  max-street-length: {{ vitamui_platform_informations.address.max_street_length }}
+
 management:
   server:
     port: {{ vitamui_struct.port_admin }}
@@ -110,6 +113,21 @@ ui-identity:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
+  archive-search-external-client:
+    server-host: {{ vitamui.archive_search_external.host }}
+    server-port: {{ vitamui.archive_search_external.port_service }}
+{% if vitamui.archive_search_external.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.archive_search_external.secure | default(secure) | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
   base-url:
 {% if vitamui.portal.base_url is defined %}
     portal: "{{ vitamui.portal.base_url }}"
@@ -150,6 +168,10 @@ cas:
     trust-store-password: {{ password_truststore }}
     hostname-verification: {{ vitamui.cas_server.hostname_verification | default('true') }}
 {% endif %}
+
+portal:
+  message: {{vitamui_platform_informations.portal_message}}
+  title: {{vitamui_platform_informations.portal_title}}
 
 opentracing:
   jaeger:

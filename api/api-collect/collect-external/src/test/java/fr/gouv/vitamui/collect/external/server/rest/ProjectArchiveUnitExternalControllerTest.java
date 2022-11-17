@@ -30,18 +30,18 @@
 package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
-import fr.gouv.vitamui.collect.external.server.service.ProjectArchiceUnitExternalService;
+import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,25 +53,25 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_ARCHIVE_UNITS_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = {ProjectArchiveUnitExternalController.class})
+@WebMvcTest(controllers = {TransactionArchiveUnitExternalController.class})
 public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalControllerTest.class);
 
     @MockBean
-    private ProjectArchiceUnitExternalService projectArchiceUnitExternalService;
+    private TransactionArchiveUnitExternalService transactionArchiveUnitExternalService;
 
-    private ProjectArchiveUnitExternalController projectArchiveUnitExternalController;
+    private TransactionArchiveUnitExternalController transactionArchiveUnitExternalController;
 
     @BeforeEach
     public void setUp() {
-        projectArchiveUnitExternalController = new ProjectArchiveUnitExternalController(
-            projectArchiceUnitExternalService);
+        transactionArchiveUnitExternalController = new TransactionArchiveUnitExternalController(
+            transactionArchiveUnitExternalService);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectEx
 
     @Override
     protected String getRessourcePrefix() {
-        return COLLECT_PROJECT_ARCHIVE_UNITS_PATH;
+        return COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
     }
 
     @Test
@@ -116,10 +116,10 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectEx
         query.setCriteriaList(List.of(nodeCriteria));
         ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
         Mockito
-            .when(projectArchiceUnitExternalService.searchCollectProjectArchiveUnits("projectId", query))
+            .when(transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query))
             .thenReturn(expectedResponse);
 
-        assertThatCode(() -> projectArchiveUnitExternalController.searchArchiveUnits("projectId", query))
+        assertThatCode(() -> transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query))
             .isInstanceOf(InvalidSanitizeCriteriaException.class);
     }
 
@@ -130,9 +130,10 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiSearchCollectEx
         SearchCriteriaDto query = new SearchCriteriaDto();
         ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
         Mockito
-            .when(projectArchiceUnitExternalService.searchCollectProjectArchiveUnits("projectId", query))
+            .when(transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query))
             .thenReturn(expectedResponse);
-        ArchiveUnitsDto responseDto = projectArchiveUnitExternalController.searchArchiveUnits("projectId", query);
+        ArchiveUnitsDto
+            responseDto = transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query);
         Assertions.assertEquals(responseDto, expectedResponse);
     }
 }

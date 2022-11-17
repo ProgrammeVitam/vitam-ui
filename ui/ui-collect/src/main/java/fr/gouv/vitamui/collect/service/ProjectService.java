@@ -28,6 +28,7 @@
 package fr.gouv.vitamui.collect.service;
 
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -75,13 +76,37 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
         return collectExternalRestClient.create(context, collectProjectDto);
     }
 
-    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(ExternalHttpContext context, final Integer page,
-        final Integer size, final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(ExternalHttpContext context,
+        final Integer page,
+        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
+        final Optional<DirectionDto> direction) {
         return collectExternalRestClient.getAllPaginated(context, page, size, criteria, orderBy, direction);
     }
 
     public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
-        String projectId, InputStream inputStream) {
-        return collectStreamingExternalRestClient.streamingUpload(context, fileName, projectId, inputStream);
+        String transactionId, InputStream inputStream) {
+        return collectStreamingExternalRestClient.streamingUpload(context, fileName, transactionId, inputStream);
     }
+
+    public void deleteProject(String projectId, final ExternalHttpContext context) {
+        collectExternalRestClient.deleteProject(projectId, context);
+    }
+
+    public CollectTransactionDto createTransactionForProject(final ExternalHttpContext context, CollectTransactionDto collectTransactionDto, String id) {
+        return collectExternalRestClient.createTransactionForProject(context, collectTransactionDto, id);
+    }
+
+    public CollectTransactionDto getLastTransactionForProjectId(final ExternalHttpContext context, String id) {
+        return collectExternalRestClient.getLastTransactionForProjectId(id, context);
+    }
+
+
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(final Integer page, Integer size,
+        final Optional<String> criteria, final Optional<String> orderBy,
+        final Optional<DirectionDto> direction, final ExternalHttpContext context, String projectId) {
+        size = beforePaginate(page, size);
+        return getClient().getTransactionsByProjectPaginated(context, page, size, criteria, orderBy, direction,
+            projectId);
+    }
+
 }

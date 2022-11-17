@@ -365,9 +365,9 @@
 	.access_app_348{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000024001272041299564490000015268675532251520179_);}
 	.access_app_349{fill:#2A2C2B;}
 	.access_app_350{fill:var(--vitamui-dark);}
-	.access_app_351{fill-rule:evenodd;clip-rule:evenodd;fill:#1D487A;}
-	.access_app_352{fill-rule:evenodd;clip-rule:evenodd;fill:#8DB6E6;}
-	.access_app_353{fill:#1D487A;}
+	.access_app_351{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-secondary-600);}
+	.access_app_352{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-secondary-100);}
+	.access_app_353{fill:var(--vitamui-secondary-600);}
 	.access_app_354{fill:url(#SVGID_00000075124357408259719760000003875324273563711118_);}
 	.access_app_355{fill:url(#SVGID_00000075857658543630575430000007438195759940278407_);}
 	.access_app_356{fill:#FFFFFF;}

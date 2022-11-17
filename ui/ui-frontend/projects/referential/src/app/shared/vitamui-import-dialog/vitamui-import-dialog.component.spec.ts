@@ -48,8 +48,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BASE_URL, LoggerModule } from 'ui-frontend-common';
 import { VitamUIImportDialogComponent } from './vitamui-import-dialog.component';
+import { WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
+import { TranslateService } from '@ngx-translate/core';
+import { EMPTY } from 'rxjs';
 
 describe('VitamUIImportDialogComponent', () => {
   let component: VitamUIImportDialogComponent;
@@ -77,6 +80,8 @@ describe('VitamUIImportDialogComponent', () => {
           { provide: CdkStepper },
           { provide: MAT_DIALOG_DATA, useValue: {} },
           { provide: BASE_URL, useValue: '' },
+          { provide: WINDOW_LOCATION, useValue: window.location },
+          { provide: TranslateService, useValue: { instant: () => EMPTY } },
         ],
       }).compileComponents();
     })

@@ -84,7 +84,7 @@ public class CollectStreamingExternalRestClient
     }
 
     public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
-        String projectId, InputStream inputStream) {
+        String transactionId, InputStream inputStream) {
         LOGGER.debug("Calling upload using streaming process");
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + PROJECTS + STREAM_UPLOAD_PATH);
@@ -92,14 +92,13 @@ public class CollectStreamingExternalRestClient
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));
         headersList.add(CommonConstants.X_ORIGINAL_FILENAME_HEADER, fileName);
-        headersList.add(CommonConstants.X_PROJECT_ID_HEADER, projectId);
+        headersList.add(CommonConstants.X_TRANSACTION_ID_HEADER, transactionId);
         HttpHeaders headersParams = new HttpHeaders();
         headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headersParams.addAll(headersList);
 
         final HttpEntity<InputStreamResource> request =
             new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
-
         final ResponseEntity<Void> response =
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, request, Void.class);
         LOGGER.debug("The response is {}", response.toString());

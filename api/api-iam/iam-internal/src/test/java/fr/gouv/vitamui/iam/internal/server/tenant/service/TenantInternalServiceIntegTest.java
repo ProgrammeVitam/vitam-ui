@@ -166,8 +166,7 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
                 internalSecurityService, repository, iamLogbookService, groupConverter, null);
 
         internalProfileService =
-            new ProfileInternalService(new SequenceGeneratorService(sequenceRepository), profileRepository, customerRepository, groupRepository,
-                repository,userRepository,
+                new ProfileInternalService(new SequenceGeneratorService(sequenceRepository), profileRepository, customerRepository, groupRepository, repository, userRepository,
                         internalSecurityService, iamLogbookService, profileConverter, null);
 
         repository.deleteAll();

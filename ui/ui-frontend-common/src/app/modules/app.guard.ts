@@ -39,7 +39,7 @@ import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { Title } from '@angular/platform-browser';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
 import { WINDOW_LOCATION } from './injection-tokens';
@@ -77,8 +77,8 @@ export class AppGuard implements CanActivate {
 
     this.startupService.CURRENT_APP_ID = appId;
 
-    this.translateService.get(APPLICATION_TRANSLATE_PATH + '.' + appId + '.NAME').subscribe((translatedAppName: string) => {
-      this.titleService.setTitle(translatedAppName);
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.titleService.setTitle(this.translateService.instant(APPLICATION_TRANSLATE_PATH + '.' + appId + '.NAME'));
     });
 
     // set user default tenant Identifier whenever we switch pages

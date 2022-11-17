@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
 import {MatDialog} from '@angular/material/dialog';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {AgencyService} from '../agency.service';
@@ -64,12 +65,12 @@ describe('AgencyPreviewComponent',() => {
   }));
 
   beforeEach(() => {
-    fixture=TestBed.createComponent(AgencyPreviewComponent);
-    component=fixture.componentInstance;
+    fixture = TestBed.createComponent(AgencyPreviewComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create',() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -52,6 +52,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { CommonTooltipComponent } from './common-tooltip.component';
+import { TooltipPosition } from './TooltipPosition.enum';
 import { TooltipType } from './TooltipType.enum';
 
 @Directive({
@@ -59,8 +60,10 @@ import { TooltipType } from './TooltipType.enum';
 })
 export class CommonTooltipDirective implements OnInit, OnDestroy {
   @Input('vitamuiCommonToolTip') text = '';
-  @Input() type = 'BOTTOM';
   @Input() outline = false;
+  @Input('vitamuiCommonToolTipPosition') position: string = TooltipPosition.BOTTOM;
+  @Input() vitamuiCommonToolTipClass: string;
+  @Input() type = 'BOTTOM';
 
  /** Disables the display of the tooltip. */
   @Input('vitamuiCommonToolTipDisabled')
@@ -73,9 +76,9 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
       this.hide();
     }
   }
+
   // tslint:disable-next-line:variable-name
   private _disabled = false;
-
   private overlayRef: OverlayRef;
 
   constructor(
@@ -85,16 +88,16 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const position = this.buildPosition(this.type);
-    const positionStrategy = this.overlayPositionBuilder
-      .flexibleConnectedTo(this.elementRef)
-      .withPositions([position]);
+      const position = this.buildPosition(this.type);
+      const positionStrategy = this.overlayPositionBuilder
+          .flexibleConnectedTo(this.elementRef)
+          .withPositions([position]);
 
-    this.overlayRef = this.overlay.create({ positionStrategy });
+      this.overlayRef = this.overlay.create({ positionStrategy });
   }
 
   ngOnDestroy() {
-    this.overlayRef.detach();
+    this.overlayRef?.detach();
   }
 
   @HostListener('mouseenter')
@@ -103,16 +106,20 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
       return;
     }
     const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
-    const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(
-      tooltipPortal
-    );
-    tooltipRef.instance.text = this.text;
-    tooltipRef.instance.className = this.type;
-    tooltipRef.instance.outline = this.outline;
+    if (this.overlayRef) {
+      const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(
+        tooltipPortal
+      );
+      tooltipRef.instance.text = this.text;
+      tooltipRef.instance.position = this.position;
+      tooltipRef.instance.outline = this.outline;
+      tooltipRef.instance.className = this.type;
+    }
   }
 
   @HostListener('mouseout')
   hide() {
+     this.overlayRef?.detach();
      this.overlayRef.detach();
   }
 

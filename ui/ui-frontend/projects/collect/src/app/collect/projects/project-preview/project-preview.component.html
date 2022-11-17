@@ -139,17 +139,6 @@
                 </ng-template>
               </div>
             </div>
-            <div class="read-only-field" *ngIf="!updateStarted">
-              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.UNIT_UPS_LABEL' | translate }} :</label>
-              <div>
-                <ng-container *ngIf="selectedProject.unitUpLabel; else elseBlock">
-                  {{ selectedProject.unitUpLabel }}
-                </ng-container>
-                <ng-template #elseBlock>
-                  {{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NO_EXSISTANT_ATTACHEMENT' | translate }}
-                </ng-template>
-              </div>
-            </div>
           </div>
         </div>
       </mat-tab>

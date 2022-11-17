@@ -1,6 +1,6 @@
-import { TranslateService } from '@ngx-translate/core';
-import { Validators, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
 

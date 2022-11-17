@@ -37,23 +37,28 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, Project } from 'ui-frontend-common';
-import { SearchCriteriaDto, SearchResponse } from '../models';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction } from 'ui-frontend-common';
+import { SearchCriteriaHistory } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class ProjectsApiService extends BaseHttpClient<any> {
   baseUrl: string;
+  urlTransaction: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/projects');
     this.baseUrl = baseUrl;
+    this.urlTransaction = baseUrl + '/transactions';
   }
 
   getBaseUrl() {
     return this.baseUrl;
   }
+
+  // Manage projects
 
   public getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Project>> {
     return super.getAllPaginated(pageRequest, embedded, headers);
@@ -61,6 +66,10 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   public create(data: Project): Observable<Project> {
     return super.create(data);
+  }
+
+  public createTransaction(data: Transaction): Observable<Transaction> {
+    return this.http.post<Transaction>(`${this.apiUrl}/${data.projectId}/transactions`, data);
   }
 
   public update(data: Project): Observable<Project> {
@@ -71,11 +80,59 @@ export class ProjectsApiService extends BaseHttpClient<any> {
     return super.getOne(projectId);
   }
 
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${projectId}/archive-units`, criteriaDto, { headers });
+  // Manage Object Groups
+
+  getDownloadObjectFromUnitUrl(unitId: string, objectId: string, accessContractId: string, tenantId: number): string {
+    return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}&tenantId=${tenantId}&contractId=${accessContractId}`;
   }
 
-  getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number): string {
-    return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  public deletebyId(projectId: string) {
+    return this.http.delete<void>(`${this.apiUrl}/${projectId}`);
+  }
+
+  // Manage AU search criteria save
+
+  getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
+    return this.http.get<SearchCriteriaHistory[]>(`${this.apiUrl}/archive-units/searchcriteriahistory`);
+  }
+
+  saveSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
+    return this.http.post<SearchCriteriaHistory>(`${this.apiUrl}/archive-units/searchcriteriahistory`, searchCriteriaHistory);
+  }
+
+  deleteSearchCriteriaHistory(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/archive-units/searchcriteriahistory/${id}`);
+  }
+
+  updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
+    return this.http.put<SearchCriteriaHistory>
+    (`${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
+  }
+
+  public getTransactionById(transactionId: string): Observable<Transaction> {
+    return this.http.get<Transaction>(this.urlTransaction + '/' + transactionId);
+  }
+
+  public getTransactionsByProjectId(pageRequest: PageRequest,
+                                    projectId?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Transaction>> {
+    const params = pageRequest.httpParams;
+    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, { params, headers });
+  }
+
+  validateTransaction(id: string) {
+    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/validate', {});
+
+  }
+
+  sendTransaction(id: string) {
+    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/send', {});
+  }
+
+  updateTransaction(data: Transaction): Observable<Transaction> {
+    return this.http.put<Transaction>(this.urlTransaction + '/' + data.id, data);
+  }
+
+  getLastTransactionByProjectId(projectId: string): Observable<Transaction> {
+    return this.http.get<Transaction>(`${this.apiUrl}/${projectId}/last-transaction`);
   }
 }

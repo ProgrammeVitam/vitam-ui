@@ -1,10 +1,5 @@
 <div class="row">
-  <div class="col">
-    <app-logbook-operation-facet [facetDetails]="facetDetails"></app-logbook-operation-facet>
-  </div>
-</div>
-<div class="row">
-  <div class="col mt-4 mb-2">
+  <div class="col mb-2">
     <h5>{{ 'COLLECT.PROJECT_LIST_TITLE' | translate }}</h5>
   </div>
 </div>
@@ -68,9 +63,12 @@
                 empty }}</div>
               <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.status }}</div>
               <div class="col-1">
-                <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-                  <button mat-menu-item (click)="searchArchiveUnitsByProject(project.id)">
+                <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [isLarge]="false">
+                  <button mat-menu-item (click)="searchArchiveUnitsByProject(project)">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
+                  </button>
+                  <button mat-menu-item (click)="searchTransactions(project)">
+                    {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.ACTIONS.SHOW_TRANSACTIONS' | translate }}
                   </button>
                 </vitamui-common-menu-button>
               </div>

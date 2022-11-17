@@ -36,10 +36,22 @@ public class RestApi {
     public static final String COLLECT_PATH = "/collect-api/v1";
     public static final String ARCHIVE_UNITS = "/archive-units";
     public static final String PROJECTS = "/projects";
+
+    public static final String TRANSACTIONS = "/transactions";
     public static final String OBJECT_GROUPS = "/object-groups";
     public static final String STREAM_UPLOAD_PATH = "/upload";
+    public static final String SEARCH = "/search";
+    public static final String SEND_PATH = "/send";
+
+    public static final String REOPEN_PATH = "/reopen";
+
+    public static final String ABORT_PATH = "/abort";
+    public static final String VALIDATE_PATH = "/validate";
+    public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
     public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + PROJECTS;
-    public static final String COLLECT_PROJECT_ARCHIVE_UNITS_PATH = COLLECT_PATH + PROJECTS;
+
+    public static final String COLLECT_TRANSACTION_PATH = COLLECT_PATH + TRANSACTIONS;
+    public static final String COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH = COLLECT_PATH + TRANSACTIONS;
     public static final String COLLECT_PROJECT_OBJECT_GROUPS_PATH = COLLECT_PATH + PROJECTS + OBJECT_GROUPS;
 
 }

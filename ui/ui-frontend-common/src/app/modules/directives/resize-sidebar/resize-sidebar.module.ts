@@ -36,13 +36,14 @@
  */
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import { ResizeSidebarDirective } from './resize-sidebar.directive';
+import {ResizeSidebarDirective} from './resize-sidebar.directive';
+import {ResizeVerticalDirective} from "./resize-vertical.directive";
 
 @NgModule({
   imports: [
     CommonModule,
   ],
-  declarations: [ResizeSidebarDirective],
-  exports: [ResizeSidebarDirective]
+  declarations: [ResizeSidebarDirective, ResizeVerticalDirective],
+  exports: [ResizeSidebarDirective, ResizeVerticalDirective]
 })
 export class ResizeSidebarModule { }

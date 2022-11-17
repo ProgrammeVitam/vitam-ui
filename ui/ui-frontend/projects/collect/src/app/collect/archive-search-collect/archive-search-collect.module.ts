@@ -36,10 +36,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ArchiveSearchHelperService } from 'projects/archive-search/src/app/archive/common-services/archive-search-helper.service';
 import { ArchiveSharedDataService } from 'projects/archive-search/src/app/core/archive-shared-data.service';
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
-import { TitleAndDescriptionCriteriaSearchCollectComponent } from './title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
 import { ArchiveSearchCollectRoutingModule } from './archive-search-collect-routing.module';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
@@ -54,6 +52,30 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
+import { CriteriaSearchComponent } from './archive-search-criteria/components/criteria-search/criteria-search.component';
+import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
+import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
+import { StorageRuleSearchComponent } from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
+import { ReuseRuleSearchComponent } from './archive-search-criteria/components/reuse-rule-search/reuse-rule-search.component';
+import { DisseminationRuleSearchComponent } from './archive-search-criteria/components/dissemination-rule-search/dissemination-rule-search.component';
+import { AppraisalRuleSearchComponent } from './archive-search-criteria/components/appraisal-rule-search/appraisal-rule-search.component';
+import { AccessRuleSearchComponent } from './archive-search-criteria/components/access-rule-search/access-rule-search.component';
+import { RuleValidator } from './archive-search-criteria/services/rule.validator';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/archive-search-rules-facets.component';
+import { SearchStorageRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-storage-rules-facets/search-storage-rules-facets.component';
+import { SearchReuseRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-reuse-rules-facets/search-reuse-rules-facets.component';
+import { SearchDisseminationRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-dissemination-rules-facets/search-dissemination-rules-facets.component';
+import { SearchAppraisalRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
+import { SearchAccessRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
+import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
+import { SearchCriteriaSaverService } from './archive-search-criteria/services/search-criteria-saver.service';
+import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
+import { ConfirmActionModule } from './archive-search-criteria/components/search-criteria-list/confirm-action/confirm-action.module';
+import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
+import { ClassificationTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/classification-tree/classification-tree.component';
+import { MatTreeModule } from '@angular/material/tree';
+import { LeavesTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/leaves-tree/leaves-tree.component';
 
 @NgModule({
   imports: [
@@ -68,8 +90,15 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTabsModule,
     MatDatepickerModule,
     MatDialogModule,
+    ConfirmActionModule,
+    MatTreeModule
   ],
-  providers: [ArchiveSearchHelperService, ArchiveSharedDataService],
+  providers: [
+    ArchiveSearchHelperService,
+    ArchiveSharedDataService,
+    RuleValidator,
+    SearchCriteriaSaverService
+  ],
   declarations: [
     ArchiveSearchCollectComponent,
     TitleAndDescriptionCriteriaSearchCollectComponent,
@@ -77,6 +106,24 @@ import { MatDialogModule } from '@angular/material/dialog';
     ArchiveUnitRulesDetailsTabComponent,
     ArchiveUnitInformationTabComponent,
     ArchiveUnitRulesInformationsTabComponent,
+    CriteriaSearchComponent,
+    SimpleCriteriaSearchComponent,
+    StorageRuleSearchComponent,
+    ReuseRuleSearchComponent,
+    DisseminationRuleSearchComponent,
+    AppraisalRuleSearchComponent,
+    AccessRuleSearchComponent,
+    ArchiveSearchRulesFacetsComponent,
+    SearchStorageRulesFacetsComponent,
+    SearchReuseRulesFacetsComponent,
+    SearchDisseminationRulesFacetsComponent,
+    SearchAppraisalRulesFacetsComponent,
+    SearchAccessRulesFacetsComponent,
+    SearchCriteriaSaverComponent,
+    SearchCriteriaListComponent,
+    FilingHoldingSchemeComponent,
+    ClassificationTreeComponent,
+    LeavesTreeComponent
   ],
 })
-export class ArchiveSearchCollectModule {}
+export class ArchiveSearchCollectModule { }

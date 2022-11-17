@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.cucumber.back.steps.archivesearch;
 
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.FactoryDto;
 import io.cucumber.java.en.Then;

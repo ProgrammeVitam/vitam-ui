@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?wj000z');
-  src:  url('fonts/vitamui-icon.eot?wj000z#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?wj000z') format('truetype'),
-    url('fonts/vitamui-icon.woff?wj000z') format('woff'),
-    url('fonts/vitamui-icon.svg?wj000z#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?cv6qr');
+  src:  url('fonts/vitamui-icon.eot?cv6qr#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?cv6qr') format('truetype'),
+    url('fonts/vitamui-icon.woff?cv6qr') format('woff'),
+    url('fonts/vitamui-icon.svg?cv6qr#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26,27 +26,27 @@ i.vitamui-icon {
 }
 
 .vitamui-icon-trash:before {
-  content: "\e963";
+  content: "\e964";
   color: #474d4a;
 }
 .vitamui-icon-import-csv:before {
-  content: "\e962";
+  content: "\e963";
   color: #757575;
 }
 .vitamui-icon-icone-arbre:before {
-  content: "\e961";
+  content: "\e962";
   color: #616161;
 }
-.vitamui-icon-ic24-user-transfer:before {
-  content: "\e95e";
-  color: #757575;
-}
-.vitamui-icon-ic24-limination:before {
+.vitamui-icon-ic24-user-transfer1:before {
   content: "\e95f";
   color: #757575;
 }
-.vitamui-icon-ic24-prservation:before {
+.vitamui-icon-ic24-limination:before {
   content: "\e960";
+  color: #757575;
+}
+.vitamui-icon-ic24-prservation:before {
+  content: "\e961";
   color: #757575;
 }
 .vitamui-icon-filing-plan:before {
@@ -796,4 +796,8 @@ i.vitamui-icon {
 }
 .vitamui-icon-radio-checked:before {
   content: "\ea78";
+}
+.vitamui-icon-ic40-rapport:before {
+  content: "\e95e";
+  color: #757575;
 }

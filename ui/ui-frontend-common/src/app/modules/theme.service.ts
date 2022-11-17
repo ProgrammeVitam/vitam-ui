@@ -36,9 +36,12 @@
  */
 
 import { Injectable } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
 import { AppConfiguration } from '.';
 import { AuthUser, ThemeDataType } from './models';
+import { GraphicIdentity } from './models/customer/graphic-identity.interface';
 import { Color } from './models/customer/theme/color.interface';
 import { convertLighten, getColorFromMaps, hexToRgb, hexToRgbString, ThemeColorType } from './utils';
 
@@ -55,11 +58,11 @@ export interface Theme {
 })
 export class ThemeService {
   public get defaultTheme(): Theme {
-    return this._defaultTheme;
+    return this._defaultTheme.getValue();
   }
 
   public set defaultTheme(theme: Theme) {
-    this._defaultTheme = theme;
+    this._defaultTheme.next(theme);
   }
 
   constructor(private domSanitizer: DomSanitizer) {}
@@ -72,18 +75,14 @@ export class ThemeService {
     [ThemeColorType.VITAMUI_BACKGROUND]: 'COLOR.BACKGROUND',
   };
 
-  private _defaultTheme: Theme = {
-    colors: {},
-    headerUrl: '',
-    footerUrl: '',
-    portalUrl: '',
-    userUrl: '',
-  };
+  // tslint:disable-next-line: variable-name
+  private _defaultTheme = new BehaviorSubject<Theme>(null);
 
   // Default theme
   defaultMap: { [colordId in ThemeColorType]: string } = {
     [ThemeColorType.VITAMUI_PRIMARY]: '#604379',
     [ThemeColorType.VITAMUI_GREY]: '#9E9E9E',
+    [ThemeColorType.VITAMUI_ADDITIONAL]: '#9AA0FF',
     [ThemeColorType.VITAMUI_SECONDARY]: '#65B2E4',
     [ThemeColorType.VITAMUI_TERTIARY]: '#E7304D',
     [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#604379',
@@ -101,6 +100,7 @@ export class ThemeService {
   // Theme for current app configuration
   applicationColorMap: { [colorId: string]: string };
 
+  // tslint:disable-next-line: variable-name
   private _backgroundChoice: Color[] = [
     { class: 'Foncé', value: '#0F0D2D' },
     { class: 'Blanc', value: '#FFFFFF' },
@@ -152,33 +152,39 @@ export class ThemeService {
     }
   }
 
-  public getData(authUser: AuthUser, type: string): string | SafeResourceUrl {
-    const userAuthGraphicIdentity =
-      authUser && authUser.basicCustomer && authUser.basicCustomer.graphicIdentity ? authUser.basicCustomer.graphicIdentity : null;
-    switch (type) {
-      case ThemeDataType.PORTAL_LOGO:
-        return userAuthGraphicIdentity && userAuthGraphicIdentity.portalDataBase64 && userAuthGraphicIdentity.hasCustomGraphicIdentity
-          ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + userAuthGraphicIdentity.portalDataBase64)
-          : this.defaultTheme.portalUrl;
-        break;
-      case ThemeDataType.HEADER_LOGO:
-        return userAuthGraphicIdentity && userAuthGraphicIdentity.headerDataBase64 && userAuthGraphicIdentity.hasCustomGraphicIdentity
-          ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + userAuthGraphicIdentity.headerDataBase64)
-          : this.defaultTheme.headerUrl;
-        break;
-      case ThemeDataType.FOOTER_LOGO:
-        return userAuthGraphicIdentity && userAuthGraphicIdentity.footerDataBase64 && userAuthGraphicIdentity.hasCustomGraphicIdentity
-          ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + userAuthGraphicIdentity.footerDataBase64)
-          : this.defaultTheme.footerUrl;
-        break;
-      case ThemeDataType.USER_LOGO:
-        return userAuthGraphicIdentity && userAuthGraphicIdentity.userDataBase64 && userAuthGraphicIdentity.hasCustomGraphicIdentity
-          ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + userAuthGraphicIdentity.userDataBase64)
-          : this.defaultTheme.userUrl;
-        break;
-      default:
-        return;
-    }
+  public getData$(authUser: AuthUser, type: string): Observable<string | SafeResourceUrl> {
+    const userGraphicIdentity: GraphicIdentity = authUser?.basicCustomer?.graphicIdentity;
+    const hasCustomGraphicIdentity = userGraphicIdentity?.hasCustomGraphicIdentity;
+
+    return this._defaultTheme.pipe(filter((theme: Theme) => !!theme), map((theme: Theme) => {
+      let value: string | SafeResourceUrl;
+      switch (type) {
+        case ThemeDataType.PORTAL_LOGO:
+          const portal64 = hasCustomGraphicIdentity && userGraphicIdentity.portalDataBase64;
+          value = portal64 ? this.domSanitize(userGraphicIdentity.portalDataBase64) : theme.portalUrl;
+          break;
+        case ThemeDataType.HEADER_LOGO:
+          const header64 = hasCustomGraphicIdentity && userGraphicIdentity.headerDataBase64;
+          value = header64 ? this.domSanitize(userGraphicIdentity.headerDataBase64) : theme.headerUrl;
+          break;
+        case ThemeDataType.FOOTER_LOGO:
+          const footer64 = hasCustomGraphicIdentity && userGraphicIdentity.footerDataBase64;
+          value = footer64 ? this.domSanitize(userGraphicIdentity.footerDataBase64) : theme.footerUrl;
+          break;
+        case ThemeDataType.USER_LOGO:
+          const userData64 = hasCustomGraphicIdentity && userGraphicIdentity.userDataBase64;
+          value = userData64 ? this.domSanitize(userGraphicIdentity.userDataBase64) : theme.userUrl;
+          break;
+        default:
+          return;
+      }
+
+      return value;
+    }, take(1)));
+  }
+
+  private domSanitize(base64: string): SafeUrl {
+    return this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + base64);
   }
 
   private calculateFontColor(color: string): string {
@@ -192,8 +198,8 @@ export class ThemeService {
 
   private add10Declinations(key: string, colors: {}, customerColors: { [colorId: string]: string }): void {
     // tslint:disable-next-line: variable-name
-    const map = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
-    const rgbValue = hexToRgb(map[key]);
+    const mergedMap = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
+    const rgbValue = hexToRgb(mergedMap[key]);
     // consider hs-L from color key as 500
 
     if (key === ThemeColorType.VITAMUI_GREY) {
@@ -206,6 +212,16 @@ export class ThemeService {
       colors[key + '-200'] = '#EEEEEE';
       colors[key + '-100'] = '#F5F5F5';
       colors[key + '-50'] = '#FAFAFA';
+    } else if (key === ThemeColorType.VITAMUI_ADDITIONAL) {
+      colors[key + '-900'] = '#000AA3';
+      colors[key + '-800'] = '#000DE0';
+      colors[key + '-700'] = '#1F2CFF';
+      colors[key + '-600'] = '#5C65FF';
+      colors[key + '-400'] = '#A8ADFF';
+      colors[key + '-300'] = '#B8BCFF';
+      colors[key + '-200'] = '#C7CAFF';
+      colors[key + '-100'] = '#D6D9FF';
+      colors[key + '-50'] = '#E5E7FF';
     } else {
       colors[key + '-900'] = convertLighten(rgbValue, -32);
       colors[key + '-800'] = convertLighten(rgbValue, -24);
@@ -223,7 +239,7 @@ export class ThemeService {
     colors[key + '-800-font'] = this.calculateFontColor(colors[key + '-800']);
     colors[key + '-700-font'] = this.calculateFontColor(colors[key + '-700']);
     colors[key + '-600-font'] = this.calculateFontColor(colors[key + '-600']);
-    colors[key + '-font'] = this.calculateFontColor(map[key]); // primary/secondary/tertiary
+    colors[key + '-font'] = this.calculateFontColor(mergedMap[key]); // primary/secondary/tertiary
     colors[key + '-400-font'] = this.calculateFontColor(colors[key + '-400']);
     colors[key + '-300-font'] = this.calculateFontColor(colors[key + '-300']);
     colors[key + '-200-font'] = this.calculateFontColor(colors[key + '-200']);
@@ -240,11 +256,20 @@ export class ThemeService {
     const colors = {};
     for (const key in this.defaultMap) {
       if (this.defaultMap.hasOwnProperty(key)) {
-        if (([ThemeColorType.VITAMUI_PRIMARY, ThemeColorType.VITAMUI_SECONDARY, ThemeColorType.VITAMUI_GREY] as string[]).includes(key)) {
+        if (
+          (
+            [
+              ThemeColorType.VITAMUI_PRIMARY,
+              ThemeColorType.VITAMUI_SECONDARY,
+              ThemeColorType.VITAMUI_GREY,
+              ThemeColorType.VITAMUI_ADDITIONAL,
+            ] as string[]
+          ).includes(key)
+        ) {
           this.add10Declinations(key, colors, customerColors);
         } else if (key === ThemeColorType.VITAMUI_HEADER_FOOTER) {
-          const map = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
-          colors[key + '-font'] = this.calculateFontColor(map[key]);
+          const mergedMap = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
+          colors[key + '-font'] = this.calculateFontColor(mergedMap[key]);
         }
         colors[key] = getColorFromMaps(key, this.defaultMap, this.applicationColorMap, customerColors);
       }

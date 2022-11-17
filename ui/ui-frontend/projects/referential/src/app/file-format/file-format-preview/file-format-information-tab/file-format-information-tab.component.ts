@@ -36,7 +36,7 @@
  */
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/public-api';
+import {FileFormat, FILE_FORMAT_EXTERNAL_PREFIX} from 'projects/vitamui-library/src/public-api';
 import {Observable, of} from 'rxjs';
 import {catchError, filter, map, switchMap} from 'rxjs/operators';
 import {diff} from 'ui-frontend-common';

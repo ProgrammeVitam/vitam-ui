@@ -42,7 +42,7 @@ import {
   LogbookApiService,
   LogbookOperationReportState,
   SearchService,
-  VitamUISnackBar
+  VitamUISnackBarService
 } from 'ui-frontend-common';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
@@ -74,7 +74,7 @@ export class LogbookDownloadService extends SearchService<Event> {
   ];
   private evTypeProcAllowed = ['AUDIT', 'EXPORT_DIP', 'ARCHIVE_TRANSFER', 'TRANSFER_REPLY', 'INGEST', 'MASS_UPDATE'];
 
-  constructor(private logbookApiService: LogbookApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+  constructor(private logbookApiService: LogbookApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
     super(http, logbookApiService);
   }
 
@@ -182,10 +182,7 @@ export class LogbookDownloadService extends SearchService<Event> {
 
       location.href = downloadUrl;
     } else {
-      this.snackBar.open('Impossible de télécharger le rapport pour cette opération', null, {
-        panelClass: 'vitamui-snack-bar',
-        duration: 10000,
-      });
+      this.snackBarService.open({ message: 'SNACKBAR.DOWNLOAD_NOT_ALLOWED' });
     }
   }
 }

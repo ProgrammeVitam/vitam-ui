@@ -39,7 +39,7 @@ import { SafeResourceUrl, Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Application, ApplicationService, Category } from 'ui-frontend-common';
+import { Application, ApplicationService, Category, UserInfo } from 'ui-frontend-common';
 import {
   ApplicationId,
   AuthService,
@@ -65,7 +65,7 @@ export class PortalComponent implements OnInit, OnDestroy {
   public applications: Map<Category, Application[]>;
   public welcomeTitle: string;
   public welcomeMessage: string;
-  public customerLogoUrl: SafeResourceUrl;
+  public portalLogoUrl: SafeResourceUrl;
   public loading = true;
 
   private destroyer$ = new Subject();
@@ -78,7 +78,8 @@ export class PortalComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private langagueService: LanguageService,
     private titleService: Title,
-    private globalEventService: GlobalEventService) { }
+    private globalEventService: GlobalEventService
+  ) { }
 
   ngOnInit() {
     this.applicationService.getActiveTenantAppsMap().pipe(takeUntil(this.destroyer$)).subscribe((appMap) => {
@@ -86,11 +87,15 @@ export class PortalComponent implements OnInit, OnDestroy {
       this.loading = false;
     });
 
+    this.themeService.getData$(this.authService.user, ThemeDataType.PORTAL_LOGO).subscribe((portalLogoUrl: SafeResourceUrl) => {
+        this.portalLogoUrl = portalLogoUrl;
+    });
+
+    this.authService.getUserInfo$().subscribe((userInfo: UserInfo) => this.initPortalTitleAndMessage(userInfo.language as FullLangString));
     this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe((event: LangChangeEvent) => {
       this.initPortalTitleAndMessage(this.langagueService.getFullLangString(event.lang as MinLangString));
     });
 
-    this.customerLogoUrl = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_LOGO);
     this.globalEventService.pageEvent.next(ApplicationId.PORTAL_APP);
   }
 
@@ -108,13 +113,13 @@ export class PortalComponent implements OnInit, OnDestroy {
       if (customer.portalTitles && customer.portalTitles[lang]) {
         this.welcomeTitle = customer.portalTitles[lang];
       } else {
-        this.welcomeTitle = this.startupService.getDefaultPortalTitle();
+        this.welcomeTitle = this.startupService.getConfigStringValue('PORTAL_TITLE');
       }
 
       if (customer.portalMessages && customer.portalMessages[lang]) {
         this.welcomeMessage = customer.portalMessages[lang];
       } else {
-        this.welcomeMessage = this.startupService.getDefaultPortalMessage();
+        this.welcomeMessage = this.startupService.getConfigStringValue('PORTAL_MESSAGE');
       }
     }
   }

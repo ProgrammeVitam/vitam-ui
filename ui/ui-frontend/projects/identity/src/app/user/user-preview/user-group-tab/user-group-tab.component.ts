@@ -39,7 +39,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
-import { AdminUserProfile, AuthService, Group, isRootLevel, User } from 'ui-frontend-common';
+import { AdminUserProfile, AuthService, Group, isRootLevel, Profile, User } from 'ui-frontend-common';
 import { GroupService } from '../../../group/group.service';
 import { GroupAttributionComponent } from '../../group-attribution/group-attribution.component';
 import { GroupSelection } from '../../group-selection.interface';
@@ -90,6 +90,7 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
   activeGroups: GroupSelection[];
   userGroup: Group;
   showUpdateButton: boolean;
+  public groupProfiles: Profile [] = [];
 
   private destroy = new Subject();
 
@@ -104,11 +105,19 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy.next();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges() {
     this.getUserProfileDetail();
+    this.getGroupProfiles();
+  }
+
+  getGroupProfiles() {
+    if(this.userGroup) {
+      this.groupService.get(this.userGroup.id).subscribe((groupRetrieved) => {
+        this.groupProfiles = groupRetrieved.profiles;
+      });
+    }
   }
 
   getUserProfileDetail() {

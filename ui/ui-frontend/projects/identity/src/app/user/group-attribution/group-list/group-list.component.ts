@@ -34,28 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+/* tslint:disable: no-use-before-declare */
 
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { collapseAnimation, rotateAnimation } from 'ui-frontend-common';
+import { collapseAnimation, Profile, rotateAnimation } from 'ui-frontend-common';
 import { GroupSelection } from './../../group-selection.interface';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
-  animations: [
-    collapseAnimation,
-    rotateAnimation,
-  ]
+  animations: [collapseAnimation, rotateAnimation],
 })
 export class GroupListComponent implements OnInit {
-
-
   public groupName: string;
 
   private initialGroups: GroupSelection[];
 
-  
+  public groupProfiles: Profile[] = [];
+
   @Input()
   public groups: GroupSelection[];
 
@@ -72,13 +69,11 @@ export class GroupListComponent implements OnInit {
 
   CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX = 2;
 
-
-  constructor( @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit() {
     this.initialGroups = this.groups.slice();
   }
-
 
   updateGroup(groupId: string, groupName: string) {
     this.groupName = groupName;
@@ -88,26 +83,29 @@ export class GroupListComponent implements OnInit {
     this.selectedGroupEvent.emit(selectedGroup);
   }
 
-
   unselectAllGroups() {
-    this.groups.forEach((group) => group.selected = false);
+    this.groups.forEach((group) => (group.selected = false));
   }
 
   public findGroup(id: string): GroupSelection {
-    return this.groups.find(value => value.id === id);
+    return this.groups.find((value) => value.id === id);
   }
   public onSearch(text?: string): void {
     this.resetgroups();
     if (text !== null && text.length > 0) {
-      this.groups = this.groups.filter((group) => group.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()) 
-      || group.description.toLocaleLowerCase().includes(text.toLocaleLowerCase()));
+      this.groups = this.groups.filter(
+        (group) =>
+          group.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
+          group.description.toLocaleLowerCase().includes(text.toLocaleLowerCase())
+      );
     }
   }
 
-
   public resetgroups(): void {
-    this.groups = this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX] ? this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX] : this.initialGroups;
-    this.groups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1);
+    this.groups = this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX]
+      ? this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX]
+      : this.initialGroups;
+    this.groups.sort((a, b) => (a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1));
     if (this.data[1]) {
       const selectedGroup = this.groups.find((group) => group.id === this.data[1].id);
       if (selectedGroup) {

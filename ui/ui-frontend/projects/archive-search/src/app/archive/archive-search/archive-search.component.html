@@ -7,11 +7,18 @@
     <div class="col-8 form-control">
       <app-title-and-description-criteria-search></app-title-and-description-criteria-search>
     </div>
-    <div class="col-1 form-control"></div>
+
     <div class="col-3 form-control text-right">
       <button type="button" class="btn primary" [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)" (click)="submit()">
         {{ 'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate }}
       </button>
+    </div>
+    <div class="col-1 form-control">
+      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+        <button mat-menu-item [disabled]="!hasTransferAcknowledgmentRole" (click)="showAcknowledgmentTransferForm()">
+          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACTION_TITLE' | translate }}
+        </button>
+      </vitamui-common-menu-button>
     </div>
   </div>
   <div class="row justify-content-around">
@@ -71,6 +78,7 @@
     ></i>
     <app-archive-search-rules-facets
       class="facet-div"
+      [exactCount]="!waitingToGetFixedCount"
       [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
       [accessRuleFacets]="archiveSearchResultFacets?.accessRuleFacets"
       [storageRuleFacets]="archiveSearchResultFacets?.storageRuleFacets"
@@ -330,10 +338,10 @@
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="launchExportDipModal()" [disabled]="itemSelected === 0 || !hasDipExportRole">
+          <button mat-menu-item (click)="startLaunchExportDipModal()" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-          <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="itemSelected === 0 || !hasTransferRequestRole">
+          <button mat-menu-item (click)="startLaunchTransferRequestModal()" [disabled]="itemSelected === 0 || !hasTransferRequestRole">
             {{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST' | translate }}
           </button>
           <button
@@ -353,7 +361,11 @@
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
-          <button mat-menu-item (click)="launchEliminationModal()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
+          <button
+            mat-menu-item
+            (click)="startLaunchEliminationModal()"
+            [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
+          >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
           <button
@@ -453,37 +465,12 @@
           <div class="col-1 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
             <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
               <ng-container *ngSwitchCase="'INGEST'">
-                <span class="table-filter-icon" [ngSwitch]="archiveUnit?.DescriptionLevel">
-                  <ng-container *ngSwitchCase="'RecordGrp'">
+                <span class="table-filter-icon">
+                  <ng-container *ngIf="!archiveUnit['#object']">
                     <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
                   </ng-container>
-                  <ng-container *ngSwitchCase="'File'">
+                  <ng-container *ngIf="!!archiveUnit['#object']">
                     <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'Item'">
-                    <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i> </ng-container
-                  ><ng-container *ngSwitchCase="'Collection'">
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'Subfonds'">
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'Class'">
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'Subgrp'">
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-                  ><ng-container *ngSwitchCase="'Otherlevel'">
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-                  ><ng-container *ngSwitchCase="'Series'">
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-                  ><ng-container *ngSwitchCase="'Subseries'">
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-                  ><ng-container *ngSwitchCase="'Fonds'">
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                  </ng-container>
-                  <ng-container *NgSwitchDefault>
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
                   </ng-container>
                 </span>
               </ng-container>
@@ -694,6 +681,69 @@
 
         <div class="text small">
           {{ 'RULES.ALERTE_MESSAGES.COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE' | translate }}
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #confirmImportantAllowedBulkOperationsDialog>
+  <mat-dialog-content>
+    <br />
+    <div class="text large bold">
+      <span *ngIf="itemSelected > 1">
+        {{
+          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE'
+            | translate: { elementsSize: itemSelected }
+        }}</span
+      >
+    </div>
+    <div class="text large bold">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2' | translate }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions class="mat-dialog-actions-right">
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM' | translate }}
+    </button>
+    <button matDialogClose class="btn cancel" cdkFocusInitial>
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CANCEL' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #actionsWithThresholdReachedAlerteMessageDialog>
+  <mat-dialog-content>
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}</div>
+    <br />
+
+    <div class="row red-text">
+      <div class="col-1">
+        <i class="material-icons icon-style">cancel</i>
+      </div>
+      <div class="col-11">
+        {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-1">
+        <span class="vertical-line"></span>
+      </div>
+      <div class="col-11">
+        <div class="text small bold">
+          {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
+        </div>
+
+        <div class="text small">
+          {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2' | translate }}
         </div>
       </div>
     </div>

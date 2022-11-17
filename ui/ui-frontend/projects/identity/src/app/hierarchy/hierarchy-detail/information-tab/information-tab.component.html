@@ -28,7 +28,7 @@
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="nameExists">{{'HIERARCHY.INFORMATIONS.EXISTING_NAME' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -49,7 +49,7 @@
         [label]="'HIERARCHY.INFORMATIONS.SUBLEVEL' | translate"
         [validator]="form?.get('level')?.validator"
       >
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="nameExists">{{'HIERARCHY.INFORMATIONS.WRONG_FORMAT' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-level-input>
     </div>
@@ -63,7 +63,7 @@
         [label]="'HIERARCHY.INFORMATIONS.DESCRIPTION' | translate"
         [validator]="form?.get('description')?.validator"
       >
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-textarea>
     </div>
   </div>

@@ -101,6 +101,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -311,10 +312,13 @@ public class CasInternalService {
      * @return
      */
     @Transactional
-    public UserDto getUser(final String email, final String idp, final String userIdentifier, final String optEmbedded) {
-       // if the user depends on an external idp
-        if(StringUtils.isNotBlank(idp)) {
-            this.provisionUser(email, idp, userIdentifier);
+    public UserDto getUser(String email, final String idp, final String userIdentifier, final String optEmbedded) {
+        // if the user depends on an external idp
+        if (StringUtils.isNotBlank(idp)) {
+            Optional<ProvidedUserDto> providedUser = this.provisionUser(email, idp, userIdentifier);
+            if (email.isBlank() && providedUser.isPresent()) {
+                email = providedUser.get().getEmail();
+            }
         }
 
         return getUserByEmail(email, Optional.ofNullable(optEmbedded));
@@ -326,30 +330,53 @@ public class CasInternalService {
      * @param idp
      * @param userIdentifier
      */
-    public void provisionUser(final String email, final String idp, final String userIdentifier) {
+    public Optional<ProvidedUserDto> provisionUser(String email, final String idp, final String userIdentifier) {
         final IdentityProviderDto identityProvider = identityProviderInternalService.getOne(idp);
 
         // Do nothing is autoProvisioning is disabled
-        if(!identityProvider.isAutoProvisioningEnabled()) {
-            return;
+        if (!identityProvider.isAutoProvisioningEnabled()) {
+            return Optional.empty();
+        }
+
+        Optional<ProvidedUserDto> providedUser = Optional.empty();
+
+        if (StringUtils.isBlank(email)) {
+            providedUser = Optional.of(getProvidedUser(email, idp, userIdentifier, null, identityProvider.getCustomerId()));
+            email = providedUser.get().getEmail();
         }
 
         final boolean userExist = userRepository.existsByEmail(email);
         // Try to update user
         if(userExist) {
             final UserDto user = internalUserService.findUserByEmail(email);
-            if(user.isAutoProvisioningEnabled()) {
-                updateUser(user, provisioningInternalService.getUserInformation(idp, email, user.getGroupId(), null, userIdentifier));
+            if (user.isAutoProvisioningEnabled()) {
+                updateUser(user, getProvidedUser(email, idp, userIdentifier, user.getGroupId(), identityProvider.getCustomerId()));
             }
         }
         // Try to create a new user
         else {
-            createNewUser(provisioningInternalService.getUserInformation(idp, email, null, null, userIdentifier));
+            if (providedUser.isEmpty()) {
+                providedUser = Optional.of(getProvidedUser(email, idp, userIdentifier, null, identityProvider.getCustomerId()));
+            }
+            createNewUser(email, providedUser.get());
         }
+
+        return providedUser;
+    }
+
+    private ProvidedUserDto getProvidedUser(String email, String idp, String userIdentifier, String groupId, String customerId) {
+        ProvidedUserDto userProvidedInfo;
+        userProvidedInfo = provisioningInternalService.getUserInformation(idp, email, groupId, null, userIdentifier, customerId);
+
+        if (Objects.isNull(userProvidedInfo)) {
+            throw new NotFoundException(String.format("The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s", email, userIdentifier, groupId, idp, customerId));
+        }
+
+        return userProvidedInfo;
     }
 
 
-    private void createNewUser(final ProvidedUserDto providedUserInfo) {
+    private void createNewUser(final String email, final ProvidedUserDto providedUserInfo) {
         final UserDto user = new UserDto();
         user.setType(UserTypeEnum.NOMINATIVE);
         user.setSubrogeable(true);
@@ -357,7 +384,7 @@ public class CasInternalService {
 
         user.setFirstname(providedUserInfo.getFirstname());
         user.setLastname(providedUserInfo.getLastname());
-        user.setEmail(providedUserInfo.getEmail());
+        user.setEmail(email);
         user.setAddress(providedUserInfo.getAddress());
         user.setInternalCode(providedUserInfo.getInternalCode());
         user.setSiteCode(providedUserInfo.getSiteCode());
@@ -368,6 +395,7 @@ public class CasInternalService {
         final Customer customer = customerRepository.findById(user.getCustomerId())
             .orElseThrow(() -> new NotFoundException(String.format("Cannot find customer : %s", user.getCustomerId())));
         user.setUserInfoId(createUserInfo(customer.getLanguage()).getId());
+
         internalUserService.create(user);
     }
 
@@ -411,9 +439,6 @@ public class CasInternalService {
         }
         if (!StringUtils.equals(userDto.getLastname(), userInfo.getLastname())) {
             userUpdate.put("lastname", userInfo.getLastname());
-        }
-        if (!StringUtils.equals(userDto.getEmail(), userInfo.getEmail())) {
-            userUpdate.put("email", userInfo.getEmail());
         }
         updateUserGroup(userDto, userInfo, userUpdate);
     }

@@ -45,7 +45,7 @@ import { LogbookManagementOperationService } from '../logbook-management-operati
 @Component({
   selector: 'app-logbook-management-operation-preview',
   templateUrl: './logbook-management-operation-preview.component.html',
-  styleUrls: ['./logbook-management-operation-preview.component.scss'],
+  styleUrls: [ './logbook-management-operation-preview.component.scss' ],
 })
 export class LogbookManagementOperationPreviewComponent implements OnInit, OnDestroy {
   @Input() operation: OperationDetails;
@@ -58,16 +58,22 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   actionId: string;
   operationUpdatedSub: Subscription;
 
-  constructor(private matDialog: MatDialog, public logbookManagementOperationService: LogbookManagementOperationService) {}
+  constructor(
+    private matDialog: MatDialog,
+    public logbookManagementOperationService: LogbookManagementOperationService
+  ) {
+  }
+
   ngOnDestroy(): void {
     this.operationUpdatedSub?.unsubscribe();
   }
 
   ngOnInit(): void {
     if (this.logbookManagementOperationService.operationUpdated) {
-      this.operationUpdatedSub = this.logbookManagementOperationService.operationUpdated.subscribe((updatedOperation: OperationDetails) => {
-        this.operation = updatedOperation;
-      });
+      this.operationUpdatedSub = this.logbookManagementOperationService.operationUpdated
+        .subscribe((updatedOperation: OperationDetails) => {
+          this.operation = updatedOperation;
+        });
     }
   }
 

@@ -129,20 +129,17 @@ public final class CriteriaUtils {
 
             // if we have a ElemMatch operator we have to check that current field is allowed and his child field also
             // field.childField
-            String keyWithPoint = criterion.getKey() + ".";
+            final String keyWithPoint = criterion.getKey() + ".";
             if (criterion.getOperator().equals(CriterionOperator.ELEMMATCH) &&
                 allowedKeys.stream().anyMatch(key -> key.startsWith(keyWithPoint))) {
                 // we recurse on children's to check the allowed key
                 try {
-                    QueryDto elemMatchQuery = QueryDto.fromJson(JsonUtils.toJson(criterion.getValue()));
-                    List<String> elemAllowedKeys =
-                        allowedKeys.stream()
-                            .filter(key -> key.startsWith(keyWithPoint))
-                            .map(key -> key.replaceFirst(keyWithPoint, ""))
-                            .collect(Collectors.toList());
+                    final QueryDto elemMatchQuery = QueryDto.fromJson(JsonUtils.toJson(criterion.getValue()));
+                    final List<String> elemAllowedKeys =
+                            allowedKeys.stream().filter(key -> key.startsWith(keyWithPoint)).map(key -> key.replaceFirst(keyWithPoint, ""))
+                                    .collect(Collectors.toList());
                     checkContainsAuthorizedKeys(elemMatchQuery, elemAllowedKeys);
-                }
-                catch (JsonProcessingException e) {
+                } catch (final JsonProcessingException e) {
                     throw new InvalidFormatException(e.getMessage(), e);
                 }
                 return;

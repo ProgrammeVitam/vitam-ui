@@ -86,7 +86,9 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     this.selectedIndex = 0;
   }
   showNormalPanel() {
-    this.selectedIndex--;
+    if (this.selectedIndex > 0) {
+      this.selectedIndex--;
+    }
     this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
     this.updateStarted = false;

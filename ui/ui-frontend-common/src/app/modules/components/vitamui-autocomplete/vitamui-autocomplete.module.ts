@@ -40,20 +40,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { MatInputModule } from '@angular/material/input';
+import { AutocompletePositionDirectiveModule } from '../../directives/autocomplete-position/autocomplete-position.directive.module';
 import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
-import {MatInputModule} from "@angular/material/input";
-import {AutocompletePositionDirectiveModule} from "../../directives/autocomplete-position/autocomplete-position.directive.module";
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MatAutocompleteModule,
-        ReactiveFormsModule,
-        MatTooltipModule,
-        MatInputModule,
-        AutocompletePositionDirectiveModule
-    ],
+  imports: [
+    CommonModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    MatTooltipModule,
+    MatInputModule,
+    AutocompletePositionDirectiveModule,
+  ],
   declarations: [VitamUIAutocompleteComponent],
-  exports: [VitamUIAutocompleteComponent]
+  exports: [VitamUIAutocompleteComponent],
 })
-export class VitamUIAutocompleteModule { }
+export class VitamUIAutocompleteModule {}

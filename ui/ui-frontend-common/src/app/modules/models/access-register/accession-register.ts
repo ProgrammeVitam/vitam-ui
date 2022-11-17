@@ -1,4 +1,4 @@
-import {Id} from "../id.interface";
+import { Id } from '../id.interface';
 
 export interface AccessionRegister extends Id {
   tenant: number;

@@ -1,0 +1,243 @@
+<div class="container">
+  <form [formGroup]="storageRuleCriteriaForm">
+    <div class="row justify-content-start">
+      <div class="form-control">
+        <p class="title-text">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.STORAGE_TITLE' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-5 form-control">
+        <vitamui-common-editable-input
+          formControlName="storageRuleIdentifier"
+          [validator]="storageRuleCriteriaForm?.get('storageRuleIdentifier')?.validator"
+          [asyncValidator]="storageRuleCriteriaForm?.get('storageRuleIdentifier')?.asyncValidator"
+          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ID_DUA' | translate }}"
+          minlength="1"
+        >
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="ruleIdPattern"
+            >{{ 'COLLECT.RULE.WRONG_FORMAT' | translate }}
+          </vitamui-common-field-error>
+
+          <vitamui-common-field-error errorKey="ruleIdExists"
+            >{{ 'COLLECT.RULE.CODE_NOT_EXIST' | translate }}
+          </vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-1 form-control"></div>
+      <div class="col-5 form-control">
+        <vitamui-common-editable-input
+          formControlName="storageRuleTitle"
+          [validator]="storageRuleCriteriaForm?.get('storageRuleTitle')?.validator"
+          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.TITLE_DUA' | translate }}"
+        >
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-1 form-control"></div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-11 form-control">
+        <p class="title-text">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-5 form-control">
+        <div class="vitamui-input" (click)="pickerBeginDuc.open()">
+          <span
+            *ngIf="!storageRuleCriteriaForm.get('storageRuleStartDate').value; else showBeginDtDuc"
+            (click)="pickerBeginDuc.open()"
+            class="search-date-label"
+            >{{
+              (endDateInterval
+                ? 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_BEGIN'
+                : 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_EQUAL'
+              ) | translate
+            }}</span
+          >
+          <ng-template #showBeginDtDuc
+            ><span (click)="pickerBeginDuc.open()"
+              >{{ storageRuleCriteriaForm.get('storageRuleStartDate').value | date: 'dd/MM/yyyy' }}
+            </span>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerBeginDuc"
+            formControlName="storageRuleStartDate"
+            [max]="storageRuleCriteriaForm.get('storageRuleEndDate').value"
+          />
+          <mat-datepicker #pickerBeginDuc></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-1 form-control">
+        <button
+          class="validate-action-button"
+          *ngIf="!endDateInterval && storageRuleCriteriaForm.get('storageRuleStartDate').value"
+          type="button"
+          mat-mini-fab
+          (click)="addBeginDtDucCriteria()"
+        >
+          <i class="material-icons">check</i>
+        </button>
+      </div>
+
+      <div class="col-4 form-control">
+        <p *ngIf="!endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
+          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.STORAGE_RULE.CREATE_INTERVAL' | translate }}
+        </p>
+
+        <div class="vitamui-input" (click)="pickerEndDuc.open()" *ngIf="endDateInterval">
+          <span
+            *ngIf="!storageRuleCriteriaForm.get('storageRuleEndDate').value; else showEndDtDuc"
+            (click)="pickerEndDuc.open()"
+            class="search-date-label"
+            >{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate }}</span
+          >
+          <ng-template #showEndDtDuc
+            ><span (click)="pickerEndDuc.open()"
+              >{{ storageRuleCriteriaForm.get('storageRuleEndDate').value | date: 'dd/MM/yyyy' }}
+            </span>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerEndDuc"
+            formControlName="storageRuleEndDate"
+            [min]="storageRuleCriteriaForm.get('storageRuleStartDate').value"
+          />
+          <mat-datepicker #pickerEndDuc></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-1 form-control">
+        <button
+          class="validate-date-small-button"
+          *ngIf="
+            endDateInterval &&
+            storageRuleCriteriaForm.get('storageRuleStartDate').value &&
+            storageRuleCriteriaForm.get('storageRuleEndDate').value
+          "
+          type="button"
+          mat-mini-fab
+          (click)="addIntervalDtDucCriteria()"
+        >
+          <i class="material-icons">check</i>
+        </button>
+      </div>
+      <div class="col-1 form-control">
+        <p *ngIf="endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
+          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.STORAGE_RULE.DELETE_INTERVAL' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row justify-content-around">
+      <div class="col-4 form-control">
+        <div class="row criteria-choice">
+          <p class="title-text">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.TITLE' | translate }}
+          </p>
+        </div>
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              type="checkbox"
+              (click)="checkBoxChange('ORIGIN_HAS_AT_LEAST_ONE', $event)"
+              id="HAS_AT_LEAST_ONE_RULE_ORIGIN"
+              [checked]="storageAdditionalCriteria.get('ORIGIN_HAS_AT_LEAST_ONE')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_AT_LEAST_ONE_STORAGE_RULE' | translate }}</span>
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              id="HAS_NO_RULE_ORIGIN"
+              type="checkbox"
+              (click)="checkBoxChange('ORIGIN_HAS_NO_ONE', $event)"
+              [checked]="storageAdditionalCriteria.get('ORIGIN_HAS_NO_ONE')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_NO_STORAGE_RULE' | translate }}</span>
+          </label>
+        </div>
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              id="WAITING_TO_RE_CALCULATE_RULE_ORIGIN"
+              type="checkbox"
+              (click)="checkBoxChange('ORIGIN_WAITING_RECALCULATE', $event)"
+              [checked]="storageAdditionalCriteria.get('ORIGIN_WAITING_RECALCULATE')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.WAITING_TO_RE_CALCULATE_STORAGE_RULE' | translate }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-4 form-control">
+        <div class="row criteria-choice">
+          <p class="title-text">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.TITLE' | translate }}
+          </p>
+        </div>
+
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              id="HAS_FINAL_ACTION_TYPE"
+              type="checkbox"
+              (click)="checkBoxChange('FINAL_ACTION_HAS_FINAL_ACTION', $event)"
+              [checked]="storageAdditionalCriteria.get('FINAL_ACTION_HAS_FINAL_ACTION')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.HAS_STORAGE_RULE' | translate }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-3 form-control">
+        <div class="row criteria-choice">
+          <p class="title-text">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.TITLE' | translate }}
+          </p>
+        </div>
+
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              type="checkbox"
+              (click)="checkBoxChange('FINAL_ACTION_TYPE_COPY', $event)"
+              id="COPY_FINAL_ACTION"
+              [checked]="storageAdditionalCriteria.get('FINAL_ACTION_TYPE_COPY')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.COPY_STORAGE_RULE' | translate }}</span>
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              type="checkbox"
+              id="TRANSFER_FINAL_ACTION"
+              type="checkbox"
+              (click)="checkBoxChange('FINAL_ACTION_TYPE_TRANSFER', $event)"
+              [checked]="storageAdditionalCriteria.get('FINAL_ACTION_TYPE_TRANSFER')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.TRANSFER_STORAGE_RULE' | translate }}</span>
+          </label>
+        </div>
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              type="checkbox"
+              id="RESTRICT_ACCESS_FINAL_ACTION"
+              type="checkbox"
+              (click)="checkBoxChange('FINAL_ACTION_TYPE_RESTRICT_ACCESS', $event)"
+              [checked]="storageAdditionalCriteria.get('FINAL_ACTION_TYPE_RESTRICT_ACCESS')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.RESTRICT_ACCESS_STORAGE_RULE' | translate }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

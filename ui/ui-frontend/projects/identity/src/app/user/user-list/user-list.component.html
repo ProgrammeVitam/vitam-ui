@@ -122,7 +122,7 @@
             </ng-template>
           </div>
           <div class="col-2">
-            <div vitamuiCommonEllipsis> {{ user?.lastname | uppercase }} {{ user?.firstname }} </div> 
+            <div vitamuiCommonEllipsis> {{ user?.lastname | uppercase }} {{ user?.firstname }} </div>
             <span class="email" vitamuiCommonEllipsis> {{ user?.email }}</span>
           </div>
           <div class="col-2" vitamuiCommonEllipsis>{{ user?.identifier }}</div>
@@ -140,7 +140,7 @@
 
   <div *ngIf="!dataSource || pending || !groups then loadingSpinner"></div>
 
- 
+
 </div>
 <ng-template #loadingSpinner>
   <div class="vitamui-min-content">

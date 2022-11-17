@@ -32,6 +32,9 @@
       "IN_PROGRESS": "In progress"
     }
   },
+  "LOGBOOK_OPERATION_DETAIL": {
+    "DOWNLOAD_ATR": "Download the ATR"
+  },
   "LOGBOOK_OPERATION_PAGE": {
     "TITLE": "Operations management",
     "SEARCH": "Search by operation identifier",
@@ -178,5 +181,43 @@
         }
       }
     }
+  },
+  "SNACKBAR": {
+    "ACCESS_CONTRACT_CREATED": "The access contract has been successfully created",
+    "ACCESS_CONTRACT_UPDATED": "The access contract has been successfully updated",
+    "INGEST_CONTRACT_CREATED": "The entry contract has been created",
+    "INGEST_CONTRACT_UPDATED": "The input contract has been updated successfully",
+    "AGENCY_CONTRACT_CREATED": "The agent service has been created",
+    "AGENCY_CONTRACT_UPDATED": "The agent service has been successfully updated",
+    "AGENCY_CONTRACT_DELETED": "The agent service has been successfully deleted",
+    "AGENCY_CONTRACT_DELETE_ERROR": "Error removing Service Agent",
+    "AGENCY_CONTRACT_EXPORT_ALL": "Agent services export in progress ...",
+    "FILE_FORMAT_CONTRACT_CREATED": "The file format has been created",
+    "FILE_FORMAT_CONTRACT_UPDATED": "The file format has been updated successfully",
+    "FILE_FORMAT_CONTRACT_DELETED": "The file format has been deleted successfully",
+    "FILE_FORMAT_CONTRACT_DELETING": "The file format deletion in progress ...",
+    "CONTEXT_CREATED": "The application context has been successfully created",
+    "CONTEXT_UPDATED": "The application context has been successfully updated",
+    "SECURITY_CREATED": "The security profile has been created",
+    "SECURITY_UPDATED": "The security profile has been successfully updated",
+    "SECURITY_DELETED": "The security profile has been successfully deleted",
+    "ONTOLOGY_CREATED": "The ontology has been successfully created",
+    "ONTOLOGY_UPDATED": "The ontology has been updated successfully",
+    "ONTOLOGY_DELETED": "Ontology has been successfully deleted",
+    "AUDIT_RUN": "The audit has been launched.",
+    "PROBATIVE_VALUE_RUN": "The probative value statement has been launched",
+    "FORMAT_INVALID": "Invalid request format",
+    "RULE_DELETION_START": "The deletion of the management rule {{ name }} is in progress ...",
+    "DOWNLOAD_NOT_ALLOWED": "Unable to download the report for this operation",
+    "IMPORT_REFERENTIAL_SUCCESSED": "Import completed successfully. Please consult the import details in the operations log",
+    "IMPORT_REFERENTIAL_FAILED": "The import failed. Please consult the error details in the operations log",
+    "RULE_CREATE_SUCCESS": "Management rule {{ name }} has been successfully created.",
+    "RULE_CREATE_FAILED": "Management rule {{ name }} could not be created.",
+    "RULE_UPDATE_SUCCESS": "Management rule {{ name }} has been successfully updated.",
+    "RULE_UPDATE_FAILED": "Management rule {{ name }} has not been updated",
+    "RULE_DELETE_SUCCESS": "Management rule {{ name }} has been deleted",
+    "RULE_DELETE_FAILED": "Management rule {{ name }} could not be deleted",
+    "RULE_EXPORT_ALL": "Export of management rules in progress ...",
+    "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de {{ limit }} résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
   }
 }

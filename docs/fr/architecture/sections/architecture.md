@@ -1462,8 +1462,9 @@ Cette base est utilisée pour stocker les critères de filtres de recherche des 
 
 * Collections
   * searchCriteriaHistories
+  * searchCriteriaHistoriesCollect
 
-#### Collection searchCriteriaHistories
+#### Collections : searchCriteriaHistories / searchCriteriaHistoriesCollect
 
 | Nom                | Type                       | Contrainte(s)                        | Remarque(s)                                                                          |
 | ------------------ | -------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------ |

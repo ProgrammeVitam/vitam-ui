@@ -39,7 +39,7 @@ package fr.gouv.vitamui.archives.search.external.client;
 import java.util.List;
 
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

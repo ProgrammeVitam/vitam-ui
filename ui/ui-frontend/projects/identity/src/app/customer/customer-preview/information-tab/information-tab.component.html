@@ -3,18 +3,14 @@
     <div class="col-6 form-control">
       <vitamui-common-editable-input
         formControlName="code"
-        maxlength="20"
         [label]="'CUSTOMER.INFORMATIONS.CODE' | translate"
         [validator]="form?.get('code')?.validator"
         [asyncValidator]="form?.get('code')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
-        </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern"
-                                    >{{'CUSTOMER.INFORMATIONS.WRONG_FORMAT' | translate}}
-        </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueCode" >{{'CUSTOMER.INFORMATIONS.CODE_ALREADY_EXIST' | translate}}
-        </vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="pattern">{{'COMMON.ERROR.WRONG_FORMAT' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="maxlength">{{ 'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: customerCodeMaxLength } }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueCode" >{{'CUSTOMER.INFORMATIONS.CODE_ALREADY_EXIST' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6">
@@ -38,7 +34,7 @@
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
+        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -50,7 +46,7 @@
         [validator]="form?.get('companyName')?.validator"
         [asyncValidator]="form?.get('companyName')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
+        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -61,12 +57,12 @@
       <div class="col-12 form-control">
         <vitamui-common-editable-input
           formControlName="street"
-          maxlength="250"
+          maxlength="{{maxStreetLength}}"
           [label]="'COMMON.ADRESS.STREET' | translate"
           [validator]="form?.get('address.street')?.validator"
           [asyncValidator]="form?.get('address.street')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
+          <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}
           </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
@@ -81,7 +77,7 @@
           [validator]="form?.get('address.zipCode')?.validator"
           [asyncValidator]="form?.get('address.zipCode')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}
+          <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}
           </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
@@ -93,7 +89,7 @@
           [validator]="form?.get('address.city')?.validator"
           [asyncValidator]="form?.get('address.city')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}
+          <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}
           </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>

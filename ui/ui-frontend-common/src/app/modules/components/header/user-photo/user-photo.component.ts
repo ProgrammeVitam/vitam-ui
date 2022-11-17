@@ -58,6 +58,8 @@ export class UserPhotoComponent implements OnInit {
   constructor(private themeService: ThemeService, private authService: AuthService) {}
 
   ngOnInit() {
-    this.userDefaultLogoUrl = this.themeService.getData(this.authService.user, ThemeDataType.USER_LOGO);
+    this.themeService.getData$(this.authService.user, ThemeDataType.USER_LOGO).subscribe((userLogoUrl: SafeResourceUrl) => {
+        this.userDefaultLogoUrl = userLogoUrl;
+    });
   }
 }

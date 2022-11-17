@@ -1,8 +1,8 @@
 //
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2 
-// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.07.15 à 03:41:18 PM CEST 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2
+// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
 
 
@@ -13,14 +13,15 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
  * <p>Classe Java pour ArchiveTransferType complex type.
- * 
+ *
  * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
- * 
+ *
  * <pre>
  * &lt;complexType name="ArchiveTransferType"&gt;
  *   &lt;complexContent&gt;
@@ -35,9 +36,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
+@XmlRootElement(name = "ArchiveTransfer")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArchiveTransferType", propOrder = {
     "relatedTransferReference",
@@ -60,25 +62,25 @@ public class ArchiveTransferType
 
     /**
      * Gets the value of the relatedTransferReference property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the relatedTransferReference property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getRelatedTransferReference().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link IdentifierType }
-     * 
-     * 
+     *
+     *
      */
     public List<IdentifierType> getRelatedTransferReference() {
         if (relatedTransferReference == null) {
@@ -89,11 +91,11 @@ public class ArchiveTransferType
 
     /**
      * Obtient la valeur de la propriété transferRequestReplyIdentifier.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link IdentifierType }
-     *     
+     *
      */
     public IdentifierType getTransferRequestReplyIdentifier() {
         return transferRequestReplyIdentifier;
@@ -101,11 +103,11 @@ public class ArchiveTransferType
 
     /**
      * Définit la valeur de la propriété transferRequestReplyIdentifier.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link IdentifierType }
-     *     
+     *
      */
     public void setTransferRequestReplyIdentifier(IdentifierType value) {
         this.transferRequestReplyIdentifier = value;
@@ -113,11 +115,11 @@ public class ArchiveTransferType
 
     /**
      * Obtient la valeur de la propriété archivalAgency.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link OrganizationWithIdType }
-     *     
+     *
      */
     public OrganizationWithIdType getArchivalAgency() {
         return archivalAgency;
@@ -125,11 +127,11 @@ public class ArchiveTransferType
 
     /**
      * Définit la valeur de la propriété archivalAgency.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link OrganizationWithIdType }
-     *     
+     *
      */
     public void setArchivalAgency(OrganizationWithIdType value) {
         this.archivalAgency = value;
@@ -137,11 +139,11 @@ public class ArchiveTransferType
 
     /**
      * Obtient la valeur de la propriété transferringAgency.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link OrganizationWithIdType }
-     *     
+     *
      */
     public OrganizationWithIdType getTransferringAgency() {
         return transferringAgency;
@@ -149,11 +151,11 @@ public class ArchiveTransferType
 
     /**
      * Définit la valeur de la propriété transferringAgency.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link OrganizationWithIdType }
-     *     
+     *
      */
     public void setTransferringAgency(OrganizationWithIdType value) {
         this.transferringAgency = value;

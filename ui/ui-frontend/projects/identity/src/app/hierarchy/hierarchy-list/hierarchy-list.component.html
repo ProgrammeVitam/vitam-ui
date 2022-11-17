@@ -20,7 +20,7 @@
             ></i>
           </div>
           <div class="col-3" vitamuiCommonEllipsis>{{ profile.name }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ getApplicationName(profile.applicationName) }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ 'APPLICATION.' + profile.applicationName + '.NAME' | translate }}</div>
           <div class="col-3" vitamuiCommonEllipsis>{{ profile.description | truncate:50 }}</div>
           <div class="col-1" vitamuiCommonEllipsis>{{ profile.level }}</div>
           <div class="col-1" vitamuiCommonEllipsis>{{ profile.identifier }}</div>

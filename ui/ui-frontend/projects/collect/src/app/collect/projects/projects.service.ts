@@ -24,10 +24,10 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { Injectable } from '@angular/core';
-import { Project, SearchService } from 'ui-frontend-common';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { Project, SearchService } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({
@@ -52,5 +52,9 @@ export class ProjectsService extends SearchService<Project> {
 
   public getProjectById(projectId: string) {
     return this.projectsApiService.getById(projectId);
+  }
+
+  public deleteProjectId(projectId: string) : Observable<void> {
+    return this.projectsApiService.deletebyId(projectId);
   }
 }

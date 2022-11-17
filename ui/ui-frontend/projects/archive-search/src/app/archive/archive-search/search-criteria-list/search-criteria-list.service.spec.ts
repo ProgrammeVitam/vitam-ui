@@ -34,19 +34,72 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
+import { InjectorModule } from 'ui-frontend-common';
+import { ArchiveApiService } from '../../../core/api/archive-api.service';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 
 describe('SearchCriteriaListService', () => {
   let service: SearchCriteriaListService;
 
+  const archiveApiServiceMock = {
+    selectUnitWithInheritedRules: () => of({}),
+    updateUnit: () => of(''),
+    reclassification: () => of(''),
+    launchComputedInheritedRules: () => of(''),
+    updateUnitsRules: () => of(''),
+    launchEliminationAction: () => of(''),
+    startEliminationAnalysis: () => of(''),
+    transferDipApiService: () => of(''),
+    exportDipApiService: () => of(''),
+    getObjectById: () => of({}),
+    updateSearchCriteriaHistory: () => of({}),
+    deleteSearchCriteriaHistory: () => of({}),
+    saveSearchCriteriaHistory: () => of({}),
+    getSearchCriteriaHistory: () => of([]),
+    findArchiveUnit: () => of(''),
+    exportCsvSearchArchiveUnitsByCriteria: () => of({}),
+    getFilingHoldingScheme: () => of({}),
+    getDownloadObjectFromUnitUrl: () => of({}),
+    get: () => of({}),
+    searchArchiveUnitsByCriteria: () => of({}),
+  };
+
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [InjectorModule, HttpClientTestingModule, RouterTestingModule],
+      providers: [{ provide: ArchiveApiService, useValue: archiveApiServiceMock }],
+    });
     service = TestBed.inject(SearchCriteriaListService);
   });
 
-  it('should be created', () => {
+  it('Service should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should call getSearchCriteriaHistory of archiveApiService', () => {
+    // Given
+    spyOn(archiveApiServiceMock, 'getSearchCriteriaHistory').and.callThrough();
+
+    // When
+    service.getSearchCriteriaHistory();
+
+    // Then
+    expect(archiveApiServiceMock.getSearchCriteriaHistory).toHaveBeenCalled();
+  });
+
+  it('should call deleteSearchCriteriaHistory of archiveApiService', () => {
+    // Given
+    const savedSearchCriteriaId = '1';
+    spyOn(archiveApiServiceMock, 'deleteSearchCriteriaHistory').and.callThrough();
+
+    // When
+    service.deleteSearchCriteriaHistory(savedSearchCriteriaId);
+
+    // Then
+    expect(archiveApiServiceMock.deleteSearchCriteriaHistory).toHaveBeenCalled();
   });
 });

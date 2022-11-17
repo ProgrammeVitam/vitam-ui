@@ -1,0 +1,22 @@
+#facet-row {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+#count-facet-details {
+  width: 35%;
+}
+
+#rules-facet-details {
+  width: 13%;
+}
+
+#expired-rules-facet-details {
+  width: 21%;
+}
+
+#final-action-facetDetails {
+  width: 27%;
+}

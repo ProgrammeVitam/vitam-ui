@@ -72,7 +72,7 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
     });
   }
 
-  openProjectDetailsPanel(selectedProjectId: string){
+  openProjectDetailsPanel(selectedProjectId: string) {
     this.projectId = selectedProjectId;
     this.openPanel(selectedProjectId);
   }
@@ -83,5 +83,16 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
 
   backToNormalLateralPanel() {
     this.isLPExtended = false;
+  }
+
+  onSearch(event: string) {
+    const criteria: string = event
+      ? JSON.stringify({
+          query: event,
+        })
+      : null;
+
+    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT, criteria);
+    this.projectListComponent.search(pageRequest);
   }
 }

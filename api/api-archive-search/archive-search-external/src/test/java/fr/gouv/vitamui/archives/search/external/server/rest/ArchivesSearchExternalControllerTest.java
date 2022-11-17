@@ -30,22 +30,22 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequestParameters;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
@@ -60,7 +60,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -269,6 +271,25 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
             .when(archivesSearchExternalService.selectUnitWithInheritedRules(searchCriteriaDto))
             .thenReturn(expectedResponse);
         ResultsDto response = archivesSearchExternalController.selectUnitWithInheritedRules(searchCriteriaDto);
+
+        // Then
+        Assertions.assertEquals(response, expectedResponse);
+    }
+
+    @Test
+    void testTransferAcknowledgmentThenReturnVitamOperationDetails()
+        throws InvalidParseOperationException, PreconditionFailedException {
+        // Given
+        String fileName = "FileName";
+        String expectedResponse = "operationId";
+        String initialString = "atr xml text";
+        InputStream atrFile = new ByteArrayInputStream(initialString.getBytes());
+
+        // When
+        Mockito
+            .when(archivesSearchExternalService.transferAcknowledgment(atrFile, fileName))
+            .thenReturn(expectedResponse);
+        String response = archivesSearchExternalController.transferAcknowledgment(atrFile, fileName);
 
         // Then
         Assertions.assertEquals(response, expectedResponse);

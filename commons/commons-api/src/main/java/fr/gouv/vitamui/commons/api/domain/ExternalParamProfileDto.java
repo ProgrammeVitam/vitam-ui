@@ -57,6 +57,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 public class ExternalParamProfileDto extends IdDto {
 
+
     @NotNull
     @Length(min = 2, max = 100)
     private String name;
@@ -83,5 +84,12 @@ public class ExternalParamProfileDto extends IdDto {
 
     private boolean enabled;
 
+    private boolean usePlatformThreshold = true;
+
+    private Long bulkOperationsThreshold;
+
+    private ParameterDto[] parameters;
+
     private OffsetDateTime dateTime = OffsetDateTime.now();
+
 }

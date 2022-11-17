@@ -38,8 +38,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Profile } from 'ui-frontend-common';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import { BASE_URL, Profile, VitamUISnackBarService } from 'ui-frontend-common';
 import { ProfileService } from './profile.service';
 
 describe('ProfileService', () => {
@@ -47,13 +46,13 @@ describe('ProfileService', () => {
   let rngProfileService: ProfileService;
 
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
+    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         ProfileService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
       ]
     });
@@ -93,7 +92,7 @@ describe('ProfileService', () => {
 
   describe('patch', () => {
     it('should call PATCH /fake-api/profiles/42', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBarService);
       const expectedRequest = {
         id: '42',
         name: 'Profile Group Name',
@@ -118,11 +117,12 @@ describe('ProfileService', () => {
       rngProfileService.patch(expectedRequest).subscribe(
         (profileGroup) => {
           expect(profileGroup).toEqual(expectedResponse);
-          expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-          expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'profileUpdate', name: expectedResponse.name },
-            duration: 10000
+          expect(snackBar.open).toHaveBeenCalledWith({
+            message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
+            translateParams:{
+              param1: expectedResponse.name,
+            },
+            icon: 'vitamui-icon-admin-key'
           });
         },
         fail
@@ -134,7 +134,7 @@ describe('ProfileService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.inject(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBarService);
       const expectedRequest = {
         id: '42',
         name: 'Profile Group Name',
@@ -143,10 +143,7 @@ describe('ProfileService', () => {
         fail,
         () => {
           expect(snackBar.open).toHaveBeenCalledTimes(1);
-          expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
+          expect(snackBar.open).toHaveBeenCalledWith({message: 'Expected message', translate: false});
         }
       );
       const req = httpTestingController.expectOne('/fake-api/profiles/42');

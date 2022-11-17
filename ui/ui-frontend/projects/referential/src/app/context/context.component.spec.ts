@@ -4,12 +4,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule} from '@angular/router/testing';
-import {GlobalEventService, ApplicationService, InjectorModule, LoggerModule} from 'ui-frontend-common';
+import { ApplicationService, GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { ActivatedRoute } from '@angular/router';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {of, EMPTY} from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { EMPTY, of } from 'rxjs';
 import {ContextComponent} from './context.component';
 
 @Component({selector: 'app-agency-preview', template: ''})

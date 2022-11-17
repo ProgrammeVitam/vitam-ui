@@ -44,6 +44,7 @@ export class CustomerDataService {
 
   private tenantsUpdatedSource = new BehaviorSubject<Tenant[]>([]);
 
+  // tslint:disable-next-line: variable-name
   private _tenants: Tenant[] = [];
 
   get tenants(): Tenant[] {
