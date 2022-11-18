@@ -1,0 +1,135 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+h2 {
+  font-size: 23px;
+  line-height: 46px;
+  margin-top: 10px;
+}
+
+h4 {
+  font-size: 19px;
+  line-height: 26px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+
+button.primary {
+  margin-right: 20px;
+}
+
+.drag-and-drop-area {
+  width: 100%;
+  height: 300px;
+  border: 2px dashed var(--vitamui-primary);
+  border-radius: 6px;
+  box-shadow: 0 0 80px rgba(255, 255, 249, 0.3);
+  background: $white;
+  overflow: hidden;
+
+  p {
+    padding-top: 20px;
+  }
+}
+
+.drag-container {
+  width: 100%;
+  height: 160px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.file-info-class {
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  color: #000000;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+
+  small {
+    color: #a5a5a5;
+  }
+}
+
+.text-red {
+  color: #c10000;
+}
+
+.text-grey {
+  color: #9d9d9d;
+  font-size: 13px;
+}
+
+.success-icon {
+  color: #27740a;
+  font-size: 50px;
+}
+
+.error-icon {
+  color: #ea0101;
+  font-size: 50px;
+}
+
+.input-file {
+  display: none;
+}
+
+.drop-csv-file-area {
+  text-align: center;
+  height: 156px;
+}
+
+.on-over {
+  border: 2px solid var(--vitamui-secondary);
+
+  p {
+    color: $white;
+  }
+
+  .drop-csv-file-area {
+    background: #5cbaa9;
+    opacity: 0.9;
+    color: $white;
+  }
+}
+
+.csv-drop {
+  font-size: 19px;
+  line-height: 26px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+.csv-drop-small {
+  text-align: center;
+  margin-top: 190px;
+  margin-bottom: 10px;
+  color: var(--vitamui-primary);
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 10px;
+}
+
+.upload-text {
+  padding-top: 5%;
+  font-size: 15px;
+  line-height: 18px;
+  color: #a5a5a5;
+  text-align: center;
+  .upload {
+    color: var(--vitamui-secondary);
+  }
+}
+
+.url-select {
+  cursor: pointer;
+  font-size: 30px;
+  color: var(--vitamui-primary);
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  transform-origin: left;
+  transition: transform 150ms ease-out;
+}

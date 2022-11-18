@@ -218,6 +218,9 @@ vitamui:
     vitamui_component_type: "external"
     port_service: 8110
     port_admin: 7110
+    connect_timeout: 30
+    read_timeout: 240000
+    write_timeout: 240000
 
   collect_internal:
     host: "collect-internal.service.{{ consul_domain }}"
@@ -225,6 +228,9 @@ vitamui:
     vitamui_component_type: "internal"
     port_service: 8210
     port_admin: 7210
+    connect_timeout: 30
+    read_timeout: 240000
+    write_timeout: 240000
 
 ################################################################################
 

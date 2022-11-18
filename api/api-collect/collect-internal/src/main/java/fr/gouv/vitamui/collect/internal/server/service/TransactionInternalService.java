@@ -30,7 +30,6 @@
 package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -41,33 +40,32 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 
 public class TransactionInternalService {
 
 
-    public static final int MAX_RESULTS = 10000;
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalService.class);
 
     private final CollectService collectService;
-
-    private final ObjectMapper objectMapper;
 
     public static final String UNABLE_TO_UPDATE_TRANSACTION = "Unable to update transaction";
 
     public static final String UNABLE_TO_PROCESS_RESPONSE = "Unable to process response";
+    public static final String UNABLE_TO_PROCESS_UNIT_UPDATE = "Unable to process units update operation";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalService.class);
+    public static final String ERROR_400 = "ERROR_400";
 
+    public static final String REQUEST_TIMEOUT_EXCEPTION_MESSAGE = "the server has decided to close the connection rather than continue waiting";
 
-
-
-    public TransactionInternalService(CollectService collectService, ObjectMapper objectMapper) {
+    public TransactionInternalService(CollectService collectService) {
         this.collectService = collectService;
-        this.objectMapper = objectMapper;
     }
 
 
@@ -150,5 +148,17 @@ public class TransactionInternalService {
             LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
+    }
+
+    public String updateArchiveUnitsFromFile(VitamContext vitamContext, InputStream inputStream, String transactionId)
+        throws RequestTimeOutException
+         {
+        LOGGER.debug("[Internal] call update Archive Units From File for transaction Id {}  ", transactionId);
+        final String result = collectService.updateCollectArchiveUnits(vitamContext, transactionId, inputStream);
+        if (result.equals(ERROR_400)) {
+            LOGGER.debug(UNABLE_TO_PROCESS_UNIT_UPDATE);
+            throw new RequestTimeOutException(REQUEST_TIMEOUT_EXCEPTION_MESSAGE ,REQUEST_TIMEOUT_EXCEPTION_MESSAGE);
+        }
+        return result ;
     }
 }

@@ -51,4 +51,6 @@ public class ApiCollectExternalApplicationProperties {
 
     private RestClientConfiguration collectInternalClient;
 
+    private RestClientConfiguration updateUnitsMetadataInternalClient;
+
 }

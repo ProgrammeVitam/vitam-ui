@@ -26,16 +26,19 @@
  */
 package fr.gouv.vitamui.collect.external.server.service;
 
-import fr.gouv.vitam.collect.external.dto.TransactionDto;
-import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.UpdateUnitsMetadataInternalRestClient;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.InputStream;
 
 /**
  * The service to manage transactions.
@@ -45,15 +48,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionExternalService extends AbstractResourceClientService<CollectTransactionDto, CollectTransactionDto> {
 
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(TransactionExternalService.class);
+
     private final CollectTransactionInternalRestClient collectTransactionInternalRestClient;
 
-
+    private final UpdateUnitsMetadataInternalRestClient updateUnitsMetadataInternalRestClient;
     @Autowired
-    public TransactionExternalService(CollectTransactionInternalRestClient collectInternalRestClient,
-        ExternalSecurityService externalSecurityService) {
+    public TransactionExternalService(ExternalSecurityService externalSecurityService,
+        CollectTransactionInternalRestClient collectTransactionInternalRestClient,
+        UpdateUnitsMetadataInternalRestClient updateUnitsMetadataInternalRestClient) {
         super(externalSecurityService);
-        this.collectTransactionInternalRestClient = collectInternalRestClient;
+        this.collectTransactionInternalRestClient = collectTransactionInternalRestClient;
+        this.updateUnitsMetadataInternalRestClient = updateUnitsMetadataInternalRestClient;
     }
+
 
 
     public void sendTransaction(String projectId) {
@@ -87,4 +96,19 @@ public class TransactionExternalService extends AbstractResourceClientService<Co
     public CollectTransactionDto updateTransaction(CollectTransactionDto collectTransactionDto) {
         return collectTransactionInternalRestClient.updateTransaction(getInternalHttpContext(), collectTransactionDto);
     }
+
+    /**
+     * function to update archive Units Metadata with a CSV file
+     *
+     * @param transactionId the transaction id
+     * @param fileName the file name
+     * @param inputStream the inputstream file
+     * @return String
+     */
+    public String updateArchiveUnitsFromFile(final String transactionId, InputStream inputStream, String fileName) {
+        LOGGER.debug(" [External] start updating archive units from csv file for transactionId {}", transactionId);
+        return updateUnitsMetadataInternalRestClient.updateArchiveUnitsMetadataFromFile(
+            getInternalHttpContext(), fileName, transactionId, inputStream);
+    }
+
 }

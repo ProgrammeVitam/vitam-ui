@@ -34,18 +34,16 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Transaction} from 'ui-frontend-common';
-import {SearchResponse} from '../../archive-search-collect/archive-search-criteria/models/search-response.interface';
-import {SearchCriteriaDto} from '../../archive-search-collect/archive-search-criteria/models/search.criteria';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Transaction } from 'ui-frontend-common';
+import { SearchResponse } from '../../archive-search-collect/archive-search-criteria/models/search-response.interface';
+import { SearchCriteriaDto } from '../../archive-search-collect/archive-search-criteria/models/search.criteria';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class TransactionApiService extends BaseHttpClient<Transaction> {
   baseUrl: string;
 
@@ -68,10 +66,8 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
     return this.http.get<Transaction>(this.apiUrl + '/' + transactionId);
   }
 
-
   validateTransaction(id: string) {
     return this.http.put<Transaction>(this.apiUrl + '/' + id + '/validate', {});
-
   }
 
   sendTransaction(id: string) {
@@ -86,14 +82,22 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
     return this.http.put<Transaction>(this.apiUrl + '/' + id + '/abort', {});
   }
 
+  // Manage units metadata
+  updateUnitsAMetadata(transactionId: string, file: Blob, headers: HttpHeaders): Observable<string> {
+    return this.http.put(`${this.apiUrl}/${transactionId}/update-units-metadata`, file, {
+      responseType: 'text',
+      headers,
+    });
+  }
+
   // Manage Archive Units
 
   getCollectUnitById(unitId: string, headers?: HttpHeaders) {
-    return this.http.get<any>(this.apiUrl + '/archive-units/archiveunit/' + unitId, {headers});
+    return this.http.get<any>(this.apiUrl + '/archive-units/archiveunit/' + unitId, { headers });
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, tranasctionId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${tranasctionId}/search`, criteriaDto, {headers});
+    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${tranasctionId}/search`, criteriaDto, { headers });
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, tranasctionId: string, headers?: HttpHeaders): Observable<Blob> {
