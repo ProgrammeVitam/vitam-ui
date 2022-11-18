@@ -43,7 +43,6 @@ import { SearchCriteriaHistory } from '../models';
 @Injectable({
   providedIn: 'root',
 })
-
 export class ProjectsApiService extends BaseHttpClient<any> {
   baseUrl: string;
   urlTransaction: string;
@@ -105,23 +104,27 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   }
 
   updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
-    return this.http.put<SearchCriteriaHistory>
-    (`${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
+    return this.http.put<SearchCriteriaHistory>(
+      `${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`,
+      searchCriteriaHistory
+    );
   }
 
   public getTransactionById(transactionId: string): Observable<Transaction> {
     return this.http.get<Transaction>(this.urlTransaction + '/' + transactionId);
   }
 
-  public getTransactionsByProjectId(pageRequest: PageRequest,
-                                    projectId?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Transaction>> {
+  public getTransactionsByProjectId(
+    pageRequest: PageRequest,
+    projectId?: string,
+    headers?: HttpHeaders
+  ): Observable<PaginatedResponse<Transaction>> {
     const params = pageRequest.httpParams;
     return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, { params, headers });
   }
 
   validateTransaction(id: string) {
     return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/validate', {});
-
   }
 
   sendTransaction(id: string) {

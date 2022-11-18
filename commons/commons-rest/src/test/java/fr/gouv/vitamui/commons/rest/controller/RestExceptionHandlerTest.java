@@ -1,14 +1,22 @@
 package fr.gouv.vitamui.commons.rest.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.OffsetDateTime;
-import java.util.Arrays;
-
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.api.exception.NoRightsException;
+import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
+import fr.gouv.vitamui.commons.api.exception.RouteNotFoundException;
+import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
+import fr.gouv.vitamui.commons.api.exception.ValidationException;
+import fr.gouv.vitamui.commons.rest.AbstractRestTest;
+import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.RestTestApplication;
+import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,22 +34,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
-import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
-import fr.gouv.vitamui.commons.api.exception.NoRightsException;
-import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
-import fr.gouv.vitamui.commons.api.exception.RouteNotFoundException;
-import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
-import fr.gouv.vitamui.commons.api.exception.ValidationException;
-import fr.gouv.vitamui.commons.rest.AbstractRestTest;
-import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
-import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.RestTestApplication;
-import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test Rest Exception Handler.
@@ -495,6 +495,20 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
         final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.ILLEGAL_ARGUMENT_SERVER_EXCEPTION, VitamUIError.class);
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
+        assertNotNull("Exception informations are empty.", result.getBody());
+        assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
+        assertNotNull("Exception message should be correctly defined.", result.getBody().getMessage());
+    }
+
+
+    /**
+     * Test a RequestTimeOutException and the JSON object in response.
+     */
+    @Test
+    public void testRequestTimeOutException() {
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.REQUEST_TIMEOUT_ERROR, VitamUIError.class);
+        assertEquals("Status code should be correctly defined.", HttpStatus.REQUEST_TIMEOUT, result.getStatusCode());
+        final String key = ApiErrorGenerator.buildKey(RequestTimeOutException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
         assertNotNull("Exception message should be correctly defined.", result.getBody().getMessage());

@@ -1,81 +1,80 @@
 .btn-validate {
-    background-color: #155724;
-  }
-  .text-title {
-    font-family: Mulish;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-  
-    display: flex;
-    align-items: center;
-  
-    color: #757575;
-  }
-  .margin-btn {
-    margin-right: 140px;
-  }
-  
-  .facet-area {
-    display: block;
-    overflow: auto;
-  }
-  
-  ::ng-deep.mat-menu-panel {
-    max-width: fit-content !important;
-  }
-  .link-without-underline {
-    cursor: pointer;
-    color: #702382;
-    font-weight: bold;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .mat-dialog-actions-right {
-    justify-content: flex-end;
-  }
-  
-  .red-text {
-    color: red;
-    font-size: x-large;
-    font-weight: bold;
-  }
-  
-  .icon-style {
-    font-size: 50px;
-    line-height: 5px;
-  }
-  .vertical-line {
-    border-left: 2px solid red;
-    display: block;
-    height: 100%;
-    margin: 0 22px;
-  }
-  
-  .disabled-div {
-    pointer-events: none;
-  }
-  .enabled-div {
-    pointer-events: painted;
-  }
-  
-  .facet-div {
-    width: 100%;
-    padding: 10px 10px;
-  }
-  
-  #show-hide-facet-button {
-    position: relative;
-    float: right;
-    cursor: pointer;
-    width: 40px;
-    border: 1px solid #bdbdbd;
-    box-sizing: border-box;
-    border-radius: 20px;
-    padding: 10px 10px;
-    font-size: large;
-    font-weight: bold;
-  }
-  
+  background-color: #155724;
+}
+.text-title {
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+
+  display: flex;
+  align-items: center;
+
+  color: #757575;
+}
+.margin-btn {
+  margin-right: 140px;
+}
+
+.facet-area {
+  display: block;
+  overflow: auto;
+}
+
+::ng-deep.mat-menu-panel {
+  max-width: fit-content !important;
+}
+.link-without-underline {
+  cursor: pointer;
+  color: #702382;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mat-dialog-actions-right {
+  justify-content: flex-end;
+}
+
+.red-text {
+  color: red;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.icon-style {
+  font-size: 50px;
+  line-height: 5px;
+}
+.vertical-line {
+  border-left: 2px solid red;
+  display: block;
+  height: 100%;
+  margin: 0 22px;
+}
+
+.disabled-div {
+  pointer-events: none;
+}
+.enabled-div {
+  pointer-events: painted;
+}
+
+.facet-div {
+  width: 100%;
+  padding: 10px 10px;
+}
+
+#show-hide-facet-button {
+  position: relative;
+  float: right;
+  cursor: pointer;
+  width: 40px;
+  border: 1px solid #bdbdbd;
+  box-sizing: border-box;
+  border-radius: 20px;
+  padding: 10px 10px;
+  font-size: large;
+  font-weight: bold;
+}
