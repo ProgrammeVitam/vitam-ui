@@ -41,7 +41,6 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
             final UIPropertiesImpl properties = new UIPropertiesImpl();
             properties.setIamExternalClient(new RestClientConfiguration());
             properties.setReferentialExternalClient(new RestClientConfiguration());
-            properties.setArchiveSearchExternalClient(new RestClientConfiguration());
             return properties;
         }
 

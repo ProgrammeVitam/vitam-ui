@@ -83,21 +83,6 @@ ui-referential:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
-  archive-search-external-client:
-    server-host: {{ vitamui.archive_search_external.host }}
-    server-port: {{ vitamui.archive_search_external.port_service }}
-{% if vitamui.archive_search_external.secure | default(secure) | lower == "true" %}
-    secure: {{ vitamui.archive_search_external.secure | default(secure) | lower }}
-    ssl-configuration:
-      keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore }}
-        type: JKS
-      truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
-      hostname-verification: false
-{%endif %}
   portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
   header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"
   footer-logo: "{{ vitamui_platform_informations.theme.footer_logo }}"
