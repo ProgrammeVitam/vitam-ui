@@ -81,7 +81,7 @@
         <commons.fileupload.version>1.4</commons.fileupload.version>
         <commons.io.version>2.7</commons.io.version>
         <commons.lang3.version>3.9</commons.lang3.version>
-        <commons.text.version>1.8</commons.text.version>
+        <commons.text.version>1.10.0</commons.text.version>
         <cucumber.version>5.6.0</cucumber.version>
         <easymock.version>4.2</easymock.version>
         <embedded.mongo.version>3.3.2</embedded.mongo.version>
