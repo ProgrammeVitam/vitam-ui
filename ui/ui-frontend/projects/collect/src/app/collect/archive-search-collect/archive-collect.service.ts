@@ -236,7 +236,7 @@ export class ArchiveCollectService extends SearchService<any> {
       'X-Access-Contract-Id': accessContractId
     });
 
-    return this.searchUnitApiService.getFilingHoldingScheme(headers).pipe(
+    return this.searchUnitApiService.getFilingPlan(headers).pipe(
       catchError(() => {
         return of({ $hits: null, $results: [] });
       }),

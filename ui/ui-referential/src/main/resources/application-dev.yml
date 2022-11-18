@@ -81,19 +81,6 @@ ui-referential:
         key-path: src/main/resources/dev/truststore_server.jks
         key-password: changeme
       hostname-verification: false
-  archive-search-external-client:
-    server-host: localhost
-    server-port: 8089
-    secure: true
-    ssl-configuration:
-      keystore:
-        key-path: src/main/resources/dev/keystore_ui-referential.jks
-        key-password: changeme
-        type: JKS
-      truststore:
-        key-path: src/main/resources/dev/truststore_server.jks
-        key-password: changeme
-      hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
 

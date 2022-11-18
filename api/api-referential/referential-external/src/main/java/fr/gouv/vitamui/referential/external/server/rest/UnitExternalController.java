@@ -94,8 +94,8 @@ public class UnitExternalController {
 
     @Secured(ServicesData.ROLE_GET_FILLING_PLAN_ACCESS)
     @GetMapping(RestApi.FILING_PLAN_PATH)
-    public VitamUISearchResponseDto getFillingPlan() {
-        return unitExternalService.getFilingPlan();
+    public VitamUISearchResponseDto getFilingAndHoldingUnits() {
+        return unitExternalService.getFilingAndHoldingUnits();
     }
 
 }

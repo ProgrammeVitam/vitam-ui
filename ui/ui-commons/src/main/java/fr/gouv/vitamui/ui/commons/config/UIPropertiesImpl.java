@@ -92,6 +92,4 @@ public class UIPropertiesImpl implements UIProperties {
     private String versionRelease;
 
     private RestClientConfiguration referentialExternalClient;
-
-    private RestClientConfiguration archiveSearchExternalClient;
 }

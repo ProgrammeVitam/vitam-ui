@@ -46,16 +46,13 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -90,7 +87,7 @@ public class UnitExternalRestClient extends BaseRestClient<ExternalHttpContext> 
     protected Class<JsonNode> getJsonNodeClass() {
         return JsonNode.class;
     }
-    
+
     public VitamUISearchResponseDto findUnitById(ExternalHttpContext context, String unitId) {
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
 
@@ -113,26 +110,26 @@ public class UnitExternalRestClient extends BaseRestClient<ExternalHttpContext> 
 
         final HttpEntity<JsonNode> request = new HttpEntity<>(dsl, headers);
         final ResponseEntity<JsonNode> response = restTemplate.exchange(
-        	getUrl() + RestApi.DSL_PATH + (id.isPresent() ? "/" + id.get() : ""), 
+        	getUrl() + RestApi.DSL_PATH + (id.isPresent() ? "/" + id.get() : ""),
         	HttpMethod.POST,
             request, getJsonNodeClass());
         checkResponse(response);
         return response.getBody();
     }
-    
+
     public JsonNode findObjectMetadataById(ExternalHttpContext context, String id, JsonNode dsl) {
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
 
         final HttpEntity<JsonNode> request = new HttpEntity<>(dsl, headers);
         final ResponseEntity<JsonNode> response = restTemplate.exchange(
-        	getUrl() + "/" + id + RestApi.OBJECTS_PATH, 
+        	getUrl() + "/" + id + RestApi.OBJECTS_PATH,
         	HttpMethod.POST, request, getJsonNodeClass());
         checkResponse(response);
         return response.getBody();
     }
-    
-    public VitamUISearchResponseDto getFilingPlan(ExternalHttpContext context) {
-        LOGGER.debug("Calling get filing plan");
+
+    public VitamUISearchResponseDto getFilingAndHoldingUnits(ExternalHttpContext context) {
+        LOGGER.debug("Calling get filing plan and holding units");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
 
         final HttpEntity<Void> request = new HttpEntity<>(headers);
