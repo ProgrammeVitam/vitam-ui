@@ -79,7 +79,9 @@ import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unit
 public class UnitInternalController {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UnitInternalController.class);
 
-    private static final String[] FILING_PLAN_PROJECTION = new String[] { "#id", "Title", "DescriptionLevel", "#unitType", "#unitups", "#allunitups", "Keyword", "Vtag" };
+    private static final String[] FILING_PLAN_PROJECTION =
+        new String[] {"#id", "Title", "DescriptionLevel", "#unitType", "#unitups", "#allunitups", "#opi", "Keyword",
+            "Vtag"};
 
     @Autowired
     private UnitInternalService unitInternalService;
@@ -92,9 +94,9 @@ public class UnitInternalController {
 
     @GetMapping(CommonConstants.PATH_ID)
     public JsonNode findUnitById(
-            @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-            @PathVariable final String id) throws VitamClientException {
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @PathVariable final String id) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return unitInternalService.findUnitById(id, vitamContext);
@@ -103,10 +105,10 @@ public class UnitInternalController {
     // TODO : Secure it !
     @PostMapping({RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID})
     public JsonNode findByDsl(
-            @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-            @PathVariable final Optional<String> id,
-            @RequestBody final JsonNode dsl) throws VitamClientException {
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @PathVariable final Optional<String> id,
+        @RequestBody final JsonNode dsl) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         SanityChecker.sanitizeJson(dsl);
         return unitInternalService.searchUnitsWithErrors(id, dsl, vitamContext);
@@ -114,10 +116,10 @@ public class UnitInternalController {
 
     @PostMapping(CommonConstants.PATH_ID + CommonConstants.PATH_OBJECTS)
     public JsonNode findObjectMetadataById(
-    		@RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-            @PathVariable final String id,
-            @RequestBody final JsonNode dsl) throws VitamClientException {
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @PathVariable final String id,
+        @RequestBody final JsonNode dsl) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeJson(dsl);
@@ -126,17 +128,16 @@ public class UnitInternalController {
 
     // TODO: Secure it ! Multiple (OR) CREATE_APPNAME_ROLE ? Unique FILLING_PLAN_ACCESS ?
     @GetMapping(RestApi.FILING_PLAN_PATH)
-    public VitamUISearchResponseDto getFillingPlan(
-            @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
-            throws VitamClientException, IOException {
-        LOGGER.debug("Get filing plan");
+    public VitamUISearchResponseDto getFilingAndHoldingUnits(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
+        throws VitamClientException, IOException {
+        LOGGER.debug("Get filing and holding units with projections on needed fields ONLY!");
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-
         // TULEAP-20359 : The filling plan must retrieve the units with the FILING or HOLDING type
         final JsonNode fillingOrHoldingQuery = createQueryForFillingOrHoldingUnit();
-
-        return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery, vitamContext), VitamUISearchResponseDto.class);
+        return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery, vitamContext),
+            VitamUISearchResponseDto.class);
     }
 
     private JsonNode createQueryForFillingOrHoldingUnit() {

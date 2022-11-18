@@ -115,18 +115,9 @@ public class UnitController extends AbstractUiRestController {
     @ApiOperation(value = "Get filing plan")
     @GetMapping(RestApi.FILING_PLAN_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public VitamUISearchResponseDto findFilingPlan() throws InvalidParseOperationException,
+    public VitamUISearchResponseDto getFilingAndHoldingUnits() throws InvalidParseOperationException,
         PreconditionFailedException {
-        LOGGER.debug("find filing plan");
-        return searchService.findFilingPlan(buildUiHttpContext());
-    }
-
-    @ApiOperation(value = "Get filing plans & holding units")
-    @GetMapping("/filingholdingscheme")
-    @ResponseStatus(HttpStatus.OK)
-    public VitamUISearchResponseDto findFilingHoldingScheme()
-        throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("find filing holding scheme");
-        return searchService.findFilingHoldingScheme(buildUiHttpContext());
+        LOGGER.debug("Get filing AND holding units");
+        return searchService.getFilingAndHoldingUnits(buildUiHttpContext());
     }
 }

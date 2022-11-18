@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
-import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
@@ -153,10 +152,9 @@ public class AutoConfigurationService {
     }
 
     @Bean("unitService")
-    @DependsOn(value = {"unitExternalRestClient", "archiveSearchExternalRestClient"})
+    @DependsOn(value = {"unitExternalRestClient"})
     @ConditionalOnMissingBean
-    public UnitService unitService(final UnitExternalRestClient unitRestClient,
-        final ArchiveSearchExternalRestClient archiveSearchExternalRestClient) {
-        return new UnitService(unitRestClient, archiveSearchExternalRestClient);
+    public UnitService unitService(final UnitExternalRestClient unitRestClient) {
+        return new UnitService(unitRestClient);
     }
 }

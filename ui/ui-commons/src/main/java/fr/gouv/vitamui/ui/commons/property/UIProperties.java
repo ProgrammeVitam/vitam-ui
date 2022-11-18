@@ -50,8 +50,6 @@ public interface UIProperties {
 
     public RestClientConfiguration getReferentialExternalClient();
 
-    public RestClientConfiguration getArchiveSearchExternalClient();
-
     public Integer getLimitPagination();
 
     public String getPortalLogo();

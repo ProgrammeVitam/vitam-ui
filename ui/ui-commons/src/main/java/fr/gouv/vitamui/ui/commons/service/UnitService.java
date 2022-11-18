@@ -27,7 +27,6 @@
 package fr.gouv.vitamui.ui.commons.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
@@ -40,21 +39,13 @@ import java.util.Optional;
 public class UnitService {
 
     private final UnitExternalRestClient unitRestClient;
-    private final ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
-
     @Autowired
-    public UnitService(final UnitExternalRestClient unitRestClient,
-        ArchiveSearchExternalRestClient archiveSearchExternalRestClient) {
+    public UnitService(final UnitExternalRestClient unitRestClient) {
         this.unitRestClient = unitRestClient;
-        this.archiveSearchExternalRestClient = archiveSearchExternalRestClient;
     }
 
     public UnitExternalRestClient getClient() {
         return unitRestClient;
-    }
-
-    public ArchiveSearchExternalRestClient getArchiveSearchClient() {
-        return archiveSearchExternalRestClient;
     }
 
     public VitamUISearchResponseDto searchById(final String id, final ExternalHttpContext context) {
@@ -69,11 +60,7 @@ public class UnitService {
         return getClient().findObjectMetadataById(context, id, dsl);
     }
 
-    public VitamUISearchResponseDto findFilingPlan(ExternalHttpContext context) {
-        return getClient().getFilingPlan(context);
-    }
-
-    public VitamUISearchResponseDto findFilingHoldingScheme(ExternalHttpContext context) {
-        return getArchiveSearchClient().getFilingHoldingScheme(context);
+    public VitamUISearchResponseDto getFilingAndHoldingUnits(ExternalHttpContext context) {
+        return getClient().getFilingAndHoldingUnits(context);
     }
 }

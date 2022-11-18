@@ -40,16 +40,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
@@ -82,13 +75,13 @@ public class UnitExternalService extends AbstractInternalClientService {
     public JsonNode findUnitByDsl(final Optional<String> id, final JsonNode dsl) {
         return getClient().findUnitByDsl(getInternalHttpContext(), id, dsl);
     }
-    
+
     public JsonNode findObjectMetadataById(final String id, final JsonNode dsl) {
         return getClient().findObjectMetadataById(getInternalHttpContext(), id, dsl);
     }
 
-    public VitamUISearchResponseDto getFilingPlan() {
-        return getClient().getFilingPlan(getInternalHttpContext());
+    public VitamUISearchResponseDto getFilingAndHoldingUnits() {
+        return getClient().getFilingAndHoldingUnits(getInternalHttpContext());
     }
 
 }

@@ -73,11 +73,11 @@ public class UnitExternalServiceTest extends ExternalServiceTest {
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
         unitExternalService = new UnitExternalService(unitInternalRestClient, externalSecurityService);
     }
-    
+
     @Test
     public void findUnitById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         String unitId = "id";
-        
+
         when(unitInternalRestClient.findUnitById(any(InternalHttpContext.class), any(String.class)))
             .thenReturn(new VitamUISearchResponseDto());
 
@@ -98,7 +98,7 @@ public class UnitExternalServiceTest extends ExternalServiceTest {
             unitExternalService.findUnitByDsl(Optional.empty(), dslQuery);
         }).doesNotThrowAnyException();
     }
-    
+
     @Test
     public void findObjectMetadataById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         String unitId = "id";
@@ -111,14 +111,14 @@ public class UnitExternalServiceTest extends ExternalServiceTest {
             unitExternalService.findObjectMetadataById(unitId, dslQuery);
         }).doesNotThrowAnyException();
     }
-    
+
     @Test
     public void getFilingPlan_should_return_ok_when_vitamclient_ok() throws VitamClientException {
-        when(unitInternalRestClient.getFilingPlan(any(InternalHttpContext.class)))
+        when(unitInternalRestClient.getFilingAndHoldingUnits(any(InternalHttpContext.class)))
         	.thenReturn(new VitamUISearchResponseDto());
 
         assertThatCode(() -> {
-        	unitExternalService.getFilingPlan();
+        	unitExternalService.getFilingAndHoldingUnits();
         }).doesNotThrowAnyException();
     }
 }

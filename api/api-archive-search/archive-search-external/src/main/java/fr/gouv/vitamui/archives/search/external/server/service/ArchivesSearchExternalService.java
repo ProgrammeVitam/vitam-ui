@@ -37,9 +37,9 @@ import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
@@ -53,7 +53,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
-
 import java.util.Optional;
 
 
@@ -99,7 +98,7 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto query) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         if (thresholdOpt.isPresent()) {
-            query.setMaxSizeThreshold(thresholdOpt.get());
+            query.setThreshold(thresholdOpt.get());
         }
         return getClient().searchArchiveUnitsByCriteria(getInternalHttpContext(), query);
     }
@@ -124,7 +123,7 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         if (thresholdOpt.isPresent()) {
-            query.setMaxSizeThreshold(thresholdOpt.get());
+            query.setThreshold(thresholdOpt.get());
         }
         return archiveInternalRestClient.exportCsvArchiveUnitsByCriteria(query, getInternalHttpContext());
     }
@@ -132,7 +131,7 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public String exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         if (thresholdOpt.isPresent()) {
-            exportDipCriteriaDto.setMaxSizeThreshold(thresholdOpt.get());
+            exportDipCriteriaDto.getExportDIPSearchCriteria().setThreshold(thresholdOpt.get());
         }
         return archiveInternalRestClient.exportDIPByCriteria(exportDipCriteriaDto, getInternalHttpContext());
     }
@@ -140,7 +139,7 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public String transferRequest(final TransferRequestDto transferRequestDto) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         if (thresholdOpt.isPresent()) {
-            transferRequestDto.setMaxSizeThreshold(thresholdOpt.get());
+            transferRequestDto.getSearchCriteria().setThreshold(thresholdOpt.get());
         }
         return archiveInternalRestClient.transferRequest(transferRequestDto, getInternalHttpContext());
     }
@@ -148,7 +147,7 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public ResponseEntity<JsonNode> startEliminationAnalysis(final SearchCriteriaDto query) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         if (thresholdOpt.isPresent()) {
-            query.setMaxSizeThreshold(thresholdOpt.get());
+            query.setThreshold(thresholdOpt.get());
         }
         return archiveInternalRestClient.startEliminationAnalysis(getInternalHttpContext(), query);
     }
@@ -156,19 +155,23 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public ResponseEntity<JsonNode> startEliminationAction(final SearchCriteriaDto query) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         if (thresholdOpt.isPresent()) {
-            query.setMaxSizeThreshold(thresholdOpt.get());
+            query.setThreshold(thresholdOpt.get());
         }
         return archiveInternalRestClient.startEliminationAction(getInternalHttpContext(), query);
     }
 
     public String updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto) {
+        Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
+        if (thresholdOpt.isPresent()) {
+            ruleSearchCriteriaDto.getSearchCriteriaDto().setThreshold(thresholdOpt.get());
+        }
         return archiveInternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, getInternalHttpContext());
     }
 
     public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         if (thresholdOpt.isPresent()) {
-            searchCriteriaDto.setMaxSizeThreshold(thresholdOpt.get());
+            searchCriteriaDto.setThreshold(thresholdOpt.get());
         }
         return archiveInternalRestClient.computedInheritedRules(searchCriteriaDto, getInternalHttpContext());
     }
@@ -176,15 +179,16 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public ResultsDto selectUnitWithInheritedRules(final SearchCriteriaDto query) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         if (thresholdOpt.isPresent()) {
-            query.setMaxSizeThreshold(thresholdOpt.get());
+            query.setThreshold(thresholdOpt.get());
         }
         return getClient().selectUnitWithInheritedRules(getInternalHttpContext(), query);
     }
 
     public String reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto) {
-        /**
-         * check thresholds
-         */
+        Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
+        if (thresholdOpt.isPresent()) {
+            reclassificationCriteriaDto.getSearchCriteriaDto().setThreshold(thresholdOpt.get());
+        }
         return archiveInternalRestClient.reclassification(reclassificationCriteriaDto, getInternalHttpContext());
     }
 
