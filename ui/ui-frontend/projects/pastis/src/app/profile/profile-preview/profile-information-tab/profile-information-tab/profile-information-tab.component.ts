@@ -13,14 +13,13 @@ import { ProfileDescription } from '../../../../models/profile-description.model
 @Component({
   selector: 'profile-information-tab',
   templateUrl: './profile-information-tab.component.html',
-  styleUrls: [ './profile-information-tab.component.scss' ]
+  styleUrls: ['./profile-information-tab.component.scss'],
 })
 export class ProfileInformationTabComponent implements OnInit {
-
   @Input()
   set inputProfile(profileDescription: ProfileDescription) {
     this._inputProfile = profileDescription;
-    this.statusProfile.setValue(this.inputProfile.status === 'INACTIVE' ? false : true)
+    this.statusProfile.setValue(this.inputProfile.status === 'INACTIVE' ? false : true);
     this.resetForm(this.inputProfile);
     this.updated.emit(false);
   }
@@ -28,7 +27,6 @@ export class ProfileInformationTabComponent implements OnInit {
   get inputProfile(): ProfileDescription {
     return this._inputProfile;
   }
-
 
   @Input()
   set readOnly(readOnly: boolean) {
@@ -40,25 +38,26 @@ export class ProfileInformationTabComponent implements OnInit {
     }
   }
 
-
-  constructor(private formBuilder: FormBuilder,
-              private profileService: ProfileService, private loggingService: NotificationService,
-              private translateService: TranslateService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private profileService: ProfileService,
+    private loggingService: NotificationService,
+    private translateService: TranslateService
+  ) {
     this.form = this.formBuilder.group({
-      identifier: [ null, Validators.required ],
-      id: [ null, Validators.required ],
-      type: [ null ],
-      description: [ null ],
-      name: [ null, Validators.required ],
-      creationDate: [ null ],
-      status: [ null, Validators.required ]
+      identifier: [null, Validators.required],
+      id: [null, Validators.required],
+      type: [null],
+      description: [null],
+      name: [null, Validators.required],
+      creationDate: [null],
+      status: [null, Validators.required],
     });
 
     this.statusProfile.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
     });
   }
-
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -76,13 +75,12 @@ export class ProfileInformationTabComponent implements OnInit {
 
   profile: Profile;
 
-
   private _inputProfile: ProfileDescription;
   pending = false;
 
   previousValue = (): ProfileDescription => {
     return this._inputProfile;
-  }
+  };
 
   isInvalid(): boolean {
     return false;
@@ -101,7 +99,6 @@ export class ProfileInformationTabComponent implements OnInit {
 
     // let diffValue = diff(this.form.getRawValue(), this.previousValue());
 
-
     if (inputProfile.type == 'PA') {
       this.profile = this.form.value;
       // console.log(JSON.stringify(this.profile));
@@ -114,31 +111,32 @@ export class ProfileInformationTabComponent implements OnInit {
 
   onSubmit() {
     this.submited = true;
-    this.prepareSubmit(this.inputProfile).subscribe((result) => {
-      this.submited = false;
-      this.pending = !this.pending;
-      this.inputProfile = this._inputProfile;
-      // console.log(JSON.stringify(result));
-      this.loggingService.showSuccess(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'));
-      this.profileService.refreshListProfiles();
-      this.close.emit(true);
-
-    }, () => {
-      this.submited = false;
-      this.pending = !this.pending;
-      this.loggingService.showSuccess('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR');
-    });
+    this.prepareSubmit(this.inputProfile).subscribe(
+      () => {
+        this.submited = false;
+        this.pending = !this.pending;
+        this.inputProfile = this._inputProfile;
+        // console.log(JSON.stringify(result));
+        this.loggingService.showSuccess(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'));
+        this.profileService.refreshListProfiles();
+        this.close.emit(true);
+      },
+      () => {
+        this.submited = false;
+        this.pending = !this.pending;
+        this.loggingService.showSuccess('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR');
+      }
+    );
   }
 
   resetForm(profileDescription: ProfileDescription) {
     this.form.reset(profileDescription, { emitEvent: false });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   isProfilAttached(inputProfile: ProfileDescription): boolean {
-    return !!(inputProfile.controlSchema && inputProfile.controlSchema.length != 2 || inputProfile.path);
+    return !!((inputProfile.controlSchema && inputProfile.controlSchema.length != 2) || inputProfile.path);
   }
 
   enregistrement() {

@@ -39,7 +39,7 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { FileUploader } from 'ng2-file-upload';
 import { Subscription } from 'rxjs';
 import { Direction, GlobalEventService, SidenavPage, StartupService } from 'ui-frontend-common';
@@ -57,9 +57,7 @@ import { ProfileResponse } from '../../models/profile-response';
 import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { CreateProfileComponent } from '../create-profile/create-profile.component';
-import {
-  ProfileInformationTabComponent
-} from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
+import { ProfileInformationTabComponent } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -73,16 +71,15 @@ function constantToTranslate() {
 @Component({
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
-  styleUrls: [ './list-profile.component.scss' ]
+  styleUrls: ['./list-profile.component.scss'],
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
-
   @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;
 
   @Input()
   uploader: FileUploader = new FileUploader({ url: '' });
 
-  displayedColumns: string[] = [ 'type', 'id', 'baseName', 'lastModified' ];
+  displayedColumns: string[] = ['type', 'id', 'baseName', 'lastModified'];
 
   retrievedProfiles: ProfileDescription[] = [];
 
@@ -114,11 +111,14 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   orderBy = 'identifier';
 
-  sedaUrl: string = this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.sedaUrl;
+  sedaUrl: string =
+    this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.sedaUrl;
 
   newProfileUrl: string = this.pastisConfig.pastisNewProfile;
 
-  docPath = this.isStandalone ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf' : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
+  docPath = this.isStandalone
+    ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf'
+    : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
 
   subscription1$: Subscription;
   subscription2$: Subscription;
@@ -143,15 +143,22 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   popupCreationOkLabel: string;
   profilesChargees = false;
 
-  constructor(private profileService: ProfileService, private noticeService: NoticeService,
-              private router: Router, private dialog: MatDialog,
-              private startupService: StartupService, private pastisConfig: PastisConfiguration,
-              private route: ActivatedRoute, globalEventService: GlobalEventService,
-              private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService,
-              private toggleService: ToggleSidenavService) {
+  constructor(
+    private profileService: ProfileService,
+    private noticeService: NoticeService,
+    private router: Router,
+    private dialog: MatDialog,
+    private startupService: StartupService,
+    private pastisConfig: PastisConfiguration,
+    private route: ActivatedRoute,
+    globalEventService: GlobalEventService,
+    private dataGeneriquePopupService: DataGeneriquePopupService,
+    private translateService: TranslateService,
+    private toggleService: ToggleSidenavService
+  ) {
     super(route, globalEventService);
     this.expanded = false;
-    this.pendingSub = this.toggleService.isPending.subscribe(status => {
+    this.pendingSub = this.toggleService.isPending.subscribe((status) => {
       this.pending = status;
     });
   }
@@ -163,18 +170,20 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     } else if (this.isStandalone) {
       this.popupCreationCancelLabel = 'Annuler';
       this.popupCreationTitleDialog = 'Choix du type de profil';
-      this.popupCreationSubTitleDialog = 'Création d\'un profil';
+      this.popupCreationSubTitleDialog = "Création d'un profil";
       this.popupCreationOkLabel = 'VALIDER';
     }
-    this.dataGeneriquePopupService.currentDonnee.subscribe(donnees => this.donnees = donnees);
-    this.breadcrumbDataTop = [ {
-      label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL',
-      url: this.startupService.getPortalUrl(),
-      external: true
-    }, { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/' } ];
+    this.dataGeneriquePopupService.currentDonnee.subscribe((donnees) => (this.donnees = donnees));
+    this.breadcrumbDataTop = [
+      {
+        label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL',
+        url: this.startupService.getPortalUrl(),
+        external: true,
+      },
+      { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/' },
+    ];
 
-    this.subscription1$ =
-      this.refreshListProfiles();
+    this.subscription1$ = this.refreshListProfiles();
     this.subscriptions.push(this.subscription1$);
   }
 
@@ -196,11 +205,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   translatedOnChange(): void {
-    this.translateService.onLangChange
-      .subscribe((event: LangChangeEvent) => {
-        constantToTranslate.call(this);
-        // console.log(event.lang);
-      });
+    this.translateService.onLangChange.subscribe(() => {
+      constantToTranslate.call(this);
+      // console.log(event.lang);
+    });
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -209,7 +217,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   retrievePAorPUA(term: string, filter: boolean): number {
     const profiles: ProfileDescription[] = filter == false ? this.retrievedProfiles : this.numProfilesFiltered;
-    const profileNum = profiles.filter(p => p.type === term).length;
+    const profileNum = profiles.filter((p) => p.type === term).length;
     return profileNum ? profileNum : 0;
   }
 
@@ -217,15 +225,15 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     if (d.external) {
       window.location.assign(d.url);
     } else {
-      this.router.navigate([ d.url ], { skipLocationChange: false });
+      this.router.navigate([d.url], { skipLocationChange: false });
     }
   }
 
   editProfile(element: ProfileDescription) {
-    this.router.navigate([ this.pastisConfig.pastisEditPage, element.id ], {
+    this.router.navigate([this.pastisConfig.pastisEditPage, element.id], {
       state: element,
       relativeTo: this.route,
-      skipLocationChange: false
+      skipLocationChange: false,
     });
   }
 
@@ -237,7 +245,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       formData.append('file', fileToUpload, fileToUpload.name);
       this._uploadProfileSub = this.profileService.uploadProfile(formData).subscribe((response: any) => {
         if (response) {
-          this.router.navigate([ this.pastisConfig.pastisNewProfile ], { state: response, relativeTo: this.route });
+          this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
         }
       });
       this.subscriptions.push(this._uploadProfileSub);
@@ -253,21 +261,21 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     dataToSendToPopUp.okLabel = this.popupCreationOkLabel;
     dataToSendToPopUp.cancelLabel = this.popupCreationCancelLabel;
     const dialogRef = this.dialog.open(CreateProfileComponent, {
-        width: '800px',
-        panelClass: 'pastis-popup-modal-box',
-        data: dataToSendToPopUp
-      }
-    );
+      width: '800px',
+      panelClass: 'pastis-popup-modal-box',
+      data: dataToSendToPopUp,
+    });
     this.subscription2$ = dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         // console.log(result.action + ' PA ou PUA ?');
         if (result.action === 'PA' || result.action === 'PUA') {
-          this.profileService.createProfile(
-            this.pastisConfig.createProfileByTypeUrl, result.action).subscribe((response: ProfileResponse) => {
-            if (response) {
-              this.router.navigate([ this.pastisConfig.pastisNewProfile ], { state: response, relativeTo: this.route });
-            }
-          });
+          this.profileService
+            .createProfile(this.pastisConfig.createProfileByTypeUrl, result.action)
+            .subscribe((response: ProfileResponse) => {
+              if (response) {
+                this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
+              }
+            });
         }
       }
     });
@@ -279,11 +287,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       search = '';
     }
     this.search = search;
-    let profileDescriptions = this.retrievedProfiles
-      .filter(profile =>
-        profile.identifier.toLowerCase().indexOf(search.toLowerCase()) >= 0 ||
-        profile.name.toLowerCase().indexOf(search.toLowerCase()) >= 0
-      );
+    let profileDescriptions = this.retrievedProfiles.filter(
+      (profile) =>
+        profile.identifier.toLowerCase().indexOf(search.toLowerCase()) >= 0 || profile.name.toLowerCase().indexOf(search.toLowerCase()) >= 0
+    );
     // console.log(this.retrievedProfiles)
     this.totalProfileNum = profileDescriptions.length;
     this.numPA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === 'PA').length;
@@ -317,7 +324,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     if (this.pendingSub) this.pendingSub.unsubscribe();
   }
 
-
   showProfile(element: ProfileDescription) {
     // console.log('showProfile')
     if (!this.isStandalone) {
@@ -343,7 +349,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         fileReader.readAsText(fileToUpload, 'UTF-8');
         fileReader.onload = () => {
           // console.log(fileReader.result.toString());
-          jsonObj = (JSON.parse(fileReader.result.toString()));
+          jsonObj = JSON.parse(fileReader.result.toString());
           // console.log(jsonObj.controlSchema);
           profileDescription.controlSchema = jsonObj.controlSchema;
           archivalProfileUnit = this.noticeService.profileDescriptionToPuaProfile(profileDescription);
@@ -357,15 +363,13 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         };
       }
     }
-
   }
 
   changeExpand(element: ProfileDescription) {
     if (element.type === 'PA' && !element.path && element.status === 'ACTIVE') {
       this.expanded = !this.expanded;
     }
-    if (element.type === 'PUA' && element.status === 'ACTIVE'
-      && (element.controlSchema === '{}' || !element.controlSchema)) {
+    if (element.type === 'PUA' && element.status === 'ACTIVE' && (element.controlSchema === '{}' || !element.controlSchema)) {
       this.expanded = !this.expanded;
     }
   }
