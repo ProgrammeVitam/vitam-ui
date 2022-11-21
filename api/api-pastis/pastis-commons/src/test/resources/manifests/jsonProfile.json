@@ -1,0 +1,4148 @@
+{
+  "name": "ArchiveTransfer",
+  "type": "element",
+  "cardinality": null,
+  "groupOrChoice": null,
+  "valueOrData": null,
+  "dataType": null,
+  "value": null,
+  "documentation": null,
+  "level": 0,
+  "id": 544,
+  "parentId": null,
+  "choices": [
+  ],
+  "children": [
+    {
+      "name": "Date",
+      "type": "element",
+      "cardinality": null,
+      "groupOrChoice": null,
+      "valueOrData": "data",
+      "dataType": "dateTime",
+      "value": null,
+      "documentation": null,
+      "level": 1,
+      "id": 545,
+      "parentId": 544,
+      "choices": [
+      ],
+      "children": [
+      ]
+    },
+    {
+      "name": "MessageIdentifier",
+      "type": "element",
+      "cardinality": null,
+      "groupOrChoice": null,
+      "valueOrData": "data",
+      "dataType": "token",
+      "value": null,
+      "documentation": null,
+      "level": 1,
+      "id": 546,
+      "parentId": 544,
+      "choices": [
+      ],
+      "children": [
+      ]
+    },
+    {
+      "name": "ArchivalAgreement",
+      "type": "element",
+      "cardinality": null,
+      "groupOrChoice": null,
+      "valueOrData": "value",
+      "dataType": "token",
+      "value": "IN-UPPA-0",
+      "documentation": null,
+      "level": 1,
+      "id": 547,
+      "parentId": 544,
+      "choices": [
+      ],
+      "children": [
+      ]
+    },
+    {
+      "name": "CodeListVersions",
+      "type": "element",
+      "cardinality": null,
+      "groupOrChoice": null,
+      "valueOrData": "data",
+      "dataType": "token",
+      "value": null,
+      "documentation": null,
+      "level": 1,
+      "id": 548,
+      "parentId": 544,
+      "choices": [
+      ],
+      "children": [
+      ]
+    },
+    {
+      "name": "DataObjectPackage",
+      "type": "element",
+      "cardinality": null,
+      "groupOrChoice": null,
+      "valueOrData": null,
+      "dataType": null,
+      "value": null,
+      "documentation": null,
+      "level": 1,
+      "id": 549,
+      "parentId": 544,
+      "choices": [
+      ],
+      "children": [
+        {
+          "name": "DataObjectGroup",
+          "type": "element",
+          "cardinality": "1-N",
+          "groupOrChoice": null,
+          "valueOrData": null,
+          "dataType": null,
+          "value": null,
+          "documentation": null,
+          "level": 2,
+          "id": 550,
+          "parentId": 549,
+          "choices": [
+          ],
+          "children": [
+            {
+              "name": "id",
+              "type": "attribute",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": "data",
+              "dataType": "ID",
+              "value": null,
+              "documentation": null,
+              "level": 3,
+              "id": 551,
+              "parentId": 550,
+              "choices": [
+              ],
+              "children": [
+              ]
+            },
+            {
+              "name": "BinaryDataObject",
+              "type": "element",
+              "cardinality": "0-N",
+              "groupOrChoice": null,
+              "valueOrData": null,
+              "dataType": null,
+              "value": null,
+              "documentation": null,
+              "level": 3,
+              "id": 552,
+              "parentId": 550,
+              "choices": [
+              ],
+              "children": [
+                {
+                  "name": "DataObjectVersion",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "data",
+                  "dataType": "token",
+                  "value": null,
+                  "documentation": "BinaryMaster par défaut",
+                  "level": 4,
+                  "id": 553,
+                  "parentId": 552,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                },
+                {
+                  "name": "Uri",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "data",
+                  "dataType": "anyURI",
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 554,
+                  "parentId": 552,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                },
+                {
+                  "name": "MessageDigest",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "data",
+                  "dataType": "base64Binary",
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 555,
+                  "parentId": 552,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "algorithm",
+                      "type": "attribute",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "token",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 556,
+                      "parentId": 555,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "Size",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "data",
+                  "dataType": "token",
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 557,
+                  "parentId": 552,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                },
+                {
+                  "name": "FormatIdentification",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 558,
+                  "parentId": 552,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "FormatLitteral",
+                      "type": "element",
+                      "cardinality": "0-1",
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "token",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 559,
+                      "parentId": 558,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "FormatId",
+                      "type": "element",
+                      "cardinality": "0-1",
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "token",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 560,
+                      "parentId": 558,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "FileInfo",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 561,
+                  "parentId": 552,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "Filename",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "token",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 562,
+                      "parentId": 561,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "id",
+                  "type": "attribute",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "data",
+                  "dataType": "ID",
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 563,
+                  "parentId": 552,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "DescriptiveMetadata",
+          "type": "element",
+          "cardinality": null,
+          "groupOrChoice": null,
+          "valueOrData": null,
+          "dataType": null,
+          "value": null,
+          "documentation": null,
+          "level": 2,
+          "id": 564,
+          "parentId": 549,
+          "choices": [
+          ],
+          "children": [
+            {
+              "name": "ArchiveUnit",
+              "type": "element",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": null,
+              "dataType": null,
+              "value": null,
+              "documentation": "Séance du conseil d'administration",
+              "level": 3,
+              "id": 565,
+              "parentId": 564,
+              "choices": [
+              ],
+              "children": [
+                {
+                  "name": "id",
+                  "type": "attribute",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "data",
+                  "dataType": "ID",
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 566,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                },
+                {
+                  "name": "Content",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 567,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "DescriptionLevel",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "value",
+                      "dataType": "token",
+                      "value": "File",
+                      "documentation": null,
+                      "level": 5,
+                      "id": 568,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Title",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "string",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 569,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "xml:lang",
+                          "type": "attribute",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "language",
+                          "value": "fra",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 570,
+                          "parentId": 569,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "OriginatingSystemId",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "token",
+                      "value": null,
+                      "documentation": "ID-SI-prod",
+                      "level": 5,
+                      "id": 571,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Description",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "value",
+                      "dataType": "token",
+                      "value": "Ces documents sont archivés dans le but d'une conservation des décisions du conseil d'administration.",
+                      "documentation": null,
+                      "level": 5,
+                      "id": 572,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "xml:lang",
+                          "type": "attribute",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "language",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 573,
+                          "parentId": 572,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "CustodialHistory",
+                      "type": "element",
+                      "cardinality": "0-1",
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 574,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "CustodialHistoryItem",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Ces archives sont transférées à l'initiative de la Direction des affaires juridiques directement vers le SAE externalisé pour conservation et après validation de l'archiviste de l'UPPA",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 575,
+                          "parentId": 574,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "Language",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "value",
+                      "dataType": "token",
+                      "value": "fra",
+                      "documentation": null,
+                      "level": 5,
+                      "id": 576,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Tag",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "value",
+                      "dataType": "token",
+                      "value": "Organe délibérant",
+                      "documentation": null,
+                      "level": 5,
+                      "id": 577,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Tag",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "value",
+                      "dataType": "token",
+                      "value": "Conseil d'administration",
+                      "documentation": null,
+                      "level": 5,
+                      "id": 578,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "CreatedDate",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "token",
+                      "value": null,
+                      "documentation": "Date de tenue du CA",
+                      "level": 5,
+                      "id": 579,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "StartDate",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "token",
+                      "value": null,
+                      "documentation": "Date de tenue du CA",
+                      "level": 5,
+                      "id": 580,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "EndDate",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "token",
+                      "value": null,
+                      "documentation": "Date de tenue du CA",
+                      "level": 5,
+                      "id": 581,
+                      "parentId": 567,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "ArchiveUnit",
+                  "type": "element",
+                  "cardinality": "0-N",
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": "Procurations",
+                  "level": 4,
+                  "id": 582,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "id",
+                      "type": "attribute",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "ID",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 583,
+                      "parentId": 582,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Content",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 584,
+                      "parentId": 582,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DescriptionLevel",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Item",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 585,
+                          "parentId": 584,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Title",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "string",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 586,
+                          "parentId": 584,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "xml:lang",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "language",
+                              "value": "fra",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 587,
+                              "parentId": 586,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "OriginatingSystemId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "ID-SI-prod",
+                          "level": 6,
+                          "id": 588,
+                          "parentId": 584,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Tag",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Procuration",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 589,
+                          "parentId": 584,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "DataObjectReference",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 590,
+                      "parentId": 582,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DataObjectGroupReferenceId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 591,
+                          "parentId": 590,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "ArchiveUnit",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": "Convocation-OJ",
+                  "level": 4,
+                  "id": 592,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "id",
+                      "type": "attribute",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "ID",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 593,
+                      "parentId": 592,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Content",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 594,
+                      "parentId": 592,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DescriptionLevel",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Item",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 595,
+                          "parentId": 594,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Title",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "string",
+                          "value": "Convocation-OJ",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 596,
+                          "parentId": 594,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "xml:lang",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "language",
+                              "value": "fra",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 597,
+                              "parentId": 596,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "OriginatingSystemId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "ID-SI-prod",
+                          "level": 6,
+                          "id": 598,
+                          "parentId": 594,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Signature",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 599,
+                          "parentId": 594,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "Signer",
+                              "type": "element",
+                              "cardinality": "1-N",
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 600,
+                              "parentId": 599,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "FullName",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "string",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 601,
+                                  "parentId": 600,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "SigningTime",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "dateTime",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 602,
+                                  "parentId": 600,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "Function",
+                                  "type": "element",
+                                  "cardinality": "0-1",
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "string",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 603,
+                                  "parentId": 600,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "Validator",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 604,
+                              "parentId": 599,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "FullName",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "string",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 605,
+                                  "parentId": 604,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "ValidationTime",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "dateTime",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 606,
+                                  "parentId": 604,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "Function",
+                                  "type": "element",
+                                  "cardinality": "0-1",
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "string",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 607,
+                                  "parentId": 604,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "ReferencedObject",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 608,
+                              "parentId": 599,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "SignedObjectId",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 609,
+                                  "parentId": 608,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "SignedObjectDigest",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 610,
+                                  "parentId": 608,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                    {
+                                      "name": "algorithm",
+                                      "type": "attribute",
+                                      "cardinality": null,
+                                      "groupOrChoice": null,
+                                      "valueOrData": "data",
+                                      "dataType": "token",
+                                      "value": null,
+                                      "documentation": null,
+                                      "level": 9,
+                                      "id": 611,
+                                      "parentId": 610,
+                                      "choices": [
+                                      ],
+                                      "children": [
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "DataObjectReference",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 612,
+                      "parentId": 592,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DataObjectGroupReferenceId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 613,
+                          "parentId": 612,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "ArchiveUnit",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": "Feuille d'émargement-élus",
+                  "level": 4,
+                  "id": 614,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "id",
+                      "type": "attribute",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "ID",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 615,
+                      "parentId": 614,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Content",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 616,
+                      "parentId": 614,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DescriptionLevel",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Item",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 617,
+                          "parentId": 616,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Title",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "string",
+                          "value": "Feuille d'émargement-élus",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 618,
+                          "parentId": 616,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "xml:lang",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "language",
+                              "value": "fra",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 619,
+                              "parentId": 618,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "OriginatingSystemId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "ID-SI-prod",
+                          "level": 6,
+                          "id": 620,
+                          "parentId": 616,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "DataObjectReference",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 621,
+                      "parentId": 614,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DataObjectGroupReferenceId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 622,
+                          "parentId": 621,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "ArchiveUnit",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": "Feuille d'émargement-membres consultatifs",
+                  "level": 4,
+                  "id": 623,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "id",
+                      "type": "attribute",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "ID",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 624,
+                      "parentId": 623,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Content",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 625,
+                      "parentId": 623,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DescriptionLevel",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Item",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 626,
+                          "parentId": 625,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Title",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "string",
+                          "value": "Feuille d'émargement-membres consultatifs",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 627,
+                          "parentId": 625,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "xml:lang",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "language",
+                              "value": "fra",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 628,
+                              "parentId": 627,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "OriginatingSystemId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "ID-SI-prod",
+                          "level": 6,
+                          "id": 629,
+                          "parentId": 625,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "DataObjectReference",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 630,
+                      "parentId": 623,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DataObjectGroupReferenceId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 631,
+                          "parentId": 630,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "ArchiveUnit",
+                  "type": "element",
+                  "cardinality": "0-1",
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": "Enregistrement audio",
+                  "level": 4,
+                  "id": 632,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "id",
+                      "type": "attribute",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "ID",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 633,
+                      "parentId": 632,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Management",
+                      "type": "element",
+                      "cardinality": "0-1",
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 634,
+                      "parentId": 632,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "AppraisalRule",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 635,
+                          "parentId": 634,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "Rule",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "APP-00015",
+                              "documentation": "DUA 15 ans",
+                              "level": 7,
+                              "id": 636,
+                              "parentId": 635,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "StartDate",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 637,
+                              "parentId": 635,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "FinalAction",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "Destroy",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 638,
+                              "parentId": 635,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "AccessRule",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 639,
+                          "parentId": 634,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "Rule",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "ACC-00020",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 640,
+                              "parentId": 639,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "StartDate",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 641,
+                              "parentId": 639,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "Content",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 642,
+                      "parentId": 632,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DescriptionLevel",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Item",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 643,
+                          "parentId": 642,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Title",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "string",
+                          "value": "Enregistrement audio",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 644,
+                          "parentId": 642,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "xml:lang",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "language",
+                              "value": "fra",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 645,
+                              "parentId": 644,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "OriginatingSystemId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "ID-SI-prod",
+                          "level": 6,
+                          "id": 646,
+                          "parentId": 642,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "DataObjectReference",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 647,
+                      "parentId": 632,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DataObjectGroupReferenceId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 648,
+                          "parentId": 647,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "ArchiveUnit",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": "Relevé de conclusions",
+                  "level": 4,
+                  "id": 649,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "id",
+                      "type": "attribute",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "ID",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 650,
+                      "parentId": 649,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Content",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 651,
+                      "parentId": 649,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DescriptionLevel",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Item",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 652,
+                          "parentId": 651,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Title",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "string",
+                          "value": "Relevé de conclusions",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 653,
+                          "parentId": 651,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "xml:lang",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "language",
+                              "value": "fra",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 654,
+                              "parentId": 653,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "OriginatingSystemId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "ID-SI-prod",
+                          "level": 6,
+                          "id": 655,
+                          "parentId": 651,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "DataObjectReference",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 656,
+                      "parentId": 649,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DataObjectGroupReferenceId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 657,
+                          "parentId": 656,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "ArchiveUnit",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": "Accusé de réception du rectorat",
+                  "level": 4,
+                  "id": 658,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "id",
+                      "type": "attribute",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "ID",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 659,
+                      "parentId": 658,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Content",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 660,
+                      "parentId": 658,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DescriptionLevel",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Item",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 661,
+                          "parentId": 660,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Title",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "string",
+                          "value": "Accusé de réception du rectorat",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 662,
+                          "parentId": 660,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "xml:lang",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "language",
+                              "value": "fra",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 663,
+                              "parentId": 662,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "OriginatingSystemId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "ID-SI-prod",
+                          "level": 6,
+                          "id": 664,
+                          "parentId": 660,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "DataObjectReference",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 665,
+                      "parentId": 658,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DataObjectGroupReferenceId",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 666,
+                          "parentId": 665,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "ArchiveUnit",
+                  "type": "element",
+                  "cardinality": "1-N",
+                  "groupOrChoice": null,
+                  "valueOrData": null,
+                  "dataType": null,
+                  "value": null,
+                  "documentation": "Point OJ",
+                  "level": 4,
+                  "id": 667,
+                  "parentId": 565,
+                  "choices": [
+                  ],
+                  "children": [
+                    {
+                      "name": "id",
+                      "type": "attribute",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": "data",
+                      "dataType": "ID",
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 668,
+                      "parentId": 667,
+                      "choices": [
+                      ],
+                      "children": [
+                      ]
+                    },
+                    {
+                      "name": "Content",
+                      "type": "element",
+                      "cardinality": null,
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": null,
+                      "level": 5,
+                      "id": 669,
+                      "parentId": 667,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "DescriptionLevel",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "File",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 670,
+                          "parentId": 669,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Title",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "Intitulé du point à l'OJ",
+                          "level": 6,
+                          "id": 671,
+                          "parentId": 669,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "xml:lang",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "language",
+                              "value": "fra",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 672,
+                              "parentId": 671,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Tag",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "value",
+                          "dataType": "token",
+                          "value": "Point OJ",
+                          "documentation": null,
+                          "level": 6,
+                          "id": 673,
+                          "parentId": 669,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Tag",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "Point n°",
+                          "level": 6,
+                          "id": 674,
+                          "parentId": 669,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Tag",
+                          "type": "element",
+                          "cardinality": "0-N",
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "token",
+                          "value": null,
+                          "documentation": "Mot-clés ordre du jour",
+                          "level": 6,
+                          "id": 675,
+                          "parentId": 669,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "ArchiveUnit",
+                      "type": "element",
+                      "cardinality": "0-N",
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": "PV CA antérieur",
+                      "level": 5,
+                      "id": 676,
+                      "parentId": 667,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "id",
+                          "type": "attribute",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "ID",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 677,
+                          "parentId": 676,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Content",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 678,
+                          "parentId": 676,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "DescriptionLevel",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "Item",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 679,
+                              "parentId": 678,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Title",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 680,
+                              "parentId": 678,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "xml:lang",
+                                  "type": "attribute",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "language",
+                                  "value": "fra",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 681,
+                                  "parentId": 680,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "OriginatingSystemId",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": "ID-SI-prod",
+                              "level": 7,
+                              "id": 682,
+                              "parentId": 678,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Status",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": "\"Voté\" ou \"Non voté\"",
+                              "level": 7,
+                              "id": 683,
+                              "parentId": 678,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Tag",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "PV",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 684,
+                              "parentId": 678,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "DataObjectReference",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 685,
+                          "parentId": 676,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "DataObjectGroupReferenceId",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 686,
+                              "parentId": 685,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "ArchiveUnit",
+                      "type": "element",
+                      "cardinality": "0-N",
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": "Extrait",
+                      "level": 5,
+                      "id": 687,
+                      "parentId": 667,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "id",
+                          "type": "attribute",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "ID",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 688,
+                          "parentId": 687,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Content",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 689,
+                          "parentId": 687,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "DescriptionLevel",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "File",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 690,
+                              "parentId": 689,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Title",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 691,
+                              "parentId": 689,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "xml:lang",
+                                  "type": "attribute",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "language",
+                                  "value": "fra",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 692,
+                                  "parentId": 691,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "Tag",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "Extrait de délibération",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 693,
+                              "parentId": 689,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "ArchiveUnit",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": "Extrait",
+                          "level": 6,
+                          "id": 694,
+                          "parentId": 687,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "id",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "ID",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 695,
+                              "parentId": 694,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Content",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 696,
+                              "parentId": 694,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "DescriptionLevel",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "token",
+                                  "value": "Item",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 697,
+                                  "parentId": 696,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "Title",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 698,
+                                  "parentId": 696,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                    {
+                                      "name": "xml:lang",
+                                      "type": "attribute",
+                                      "cardinality": null,
+                                      "groupOrChoice": null,
+                                      "valueOrData": "value",
+                                      "dataType": "language",
+                                      "value": "fra",
+                                      "documentation": null,
+                                      "level": 9,
+                                      "id": 699,
+                                      "parentId": 698,
+                                      "choices": [
+                                      ],
+                                      "children": [
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "OriginatingSystemId",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": "ID-SI-prod",
+                                  "level": 8,
+                                  "id": 700,
+                                  "parentId": 696,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "Signature",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": null,
+                                  "dataType": null,
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 701,
+                                  "parentId": 696,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                    {
+                                      "name": "Signer",
+                                      "type": "element",
+                                      "cardinality": "1-N",
+                                      "groupOrChoice": null,
+                                      "valueOrData": null,
+                                      "dataType": null,
+                                      "value": null,
+                                      "documentation": null,
+                                      "level": 9,
+                                      "id": 702,
+                                      "parentId": 701,
+                                      "choices": [
+                                      ],
+                                      "children": [
+                                        {
+                                          "name": "FullName",
+                                          "type": "element",
+                                          "cardinality": null,
+                                          "groupOrChoice": null,
+                                          "valueOrData": "data",
+                                          "dataType": "string",
+                                          "value": null,
+                                          "documentation": null,
+                                          "level": 10,
+                                          "id": 703,
+                                          "parentId": 702,
+                                          "choices": [
+                                          ],
+                                          "children": [
+                                          ]
+                                        },
+                                        {
+                                          "name": "SigningTime",
+                                          "type": "element",
+                                          "cardinality": null,
+                                          "groupOrChoice": null,
+                                          "valueOrData": "data",
+                                          "dataType": "dateTime",
+                                          "value": null,
+                                          "documentation": null,
+                                          "level": 10,
+                                          "id": 704,
+                                          "parentId": 702,
+                                          "choices": [
+                                          ],
+                                          "children": [
+                                          ]
+                                        },
+                                        {
+                                          "name": "Function",
+                                          "type": "element",
+                                          "cardinality": "0-1",
+                                          "groupOrChoice": null,
+                                          "valueOrData": "data",
+                                          "dataType": "string",
+                                          "value": null,
+                                          "documentation": null,
+                                          "level": 10,
+                                          "id": 705,
+                                          "parentId": 702,
+                                          "choices": [
+                                          ],
+                                          "children": [
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "name": "Validator",
+                                      "type": "element",
+                                      "cardinality": null,
+                                      "groupOrChoice": null,
+                                      "valueOrData": null,
+                                      "dataType": null,
+                                      "value": null,
+                                      "documentation": null,
+                                      "level": 9,
+                                      "id": 706,
+                                      "parentId": 701,
+                                      "choices": [
+                                      ],
+                                      "children": [
+                                        {
+                                          "name": "FullName",
+                                          "type": "element",
+                                          "cardinality": null,
+                                          "groupOrChoice": null,
+                                          "valueOrData": "data",
+                                          "dataType": "string",
+                                          "value": null,
+                                          "documentation": null,
+                                          "level": 10,
+                                          "id": 707,
+                                          "parentId": 706,
+                                          "choices": [
+                                          ],
+                                          "children": [
+                                          ]
+                                        },
+                                        {
+                                          "name": "ValidationTime",
+                                          "type": "element",
+                                          "cardinality": null,
+                                          "groupOrChoice": null,
+                                          "valueOrData": "data",
+                                          "dataType": "dateTime",
+                                          "value": null,
+                                          "documentation": null,
+                                          "level": 10,
+                                          "id": 708,
+                                          "parentId": 706,
+                                          "choices": [
+                                          ],
+                                          "children": [
+                                          ]
+                                        },
+                                        {
+                                          "name": "Function",
+                                          "type": "element",
+                                          "cardinality": "0-1",
+                                          "groupOrChoice": null,
+                                          "valueOrData": "data",
+                                          "dataType": "string",
+                                          "value": null,
+                                          "documentation": null,
+                                          "level": 10,
+                                          "id": 709,
+                                          "parentId": 706,
+                                          "choices": [
+                                          ],
+                                          "children": [
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "name": "ReferencedObject",
+                                      "type": "element",
+                                      "cardinality": null,
+                                      "groupOrChoice": null,
+                                      "valueOrData": null,
+                                      "dataType": null,
+                                      "value": null,
+                                      "documentation": null,
+                                      "level": 9,
+                                      "id": 710,
+                                      "parentId": 701,
+                                      "choices": [
+                                      ],
+                                      "children": [
+                                        {
+                                          "name": "SignedObjectId",
+                                          "type": "element",
+                                          "cardinality": null,
+                                          "groupOrChoice": null,
+                                          "valueOrData": "data",
+                                          "dataType": "token",
+                                          "value": null,
+                                          "documentation": null,
+                                          "level": 10,
+                                          "id": 711,
+                                          "parentId": 710,
+                                          "choices": [
+                                          ],
+                                          "children": [
+                                          ]
+                                        },
+                                        {
+                                          "name": "SignedObjectDigest",
+                                          "type": "element",
+                                          "cardinality": null,
+                                          "groupOrChoice": null,
+                                          "valueOrData": "data",
+                                          "dataType": "token",
+                                          "value": null,
+                                          "documentation": null,
+                                          "level": 10,
+                                          "id": 712,
+                                          "parentId": 710,
+                                          "choices": [
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "algorithm",
+                                              "type": "attribute",
+                                              "cardinality": null,
+                                              "groupOrChoice": null,
+                                              "valueOrData": "data",
+                                              "dataType": "token",
+                                              "value": null,
+                                              "documentation": null,
+                                              "level": 11,
+                                              "id": 713,
+                                              "parentId": 712,
+                                              "choices": [
+                                              ],
+                                              "children": [
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "DataObjectReference",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 714,
+                              "parentId": 694,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "DataObjectGroupReferenceId",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 715,
+                                  "parentId": 714,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "ArchiveUnit",
+                          "type": "element",
+                          "cardinality": "0-N",
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": "Pièces annexes",
+                          "level": 6,
+                          "id": 716,
+                          "parentId": 687,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "id",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "ID",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 717,
+                              "parentId": 716,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Content",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 718,
+                              "parentId": 716,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "DescriptionLevel",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "token",
+                                  "value": "Item",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 719,
+                                  "parentId": 718,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "Title",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 720,
+                                  "parentId": 718,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                    {
+                                      "name": "xml:lang",
+                                      "type": "attribute",
+                                      "cardinality": null,
+                                      "groupOrChoice": null,
+                                      "valueOrData": "value",
+                                      "dataType": "language",
+                                      "value": "fra",
+                                      "documentation": null,
+                                      "level": 9,
+                                      "id": 721,
+                                      "parentId": 720,
+                                      "choices": [
+                                      ],
+                                      "children": [
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "OriginatingSystemId",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": "ID-SI-prod",
+                                  "level": 8,
+                                  "id": 722,
+                                  "parentId": 718,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "Tag",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "token",
+                                  "value": "Pièce annexe",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 723,
+                                  "parentId": 718,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "DataObjectReference",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 724,
+                              "parentId": 716,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "DataObjectGroupReferenceId",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 725,
+                                  "parentId": 724,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "ArchiveUnit",
+                      "type": "element",
+                      "cardinality": "0-N",
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": "Pièces annexes",
+                      "level": 5,
+                      "id": 726,
+                      "parentId": 667,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "id",
+                          "type": "attribute",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "ID",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 727,
+                          "parentId": 726,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Content",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 728,
+                          "parentId": 726,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "DescriptionLevel",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "Item",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 729,
+                              "parentId": 728,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Title",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 730,
+                              "parentId": 728,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "xml:lang",
+                                  "type": "attribute",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "language",
+                                  "value": "fra",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 731,
+                                  "parentId": 730,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "OriginatingSystemId",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": "ID-SI-prod",
+                              "level": 7,
+                              "id": 732,
+                              "parentId": 728,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Tag",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "Pièce annexe",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 733,
+                              "parentId": 728,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "DataObjectReference",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 734,
+                          "parentId": 726,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "DataObjectGroupReferenceId",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 735,
+                              "parentId": 734,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "ArchiveUnit",
+                      "type": "element",
+                      "cardinality": "0-N",
+                      "groupOrChoice": null,
+                      "valueOrData": null,
+                      "dataType": null,
+                      "value": null,
+                      "documentation": "Convention ou Accord international",
+                      "level": 5,
+                      "id": 736,
+                      "parentId": 667,
+                      "choices": [
+                      ],
+                      "children": [
+                        {
+                          "name": "id",
+                          "type": "attribute",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": "data",
+                          "dataType": "ID",
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 737,
+                          "parentId": 736,
+                          "choices": [
+                          ],
+                          "children": [
+                          ]
+                        },
+                        {
+                          "name": "Management",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 738,
+                          "parentId": 736,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "AppraisalRule",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 739,
+                              "parentId": 738,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "Rule",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "token",
+                                  "value": "APP-00015",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 740,
+                                  "parentId": 739,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "StartDate",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 741,
+                                  "parentId": 739,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "FinalAction",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "token",
+                                  "value": "Destroy",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 742,
+                                  "parentId": 739,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Content",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": null,
+                          "level": 6,
+                          "id": 743,
+                          "parentId": 736,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "DescriptionLevel",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "File",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 744,
+                              "parentId": 743,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Title",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 745,
+                              "parentId": 743,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "xml:lang",
+                                  "type": "attribute",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "language",
+                                  "value": "fra",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 746,
+                                  "parentId": 745,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "Tag",
+                              "type": "element",
+                              "cardinality": "0-1",
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "ACI",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 747,
+                              "parentId": 743,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Tag",
+                              "type": "element",
+                              "cardinality": "0-1",
+                              "groupOrChoice": null,
+                              "valueOrData": "value",
+                              "dataType": "token",
+                              "value": "Convention",
+                              "documentation": null,
+                              "level": 7,
+                              "id": 748,
+                              "parentId": 743,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Tag",
+                              "type": "element",
+                              "cardinality": "0-1",
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "token",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 749,
+                              "parentId": 743,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "ArchiveUnit",
+                          "type": "element",
+                          "cardinality": null,
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": "Convention ou ACI",
+                          "level": 6,
+                          "id": 750,
+                          "parentId": 736,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "id",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "ID",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 751,
+                              "parentId": 750,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Content",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 752,
+                              "parentId": 750,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "DescriptionLevel",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "token",
+                                  "value": "Item",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 753,
+                                  "parentId": 752,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "Title",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 754,
+                                  "parentId": 752,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                    {
+                                      "name": "xml:lang",
+                                      "type": "attribute",
+                                      "cardinality": null,
+                                      "groupOrChoice": null,
+                                      "valueOrData": "value",
+                                      "dataType": "language",
+                                      "value": "fra",
+                                      "documentation": null,
+                                      "level": 9,
+                                      "id": 755,
+                                      "parentId": 754,
+                                      "choices": [
+                                      ],
+                                      "children": [
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "OriginatingSystemId",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": "ID-SI-prod",
+                                  "level": 8,
+                                  "id": 756,
+                                  "parentId": 752,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "DataObjectReference",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 757,
+                              "parentId": 750,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "DataObjectGroupReferenceId",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 758,
+                                  "parentId": 757,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "ArchiveUnit",
+                          "type": "element",
+                          "cardinality": "0-N",
+                          "groupOrChoice": null,
+                          "valueOrData": null,
+                          "dataType": null,
+                          "value": null,
+                          "documentation": "Pièces annexes",
+                          "level": 6,
+                          "id": 759,
+                          "parentId": 736,
+                          "choices": [
+                          ],
+                          "children": [
+                            {
+                              "name": "id",
+                              "type": "attribute",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": "data",
+                              "dataType": "ID",
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 760,
+                              "parentId": 759,
+                              "choices": [
+                              ],
+                              "children": [
+                              ]
+                            },
+                            {
+                              "name": "Content",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 761,
+                              "parentId": 759,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "DescriptionLevel",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "token",
+                                  "value": "Item",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 762,
+                                  "parentId": 761,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "Title",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 763,
+                                  "parentId": 761,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                    {
+                                      "name": "xml:lang",
+                                      "type": "attribute",
+                                      "cardinality": null,
+                                      "groupOrChoice": null,
+                                      "valueOrData": "value",
+                                      "dataType": "language",
+                                      "value": "fra",
+                                      "documentation": null,
+                                      "level": 9,
+                                      "id": 764,
+                                      "parentId": 763,
+                                      "choices": [
+                                      ],
+                                      "children": [
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "OriginatingSystemId",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": "ID-SI-prod",
+                                  "level": 8,
+                                  "id": 765,
+                                  "parentId": 761,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                },
+                                {
+                                  "name": "Tag",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "value",
+                                  "dataType": "token",
+                                  "value": "Pièce annexe",
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 766,
+                                  "parentId": 761,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "DataObjectReference",
+                              "type": "element",
+                              "cardinality": null,
+                              "groupOrChoice": null,
+                              "valueOrData": null,
+                              "dataType": null,
+                              "value": null,
+                              "documentation": null,
+                              "level": 7,
+                              "id": 767,
+                              "parentId": 759,
+                              "choices": [
+                              ],
+                              "children": [
+                                {
+                                  "name": "DataObjectGroupReferenceId",
+                                  "type": "element",
+                                  "cardinality": null,
+                                  "groupOrChoice": null,
+                                  "valueOrData": "data",
+                                  "dataType": "token",
+                                  "value": null,
+                                  "documentation": null,
+                                  "level": 8,
+                                  "id": 768,
+                                  "parentId": 767,
+                                  "choices": [
+                                  ],
+                                  "children": [
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ManagementMetadata",
+          "type": "element",
+          "cardinality": null,
+          "groupOrChoice": null,
+          "valueOrData": null,
+          "dataType": null,
+          "value": null,
+          "documentation": null,
+          "level": 2,
+          "id": 769,
+          "parentId": 549,
+          "choices": [
+          ],
+          "children": [
+            {
+              "name": "ArchivalProfile",
+              "type": "element",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": "data",
+              "dataType": "token",
+              "value": null,
+              "documentation": null,
+              "level": 3,
+              "id": 770,
+              "parentId": 769,
+              "choices": [
+              ],
+              "children": [
+              ]
+            },
+            {
+              "name": "OriginatingAgencyIdentifier",
+              "type": "element",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": "value",
+              "dataType": "token",
+              "value": "19640251500270",
+              "documentation": null,
+              "level": 3,
+              "id": 771,
+              "parentId": 769,
+              "choices": [
+              ],
+              "children": [
+              ]
+            },
+            {
+              "name": "SubmissionAgencyIdentifier",
+              "type": "element",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": "value",
+              "dataType": "token",
+              "value": "19640251500270",
+              "documentation": null,
+              "level": 3,
+              "id": 772,
+              "parentId": 769,
+              "choices": [
+              ],
+              "children": [
+              ]
+            },
+            {
+              "name": "AppraisalRule",
+              "type": "element",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": null,
+              "dataType": null,
+              "value": null,
+              "documentation": null,
+              "level": 3,
+              "id": 773,
+              "parentId": 769,
+              "choices": [
+              ],
+              "children": [
+                {
+                  "name": "Rule",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "value",
+                  "dataType": "token",
+                  "value": "APP-00015",
+                  "documentation": "DUA 15 ans",
+                  "level": 4,
+                  "id": 774,
+                  "parentId": 773,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                },
+                {
+                  "name": "StartDate",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "data",
+                  "dataType": "date",
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 775,
+                  "parentId": 773,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                },
+                {
+                  "name": "FinalAction",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "value",
+                  "dataType": "token",
+                  "value": "Keep",
+                  "documentation": null,
+                  "level": 4,
+                  "id": 776,
+                  "parentId": 773,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "AccessRule",
+              "type": "element",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": null,
+              "dataType": null,
+              "value": null,
+              "documentation": null,
+              "level": 3,
+              "id": 777,
+              "parentId": 769,
+              "choices": [
+              ],
+              "children": [
+                {
+                  "name": "Rule",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "value",
+                  "dataType": "token",
+                  "value": "ACC-00001",
+                  "documentation": "Librement communicable",
+                  "level": 4,
+                  "id": 778,
+                  "parentId": 777,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                },
+                {
+                  "name": "StartDate",
+                  "type": "element",
+                  "cardinality": null,
+                  "groupOrChoice": null,
+                  "valueOrData": "data",
+                  "dataType": "date",
+                  "value": null,
+                  "documentation": null,
+                  "level": 4,
+                  "id": 779,
+                  "parentId": 777,
+                  "choices": [
+                  ],
+                  "children": [
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ArchivalAgency",
+      "type": "element",
+      "cardinality": null,
+      "groupOrChoice": null,
+      "valueOrData": null,
+      "dataType": null,
+      "value": null,
+      "documentation": null,
+      "level": 1,
+      "id": 780,
+      "parentId": 544,
+      "choices": [
+      ],
+      "children": [
+        {
+          "name": "Identifier",
+          "type": "element",
+          "cardinality": null,
+          "groupOrChoice": null,
+          "valueOrData": "value",
+          "dataType": "token",
+          "value": "19341594000017",
+          "documentation": null,
+          "level": 2,
+          "id": 781,
+          "parentId": 780,
+          "choices": [
+          ],
+          "children": [
+            {
+              "name": "schemeName",
+              "type": "attribute",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": "value",
+              "dataType": "token",
+              "value": "SIRET",
+              "documentation": null,
+              "level": 3,
+              "id": 782,
+              "parentId": 781,
+              "choices": [
+              ],
+              "children": [
+              ]
+            },
+            {
+              "name": "schemeAgencyName",
+              "type": "attribute",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": "value",
+              "dataType": "token",
+              "value": "INSEE",
+              "documentation": null,
+              "level": 3,
+              "id": 783,
+              "parentId": 781,
+              "choices": [
+              ],
+              "children": [
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TransferringAgency",
+      "type": "element",
+      "cardinality": null,
+      "groupOrChoice": null,
+      "valueOrData": null,
+      "dataType": null,
+      "value": null,
+      "documentation": null,
+      "level": 1,
+      "id": 784,
+      "parentId": 544,
+      "choices": [
+      ],
+      "children": [
+        {
+          "name": "Identifier",
+          "type": "element",
+          "cardinality": null,
+          "groupOrChoice": null,
+          "valueOrData": "value",
+          "dataType": "token",
+          "value": "19640251500270",
+          "documentation": null,
+          "level": 2,
+          "id": 785,
+          "parentId": 784,
+          "choices": [
+          ],
+          "children": [
+            {
+              "name": "schemeName",
+              "type": "attribute",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": "value",
+              "dataType": "token",
+              "value": "SIRET",
+              "documentation": null,
+              "level": 3,
+              "id": 786,
+              "parentId": 785,
+              "choices": [
+              ],
+              "children": [
+              ]
+            },
+            {
+              "name": "schemeAgencyName",
+              "type": "attribute",
+              "cardinality": null,
+              "groupOrChoice": null,
+              "valueOrData": "value",
+              "dataType": "token",
+              "value": "INSEE",
+              "documentation": null,
+              "level": 3,
+              "id": 787,
+              "parentId": 785,
+              "choices": [
+              ],
+              "children": [
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "aegaaaaabafbmai5aa2d2alwatqvahqaaaaq",
+  "identifier": "AUP-000007",
+  "name": "AUP default PASTIS",
+  "description": "Import d'un AUP default pour PASTIS",
+  "status": "ACTIVE",
+  "creationDate": "2000-09-01T00:00:00.000",
+  "lastUpdate": "2020-11-26T14:08:20.987",
+  "activationDate": "2016-12-10T00:00:00.000",
+  "deactivationDate": "2016-12-10T00:00:00.000",
+  "controlSchema": "{\"$schema\":\"http://json-schema.org/draft-04/schema\",\"type\":\"object\",\"additionalProperties\":false,\"patternProperties\":{\"#management\":{}},\"properties\":{\"ArchiveUnitProfile\":{\"type\":\"string\",\"description\":\"DescriptionLevel : cardinalité 0-1 / valeur au choix\"},\"DescriptionLevel\":{\"type\":\"string\",\"description\":\"DescriptionLevel : cardinalité 0-1\",\"enum\":[\"Fonds\",\"Subfonds\",\"Class\",\"Collection\",\"Series\",\"Subseries\",\"RecordGrp\",\"SubGrp\",\"File\",\"Item\",\"OtherLevel\"]},\"Title_\":{\"type\":\"object\",\"description\":\"Title : cardinalité 0-N / valeur au choix\"},\"FilePlanPosition\":{\"description\":\"FilePlanPosition : cardinalité 0-N / valeur au choix\",\"type\":\"array\"},\"Tag\":{\"description\":\"Tag : cardinalité 0-N / valeur au choix\",\"type\":\"array\"},\"Keyword\":{\"description\":\"Keyword : cardinalité 0-N / valeur au choix\",\"type\":\"array\",\"minItems\":0,\"maxItems\":1,\"additionalProperties\":false,\"properties\":{\"KeywordContent\":{\"type\":\"string\",\"description\":\"Identifier : cardinalité 1 / valeur au choix\"}}},\"OriginatingAgency\":{\"description\":\"OriginatingAgency : cardinalité 0-1 / valeur au choix\",\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"Identifier\":{\"description\":\"Identifier : cardinalité 1-1 / valeur au choix\",\"type\":\"string\"}}}}}",
+  "tenant": 8,
+  "version": 1,
+  "fields": [
+    "ArchiveUnitProfile",
+    "DescriptionLevel",
+    "Title"
+  ]
+}

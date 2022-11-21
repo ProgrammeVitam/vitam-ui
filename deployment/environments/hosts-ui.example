@@ -37,6 +37,7 @@ hosts_ui_ingest
 hosts_ui_archive_search
 hosts_ui_collect
 hosts_ui_referential
+hosts_ui_pastis
 
 [hosts_ui_identity]
 # EDIT: Mandatory
@@ -59,6 +60,8 @@ hosts_ui_referential
 [hosts_ui_search]
 # EDIT: Mandatory
 
+[hosts_ui_pastis]
+# EDIT: Mandatory
 
 ################################################################################
 # ZONE ADMIN
@@ -96,6 +99,7 @@ hosts_vitamui_collect_internal
 hosts_vitamui_referential_external
 hosts_vitamui_referential_internal
 hosts_vitamui_security_internal
+hosts_vitamui_pastis_external
 
 [hosts_vitamui_iam_external]
 # EDIT: Mandatory
@@ -130,6 +134,8 @@ hosts_vitamui_security_internal
 [hosts_vitamui_security_internal]
 # EDIT: Mandatory
 
+[hosts_vitamui_pastis_external]
+# EDIT: Mandatory
 
 ################################################################################
 # ZONE DATA

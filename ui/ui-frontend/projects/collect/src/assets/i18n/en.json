@@ -1,21 +1,5 @@
 {
   "COLLECT": {
-    "UPDATE_UNITS_METADATA": {
-      "ACTION_UPDATE": "Update metadata",
-      "ACTION_TITLE": "Update Archive Metadata",
-      "ACTION_SUB_TITLE": "Import metadata update file",
-      "ACTION_DESCRIPTION": "Import a csv file to update the descriptive metadata of the archival units of the selected project",
-      "UPDATE_CONFIRM": "Update",
-      "UPDATE_CANCEL": "Cancel",
-      "CONFIRM": "Confirm",
-      "CANCEL_UPDATE_TO_CONFIRM": "Are you sure you want to cancel the metadata update operation?",
-      "ADD_FILE": "Drag and drop",
-      "BROWSE": "or Browse",
-      "ACCEPTED_FORMAT": "Accepted format: csv",
-      "FILE_BAD_FORMAT": "The uploaded file is not in the correct format",
-      "SUCCESS_MESSAGE": "The metadata update operation was successfully processed",
-      "WAIT_MESSAGE": "The operation is in progress, please do not shut down or refresh your browser"
-    },
     "SEARCH_PLACEHOLDER": "Code and message identifier, Submission agency",
     "APP_BREADCRUMB": "Collection and Remittance Preparation",
     "NB_ENTRIES": "{{nb}} projects",

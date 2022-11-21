@@ -52,15 +52,23 @@ public class ReferentialInternalWebClientFactory extends BaseWebClientFactory  {
     public AgencyInternalWebClient getAgencyInternalWebClient() {
         return new AgencyInternalWebClient(getWebClient(), getBaseUrl());
     }
-    
+
     public FileFormatInternalWebClient getFileFormatInternalWebClient() {
         return new FileFormatInternalWebClient(getWebClient(), getBaseUrl());
     }
-    
+
+    public ArchivalProfileInternalWebClient getArchivalProfileInternalWebClient() {
+        return new ArchivalProfileInternalWebClient(getWebClient(), getBaseUrl());
+    }
+
+    public ProfileInternalWebClient getProfileInternalWebClient() {
+        return new ProfileInternalWebClient(getWebClient(), getBaseUrl());
+    }
+
     public OntologyInternalWebClient getOntologyInternalWebClient() {
         return new OntologyInternalWebClient(getWebClient(), getBaseUrl());
     }
-    
+
     public RuleInternalWebClient getRuleInternalWebClient() {
         return new RuleInternalWebClient(getWebClient(), getBaseUrl());
     }

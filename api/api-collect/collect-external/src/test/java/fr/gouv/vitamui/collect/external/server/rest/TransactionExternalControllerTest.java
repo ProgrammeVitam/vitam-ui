@@ -33,10 +33,8 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.external.server.service.TransactionExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,16 +43,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
-import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_PATH;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = {TransactionExternalController.class})
-class TransactionExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
+public class TransactionExternalControllerTest extends ApiSearchCollectExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(TransactionExternalControllerTest.class);
@@ -69,6 +63,24 @@ class TransactionExternalControllerTest extends ApiCollectExternalControllerTest
         transactionExternalController = new TransactionExternalController(
             transactionExternalService);
     }
+
+
+    @Test
+    void when_abortTransaction_ok() throws InvalidParseOperationException {
+
+        Mockito.doNothing().when(transactionExternalService).abortTransaction("transactionId");
+        this.transactionExternalController.abortTransaction("transactionId");
+        verify(transactionExternalService, times(1)).abortTransaction("transactionId");
+    }
+
+    @Test
+    void when_searchCollectUnitsByCriteria_Service_ko_should_return_ko() throws InvalidParseOperationException {
+
+        Mockito.doNothing().when(transactionExternalService).reopenTransaction("transactionId");
+        this.transactionExternalController.reopenTransaction("transactionId");
+        verify(transactionExternalService, times(1)).reopenTransaction("transactionId");
+    }
+
 
     @Override
     protected String[] getServices() {
@@ -97,43 +109,6 @@ class TransactionExternalControllerTest extends ApiCollectExternalControllerTest
 
     @Override
     protected String getRessourcePrefix() {
-        return COLLECT_TRANSACTION_PATH;
+        return null;
     }
-
-     @Test
-    void when_abortTransaction_ok() throws InvalidParseOperationException {
-
-        Mockito.doNothing().when(transactionExternalService).abortTransaction("transactionId");
-        this.transactionExternalController.abortTransaction("transactionId");
-        verify(transactionExternalService, times(1)).abortTransaction("transactionId");
-    }
-
-    @Test
-    void when_searchCollectUnitsByCriteria_Service_ko_should_return_ko() throws InvalidParseOperationException {
-
-        Mockito.doNothing().when(transactionExternalService).reopenTransaction("transactionId");
-        this.transactionExternalController.reopenTransaction("transactionId");
-        verify(transactionExternalService, times(1)).reopenTransaction("transactionId");
-    }
-
-    @Test
-    void testUpdateUnitsMetadataThenReturnVitamOperationDetails()
-        throws InvalidParseOperationException, PreconditionFailedException {
-        // Given
-        String fileName = "FileName";
-        String transactionId = "transactionId";
-        String expectedResponse = "operationStatus";
-        String initialString = "csv file to update collect units";
-        InputStream csvFile = new ByteArrayInputStream(initialString.getBytes());
-
-        // When
-        Mockito
-            .when(transactionExternalService.updateArchiveUnitsFromFile(transactionId, csvFile, fileName))
-            .thenReturn(expectedResponse);
-        String response = transactionExternalController.updateArchiveUnitsMetadataFromFile(transactionId, csvFile, fileName);
-
-        // Then
-        Assertions.assertEquals(response, expectedResponse);
-    }
-
-    }
+}

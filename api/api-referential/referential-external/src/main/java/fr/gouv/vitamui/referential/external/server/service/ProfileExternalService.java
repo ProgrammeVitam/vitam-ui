@@ -36,22 +36,28 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.ProfileInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -61,8 +67,15 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
     @Autowired
     private ProfileInternalRestClient profileInternalRestClient;
 
-    public ProfileExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    private ProfileInternalWebClient profileInternalWebClient;
+
+    @Autowired
+    public ProfileExternalService(@Autowired  ExternalSecurityService externalSecurityService,
+                                  ProfileInternalRestClient profileInternalRestClient,
+                                  ProfileInternalWebClient profileInternalWebClient) {
         super(externalSecurityService);
+        this.profileInternalRestClient = profileInternalRestClient;
+        this.profileInternalWebClient = profileInternalWebClient;
     }
 
     public List<ProfileDto> getAll(final Optional<String> criteria) {
@@ -76,5 +89,64 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
     @Override
     protected Collection<String> getAllowedKeys() {
         return Arrays.asList("name", "identifier");
+    }
+
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
+                                                                  final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+
+        ParameterChecker.checkPagination(size, page);
+        final PaginatedValuesDto<ProfileDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        return new PaginatedValuesDto<>(
+            result.getValues().stream().map(this::converterToExternalDto).collect(Collectors.toList()),
+            result.getPageNum(),
+            result.getPageSize(),
+            result.isHasMore());
+    }
+
+    public ProfileDto getOne(String id) {
+        return getClient().getOne(getInternalHttpContext(), id);
+    }
+
+    @Override
+    public ProfileDto patch(final Map<String, Object> partialDto) {
+        return super.patch(partialDto);
+    }
+
+    public ProfileDto create(final ProfileDto accessContractDto) {
+        return profileInternalRestClient.create(getInternalHttpContext(), accessContractDto);
+    }
+
+    public boolean checkExists(final String criteria) {
+        return super.checkExists(criteria);
+    }
+
+    public ResponseEntity<JsonNode> updateProfile(final ProfileDto dto) {
+        return profileInternalRestClient.updateProfile(getInternalHttpContext(), dto);
+    }
+
+    @Override
+    public JsonNode findHistoryById(final String id) {
+        return getClient().findHistoryById(getInternalHttpContext(), id);
+    }
+
+    public boolean check(ProfileDto accessContractDto) {
+        return profileInternalRestClient.check(getInternalHttpContext(), accessContractDto);
+    }
+
+    public void delete(final String id) {
+        profileInternalRestClient.delete(getInternalHttpContext(), id);
+    }
+
+    public ResponseEntity<Resource> download(String id) {
+        return profileInternalRestClient.download(getInternalHttpContext(), id);
+    }
+
+    public ResponseEntity<JsonNode> importProfiles(String fileName, MultipartFile file) {
+        return profileInternalWebClient.importProfiles(getInternalHttpContext(), fileName, file);
+    }
+
+
+    public ResponseEntity<JsonNode> updateProfileFile(String id, MultipartFile profileFile) throws IOException {
+        return profileInternalRestClient.updateProfileFile(getInternalHttpContext(),id,profileFile);
     }
 }

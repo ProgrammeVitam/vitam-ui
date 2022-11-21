@@ -1,0 +1,451 @@
+
+
+.pastis-font-button-white {
+    position: absolute;
+    left: 38.89%;
+    right: 52.08%;
+    top: 93.27%;
+    bottom: 5.09%;
+
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 18px;
+    text-align: center;
+
+    color: #FFFFFF;
+}
+.pastis-font-table-header {
+
+  //styleName: Text/Text-normal-bold;
+  @extend .text-text-normal-bold;
+  color: #212121;
+
+}
+
+.pastis-font-button-icon {
+
+    font-family: Mulish;
+    font-style: normal;
+
+    font-size: 14px;
+    line-height: 18px;
+
+    align-items: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    flex: none;
+    margin: 0px 10px;
+}
+
+
+.pastis-table-content {
+  //styleName: Text/Text-normal;
+ @extend .text-text-normal;
+  color: #212121;
+
+}
+
+
+.pastis-table-content-with-errors {
+    @extend .pastis-table-content;
+    color: darkred;
+}
+
+/* Body 2 - Mulish Regular */
+.pastis-body-2 {
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    align-items: center;
+    text-align: center;
+}
+
+/* Body 2 - Mulish medium */
+.pastis-font-roboto-medium {
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.75px;
+}
+
+
+/* Body 2 - Mulish Regular */
+.pastis-font-roboto-regular {
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+}
+
+.pastis-font-roboto-snack {
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    color: white;
+    opacity: 0.4;
+    /* identical to box height, or 133% */
+}
+
+.pastis-font-headline-6 {
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 28px;
+    /* or 175% */
+    letter-spacing: 0.5px;
+}
+
+.pastis-font-informations {
+    /* INFORMATIONS */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    /* identical to box height */
+    font-variant: small-caps;
+}
+
+.pastis-font-label {
+    /* Label */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    /* or 114% */
+    letter-spacing: 0.75px;
+}
+
+.pastis-font-label-small {
+    /* Label */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    font-variant: small-caps;
+    /* or 114% */
+    letter-spacing: 0.75px;
+}
+
+.pastis-font-label-historique {
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    font-variant: small-caps;
+    letter-spacing: 0.75px;
+
+}
+
+.pastis-font-headline6 {
+
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+}
+
+.pastis-font-popup-subtitle{
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 35px;
+    letter-spacing: 0.15px;
+    color: #485053;
+}
+
+.pastis-font-popup-title{
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 26px;
+    line-height: 35px;
+    letter-spacing: 0.15px;
+    color: #485053;
+}
+
+.pastis-input-text {
+    @extend .pastis-black-medium;
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+}
+
+.pastis-input-placeholder-text {
+    /* Caption - Mulish Regular */
+    @extend .pastis-black-low;
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+}
+
+.pastis-font-menu{
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.pastis-font-add-metadata-items{
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 60px;
+}
+
+.pastis-textarea-comment{
+
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.25px;
+
+    /* Black - Low */
+
+    color: #9D9D9D;
+}
+
+.pastis-toaster-font{
+    .pastis-toaster-font{
+        font-family: Mulish;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 20px;
+        /* identical to box height, or 133% */
+
+        color: #FFFFFF;
+    }
+}
+
+// Font from FIGMA
+.pastis-font-h1{
+    /* H1 - Mulish Light */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 96px;
+    line-height: 112px;
+    /* identical to box height */
+    letter-spacing: -1.5px;
+    color: #C4C4C4;
+}
+
+.pastis-font-h2{
+    /* H2 - Mulish Light */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 60px;
+    line-height: 70px;
+    /* identical to box height */
+    letter-spacing: -0.5px;
+    color: #C4C4C4;
+}
+
+.pastis-font-h3{
+    /* H3 - Mulish Regular */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 48px;
+    line-height: 56px;
+    /* identical to box height */
+    color: #C4C4C4;
+}
+.pastis-font-h3-bold{
+    /* H3 - Mulish Regular */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 48px;
+    line-height: 56px;
+    /* identical to box height */
+    color: #C4C4C4;
+}
+
+.pastis-font-h4{
+    /* H4 - Mulish Regular */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 34px;
+    line-height: 40px;
+    /* identical to box height */
+    letter-spacing: 0.25px;
+    color: #C4C4C4;
+}
+
+.pastis-font-h5{
+    /* H5 - Mulish Regular */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.5px;
+    @extend .pastis-grey-900;
+}
+
+.pastis-font-h6{
+    /* H6 - Mulish Medium */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+    /* identical to box height */
+    color: #C4C4C4;
+}
+
+.pastis-font-body-medium{
+    /* Body 1 - Mulish Medium */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+    /* identical to box height, or 200% */
+    color: #C4C4C4;
+}
+
+.pastis-font-body-regular {
+    /* Body 2 - Mulish Regular */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+    color: #C4C4C4;
+}
+
+.pastis-font-subtitle-regular{
+    /* Subtitle 1 - Mulish Regular */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    /* identical to box height, or 150% */
+    letter-spacing: 0.15px;
+    color: #C4C4C4;
+}
+
+.pastis-font-regular-medium {
+    /* Subtitle 2 - Mulish Medium */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    /* identical to box height, or 171% */
+    color: #C4C4C4;
+}
+
+.pastis-font-button {
+    /* Button - Mulish Medium */
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    /* identical to box height, or 114% */
+    color: #C4C4C4;
+}
+
+.pastis-font-caption {
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    /* identical to box height, or 133% */
+    letter-spacing: -0.2px;
+}
+
+.pastis-font-caption-bold {
+    @extend .pastis-font-caption;
+    font-weight: bold;
+}
+
+.pastis-font-text-large {
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+}
+
+.pastis-font-text-large-bold {
+    @extend .pastis-font-text-large;
+    font-weight: bold;
+}
+
+//styleName: X_Text/Text-normal;
+.text-text-normal {
+  font-family: Mulish;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0.10000000149011612px;
+  text-align: left;
+}
+
+.text-text-medium {
+  //styleName: Text/Text-medium;
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.text-text-normal-bold {
+  //styleName: Text/Text-normal-bold;
+  font-family: Mulish;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: 0.10000000149011612px;
+  text-align: left;
+}

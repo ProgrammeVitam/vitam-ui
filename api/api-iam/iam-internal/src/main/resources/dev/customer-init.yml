@@ -193,6 +193,16 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
 
+    - name: Profil pour la gestion des pua/pa de pastis
+      description: Gestion de Pastis dans Vitam
+      app-name: PASTIS_APP
+      level:
+      roles:
+          - ROLE_GET_PASTIS
+          - ROLE_CREATE_PASTIS
+          - ROLE_UPDATE_PASTIS
+          - ROLE_DELETE_PASTIS
+
 
     - name: Archiviste
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
@@ -241,13 +251,30 @@ customer-init:
         - ROLE_GET_RULES
         - ROLE_SEND_TRANSACTIONS
         - ROLE_CLOSE_TRANSACTIONS
-        - ROLE_UPDATE_UNITS_METADATA
         - ROLE_REOPEN_TRANSACTIONS
         - ROLE_ABORT_TRANSACTIONS
         - ROLE_GET_TRANSACTIONS
         - ROLE_CREATE_TRANSACTIONS
         - ROLE_UPDATE_TRANSACTIONS
         - ROLE_DELETE_TRANSACTIONS
+
+    - name: Pastis-Gestion des profils documentaires
+      description: Pastis-Gestion des profils documentaires
+      app-name: PASTIS_APP
+      level:
+      roles:
+        - ROLE_GET_PASTIS
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_UPDATE_ARCHIVE_PROFILES_UNIT
+        - ROLE_CREATE_ARCHIVE_PROFILES_UNIT
+        - ROLE_IMPORT_ARCHIVE_PROFILES_UNIT
+        - ROLE_DELETE_ARCHIVE_PROFILES_UNIT
+        - ROLE_GET_ARCHIVE_PROFILES
+        - ROLE_UPDATE_ARCHIVE_PROFILES
+        - ROLE_CREATE_ARCHIVE_PROFILES
+        - ROLE_IMPORT_ARCHIVE_PROFILES
+        - ROLE_DELETE_ARCHIVE_PROFILES
+
 
   #- name: profileName
   #  description: desc

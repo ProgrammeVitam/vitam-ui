@@ -31,7 +31,6 @@ package fr.gouv.vitamui.collect.service;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
-import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -42,16 +41,9 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -61,8 +53,6 @@ public class TransactionServiceTest {
     private TransactionService transactionService;
 
     @Mock
-    private UpdateUnitsMetadataExternalRestClient updateUnitsMetadataExternalRestClient;
-    @Mock
     private CollectTransactionExternalRestClient collectTransactionExternalRestClient;
 
     @Mock
@@ -70,8 +60,7 @@ public class TransactionServiceTest {
 
     @Before
     public void init() {
-        transactionService = new TransactionService(collectTransactionExternalRestClient, updateUnitsMetadataExternalRestClient,
-            commonService);
+        transactionService = new TransactionService(collectTransactionExternalRestClient, commonService);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
@@ -111,27 +100,6 @@ public class TransactionServiceTest {
         Mockito.doNothing().when(collectTransactionExternalRestClient).reopenTransaction(context, "transactionId");
         transactionService.reopenTransaction(context, "transactionId");
         verify(collectTransactionExternalRestClient, times(1)).reopenTransaction(context, "transactionId");
-    }
-
-    @Test
-    public void update_archive_units_metadata_should_call_appropriate_client() {
-        // Given
-        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(updateUnitsMetadataExternalRestClient.updateArchiveUnitsMetadataFromFile(any(ExternalHttpContext.class), anyString(),
-                anyString(), any(InputStream.class)))
-            .thenReturn(new ResponseEntity<>("responseFromVitam", HttpStatus.OK));
-
-        String transactionId = "1";
-        InputStream anyInputStream = new ByteArrayInputStream("test data".getBytes());
-
-        // When
-        transactionService.updateArchiveUnitsMetadataFromFile( eq(transactionId), eq("fileName"), eq(anyInputStream), eq(context) );
-
-        // Then
-        verify(updateUnitsMetadataExternalRestClient, Mockito.times(1))
-            .updateArchiveUnitsMetadataFromFile(ArgumentMatchers.any() ,
-                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()
-            );
     }
 
 }

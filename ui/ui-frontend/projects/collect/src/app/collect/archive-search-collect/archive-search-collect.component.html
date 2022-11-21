@@ -29,7 +29,8 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectName }} </vitamui-common-title-breadcrumb>
+      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectName }}
+      </vitamui-common-title-breadcrumb>
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
       <div class="row row justify-content-around">
@@ -62,20 +63,14 @@
             {{ 'COLLECT.LAUNCH_SEARCH_ACTION' | translate }}
           </button>
         </div>
-        <div class="col-1 form-control">
-          <vitamui-common-menu-button
-            [overlayPos]="'end'"
-            [icon]="'vitamui-icon-more-horiz'"
-            matTooltip="{{ 'COLLECT.OTHER_ACTION' | translate }}"
-            matTooltipClass="vitamui-tooltip"
-          >
-            <button mat-menu-item [disabled]="updateUnitsMetadataDisabled(projectDetails)" (click)="openUpdateUnitsForm()">
-              {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate }}
-            </button>
-            <button mat-menu-item (click)="validateTransaction()" [disabled]="isNotOpen$ | async">
+
+        <div class="col-3 form-control text-right">
+          <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+            <button mat-menu-item i18n="Import@@RuleImportButton" (click)="validateTransaction()" [disabled]="isNotOpen$ | async">
               {{ 'COLLECT.VALIDATE_ACTION' | translate }}
             </button>
-            <button mat-menu-item (click)="sendTransaction()" [disabled]="isNotReady$ | async">
+
+            <button mat-menu-item i18n="Export@@RuleExportButton" (click)="sendTransaction()" [disabled]="isNotReady$ | async">
               {{ 'COLLECT.INGEST_ACTION' | translate }}
             </button>
           </vitamui-common-menu-button>
@@ -157,7 +152,8 @@
       </div>
       <div class="row" *ngIf="!pending">
         <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{ 'COLLECT.SHOW_SEARCH_CRITERIA' | translate }}</a>
-        <a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
+        <a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited"
+          (click)="showHideFacets(true)">{{
           'COLLECT.COMPUTE_RULES_FACETS' | translate
         }}</a>
       </div>
@@ -359,11 +355,8 @@
 
             <div
               class="col-3 area-download"
-              [ngClass]="
-                criteriaSearchList != null && criteriaSearchList.length > 0 && totalResults > 0 && itemSelected > 0
-                  ? 'enabled-div'
-                  : 'disabled-div'
-              "
+              [disabled]="totalResults == 0 || itemSelected == 0"
+              [ngClass]="totalResults > 0 && itemSelected > 0 ? 'enabled-div' : 'disabled-div'"
             >
               <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
             </div>

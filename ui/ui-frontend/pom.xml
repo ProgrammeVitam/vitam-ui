@@ -107,7 +107,7 @@
               <arguments>run build -- --project= --output-path=target/www</arguments>
             </configuration>
           </execution>
-          <execution>
+          <!--<execution>
             <id>npm test</id>
             <phase>test</phase>
             <goals>
@@ -117,7 +117,7 @@
               <skip>${skipAllFrontendTests}</skip>
               <arguments>run test:conf-ci</arguments>
             </configuration>
-          </execution>
+          </execution>-->
         </executions>
       </plugin>
       <plugin>
@@ -142,5 +142,59 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>standalone</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>2.4</version>
+            <executions>
+              <execution>
+                <id>copy-pastis-standalone-angular.json</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <overwrite>true</overwrite>
+                  <outputDirectory>.</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>../../api/api-pastis/pastis-standalone/src/main/resources/standalone/</directory>
+                      <includes>
+                        <include>angular.json</include>
+                      </includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              <execution>
+                <id>copy-resources-package.json</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>.</outputDirectory>
+                  <overwrite>true</overwrite>
+                  <resources>
+                    <resource>
+                      <directory>../../api/api-pastis/pastis-standalone/src/main/resources/standalone/</directory>
+                      <includes>
+                        <include>package.json</include>
+                      </includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

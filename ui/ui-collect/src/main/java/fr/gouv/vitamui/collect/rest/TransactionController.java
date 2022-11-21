@@ -30,6 +30,7 @@ package fr.gouv.vitamui.collect.rest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.service.TransactionService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -48,29 +49,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import java.io.InputStream;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.REOPEN_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.*;
 import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_MANDATORY_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 
@@ -205,31 +192,10 @@ public class TransactionController extends AbstractUiRestController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the transaction with ID {}", id);
+        final HttpServletRequest request = getCurrentHttpRequest();
         return transactionService.getTransactionById(buildUiHttpContext(), id);
     }
 
-
-    /**
-     * service to update archive Units Metadata From File
-     *
-     * @param transactionId the transaction id
-     * @param inputStream the input stream file
-     * @return a String
-     */
-
-    @ApiOperation(value = "Upload on streaming metadata file and update archive units", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PutMapping(value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId, InputStream inputStream,
-        @RequestHeader(value = "fileName") final String fileName)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("[UI] The transaction id is a mandatory parameter: ", transactionId);
-        SanityChecker.checkSecureParameter(transactionId);
-        SanityChecker.isValidFileName(fileName);
-        LOGGER.debug(" [UI] Calling update archive units metadata for transaction Id  {} ", transactionId);
-        return transactionService
-            .updateArchiveUnitsMetadataFromFile(transactionId, fileName, inputStream, buildUiHttpContext()).getBody();
-    }
 
 
 }

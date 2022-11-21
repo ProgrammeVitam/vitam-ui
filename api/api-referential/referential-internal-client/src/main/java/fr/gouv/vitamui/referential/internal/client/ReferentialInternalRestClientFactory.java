@@ -74,6 +74,10 @@ public class ReferentialInternalRestClientFactory extends BaseRestClientFactory 
         return new FileFormatInternalRestClient(getRestTemplate(), getBaseUrl());
     }
 
+    public ArchivalProfileUnitInternalRestClient getArchivalProfileInternalRestClient() {
+        return new ArchivalProfileUnitInternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
     public ContextInternalRestClient getContextInternalRestClient() {
         return new ContextInternalRestClient(getRestTemplate(), getBaseUrl());
     }

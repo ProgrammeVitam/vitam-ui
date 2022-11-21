@@ -1,0 +1,50 @@
+/// Pastis base colors
+/// @author Paulo Pimenta
+$colors: (
+
+  /* Primary */
+  primary-50: #F7EBFA,
+  primary-100: #e6c3ef,
+  primary-300: #C672D9,
+  primary-400 : #B54ACE,
+  primary-500 : #9c31b5,
+  primary-700: #571B64,
+
+
+  /* Secondary */
+  secondary-disabled:#BDD9EC,
+  secondary-50:#EAF2FA,
+  secondary-200: #96BDE8,
+  secondary-300: #6DA2DF,
+  secondary-400: #4388D6,
+  secondary-500: #2563A9,
+
+  /*Surface*/
+  surface-tabs: #604379,
+  surface-snackbar:#604379,
+
+  /* Variant */
+  black-low:#C1C1C1,
+  black-disabled:#E7E5E5,
+  black-medium:#747272,
+  black-height: #232323,
+  black-standard: #474747,
+  grey-900: #212121,
+  grey-600: #757575,
+  grey-400: #BDBDBD,
+  ligthly-purple: #F6F3FB,
+
+  /* White */
+  white-highlight: #FFFFFF,
+  white-disabled:rgba(255, 255, 255, 0.57)
+
+);
+
+$input-colors: (
+  enabled:  #F0F0F0,
+  disabled:#F0F0F0,
+  hover :#65B2E4,
+  activated :#747272,
+  error:#FF0000,
+  valid:#50D166,
+);

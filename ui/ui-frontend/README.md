@@ -115,3 +115,11 @@ Replace each static hex/rgb colors inside the svg file by the right css variable
 Replace each css class ids (for example .stXXX) and svgids (for example #SVGID_XX) by unique identifier compared to the others svg.
 
 > Attention: If an other application svg have the same class identifiers, your svg will not be displayed properly. **Also, do not forget to rename the css class & svgids usage in the whole file**.
+
+
+## Standalone Profile
+
+The standalone profile is used to build the pastis project ignoring other ui-frontend projects :
+
+- api/api-pastis/pastis-standalone/src/main/resources/standalone/package.json -> package.json
+- api/api-pastis/pastis-standalone/src/main/resources/standalone/angular.json -> angular.json

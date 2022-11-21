@@ -1,0 +1,138 @@
+@import '../../../../assets/css/mixins';
+@import '../../../../assets/css/font';
+
+.pastis-dialog-config-title {
+  bottom: 10px;
+  position: relative;
+}
+
+.pastis-dialog-title {
+  @extend .pastis-font-popup-title;
+  /* Positioning */
+  position: relative;
+  margin-left: 5%;
+  margin-right: 40px;
+  margin-top: 10px;
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  color: var(--vitamui-grey-900);
+
+}
+
+.pastis-dialog-subtitle {
+  @extend .pastis-font-popup-subtitle;
+  /* Positioning */
+  position: relative;
+  margin-left: 5%;
+  margin-right: 40px;
+  margin-bottom: 0;
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--vitamui-grey-600);
+}
+
+.pastis-dialog-content {
+  margin-right: 5%;
+  margin-left: 5%;
+  overflow: hidden;
+}
+
+.pastis-dialog-confirm-buttons {
+  position: relative;
+  margin-left: 5%;
+  margin-bottom: 10px;
+}
+
+.pastis-btn-oui-dialog-confirm {
+  padding-left: 30px;
+  padding-right: 30px;
+  min-width: 92px;
+  height: 50px;
+  background-color: var(--vitamui-primary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: Mulish !important;
+  @extend .pastis-btn-primary-enabled;
+}
+
+.pastis-btn-oui-dialog-confirm:hover:not([disabled]) {
+  @extend .pastis-btn-primary-hover;
+}
+
+.pastis-btn-oui-dialog-confirm:active {
+  @extend .pastis-btn-primary-focus;
+}
+
+.pastis-btn-oui-dialog-confirm:disabled {
+  @extend .pastis-btn-primary-disabled;
+}
+
+.pastis-btn-non-dialog-confirm {
+  padding-left: 30px;
+  padding-right: 30px;
+  min-width: 92px;
+  height: 50px;
+  margin-left: 24px;
+  border: 0;
+  background-color: transparent;
+  color: var(--vitamui-grey-900);
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.pastis-btn-non-dialog-confirm:active {
+  border: 0;
+}
+
+.barre-et-croix {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+}
+
+.barre-et-croix-attributes {
+  @extend .barre-et-croix;
+  left: 95%;
+}
+
+.barre-et-croix-delete {
+  @extend .barre-et-croix;
+  left: 600px;
+}
+
+
+.barre-et-croix-creation {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: 10px;
+}
+
+.barre-et-croix-creationfr {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: 10px;
+}
+
+.barre-et-croix-save{
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: 10px;
+}
