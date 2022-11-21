@@ -407,6 +407,7 @@ export class FileService implements OnDestroy {
     }
 
     setNotice(inverse: boolean) {
+      console.log('FileService.setNotice')
       let noticeProfile: ProfileDescription;
       noticeProfile = this.notice.getValue();
       let notice: Notice;
@@ -420,12 +421,14 @@ export class FileService implements OnDestroy {
           name: noticeProfile.name,
           description: noticeProfile.description
         };
+        console.log('    this.noticeEditable.next(notice);')
         this.noticeEditable.next(notice);
       } else {
         if (notice.identifier) { noticeProfile.identifier = notice.identifier; }
         noticeProfile.name = notice.name;
         noticeProfile.status = notice.status;
         noticeProfile.description = notice.description;
+        console.log('   this.notice.next(noticeProfile)')
         this.notice.next(noticeProfile);
       }
     }

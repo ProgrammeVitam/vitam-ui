@@ -64,33 +64,33 @@ export enum CardinalityConstants {
  * Json node data with nested structure. Each node has a name and a value or a list of children
  */
 export enum DataTypeConstants {
-    string = 'string',
-    dateTime = 'dateTime',
-    dateOrDateTime = 'dateOrDateTime',
-    date = 'date',
-    ID = 'ID',
-    'id' = 'id',
-    anyURI = 'anyURI',
-    token = 'token',
-    tokenType = 'tokenType',
-    base64Binary = 'base64Binary',
-    positiveInteger = 'positiveInteger',
-    boolean = 'boolean',
-    decimal = 'decimal',
-    int = 'int',
-    language = 'language',
-    NCName = 'NCName',
-    undefined = 'undefined'
+  string = 'string',
+  dateTime = 'dateTime',
+  dateOrDateTime = 'dateOrDateTime',
+  date = 'date',
+  ID = 'ID',
+  'id' = 'id',
+  anyURI = 'anyURI',
+  token = 'token',
+  tokenType = 'tokenType',
+  base64Binary = 'base64Binary',
+  positiveInteger = 'positiveInteger',
+  boolean = 'boolean',
+  decimal = 'decimal',
+  int = 'int',
+  language = 'language',
+  NCName = 'NCName',
+  undefined = 'undefined'
 }
 
 /**
  * Json node data with nested structure. Each node has a name and a value or a list of children
  */
 export enum ValueOrDataConstants {
-    value = 'value',
-    data = 'data',
-    nsName = 'nsName',
-    undefined = 'undefined'
+  value = 'value',
+  data = 'data',
+  nsName = 'nsName',
+  undefined = 'undefined'
 }
 
 export enum DateFormatType {
@@ -101,7 +101,7 @@ export enum DateFormatType {
 
 export interface FileNode {
   editName?: string;
-  additionalProperties:boolean;
+  additionalProperties: boolean;
   id: number;
   parentId: number;
   name: string;
@@ -117,8 +117,28 @@ export interface FileNode {
   children: FileNode[];
   parent: FileNode;
   sedaData: SedaData;
-  nonEditFileNode ?: boolean;
+  nonEditFileNode?: boolean;
   puaData?: PuaData;
+}
+
+// for debug purpose
+export function nodeToString(node: FileNode): string {
+  if (!node) {
+    return;
+  }
+  return '{' +
+    '"name": "' + node.name + '",'
+    + '"cardinality": "' + node.cardinality + '",'
+    + '"children": ' + nodesToString(node.children)
+    + '}';
+}
+
+// for debug purpose
+export function nodesToString(nodes: FileNode[]): string {
+  if (!nodes || nodes.length < 1) {
+    return '[]';
+  }
+  return '[' + nodes.map(node => nodeToString(node)).join(',') + ']'
 }
 
 export interface FileNodeInsertParams {
@@ -132,9 +152,9 @@ export interface FileNodeInsertAttributeParams {
 }
 
 export enum nodeNameToLabel {
-'notice' = 'PROFILE.EDIT_PROFILE.NOTICE_TAB',
-'ArchiveTransfer' = 'PROFILE.EDIT_PROFILE.ENTETE',
-'ManagementMetadata' = 'PROFILE.EDIT_PROFILE.REGLES',
-'DescriptiveMetadata' = 'PROFILE.EDIT_PROFILE.UNITES_ARCHIVES',
-'DataObjectPackage' = 'PROFILE.EDIT_PROFILE.OBJETS'
+  'notice' = 'PROFILE.EDIT_PROFILE.NOTICE_TAB',
+  'ArchiveTransfer' = 'PROFILE.EDIT_PROFILE.ENTETE',
+  'ManagementMetadata' = 'PROFILE.EDIT_PROFILE.REGLES',
+  'DescriptiveMetadata' = 'PROFILE.EDIT_PROFILE.UNITES_ARCHIVES',
+  'DataObjectPackage' = 'PROFILE.EDIT_PROFILE.OBJETS'
 }

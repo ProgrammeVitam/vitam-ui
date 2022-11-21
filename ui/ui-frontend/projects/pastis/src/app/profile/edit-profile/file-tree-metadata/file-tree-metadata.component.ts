@@ -489,7 +489,6 @@ export class FileTreeMetadataComponent {
 
   onAddNode() {
     if (this.clickedNode.name === 'DescriptiveMetadata') {
-      console.log('Yes');
       let elements: SedaData[];
       elements.push({
         Name: 'ArchiveUnit',

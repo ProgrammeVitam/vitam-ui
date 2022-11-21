@@ -1,9 +1,9 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {environment} from '../../../environments/environment';
-import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
+import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
 const POP_UP_SAVE_CHOICE_PATH = 'PROFILE.POP_UP_SAVE.CHOICE';
 
@@ -108,11 +108,15 @@ export class SaveProfileOptionsComponent implements OnInit {
   }
 
   onYesClick() {
+    console.log('onYesClick:')
     if (this.valueSelected && this.gestionNotice) {
+      console.log('    creation')
       this.dialogRef.close({success: true, action: 'creation'});
     } else if (!this.valueSelected) {
+      console.log('    local')
       this.dialogRef.close({success: true, action: 'local'});
     } else if (this.valueSelected && !this.gestionNotice) {
+      console.log('    rattachement')
       this.dialogRef.close({success: true, action: 'rattachement'});
     }
   }

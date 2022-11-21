@@ -35,26 +35,26 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {ProfileService} from '../../core/services/profile.service';
-import {FileService} from '../../core/services/file.service';
-import {FileNode} from '../../models/file-node';
-import {PastisDialogData} from "../../shared/pastis-dialog/classes/pastis-dialog-data";
-import {Subscription} from "rxjs";
-import {DataGeneriquePopupService} from '../../shared/data-generique-popup.service';
-import {MatDialog} from "@angular/material/dialog";
-import {CreateNoticeComponent} from "../create-notice/create-notice.component";
-import {SaveProfileOptionsComponent} from "../save-profile-options/save-profile-options.component";
-import {ArchivalProfileUnit} from "../../models/archival-profile-unit";
-import {Profile} from "../../models/profile";
-import {ProfileDescription} from "../../models/profile-description.model";
-import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {environment} from "../../../environments/environment";
-import {Router} from '@angular/router';
-import {NoticeService} from '../../core/services/notice.service';
-import {NotificationService} from '../../core/services/notification.service';
-import {ToggleSidenavService} from "../../core/services/toggle-sidenav.service";
-import {SelectNoticeComponent} from "../select-notice/select-notice.component";
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { FileService } from '../../core/services/file.service';
+import { NoticeService } from '../../core/services/notice.service';
+import { NotificationService } from '../../core/services/notification.service';
+import { ProfileService } from '../../core/services/profile.service';
+import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
+import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
+import { FileNode, nodesToString } from '../../models/file-node';
+import { Profile } from '../../models/profile';
+import { ProfileDescription } from '../../models/profile-description.model';
+import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
+import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { CreateNoticeComponent } from '../create-notice/create-notice.component';
+import { SaveProfileOptionsComponent } from '../save-profile-options/save-profile-options.component';
+import { SelectNoticeComponent } from '../select-notice/select-notice.component';
 
 export interface PastisDialogDataCreate {
   height: string;
@@ -87,7 +87,7 @@ function constantToTranslate(edit: boolean) {
 @Component({
   selector: 'pastis-user-action-save-profile',
   templateUrl: './save-profile.component.html',
-  styleUrls: ['./save-profile.component.scss']
+  styleUrls: [ './save-profile.component.scss' ]
 })
 export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   popupSaveCancelLabel: string;
@@ -162,172 +162,192 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   saveProfileToFile() {
     // Retrieve the current file tree data as a JSON
     this.data = this.fileService.allData.getValue();
+    console.log('UserActionSaveProfileComponent.saveProfileToFile')
+    console.log(nodesToString(this.data))
     if (this.isStandalone) {
       this.downloadProfiles(true);
-    } else {
-      const donnees = ['Local', 'SAE', 'Où souhaitez-vous l\'enregistrer ?'];
-      this.dataGeneriquePopupService.changeDonnees(donnees);
+      return;
+    }
 
-      const dataToSendToPopUp = {} as PastisDialogData;
-      dataToSendToPopUp.titleDialog = this.popupSaveTitleDialog;
-      dataToSendToPopUp.subTitleDialog = this.popupSaveSubTitleDialog;
-      dataToSendToPopUp.width = '800px';
-      dataToSendToPopUp.height = '800px';
-      dataToSendToPopUp.okLabel = this.popupSaveOkLabel;
-      dataToSendToPopUp.cancelLabel = this.popupSaveCancelLabel;
-      const dialogRef = this.dialog.open(SaveProfileOptionsComponent, {
-          width: '800px',
-          panelClass: 'pastis-popup-modal-box',
-          data: dataToSendToPopUp
-        }
-      );
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result.success && result.action === 'local') {
-          this.downloadProfiles(true);
+    const donnees = [ 'Local', 'SAE', 'Où souhaitez-vous l\'enregistrer ?' ];
+    this.dataGeneriquePopupService.changeDonnees(donnees);
 
-        } else if (result.success && result.action === 'creation') {
+    const dataToSendToPopUp = {} as PastisDialogData;
+    dataToSendToPopUp.titleDialog = this.popupSaveTitleDialog;
+    dataToSendToPopUp.subTitleDialog = this.popupSaveSubTitleDialog;
+    dataToSendToPopUp.width = '800px';
+    dataToSendToPopUp.height = '800px';
+    dataToSendToPopUp.okLabel = this.popupSaveOkLabel;
+    dataToSendToPopUp.cancelLabel = this.popupSaveCancelLabel;
+    const dialogRef = this.dialog.open(SaveProfileOptionsComponent, {
+        width: '800px',
+        panelClass: 'pastis-popup-modal-box',
+        data: dataToSendToPopUp
+      }
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('afterClosed')
+      console.log(JSON.stringify(result))
+      if (!result.success) {
+        console.log('not success')
+        return;
+      }
+      if (result.action === 'local') {
+        console.log(' action = local')
+        this.downloadProfiles(true);
 
-          const modeProfile = this.profileService.profileMode;
-          const dataToSendToPopUp = {} as PastisDialogDataCreate;
-          dataToSendToPopUp.titleDialog = this.popupSaveCreateNoticeTitleDialog;
-          dataToSendToPopUp.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
-          dataToSendToPopUp.okLabel = this.popupSaveCreateNoticeOkLabel;
-          dataToSendToPopUp.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
-          dataToSendToPopUp.modeProfile = modeProfile;
-          const dialogRef = this.dialog.open(CreateNoticeComponent, {
-              width: '800px',
-              panelClass: 'pastis-popup-modal-box',
-              data: dataToSendToPopUp
-            }
-          );
-          dialogRef.afterClosed().subscribe((result) => {
-            this.toggleService.showPending();
-            let retour;
-            if (result.success) {
-              retour = result.data;
-              if (result.mode === 'PUA') {
-                if (!this.editProfile) {
-                  this.profileDescription = Object.assign(this.noticeService.profileFromNotice(retour, this.editProfile, true), this.profileDescription);
-                } else {
-                  this.fileService.notice.subscribe((value: ProfileDescription) => {
-                    this.profileDescription = value;
-                  });
-                }
-                this.profileService.uploadFile(this.data, this.profileDescription, result.mode).subscribe(retrievedData => {
-                  retrievedData.text().then(result => {
-                    const jsonObject = JSON.parse(result);
-                    this.archivalProfileUnit = jsonObject as unknown as ArchivalProfileUnit;
-                    // Create ro update existing PUA
-                    if (!this.editProfile) {
-                      this.profileService.createArchivalUnitProfile(this.archivalProfileUnit).subscribe(() => {
-                        this.toggleService.hidePending();
-                        console.log("ok create")
-                        this.success("La création du profil a bien été effectué");
-                      })
-                    } else {
-                      this.profileService.updateProfilePua(this.archivalProfileUnit).subscribe(() => {
-                        this.toggleService.hidePending();
-                        console.log("ok update")
-                        this.success("La modification du profil a bien été effectué");
-                      })
-                    }
-                  });
+      } else if (result.action === 'creation') {
+        console.log(' action = creation')
+
+        const modeProfile = this.profileService.profileMode;
+        const dataToSendToPopUp = {} as PastisDialogDataCreate;
+        dataToSendToPopUp.titleDialog = this.popupSaveCreateNoticeTitleDialog;
+        dataToSendToPopUp.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
+        dataToSendToPopUp.okLabel = this.popupSaveCreateNoticeOkLabel;
+        dataToSendToPopUp.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
+        dataToSendToPopUp.modeProfile = modeProfile;
+        const dialogRef = this.dialog.open(CreateNoticeComponent, {
+            width: '800px',
+            panelClass: 'pastis-popup-modal-box',
+            data: dataToSendToPopUp
+          }
+        );
+        dialogRef.afterClosed().subscribe((result) => {
+          this.toggleService.showPending();
+          let retour;
+          if (result.success) {
+            retour = result.data;
+            if (result.mode === 'PUA') {
+              console.log('  result.mode === \'PUA\'')
+              if (!this.editProfile) {
+                this.profileDescription = Object.assign(this.noticeService.profileFromNotice(retour, this.editProfile, true), this.profileDescription);
+              } else {
+                this.fileService.notice.subscribe((value: ProfileDescription) => {
+                  this.profileDescription = value;
                 });
-
-              } else if (result.mode === 'PA') {
-                const profile: Profile = this.noticeService.paNotice(retour, true);
-                if (!this.editProfile) {
-                  // CREER NOTICE PUIS ASSIGNER LE PROFIL A LA NOTICE
-                  this.profile = Object.assign(profile, this.profile);
-                  this.profileDescription = Object.assign(this.noticeService.profileFromNotice(retour, this.editProfile, false), this.profileDescription);
-                } else {
-                  this.fileService.notice.subscribe((value: ProfileDescription) => {
-                    this.profile = Object.assign(profile, value);
-                    this.profileDescription = value;
-                  });
-                }
-                // STEP 1 : Create or update Notice
-                this.savePA();
               }
-            }
-          });
-        } else if (result.success && result.action === 'rattachement') {
-          const modeProfile = this.profileService.profileMode;
-          const dataToSendToPopUp = {} as PastisDialogDataCreate;
-          dataToSendToPopUp.titleDialog = this.popupSaveSelectNoticeTitleDialog;
-          dataToSendToPopUp.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
-          dataToSendToPopUp.okLabel = this.popupSaveCreateNoticeOkLabel;
-          dataToSendToPopUp.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
-          dataToSendToPopUp.modeProfile = modeProfile;
-          const dialogRef = this.dialog.open(SelectNoticeComponent, {
-              width: '800px',
-              panelClass: 'pastis-popup-modal-box',
-              data: dataToSendToPopUp
-            }
-          );
-          dialogRef.afterClosed().subscribe((result) => {
-            this.toggleService.showPending();
-            let profileDescription: ProfileDescription;
-            if (result.success) {
-              profileDescription = result.data;
-              if (result.mode === "PUA") {
-                this.profileService.uploadFile(this.data, profileDescription, result.mode).subscribe(retrievedData => {
-                  retrievedData.text().then(result => {
-                    const jsonObject = JSON.parse(result);
-                    this.archivalProfileUnit = jsonObject as unknown as ArchivalProfileUnit;
-                    //  update existing PUA
+              this.profileService.uploadFile(this.data, this.profileDescription, result.mode).subscribe(retrievedData => {
+                retrievedData.text().then(result => {
+                  const jsonObject = JSON.parse(result);
+                  this.archivalProfileUnit = jsonObject as unknown as ArchivalProfileUnit;
+                  // Create ro update existing PUA
+                  if (!this.editProfile) {
+                    this.profileService.createArchivalUnitProfile(this.archivalProfileUnit).subscribe(() => {
+                      this.toggleService.hidePending();
+                      console.log('ok create')
+                      this.success('La création du profil a bien été effectué');
+                    })
+                  } else {
                     this.profileService.updateProfilePua(this.archivalProfileUnit).subscribe(() => {
                       this.toggleService.hidePending();
-                      console.log("ok update")
-                      this.success("La modification du profil a bien été effectué");
+                      console.log('ok update')
+                      this.success('La modification du profil a bien été effectué');
                     })
-                  });
+                  }
                 });
+              });
 
-              } else if (result.mode === "PA") {
-
-
-                    this.profileService.uploadFile(this.data, profileDescription, result.mode).subscribe(retrievedData => {
-                      const myFile = this.blobToFile(retrievedData, 'file');
-                      this.profileService.updateProfileFilePa(this.noticeService.paNotice(profileDescription, false), myFile).subscribe(() => {
-                        this.toggleService.hidePending();
-                        this.success("La modification du profil a bien été effectué");
-                      })
-                    });
+            } else if (result.mode === 'PA') {
+              console.log('  result.mode === \'PA\'')
+              const profile: Profile = this.noticeService.paNotice(retour, true);
+              if (!this.editProfile) {
+                // CREER NOTICE PUIS ASSIGNER LE PROFIL A LA NOTICE
+                console.log('  !this.editProfile')
+                this.profile = Object.assign(profile, this.profile);
+                this.profileDescription = Object.assign(this.noticeService.profileFromNotice(retour, this.editProfile, false), this.profileDescription);
+              } else {
+                console.log('  this.editProfile')
+                this.fileService.notice.subscribe((value: ProfileDescription) => {
+                  this.profile = Object.assign(profile, value);
+                  this.profileDescription = value;
+                });
               }
+              // STEP 1 : Create or update Notice
+              this.savePA();
             }
-          });
-        }
-      });
-    }
+          }
+        });
+      } else if (result.action === 'rattachement') {
+        console.log(' action = rattachement')
+        const modeProfile = this.profileService.profileMode;
+        const dataToSendToPopUp = {} as PastisDialogDataCreate;
+        dataToSendToPopUp.titleDialog = this.popupSaveSelectNoticeTitleDialog;
+        dataToSendToPopUp.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
+        dataToSendToPopUp.okLabel = this.popupSaveCreateNoticeOkLabel;
+        dataToSendToPopUp.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
+        dataToSendToPopUp.modeProfile = modeProfile;
+        const dialogRef = this.dialog.open(SelectNoticeComponent, {
+            width: '800px',
+            panelClass: 'pastis-popup-modal-box',
+            data: dataToSendToPopUp
+          }
+        );
+        dialogRef.afterClosed().subscribe((result) => {
+          this.toggleService.showPending();
+          let profileDescription: ProfileDescription;
+          if (result.success) {
+            profileDescription = result.data;
+            if (result.mode === 'PUA') {
+              this.profileService.uploadFile(this.data, profileDescription, result.mode).subscribe(retrievedData => {
+                retrievedData.text().then(result => {
+                  const jsonObject = JSON.parse(result);
+                  this.archivalProfileUnit = jsonObject as unknown as ArchivalProfileUnit;
+                  //  update existing PUA
+                  this.profileService.updateProfilePua(this.archivalProfileUnit).subscribe(() => {
+                    this.toggleService.hidePending();
+                    console.log('ok update')
+                    this.success('La modification du profil a bien été effectué');
+                  })
+                });
+              });
+
+            } else if (result.mode === 'PA') {
+
+
+              this.profileService.uploadFile(this.data, profileDescription, result.mode).subscribe(retrievedData => {
+                const myFile = this.blobToFile(retrievedData, 'file');
+                this.profileService.updateProfileFilePa(this.noticeService.paNotice(profileDescription, false), myFile).subscribe(() => {
+                  this.toggleService.hidePending();
+                  this.success('La modification du profil a bien été effectué');
+                })
+              });
+            }
+          }
+        });
+      }
+    });
   }
 
   savePA() {
+    console.log('UserActionSaveProfileComponent.savePA')
     if (!this.editProfile) {
+      console.log('  !editProfile')
+      console.log('  -> this.profileService.createProfilePa(this.profile)')
       this.profileService.createProfilePa(this.profile).subscribe((createdProfile) => {
         if (createdProfile) {
           // STEP 2 : ASSIGNER LE PROFIL A LA NOTICE
-          this.profileService.uploadFile(this.data, this.profileDescription, "PA").subscribe(retrievedData => {
+          this.profileService.uploadFile(this.data, this.profileDescription, 'PA').subscribe(retrievedData => {
             const myFile = this.blobToFile(retrievedData, 'file');
             this.profileService.updateProfileFilePa(createdProfile, myFile).subscribe(() => {
               this.toggleService.hidePending();
-              this.success("La création du profil a bien été effectué");
+              this.success('La création du profil a bien été effectué');
             })
           });
         }
       });
     } else {
-      this.profileService.updateProfilePa(this.profile).subscribe((updatedProfile) => {
-        if (updatedProfile) {
-          // STEP 2 : ASSIGNER LE PROFIL A LA NOTICE
-          this.profileService.uploadFile(this.data, this.profileDescription, this.profileService.profileMode).subscribe(retrievedData => {
-            const myFile = this.blobToFile(retrievedData, 'file');
-            this.profileService.updateProfileFilePa(this.noticeService.paNotice(this.profileDescription, false), myFile).subscribe(() => {
-              this.toggleService.hidePending();
-              this.success("La modification du profil a bien été effectué");
-            })
-          });
-        }
+      console.log('  editProfile')
+      console.log('  -> this.profileService.updateProfilePa(this.profile)')
+      this.profileService.updateProfilePa(this.profile).subscribe(() => {
+        // STEP 2 : ASSIGNER LE PROFIL A LA NOTICE
+        this.profileService.uploadFile(this.data, this.profileDescription, this.profileService.profileMode).subscribe(retrievedData => {
+          console.log('body bien récupéré')
+          const myFile = this.blobToFile(retrievedData, 'file');
+          this.profileService.updateProfileFilePa(this.noticeService.paNotice(this.profileDescription, false), myFile).subscribe(() => {
+            this.toggleService.hidePending();
+            this.success('La modification du profil a bien été effectué');
+          })
+        });
       });
     }
   }
@@ -336,7 +356,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     this.notificationService.showSuccess(msg);
     // sleep 3 sec before return pastishome
     setTimeout(() => {
-      this.router.navigate(['pastis']);
+      this.router.navigate([ 'pastis' ]);
     }, 3000);
   }
 
@@ -359,7 +379,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
       typeFile = this.profileService.profileMode === 'PA' ? 'application/xml' : 'application/json';
       download = this.profileService.profileMode === 'PA' ? 'pastis_profile.rng' : 'pastis.json';
     }
-    const newBlob = new Blob([dataFile], {type: typeFile});
+    const newBlob = new Blob([ dataFile ], { type: typeFile });
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(newBlob);
       return;
@@ -369,7 +389,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     link.href = data;
     link.download = download;
     // this is necessary as link.click() does not work on the latest firefox
-    link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
     setTimeout(() => {
       // For Firefox it is necessary to delay revoking the ObjectURL
       window.URL.revokeObjectURL(data);

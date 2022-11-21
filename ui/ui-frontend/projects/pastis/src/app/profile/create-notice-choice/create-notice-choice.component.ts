@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {environment} from "../../../environments/environment";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {PastisDialogData} from "../../shared/pastis-dialog/classes/pastis-dialog-data";
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
+import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION.NOTICE_CHOICE';
@@ -23,7 +23,7 @@ export class CreateNoticeChoiceComponent implements OnInit {
   firstChoice: string;
   secondChoice: string;
   title: string;
-  noticePaChoice: boolean = true;
+  noticePaChoice = true;
   isStandalone: boolean = environment.standalone;
 
   constructor(private dialogRef: MatDialogRef<CreateNoticeChoiceComponent>, private translateService: TranslateService,
@@ -35,9 +35,9 @@ export class CreateNoticeChoiceComponent implements OnInit {
       constantToTranslate.call(this);
       this.translatedOnChange();
     } else if (this.isStandalone) {
-      this.firstChoice = "PA"
-      this.secondChoice = "PUA"
-      this.title = "Choisir le type de notice à créer :"
+      this.firstChoice = 'PA'
+      this.secondChoice = 'PUA'
+      this.title = 'Choisir le type de notice à créer :'
     }
   }
 

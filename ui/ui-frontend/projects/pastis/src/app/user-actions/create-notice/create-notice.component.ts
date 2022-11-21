@@ -1,16 +1,16 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {environment} from '../../../environments/environment';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
-import {PopupService} from '../../core/services/popup.service';
+import { PopupService } from '../../core/services/popup.service';
 import { ProfileService } from '../../core/services/profile.service';
+import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { Notice } from '../../models/notice.model';
-import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import {PastisDialogDataCreate} from '../save-profile/save-profile.component';
-import {ArchivalProfileUnit} from "../../models/archival-profile-unit";
+import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
 
 
 interface Status {
@@ -196,6 +196,7 @@ export class CreateNoticeComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log('CreateNoticeComponentthis.onSubmit');
     if (this.form.invalid) {
       this.isDisabledButton = true;
       return;
@@ -209,5 +210,3 @@ export class CreateNoticeComponent implements OnInit {
     this.dialogRef.close({ success: true, action: 'none', data: this.form.value, mode: this.typeProfile });
   }
 }
-
-

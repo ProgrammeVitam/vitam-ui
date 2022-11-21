@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
-import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 
 const HTTP_STATUS_OK = 200;
@@ -53,7 +53,7 @@ export class ArchivalProfileUnitApiService extends BaseHttpClient<ArchivalProfil
 
   // @ts-ignore
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, pastisConfiguration: PastisConfiguration) {
-    console.log('passage dans service archival API');
+    // console.log('passage dans service archival API');
     super(http, baseUrl + pastisConfiguration.archivalProfileUnitApiPath + '/');
   }
 

@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
-import {Profile} from '../../models/profile';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { Profile } from '../../models/profile';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 
 const HTTP_STATUS_OK = 200;
@@ -51,7 +51,7 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
 
   // @ts-ignore
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, private pastisConfig: PastisConfiguration) {
-    console.log('passage dans service archive API');
+    // console.log('passage dans service archive API');
     super(http, baseUrl);
   }
 

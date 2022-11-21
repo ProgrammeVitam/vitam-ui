@@ -35,11 +35,11 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {environment} from '../../../environments/environment';
-import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
+import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION.CHOICE';
 
@@ -52,7 +52,7 @@ function constantToTranslate() {
 @Component({
   selector: 'pastis-create-profile',
   templateUrl: './create-profile.component.html',
-  styleUrls: ['./create-profile.component.scss']
+  styleUrls: [ './create-profile.component.scss' ]
 })
 export class CreateProfileComponent implements OnInit {
   firstChoice: string;
@@ -107,9 +107,9 @@ export class CreateProfileComponent implements OnInit {
 
   onYesClick() {
     if (this.profilPaChoice) {
-      this.dialogRef.close({success: true, action: 'PA'});
+      this.dialogRef.close({ success: true, action: 'PA' });
     } else if (!this.profilPaChoice) {
-      this.dialogRef.close({success: true, action: 'PUA'});
+      this.dialogRef.close({ success: true, action: 'PUA' });
     }
   }
 
