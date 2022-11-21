@@ -28,6 +28,7 @@
 package fr.gouv.vitamui.collect.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.collect.service.ProjectArchiveUnitService;
 import fr.gouv.vitamui.collect.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
@@ -70,7 +71,7 @@ public class ProjectArchiveUnitController extends AbstractUiRestController {
     private final SearchCriteriaHistoryService searchCriteriaHistoryService;
 
     @Autowired
-    public ProjectArchiveUnitController(
+    public ProjectArchiveUnitController(final ProjectArchiveUnitService projectArchiveUnitService,
         final SearchCriteriaHistoryService searchCriteriaHistoryService) {
         this.searchCriteriaHistoryService = searchCriteriaHistoryService;
     }

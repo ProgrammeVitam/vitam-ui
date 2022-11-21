@@ -215,6 +215,8 @@ public class CommonConstants {
 
     public static final String ARCHIVES_SEARCH_URL = "ARCHIVES_SEARCH_URL";
 
+    public static final String PASTIS_URL = "PASTIS_URL";
+
     public static final String INGEST_URL = "INGEST_URL";
 
     public static final String REFERENTIAL_URL = "REFERENTIAL_URL";
@@ -333,8 +335,6 @@ public class CommonConstants {
     public static final String GPDR_DEFAULT_VALUE = "-";
 
     public static final String APPLICATION_ID = "applicationId";
-
-    public static final String TRANSACTION_PATH_ID = "/{transactionId}";
 
     /**
      * Constants of ingest operations

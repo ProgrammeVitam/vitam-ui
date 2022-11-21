@@ -1,0 +1,175 @@
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.consul
+      discovery:
+        preferIpAddress: true
+        tags: {{ consul_tags }}
+        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+
+server:
+  host: {{ vitamui.pastis.host }}
+  port: {{ vitamui.pastis.port_service }}
+{% if vitamui.pastis.base_url is defined %}
+  servlet.context-path: /
+  servlet.session.cookie.path: /
+{% else %}
+  servlet.context-path: /pastis
+  servlet.session.cookie.path: /pastis
+{% endif %}
+  scheme: {% if vitamui.pastis.secure | default(secure) | lower =='true' %}https{% else %}http{% endif %}
+
+{% if vitamui_struct.secure | default(secure) | lower =='true' %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_keystore }}
+    enabled-protocols: {{ssl_setting.enabled_protocols}}
+    ciphers: {{ssl_setting.ciphers}}
+  error:
+    path: /error
+
+{% endif %}
+  tomcat:
+    accesslog:
+        enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
+        directory: "{{ vitamui_folder_log }}"
+        prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+        file-date-format: ".yyyy-MM-dd"
+        suffix: ".log"
+
+management:
+  server:
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml
+  level:
+    fr.gouv.vitamui.pastis.*: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+
+server-identity:
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
+  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityServerId: 1
+
+
+ui-pastis:
+  iam-external-client:
+    server-host: {{ vitamui.iam_external.host }}
+    server-port: {{ vitamui.iam_external.port_service }}
+{% if vitamui.iam_external.secure | default(secure) | lower == "true" %}
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
+  pastis-external-client:
+    server-host: {{ vitamui.pastis_external.host }}
+    server-port: {{ vitamui.pastis_external.port_service }}
+{% if vitamui.pastis_external.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.pastis_external.secure | default(secure) | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
+  referential-external-client:
+    server-host: {{ vitamui.referential_external.host }}
+    server-port: {{ vitamui.referential_external.port_service }}
+{% if vitamui.referential_external.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.referential_external.secure | default(secure) | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
+  assets: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
+  portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
+  header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"
+  footer-logo: "{{ vitamui_platform_informations.theme.footer_logo }}"
+  user-logo: "{{ vitamui_platform_informations.theme.user_logo }}"
+  portal-message: "{{ vitamui_platform_informations.portal_message }}"
+  portal-title: "{{ vitamui_platform_informations.portal_title }}"
+  theme-colors:
+    vitamui-primary: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_primary }}"
+    vitamui-secondary: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_secondary }}"
+    vitamui-tertiary: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_tertiary }}"
+    vitamui-header-footer: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_header_footer }}"
+    vitamui-background: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_background }}"
+  base-url:
+{% if vitamui.portal.base_url is defined %}
+    portal: "{{ vitamui.portal.base_url }}"
+{% else %}
+    portal: "{{ url_prefix }}"
+{% endif %}
+{% if vitamui.pastis.base_url is defined %}
+    pastis: "{{ vitamui.pastis.base_url }}"
+{% else %}
+    pastis: "{{ url_prefix }}/pastis"
+{% endif %}
+{% if vitamui.referential.base_url is defined %}
+    referential: "{{ vitamui.referential.base_url }}"
+{% else %}
+    referential: "{{ url_prefix }}/referential"
+{% endif %}
+  portal-categories:
+{% for id, category in vitamui_defaults.portal_categories.items() %}
+    {{ id }}:
+      title: "{{ category.title }}"
+      displayTitle: {{ category.displayTitle }}
+      order: {{ category.order }}
+{% endfor %}
+
+ui:
+{% if vitamui_struct.base_url is defined %}
+  url: "{{ vitamui_struct.base_url }}"
+{% else %}
+  url: "{{ url_prefix }}/pastis"
+{% endif %}
+  redirect-url: ${ui.url}/${ui-prefix}
+
+cas:
+{% if vitamui.cas_server.base_url is defined %}
+  external-url: "{{ vitamui.cas_server.base_url}}"
+{% else %}
+  external-url: "{{ url_prefix }}/cas"
+{% endif %}
+  internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
+  
+  callback-url: ${ui.url}/pastis-api/callback
+{% if vitamui.cas_server.secure | default(secure) | lower == "true" %}
+  ssl:
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+    trust-store-password: {{ password_truststore }}
+    hostname-verification: {{ vitamui.cas_server.hostname_verification }}
+
+{% endif %}
+
+
+opentracing:
+  jaeger:
+    enabled: {{ opentracing.jaeger.enabled }}
+    logSpans: {{ opentracing.jaeger.log_spans }}
+    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    udp-sender:
+      host: {{ opentracing.jaeger.udp_sender.host }}
+      port: {{ opentracing.jaeger.udp_sender.port }}

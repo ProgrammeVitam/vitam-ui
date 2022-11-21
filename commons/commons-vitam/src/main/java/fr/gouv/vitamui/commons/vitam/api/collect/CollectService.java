@@ -36,6 +36,7 @@ import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -306,27 +307,5 @@ public class CollectService {
         RequestResponseOK<JsonNode> result = collectClient.getUnitById(vitamContext, unitId);
         VitamRestUtils.checkResponse(result);
         return result;
-    }
-
-    /**
-     * Start update collect units with a csv File.
-     * @param transactionId The transaction identifier
-     * @param csvFile The csv File to update units
-     * @param vitamContext The vitam context
-     * @return String
-     */
-
-    public String updateCollectArchiveUnits(VitamContext vitamContext, String transactionId, InputStream csvFile) {
-        LOGGER.debug("transactionId : {}", transactionId);
-        String response;
-        RequestResponse<JsonNode> result;
-        try {
-             result = collectClient.updateUnits(vitamContext, transactionId, csvFile);
-             response = Integer.toString(result.getHttpCode());
-        } catch (VitamClientException e) {
-              response = "ERROR_400";
-            LOGGER.debug("Unable to process units update operation");
-        }
-        return response;
     }
 }

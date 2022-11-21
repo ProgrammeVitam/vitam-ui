@@ -1,0 +1,111 @@
+rng:
+  base:
+    file: profiles_new/Profil_seda_pastis_mvp.rng
+    directory: rng/
+json:
+  base:
+    file: profiles_new/ProfileJson.json
+  template:
+    fileStandalone: profiles_new/AUP_default_PASTIS.json
+    fileVitam: profiles_new/AUP_default_VITAM.json
+pua:
+  definitions:
+    file: pua_validation/ProfileJson.json
+
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.{{ consul_domain }}
+      discovery:
+        preferIpAddress: true
+        tags: {{ consul_tags }}
+        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml
+  level:
+    fr.gouv.vitamui.pastis.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+
+
+server:
+  port: {{ vitamui_struct.port_service }}
+{% if vitamui_struct.secure | default(secure) | lower == "true" %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_keystore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+    trust-store-password: {{ password_truststore }}
+    client-auth: need
+    enabled-protocols: {{ssl_setting.enabled_protocols}}
+    ciphers: {{ssl_setting.ciphers}}
+  error:
+    path: /error
+
+{% endif %}
+  tomcat:
+    connection-timeout: {{ vitamui_struct.server_connection_timeout }}
+    accesslog:
+        enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
+        directory: "{{ vitamui_folder_log }}"
+
+management:
+  server:
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false
+
+pastis-external:
+  security-client:
+    server-host: {{ vitamui.security_internal.host }}
+    server-port: {{ vitamui.security_internal.port_service }}
+{% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.security_internal.secure | default(secure) | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
+  iam-internal-client:
+    server-host: {{ vitamui.iam_internal.host }}
+    server-port: {{ vitamui.iam_internal.port_service }}
+
+{% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
+
+
+server-identity:
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
+  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityServerId: 1
+
+
+
+opentracing:
+  jaeger:
+    enabled: {{ opentracing.jaeger.enabled }}
+    logSpans: {{ opentracing.jaeger.log_spans }}
+    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    udp-sender:
+      host: {{ opentracing.jaeger.udp_sender.host }}
+      port: {{ opentracing.jaeger.udp_sender.port }}

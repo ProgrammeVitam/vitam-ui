@@ -30,10 +30,7 @@ package fr.gouv.vitamui.collect.service;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
-import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
@@ -43,29 +40,23 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-
 /**
  * UI Collect Transaction Service
  */
 @Service
 public class TransactionService extends AbstractPaginateService<CollectTransactionDto> {
-    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionService.class);
 
     private final CollectTransactionExternalRestClient collectTransactionExternalRestClient;
 
-    private final UpdateUnitsMetadataExternalRestClient updateUnitsMetadataExternalRestClient;
     private final CommonService commonService;
 
 
     @Autowired
     public TransactionService(CollectTransactionExternalRestClient collectTransactionExternalRestClient,
-        UpdateUnitsMetadataExternalRestClient updateUnitsMetadataExternalRestClient,
         CommonService commonService) {
-        this.collectTransactionExternalRestClient = collectTransactionExternalRestClient;
-        this.updateUnitsMetadataExternalRestClient = updateUnitsMetadataExternalRestClient;
         this.commonService = commonService;
-            }
+        this.collectTransactionExternalRestClient = collectTransactionExternalRestClient;
+    }
 
 
     @Override
@@ -93,7 +84,6 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         collectTransactionExternalRestClient.abortTransaction(context, transactionId);
     }
 
-
     public CollectTransactionDto getTransactionById(ExternalHttpContext context, String transactionId) {
         return collectTransactionExternalRestClient.getTransactionById(context, transactionId);
     }
@@ -113,21 +103,6 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return collectTransactionExternalRestClient.updateTransaction(context, transactionDto);
     }
 
-    /**
-     * function to update archive Units Metadata From File
-     *
-     * @param transactionId the transaction id
-     * @param inputStream thr inputstream file
-     * @param fileName the file Name
-     * @param context the external vitamui context
-     * @return a String
-     */
-
-    public ResponseEntity<String> updateArchiveUnitsMetadataFromFile(final String transactionId, String fileName, InputStream inputStream,
-        final ExternalHttpContext context) {
-        LOGGER.debug("[UI] start updating archive units from file for transactionId {}", transactionId);
-        return updateUnitsMetadataExternalRestClient.updateArchiveUnitsMetadataFromFile(context, fileName, transactionId, inputStream );
-    }
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
         return collectTransactionExternalRestClient.findUnitById(id, context);
     }

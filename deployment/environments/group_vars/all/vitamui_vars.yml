@@ -218,9 +218,6 @@ vitamui:
     vitamui_component_type: "external"
     port_service: 8110
     port_admin: 7110
-    connect_timeout: 30
-    read_timeout: 240000
-    write_timeout: 240000
 
   collect_internal:
     host: "collect-internal.service.{{ consul_domain }}"
@@ -228,9 +225,47 @@ vitamui:
     vitamui_component_type: "internal"
     port_service: 8210
     port_admin: 7210
-    connect_timeout: 30
-    read_timeout: 240000
-    write_timeout: 240000
+
+  pastis_external:
+    host: "pastis-external.service.{{ consul_domain }}"
+    vitamui_component: "pastis-external"
+    vitamui_component_type: "external"
+    package_name: "vitamui-pastis-external"
+    service_name: "vitamui-pastis-external"
+    store_name: "pastis-external"
+    port_service: 8015
+    port_admin: 7115
+    secure: true
+    server_connection_timeout: 60000
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "DEBUG"
+
+  pastis:
+    host: "pastis.service.{{ consul_domain }}"
+    vitamui_component: "ui-pastis"
+    vitamui_component_type: "ui"
+    package_name: "vitamui-ui-pastis"
+    service_name: "vitamui-ui-pastis"
+    store_name: "ui-pastis"
+    port_service: 9015
+    port_admin: 7015
+    server_connection_timeout: 60000
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "DEBUG"
+
 
 ################################################################################
 

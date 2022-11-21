@@ -1,0 +1,85 @@
+debug: false
+# Pastis Rest APi
+rng:
+  base:
+    file: profiles_new/Profil_seda_pastis_mvp.rng
+    directory: rng/
+json:
+  base:
+    file: profiles_new/ProfileJson.json
+  template:
+    fileStandalone: profiles_new/AUP_default_PASTIS.json
+    fileVitam: profiles_new/AUP_default_VITAM.json
+pua:
+  definitions:
+    file: pua_validation/ProfileJson.json
+
+spring:
+  config:
+    use-legacy-processing: true
+  profiles:
+    active: dev, swagger
+
+  cloud:
+    consul: #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+
+multipart:
+  enabled: true
+
+spring.servlet.multipart.max-file-size: -1
+spring.servlet.multipart.max-request-size: -1
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: pastis-external
+  identityServerId: 1
+
+server:
+  host:
+  port: 8015
+  ssl:
+    key-store: src/main/resources/dev/keystore_pastis-external.jks
+    key-store-password: e2zS1Za6se9vYky0uoATKDfuXDp0j6r4PBWDn4ZHQvX5cKfX
+    key-password: e2zS1Za6se9vYky0uoATKDfuXDp0j6r4PBWDn4ZHQvX5cKfX
+    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store-password: changeme
+    client-auth: need
+    enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
+    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+
+management:
+  server:
+    address: localhost
+    port: 8189
+    ssl:
+      enabled: false
+pastis-external:
+  security-client:
+    server-host: localhost
+    server-port: 8084
+    secure: false
+  iam-internal-client:
+    server-host: localhost
+    server-port: 7083
+    secure: false
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
+
+logging:
+  level:
+    fr.gouv.vitamui: DEBUG
+    fr.gouv.vitamui.iam.security: DEBUG
+    #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost

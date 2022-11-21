@@ -1,0 +1,58 @@
+# TECHNICAL PROPERTIES / DON'T put environment properties
+# This property can be override by a config file give at run time with spring.config.location
+
+spring:
+  application:
+    name: ${server-identity.identityRole}
+  api:
+    name: API Pastis
+    description: This API is used to manage Vitam's profile
+    version: v1
+  mvc:
+    favicon:
+      enabled: false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+#Spring
+spring.servlet.multipart:
+  max-file-size: 10MB
+  max-request-size: 11MB
+  enabled: true
+
+#Spring docs swagger
+springdoc:
+  api-docs.path: /api-docs
+  swagger-ui:
+    path: /open-api.html
+    model-and-view-allowed: false
+
+
+# Pastis Rest APi
+rng.base.file: profiles_new/Profil_seda_pastis_mvp.rng
+rng.base.directory: rng/
+json.base.file: profiles_new/ProfileJson.json
+pua.definitions.file: pua_validation/ProfileJson.json
+json.template.fileStandalone: profiles_new/AUP_default_PASTIS.json
+json.template.fileVitam: profiles_new/AUP_default_VITAM.json
+
+#PORT
+server.port: 8096
+server-identity:
+  identityName: vitamui-dev
+  identityRole: pastis-standalone
+  identityServerId: 1
+
+management:
+  endpoints:
+    jmx:
+      domain: ${server-identity.identityRole}
+      unique-names: true
+      web.exposure.include: info,health,prometheus
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost,http://localhost:8096
+

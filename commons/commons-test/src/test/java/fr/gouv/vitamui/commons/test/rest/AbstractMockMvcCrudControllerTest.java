@@ -3,6 +3,7 @@ package fr.gouv.vitamui.commons.test.rest;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
      * @return ResultActions
      */
     public ResultActions testCreateEntity(final ResultMatcher matcher) {
-        return testCreateEntity(getHeaders());
+        return testCreateEntity(matcher, getHeaders());
 
     }
 

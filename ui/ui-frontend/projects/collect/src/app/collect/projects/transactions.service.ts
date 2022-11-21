@@ -25,15 +25,18 @@
  * accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Transaction } from 'ui-frontend-common';
+import { Observable } from 'rxjs';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionsService {
-  constructor(private projectsApiService: ProjectsApiService) {}
+
+  constructor(private projectsApiService: ProjectsApiService) {
+    
+  }
 
   public create(transaction: Transaction): Observable<any> {
     return this.projectsApiService.createTransaction(transaction);
@@ -42,4 +45,5 @@ export class TransactionsService {
   public updateTransaction(transaction: Transaction): Observable<any> {
     return this.projectsApiService.updateTransaction(transaction);
   }
+
 }

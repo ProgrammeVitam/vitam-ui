@@ -1,0 +1,18 @@
+@import "../../../assets/css/mixins";
+@import "../../../assets/css/layout";
+
+.btn-rounded-setting {
+    @extend .pastis-btn-rounded-standard-secondary-enabled;
+  }
+  
+  .btn-rounded-setting:hover {
+    @extend .pastis-btn-rounded-standard-secondary-hover;
+  }
+  
+  .btn-rounded-setting:active {
+    @extend .pastis-btn-rounded-standard-secondary-focus;
+  }
+  
+  .ico-setting {
+    @extend .pastis-ico-svg;
+  }

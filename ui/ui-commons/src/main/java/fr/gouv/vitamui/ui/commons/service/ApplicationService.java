@@ -187,6 +187,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.PORTAL_URL, properties.getBaseUrl().getPortal());
         configurationData.put(CommonConstants.ARCHIVES_SEARCH_URL, properties.getBaseUrl().getArchivesSearch());
         configurationData.put(CommonConstants.INGEST_URL, properties.getBaseUrl().getIngest());
+        configurationData.put(CommonConstants.PASTIS_URL, properties.getBaseUrl().getPastis());
         configurationData.put(CommonConstants.REFERENTIAL_URL, properties.getBaseUrl().getReferential());
         configurationData.put(CommonConstants.COLLECT_URL, properties.getBaseUrl().getCollect());
         configurationData.put(CommonConstants.CAS_LOGIN_URL, getCasLoginUrl());

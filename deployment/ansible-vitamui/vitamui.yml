@@ -20,6 +20,8 @@
 
 - import_playbook: app_referential.yml
 
+- import_playbook: app_pastis.yml
+
 - import_playbook: app_collect.yml
 
 - import_playbook: reverse_proxy.yml
