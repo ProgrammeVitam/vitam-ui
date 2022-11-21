@@ -105,6 +105,13 @@
         <jaxb.version>2.4.0-b180830.0359</jaxb.version>
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
         <jaxb.impl.version>3.0.0-M1</jaxb.impl.version>
+        <json.version>20180813</json.version>
+        <jaxp-api.version>1.4.5</jaxp-api.version>
+        <jackson-xml-databind.version>0.6.2</jackson-xml-databind.version>
+        <thaiopensource.jing.version>20091111</thaiopensource.jing.version>
+        <thaiopensource.trang.version>20091111</thaiopensource.trang.version>
+        <xercesImpl-xsd11.version>2.12-beta-r1667115</xercesImpl-xsd11.version>
+        <xml-resolver.version>1.2</xml-resolver.version>
         <jlibs.version>2.2.3</jlibs.version>
         <junit.version>4.13.1</junit.version>
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
@@ -187,6 +194,7 @@
         <maven.swagger2markup.plugin.version>1.3.3</maven.swagger2markup.plugin.version>
         <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
         <maven.assembly.version>3.2.0</maven.assembly.version>
+        <launch4j-maven-plugin.version>1.7.21</launch4j-maven-plugin.version>
 
         <!-- Profile properties -->
         <angular.additional.test.informations></angular.additional.test.informations>
@@ -448,6 +456,21 @@
                 <artifactId>iam-internal</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>pastis-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>pastis-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>pastis-external</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- spring-boot -->
             <dependency>
@@ -586,6 +609,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webflux</artifactId>
                 <version>${spring.version}</version>
             </dependency>
             <dependency>
@@ -1085,6 +1113,11 @@
                 <groupId>org.glassfish.jaxb</groupId>
                 <artifactId>jaxb-runtime</artifactId>
                 <version>${glassfish.jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>${launch4j-maven-plugin.version}</version>
             </dependency>
 
             <dependency>

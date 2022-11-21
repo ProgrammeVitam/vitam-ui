@@ -1,0 +1,17 @@
+{
+  "id": "aegaaaaabafbmai5aa2d2alwatqvahqaaaaq",
+  "identifier": "AUP-000007",
+  "name": "AUP default PASTIS",
+  "description": "Import d'un AUP default pour PASTIS",
+  "status": "ACTIVE",
+  "creationDate": "2000-09-01T00:00:00.000",
+  "lastUpdate": "2020-11-26T14:08:20.987",
+  "activationDate": "2016-12-10T00:00:00.000",
+  "deactivationDate": "2016-12-10T00:00:00.000",
+  "controlSchema": "{\"$schema\":\"http://json-schema.org/draft-04/schema\",\"type\":\"object\",\"definitions\":{\"pattern-simple-date\":{\"type\":\"string\",\"pattern\":\"[0-9]{4}-[0-9]{2}-[0-9]{2}\"},\"pattern-date\":{\"type\":\"string\",\"pattern\":\"^([0-8][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$\"}},\"properties\":{}}",
+  "tenant": 8,
+  "version": 1,
+  "fields": [
+  ],
+  "type":"PUA"
+}

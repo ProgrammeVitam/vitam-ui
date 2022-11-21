@@ -48,6 +48,4 @@ public class CollectApplicationProperties extends UIPropertiesImpl implements UI
 
     public RestClientConfiguration collectExternalClient;
 
-    public RestClientConfiguration updateUnitsMetadataExternalClient;
-
 }

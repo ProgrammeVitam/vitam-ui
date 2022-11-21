@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:seda="fr:gouv:culture:archivesdefrance:seda:v2.1"
+            elementFormDefault="qualified"
+            targetNamespace="fr:gouv:culture:archivesdefrance:seda:v2.1">
+    <xsd:element name="ArchiveTransfer">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:Comment"/>
+                <xsd:element ref="seda:Date"/>
+                <xsd:element ref="seda:MessageIdentifier"/>
+                <xsd:element ref="seda:ArchivalAgreement"/>
+                <xsd:element ref="seda:CodeListVersions"/>
+                <xsd:element ref="seda:DataObjectPackage"/>
+                <xsd:element ref="seda:ArchivalAgency"/>
+                <xsd:element ref="seda:TransferringAgency"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:anyAttribute namespace="##other" processContents="skip"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Comment" type="xsd:string"/>
+    <xsd:element name="Date" type="xsd:dateTime"/>
+    <xsd:element name="MessageIdentifier">
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:token">
+                    <xsd:attribute name="schemeDataURI" type="xsd:anyURI"/>
+                    <xsd:attribute name="schemeID" type="xsd:token"/>
+                    <xsd:attribute name="schemeAgencyName" type="xsd:string"/>
+                    <xsd:attribute name="schemeAgencyID" type="xsd:token"/>
+                    <xsd:attribute name="schemeName" type="xsd:string"/>
+                    <xsd:attribute name="schemeVersionID" type="xsd:token"/>
+                    <xsd:attribute name="schemeURI" type="xsd:anyURI"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ArchivalAgreement">
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:token">
+                    <xsd:attribute name="schemeDataURI" type="xsd:anyURI"/>
+                    <xsd:attribute name="schemeID" type="xsd:token"/>
+                    <xsd:attribute name="schemeAgencyName" type="xsd:string"/>
+                    <xsd:attribute name="schemeAgencyID" type="xsd:token"/>
+                    <xsd:attribute name="schemeName" type="xsd:string"/>
+                    <xsd:attribute name="schemeVersionID" type="xsd:token"/>
+                    <xsd:attribute name="schemeURI" type="xsd:anyURI"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="CodeListVersions">
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="DataObjectPackage">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:DataObjectGroup"/>
+                <xsd:element ref="seda:DescriptiveMetadata"/>
+                <xsd:element ref="seda:ManagementMetadata"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="DataObjectGroup">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="unbounded" ref="seda:BinaryDataObject"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:ID"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="BinaryDataObject">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element minOccurs="0" ref="seda:DataObjectGroupId"/>
+                <xsd:element minOccurs="0" ref="seda:DataObjectVersion"/>
+                <xsd:element minOccurs="0" ref="seda:Uri"/>
+                <xsd:element ref="seda:MessageDigest"/>
+                <xsd:element ref="seda:Size"/>
+                <xsd:element ref="seda:FormatIdentification"/>
+                <xsd:element ref="seda:FileInfo"/>
+                <xsd:element minOccurs="0" ref="seda:Metadata"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" use="required" type="xsd:ID"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="DataObjectGroupId" type="xsd:token"/>
+    <xsd:element name="DataObjectVersion" type="xsd:token"/>
+    <xsd:element name="Uri" type="xsd:anyURI"/>
+    <xsd:element name="MessageDigest">
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:restriction base="xsd:anyType">
+                    <xsd:simpleType>
+                        <xsd:union memberTypes="xsd:base64Binary xsd:hexBinary"/>
+                    </xsd:simpleType>
+                    <xsd:attribute name="algorithm" use="required" type="xsd:token"/>
+                </xsd:restriction>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Size" type="xsd:positiveInteger"/>
+    <xsd:element name="FormatIdentification">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element minOccurs="0" ref="seda:FormatLitteral"/>
+                <xsd:element minOccurs="0" ref="seda:FormatId"/>
+                <xsd:element minOccurs="0" ref="seda:Encoding"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="FormatLitteral" type="xsd:string"/>
+    <xsd:element name="FormatId" type="xsd:token"/>
+    <xsd:element name="Encoding" type="xsd:token"/>
+    <xsd:element name="FileInfo">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:Filename"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Filename" type="xsd:string"/>
+    <xsd:element name="Metadata">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element minOccurs="0" ref="seda:Video"/>
+                <xsd:element minOccurs="0" ref="seda:Audio"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Video">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+                <xsd:enumeration value=""/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="Audio">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+                <xsd:enumeration value=""/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="DescriptiveMetadata">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="unbounded" ref="seda:ArchiveUnit"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ArchiveUnit">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:Management"/>
+                <xsd:sequence>
+                    <xsd:element ref="seda:Content"/>
+                    <xsd:element minOccurs="0" ref="seda:DataObjectReference"/>
+                </xsd:sequence>
+            </xsd:sequence>
+            <xsd:attribute name="id" use="required" type="xsd:ID"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Management">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element minOccurs="0" ref="seda:UpdateOperation"/>
+                <xsd:element minOccurs="0" ref="seda:AppraisalRule"/>
+                <xsd:element minOccurs="0" ref="seda:AccessRule"/>
+                <xsd:element minOccurs="0" ref="seda:DisseminationRule"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="UpdateOperation">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:ArchiveUnitIdentifierKey"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ArchiveUnitIdentifierKey">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:MetadataName"/>
+                <xsd:element ref="seda:MetadataValue"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="MetadataName" type="xsd:token"/>
+    <xsd:element name="MetadataValue" type="xsd:token"/>
+    <xsd:element name="AppraisalRule">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:Rule"/>
+                <xsd:element name="StartDate" type="xsd:date"/>
+                <xsd:element ref="seda:FinalAction"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Rule">
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:token">
+                    <xsd:attribute name="id" type="xsd:ID"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="FinalAction" type="xsd:token"/>
+    <xsd:element name="AccessRule">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:Rule"/>
+                <xsd:element name="StartDate" type="xsd:date"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="DisseminationRule">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:Rule"/>
+                <xsd:element name="StartDate" type="xsd:date"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Content">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:DescriptionLevel"/>
+                <xsd:element maxOccurs="unbounded" ref="seda:Title"/>
+                <xsd:element minOccurs="0" ref="seda:FilePlanPosition"/>
+                <xsd:element minOccurs="0" ref="seda:OriginatingAgencyArchiveUnitIdentifier"/>
+                <xsd:element minOccurs="0" ref="seda:TransferringAgencyArchiveUnitIdentifier"/>
+                <xsd:element minOccurs="0" ref="seda:Description"/>
+                <xsd:element minOccurs="0" ref="seda:CustodialHistory"/>
+                <xsd:element ref="seda:Type"/>
+                <xsd:element maxOccurs="unbounded" ref="seda:Language"/>
+                <xsd:element minOccurs="0" ref="seda:DescriptionLanguage"/>
+                <xsd:element minOccurs="0" maxOccurs="unbounded" ref="seda:Tag"/>
+                <xsd:element minOccurs="0" maxOccurs="unbounded" ref="seda:Keyword"/>
+                <xsd:element minOccurs="0" ref="seda:OriginatingAgency"/>
+                <xsd:element minOccurs="0" ref="seda:SubmissionAgency"/>
+                <xsd:element name="StartDate">
+                    <xsd:simpleType>
+                        <xsd:union memberTypes="xsd:date xsd:dateTime"/>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element ref="seda:EndDate"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="DescriptionLevel" type="xsd:token"/>
+    <xsd:element name="Title">
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute name="lang" type="xsd:language"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="FilePlanPosition" type="xsd:token"/>
+    <xsd:element name="OriginatingAgencyArchiveUnitIdentifier" type="xsd:token"/>
+    <xsd:element name="TransferringAgencyArchiveUnitIdentifier" type="xsd:token"/>
+    <xsd:element name="Description">
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute name="lang" type="xsd:language"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="CustodialHistory">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" ref="seda:CustodialHistoryItem"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="CustodialHistoryItem" type="xsd:string"/>
+    <xsd:element name="Type" type="xsd:string"/>
+    <xsd:element name="Language" type="xsd:language"/>
+    <xsd:element name="DescriptionLanguage" type="xsd:language"/>
+    <xsd:element name="Tag" type="xsd:token"/>
+    <xsd:element name="Keyword">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:KeywordContent"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:ID"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="KeywordContent" type="xsd:string"/>
+    <xsd:element name="OriginatingAgency">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Identifier" type="xsd:string"/>
+                <xsd:element name="OrganizationDescriptiveMetadata">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Name" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="SubmissionAgency">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Identifier">
+                    <xsd:complexType>
+                        <xsd:simpleContent>
+                            <xsd:extension base="xsd:string">
+                                <xsd:attribute name="schemeName">
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:token">
+                                            <xsd:enumeration value="SIRET"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:attribute>
+                                <xsd:attribute name="schemeAgencyName">
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:token">
+                                            <xsd:enumeration value="INSEE"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:attribute>
+                            </xsd:extension>
+                        </xsd:simpleContent>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="OrganizationDescriptiveMetadata">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Name" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="EndDate">
+        <xsd:simpleType>
+            <xsd:union memberTypes="xsd:date xsd:dateTime"/>
+        </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="DataObjectReference">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:DataObjectReferenceId"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:ID"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="DataObjectReferenceId" type="xsd:NCName"/>
+    <xsd:element name="ManagementMetadata">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="seda:ArchivalProfile"/>
+                <xsd:element minOccurs="0" ref="seda:AppraisalRule"/>
+                <xsd:element minOccurs="0" ref="seda:AccessRule"/>
+                <xsd:element minOccurs="0" ref="seda:DisseminationRule"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ArchivalProfile" type="xsd:token"/>
+    <xsd:element name="ArchivalAgency">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Identifier">
+                    <xsd:complexType>
+                        <xsd:simpleContent>
+                            <xsd:restriction base="xsd:anyType">
+                                <xsd:simpleType>
+                                    <xsd:restriction base="xsd:token">
+                                        <xsd:enumeration value="19341594000017"/>
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                                <xsd:attribute name="schemeName" use="required">
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:token">
+                                            <xsd:enumeration value="SIRET"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:attribute>
+                                <xsd:attribute name="schemeAgencyName" use="required">
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:token">
+                                            <xsd:enumeration value="INSEE"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:attribute>
+                            </xsd:restriction>
+                        </xsd:simpleContent>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="OrganizationDescriptiveMetadata">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Name">
+                                <xsd:simpleType>
+                                    <xsd:restriction base="xsd:token">
+                                        <xsd:enumeration
+                                            value="Centre Informatique National de l'Enseignement Supérieur"/>
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="TransferringAgency">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Identifier">
+                    <xsd:complexType>
+                        <xsd:simpleContent>
+                            <xsd:extension base="xsd:token">
+                                <xsd:attribute name="schemeName" use="required">
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:token">
+                                            <xsd:enumeration value="SIRET"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:attribute>
+                                <xsd:attribute name="schemeAgencyName" use="required">
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:token">
+                                            <xsd:enumeration value="INSEE"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:attribute>
+                            </xsd:extension>
+                        </xsd:simpleContent>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="OrganizationDescriptiveMetadata">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Name" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:group name="OpenType">
+        <xsd:sequence>
+            <xsd:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+        </xsd:sequence>
+    </xsd:group>
+</xsd:schema>

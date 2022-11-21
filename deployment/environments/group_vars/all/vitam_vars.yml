@@ -34,9 +34,6 @@ vitam_vars:
   collect:
     host: "collect.service.{{ vitam_site_name }}.{{ consul_domain }}"
     port_service: 8030
-    connect_timeout: 30
-    read_timeout: 240000
-    write_timeout: 240000
   security_internal:
     port_admin: 28005
     port_service: 8005

@@ -995,6 +995,147 @@
           }
         }
       }
+    },
+    "pastis": {
+      "root": "projects/pastis/",
+      "sourceRoot": "projects/pastis/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./extra-webpack.config.js",
+              "preserveSymlinks": true
+            },
+            "outputPath": "dist/pastis",
+            "index": "projects/pastis/src/index.html",
+            "main": "projects/pastis/src/main.ts",
+            "polyfills": "projects/pastis/src/polyfills.ts",
+            "tsConfig": "projects/pastis/tsconfig.app.json",
+            "rebaseRootRelativeCssUrls": true,
+            "assets": [
+              "projects/pastis/src/assets",
+              "projects/pastis/src/favicon.ico",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ui-frontend-common/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              "projects/pastis/src/sass/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
+            },
+            "scripts": []
+          },
+          "configurations": {
+            "en": {
+              "aot": true,
+              "i18nFile": "projects/pastis/src/locale/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en",
+              "i18nMissingTranslation": "warning"
+            },
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/pastis/src/environments/environment.ts",
+                  "with": "projects/pastis/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "14mb",
+                  "maximumError": "14mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "pastis:build",
+            "host": "dev.vitamui.com",
+            "port": 4251
+          },
+          "configurations": {
+            "en": {
+              "browserTarget": "pastis:build:en"
+            },
+            "production": {
+              "browserTarget": "pastis:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "pastis:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/pastis/src/test.ts",
+            "polyfills": "projects/pastis/src/polyfills.ts",
+            "tsConfig": "projects/pastis/tsconfig.spec.json",
+            "karmaConfig": "projects/pastis/karma.conf.ci.js",
+            "assets": [
+              "projects/pastis/src/favicon.ico",
+              "projects/pastis/src/assets"
+            ],
+            "styles": [
+              "projects/pastis/src/sass/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/pastis/tsconfig.app.json",
+              "projects/pastis/tsconfig.spec.json",
+              "projects/pastis/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/pastis/e2e/protractor.conf.js",
+            "devServerTarget": "pastis:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "pastis:serve:production"
+            }
+          }
+        }
+      }
     }
   },
   "defaultProject": "portal",

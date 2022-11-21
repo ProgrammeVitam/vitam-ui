@@ -37,27 +37,21 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.InputStream;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.REOPEN_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 
 @RestController
@@ -71,7 +65,7 @@ public class TransactionInternalController {
 
     @Autowired
     public TransactionInternalController(final TransactionInternalService transactionInternalService,
-        final InternalSecurityService securityService) {
+                                         final InternalSecurityService securityService) {
         this.securityService = securityService;
         this.transactionInternalService = transactionInternalService;
     }
@@ -125,27 +119,12 @@ public class TransactionInternalController {
         return transactionInternalService.getTransactionById(id, vitamContext);
     }
 
-    @PutMapping(value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
-        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId, InputStream inputStream,
-        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName)
-        throws InvalidParseOperationException, PreconditionFailedException, RequestTimeOutException {
-
-        ParameterChecker.checkParameter("The transaction Id is a mandatory parameter: ", transactionId);
-        SanityChecker.checkSecureParameter(transactionId);
-        LOGGER.debug("[Internal] update archiveUnits metadata from file for transaction  {}", transactionId);
-        SanityChecker.isValidFileName(originalFileName);
-        LOGGER.debug("[Internal] csv FileName  {}", originalFileName);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return transactionInternalService.updateArchiveUnitsFromFile(vitamContext, inputStream, transactionId);
-
-    }
     @PutMapping
     public CollectTransactionDto updateTransaction(@RequestBody CollectTransactionDto transactionDto)
         throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", transactionDto.getId());
         SanityChecker.checkSecureParameter(transactionDto.getId());
-        LOGGER.debug("[Internal] Transaction to update : {}", transactionDto);
+        LOGGER.debug("[External] Transaction to update : {}", transactionDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return transactionInternalService.updateTransaction(transactionDto, vitamContext);
     }

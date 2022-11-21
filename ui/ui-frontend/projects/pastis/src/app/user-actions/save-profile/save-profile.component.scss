@@ -1,0 +1,21 @@
+@import "../../../assets/css/mixins";
+@import "../../../assets/css/layout";
+@import "../../../assets/css/colors";
+@import "../../../assets/css/font";
+@import "../../../assets/css/buttons";
+
+.pastis-btn-rounded-save {
+    @extend .pastis-btn-rounded-standard-primary-enabled;
+  }
+  
+  .pastis-btn-rounded-save:hover {
+    @extend .pastis-btn-rounded-standard-primary-hover;
+  }
+  
+  .pastis-btn-rounded-save:active {
+    @extend .pastis-btn-rounded-standard-primary-focus;
+  }
+  
+  .pastis-ico-save {
+    @extend .pastis-ico-svg;
+  }

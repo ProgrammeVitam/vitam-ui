@@ -1,0 +1,122 @@
+
+.toast-center-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.toast-top-center {
+  top: 0;
+  right: 0;
+  width: 100%;
+}
+.toast-bottom-center {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+}
+.toast-top-full-width {
+  top: 0;
+  right: 0;
+  width: 100%;
+}
+.toast-bottom-full-width {
+  bottom: 0;
+  right: 10;
+  float: left;
+  width: 100%;
+}
+.toast-top-left {
+  top: 12px;
+  left: 12px;
+}
+.toast-top-right {
+  top: 12px;
+  right: 12px;
+}
+.toast-bottom-right {
+  right: 12px;
+  bottom: 12px;
+}
+.toast-bottom-left {
+  bottom: 12px;
+  left: 12px;
+}
+
+/*Additional properties for button version
+ iOS requires the button element instead of an anchor tag.
+ If you want the anchor version, it requires `href="#"`.*/
+button.toast-close-button {
+  //padding: 0;
+  padding-right: 650px;
+  cursor: pointer;
+  float: right;
+  background: transparent;
+  border: 0;
+}
+.toast-container {
+  pointer-events: none;
+  position: fixed;
+  z-index: 999999;
+}
+.toast-container * {
+  box-sizing: border-box;
+}
+.toast-container .ngx-toastr {
+  position: relative;
+  overflow: hidden;
+  //margin: 0 0 6px;
+  padding: 15px 15px 15px 50px;
+  width: 300px;
+  //border-radius: 3px 3px 3px 3px;
+  background-position: 120px center;
+  background-repeat: no-repeat;
+  background-size: 24px;
+  box-shadow: 0 0 12px #999999;
+  color: #FFFFFF;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  padding-left: 190px;
+}
+.toast-container .ngx-toastr:hover {
+  box-shadow: 0 0 12px #000000;
+  opacity: 1;
+  cursor: pointer;
+}
+.toast-container.toast-top-center .ngx-toastr,
+.toast-container.toast-bottom-center .ngx-toastr {
+  width: 300px;
+  margin-left: left;
+  margin-right: auto;
+}
+.toast-container.toast-top-full-width .ngx-toastr,
+.toast-container.toast-bottom-full-width .ngx-toastr {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ngx-toastr {
+  background-color: #030303;
+  pointer-events: auto;
+}
+.toast-success {
+  background-color: var(--vitamui-primary);
+}
+.toast-error {
+  background-color: #BD362F;
+}
+.toast-info {
+  background-color: #2F96B4;
+}
+.toast-warning {
+  background-color: #F89406;
+}
+.toast-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  background-color: #000000;
+  opacity: 0.4;
+}

@@ -1,0 +1,62 @@
+<div>
+  <!-- The input search -->
+  <div style="margin-bottom: 20px;">
+    <vitamui-common-banner (search)="onSearchSubmit($event)"
+                           [searchbarPlaceholder]="'USER_ACTION.ADD_METADATA.SEARCH_PLACEHOLDER' | translate"></vitamui-common-banner>
+  </div>
+
+  <!-- The selected items -->
+  <div *ngIf="addedItems?.length > 0" class="pastis-container-selected-items">
+    <div *ngFor="let item of addedItems;let i =index" style="display: inline-flex">
+      <div class="selected-items-box">
+                <span style="padding: 12px;">
+                    <i *ngIf="isElementComplex(item)" class="vitamui-icon vitamui-icon-arborescence"></i>
+                    <span class="item-text">{{onResolveName(item)}}</span>
+                </span>
+        <mat-divider class="selected-items-separator" vertical></mat-divider>
+        <span (click)="onRemoveSelectedElement(item)" class="selected-items-close">&times;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- The list of items to be selected-->
+  <mat-list *ngIf="allowedChildren?.length; else noItemsLeftToAdd" class="list-box-head">
+        <span class="list-box-content-title">
+          <span [ngStyle]="{'margin-top': atLeastOneIsSelected ? '40px' : '0px'}"
+                class="paragraph-metadata-subtitle">{{'USER_ACTION.ADD_METADATA.METADATA_ADD' | translate}}</span>
+          <i class="vitamui-icon vitamui-icon-chevron-down" style="margin-left: 20px; font-weight: bold;"></i>
+        </span>
+    <i class="vita"></i>
+    <mat-divider class="pastis-popup-separator"></mat-divider>
+    <mat-selection-list (ngModelChange)="selectSedaElement($event)" [disableRipple]="true"
+                        [ngModel]="addedItems" class="list-box">
+      <mat-list *ngFor="let element of allowedChildren | filterByName:filterName:sedaLanguage;"
+                class="list-item">
+                            <span class="list-box-content">
+                                <i *ngIf="isElementComplex(element)" class="vitamui-icon vitamui-icon-complex-element-1-1"
+                                   id="pastis-ico-complex-element">
+                                  <span class="path1"></span><span class="path2"></span>
+                                  <span class="path3"></span><span class="path4"></span>
+                                  <span class="path5"></span>
+                                </i>
+
+                                <span
+                                  [matTooltipShowDelay]="0"
+                                  class="text medium"
+                                  matTooltip={{getDefinition(element)}}
+                                  matTooltipClass="pastis-tooltip-class"
+                                  placement="right">{{onResolveName(element)}}</span>
+                            </span>
+        <span (click)="onAddSelectedElement(element)" class="ajouter">{{'USER_ACTION.ADD_METADATA.BOUTON_AJOUTER' | translate}}</span>
+        <mat-divider class="pastis-popup-separator"></mat-divider>
+
+      </mat-list>
+    </mat-selection-list>
+  </mat-list>
+
+  <ng-template #noItemsLeftToAdd>
+    <p class="paragraph-metadata-subtitle" style="margin-top: 40px;">
+      {{'USER_ACTION.ADD_METADATA.MESSAGE_PLUS_METADONNEE' | translate}}</p>
+  </ng-template>
+
+</div>

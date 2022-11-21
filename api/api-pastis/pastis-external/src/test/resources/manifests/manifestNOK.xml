@@ -1,0 +1,1139 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ArchiveTransfer
+    xmlns="fr:gouv:culture:archivesdefrance:seda:v2.1"
+>
+    <Date>2020-06-16T16:04:33.425</Date>
+    <MessageIdentifier>SIP SEDA UPPA de test</MessageIdentifier>
+    <ArchivalAgreement>IN-UPPA-0</ArchivalAgreement>
+    <CodeListVersions></CodeListVersions>
+    <DataObjectPackage>
+        <DataObjectGroup id="ID100">
+            <BinaryDataObject id="ID101">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID101.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    e188a8b598dea9064eae4dfe8d3f98ca002feb259ea21ff8b80c7f49d37a2433eb754f0c0d901f29b05b94463fe0553a8d946be90adcebd7008a550157f56f50
+                </MessageDigest>
+                <Size>210110</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Relevé de conclusions.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID11">
+            <BinaryDataObject id="ID12">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID12.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    7d316982a4cb7416a2ed3d48735f9a0593b33b6f95d04d6f12682e0a5d12085effb2df035862dd70d03b1840edbb8e4bddeeedc68013fdf3068db0489563eed1
+                </MessageDigest>
+                <Size>205838</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Accusé de réception du rectorat.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID14">
+            <BinaryDataObject id="ID15">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID15.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                </MessageDigest>
+                <Size>501988</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.6 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/20</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Convocation-OJ.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID17">
+            <BinaryDataObject id="ID18">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID18.mp3</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    71ff1326d14b7581584e92f7f8b2e195201a214af67fec16854e17f4301a12dbbbc6dc1984bd9bf0dd65736a3b32e59b4d795c331fe766468394f3061950da0e
+                </MessageDigest>
+                <Size>418442</Size>
+                <FormatIdentification>
+                    <FormatLitteral>MPEG 1/2 Audio Layer 3</FormatLitteral>
+                    <FormatId>fmt/134</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Enregistrement audio.mp3</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID20">
+            <BinaryDataObject id="ID21">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID21.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    41fcbf12eaec21ba65eeec5214e4376da9890a90e275e6b9dac7d8a9606892cd74ed026d0351ad4e8a2b7d32ce28ea1fd6c1066128e8ac4d86a9709378ffcf08
+                </MessageDigest>
+                <Size>209935</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Feuille d'émargt- consultatifs.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID23">
+            <BinaryDataObject id="ID24">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID24.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    0718b77db6ac2b1d21729d6d3317aab0c7f70e4f8af3acfbabe1696032b5d89c70ced454369a5156c7094bfd74f83986fa1a0a27fd0538e4d9546a7e8df76442
+                </MessageDigest>
+                <Size>206456</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Feuille d'émargt-élus.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID26">
+            <BinaryDataObject id="ID27">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID27.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    6cffd624d2d9dba4b66eb8c50d43c5791b8cccdd92675255ba507602323e1cee22d6e467140b2af42ff7d3499413e54547a8b6ad0498d7b2e8e67bda15fc3037
+                </MessageDigest>
+                <Size>205683</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>PV CA antérieur01-10-2019.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID29">
+            <BinaryDataObject id="ID30">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID30.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    c5e1508e873734406f706a60cf5aec612c50845324655d650b4c16a3de1a2299b2a689028e0967a946369c02076cb82518368abfad628ee1d1217e4cad0fdc7b
+                </MessageDigest>
+                <Size>203506</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>PV CA antérieur01-11-2019.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID33">
+            <BinaryDataObject id="ID34">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID34.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    1c326663ada662ad1a8ade439e6dde0ff02933e2640373aaec1817c5a6e378d4c57e7ab83e6c99469f0101842e78cfa63082eceaa558eafd1c8e85fd343defce
+                </MessageDigest>
+                <Size>200492</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Pièce annexe PtOJ1 Infos.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID38">
+            <BinaryDataObject id="ID39">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID39.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    da4139be6e1fd9ac2649fc55a05dea421cba951f5404bb691c2af32085862bfdf0182a1121e77b80e8cf136fd19ed5bed394970fca22de2791e8da27dab25bfb
+                </MessageDigest>
+                <Size>852122</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>ConventionFictif.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID41">
+            <BinaryDataObject id="ID42">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID42.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    f3904a6484e1bbf392b68533b53e74464c6da839b76f7bd074dcee857a53e9724053e093102073450ff2de2b875bf2c8c1bc0478b7585f4f4344ba08c90e7507
+                </MessageDigest>
+                <Size>1325131</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.7 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/276</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>PAPtOJ2PRJ3-PlanClasst SAE.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID44">
+            <BinaryDataObject id="ID45">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID45.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                </MessageDigest>
+                <Size>501988</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.6 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/20</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>ExtraitDélibPtOJ2SignPlanActions.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID49">
+            <BinaryDataObject id="ID50">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID50.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    3744809ee7b304f78ed3595473ec4fefc666b3bed2e3512d347c18a7afc83573b97ed3c40a2080d832496b386d61e8a2d3be6c1f9eefbd8ccb43f3029dd48307
+                </MessageDigest>
+                <Size>198204</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>ACI.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID52">
+            <BinaryDataObject id="ID53">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID53.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    c58cf5388cae5dd4bb55ac76a541f5f13683524e1c337836b5c75217d186f70fd351680499f344b82ef5b0c739da398ee8094f387c4bc3a425571a6e597349bf
+                </MessageDigest>
+                <Size>306906</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Pièce annexe 1 ACI.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID55">
+            <BinaryDataObject id="ID56">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID56.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    dc9cefa1e03764eccad4b7b3ba5ef6b4f977d373df9febdafd309793c91b6a71f74ed1e2567f6be0821f34dd8b2e0a266d0377e740ba11ebe6977d21381a9e00
+                </MessageDigest>
+                <Size>307037</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Pièce annexe 2 ACI.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID58">
+            <BinaryDataObject id="ID59">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID59.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                </MessageDigest>
+                <Size>501988</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.6 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/20</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>ExtraitDélibSignPtOJ3.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID62">
+            <BinaryDataObject id="ID63">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID63.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                </MessageDigest>
+                <Size>501988</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.6 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/20</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>ExtraitDélibSignPtOJ4.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID65">
+            <BinaryDataObject id="ID66">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID66.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    919b5cea234c11df0aaf6cc00eed4eca204a29900250c9474af7118b03d96f29133bdd761bb29ddc3e56ef81fc4e662b5fb72a408693daef2e595adfa42df2ba
+                </MessageDigest>
+                <Size>210276</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Pièce annexe 1.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID68">
+            <BinaryDataObject id="ID69">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID69.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    5358f033013102ac7272240a780cc77f9efba5eda6d943c036aae053ac46b443363bf5c5aae62bdee287bde9980b3fd74197726546fe098e29b0a008457106fa
+                </MessageDigest>
+                <Size>210437</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Pièce annexe 2.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID72">
+            <BinaryDataObject id="ID73">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID73.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                </MessageDigest>
+                <Size>501988</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.6 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/20</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>ExtraitDélib1SignPtOJ5.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID76">
+            <BinaryDataObject id="ID77">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID77.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                </MessageDigest>
+                <Size>501988</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.6 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/20</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>ExtraitDélib1SignPtOJ6College1.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID79">
+            <BinaryDataObject id="ID80">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID80.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                </MessageDigest>
+                <Size>501988</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.6 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/20</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>ExtraitDélib2SignPtOJ6College2.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID82">
+            <BinaryDataObject id="ID83">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID83.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                </MessageDigest>
+                <Size>501988</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.6 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/20</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>ExtraitDélib3SignPtOJ6College3.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID85">
+            <BinaryDataObject id="ID86">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID86.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    5f6d6348235a7b736dd2430a7369bae7c9371508e9c5c276cc9fb719ac2de46110dc84cf5f5fc3ee295fc7c0babfc3174e8303ad4c1ce4e7184682e51d6a67f5
+                </MessageDigest>
+                <Size>207968</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Pièce annexe 1 Collège 1.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID88">
+            <BinaryDataObject id="ID89">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID89.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    fcf3976b6ee893a1e5bc5215fe3a1873639e2df7adee675258713181403eccf7763becd0ecb668e29ba72988abf12ab86bb1761ecf22003511559eef5eb33376
+                </MessageDigest>
+                <Size>207968</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Pièce annexe 2 Collège 2.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID91">
+            <BinaryDataObject id="ID92">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID92.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    98308790accb1e0285f4e9e13fb10af8f5075962e99dd482a911ccb398daea72068a81549c044404480e15bb9aa59cda42178867870f6c20a9308cfc048cf738
+                </MessageDigest>
+                <Size>210121</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Pièce annexe 3 Collège 3.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID94">
+            <BinaryDataObject id="ID95">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID95.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    f71e44691d70ae7e3961920374cf62fea43e9bcf7976acf580fe8dedc60e3f8cc4471fbbbcc689307dbc451ec142d902a180dc420e1a6ed2583590626a8cd547
+                </MessageDigest>
+                <Size>205939</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF 1.7 - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/276</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Procuration1.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+        <DataObjectGroup id="ID97">
+            <BinaryDataObject id="ID98">
+                <DataObjectVersion>BinaryMaster_1</DataObjectVersion>
+                <Uri>content/ID98.pdf</Uri>
+                <MessageDigest algorithm="SHA-512">
+                    56f84353b4b66caed44da4ef5264a337c4d267426b928257b9f3f2a67e1ec714782cddfdda73b0f87fc048ccd4f883c90711534085fd95767f181090010c6800
+                </MessageDigest>
+                <Size>198621</Size>
+                <FormatIdentification>
+                    <FormatLitteral>Acrobat PDF/A - Portable Document Format</FormatLitteral>
+                    <FormatId>fmt/95</FormatId>
+                </FormatIdentification>
+                <FileInfo>
+                    <Filename>Procuration2.pdf</Filename>
+                </FileInfo>
+            </BinaryDataObject>
+        </DataObjectGroup>
+
+        <DescriptiveMetadata>
+
+            <ArchiveUnit id="ID10">
+                <Content>
+                    <DescriptionLevel>File</DescriptionLevel>
+                    <Title xml:lang="fra">Séance CA du 02-12-2019</Title>
+                    <OriginatingSystemId>ID-SI-Prod</OriginatingSystemId>
+                    <Description xml:lang="fra">Ces documents sont archivés dans le but d'une conservation des décisions
+                        du conseil d'administration.
+                    </Description>
+                    <CustodialHistory>
+                        <CustodialHistoryItem>Ces archives sont transférées à l'initiative de la Direction des affaires
+                            juridiques directement vers le SAE externalisé pour conservation et après validation de
+                            l'archiviste de l'UPPA
+                        </CustodialHistoryItem>
+                    </CustodialHistory>
+                    <Language>fra</Language>
+                    <Tag>Organe délibérant</Tag>
+                    <Tag>Conseil d'administration</Tag>
+                    <CreatedDate>2019-12-02</CreatedDate>
+                    <!--Date de tenue du CA-->
+                    <StartDate>2019-12-02</StartDate> <!--Date de tenue du CA-->
+                    <EndDate>2019-12-02</EndDate> <!--Date de tenue du CA-->
+                </Content>
+
+                <ArchiveUnit id="ID96">
+                    <Content>
+                        <DescriptionLevel>Item</DescriptionLevel>
+                        <Title xml:lang="fra">Procuration1</Title>
+                        <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                        <Tag>Procuration</Tag>
+                    </Content>
+                    <DataObjectReference>
+                        <DataObjectGroupReferenceId>ID94</DataObjectGroupReferenceId>
+                    </DataObjectReference>
+                </ArchiveUnit>
+                <ArchiveUnit id="ID99">
+                    <Content>
+                        <DescriptionLevel>Item</DescriptionLevel>
+                        <Title xml:lang="fra">Procuration2</Title>
+                        <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                        <Tag>Procuration</Tag>
+                    </Content>
+                    <DataObjectReference>
+                        <DataObjectGroupReferenceId>ID97</DataObjectGroupReferenceId>
+                    </DataObjectReference>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID16">
+                    <Content>
+                        <DescriptionLevel>Item</DescriptionLevel>
+                        <Title xml:lang="fra">Convocation-OJ</Title>
+                        <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                        <Signature>
+                            <Signer>
+                                <FullName>JEAN-MICHEL BAUDEQUIN</FullName>
+                                <SigningTime>2020-02-24T12:25:58</SigningTime>
+                                <Function>Fonction de la personne ou de l'entité</Function>
+                            </Signer>
+                            <Validator>
+                                <FullName>NOM Prénom
+                                </FullName> <!-- Le validateur de la signature est-il une personne ou une institution ? -->
+                                <ValidationTime>2019-12-26T10:00:00</ValidationTime>
+                                <Function>Fonction de l'entité</Function>
+                            </Validator>
+                            <ReferencedObject>
+                                <SignedObjectId>ID15</SignedObjectId>
+                                <SignedObjectDigest algorithm="SHA-512">
+                                    6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                                </SignedObjectDigest>
+                            </ReferencedObject>
+                        </Signature>
+                    </Content>
+                    <DataObjectReference>
+                        <DataObjectGroupReferenceId>ID14</DataObjectGroupReferenceId>
+                    </DataObjectReference>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID25">
+                    <Content>
+                        <DescriptionLevel>Item</DescriptionLevel>
+                        <Title xml:lang="fra">Feuille d'émargement-élus</Title>
+                        <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                    </Content>
+                    <DataObjectReference>
+                        <DataObjectGroupReferenceId>ID23</DataObjectGroupReferenceId>
+                    </DataObjectReference>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID22">
+                    <Content>
+                        <DescriptionLevel>Item</DescriptionLevel>
+                        <Title xml:lang="fra">Feuille d'émargement-membres consultatifs</Title>
+                        <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                    </Content>
+                    <DataObjectReference>
+                        <DataObjectGroupReferenceId>ID20</DataObjectGroupReferenceId>
+                    </DataObjectReference>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID19">
+                    <Management>
+                        <AppraisalRule>
+                            <Rule>APP-00015</Rule>
+                            <StartDate>2019-12-31</StartDate>
+                            <FinalAction>Destroy</FinalAction>
+                        </AppraisalRule>
+                        <AccessRule>
+                            <Rule>ACC-00020</Rule>
+                            <StartDate>2019-12-31</StartDate>
+                        </AccessRule>
+                    </Management>
+                    <Content>
+                        <DescriptionLevel>Item</DescriptionLevel>
+                        <Title xml:lang="fra">Enregistrement audio</Title>
+                        <OriginatingSystemId>ID-SI-Prod</OriginatingSystemId>
+                    </Content>
+                    <DataObjectReference>
+                        <DataObjectGroupReferenceId>ID17</DataObjectGroupReferenceId>
+                    </DataObjectReference>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID102">
+                    <Content>
+                        <DescriptionLevel>Item</DescriptionLevel>
+                        <Title xml:lang="fra">Relevé de conclusions</Title>
+                        <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                    </Content>
+                    <DataObjectReference>
+                        <DataObjectGroupReferenceId>ID100</DataObjectGroupReferenceId>
+                    </DataObjectReference>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID13">
+                    <Content>
+                        <DescriptionLevel>Item</DescriptionLevel>
+                        <Title xml:lang="fra">Accusé de réception du rectorat</Title>
+                        <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                    </Content>
+                    <DataObjectReference>
+                        <DataObjectGroupReferenceId>ID11</DataObjectGroupReferenceId>
+                    </DataObjectReference>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID32">
+                    <Content>
+                        <DescriptionLevel>File</DescriptionLevel>
+                        <Title xml:lang="fra">PointsOJLibellé1Infos</Title>
+                        <Tag>Point OJ</Tag>
+                        <Tag>Information;E2S</Tag>
+                        <Tag>Point n°1</Tag>
+                    </Content>
+
+                    <ArchiveUnit id="ID31">
+                        <Content>
+                            <DescriptionLevel>Item</DescriptionLevel>
+                            <Title xml:lang="fra">PV CA antérieur01-11-2019</Title>
+                            <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                            <Status>Voté</Status>
+                            <Tag>PV</Tag>
+                        </Content>
+                        <DataObjectReference>
+                            <DataObjectGroupReferenceId>ID29</DataObjectGroupReferenceId>
+                        </DataObjectReference>
+                    </ArchiveUnit>
+                    <ArchiveUnit id="ID28">
+                        <Content>
+                            <DescriptionLevel>Item</DescriptionLevel>
+                            <Title xml:lang="fra">PV CA antérieur01-10-2019</Title>
+                            <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                            <Status>Voté</Status>
+                            <Tag>PV</Tag>
+                        </Content>
+                        <DataObjectReference>
+                            <DataObjectGroupReferenceId>ID26</DataObjectGroupReferenceId>
+                        </DataObjectReference>
+                    </ArchiveUnit>
+                    <ArchiveUnit id="ID35">
+                        <Content>
+                            <DescriptionLevel>Item</DescriptionLevel>
+                            <Title xml:lang="fra">Pièce annexe PtOJ1 Infos</Title>
+                            <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                            <Tag>Pièce annexe</Tag>
+                        </Content>
+                        <DataObjectReference>
+                            <DataObjectGroupReferenceId>ID33</DataObjectGroupReferenceId>
+                        </DataObjectReference>
+                    </ArchiveUnit>
+
+                </ArchiveUnit>
+                <ArchiveUnit id="ID36">
+                    <Content>
+                        <DescriptionLevel>File</DescriptionLevel>
+                        <Title xml:lang="fra">PointsOJLibellé2CVTato</Title>
+                        <Tag>Point OJ</Tag>
+                        <Tag>Convention;Tato
+                        </Tag> <!-- A quoi correspond cette valeur ? Doit-elle apparaître ainsi ? -->
+                        <Tag>Point n° 2</Tag>
+                    </Content>
+                    <ArchiveUnit id="ID103">
+                        <Content>
+                            <DescriptionLevel>File</DescriptionLevel>
+                            <Title xml:lang="fra">Extrait</Title>
+                            <Tag>Extrait de délibération</Tag>
+                        </Content>
+                        <ArchiveUnit id="ID46">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">ExtraitDélibPtOJ2SignPlanActions</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Signature>
+                                    <Signer>
+                                        <FullName>JEAN-MICHEL BAUDEQUIN</FullName>
+                                        <SigningTime>2020-02-24T12:25:58</SigningTime>
+                                        <Function>Fonction de la personne ou de l'entité</Function>
+                                    </Signer>
+                                    <Validator>
+                                        <FullName>NOM Prénom
+                                        </FullName> <!-- Le validateur de la signature est-il une personne ou une institution ? -->
+                                        <ValidationTime>2019-12-26T10:00:00</ValidationTime>
+                                        <Function>Fonction de l'entité</Function>
+                                    </Validator>
+                                    <ReferencedObject>
+                                        <SignedObjectId>ID45</SignedObjectId>
+                                        <SignedObjectDigest algorithm="SHA-512">
+                                            6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                                        </SignedObjectDigest>
+                                    </ReferencedObject>
+                                </Signature>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID44</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                    </ArchiveUnit>
+                    <ArchiveUnit id="ID37">
+                        <Management>
+                            <AppraisalRule>
+                                <Rule>APP-00015</Rule>
+                                <StartDate>2019-12-31</StartDate>
+                                <FinalAction>Destroy</FinalAction>
+                            </AppraisalRule>
+                        </Management>
+                        <Content>
+                            <DescriptionLevel>File</DescriptionLevel>
+                            <Title xml:lang="fra">Convention</Title>
+                            <Tag>Convention</Tag>
+                            <Tag>Tato</Tag>
+                        </Content>
+                        <ArchiveUnit id="ID40">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">ConventionFictif</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID38</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                        <ArchiveUnit id="ID43">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">PAPtOJ2PRJ3-PlanClasst SAE</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Tag>Pièce annexe</Tag>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID41</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                    </ArchiveUnit>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID47">
+                    <Content>
+                        <DescriptionLevel>File</DescriptionLevel>
+                        <Title xml:lang="fra">PointsOJLibellé3ACITet</Title>
+                        <Tag>Point OJ</Tag>
+                        <Tag>ACI;Tet</Tag>
+                        <Tag>Point n°3</Tag>
+                    </Content>
+                    <ArchiveUnit id="ID106">
+                        <Content>
+                            <DescriptionLevel>File</DescriptionLevel>
+                            <Title xml:lang="fra">Extrait</Title>
+                            <Tag>Extrait de délibération</Tag>
+                        </Content>
+                        <ArchiveUnit id="ID60">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">ExtraitDélibSignPtOJ3</Title>
+                                <OriginatingSystemId>ID-Si-prod</OriginatingSystemId>
+                                <Signature>
+                                    <Signer>
+                                        <FullName>JEAN-MICHEL BAUDEQUIN</FullName>
+                                        <SigningTime>2020-02-24T12:25:58</SigningTime>
+                                        <Function>Fonction de la personne ou de l'entité</Function>
+                                    </Signer>
+                                    <Validator>
+                                        <FullName>NOM Prénom
+                                        </FullName> <!-- Le validateur de la signature est-il une personne ou une institution ? -->
+                                        <ValidationTime>2019-12-26T10:00:00</ValidationTime>
+                                        <Function>Fonction de l'entité</Function>
+                                    </Validator>
+                                    <ReferencedObject>
+                                        <SignedObjectId>ID59</SignedObjectId>
+                                        <SignedObjectDigest algorithm="SHA-512">
+                                            6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                                        </SignedObjectDigest>
+                                    </ReferencedObject>
+                                </Signature>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID58</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                    </ArchiveUnit>
+                    <ArchiveUnit id="ID48">
+                        <Management>
+                            <AppraisalRule>
+                                <Rule>APP-00015</Rule>
+                                <StartDate>2019-12-31</StartDate>
+                                <FinalAction>Destroy</FinalAction>
+                            </AppraisalRule>
+                        </Management>
+                        <Content>
+                            <DescriptionLevel>File</DescriptionLevel>
+                            <Title xml:lang="fra">Accord international</Title>
+                            <Tag>ACI</Tag>
+                            <Tag>Tet</Tag>
+                        </Content>
+                        <ArchiveUnit id="ID51">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">ACI</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID49</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                        <ArchiveUnit id="ID54">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">Pièce annexe 1 ACI</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Tag>Pièce annexe</Tag>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID52</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                        <ArchiveUnit id="ID57">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">Pièce annexe 2 ACI</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Tag>Pièce annexe</Tag>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID55</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                    </ArchiveUnit>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID61">
+                    <Content>
+                        <DescriptionLevel>File</DescriptionLevel>
+                        <Title xml:lang="fra">PointsOJLibellé4SsCVScACI</Title>
+                        <Tag>Point OJ</Tag>
+                        <Tag>Point n°4</Tag>
+                    </Content>
+                    <ArchiveUnit id="ID104">
+                        <Content>
+                            <DescriptionLevel>File</DescriptionLevel>
+                            <Title xml:lang="fra">Extrait</Title>
+                            <Tag>Extrait de délibération</Tag>
+                        </Content>
+                        <ArchiveUnit id="ID64">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">ExtraitDélibSignPtOJ4</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Signature>
+                                    <Signer>
+                                        <FullName>JEAN-MICHEL BAUDEQUIN</FullName>
+                                        <SigningTime>2020-02-24T12:25:58</SigningTime>
+                                        <Function>Fonction de la personne ou de l'entité</Function>
+                                    </Signer>
+                                    <Validator>
+                                        <FullName>NOM Prénom
+                                        </FullName> <!-- Le validateur de la signature est-il une personne ou une institution ? -->
+                                        <ValidationTime>2019-12-26T10:00:00</ValidationTime>
+                                        <Function>Fonction de l'entité</Function>
+                                    </Validator>
+                                    <ReferencedObject>
+                                        <SignedObjectId>ID63</SignedObjectId>
+                                        <SignedObjectDigest algorithm="SHA-512">
+                                            6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                                        </SignedObjectDigest>
+                                    </ReferencedObject>
+                                </Signature>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID62</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                        <ArchiveUnit id="ID67">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">Pièce annexe 1</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Tag>Pièce annexe</Tag>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID65</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                        <ArchiveUnit id="ID70">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">Pièce annexe 2</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Tag>Pièce annexe</Tag>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID68</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                    </ArchiveUnit>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID71">
+                    <Content>
+                        <DescriptionLevel>File</DescriptionLevel>
+                        <Title xml:lang="fra">PointsOJLibellé5PVanterieur</Title>
+                        <Tag>Point OJ</Tag>
+                        <Tag>Point n°5</Tag>
+                        <Tag>PV</Tag>
+                    </Content>
+                    <ArchiveUnit id="ID105">
+                        <Content>
+                            <DescriptionLevel>File</DescriptionLevel>
+                            <Title xml:lang="fra">Extrait</Title>
+                            <Tag>Extrait de délibération</Tag>
+                        </Content>
+                        <ArchiveUnit id="ID74">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">ExtraitDélib1SignPtOJ5</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Signature>
+                                    <Signer>
+                                        <FullName>JEAN-MICHEL BAUDEQUIN</FullName>
+                                        <SigningTime>2020-02-24T12:25:58</SigningTime>
+                                        <Function>Fonction de la personne ou de l'entité</Function>
+                                    </Signer>
+                                    <Validator>
+                                        <FullName>NOM Prénom
+                                        </FullName> <!-- Le validateur de la signature est-il une personne ou une institution ? -->
+                                        <ValidationTime>2019-12-26T10:00:00</ValidationTime>
+                                        <Function>Fonction de l'entité</Function>
+                                    </Validator>
+                                    <ReferencedObject>
+                                        <SignedObjectId>ID73</SignedObjectId>
+                                        <SignedObjectDigest algorithm="SHA-512">
+                                            6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                                        </SignedObjectDigest>
+                                    </ReferencedObject>
+                                </Signature>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID72</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                    </ArchiveUnit>
+                </ArchiveUnit>
+
+                <ArchiveUnit id="ID75">
+                    <Content>
+                        <DescriptionLevel>File</DescriptionLevel>
+                        <Title xml:lang="fra">PointsOJLibellé6StatutsColleges</Title>
+                        <Tag>Point OJ</Tag>
+                        <Tag>Point n°6</Tag>
+                        <Tag>Statut;Collège</Tag>
+                    </Content>
+                    <ArchiveUnit id="ID107">
+                        <Content>
+                            <DescriptionLevel>File</DescriptionLevel>
+                            <Title xml:lang="fra">Extrait Collège 1</Title>
+                            <Tag>Extrait de délibération</Tag>
+                        </Content>
+                        <ArchiveUnit id="ID78">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">ExtraitDélib1SignPtOJ6College1</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Signature>
+                                    <Signer>
+                                        <FullName>JEAN-MICHEL BAUDEQUIN</FullName>
+                                        <SigningTime>2020-02-24T12:25:58</SigningTime>
+                                        <Function>Fonction de la personne ou de l'entité</Function>
+                                    </Signer>
+                                    <Validator>
+                                        <FullName>NOM Prénom
+                                        </FullName> <!-- Le validateur de la signature est-il une personne ou une institution ? -->
+                                        <ValidationTime>2019-12-26T10:00:00</ValidationTime>
+                                        <Function>Fonction de l'entité</Function>
+                                    </Validator>
+                                    <ReferencedObject>
+                                        <SignedObjectId>ID77</SignedObjectId>
+                                        <SignedObjectDigest algorithm="SHA-512">
+                                            6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                                        </SignedObjectDigest>
+                                    </ReferencedObject>
+                                </Signature>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID76</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                        <ArchiveUnit id="ID87">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">Pièce annexe 1 Collège 1.pdf</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Tag>Pièce annexe</Tag>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID85</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                    </ArchiveUnit>
+                    <ArchiveUnit id="ID108">
+                        <Content>
+                            <DescriptionLevel>File</DescriptionLevel>
+                            <Title xml:lang="fra">Extrait Collège 2</Title>
+                            <Tag>Extrait de délibération</Tag>
+                        </Content>
+                        <ArchiveUnit id="ID81">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">ExtraitDélib2SignPtOJ6College2</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Signature>
+                                    <Signer>
+                                        <FullName>JEAN-MICHEL BAUDEQUIN</FullName>
+                                        <SigningTime>2020-02-24T12:25:58</SigningTime>
+                                        <Function>Fonction de la personne ou de l'entité</Function>
+                                    </Signer>
+                                    <Validator>
+                                        <FullName>NOM Prénom
+                                        </FullName> <!-- Le validateur de la signature est-il une personne ou une institution ? -->
+                                        <ValidationTime>2019-12-26T10:00:00</ValidationTime>
+                                        <Function>Fonction de l'entité</Function>
+                                    </Validator>
+                                    <ReferencedObject>
+                                        <SignedObjectId>ID80</SignedObjectId>
+                                        <SignedObjectDigest algorithm="SHA-512">
+                                            6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                                        </SignedObjectDigest>
+                                    </ReferencedObject>
+                                </Signature>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID79</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                        <ArchiveUnit id="ID90">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">Pièce annexe 2 Collège 2.pdf</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Tag>Pièce annexe</Tag>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID88</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                    </ArchiveUnit>
+                    <ArchiveUnit id="ID109">
+                        <Content>
+                            <DescriptionLevel>File</DescriptionLevel>
+                            <Title xml:lang="fra">Extrait Collège 3</Title>
+                            <Tag>Extrait de délibération</Tag>
+                        </Content>
+                        <ArchiveUnit id="ID84">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">ExtraitDélib3SignPtOJ6College3.pdf</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Signature>
+                                    <Signer>
+                                        <FullName>JEAN-MICHEL BAUDEQUIN</FullName>
+                                        <SigningTime>2020-02-24T12:25:58</SigningTime>
+                                        <Function>Fonction de la personne ou de l'entité</Function>
+                                    </Signer>
+                                    <Validator>
+                                        <FullName>NOM Prénom
+                                        </FullName> <!-- Le validateur de la signature est-il une personne ou une institution ? -->
+                                        <ValidationTime>2019-12-26T10:00:00</ValidationTime>
+                                        <Function>Fonction de l'entité</Function>
+                                    </Validator>
+                                    <ReferencedObject>
+                                        <SignedObjectId>ID83</SignedObjectId>
+                                        <SignedObjectDigest algorithm="SHA-512">
+                                            6e7a10c3b8f4d37d9e23dc63adbdd5f71ab74ae31df16d0552527f58e8000272640e521a19a3c89cf9509bc8fefa1a37b8bf52ba4e20df733cb2a88315f8aef7
+                                        </SignedObjectDigest>
+                                    </ReferencedObject>
+                                </Signature>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID82</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                        <ArchiveUnit id="ID93">
+                            <Content>
+                                <DescriptionLevel>Item</DescriptionLevel>
+                                <Title xml:lang="fra">Pièce annexe 3 Collège 3.pdf</Title>
+                                <OriginatingSystemId>ID-SI-prod</OriginatingSystemId>
+                                <Tag>Pièce annexe</Tag>
+                            </Content>
+                            <DataObjectReference>
+                                <DataObjectGroupReferenceId>ID91</DataObjectGroupReferenceId>
+                            </DataObjectReference>
+                        </ArchiveUnit>
+                    </ArchiveUnit>
+                </ArchiveUnit>
+            </ArchiveUnit>
+
+        </DescriptiveMetadata>
+        <ManagementMetadata>
+            <OriginatingAgencyIdentifier>19640251500270</OriginatingAgencyIdentifier>
+            <SubmissionAgencyIdentifier>19640251500270</SubmissionAgencyIdentifier>
+            <AppraisalRule>
+                <Rule>APP-00015</Rule> <!-- DUA 15 ans -->
+                <StartDate>2019-12-31</StartDate>
+                <FinalAction>Keep</FinalAction>
+            </AppraisalRule>
+            <AccessRule>
+                <Rule>ACC-00001</Rule> <!-- Librement communicable -->
+                <StartDate>2019-12-31</StartDate>
+            </AccessRule>
+        </ManagementMetadata>
+    </DataObjectPackage>
+    <ArchivalAgency>
+        <Identifier schemeName="SIRET" schemeAgencyName="INSEE">19341594000017</Identifier>
+    </ArchivalAgency>
+    <TransferringAgency>
+        <Identifier schemeName="SIRET" schemeAgencyName="INSEE">19640251500270</Identifier>
+    </TransferringAgency>
+</ArchiveTransfer>

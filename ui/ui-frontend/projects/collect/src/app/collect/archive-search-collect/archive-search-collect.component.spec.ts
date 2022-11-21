@@ -36,7 +36,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, Project, ProjectStatus, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
@@ -137,28 +137,5 @@ describe('ArchiveSearchCollectComponent', () => {
     expect(component.isIndeterminate).toBeFalsy();
     expect(component.isAllchecked).toBeFalsy();
     expect(component.itemNotSelected).toBe(0);
-  });
-
-  it('should return true', () => {
-    // Given
-    const project: Project = {
-      id: 'projectId',
-      archivalAgreement: 'archivalAgreement',
-      messageIdentifier: 'messageIdentifier',
-      archivalAgencyIdentifier: 'archivalAgencyIdentifier',
-      transferringAgencyIdentifier: 'transferringAgencyIdentifier',
-      originatingAgencyIdentifier: 'originatingAgencyIdentifier',
-      submissionAgencyIdentifier: 'submissionAgencyIdentifier',
-      archivalProfile: 'archivalProfile',
-      unitUp: 'INGEST',
-      comment: 'comment',
-      status: ProjectStatus.SENT,
-    };
-
-    // When
-    const response = component.updateUnitsMetadataDisabled(project);
-
-    // Then
-    expect(response).toBeTruthy();
   });
 });

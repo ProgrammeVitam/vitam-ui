@@ -121,8 +121,6 @@ public final class ErrorsConstants {
     public static final String ERROR_MESSAGE = "message";
 
     public static final String ERROR_ARGS = "args";
-    public static final String API_ERRORS_REQUEST_TIMEOUT = "Request Timeout Error";
-    public static final String API_ERRORS_REQUEST_TIMEOUT_MESSAGE = "Invalid Request TimeOut";
 
     private ErrorsConstants() {
         // do nothing

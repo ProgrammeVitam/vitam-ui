@@ -43,19 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.ABORT_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CLOSE_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.IMPORT_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.REOPEN_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SEND_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
 /**
  * All the services.
@@ -235,6 +223,18 @@ public class ServicesData {
 
     public static final String ROLE_UPDATE_ACCESS_CONTRACTS = UPDATE_ROLE_PREFIX + SERVICE_ACCESS_CONTRACT;
 
+    //------------------------------------ PASTIS -----------------------------------------
+
+    public static final String SERVICE_PASTIS = "PASTIS";
+
+    public static final String ROLE_GET_PASTIS = GET_ROLE_PREFIX + SERVICE_PASTIS;
+
+    public static final String ROLE_CREATE_PASTIS = CREATE_ROLE_PREFIX + SERVICE_PASTIS;
+
+    public static final String ROLE_UPDATE_PASTIS =  UPDATE_ROLE_PREFIX + SERVICE_PASTIS;
+
+    public static final String ROLE_DELETE_PASTIS =  DELETE_ROLE_PREFIX + SERVICE_PASTIS;
+
     //------------------------------------ INGEST CONTRACT -----------------------------------------
 
     public static final String SERVICE_INGEST_CONTRACT = "INGEST_CONTRACTS";
@@ -361,7 +361,28 @@ public class ServicesData {
 
     //------------------------------ PROFILES (ARCHIVE PROFILES) --------------------------------------
 
-    public static final String ROLE_GET_ARCHIVE_PROFILES = ROLE_PREFIX + "GET_ARCHIVE_PROFILES";
+    public static final String SERVICE_ARCHIVE_PROFILES = "ARCHIVE_PROFILES";
+
+    public static final String ROLE_GET_ARCHIVE_PROFILES = GET_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+
+    public static final String ROLE_UPDATE_ARCHIVE_PROFILES = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+
+    public static final String ROLE_CREATE_ARCHIVE_PROFILES =  UPDATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+
+    public static final String ROLE_IMPORT_ARCHIVE_PROFILES =  DELETE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+
+    //------------------------------------ ARCHIVE PROFILES UNIT -----------------------------------
+
+    public static final String SERVICE_ARCHIVE_PROFILES_UNIT = "ARCHIVE_PROFILES_UNIT";
+
+    public static final String ROLE_GET_ARCHIVE_PROFILES_UNIT = GET_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+
+    public static final String ROLE_UPDATE_ARCHIVE_PROFILES_UNIT = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+
+    public static final String ROLE_CREATE_ARCHIVE_PROFILES_UNIT =  UPDATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+
+    public static final String ROLE_IMPORT_ARCHIVE_PROFILES_UNIT =  DELETE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+
 
     //------------------------------------ INGESTS -----------------------------------------
 
@@ -439,7 +460,6 @@ public class ServicesData {
     public static final String PROJECTS = "PROJECTS";
 
     public static final String TRANSACTIONS = "TRANSACTIONS";
-    public static final String UNITS_METADATA = "UNITS_METADATA";
     public static final String ROLE_GET_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
     public static final String ROLE_CREATE_PROJECTS = CREATE_ROLE_PREFIX + PROJECTS;
     public static final String ROLE_CREATE_TRANSACTIONS = CREATE_ROLE_PREFIX + TRANSACTIONS;
@@ -456,7 +476,6 @@ public class ServicesData {
 
     public static final String ROLE_ABORT_TRANSACTIONS = ABORT_ROLE_PREFIX + TRANSACTIONS;
 
-    public static final String ROLE_UPDATE_UNITS_METADATA = UPDATE_ROLE_PREFIX + UNITS_METADATA;
 
     //@formatter:off
 
@@ -593,9 +612,7 @@ public class ServicesData {
         ROLE_CREATE_TRANSACTIONS,
         ROLE_UPDATE_TRANSACTIONS,
         ROLE_GET_TRANSACTIONS,
-        ROLE_DELETE_PROJECTS,
-        ROLE_SEND_TRANSACTIONS,
-        ROLE_UPDATE_UNITS_METADATA
+        ROLE_DELETE_PROJECTS
     );
 
     /**
@@ -747,16 +764,7 @@ public class ServicesData {
         ROLE_CREATE_TRANSACTIONS,
         ROLE_UPDATE_TRANSACTIONS,
         ROLE_GET_TRANSACTIONS,
-        ROLE_DELETE_PROJECTS,
-        ROLE_UPDATE_UNIT_DESC_METADATA,
-
-        ROLE_GET_PROJECTS,
-        ROLE_CREATE_PROJECTS,
-        ROLE_UPDATE_PROJECTS,
-
-        ROLE_CLOSE_TRANSACTIONS,
-        ROLE_SEND_TRANSACTIONS,
-        ROLE_UPDATE_UNITS_METADATA
+        ROLE_DELETE_PROJECTS
     );
     //@formatter:on
 

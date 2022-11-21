@@ -95,7 +95,7 @@
 
 - name: Load script in database
   shell: "mongo \"mongodb://{{ mongod_uri }}/admin\" {{ mongo_credentials }} {{ mongod_output_dir_entry_point }}/main_script.js"
-  no_log: "{{ hide_passwords_during_deploy }}"
+#  no_log: "{{ hide_passwords_during_deploy }}"
   when: mongodb.docker is not defined or not mongodb.docker.enable
 
 - name: Load script in database test (docker)

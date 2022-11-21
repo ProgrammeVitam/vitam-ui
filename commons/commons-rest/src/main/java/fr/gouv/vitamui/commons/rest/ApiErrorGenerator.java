@@ -36,6 +36,10 @@
  */
 package fr.gouv.vitamui.commons.rest;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.MissingFormatArgumentException;
+
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
@@ -48,15 +52,10 @@ import fr.gouv.vitamui.commons.api.exception.NoRightsException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
-import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.api.exception.RouteNotFoundException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.exception.ValidationException;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.MissingFormatArgumentException;
 
 /**
  * API Error Generator.
@@ -92,7 +91,6 @@ public final class ApiErrorGenerator {
         mappings.put(ErrorsConstants.API_ERRORS_ROUTE_NOT_FOUND, ErrorsConstants.API_ERRORS_ROUTE_NOT_FOUND_MESSAGE);
         mappings.put(ErrorsConstants.API_ERRORS_UNAUTHORIZED, ErrorsConstants.API_ERRORS_UNAUTHORIZED_MESSAGE);
         mappings.put(ErrorsConstants.API_ERRORS_VALIDATION, ErrorsConstants.API_ERRORS_VALIDATION_MESSAGE);
-        mappings.put(ErrorsConstants.API_ERRORS_REQUEST_TIMEOUT, ErrorsConstants.API_ERRORS_REQUEST_TIMEOUT_MESSAGE);
         return mappings;
     }
 
@@ -118,7 +116,6 @@ public final class ApiErrorGenerator {
         keysMappings.put(RouteNotFoundException.class, ErrorsConstants.API_ERRORS_ROUTE_NOT_FOUND);
         keysMappings.put(UnAuthorizedException.class, ErrorsConstants.API_ERRORS_UNAUTHORIZED);
         keysMappings.put(ValidationException.class, ErrorsConstants.API_ERRORS_VALIDATION);
-        keysMappings.put(RequestTimeOutException.class, ErrorsConstants.API_ERRORS_REQUEST_TIMEOUT);
         return keysMappings;
     }
 
@@ -221,13 +218,6 @@ public final class ApiErrorGenerator {
     public static NotImplementedException getNotImplementedException(final Object... args) {
         return new NotImplementedException(getMessage(ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET, args),
                 buildKey(ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET));
-    }
-
-    /**
-     * @return the RequestTimeOutException
-     */
-    public static RequestTimeOutException getRequestTimeOutException(final Object... args) {
-        return new RequestTimeOutException(getMessage(ErrorsConstants.API_ERRORS_REQUEST_TIMEOUT, args), buildKey(ErrorsConstants.API_ERRORS_REQUEST_TIMEOUT));
     }
 
     public static String buildKey(@SuppressWarnings("rawtypes") final Class clazz) {

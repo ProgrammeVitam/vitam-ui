@@ -52,7 +52,7 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = {ProjectExternalController.class})
-public class ProjectExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
+public class ProjectExternalControllerTest extends ApiSearchCollectExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ProjectExternalControllerTest.class);

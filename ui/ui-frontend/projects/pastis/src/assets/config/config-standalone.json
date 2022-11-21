@@ -1,0 +1,15 @@
+{
+  "sedaUrl": "/sedaview",
+  "pastisEditPage": "edit",
+  "pastisNewProfile": "new",
+  "pastisPathPrefix": "",
+  "getAllProfilesUrl": "/getprofiles",
+  "editProfileUrl": "/edit",
+  "createProfileByTypeUrl": "/profile",
+  "uploadProfileUrl": "/profile",
+  "getFileUrl": "/getfile",
+  "savePAasFileUrl": "/archiveprofile",
+  "savePUAasFileUrl": "/getarchiveunitprofile"
+
+
+}
