@@ -51,7 +51,7 @@ public class ApiArchivesSearchInternalApplicationTest {
     }
 
     @Test
-    public void testContextLoads() {
+    void testContextLoads() {
         Assertions.assertNotNull(env);
     }
 }

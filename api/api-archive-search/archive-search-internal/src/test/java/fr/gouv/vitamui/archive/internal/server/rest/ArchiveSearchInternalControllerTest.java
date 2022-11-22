@@ -34,6 +34,7 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -76,7 +77,8 @@ public class ArchiveSearchInternalControllerTest {
     }
 
     @Test
-    public void testBasicArchive() {
+    void testBasicArchive() {
+        Assertions.assertNotNull(archiveSearchInternalService);
     }
 
 }

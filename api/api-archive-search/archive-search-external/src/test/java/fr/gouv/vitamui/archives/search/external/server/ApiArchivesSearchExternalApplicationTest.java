@@ -38,14 +38,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class ApiArchivesSearchExternalApplicationTest {
+class ApiArchivesSearchExternalApplicationTest {
 
 
     @Autowired
     private ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties;
 
     @Test
-    public void testArchiveContextLoads() {
+    void testArchiveContextLoads() {
 
         Assertions.assertNotNull(apiArchiveExternalApplicationProperties);
         Assertions.assertNotNull(apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());

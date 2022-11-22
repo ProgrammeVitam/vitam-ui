@@ -53,7 +53,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public class ArchiveSearchEliminationInternalServiceTest {
+class ArchiveSearchEliminationInternalServiceTest {
 
     @MockBean(name = "eliminationService")
     private EliminationService eliminationService;
@@ -74,11 +74,11 @@ public class ArchiveSearchEliminationInternalServiceTest {
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         archiveSearchEliminationInternalService =
-            new ArchiveSearchEliminationInternalService(archiveSearchInternalService, eliminationService,objectMapper);
+            new ArchiveSearchEliminationInternalService(archiveSearchInternalService, eliminationService, objectMapper);
     }
 
     @Test
-    public void getFinalEliminationConstructedQuery() throws Exception {
+    void getFinalEliminationConstructedQuery() throws Exception {
         JsonNode fromString = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_QUERY));
         EliminationRequestBody eliminationRequestBody2 =
             archiveSearchEliminationInternalService.getEliminationRequestBody(fromString, null);

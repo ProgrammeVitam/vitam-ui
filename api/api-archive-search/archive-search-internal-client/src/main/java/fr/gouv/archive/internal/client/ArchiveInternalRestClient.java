@@ -115,6 +115,7 @@ public class ArchiveInternalRestClient
         return response.getBody();
     }
 
+    @Override
     protected MultiValueMap<String, String> buildSearchHeaders(final InternalHttpContext context) {
         final MultiValueMap<String, String> headers = buildHeaders(context);
         String accessContract = null;

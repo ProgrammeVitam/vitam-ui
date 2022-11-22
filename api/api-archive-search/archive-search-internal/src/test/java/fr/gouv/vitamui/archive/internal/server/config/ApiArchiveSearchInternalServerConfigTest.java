@@ -49,7 +49,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("test")
 @ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
-public class ApiArchiveSearchInternalServerConfigTest {
+class ApiArchiveSearchInternalServerConfigTest {
 
     @MockBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;

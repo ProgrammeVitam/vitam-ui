@@ -52,11 +52,10 @@ import java.util.List;
 
 /**
  * MongoDB configuration for archive.
- *
- *
  */
 @Configuration
-@EnableMongoRepositories(basePackages = { "fr.gouv.vitamui.commons.mongo", "fr.gouv.vitamui.archive.internal.server" }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(basePackages = {"fr.gouv.vitamui.commons.mongo",
+    "fr.gouv.vitamui.archive.internal.server"}, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class MongoDbConfig {
 
     @Autowired
@@ -64,7 +63,7 @@ public class MongoDbConfig {
 
     @Bean
     public MongoCustomConversions customConversion() {
-        final List<Converter<?, ?>> converters = new ArrayList<Converter<?, ?>>();
+        final List<Converter<?, ?>> converters = new ArrayList<>();
         converters.add(new OffsetDateTimeToStringConverter());
         converters.add(new StringToOffsetDateTimeConverter());
         return new MongoCustomConversions(converters);

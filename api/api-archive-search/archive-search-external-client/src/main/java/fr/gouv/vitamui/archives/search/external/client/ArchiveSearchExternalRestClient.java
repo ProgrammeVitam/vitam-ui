@@ -113,6 +113,7 @@ public class ArchiveSearchExternalRestClient
         return response.getBody();
     }
 
+    @Override
     protected MultiValueMap<String, String> buildSearchHeaders(final ExternalHttpContext context) {
         final MultiValueMap<String, String> headers = buildHeaders(context);
         String accessContract = null;

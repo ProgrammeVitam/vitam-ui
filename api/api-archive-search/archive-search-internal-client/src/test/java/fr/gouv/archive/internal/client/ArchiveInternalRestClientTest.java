@@ -71,7 +71,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
     @Test
     public void sampleArchiveTest() {
         Assertions.assertNotNull(archivesSearchExternalRestClient);
-        Assertions.assertEquals(archivesSearchExternalRestClient.getPathUrl(), RestApi.ARCHIVE_SEARCH_PATH);
+        Assertions.assertEquals(RestApi.ARCHIVE_SEARCH_PATH, archivesSearchExternalRestClient.getPathUrl());
     }
 
 

@@ -340,7 +340,7 @@ public class ArchiveSearchInternalController {
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final SearchCriteriaDto searchQuery)
-        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
             .checkParameter(MANDATORY_PARAMETERS,
