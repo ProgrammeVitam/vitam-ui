@@ -33,7 +33,8 @@
       <mat-list *ngFor="let element of allowedChildren | filterByName:filterName:sedaLanguage;"
                 class="list-item">
                             <span class="list-box-content">
-                                <i *ngIf="isElementComplex(element)" class="vitamui-icon vitamui-icon-complex-element-1-1"
+                                <i *ngIf="isElementComplex(element)"
+                                   class="vitamui-icon vitamui-icon-complex-element-1-1"
                                    id="pastis-ico-complex-element">
                                   <span class="path1"></span><span class="path2"></span>
                                   <span class="path3"></span><span class="path4"></span>
@@ -43,11 +44,12 @@
                                 <span
                                   [matTooltipShowDelay]="0"
                                   class="text medium"
-                                  matTooltip={{getDefinition(element)}}
+                                  matTooltip="{{ getDefinition(element) }}"
                                   matTooltipClass="pastis-tooltip-class"
-                                  placement="right">{{onResolveName(element)}}</span>
+                                  placement="right">{{ onResolveName(element) }}</span>
                             </span>
-        <span (click)="onAddSelectedElement(element)" class="ajouter">{{'USER_ACTION.ADD_METADATA.BOUTON_AJOUTER' | translate}}</span>
+        <span (click)="onAddSelectedElement(element)"
+              class="ajouter">{{'USER_ACTION.ADD_METADATA.BOUTON_AJOUTER' | translate}}</span>
         <mat-divider class="pastis-popup-separator"></mat-divider>
 
       </mat-list>
