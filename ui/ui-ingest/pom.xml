@@ -25,6 +25,7 @@
         <webpack.test.skip>false</webpack.test.skip>
         <skipTests>false</skipTests>
         <skipAllFrontend>false</skipAllFrontend>
+        <skipAllFrontendTests>false</skipAllFrontendTests>
     </properties>
 
 
