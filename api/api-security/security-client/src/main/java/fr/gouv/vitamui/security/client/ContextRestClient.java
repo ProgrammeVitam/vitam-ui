@@ -42,6 +42,7 @@ import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.security.common.rest.RestApi;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -68,7 +69,7 @@ public class ContextRestClient extends BaseCrudRestClient<ContextDto, InternalHt
     }
 
     public ContextDto findByCertificate(final InternalHttpContext context, final String certificate) {
-        LOGGER.debug("certificate(truncated): {}", certificate);
+        LOGGER.debug("certificate(truncated): {}****", StringUtils.substring(certificate, 0, 100));
         final HttpEntity<String> request = new HttpEntity<>(certificate, buildHeaders(context));
         final ResponseEntity<ContextDto> response = restTemplate.exchange(getUrl() + RestApi.FINDBYCERTIFICATE_PATH, HttpMethod.POST, request, getDtoClass());
         checkResponse(response);
