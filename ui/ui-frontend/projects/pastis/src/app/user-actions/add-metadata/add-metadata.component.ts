@@ -46,12 +46,12 @@ import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import {FileNode} from "../../models/file-node";
+import { FileNode } from "../../models/file-node";
 
 @Component({
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-metadata.component.html',
-  styleUrls: ['./add-metadata.component.scss']
+  styleUrls: [ './add-metadata.component.scss' ]
 })
 export class UserActionAddMetadataComponent implements OnInit {
 
@@ -74,9 +74,10 @@ export class UserActionAddMetadataComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private fileService: FileService, private sedaService: SedaService,
-    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService,
-    private profileService: ProfileService) { }
+              private fileService: FileService, private sedaService: SedaService,
+              private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService,
+              private profileService: ProfileService) {
+  }
 
   ngOnInit() {
     this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
@@ -87,7 +88,9 @@ export class UserActionAddMetadataComponent implements OnInit {
         console.log(error);
       }
     );
-    this.fileService.nodeChange.subscribe(fileNode => { this.fileNode = fileNode; });
+    this.fileService.nodeChange.subscribe(fileNode => {
+      this.fileNode = fileNode;
+    });
     this.sedaData = this.sedaService.sedaRules[0];
 
     this.sedaNodeFound = this.fileNode.sedaData;
@@ -109,16 +112,16 @@ export class UserActionAddMetadataComponent implements OnInit {
       } else {
         this.allowedChildren = this.sedaNodeFound.Children.filter((e: SedaData) => e.Name !== 'id');
         if (this.fileNode.sedaData.Children.filter((e: SedaData) => e.Name.endsWith('Rule')).length > 0) {
-          if (this.fileNode.children.filter( (e: FileNode) => e.name === 'PreventInheritance').length > 0) {
+          if (this.fileNode.children.filter((e: FileNode) => e.name === 'PreventInheritance').length > 0) {
             this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'RefNonRuleId');
           }
-          if (this.fileNode.children.filter( (e: FileNode) => e.name === 'RefNonRuleId').length > 0) {
+          if (this.fileNode.children.filter((e: FileNode) => e.name === 'RefNonRuleId').length > 0) {
             this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'PreventInheritance');
           }
         }
 
       }
-      this.fileNode.children.forEach( (child: FileNode) => {
+      this.fileNode.children.forEach((child: FileNode) => {
         if (child.cardinality.endsWith("1")) {
           this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== child.name);
         }
@@ -195,6 +198,10 @@ export class UserActionAddMetadataComponent implements OnInit {
     }
   }
 
+  getDefinition(element: SedaData): string {
+    return element ? element.Definition : '';
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -202,6 +209,7 @@ export class UserActionAddMetadataComponent implements OnInit {
   public onSearchSubmit(search: string): void {
     this.filterName = search;
   }
+
   onResolveName(element: SedaData): string {
     if (this.sedaLanguage) {
       return element.Name;
@@ -212,6 +220,7 @@ export class UserActionAddMetadataComponent implements OnInit {
     }
     return element.Name;
   }
+
   ngOnDestroy(): void {
     if (this.sedaLanguageSub != null) {
       this.sedaLanguageSub.unsubscribe();
@@ -223,8 +232,12 @@ export class UserActionAddMetadataComponent implements OnInit {
 @Pipe({ name: 'filterByName' })
 export class FilterByNamePipe implements PipeTransform {
   transform(listOfElements: SedaData[], nameToFilter: string, sedaLanguage: boolean): SedaData[] {
-    if (!listOfElements) { return null; }
-    if (!nameToFilter) { return listOfElements; }
+    if (!listOfElements) {
+      return null;
+    }
+    if (!nameToFilter) {
+      return listOfElements;
+    }
     if (sedaLanguage) {
       return listOfElements.filter(element => element.Name !== undefined)
         .filter(element => element.Name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
