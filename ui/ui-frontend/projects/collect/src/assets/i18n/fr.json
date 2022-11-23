@@ -1,5 +1,21 @@
 {
   "COLLECT": {
+    "UPDATE_UNITS_METADATA": {
+      "ACTION_UPDATE": "Mettre à jour les metadonnées",
+      "ACTION_TITLE": "Mise à jour des métadonnées des archives",
+      "ACTION_SUB_TITLE": "Import du fichier de mise à jour des métadonnées",
+      "ACTION_DESCRIPTION": "Importer un fichier csv pour mettre à jour les métadonnées descriprives des unités archivistiques du projet sélectionné",
+      "UPDATE_CONFIRM": "Mettre à jour",
+      "UPDATE_CANCEL": "Annuler",
+      "CONFIRM": "Confirmer",
+      "CANCEL_UPDATE_TO_CONFIRM": "Êtes-vous sur de vouloir annuler l'opération de mise à jour des métadonnées ?",
+      "ADD_FILE": "Glisser-déposer ",
+      "BROWSE": "ou Parcourir",
+      "ACCEPTED_FORMAT": "Format accépté : csv",
+      "FILE_BAD_FORMAT": "Le fichier déposé n'est pas au bon format",
+      "SUCCESS_MESSAGE": "L’opération de mise à jour des métadonnées a bien été traitée",
+      "WAIT_MESSAGE": "L'opération est en cours, merci de ne pas éteindre ou rafraichir votre navigateur"
+    },
     "SEARCH_PLACEHOLDER": "Code et intitulé du versement, service versant",
     "APP_BREADCRUMB": "Collecte et préparation des versements",
     "NB_ENTRIES": "{{nb}} projets",

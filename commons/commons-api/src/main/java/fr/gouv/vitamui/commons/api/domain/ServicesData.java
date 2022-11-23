@@ -43,7 +43,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.*;
+import static fr.gouv.vitamui.commons.api.CommonConstants.ABORT_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CLOSE_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.IMPORT_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.REOPEN_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SEND_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
 
 /**
  * All the services.
@@ -460,6 +472,7 @@ public class ServicesData {
     public static final String PROJECTS = "PROJECTS";
 
     public static final String TRANSACTIONS = "TRANSACTIONS";
+    public static final String UNITS_METADATA = "UNITS_METADATA";
     public static final String ROLE_GET_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
     public static final String ROLE_CREATE_PROJECTS = CREATE_ROLE_PREFIX + PROJECTS;
     public static final String ROLE_CREATE_TRANSACTIONS = CREATE_ROLE_PREFIX + TRANSACTIONS;
@@ -476,6 +489,7 @@ public class ServicesData {
 
     public static final String ROLE_ABORT_TRANSACTIONS = ABORT_ROLE_PREFIX + TRANSACTIONS;
 
+    public static final String ROLE_UPDATE_UNITS_METADATA = UPDATE_ROLE_PREFIX + UNITS_METADATA;
 
     //@formatter:off
 
@@ -612,7 +626,9 @@ public class ServicesData {
         ROLE_CREATE_TRANSACTIONS,
         ROLE_UPDATE_TRANSACTIONS,
         ROLE_GET_TRANSACTIONS,
-        ROLE_DELETE_PROJECTS
+        ROLE_DELETE_PROJECTS,
+        ROLE_SEND_TRANSACTIONS,
+        ROLE_UPDATE_UNITS_METADATA
     );
 
     /**
@@ -764,7 +780,16 @@ public class ServicesData {
         ROLE_CREATE_TRANSACTIONS,
         ROLE_UPDATE_TRANSACTIONS,
         ROLE_GET_TRANSACTIONS,
-        ROLE_DELETE_PROJECTS
+        ROLE_DELETE_PROJECTS,
+        ROLE_UPDATE_UNIT_DESC_METADATA,
+
+        ROLE_GET_PROJECTS,
+        ROLE_CREATE_PROJECTS,
+        ROLE_UPDATE_PROJECTS,
+
+        ROLE_CLOSE_TRANSACTIONS,
+        ROLE_SEND_TRANSACTIONS,
+        ROLE_UPDATE_UNITS_METADATA
     );
     //@formatter:on
 

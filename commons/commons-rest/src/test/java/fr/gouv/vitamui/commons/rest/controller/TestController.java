@@ -1,10 +1,12 @@
 package fr.gouv.vitamui.commons.rest.controller;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-
-import javax.validation.Valid;
-
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.VitamUIException;
+import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
+import fr.gouv.vitamui.commons.rest.dto.VitamUIDto;
+import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpMethod;
@@ -24,13 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
-import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
-import fr.gouv.vitamui.commons.rest.dto.VitamUIDto;
-import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 @RestController
 public class TestController {
@@ -90,6 +88,8 @@ public class TestController {
     public static final String UN_AUTHORIZED_EXCEPTION = "/test/unAuthorizedException";
 
     public static final String VALIDATION_EXCEPTION = "/test/validationException";
+
+    public static final String REQUEST_TIMEOUT_ERROR = "/test/requestTimeOutException";
 
     @RequestMapping(value = VITAMUI_EXCEPTION, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody String vitamuiException(@RequestBody final VitamUIDto name) {
@@ -234,6 +234,11 @@ public class TestController {
     @RequestMapping(value = VALIDATION_EXCEPTION)
     public String getValidationException() {
         throw ApiErrorGenerator.getValidationException();
+    }
+
+    @RequestMapping(value = REQUEST_TIMEOUT_ERROR)
+    public String getRequestTimeOutException() {
+        throw ApiErrorGenerator.getRequestTimeOutException();
     }
 
     @Override

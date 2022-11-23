@@ -50,7 +50,6 @@ import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteria
   providedIn: 'root',
 })
 export class ArchiveCollectService extends SearchService<any> {
-
   constructor(
     private projectsApiService: ProjectsApiService,
     private transactionApiService: TransactionApiService,
@@ -97,15 +96,11 @@ export class ArchiveCollectService extends SearchService<any> {
   }
 
   getTransactionById(transactionId: string): Observable<Transaction> {
-    return this.projectsApiService.getTransactionById(transactionId).pipe(
-      map((result) => result)
-    );
+    return this.projectsApiService.getTransactionById(transactionId).pipe(map((result) => result));
   }
 
   getLastTransactionByProjectId(projectId: string): Observable<Transaction> {
-    return this.projectsApiService.getLastTransactionByProjectId(projectId).pipe(
-      map((result) => result)
-    );
+    return this.projectsApiService.getLastTransactionByProjectId(projectId).pipe(map((result) => result));
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, accessContract: string): Observable<PagedResult> {
@@ -233,7 +228,7 @@ export class ArchiveCollectService extends SearchService<any> {
   public loadFilingHoldingSchemeTree(tenantIdentifier: string, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId
+      'X-Access-Contract-Id': accessContractId,
     });
 
     return this.searchUnitApiService.getFilingPlan(headers).pipe(
@@ -249,13 +244,13 @@ export class ArchiveCollectService extends SearchService<any> {
   getReferentialUnitDetails(unitId: string, accessContract: string): Observable<SearchResponse> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
-    return this.searchUnitApiService.getById(unitId, headers)
+    return this.searchUnitApiService.getById(unitId, headers);
   }
 
   getCollectUnitDetails(unitId: string, accessContract: string): Observable<Unit> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
-    return this.transactionApiService.getCollectUnitById(unitId, headers)
+    return this.transactionApiService.getCollectUnitById(unitId, headers);
   }
 
   private buildNestedTreeLevels(arr: any[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
@@ -271,7 +266,7 @@ export class ArchiveCollectService extends SearchService<any> {
           title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
           type: unit.DescriptionLevel,
           children: [],
-          parents: parentNode ? [ parentNode ] : [],
+          parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
           hidden: false,
@@ -284,7 +279,16 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.sortByTitle(out);
   }
 
+  // update metadata CSV file
 
+  updateUnitsAMetadata(tenantIdentifier: string, csvFile: Blob, fileName: string, transactionId: string): Observable<string> {
+    let headers = new HttpHeaders();
+    headers = headers.append('X-Tenant-Id', tenantIdentifier);
+    headers = headers.append('Content-Type', 'application/octet-stream');
+    headers = headers.append('fileName', fileName);
+
+    return this.transactionApiService.updateUnitsAMetadata(transactionId, csvFile, headers);
+  }
 }
 
 function idExists(units: Unit[], id: string): boolean {

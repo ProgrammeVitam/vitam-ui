@@ -48,7 +48,8 @@
       "HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION": "L'objet ajouté est invalide et non propre merci de le corriger",
       "CLIENT_ERROR_START": "Une erreur technique est survenue : requête invalide",
       "SERVER_ERROR_START": "Une erreur technique est survenue : erreur interne",
-      "TIME_OUT_ERROR": "Une erreur technique est survenue : le serveur ne répond pas."
+      "TIME_OUT_ERROR": "Une erreur technique est survenue : le serveur ne répond pas.",
+      "HTTP_STATUS_CODE_REQUEST_TIMEOUT": "L'opération de mise à jour est en échec. Veuillez revoir le fichier csv pour vérifier la conformité des métadonnées attendues et des unités archivistiques référencées."
     }
   },
   "COLOR": {

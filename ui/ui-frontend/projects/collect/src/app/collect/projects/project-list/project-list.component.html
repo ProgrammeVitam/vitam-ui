@@ -10,38 +10,57 @@
       <div class="vitamui-table">
         <div class="vitamui-table-head title-text result-layout">
           <div class="col-13">
-            {{ 'COLLECT.NB_ENTRIES' | translate: {nb: dataSource?.length} }}
+            {{ 'COLLECT.NB_ENTRIES' | translate: { nb: dataSource?.length } }}
           </div>
         </div>
         <div class="vitamui-table-head">
           <div class="col-1"></div>
           <div class="col-2">
             <span>{{ 'COLLECT.FIELD_MESSAGE_IDENTIFIER' | translate }}</span>
-            <vitamui-common-order-by-button (orderChange)="emitOrderChange($event)" [(direction)]="direction"
-              [(orderBy)]="orderBy" orderByKey="messageIdentifier"></vitamui-common-order-by-button>
+            <vitamui-common-order-by-button
+              (orderChange)="emitOrderChange($event)"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              orderByKey="messageIdentifier"
+            ></vitamui-common-order-by-button>
           </div>
           <div class="col-2">
             <span>{{ 'COLLECT.FIELD_SUBMISSION_AGENCY_IDENTIFIER' | translate }}</span>
-            <vitamui-common-order-by-button (orderChange)="emitOrderChange($event)" [(direction)]="direction"
-              [(orderBy)]="orderBy" orderByKey="submissionAgencyIdentifier"></vitamui-common-order-by-button>
+            <vitamui-common-order-by-button
+              (orderChange)="emitOrderChange($event)"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              orderByKey="submissionAgencyIdentifier"
+            ></vitamui-common-order-by-button>
           </div>
           <div class="col-2">
             <span>{{ 'COLLECT.FIELD_CREATED_ON' | translate }}</span>
-            <vitamui-common-order-by-button (orderChange)="emitOrderChange($event)" [(direction)]="direction"
-              [(orderBy)]="orderBy" orderByKey="createdOn"></vitamui-common-order-by-button>
+            <vitamui-common-order-by-button
+              (orderChange)="emitOrderChange($event)"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              orderByKey="createdOn"
+            ></vitamui-common-order-by-button>
           </div>
           <div class="col-2">
             <span>{{ 'COLLECT.FIELD_LAST_MODIFY_ON' | translate }}</span>
-            <vitamui-common-order-by-button (orderChange)="emitOrderChange($event)" [(direction)]="direction"
-              [(orderBy)]="orderBy" orderByKey="lastModifyOn"></vitamui-common-order-by-button>
+            <vitamui-common-order-by-button
+              (orderChange)="emitOrderChange($event)"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              orderByKey="lastModifyOn"
+            ></vitamui-common-order-by-button>
           </div>
           <div class="col-2">
             <span>{{ 'COLLECT.FIELD_STATUS' | translate }}</span>
-            <vitamui-common-order-by-button (orderChange)="emitOrderChange($event)" [(direction)]="direction"
-              [(orderBy)]="orderBy" orderByKey="status"></vitamui-common-order-by-button>
+            <vitamui-common-order-by-button
+              (orderChange)="emitOrderChange($event)"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              orderByKey="status"
+            ></vitamui-common-order-by-button>
           </div>
-          <div class="col-1">
-          </div>
+          <div class="col-1"></div>
         </div>
 
         <div class="vitamui-table-body">
@@ -56,11 +75,9 @@
                 </i>
               </div>
               <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.messageIdentifier }}</div>
-              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.submissionAgencyIdentifier}}</div>
-              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.createdOn | date:'dd/MM/yyyy' |
-                empty }}</div>
-              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.lastModifyOn | date:'dd/MM/yyyy' |
-                empty }}</div>
+              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.submissionAgencyIdentifier }}</div>
+              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.createdOn | date: 'dd/MM/yyyy' | empty }}</div>
+              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.lastModifyOn | date: 'dd/MM/yyyy' | empty }}</div>
               <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.status }}</div>
               <div class="col-1">
                 <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [isLarge]="false">

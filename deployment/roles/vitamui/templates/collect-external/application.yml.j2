@@ -100,7 +100,24 @@ collect-external:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
-
+  update-units-metadata-internal-client:
+    server-host: {{ vitamui.collect_internal.host }}
+    server-port: {{ vitamui.collect_internal.port_service }}
+{% if vitamui.collect_internal.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.collect_internal.secure | default(secure) | lower }}
+    connect-time-out: {{ vitamui.collect_internal.connect_timeout | default(30) }}
+    read-time-out: {{ vitamui.collect_internal.read_timeout | default(240000) }}
+    write-time-out: {{ vitamui.collect_internal.write_timeout | default(240000) }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
