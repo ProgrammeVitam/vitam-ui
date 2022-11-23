@@ -5,7 +5,7 @@ db = db.getSiblingDB('cas')
 print("START 218_cas_services_pastis_ref.js");
 
 var nbInsert = db.services.insert({
-   "_id" : NumberInt(7),
+   "_id" : NumberInt(8),
    "_class": "org.apereo.cas.services.RegexRegisteredService",
 {% if vitamui.pastis.base_url is defined %}
 	"serviceId": "^{{ vitamui.pastis.base_url }}/.*",
