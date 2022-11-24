@@ -43,8 +43,8 @@ server:
   port: 8015
   ssl:
     key-store: src/main/resources/dev/keystore_pastis-external.jks
-    key-store-password: e2zS1Za6se9vYky0uoATKDfuXDp0j6r4PBWDn4ZHQvX5cKfX
-    key-password: e2zS1Za6se9vYky0uoATKDfuXDp0j6r4PBWDn4ZHQvX5cKfX
+    key-store-password: changeme
+    key-password: changeme
     trust-store: src/main/resources/dev/truststore_server.jks
     trust-store-password: changeme
     client-auth: need

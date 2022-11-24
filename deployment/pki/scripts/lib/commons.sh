@@ -187,7 +187,7 @@ function getComponentPassphrase {
     } && {
         # Finally
         if [ "${CERT_KEY}" == "" ]; then
-            pki_logger "ERROR" "Error while retrieving the key: ${KEY}"
+            pki_logger "ERROR" "Error while retrieving the key:TYPE=${TYPE} KEY=${KEY} : in ${VAULT_FILE} with KEY_PREFIX=$KEY_PREFIX"
             RETURN_CODE=1
         fi
         ansible-vault encrypt ${VAULT_FILE} ${VAULT_PASS}
