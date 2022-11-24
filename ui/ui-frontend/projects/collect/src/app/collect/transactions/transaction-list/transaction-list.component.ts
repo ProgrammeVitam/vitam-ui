@@ -24,30 +24,37 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Component, OnInit} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject} from 'rxjs';
-import {Direction, InfiniteScrollTable, Transaction, TransactionStatus} from 'ui-frontend-common';
-import {TransactionsService} from '../transactions.service';
+import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
+import { Direction, InfiniteScrollTable, StartupService, Transaction, TransactionStatus } from 'ui-frontend-common';
+import { TransactionsService } from '../transactions.service';
 
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',
-  styleUrls: ['./transaction-list.component.css']
+  styleUrls: ['./transaction-list.component.css'],
 })
 export class TransactionListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
   direction = Direction.DESCENDANT;
   orderBy = 'archivalAgreement';
   orderChange = new BehaviorSubject<string>(this.orderBy);
+  tenantIdentifier: string;
 
-  constructor(private snackBar: MatSnackBar, private transactionService: TransactionsService,
-              private translateService: TranslateService, private router: Router) {
+  constructor(
+    private snackBar: MatSnackBar,
+    private transactionService: TransactionsService,
+    private translateService: TranslateService,
+    private router: Router,
+    private startupService: StartupService
+  ) {
     super(transactionService);
   }
 
   ngOnInit(): void {
+    this.tenantIdentifier = this.startupService.getTenantIdentifier();
     super.search(null);
   }
 
@@ -60,61 +67,73 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   searchArchiveUnitsByTransaction(transaction: Transaction) {
-    this.router.navigate(['collect/archive-search-collect',
-      transaction.projectId, transaction.id], {queryParams: {projectName: transaction.messageIdentifier}});
+    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', transaction.projectId, transaction.id], {
+      queryParams: { projectName: transaction.messageIdentifier },
+    });
   }
 
   sendTransaction(transaction: Transaction) {
-    this.transactionService.sendTransaction(transaction.id).subscribe(() => {
-      const message = this.translateService.instant('COLLECT.INGEST_TRANSACTION_LAUNCHED');
-      transaction.status = TransactionStatus.SENDING;
-      this.snackBar.open(message, null, {
-        panelClass: 'vitamui-snack-bar',
-        duration: 10000,
-      });
-    },()=>{
-      transaction.status = TransactionStatus.KO;
-    });
+    this.transactionService.sendTransaction(transaction.id).subscribe(
+      () => {
+        const message = this.translateService.instant('COLLECT.INGEST_TRANSACTION_LAUNCHED');
+        transaction.status = TransactionStatus.SENDING;
+        this.snackBar.open(message, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
+      },
+      () => {
+        transaction.status = TransactionStatus.KO;
+      }
+    );
   }
 
   validateTransaction(transaction: Transaction) {
-    this.transactionService.validateTransaction(transaction.id).subscribe(() => {
-      const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
-      transaction.status = TransactionStatus.READY;
-      this.snackBar.open(message, null, {
-        panelClass: 'vitamui-snack-bar',
-        duration: 10000,
-      });
-    },()=>{
-      transaction.status = TransactionStatus.KO;
-    });
+    this.transactionService.validateTransaction(transaction.id).subscribe(
+      () => {
+        const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
+        transaction.status = TransactionStatus.READY;
+        this.snackBar.open(message, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
+      },
+      () => {
+        transaction.status = TransactionStatus.KO;
+      }
+    );
   }
 
-
   abortTransaction(transaction: Transaction) {
-    this.transactionService.abortTransaction(transaction.id).subscribe(() => {
-      transaction.status = TransactionStatus.ABORTED;
-      const message = this.translateService.instant('COLLECT.TRANSACTION_ABORTED');
-      this.snackBar.open(message, null, {
-        panelClass: 'vitamui-snack-bar',
-        duration: 10000,
-      });
-    },()=>{
-      transaction.status = TransactionStatus.KO;
-    });
+    this.transactionService.abortTransaction(transaction.id).subscribe(
+      () => {
+        transaction.status = TransactionStatus.ABORTED;
+        const message = this.translateService.instant('COLLECT.TRANSACTION_ABORTED');
+        this.snackBar.open(message, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
+      },
+      () => {
+        transaction.status = TransactionStatus.KO;
+      }
+    );
   }
 
   editTransaction(transaction: Transaction) {
-    this.transactionService.editTransaction(transaction.id).subscribe(() => {
-      transaction.status = TransactionStatus.OPEN;
-      const message = this.translateService.instant('COLLECT.TRANSACTION_REOPENED');
-      this.snackBar.open(message, null, {
-        panelClass: 'vitamui-snack-bar',
-        duration: 10000,
-      });
-    },()=>{
-      transaction.status = TransactionStatus.KO;
-    });
+    this.transactionService.editTransaction(transaction.id).subscribe(
+      () => {
+        transaction.status = TransactionStatus.OPEN;
+        const message = this.translateService.instant('COLLECT.TRANSACTION_REOPENED');
+        this.snackBar.open(message, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
+      },
+      () => {
+        transaction.status = TransactionStatus.KO;
+      }
+    );
   }
 
   transactionIsOpen(transaction: Transaction): boolean {
@@ -130,7 +149,8 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   transactionIsAbortable(transaction: Transaction): boolean {
-    return [TransactionStatus.OPEN, TransactionStatus.READY,
-      TransactionStatus.ACK_KO, TransactionStatus.KO].indexOf(transaction.status) !== -1;
+    return (
+      [TransactionStatus.OPEN, TransactionStatus.READY, TransactionStatus.ACK_KO, TransactionStatus.KO].indexOf(transaction.status) !== -1
+    );
   }
 }
