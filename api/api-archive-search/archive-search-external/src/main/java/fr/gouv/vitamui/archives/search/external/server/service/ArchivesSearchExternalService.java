@@ -169,10 +169,6 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     }
 
     public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto) {
-        Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
-        if (thresholdOpt.isPresent()) {
-            searchCriteriaDto.setThreshold(thresholdOpt.get());
-        }
         return archiveInternalRestClient.computedInheritedRules(searchCriteriaDto, getInternalHttpContext());
     }
 
