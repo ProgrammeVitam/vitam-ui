@@ -92,6 +92,7 @@ pipeline {
             }
             steps {
                 sh 'sudo yum remove -y nodejs'
+                sh 'sudo rm /etc/yum.repos.d/github_git-lfs.repo'
                 sh "curl -fsSL ${env.NODE_JS_DOWNLOAD_URL} | sudo -E bash -"
                 sh 'sudo yum --enablerepo=nodesource clean all'
                 sh 'sudo yum install -y nodejs gcc-c++ make'
