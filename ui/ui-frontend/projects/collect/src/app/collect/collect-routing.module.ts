@@ -61,7 +61,7 @@ const routes: Route[] = [
     canActivate: [AppGuard],
   },
   {
-    path: 'archive-search-collect/:projectId/:transactionId',
+    path: 'tenant/:tenantIdentifier/units/:projectId/:transactionId',
     loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
     canActivate: [AppGuard],
   },
