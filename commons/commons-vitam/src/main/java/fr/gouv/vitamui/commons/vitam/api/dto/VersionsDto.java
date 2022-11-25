@@ -43,16 +43,14 @@ import fr.gouv.vitam.common.model.objectgroup.FormatIdentificationModel;
 import fr.gouv.vitam.common.model.objectgroup.MetadataModel;
 import fr.gouv.vitam.common.model.objectgroup.PhysicalDimensionsModel;
 import fr.gouv.vitam.common.model.objectgroup.StorageJson;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
-@Setter
-@ToString
+@Data
+@Accessors(chain = true)
 public class VersionsDto {
 
     @JsonProperty("#rank")

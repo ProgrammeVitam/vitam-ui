@@ -39,18 +39,19 @@ package fr.gouv.vitamui.commons.vitam.api.model;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 
 import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public enum ObjectQualifierTypeEnum {
+    // Ordered by download preference.
     BINARYMASTER("BinaryMaster"),
     DISSEMINATION("Dissemination"),
     THUMBNAIL("Thumbnail"),
     TEXTCONTENT("TextContent");
 
-    public static final Set<String> allValues = Arrays.stream(ObjectQualifierTypeEnum.values())
+    public static final List<String> allValuesOrdered = Arrays.stream(ObjectQualifierTypeEnum.values())
         .map(ObjectQualifierTypeEnum::getValue)
-        .collect(Collectors.toSet());
+        .collect(Collectors.toList());
 
     private final String value;
 
