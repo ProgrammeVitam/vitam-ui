@@ -132,6 +132,36 @@ describe('FilingHoldingSchemeHandler', () => {
     expect(node.count).toEqual(65);
   });
 
+  it('setCountRecursively should return the number of node checked, set count and reset member not found', () => {
+    node = uaNodes[0].children[0].children[2];
+    expect(node.id).toEqual('node-0-0-2');
+    expect(node.count).toBeUndefined();
+    node = uaNodes[2].children[2];
+    expect(node.id).toEqual('node-2-2');
+    expect(node.count).toBeUndefined();
+    facets = [
+      { node: 'node-0-0-2', count: 42 },
+      { node: 'node-2-2', count: 65 },
+    ];
+    expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(2);
+    node = uaNodes[0].children[0].children[2];
+    expect(node.id).toEqual('node-0-0-2');
+    expect(node.count).toEqual(42);
+    node = uaNodes[2].children[2];
+    expect(node.id).toEqual('node-2-2');
+    expect(node.count).toEqual(65);
+    facets = [
+      { node: 'node-2-2', count: 12 },
+    ];
+    expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(1);
+    node = uaNodes[0].children[0].children[2];
+    expect(node.id).toEqual('node-0-0-2');
+    expect(node.count).toEqual(0);
+    node = uaNodes[2].children[2];
+    expect(node.id).toEqual('node-2-2');
+    expect(node.count).toEqual(12);
+  });
+
   it('addChildrenRecursively should add new children and not presents ones', () => {
     const units = [
       newUnit('node-2-3', 'node-2'),

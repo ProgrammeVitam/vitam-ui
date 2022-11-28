@@ -51,9 +51,7 @@ export class FilingHoldingSchemeHandler {
   }
 
   public static setCountOnNode(node: FilingHoldingSchemeNode, facets: ResultFacet[]): number {
-    if (!node.count) {
-      node.count = 0;
-    }
+    node.count = 0;
     for (const facet of facets) {
       if (node.id === facet.node) {
         node.count = facet.count;
