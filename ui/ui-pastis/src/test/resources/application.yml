@@ -72,9 +72,9 @@ server:
   port: 8081
   scheme: https
   ssl:
-    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-pastis.jks
-    key-store-password: BDjtZqdOx5obBkAsFpQ97zV92m3Ov1xA37oq2C4WkdwFW8kP
-    key-password: BDjtZqdOx5obBkAsFpQ97zV92m3Ov1xA37oq2C4WkdwFW8kP
+    key-store: src/main/resources/dev/keystore_ui-pastis.jks
+    key-store-password: changeme
+    key-password: changeme
     enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
 
