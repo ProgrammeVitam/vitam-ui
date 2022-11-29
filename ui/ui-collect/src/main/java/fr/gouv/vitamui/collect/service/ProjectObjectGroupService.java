@@ -29,8 +29,6 @@
 
 package fr.gouv.vitamui.collect.service;
 
-import fr.gouv.vitam.common.model.objectgroup.FileInfoModel;
-import fr.gouv.vitam.common.model.objectgroup.FormatIdentificationModel;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
@@ -43,13 +41,19 @@ import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Objects;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
  * UI Collect Object group Service
@@ -81,47 +85,80 @@ public class ProjectObjectGroupService extends AbstractPaginateService<CollectPr
     }
 
     public void setObjectData(ResultsDto got, ObjectData objectData) {
-        objectData.setQualifier(getQualifier(got));
-        objectData.setFilename(getFilename(got));
-        objectData.setMimeType(getMimeType(got));
-        objectData.setVersion(getVersion(got));
+        QualifiersDto qualifier = getLastObjectQualifier(got);
+        if (isNull(qualifier)) {
+            return;
+        }
+        objectData.setQualifier(qualifier.getQualifier());
+        VersionsDto version = getLastVersion(qualifier);
+        if (isNull(version)) {
+            return;
+        }
+        objectData.setFilename(getFilename(version));
+        objectData.setMimeType(getMimeType(version));
+        objectData.setVersion(getVersion(version));
     }
 
-    private String getQualifier(ResultsDto got) {
-        return got.getQualifiers().stream()
-            .map(QualifiersDto::getQualifier)
-            .filter(ObjectQualifierTypeEnum.allValues::contains)
+    private QualifiersDto getLastObjectQualifier(ResultsDto got) {
+        for (String qualifierName : ObjectQualifierTypeEnum.allValuesOrdered) {
+            QualifiersDto qualifierFound = got.getQualifiers().stream()
+                .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
+                .reduce((first, second) -> second)
+                .orElse(null);
+            if (nonNull(qualifierFound)) {
+                return qualifierFound;
+            }
+        }
+        return null;
+    }
+
+    private VersionsDto getLastVersion(QualifiersDto qualifier) {
+        if (isNull(qualifier) || CollectionUtils.isEmpty(qualifier.getVersions())) {
+            return null;
+        }
+        return qualifier.getVersions().stream()
             .reduce((first, second) -> second)
             .orElse(null);
     }
 
-    private String getFilename(ResultsDto got) {
-        return got.getQualifiers().stream()
-            .map(QualifiersDto::getVersions)
-            .flatMap(List::stream)
-            .map(VersionsDto::getFileInfoModel).filter(Objects::nonNull)
-            .map(FileInfoModel::getFilename).filter(Objects::nonNull)
-            .findFirst().orElse(null);
+    private String getFilename(VersionsDto version) {
+        if (isNull(version) || isEmpty(version.getId())) {
+            return null;
+        }
+        return version.getId() + getExtension(version);
     }
 
-    private String getMimeType(ResultsDto got) {
-        return got.getQualifiers().stream()
-            .map(QualifiersDto::getVersions)
-            .flatMap(List::stream)
-            .map(VersionsDto::getFormatIdentification).filter(Objects::nonNull)
-            .map(FormatIdentificationModel::getMimeType).filter(Objects::nonNull)
-            .findFirst().orElse(null);
+    private String getExtension(VersionsDto version) {
+        String uriExtension = EMPTY;
+        if (isNotBlank(version.getUri()) && version.getUri().contains(".")) {
+            uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
+        }
+        String filenameExtension = EMPTY;
+        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")) {
+            filenameExtension = version.getFileInfoModel().getFilename()
+                .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
+        }
+        if (isNotBlank(filenameExtension)) {
+            return "." + filenameExtension;
+        } else if (isNotBlank(uriExtension)) {
+            return "." + uriExtension;
+        }
+        return EMPTY;
     }
 
-    private Integer getVersion(ResultsDto got) {
-        return got.getQualifiers().stream()
-            .filter(qualifierDto -> ObjectQualifierTypeEnum.allValues.contains(qualifierDto.getQualifier()))
-            .map(QualifiersDto::getVersions)
-            .flatMap(List::stream)
-            .map(VersionsDto::getDataObjectVersion).filter(Objects::nonNull)
-            .reduce((first, second) -> second)
-            .map(version -> Integer.parseInt(version.split("_")[1]))
-            .orElse(null);
+    private String getMimeType(VersionsDto version) {
+        if (isNull(version) || isNull(version.getFormatIdentification())) {
+            return null;
+        }
+        return version.getFormatIdentification().getMimeType();
+    }
+
+    private Integer getVersion(VersionsDto version) {
+        if (isNull(version) || isNull(version.getDataObjectVersion())) {
+            return null;
+        }
+        return Integer.parseInt(version.getDataObjectVersion().split("_")[1]);
     }
 
     public ResponseEntity<ResultsDto> findObjectById(String id, ExternalHttpContext context) {

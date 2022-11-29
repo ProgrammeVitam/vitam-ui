@@ -16,12 +16,12 @@
       "#nbobjects": 1,
       "#qualifiers": [
         {
-          "qualifier": "BinaryMaster",
+          "qualifier": "Thumbnail",
           "#nbc": 1,
           "versions": [
             {
               "DataObjectGroupId": "aebaaaaaaahl2zz5ab23malq4gw2cnqaaaba",
-              "DataObjectVersion": "BinaryMaster_1",
+              "DataObjectVersion": "Thumbnail_1",
               "FormatIdentification": {
                 "FormatLitteral": "Plain Text File",
                 "MimeType": "text/plain",

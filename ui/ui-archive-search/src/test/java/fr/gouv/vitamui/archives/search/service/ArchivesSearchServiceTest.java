@@ -147,9 +147,9 @@ public class ArchivesSearchServiceTest {
 
         // Then
         assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.BINARYMASTER.getValue());
-        assertThat(objectData.getFilename()).isEqualTo("this_is_a_BinaryMaster.txt");
         assertThat(objectData.getVersion()).isEqualTo(1);
         assertThat(objectData.getMimeType()).isEqualTo("text/plain");
+        assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq.txt");
     }
 
 
@@ -169,9 +169,9 @@ public class ArchivesSearchServiceTest {
 
         // Then
         assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.BINARYMASTER.getValue());
-        assertThat(objectData.getFilename()).isEqualTo("this_is_a_BinaryMaster.txt");
         assertThat(objectData.getVersion()).isEqualTo(1);
         assertThat(objectData.getMimeType()).isEqualTo("text/plain");
+        assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq.txt");
     }
 
     @Test
@@ -190,9 +190,9 @@ public class ArchivesSearchServiceTest {
 
         // Then
         assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.BINARYMASTER.getValue());
-        assertThat(objectData.getFilename()).isEqualTo("this_is_a_BinaryMaster.txt");
         assertThat(objectData.getVersion()).isEqualTo(2);
         assertThat(objectData.getMimeType()).isEqualTo("text/plain");
+        assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq.txt");
     }
 
     @Test
@@ -211,9 +211,9 @@ public class ArchivesSearchServiceTest {
 
         // Then
         assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.DISSEMINATION.getValue());
-        assertThat(objectData.getFilename()).isEqualTo("Gallieni pour diffusion");
         assertThat(objectData.getVersion()).isEqualTo(1);
-        assertThat(objectData.getMimeType()).isEqualTo("text/plain");
+        assertThat(objectData.getMimeType()).isEqualTo("image/png");
+        assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih5ziaaaba.png");
     }
 
     @Test
@@ -232,9 +232,9 @@ public class ArchivesSearchServiceTest {
 
         // Then
         assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.DISSEMINATION.getValue());
-        assertThat(objectData.getFilename()).isEqualTo("Gallieni pour diffusion");
         assertThat(objectData.getVersion()).isEqualTo(1);
-        assertThat(objectData.getMimeType()).isEqualTo("text/plain");
+        assertThat(objectData.getMimeType()).isEqualTo("image/png");
+        assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih5ziaaaba.png");
     }
 
     @Test
@@ -253,28 +253,9 @@ public class ArchivesSearchServiceTest {
 
         // Then
         assertNull(objectData.getQualifier());
-        assertNull(objectData.getFilename());
         assertNull(objectData.getVersion());
         assertNull(objectData.getMimeType());
-    }
-
-    @Test
-    public void should_return_file_name_of_dissemination_when_absent_in_binary_master()
-        throws IOException, InvalidParseOperationException, VitamClientException {
-        // Given
-        ObjectData objectData = new ObjectData();
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot("data/vitam_got_full.json");
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
-        // When
-        when(unitService.findObjectMetadataById(any(), any()))
-            .thenReturn(jsonNodeRequestResponse);
-        when(archivesSearchService.findObjectById(any(), any()))
-            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
-        archivesSearchService.setObjectData(resultsDto, objectData);
-
-        // Then
-        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.DISSEMINATION.getValue());
-        assertThat(objectData.getFilename()).isEqualTo("titre dissemination");
+        assertNull(objectData.getFilename());
     }
 
     @Test
@@ -293,9 +274,9 @@ public class ArchivesSearchServiceTest {
 
         // Then
         assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.THUMBNAIL.getValue());
-        assertThat(objectData.getFilename()).isEqualTo("titre thumbnail.txt");
         assertThat(objectData.getVersion()).isEqualTo(1);
-        assertThat(objectData.getMimeType()).isEqualTo("text/plain");
+        assertThat(objectData.getMimeType()).isEqualTo("image/jpeg");
+        assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih54qaaaba.jpeg");
     }
 
     @Test
@@ -314,10 +295,10 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertEquals(objectData.getQualifier(), ObjectQualifierTypeEnum.THUMBNAIL.getValue());
-        assertNull(objectData.getFilename());
+        assertEquals(objectData.getQualifier(), ObjectQualifierTypeEnum.BINARYMASTER.getValue());
         assertThat(objectData.getVersion()).isEqualTo(1);
         assertThat(objectData.getMimeType()).isEqualTo("text/plain");
+        assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahly3l5ab7vwalzlvsew3aaaaaq.txt");
     }
 
     private ResultsDto buildResults(RequestResponse<JsonNode> jsonNodeRequestResponse) throws IOException {
@@ -352,9 +333,9 @@ public class ArchivesSearchServiceTest {
 
         // Then
         assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
-        assertThat(objectData.getFilename()).isEqualTo("Un fichier de type TextContent");
         assertThat(objectData.getVersion()).isEqualTo(3);
         assertThat(objectData.getMimeType()).isEqualTo("image/png");
+        assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih5ziaaaba.png");
     }
 
     @Test
@@ -372,10 +353,9 @@ public class ArchivesSearchServiceTest {
 
         // Then
         assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
-        assertThat(objectData.getFilename()).isEqualTo("Un fichier de type TextContent");
         assertThat(objectData.getVersion()).isEqualTo(3);
         assertThat(objectData.getMimeType()).isEqualTo("image/png");
-
+        assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih5ziaaaba.png");
     }
 
 
