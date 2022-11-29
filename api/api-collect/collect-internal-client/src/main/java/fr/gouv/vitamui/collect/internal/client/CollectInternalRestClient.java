@@ -52,13 +52,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_TRANSACTION_PATH;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 
 public class CollectInternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectProjectDto, InternalHttpContext> {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(CollectInternalRestClient.class);
     private static final String TRANSACTIONS = "/transactions";
-    private static final String LAST_TRANSACTION = "/last-transaction";
 
     public CollectInternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
@@ -111,14 +112,14 @@ public class CollectInternalRestClient
 
     public ResponseEntity<ResultsDto> findObjectById(String id, final InternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + OBJECT_GROUPS + CommonConstants.PATH_ID);
+            UriComponentsBuilder.fromHttpUrl(getUrl() + OBJECT_GROUPS + PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
     public void deleteProject(final InternalHttpContext context, String id) {
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
+            UriComponentsBuilder.fromHttpUrl(getUrl() + PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
     }
@@ -147,7 +148,7 @@ public class CollectInternalRestClient
 
     public CollectTransactionDto getTransactionById(InternalHttpContext context, String transactionId) {
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + CommonConstants.PATH_ID);
+            UriComponentsBuilder.fromHttpUrl(getTransactionUrl() + PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         ResponseEntity<CollectTransactionDto> response =
             restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.GET, request,
@@ -167,7 +168,7 @@ public class CollectInternalRestClient
 
     public CollectTransactionDto getLastTransactionForProjectId(InternalHttpContext context, String id) {
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + LAST_TRANSACTION);
+            UriComponentsBuilder.fromHttpUrl(getUrl() + PATH_ID + LAST_TRANSACTION_PATH);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         ResponseEntity<CollectTransactionDto> response =
             restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, CollectTransactionDto.class);

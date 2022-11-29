@@ -56,6 +56,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_TRANSACTION_PATH;
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_ACCESS_CONTRACT_ID_HEADER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_APPLICATION_ID_HEADER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_CUSTOMER_ID_HEADER;
@@ -228,7 +229,7 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
         CollectTransactionDto collectTransactionDto = factory.manufacturePojo(CollectTransactionDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         when(
-            restTemplate.exchange(URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + "/last-transaction"),
+            restTemplate.exchange(URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + LAST_TRANSACTION_PATH),
                 HttpMethod.GET,
                 new HttpEntity<>(params.getValue()), CollectTransactionDto.class))
             .thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));

@@ -337,6 +337,7 @@ public class CommonConstants {
     public static final String APPLICATION_ID = "applicationId";
 
     public static final String TRANSACTION_PATH_ID = "/{transactionId}";
+    public static final String LAST_TRANSACTION_PATH = "/last-transaction\"";
 
     /**
      * Constants of ingest operations
