@@ -427,6 +427,7 @@
     "MESSAGE": "An internal error occured. Please contact an administrator if the problem persists"
   },
   "EVENT_TYPE_LABEL": {
+    "RECLASSIFICATION_PREPARATION_CHECK_HOLD_RULES": "Checking the blocking of reclassification of archival units by hold rules.",
     "EXPORT_CHECK_RESOURCE_AVAILABILITY": "Checking the availability of binary objects on the storage offer",
     "CHECK_ATTACHEMENT": "Verification of the attachment between existing and new objects, groups of objects and archival units",
     "CHECK_ATTACHEMENT.OK": "Successful verification of the attachment between existing and new objects, groups of objects and archival units",
