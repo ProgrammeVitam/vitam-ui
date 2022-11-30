@@ -68,6 +68,8 @@ import java.io.InputStream;
 import java.util.Optional;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_TRANSACTION_PATH;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 
 @Api(tags = "Collect")
 @RestController
@@ -148,7 +150,7 @@ public class ProjectController extends AbstractUiRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping(CommonConstants.PATH_ID)
+    @PutMapping(PATH_ID)
     public CollectProjectDto updateProject(final @PathVariable("id") String id,
         @RequestBody CollectProjectDto collectProjectDto)
         throws InvalidParseOperationException {
@@ -159,7 +161,7 @@ public class ProjectController extends AbstractUiRestController {
         return projectService.update(buildUiHttpContext(), collectProjectDto);
     }
 
-    @PostMapping(value = CommonConstants.PATH_ID+ "/transactions")
+    @PostMapping(value = PATH_ID+ "/transactions")
     public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody
         CollectTransactionDto collectTransactionDto)
         throws InvalidParseOperationException,
@@ -173,7 +175,7 @@ public class ProjectController extends AbstractUiRestController {
 
 
     @ApiOperation(value = "Get project Details")
-    @GetMapping(CommonConstants.PATH_ID)
+    @GetMapping(PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public CollectProjectDto findProjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -184,7 +186,7 @@ public class ProjectController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Delete project")
-    @DeleteMapping(CommonConstants.PATH_ID)
+    @DeleteMapping(PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public void deleteProjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -195,7 +197,7 @@ public class ProjectController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Get last Transaction for project")
-    @GetMapping(CommonConstants.PATH_ID  + "/last-transaction")
+    @GetMapping(PATH_ID  + LAST_TRANSACTION_PATH)
     public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);

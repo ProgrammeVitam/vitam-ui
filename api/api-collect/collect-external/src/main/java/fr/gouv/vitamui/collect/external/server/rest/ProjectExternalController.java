@@ -43,7 +43,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -64,6 +63,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_TRANSACTION_PATH;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 
 /**
  * Project External controller
@@ -140,9 +141,9 @@ public class ProjectExternalController {
     }
 
     @Secured(ServicesData.ROLE_CREATE_TRANSACTIONS)
-    @PostMapping(value = CommonConstants.PATH_ID+ "/transactions")
+    @PostMapping(value = PATH_ID + "/transactions")
     public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody
-        CollectTransactionDto collectTransactionDto)
+    CollectTransactionDto collectTransactionDto)
         throws InvalidParseOperationException,
         PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
@@ -167,7 +168,7 @@ public class ProjectExternalController {
     }
 
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
-    @PutMapping(CommonConstants.PATH_ID)
+    @PutMapping(PATH_ID)
     public CollectProjectDto updateProject(final @PathVariable("id") String id,
         @RequestBody CollectProjectDto collectProjectDto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -179,7 +180,7 @@ public class ProjectExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_PROJECTS)
-    @GetMapping(CommonConstants.PATH_ID)
+    @GetMapping(PATH_ID)
     public CollectProjectDto findProjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
@@ -189,7 +190,7 @@ public class ProjectExternalController {
     }
 
     @Secured(ServicesData.ROLE_DELETE_PROJECTS)
-    @DeleteMapping(CommonConstants.PATH_ID)
+    @DeleteMapping(PATH_ID)
     public void deleteProjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
@@ -199,7 +200,7 @@ public class ProjectExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
-    @GetMapping(CommonConstants.PATH_ID  + "/last-transaction")
+    @GetMapping(PATH_ID + LAST_TRANSACTION_PATH)
     public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);

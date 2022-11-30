@@ -210,7 +210,7 @@ public class TransactionArchiveUnitInternalService {
         }
     }
 
-    public static String getArchiveUnitTitle(ArchiveUnit archiveUnit) {
+    private static String getArchiveUnitTitle(ArchiveUnit archiveUnit) {
         if (archiveUnit == null) {
             return null;
         }

@@ -62,6 +62,7 @@ public class TransactionConverter {
         collectTransactionDto.setCreationDate(transactionDto.getCreationDate());
         collectTransactionDto.setLastUpdate(transactionDto.getLastUpdate());
         collectTransactionDto.setProjectId(transactionDto.getProjectId());
+        collectTransactionDto.setName(transactionDto.getName());
         return collectTransactionDto;
     }
 

@@ -32,7 +32,6 @@ import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
@@ -56,6 +55,8 @@ import java.util.Optional;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_TRANSACTION_PATH;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 
 public class CollectExternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectProjectDto, ExternalHttpContext> {
@@ -109,14 +110,14 @@ public class CollectExternalRestClient
 
     public ResponseEntity<ResultsDto> findObjectById(String id, ExternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + OBJECT_GROUPS + CommonConstants.PATH_ID);
+            UriComponentsBuilder.fromHttpUrl(getUrl() + OBJECT_GROUPS + PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
 
     public void deleteProject(String id, ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
     }
@@ -149,17 +150,19 @@ public class CollectExternalRestClient
     public CollectTransactionDto createTransactionForProject(ExternalHttpContext context,
         CollectTransactionDto collectTransactionDto, String projectId) {
         final HttpEntity<?> request = new HttpEntity<>(collectTransactionDto, buildHeaders(context));
-        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(getUrl() + "/"+ projectId + "/transactions", HttpMethod.POST,
-            request, CollectTransactionDto.class);
+        final ResponseEntity<CollectTransactionDto> response =
+            restTemplate.exchange(getUrl() + "/" + projectId + "/transactions", HttpMethod.POST,
+                request, CollectTransactionDto.class);
         checkResponse(response);
         return response.getBody();
     }
 
     public CollectTransactionDto getLastTransactionForProjectId(String id, ExternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + "/last-transaction");
+            UriComponentsBuilder.fromHttpUrl(getUrl() + PATH_ID + LAST_TRANSACTION_PATH);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, CollectTransactionDto.class);
+        final ResponseEntity<CollectTransactionDto> response =
+            restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, CollectTransactionDto.class);
         checkResponse(response);
         return response.getBody();
     }
