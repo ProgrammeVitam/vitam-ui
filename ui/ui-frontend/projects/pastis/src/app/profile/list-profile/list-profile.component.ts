@@ -57,7 +57,9 @@ import { ProfileResponse } from '../../models/profile-response';
 import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { CreateProfileComponent } from '../create-profile/create-profile.component';
-import { ProfileInformationTabComponent } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
+import {
+  ProfileInformationTabComponent
+} from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -71,15 +73,13 @@ function constantToTranslate() {
 @Component({
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
-  styleUrls: ['./list-profile.component.scss'],
+  styleUrls: [ './list-profile.component.scss' ],
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
   @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;
 
   @Input()
   uploader: FileUploader = new FileUploader({ url: '' });
-
-  displayedColumns: string[] = ['type', 'id', 'baseName', 'lastModified'];
 
   retrievedProfiles: ProfileDescription[] = [];
 
@@ -90,8 +90,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   numPUA: number;
 
   totalProfileNum: number;
-
-  profileToLoad: any;
 
   hoveredElementId: number;
 
@@ -225,12 +223,12 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     if (d.external) {
       window.location.assign(d.url);
     } else {
-      this.router.navigate([d.url], { skipLocationChange: false });
+      this.router.navigate([ d.url ], { skipLocationChange: false });
     }
   }
 
   editProfile(element: ProfileDescription) {
-    this.router.navigate([this.pastisConfig.pastisEditPage, element.id], {
+    this.router.navigate([ this.pastisConfig.pastisEditPage, element.id ], {
       state: element,
       relativeTo: this.route,
       skipLocationChange: false,
@@ -245,7 +243,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       formData.append('file', fileToUpload, fileToUpload.name);
       this._uploadProfileSub = this.profileService.uploadProfile(formData).subscribe((response: any) => {
         if (response) {
-          this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
+          this.router.navigate([ this.pastisConfig.pastisNewProfile ], { state: response, relativeTo: this.route });
         }
       });
       this.subscriptions.push(this._uploadProfileSub);
@@ -273,7 +271,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
             .createProfile(this.pastisConfig.createProfileByTypeUrl, result.action)
             .subscribe((response: ProfileResponse) => {
               if (response) {
-                this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
+                this.router.navigate([ this.pastisConfig.pastisNewProfile ], { state: response, relativeTo: this.route });
               }
             });
         }
