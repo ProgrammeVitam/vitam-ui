@@ -195,6 +195,9 @@
         <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
         <maven.assembly.version>3.2.0</maven.assembly.version>
         <launch4j-maven-plugin.version>1.7.21</launch4j-maven-plugin.version>
+        <opencsv.version>5.4</opencsv.version>
+        <spring.data.mongo.version>3.3.5</spring.data.mongo.version>
+        <podam.version>7.2.5.RELEASE</podam.version>
 
         <!-- Profile properties -->
         <angular.additional.test.informations></angular.additional.test.informations>
@@ -219,7 +222,6 @@
         <skipAllFrontendTests>true</skipAllFrontendTests>
 
         <itCoverageAgent></itCoverageAgent>
-        <opencsv.version>5.4</opencsv.version>
     </properties>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -1401,7 +1403,17 @@
                 <artifactId>opencsv</artifactId>
                 <version>${opencsv.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-mongodb</artifactId>
+                <version>${spring.data.mongo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.co.jemos.podam</groupId>
+                <artifactId>podam</artifactId>
+                <version>${podam.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

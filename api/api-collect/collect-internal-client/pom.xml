@@ -109,7 +109,10 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>archive-search-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId>
+            <artifactId>podam</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
-
 </project>

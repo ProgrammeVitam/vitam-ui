@@ -37,9 +37,6 @@ import fr.gouv.vitam.collect.external.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -52,37 +49,25 @@ import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionCon
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
-import org.springframework.util.CollectionUtils;
 
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter.toVitamuiDto;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.FIELDS;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.NODES;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_DEPTH;
 
 public class ProjectInternalService {
 
     public static final int MAX_RESULTS = 10000;
     public static final String UNABLE_TO_CREATE_PROJECT = "Unable to create project";
-    public static final String UNABLE_TO_CREATE_TRANSACTION= "Unable to create transaction";
+    public static final String UNABLE_TO_CREATE_TRANSACTION = "Unable to create transaction";
     public static final String UNABLE_TO_PROCESS_RESPONSE = "Unable to process response";
     public static final String UNABLE_TO_UPDATE_PROJECT = "Unable to update project";
     public static final String UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE = "Unable to upload project zip file";
@@ -116,12 +101,14 @@ public class ProjectInternalService {
         }
     }
 
-    public CollectTransactionDto createTransactionForProject(VitamContext vitamContext, CollectTransactionDto collectTransactionDto, String projectId) {
+    public CollectTransactionDto createTransactionForProject(VitamContext vitamContext,
+        CollectTransactionDto collectTransactionDto, String projectId) {
         LOGGER.debug("CollectTransactionDto: ", collectTransactionDto);
         try {
             SanityChecker.checkSecureParameter(projectId);
             TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
-            RequestResponse<JsonNode> requestResponse = collectService.initTransaction(vitamContext, transactionDto, projectId);
+            RequestResponse<JsonNode> requestResponse =
+                collectService.initTransaction(vitamContext, transactionDto, projectId);
             if (!requestResponse.isOk()) {
                 LOGGER.error("Error occurs when creating transaction");
                 throw new VitamClientException("Error occurs when creating transaction");
@@ -149,15 +136,12 @@ public class ProjectInternalService {
         try {
             RequestResponse<JsonNode> requestResponse;
             if (criteria.isPresent()) {
-
-                TypeReference<HashMap<String, String>> typRef = new TypeReference<>() {
-                };
-                HashMap<String, String> vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
-                var criteriaProjectDto = new CriteriaProjectDto();
+                HashMap<String, String> vitamCriteria = objectMapper.readValue(criteria.get(), new TypeReference<>() {
+                });
+                CriteriaProjectDto criteriaProjectDto = new CriteriaProjectDto();
                 criteriaProjectDto.setQuery(vitamCriteria.get("query"));
                 requestResponse = collectService.searchProject(vitamContext, criteriaProjectDto);
             } else {
-
                 requestResponse = collectService.getProjects(vitamContext);
             }
 
@@ -212,75 +196,6 @@ public class ProjectInternalService {
             LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
-    }
-
-    public SelectMultiQuery mapRequestToSelectMultiQuery(SearchCriteriaDto searchQuery)
-        throws VitamClientException {
-        if (searchQuery == null) {
-            throw new BadRequestException("Can't parse null criteria");
-        }
-        SelectMultiQuery selectMultiQuery;
-        Optional<String> orderBy = Optional.empty();
-        Optional<DirectionDto> direction = Optional.empty();
-        try {
-            if (searchQuery.getSortingCriteria() != null) {
-                direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
-                orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
-            }
-            selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
-            if (orderBy.isPresent()) {
-                if (DirectionDto.DESC.equals(direction.get())) {
-                    selectMultiQuery.addOrderByDescFilter(orderBy.get());
-                } else {
-                    selectMultiQuery.addOrderByAscFilter(orderBy.get());
-                }
-            }
-            selectMultiQuery
-                .setLimitFilter((long) searchQuery.getPageNumber() * searchQuery.getSize(), searchQuery.getSize());
-            selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
-            LOGGER.debug("Final query: {}", selectMultiQuery.getFinalSelect().toPrettyString());
-
-        } catch (InvalidCreateOperationException ioe) {
-            throw new VitamClientException("Unable to find archive units with pagination", ioe);
-        } catch (InvalidParseOperationException e) {
-            throw new BadRequestException("Can't parse criteria as Vitam query" + e.getMessage());
-        }
-        return selectMultiQuery;
-    }
-
-    public SelectMultiQuery createSelectMultiQuery(List<SearchCriteriaEltDto> criteriaList)
-        throws InvalidParseOperationException, InvalidCreateOperationException {
-        final BooleanQuery query = and();
-        final SelectMultiQuery select = new SelectMultiQuery();
-        //Handle roots
-        LOGGER.debug("Call create Query DSL for criteriaList {} ", criteriaList);
-        List<SearchCriteriaEltDto> mgtRulesCriteriaList = criteriaList.stream().filter(Objects::nonNull)
-            .filter(searchCriteriaEltDto -> (ArchiveSearchConsts.CriteriaMgtRulesCategory
-                .contains(searchCriteriaEltDto.getCategory().name()))).collect(Collectors.toList());
-
-        List<SearchCriteriaEltDto> simpleCriteriaList = criteriaList.stream().filter(
-            Objects::nonNull).filter(searchCriteriaEltDto -> FIELDS
-            .equals(searchCriteriaEltDto.getCategory())).collect(Collectors.toList());
-
-        LOGGER.debug("management rules criteria list {}", mgtRulesCriteriaList);
-        LOGGER.debug("sample criteria list {}", simpleCriteriaList);
-        List<String> nodesCriteriaList = criteriaList.stream().filter(
-                Objects::nonNull).filter(searchCriteriaEltDto -> NODES
-                .equals(searchCriteriaEltDto.getCategory())).flatMap(criteria -> criteria.getValues().stream())
-            .map(CriteriaValue::getValue).collect(Collectors.toList());
-
-        if (!CollectionUtils.isEmpty(nodesCriteriaList)) {
-            select.addRoots(nodesCriteriaList.toArray(new String[nodesCriteriaList.size()]));
-            query.setDepthLimit(DEFAULT_DEPTH);
-        }
-
-        if (query.isReady()) {
-            select.setQuery(query);
-        }
-
-        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
-
-        return select;
     }
 
     public CollectProjectDto getProjectById(String id, VitamContext vitamContext) throws VitamClientException {
@@ -343,9 +258,10 @@ public class ProjectInternalService {
 
     }
 
-    public CollectTransactionDto getLastTransactionForProjectId(String id, VitamContext vitamContext) throws VitamClientException {
+    public CollectTransactionDto getLastTransactionForProjectId(String projectId, VitamContext vitamContext)
+        throws VitamClientException {
         try {
-            RequestResponse<JsonNode> requestResponse = collectService.getLastTransactionForProjectId(vitamContext, id);
+            RequestResponse<JsonNode> requestResponse = collectService.getLastTransactionForProjectId(vitamContext, projectId);
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when getting last transaction by project!");
             }
@@ -354,10 +270,10 @@ public class ProjectInternalService {
                     new TypeReference<>() {
                     });
             List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos);
-            if(collectTransactionDtos.isEmpty()){
+            if (collectTransactionDtos.isEmpty()) {
                 throw new VitamClientException("Unable to find transactions by project");
             }
-            return collectTransactionDtos.get(collectTransactionDtos.size() -1);
+            return collectTransactionDtos.get(collectTransactionDtos.size() - 1);
         } catch (VitamClientException | JsonProcessingException e) {
             throw new VitamClientException("Unable to find transactions by project : ", e);
         }
