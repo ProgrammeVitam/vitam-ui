@@ -451,6 +451,7 @@
     "MESSAGE": "Une erreur interne s'est produite. Veuillez contacter un administrateur si le problème persiste."
   },
   "EVENT_TYPE_LABEL": {
+    "RECLASSIFICATION_PREPARATION_CHECK_HOLD_RULES": "Contrôle du blocage de reclassification des unités archivistiques par des règles de gel.",
     "EXPORT_CHECK_RESOURCE_AVAILABILITY": "Vérification de la disponibilité des objets binaires sur l'offre de stockage",
     "CHECK_ATTACHEMENT": "Vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux",
     "CHECK_ATTACHEMENT.OK": "Succès de la vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux",
