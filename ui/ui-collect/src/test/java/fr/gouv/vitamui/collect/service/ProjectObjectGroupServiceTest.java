@@ -120,30 +120,10 @@ public class ProjectObjectGroupServiceTest {
         assertThat(response.getBody()).isInstanceOf(ResultsDto.class);
     }
 
-    private ResultsDto newResultDto(List<QualifiersDto> qualifiers) {
-        return new ResultsDto()
-            .setId("whatever")
-            .setQualifiers(qualifiers);
-    }
-
-    private FileInfoModel newFileInfoModel(String filename) {
-        FileInfoModel fileInfoModel = new FileInfoModel();
-        fileInfoModel.setFilename(filename);
-        return fileInfoModel;
-    }
-
-
-    private VersionsDto newVersionsDto(String id, ObjectQualifierTypeEnum type, Integer version, String filename) {
-        return new VersionsDto()
-            .setId(id)
-            .setFileInfoModel(newFileInfoModel(filename))
-            .setDataObjectVersion(type.getValue() + "_" + version);
-    }
-
-    @org.junit.jupiter.api.Test
+    @Test
     public void setObjectData_should_return_binary_master_before_other() {
         // Given
-        ObjectData objectData = new ObjectData();
+        final ObjectData objectData = new ObjectData();
         ResultsDto resultsDto = new ResultsDto()
             .setId("whatever")
             .setQualifiers(List.of(
@@ -173,5 +153,25 @@ public class ProjectObjectGroupServiceTest {
         Assertions.assertThat(objectData.getQualifier()).isEqualTo(BINARYMASTER.getValue());
         Assertions.assertThat(objectData.getVersion()).isEqualTo(2);
         Assertions.assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq.pouet");
+    }
+
+    private ResultsDto newResultDto(List<QualifiersDto> qualifiers) {
+        return new ResultsDto()
+            .setId("whatever")
+            .setQualifiers(qualifiers);
+    }
+
+    private FileInfoModel newFileInfoModel(String filename) {
+        FileInfoModel fileInfoModel = new FileInfoModel();
+        fileInfoModel.setFilename(filename);
+        return fileInfoModel;
+    }
+
+
+    private VersionsDto newVersionsDto(String id, ObjectQualifierTypeEnum type, Integer version, String filename) {
+        return new VersionsDto()
+            .setId(id)
+            .setFileInfoModel(newFileInfoModel(filename))
+            .setDataObjectVersion(type.getValue() + "_" + version);
     }
 }
