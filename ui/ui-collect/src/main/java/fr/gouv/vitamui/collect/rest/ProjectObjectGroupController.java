@@ -90,7 +90,7 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
             unitId, objectId, contractId, String.valueOf(tenantId));
         SanityChecker.checkSecureParameter(unitId, contractId, String.valueOf(tenantId));
         LOGGER.debug("Download the Archive Unit Object with Unit ID {}", unitId);
-        ObjectData objectData = new ObjectData();
+        final ObjectData objectData = new ObjectData();
         ResponseEntity<Resource> responseResource = projectObjectGroupService.downloadObjectFromUnit(unitId, objectId,
             objectData, buildUiHttpContext(tenantId, contractId)).block();
         List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
