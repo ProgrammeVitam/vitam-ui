@@ -41,8 +41,6 @@ import {
   ExternalParameters,
   ExternalParametersService,
   GlobalEventService,
-  Project,
-  ProjectStatus,
   SidenavPage,
   Transaction,
   TransactionStatus,
@@ -271,23 +269,24 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     });
   }
 
-
-  private addInitalCriteriaValues(){
-
-    this.archiveHelperService.addCriteria(    this.searchCriterias,
+  private addInitalCriteriaValues() {
+    this.archiveHelperService.addCriteria(
+      this.searchCriterias,
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
       { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
       this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
       true,
-      CriteriaOperator.EQ,SearchCriteriaTypeEnum.FIELDS,
+      CriteriaOperator.EQ,
+      SearchCriteriaTypeEnum.FIELDS,
       false,
       CriteriaDataType.STRING,
       false
     );
 
-    this.archiveHelperService.addCriteria(    this.searchCriterias,
+    this.archiveHelperService.addCriteria(
+      this.searchCriterias,
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
@@ -300,8 +299,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       CriteriaDataType.STRING,
       false
     );
-
-}
+  }
   private initializeSelectionParams() {
     this.pending = true;
     this.showCriteriaPanel = false;
