@@ -49,6 +49,7 @@ import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
@@ -69,8 +70,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -196,7 +200,7 @@ public class ExternalParamProfileInternalService {
     }
 
     @Transactional
-    public ExternalParamProfileDto patch(final Map<String, Object> partialDto) {
+    public ExternalParamProfileDto patch(final Map<String, Object> partialDto) throws BadRequestException {
         LOGGER.debug("Patch with {}", partialDto);
         final Collection<EventDiffDto> externalParamProfileLogbooks = new ArrayList<>();
         String idProfile = (String) partialDto.get(ID_PROFILE);
@@ -213,80 +217,86 @@ public class ExternalParamProfileInternalService {
         String idExternalParam = (String) partialDto.get(ID_EXTERNAL_PARAM);
         ExternalParametersDto externalParametersDto = externalParametersInternalService.getOne(idExternalParam);
         Collection<EventDiffDto> externalParametersLogbooks = new ArrayList<>();
-        List<ParameterDto> newParametersList = externalParametersDto.getParameters();
-        if (newParametersList == null) {
-            newParametersList = new ArrayList<>();
+
+        Map<String, ParameterDto> parametersMaps = Optional.ofNullable(externalParametersDto.getParameters()).orElse(
+                Collections.emptyList()).stream()
+            .collect(Collectors.toMap(ParameterDto::getKey, Function.identity()));
+        if (partialDto.get(NAME) != null) {
+            externalParametersDto.setName((String) partialDto.get(NAME));
         }
-        // Journalisation
+        // Journalisation and updating values
 
         //Access contract
-        if (!externalParamProfileLogbooks.isEmpty() ||
-            partialDto.get(ACCESS_CONTRACT) != null && partialDto.get(ACCESS_CONTRACT) != null) {
-            newParametersList = newParametersList.stream().filter(
-                parameterDto -> !ExternalParamDtoBuilder.PARAM_ACCESS_CONTRACT_NAME
-                    .equals(parameterDto.getKey())).collect(
-                Collectors.toList());
-
+        if (partialDto.get(ACCESS_CONTRACT) != null) {
             String accessContract = (String) partialDto.get(ACCESS_CONTRACT);
             externalParamProfileLogbooks.add(new EventDiffDto(ExternalParamProfileConverter.ACCESS_CONTRACT,
                 externalParamProfileDto.getAccessContract(), accessContract));
             externalParametersLogbooks.add(new EventDiffDto(ExternalParamProfileConverter.ACCESS_CONTRACT,
                 externalParamProfileDto.getAccessContract(),
                 accessContract));
-
-            newParametersList
-                .add(new ParameterDto(ExternalParamDtoBuilder.PARAM_ACCESS_CONTRACT_NAME, accessContract));
-
+            parametersMaps.put(ExternalParamDtoBuilder.PARAM_ACCESS_CONTRACT_NAME,
+                new ParameterDto(ExternalParamDtoBuilder.PARAM_ACCESS_CONTRACT_NAME, accessContract));
         }
-        if (partialDto.get(NAME) != null) {
-            externalParametersDto.setName((String) partialDto.get(NAME));
-        }
+
+
         //thresholds
         if (partialDto.get(USE_PLATFORM_BULK_OPERATIONS_THRESHOLD) != null ||
             partialDto.get(BULK_OPERATIONS_THRESHOLD) != null) {
-
-            Object bulkOperationThreshold = partialDto.get(BULK_OPERATIONS_THRESHOLD);
-            //filter parameters by removing old thresholds
-            newParametersList = newParametersList.stream().filter(
-                parameterDto -> !ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME
-                    .equals(parameterDto.getKey())).collect(
-                Collectors.toList());
-
             if (partialDto.get(USE_PLATFORM_BULK_OPERATIONS_THRESHOLD) != null) {
-                boolean shouldUpdateBulkOperationThresholdFlag =
+                //We update to setting to use or not the platform settings
+                boolean updateBulkOperationThresholdFlag =
                     (boolean) partialDto.get(USE_PLATFORM_BULK_OPERATIONS_THRESHOLD);
-
-                //replace old settings by new ones, else it will be removed
-                if (!shouldUpdateBulkOperationThresholdFlag) {
-                    newParametersList.add(new ParameterDto(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
-                        ((Integer) bulkOperationThreshold).toString()));
-
+                if (!updateBulkOperationThresholdFlag) {//use custom thresholds
+                    Object bulkOperationThreshold = partialDto.get(BULK_OPERATIONS_THRESHOLD);
+                    Integer thresholdValue = extractValidNumber(bulkOperationThreshold);
+                    parametersMaps.put(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
+                        new ParameterDto(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
+                            thresholdValue.toString()));
                     externalParamProfileLogbooks.add(
                         new EventDiffDto(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
                             externalParamProfileDto.getBulkOperationsThreshold(), bulkOperationThreshold));
-                    externalParametersLogbooks
-                        .add(new EventDiffDto(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
-                            externalParamProfileDto.getBulkOperationsThreshold(), bulkOperationThreshold));
+                } else {//use platform settings
+                    parametersMaps.remove(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME);
+                    externalParamProfileLogbooks.add(
+                        new EventDiffDto(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
+                            externalParamProfileDto.getBulkOperationsThreshold(), null));
                 }
             } else {
-                //replace old settings by new threshold
-                newParametersList.add(new ParameterDto(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
-                    ((Integer) bulkOperationThreshold).toString()));
+                //We update just the thresholds
+                Object bulkOperationThreshold = partialDto.get(BULK_OPERATIONS_THRESHOLD);
+                Integer thresholdValue = extractValidNumber(bulkOperationThreshold);
+                parametersMaps.put(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
+                    new ParameterDto(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
+                        thresholdValue.toString()));
                 externalParamProfileLogbooks.add(
                     new EventDiffDto(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
                         externalParamProfileDto.getBulkOperationsThreshold(), bulkOperationThreshold));
-                externalParametersLogbooks
-                    .add(new EventDiffDto(ExternalParamDtoBuilder.PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
-                        externalParamProfileDto.getBulkOperationsThreshold(), bulkOperationThreshold));
             }
-            externalParametersDto.setParameters(newParametersList);
         }
+        externalParametersDto.setParameters(parametersMaps.values().stream().collect(Collectors.toList()));
+
         externalParametersInternalService.update(externalParametersDto, externalParametersLogbooks);
         iamLogbookService.updateExternalParamProfileEvent(externalParamProfileDto, externalParamProfileLogbooks);
 
         externalParametersInternalService.update(externalParametersDto, externalParametersLogbooks);
 
         return externalParamProfileRepository.findByIdProfile(idProfile);
+    }
+
+    private Integer extractValidNumber(Object bulkOperationThreshold) throws BadRequestException {
+        Integer extractedNumber;
+        if (bulkOperationThreshold != null) {
+            try {
+                extractedNumber = (Integer) bulkOperationThreshold;
+            } catch (NumberFormatException nfe) {
+                LOGGER.debug("The threshold is not a valid number {} ", bulkOperationThreshold);
+                throw new BadRequestException("The threshold is not a valid number " + bulkOperationThreshold);
+            }
+        } else {
+            LOGGER.debug("The threshold should be mandatory valid number ");
+            throw new BadRequestException("The threshold should be mandatory valid number ");
+        }
+        return extractedNumber;
     }
 
     private void patchProfile(ProfileDto profileDto, ExternalParamProfileDto oldDto, Map<String, Object> partialDto,
