@@ -69,12 +69,13 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
   }
 
   download(id: string, headers?: HttpHeaders): Observable<Blob> {
-    return super.getHttp().get(super.getApiUrl() + this.pastisConfig.downloadProfile + '/'  + id, {responseType: 'blob', headers});
+    return super.getHttp().get(super.getApiUrl() + this.pastisConfig.downloadProfile + '/' + id, { responseType: 'blob', headers });
   }
 
 
   uploadProfileArchivageFile(id: string, profile: FormData, headers?: HttpHeaders): Observable<any> {
-    return super.getHttp().put(this.apiUrl + this.pastisConfig.importProfileInExistingNotice + '/' + id, profile, {responseType: 'json', headers});
+    return super.getHttp().put(this.apiUrl + this.pastisConfig.importProfileInExistingNotice + '/' + id,
+      profile, { responseType: 'json', headers });
   }
 
   updateProfilePa(profile: Profile, headers?: HttpHeaders): Observable<Profile> {
@@ -87,17 +88,20 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
   }
 
   create(profile: Profile, headers?: HttpHeaders): Observable<Profile> {
-    return this.http.post<Profile>(this.apiUrl  + this.pastisConfig.archiveProfileApiPath + '/', profile, { headers });
+    return this.http.post<Profile>(this.apiUrl + this.pastisConfig.archiveProfileApiPath + '/', profile, { headers });
   }
 
-  check(agency: Profile, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', agency, {observe: 'response', headers})
+  check(profile: Profile, headers?: HttpHeaders): Observable<boolean> {
+    return super.getHttp().post<any>(super.getApiUrl() + this.pastisConfig.archiveProfileApiPath + '/check',
+      profile, {
+        observe: 'response',
+        headers
+      })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
   delete(id: string, headers?: HttpHeaders) {
-    return super.getHttp().delete(super.getApiUrl() + '/' + id, {headers});
+    return super.getHttp().delete(super.getApiUrl() + '/' + id, { headers });
   }
-
 
 }

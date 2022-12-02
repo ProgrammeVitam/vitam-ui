@@ -58,6 +58,7 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -299,6 +300,14 @@ public class ProfileInternalService {
             return archivalProfileResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find archivalProfiles", e);
+        }
+    }
+
+    public boolean checkProfileIdExist(VitamContext vitamContext, String identifier) {
+        try {
+            return Objects.nonNull(getOne(vitamContext, identifier));
+        } catch (NotFoundException notFoundException) {
+            return false;
         }
     }
 }
