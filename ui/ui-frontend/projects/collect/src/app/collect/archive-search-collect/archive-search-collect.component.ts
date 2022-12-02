@@ -74,6 +74,9 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
+const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
+const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
+
 @Component({
   selector: 'app-archive-search-collect',
   templateUrl: './archive-search-collect.component.html',
@@ -239,6 +242,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.searchCriteriaKeys = [];
     this.searchCriterias = new Map();
     this.initializeSelectionParams();
+    this.addInitalCriteriaValues();
     this.transactionSubscription = this.route.params
       .pipe(
         mergeMap((params) => {
@@ -267,6 +271,37 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     });
   }
 
+
+  private addInitalCriteriaValues(){
+
+    this.archiveHelperService.addCriteria(    this.searchCriterias,
+      this.searchCriteriaKeys,
+      this.nbQueryCriteria,
+      ALL_ARCHIVE_UNIT_TYPES,
+      { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
+      this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
+      true,
+      CriteriaOperator.EQ,SearchCriteriaTypeEnum.FIELDS,
+      false,
+      CriteriaDataType.STRING,
+      false
+    );
+
+    this.archiveHelperService.addCriteria(    this.searchCriterias,
+      this.searchCriteriaKeys,
+      this.nbQueryCriteria,
+      ALL_ARCHIVE_UNIT_TYPES,
+      { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
+      this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
+      true,
+      CriteriaOperator.EQ,
+      SearchCriteriaTypeEnum.FIELDS,
+      false,
+      CriteriaDataType.STRING,
+      false
+    );
+
+}
   private initializeSelectionParams() {
     this.pending = true;
     this.showCriteriaPanel = false;
