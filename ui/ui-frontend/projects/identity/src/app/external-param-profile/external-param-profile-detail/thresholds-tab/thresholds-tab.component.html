@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-12">
         <div *ngIf="!form.get('usePlatformThreshold').value">
-          <mat-form-field class="vitamui-mat-select">
+          <mat-form-field class="vitamui-mat-select"   required="required">
             <mat-select
               formControlName="bulkOperationsThreshold"
               placeholder="{{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}"
@@ -27,7 +27,7 @@
     </div>
     <br/>
     <div class="row">
-      <button type="submit" class="btn primary mr-4" (click)="submitModification()" [disabled]="!isUpdated">
+      <button type="submit" class="btn primary mr-4" (click)="submitModification()" [disabled]="!isUpdated || this.form.get('bulkOperationsThreshold').invalid ">
         {{ 'COMMON.SUBMIT' | translate }}
       </button>
     </div>
