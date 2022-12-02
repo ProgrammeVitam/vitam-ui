@@ -917,9 +917,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     });
   }
 
-  updateUnitsMetadataDisabled(project: Project): boolean {
-    if (project) {
-      return project.status !== ProjectStatus.OPEN;
-    }
+  updateUnitsMetadataDisabled(): boolean {
+    return this.transaction.status !== TransactionStatus.OPEN;
   }
 }
