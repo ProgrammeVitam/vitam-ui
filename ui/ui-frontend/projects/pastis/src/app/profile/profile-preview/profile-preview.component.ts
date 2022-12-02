@@ -1,21 +1,21 @@
-import {AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {ConfirmActionComponent} from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
-import {environment} from '../../../environments/environment';
-import {PastisConfiguration} from '../../core/classes/pastis-configuration';
-import {ProfileService} from '../../core/services/profile.service';
-import {FileNode} from '../../models/file-node';
-import {ProfileDescription} from '../../models/profile-description.model';
-import {ProfileResponse} from '../../models/profile-response';
-import {ProfileInformationTabComponent} from './profile-information-tab/profile-information-tab/profile-information-tab.component';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ConfirmActionComponent } from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
+import { environment } from '../../../environments/environment';
+import { PastisConfiguration } from '../../core/classes/pastis-configuration';
+import { ProfileService } from '../../core/services/profile.service';
+import { FileNode } from '../../models/file-node';
+import { ProfileDescription } from '../../models/profile-description.model';
+import { ProfileResponse } from '../../models/profile-response';
+import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 @Component({
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
-  styleUrls: ['./profile-preview.component.scss']
+  styleUrls: [ './profile-preview.component.scss' ]
 })
 export class ProfilePreviewComponent implements AfterViewInit {
 
@@ -24,19 +24,19 @@ export class ProfilePreviewComponent implements AfterViewInit {
   @Input()
   inputProfile: ProfileDescription;
 
-  tabUpdated: boolean[] = [false, false];
+  tabUpdated: boolean[] = [ false, false ];
   isClicked = false;
   isStandalone: boolean = environment.standalone;
 
   fileNode: FileNode[] = [];
 
   isPopup: boolean;
-  @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
+  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
 
   tabLinks: Array<ProfileInformationTabComponent> = [];
-  @ViewChild('infoTab', {static: false}) infoTab: ProfileInformationTabComponent;
+  @ViewChild('infoTab', { static: false }) infoTab: ProfileInformationTabComponent;
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener('window:beforeunload', [ '$event' ])
   beforeunloadHandler(event: any) {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       event.preventDefault();
@@ -80,12 +80,12 @@ export class ProfilePreviewComponent implements AfterViewInit {
       await this.checkBeforeExit();
     }
 
-    const args = [tab, tabHeader, idx];
+    const args = [ tab, tabHeader, idx ];
     return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
   }
 
   async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
   }
@@ -109,7 +109,8 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   editProfile(inputProfile: ProfileDescription) {
-    this.router.navigate([this.pastisConfig.pastisEditPage, inputProfile.id], {state: inputProfile,relativeTo: this.route ,skipLocationChange: false});
+    this.router.navigate([ this.pastisConfig.pastisEditPage, inputProfile.id ],
+      { state: inputProfile, relativeTo: this.route, skipLocationChange: false });
   }
 
   downloadProfile(inputProfile: ProfileDescription) {
@@ -133,9 +134,8 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   downloadFile(dataFile: any, typeProfile: string, inputProfile?: ProfileDescription): void {
-    console.debug('Profile mode : ', this.profileService.profileMode);
     const typeFile = typeProfile === 'PA' ? 'application/xml' : 'application/json';
-    const newBlob = new Blob([dataFile], {type: typeFile});
+    const newBlob = new Blob([ dataFile ], { type: typeFile });
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(newBlob);
       return;
@@ -145,7 +145,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
     link.href = data;
     link.download = typeProfile === 'PA' ? inputProfile.path : 'pastis_' + inputProfile.identifier + '.json';
     // this is necessary as link.click() does not work on the latest firefox
-    link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
     setTimeout(() => {
       // For Firefox it is necessary to delay revoking the ObjectURL
       window.URL.revokeObjectURL(data);

@@ -55,7 +55,7 @@ import { ArchiveProfileApiService } from './archive-profile-api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ProfileService implements OnDestroy  {
+export class ProfileService implements OnDestroy {
 
   public page: number;
   public size: number;
@@ -78,14 +78,14 @@ export class ProfileService implements OnDestroy  {
   subscriptions: Subscription[] = [];
 
 
-
   constructor(private apiService: PastisApiService, private pastisConfig: PastisConfiguration,
-              private puaService: ArchivalProfileUnitApiService, private  paService: ArchiveProfileApiService) {
+              private puaService: ArchivalProfileUnitApiService,
+              private paService: ArchiveProfileApiService) {
   }
 
   ngOnDestroy(): void {
-       this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
-    }
+    this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
+  }
 
   getAllProfiles(): void {
     if (environment.standalone) {
@@ -107,7 +107,7 @@ export class ProfileService implements OnDestroy  {
     let allProfilesPA: any;
     const params = new HttpParams().set('embedded', 'ALL');
     // @ts-ignore
-    allProfilesPA = this.apiService.get(this.pastisConfig.getAllArchivalProfileUrl, {params});
+    allProfilesPA = this.apiService.get(this.pastisConfig.getAllArchivalProfileUrl, { params });
     return allProfilesPA;
   }
 
@@ -115,7 +115,7 @@ export class ProfileService implements OnDestroy  {
     let allProfilesPUA: any;
     const params = new HttpParams().set('embedded', 'ALL');
 
-    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitUrl, {params});
+    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitUrl, { params });
     return allProfilesPUA;
   }
 
@@ -136,13 +136,13 @@ export class ProfileService implements OnDestroy  {
 
   getAllProfilesVitam(): void {
     const profiles: ProfileDescription[] = [];
-    this.subscription3$ = this.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[] ) => {
+    this.subscription3$ = this.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[]) => {
       if (profileListPUA) {
         profileListPUA.forEach((p) => {
           p.type = 'PUA';
           profiles.push(p);
         });
-        this.subscription4$ = this.getAllProfilesPA().subscribe((profileListPA: ProfileDescription[] ) => {
+        this.subscription4$ = this.getAllProfilesPA().subscribe((profileListPA: ProfileDescription[]) => {
           if (profileListPA) {
             profileListPA.forEach((p) => {
               p.type = 'PA';
@@ -167,7 +167,7 @@ export class ProfileService implements OnDestroy  {
 
   // Send the modified tree as post,
   // Expects a RNG or a JSON file depending on the profile type
-  uploadFile(file: FileNode[], notice: ProfileDescription , profileType: string): Observable<Blob> {
+  uploadFile(file: FileNode[], notice: ProfileDescription, profileType: string): Observable<Blob> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-type': 'application/json',
@@ -180,7 +180,7 @@ export class ProfileService implements OnDestroy  {
     this.fixCircularReference(profile);
 
     if (profileType === 'PUA') {
-      profile = {elementProperties: profile, notice};
+      profile = { elementProperties: profile, notice };
     }
 
     return this.apiService.post(endPointUrl, profile, httpOptions);
@@ -189,7 +189,9 @@ export class ProfileService implements OnDestroy  {
   fixCircularReference(node: FileNode) {
     node.parent = null;
     node.sedaData = null;
-    node.children.forEach(child => {this.fixCircularReference(child); });
+    node.children.forEach(child => {
+      this.fixCircularReference(child);
+    });
   }
 
   // @ts-ignore
@@ -203,7 +205,7 @@ export class ProfileService implements OnDestroy  {
       .set('size', this.size.toString())
       .set('direction', this.direction);
     let allProfilesPA: any;
-    allProfilesPA = this.apiService.get(this.pastisConfig.getProfilePaginatedUrl, {params})  .pipe(
+    allProfilesPA = this.apiService.get(this.pastisConfig.getProfilePaginatedUrl, { params }).pipe(
       map((paginated: PaginatedResponse<ProfileDescription>) => {
         this.data = paginated.values;
         this.page = paginated.pageNum;
@@ -225,7 +227,7 @@ export class ProfileService implements OnDestroy  {
       .set('size', this.size.toString())
       .set('direction', this.direction);
     let allProfilesPUA: any;
-    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitPaginatedUrl, {params})  .pipe(
+    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitPaginatedUrl, { params }).pipe(
       map((paginated: PaginatedResponse<ProfileDescription>) => {
         this.data = paginated.values;
         this.page = paginated.pageNum;
@@ -241,7 +243,7 @@ export class ProfileService implements OnDestroy  {
   getAllProfilesPaginated(pageRequest: PageRequest): Observable<ProfileDescription[]> {
     const tabVide: ProfileDescription[] = [];
 
-    this.subscription2$ = this.getAllProfilesPAPaginated(pageRequest).subscribe((data: ProfileDescription[] ) => {
+    this.subscription2$ = this.getAllProfilesPAPaginated(pageRequest).subscribe((data: ProfileDescription[]) => {
       if (data) {
         data.forEach(p => p.type = 'PA');
         data.forEach(p => tabVide.push(p));
@@ -249,7 +251,7 @@ export class ProfileService implements OnDestroy  {
       }
     });
 
-    this.subscription1$ = this.getAllProfilesPUAPaginated(pageRequest).subscribe((data: ProfileDescription[] ) => {
+    this.subscription1$ = this.getAllProfilesPUAPaginated(pageRequest).subscribe((data: ProfileDescription[]) => {
       // @ts-ignore
       if (data) {
         data.forEach(p => p.type = 'PUA');
@@ -277,9 +279,13 @@ export class ProfileService implements OnDestroy  {
     return this.paService.getOne(id, headers);
   }
 
+  checkPaProfile(profile: Profile, headers?: HttpHeaders): Observable<boolean> {
+    return this.paService.check(profile, headers);
+  }
+
   createProfile(path: string, type: string): Observable<ProfileResponse> {
     const params = new HttpParams().set('type', type);
-    return this.apiService.get<ProfileResponse>(path, {params});
+    return this.apiService.get<ProfileResponse>(path, { params });
   }
 
   createProfilePa(profile: Profile) {

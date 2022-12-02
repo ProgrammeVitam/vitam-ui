@@ -65,6 +65,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -362,7 +363,9 @@ public class PuaPastisValidator {
         List<String> rulesFound = new ArrayList<>();
 
         JSONObject pua = sortedJSON();
-        pua.put(ADDITIONAL_PROPERTIES, element.getPuaData().getAdditionalProperties());
+        if (Objects.nonNull(element.getPuaData()) && Objects.nonNull(element.getPuaData().getAdditionalProperties())) {
+            pua.put(ADDITIONAL_PROPERTIES, element.getPuaData().getAdditionalProperties());
+        }
         if (element.getChildren().isEmpty()) {
             return retrieveAccumulatedJsonManagementProperties(pua);
         }

@@ -9,6 +9,7 @@ import { PopupService } from '../../core/services/popup.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { Notice } from '../../models/notice.model';
+import { Profile } from '../../models/profile';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
 
@@ -28,7 +29,7 @@ function constantToTranslate() {
 @Component({
   selector: 'create-notice',
   templateUrl: './create-notice.component.html',
-  styleUrls: ['./create-notice.component.scss']
+  styleUrls: [ './create-notice.component.scss' ]
 })
 export class CreateNoticeComponent implements OnInit {
   form: FormGroup;
@@ -43,7 +44,7 @@ export class CreateNoticeComponent implements OnInit {
   subTitleDialog: string;
   okLabel: string;
   cancelLabel: string;
-  arrayStatus: Status[] ;
+  arrayStatus: Status[];
   typeProfile?: string;
   modePUA: boolean;
   information: string;
@@ -81,7 +82,7 @@ export class CreateNoticeComponent implements OnInit {
         name: '',
         status: 'ACTIVE',
         identifier: ''
-       };
+      };
     }
 
     if (!this.isStandalone) {
@@ -92,8 +93,8 @@ export class CreateNoticeComponent implements OnInit {
       this.profilInactif = 'Profil inactif';
     }
     this.arrayStatus = [
-      {value: 'INACTIVE', viewValue: this.profilInactif},
-      {value: 'ACTIVE', viewValue:  this.profilActif}
+      { value: 'INACTIVE', viewValue: this.profilInactif },
+      { value: 'ACTIVE', viewValue: this.profilActif }
     ];
     this.typeProfile = this.data.modeProfile;
     if (this.typeProfile === 'PUA') {
@@ -101,11 +102,11 @@ export class CreateNoticeComponent implements OnInit {
     }
     this.information = 'texte d\'information';
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
-      intitule: [null, Validators.required],
-      selectedStatus: [null],
-      description: [null],
-      autoriserPresenceMetadonnees : false
+      identifier: [ null, Validators.required ],
+      intitule: [ null, Validators.required ],
+      selectedStatus: [ null ],
+      description: [ null ],
+      autoriserPresenceMetadonnees: false
     });
 
 
@@ -134,10 +135,8 @@ export class CreateNoticeComponent implements OnInit {
   }
 
   onCancel() {
-      this.dialogRef.close();
+    this.dialogRef.close();
   }
-
-
 
 
   upateButtonStatusAndDataToSend() {
@@ -157,11 +156,29 @@ export class CreateNoticeComponent implements OnInit {
 
   checkIdentifier(modePUA: boolean) {
 
+    if (this.notice.identifier.length < 1) {
+      this.validate = false;
+      return;
+    }
     if (this.notice.identifier.length !== 0) {
-      if(modePUA) {
-        const profile = {} as ArchivalProfileUnit;
+      if (modePUA) {
+        const archivalProfileUnit = {} as ArchivalProfileUnit;
+        archivalProfileUnit.identifier = this.notice.identifier;
+        this.profileService.checkPuaProfile(archivalProfileUnit).subscribe(
+          (response: boolean) => {
+            if (response) {
+              alert('Identifier already exists use another identifier');
+              this.validate = false;
+            } else {
+              this.validate = true;
+              this.checkIntitule();
+            }
+          }
+        );
+      } else {
+        const profile = {} as Profile;
         profile.identifier = this.notice.identifier;
-        this.profileService.checkPuaProfile(profile).subscribe(
+        this.profileService.checkPaProfile(profile).subscribe(
           (response: boolean) => {
             if (response) {
               alert('Identifier already exists use another identifier');
@@ -173,24 +190,15 @@ export class CreateNoticeComponent implements OnInit {
           }
         );
       }
-      else{
-        this.profileService.getPaProfile(this.notice.identifier).subscribe(
-          () => {
-            alert('Identifier already exists use another identifier');
-            this.validate = false;
-          }, () => {
-            this.validate = true;
-            this.checkIntitule();
-          }
-        );
-      }
     } else {
       this.validate = false;
     }
   }
 
   checkIntitule() {
-    if (this.notice.name.length !== 0) { this.validate = true; } else {
+    if (this.notice.name.length !== 0) {
+      this.validate = true;
+    } else {
       this.validate = false;
     }
   }
