@@ -308,31 +308,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         );
       });
     });
-    if (this.criteriaSearchListToSave.length === 0) {
-      this.addCriteria(
-        ALL_ARCHIVE_UNIT_TYPES,
-        { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
-        this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-        SearchCriteriaTypeEnum.FIELDS
-      );
-
-      this.addCriteria(
-        ALL_ARCHIVE_UNIT_TYPES,
-        { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
-        this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-        SearchCriteriaTypeEnum.FIELDS
-      );
-    }
+    
   }
-
+ 
   onSelectOtherCriteria() {
     this.simpleCriteriaForm.get('otherCriteria').valueChanges.subscribe((selectedcriteria) => {
       if (selectedcriteria === '') {

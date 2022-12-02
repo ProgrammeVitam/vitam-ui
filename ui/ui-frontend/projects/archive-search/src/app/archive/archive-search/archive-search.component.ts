@@ -66,6 +66,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
+const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
+const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 
 @Component({
   selector: 'app-archive-search',
@@ -334,7 +336,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
-
+    this.addInitalCriteriaValues()
     searchCriteriaChange.subscribe(() => {
       this.submit();
     });
@@ -348,6 +350,35 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     const ruleActions: ActionsRules[] = [];
     this.managementRulesSharedDataService.emitRuleActions(ruleActions);
     this.managementRulesSharedDataService.emitManagementRules([]);
+  }
+
+
+
+  private addInitalCriteriaValues(){
+
+      this.addCriteria(
+        ALL_ARCHIVE_UNIT_TYPES,
+        { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
+        this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
+        true,
+        CriteriaOperator.EQ,SearchCriteriaTypeEnum.FIELDS,
+        false,
+        CriteriaDataType.STRING,
+        false
+      );
+
+      this.addCriteria(
+        ALL_ARCHIVE_UNIT_TYPES,
+        { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
+        this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
+        true,
+        CriteriaOperator.EQ,
+        SearchCriteriaTypeEnum.FIELDS,
+        false,
+        CriteriaDataType.STRING,
+        false
+      );
+    
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -1021,6 +1052,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.show = !hidden;
     this.archiveExchangeDataService.emitToggle(this.show);
   }
+
+
+
 
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
