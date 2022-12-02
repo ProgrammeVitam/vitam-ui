@@ -45,6 +45,8 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+
 public class RuleConverter {
 
     public FileRulesModel convertDtoToVitam(final RuleDto dto) {
@@ -56,8 +58,12 @@ public class RuleConverter {
 
     public RuleDto convertVitamToDto(final FileRulesModel rule) {
         final RuleDto dto = VitamUIUtils.copyProperties(rule, new RuleDto());
-        dto.setRuleMeasurement(rule.getRuleMeasurement().getType());
-        dto.setRuleType(rule.getRuleType().name());
+        if(nonNull(rule.getRuleMeasurement())) {
+            dto.setRuleMeasurement(rule.getRuleMeasurement().getType());
+        }
+        if(nonNull(rule.getRuleType())) {
+            dto.setRuleType(rule.getRuleType().name());
+        }
         return dto;
     }
 
