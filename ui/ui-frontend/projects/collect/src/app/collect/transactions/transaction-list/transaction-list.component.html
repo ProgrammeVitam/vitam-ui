@@ -58,7 +58,7 @@
               <div class="col-4">{{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate}}</div>
               <div class="col-1">
                 <vitamui-common-menu-button [icon]="'vitamui-icon-more-horiz'" [overlayPos]="'end'" [isLarge]="false">
-                  <button mat-menu-item [disabled]="!transactionIsOpen(transaction)"
+                  <button mat-menu-item
                           (click)="searchArchiveUnitsByTransaction(transaction)">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
                   </button>
