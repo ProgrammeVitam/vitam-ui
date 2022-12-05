@@ -45,6 +45,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -99,14 +100,15 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      * Get all Archival Unit Profiles
      *
      * @param criteria
-     * @return
+     * @return a list of Archival Profile Unit
      */
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<ArchivalProfileUnitDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException {
-        LOGGER.debug("Get all with criteria={}", criteria);
+
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -118,7 +120,7 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      * @param criteria
      * @param orderBy
      * @param direction
-     * @return
+     * @return a list of Archival Profile Unit
      */
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = {"page", "size"})
@@ -127,6 +129,10 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
         @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
+        if(orderBy.isPresent()){
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
@@ -137,16 +143,20 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      * Get Archival Unit Profile by Identifier
      *
      * @param identifier
-     * @return
+     * @return the Archival Profile Unit
      * @throws UnsupportedEncodingException
+     * @throws PreconditionFailedException
+     * @throws InvalidParseOperationException
      */
     @ApiOperation(value = "Get profile by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     @ResponseStatus(HttpStatus.OK)
     public ArchivalProfileUnitDto getById(final @PathVariable("identifier") String identifier)
-        throws UnsupportedEncodingException, InvalidParseOperationException {
-        LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        SanityChecker.checkSecureParameter(identifier);
+        LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8));
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
@@ -154,13 +164,15 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      * Modify Archival Unit Profile by Identifier
      *
      * @param archivalProfileUnitDto
-     * @return
+     * @return the Archival Profile Unit
      */
 
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ArchivalProfileUnitDto update(@RequestBody final ArchivalProfileUnitDto archivalProfileUnitDto) throws InvalidParseOperationException {
+    public ArchivalProfileUnitDto update(@RequestBody final ArchivalProfileUnitDto archivalProfileUnitDto) throws
+        InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(archivalProfileUnitDto);
         LOGGER.debug("update profile {}", archivalProfileUnitDto.getId());
         return service.update(buildUiHttpContext(), archivalProfileUnitDto);
     }
@@ -169,13 +181,15 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      * Create Archival Unit Profile
      *
      * @param archivalProfileUnitDto
-     * @return
+     * @return the Archival Profile Unit
      */
     @ApiOperation(value = "Create Archival Unit Profile")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ArchivalProfileUnitDto> create(
-        @Valid @RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) throws InvalidParseOperationException {
+        @Valid @RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) throws
+        InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(archivalProfileUnitDto);
         LOGGER.debug("create archival unit profile={}", archivalProfileUnitDto);
         ArchivalProfileUnitDto result = service.create(buildUiHttpContext(), archivalProfileUnitDto);
         if (result != null) {
@@ -205,7 +219,7 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      * Check access
      *
      * @param archivalProfileUnitDto
-     * @return
+     * @return a ResponseEntity
      */
     @ApiOperation(value = "Check ability to create ontology")
     @PostMapping(path = CommonConstants.PATH_CHECK)

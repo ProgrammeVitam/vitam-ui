@@ -33,6 +33,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.TransactionInternalService;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -69,6 +70,8 @@ public class TransactionInternalController {
     private final InternalSecurityService securityService;
     private final TransactionInternalService transactionInternalService;
 
+    private static final String IDENTIFIER_MANDATORY_MESSAGE = "The Identifier is a mandatory parameter: ";
+
     @Autowired
     public TransactionInternalController(final TransactionInternalService transactionInternalService,
         final InternalSecurityService securityService) {
@@ -79,7 +82,7 @@ public class TransactionInternalController {
     @PutMapping(CommonConstants.PATH_ID + SEND_PATH)
     public void sendTransaction(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to send  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -89,7 +92,7 @@ public class TransactionInternalController {
     @PutMapping(CommonConstants.PATH_ID + VALIDATE_PATH)
     public void validateTransaction(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to close  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -99,7 +102,7 @@ public class TransactionInternalController {
     @PutMapping(CommonConstants.PATH_ID + REOPEN_PATH)
     public void reopenTransaction(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to reopen  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -109,7 +112,7 @@ public class TransactionInternalController {
     @PutMapping(CommonConstants.PATH_ID + ABORT_PATH)
     public void abortTransaction(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to abort  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -118,7 +121,7 @@ public class TransactionInternalController {
 
     @GetMapping(CommonConstants.PATH_ID )
     public CollectTransactionDto getTransactionById(final @PathVariable("id") String id) throws VitamClientException, InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Project Id  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -135,6 +138,7 @@ public class TransactionInternalController {
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("[Internal] update archiveUnits metadata from file for transaction  {}", transactionId);
         SanityChecker.isValidFileName(originalFileName);
+        SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[Internal] csv FileName  {}", originalFileName);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return transactionInternalService.updateArchiveUnitsFromFile(vitamContext, inputStream, transactionId);
@@ -143,8 +147,8 @@ public class TransactionInternalController {
     @PutMapping
     public CollectTransactionDto updateTransaction(@RequestBody CollectTransactionDto transactionDto)
         throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", transactionDto.getId());
-        SanityChecker.checkSecureParameter(transactionDto.getId());
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, transactionDto);
+        SanityChecker.sanitizeCriteria(transactionDto);
         LOGGER.debug("[Internal] Transaction to update : {}", transactionDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return transactionInternalService.updateTransaction(transactionDto, vitamContext);

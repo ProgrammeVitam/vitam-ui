@@ -248,9 +248,10 @@ public class ArchivalProfileUnitInternalService {
             } else {
                 return null;
             }
-        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException |
-                 JAXBException e) {
-            e.printStackTrace();
+        } catch (InvalidParseOperationException | AccessExternalClientException |
+                 VitamClientException | IOException | JAXBException exception) {
+            LOGGER.error("Error while creating archive Profile", exception);
+
         }
         return archivalProfileUnitDto;
     }

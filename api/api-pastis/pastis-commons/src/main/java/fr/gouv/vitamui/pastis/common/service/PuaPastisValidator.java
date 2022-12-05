@@ -62,6 +62,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 @Service
@@ -101,6 +101,9 @@ public class PuaPastisValidator {
     private static final String TYPE = "type";
     private static final String OBJECT = "object";
     private static final String ID = "ID";
+
+    private static final String STRING = "string";
+
 
     private JSONObject getProfileJsonExpected(boolean standalone) {
         if (profileJsonExpected == null) {
@@ -153,8 +156,8 @@ public class PuaPastisValidator {
 
         // Compare list of field at the root level
         if (!standalone) {
-            Set<String> actualFieldList = pua.keySet().stream().collect(toSet());
-            if (!actualFieldList.contains("name") && !actualFieldList.contains("controlSchema")) {
+            Set<String> actualFieldList = new HashSet<>(pua.keySet());
+            if (!actualFieldList.contains("name") && !actualFieldList.contains(CONTROLSCHEMA)) {
                 throw new AssertionError("Notice not contains the expected keys 'name' and 'controlSchema'");
             }
         }
@@ -165,28 +168,18 @@ public class PuaPastisValidator {
         JSONObject controlSchemaActual = new JSONObject(controlSchemaString);
         controlSchemaString = profileJson.getString(CONTROLSCHEMA);
         JSONObject controlSchemaExpected = new JSONObject(controlSchemaString);
-        LOGGER.error(controlSchemaActual.toString() + " control schema actuelle");
-        LOGGER.error(controlSchemaExpected.toString() + " control schema Expected");
+        LOGGER.debug(" control schema actuelle {}", controlSchemaActual);
+        LOGGER.debug(" control schema Expected {}", controlSchemaExpected);
         if (standalone) {
-            // Checking that the whole structure is respected. Doesn't care that the pua contains extended fields.
-            //JSONAssert.assertEquals(controlSchemaExpected, controlSchemaActual, JSONCompareMode.LENIENT);
-
-            // Checking that the definitions list is exactly the same as expected
-            //            JSONAssert.assertEquals(controlSchemaExpected.getJSONObject(DEFINITIONS),
-            //                controlSchemaActual.getJSONObject(DEFINITIONS), JSONCompareMode.STRICT);
-
             // Checking that additionalProperties is present and is boolean
-            if (controlSchemaActual.has("additionalProperties") &&
-                !(controlSchemaActual.get("additionalProperties") instanceof Boolean)) {
+            if (controlSchemaActual.has(ADDITIONAL_PROPERTIES) &&
+                !(controlSchemaActual.get(ADDITIONAL_PROPERTIES) instanceof Boolean)) {
                 throw new AssertionError("PUA additionalProperties field does not contains a boolean value");
             }
             // Checking that #management object is present and at the correct position
             if (controlSchemaActual.has("patternProperties")) {
                 JSONObject patternProperties = controlSchemaActual.getJSONObject("patternProperties");
                 if (patternProperties.has(MANAGEMENTCONTROL)) {
-                    /*JSONAssert.assertEquals(new JSONObject(), patternProperties.getJSONObject(MANAGEMENTCONTROL),
-                        JSONCompareMode.STRICT);*/
-
                     // Check that #management is not in both header and 'properties' object
                     JSONObject properties = controlSchemaActual.getJSONObject(PROPERTIES);
                     if (properties.has(MANAGEMENTCONTROL)) {
@@ -217,7 +210,7 @@ public class PuaPastisValidator {
 
         JSONObject baseProfile = getProfileJsonExpected(true);
         String controlSchema = baseProfile.get(CONTROLSCHEMA).toString();
-        LOGGER.error(controlSchema + " control shema");
+        LOGGER.debug(" control schema {}", controlSchema);
         JSONObject controlSchemaAsJSON = new JSONObject(controlSchema);
 
         return controlSchemaAsJSON.getJSONObject(DEFINITIONS);
@@ -233,9 +226,11 @@ public class PuaPastisValidator {
     private String getPUAMetadataType(String elementName, String name, ElementProperties elementProperties)
         throws IOException {
         SedaNode sedaElement = getSedaMetadata(elementName, name);
-        return sedaElement != null ?
-            resolvePuaType(sedaElement, elementProperties) :
-            elementName.equals("MessageDigest") ? "string" : "undefined";
+
+        if(sedaElement != null) {
+            return resolvePuaType(sedaElement, elementProperties);
+        }
+        return elementName.equals("MessageDigest") ? STRING : "undefined";
     }
 
     /**
@@ -250,22 +245,24 @@ public class PuaPastisValidator {
         String sedaName = sedaElement.getName();
         String sedaCardinality = sedaElement.getCardinality();
 
-        if (sedaName.equals("Title") || sedaName.equals("Description") || sedaName.equals("algorithm")) {
-            return "string";
+        if (sedaName.equals("Title")
+            || sedaName.equals("Description")
+            || sedaName.equals("algorithm")) {
+            return STRING;
         }
 
         if (sedaName.equals("SignedObjectDigest")) {
-            return "object";
+            return OBJECT;
         }
 
         if (sedaElementType.equals("Simple") && !sedaElement.getType().equals("boolean") &&
             !sedaElement.getType().equals("integer") &&
-            (sedaCardinality.equals(CARDINALITY_0_1) || sedaCardinality.equals(CARDINALITY_1))) {
-            return "string";
+            (sedaCardinality.equals(CARDINALITY_0_1) || sedaCardinality.equals("1"))) {
+            return STRING;
         }
         if ((sedaElement.getElement().equals(COMPLEX) &&
-            (sedaCardinality.equals(CARDINALITY_0_1) || sedaCardinality.equals(CARDINALITY_1)))) {
-            return "object";
+            (sedaCardinality.equals(CARDINALITY_0_1) || sedaCardinality.equals("1")))) {
+            return OBJECT;
         }
         if (sedaType.equals("boolean") &&
             (sedaCardinality.equals(CARDINALITY_0_1) || sedaCardinality.equals(CARDINALITY_1))) {
@@ -279,7 +276,7 @@ public class PuaPastisValidator {
             return "array";
         }
         if (sedaType.equals(ID)) {
-            return "string";
+            return STRING;
         }
         return "undefined";
     }
@@ -407,7 +404,7 @@ public class PuaPastisValidator {
 
             // add endDate by default cardinality 0-1
             PuaMetadataDetails endDateDetails = new PuaMetadataDetails();
-            endDateDetails.setType("string");
+            endDateDetails.setType(STRING);
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             grandChildrenOfRule.put("EndDate", new JSONObject(mapper.writeValueAsString(endDateDetails)));
@@ -492,7 +489,7 @@ public class PuaPastisValidator {
                     if (!childElement.getChildren().isEmpty()) {
                         String cardinality =
                             childElement.getChildren().stream().filter(e -> e.getName().equals("PreventInheritance"))
-                                .map(e -> e.getCardinality()).collect(Collectors.joining());
+                                .map(ElementProperties::getCardinality).collect(Collectors.joining());
                         if (cardinality.equals(CARDINALITY_1)) {
                             inheritance.accumulate(REQUIRED, Arrays.asList(entry.getKey()));
                         }
@@ -709,7 +706,7 @@ public class PuaPastisValidator {
         if (!elementProperties.getChildren().isEmpty()) {
             if (puaMetadataDetails.getType().equals("array")) {
                 JSONObject items = new JSONObject();
-                items.put("type", new String("object"));
+                items.put("type", OBJECT);
                 items.put(ADDITIONAL_PROPERTIES, elementProperties.getPuaData().getAdditionalProperties());
                 if (null != json.getJSONObject(elementProperties.getName()).opt(REQUIRED)) {
                     json.getJSONObject(elementProperties.getName()).remove(REQUIRED);
@@ -773,7 +770,7 @@ public class PuaPastisValidator {
 
                     if (puaMetadataDetails.getType().equals("array")) {
                         JSONObject items = new JSONObject();
-                        items.put("type", new String("object"));
+                        items.put("type", OBJECT);
                         items.put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
                         json.getJSONObject(el.getName()).remove(REQUIRED);
                         json.getJSONObject(el.getName()).put(ITEMS, items);
@@ -795,7 +792,7 @@ public class PuaPastisValidator {
                 } else {
                     if (puaMetadataDetails.getType().equals("array")) {
                         JSONObject items = new JSONObject();
-                        items.put("type", new String("object"));
+                        items.put("type", OBJECT);
                         if (null != el.getPuaData() && null != el.getPuaData().getAdditionalProperties()) {
                             items.put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
                         }
@@ -805,10 +802,9 @@ public class PuaPastisValidator {
                                 keyToDelete.add(key);
                             }
                         });
-                        keyToDelete.forEach(e -> {
-                            json.getJSONObject(el.getName()).remove(e);
-                        });
-                        puaMetadataDetails.setType("string");
+                        keyToDelete.forEach(e -> json.getJSONObject(el.getName()).remove(e)
+                        );
+                        puaMetadataDetails.setType(STRING);
 
                         json.getJSONObject(el.getName()).remove(ADDITIONAL_PROPERTIES);
                         if (null != puaMetadataDetails.getMinItems()) {
@@ -868,6 +864,8 @@ public class PuaPastisValidator {
             case "algorithm":
                 child.setName("Algorithm");
                 break;
+            default:
+                break;
         }
     }
 
@@ -921,7 +919,7 @@ public class PuaPastisValidator {
                     (element.getName().equals(MANAGEMENT) && element.getCardinality().equals(CARDINALITY_1)) ||
                     element.getName().equals("ArchiveUnitProfile") && element.getCardinality().equals(CARDINALITY_1)) {
 
-                    if (element.getName().equals(MANAGEMENT) && element.getChildren().size() > 0) {
+                    if (element.getName().equals(MANAGEMENT) && !element.getChildren().isEmpty()) {
                         list.add(MANAGEMENTCONTROL);
                     } else {
                         list.add(element.getName());
@@ -956,9 +954,6 @@ public class PuaPastisValidator {
         if (el.getPuaData() != null && el.getPuaData().getEnum() != null) {
             puaMetadataDetails.setEnums(el.getPuaData().getEnum());
         } else {
-            //            if (!sedaElement.getEnumeration().isEmpty() && el.getValue() == null) {
-            //                puaMetadataDetails.setEnums(sedaElement.getEnumeration());
-            //            }
             if (el.getValue() != null) {
                 ArrayList<String> list = new ArrayList<>();
                 list.add(el.getValue());
@@ -984,6 +979,8 @@ public class PuaPastisValidator {
                 puaMetadataDetails.setMinItems(1);
                 break;
             }
+            default:
+                break;
 
         }
     }

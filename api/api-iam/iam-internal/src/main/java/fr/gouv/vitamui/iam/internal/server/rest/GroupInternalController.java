@@ -106,9 +106,9 @@ public class GroupInternalController implements CrudController<GroupDto> {
      */
     @GetMapping
     public List<GroupDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("get all criteria={}, embedded={}", criteria, embedded);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("get all criteria={}, embedded={}", criteria, embedded);
         return internalGroupService.getAll(criteria, embedded);
     }
 
@@ -123,13 +123,13 @@ public class GroupInternalController implements CrudController<GroupDto> {
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
             @RequestParam(required = false) final Optional<DirectionDto> direction, @RequestParam(required = false) final Optional<String> embedded)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size, orderBy, direction, embedded);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         SanityChecker.sanitizeCriteria(criteria);
         if(direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         SanityChecker.checkSecureParameter(String.valueOf(size), String.valueOf(page));
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size, orderBy, direction, embedded);
         return internalGroupService.getAllPaginated(page, size, criteria, orderBy, direction, embedded);
     }
 
@@ -143,10 +143,11 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @GetMapping(CommonConstants.PATH_ID)
     public GroupDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria, final @RequestParam Optional<String> embedded)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Get {} criteria={} embedded={}", id, criteria, embedded);
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeCriteria(criteria);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get {} criteria={} embedded={}", id, criteria, embedded);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return internalGroupService.getOne(id, criteria, embedded);
     }
@@ -157,8 +158,9 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
-        LOGGER.debug("check exist criteria={}", criteria);
+
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
+        LOGGER.debug("check exist criteria={}", criteria);
         final boolean exist = internalGroupService.checkExist(criteria);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -170,8 +172,9 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @Override
     public GroupDto create(final @Valid @RequestBody GroupDto dto) throws InvalidParseOperationException,
         PreconditionFailedException {
-        LOGGER.debug("Create {}", dto);
+
         SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Create {}", dto);
         return internalGroupService.create(dto);
     }
 
@@ -191,10 +194,10 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public GroupDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalGroupService.patch(partialDto);
     }
@@ -202,9 +205,9 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("get logbook for group with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for group with id :{}", id);
         return internalGroupService.findHistoryById(id);
     }
 
@@ -216,8 +219,9 @@ public class GroupInternalController implements CrudController<GroupDto> {
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
     public List<String> getLevels(final Optional<String> criteria) {
-        LOGGER.debug("Get levels with criteria={}", criteria);
+
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("Get levels with criteria={}", criteria);
         return internalGroupService.getLevels(criteria);
     }
 }

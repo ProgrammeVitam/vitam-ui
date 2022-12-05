@@ -86,8 +86,9 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final @RequestParam String criteria) {
-        LOGGER.debug("Check exists by criteria {}", criteria);
+
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
+        LOGGER.debug("Check exists by criteria {}", criteria);
         final boolean exist = internalOwnerService.checkExist(criteria);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -101,10 +102,10 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @GetMapping(CommonConstants.PATH_ID)
     public OwnerDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Get one {} criteria={}", id, criteria);
         ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         SanityChecker.sanitizeCriteria(criteria);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get one {} criteria={}", id, criteria);
         return internalOwnerService.getOne(id, criteria);
     }
 
@@ -115,8 +116,8 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @PostMapping
     public OwnerDto create(@Valid final @RequestBody OwnerDto dto) throws InvalidParseOperationException,
         PreconditionFailedException {
-        LOGGER.debug("Create {}", dto);
         SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Create {}", dto);
         return internalOwnerService.create(dto);
     }
 
@@ -127,10 +128,10 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public OwnerDto update(final @PathVariable("id") String id, final @Valid @RequestBody OwnerDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Update {} with {}", id, dto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Update {} with {}", id, dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return internalOwnerService.update(dto);
     }
@@ -142,10 +143,10 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalOwnerService.patch(partialDto);
     }
@@ -153,9 +154,9 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("get logbook for owner with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for owner with id :{}", id);
         return internalOwnerService.findHistoryById(id);
     }
 }

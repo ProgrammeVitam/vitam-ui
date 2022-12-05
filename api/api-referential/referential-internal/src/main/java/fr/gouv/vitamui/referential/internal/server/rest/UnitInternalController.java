@@ -45,6 +45,7 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -85,9 +86,11 @@ public class UnitInternalController {
     public JsonNode findUnitById(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @PathVariable final String id) throws VitamClientException {
+        @PathVariable final String id) throws VitamClientException, InvalidParseOperationException,
+        PreconditionFailedException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id,accessContractId);
         return unitInternalService.findUnitById(id, vitamContext);
     }
 
@@ -97,9 +100,10 @@ public class UnitInternalController {
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @PathVariable final Optional<String> id,
-        @RequestBody final JsonNode dsl) throws VitamClientException {
+        @RequestBody final JsonNode dsl) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         SanityChecker.sanitizeJson(dsl);
+        SanityChecker.checkSecureParameter(accessContractId);
         return unitInternalService.searchUnitsWithErrors(id, dsl, vitamContext);
     }
 
@@ -108,10 +112,11 @@ public class UnitInternalController {
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @PathVariable final String id,
-        @RequestBody final JsonNode dsl) throws VitamClientException {
+        @RequestBody final JsonNode dsl) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeJson(dsl);
+        SanityChecker.checkSecureParameter(accessContractId, id);
         return unitInternalService.findObjectMetadataById(id, dsl, vitamContext);
     }
 
@@ -123,6 +128,7 @@ public class UnitInternalController {
         ParameterChecker.checkParameter("The accessContractId is a mandatory parameter: ", accessContractId);
         SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Get filing and holding units with projections on needed fields ONLY!");
+        SanityChecker.checkSecureParameter(accessContractId);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         final JsonNode fillingOrHoldingQuery = unitInternalService.createQueryForFillingOrHoldingUnit();
         return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery, vitamContext),

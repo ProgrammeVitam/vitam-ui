@@ -37,6 +37,7 @@ import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -255,6 +256,7 @@ public class ArchivesSearchExternalController {
         ParameterChecker.checkParameter("The  fileName is mandatory parameter : ", originalFileName);
         SanityChecker.checkSecureParameter(originalFileName);
         SanityChecker.isValidFileName(originalFileName);
+        SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("atr xml fileName: {}", originalFileName);
         return archivesSearchExternalService.transferAcknowledgment(inputStream, originalFileName);
     }

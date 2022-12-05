@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -45,6 +46,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -94,8 +96,9 @@ public class OntologyInternalController {
 
     @GetMapping()
     public Collection<OntologyDto> getAll(@RequestParam final Optional<String> criteria) {
-        LOGGER.debug("get all ontology criteria={}", criteria);
+
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("get all ontology criteria={}", criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ontologyInternalService.getAll(vitamContext);
     }
@@ -103,14 +106,21 @@ public class OntologyInternalController {
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<OntologyDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+            @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        if(orderBy.isPresent()){
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ontologyInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @PostMapping
-    public OntologyDto create(@Valid @RequestBody OntologyDto ontologyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public OntologyDto create(@Valid @RequestBody OntologyDto ontologyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("create ontology={}", ontologyDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ontologyDto.setTenant(tenant);
@@ -118,15 +128,20 @@ public class OntologyInternalController {
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public OntologyDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get ontology identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+    public OntologyDto getOne(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        SanityChecker.checkSecureParameter(identifier);
+        LOGGER.debug("get ontology identifier={} / {}", identifier, URLDecoder.decode(identifier,
+            StandardCharsets.UTF_8));
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ontologyInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody OntologyDto ontologyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> checkExist(@RequestBody OntologyDto ontologyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("check exist accessContract={}", ontologyDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ontologyDto.setTenant(tenant);
@@ -135,32 +150,42 @@ public class OntologyInternalController {
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+    public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return ontologyInternalService.patch(vitamContext, partialDto);
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
-        LOGGER.debug("Delete {}", id);
+    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Delete {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ontologyInternalService.delete(vitamContext, id);
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for ontology with id :{}", id);
         return ontologyInternalService.findHistoryByIdentifier(vitamContext, id);
     }
 
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importOntology(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+    public JsonNode importOntology(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) throws
+        PreconditionFailedException {
+        SanityChecker.isValidFileName(fileName);
         LOGGER.debug("import ontology file {}", fileName);
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());

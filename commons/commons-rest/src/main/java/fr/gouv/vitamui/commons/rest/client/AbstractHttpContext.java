@@ -36,20 +36,19 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.X_TENANT_ID_HEADER;
-
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.jboss.logging.MDC;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+import org.jboss.logging.MDC;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_TENANT_ID_HEADER;
 
 /**
  * The context of an internal REST call (to the security API).
@@ -123,7 +122,7 @@ public abstract class AbstractHttpContext implements Serializable {
     /**
      * Checks if the URL needs a tenantIdentifier, using our whitelist.
      * @param url
-     * @return
+     * @return a boolean
      */
     public static boolean urlNeedsTenantIdHeader(final String url) {
         return CALLS_WITHOUT_TENANT_ID.stream().noneMatch(whitelist -> StringUtils.isNotEmpty(url)

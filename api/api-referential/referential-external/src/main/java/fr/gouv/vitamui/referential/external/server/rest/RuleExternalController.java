@@ -89,6 +89,8 @@ public class RuleExternalController {
 
     private RuleExternalService ruleExternalService;
 
+    private static final String IDENTIFIER_MANDATORY_MESSAGE = "The Identifier is a mandatory parameter: ";
+
     @Autowired
     public RuleExternalController(final RuleExternalService ruleExternalService) {
         this.ruleExternalService = ruleExternalService;
@@ -118,35 +120,44 @@ public class RuleExternalController {
 
     @Secured(ServicesData.ROLE_GET_RULES)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public RuleDto getOne(final @PathVariable("identifier") String identifier) {
+    public RuleDto getOne(final @PathVariable("identifier") String identifier) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, identifier);
+        SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("get rule identifier={}");
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return ruleExternalService.getOne(identifier);
     }
 
     @Secured({ ServicesData.ROLE_GET_RULES })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody RuleDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
-        LOGGER.debug("check exist accessContract={}", accessContractDto);
-        final boolean exist = ruleExternalService.check(accessContractDto);
+    public ResponseEntity<Void> check(@RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ruleDto);
+        LOGGER.debug("check exist accessContract={}", ruleDto);
+        final boolean exist = ruleExternalService.check(ruleDto);
         return RestUtils.buildBooleanResponse(exist);
     }
 
     @Secured(ServicesData.ROLE_CREATE_RULES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Void> create(final @Valid @RequestBody RuleDto accessContractDto) {
-        LOGGER.debug("Create {}", accessContractDto);
+    public ResponseEntity<Void> create(final @Valid @RequestBody RuleDto ruleDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, ruleDto);
+        SanityChecker.sanitizeCriteria(ruleDto);
+        LOGGER.debug("Create {}", ruleDto);
         return RestUtils.buildBooleanResponse(
-        		ruleExternalService.createRule(accessContractDto)
+        		ruleExternalService.createRule(ruleDto)
         );
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_RULES)
-    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException  {
+
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return RestUtils.buildBooleanResponse(
         		ruleExternalService.patchRule(id, partialDto)
@@ -155,17 +166,20 @@ public class RuleExternalController {
 
     @Secured(ServicesData.ROLE_GET_RULES)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return ruleExternalService.findHistoryById(id);
     }
 
     @Secured(ServicesData.ROLE_DELETE_RULES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Void> delete(final @PathVariable("id") String id) {
+    public ResponseEntity<Void> delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete rule with id :{}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return RestUtils.buildBooleanResponse(
         	ruleExternalService.deleteRule(id)
         );
@@ -190,6 +204,7 @@ public class RuleExternalController {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         }
         SanityChecker.isValidFileName(fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug("Import agency file {}", fileName);
         return ruleExternalService.importRules(fileName, file);
     }

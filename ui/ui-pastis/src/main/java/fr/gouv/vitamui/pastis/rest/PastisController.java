@@ -38,6 +38,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -84,8 +86,10 @@ public class PastisController extends AbstractUiRestController {
 
     @ApiOperation(value = "Transform profile")
     @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE)
-    ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice) throws IOException, InvalidParseOperationException {
+    ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice) throws IOException, InvalidParseOperationException,
+        PreconditionFailedException {
         LOGGER.debug("Start get profile By ui-pastis-controller");
+        SanityChecker.sanitizeCriteria(notice);
         return pastisTransformationService.loadProfile(notice, buildUiHttpContext());
     }
 
@@ -101,16 +105,18 @@ public class PastisController extends AbstractUiRestController {
     @ApiOperation(value = "Download Archive Profile")
     @PostMapping(RestApi.PASTIS_DOWNLOAD_PA)
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<String> getArchiveProfile(@RequestBody final ElementProperties json) throws IOException, InvalidParseOperationException {
+    ResponseEntity<String> getArchiveProfile(@RequestBody final ElementProperties json) throws PreconditionFailedException, InvalidParseOperationException {
         LOGGER.debug("Start download PA By ui-pastis-controller");
+        SanityChecker.sanitizeCriteria(json);
         return pastisTransformationService.getArchiveProfile(json, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Download Archive Unit Profile")
     @PostMapping(RestApi.PASTIS_DOWNLOAD_PUA)
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json) throws IOException, InvalidParseOperationException {
+    ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json) throws PreconditionFailedException, InvalidParseOperationException {
         LOGGER.debug("Start download PUA By ui-pastis-controller");
+        SanityChecker.sanitizeCriteria(json);
         return pastisTransformationService.getArchiveUnitProfile(json, buildUiHttpContext());
     }
 
@@ -119,6 +125,7 @@ public class PastisController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType) throws IOException, InvalidParseOperationException {
         LOGGER.debug("Create new Profile by type PA or PUA By ui-pastis-controller");
+        SanityChecker.checkSecureParameter(profileType);
         return pastisTransformationService.createProfile(profileType, buildUiHttpContext());
     }
 }

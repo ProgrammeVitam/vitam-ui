@@ -44,6 +44,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -89,7 +90,7 @@ import java.util.Optional;
 public class ProfileController extends AbstractUiRestController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileController.class);
-    private static final String IDMANDATORYMESSAGE = "The Identifier is a mandatory parameter: ";
+    private static final String MANDATORY_ID_MESSAGE = "The Identifier is a mandatory parameter: ";
     protected final ProfileService service;
 
     @Autowired
@@ -107,8 +108,9 @@ public class ProfileController extends AbstractUiRestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<ProfileDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException {
-        LOGGER.debug("Get all with criteria={}", criteria);
+
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -120,7 +122,7 @@ public class ProfileController extends AbstractUiRestController {
      * @param criteria
      * @param orderBy
      * @param direction
-     * @return
+     * @return a list of profiles
      */
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = {"page", "size"})
@@ -129,6 +131,10 @@ public class ProfileController extends AbstractUiRestController {
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
         @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
+        if(orderBy.isPresent()){
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
@@ -138,15 +144,18 @@ public class ProfileController extends AbstractUiRestController {
      * Get Profile by Identifier
      *
      * @param identifier
-     * @return
+     * @return a profile
      * @throws UnsupportedEncodingException
      */
     @ApiOperation(value = "Get profile by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ProfileDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException, InvalidParseOperationException {
-        LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
-        ParameterChecker.checkParameter(IDMANDATORYMESSAGE, identifier);
+    public ProfileDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException,
+        InvalidParseOperationException, PreconditionFailedException {
+
+        ParameterChecker.checkParameter(MANDATORY_ID_MESSAGE, identifier);
+        SanityChecker.checkSecureParameter(identifier);
+        LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8));
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
@@ -158,9 +167,11 @@ public class ProfileController extends AbstractUiRestController {
      */
     @ApiOperation(value = "download profile by id")
     @GetMapping(value = RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> download(final @PathVariable("id") String id) throws InvalidParseOperationException {
+    public ResponseEntity<Resource> download(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+
+        ParameterChecker.checkParameter(MANDATORY_ID_MESSAGE, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("download {} profile with id :{}", id);
-        ParameterChecker.checkParameter(IDMANDATORYMESSAGE, id);
         Resource body = service.download(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
@@ -177,10 +188,12 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Importer un fichier xsd ou rng dans un profil")
     @PutMapping(value = RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID)
     public ResponseEntity<JsonNode> importProfileFile(final @PathVariable("id") String id,
-        @RequestParam("file") MultipartFile file) throws IOException, InvalidParseOperationException {
-        LOGGER.debug("Update profile file with id :{}", id);
+        @RequestParam("file") MultipartFile file) throws IOException, InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
-        ParameterChecker.checkParameter(IDMANDATORYMESSAGE, id);
+        SanityChecker.checkSecureParameter(id);
+        ParameterChecker.checkParameter(MANDATORY_ID_MESSAGE, id);
+        LOGGER.debug("Update profile file with id :{}", id);
         return service.updateProfileFile(buildUiHttpContext(), id, file);
     }
 
@@ -194,7 +207,8 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<JsonNode> updateProfile(@RequestBody final ProfileDto profileDto) throws InvalidParseOperationException {
+    public ResponseEntity<JsonNode> updateProfile(@RequestBody final ProfileDto profileDto) throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("update profile {}", profileDto.getId());
         return service.updateProfile(buildUiHttpContext(), profileDto);
     }
@@ -204,12 +218,13 @@ public class ProfileController extends AbstractUiRestController {
      * Create Profile
      *
      * @param profileDto
-     * @return
+     * @return a profile
      */
     @ApiOperation(value = "Create Archival Profile")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ProfileDto> create(@Valid @RequestBody ProfileDto profileDto) throws InvalidParseOperationException {
+    public ResponseEntity<ProfileDto> create(@Valid @RequestBody ProfileDto profileDto) throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("create profile={}", profileDto);
         ProfileDto result = service.create(buildUiHttpContext(), profileDto);
         if (result != null) {
@@ -238,11 +253,12 @@ public class ProfileController extends AbstractUiRestController {
      * Check access
      *
      * @param profileDto
-     * @return
+     * @return a ResponseEntity
      */
     @ApiOperation(value = "Check ability to create profile")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody ProfileDto profileDto) throws InvalidParseOperationException {
+    public ResponseEntity<Void> check(@RequestBody ProfileDto profileDto) throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("check ability to create profile={}", profileDto);
         final boolean exist = service.check(buildUiHttpContext(), profileDto);
         LOGGER.debug("response value={}" + exist);

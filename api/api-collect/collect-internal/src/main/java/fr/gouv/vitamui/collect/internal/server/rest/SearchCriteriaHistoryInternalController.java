@@ -81,6 +81,7 @@ public class SearchCriteriaHistoryInternalController {
     @PostMapping
     public SearchCriteriaHistoryDto create(final @Valid @RequestBody SearchCriteriaHistoryDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("the Search Criteria is mandatory : ", dto);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create SearchCriteriaHistory {}", dto);
         return searchCriteriaHistoryInternalService.create(dto);
@@ -97,7 +98,7 @@ public class SearchCriteriaHistoryInternalController {
     @PutMapping(CommonConstants.PATH_ID)
     public SearchCriteriaHistoryDto update(final @RequestBody SearchCriteriaHistoryDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , dto.getId());
+        ParameterChecker.checkParameter("Identifier is mandatory : " , dto);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", dto.getId());
         return searchCriteriaHistoryInternalService.update(dto);

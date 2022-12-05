@@ -114,7 +114,7 @@ public class PuaFromJSON {
         ElementProperties managementElementProperties = puaPastisValidator
             .getManagementElementProperties(elementProperties);
         // set when it's null ?
-        if (Objects.isNull(managementElementProperties) || managementElementProperties.getChildren().size() > 0) {
+        if (Objects.isNull(managementElementProperties) || !managementElementProperties.getChildren().isEmpty()) {
             return;
         }
         controlSchema

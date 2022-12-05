@@ -97,12 +97,13 @@ public class UserInternalController implements CrudController<UserDto> {
             @RequestParam(required = false) final Optional<DirectionDto> direction)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+
         SanityChecker.sanitizeCriteria(criteria);
         if(direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         SanityChecker.checkSecureParameter(String.valueOf(size), String.valueOf(page));
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         return internalUserService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -115,9 +116,9 @@ public class UserInternalController implements CrudController<UserDto> {
     @GetMapping(CommonConstants.PATH_ID)
     public UserDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Get {} criteria={}", id, criteria);
         SanityChecker.sanitizeCriteria(criteria);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get {} criteria={}", id, criteria);
         return internalUserService.getOne(id, criteria);
     }
 
@@ -137,8 +138,9 @@ public class UserInternalController implements CrudController<UserDto> {
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
-        LOGGER.debug("check exist criteria={}", criteria);
+
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
+        LOGGER.debug("check exist criteria={}", criteria);
         final boolean exist = internalUserService.checkExist(criteria);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -149,8 +151,9 @@ public class UserInternalController implements CrudController<UserDto> {
     @Override
     @PostMapping
     public UserDto create(final @Valid @RequestBody UserDto dto) throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Create {}", dto);
+
         SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Create {}", dto);
         return internalUserService.create(dto);
     }
 
@@ -161,10 +164,11 @@ public class UserInternalController implements CrudController<UserDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public UserDto update(final @PathVariable("id") String id, final @Valid @RequestBody UserDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Update {} with {}", id, dto);
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Update {} with {}", id, dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return internalUserService.update(dto);
     }
@@ -176,10 +180,11 @@ public class UserInternalController implements CrudController<UserDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public UserDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalUserService.patch(partialDto);
     }
@@ -187,9 +192,10 @@ public class UserInternalController implements CrudController<UserDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("get logbook for users with id :{}", id);
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for users with id :{}", id);
         return internalUserService.findHistoryById(id);
     }
 
@@ -200,8 +206,9 @@ public class UserInternalController implements CrudController<UserDto> {
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
     public List<String> getLevels(final Optional<String> criteria) {
-        LOGGER.debug("Get levels with criteria={}", criteria);
+
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("Get levels with criteria={}", criteria);
         return internalUserService.getLevels(criteria);
     }
 

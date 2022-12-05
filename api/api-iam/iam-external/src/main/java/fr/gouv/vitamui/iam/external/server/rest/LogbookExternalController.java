@@ -125,7 +125,11 @@ public class LogbookExternalController {
     @ApiOperation(value = "Get logbook operations by json select")
     @Secured({ServicesData.ROLE_LOGBOOKS})
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
-    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) throws VitamClientException {
+    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeJson(select);
+        SanityChecker.sanitizeCriteria(select);
+        LOGGER.debug("Get logbook operations by json select");
         return logbookExternalService.findOperations(select);
     }
 

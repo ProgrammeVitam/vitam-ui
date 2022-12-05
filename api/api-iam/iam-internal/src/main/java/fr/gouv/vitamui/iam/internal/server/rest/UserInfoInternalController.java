@@ -36,14 +36,22 @@
  */
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import java.util.Map;
-import java.util.Optional;
-
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.CrudController;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -58,17 +66,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
-import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.CrudController;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * The controller to check existence, create, read, update and delete the users.
@@ -101,8 +100,8 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
     @PostMapping
     public UserInfoDto create(final @Valid @RequestBody UserInfoDto userInfoDto) throws InvalidParseOperationException,
         PreconditionFailedException{
-        LOGGER.debug("Create {}", userInfoDto);
         SanityChecker.sanitizeCriteria(userInfoDto);
+        LOGGER.debug("Create {}", userInfoDto);
         return userInfoInternalService.create(userInfoDto);
     }
 
@@ -122,9 +121,10 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
     @GetMapping(CommonConstants.PATH_ID)
     public UserInfoDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Get {} criteria={}", id, criteria);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeCriteria(criteria);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get {} criteria={}", id, criteria);
         return userInfoInternalService.getOne(id, Optional.empty());
     }
 
@@ -147,15 +147,19 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public UserInfoDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return userInfoInternalService.patch(partialDto);
     }
 
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for user info with id :{}", id);
         return userInfoInternalService.findHistoryById(id);
     }

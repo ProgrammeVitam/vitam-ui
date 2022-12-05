@@ -31,6 +31,7 @@ import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.ProjectExternalService;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -163,6 +164,7 @@ public class ProjectExternalController {
         ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(originalFileName);
+        SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[External] upload collect zip file : {}", originalFileName);
         return projectExternalService.streamingUpload(inputStream, transactionId, originalFileName);
     }
@@ -203,7 +205,7 @@ public class ProjectExternalController {
     @GetMapping(PATH_ID + LAST_TRANSACTION_PATH)
     public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the transaction by project with ID {}", id);
         return projectExternalService.getLastTransactionForProjectId(id);

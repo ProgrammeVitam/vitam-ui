@@ -30,6 +30,7 @@ package fr.gouv.vitamui.collect.rest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -80,6 +81,7 @@ public class ProjectArchiveUnitController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public SearchCriteriaHistoryDto create(@RequestBody final SearchCriteriaHistoryDto entityDto)
         throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Search Criteria is mandatory", entityDto);
         SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("create class={}", entityDto.getClass().getName());
         return searchCriteriaHistoryService.create(buildUiHttpContext(), entityDto);
@@ -103,6 +105,7 @@ public class ProjectArchiveUnitController extends AbstractUiRestController {
     @DeleteMapping(SEARCH_CRITERIA_HISTORY + PATH_ID)
     public void delete(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Search Criteria id is mandatory", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory by id :{}", id);
         searchCriteriaHistoryService.delete(buildUiHttpContext(), id);
@@ -112,6 +115,7 @@ public class ProjectArchiveUnitController extends AbstractUiRestController {
     @PutMapping(SEARCH_CRITERIA_HISTORY + PATH_ID)
     public SearchCriteriaHistoryDto update(@RequestBody final SearchCriteriaHistoryDto entity)
         throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Search Criteria is mandatory", entity);
         SanityChecker.sanitizeCriteria(entity);
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", entity.getId());
         return searchCriteriaHistoryService.update(buildUiHttpContext(), entity);
