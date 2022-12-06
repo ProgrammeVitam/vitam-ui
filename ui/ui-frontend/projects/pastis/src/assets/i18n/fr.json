@@ -75,6 +75,7 @@
         "POPUP_CREATE_NOTICE_SUBTITLE_DIALOG_EDIT": "Validation",
         "POPUP_CREATE_NOTICE_OK_LABEL": "TERMINER",
         "POPUP_SELECT_NOTICE_TITLE_DIALOG": "Rattacher le profil à une notice existante"
+        "ERROR_": "Rattacher le profil à une notice existante"
       },
       "CHOICE": {
         "FIRST_CHOICE_ENREGISTREMENT": "Local",
@@ -659,7 +660,9 @@
     "ACTIVATED_SUBROGATION": "Le mode subrogation est activé pour {{ duration }} minutes, jusqu'à {{ hours }}h{{ minutes }}. Veuillez ne pas changer d'application.",
     "ASK_SUBROGATION": "L'utilisateur {{ user }} demande un accès temporaire à vos droits",
     "ACCEPT_SUBROGATION": "Accepter",
-    "DECLINE_SUBROGATION": "Refuser"
+    "DECLINE_SUBROGATION": "Refuser",
+    "ERROR_WITH_LOGBOOK_OPERATION_ID": "Voir dans le journal des opérations",
+    "ERROR_WITH_LOGBOOK_OPERATION_ID_BUTTON": "Aller au journal des opérations"
   },
   "ERROR_DIALOG": {
     "TITLE": "Erreur serveur interne (500)",
@@ -3240,9 +3243,3 @@
     "EXT_VITAMUI_UPDATE_USER": "Modification de l'utilisateur"
   }
 }
-
-
-
-
-
-

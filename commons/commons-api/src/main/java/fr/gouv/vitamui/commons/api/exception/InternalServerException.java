@@ -39,9 +39,10 @@ package fr.gouv.vitamui.commons.api.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.List;
+
 /**
  * Base exception for internal server error requests.
- *
  */
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 public class InternalServerException extends VitamUIException {
@@ -61,6 +62,10 @@ public class InternalServerException extends VitamUIException {
 
     public InternalServerException(final String message, final String key, final Throwable e) {
         super(message, key, e);
+    }
+
+    public InternalServerException(final String message, final String key, final List<String> args) {
+        super(message, key, args);
     }
 
     public InternalServerException(final String message, final Throwable e) {

@@ -39,6 +39,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.service;
 
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,10 @@ public class PuaFromJSON {
         // 4. Check if tree contains Management metadata
         addPatternPropertiesForManagement(elementProperties, controlSchema);
         List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
-        controlSchema.put("required", puaPastisValidator.getHeadRequired(elementsForTree));
+        List<String> rerquiredElements = puaPastisValidator.getHeadRequired(elementsForTree);
+        if (CollectionUtils.isNotEmpty(rerquiredElements)) {
+            controlSchema.put(PuaPastisValidator.REQUIRED, puaPastisValidator.getHeadRequired(elementsForTree));
+        }
 
         // 5. Add definitions _ not used actually
           /*  JSONObject definitionsFromBasePua = puaPastisValidator.getDefinitionsFromExpectedProfile();

@@ -70,7 +70,7 @@ public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIExc
         final HttpStatus status = HttpStatus.valueOf(source.getStatus());
         switch (status) {
             case INTERNAL_SERVER_ERROR:
-                exception = new InternalServerException(source.getMessage(), source.getError());
+                exception = new InternalServerException(source.getMessage(), source.getError(), source.getArgs());
                 break;
             case BAD_REQUEST:
                 exception = new InvalidFormatException(source.getMessage(), source.getError(), source.getArgs());

@@ -639,7 +639,9 @@
     "ACTIVATED_SUBROGATION": "The subrogation mode is activated for {{ duration }} minutes, up to {{ hours }}h{{ minutes }}. Please do not change application.",
     "ASK_SUBROGATION": "The user {{ user }} requests a temporary access to your rights",
     "ACCEPT_SUBROGATION": "Accept",
-    "DECLINE_SUBROGATION": "Decline"
+    "DECLINE_SUBROGATION": "Decline",
+    "ERROR_WITH_LOGBOOK_OPERATION_ID": "See in logbook operation",
+    "ERROR_WITH_LOGBOOK_OPERATION_ID_BUTTON": "Go to logbook operation"
   },
   "ERROR_DIALOG": {
     "TITLE": "Internal server error (500)",
@@ -3220,4 +3222,3 @@
     "EXT_VITAMUI_UPDATE_USER": "User modification"
   }
 }
-

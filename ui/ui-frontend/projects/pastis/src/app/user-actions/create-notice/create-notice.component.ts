@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
@@ -31,7 +32,7 @@ function constantToTranslate() {
   templateUrl: './create-notice.component.html',
   styleUrls: [ './create-notice.component.scss' ]
 })
-export class CreateNoticeComponent implements OnInit {
+export class CreateNoticeComponent implements OnInit, OnDestroy {
   form: FormGroup;
   stepIndex = 0;
   btnIsDisabled: boolean;
@@ -56,6 +57,8 @@ export class CreateNoticeComponent implements OnInit {
 
   isStandalone: boolean = environment.standalone;
 
+  subscriptions = new Subscription();
+
   constructor(public dialogRef: MatDialogRef<CreateNoticeComponent>,
               @Inject(MAT_DIALOG_DATA) public data: PastisDialogDataCreate,
               private formBuilder: FormBuilder,
@@ -73,9 +76,11 @@ export class CreateNoticeComponent implements OnInit {
     if (this.editNotice) {
       this.validate = true;
       // Subscribe observer to notice
-      this.fileService.noticeEditable.subscribe((value: Notice) => {
-        this.notice = value;
-      });
+
+      this.subscriptions.add(
+        this.fileService.noticeEditable.subscribe((value: Notice) => {
+          this.notice = value;
+        }));
     } else {
       this.notice = {
         description: '',
@@ -110,24 +115,28 @@ export class CreateNoticeComponent implements OnInit {
     });
 
 
-    this.presenceNonDeclareMetadonneesPUAControl.valueChanges.subscribe((value) => {
-      this.form.controls.autoriserPresenceMetadonnees.setValue(value);
-    });
+    this.subscriptions.add(
+      this.presenceNonDeclareMetadonneesPUAControl.valueChanges.subscribe((value) => {
+        this.form.controls.autoriserPresenceMetadonnees.setValue(value);
+      }));
 
 
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
-    this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
-      this.btnIsDisabled = status;
-    });
+
+    this.subscriptions.add(
+      this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
+        this.btnIsDisabled = status;
+      }));
   }
 
   translatedOnChange(): void {
-    this.translateService.onLangChange
-      .subscribe((_: LangChangeEvent) => {
-        constantToTranslate.call(this);
-        // console.log(event.lang);
-      });
+    this.subscriptions.add(
+      this.translateService.onLangChange
+        .subscribe((_: LangChangeEvent) => {
+          constantToTranslate.call(this);
+          // console.log(event.lang);
+        }));
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -151,7 +160,7 @@ export class CreateNoticeComponent implements OnInit {
 
 
   ngOnDestroy(): void {
-
+    this.subscriptions.unsubscribe();
   }
 
   checkIdentifier(modePUA: boolean) {
@@ -160,10 +169,10 @@ export class CreateNoticeComponent implements OnInit {
       this.validate = false;
       return;
     }
-    if (this.notice.identifier.length !== 0) {
-      if (modePUA) {
-        const archivalProfileUnit = {} as ArchivalProfileUnit;
-        archivalProfileUnit.identifier = this.notice.identifier;
+    if (modePUA) {
+      const archivalProfileUnit = {} as ArchivalProfileUnit;
+      archivalProfileUnit.identifier = this.notice.identifier;
+      this.subscriptions.add(
         this.profileService.checkPuaProfile(archivalProfileUnit).subscribe(
           (response: boolean) => {
             if (response) {
@@ -174,10 +183,11 @@ export class CreateNoticeComponent implements OnInit {
               this.checkIntitule();
             }
           }
-        );
-      } else {
-        const profile = {} as Profile;
-        profile.identifier = this.notice.identifier;
+        ));
+    } else {
+      const profile = {} as Profile;
+      profile.identifier = this.notice.identifier;
+      this.subscriptions.add(
         this.profileService.checkPaProfile(profile).subscribe(
           (response: boolean) => {
             if (response) {
@@ -188,19 +198,12 @@ export class CreateNoticeComponent implements OnInit {
               this.checkIntitule();
             }
           }
-        );
-      }
-    } else {
-      this.validate = false;
+        ));
     }
   }
 
   checkIntitule() {
-    if (this.notice.name.length !== 0) {
-      this.validate = true;
-    } else {
-      this.validate = false;
-    }
+    this.validate = this.notice.name.length !== 0;
   }
 
   onSubmit() {
