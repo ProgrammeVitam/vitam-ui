@@ -65,6 +65,8 @@ public class ServicesData {
     //------------------------------------ USERS -------------------------------------------
     public static final String SERVICE_USERS = "USERS";
 
+    public static final String SERVICE_USERS_PROFILES_NAMES = "Profil pour la gestion des utilisateurs";
+
     public static final String ROLE_GET_USERS = GET_ROLE_PREFIX + SERVICE_USERS;
 
     public static final String ROLE_CREATE_USERS = CREATE_ROLE_PREFIX + SERVICE_USERS;
@@ -82,6 +84,7 @@ public class ServicesData {
     public static final String ROLE_UPDATE_ME_USERS = UPDATE_ME_ROLE_PREFIX + SERVICE_USERS;
 
     //------------------------------------ USERS INFO ROLE_GET_USER_INFOS  -------------------------------------------
+
     public static final String SERVICE_USER_INFOS = "USER_INFOS";
     public static final String ROLE_GET_USER_INFOS = GET_ROLE_PREFIX + SERVICE_USER_INFOS;
     public static final String ROLE_CREATE_USER_INFOS = CREATE_ROLE_PREFIX + SERVICE_USER_INFOS;
@@ -140,6 +143,8 @@ public class ServicesData {
 
     public static final String SERVICE_GROUPS = "GROUPS";
 
+    public static final String SERVICE_GROUPS_PROFILES_NAMES = "Profil pour la gestion des groupes d'utilisateurs";
+
     public static final String ROLE_GET_GROUPS = GET_ROLE_PREFIX + SERVICE_GROUPS;
 
     public static final String ROLE_GET_ALL_GROUPS = GET_ROLE_PREFIX + "ALL_" + SERVICE_GROUPS;
@@ -153,6 +158,9 @@ public class ServicesData {
     //------------------------------------ PROFILES -------------------------------------------
 
     public static final String SERVICE_PROFILES = "PROFILES";
+
+    public static final String SERVICE_PROFILES_PROFILES_NAMES = "Profil pour la gestion des profils d'utilisateurs";
+
 
     public static final String ROLE_GET_PROFILES = GET_ROLE_PREFIX + SERVICE_PROFILES;
 
@@ -203,6 +211,9 @@ public class ServicesData {
     //------------------------------------ ACCOUNTS -------------------------------------------
 
     public static final String SERVICE_ACCOUNTS = "ACCOUNTS";
+
+    public static final String SERVICE_ACCOUNTS_PROFILES_NAMES = "Profil pour la gestion de mon compte";
+
 
     //------------------------------------ APPLICATIONS -------------------------------------------
 
