@@ -542,7 +542,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       pageNumber: 0,
       size: 1,
       sortingCriteria,
-      trackTotalHits: this.totalResults > 10000,
+      trackTotalHits: this.totalResults >= 10000,
       computeFacets: true,
     };
 
@@ -781,10 +781,30 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     return this.criteriaSearchList && this.criteriaSearchList.length > 0;
   }
 
-  launchFacetsComputing() {
-    if (!this.pendingComputeFacets && this.hasSearchCriterias()) {
-      this.launchComputingManagementRulesFacets();
+  async launchFacetsComputing() {
+    if (this.pendingComputeFacets || !this.hasSearchCriterias()) {
+      return;
     }
+    
+    if(this.waitingToGetFixedCount){
+      if (this.hasSearchCriterias()) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        const exactCountResults: number = await this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .toPromise();
+        if (exactCountResults !== -1) {
+          this.totalResults = exactCountResults;
+          this.waitingToGetFixedCount = false;
+          this.managementRulesSharedDataService.emitHasExactCount(true);
+          this.launchComputingManagementRulesFacets();
+        }
+        this.pendingGetFixedCount = false;
+      }
+    } else {
+      this.managementRulesSharedDataService.emitHasExactCount(false);
+      this.launchComputingManagementRulesFacets();
+    }    
   }
 
   showHideFacets(show: boolean) {
