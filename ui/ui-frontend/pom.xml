@@ -107,7 +107,7 @@
               <arguments>run build -- --project= --output-path=target/www</arguments>
             </configuration>
           </execution>
-          <!--<execution>
+          <execution>
             <id>npm test</id>
             <phase>test</phase>
             <goals>
@@ -117,7 +117,7 @@
               <skip>${skipAllFrontendTests}</skip>
               <arguments>run test:conf-ci</arguments>
             </configuration>
-          </execution>-->
+          </execution>
         </executions>
       </plugin>
       <plugin>
