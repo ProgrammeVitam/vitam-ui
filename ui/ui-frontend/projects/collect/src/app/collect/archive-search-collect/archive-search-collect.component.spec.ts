@@ -36,7 +36,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, Project, ProjectStatus, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
@@ -69,6 +69,20 @@ describe('ArchiveSearchCollectComponent', () => {
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
   const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+
+  const transaction: Transaction = {
+    id: 'transactionId',
+    archivalAgreement: 'archivalAgreement',
+    messageIdentifier: 'messageIdentifier',
+    archivalAgencyIdentifier: 'archivalAgencyIdentifier',
+    transferringAgencyIdentifier: 'transferringAgencyIdentifier',
+    originatingAgencyIdentifier: 'originatingAgencyIdentifier',
+    submissionAgencyIdentifier: 'submissionAgencyIdentifier',
+    archivalProfile: 'archivalProfile',
+    projectId: 'ProjectId',
+    comment: 'I am a comment',
+    status: TransactionStatus.SENDING,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -113,6 +127,7 @@ describe('ArchiveSearchCollectComponent', () => {
     fixture = TestBed.createComponent(ArchiveSearchCollectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.transaction = transaction;
   });
 
   it('component should be created', () => {
@@ -140,23 +155,8 @@ describe('ArchiveSearchCollectComponent', () => {
   });
 
   it('should return true', () => {
-    // Given
-    const project: Project = {
-      id: 'projectId',
-      archivalAgreement: 'archivalAgreement',
-      messageIdentifier: 'messageIdentifier',
-      archivalAgencyIdentifier: 'archivalAgencyIdentifier',
-      transferringAgencyIdentifier: 'transferringAgencyIdentifier',
-      originatingAgencyIdentifier: 'originatingAgencyIdentifier',
-      submissionAgencyIdentifier: 'submissionAgencyIdentifier',
-      archivalProfile: 'archivalProfile',
-      unitUp: 'INGEST',
-      comment: 'comment',
-      status: ProjectStatus.SENT,
-    };
-
     // When
-    const response = component.updateUnitsMetadataDisabled(project);
+    const response = component.updateUnitsMetadataDisabled();
 
     // Then
     expect(response).toBeTruthy();

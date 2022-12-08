@@ -18,6 +18,17 @@ public class TransactionConverterTest {
         assertNotNull(collectTransactionDto);
         assertEquals(transactionDto.getId(), collectTransactionDto.getId());
         assertEquals(transactionDto.getStatus(), collectTransactionDto.getStatus());
+        assertEquals(transactionDto.getName(), collectTransactionDto.getName());
+    }
+
+    @Test
+    public void convertTransactionDtotoVitamDto() {
+        CollectTransactionDto collectTransactionDto = buildCollectTransactionDto();
+        TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
+        assertNotNull(transactionDto);
+        assertEquals(collectTransactionDto.getId(), transactionDto.getId());
+        assertEquals(collectTransactionDto.getStatus(), transactionDto.getStatus());
+        assertEquals(collectTransactionDto.getName(), transactionDto.getName());
     }
 
     @Test
@@ -51,5 +62,24 @@ public class TransactionConverterTest {
         transactionDto.setLastUpdate("2022-10-24T16:40:59.821");
         transactionDto.setProjectId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaabq");
         return transactionDto;
+    }
+
+    private CollectTransactionDto buildCollectTransactionDto() {
+        CollectTransactionDto collectTransactionDto = new CollectTransactionDto();
+        collectTransactionDto.setArchivalAgencyIdentifier("archivalAgency");
+        collectTransactionDto.setArchivalAgreement("archivalAgreement");
+        collectTransactionDto.setComment("comment");
+        collectTransactionDto.setArchivalProfile("archivalProfile");
+        collectTransactionDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
+        collectTransactionDto.setMessageIdentifier("messageIdentifier");
+        collectTransactionDto.setOriginatingAgencyIdentifier("originatingAgencyIdentifier");
+        collectTransactionDto.setSubmissionAgencyIdentifier("submissionIdentifier");
+        collectTransactionDto.setTransferringAgencyIdentifier("TransferringAgencyIdentifier");
+        collectTransactionDto.setAcquisitionInformation("AcquisitionInformation");
+        collectTransactionDto.setLegalStatus("OPEN");
+        collectTransactionDto.setCreationDate("2022-10-24T16:40:59.821");
+        collectTransactionDto.setLastUpdate("2022-10-24T16:40:59.821");
+        collectTransactionDto.setProjectId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaabq");
+        return collectTransactionDto;
     }
 }
