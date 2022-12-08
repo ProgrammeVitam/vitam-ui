@@ -81,6 +81,7 @@ public class TransactionConverter {
         externalDto.setLegalStatus(collectTransactionDto.getLegalStatus());
         externalDto.setCreationDate(collectTransactionDto.getCreationDate());
         externalDto.setLastUpdate(collectTransactionDto.getLastUpdate());
+        externalDto.setName(collectTransactionDto.getName());
         return externalDto;
     }
 

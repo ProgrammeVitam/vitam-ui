@@ -169,11 +169,10 @@ describe('CreateProjectComponent', () => {
 
     // When
     component.createdProject = project;
-    const projectsService = TestBed.inject(ProjectsService);
     component.validateAndProcessUpload();
 
     // Then
-    expect(projectsService.create).toHaveBeenCalled();
+    expect(projectsServiceMock.create).toHaveBeenCalled();
   });
 
   describe('DOM', () => {
