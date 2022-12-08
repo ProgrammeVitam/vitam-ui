@@ -4,29 +4,22 @@
 
 ###
 # repositories.yml
+
+# For Debian
 vitam_repositories:
-  - key: vitamui
-    value: https://download.programmevitam.fr/vitamui_nightly/deb/
-    trusted: "[trusted=yes]"
+  - key: "programmevitam-vitam-deb-vitam-product"
+    value: "http://192.168.56.1:8000/b070acd87e1ce9c472847499d7648ebf76de8eba/deb/vitam-product/"
     subtree: "./"
-    proxy: ""
-  - key: vitam-product
-    value: https://download.programmevitam.fr/vitam_nightly/deb/vitam-product/
+    trusted: "[trusted=yes]"
+  - key: "programmevitam-vitam-deb-vitam-external"
+    value: "http://192.168.56.1:8000/b070acd87e1ce9c472847499d7648ebf76de8eba/deb/vitam-external/"
+    subtree: "./"
+    trusted: "[trusted=yes]"
+  - key: "programmevitam-vitam-deb-vitam-core"
+    value: "http://192.168.56.1:8000/b070acd87e1ce9c472847499d7648ebf76de8eba/deb/vitam-core/"
+    subtree: "./"
+    trusted: "[trusted=yes]"
+  - key: "programmevitam-vitam-deb-vitam-extras"
+    value: "http://192.168.56.1:8000/b070acd87e1ce9c472847499d7648ebf76de8eba/deb/vitam-extras/"
+    subtree: "./"
     trusted: "[trusted=yes]"    
-    subtree: "./"
-    proxy: ""
-  - key: vitam-external
-    value: https://download.programmevitam.fr/vitam_nightly/deb/vitam-external/
-    trusted: "[trusted=yes]"
-    subtree: "./"
-    proxy: ""
-  - key: vitam-core
-    value: https://download.programmevitam.fr/vitam_nightly/deb/vitam-core/
-    trusted: "[trusted=yes]"
-    subtree: "./"
-    proxy: ""
-  - key: vitam-extras
-    value: https://download.programmevitam.fr/vitam_nightly/deb/vitam-extras/
-    proxy: ""
-    trusted: "[trusted=yes]"
-    subtree: "./"
