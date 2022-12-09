@@ -34,22 +34,32 @@ vitamui_platform_informations:
 ###
 # repositories.yml
 vitam_repositories:
-  - key: "programmevitam-vitam-deb-vitam-product"
-    value: "http://192.168.56.1:8000/b070acd87e1ce9c472847499d7648ebf76de8eba/deb/vitam-product/"
+  - key: vitamui
+    value: "http://192.168.56.1:8000/b070acd87e1ce9c472847499d7648ebf76de8eba/deb/"
     subtree: "./"
     trusted: "[trusted=yes]"
-  - key: "programmevitam-vitam-deb-vitam-external"
-    value: "http://192.168.56.1:8000/b070acd87e1ce9c472847499d7648ebf76de8eba/deb/vitam-external/"
+    proxy: ""
+  - key: vitam-product
+    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-product/
+    proxy: ""
     subtree: "./"
     trusted: "[trusted=yes]"
-  - key: "programmevitam-vitam-deb-vitam-core"
-    value: "http://192.168.56.1:8000/b070acd87e1ce9c472847499d7648ebf76de8eba/deb/vitam-core/"
+  - key: vitam-external
+    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-external/
+    proxy: ""
     subtree: "./"
     trusted: "[trusted=yes]"
-  - key: "programmevitam-vitam-deb-vitam-extras"
-    value: "http://192.168.56.1:8000/b070acd87e1ce9c472847499d7648ebf76de8eba/deb/vitam-extras/"
+  - key: vitam-core
+    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-core/
+    proxy: ""
     subtree: "./"
     trusted: "[trusted=yes]"
+  - key: vitam-extras
+    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-extras/
+    proxy: ""
+    subtree: "./"
+    trusted: "[trusted=yes]"
+
 # To avoid installation of internet repositories (like epel for example)
 disable_internet_repositories_install: true # default value if unset: false
 
