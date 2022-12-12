@@ -145,7 +145,6 @@ slave1
 hosts_vitamui_mongod
 
 [hosts_vitamui_mongod]
-slave1
 # WARNING: put only one server for this service, not more !
 # Mandatory params
 #  - mongo_rs_bootstrap=true (default: false)
@@ -155,6 +154,7 @@ slave1
 #  - mongo_express_enabled=true to deploy mongo_express (default: false)
 # Example:
 # vm-mongo-ui mongo_rs_bootstrap=true mongo_express_enabled=true
+slave1 mongo_rs_bootstrap=true mongo_express=true
 
 
 ################################################################################
@@ -193,7 +193,7 @@ hosts_elasticsearch_log
 [hosts_consul_server]
 # EDIT: Mandatory unless [hosts_vitamui_consul_server] is defined
 # Choose between [hosts_consul_server] and [hosts_vitamui_consul_server]. If both defined [hosts_vitamui_consul_server] will be used by default.
-
+slave1
 [hosts_ingest_external]
 # EDIT: Mandatory
 slave1
@@ -240,3 +240,7 @@ ansible_python_interpreter=/usr/bin/python3
 ansible_ssh_user=vagrant
 ansible_become=true
 ansible_become_method=sudo
+
+
+[all]
+slave1 ansible_ssh_private_key_file=../.vagrant/machines/slave1/virtualbox/private_key ansible_ssh_common_args='-o StrictHostKeyChecking=no'

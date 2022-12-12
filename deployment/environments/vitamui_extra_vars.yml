@@ -40,22 +40,22 @@ vitam_repositories:
     trusted: "[trusted=yes]"
     proxy: ""
   - key: vitam-product
-    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-product/
+    value: https://download.programmevitam.fr/vitam_nightly/deb/vitam-product/
     proxy: ""
     subtree: "./"
     trusted: "[trusted=yes]"
   - key: vitam-external
-    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-external/
+    value: https://download.programmevitam.fr/vitam_nightly/deb/vitam-external/
     proxy: ""
     subtree: "./"
     trusted: "[trusted=yes]"
   - key: vitam-core
-    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-core/
+    value: https://download.programmevitam.fr/vitam_nightly/deb/vitam-core/
     proxy: ""
     subtree: "./"
     trusted: "[trusted=yes]"
   - key: vitam-extras
-    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-extras/
+    value: https://download.programmevitam.fr/vitam_nightly/deb/vitam-extras/
     proxy: ""
     subtree: "./"
     trusted: "[trusted=yes]"
