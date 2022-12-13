@@ -246,6 +246,13 @@ export class StartupService {
     return null;
   }
 
+  getPastisUrl(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.PASTIS_URL;
+    }
+    return null;
+  }
+
   getCollectUrl(): string {
     if (this.configurationLoaded()) {
       return this.configurationData.COLLECT_URL;

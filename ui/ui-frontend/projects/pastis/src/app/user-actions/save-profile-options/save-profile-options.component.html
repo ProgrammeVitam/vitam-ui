@@ -7,15 +7,19 @@
 
 <div class="conteneur">
 
-  <div class="gauche"><pastis-generic-popup [firstChoice]="firstChoiceEnregistrement" [secondChoice]="secondChoiceEnregistrement" [title]="titleEnregistrement" (changeStatusEvent)="changeStatus($event)">
-  </pastis-generic-popup>
+  <div class="gauche">
+    <pastis-generic-popup [firstChoice]="firstChoiceEnregistrement" [secondChoice]="secondChoiceEnregistrement"
+                          [title]="titleEnregistrement" (changeStatusEvent)="changeStatus($event)">
+    </pastis-generic-popup>
   </div>
 
   <div *ngIf="valueSelected && !editProfile">
-    <div class="gauche"><pastis-generic-popup [secondPopup]="true" [firstChoice]="firstChoiceGestionNotice" [secondChoice]="secondChoiceGestionNotice" [title]="titleGestionNotice" (changeStatusEvent)="changeStatusGestionNoticeProfil($event)">
-    </pastis-generic-popup>
+    <div class="gauche">
+      <pastis-generic-popup [secondPopup]="true" [firstChoice]="firstChoiceGestionNotice"
+                            [secondChoice]="secondChoiceGestionNotice" [title]="titleGestionNotice"
+                            (changeStatusEvent)="changeStatusGestionNoticeProfil($event)">
+      </pastis-generic-popup>
     </div>
-
   </div>
 </div>
 
@@ -27,6 +31,3 @@
     <button type="button" class="pastis-btn-non-dialog-confirm" (click)="onCancel()">{{data.cancelLabel}}</button>
   </mat-dialog-actions>
 </div>
-
-
-

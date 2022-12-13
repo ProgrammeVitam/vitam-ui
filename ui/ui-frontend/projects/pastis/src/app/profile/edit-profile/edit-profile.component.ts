@@ -69,26 +69,10 @@ export interface UploadedProfileResponse {
 export class EditProfileComponent implements OnDestroy {
 
   nodeToSend: FileNode;
-
   sedaParentNode: SedaData;
-
   selectedIndex: number;
-
-  profileRulesIsLoaded: boolean;
-
-  loadRules: boolean;
-
   activeTabIndex: number;
-
-  sideNavOpened: boolean;
-
-  tabRootElementName: string;
-
-  tabRulesMap: Map<string, Map<string, string[]>>;
-  nodeParentChildMap: Map<string, string[]>;
-
   dataChange = new BehaviorSubject<FileNode[]>([]);
-
   isStandalone: boolean = environment.standalone;
   puaMode: boolean;
 
@@ -179,7 +163,7 @@ export class EditProfileComponent implements OnDestroy {
   ngAfterViewInit() {
     this._fileServiceCurrentTreeSubscription = this.fileService.currentTree.subscribe(response => {
       this.initAll();
-      if (response && response !== undefined) {
+      if (response) {
         this.nodeToSend = response[0];
         if (this.nodeToSend) {
           this.fileService.allData.next(response);
