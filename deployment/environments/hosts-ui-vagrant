@@ -103,40 +103,40 @@ hosts_vitamui_security_internal
 hosts_vitamui_pastis_external
 
 [hosts_vitamui_iam_external]
-slave1
+slave2
 
 [hosts_vitamui_iam_internal]
-slave1
+slave2
 
 [hosts_vitamui_ingest_external]
-slave1
+slave2
 
 [hosts_vitamui_ingest_internal]
-slave1
+slave2
 
 [hosts_vitamui_archive_search_external]
-slave1
+slave2
 
 [hosts_vitamui_archive_search_internal]
-slave1
+slave2
 
 [hosts_vitamui_collect_external]
-slave1
+slave2
 
 [hosts_vitamui_collect_internal]
-slave1
+slave2
 
 [hosts_vitamui_referential_external]
-slave1
+slave2
 
 [hosts_vitamui_referential_internal]
-slave1
+slave2
 
 [hosts_vitamui_security_internal]
-slave1
+slave2
 
 [hosts_vitamui_pastis_external]
-slave1
+slave2
 
 ################################################################################
 # ZONE DATA
