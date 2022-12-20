@@ -25,14 +25,14 @@
  * accept its terms.
  */
 
-import {HttpErrorResponse} from '@angular/common/http';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, merge, Subject, Subscription} from 'rxjs';
-import {debounceTime, map, mergeMap} from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, merge, Subject, Subscription } from 'rxjs';
+import { debounceTime, map, mergeMap } from 'rxjs/operators';
 import {
   AccessContract,
   CriteriaDataType,
@@ -43,9 +43,9 @@ import {
   GlobalEventService,
   SidenavPage,
   Transaction,
-  TransactionStatus,
+  TransactionStatus
 } from 'ui-frontend-common';
-import {Unit} from 'vitamui-library/lib/models/unit.interface';
+import { Unit } from 'vitamui-library/lib/models/unit.interface';
 import {
   ArchiveSearchResultFacets,
   CriteriaValue,
@@ -58,16 +58,16 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
+  SearchCriteriaTypeEnum
 } from '../core/models';
-import {ArchiveCollectService} from './archive-collect.service';
+import { ArchiveCollectService } from './archive-collect.service';
 import {
   SearchCriteriaSaverComponent
 } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
-import {ArchiveFacetsService} from './archive-search-criteria/services/archive-facets.service';
-import {ArchiveSearchHelperService} from './archive-search-criteria/services/archive-search-helper.service';
-import {ArchiveSharedDataService} from './archive-search-criteria/services/archive-shared-data.service';
-import {UpdateUnitsaMetadataComponent} from './update-units-metadata/update-units-metadata.component';
+import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
+import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
+import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
+import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -98,7 +98,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   transaction: Transaction;
   projectId: string;
   foundAccessContract = false;
-  hasAccessContractManagementPermissions = false;
+    accessContractAllowUpdating: boolean = false;
+  accessContractUpdatingRestrictedDesc: boolean;
+
   hasUpdateDescriptiveUnitMetadataRole = false;
   isLPExtended = false;
   show = true;
@@ -346,7 +348,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   fetchVitamAccessContract() {
     this.accessContractSubscription = this.archiveUnitCollectService.getAccessContractById(this.accessContract).subscribe(
       (ac: AccessContract) => {
-        this.hasAccessContractManagementPermissions = this.archiveUnitCollectService.hasAccessContractManagementPermissions(ac);
+        this.accessContractAllowUpdating = ac.writingPermission;
+        this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
       },
       (error: any) => {
         this.logger.error('AccessContract not found :', error.message);

@@ -34,17 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { AccessContract, AccessContractApiService, SearchService, Transaction } from 'ui-frontend-common';
-import { ProjectsApiService } from '../core/api/project-api.service';
-import { TransactionApiService } from '../core/api/transaction-api.service';
-import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, Unit } from '../core/models';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable, LOCALE_ID} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {VitamUISnackBarComponent} from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
+import {SearchUnitApiService} from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
+import {Observable, of, throwError, TimeoutError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {AccessContract, AccessContractApiService, SearchService, Transaction} from 'ui-frontend-common';
+import {ProjectsApiService} from '../core/api/project-api.service';
+import {TransactionApiService} from '../core/api/transaction-api.service';
+import {
+  FilingHoldingSchemeNode,
+  PagedResult,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SearchResponse,
+  Unit
+} from '../core/models';
 
 @Injectable({
   providedIn: 'root',
@@ -114,7 +121,7 @@ export class ArchiveCollectService extends SearchService<any> {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
         }
         // Return other errors
-        return of({ $hits: null, $results: [] });
+        return of({$hits: null, $results: []});
       }),
       map((results) => ArchiveCollectService.buildPagedResults(results))
     );
@@ -148,15 +155,6 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
 
-  hasAccessContractManagementPermissions(accessContract: AccessContract): boolean {
-    return accessContract.writingPermission && !accessContract.writingRestrictedDesc;
-  }
-
-  prepareHeaders(accessContract: string): HttpHeaders {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-    return headers;
-  }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
@@ -217,7 +215,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: { type: 'exportCsvLimitReached' },
+            data: {type: 'exportCsvLimitReached'},
             duration: 10000,
           });
         }
@@ -233,7 +231,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
     return this.searchUnitApiService.getFilingPlan(headers).pipe(
       catchError(() => {
-        return of({ $hits: null, $results: [] });
+        return of({$hits: null, $results: []});
       }),
       map((response) => {
         return this.buildNestedTreeLevels(response.$results);
@@ -300,6 +298,6 @@ function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingS
     if (!a || !b || !a.title || !b.title) {
       return 0;
     }
-    return a.title.localeCompare(b.title, locale, { numeric: true });
+    return a.title.localeCompare(b.title, locale, {numeric: true});
   };
 }

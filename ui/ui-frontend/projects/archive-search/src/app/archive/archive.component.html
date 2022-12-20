@@ -27,7 +27,7 @@
       [archiveUnit]="openedItem"
       [accessContract]="accessContract"
       (backToNormalLateralPanel)="backToNormalLateralPanel()"
-      [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
+      [accessContractAllowUpdating]="accessContractAllowUpdating"      
       [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"
     ></app-archive-preview>
   </mat-sidenav>
@@ -55,7 +55,8 @@
       <app-archive-search
         (archiveUnitClick)="showPreviewArchiveUnit($event)"
         [accessContract]="accessContract"
-        [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
+        [accessContractAllowUpdating]="accessContractAllowUpdating"
+        [accessContractUpdatingRestrictedDesc]="accessContractUpdatingRestrictedDesc"
       >
       </app-archive-search>
     </div>

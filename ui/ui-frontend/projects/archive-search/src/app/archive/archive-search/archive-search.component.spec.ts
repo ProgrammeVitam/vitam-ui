@@ -35,43 +35,43 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTreeModule } from '@angular/material/tree';
-import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { environment } from 'projects/archive-search/src/environments/environment';
-import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, VitamuiRoles, WINDOW_LOCATION } from 'ui-frontend-common';
-import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
-import { ArchiveService } from '../archive.service';
-import { ArchiveSearchHelperService } from '../common-services/archive-search-helper.service';
-import { ArchiveUnitDipService } from '../common-services/archive-unit-dip.service';
-import { ArchiveUnitEliminationService } from '../common-services/archive-unit-elimination.service';
-import { ComputeInheritedRulesService } from '../common-services/compute-inherited-rules.service';
-import { UpdateUnitManagementRuleService } from '../common-services/update-unit-management-rule.service';
-import { PagedResult, SearchCriteriaStatusEnum } from '../models/search.criteria';
-import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
-import { ArchiveSearchComponent } from './archive-search.component';
-import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
+import {DatePipe} from '@angular/common';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormBuilder} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTreeModule} from '@angular/material/tree';
+import {ActivatedRoute} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {environment} from 'projects/archive-search/src/environments/environment';
+import {Observable, of} from 'rxjs';
+import {BASE_URL, InjectorModule, LoggerModule, VitamuiRoles, WINDOW_LOCATION} from 'ui-frontend-common';
+import {ArchiveSharedDataService} from '../../core/archive-shared-data.service';
+import {ArchiveService} from '../archive.service';
+import {ArchiveSearchHelperService} from '../common-services/archive-search-helper.service';
+import {ArchiveUnitDipService} from '../common-services/archive-unit-dip.service';
+import {ArchiveUnitEliminationService} from '../common-services/archive-unit-elimination.service';
+import {ComputeInheritedRulesService} from '../common-services/compute-inherited-rules.service';
+import {UpdateUnitManagementRuleService} from '../common-services/update-unit-management-rule.service';
+import {PagedResult, SearchCriteriaStatusEnum} from '../models/search.criteria';
+import {VitamUISnackBar} from '../shared/vitamui-snack-bar';
+import {ArchiveSearchComponent} from './archive-search.component';
+import {TransferAcknowledgmentComponent} from './transfer-acknowledgment/transfer-acknowledgment.component';
 
-@Pipe({ name: 'truncate' })
+@Pipe({name: 'truncate'})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
   }
 }
 
-const translations: any = { TEST: 'Mock translate test' };
+const translations: any = {TEST: 'Mock translate test'};
 
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
@@ -82,10 +82,10 @@ class FakeLoader implements TranslateLoader {
 describe('ArchiveSearchComponent', () => {
   let component: ArchiveSearchComponent;
   let fixture: ComponentFixture<ArchiveSearchComponent>;
-  const pagedResult: PagedResult = { pageNumbers: 1, facets: [], results: [], totalResults: 1 };
+  const pagedResult: PagedResult = {pageNumbers: 1, facets: [], results: [], totalResults: 1};
 
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  matDialogSpy.open.and.returnValue({afterClosed: () => of(true)});
 
   const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
@@ -95,8 +95,6 @@ describe('ArchiveSearchComponent', () => {
     searchArchiveUnitsByCriteria: () => of(pagedResult),
     hasArchiveSearchRole: () => of(true),
     getAccessContractById: () => of({}),
-    hasAccessContractPermissions: () => of(true),
-    hasAccessContractManagementPermissions: () => of(true),
   };
   const archiveSearchCommonService = {
     addCriteria: () => of(),
@@ -130,7 +128,7 @@ describe('ArchiveSearchComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
+          loader: {provide: TranslateLoader, useClass: FakeLoader},
         }),
         MatSnackBarModule,
         HttpClientTestingModule,
@@ -141,21 +139,21 @@ describe('ArchiveSearchComponent', () => {
         FormBuilder,
         ArchiveSharedDataService,
         DatePipe,
-        { provide: ArchiveService, useValue: archiveServiceStub },
-        { provide: ArchiveSearchHelperService, useValue: archiveSearchCommonService },
+        {provide: ArchiveService, useValue: archiveServiceStub},
+        {provide: ArchiveSearchHelperService, useValue: archiveSearchCommonService},
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+          useValue: {params: of({tenantIdentifier: 1}), data: of({appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP'})},
         },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: environment, useValue: environment },
-        { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
-        { provide: ArchiveUnitEliminationService, useValue: archiveUnitEliminationServiceMock },
-        { provide: ComputeInheritedRulesService, useValue: computeInheritedRulesServiceMock },
-        { provide: ArchiveUnitDipService, useValue: archiveUnitDipServiceMock },
+        {provide: MatDialog, useValue: matDialogSpy},
+        {provide: VitamUISnackBar, useValue: snackBarSpy},
+        {provide: WINDOW_LOCATION, useValue: window.location},
+        {provide: BASE_URL, useValue: '/fake-api'},
+        {provide: environment, useValue: environment},
+        {provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock},
+        {provide: ArchiveUnitEliminationService, useValue: archiveUnitEliminationServiceMock},
+        {provide: ComputeInheritedRulesService, useValue: computeInheritedRulesServiceMock},
+        {provide: ArchiveUnitDipService, useValue: archiveUnitDipServiceMock},
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

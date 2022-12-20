@@ -34,18 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEventService, Logger, SidenavPage } from 'ui-frontend-common';
-import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
-import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
-import { ArchiveService } from './archive.service';
-import { Unit } from './models/unit.interface';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
+import {Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {
+  AccessContract,
+  ExternalParameters,
+  ExternalParametersService,
+  GlobalEventService,
+  Logger,
+  SidenavPage
+} from 'ui-frontend-common';
+import {ArchiveSharedDataService} from '../core/archive-shared-data.service';
+import {ManagementRulesSharedDataService} from '../core/management-rules-shared-data.service';
+import {ArchiveService} from './archive.service';
+import {Unit} from './models/unit.interface';
 
 @Component({
   selector: 'app-archive',
@@ -61,7 +68,9 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   accessContractSub: Subscription;
   errorMessageSub: Subscription;
   isLPExtended = false;
-  hasAccessContractManagementPermissions = false;
+
+  accessContractAllowUpdating = false;
+  accessContractUpdatingRestrictedDesc = false;
   hasUpdateDescriptiveUnitMetadataRole = false;
 
   constructor(
@@ -141,7 +150,8 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   fetchVitamAccessContract() {
     this.archiveService.getAccessContractById(this.accessContract).subscribe(
       (ac: AccessContract) => {
-        this.hasAccessContractManagementPermissions = this.archiveService.hasAccessContractManagementPermissions(ac);
+        this.accessContractAllowUpdating = ac.writingPermission;
+        this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
       },
       (error: any) => {
         this.loggerService.error('error message', error);
@@ -159,15 +169,17 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
   showPreviewArchiveUnit(item: Unit) {
     this.openPanel(item);
   }
+
   showExtendedLateralPanel() {
     this.isLPExtended = true;
   }
+
   backToNormalLateralPanel() {
     this.isLPExtended = false;
   }
