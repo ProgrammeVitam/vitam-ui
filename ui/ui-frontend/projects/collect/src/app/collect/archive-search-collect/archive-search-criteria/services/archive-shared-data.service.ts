@@ -35,12 +35,11 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Direction } from 'ui-frontend-common';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
+import { Direction, FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { Unit } from '../../../core/models/unit.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { SearchCriteriaHistory } from '../models/search-criteria-history.interface';
 import { ResultFacet, SearchCriteriaAddAction, SearchCriteriaDto, SearchCriteriaRemoveAction } from '../models/search.criteria';
-import { Unit } from '../../../core/models/unit.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -107,8 +106,7 @@ export class ArchiveSharedDataService {
 
   entireNodesObservable = this.entireNodes.asObservable();
 
-  constructor() {
-  }
+  constructor() {}
 
   emitRuleCategory(ruleCategory: string) {
     this.ruleCategory.next(ruleCategory);

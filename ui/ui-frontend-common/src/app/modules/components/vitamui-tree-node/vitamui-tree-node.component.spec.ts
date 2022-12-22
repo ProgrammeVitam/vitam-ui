@@ -26,8 +26,8 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { VitamuiTreeNodeComponent } from './vitamui-tree-node.component';
-import { NO_ERRORS_SCHEMA, PipeTransform, Pipe } from '@angular/core';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -48,18 +48,18 @@ describe('VitamuiTreeNodeComponent', () => {
     vitamId: 'vitamId',
     parents: [],
     checked: true,
-    hidden: true
+    hidden: true,
+    hasObject: false,
+    unitType: 'INGEST',
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-      ],
+      imports: [],
       declarations: [VitamuiTreeNodeComponent, MockTruncatePipe],
       providers: [],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(VitamuiTreeNodeComponent);
     component = fixture.componentInstance;
@@ -101,7 +101,6 @@ describe('VitamuiTreeNodeComponent', () => {
   });
 
   it('should emit labelClick event and node should be checked when property labelIsLinkedToCheckbox is set to true and label is clicked', () => {
-
     // Link label and checkbox
     component.labelIsLinkedToCheckbox = true;
     component.node.checked = false;
@@ -116,14 +115,4 @@ describe('VitamuiTreeNodeComponent', () => {
     expect(component.node.checked).toBeTruthy();
     expect(component.labelClick.emit).toHaveBeenCalled();
   });
-
 });
-
-
-
-
-
-
-
-
-

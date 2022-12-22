@@ -40,16 +40,16 @@ import {
   Direction,
   ExternalParameters,
   ExternalParametersService,
+  FilingHoldingSchemeNode,
   GlobalEventService,
   SidenavPage,
   Transaction,
-  TransactionStatus
+  TransactionStatus,
 } from 'ui-frontend-common';
 import { Unit } from 'vitamui-library/lib/models/unit.interface';
 import {
   ArchiveSearchResultFacets,
   CriteriaValue,
-  FilingHoldingSchemeNode,
   PagedResult,
   SearchCriteria,
   SearchCriteriaCategory,
@@ -58,12 +58,10 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum
+  SearchCriteriaTypeEnum,
 } from '../core/models';
 import { ArchiveCollectService } from './archive-collect.service';
-import {
-  SearchCriteriaSaverComponent
-} from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
+import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
@@ -98,7 +96,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   transaction: Transaction;
   projectId: string;
   foundAccessContract = false;
-  accessContractAllowUpdating: boolean = false;
+  accessContractAllowUpdating = false;
   accessContractUpdatingRestrictedDesc: boolean;
   hasUpdateDescriptiveUnitMetadataRole = false;
   isLPExtended = false;
@@ -197,7 +195,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             this.searchCriteriaKeys,
             this.nbQueryCriteria,
             'NODE',
-            {id: node.id, value: node.id},
+            { id: node.id, value: node.id },
             node.title,
             true,
             CriteriaOperator.EQ,
@@ -208,7 +206,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           );
         } else {
           node.count = null;
-          this.removeCriteria('NODE', {id: node.id, value: node.id}, false);
+          this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
         }
       })
     );
@@ -278,7 +276,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
-      {value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS},
+      { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
       this.translateService.instant('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
       true,
       CriteriaOperator.EQ,
@@ -293,7 +291,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
-      {value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS},
+      { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
       this.translateService.instant('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
       true,
       CriteriaOperator.EQ,
@@ -384,7 +382,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     }
     // Prepare criteria and store them to use for lateral panel
     this.pending = true;
-    const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: this.currentPage,
@@ -484,7 +482,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     if (this.isAllchecked && !action) {
       this.listOfUACriteriaSearch = [];
       this.isIndeterminate = true;
-      this.listOfUAIdToExclude.push({value: id, id});
+      this.listOfUAIdToExclude.push({ value: id, id });
       this.listOfUAIdToInclude = [];
       if (this.itemSelected > 0) {
         this.itemSelected--;
@@ -498,7 +496,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         if (this.itemSelected === this.totalResults) {
           this.isIndeterminate = false;
         }
-        this.listOfUAIdToInclude.push({value: id, id});
+        this.listOfUAIdToInclude.push({ value: id, id });
         this.listOfUAIdToExclude.splice(0, this.listOfUAIdToExclude.length);
       } else {
         this.listOfUAIdToInclude = this.listOfUAIdToInclude.filter((element) => element.id !== id);
@@ -716,7 +714,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   private launchComputingManagementRulesFacets() {
     this.pendingComputeFacets = true;
-    const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: 0,
@@ -891,7 +889,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   exportArchiveUnitsToCsvFile() {
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
-      const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+      const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
       const searchCriteria = {
         criteriaList: this.listOfUACriteriaSearch,
         pageNumber: this.currentPage,
@@ -957,5 +955,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   updateUnitsMetadataDisabled(): boolean {
     return this.transaction.status !== TransactionStatus.OPEN;
+  }
+
+  getArchiveUnitType(archiveUnit: any) {
+    if (archiveUnit) {
+      return archiveUnit['#unitType'];
+    }
   }
 }

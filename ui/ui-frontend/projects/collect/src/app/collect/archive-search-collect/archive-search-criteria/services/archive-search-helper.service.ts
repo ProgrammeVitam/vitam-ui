@@ -36,9 +36,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator } from 'ui-frontend-common';
-import { ArchiveSharedDataService } from './archive-shared-data.service';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar';
 import {
   CriteriaValue,
   SearchCriteria,
@@ -47,7 +46,7 @@ import {
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
 } from '../models/search.criteria';
-import { VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar';
+import { ArchiveSharedDataService } from './archive-shared-data.service';
 
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const WAITING_RECALCULATE = 'WAITING_RECALCULATE';
@@ -55,7 +54,7 @@ const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
 
 @Injectable()
 export class ArchiveSearchHelperService {
-  constructor(private archiveExchangeDataService: ArchiveSharedDataService) { }
+  constructor(private archiveExchangeDataService: ArchiveSharedDataService) {}
 
   addCriteria(
     searchCriterias: Map<string, SearchCriteria>,
@@ -409,12 +408,12 @@ export class ArchiveSearchHelperService {
         if (
           (!hasMgtRuleCriteria &&
             (this.isAppraisalRuleCriteria(criteria) ||
-            this.isAccessRuleCriteria(criteria) ||
-            this.isStorageRuleCriteria(criteria) ||
-            this.isReuseRuleCriteria(criteria) ||
-            this.isDisseminationRuleCriteria(criteria))) ||
-            this.isWaitingToRecalculateCriteria(criteria.key) ||
-            this.isEliminationTenchnicalIdCriteria(criteria.key)
+              this.isAccessRuleCriteria(criteria) ||
+              this.isStorageRuleCriteria(criteria) ||
+              this.isReuseRuleCriteria(criteria) ||
+              this.isDisseminationRuleCriteria(criteria))) ||
+          this.isWaitingToRecalculateCriteria(criteria.key) ||
+          this.isEliminationTenchnicalIdCriteria(criteria.key)
         ) {
           hasMgtRuleCriteria = true;
         }

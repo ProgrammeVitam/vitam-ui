@@ -30,7 +30,6 @@ import { ResultFacet } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 
 export class FilingHoldingSchemeHandler {
-
   public static foundNodeAndSetCheck(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {
     if (nodes.length < 1) {
       return false;
@@ -79,7 +78,7 @@ export class FilingHoldingSchemeHandler {
     if (!nodes) {
       return [];
     }
-    const leaves: FilingHoldingSchemeNode[] = []
+    const leaves: FilingHoldingSchemeNode[] = [];
     for (const node of nodes) {
       if (node.count < 1) {
         continue;
@@ -101,19 +100,21 @@ export class FilingHoldingSchemeHandler {
   }
 
   public static unitHasDirectParent(unit: Unit, parentId: string): boolean {
-    return unit['#unitups'].findIndex(unitupId => unitupId === parentId) !== -1;
+    return unit['#unitups'].findIndex((unitupId) => unitupId === parentId) !== -1;
   }
 
   public static foundChild(parentNode: FilingHoldingSchemeNode, childId: string): FilingHoldingSchemeNode {
     if (!parentNode.children) {
       parentNode.children = [];
     }
-    return parentNode.children.find(nodeChild => nodeChild.id === childId);
+    return parentNode.children.find((nodeChild) => nodeChild.id === childId);
   }
 
-  public static addDirectChildrenOnly(parentNode: FilingHoldingSchemeNode,
-                                      units: Unit[],
-                                      initCount: boolean = false): MatchingNodesNumbers {
+  public static addDirectChildrenOnly(
+    parentNode: FilingHoldingSchemeNode,
+    units: Unit[],
+    initCount: boolean = false
+  ): MatchingNodesNumbers {
     const matchingNodes = new MatchingNodesNumbers();
     if (!parentNode.children) {
       parentNode.children = [];
@@ -135,7 +136,7 @@ export class FilingHoldingSchemeHandler {
         if (initCount) {
           child.count = 1;
         } else {
-          child.count = 0
+          child.count = 0;
         }
       } else if (initCount && child.count < 1) {
         child.count = 1;
@@ -148,9 +149,11 @@ export class FilingHoldingSchemeHandler {
     return matchingNodes;
   }
 
-  public static addChildrenRecursively(parentNodes: FilingHoldingSchemeNode[],
-                                       units: Unit[],
-                                       initCount: boolean = false): MatchingNodesNumbers {
+  public static addChildrenRecursively(
+    parentNodes: FilingHoldingSchemeNode[],
+    units: Unit[],
+    initCount: boolean = false
+  ): MatchingNodesNumbers {
     const matchingNodesNumbers = new MatchingNodesNumbers();
     if (!parentNodes || parentNodes.length < 1) {
       return matchingNodesNumbers;
@@ -163,9 +166,8 @@ export class FilingHoldingSchemeHandler {
   }
 
   public static getGraphIds(nodes: FilingHoldingSchemeNode[]): string[] {
-    if (!nodes || nodes.length < 1)
-      return []
-    const knownIds: string[] = []
+    if (!nodes || nodes.length < 1) return [];
+    const knownIds: string[] = [];
     for (const node of nodes) {
       knownIds.push(node.id);
       knownIds.push(...FilingHoldingSchemeHandler.getGraphIds(node.children));
@@ -173,17 +175,13 @@ export class FilingHoldingSchemeHandler {
     return knownIds;
   }
 
-  public static filterUnknownFacets(knownFacets: ResultFacet[],
-                                    newFacets: ResultFacet[]): ResultFacet[] {
-    return newFacets.filter(newFacet => knownFacets.findIndex(knownFacet => knownFacet.node === newFacet.node) === -1);
-
+  public static filterUnknownFacets(knownFacets: ResultFacet[], newFacets: ResultFacet[]): ResultFacet[] {
+    return newFacets.filter((newFacet) => knownFacets.findIndex((knownFacet) => knownFacet.node === newFacet.node) === -1);
   }
 
-  public static filterUnknownFacetsIds(nodes: FilingHoldingSchemeNode[],
-                                       facets: ResultFacet[]): ResultFacet[] {
+  public static filterUnknownFacetsIds(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): ResultFacet[] {
     const knownIds = FilingHoldingSchemeHandler.getGraphIds(nodes);
-    return facets.filter(facet => !knownIds.includes(facet.node));
-
+    return facets.filter((facet) => !knownIds.includes(facet.node));
   }
 
   public static convertUAToNode(unit: Unit): FilingHoldingSchemeNode {
@@ -197,8 +195,9 @@ export class FilingHoldingSchemeHandler {
       checked: false,
       isLoadingChildren: false,
       canLoadMoreChildren: unit.DescriptionLevel !== DescriptionLevel.ITEM,
-      count: 0
+      count: 0,
+      hasObject: unit['#object'] ? true : false,
+      unitType: unit['#unitType'],
     };
   }
-
 }

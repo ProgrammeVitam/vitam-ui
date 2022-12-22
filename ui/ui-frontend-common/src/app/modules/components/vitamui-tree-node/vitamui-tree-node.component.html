@@ -22,8 +22,7 @@
   [matTooltipShowDelay]="300"
 >
   <label class="node-label" (click)="onLabelClick($event)">
-    <i class="pad vitamui-icon vitamui-icon-folder"></i>
+    <i class="pad vitamui-icon {{ icon }}"></i>
     {{ node?.title }}
   </label>
 </mat-checkbox>
-

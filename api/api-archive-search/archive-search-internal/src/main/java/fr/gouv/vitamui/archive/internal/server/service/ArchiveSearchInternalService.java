@@ -97,7 +97,7 @@ public class ArchiveSearchInternalService {
     private static final Integer SEARCH_UNIT_MAX_RESULTS = 10000;
 
     private static final String[] FILING_PLAN_PROJECTION =
-        new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups"};
+        new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups", "#object"};
     public static final String FALSE = "false";
     public static final String TRUE = "true";
 
@@ -362,8 +362,6 @@ public class ArchiveSearchInternalService {
         archiveSearchRulesInternalService.mapManagementRulesTitlesToCodes(searchQuery, vitamContext);
         return mapRequestToDslQuery(searchQuery);
     }
-
-
 
     public JsonNode createQueryForHoldingFillingUnit() {
         try {

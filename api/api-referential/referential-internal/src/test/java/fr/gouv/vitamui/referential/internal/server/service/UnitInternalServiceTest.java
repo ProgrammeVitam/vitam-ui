@@ -36,34 +36,34 @@
  */
 package fr.gouv.vitamui.referential.internal.server.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.PropertiesUtils;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.referential.internal.server.unit.UnitInternalService;
+import org.assertj.core.api.Assertions;
+import org.easymock.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.mock;
 
-import java.util.Optional;
-
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import org.easymock.EasyMock;
-import org.easymock.EasyMockRunner;
-import org.easymock.Mock;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.json.JsonHandler;
-import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import fr.gouv.vitamui.referential.internal.server.unit.UnitInternalService;
-
 public class UnitInternalServiceTest {
 
     private UnitService unitService;
     private UnitInternalService unitInternalService;
+
+    public final String FILLING_HOLDING_SCHEME_QUERY = "data/fillingholding/expected_unitType_query.json";
 
     @Before
     public void setUp() {
@@ -241,6 +241,32 @@ public class UnitInternalServiceTest {
         assertThatCode(() -> {
             unitInternalService.findObjectMetadataById(unitId, dslQuery, vitamContext);
         }).isInstanceOf(VitamClientException.class);
+    }
+
+    @Test
+    public void getFinalFillingHoldingSchemeQueryWithAllProjectionFields() throws Exception {
+        // Given
+        JsonNode expectedQuery =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
+
+        // When
+        JsonNode givenQuery =
+            unitInternalService.createQueryForFillingOrHoldingUnit();
+
+        // Then
+        Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
+        Assertions.assertThat(
+            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#object")).isTrue();
+        Assertions.assertThat(
+            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#unitType")).isTrue();
+        Assertions.assertThat(
+            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#id")).isTrue();
+        Assertions.assertThat(
+            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("DescriptionLevel")).isTrue();
     }
 }
 

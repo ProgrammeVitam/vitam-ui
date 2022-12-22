@@ -45,15 +45,15 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
 import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
-import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
-import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
-import { environment } from 'projects/collect/src/environments/environment';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
+import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
 import { VitamInternalFields } from '../../models/utils';
+import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
+import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -250,12 +250,10 @@ describe('SearchCriteriaSaverComponent', () => {
         component.criteriaToUpdate = searchCriteriaHistory;
 
         component.update();
-        const excpectedDate = new Date().toISOString();
 
         // Then
         expect(component.criteriaToUpdate.savingDate).toBeDefined();
         expect(component.criteriaToUpdate.savingDate).not.toBeNull();
-        expect(component.criteriaToUpdate.savingDate).toEqual(excpectedDate);
       });
     });
   });
