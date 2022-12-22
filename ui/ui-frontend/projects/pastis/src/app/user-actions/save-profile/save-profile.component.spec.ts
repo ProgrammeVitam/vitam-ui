@@ -43,13 +43,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
-import { BASE_URL } from 'ui-frontend-common';
+import { BASE_URL, LoggerModule, StartupService } from 'ui-frontend-common';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';
 
 import { UserActionSaveProfileComponent } from './save-profile.component';
-
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -58,20 +57,31 @@ describe('UserActionOpenProfileComponent', () => {
   let component: UserActionSaveProfileComponent;
   let fixture: ComponentFixture<UserActionSaveProfileComponent>;
 
+  const startUpServiceMock = {
+    getPortalUrl: () => '',
+    setTenantIdentifier: () => {},
+    getLogoutUrl: () => '',
+    getCasUrl: () => '',
+    getSearchUrl: () => '',
+    getArchivesSearchUrl: () => '',
+    getReferentialUrl: () => '',
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserActionSaveProfileComponent ],
+      declarations: [UserActionSaveProfileComponent],
       imports: [
         HttpClientTestingModule,
         RouterTestingModule,
+        LoggerModule.forRoot(),
         TranslateModule.forRoot(),
         ToastrModule.forRoot({
           positionClass: 'toast-bottom-full-width',
           preventDuplicates: false,
           timeOut: 3000,
           closeButton: false,
-          easeTime: 0
-        })
+          easeTime: 0,
+        }),
       ],
       providers: [
         ProfileService,
@@ -79,9 +89,10 @@ describe('UserActionOpenProfileComponent', () => {
         PastisConfiguration,
         { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: MatSnackBar, useValue: snackBarSpy }      ]
-    })
-    .compileComponents();
+        { provide: MatSnackBar, useValue: snackBarSpy },
+        { provide: StartupService, useValue: startUpServiceMock },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
