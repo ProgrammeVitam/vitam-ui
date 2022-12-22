@@ -4,7 +4,7 @@ import { AppConfiguration } from '.';
 import { AuthUser, ThemeDataType } from './models';
 import { Color } from './models/customer/theme/color.interface';
 import { convertLighten, getColorFromMaps, hexToRgb, hexToRgbString, ThemeColorType } from './utils';
-import { Observable, of } from 'rxjs';
+import { Observable, EMPTY } from 'rxjs';
 
 export interface Theme {
   colors: {[colorId: string]: string};
@@ -107,7 +107,7 @@ export class ThemeService {
   }
 
   public getData$(authUser: AuthUser, type: string): Observable<string | SafeResourceUrl>  {
-    return of(null);
+    return EMPTY;
   }
 
   private calculateFontColor(color: string): string {
