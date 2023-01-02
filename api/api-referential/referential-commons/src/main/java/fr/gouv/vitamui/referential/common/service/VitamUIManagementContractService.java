@@ -53,7 +53,7 @@ public class VitamUIManagementContractService {
     public RequestResponse<?> patchManagementContract(final VitamContext vitamContext, final String id, JsonNode jsonNode) throws InvalidParseOperationException, AccessExternalClientException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("patch: {}, {}", id, jsonNode);
-        LOGGER.info("Management Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("Management Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return adminExternalClient.updateManagementContract(vitamContext,id,jsonNode);
     }
 

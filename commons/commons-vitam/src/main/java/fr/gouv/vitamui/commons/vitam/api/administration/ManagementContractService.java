@@ -132,15 +132,13 @@ public class ManagementContractService {
             if (tenantIdentifier != null) {
                 final boolean sameTenant = managementContractModelDtos.stream().allMatch(mc -> tenantIdentifier.equals(mc.getTenant()));
                 if (!sameTenant) {
-                    final String msg = "All the management contracts must have the same tenant identifier";
-                    LOGGER.error(msg);
-                    throw new BadRequestException(msg);
+                    LOGGER.error("All the management contracts must have the same tenant identifier");
+                    throw new BadRequestException("All the management contracts must have the same tenant identifier");
                 }
             }
             else {
-                final String msg = "The tenant identifier must be present in the request body";
-                LOGGER.error(msg);
-                throw new BadRequestException(msg);
+                LOGGER.error("The tenant identifier must be present in the request body");
+                throw new BadRequestException("The tenant identifier must be present in the request body");
             }
 
             try {
@@ -149,22 +147,19 @@ public class ManagementContractService {
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<ManagementContractModel> response = findManagementContracts(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    final String msg = "Can't create management contracts for the tenant : " + tenantIdentifier + " not found in Vitam";
-                    LOGGER.error(msg);
-                    throw new PreconditionFailedException(msg);
+                    LOGGER.error("Can't create management contracts for the tenant : " + tenantIdentifier + " not found in Vitam");
+                    throw new NotFoundException("Can't create management contracts for the tenant : " + tenantIdentifier + " not found in Vitam");
                 }
                 else if (response.getStatus() != HttpStatus.OK.value()) {
-                    final String msg = "Can't create management contracts for this tenant, Vitam response code : " + response.getStatus();
-                    LOGGER.error(msg);
-                    throw new UnavailableServiceException(msg);
+                    LOGGER.error("Can't create management contracts for this tenant, Vitam response code : " + response.getStatus());
+                    throw new UnavailableServiceException("Can't create management contracts for this tenant, Vitam response code : " + response.getStatus());
                 }
 
                 verifyManagementContractExistence(managementContractModelDtos, response);
             }
             catch (final VitamClientException e) {
-                final String msg = "Can't create management contracts for this tenant, error while calling Vitam : " + e.getMessage();
-                LOGGER.error(msg);
-                throw new UnavailableServiceException(msg);
+                LOGGER.error("Can't create management contracts for this tenant, error while calling Vitam : " + e.getMessage());
+                throw new UnavailableServiceException("Can't create management contracts for this tenant, error while calling Vitam : " + e.getMessage());
             }
             return tenantIdentifier;
         }

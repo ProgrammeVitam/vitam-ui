@@ -29,7 +29,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
+import {ConfirmDialogService, Logger} from 'ui-frontend-common';
 import { ManagementContract } from 'projects/vitamui-library/src/public-api';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from './management-contract-create.validators';
@@ -62,6 +62,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private managementContractService: ManagementContractService,
     private managementContractCreateValidators: ManagementContractCreateValidators,
+    private logger: Logger
 
   ) {}
 
@@ -129,7 +130,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       },
       (error: any) => {
         this.dialogRef.close({ success: false, action: 'none' });
-        console.error(error);
+        this.logger.error(error);
       }
     );
   }
