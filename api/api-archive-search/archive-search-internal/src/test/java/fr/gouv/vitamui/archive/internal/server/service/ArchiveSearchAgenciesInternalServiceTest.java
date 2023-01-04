@@ -60,6 +60,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(SpringExtension.class)
+@SuppressWarnings("unchecked")
 public class ArchiveSearchAgenciesInternalServiceTest {
 
     private static final VitamUILogger LOGGER =
@@ -106,7 +107,8 @@ public class ArchiveSearchAgenciesInternalServiceTest {
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any())).thenReturn(getResponseAgencies());
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+            .thenReturn(getResponseAgencies());
 
         // When
         archiveSearchAgenciesInternalService
@@ -140,7 +142,8 @@ public class ArchiveSearchAgenciesInternalServiceTest {
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any())).thenReturn(getResponseAgencies());
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+            .thenReturn(getResponseAgencies());
 
         // When
         archiveSearchAgenciesInternalService
