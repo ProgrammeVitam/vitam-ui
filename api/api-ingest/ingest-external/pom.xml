@@ -141,11 +141,7 @@
         <!-- Documentation -->
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
+            <artifactId>springfox-boot-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -212,7 +208,7 @@
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>fr.gouv.vitamui.ingest.external.server.ApiIngestExternalServerApplication</mainClass>
                     <arguments>
-                         <argument>--spring.profiles.active=dev</argument>
+                        <argument>--spring.profiles.active=dev</argument>
                     </arguments>
                 </configuration>
             </plugin>

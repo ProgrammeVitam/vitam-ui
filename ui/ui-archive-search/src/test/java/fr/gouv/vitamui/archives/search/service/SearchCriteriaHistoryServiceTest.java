@@ -26,22 +26,22 @@
 
 package fr.gouv.vitamui.archives.search.service;
 
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.archives.search.external.client.SearchCriteriaHistoryExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class SearchCriteriaHistoryServiceTest {
 
     private SearchCriteriaHistoryService searchCriteriaHistoryService;
@@ -49,7 +49,7 @@ public class SearchCriteriaHistoryServiceTest {
     @Mock
     private SearchCriteriaHistoryExternalRestClient searchCriteriaHistoryExternalRestClient;
 
-    @Before
+    @BeforeAll
     public void init() {
         searchCriteriaHistoryService = new SearchCriteriaHistoryService(searchCriteriaHistoryExternalRestClient);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
@@ -57,14 +57,14 @@ public class SearchCriteriaHistoryServiceTest {
 
     @Test
     public void testIngest() {
-        Assert.assertNotNull(searchCriteriaHistoryService);
+        Assertions.assertNotNull(searchCriteriaHistoryService);
     }
 
     @Test
     public void testGetSearchCriteriaHistories() {
         when(searchCriteriaHistoryExternalRestClient.getSearchCriteriaHistory(ArgumentMatchers.any())).thenReturn(
             Arrays.asList(new SearchCriteriaHistoryDto()));
-        Assert.assertNotNull(searchCriteriaHistoryService.getSearchCritriaHistory(null));
+        Assertions.assertNotNull(searchCriteriaHistoryService.getSearchCritriaHistory(null));
     }
 
 }

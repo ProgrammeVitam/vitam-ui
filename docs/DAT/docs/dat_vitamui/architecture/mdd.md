@@ -23,9 +23,9 @@
     tenants
     tokens
     users
+    userInfos
 
-
-  * _Collection applications_
+* _Collection applications_
 
 | Nom                           | Type            | Contrainte(s)                             | Remarque(s)                                                             |
 | :---------------------------  | :-------------  | :---------------------------------------- | :---------------------------------------------------------------------  |
@@ -43,28 +43,28 @@
 | tooltip                       |   String        | minimum = 1, maximum = 100                | Un texte pour décrire l'application                                     |
 | target                        |   String        |  maximum = 25                             |                                                                         |
 
-  * _Collection customers_
+* _Collection customers_
 
-| Nom                           | Type             | Contrainte(s)                                         | Remarque(s)           |
-| :---------------------------  | :--------------  | :---------------------------------------------------- | :-------------------  |
-| _id                           |   String         | Clé Primaire                                          |                       |
-| identifier                    |   String         | minimum = 1, maximum = 12                             |                       |
-| code                          |   String         | minimum = 6, maximum = 20                             |                       |
-| companyName                   |   String         | maximum = 250                                         |                       |
-| language                      |   String         | Non null, valeurs = [FRENCH,ENGLISH]                  |                       |
-| passwordRevocationDelay       |   Integer        | Non null                                              |  exprimé en jour      |
-| otp                           |   Enum           | Non null, valeurs = [OPTIONAL,DISABLED,MANDATORY]     |                       |
-| emailDomains                  |   List<_String_> | Non null, Non vide                                    |                       |
-| defaultEmailDomain            |   String         | Non null                                              |                       |
-| address                       |   Address        | Non null                                              |                       |
-| name                          |   String         | maximum = 100                                         |                       |
-| subrogeable                   |   boolean        | default=false                                         |                       |
-| readonly                      |   boolean        | default=false                                         |                       |
-| graphicIdentity               |   GraphicIdentity|                                                       |                       |
-| gdprAlert                     |   boolean        | default=false                                         |                       |
-| gdprAlertDelay                |   int            | minimum=1                                             |                       |
+| Nom                           | Type             | Contrainte(s)                                     | Remarque(s)           |
+| :---------------------------  | :--------------  |:--------------------------------------------------| :-------------------  |
+| _id                           |   String         | Clé Primaire                                      |                       |
+| identifier                    |   String         | minimum = 1, maximum = 12                         |                       |
+| code                          |   String         | minimum = 1, maximum = 15                       |                       |
+| companyName                   |   String         | maximum = 250                                     |                       |
+| language                      |   String         | Non null, valeurs = [FRENCH,ENGLISH]              |                       |
+| passwordRevocationDelay       |   Integer        | Non null                                          |  exprimé en jour      |
+| otp                           |   Enum           | Non null, valeurs = [OPTIONAL,DISABLED,MANDATORY] |                       |
+| emailDomains                  |   List<_String_> | Non null, Non vide                                |                       |
+| defaultEmailDomain            |   String         | Non null                                          |                       |
+| address                       |   Address        | Non null                                          |                       |
+| name                          |   String         | maximum = 100                                     |                       |
+| subrogeable                   |   boolean        | default=false                                     |                       |
+| readonly                      |   boolean        | default=false                                     |                       |
+| graphicIdentity               |   GraphicIdentity|                                                   |                       |
+| gdprAlert                     |   boolean        | default=false                                     |                       |
+| gdprAlertDelay                |   int            | minimum=1                                         |                       |
 
-   * GraphicIdentity (Embarqué)
+* GraphicIdentity (Embarqué)
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -74,8 +74,8 @@
 | portalTitle | String    |   |   |
 | portalMessage | String    |  maximum length = 500 chars) |   |
 | themeColors    |   Map<String, String>   |   |  |
-       
-   * themeColors
+
+* themeColors
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -84,8 +84,8 @@
 | vitamui-tertiary | String     |  hexadeciaml color like |   |
 | vitamui-header-footer | String     | hexadeciaml color like  |   |
 | vitamui-background | String     | hexadeciaml color like  |   |
-        
-   * _Collection tenants_
+
+* _Collection tenants_
 
 Le tenant correspond à un container (ie. espace de travail) logique.
 Chaque tenant est unique dans le système et appartient à un seul et unique client.
@@ -93,7 +93,8 @@ Un client peut posséder plusieurs tenants.
 Un client ne doit jamais pouvoir accéder au tenant d’un autre client.
 Les tenants VITAMUI correspondent aux tenants VITAM.
 Toutes les requêtes HTTP dans VITAMUI doivent renseigner le tenant dans le header.
-Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (certificat et contexte) et utilisateurs (profils).
+Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (certificat et contexte) et utilisateurs (
+profils).
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -110,7 +111,7 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 | accessContractLogbookIdentifier    |   String  |  Non null |  contrat d’accès pour le logbook |
 | enabled    |   Boolean  | Non null  |   |
 
-   * _Collection owners_
+* _Collection owners_
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -123,8 +124,7 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 | address    | Address    |   | embedded  |
 | readonly    |   Boolean  |   |   |
 
-
-   * Address (Embarqué)
+* Address (Embarqué)
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -133,12 +133,10 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 | city    |   String  | maximum = 100  |  |
 | country    |   String  | maximum = 50|   |
 
+* _Collection Identity Provider_
 
- * _Collection Identity Provider_
-
- L’identity provider L’IDP est soit externe (Clients/Organisations externes) soit interne.
- L’IDP interne est CAS lui même et les utilisateurs sont alors gérés uniquement dans l’annuaire CAS de VITAMUI.
-
+L’identity provider L’IDP est soit externe (Clients/Organisations externes) soit interne.
+L’IDP interne est CAS lui même et les utilisateurs sont alors gérés uniquement dans l’annuaire CAS de VITAMUI.
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -157,7 +155,6 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 | spMetadata    |   String  | | XML  |
 | maximumAuthenticationLifetime    |   Integer  | |   |
 | readonly    |   Boolean  | |   |
-
 
 * _Collection users_
 
@@ -187,23 +184,32 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 | passwordExpirationDate    |   OffsetDateTime  |  |   |
 | address    |   Address  |  |   |
 | analytics    |   AnalyticsDto  |  |   |
+| userInfoId    |   String  | Not null |   |
 
+* _Collection userInfos_
 
-   * AnalyticsDto (Embarqué)
+La collection définit des informations complémentaires de l'utilisateurs.
+
+| Nom    | Type | Contrainte(s) | Remarque(s) |
+| -------- | -------- | ------ | ------  |
+| _id | String     | Clé Primaire  |   |
+| identifier    |   String  |  minimum = 1, maximum = 12  |  |
+| language    |   String  |   |  |
+
+* AnalyticsDto (Embarqué)
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
 | applications | ApplicationAnalyticsDto     |  |   |
 | lastTenantIdentifier | Integer    |  |   |
 
-   * ApplicationAnalyticsDto (Embarqué)
+* ApplicationAnalyticsDto (Embarqué)
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
 | applicationId | String     |  |   |
 | accessCounter | int    |  |   |
 | lastAccess | OffsetDateTime    |  |  ex: YYYY-MM-ddTHH:mm:ss.ssssssZ |
-
 
 * _Collection externalParameters_
 
@@ -216,7 +222,7 @@ La collection qui définit un contrat d'accès par défaut
 | name    |   String  | minimum = 2, maximum = 100|   |
 | parameters    |   ParameterDto  |  Not Null |   |
 
-   * ParameterDto (Embarqué)
+* ParameterDto (Embarqué)
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -226,7 +232,8 @@ La collection qui définit un contrat d'accès par défaut
 * _Collection groups_
 
 Le groupe de profil définit un ensemble de profils.
-Un groupe de profil ne peut contenir qu’un seul profil par “app:tenant”. Par exemple : “profil(app1:tenant1), profil(app1:tenant2), profil(app2:tenant1)” est autorisé.
+Un groupe de profil ne peut contenir qu’un seul profil par “app:tenant”. Par exemple : “profil(app1:tenant1), profil(
+app1:tenant2), profil(app2:tenant1)” est autorisé.
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -242,8 +249,11 @@ Un groupe de profil ne peut contenir qu’un seul profil par “app:tenant”. P
 
 * _Collection profiles_
 
-Le profil définit les permissions (rôles) données à un utilisateur et l’accès à une application (applicationName), généralement une IHM qui regroupe un ensemble de fonctionnalités selon une logique métier et appelant des API backoffice.
-Un profil appartient à une groupe (de profils). Il ne peut y avoir qu’un seule et unique profile par tenant, applicationName dans un groupe.
+Le profil définit les permissions (rôles) données à un utilisateur et l’accès à une application (applicationName),
+généralement une IHM qui regroupe un ensemble de fonctionnalités selon une logique métier et appelant des API
+backoffice.
+Un profil appartient à une groupe (de profils). Il ne peut y avoir qu’un seule et unique profile par tenant,
+applicationName dans un groupe.
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -305,104 +315,116 @@ Un profil appartient à une groupe (de profils). Il ne peut y avoir qu’un seul
 | vitamResponse    |  String   | |   |
 | synchronizedVitamDate    |   OffsetDateTime  | |   |
 
-Pour aller plus loin, le modèle de données Vitam concernant les journaux d'archives est accessible par [ici](http://www.programmevitam.fr/ressources/DocCourante/autres/fonctionnel/VITAM_Modele_de_donnees.pdf#%5B%7B%22num%22%3A45%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C56.7%2C748.3%2C0%5D)
+Pour aller plus loin, le modèle de données Vitam concernant les journaux d'archives est accessible
+par [ici](http://www.programmevitam.fr/ressources/DocCourante/autres/fonctionnel/VITAM_Modele_de_donnees.pdf#%5B%7B%22num%22%3A45%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C56.7%2C748.3%2C0%5D)
 
 ### Base security
 
 * _Collection Context_
 
-Le contexte applicatif permet d’attribuer à une application cliente selon son certificat X509 transmis lors de la connexion https les droits d’accès (rôles)  à différents services.
+Le contexte applicatif permet d’attribuer à une application cliente selon son certificat X509 transmis lors de la
+connexion https les droits d’accès (rôles)  à différents services.
 
-  | Nom    | Type | Contrainte(s) | Remarque(s) |
+| Nom    | Type | Contrainte(s) | Remarque(s) |
   | -------- | -------- | ------ | ------  |
-  | _id | String     |  Clé Primaire |   |
-  | fullAccess | Boolean    | default = false  |   |
-  | name | String    | not null  |   |
-  | tenants    |  List<_Integer_>   | Not Null, List de Clé Étrangère | Liste des tenants autorisés |
-  | roleNames    |  List<_String_>   | Not Null |  Liste des rôles autorisés |
+| _id | String     |  Clé Primaire |   |
+| fullAccess | Boolean    | default = false  |   |
+| name | String    | not null  |   |
+| tenants    |  List<_Integer_>   | Not Null, List de Clé Étrangère | Liste des tenants autorisés |
+| roleNames    |  List<_String_>   | Not Null |  Liste des rôles autorisés |
 
 * _Collection Certificate_
 
 La collection certificat permet de stocker les certificats correspondant à un contexte.
-Le certificat est  transmis par l’application client lors de la connexion SSL.
+Le certificat est transmis par l’application client lors de la connexion SSL.
 
-  | Nom    | Type | Contrainte(s) | Remarque(s) |
+| Nom    | Type | Contrainte(s) | Remarque(s) |
   | -------- | -------- | ------ | ------  |
-  | _id | String     |  Clé Primaire |   |
-  | contextId | String    | Not Null  |   |
-  | serialNumber    |  String   | Not Null | Numéro de série du certificat |
-  | subjectDN    |  String   | Not Null |  Identifiant unique (Distinguished Name) du certificat |
-  | issuerDN    |  String   | Not Null |  Identifiant unique (Distinguished Name) de l’autorité de certification |
-  | data    |  String   | Not Null |  Certificat en base64 |
+| _id | String     |  Clé Primaire |   |
+| contextId | String    | Not Null  |   |
+| serialNumber    |  String   | Not Null | Numéro de série du certificat |
+| subjectDN    |  String   | Not Null |  Identifiant unique (Distinguished Name) du certificat |
+| issuerDN    |  String   | Not Null |  Identifiant unique (Distinguished Name) de l’autorité de certification |
+| data    |  String   | Not Null |  Certificat en base64 |
 
 * _Collection CustomSequence_
 
 La collection sequence permet de stocker les différentes séquences utilisés.
 
-  | Nom    | Type | Contrainte(s) | Remarque(s) |
+| Nom    | Type | Contrainte(s) | Remarque(s) |
   | -------- | -------- | ------ | ------  |
-  | _id | String     |  Clé Primaire |   |
-  | name | String    |  Not Null | Nom de la séquence   |
-  | sequence    |  int   |  | Valeur courante |
+| _id | String     |  Clé Primaire |   |
+| name | String    |  Not Null | Nom de la séquence   |
+| sequence    |  int   |  | Valeur courante |
 
 La liste des noms de séquences :
 
 - tenant_identifier
 - user_identifier
 - profile_identifier
-- group_identifier	
+- group_identifier
 - provider_identifier
 - customer_identifier
 - owner_identifier
 
-	
 ### Base Cas
 
 Cette base est initialisée à la création de l'environnement. Elle est uniquement utilisée par CAS en lecture seule.
 
-  | Nom    | Type | Contrainte(s) | Remarque(s) |
+| Nom    | Type | Contrainte(s) | Remarque(s) |
   | -------- | -------- | ------ | ------  |
-  | _id | String     |  Clé Primaire |   |
-  | serviceId | String    | Not Null  |  url du service web |
-  | name    |  String   |  | nom du service |
-  | logoutType    |  String   |  |   |
-  | logoutUrl    |  String   |  |  url de logout |
-  | attributeReleasePolicy    |     |  |  Stratégie des attributs |
-
+| _id | String     |  Clé Primaire |   |
+| serviceId | String    | Not Null  |  url du service web |
+| name    |  String   |  | nom du service |
+| logoutType    |  String   |  |   |
+| logoutUrl    |  String   |  |  url de logout |
+| attributeReleasePolicy    |     |  |  Stratégie des attributs |
 
 ### Base archivesearch
 
-Cette base est utilisé pour stocker les critères de filtres de recherche des utilisateurs, Aujourd'hui, elle est utilisée uniquement par le service Archive-Search, en particulier l'application de consultation et de recherche d'archives.
+Cette base est utilisé pour stocker les critères de filtres de recherche des utilisateurs:
 
+La collection searchCriteriaHistories est utilisée par l'application de consultation et de recherche d'archives.
 
 ###### Collections
 
     searchCriteriaHistories
 
-   * _Collection searchCriteriaHistories_
+* _Collection searchCriteriaHistories_
 
-
-
-  | Nom    | Type | Contrainte(s) | Remarque(s) |
+| Nom    | Type | Contrainte(s) | Remarque(s) |
   | -------- | -------- | ------ | ------  |
-  | _id | String     |  Clé Primaire |   |
-  | name | String    | Not Null, minimum = 1, maximum = 150 |  nom de la recherche sauvegardée |
-  | userId | String    | Not Null  | l'identifiant de l'utilisateur  |
-  | date    |  Date   |   | date de la sauvegarde des critères de recherche |
-  | searchCriteriaList    |   List<_SearchCriteriasDto_>  |  | liste des critères de recherches sauvegardées incluant les critères d'arbres et plan  |
-  
+| _id | String     |  Clé Primaire |   |
+| name | String    | Not Null, minimum = 1, maximum = 150 |  nom de la recherche sauvegardée |
+| userId | String    | Not Null  | l'identifiant de l'utilisateur  |
+| date    |  Date   |   | date de la sauvegarde des critères de recherche |
+| searchCriteriaList    |   List<_SearchCriteriasDto_>  |  | liste des critères de recherches sauvegardées incluant les critères d'arbres et plan  |
+
+    searchCriteriaHistories
+
+La collection searchCriteriaHistoriesCollect est utilisée par l'application de collect.
+
+* _Collection searchCriteriaHistoriesCollect_
+
+| Nom    | Type | Contrainte(s) | Remarque(s) |
+  | -------- | -------- | ------ | ------  |
+| _id | String     |  Clé Primaire |   |
+| name | String    | Not Null, minimum = 1, maximum = 150 |  nom de la recherche sauvegardée |
+| userId | String    | Not Null  | l'identifiant de l'utilisateur  |
+| date    |  Date   |   | date de la sauvegarde des critères de recherche |
+| searchCriteriaList    |   List<_SearchCriteriasDto_>  |  | liste des critères de recherches sauvegardées incluant les critères d'arbres et plan  |
+
      * SearchCriteriasDto (Embarqué)
-  
-  | Nom    | Type | Contrainte(s) | Remarque(s) |
+
+| Nom    | Type | Contrainte(s) | Remarque(s) |
   | -------- | -------- | ------ | ------  |
-  | nodes    |   List<_String_>  |  | liste des identifiants des noeuds d'arbre de positionnement/ plans de classemnt|
-  | criteriaList    |   List<_SearchCriteriaElementsDto_>  |  | liste des critères de recherches sauvegardées  |
-  
-  
+| nodes    |   List<_String_>  |  | liste des identifiants des noeuds d'arbre de positionnement/ plans de classemnt|
+| criteriaList    |   List<_SearchCriteriaElementsDto_>  |  | liste des critères de recherches sauvegardées  |
+
      * SearchCriteriaElementsDto (Embarqué)
-    
-  | Nom    | Type | Contrainte(s) | Remarque(s) |
+
+| Nom    | Type | Contrainte(s) | Remarque(s) |
   | -------- | -------- | ------ | ------  |
-  | criteria    |   String  |  | le nom du critère de recherche (eg: Title, StartDate, #opi, #id ...) |
-  | values    |   List<_String_>  |  | liste des valeurs du critère de filtre |
+| criteria    |   String  |  | le nom du critère de recherche (eg: Title, StartDate, #opi, #id ...) |
+| values    |   List<_String_>  |  | liste des valeurs du critère de filtre |
   

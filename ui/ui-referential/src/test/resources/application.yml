@@ -3,12 +3,12 @@ spring:
     name: ${server-identity.identityRole}
   api:
     name: API for referential UI
-    description: DESCRIPTION HERE.
+    description: This API is used by the referential UI
     version: v1
   profiles:
     active: test
   jmx:
-    default-domain: referential # Need to change endpoints bean name when there is multiple instance of spring boot
+    default-domain: archive-search
   cloud:
     consul:
       discovery:
@@ -20,30 +20,29 @@ ui-referential:
   iam-external-client:
     server-host: localhost
     server-port: 8083
-    secure: false
+    secure: true
     ssl-configuration:
       keystore:
-        key-path: "@project.build.testOutputDirectory@/keystore_sae-app.p12"
-        key-password: azerty
+        key-path: src/main/resources/dev/keystore_ui-referential.jks
+        key-password: changeme
+        type: JKS
       truststore:
-        key-path: "@project.build.testOutputDirectory@/truststore_sae-app.jks"
-        key-password: azerty
-      hostname-verification: true
+        key-path: src/main/resources/dev/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
   referential-external-client:
     server-host: localhost
-    server-port: 8085
-    secure: false
+    server-port: 8087
+    secure: true
     ssl-configuration:
       keystore:
-        key-path: "@project.build.testOutputDirectory@/keystore_sae-app.p12"
-        key-password: azerty
+        key-path: src/main/resources/dev/keystore_ui-referential.jks
+        key-password: changeme
+        type: JKS
       truststore:
-        key-path: "@project.build.testOutputDirectory@/truststore_sae-app.jks"
-        key-password: azerty
-      hostname-verification: true
-  base-url:
-    portal: "https://localhost:4200"
-    referential: "${ui.url}"
+        key-path: src/main/resources/dev/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
 
 ui-prefix: referential-api
 
@@ -53,14 +52,18 @@ server-identity:
   identityServerId: 1
 
 server:
+  servlet:
+    encoding:
+      force-response: true
+      charset: UTF-8
   compression:
     enabled: true
     mime-types: text/html,text/css,application/javascript,application/json
-  host: dev-referential.vitamui.com
+  host: dev.vitamui.com
   port: 8081
   scheme: https
   ssl:
-    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
+    key-store: src/main/resources/dev/keystore_ui-referential.jks
     key-store-password: changeme
     key-password: changeme
     enabled-protocols: TLSv1.2,TLSv1.3
@@ -77,11 +80,11 @@ ui:
   redirect-url: ${ui.url}
 
 cas:
-  internal-url: https://dev.vitamui.com:8080
-  external-url: https://dev.vitamui.com:8080
+  internal-url: https://dev-cas.vitamui.com:8080
+  external-url: https://dev-cas.vitamui.com:8080
   callback-url: ${ui.url}/callback
   ssl:
-    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store: src/main/resources/dev/truststore_server.jks
     trust-store-password: changeme
 
 debug: false

@@ -27,17 +27,17 @@
 package fr.gouv.vitamui.archives.search;
 
 import fr.gouv.vitamui.archives.search.config.ArchiveSearchApplicationProperties;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class ArchiveSearchApplicationTest {
 
@@ -50,7 +50,7 @@ public class ArchiveSearchApplicationTest {
     @Test
     public void testPropertiesLoading() {
 
-        Assert.assertNotNull(archiveSearchApplicationProperties);
+        Assertions.assertNotNull(archiveSearchApplicationProperties);
 
     }
 }

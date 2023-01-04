@@ -36,55 +36,42 @@
  */
 package fr.gouv.vitamui.commons.rest.configuration;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.util.MimeTypeUtils;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.RequestParameterBuilder;
+import springfox.documentation.oas.annotations.EnableOpenApi;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.service.RequestParameter;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpStatus;
-import org.springframework.util.MimeTypeUtils;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import lombok.Setter;
-import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.ResponseMessageBuilder;
-import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Parameter;
-import springfox.documentation.service.ResponseMessage;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.SwaggerResourcesProvider;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 /**
  * Enables the Swagger API documentation.
  * <p>
- * Call swagger-ui in our case http://localhost:[port]/swagger-ui.html#/
+ * Call swagger-ui in our case http://localhost:[port]/swagger-ui/index.html
  */
 @Configuration
-@EnableSwagger2
-@Profile("swagger")
-@PropertySource(value = { "classpath:swagger-${swagger.layer:default}.properties" }, encoding = "UTF-8")
+//@Profile("swagger")
+@EnableOpenApi
+@PropertySource(value = {"classpath:swagger-${swagger.layer:default}.properties"}, encoding = "UTF-8")
 public class SwaggerConfiguration {
 
-    private static final String MODEL_REF_TYPE = "string";
-
     private static final String PARAMETER_TYPE_HEADER = "header";
-
     @Value("${spring.api.name}")
     @NotNull
     @Setter
@@ -155,146 +142,102 @@ public class SwaggerConfiguration {
     @Setter
     private Boolean accessContractHeaderEnabled;
 
-    public static final String HTTP_CODE_401_MSG = "La requête n'est pas autorisée. Le X-User-Token n'est pas valide";
-
-    public static final String HTTP_CODE_403_MSG = "L'utilisateur ne possède pas les droits pour effectuer cette opération";
-
-    public static final String HTTP_CODE_404_MSG = "Non trouvée";
-
-    public static final String SWAGGER_API = "/swagger.json";
+    public static final String SWAGGER_API = "/v3/api-docs";
 
     @Bean
     public Docket api() {
-        final List<Parameter> parameters = new ArrayList<>();
+        final List<RequestParameter> parameters = new ArrayList<>();
         // @formatter:off
 
-        if(tenantHeaderEnabled) {
-            final Parameter tenantHeader = new ParameterBuilder()
-                    .name(CommonConstants.X_TENANT_ID_HEADER)
-                    .description(tenantHeaderDescription)
-                    .modelRef(new ModelRef("int"))
-                    .parameterType(PARAMETER_TYPE_HEADER)
-                    .required(true).build();
+        if (tenantHeaderEnabled) {
+            final RequestParameter tenantHeader = new RequestParameterBuilder()
+                .name(CommonConstants.X_TENANT_ID_HEADER)
+                .description(tenantHeaderDescription)
+                //.contentModel(new ModelSpecification("int"))
+                //.parameterType(PARAMETER_TYPE_HEADER)
+                .required(true).build();
             parameters.add(tenantHeader);
         }
 
-        if(xrsfTokenHeaderEnabled) {
-            final Parameter xsrfHeader = new ParameterBuilder()
-                    .name(CommonConstants.X_XSRF_TOKEN_HEADER)
-                    .description("XSRF Token")
-                    .modelRef(new ModelRef(MODEL_REF_TYPE))
-                    .parameterType(PARAMETER_TYPE_HEADER).required(false).build();
-
+        if (xrsfTokenHeaderEnabled) {
+            final RequestParameter xsrfHeader = new RequestParameterBuilder()
+                //contentModel(MODEL_REF_TYPE);
+                .description("XSRF Token")
+                .required(false)
+                .name(CommonConstants.X_XSRF_TOKEN_HEADER).build();
             parameters.add(xsrfHeader);
         }
 
-        if(userTokenHeaderEnabled) {
-            final Parameter userTokenHeader = new ParameterBuilder()
-                    .name(CommonConstants.X_USER_TOKEN_HEADER)
-                    .description(userTokenHeaderDescription)
-                    .modelRef(new ModelRef(MODEL_REF_TYPE))
-                    .parameterType(PARAMETER_TYPE_HEADER).required(true).build();
-
+        if (userTokenHeaderEnabled) {
+            final RequestParameter userTokenHeader = new RequestParameterBuilder()
+                //(MODEL_REF_TYPE);
+                .description(userTokenHeaderDescription)
+                .required(true)
+                .name(CommonConstants.X_USER_TOKEN_HEADER).build();
             parameters.add(userTokenHeader);
+
         }
 
-        if(applicationIdHeaderEnabled) {
-            final Parameter applicationIdHeader = new ParameterBuilder()
-                    .name(CommonConstants.X_APPLICATION_ID_HEADER)
-                    .description(applicationIdHeaderDescription)
-                    .modelRef(new ModelRef(MODEL_REF_TYPE))
-                    .parameterType(PARAMETER_TYPE_HEADER)
-                    .required(applicationHeaderRequired).build();
+        if (applicationIdHeaderEnabled) {
+
+            final RequestParameter applicationIdHeader = new RequestParameterBuilder()
+                .name(CommonConstants.X_APPLICATION_ID_HEADER)
+                .description(applicationIdHeaderDescription)
+                .in(PARAMETER_TYPE_HEADER)
+                //.modelRef(new ModelRef(MODEL_REF_TYPE))
+                .required(applicationHeaderRequired).build();
 
             parameters.add(applicationIdHeader);
         }
 
-        if(requestIdHeaderEnabled) {
-            final Parameter requestIdHeader = new ParameterBuilder()
-                    .name(CommonConstants.X_REQUEST_ID_HEADER)
-                    .description("X-request-Id")
-                    .modelRef(new ModelRef(MODEL_REF_TYPE))
-                    .parameterType(PARAMETER_TYPE_HEADER).required(true).build();
-
+        if (requestIdHeaderEnabled) {
+            final RequestParameter requestIdHeader = new RequestParameterBuilder()
+                .name(CommonConstants.X_REQUEST_ID_HEADER)
+                .description("X-request-Id")
+                //.modelRef(new ModelRef(MODEL_REF_TYPE))
+                .in(PARAMETER_TYPE_HEADER)
+                .required(true).build();
             parameters.add(requestIdHeader);
         }
 
-        if(accessContractHeaderEnabled) {
-            final Parameter requestIdHeader = new ParameterBuilder()
-                    .name(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)
-                    .description("X-Access-Contract-Id")
-                    .modelRef(new ModelRef(MODEL_REF_TYPE))
-                    .parameterType(PARAMETER_TYPE_HEADER).required(true).build();
-
+        if (accessContractHeaderEnabled) {
+            final RequestParameter requestIdHeader = new RequestParameterBuilder()
+                .name(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)
+                .description("X-Access-Contract-Id")
+                //.modelRef(new ModelRef(MODEL_REF_TYPE))
+                .in(PARAMETER_TYPE_HEADER)
+                .required(true).build();
             parameters.add(requestIdHeader);
         }
-
 
         Set<String> produces = Collections.singleton(MimeTypeUtils.APPLICATION_JSON_VALUE);
-        return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors
-                .any()).paths(PathSelectors.any()).build()
-                .apiInfo(apiInfo())
-                .produces(produces)
-                .globalOperationParameters(parameters)
-                .useDefaultResponseMessages(false)
-                .globalResponseMessage(RequestMethod.GET,getResponseMessage(RequestMethod.GET))
-                .globalResponseMessage(RequestMethod.POST,getResponseMessage(RequestMethod.POST))
-                .globalResponseMessage(RequestMethod.PATCH,getResponseMessage(RequestMethod.PATCH))
-                .globalResponseMessage(RequestMethod.PUT,getResponseMessage(RequestMethod.PUT))
-                .globalResponseMessage(RequestMethod.HEAD,getResponseMessage(RequestMethod.HEAD))
-                .pathMapping("/")
-                .genericModelSubstitutes(Optional.class);
+
+
+        return new Docket(DocumentationType.OAS_30)
+            .apiInfo(apiInfo())
+            .select()
+            .apis(RequestHandlerSelectors.any())
+            .paths(PathSelectors.any())
+            .build()
+            .produces(produces)
+            .globalRequestParameters(parameters)
+            .useDefaultResponseMessages(false)
+            .pathMapping("/")
+            .genericModelSubstitutes(Optional.class);
         // @formatter:on
-    }
-
-    private List<ResponseMessage> getResponseMessage(final RequestMethod requestMethod) {
-        List<ResponseMessage> responseMessage = new ArrayList<>();
-        ResponseMessage responseMessage403 = new ResponseMessageBuilder().code(HttpStatus.FORBIDDEN.value())
-                .message(HTTP_CODE_403_MSG).build();
-        ResponseMessage responseMessage401 = new ResponseMessageBuilder().code(HttpStatus.UNAUTHORIZED.value())
-                .message(HTTP_CODE_401_MSG).build();
-        ResponseMessage responseMessage404 = new ResponseMessageBuilder().code(HttpStatus.NOT_FOUND.value())
-                .message(HTTP_CODE_404_MSG).build();
-
-        responseMessage.add(responseMessage401);
-        responseMessage.add(responseMessage403);
-        switch (requestMethod) {
-            case GET :
-            case PATCH :
-            case PUT :
-                responseMessage.add(responseMessage404);
-                break;
-            default :
-                break;
-        }
-
-        return responseMessage;
-    }
-
-    @Bean
-    @Primary
-    @ConditionalOnProperty(value="swagger.custom.enabled", havingValue = "true", matchIfMissing = true)
-    public SwaggerResourcesProvider swaggerResourcesProvider() {
-        return new CustomInMemorySwaggerResourcesProvider();
-    }
-
-    @Bean
-    public SwaggerController swaggerController() {
-        return new SwaggerController();
     }
 
     protected ApiInfo apiInfo() {
         // @formatter:off
-        return new ApiInfo(
-                apiName,
-                apiDescription,
-                apiVersion,
-                "Terms of service",
-                new springfox.documentation.service.Contact("Direction de la diffusion et des partenariats", "", "contact@programmevitam.fr"),
-                "License to be defined ...",
-                "URL not defined.",
-                Collections.emptyList());
+        return new ApiInfo(apiName,
+            apiDescription,
+            apiVersion,
+            "Terms of service",
+            new Contact("Direction de la diffusion et des partenariats", "", "contact@programmevitam.fr"),
+            "Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022) " +
+                "and the signatories of the VITAM - Accord du Contributeur agreement.",
+            "https://github.com/ProgrammeVitam/vitam-ui/blob/develop/LICENSE.txt",
+            Collections.emptyList());
         // @formatter:on
     }
 

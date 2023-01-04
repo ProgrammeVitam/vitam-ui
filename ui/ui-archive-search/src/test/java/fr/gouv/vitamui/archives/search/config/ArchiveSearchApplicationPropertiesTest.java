@@ -27,18 +27,17 @@
 package fr.gouv.vitamui.archives.search.config;
 
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class ArchiveSearchApplicationPropertiesTest {
 
@@ -50,10 +49,10 @@ public class ArchiveSearchApplicationPropertiesTest {
 
     @Test
     public void testApplicationProperties() {
-        assertNotNull(archiveSearchApplicationProperties);
-        assertNotNull(archiveSearchApplicationProperties.getLimitPagination());
-        assertNotNull(archiveSearchApplicationProperties.getPrefix());
-        assertEquals(archiveSearchApplicationProperties.getPrefix(), "archive-search-api");
+        Assertions.assertNotNull(archiveSearchApplicationProperties);
+        Assertions.assertNotNull(archiveSearchApplicationProperties.getLimitPagination());
+        Assertions.assertNotNull(archiveSearchApplicationProperties.getPrefix());
+        Assertions.assertEquals(archiveSearchApplicationProperties.getPrefix(), "archive-search-api");
     }
 
 }

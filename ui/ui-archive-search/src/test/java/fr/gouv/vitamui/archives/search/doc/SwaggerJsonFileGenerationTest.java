@@ -31,24 +31,34 @@ import fr.gouv.vitamui.archives.search.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
+import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationJunit5;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
-import org.junit.runner.RunWith;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Swagger JSON Generation.
  * With this test class, we can generate the swagger json file without launching a full SpringBoot app.
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest
 @Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class})
 @ActiveProfiles("test, swagger")
-public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
+public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationJunit5 {
 
     @MockBean
     private RestExceptionHandler restExceptionHandler;
@@ -59,4 +69,16 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     @MockBean
     private SearchCriteriaHistoryService searchCriteriaHistoryService;
 
+    @Test
+    protected void swaggerJsonExists() throws Exception {
+        final String contentAsString =
+            mockMvc.perform(MockMvcRequestBuilders.get("/v3/api-docs").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Writer writer = new FileWriter(new File("target/generated-sources/swagger.json"));
+        try (writer) {
+            IOUtils.write(contentAsString, writer);
+        }
+    }
 }

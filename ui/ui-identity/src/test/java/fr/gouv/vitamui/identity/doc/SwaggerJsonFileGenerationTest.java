@@ -1,0 +1,112 @@
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * contact.vitam@culture.gouv.fr
+ *
+ * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
+ * high volumetry securely and efficiently.
+ *
+ * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
+ * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
+ * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
+ * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
+ * successive licensors have only limited liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated with loading, using, modifying and/or
+ * developing or reproducing the software by the user in light of its specific status of free software, that may mean
+ * that it is complicated to manipulate, and that also therefore means that it is reserved for developers and
+ * experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the
+ * software's suitability as regards their requirements in conditions enabling the security of their systems and/or data
+ * to be ensured and, more generally, to use and operate it in the same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
+ * accept its terms.
+ */
+
+package fr.gouv.vitamui.identity.doc;
+
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationJunit5;
+import fr.gouv.vitamui.identity.service.CustomerService;
+import fr.gouv.vitamui.identity.service.GroupService;
+import fr.gouv.vitamui.identity.service.IdentityCommonService;
+import fr.gouv.vitamui.identity.service.OwnerService;
+import fr.gouv.vitamui.identity.service.ProfileService;
+import fr.gouv.vitamui.identity.service.ProviderService;
+import fr.gouv.vitamui.identity.service.TenantService;
+import fr.gouv.vitamui.identity.service.UserInfoService;
+import fr.gouv.vitamui.identity.service.UserService;
+import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * Swagger JSON Generation.
+ * With this test class, we can generate the swagger json file without launching a full SpringBoot app.
+ */
+@ExtendWith(SpringExtension.class)
+@WebMvcTest
+@Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class})
+@ActiveProfiles("test, swagger")
+public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationJunit5 {
+
+    @MockBean
+    private RestExceptionHandler restExceptionHandler;
+
+    @MockBean
+    private CustomerService customerService;
+
+    @MockBean
+    private GroupService groupService;
+
+    @MockBean
+    private IdentityCommonService identityCommonService;
+
+    @MockBean
+    private OwnerService ownerService;
+
+    @MockBean
+    private ProfileService profileService;
+
+    @MockBean
+    private ProviderService providerService;
+
+    @MockBean
+    private TenantService tenantService;
+
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    private UserInfoService userInfoService;
+
+    @Test
+    protected void swaggerJsonExists() throws Exception {
+        final String contentAsString =
+            mockMvc.perform(MockMvcRequestBuilders.get("/v3/api-docs").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Writer writer = new FileWriter(new File("target/generated-sources/swagger.json"));
+        try (writer) {
+            IOUtils.write(contentAsString, writer);
+        }
+    }
+}

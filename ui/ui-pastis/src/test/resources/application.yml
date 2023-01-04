@@ -65,6 +65,10 @@ server-identity:
   identityServerId: 1
 
 server:
+  servlet:
+    encoding:
+      force-response: true
+      charset: UTF-8
   compression:
     enabled: true
     mime-types: text/html,text/css,application/javascript,application/json

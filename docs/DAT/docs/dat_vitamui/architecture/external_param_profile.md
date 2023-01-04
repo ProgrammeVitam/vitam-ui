@@ -1,5 +1,4 @@
-
-## Profils de paramétrage externes 
+## Profils de paramétrage externes
 
 ### External Parameter Profile
 
@@ -8,11 +7,13 @@ Un profil de paramétrage externe est une entité fictive, contient les informat
 * le nom du profil (nom)
 * la description du profil (description)
 * le contrat d'accès associé (accessContract: voir external parameters)
+* le seuil commun d'opérations de masse
 * le statut du profil (enabled)
 
-Un profil de paramétrage externe permet d'associer un et unique profil à un contrat d'accès qui est lui meme lié à un paramétrage externe (ExternalParameters).
+Un profil de paramétrage externe permet d'associer un et unique profil à un contrat d'accès qui est lui meme lié à un
+paramétrage externe (ExternalParameters).
 
-### Profil  
+### Profil
 
 voir [section 3.8](3.8)
 
@@ -51,7 +52,7 @@ Donnée du profil
     "_class": "profiles"
 }
 ```
-      
+
 Donnée de l'external parameter
 
 ```
@@ -63,6 +64,10 @@ Donnée de l'external parameter
         {
             "key": "PARAM_ACCESS_CONTRACT",
             "value": "ContratTNR"
+        },
+        {
+            key: 'PARAM_BULK_OPERATIONS_THRESHOLD',
+            value: '10000'
         }
     ],
     "_class": "externalParameters"
@@ -93,23 +98,22 @@ La mise à jour du profil de paramétrage externe peut générer jusqu'à trois 
 Premier cas:
 
 * Modification des données liés aux données du profil
-  * Dans ce cas de figure, on émet un événement de journal externe de type `EXT_VITAMUI_UPDATE_PROFILE`.
-  * et un événement de modification du profil de paramétrage externe `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE`
+    * Dans ce cas de figure, on émet un événement de journal externe de type `EXT_VITAMUI_UPDATE_PROFILE`.
+    * et un événement de modification du profil de paramétrage externe `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE`
 
 Deuxième cas:
 
 * Modification des données liés à la donnée du paramétrage externe
-  * Dans ce cas de figure, on émet un événement de journal externe de type `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM`.
-  * et un événement de modification du profil de paramétrage externe `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE`.
-
+    * Dans ce cas de figure, on émet un événement de journal externe de type `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM`.
+    * et un événement de modification du profil de paramétrage externe `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE`.
 
 Troisième cas:
 
-* Modification des données liés aux données du profil et du paramétrage externe, dans ce cas de figure, on émet 3 événements de journalisation :
-  * événement de type `EXT_VITAMUI_UPDATE_PROFILE`.
-  * événement de type `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM`.
-  * et un événement de modification du profil de paramétrage externe `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE`.
-
+* Modification des données liés aux données du profil et du paramétrage externe, dans ce cas de figure, on émet 3
+  événements de journalisation :
+    * événement de type `EXT_VITAMUI_UPDATE_PROFILE`.
+    * événement de type `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM`.
+    * et un événement de modification du profil de paramétrage externe `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE`.
 
 Exemple de mise à jour de la description du profil:
 

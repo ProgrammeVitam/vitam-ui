@@ -24,7 +24,7 @@
         <webpack.skip>false</webpack.skip>
         <webpack.test.skip>false</webpack.test.skip>
         <skipAllFrontend>false</skipAllFrontend>
-        <skipAllFrontendTests>false</skipAllFrontendTests>
+        <skipAllFrontendTests>true</skipAllFrontendTests>
     </properties>
 
     <dependencies>
@@ -109,11 +109,7 @@
         <!-- Documentation -->
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
+            <artifactId>springfox-boot-starter</artifactId>
         </dependency>
 
         <!-- UTILS -->

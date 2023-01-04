@@ -1,26 +1,28 @@
 package fr.gouv.vitamui.archives.search.rest;
 
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.archives.search.service.SearchCriteriaHistoryService;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.ui.commons.config.UICommonsAutoConfiguration;
 import fr.gouv.vitamui.ui.commons.config.UICommonsAutoSpringMockConfiguration;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.mockito.ArgumentMatchers.any;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ImportAutoConfiguration(classes = { UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class })
-@WebMvcTest(controllers = { SearchCriteriaHistoryController.class })
+@ExtendWith(SpringExtension.class)
+@ImportAutoConfiguration(classes = {UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class})
+@WebMvcTest(controllers = {SearchCriteriaHistoryController.class})
+@ActiveProfiles("test")
 public class SearchCriteriaHistoryControllerTest extends UiArchiveSearchControllerTest<SearchCriteriaHistoryDto> {
 
     @Value("${ui-archive-search.prefix}")
@@ -31,7 +33,8 @@ public class SearchCriteriaHistoryControllerTest extends UiArchiveSearchControll
     @MockBean
     private SearchCriteriaHistoryService service;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SearchCriteriaHistoryControllerTest.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(SearchCriteriaHistoryControllerTest.class);
 
     @MockBean
     private BuildProperties buildProperties;
@@ -79,8 +82,10 @@ public class SearchCriteriaHistoryControllerTest extends UiArchiveSearchControll
 
     @Override
     protected void preparedServices() {
-        Mockito.when(service.create(any(), any(SearchCriteriaHistoryDto.class))).thenReturn(new SearchCriteriaHistoryDto());
-        Mockito.when(service.update(any(), any(SearchCriteriaHistoryDto.class))).thenReturn(new SearchCriteriaHistoryDto());
+        Mockito.when(service.create(any(), any(SearchCriteriaHistoryDto.class)))
+            .thenReturn(new SearchCriteriaHistoryDto());
+        Mockito.when(service.update(any(), any(SearchCriteriaHistoryDto.class)))
+            .thenReturn(new SearchCriteriaHistoryDto());
         Mockito.when(service.getOne(any(), any(), any())).thenReturn(new SearchCriteriaHistoryDto());
     }
 }

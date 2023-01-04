@@ -24,7 +24,7 @@ Les principes de fonctionnement de la PKI sont les suivants :
       magasin de certificats qui contient des certificats .p12 et .jks)
     * Déploiement dans VITAMUI des certificats .p12 et .jks par Ansible
 
-    Schéma de la PKI :
+  Schéma de la PKI :
 
 ![PKI](../images/dat_pki_1.png)
 
@@ -47,7 +47,7 @@ La PKI voit ses fichiers répartis à deux emplacements:
   certificats, clés privées ...)
 
   Fichier       | Description  |
-    ------------ | :----------- |
+          ------------ | :----------- |
   pki/ca        |  Répertoire dans lequel sont stockés les CA de chaque zone    |
   pki/config        |  Répertoire dans lequel sont stockées les configurations pour la génération des CA/certificats     |
   pki/config/scripts        |  Répertoire dans lequel sont stockées les scripts de génération de la PKI. |
@@ -180,24 +180,29 @@ surtout pas être utilisée en environnement de production.
 
 Le tableau ci-dessous détail l’ensemble du contenu des keystores et truststores par service.
 
-|Composants  |  Keystores  |Truststores|
-|------------|-------------|-----------|
-|**ui-portal**  |  ui-portal.crt, ui-portal.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-identity**  |  ui-identity.crt, ui-identity.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-identity-admin**  |  ui-identity-admin.crt, ui-identity-admin.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-referential**  |  ui-referential.crt, ui-referential.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-ingest**  |  ui-ingest.crt, ui-ingest.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-archive-search**  |  ui-archive-search.crt, ui-archive-search.key  | ca-root.crt, ca-intermediate.crt |
-|**cas-server**  |  cas-server.crt, cas-server.key  | ca-root.crt, ca-intermediate.crt |
-|**iam-external**  |  iam-external.crt, iam-external.key  | ca-root.crt |
-|**iam-internal**  |  iam-internal.crt, iam-internal.key  | ca-root.crt |
-|**referential-external**  |  referential-external.crt, referential-external.key  | ca-root.crt |
-|**referential-internal**  |  referential-internal.crt, referential-internal.key  | ca-root.crt |
-|**ingest-external**  |  ingest-external.crt, ingest-external.key  | ca-root.crt |
-|**ingest-internal**  |  ingest-internal.crt, ingest-internal.key  | ca-root.crt |
-|**archive-search-external**  |  archive-search-external.crt, archive-external.key  | ca-root.crt |
-|**archive-search-internal**  |  archive-search-internal.crt, archive-internal.key  | ca-root.crt |
-|**security-server**  |  security-server.crt, security-server | ca-root.crt |
+| Composants                  | Keystores                                          |Truststores|
+|-----------------------------|----------------------------------------------------|-----------|
+| **ui-portal**               | ui-portal.crt, ui-portal.key                       | ca-root.crt, ca-intermediate.crt |
+| **ui-identity**             | ui-identity.crt, ui-identity.key                   | ca-root.crt, ca-intermediate.crt |
+| **ui-identity-admin**       | ui-identity-admin.crt, ui-identity-admin.key       | ca-root.crt, ca-intermediate.crt |
+| **ui-referential**          | ui-referential.crt, ui-referential.key             | ca-root.crt, ca-intermediate.crt |
+| **ui-ingest**               | ui-ingest.crt, ui-ingest.key                       | ca-root.crt, ca-intermediate.crt |
+| **ui-archive-search**       | ui-archive-search.crt, ui-archive-search.key       | ca-root.crt, ca-intermediate.crt |
+| **ui-collect**              | ui-collect.crt, ui-collect.key                     | ca-root.crt, ca-intermediate.crt |
+| **ui-pastis**               | ui-pastis.crt, ui-pastis.key                       | ca-root.crt, ca-intermediate.crt |
+| **cas-server**              | cas-server.crt, cas-server.key                     | ca-root.crt, ca-intermediate.crt |
+| **iam-external**            | iam-external.crt, iam-external.key                 | ca-root.crt |
+| **iam-internal**            | iam-internal.crt, iam-internal.key                 | ca-root.crt |
+| **referential-external**    | referential-external.crt, referential-external.key | ca-root.crt |
+| **referential-internal**    | referential-internal.crt, referential-internal.key | ca-root.crt |
+| **ingest-external**         | ingest-external.crt, ingest-external.key           | ca-root.crt |
+| **ingest-internal**         | ingest-internal.crt, ingest-internal.key           | ca-root.crt |
+| **archive-search-external** | archive-search-external.crt, archive-external.key  | ca-root.crt |
+| **archive-search-internal** | archive-search-internal.crt, archive-internal.key  | ca-root.crt |
+| **collect-external**        | collect-external.crt, collect.key                  | ca-root.crt |
+| **collect-internal**        | collect-internal.crt, collect.key                  | ca-root.crt |
+| **pastis-external**         | pastis-external.crt, pastis.key                    | ca-root.crt |
+| **security-server**         | security-server.crt, security-server               | ca-root.crt |
 
 La liste des certificats utilisées par VITAM est décrite à cette
 adresse : http://www.programmevitam.fr/ressources/DocCourante/html/archi/securite/20-certificates.html

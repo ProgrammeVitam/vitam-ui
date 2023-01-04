@@ -1,7 +1,7 @@
+# Architecture
 
-# Architecture 
-
-La solution VITAMUI popose des applications web accessibles depuis un portail. La solution VITAMUI est constitué de différents modules :
+La solution VITAMUI popose des applications web accessibles depuis un portail. La solution VITAMUI est constitué de
+différents modules :
 
 * Socle IAM CAS pour la gestion des identités et des accès
 
@@ -9,32 +9,37 @@ La solution VITAMUI popose des applications web accessibles depuis un portail. L
 
 * Services d'infrastructure
     * Annuaire de service
-    * Gestion des logs centralisée   
-    
+    * Gestion des logs centralisée
+
 * Applications web pour les utilisateurs
-    * portail 
+    * portail
     * gestion des organisations, utilisateurs, profils, etc.
     * Gestion des référentiels de la solution VITAM
     * Gestion d'entrée, accès et recherche d'archives
     * Consultation des journaux d'opérations d'archives etc.
-    
+    * Recherche, mise à jour des unités archivistiques
+    * Collect et construction de SIP d'ingest (Collect)
+    * Création, et mise à jour des profils d'unité d'archives et d'unité archivistiques (Pastis)
+
 * Services API externes
     * service de gestion des organisations, des utilisateurs, etc.
     * service CAS
     * service de référentiel externe
     * service d'ingest externe
     * service d'archive externe
-    
-* Services API internes 
+    * service de collect externe
+    * service de Pastis externe
+
+* Services API internes
     * service des gestion des organisations, des utilisateurs, etc.
     * service de gestion de la sécurité
     * service de référentiel interne
     * service d'ingest interne
     * service d'archive interne
+    * service de collect interne
 
- * Les services API internes communiquent avec les API externes VITAM.
- 
- 
-    Schéma de l’architecture fonctionnelle VITAMUI:
+* Les services API internes communiquent avec les API externes VITAM.
+
+  Schéma de l’architecture fonctionnelle VITAMUI:
 
 ![Architecture fonctionnelle](../images/dat_architecture_generale.png)
