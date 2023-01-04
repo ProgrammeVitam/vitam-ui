@@ -6,7 +6,7 @@
 
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>parent</artifactId>
-    <version>6.rc.0</version>
+    <version>6.rc.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>VITAMUI</name>
     <description>${project.artifactId}</description>
@@ -149,7 +149,7 @@
         <swagger.version>3.0.0</swagger.version>
         <trang.version>20181222</trang.version>
         <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
-        <vitam.version>6.rc.0</vitam.version>
+        <vitam.version>6.rc.1-SNAPSHOT</vitam.version>
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
         <xom.version>1.3.4</xom.version>
