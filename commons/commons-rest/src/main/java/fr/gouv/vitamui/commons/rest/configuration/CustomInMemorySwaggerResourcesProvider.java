@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.commons.rest.configuration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.Setter;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomInMemorySwaggerResourcesProvider implements SwaggerResourcesProvider {
 
@@ -53,7 +53,7 @@ public class CustomInMemorySwaggerResourcesProvider implements SwaggerResourcesP
         List<SwaggerResource> resource = new ArrayList<>();
         SwaggerResource swaggerResource = new SwaggerResource();
         swaggerResource.setUrl(filePath);
-        swaggerResource.setSwaggerVersion("2.0");
+        swaggerResource.setSwaggerVersion("3.0");
         swaggerResource.setName("custom");
         resource.add(swaggerResource);
         return resource;

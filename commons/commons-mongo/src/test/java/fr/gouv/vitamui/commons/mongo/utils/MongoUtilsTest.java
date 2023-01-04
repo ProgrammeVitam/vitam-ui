@@ -1,6 +1,15 @@
 package fr.gouv.vitamui.commons.mongo.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.mongodb.BasicDBList;
+import fr.gouv.vitamui.commons.api.domain.Criterion;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.mongo.domain.Person;
+import fr.gouv.vitamui.commons.utils.ReflectionUtils;
+import org.bson.Document;
+import org.junit.Test;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
@@ -10,18 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-import com.mongodb.BasicDBList;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import org.bson.Document;
-
-import org.junit.Test;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-
-import fr.gouv.vitamui.commons.api.domain.Criterion;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.mongo.domain.Person;
-import fr.gouv.vitamui.commons.utils.ReflectionUtils;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MongoUtilsTest {
 
@@ -47,7 +45,7 @@ public class MongoUtilsTest {
         MongoUtils.addCriteriaIgnoreCase("key", Optional.of("val"), criteria);
         assertThat(criteria.size()).isEqualTo(1);
         assertThat(criteria)
-                .containsExactly(Criteria.where("key").regex(Pattern.compile("^\\Qval\\E$", Pattern.CASE_INSENSITIVE)));
+            .containsExactly(Criteria.where("key").regex(Pattern.compile("^\\Qval\\E$", Pattern.CASE_INSENSITIVE)));
     }
 
     @Test
@@ -61,12 +59,12 @@ public class MongoUtilsTest {
         assertThat(criteria.getKey()).isEqualTo("age");
 
         c = new Criterion("lastConnection", OffsetDateTime.now().toString(),
-                CriterionOperator.EQUALS);
+            CriterionOperator.EQUALS);
         criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("lastConnection");
 
         c = new Criterion("emails", Arrays.asList("julien@vitamui.com"),
-                CriterionOperator.EQUALS);
+            CriterionOperator.EQUALS);
         criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("emails");
 
@@ -75,7 +73,7 @@ public class MongoUtilsTest {
         assertThat(criteria.getKey()).isEqualTo("id");
 
         c = new Criterion("lastName", Arrays.asList("titi", "toto"),
-                CriterionOperator.NOTIN);
+            CriterionOperator.NOTIN);
         criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("lastName");
 
@@ -166,13 +164,13 @@ public class MongoUtilsTest {
 
         assertThat(criteria.getKey()).isEqualTo("addressList");
 
-        Document addressCriteria = (Document)criteria.getCriteriaObject().get("addressList");
+        Document addressCriteria = (Document) criteria.getCriteriaObject().get("addressList");
         assertThat(addressCriteria).isNotNull();
 
-        Document elemMatch = (Document)addressCriteria.get("$elemMatch");
+        Document elemMatch = (Document) addressCriteria.get("$elemMatch");
         assertThat(elemMatch).isNotNull();
 
-        Document elemMatchInternalQuery = (Document)((BasicDBList)elemMatch.get("$and")).get(0);
+        Document elemMatchInternalQuery = (Document) ((BasicDBList) elemMatch.get("$and")).get(0);
         assertThat(elemMatchInternalQuery.getString("country")).isEqualTo("France");
     }
 

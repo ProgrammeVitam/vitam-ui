@@ -52,8 +52,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_TENANT_ID_HEADER;
 
 /**
  * The context of an internal REST call (to the security API).
- *
- *
  */
 @Getter
 @EqualsAndHashCode
@@ -76,12 +74,15 @@ public abstract class AbstractHttpContext implements Serializable {
     // @formatter:off
     private static final List<String> CALLS_WITHOUT_TENANT_ID = Arrays.asList(
         "/actuator/health", "/actuator/prometheus", "/error/", "/favicon.ico",
-        "/swagger-resources", "/swagger-ui.html", "/v2/api-docs", "/webjars"
+        "/swagger-resources", "/swagger-ui.html", "/v2/api-docs", "/webjars", "/swagger-resources/**",
+        "/swagger-ui/**",
+        "/v3/api-docs",
+        "/webjars/**"
     );
     // @formatter:on
 
     public AbstractHttpContext(final Integer tenantIdentifier, final String userToken, final String applicationId,
-            final String identity, final String requestId, final String accessContract) {
+        final String identity, final String requestId, final String accessContract) {
         this.identity = identity;
         this.tenantIdentifier = tenantIdentifier;
         this.userToken = userToken;
@@ -106,10 +107,9 @@ public abstract class AbstractHttpContext implements Serializable {
             if (StringUtils.isNotBlank(tenant)) {
                 return Integer.valueOf(tenant);
             }
-        }
-        catch (final NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new BadRequestException(String.format("%s header : Integer type was expected, instead value was %s. ",
-                    X_TENANT_ID_HEADER, tenant));
+                X_TENANT_ID_HEADER, tenant));
         }
 
         if (urlNeedsTenantIdHeader(url)) {
@@ -121,19 +121,20 @@ public abstract class AbstractHttpContext implements Serializable {
 
     /**
      * Checks if the URL needs a tenantIdentifier, using our whitelist.
+     *
      * @param url
      * @return a boolean
      */
     public static boolean urlNeedsTenantIdHeader(final String url) {
         return CALLS_WITHOUT_TENANT_ID.stream().noneMatch(whitelist -> StringUtils.isNotEmpty(url)
-                && (whitelist.equalsIgnoreCase(url) || url.contains(whitelist)));
+            && (whitelist.equalsIgnoreCase(url) || url.contains(whitelist)));
     }
 
     @Override
     public String toString() {
         return "AbstractHttpContext(tenantIdentifier=" + tenantIdentifier + ", userToken(truncated)="
-                + StringUtils.substring(userToken, 0, StringUtils.length(userToken) / 2) + "****, applicationId= "
-                + applicationId + ", identity=" + identity + ", requestId=" + requestId + ", accessContract="
-                + accessContract + ")";
+            + StringUtils.substring(userToken, 0, StringUtils.length(userToken) / 2) + "****, applicationId= "
+            + applicationId + ", identity=" + identity + ", requestId=" + requestId + ", accessContract="
+            + accessContract + ")";
     }
 }
