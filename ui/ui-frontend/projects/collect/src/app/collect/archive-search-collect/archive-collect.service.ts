@@ -148,16 +148,6 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
 
-  hasAccessContractManagementPermissions(accessContract: AccessContract): boolean {
-    return accessContract.writingPermission && !accessContract.writingRestrictedDesc;
-  }
-
-  prepareHeaders(accessContract: string): HttpHeaders {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-    return headers;
-  }
-
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
