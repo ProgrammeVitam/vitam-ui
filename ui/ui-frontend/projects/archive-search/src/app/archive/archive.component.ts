@@ -61,7 +61,8 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   accessContractSub: Subscription;
   errorMessageSub: Subscription;
   isLPExtended = false;
-  hasAccessContractManagementPermissions = false;
+  accessContractAllowUpdating = false;
+  accessContractUpdatingRestrictedDesc = false;
   hasUpdateDescriptiveUnitMetadataRole = false;
 
   constructor(
@@ -141,7 +142,8 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   fetchVitamAccessContract() {
     this.archiveService.getAccessContractById(this.accessContract).subscribe(
       (ac: AccessContract) => {
-        this.hasAccessContractManagementPermissions = this.archiveService.hasAccessContractManagementPermissions(ac);
+        this.accessContractAllowUpdating = ac.writingPermission;
+        this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
       },
       (error: any) => {
         this.loggerService.error('error message', error);

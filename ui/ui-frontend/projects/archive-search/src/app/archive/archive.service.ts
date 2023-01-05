@@ -46,7 +46,7 @@ import {
   CriteriaOperator,
   FilingHoldingSchemeNode,
   SearchService,
-  SecurityService,
+  SecurityService
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
@@ -245,16 +245,6 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
-  }
-
-  hasAccessContractManagementPermissions(accessContract: AccessContract): boolean {
-    return accessContract.writingPermission && !accessContract.writingRestrictedDesc;
-  }
-
-  prepareHeaders(accessContract: string): HttpHeaders {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-    return headers;
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
