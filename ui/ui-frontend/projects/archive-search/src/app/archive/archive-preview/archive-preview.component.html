@@ -18,11 +18,11 @@
     </button>
     <button
       mat-menu-item
-      matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
+      matTooltip="{{ !accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : '' }}"
       matTooltipClass="vitamui-tooltip"
       [matTooltipShowDelay]="300"
       (click)="updateMetadataDesc()"
-      [disabled]="updateStarted || (!hasAccessContractManagementPermissions || !hasUpdateDescriptiveUnitMetadataRole)"
+      [disabled]="updateStarted || (!accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole)"
     >
       {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>
