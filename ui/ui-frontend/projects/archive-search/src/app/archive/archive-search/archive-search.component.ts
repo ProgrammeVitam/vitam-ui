@@ -38,7 +38,7 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -69,7 +69,7 @@ import {
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaRemoveAction,
   SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
+  SearchCriteriaTypeEnum
 } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
@@ -179,7 +179,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   hasTransferRequestRole = false;
   hasUpdateManagementRuleRole = false;
   @Input()
-  hasAccessContractManagementPermissions: boolean;
+  accessContractAllowUpdating: boolean;
+  @Input()
+  accessContractUpdatingRestrictedDesc: boolean;
   hasEliminationAnalysisOrActionRole = false;
   hasComputedInheritedRulesRole = false;
   hasReclassificationRole = false;
