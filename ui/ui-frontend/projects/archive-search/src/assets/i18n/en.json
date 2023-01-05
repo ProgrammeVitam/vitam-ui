@@ -1,5 +1,12 @@
 {
   "ARCHIVE_SEARCH": {
+    "UNIT_OBJECT_QUALIFIER_TYPE": {
+      "BinaryMaster": "Binary master",
+      "Dissemination": "Dissemination",
+      "Thumbnail": "Thumbnail",
+      "TextContent": "Text content",
+      "PhysicalMaster": "Physical master"
+    },
     "ARCHIVE_UNIT_RULES_DETAILS": {
       "RULES_FINAL_ACTION": {
         "KEEP": "Conservation",
@@ -128,8 +135,8 @@
       "CONFIRM": "Confirm",
       "CANCEL": "Cancel"
     },
-    "TRANSFER_ACKNOWLEDGMENT" : {
-      "ACTION_TITLE" : "Acknowledge an archive transfer",
+    "TRANSFER_ACKNOWLEDGMENT": {
+      "ACTION_TITLE": "Acknowledge an archive transfer",
       "FILE_BAD_FORMAT": "The uploaded file is not in the correct format",
       "TITLE_FIRST_STEP": "Acknowledgment of a transfer operation",
       "DOWNLOAD_ATR_FILE": "Download Transfer Acknowledgment",
@@ -139,7 +146,7 @@
       "DRAG_AND_DROP": "Drag or drop",
       "BROWSE": "Or browse",
       "ACCEPTED_FORMAT": "Accepted format: xml",
-      "MAX_SIZE" : "Maximum recommended size: 10 GB",
+      "MAX_SIZE": "Maximum recommended size: 10 GB",
       "TRANSFER_REPLY_OPERATION": "Acknowledgment of a transfer operation",
       "OPERATION_MESSAGE_IDENTIFIER": "Original transfer request identifier",
       "TRANSFER_REALISATION_DATE": "Date of completion of the transfer",
@@ -152,12 +159,12 @@
       "PREVIOUS_STEP": "Back",
       "ACKNOWLEDGMENT_TRANSFER_CONTROL": "Transfer acknowledgment control",
       "ACKNOWLEDGMENT_TRANSFER_VALIDATION": "Transfer acknowledgment validation",
-      "ACKNOWLEDGMENT_TRANSFER_REPLY_CODE" : "Transfer acknowledgment status is:",
-      "CONFIRM_SUCCESS_TRANSFER" : "Do you want to confirm the SUCCESS of the transfer?",
+      "ACKNOWLEDGMENT_TRANSFER_REPLY_CODE": "Transfer acknowledgment status is:",
+      "CONFIRM_SUCCESS_TRANSFER": "Do you want to confirm the SUCCESS of the transfer?",
       "CONFIRM_FAILURE_TRANSFER": "Do you want to confirm the transfer FAILED? No elimination will be carried out at this stage.",
       "REPLY_TRANSFER": "Acknowledge the transfer",
       "ACKNOWLEDGMENT_TRANSFER": "Transfer acknowledgment",
-      "CANCEL_TRANSFER_OPERATION" : "Are you sure you want to cancel the transfer acknowledgment operation?",
+      "CANCEL_TRANSFER_OPERATION": "Are you sure you want to cancel the transfer acknowledgment operation?",
       "TRANSFER_CONFIRM": "Confirm",
       "REQUEST_MESSAGE": "Your transfer acknowledgment request has been taken into account "
     },
@@ -337,7 +344,6 @@
         "END_DATE_DISSEMINATION_EQUAL": "Max end date",
         "END_DATE_DISSEMINATION_BEGIN": "Between ",
         "END_DATE_DISSEMINATION_END": " and ",
-
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
         "ARCHIVE_UNIT_HOLDING_UNIT": "Positioning tree",
         "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
@@ -361,19 +367,16 @@
           "HAS_NO_ACCESS_RULE": "Does not define a Access rule defined",
           "WAITING_TO_RE_CALCULATE_ACCESS_RULE": "Is waiting for rule recalculation",
           "SELECT_ALL_ACCESS_RULE": "Select all",
-
           "INHERITE_AT_LEAST_ONE_STORAGE_RULE": "Inherits at least one storage rule",
           "HAS_AT_LEAST_ONE_STORAGE_RULE": "Define at least one storage rule",
           "HAS_NO_STORAGE_RULE": "Does not define a storage rule defined ",
           "WAITING_TO_RE_CALCULATE_STORAGE_RULE": "Is waiting for rule recalculation",
           "SELECT_ALL_STORAGE_RULE": "Select all",
-
           "INHERITE_AT_LEAST_ONE_REUSE_RULE": "Inherits at least one reuse rule",
           "HAS_AT_LEAST_ONE_REUSE_RULE": "Define at least one reuse rule",
           "HAS_NO_REUSE_RULE": "Does not define a reuse rule defined",
           "WAITING_TO_RE_CALCULATE_REUSE_RULE": "Is waiting for rule recalculation",
           "SELECT_ALL_REUSE_RULE": "Select all",
-
           "INHERITE_AT_LEAST_ONE_DISSEMINATION_RULE": "Inherits at least one Dissemination rule",
           "HAS_AT_LEAST_ONE_DISSEMINATION_RULE": "Define at least one Dissemination rule",
           "HAS_NO_DISSEMINATION_RULE": "Does not define a Dissemination rule defined",
@@ -511,7 +514,31 @@
         "PATH": "Path",
         "DESCRIPTION_LEVEL": "Description level",
         "DOWNLOAD_DOC": "Download the document",
-        "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH"
+        "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH",
+        "OBJECT_ID": "Technical object identifier",
+        "OBJECT_GROUP_ID": "Technical object group identifier",
+        "CREATION_DATE": "Creation date",
+        "USAGE": "Usage",
+        "USAGE_VERSION": "Usage version",
+        "FORMAT": "FORMAT",
+        "FORMAT_PUID": "PUID of the format",
+        "FORMAT_NAME": "Name of the format",
+        "MIME_TYPE": "MIME type",
+        "FILE_ENCODING": "File encoding",
+        "FILE": "FILE",
+        "FILE_NAME": "Original file name",
+        "URI": "URI",
+        "OCTET_SIZE": "Size in byte",
+        "ALGORITHM": "Footprint - ",
+        "LAST_MODIFIED_DATE": "Date of last modification",
+        "CREATING_APPLICATION_NAME": "Original app name",
+        "CREATING_OS": "Original operating system",
+        "CREATING_APPLICATION_VERSION": "Original app version",
+        "CREATING_OS_VERSION": "Original operating system version",
+        "CREATED_APPLICATION_DATE": "Application creation date",
+        "STOCKAGE": "STORAGE",
+        "STOCKAGE_STRATEGY_ID": "Storage strategy identifier",
+        "COPY": "Copy"
       },
       "TABS": {
         "INFORMATIONS": "Informations",

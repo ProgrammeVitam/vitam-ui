@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -47,6 +48,9 @@ import java.util.List;
 public class QualifiersDto {
 
     private String qualifier;
+
+    @JsonProperty("#nbc")
+    private String nbc;
 
     private List<VersionsDto> versions = new ArrayList<>();
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -24,24 +24,41 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {VitamuiTreeNodeComponent} from './vitamui-tree-node.component';
+import {QualifierDto, VersionDto, VersionWithQualifierDto} from './unit-object-api.interface';
+import {ObjectQualifierTypeList} from './unit.enums';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatTooltipModule,
-  ],
-  declarations: [VitamuiTreeNodeComponent],
-  exports: [VitamuiTreeNodeComponent],
-})
-export class VitamuiTreeNodeModule {
+export function qualifiersToVersionsWithQualifier(qualifiers: Array<QualifierDto>): Array<VersionWithQualifierDto> {
+  if (!qualifiers || qualifiers.length < 1) {
+    return [];
+  }
+  const versionsWithQualifiers = new Array<VersionWithQualifierDto>();
+  for (const qualifier of qualifiers) {
+    for (const version of qualifier.versions) {
+      versionsWithQualifiers.push(convertToVersionWithQualifier(qualifier, version));
+    }
+  }
+  versionsWithQualifiers.sort(byQualifierThenVersion);
+  return versionsWithQualifiers;
+}
+
+export function convertToVersionWithQualifier(qualifier: QualifierDto, version: VersionDto): VersionWithQualifierDto {
+  const versionWithQualifier: VersionWithQualifierDto = version as VersionWithQualifierDto;
+  versionWithQualifier.qualifier = qualifier.qualifier;
+  versionWithQualifier.version = parseDataObjectVersion(versionWithQualifier.DataObjectVersion);
+  return versionWithQualifier;
+}
+
+export const byQualifierThenVersion = (left: VersionWithQualifierDto, right: VersionWithQualifierDto) => {
+  if (left.qualifier === right.qualifier) {
+    return left.version - right.version;
+  }
+  return ObjectQualifierTypeList.indexOf(left.qualifier) - ObjectQualifierTypeList.indexOf(right.qualifier);
+};
+
+export function parseDataObjectVersion(dataObjectVersion: string): number {
+  if (!dataObjectVersion) {
+    return 0;
+  }
+  const qualifierAndVersion: Array<string> = dataObjectVersion.split('_');
+  return +qualifierAndVersion[1];
 }

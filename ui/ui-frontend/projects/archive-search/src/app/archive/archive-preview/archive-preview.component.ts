@@ -35,11 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
-import { Unit } from '../models/unit.interface';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {MatTabChangeEvent} from '@angular/material/tabs';
+import {ActivatedRoute} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
+import {VitamuiIcons, VitamuiUnitTypes} from 'ui-frontend-common';
+import {Unit} from '../models/unit.interface';
 
 @Component({
   selector: 'app-archive-preview',
@@ -47,29 +48,23 @@ import { Unit } from '../models/unit.interface';
   styleUrls: ['./archive-preview.component.scss'],
 })
 export class ArchivePreviewComponent implements OnInit, OnChanges {
-  @Input()
-  archiveUnit: Unit;
-  @Input()
-  accessContract: string;
-  @Output()
-  backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
-  @Output()
-  previewClose: EventEmitter<any> = new EventEmitter();
-  @Output()
-  showExtendedLateralPanel: EventEmitter<any> = new EventEmitter();
-  @Input()
-  isPopup: boolean;
+
+  @Input() archiveUnit: Unit;
+  @Input() accessContract: string;
+  @Input() isPopup: boolean;
+  @Input() accessContractAllowUpdating: boolean;
+  @Input() hasUpdateDescriptiveUnitMetadataRole: boolean;
+
+  @Output() backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
+  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  @Output() showExtendedLateralPanel: EventEmitter<any> = new EventEmitter();
+
   isPanelextended = false;
   selectedIndex = 0;
-
   tenantIdentifier: number;
-
   updateStarted = false;
-  @Input()
-  accessContractAllowUpdating: boolean;
-  @Input()
-  hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = '';
+
   constructor(private route: ActivatedRoute, private translateService: TranslateService) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
@@ -81,25 +76,39 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   }
 
   emitClose() {
-    this.isPanelextended = false;
     this.previewClose.emit();
+    this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
     this.selectedIndex = 0;
   }
-  showNormalPanel() {
-    if (this.selectedIndex > 0) {
-      this.selectedIndex--;
+
+  selectedTabChangeEvent($event: MatTabChangeEvent) {
+    switch ($event.index) {
+      case 0:
+        this.isPanelextended = false;
+        this.backToNormalLateralPanel.emit();
+        break;
+      case 1:
+        this.isPanelextended = true;
+        this.showExtendedLateralPanel.emit();
+        break;
+      case 2:
+        this.isPanelextended = true;
+        this.showExtendedLateralPanel.emit();
+        break;
     }
-    this.isPanelextended = false;
-    this.backToNormalLateralPanel.emit();
+    this.selectedIndex = $event.index;
+  }
+
+  showNormalPanel() {
     this.updateStarted = false;
+    this.selectedTabChangeEvent({index: 0, tab: null})
   }
 
   showExtendedPanel() {
-    this.isPanelextended = true;
-    this.showExtendedLateralPanel.emit();
-    this.selectedIndex = 1;
+    this.selectedTabChangeEvent({index: 1, tab: null})
   }
+
 
   updateMetadataDesc() {
     this.isPanelextended = true;
@@ -123,9 +132,9 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     return this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.HOLDING_UNIT
       ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
       : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.FILING_UNIT
-      ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
-      : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.INGEST && !archiveUnit['#object']
-      ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
-      : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
+        ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
+        : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.INGEST && !archiveUnit['#object']
+          ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
+          : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
   }
 }

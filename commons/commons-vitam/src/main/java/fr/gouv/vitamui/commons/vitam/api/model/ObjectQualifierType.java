@@ -47,7 +47,8 @@ public enum ObjectQualifierType {
     BINARYMASTER("BinaryMaster"),
     DISSEMINATION("Dissemination"),
     THUMBNAIL("Thumbnail"),
-    TEXTCONTENT("TextContent");
+    TEXTCONTENT("TextContent"),
+    PHYSICALMASTER("PhysicalMaster");
 
     public static final List<String> allValuesOrdered = Arrays.stream(ObjectQualifierType.values())
         .map(ObjectQualifierType::getValue)
