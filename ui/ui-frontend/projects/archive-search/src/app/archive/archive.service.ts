@@ -34,25 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable, LOCALE_ID} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Observable, of, throwError, TimeoutError} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, of, throwError, TimeoutError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
   CriteriaDataType,
   CriteriaOperator,
   SearchService,
-  SecurityService,
+  SecurityService
 } from 'ui-frontend-common';
-import {ArchiveApiService} from '../core/api/archive-api.service';
-import {ExportDIPCriteriaList} from './models/dip-request-detail.interface';
-import {FilingHoldingSchemeNode} from './models/node.interface';
-import {ReclassificationCriteriaDto} from './models/reclassification-request.interface';
-import {RuleSearchCriteriaDto} from './models/ruleAction.interface';
-import {SearchResponse} from './models/search-response.interface';
+import { ArchiveApiService } from '../core/api/archive-api.service';
+import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
+import { FilingHoldingSchemeNode } from './models/node.interface';
+import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
+import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
+import { SearchResponse } from './models/search-response.interface';
 import {
   AppraisalRuleFacets,
   PagedResult,
@@ -61,11 +61,11 @@ import {
   SearchCriteria,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  SearchCriteriaTypeEnum,
+  SearchCriteriaTypeEnum
 } from './models/search.criteria';
-import {Unit} from './models/unit.interface';
-import {UnitDescriptiveMetadataDto} from './models/unitDescriptiveMetadata.interface';
-import {VitamUISnackBarComponent} from './shared/vitamui-snack-bar';
+import { Unit } from './models/unit.interface';
+import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
+import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -320,10 +320,7 @@ export class ArchiveService extends SearchService<any> {
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
 
-  hasAccessContractManagementPermissions(accessContract: AccessContract): boolean {
-    return accessContract.writingPermission && !accessContract.writingRestrictedDesc;
-  }
-
+  
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',

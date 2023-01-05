@@ -64,8 +64,8 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   tenantIdentifier: number;
 
   updateStarted = false;
-  @Input()
-  hasAccessContractManagementPermissions: boolean;
+ @Input()
+  accessContractAllowUpdating: boolean;
   @Input()
   hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = '';

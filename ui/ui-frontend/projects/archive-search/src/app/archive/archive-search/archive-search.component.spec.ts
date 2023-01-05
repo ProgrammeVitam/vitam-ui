@@ -59,7 +59,7 @@ import {
   SearchCriteria,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
+  SearchCriteriaValue
 } from '../models/search.criteria';
 import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { ArchiveSearchComponent } from './archive-search.component';
@@ -99,10 +99,6 @@ describe('ArchiveSearchComponent', () => {
     hasArchiveSearchRole: () => of(true),
 
     getAccessContractById: () => of({}),
-
-    hasAccessContractPermissions: () => of(true),
-
-    hasAccessContractManagementPermissions: () => of(true),
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

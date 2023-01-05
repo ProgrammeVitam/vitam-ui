@@ -205,8 +205,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   showUnitPreviewBlock = false;
   hasDipExportRole = false;
   hasUpdateManagementRuleRole = false;
+    @Input()
+  accessContractAllowUpdating: boolean;
+
   @Input()
-  hasAccessContractManagementPermissions: boolean;
+  accessContractUpdatingRestrictedDesc: boolean;
+
   hasEliminationAnalysisOrActionRole = false;
   hasComputedInheritedRulesRole = false;
   hasReclassificationRole = false;
