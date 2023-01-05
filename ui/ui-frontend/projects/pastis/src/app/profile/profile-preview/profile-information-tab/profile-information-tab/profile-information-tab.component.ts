@@ -1,25 +1,25 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { ProfileService } from '../../../../core/services/profile.service';
-import { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
-import { Profile } from '../../../../models/profile';
-import { ProfileDescription } from '../../../../models/profile-description.model';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {TranslateService} from '@ngx-translate/core';
+import {Observable, of} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {diff} from 'ui-frontend-common';
+import {NotificationService} from '../../../../core/services/notification.service';
+import {ProfileService} from '../../../../core/services/profile.service';
+import {ArchivalProfileUnit} from '../../../../models/archival-profile-unit';
+import {Profile} from '../../../../models/profile';
+import {ProfileDescription} from '../../../../models/profile-description.model';
 
 @Component({
   selector: 'profile-information-tab',
   templateUrl: './profile-information-tab.component.html',
   styleUrls: ['./profile-information-tab.component.scss'],
 })
-export class ProfileInformationTabComponent implements OnInit {
+export class ProfileInformationTabComponent {
   @Input()
   set inputProfile(profileDescription: ProfileDescription) {
     this._inputProfile = profileDescription;
-    this.statusProfile.setValue(this.inputProfile.status === 'INACTIVE' ? false : true);
+    this.statusProfile.setValue(this.inputProfile.status !== 'INACTIVE');
     this.resetForm(this.inputProfile);
     this.updated.emit(false);
   }
@@ -31,10 +31,10 @@ export class ProfileInformationTabComponent implements OnInit {
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
 
@@ -55,21 +55,17 @@ export class ProfileInformationTabComponent implements OnInit {
     });
 
     this.statusProfile.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
+      this.form.controls.status.setValue((value === false ? 'INACTIVE' : 'ACTIVE'));
     });
   }
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() closed: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
 
   statusProfile = new FormControl();
 
   submited = false;
-
-  isProfileAttache: boolean;
-
-  typeProfile: string;
 
   archivalProfileUnit: ArchivalProfileUnit;
 
@@ -93,15 +89,8 @@ export class ProfileInformationTabComponent implements OnInit {
   }
 
   prepareSubmit(inputProfile: ProfileDescription): Observable<ProfileDescription> {
-    // console.log(JSON.stringify(inputProfile) + ' inputProfile');
-
-    // console.log(this.form.getRawValue());
-
-    // let diffValue = diff(this.form.getRawValue(), this.previousValue());
-
-    if (inputProfile.type == 'PA') {
+    if (inputProfile.type === 'PA') {
       this.profile = this.form.value;
-      // console.log(JSON.stringify(this.profile));
       return this.profileService.updateProfilePa(this.profile).pipe(catchError(() => of(null)));
     } else {
       this.archivalProfileUnit = this.form.value;
@@ -116,10 +105,9 @@ export class ProfileInformationTabComponent implements OnInit {
         this.submited = false;
         this.pending = !this.pending;
         this.inputProfile = this._inputProfile;
-        // console.log(JSON.stringify(result));
         this.loggingService.showSuccess(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'));
         this.profileService.refreshListProfiles();
-        this.close.emit(true);
+        this.closed.emit(true);
       },
       () => {
         this.submited = false;
@@ -130,13 +118,11 @@ export class ProfileInformationTabComponent implements OnInit {
   }
 
   resetForm(profileDescription: ProfileDescription) {
-    this.form.reset(profileDescription, { emitEvent: false });
+    this.form.reset(profileDescription, {emitEvent: false});
   }
 
-  ngOnInit(): void {}
-
   isProfilAttached(inputProfile: ProfileDescription): boolean {
-    return !!((inputProfile.controlSchema && inputProfile.controlSchema.length != 2) || inputProfile.path);
+    return !!((inputProfile.controlSchema && inputProfile.controlSchema.length !== 2) || inputProfile.path);
   }
 
   enregistrement() {
