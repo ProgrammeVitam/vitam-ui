@@ -4,6 +4,7 @@ import { AppConfiguration } from '.';
 import { AuthUser, ThemeDataType } from './models';
 import { Color } from './models/customer/theme/color.interface';
 import { convertLighten, getColorFromMaps, hexToRgb, hexToRgbString, ThemeColorType } from './utils';
+import { Observable, EMPTY } from 'rxjs';
 
 export interface Theme {
   colors: {[colorId: string]: string};
@@ -42,6 +43,7 @@ export class ThemeService {
   defaultMap: {[colordId in ThemeColorType]: string} = {
     [ThemeColorType.VITAMUI_PRIMARY]: '#604379',
     [ThemeColorType.VITAMUI_GREY]: '#9E9E9E',
+    [ThemeColorType.VITAMUI_ADDITIONAL]: '#9AA0FF',
     [ThemeColorType.VITAMUI_SECONDARY]: '#65B2E4',
     [ThemeColorType.VITAMUI_TERTIARY]: '#E7304D',
     [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#604379',
@@ -104,8 +106,8 @@ export class ThemeService {
     }
   }
 
-  public getData(authUser: AuthUser, type: string): string | SafeResourceUrl {
-    return null;
+  public getData$(authUser: AuthUser, type: string): Observable<string | SafeResourceUrl>  {
+    return EMPTY;
   }
 
   private calculateFontColor(color: string): string {
