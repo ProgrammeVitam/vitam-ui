@@ -38,8 +38,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IngestContract } from 'projects/vitamui-library/src/lib/models/ingest-contract';
-import { ApplicationService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import {ApplicationService, GlobalEventService, SecurityService, SidenavPage} from 'ui-frontend-common';
 
+import {Observable} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
 
@@ -55,12 +57,17 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   tenantId: number;
   isSlaveMode: boolean;
 
+  tenantIdentifier: number;
+  appName = 'INGEST_APP';
+  hasUpdateIngestRole$: Observable<boolean>;
+
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
     globalEventService: GlobalEventService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private securityService: SecurityService
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -111,6 +118,12 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   }
 
   ngOnInit() {
+
+    this.hasUpdateIngestRole$ = this.route.params.pipe(mergeMap(params => {
+      this.tenantIdentifier = +params.tenantIdentifier;
+      return  this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_INGEST_CONTRACTS')
+    }));
+
     this.updateSlaveMode();
   }
 
