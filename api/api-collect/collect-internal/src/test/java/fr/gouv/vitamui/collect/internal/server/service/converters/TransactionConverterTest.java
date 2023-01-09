@@ -4,7 +4,6 @@ import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,7 +68,7 @@ public class TransactionConverterTest {
         collectTransactionDto.setArchivalAgencyIdentifier("archivalAgency");
         collectTransactionDto.setArchivalAgreement("archivalAgreement");
         collectTransactionDto.setComment("comment");
-        collectTransactionDto.setArchivalProfile("archivalProfile");
+        collectTransactionDto.setArchiveProfile("archivalProfile");
         collectTransactionDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
         collectTransactionDto.setMessageIdentifier("messageIdentifier");
         collectTransactionDto.setOriginatingAgencyIdentifier("originatingAgencyIdentifier");

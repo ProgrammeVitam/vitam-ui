@@ -48,7 +48,7 @@ public class CollectTransactionDto extends IdDto {
     private String transferringAgencyIdentifier;
     private String originatingAgencyIdentifier;
     private String submissionAgencyIdentifier;
-    private String archivalProfile;
+    private String archiveProfile;
     private String acquisitionInformation;
     private String legalStatus;
     private String comment;
