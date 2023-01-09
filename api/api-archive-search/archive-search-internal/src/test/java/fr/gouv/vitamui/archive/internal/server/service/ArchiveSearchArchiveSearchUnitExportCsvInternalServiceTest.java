@@ -48,12 +48,12 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
+import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
-import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
@@ -84,6 +84,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
+@SuppressWarnings("unchecked")
 public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
 
     @MockBean(name = "objectMapper")
@@ -276,7 +277,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
             .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
         // query
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -339,7 +340,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
             .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
         // query
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -402,7 +403,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
             .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
         // query
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -465,7 +466,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
             .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
         // query
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -528,7 +529,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
             .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
         // query
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -589,7 +590,8 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_RESULTS));
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_RESULTS));
     }
 
     @SneakyThrows
