@@ -156,6 +156,9 @@ export class StartupService {
     return trustedInlineLogoUrl;
   }
 
+  getReferentialUrl(): string {
+    return null;
+  }
   getPortalUrl(): string {
     return null;
   }
