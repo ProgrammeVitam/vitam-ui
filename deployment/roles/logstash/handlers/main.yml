@@ -2,13 +2,10 @@
 
 - name: restart logstash
   service:
-    name: "{{ service_logstash }}"
+    name: "{{ service_name }}"
     state: restarted
 
-- name: systemctl reload-daemon # see https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
-  command: systemctl daemon-reload
-
-- name: reload consul configuration
+- name: reload consul configuration for logstash
   service:
-    name: "{{ service_consul }}"
+    name: "{{ consul.service_name | default('vitam-consul') }}"
     state: reloaded

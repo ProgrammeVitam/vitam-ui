@@ -1,22 +1,14 @@
 ---
 
-- name: "Install {{ mongodb.package_name }} package"
+- name: "Install {{ package_name }} package"
   package:
-    name: "{{ mongodb.package_name }}"
+    name: "{{ package_name }}"
     state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
-  notify:
-    - restart mongod
-
-- name: "enable {{ service_name }} service at boot"
-  service:
-    name: "{{ service_name }}"
-    enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
-  notify:
-    - restart mongod
+  notify: restart mongod
 
 #### Configuration ####
 
@@ -36,10 +28,8 @@
     - log
     - script
     - tmp
-  notify:
-    - restart mongod
-  tags:
-    - update_mongodb_configuration
+  notify: restart mongod
+  tags: update_mongodb_configuration
 
 - name: Create db directory
   file:
@@ -48,10 +38,8 @@
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  notify:
-    - restart mongod
-  tags:
-    - update_mongodb_configuration
+  notify: restart mongod
+  tags: update_mongodb_configuration
 
 - name: Create the mongod configuration server file
   template:
@@ -60,16 +48,14 @@
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-  notify:
-    - restart mongod
-  tags:
-    - update_mongodb_configuration
+  notify: restart mongod
+  tags: update_mongodb_configuration
 
 #### Consul configuration ####
 
 - name: Ensure consul config dir is OK
   file:
-    path: "{{ consul.conf_folder }}"
+    path: "{{ consul.conf_folder | default('/vitam/conf/consul') }}"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
@@ -81,15 +67,14 @@
 - name: Deploy consul agent service declaration
   template:
     src: "service-componentid.json.j2"
-    dest: "{{ consul.conf_folder }}/service-mongod.json"
+    dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/service-mongod.json"
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   tags:
     - consul_conf
     - update_mongodb_configuration
-  notify:
-    - reload consul configuration for mongo
+  notify: reload consul configuration for mongo
 
 # Ensure that the installation is complete and consul up before contnuing...
 - meta: flush_handlers
@@ -97,12 +82,12 @@
     - consul_conf
     - update_mongodb_configuration
 
-- name: Ensure service is started
+- name: "Ensure {{ service_name }} is started"
   service:
-    name: vitamui-mongod
+    name: "{{ service_name }}"
     state: started
-  tags:
-    - update_mongodb_configuration
+    enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
+  tags: update_mongodb_configuration
 
 #### Mongo online configuration ####
 # Note : mongodb needs to be started for these elements to succeed
@@ -116,8 +101,7 @@
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: 0600
-  tags:
-    - update_mongodb_configuration
+  tags: update_mongodb_configuration
 
 # # Now let's initiate the replica set
 # # Do this only on the first node of the current shard
@@ -159,7 +143,6 @@
       command: mongo --host {{ ip_service }} --port {{ mongodb.mongod_port }} {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/init-replica.js
       tags:
         - update_mongodb_configuration
-
 
     - import_tasks: check_auth.yml
 

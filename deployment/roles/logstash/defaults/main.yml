@@ -1,4 +1,4 @@
 ---
 
-service_consul: "{{ consul.service_name }}"
-service_logstash: "{{ logstash.service_name }}"
+package_name: "{{ logstash.package_name | default('vitamui-logstash') }}"
+service_name: "{{ logstash.service_name | default('vitamui-logstash') }}"

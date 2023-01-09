@@ -7,23 +7,33 @@
   - name: Install Apache package for displaying data content
     package:
       name: httpd
+      state: latest
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
     when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
 
   - name: Install Apache package for displaying data content
     package:
       name: apache2
+      state: latest
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
     when: ( ansible_distribution == "Debian")
 
   # TODO : idéalement, Apache ne devrait écouter que sur l'IP d'admin
 
-  - name: Ensure  Apache autostart && Apache is started on Centos
+  - name: Ensure Apache autostart && Apache is started on Centos
     service:
       name: httpd
       enabled: yes
       state: started
     when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
 
-  - name: Ensure  Apache autostart && Apache is started on Debian
+  - name: Ensure Apache autostart && Apache is started on Debian
     service:
       name: apache2
       enabled: yes

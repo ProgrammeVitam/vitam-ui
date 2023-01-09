@@ -192,7 +192,7 @@ http.host: "{{ ip_admin }}"
 # Bind port for the metrics REST endpoint, this option also accept a range
 # (9600-9700) and logstash will pick up the first available ports.
 #
-http.port: "{{ logstash.rest_port }}"
+http.port: "{{ logstash.rest_port | default('20514') }}"
 #
 # ------------ Debugging Settings --------------
 #

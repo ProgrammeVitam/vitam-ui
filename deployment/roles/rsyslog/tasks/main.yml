@@ -5,6 +5,10 @@
   package:
     name: rsyslog
     state: latest
+  register: result
+  retries: "{{ packages_install_retries_number | default(2) }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay | default(10) }}"
   notify:
     - restart rsyslog
 
