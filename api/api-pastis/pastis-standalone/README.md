@@ -16,10 +16,16 @@ Prérequis :
 Pour démarrer l'application en mode développement
 
     mvn clean install
+    ./build.sh
+    cd api/api-pastis/pastis standalone
     mvn clean spring-boot:run
+    cd ui/ui-frontend
+    npm run start
 
 Pour démarrer l'application en mode production
 
-        mvn clean install -Pstandalone
+        mvn clean install
         ./build.sh
-        ./run.sh
+        ./run.sh (pour tester pastis standalone)
+        
+        l'executable windows peut etre récupéré dans api/api-pastis/pastis-standalone/target/pastis-standalone-{verion}-package.zip

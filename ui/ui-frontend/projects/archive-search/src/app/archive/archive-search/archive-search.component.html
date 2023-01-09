@@ -347,10 +347,10 @@
           <button
             mat-menu-item
             (click)="goToUpdateManagementRule()"
-            matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
+            matTooltip="{{ (!accessContractAllowUpdating || accessContractUpdatingRestrictedDesc) ? hasAccessContractManagementPermissionsMessage : '' }}"
             matTooltipClass="vitamui-tooltip"
             [matTooltipShowDelay]="300"
-            [disabled]="!hasUpdateManagementRuleRole || itemSelected === 0 || !hasAccessContractManagementPermissions || itemSelected === 0"
+            [disabled]="!hasUpdateManagementRuleRole || itemSelected === 0 || !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc"
           >
             {{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}
           </button>

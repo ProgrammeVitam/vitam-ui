@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
   <div class="row">
     <div class="col-10 form-control">
-      <vitamui-common-slide-toggle [formControl]="statusControl" i18n="status@@ingestContractPreviewLabelName">
+      <vitamui-common-slide-toggle disabled="{{statusControl.disabled}}" [formControl]="statusControl" i18n="status@@ingestContractPreviewLabelName">
         Contrat actif
       </vitamui-common-slide-toggle>
     </div>

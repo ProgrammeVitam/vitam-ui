@@ -74,7 +74,7 @@
         "POPUP_CREATE_NOTICE_TITLE_DIALOG_EDIT": "Valider la notice de profil",
         "POPUP_CREATE_NOTICE_SUBTITLE_DIALOG_EDIT": "Validation",
         "POPUP_CREATE_NOTICE_OK_LABEL": "TERMINER",
-        "POPUP_SELECT_NOTICE_TITLE_DIALOG": "Rattacher le profil à une notice existante"
+        "POPUP_SELECT_NOTICE_TITLE_DIALOG": "Rattacher le profil à une notice existante",
         "ERROR_": "Rattacher le profil à une notice existante"
       },
       "CHOICE": {
