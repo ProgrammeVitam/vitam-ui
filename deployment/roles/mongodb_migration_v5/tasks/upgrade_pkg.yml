@@ -5,25 +5,27 @@
     name:
       - 'mongodb-org-tools'
     state: absent
+  register: result
+  retries: "{{ packages_install_retries_number | default(2) }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay | default(10) }}"
 
-- name: "Upgrade mongo packages"
+- name: "Upgrade mongo packages & vitamui-mongod"
   package:
     name:
       - 'mongodb-org'
       - 'mongodb-org-database-tools-extra'
       - 'mongodb-org-server'
       - 'mongodb-org-shell'
-    state: latest
-
-- name: "Upgrade vitam-mongod"
-  package:
-    name:
       - 'vitamui-mongod'
     state: latest
+  register: result
+  retries: "{{ packages_install_retries_number | default(2) }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay | default(10) }}"
 
 - name: "Start vitam-mongo service"
   systemd:
     name: "vitamui-mongod"
     enabled: yes
     state: restarted
-

@@ -1,5 +1,6 @@
 ---
 
+# Used only with group hosts_vitamui_logstash
 elasticsearch:
   log:
     # host: "elasticsearch-log.service.{{ vitam_site_name }}.{{ consul_domain }}"

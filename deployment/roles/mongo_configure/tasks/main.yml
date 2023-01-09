@@ -47,9 +47,9 @@
     - update_mongodb_configuration
 
 # Restart the mongo instances (to enable auth)
-- name: "restart {{ mongodb.service_name }} service"
+- name: "restart {{ service_name }} service"
   service:
-    name: "{{ mongodb.service_name }}"
+    name: "{{ service_name }}"
     enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
     state: restarted
   delegate_to: "{{ item }}"

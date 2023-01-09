@@ -4,9 +4,9 @@
   fail: msg="{{ vitam_site_name }} not correctly configured"
   when: vitam_site_name|regex_search('[^a-zA-Z0-9\\-]') # found a bug ; no "_" allowed
 
-- name: Install {{ consul.package_name }} package
+- name: Install {{ package_name }} package
   package:
-    name: "{{ consul.package_name }}"
+    name: "{{ package_name }}"
     state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"
@@ -43,7 +43,7 @@
 - name: Deploy consul common configuration files
   template:
     src: "{{ item }}.j2"
-    dest: "{{ consul.conf_folder }}/{{ item }}"
+    dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/{{ item }}"
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
@@ -55,9 +55,9 @@
 # Ensure that the installation is complete and consul up before setting up the system-wide dns resolver...
 - meta: flush_handlers
 
-- name: "Ensure {{ consul.service_name }} service is started"
+- name: "Ensure {{ service_name }} service is started"
   service:
-    name: "{{ consul.service_name }}"
+    name: "{{ service_name }}"
     state: started
     enabled: "{{ consul.at_boot | default(service_at_boot) }}"
 

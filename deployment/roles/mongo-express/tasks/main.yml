@@ -4,8 +4,11 @@
   package:
     name: "{{ package_name }}"
     state: latest
-  tags:
-    - mongo-express
+  register: result
+  retries: "{{ packages_install_retries_number | default(2) }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay | default(10) }}"
+  tags: mongo-express
 
 - name: Push mongo-express script and config
   template:
@@ -15,14 +18,13 @@
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: 0755
   notify: restart mongo-express
-  tags:
-    - mongo-express
+  tags: mongo-express
 
 #### Consul configuration ####
 - name: Deploy consul agent service declaration
   template:
     src: "service-componentid.json.j2"
-    dest: "{{ consul.conf_folder }}/service-{{ item }}.json"
+    dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/service-{{ item }}.json"
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitam_defaults.users.group }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
@@ -45,5 +47,4 @@
     state: started
     enabled: "{{ mongo_express.at_boot | default(service_at_boot) }}"
     daemon_reload: yes
-  tags:
-    - mongo-express
+  tags: mongo-express

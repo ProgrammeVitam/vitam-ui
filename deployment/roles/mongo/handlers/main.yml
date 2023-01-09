@@ -2,7 +2,7 @@
 
 - name: reload consul configuration for mongo
   service:
-    name: "{{ consul_service }}"
+    name: "{{ consul.service_name | default('vitam-consul') }}"
     state: reloaded
 
 - name: restart mongod

@@ -79,7 +79,7 @@ ui-pastis:
     secure: {{ vitamui.pastis_external.secure | default(secure) | lower }}
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
@@ -94,7 +94,7 @@ ui-pastis:
     secure: {{ vitamui.referential_external.secure | default(secure) | lower }}
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
@@ -154,7 +154,7 @@ cas:
   external-url: "{{ url_prefix }}/cas"
 {% endif %}
   internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
-  
+
   callback-url: ${ui.url}/pastis-api/callback
 {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}
   ssl:
