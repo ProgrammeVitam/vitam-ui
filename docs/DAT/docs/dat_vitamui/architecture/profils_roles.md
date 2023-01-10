@@ -148,6 +148,227 @@ Lors de la modification du niveau d'un groupe. Il faut vérifier qu’il n’a p
 
 Un administrateur ne peut pas affecter à un profil des rôles qui ne sont pas autorisés dans son organisation. 
 
+### Matrice des profiles
+
+La liste de profils crées par défaut pour chaque tenant :
+   
+    - Nom: Profil pour la gestion des contrats d'accès
+      Description: Gestion des contrats d'accès dans Vitam
+      Application: ACCESS_APP
+      Rôles:
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_CREATE_ACCESS_CONTRACTS
+        - ROLE_UPDATE_ACCESS_CONTRACTS
+        - ROLE_GET_FILLING_PLAN_ACCESS
+
+    - Nom: Profil pour la gestion des contrats d'entrée
+      Description: Gestion des contrats d'entrée dans Vitam
+      Application: INGEST_APP
+      Rôles:
+        - ROLE_GET_INGEST_CONTRACTS
+        - ROLE_CREATE_INGEST_CONTRACTS
+        - ROLE_UPDATE_INGEST_CONTRACTS
+        - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_GET_MANAGEMENT_CONTRACTS
+        - ROLE_GET_ARCHIVE_PROFILES
+
+    - Nom: Profil consultation des contrats d'entrée
+      Description: Profil pour la consultation des contrats d'entrée dans Vitam sans mises à jour des contrats
+      Application: INGEST_APP
+      Rôles:
+        - ROLE_GET_INGEST_CONTRACTS
+
+    - Nom:  Profil gestion des services agents
+      Description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour
+      Application: AGENCIES_APP
+      Rôles:
+        - ROLE_GET_AGENCIES
+        - ROLE_CREATE_AGENCIES
+        - ROLE_UPDATE_AGENCIES
+        - ROLE_DELETE_AGENCIES
+        - ROLE_EXPORT_AGENCIES
+        - ROLE_IMPORT_AGENCIES
+
+    - Nom: Profil consultation des services agents
+      Description: Profil de consultation du référentiel des services agent sans possibilité de mise à jour
+      Application: AGENCIES_APP
+      Rôles:
+        - ROLE_GET_AGENCIES
+
+    - Nom: Profil pour la gestion des Audits
+      Description: Gestion des audits dans Vitam
+      Application: AUDIT_APP
+      Rôles:
+        - ROLE_GET_AUDITS
+        - ROLE_RUN_AUDITS
+
+    - Nom: Profil pour la gestion des opérations de sécurisation
+      Description: Gestion des opérations de sécurisation dans Vitam
+      Application: SECURE_APP
+      Rôles:
+        - ROLE_GET_OPERATIONS
+
+    - Nom: Profil de gestion des valeurs probantes
+      Description: Gestion des valeurs probantes dans Vitam
+      Application: PROBATIVE_VALUE_APP
+      Rôles:
+        - ROLE_GET_OPERATIONS
+        - ROLE_RUN_PROBATIVE_VALUE
+
+    - Nom: Profil pour la lecture des formats de fichiers
+      Description: Lecture des formats de fichiers dans Vitam
+      Application: FILE_FORMATS_APP
+      Rôles:
+        - ROLE_GET_FILE_FORMATS
+
+    - Nom: Profil Journal des Opérations
+      Description: Gestion des applications des Journaux des Opérations
+      Application: LOGBOOK_OPERATION_APP
+      Rôles:
+        - ROLE_LOGBOOKS
+
+    - Nom: Profil pour le dépôt et suivi des versements
+      Description: Gestion des applications de dépôt et suivi des versements
+      Application: INGEST_MANAGEMENT_APP
+      Rôles:
+        - ROLE_GET_INGEST
+        - ROLE_CREATE_INGEST
+        - ROLE_GET_ALL_INGEST
+        - ROLE_LOGBOOKS
+
+    - Nom: Profil Arbres et Plans
+      Description: Gestion des applications d'import d'arbres de positionnement et plans de classement
+      Application: HOLDING_FILLING_SCHEME_APP
+      Rôles:
+        - ROLE_CREATE_HOLDING_FILLING_SCHEME
+        - ROLE_GET_HOLDING_FILLING_SCHEME
+        - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
+
+    - Nom: Profil pour la gestion des règles de gestion
+      Description: Gestion des règles de gestion
+      Application: RULES_APP
+      Rôles:
+        - ROLE_GET_RULES
+        - ROLE_CREATE_RULES
+        - ROLE_UPDATE_RULES
+        - ROLE_DELETE_RULES
+        - ROLE_IMPORT_RULES
+        - ROLE_EXPORT_RULES
+
+    - Nom: Profil consultation des règles de gestion
+      Description: Profil pour la consultation des règles de gestion dans Vitam sans mises à jour des règles
+      Application: RULES_APP
+      Rôles:
+        - ROLE_GET_RULES
+
+    - Nom: Lancement de recherches par DSL
+      Description: Lancement de recherches par DSL dans Vitam
+      Application: DSL_APP
+      Rôles:
+        - ROLE_GET_UNITS
+
+    - Nom: Profil pour la gestion des opérations
+      Description: Gérer et consulter l'ensemble des opérations d'entrées qui sont en cours
+      Application: LOGBOOK_MANAGEMENT_OPERATION_APP
+      Rôles:
+        - ROLE_GET_LOGBOOK_OPERATION
+        - ROLE_GET_ALL_LOGBOOK_OPERATION
+        - ROLE_UPDATE_LOGBOOK_OPERATION
+
+    - Nom: Profil pour la création des profils paramétrage externe
+      Description: Gérer et consulter l'ensemble des profils paramétrage externe
+      Application: EXTERNAL_PARAM_PROFILE_APP
+      Rôles:
+        - ROLE_CREATE_EXTERNAL_PARAM_PROFILE
+        - ROLE_EDIT_EXTERNAL_PARAM_PROFILE
+        - ROLE_SEARCH_EXTERNAL_PARAM_PROFILE
+        - ROLE_GET_PROFILES
+        - ROLE_UPDATE_PROFILES
+        - ROLE_LOGBOOKS
+
+    - Nom: Consultation
+      Description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
+      Application: ARCHIVE_SEARCH_MANAGEMENT_APP
+      Rôles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_SEARCH_WITH_RULES
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
+
+    - Nom: Archiviste
+      Description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
+      Application: ARCHIVE_SEARCH_MANAGEMENT_APP
+      Rôles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_EXPORT_DIP
+        - ROLE_SEARCH_WITH_RULES
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
+
+    - Nom: Archiviste administrateur
+      Description: Profil pour la recherche et consultation des archives dans Vitam avec mise à jour des règles, export DIP, opérations d'élimination, reclassement, demande de transfert et acquittement de transfert
+      Application: ARCHIVE_SEARCH_MANAGEMENT_APP
+      Rôles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_SEARCH_WITH_RULES
+        - ROLE_EXPORT_DIP
+        - ROLE_ELIMINATION
+        - ROLE_UPDATE_MANAGEMENT_RULES
+        - ROLE_COMPUTED_INHERITED_RULES
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_RECLASSIFICATION
+        - ROLE_UPDATE_UNIT_DESC_METADATA
+        - ROLE_TRANSFER_REQUEST
+        - ROLE_TRANSFER_ACKNOWLEDGMENT
+        - ROLE_GET_RULES
+
+    - Nom: Registre des fonds
+      Description: Visualisation de l'ensemble des données du registre des fonds
+      Application: ACCESSION_REGISTER_APP
+      Rôles:
+        - ROLE_GET_ACCESSION_REGISTER_DETAIL
+
+    - Nom: Pastis-Gestion des profils documentaires
+      Description: Pastis-Gestion des profils documentaires
+      Application: PASTIS_APP
+      Rôles:
+        - ROL_GET_PASTIS
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_UPDATE_ARCHIVE_PROFILES_UNIT
+        - ROLE_CREATE_ARCHIVE_PROFILES_UNIT
+        - ROLE_IMPORT_ARCHIVE_PROFILES_UNIT
+        - ROLE_DELETE_ARCHIVE_PROFILES_UNIT
+        - ROLE_GET_ARCHIVE_PROFILES
+        - ROLE_UPDATE_ARCHIVE_PROFILES
+        - ROLE_CREATE_ARCHIVE_PROFILES
+        - ROLE_IMPORT_ARCHIVE_PROFILES
+        - ROLE_DELETE_ARCHIVE_PROFILES
+
+    - Nom: Collecte
+      Description: Collecte de données, Application de préparation de versements
+      Application: COLLECT_APP
+      Rôles:
+        - ROLE_GET_PROJECTS
+        - ROLE_CREATE_PROJECTS
+        - ROLE_UPDATE_PROJECTS
+        - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
+        - ROLE_SEND_TRANSACTIONS
+        - ROLE_CLOSE_TRANSACTIONS
+        - ROLE_REOPEN_TRANSACTIONS
+        - ROLE_ABORT_TRANSACTIONS
+        - ROLE_GET_TRANSACTIONS
+        - ROLE_CREATE_TRANSACTIONS
+        - ROLE_UPDATE_TRANSACTIONS
+        - ROLE_DELETE_TRANSACTIONS
+        - ROLE_UPDATE_UNITS_METADATA
 
 ### Sécurisation des ressources
 
