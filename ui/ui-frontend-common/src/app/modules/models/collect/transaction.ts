@@ -36,7 +36,7 @@ export interface Transaction extends Id {
     transferringAgencyIdentifier: string;
     originatingAgencyIdentifier: string;
     submissionAgencyIdentifier: string;
-    archivalProfile: string;
+    archiveProfile: string;
     comment: string;
     creationDate?: Date;
     lastUpdate?: Date;

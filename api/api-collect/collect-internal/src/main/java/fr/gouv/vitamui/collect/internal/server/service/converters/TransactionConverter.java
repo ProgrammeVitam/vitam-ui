@@ -29,12 +29,10 @@ package fr.gouv.vitamui.collect.internal.server.service.converters;
 
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.collect.external.dto.TransactionDto;
-import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -50,7 +48,7 @@ public class TransactionConverter {
         collectTransactionDto.setArchivalAgencyIdentifier(transactionDto.getArchivalAgencyIdentifier());
         collectTransactionDto.setArchivalAgreement(transactionDto.getArchivalAgreement());
         collectTransactionDto.setComment(transactionDto.getComment());
-        collectTransactionDto.setArchivalProfile(transactionDto.getArchivalProfile());
+        collectTransactionDto.setArchiveProfile(transactionDto.getArchivalProfile());
         collectTransactionDto.setId(transactionDto.getId());
         collectTransactionDto.setStatus(transactionDto.getStatus());
         collectTransactionDto.setMessageIdentifier(transactionDto.getMessageIdentifier());
@@ -71,7 +69,7 @@ public class TransactionConverter {
         externalDto.setArchivalAgencyIdentifier(collectTransactionDto.getArchivalAgencyIdentifier());
         externalDto.setArchivalAgreement(collectTransactionDto.getArchivalAgreement());
         externalDto.setComment(collectTransactionDto.getComment());
-        externalDto.setArchivalProfile(collectTransactionDto.getArchivalProfile());
+        externalDto.setArchivalProfile(collectTransactionDto.getArchiveProfile());
         externalDto.setId(collectTransactionDto.getId());
         externalDto.setMessageIdentifier(collectTransactionDto.getMessageIdentifier());
         externalDto.setOriginatingAgencyIdentifier(collectTransactionDto.getOriginatingAgencyIdentifier());
