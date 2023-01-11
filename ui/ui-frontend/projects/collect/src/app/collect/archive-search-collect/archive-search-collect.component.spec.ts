@@ -78,7 +78,7 @@ describe('ArchiveSearchCollectComponent', () => {
     transferringAgencyIdentifier: 'transferringAgencyIdentifier',
     originatingAgencyIdentifier: 'originatingAgencyIdentifier',
     submissionAgencyIdentifier: 'submissionAgencyIdentifier',
-    archivalProfile: 'archivalProfile',
+    archiveProfile: 'archivalProfile',
     projectId: 'ProjectId',
     comment: 'I am a comment',
     status: TransactionStatus.SENDING,

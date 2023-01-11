@@ -73,7 +73,7 @@ describe('TransactionListComponent', () => {
     transferringAgencyIdentifier: 'transferringAgencyIdentifier',
     originatingAgencyIdentifier: 'originatingAgencyIdentifier',
     submissionAgencyIdentifier: 'submissionAgencyIdentifier',
-    archivalProfile: 'archivalProfile',
+    archiveProfile: 'archivalProfile',
     comment: 'comment',
   };
 

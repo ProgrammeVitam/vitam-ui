@@ -53,7 +53,7 @@ const selectedTransaction: Transaction = {
   transferringAgencyIdentifier: 'transferringAgencyIdentifier',
   originatingAgencyIdentifier: 'originatingAgencyIdentifier',
   submissionAgencyIdentifier: 'submissionAgencyIdentifier',
-  archivalProfile: 'archivalProfile',
+  archiveProfile: 'archivalProfile',
   comment: 'comment',
 };
 
