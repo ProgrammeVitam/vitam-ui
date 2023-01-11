@@ -286,6 +286,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       }
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
+        preventInheritance !== undefined &&
         listOfActionTypes.length === 1 &&
         (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
           listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
@@ -379,6 +380,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       }
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
+        preventInheritance !== undefined &&
         listOfActionTypes.length === 1 &&
         (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
           listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
@@ -534,12 +536,12 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         break;
 
       case 'BLOCK_CATEGORY_INHERITANCE':
-        if (!this.isBlockInheritanceCategoryDisabled && !this.isUnlockInheritanceCategoryDisabled && !this.isStorageRuleActionDisabled) {
+        if (!this.isBlockInheritanceCategoryDisabled && !this.isUnlockInheritanceCategoryDisabled) {
           this.prepareActionToAdd(rule);
         }
         break;
       case 'UNLOCK_CATEGORY_INHERITANCE':
-        if (!this.isUnlockInheritanceCategoryDisabled && !this.isBlockInheritanceCategoryDisabled && !this.isStorageRuleActionDisabled) {
+        if (!this.isUnlockInheritanceCategoryDisabled && !this.isBlockInheritanceCategoryDisabled) {
           this.prepareActionToAdd(rule);
         }
         break;
@@ -730,6 +732,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
+        preventInheritance !== undefined &&
         listOfActionTypes.length === 1 &&
         (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
           listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
@@ -794,6 +797,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       }
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
+        preventInheritance !== undefined &&
         listOfActionTypes.length === 1 &&
         (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
           listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
@@ -866,6 +870,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       }
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
+        preventInheritance !== undefined &&
         listOfActionTypes.length === 1 &&
         (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
           listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)

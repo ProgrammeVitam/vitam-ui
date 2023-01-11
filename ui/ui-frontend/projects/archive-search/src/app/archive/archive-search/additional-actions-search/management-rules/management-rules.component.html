@@ -97,10 +97,7 @@
               placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}"
               [disabled]="
                 !isRuleCategorySelected ||
-                !isAllActionsValid() ||
-                isAccessRuleActionDisabled ||
-                isReuseRuleActionDisabled ||
-                isDisseminationActionDisabled
+                !isAllActionsValid() 
               "
             >
               <mat-option
@@ -127,13 +124,13 @@
                 {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}</mat-option
               >
               <mat-option
-                [disabled]="isBlockInheritanceCategoryDisabled || isUnlockInheritanceCategoryDisabled || isStorageRuleActionDisabled"
+                [disabled]="isBlockInheritanceCategoryDisabled || isUnlockInheritanceCategoryDisabled"
                 (click)="onSelectAction('BLOCK_CATEGORY_INHERITANCE')"
               >
                 {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
               >
               <mat-option
-                [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled || isStorageRuleActionDisabled"
+                [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled"
                 (click)="onSelectAction('UNLOCK_CATEGORY_INHERITANCE')"
                 matTooltip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
                 matTooltipClass="vitamui-tooltip-rules "

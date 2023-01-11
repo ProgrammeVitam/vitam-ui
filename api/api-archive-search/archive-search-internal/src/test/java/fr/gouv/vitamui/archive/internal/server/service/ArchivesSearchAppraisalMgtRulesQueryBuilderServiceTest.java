@@ -81,7 +81,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         "appraisal/expected-search-query-with-appraisal-inheritance.txt";
 
     public static String SEARCH_QUERY_WITH_RULE_CATEGORY_INHERITANCE_STORAGE =
-        "appraisal/expected-search-query-with-appraisal-inheritance.txt";
+        "storage/expected-search-query-with-storage-inheritance.txt";
 
     public static String SEARCH_QUERY_WITH_APPRAISAL_PREVENT_RULE_IDENTIFIER =
         "appraisal/expected-search-query-with-appraisal-prevent-rule-identifier.txt";
