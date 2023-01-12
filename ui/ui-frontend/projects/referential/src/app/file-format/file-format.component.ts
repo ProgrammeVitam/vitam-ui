@@ -44,6 +44,7 @@ import {Referential} from '../shared/vitamui-import-dialog/referential.enum';
 import {VitamUIImportDialogComponent} from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 import {FileFormatCreateComponent} from './file-format-create/file-format-create.component';
 import {FileFormatListComponent} from './file-format-list/file-format-list.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-file-format',
@@ -53,10 +54,12 @@ import {FileFormatListComponent} from './file-format-list/file-format-list.compo
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit {
 
   search = '';
+  tenantIdentifier: number;
+  tenantIdentifierSubscription: Subscription;
 
   @ViewChild(FileFormatListComponent, {static: true}) fileFormatListComponentListComponent: FileFormatListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, globalEventService: GlobalEventService) {
     super(route, globalEventService);
   }
 
@@ -81,6 +84,13 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   }
 
   ngOnInit() {
+    this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
+      this.tenantIdentifier = +params.tenantIdentifier;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.tenantIdentifierSubscription.unsubscribe();
   }
 
   showFileFormat(item: FileFormat) {
