@@ -1,9 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { environment } from '../../../environments/environment';
-import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {environment} from '../../../environments/environment';
+import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
 const POP_UP_SAVE_CHOICE_PATH = 'PROFILE.POP_UP_SAVE.CHOICE';
 
@@ -71,7 +71,6 @@ export class SaveProfileOptionsComponent implements OnInit {
     this.translateService.onLangChange
       .subscribe((_: LangChangeEvent) => {
         constantToTranslate.call(this);
-        // console.log(event.lang);
       });
   }
 
@@ -80,8 +79,7 @@ export class SaveProfileOptionsComponent implements OnInit {
   }
 
   changeStatus($event: string) {
-    // console.log($event);
-    if ($event == this.secondChoiceEnregistrement) {
+    if ($event === this.secondChoiceEnregistrement) {
       this.data.okLabel = this.okLabelNext;
       this.valueSelected = true;
     } else {
@@ -91,8 +89,7 @@ export class SaveProfileOptionsComponent implements OnInit {
   }
 
   changeStatusGestionNoticeProfil($event: string) {
-    // console.log($event);
-    if ($event ==  this.firstChoiceGestionNotice) {
+    if ($event === this.firstChoiceGestionNotice) {
       this.gestionNotice = true;
     } else {
       this.gestionNotice = false;

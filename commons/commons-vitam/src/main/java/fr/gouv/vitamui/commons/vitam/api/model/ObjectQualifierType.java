@@ -42,20 +42,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum ObjectQualifierTypeEnum {
+public enum ObjectQualifierType {
     // Ordered by download preference.
     BINARYMASTER("BinaryMaster"),
     DISSEMINATION("Dissemination"),
     THUMBNAIL("Thumbnail"),
     TEXTCONTENT("TextContent");
 
-    public static final List<String> allValuesOrdered = Arrays.stream(ObjectQualifierTypeEnum.values())
-        .map(ObjectQualifierTypeEnum::getValue)
+    public static final List<String> allValuesOrdered = Arrays.stream(ObjectQualifierType.values())
+        .map(ObjectQualifierType::getValue)
         .collect(Collectors.toList());
 
     private final String value;
 
-    ObjectQualifierTypeEnum(String value) {
+    ObjectQualifierType(String value) {
         this.value = value;
     }
 
@@ -63,10 +63,10 @@ public enum ObjectQualifierTypeEnum {
         return value;
     }
 
-    public static ObjectQualifierTypeEnum fromValue(String value) {
-        for (ObjectQualifierTypeEnum objectQualifierTypeEnum : ObjectQualifierTypeEnum.values()) {
-            if (objectQualifierTypeEnum.getValue().equalsIgnoreCase(value)) {
-                return objectQualifierTypeEnum;
+    public static ObjectQualifierType fromValue(String value) {
+        for (ObjectQualifierType objectQualifierType : ObjectQualifierType.values()) {
+            if (objectQualifierType.getValue().equalsIgnoreCase(value)) {
+                return objectQualifierType;
             }
         }
         throw new BadRequestException("the object qualifier type " + value + " specified is not a valid one");

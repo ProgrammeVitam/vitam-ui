@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {PastisDialogDataCreate} from "../save-profile/save-profile.component";
-import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {ProfileService} from "../../core/services/profile.service";
-import {ProfileDescription} from "../../models/profile-description.model";
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {ProfileService} from '../../core/services/profile.service';
+import {ProfileDescription} from '../../models/profile-description.model';
+import {PastisDialogDataCreate} from '../save-profile/save-profile.component';
 
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION_NOTICE.CHOICE';
@@ -23,7 +23,7 @@ export class SelectNoticeComponent implements OnInit {
   profiles: ProfileDescription[];
   selectedProfile: ProfileDescription;
   validate: boolean;
-  userValidation: boolean = false;
+  userValidation = false;
   showMessage: boolean;
 
 
@@ -52,7 +52,6 @@ export class SelectNoticeComponent implements OnInit {
     this.translateService.onLangChange
       .subscribe((_: LangChangeEvent) => {
         constantToTranslate.call(this);
-        // console.log(event.lang);
       });
   }
 
