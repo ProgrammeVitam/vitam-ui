@@ -454,42 +454,22 @@
                   />
                 </div>
                 <div class="col-1 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  <span class="table-filter-icon" [ngSwitch]="archiveUnit?.DescriptionLevel">
-                    <ng-container *ngSwitchCase="'RecordGrp'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                  <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
+                    <ng-container *ngSwitchCase="'INGEST'">
+                      <span class="table-filter-icon">
+                        <ng-container *ngIf="!archiveUnit['#object']">
+                          <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                        </ng-container>
+                        <ng-container *ngIf="!!archiveUnit['#object']">
+                          <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
+                        </ng-container>
+                      </span>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'File'">
-                      <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
+                    <ng-container *ngSwitchCase="'HOLDING_UNIT'">
+                      <i class="vitamui-icon vitamui-icon-icone-arbre vitamui-row-icon status-badge"></i>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Item'">
-                      <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Collection'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Subfonds'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Class'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Subgrp'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Otherlevel'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Series'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Subseries'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Fonds'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *NgSwitchDefault>
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                    <ng-container *ngSwitchCase="'FILING_UNIT'">
+                      <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge"></i>
                     </ng-container>
                   </span>
                 </div>
@@ -497,14 +477,14 @@
                   <ng-container *ngIf="archiveUnit?.Title; else subTitleFr">
                     <p matTooltip="{{ archiveUnit?.Description }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                       <b> {{ archiveUnit?.Title }}</b> <br />
-                      {{ archiveUnit?.Description | truncate: 100 }}
+                      {{ archiveUnit?.Description | truncate : 100 }}
                     </p>
                   </ng-container>
                   <ng-template #subTitleFr>
                     <ng-container *ngIf="archiveUnit.Title_.fr; else subTitleEn">
                       <p matTooltip="{{ archiveUnit?.Description_?.fr }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                         <b>{{ archiveUnit.Title_.fr }} </b> <br />
-                        {{ archiveUnit?.Description_?.fr | truncate: 100 }}
+                        {{ archiveUnit?.Description_?.fr | truncate : 100 }}
                       </p>
                     </ng-container>
                   </ng-template>
@@ -512,16 +492,16 @@
                     <ng-container *ngIf="archiveUnit.Title_.en">
                       <p matTooltip="{{ archiveUnit?.Description_?.en }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                         <b>{{ archiveUnit.Title_.en }} </b> <br />
-                        {{ archiveUnit?.Description_?.en | truncate: 100 }}
+                        {{ archiveUnit?.Description_?.en | truncate : 100 }}
                       </p>
                     </ng-container>
                   </ng-template>
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  {{ archiveUnit.StartDate | dateTime: 'dd/MM/yyyy' }}
+                  {{ archiveUnit.StartDate | dateTime : 'dd/MM/yyyy' }}
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  {{ archiveUnit.EndDate | dateTime: 'dd/MM/yyyy' }}
+                  {{ archiveUnit.EndDate | dateTime : 'dd/MM/yyyy' }}
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
                   <p

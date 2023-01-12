@@ -125,4 +125,48 @@ describe('LeavesTreeComponent', () => {
     expect(component.accessContract).toBeDefined();
     expect(component.nestedTreeControlLeaves).toBeDefined();
   });
+
+  it('should return INGEST as response ', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'INGEST',
+      unitType: 'INGEST',
+      descriptionLevel: 'Item',
+      label: 'string',
+      children: [],
+      count: 55,
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: false,
+      isLoadingChildren: true,
+      paginatedChildrenLoaded: 5,
+    };
+
+    const response = component.getNodeUnitType(filingHoldingSchemaNode);
+
+    expect(response).toEqual('INGEST');
+  });
+
+  it('should return vitamui-icon-folder as response ', () => {
+    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+      id: 'filingHoldingSchemaNodeId',
+      title: 'string',
+      type: 'INGEST',
+      unitType: 'INGEST',
+      descriptionLevel: 'Item',
+      label: 'string',
+      children: [],
+      count: 55,
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: false,
+      isLoadingChildren: true,
+      paginatedChildrenLoaded: 5,
+    };
+
+    const response = component.getNodeUnitIcone(filingHoldingSchemaNode);
+
+    expect(response).toEqual('vitamui-icon-folder');
+  });
 });

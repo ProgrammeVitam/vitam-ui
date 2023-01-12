@@ -119,6 +119,8 @@ export class ArchiveService extends SearchService<any> {
           vitamId: unit['#id'],
           checked: false,
           hidden: false,
+          hasObject: unit['#object'] ? true : false,
+          unitType: unit['#unitType'],
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);

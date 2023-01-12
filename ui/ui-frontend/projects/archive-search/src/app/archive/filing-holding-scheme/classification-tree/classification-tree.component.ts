@@ -27,7 +27,7 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch } from 'ui-frontend-common';
+import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-classification-tree',
@@ -35,7 +35,6 @@ import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch } from 'ui-front
   styleUrls: ['./classification-tree.component.scss'],
 })
 export class ClassificationTreeComponent {
-
   @Input() accessContract: string;
   @Input() loadingHolding: boolean;
   @Input() nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
@@ -75,5 +74,21 @@ export class ClassificationTreeComponent {
 
   onClosePanel() {
     this.closePanel.emit();
+  }
+
+  getNodeUnitType(filingholdingscheme: FilingHoldingSchemeNode) {
+    if (filingholdingscheme && filingholdingscheme.unitType) {
+      return filingholdingscheme.unitType;
+    }
+  }
+
+  getNodeUnitIcone(filingholdingscheme: FilingHoldingSchemeNode) {
+    return this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.HOLDING_UNIT
+      ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
+      : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.FILING_UNIT
+      ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
+      : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.INGEST && !filingholdingscheme?.hasObject
+      ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
+      : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
   }
 }

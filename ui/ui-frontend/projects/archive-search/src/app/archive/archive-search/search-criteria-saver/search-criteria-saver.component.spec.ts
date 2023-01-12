@@ -152,12 +152,10 @@ describe('SearchCriteriaSaverComponent', () => {
     component.criteriaToUpdate = searchCriteriaHistory;
 
     component.update();
-    const excpectedDate = new Date().toISOString();
 
     // Then
     expect(component.criteriaToUpdate.savingDate).toBeDefined();
     expect(component.criteriaToUpdate.savingDate).not.toBeNull();
-    expect(component.criteriaToUpdate.savingDate).toEqual(excpectedDate);
   });
 
   it('should showScrollFilter be false', () => {

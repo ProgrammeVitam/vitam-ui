@@ -60,6 +60,11 @@ export interface FilingHoldingSchemeNode extends Id {
   canLoadMoreMatchingChildren?: boolean;
 
   toggled?: boolean;
+
+  // help to detect the unit type and the icon to show
+  hasObject?: boolean;
+  unitType?: string;
+  parents?: FilingHoldingSchemeNode[];
 }
 
 export const nodeHasChildren = (node: FilingHoldingSchemeNode): boolean => {
@@ -81,13 +86,15 @@ export const copyNodeWithoutChildren = (node: FilingHoldingSchemeNode): FilingHo
     checked: node.checked,
     count: node.count,
 
+    hasObject: node?.hasObject,
+    unitType: node?.unitType,
+
     hidden: node.hidden,
     isLoadingChildren: false,
     canLoadMoreChildren: true,
     canLoadMoreMatchingChildren: true,
   };
 };
-
 
 export class MatchingNodesNumbers {
   nodesAdded: number;

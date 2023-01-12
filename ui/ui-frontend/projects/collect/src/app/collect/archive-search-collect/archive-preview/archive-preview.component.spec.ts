@@ -47,8 +47,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment';
-import { ArchiveCollectService } from '../archive-collect.service';
 import { Unit } from '../../core/models';
+import { ArchiveCollectService } from '../archive-collect.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
 
 describe('ArchivePreviewComponent', () => {
@@ -62,39 +62,37 @@ describe('ArchivePreviewComponent', () => {
     }
   }
 
-  beforeEach(
-    waitForAsync(() => {
-      const archiveServiceMock = {
-        getBaseUrl: () => '/fake-api',
-        buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
-        receiveDownloadProgressSubject: () => of(true),
-      };
+  beforeEach(waitForAsync(() => {
+    const archiveServiceMock = {
+      getBaseUrl: () => '/fake-api',
+      buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
+      receiveDownloadProgressSubject: () => of(true),
+    };
 
-      TestBed.configureTestingModule({
-        imports: [
-          MatMenuModule,
-          MatTreeModule,
-          MatProgressSpinnerModule,
-          MatSidenavModule,
-          InjectorModule,
-          LoggerModule.forRoot(),
-          RouterTestingModule,
-          MatIconModule,
-          BrowserAnimationsModule,
-          TranslateModule.forRoot(),
-        ],
-        declarations: [ArchivePreviewComponent, MockTruncatePipe],
-        providers: [
-          { provide: ArchiveCollectService, useValue: archiveServiceMock },
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: ENVIRONMENT, useValue: environment },
-          { provide: WINDOW_LOCATION, useValue: window.location },
-          { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [
+        MatMenuModule,
+        MatTreeModule,
+        MatProgressSpinnerModule,
+        MatSidenavModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        MatIconModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot(),
+      ],
+      declarations: [ArchivePreviewComponent, MockTruncatePipe],
+      providers: [
+        { provide: ArchiveCollectService, useValue: archiveServiceMock },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchivePreviewComponent);
@@ -126,6 +124,84 @@ describe('ArchivePreviewComponent', () => {
     component.showExtendedPanel();
     component.showNormalPanel();
     expect(component.selectedIndex).toEqual(0);
+  });
+
+  it('should return INGEST as response ', () => {
+    const archiveUnit: Unit = {
+      '#id': 'aeaqaaaaaehlvxukaazfaame7fyo5myaaaba',
+      Title: 'Porte de Bagnolet par producteur1',
+      DescriptionLevel: 'RecordGrp',
+      Description: 'Station Porte de Bagnolet ligne 3 Paris',
+      '#tenant': 1,
+      '#unitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
+      '#min': 1,
+      '#max': 2,
+      '#allunitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
+      '#unitType': 'INGEST',
+      '#operations': ['aeeaaaaaaghnanqdabliwame7fyokjqaaaaq'],
+      '#opi': 'aeeaaaaaaghnanqdabliwame7fyokjqaaaaq',
+      '#originating_agency': 'producteur1',
+      '#originating_agencies': ['producteur1'],
+      StartDate: new Date('2016-06-03T15:28:00'),
+      EndDate: new Date('2016-06-03T15:28:00'),
+      Xtag: [],
+      Vtag: [],
+      '#storage': {
+        strategyId: 'default',
+      },
+      '#qualifiers': [],
+      OriginatingSystemId: ['OriginatingSystemId_00'],
+      PhysicalAgency: [],
+      PhysicalStatus: [],
+      PhysicalType: [],
+      Keyword: [],
+      '#approximate_creation_date': '2022-12-10T00:30:42.568',
+      '#approximate_update_date': '2022-12-10T00:30:42.568',
+      originating_agencyName: 'Service producteur1',
+    };
+
+    const response = component.getArchiveUnitType(archiveUnit);
+
+    expect(response).toEqual('INGEST');
+  });
+
+  it('should return vitamui-icon-folder" as response ', () => {
+    const archiveUnit: Unit = {
+      '#id': 'aeaqaaaaaehlvxukaazfaame7fyo5myaaaba',
+      Title: 'Porte de Bagnolet par producteur1',
+      DescriptionLevel: 'RecordGrp',
+      Description: 'Station Porte de Bagnolet ligne 3 Paris',
+      '#tenant': 1,
+      '#unitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
+      '#min': 1,
+      '#max': 2,
+      '#allunitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
+      '#unitType': 'INGEST',
+      '#operations': ['aeeaaaaaaghnanqdabliwame7fyokjqaaaaq'],
+      '#opi': 'aeeaaaaaaghnanqdabliwame7fyokjqaaaaq',
+      '#originating_agency': 'producteur1',
+      '#originating_agencies': ['producteur1'],
+      StartDate: new Date('2016-06-03T15:28:00'),
+      EndDate: new Date('2016-06-03T15:28:00'),
+      Xtag: [],
+      Vtag: [],
+      '#storage': {
+        strategyId: 'default',
+      },
+      '#qualifiers': [],
+      OriginatingSystemId: ['OriginatingSystemId_00'],
+      PhysicalAgency: [],
+      PhysicalStatus: [],
+      PhysicalType: [],
+      Keyword: [],
+      '#approximate_creation_date': '2022-12-10T00:30:42.568',
+      '#approximate_update_date': '2022-12-10T00:30:42.568',
+      originating_agencyName: 'Service producteur1',
+    };
+
+    const response = component.getArchiveUnitIcone(archiveUnit);
+
+    expect(response).toEqual('vitamui-icon-folder');
   });
 
   it('should the selectedIndex to be 1 after choosing the extended lateral panel ', () => {

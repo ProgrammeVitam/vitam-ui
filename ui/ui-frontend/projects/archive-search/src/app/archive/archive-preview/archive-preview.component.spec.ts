@@ -137,6 +137,118 @@ describe('ArchivePreviewComponent', () => {
     expect(component.selectedIndex).toEqual(1);
   });
 
+  it('should have the correct values ', () => {
+    component.updateMetadataDesc();
+    expect(component.isPanelextended).toBeTruthy();
+    expect(component.updateStarted).toBeTruthy();
+  });
+
+  it('should not change the selectedIndex value ', () => {
+    component.selectedIndex = -3;
+    component.showNormalPanel();
+    expect(component.selectedIndex).toEqual(-3);
+  });
+
+  it('should return vitamui-icon-folder ', () => {
+    // Given
+    const expectedResponse = 'vitamui-icon-folder';
+    const archiveUnit: Unit = {
+      '#id': 'aeaqaaaaaehlvxukaazfaame7fyo5myaaaba',
+      Title: 'Porte de Bagnolet par producteur1',
+      DescriptionLevel: 'RecordGrp',
+      Description: 'Station Porte de Bagnolet ligne 3 Paris',
+      '#tenant': 1,
+      '#unitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
+      '#min': 1,
+      '#max': 2,
+      '#allunitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
+      '#unitType': 'INGEST',
+      '#operations': ['aeeaaaaaaghnanqdabliwame7fyokjqaaaaq'],
+      '#opi': 'aeeaaaaaaghnanqdabliwame7fyokjqaaaaq',
+      '#originating_agency': 'producteur1',
+      '#originating_agencies': ['producteur1'],
+      '#management': {
+        AppraisalRule: null,
+        HoldRule: null,
+        StorageRule: null,
+        ReuseRule: null,
+        ClassificationRule: null,
+        DisseminationRule: null,
+        AccessRule: null,
+      },
+      StartDate: new Date('2016-06-03T15:28:00'),
+      EndDate: new Date('2016-06-03T15:28:00'),
+      Xtag: [],
+      Vtag: [],
+      '#storage': {
+        strategyId: 'default',
+      },
+      '#qualifiers': [],
+      OriginatingSystemId: ['OriginatingSystemId_00'],
+      PhysicalAgency: [],
+      PhysicalStatus: [],
+      PhysicalType: [],
+      Keyword: [],
+      '#approximate_creation_date': '2022-12-10T00:30:42.568',
+      '#approximate_update_date': '2022-12-10T00:30:42.568',
+      originating_agencyName: 'Service producteur1',
+    };
+
+    // When
+    const response = component.getArchiveUnitIcone(archiveUnit);
+
+    // Then
+    expect(response).toEqual(expectedResponse);
+  });
+
+  it('should return INGEST as response ', () => {
+    const archiveUnit: Unit = {
+      '#id': 'aeaqaaaaaehlvxukaazfaame7fyo5myaaaba',
+      Title: 'Porte de Bagnolet par producteur1',
+      DescriptionLevel: 'RecordGrp',
+      Description: 'Station Porte de Bagnolet ligne 3 Paris',
+      '#tenant': 1,
+      '#unitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
+      '#min': 1,
+      '#max': 2,
+      '#allunitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
+      '#unitType': 'INGEST',
+      '#operations': ['aeeaaaaaaghnanqdabliwame7fyokjqaaaaq'],
+      '#opi': 'aeeaaaaaaghnanqdabliwame7fyokjqaaaaq',
+      '#originating_agency': 'producteur1',
+      '#originating_agencies': ['producteur1'],
+      '#management': {
+        AppraisalRule: null,
+        HoldRule: null,
+        StorageRule: null,
+        ReuseRule: null,
+        ClassificationRule: null,
+        DisseminationRule: null,
+        AccessRule: null,
+      },
+      StartDate: new Date('2016-06-03T15:28:00'),
+      EndDate: new Date('2016-06-03T15:28:00'),
+      Xtag: [],
+      Vtag: [],
+      '#storage': {
+        strategyId: 'default',
+      },
+      '#qualifiers': [],
+      OriginatingSystemId: ['OriginatingSystemId_00'],
+      PhysicalAgency: [],
+      PhysicalStatus: [],
+      PhysicalType: [],
+      Keyword: [],
+      '#approximate_creation_date': '2022-12-10T00:30:42.568',
+      '#approximate_update_date': '2022-12-10T00:30:42.568',
+      originating_agencyName: 'Service producteur1',
+    };
+
+    const response = component.getArchiveUnitType(archiveUnit);
+
+    expect(response).toEqual('INGEST');
+  });
+
   describe('DOM', () => {
     it('should have 3 mat-tab', () => {
       // When

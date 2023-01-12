@@ -39,19 +39,15 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.query.Query;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.unit.UnitInternalService;
@@ -69,19 +65,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.Optional;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
-import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
-
 @RestController
 @RequestMapping(RestApi.UNITS_PATH)
 @Getter
 @Setter
 public class UnitInternalController {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UnitInternalController.class);
-
-    private static final String[] FILING_PLAN_PROJECTION =
-        new String[] {"#id", "Title", "DescriptionLevel", "#unitType", "#unitups", "#allunitups", "#opi", "Keyword",
-            "Vtag"};
 
     @Autowired
     private UnitInternalService unitInternalService;
@@ -126,34 +115,18 @@ public class UnitInternalController {
         return unitInternalService.findObjectMetadataById(id, dsl, vitamContext);
     }
 
-    // TODO: Secure it ! Multiple (OR) CREATE_APPNAME_ROLE ? Unique FILLING_PLAN_ACCESS ?
     @GetMapping(RestApi.FILING_PLAN_PATH)
     public VitamUISearchResponseDto getFilingAndHoldingUnits(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
-        throws VitamClientException, IOException {
+        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The accessContractId is a mandatory parameter: ", accessContractId);
+        SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Get filing and holding units with projections on needed fields ONLY!");
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        // TULEAP-20359 : The filling plan must retrieve the units with the FILING or HOLDING type
-        final JsonNode fillingOrHoldingQuery = createQueryForFillingOrHoldingUnit();
+        final JsonNode fillingOrHoldingQuery = unitInternalService.createQueryForFillingOrHoldingUnit();
         return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery, vitamContext),
             VitamUISearchResponseDto.class);
-    }
-
-    private JsonNode createQueryForFillingOrHoldingUnit() {
-
-        try {
-            final SelectMultiQuery select = new SelectMultiQuery();
-            final Query query =
-                in(unitType(), UnitTypeEnum.HOLDING_UNIT.getValue(), UnitTypeEnum.FILING_UNIT.getValue());
-            select.addQueries(query);
-            select.addUsedProjection(FILING_PLAN_PROJECTION);
-            LOGGER.debug("query =", select.getFinalSelect().toPrettyString());
-            return select.getFinalSelect();
-        } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
-            throw new UnexpectedDataException(
-                "Unexpected error occured while building holding dsl query : " + e.getMessage());
-        }
     }
 
 }

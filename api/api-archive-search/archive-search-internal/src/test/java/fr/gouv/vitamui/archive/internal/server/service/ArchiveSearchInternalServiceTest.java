@@ -134,6 +134,8 @@ public class ArchiveSearchInternalServiceTest {
         "data/update_unit_descriptive_metadata_response.json";
     public final String FILLING_HOLDING_SCHEME_EXPECTED_QUERY = "data/fillingholding/expected_query.json";
 
+    public final String FILLING_HOLDING_SCHEME_QUERY = "data/fillingholding/expected_unitType_query.json";
+
     @BeforeEach
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
@@ -377,6 +379,50 @@ public class ArchiveSearchInternalServiceTest {
         JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_7.json"));
 
         Assertions.assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
+    }
+
+    @Test
+    void getFinalFillingHoldingSchemeQueryWithProjection() throws Exception {
+        // Given
+        JsonNode expectedQuery =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
+
+        // When
+        JsonNode givenQuery =
+            archiveSearchInternalService.createQueryForHoldingFillingUnit();
+
+        // Then
+        Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
+        Assertions.assertThat(
+            givenQuery.get(BuilderToken.GLOBAL.FILTER.exactToken()).get(BuilderToken.SELECTFILTER.ORDERBY.exactToken())
+                .has("Title")).isTrue();
+
+    }
+
+    @Test
+    void getFinalFillingHoldingSchemeQueryWithAllProjectionFields() throws Exception {
+        // Given
+        JsonNode expectedQuery =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
+
+        // When
+        JsonNode givenQuery =
+            archiveSearchInternalService.createQueryForHoldingFillingUnit();
+
+        // Then
+        Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
+        Assertions.assertThat(
+            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#object")).isTrue();
+        Assertions.assertThat(
+            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#unitType")).isTrue();
+        Assertions.assertThat(
+            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#id")).isTrue();
+        Assertions.assertThat(
+            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("DescriptionLevel")).isTrue();
     }
 
     private UnitDescriptiveMetadataDto buildUnitDescriptiveMetadataDto

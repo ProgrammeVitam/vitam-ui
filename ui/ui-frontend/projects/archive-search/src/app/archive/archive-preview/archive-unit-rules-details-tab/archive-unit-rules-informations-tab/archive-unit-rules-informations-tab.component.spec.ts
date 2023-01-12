@@ -136,6 +136,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
   it('the component should be created', () => {
     expect(component).toBeTruthy();
   });
+
   it('should the returned key as Final Action value be', () => {
     expect(component.getFinalActionStatus(inheritedProperty)).toEqual(
       'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED'
@@ -213,6 +214,40 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     // Then
     expect(component.getClassificationRulePropertyStatus(property)).not.toBeDefined();
     expect(component.getClassificationRulePropertyStatus(property)).not.toBeNull();
+  });
+
+  it('should have the correct values', () => {
+    component.initializeParameters();
+
+    expect(component.unitRuleDTO).toBeNull();
+    expect(component.listOfPropertiesCollapsed).toBeFalsy();
+    expect(component.propertiesList).toBeNull();
+    expect(component.isPreventInheritance).toBeFalsy();
+    expect(component.isShowHoldRuleDetails).toBeFalsy();
+    expect(component.holdRuleDetails).toBeNull();
+  });
+
+  it('should be false', () => {
+    component.listOfRulesCollapsed = true;
+    component.showlistOfRulesBloc();
+
+    expect(component.listOfRulesCollapsed).toBeFalsy();
+  });
+
+  it('should be true', () => {
+    component.listOfPropertiesCollapsed = false;
+    component.showListOfPropertiesBloc();
+
+    expect(component.listOfPropertiesCollapsed).toBeTruthy();
+  });
+
+  it('should return the rigth key to translate', () => {
+    // Given
+    const expectedResponse = 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.CLASSIFICATION_RULE_PROPERTIES.TEST';
+    // When
+    const response = component.getClassificationRulePropertyName('test');
+    // Then
+    expect(response).toEqual(expectedResponse);
   });
 
   // new tests
