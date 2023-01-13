@@ -22,6 +22,15 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
         "roles": [
             {
                 "name": "ROLE_GET_INGEST_CONTRACTS"
+            },
+            {
+                "name": "ROLE_GET_FILLING_PLAN_ACCESS"
+            },
+            {
+                "name": "ROLE_GET_MANAGEMENT_CONTRACTS"
+            },
+            {
+                "name": "ROLE_GET_ARCHIVE_PROFILES"
             }
         ]
     });

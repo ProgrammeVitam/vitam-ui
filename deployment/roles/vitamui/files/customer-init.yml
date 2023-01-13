@@ -59,6 +59,9 @@ customer-init:
       level:
       roles:
         - ROLE_GET_INGEST_CONTRACTS
+        - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_GET_MANAGEMENT_CONTRACTS
+        - ROLE_GET_ARCHIVE_PROFILES
 
     - name:  Profil gestion des services agents
       description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour
