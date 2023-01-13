@@ -29,11 +29,10 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import {ConfirmDialogService, Logger} from 'ui-frontend-common';
-import { ManagementContract } from 'projects/vitamui-library/src/public-api';
+import { ConfirmDialogService, Logger, ManagementContract, StorageStrategy } from 'ui-frontend-common';
+import * as uuid from 'uuid';
 import { ManagementContractService } from '../management-contract.service';
-import { ManagementContractCreateValidators } from './management-contract-create.validators';
-import {StorageStrategy} from "vitamui-library";
+import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -45,15 +44,14 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   stepIndex = 0;
+  stepCount = 2;
+
   isDisabledButton = false;
   isSlaveMode: boolean;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 1;
-  private keyPressSubscription: Subscription;
+  keyPressSubscription: Subscription;
+  apiSubscriptions: Subscription;
+  statusControlValueChangesSubscribe: Subscription;
 
   constructor(
     public dialogRef: MatDialogRef<ManagementContractCreateComponent>,
@@ -63,11 +61,9 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     private managementContractService: ManagementContractService,
     private managementContractCreateValidators: ManagementContractCreateValidators,
     private logger: Logger
-
   ) {}
 
   statusControl = new FormControl(false);
-  statusControlValueChangesSubscribe: Subscription;
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -82,10 +78,9 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
         objectGroupStrategy: ['default', Validators.required],
         objectStrategy: ['default', Validators.required],
       }),
-      // Step 3
     });
 
-    this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value:boolean) => {
+    this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value: boolean) => {
       this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
@@ -95,6 +90,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.keyPressSubscription?.unsubscribe();
     this.statusControlValueChangesSubscribe?.unsubscribe();
+    this.apiSubscriptions?.unsubscribe();
   }
 
   onCancel() {
@@ -106,24 +102,23 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
-      this.isDisabledButton = true;
-      return;
-    }
     this.isDisabledButton = true;
     const managementContract = this.form.value as ManagementContract;
     managementContract.status === 'ACTIVE'
       ? (managementContract.activationDate = new Date().toISOString())
       : (managementContract.deactivationDate = new Date().toISOString());
+    if (this.form.get('identifier').value === null) {
+      managementContract.identifier = uuid.v4();
+    }
     if (!managementContract.storage) {
-      let storage = {
+      const storage: StorageStrategy = {
         unitStrategy: null,
         objectGroupStrategy: null,
-        objectStrategy: null
-      } as StorageStrategy;
+        objectStrategy: null,
+      };
       managementContract.storage = storage;
     }
-    this.managementContractService.create(managementContract).subscribe(
+    this.apiSubscriptions = this.managementContractService.create(managementContract).subscribe(
       () => {
         this.isDisabledButton = false;
         this.dialogRef.close({ success: true, action: 'none' });
@@ -140,16 +135,27 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    return (
-      this.form.get('identifier').invalid ||
-      this.form.get('identifier').pending ||
-      this.form.get('name').invalid ||
-      this.form.get('name').pending ||
-      this.form.get('description').invalid ||
-      this.form.get('description').pending ||
-      this.form.get('status').invalid ||
-      this.form.get('status').pending
-    );
+    if (this.isSlaveMode) {
+      return (
+        this.form.get('identifier').invalid ||
+        this.form.get('identifier').pending ||
+        this.form.get('name').invalid ||
+        this.form.get('name').pending ||
+        this.form.get('description').invalid ||
+        this.form.get('description').pending ||
+        this.form.get('status').invalid ||
+        this.form.get('status').pending
+      );
+    } else {
+      return (
+        this.form.get('name').invalid ||
+        this.form.get('name').pending ||
+        this.form.get('description').invalid ||
+        this.form.get('description').pending ||
+        this.form.get('status').invalid ||
+        this.form.get('status').pending
+      );
+    }
   }
 
   secondStepInvalid(): boolean {

@@ -25,11 +25,39 @@
  * accept its terms.
  */
 
+import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from './management-contract-create.validators';
 
 describe('ManagementContractCreateValidators', () => {
+  let service: ManagementContractCreateValidators;
+
+  const managementContractServiceMock = {
+    existsProperties: () => of(null),
+  };
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: ManagementContractService, useValue: managementContractServiceMock }],
+    });
+    service = TestBed.inject(ManagementContractCreateValidators);
+  });
+
   it('should create an instance', () => {
     const managementContractServiceSpy = jasmine.createSpyObj('ManagementContractService', ['existsProperties']);
     expect(new ManagementContractCreateValidators(managementContractServiceSpy)).toBeTruthy();
+  });
+
+  it('should the service be created', () => {
+    expect(service).toBeTruthy();
+  });
+
+  it(' uniqueIdentifier should return true when contract identifier does not exist in Vitam', () => {
+    expect(service.uniqueIdentifier('contractIdentifier')).toBeTruthy();
+  });
+
+  it(' uniqueName should return true when contract name does not exist in Vitam', () => {
+    expect(service.uniqueName('contractName')).toBeTruthy();
   });
 });

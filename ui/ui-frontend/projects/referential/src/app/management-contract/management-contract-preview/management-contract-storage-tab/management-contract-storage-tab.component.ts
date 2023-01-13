@@ -25,101 +25,67 @@
  * accept its terms.
  */
 
-import {Component,EventEmitter,Input,OnInit,Output} from '@angular/core';
-import {FormBuilder,FormControl,FormGroup,Validators} from '@angular/forms';
-import {ManagementContract} from 'projects/vitamui-library/src/public-api';
-import {Observable,of, Subscription} from 'rxjs';
-import {catchError,filter,map,switchMap} from 'rxjs/operators';
-import {diff} from 'ui-frontend-common';
-import {extend,isEmpty} from 'underscore';
-import {ManagementContractService} from '../../management-contract.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, of, Subscription } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, ManagementContract, StorageStrategy } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { ManagementContractService } from '../../management-contract.service';
 
 @Component({
   selector: 'app-management-contract-storage-tab',
   templateUrl: './management-contract-storage-tab.component.html',
-  styleUrls: ['./management-contract-storage-tab.component.scss']
+  styleUrls: ['./management-contract-storage-tab.component.scss'],
 })
-export class ManagementContractStorageTabComponent implements OnInit {
-  @Output() updated: EventEmitter<boolean>=new EventEmitter<boolean>();
+export class ManagementContractStorageTabComponent implements OnInit, OnDestroy {
+  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
-  submited=false;
+  submited = false;
+  showSpinner = false;
 
   statusControlValueChangesSubscribe: Subscription;
 
   @Input()
   set inputManagementContract(managementContract: ManagementContract) {
-    if (!managementContract.storage.unitStrategy) {
-      managementContract.storage.unitStrategy = "";
+    if (managementContract.storage && !managementContract.storage.unitStrategy) {
+      managementContract.storage.unitStrategy = '';
     }
-    if (!managementContract.storage.objectGroupStrategy) {
-      managementContract.storage.objectGroupStrategy = "";
+    if (managementContract.storage && !managementContract.storage.objectGroupStrategy) {
+      managementContract.storage.objectGroupStrategy = '';
     }
-    if (managementContract.storage.objectStrategy) {
-      managementContract.storage.objectStrategy = "";
+    if (managementContract.storage && !managementContract.storage.objectStrategy) {
+      managementContract.storage.objectStrategy = '';
     }
-    this._inputManagementContract=managementContract;
 
-    if(!managementContract.description) {
-      this._inputManagementContract.description='';
-    }
-    this.form.controls.status.setValue(managementContract.status);
-    this.statusControl = new FormControl(managementContract.status === 'ACTIVE');
-    this.resetForm(this.inputManagementContract);
+    this._inputManagementContract = managementContract;
+
+    this.resetForm(this.inputManagementContract.storage);
     this.updated.emit(false);
-
-    if (this.statusControlValueChangesSubscribe) {
-      this.statusControlValueChangesSubscribe.unsubscribe();
-    }
-    this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value:boolean) => {
-      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
-    });
   }
 
   get inputManagementContract(): ManagementContract {
     return this._inputManagementContract;
   }
 
-  public _inputManagementContract: ManagementContract;
-  public statusControl = new FormControl();
+  _inputManagementContract: ManagementContract;
 
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if(readOnly&&this.form.enabled) {
-      this.form.disable({emitEvent: false});
-    } else if(this.form.disabled) {
-      this.form.enable({emitEvent: false});
-      this.form.get('identifier').disable({emitEvent: false});
-    }
-  }
+  previousValue = (): StorageStrategy => {
+    return this._inputManagementContract?.storage;
+  };
 
-  previousValue=(): ManagementContract => {
-    return this._inputManagementContract;
-  }
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private managementContractService: ManagementContractService
-  ) {
-    this.form=this.formBuilder.group({
-      identifier: [null,Validators.required],
-      name: [null,Validators.required],
-      description: [null,Validators.required],
-      status: [null],
-      storage: this.formBuilder.group({
-        unitStrategy: ['', Validators.required],
-        objectGroupStrategy: ['', Validators.required],
-        objectStrategy: ['', Validators.required],
-      }),
+  constructor(private formBuilder: FormBuilder, private managementContractService: ManagementContractService) {
+    this.form = this.formBuilder.group({
+      unitStrategy: [null, Validators.required],
+      objectGroupStrategy: [null, Validators.required],
+      objectStrategy: [null, Validators.required],
     });
-    this.form.disable({emitEvent: false});
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   unchanged(): boolean {
-    const unchanged=JSON.stringify(diff(this.form.getRawValue(),this.previousValue()))==='{}';
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -127,44 +93,36 @@ export class ManagementContractStorageTabComponent implements OnInit {
   prepareSubmit(): Observable<ManagementContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => extend({ id: this._inputManagementContract.id, identifier: this._inputManagementContract.identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
-        // Update the activation and deactivation dates if the contract status has changed before sending the data
-        if (formData.status) {
-          if (formData.status === 'ACTIVE') {
-            formData.activationDate = new Date();
-            formData.deactivationDate = null;
-          } else {
-            formData.status = 'INACTIVE';
-            formData.activationDate = null;
-            formData.deactivationDate = new Date();
-          }
-        }
         return this.managementContractService.patch(formData).pipe(catchError(() => of(null)));
       })
     );
   }
 
   onSubmit() {
-    this.submited=true;
-    this.prepareSubmit().subscribe(() => {
-      this.managementContractService.get(this._inputManagementContract.identifier).subscribe(
-        response => {
-          this.submited=false;
-          this.inputManagementContract=response;
-        }
-      );
-    },() => {
-      this.submited=false;
-    });
+    this.submited = true;
+    this.showSpinner = true;
+    this.prepareSubmit().subscribe(
+      () => {
+        this.managementContractService.get(this._inputManagementContract.identifier).subscribe((response) => {
+          this.submited = false;
+          this.showSpinner = false;
+          this.inputManagementContract = response;
+        });
+      },
+      () => {
+        this.submited = false;
+        this.showSpinner = false;
+      }
+    );
   }
 
-  resetForm(managementContract: ManagementContract) {
-    this.form.reset(managementContract,{emitEvent: false});
+  resetForm(storageStrategy: StorageStrategy) {
+    this.form.reset(storageStrategy, { emitEvent: false });
   }
-
 
   ngOnDestroy() {
-    this.statusControlValueChangesSubscribe.unsubscribe();
+    this.statusControlValueChangesSubscribe?.unsubscribe();
   }
 }

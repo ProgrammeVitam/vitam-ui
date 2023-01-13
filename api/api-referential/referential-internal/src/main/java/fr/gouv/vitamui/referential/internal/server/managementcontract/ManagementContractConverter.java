@@ -50,9 +50,7 @@ public class ManagementContractConverter {
 
     public ManagementContractVitamDto convertDtoToVitam(final ManagementContractDto dto) {
 
-        final ManagementContractVitamDto managementContract = VitamUIUtils.copyProperties(dto, new ManagementContractVitamDto());
-
-        return managementContract;
+        return VitamUIUtils.copyProperties(dto, new ManagementContractVitamDto());
     }
 
     public ManagementContractDto convertVitamToDto(final ManagementContractVitamDto managementContract) {

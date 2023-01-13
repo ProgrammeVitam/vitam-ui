@@ -6,6 +6,62 @@
     "APPLY_UPDATE": "Apply changes",
     "REQUIRED": "Required field"
   },
+  "CONTRACT_MANAGEMENT": {
+    "CONTRACT_PAGE": {
+      "TITLE": "Management contracts",
+      "CREATE_MANAGEMENT_CONTRACT": "Create management contract",
+      "SEARCH_CRITERIA": "Search by identifier and contract name",
+      "CONTRACTS_LIST": "List of management contracts"
+    },
+    "CONTRACTS_CREATION": {
+      "CREATION_ACTION": "Creation of a management contract",
+      "INFORMATIONS": "Informations",
+      "CONTRACT_STATUS": "Management contract active ",
+      "NAME_ALREADY_EXIST": "Name already in use",
+      "MANDATORY_FIELD": "Required field",
+      "IDENTIFIER": "Contract identifier",
+      "NAME": "Contract name",
+      "IDENTIFIER_ALREADY_EXIST": "Identifier already in use",
+      "DESCRIPTION": "Description",
+      "STORAGE_POLICIES": "Storage policies settings",
+      "STORAGE_POLICIES_TOOLTIP": "It is recommended, in a management contract, to declare the same policies for metadata of archival units and metadata of groups of technical objects.",
+      "UNIT_STRATEGY": "For metadata describing units of record (and their lifecycle log)",
+      "OBJECT_GROUP_STRATEGY": "For metadata describing technical object groups (and their lifecycle log)",
+      "OBJECT_STRATEGY": "For digital files (binary objects)",
+      "SUBMIT": "Confirm",
+      "MANAGEMENT_CONTRACT_CREATED": "Management contract created successfully",
+      "MANAGEMENT_CONTRACT_UPDATED": "The management contract is successfully updated"
+    },
+    "CONTRACT_LIST": {
+      "IDENTIFIER": "Contract identifier",
+      "NAME": "Contract name",
+      "CREATION_DATE": "Creation date",
+      "LAST_UPDATE_DATE": "Date of last modification",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "NO_RESULT_FOUND": "End of results"
+    },
+    "PREVIEW": {
+      "INFORMATIONS": "Informations",
+      "STORAGE": "Storage",
+      "HISTORY": "History",
+      "INFORMATION": {
+        "NAME": "Contract name",
+        "IDENTIFIER": "Contract identifier",
+        "DESCRIPTION": "Contract description",
+        "CONTRACT_ACTIVE_STATUS": "Management contract active ",
+        "CREATION_DATE": "Creation date",
+        "LAST_UPDATE_DATE": "Date of last modification",
+        "SAVE": "Save"
+      },
+      "STORAGE_DETAILS": {
+        "STORAGE_STRATEGY": "Storage strategy",
+        "UNIT_STRATEGY": "Archive Unit",
+        "OBJECT_GROUP_STRATEGY": "Technical object groups",
+        "OBJECT_STRATEGY": "Digital files"
+      }
+    }
+  },
   "LOGBOOK_OPERATION_LIST": {
     "NO_RESULTS": "End of results",
     "HOUR": "Hour",

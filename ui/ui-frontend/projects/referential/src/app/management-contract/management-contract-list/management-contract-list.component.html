@@ -1,114 +1,123 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-    <thead>
-      <tr>
-        <th>
-          <div class="vitamui-table-header">
-            <button
-              class="vitamui-filter-button"
-              [vitamuiCommonTableFilter]="statusFilterTemplate"
-              [class.active]="filterMap['status'] && filterMap['status'].length > 0"
-            >
-              <i class="material-icons vitamui-row-icon">filter_list</i>
-            </button>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-2">
+        <button
+          class="vitamui-filter-button"
+          [vitamuiCommonTableFilter]="statusFilterTemplate"
+          [class.active]="filterMap['status'] && filterMap['status'].length > 0"
+        >
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
 
-            <ng-template #statusFilterTemplate>
-              <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
-                <vitamui-common-table-filter-option value="ACTIVE">
-                  <div class="table-filter-icon" i18n="@@userStatusEnabled">
-                    <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i> Actif
-                  </div>
-                </vitamui-common-table-filter-option>
-                <vitamui-common-table-filter-option value="INACTIVE">
-                  <div class="table-filter-icon" i18n="@@userStatusDisabled">
-                    <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey close"></i> Désactivé
-                  </div>
-                </vitamui-common-table-filter-option>
-              </vitamui-common-table-filter>
-            </ng-template>
+        <ng-template #statusFilterTemplate>
+          <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
+            <vitamui-common-table-filter-option value="ACTIVE">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-document-layers status-badge status-badge-green close"></i>
+                {{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.ACTIVE' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="INACTIVE">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-document-layers status-badge status-badge-grey close"></i>
+                {{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.INACTIVE' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+          </vitamui-common-table-filter>
+        </ng-template>
 
-            <i class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
-            <vitamui-common-order-by-button
-              orderByKey="Status"
-              [(orderBy)]="orderBy"
-              [(direction)]="direction"
-              (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
-          </div>
-        </th>
+        <i class="vitamui-icon vitamui-icon-document-layers vitamui-row-icon"></i>
+        <vitamui-common-order-by-button
+          orderByKey="Status"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+      <div class="col-2">
+        <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.IDENTIFIER' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="Identifier"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        >
+        </vitamui-common-order-by-button>
+      </div>
+      <div class="col-4">
+        <span>{{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.NAME' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="Name"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+      <div class="col-2">
+        <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.CREATION_DATE' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="CreationDate"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
 
-        <th>
-          <div class="vitamui-table-header">
-            <span i18n="managementContract id column header@@managementContractListIdHeader">Identifiant</span>
-            <vitamui-common-order-by-button
-              orderByKey="Identifier"
-              [(orderBy)]="orderBy"
-              [(direction)]="direction"
-              (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
-          </div>
-        </th>
+      <div class="col-2">
+        <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.LAST_UPDATE_DATE' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="LastUpdate"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+    </div>
 
-        <th>
-            <div class="vitamui-table-header">
-              <span i18n="managementContract name column header@@managementContractListNameHeader">Nom</span>
-              <vitamui-common-order-by-button
-                orderByKey="Name"
-                [(orderBy)]="orderBy"
-                [(direction)]="direction"
-                (orderChange)="emitOrderChange()"
-              ></vitamui-common-order-by-button>
-            </div>
-          </th>
-
-        <th>
-          <div class="vitamui-table-header">
-            <span i18n="managementContract creation date column header@@managementContractListLastUpdateHeader">Dernières modifications</span>
-            <vitamui-common-order-by-button
-              orderByKey="LastUpdate"
-              [(orderBy)]="orderBy"
-              [(direction)]="direction"
-              (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
-          </div>
-        </th>
-
-        <th></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <ng-container *ngFor="let managementContract of dataSource; let index = index">
-        <tr class="vitamui-table-row">
-          <td>
+    <div class="vitamui-table-body">
+      <div
+        class="vitamui-table-rows"
+        *ngFor="let managementContract of dataSource; let index = index"
+        (click)="managementContractClick.emit(managementContract)"
+      >
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-2">
             <i
-              class="vitamui-icon vitamui-icon-contrat vitamui-row-icon status-badge"
+              class="vitamui-icon vitamui-icon-document-layers vitamui-row-icon status-badge"
               [ngClass]="{
                 'status-badge-green': managementContract?.status == 'ACTIVE',
                 'status-badge-grey': managementContract?.status == 'INACTIVE'
               }"
             ></i>
-          </td>
-          <td class="clickable" (click)="managementContractClick.emit(managementContract)">
-            {{ managementContract?.identifier }}
-          </td>
-          <td class="clickable" (click)="managementContractClick.emit(managementContract)">{{ managementContract?.name }}</td>
-          <td class="clickable" (click)="managementContractClick.emit(managementContract)">
-            {{ managementContract?.lastUpdate | date: 'dd/MM/yyyy' }}
-          </td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-
-  <div class="vitamui-table-footer">
-    <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-    <button
-      *ngIf="!pending && infiniteScrollDisabled && managementContractService.canLoadMore"
-      (click)="loadMore()"
-      class="btn"
-      i18n="Show more results@@tableMoreResultButton"
-    >
-      Afficher plus de résultats...
-    </button>
-    <span *ngIf="!pending && !managementContractService.canLoadMore">Fin des résultats</span>
+          </div>
+          <div class="col-2">{{ managementContract?.identifier }}</div>
+          <div class="col-4">{{ managementContract?.name }}</div>
+          <div class="col-2">
+            <div>{{ managementContract?.creationDate | dateTime : 'dd/MM/yyyy' }}</div>
+            <span class="date">
+              {{ managementContract?.creationDate | dateTime : 'HH:mm:ss' }}
+            </span>
+          </div>
+          <div class="col-2">
+            <div>{{ managementContract?.lastUpdate | dateTime : 'dd/MM/yyyy' }}</div>
+            <span class="date">
+              {{ managementContract?.lastUpdate | dateTime : 'HH:mm:ss' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <div *ngIf="!pending && !managementContractService.canLoadMore; then resultfound; else loadingSpinner"></div>
+</div>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+<ng-template #resultfound>
+  <div class="text-center">{{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.NO_RESULT_FOUND' | translate }}</div>
+</ng-template>

@@ -1,43 +1,35 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-      <app-management-contract-preview
-        *ngIf="openedItem"
-        (previewClose)="closePanel()"
-        [inputManagementContract]="openedItem"
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-management-contract-preview *ngIf="openedItem" (previewClose)="closePanel()" [inputManagementContract]="openedItem">
+    </app-management-contract-preview>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.TITLE' | translate }}
+      </vitamui-common-title-breadcrumb>
+
+      <vitamui-common-banner
+        [searchbarPlaceholder]="'CONTRACT_MANAGEMENT.CONTRACT_PAGE.SEARCH_CRITERIA' | translate"
+        (search)="onSearchSubmit($event)"
       >
-      </app-management-contract-preview>
-    </mat-sidenav>
+        <button
+          class="btn secondary"
+          (click)="openCreateManagementcontractDialog()"
+          matTooltip="{{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CREATE_MANAGEMENT_CONTRACT' | translate }}"
+          matTooltipClass="vitamui-tooltip"
+        >
+          <i class="vitamui-icon vitamui-icon-refresh"></i>
+          <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CREATE_MANAGEMENT_CONTRACT' | translate }}</span>
+        </button>
+      </vitamui-common-banner>
+    </div>
 
-    <mat-sidenav-content>
-      <div class="vitamui-header">
-        <div class="vitamui-container">
-          <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"> </vitamui-common-navbar>
-
-          <h2 i18n="Search a management contract, owner or tenant@@ManagementContractSearchHeader">
-            <img src="assets/mini-logo-vitam.png" /> Paramétrer mes <strong>Contrats de gestion</strong>
-          </h2>
-
-          <div class="controls">
-            <vitamui-common-search-bar
-              name="management-contract-search"
-              (search)="onSearchSubmit($event)"
-              placeholder="Nom, Identifiant, ..."
-              i18n-placeholder="@@ManagementContractSearchPlaceholder"
-            >
-            </vitamui-common-search-bar>
-
-            <div class="actions">
-              <button class="btn secondary" (click)="openCreateManagementcontractDialog()">
-                <i class="vitamui-icon vitamui-icon-contrat"></i>
-                <span i18n="Create a management contract button label@@ManagementContractListCreateButton">Créer un contrat de gestion</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="vitamui-body vitamui-container">
-        <app-management-contract-list (managementContractClick)="showManagementContract($event)" [search]="search"> </app-management-contract-list>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    <div class="vitamui-content">
+      <h5 class="mt-0 mb-4">{{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CONTRACTS_LIST' | translate }}</h5>
+      <app-management-contract-list (managementContractClick)="showManagementContract($event)" [search]="search">
+      </app-management-contract-list>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

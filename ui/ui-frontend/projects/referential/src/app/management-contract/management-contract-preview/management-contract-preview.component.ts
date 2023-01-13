@@ -34,96 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
-import {ConfirmActionComponent, ManagementContract} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {ManagementContractService} from '../management-contract.service';
-import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
-
-
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ManagementContract } from 'ui-frontend-common';
 @Component({
   selector: 'app-management-contract-preview',
   templateUrl: './management-contract-preview.component.html',
-  styleUrls: ['./management-contract-preview.component.scss']
+  styleUrls: ['./management-contract-preview.component.scss'],
 })
-export class ManagementContractPreviewComponent implements AfterViewInit {
-
+export class ManagementContractPreviewComponent implements OnInit {
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
 
-  isPopup: boolean;
-
   @Input()
   inputManagementContract: ManagementContract;
-  // tab indexes: info = 0; history = 2;
+
   tabUpdated: boolean[] = [false, false];
-  @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
 
-  tabLinks: Array<ManagementContractInformationTabComponent> = [];
-  @ViewChild('infoTab', {static: false}) infoTab: ManagementContractInformationTabComponent;
+  constructor() {}
 
-  filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('STP_UPDATE_MANAGEMENT_CONTRACT') ||
-      event.outDetail.includes('STP_IMPORT_MANAGEMENT_CONTRACT'));
-  }
-
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event: any) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
-      event.preventDefault();
-      this.checkBeforeExit();
-      return '';
-    }
-  }
-
-  constructor(private matDialog: MatDialog, private managementContractService: ManagementContractService) {
-  }
-
-  ngAfterViewInit() {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
-    this.tabLinks[0] = this.infoTab;
-  }
+  ngOnInit() {}
 
   updatedChange(updated: boolean, index: number) {
     this.tabUpdated[index] = updated;
   }
 
-  async checkBeforeExit() {
-    if (await this.confirmAction()) {
-      const submitManagementContractUpdate: Observable<ManagementContract> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
-
-      submitManagementContractUpdate.subscribe(() => {
-        this.managementContractService.get(this.inputManagementContract.identifier).subscribe(
-          response => {
-            this.inputManagementContract = response;
-          }
-        );
-      });
-    } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.inputManagementContract);
-    }
-  }
-
-  async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
-      await this.checkBeforeExit();
-    }
-
-    const args = [tab, tabHeader, idx];
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
-  }
-
-  async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
-    dialog.componentInstance.dialogType = 'changeTab';
-    return await dialog.afterClosed().toPromise();
+  filterEvents(event: any): boolean {
+    return (
+      event.outDetail &&
+      (event.outDetail.toString().includes('STP_UPDATE_MANAGEMENT_CONTRACT') ||
+        event.outDetail.toString().includes('STP_IMPORT_MANAGEMENT_CONTRACT'))
+    );
   }
 
   emitClose() {
     this.previewClose.emit();
   }
-
 }

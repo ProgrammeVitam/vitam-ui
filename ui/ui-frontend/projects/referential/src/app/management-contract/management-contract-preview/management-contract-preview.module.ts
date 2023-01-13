@@ -34,26 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatOptionModule} from '@angular/material/core';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTabsModule} from '@angular/material/tabs';
-import {RouterModule} from '@angular/router';
-import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RouterModule } from '@angular/router';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
-import {ManagementContractInformationTabComponent} from './management-contract-information-tab/management-contract-information-tab.component';
-import {ManagementContractPreviewComponent} from './management-contract-preview.component';
-import {
-  ManagementContractStorageTabComponent
-} from "./management-contract-storage-tab/management-contract-storage-tab.component";
+import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
+import { ManagementContractPreviewComponent } from './management-contract-preview.component';
+import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';
 
 @NgModule({
   imports: [
@@ -70,17 +68,9 @@ import {
     MatProgressSpinnerModule,
     MatSelectModule,
     MatOptionModule,
-    MatTabsModule
+    MatTabsModule,
   ],
-  declarations: [
-    ManagementContractPreviewComponent,
-    ManagementContractInformationTabComponent,
-    ManagementContractStorageTabComponent
-  ],
-  exports: [
-    ManagementContractPreviewComponent
-  ]
-
+  declarations: [ManagementContractPreviewComponent, ManagementContractInformationTabComponent, ManagementContractStorageTabComponent],
+  exports: [ManagementContractPreviewComponent],
 })
-export class ManagementContractPreviewModule {
-}
+export class ManagementContractPreviewModule {}

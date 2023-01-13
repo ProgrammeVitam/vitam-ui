@@ -160,6 +160,4 @@ public class ManagementContractDto implements Serializable {
         return storage;
     }
 
-
-
 }

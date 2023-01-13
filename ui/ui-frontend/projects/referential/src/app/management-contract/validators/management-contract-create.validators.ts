@@ -27,7 +27,6 @@
 
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { ManagementContract } from 'projects/vitamui-library/src/public-api';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
@@ -45,32 +44,9 @@ export class ManagementContractCreateValidators {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);
   };
 
-  uniqueNameWhileEdit = (managementContract: () => ManagementContract, nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFieldsWhileEdit(managementContract, 'name', 'nameExists', nameToIgnore);
-  };
-
   uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
   };
-
-  private uniqueFieldsWhileEdit(managementContract: () => ManagementContract, field: string, existTag: string, valueToIgnore?: string) {
-    return (control: AbstractControl) => {
-      const properties: any = {};
-      properties[field] = control.value;
-      const existField: any = {};
-      existField[existTag] = true;
-
-      if (managementContract() === undefined || control.value === managementContract().name) {
-        return of(null);
-      } else {
-        return timer(this.debounceTime).pipe(
-          switchMap(() => (control.value !== valueToIgnore ? this.managementContractService.existsProperties(properties) : of(false))),
-          take(1),
-          map((exists: boolean) => (exists ? existField : null))
-        );
-      }
-    };
-  }
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {

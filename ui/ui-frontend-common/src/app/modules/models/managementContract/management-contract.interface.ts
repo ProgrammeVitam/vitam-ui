@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import {Id} from 'ui-frontend-common';
+import { Id } from '../id.interface';
 
 export interface ManagementContract extends Id {
   tenant: number;
@@ -43,9 +43,9 @@ export interface ManagementContract extends Id {
 }
 
 export interface StorageStrategy {
-  unitStrategy: string,
-  objectGroupStrategy: string,
-  objectStrategy: string
+  unitStrategy: string;
+  objectGroupStrategy: string;
+  objectStrategy: string;
 }
 
 export interface VersionRetentionPolicy {
@@ -61,7 +61,12 @@ export interface VersionUsage {
 }
 
 export enum IntermediaryVersionEnum {
-  ALL = "ALL",
-  LAST = "LAST",
-  NONE = "NONE"
+  ALL = 'ALL',
+  LAST = 'LAST',
+  NONE = 'NONE',
+}
+
+export enum ManagementContractStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
 }

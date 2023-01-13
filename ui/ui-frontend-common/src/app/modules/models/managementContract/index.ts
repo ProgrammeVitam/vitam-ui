@@ -25,31 +25,4 @@
  * accept its terms.
  */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
-import { ManagementContractComponent } from './management-contract.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full',
-  },
-  {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    component: ManagementContractComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-];
-
-@NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes)],
-})
-export class ManagementContractRoutingModule {}
+export * from './management-contract.interface';
