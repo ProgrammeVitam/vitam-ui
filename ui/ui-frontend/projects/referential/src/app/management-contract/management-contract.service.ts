@@ -27,10 +27,10 @@
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ManagementContract } from 'projects/vitamui-library/src/public-api';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { ManagementContract, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
 import { ManagementContractsApiService } from '../core/api/management-contracts-api.service';
 
@@ -40,7 +40,12 @@ import { ManagementContractsApiService } from '../core/api/management-contracts-
 export class ManagementContractService extends SearchService<ManagementContract> {
   updated = new Subject<ManagementContract>();
 
-  constructor(private managementContractApi: ManagementContractsApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private managementContractApi: ManagementContractsApiService,
+    private snackBarService: VitamUISnackBarService,
+    private translateService: TranslateService,
+    http: HttpClient
+  ) {
     super(http, managementContractApi, 'ALL');
   }
 
@@ -81,8 +86,10 @@ export class ManagementContractService extends SearchService<ManagementContract>
     return this.managementContractApi.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
-        (response) => {
-          this.snackBarService.open({ message: 'managementContractUpdate' + response.name });
+        () => {
+          this.snackBarService.open({
+            message: this.translateService.instant('CONTRACT_MANAGEMENT.CONTRACTS_CREATION.MANAGEMENT_CONTRACT_UPDATED'),
+          });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message });
@@ -94,9 +101,10 @@ export class ManagementContractService extends SearchService<ManagementContract>
   create(managementContract: ManagementContract) {
     return this.managementContractApi.create(managementContract).pipe(
       tap(
-        (response: ManagementContract) => {
-
-          this.snackBarService.open({ message: 'managementContractCreate' + response.name });
+        () => {
+          this.snackBarService.open({
+            message: this.translateService.instant('CONTRACT_MANAGEMENT.CONTRACTS_CREATION.MANAGEMENT_CONTRACT_CREATED'),
+          });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message });

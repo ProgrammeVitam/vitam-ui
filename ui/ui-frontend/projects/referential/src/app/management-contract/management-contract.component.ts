@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -25,85 +25,88 @@
  * accept its terms.
  */
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ManagementContract } from 'projects/vitamui-library/src/lib/models/management-contract';
-import { ApplicationService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ApplicationService, GlobalEventService, ManagementContract, SidenavPage } from 'ui-frontend-common';
 import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
 
 @Component({
   selector: 'app-management-contract',
   templateUrl: './management-contract.component.html',
-  styleUrls: ['./management-contract.component.scss']
+  styleUrls: ['./management-contract.component.scss'],
 })
-export class ManagementContractComponent extends SidenavPage<ManagementContract> implements OnInit {
-    @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;
+export class ManagementContractComponent extends SidenavPage<ManagementContract> implements OnInit, OnDestroy {
+  @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;
 
-    search = '';
-    tenantId: number;
-    isSlaveMode: boolean;
+  search = '';
+  tenantId: number;
+  isSlaveMode: boolean;
 
-    constructor(
-      public dialog: MatDialog,
-      private route: ActivatedRoute,
-      private router: Router,
-      globalEventService: GlobalEventService,
-      private applicationService: ApplicationService
-    ) {
-      super(route, globalEventService);
-      globalEventService.tenantEvent.subscribe(() => {
-        this.refreshList();
-        this.updateSlaveMode();
-      });
+  subscriptions: Subscription = new Subscription();
 
-      this.route.params.subscribe((params) => {
-        if (params.tenantIdentifier) {
-          this.tenantId = +params.tenantIdentifier;
-        }
-      });
-    }
+  constructor(
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+    globalEventService: GlobalEventService,
+    private applicationService: ApplicationService
+  ) {
+    super(route, globalEventService);
+    globalEventService.tenantEvent.subscribe(() => {
+      this.refreshList();
+      this.updateSlaveMode();
+    });
 
-    openCreateManagementcontractDialog() {
-      const dialogRef = this.dialog.open(ManagementContractCreateComponent, {
-        panelClass: 'vitamui-modal',
-        disableClose: true,
-      });
-      dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result !== undefined) {
-          this.refreshList();
-        }
-      });
-    }
-
-    private refreshList() {
-      if (!this.managementContractListComponent) {
-        return;
+    this.route.params.subscribe((params) => {
+      if (params.tenantIdentifier) {
+        this.tenantId = +params.tenantIdentifier;
       }
-      this.managementContractListComponent.searchManagementContractOrdered();
-    }
+    });
+  }
 
-    onSearchSubmit(search: string) {
-      this.search = search || '';
-    }
+  ngOnInit() {
+    this.updateSlaveMode();
+  }
 
-    changeTenant(tenantIdentifier: number) {
-      this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
-    }
+  openCreateManagementcontractDialog() {
+    const dialogRef = this.dialog.open(ManagementContractCreateComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: true,
+    });
+    dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.refreshList();
+      }
+    });
+  }
 
-    updateSlaveMode() {
+  private refreshList() {
+    if (!this.managementContractListComponent) {
+      return;
+    }
+    this.managementContractListComponent.searchManagementContractOrdered();
+  }
+
+  onSearchSubmit(search: string) {
+    this.search = search || '';
+  }
+
+  updateSlaveMode() {
+    this.subscriptions.add(
       this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').subscribe((value) => {
         this.isSlaveMode = value;
-      });
-    }
+      })
+    );
+  }
 
-    ngOnInit() {
-      this.updateSlaveMode();
-    }
+  showManagementContract(item: ManagementContract) {
+    this.openPanel(item);
+  }
 
-    showManagementContract(item: ManagementContract) {
-      this.openPanel(item);
-    }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 }

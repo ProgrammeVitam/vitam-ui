@@ -1,45 +1,83 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-
-    <div class="row">
-        <div class="col">
-            <vitamui-common-slide-toggle [formControl]="statusControl">Contrat de gestion actif </vitamui-common-slide-toggle>
-        </div>
+  <div class="row">
+    <div class="col">
+      <vitamui-common-slide-toggle [formControl]="statusControl"
+        >{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.CONTRACT_ACTIVE_STATUS' | translate }}
+      </vitamui-common-slide-toggle>
     </div>
+  </div>
 
-    <div class="row">
-        <div class="col-10 form-control">
-            <vitamui-common-input formControlName="identifier" placeholder="Identifiant"
-                i18n-placeholder="Identifiant@@managementContractPreviewTabInformation">
-            </vitamui-common-input>
-        </div>
+  <div class="row">
+    <div class="col-10 form-control">
+      <vitamui-common-input
+        formControlName="identifier"
+        placeholder="{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.IDENTIFIER' | translate }}"
+      >
+      </vitamui-common-input>
     </div>
+  </div>
 
-    <div class="row">
-        <div class="col-10 form-control">
-            <vitamui-common-input formControlName="name" placeholder="Nom"
-                i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
-            </vitamui-common-input>
-        </div>
+  <div class="row">
+    <div class="col-10 form-control">
+      <vitamui-common-input formControlName="name" placeholder="{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.NAME' | translate }}">
+        <ng-container *ngIf="form.get('name')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
+            >{{ 'COMMON.REQUIRED' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
     </div>
+  </div>
 
-    <div class="row">
-        <div class="col-10 form-control">
-            <vitamui-common-textarea formControlName="description" placeholder="Description" [rows]="3">
-                <ng-container *ngIf="form.get('description')?.touched">
-                    <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
-                    </vitamui-common-input-error>
-                </ng-container>
-            </vitamui-common-textarea>
-        </div>
+  <div class="row">
+    <div class="col-10 form-control">
+      <vitamui-common-textarea
+        formControlName="description"
+        placeholder="{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.DESCRIPTION' | translate }}"
+        [rows]="3"
+      >
+        <ng-container *ngIf="form.get('description')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required"
+            >{{ 'COMMON.REQUIRED' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-textarea>
     </div>
+  </div>
 
-    <div class="row">
-        <div class="col-10">
-            <span>Date de création</span> : {{inputManagementContract?.creationDate | date: 'dd/MM/yyyy'}}
-        </div>
+  <div class="row">
+    <div class="col-12 mb-3">
+      <label>{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.CREATION_DATE' | translate }}</label>
+      <div>
+        {{ inputManagementContract?.creationDate | dateTime : 'dd/MM/yyyy' }}
+        <span class="date-hms">{{ inputManagementContract?.creationDate | dateTime : 'HH:mm:ss' }}</span>
+      </div>
     </div>
+  </div>
 
-    <div class="form-group bottom">
-        <button type="submit" class="btn secondary" [disabled]="unchanged() || submited">Enregistrer</button>
+  <div class="row">
+    <div class="col-12 mb-3">
+      <label>{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.LAST_UPDATE_DATE' | translate }}</label>
+      <div>
+        {{ inputManagementContract?.lastUpdate | dateTime : 'dd/MM/yyyy' }}
+        <span class="date-hms">{{ inputManagementContract?.lastUpdate | dateTime : 'HH:mm:ss' }}</span>
+      </div>
     </div>
+  </div>
+
+  <div class="form-group bottom" *ngIf="showSpinner; then loadingSpinner; else saveBtn"></div>
 </form>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #saveBtn>
+  <div class="form-group bottom">
+    <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submited">
+      {{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.SAVE' | translate }}
+    </button>
+  </div>
+</ng-template>

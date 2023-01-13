@@ -33,16 +33,15 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.ManagementContractExternalService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers={ManagementContractExternalController.class})
+@WebMvcTest(controllers={ ManagementContractExternalController.class })
 public  class ManagementContractExternalControllerTest extends ApiReferentialControllerTest<ManagementContractDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractExternalControllerTest.class);
@@ -50,14 +49,14 @@ public  class ManagementContractExternalControllerTest extends ApiReferentialCon
     @MockBean
     private ManagementContractExternalService managementContractExternalService;
 
-    @Test
-    public void getAll() {
-        super.testGetAllEntity();
-    }
-
-    @Override
+     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.SERVICE_MANAGEMENT_CONTRACT};
+        return new String[] {
+            ServicesData.SERVICE_MANAGEMENT_CONTRACT,
+            ServicesData.ROLE_CREATE_MANAGEMENT_CONTRACT,
+            ServicesData.ROLE_GET_MANAGEMENT_CONTRACT,
+            ServicesData.ROLE_UPDATE_MANAGEMENT_CONTRACT,
+        };
     }
 
     @Override
@@ -82,4 +81,17 @@ public  class ManagementContractExternalControllerTest extends ApiReferentialCon
     protected String getRessourcePrefix() {
         return RestApi.MANAGEMENT_CONTRACTS_URL;
     }
+
+    @Test
+    public void getAll() {
+        super.testGetAllEntity();
+    }
+
+    @Test
+    public void testManagementContract() {
+        Assert.assertNotNull(managementContractExternalService);
+    }
+
+
+
 }

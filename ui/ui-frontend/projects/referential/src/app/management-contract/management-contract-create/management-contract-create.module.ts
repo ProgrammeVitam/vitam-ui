@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -25,20 +25,20 @@
  * accept its terms.
  */
 
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatInputModule } from '@angular/material/input';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ReactiveFormsModule } from '@angular/forms';
-import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
-import {SharedModule} from 'projects/identity/src/app/shared/shared.module';
+import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { ManagementContractCreateComponent } from './management-contract-create.component';
 
 @NgModule({
@@ -56,7 +56,7 @@ import { ManagementContractCreateComponent } from './management-contract-create.
     MatTooltipModule,
     ReactiveFormsModule,
     VitamUICommonModule,
-    VitamUILibraryModule
-  ]
+    VitamUILibraryModule,
+  ],
 })
-export class ManagementContractCreateModule { }
+export class ManagementContractCreateModule {}

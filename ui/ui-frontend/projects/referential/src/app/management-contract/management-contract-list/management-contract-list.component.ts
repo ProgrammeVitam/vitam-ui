@@ -26,10 +26,9 @@
  */
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ManagementContract } from 'projects/vitamui-library/src/lib/models/management-contract';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
+import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, ManagementContract, PageRequest } from 'ui-frontend-common';
 import { ManagementContractService } from '../management-contract.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -37,22 +36,21 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 @Component({
   selector: 'app-management-contract-list',
   templateUrl: './management-contract-list.component.html',
-  styleUrls: ['./management-contract-list.component.scss']
+  styleUrls: ['./management-contract-list.component.scss'],
 })
 export class ManagementContractListComponent extends InfiniteScrollTable<ManagementContract> implements OnDestroy, OnInit {
-
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
   filterMap: { [key: string]: any[] } = {
     status: ['ACTIVE', 'INACTIVE'],
   };
-  private _searchText: string;
-  private updatedManagementContractsSub: Subscription;
-  private firstSearchCriteriaSub: Subscription;
-  private searchCriteriaSub: Subscription;
-  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
-  private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  _searchText: string;
+  updatedManagementContractsSub: Subscription;
+  firstSearchCriteriaSub: Subscription;
+  searchCriteriaSub: Subscription;
+  readonly filterChange = new Subject<{ [key: string]: any[] }>();
+  readonly searchChange = new Subject<string>();
+  readonly orderChange = new Subject<string>();
 
   @Input('search')
   set searchText(searchText: string) {
@@ -104,7 +102,9 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
 
   subscribeOnManagementContractPatchOperation() {
     this.updatedManagementContractsSub = this.managementContractService.updated.subscribe((managementContract: ManagementContract) => {
-      const index = this.dataSource.findIndex((mngContract: ManagementContract) => mngContract.identifier === managementContract.identifier);
+      const index = this.dataSource.findIndex(
+        (mngContract: ManagementContract) => mngContract.identifier === managementContract.identifier
+      );
       if (index > -1) {
         this.dataSource[index] = {
           id: managementContract.id,
@@ -139,10 +139,9 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
   }
 
   ngOnDestroy() {
-    this.updatedData.unsubscribe();
-    this.firstSearchCriteriaSub.unsubscribe();
-    this.searchCriteriaSub.unsubscribe();
-    this.updatedManagementContractsSub.unsubscribe();
+    this.updatedData?.unsubscribe();
+    this.firstSearchCriteriaSub?.unsubscribe();
+    this.searchCriteriaSub?.unsubscribe();
+    this.updatedManagementContractsSub?.unsubscribe();
   }
-
 }

@@ -32,8 +32,9 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
@@ -50,11 +51,21 @@ public class VitamUIManagementContractService {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public RequestResponse<?> patchManagementContract(final VitamContext vitamContext, final String id, JsonNode jsonNode) throws InvalidParseOperationException, AccessExternalClientException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        LOGGER.debug("patch: {}, {}", id, jsonNode);
+    /**
+     * update a management contract in Vitam
+     *
+     * @param vitamContext
+     * @param contractId
+     * @param jsonNode
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<?> patchManagementContract(final VitamContext vitamContext, final String contractId, JsonNode jsonNode)
+        throws InvalidParseOperationException,
+        PreconditionFailedException, AccessExternalClientException {
+        LOGGER.debug("patch: {}, {}", contractId, jsonNode);
         LOGGER.debug("Management Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        return adminExternalClient.updateManagementContract(vitamContext,id,jsonNode);
+        return adminExternalClient.updateManagementContract(vitamContext,contractId,jsonNode);
     }
 
 

@@ -277,6 +277,17 @@ customer-init:
         - ROLE_DELETE_TRANSACTIONS
         - ROLE_UPDATE_UNITS_METADATA
 
+    - name: Profil pour les contrats de gestion
+      description: Contrats de gestion
+      app-name: MANAGEMENT_CONTRACT_APP
+      level:
+      roles:
+        - ROLE_GET_MANAGEMENT_CONTRACT
+        - ROLE_CREATE_MANAGEMENT_CONTRACT
+        - ROLE_UPDATE_MANAGEMENT_CONTRACT
+        - ROLE_DELETE_MANAGEMENT_CONTRACT
+
+
   # Other Default profiles for admin group
   admin-profiles:
   #- name: profileName

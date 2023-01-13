@@ -35,14 +35,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -76,9 +74,9 @@ public class ManagementContractExternalServiceTest extends ExternalServiceTest {
 
         when(managementContractInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class)))
             .thenReturn(list);
-        assertThatCode(() -> {
-            managementContractExternalService.getAll(Optional.empty());
-        }).doesNotThrowAnyException();
+        assertThatCode(() ->
+            managementContractExternalService.getAll(Optional.empty())
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -90,8 +88,8 @@ public class ManagementContractExternalServiceTest extends ExternalServiceTest {
         when(managementContractInternalRestClient.check(any(InternalHttpContext.class), any(ManagementContractDto.class)))
             .thenReturn(true);
 
-        assertThatCode(() -> {
-            managementContractExternalService.check(new ManagementContractDto());
-        }).doesNotThrowAnyException();
+        assertThatCode(() ->
+            managementContractExternalService.check(new ManagementContractDto())
+        ).doesNotThrowAnyException();
     }
 }

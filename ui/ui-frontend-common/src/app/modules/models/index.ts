@@ -48,6 +48,7 @@ export * from './externalparamprofile/index';
 export * from './group/index';
 export * from './id.interface';
 export * from './logbook/index';
+export * from './managementContract/index';
 export * from './ontology/index';
 export * from './operation/index';
 export * from './position/index';
