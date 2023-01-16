@@ -39,12 +39,12 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute} from '@angular/router';
 
 import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage} from 'ui-frontend-common';
 import {Referential} from '../shared/vitamui-import-dialog/referential.enum';
 import {VitamUIImportDialogComponent} from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 import {FileFormatCreateComponent} from './file-format-create/file-format-create.component';
 import {FileFormatListComponent} from './file-format-list/file-format-list.component';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-file-format',
@@ -56,10 +56,12 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   search = '';
   tenantIdentifier: number;
   tenantIdentifierSubscription: Subscription;
+  hasCreateRole = new Observable<boolean>();
+  hasImportRole = new Observable<boolean>();
 
   @ViewChild(FileFormatListComponent, {static: true}) fileFormatListComponentListComponent: FileFormatListComponent;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, globalEventService: GlobalEventService, private securityService: SecurityService) {
     super(route, globalEventService);
   }
 
@@ -85,7 +87,10 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
 
   ngOnInit() {
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
-      this.tenantIdentifier = +params.tenantIdentifier;
+      if (params.tenantIdentifier) {
+        this.hasCreateRole = this.securityService.hasRole(ApplicationId.FILE_FORMATS_APP, parseInt(params.tenantIdentifier), Role.ROLE_CREATE_FILE_FORMATS);
+        this.hasImportRole = this.securityService.hasRole(ApplicationId.FILE_FORMATS_APP, parseInt(params.tenantIdentifier), Role.ROLE_IMPORT_FILE_FORMATS);
+      }
     });
   }
 
