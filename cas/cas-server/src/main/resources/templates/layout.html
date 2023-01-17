@@ -12,7 +12,8 @@
     <!--/* Core CAS CSS */-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/cas.css}"/>
 
-    <link rel="icon" type="image/x-icon" th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
+    <link rel="icon" type="image/x-icon"
+          th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
 
     <script type="text/javascript" th:src="@{#{webjars.jquery.js}}"></script>
 
@@ -21,11 +22,12 @@
 <body th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div id="container" class="container">
 
-	<div class="login">
+    <div class="login">
     </div>
     <div class="centered">
         <div class="flex-justify-content-center">
-            <img th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
+            <img
+                th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
         </div>
         <div class="login-box login-padding  step-email">
             <div layout:fragment="content" id="content">
@@ -33,12 +35,29 @@
                 <p/>
             </div>
 
-            <button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|">
+            <button class="back" type="button" th:urlToUse="@{/login(service=${serviceUrl})}"
+                    th:onclick="window.location.href=sanitizeUrl(this.getAttribute('urlToUse'))">
                 <i class="material-icons">chevron_left</i> <span th:text="#{cas.welcome.button.back}">RETOUR</span>
             </button>
         </div>
     </div>
 </div>
 <script th:replace="fragments/scripts"/>
+
+
+<script>
+    function sanitizeUrl(inputUrl) {
+        let ESC_MAP = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        };
+        return inputUrl.replace(true ? /[&<>'"]/g : /[&<>]/g, function (c) {
+            return ESC_MAP[c];
+        });
+    }
+</script>
 </body>
 </html>
