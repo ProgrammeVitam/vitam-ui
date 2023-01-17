@@ -71,8 +71,7 @@ public class InitContextConfiguration implements ServletContextInitializer {
                 final String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
                 servletContext.setAttribute(Constants.VITAM_UI_LARGE_LOGO, logo);
             } catch (final IOException e) {
-                LOGGER.warn("Can't find vitam ui large logo");
-                e.printStackTrace();
+                LOGGER.warn("Can't find vitam ui large logo", e);
             }
         }
 

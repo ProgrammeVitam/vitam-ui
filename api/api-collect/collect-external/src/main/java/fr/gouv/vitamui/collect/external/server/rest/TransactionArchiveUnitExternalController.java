@@ -106,6 +106,7 @@ public class TransactionArchiveUnitExternalController {
         final @RequestBody SearchCriteriaDto query)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
+        SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling export to csv search archive Units By Criteria {} ", query);
         return transactionArchiveUnitExternalService.exportCsvArchiveUnitsByCriteria(transactionId, query);

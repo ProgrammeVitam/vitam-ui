@@ -125,8 +125,8 @@ public class ExternalParamProfileInternalController {
     @ResponseStatus(HttpStatus.CREATED)
     public ExternalParamProfileDto create(@RequestBody final ExternalParamProfileDto entityDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("create class={}", entityDto.getClass().getName());
         SanityChecker.sanitizeCriteria(entityDto);
+        LOGGER.debug("create class={}", entityDto.getClass().getName());
         return externalParamProfileInternalService.create(entityDto);
     }
 
@@ -134,9 +134,9 @@ public class ExternalParamProfileInternalController {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("get logbook for external parameter profile with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for external parameter profile with id :{}", id);
         return externalParamProfileInternalService.findHistoryById(id);
     }
 
@@ -144,20 +144,20 @@ public class ExternalParamProfileInternalController {
     public ExternalParamProfileDto patch(final @PathVariable("id") String id,
         @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException, BadRequestException {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")),
             "The DTO identifier must match the path identifier for update.");
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         return externalParamProfileInternalService.patch(partialDto);
     }
 
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
-        LOGGER.debug("checkExist criteria={}", criteria);
         ParameterChecker.checkParameter("criteria is mandatory : ", criteria);
+        LOGGER.debug("checkExist criteria={}", criteria);
         final boolean exist = externalParamProfileInternalService.checkExist(criteria);
         return RestUtils.buildBooleanResponse(exist);
     }

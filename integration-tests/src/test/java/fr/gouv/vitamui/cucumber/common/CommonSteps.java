@@ -1,28 +1,8 @@
 package fr.gouv.vitamui.cucumber.common;
 
-import static com.mongodb.client.model.Filters.eq;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bson.BsonDocument;
-import org.bson.BsonString;
-import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.CompareQuery;
 import fr.gouv.vitam.common.database.builder.query.QueryHelper;
@@ -54,6 +34,24 @@ import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bson.BsonDocument;
+import org.bson.BsonString;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import static com.mongodb.client.model.Filters.eq;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ContextConfiguration(classes = Context.class)
 public abstract class CommonSteps extends BaseIntegration {
@@ -293,7 +291,7 @@ public abstract class CommonSteps extends BaseIntegration {
                     event = retrieveTraceFromVitam(identifier, collectionNames, eventType, tenantIdentifier);
                 }
                 catch (final InterruptedException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Error message", e);
                 }
 
             }
@@ -322,7 +320,7 @@ public abstract class CommonSteps extends BaseIntegration {
                     evDetData = JsonUtils.readTree(l.getEvDetData());
                 }
                 catch (final IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Error Message :", e);
                 }
                 final JsonNode dateOp = evDetData.get(TestConstants.EVENT_DATE_TIME_KEY);
                 String evDateOperation = null;

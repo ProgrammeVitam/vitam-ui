@@ -38,12 +38,15 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.dto.RuleDto;
@@ -115,15 +118,20 @@ public class RuleInternalController {
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public RuleDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get rule identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+    public RuleDto getOne(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        SanityChecker.checkSecureParameter(identifier);
+        LOGGER.debug("get rule identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ruleInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> checkExist(@RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The ruleDto is a mandatory parameter: ", ruleDto);
+        SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("check exist rule={}", ruleDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         final boolean exist = ruleInternalService.check(vitamContext, ruleDto);
@@ -131,33 +139,42 @@ public class RuleInternalController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> create(@Valid @RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The ruleDto is a mandatory parameter: ", ruleDto);
+        SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("create rule={}", ruleDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return RestUtils.buildBooleanResponse(ruleInternalService.create(vitamContext,ruleDto));
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return RestUtils.buildBooleanResponse(ruleInternalService.patch(vitamContext, partialDto));
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for rule with id :{}", id);
         return ruleInternalService.findHistoryByIdentifier(vitamContext, id);
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Void> delete(final @PathVariable("id") String id) {
-        LOGGER.debug("Delete {}", id);
+    public ResponseEntity<Void> delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Delete {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return RestUtils.buildBooleanResponse(ruleInternalService.delete(vitamContext, id));
     }
@@ -178,6 +195,8 @@ public class RuleInternalController {
 
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        SanityChecker.isValidFileName(fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug("import rule file {}", fileName);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ruleInternalService.importRules(vitamContext, fileName, file);

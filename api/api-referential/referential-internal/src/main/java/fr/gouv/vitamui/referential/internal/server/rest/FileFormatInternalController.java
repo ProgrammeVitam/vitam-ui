@@ -194,6 +194,7 @@ public class FileFormatInternalController {
 
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         SanityChecker.isValidFileName(fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug("import file format file {}", fileName);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return fileFormatInternalService.importFileFormats(vitamContext, fileName, file);

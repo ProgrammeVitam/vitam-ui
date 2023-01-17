@@ -34,6 +34,7 @@ import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -97,6 +98,7 @@ public class ProjectInternalController {
     @PostMapping()
     public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
         throws InvalidParseOperationException {
+        ParameterChecker.checkParameter("the project is mandatory : ", collectProjectDto);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create {}", collectProjectDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -107,6 +109,7 @@ public class ProjectInternalController {
     public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody CollectTransactionDto collectTransactionDto)
         throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter("The transaction is a mandatory parameter: ", collectTransactionDto);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectTransactionDto);
         LOGGER.debug("Transaction to create {}", collectTransactionDto);
@@ -123,6 +126,7 @@ public class ProjectInternalController {
     ) throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
         SanityChecker.isValidFileName(originalFileName);
+        SafeFileChecker.checkSafeFilePath(originalFileName);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("[Internal] upload collect zip file : {}", originalFileName);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -133,6 +137,7 @@ public class ProjectInternalController {
     public CollectProjectDto updateProject(final @PathVariable("id") String id,
         @RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
+        ParameterChecker.checkParameter("the project is mandatory : ", collectProjectDto);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
@@ -141,8 +146,10 @@ public class ProjectInternalController {
     }
 
     @GetMapping(PATH_ID)
-    public CollectProjectDto findProjectById(final @PathVariable("id") String id) throws VitamClientException {
+    public CollectProjectDto findProjectById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Project to get  {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return projectInternalService.getProjectById(id, vitamContext);

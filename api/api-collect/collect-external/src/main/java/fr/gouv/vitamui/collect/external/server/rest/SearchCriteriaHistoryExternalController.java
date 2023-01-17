@@ -31,7 +31,6 @@ import fr.gouv.vitamui.collect.external.server.service.SearchCriteriaHistoryExte
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -41,7 +40,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -104,6 +102,7 @@ public class SearchCriteriaHistoryExternalController {
     @PutMapping(CommonConstants.PATH_ID)
     public void update(@RequestBody final SearchCriteriaHistoryDto entity)
         throws PreconditionFailedException, InvalidParseOperationException {
+        ParameterChecker.checkParameter("Search criteria is mandatory : ", entity);
         SanityChecker.sanitizeCriteria(entity);
         ParameterChecker.checkParameter("Identifier is mandatory : ", entity.getId());
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", entity.getId());

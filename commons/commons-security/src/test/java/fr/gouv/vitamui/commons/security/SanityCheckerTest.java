@@ -200,29 +200,29 @@ public class SanityCheckerTest {
     @Test
     public void testIsValidFileNameWithBadName() {
         final String badString = "aa<script>bb";
-        boolean expectedResponse = SanityChecker.isValidFileName(badString);
-        Assertions.assertThat(expectedResponse).isFalse();
+        assertThatCode(() -> SanityChecker.isValidFileName(badString)).
+            hasMessage("The fileName is not valid");
     }
 
     @Test
     public void testIsValidFileNameWithGoodName() {
-        final String badString = "fileName";
-        boolean expectedResponse = SanityChecker.isValidFileName(badString);
-        Assertions.assertThat(expectedResponse).isTrue();
+        final String goodFileName = "fileName";
+        assertThatCode(() -> SanityChecker.isValidFileName(goodFileName))
+            .doesNotThrowAnyException();
     }
 
     @Test
     public void testIsValidFileNameWithXmlString() {
         final String badString = "text<strong>text</strong>bb";
-        boolean expectedResponse = SanityChecker.isValidFileName(badString);
-        Assertions.assertThat(expectedResponse).isFalse();
+        assertThatCode(() -> SanityChecker.isValidFileName(badString)).
+            hasMessage("The fileName is not valid");
     }
 
     @Test
     public void testIsValidFileNameWhenGivenStringIsBad() {
         final String badText = "aa<![CDATA[bb";
-        boolean expectedResponse = SanityChecker.isValidFileName(badText);
-        Assertions.assertThat(expectedResponse).isFalse();
+        assertThatCode(() -> SanityChecker.isValidFileName(badText)).
+            hasMessage("The fileName is not valid");
     }
 
     @Test
@@ -279,6 +279,27 @@ public class SanityCheckerTest {
             SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).
             doesNotThrowAnyException();
 
+    }
+    @Test
+    public void sanitizeJson_should_not_fail_with_keys_$eq_$offset()
+        throws FileNotFoundException, InvalidParseOperationException {
+        final String jsonWithOffsetEqKeys = "logbook_operations_with_equal_offset_keys.json";
+        final File file = PropertiesUtils.findFile(jsonWithOffsetEqKeys);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
+            doesNotThrowAnyException();
+    }
+
+    @Test
+    public void sanitizeJson_should_not_fail_with_keys_$limit_$orderBy()
+        throws FileNotFoundException, InvalidParseOperationException {
+        final String jsonWithLimitOrderByKeys = "logbook_operations_with_limit_orderby_keys.json";
+        final File file = PropertiesUtils.findFile(jsonWithLimitOrderByKeys);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
+            doesNotThrowAnyException();
     }
 
 }

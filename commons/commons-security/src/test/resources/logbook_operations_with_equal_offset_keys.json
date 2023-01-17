@@ -1,0 +1,21 @@
+{
+  "$query":{
+    "$and":[
+      {
+        "$eq":{
+          "evId":"test"
+        }
+      }
+    ]
+  },
+  "$projection":{
+
+  },
+  "$filter":{
+    "$limit":20,
+    "$offset":0,
+    "$orderby":{
+      "evDateTime":-1
+    }
+  }
+}

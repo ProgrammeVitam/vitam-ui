@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -54,6 +56,7 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import io.swagger.annotations.Api;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.engine.query.ParameterRecognitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -192,7 +195,12 @@ public class CasInternalController {
 
     @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
     public UserDto getUser(@RequestParam final String email, @RequestParam final String idp, @RequestParam(required = false) final String userIdentifier,
-            @RequestParam(required = false) final String embedded) {
+            @RequestParam(required = false) final String embedded) throws InvalidParseOperationException,
+        ParameterRecognitionException {
+        SanityChecker.checkSecureParameter(idp, email);
+        if(userIdentifier!= null) {
+            SanityChecker.checkSecureParameter(userIdentifier);
+        }
         LOGGER.debug("getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}", email, idp, userIdentifier, embedded);
         return casService.getUser(email, idp, userIdentifier, embedded);
     }

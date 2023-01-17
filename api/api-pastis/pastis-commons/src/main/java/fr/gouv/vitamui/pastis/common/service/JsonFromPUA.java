@@ -61,6 +61,7 @@ public class JsonFromPUA {
 	private static final String PROPERTIES = "properties";
     private static final String ITEMS = "items";
     private static final String PATTERN_PROPERTIES= "patternProperties";
+    private static final String ADDITIONAL_PROPERTIES = "additionalProperties";
 
 	/**
 	 * Generates a Profile from a PUA file
@@ -75,7 +76,7 @@ public class JsonFromPUA {
 		idCounter = 0L;
 		// Adding root element DescriptiveMetadata
 		ElementProperties root = new ElementProperties();
-        root.setAdditionalProperties(controlSchema.optBoolean("additionalProperties", false));
+        root.setAdditionalProperties(controlSchema.optBoolean(ADDITIONAL_PROPERTIES, false));
         root.setName("DescriptiveMetadata");
         root.setId(idCounter++);
         root.setLevel(0);
@@ -181,6 +182,8 @@ public class JsonFromPUA {
             case "Algorithm":
                 realName = "algorithm";
                 break;
+            default:
+                break;
         }
 
 		return realName;
@@ -199,17 +202,15 @@ public class JsonFromPUA {
         if (jsonPUA.has(ITEMS)) {
             JSONObject jsonPuaTemp = jsonPUA.getJSONObject(ITEMS);
             jsonPUA.remove(ITEMS);
-            jsonPuaTemp.keySet().forEach(key -> {
-                jsonPUA.put(key, jsonPuaTemp.get(key));
-            });
+            jsonPuaTemp.keySet().forEach(key -> jsonPUA.put(key, jsonPuaTemp.get(key)));
         }
         if (jsonPUA.has(PATTERN_PROPERTIES)) {
             JSONObject patternProperties = jsonPUA.getJSONObject(PATTERN_PROPERTIES);
             if (patternProperties.has("#management")) {
                 JSONObject management = patternProperties.getJSONObject("#management");
                 boolean additionalProperties = false;
-                if (management.has("additionalProperties")) {
-                    additionalProperties = management.getBoolean("additionalProperties");
+                if (management.has(ADDITIONAL_PROPERTIES)) {
+                    additionalProperties = management.getBoolean(ADDITIONAL_PROPERTIES);
                 }
                 SedaNode managementSeda = sedaNode.getChildren().stream()
                     .filter(e -> e.getName().equals("Management")).findAny().get();
@@ -219,7 +220,6 @@ public class JsonFromPUA {
                 managementData.setAdditionalProperties(additionalProperties);
                 managementProperties.setPuaData(managementData);
                 managementProperties.setType(RNGConstants.getTypeElement().get(managementSeda.getElement()));
-                //parent.getChildren().add(managementProperties);
             }
         }
 		if (jsonPUA.has(PROPERTIES)) {
@@ -310,13 +310,10 @@ public class JsonFromPUA {
 
 		Integer minItems = null;
 		Integer maxItems = null;
-        JSONObject childPuaNew;
         if (childPua.has(ITEMS)) {
             JSONObject jsonPuaTemp = childPua.getJSONObject(ITEMS);
             childPua.remove(ITEMS);
-            jsonPuaTemp.keySet().forEach(k -> {
-                childPua.put(k, jsonPuaTemp.get(k));
-            });
+            jsonPuaTemp.keySet().forEach(k -> childPua.put(k, jsonPuaTemp.get(k)));
         }
 		for (String k : childPua.keySet()) {
 			PuaAttributes e = PuaAttributes.fromString(k);
@@ -431,7 +428,6 @@ public class JsonFromPUA {
 		ElementProperties children = new ElementProperties();
 		children.setName(realName);
 		children.setId(idCounter++);
-		//children.setParent(parent);
 		children.setParentId(parent.getId());
 		children.setLevel(parent.getLevel() + 1);
 		parent.getChildren().add(children);

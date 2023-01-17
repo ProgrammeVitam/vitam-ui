@@ -37,7 +37,6 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -59,8 +58,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.access.annotation.Secured;
-
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -81,6 +78,8 @@ public class ProjectController extends AbstractUiRestController {
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectController.class);
 
     private final ProjectService projectService;
+
+    private static final String IDENTIFIER_MANDATORY_MESSAGE = "The Identifier is a mandatory parameter: ";
 
     @Autowired
     public ProjectController(final ProjectService service) {
@@ -111,7 +110,7 @@ public class ProjectController extends AbstractUiRestController {
         @RequestParam final Optional<DirectionDto> direction,
         @PathVariable("id") final String projectId) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(criteria);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", projectId);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, projectId);
         SanityChecker.checkSecureParameter(projectId);
         LOGGER.debug("getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
             criteria,
@@ -142,6 +141,7 @@ public class ProjectController extends AbstractUiRestController {
         SanityChecker.checkSecureParameter(tenantId);
         SanityChecker.checkSecureParameter(transactionId);
         SafeFileChecker.checkSafeFilePath(filename);
+        SanityChecker.isValidFileName(filename);
         LOGGER.debug("Start uploading file ...{} ", filename);
         ResponseEntity<Void> response =
             projectService.streamingUpload(buildUiHttpContext(), filename, transactionId, inputStream);
@@ -153,8 +153,8 @@ public class ProjectController extends AbstractUiRestController {
     @PutMapping(PATH_ID)
     public CollectProjectDto updateProject(final @PathVariable("id") String id,
         @RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id, collectProjectDto);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
@@ -164,10 +164,10 @@ public class ProjectController extends AbstractUiRestController {
     @PostMapping(value = PATH_ID+ "/transactions")
     public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody
         CollectTransactionDto collectTransactionDto)
-        throws InvalidParseOperationException,
-        PreconditionFailedException {
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id, collectTransactionDto);
         SanityChecker.checkSecureParameter(id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeCriteria(collectTransactionDto);
         LOGGER.debug("Transaction to create : {}", collectTransactionDto);
         return projectService.createTransactionForProject(buildUiHttpContext(), collectTransactionDto, id);
@@ -179,7 +179,7 @@ public class ProjectController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public CollectProjectDto findProjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the Project with ID {}", id);
         return projectService.getOne(buildUiHttpContext(), id);
@@ -190,7 +190,7 @@ public class ProjectController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteProjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete the Project with ID {}", id);
         projectService.deleteProject(id, buildUiHttpContext());
@@ -200,11 +200,12 @@ public class ProjectController extends AbstractUiRestController {
     @GetMapping(PATH_ID  + LAST_TRANSACTION_PATH)
     public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the transaction by project with ID {}", id);
-        CollectTransactionDto collectTransactionDto = projectService.getLastTransactionForProjectId(buildUiHttpContext(), id);
-        return collectTransactionDto;
+        return
+            projectService.getLastTransactionForProjectId(buildUiHttpContext(), id);
+
     }
 
 

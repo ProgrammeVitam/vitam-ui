@@ -98,9 +98,10 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
      */
     @GetMapping
     public Collection<ProfileDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
+
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
+        LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
         return internalProfileService.getAll(criteria, embedded);
     }
 
@@ -136,11 +137,12 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     public ProfileDto getOne(final @PathVariable("id") String id, @RequestParam final Optional<String> criteria,
             final @RequestParam Optional<String> embedded) throws InvalidParseOperationException,
         PreconditionFailedException {
-        LOGGER.debug("Get One {}, criteria={}, embedded={}", id, criteria, embedded);
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.sanitizeCriteria(criteria);
         SanityChecker.checkSecureParameter(id);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
+        LOGGER.debug("Get One {}, criteria={}, embedded={}", id, criteria, embedded);
         return internalProfileService.getOne(id, criteria, embedded);
     }
 
@@ -151,8 +153,9 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
-        LOGGER.debug("checkExist criteria={}", criteria);
+
         ParameterChecker.checkParameter("criteria is mandatory : ", criteria);
+        LOGGER.debug("checkExist criteria={}", criteria);
         final boolean exist = internalProfileService.checkExist(criteria);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -164,8 +167,9 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     @Override
     public ProfileDto create(final @Valid @RequestBody ProfileDto dto) throws InvalidParseOperationException,
         PreconditionFailedException {
-        LOGGER.debug("Create {}", dto);
+
         SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Create {}", dto);
         return internalProfileService.create(dto);
     }
 
@@ -184,10 +188,11 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public ProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalProfileService.patch(partialDto);
     }
@@ -195,9 +200,10 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("get logbook for profile with id :{}", id);
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for profile with id :{}", id);
         return internalProfileService.findHistoryById(id);
     }
 
@@ -208,8 +214,9 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
     public List<String> getLevels(final Optional<String> criteria) {
-        LOGGER.debug("Get levels with criteria={}", criteria);
+
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("Get levels with criteria={}", criteria);
         return internalProfileService.getLevels(criteria);
     }
 }

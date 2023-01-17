@@ -46,7 +46,6 @@
               <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
                 'COMMON.REQUIRED' | translate
               }}</vitamui-common-input-error>
-              <!-- FIXME: Must we validate existance ? -->
               <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists" i18n="Name exists error hint@@formErrorNameExists">Nom déjà utilisé</vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>

@@ -107,8 +107,9 @@ public class RuleController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public Collection<RuleDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
         PreconditionFailedException {
-        LOGGER.debug("Get all with criteria={}", criteria);
+
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -130,6 +131,8 @@ public class RuleController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public RuleDto getById(final @PathVariable("identifier") String identifier)
         throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
@@ -139,6 +142,7 @@ public class RuleController extends AbstractUiRestController {
     @PostMapping(path = CommonConstants.PATH_CHECK)
     public ResponseEntity<Void> check(@RequestBody RuleDto ruleDto) throws InvalidParseOperationException,
         PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("check ability to create rule={}", ruleDto);
         final boolean exist = service.check(buildUiHttpContext(), ruleDto);
         LOGGER.debug("response value={}" + exist);
@@ -150,6 +154,7 @@ public class RuleController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@Valid @RequestBody  RuleDto ruleDto) throws InvalidParseOperationException,
         PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("create rule={}", ruleDto);
         return RestUtils.buildBooleanResponse(
             service.createRule(buildUiHttpContext(), ruleDto)
@@ -161,8 +166,10 @@ public class RuleController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("Patch User {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier, the partialEntity are mandatory parameters: ", id, partialDto);
+        SanityChecker.sanitizeCriteria(partialDto);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Patch User {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch rule : the DTO id must match the path id.");
         return RestUtils.buildBooleanResponse(
         	service.patchRule(buildUiHttpContext(), partialDto, id)
@@ -173,8 +180,10 @@ public class RuleController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("get logbook for rule with id :{}", id);
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for rule with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
@@ -182,8 +191,10 @@ public class RuleController extends AbstractUiRestController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public ResponseEntity<Void> delete(final @PathVariable String id) throws InvalidParseOperationException,
         PreconditionFailedException {
-        LOGGER.debug("delete rule with id :{}", id);
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("delete rule with id :{}", id);
         return RestUtils.buildBooleanResponse(
         	service.deleteRule(buildUiHttpContext(), id)
         );

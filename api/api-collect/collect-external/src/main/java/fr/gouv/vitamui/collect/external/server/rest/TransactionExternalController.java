@@ -30,6 +30,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.TransactionExternalService;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -73,6 +74,7 @@ public class TransactionExternalController {
     private final TransactionExternalService transactionExternalService;
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+    private static final String TRANSACTION_ID = "The transaction id {} ";
 
     @Autowired
     public TransactionExternalController(TransactionExternalService transactionExternalService) {
@@ -85,7 +87,7 @@ public class TransactionExternalController {
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("The transaction id {} ", id);
+        LOGGER.debug(TRANSACTION_ID, id);
         transactionExternalService.sendTransaction(id);
     }
 
@@ -95,7 +97,7 @@ public class TransactionExternalController {
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("The transaction id {} ", id);
+        LOGGER.debug(TRANSACTION_ID, id);
         transactionExternalService.reopenTransaction(id);
     }
 
@@ -105,7 +107,7 @@ public class TransactionExternalController {
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("The transaction id {} ", id);
+        LOGGER.debug(TRANSACTION_ID, id);
         transactionExternalService.abortTransaction(id);
     }
 
@@ -115,7 +117,7 @@ public class TransactionExternalController {
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("The transaction id {} ", id);
+        LOGGER.debug(TRANSACTION_ID, id);
         transactionExternalService.validateTransaction(id);
     }
 
@@ -123,7 +125,7 @@ public class TransactionExternalController {
     @GetMapping(CommonConstants.PATH_ID)
     public CollectTransactionDto getTransactionById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the Transactions with project Id {}", id);
         return transactionExternalService.getTransactionById(id);
@@ -151,6 +153,7 @@ public class TransactionExternalController {
         ParameterChecker.checkParameter(" [External] The transactionId is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(originalFileName);
+        SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[External] Calling update archive units metadata for transaction Id  {} ", transactionId);
         return transactionExternalService.updateArchiveUnitsFromFile(transactionId, inputStream, originalFileName);
     }

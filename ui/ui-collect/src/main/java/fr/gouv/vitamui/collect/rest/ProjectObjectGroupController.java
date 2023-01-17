@@ -88,7 +88,7 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
         InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier, The contractId and The tenantId are mandatory parameters: ",
             unitId, objectId, contractId, String.valueOf(tenantId));
-        SanityChecker.checkSecureParameter(unitId, contractId, String.valueOf(tenantId));
+        SanityChecker.checkSecureParameter(unitId, contractId, objectId);
         LOGGER.debug("Download the Archive Unit Object with Unit ID {}", unitId);
         final ObjectData objectData = new ObjectData();
         ResponseEntity<Resource> responseResource = projectObjectGroupService.downloadObjectFromUnit(unitId, objectId,

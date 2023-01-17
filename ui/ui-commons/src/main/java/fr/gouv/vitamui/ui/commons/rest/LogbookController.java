@@ -135,6 +135,7 @@ public class LogbookController extends AbstractUiRestController {
     public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Parameter is a mandatory parameter: ", select);
+        SanityChecker.sanitizeJson(select);
         return logbookService.findOperations(buildUiHttpContext(), select);
     }
 

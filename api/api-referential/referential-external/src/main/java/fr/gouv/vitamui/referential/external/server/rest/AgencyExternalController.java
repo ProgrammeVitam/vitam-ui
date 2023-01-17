@@ -179,6 +179,7 @@ public class AgencyExternalController {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         }
         SanityChecker.isValidFileName(fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
         ParameterChecker.checkParameter("The fileName is mandatory parameter : ", fileName);
         LOGGER.debug("Import agency file {}", fileName);
 

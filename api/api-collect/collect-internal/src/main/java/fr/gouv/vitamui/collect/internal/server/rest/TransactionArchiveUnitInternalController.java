@@ -97,9 +97,9 @@ public class TransactionArchiveUnitInternalController {
             tenantId,
             accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        ArchiveUnitsDto archiveUnitsDto =
+        return
             transactionArchiveUnitInternalService.searchArchiveUnitsByCriteria(transactionId, searchQuery, vitamContext);
-        return archiveUnitsDto;
+
     }
 
     @PostMapping("/{transactionId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
@@ -109,7 +109,7 @@ public class TransactionArchiveUnitInternalController {
         @PathVariable("transactionId") final String transactionId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-        SanityChecker.checkSecureParameter(accessContractId);
+        SanityChecker.checkSecureParameter(accessContractId, transactionId);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("Export to CSV file Archive Units by criteria {}", searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);

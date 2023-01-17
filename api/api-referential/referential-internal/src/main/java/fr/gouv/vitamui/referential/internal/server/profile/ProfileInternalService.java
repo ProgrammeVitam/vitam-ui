@@ -264,8 +264,8 @@ public class ProfileInternalService {
             }
 
         } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException |
-                 JAXBException e) {
-            e.printStackTrace();
+                 JAXBException exception) {
+            LOGGER.error("Error while creating archive Profile", exception);
         }
         return null;
     }

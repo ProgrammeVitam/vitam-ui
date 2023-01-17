@@ -36,29 +36,15 @@
  */
 package fr.gouv.vitamui.iam.internal.server.idp.service;
 
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.CollectionUtils;
-
-import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
@@ -68,6 +54,23 @@ import fr.gouv.vitamui.iam.internal.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The service to read, create, update and delete the identity providers.
@@ -87,6 +90,11 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
     private final IamLogbookService iamLogbookService;
 
     private final IdentityProviderConverter idpConverter;
+
+    private static final String CUSTOMER = "customerId";
+    private static final String AUTO_PROVISIONING_ENABLED = "autoProvisioningEnabled";
+    private static final String READ_ONLY = "readonly";
+
 
     @Autowired
     public IdentityProviderInternalService(final SequenceGeneratorService sequenceGeneratorService, final IdentityProviderRepository identityProviderRepository,
@@ -169,22 +177,22 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
         final IdentityProvider idp = find(id, message);
 
         checkIsReadonly(idp.isReadonly(), message);
-        Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "customerId", "readonly", "identifier")), message);
+        Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", CUSTOMER, READ_ONLY, "identifier")), message);
 
-        final String customerId = CastUtils.toString(partialDto.get("customerId"));
+        final String customerId = CastUtils.toString(partialDto.get(CUSTOMER));
         if (customerId != null) {
             checkCustomer(customerId, message);
         }
 
-        final Boolean readonly = CastUtils.toBoolean(partialDto.get("readonly"));
+        final Boolean readonly = CastUtils.toBoolean(partialDto.get(READ_ONLY));
         if (readonly != null) {
             checkSetReadonly(readonly, message);
         }
 
         boolean autoProvisioningEnabled = false;
         final Boolean internal = (Boolean) partialDto.get("internal");
-        if (partialDto.get("autoProvisioningEnabled") != null) {
-            autoProvisioningEnabled = (boolean) partialDto.get("autoProvisioningEnabled");
+        if (partialDto.get(AUTO_PROVISIONING_ENABLED) != null) {
+            autoProvisioningEnabled = (boolean) partialDto.get(AUTO_PROVISIONING_ENABLED);
         }
         if (Boolean.TRUE.equals(internal)) {
             checkIdendityProviderInternUniqueByCustomer(idp.getCustomerId(), message);
@@ -220,8 +228,8 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id" :
-                case "readonly" :
-                case "customerId" :
+                case READ_ONLY :
+                case CUSTOMER :
                 case "identifier" :
                     break;
                 case "name" :
@@ -256,7 +264,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.IDENTIFIER_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
                     entity.setIdentifierAttribute(CastUtils.toString(entry.getValue()));
                     break;
-                case "autoProvisioningEnabled" :
+                case AUTO_PROVISIONING_ENABLED :
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.AUTO_PROVISIONING_ENABLED_KEY, entity.isAutoProvisioningEnabled(), entry.getValue()));
                     entity.setAutoProvisioningEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
@@ -432,8 +440,8 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
 
     public List<String> getDomainsNotAssigned(final String customerId) {
         final List<String> filterDomains = new ArrayList<>();
-        final List<IdentityProvider> idp = identityProviderRepository.findAll(Criteria.where("customerId").is(customerId));
-        if (idp != null && idp.size() > 0) {
+        final List<IdentityProvider> idp = identityProviderRepository.findAll(Criteria.where(CUSTOMER).is(customerId));
+        if (idp != null && !idp.isEmpty() ) {
             for (final IdentityProvider i : idp) {
                 filterDomains.addAll(i.getPatterns().stream().map(s -> s.replace(".*@", "")).collect(Collectors.toList()));
             }

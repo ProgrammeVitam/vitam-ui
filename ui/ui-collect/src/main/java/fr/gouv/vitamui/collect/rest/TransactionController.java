@@ -32,6 +32,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.service.TransactionService;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -127,6 +128,7 @@ public class TransactionController extends AbstractUiRestController {
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
+        SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("Export search archives Units by criteria into csv format = {}", searchQuery);
         Resource exportedCsvResult =
             transactionService.exportCsvArchiveUnitsByCriteria(transactionId, searchQuery, buildUiHttpContext()).getBody();
@@ -141,7 +143,7 @@ public class TransactionController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the Archive Unit with ID {}", id);
         return transactionService.findUnitById(id, buildUiHttpContext());
@@ -161,7 +163,7 @@ public class TransactionController extends AbstractUiRestController {
     public CollectTransactionDto updateTransaction(final @PathVariable("id") String id,
         @RequestBody CollectTransactionDto collectTransactionDto)
         throws InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectTransactionDto);
         LOGGER.debug("[Internal] Transaction to update : {}", collectTransactionDto);
@@ -226,6 +228,7 @@ public class TransactionController extends AbstractUiRestController {
         ParameterChecker.checkParameter("[UI] The transaction id is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug(" [UI] Calling update archive units metadata for transaction Id  {} ", transactionId);
         return transactionService
             .updateArchiveUnitsMetadataFromFile(transactionId, fileName, inputStream, buildUiHttpContext()).getBody();

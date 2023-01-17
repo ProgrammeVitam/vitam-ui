@@ -91,7 +91,8 @@ public class SanityChecker {
     private static final Validator ESAPI = init();
     private static final List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST =
         List.of("$action", "$add", "$pull", "#unitups", "#allunitups", "#id", "$in",
-            "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields", "authorizationRequestReplyIdentifier");
+            "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields", "authorizationRequestReplyIdentifier",
+            "$limit", "$orderby", "$eq", "$offset");
 
     private SanityChecker() {
         // Empty constructor
@@ -116,8 +117,10 @@ public class SanityChecker {
      * @param fileName
      * @return true/false
      */
-    public static boolean isValidFileName(String fileName) {
-        return !StringUtils.HTML_PATTERN.matcher(fileName).find() && !isStringInfected(fileName, HTTP_PARAMETER_VALUE);
+    public static void isValidFileName(String fileName) throws PreconditionFailedException {
+        if( StringUtils.HTML_PATTERN.matcher(fileName).find() || isStringInfected(fileName, HTTP_PARAMETER_VALUE) ) {
+            throw new PreconditionFailedException("The fileName is not valid", "The fileName is not valid");
+        }
     }
 
     /**

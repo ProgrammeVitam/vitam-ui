@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.AuditOptions;
@@ -60,17 +59,22 @@ import fr.gouv.vitamui.referential.internal.server.operation.OperationInternalSe
 import fr.gouv.vitamui.referential.internal.server.probativevalue.ProbativeValueInternalService;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.ws.rs.core.Response;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -169,8 +173,8 @@ public class OperationInternalController {
         throws InvalidParseOperationException, PreconditionFailedException {
 
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, operationId);
-        SanityChecker.checkSecureParameter(operationId, accessContractId);
         SafeFileChecker.checkSafeFilePath(operationId);
+        SanityChecker.checkSecureParameter(operationId, accessContractId);
         LOGGER.debug("Export probative with operationId : ", operationId);
         LOGGER.debug("Export probative accessContractId : ", accessContractId);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);

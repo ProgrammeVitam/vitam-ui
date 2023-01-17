@@ -1,0 +1,14 @@
+{
+  "$query":{
+
+  },
+  "$projection":{
+
+  },
+  "$filter":{
+    "$limit":20,
+    "$orderby":{
+      "evDateTime":-1
+    }
+  }
+}

@@ -29,6 +29,7 @@ package fr.gouv.vitamui.ingest.internal.server.rest;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -144,6 +145,7 @@ public class IngestInternalController {
         ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
             originalFileName);
         SanityChecker.isValidFileName(originalFileName);
+        SafeFileChecker.checkSafeFilePath(originalFileName);
         SanityChecker.checkSecureParameter(action, contextId, originalFileName);
         LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
         final String operationId = ingestInternalService.streamingUpload(inputStream, contextId, action);

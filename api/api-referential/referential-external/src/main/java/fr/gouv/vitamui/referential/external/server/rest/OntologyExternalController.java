@@ -166,6 +166,7 @@ public class OntologyExternalController {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         }
         SanityChecker.isValidFileName(fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug("Import ontology file {}", fileName);
         return ontologyExternalService.importOntologies(fileName, file);
     }

@@ -38,6 +38,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.standalone.controller;
 
+import fr.gouv.vitam.common.StringUtils;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
@@ -56,7 +57,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.NoSuchAlgorithmException;
@@ -123,6 +128,9 @@ class PastisController {
     @GetMapping(value = RestApi.PASTIS_GET_PROFILE_FILE)
     ResponseEntity<Resource> getFile(@RequestParam(name = "name") String filename) {
         Resource resource = profileService.getFile(filename);
+        if(!isValidFileName(filename)) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         if (resource != null) {
             return ResponseEntity.ok(resource);
         } else {
@@ -150,6 +158,7 @@ class PastisController {
         consumes = "multipart/form-data", produces = "application/json")
     ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file) throws NoSuchAlgorithmException, TechnicalException {
         String originalFileName = file.getOriginalFilename();
+        isValidFileName(originalFileName);
         ProfileResponse profileResponse = profileService.loadProfileFromFile(file, originalFileName,true);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
@@ -169,6 +178,10 @@ class PastisController {
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private static boolean isValidFileName(String fileName) {
+        return !StringUtils.HTML_PATTERN.matcher(fileName).find();
     }
 
 }

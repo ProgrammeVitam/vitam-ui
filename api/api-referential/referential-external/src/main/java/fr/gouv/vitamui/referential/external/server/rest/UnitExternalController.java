@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -68,8 +69,10 @@ public class UnitExternalController {
     private UnitExternalService unitExternalService;
 
     @GetMapping(CommonConstants.PATH_ID)
-    public VitamUISearchResponseDto searchById(final @PathVariable("id") String id) {
+    public VitamUISearchResponseDto searchById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The archive unit id is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
         return unitExternalService.findUnitById(id);
     }
 
@@ -85,8 +88,9 @@ public class UnitExternalController {
     @Secured(ServicesData.ROLE_GET_UNITS)
     public JsonNode findObjectMetadataById(
             @PathVariable final String id,
-            @RequestBody final JsonNode dsl) throws VitamClientException {
+            @RequestBody final JsonNode dsl) throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
+        SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeJson(dsl);
         return unitExternalService.findObjectMetadataById(id, dsl);
     }

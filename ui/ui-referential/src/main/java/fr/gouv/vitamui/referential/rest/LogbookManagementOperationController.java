@@ -88,9 +88,9 @@ public class LogbookManagementOperationController extends AbstractUiRestControll
     @ResponseStatus(HttpStatus.OK)
     public VitamUIProcessDetailResponseDto cancelOperationProcessExecution(final @PathVariable("id") String operationId)
         throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("operationId is mandatory : ", operationId);
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("Cancel the operation id= {}", operationId);
-        ParameterChecker.checkParameter("operationId is mandatory : ", operationId);
         return logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId) != null
             ? logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId).getBody().getOperations()
             : null;
@@ -102,9 +102,10 @@ public class LogbookManagementOperationController extends AbstractUiRestControll
     @ResponseStatus(HttpStatus.OK)
     public VitamUIProcessDetailResponseDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId)
         throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker
+            .checkParameter("operationId and actionId are mandatories : ", operationId, actionId);
         SanityChecker.checkSecureParameter(operationId, actionId);
         LOGGER.debug("Update Operation Id={} with ActionId = {}", operationId, actionId);
-        ParameterChecker.checkParameter("operationId and actionId are mandatories : ", operationId, actionId);
         return logbookManagementOperationService.updateOperationActionProcess(buildUiHttpContext(), actionId, operationId) != null
             ? logbookManagementOperationService.updateOperationActionProcess(buildUiHttpContext(), actionId, operationId).getBody().getOperations() :
             null;

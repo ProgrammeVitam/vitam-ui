@@ -167,8 +167,8 @@ public class ArchivesSearchController extends AbstractUiRestController {
     public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
-        LOGGER.debug("Find the Object Group with Identifier {}", id);
         SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find the Object Group with Identifier {}", id);
         return archivesSearchService.findObjectById(id, buildUiHttpContext());
     }
 
@@ -342,6 +342,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
             "The access Contract , the tenant Id and the fileName are mandatory parameters: ",
             accessContractId, tenantId, fileName);
         SafeFileChecker.checkSafeFilePath(fileName);
+        SanityChecker.isValidFileName(fileName);
         SanityChecker.checkSecureParameter(tenantId, accessContractId);
         LOGGER.debug("Start uploading file ...{} ", fileName);
         ResponseEntity<String> response =

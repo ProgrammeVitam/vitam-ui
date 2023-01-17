@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { Component, Input } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Event } from '../../../models';
 import { HistoryEventsComponent } from './history-events.component';
 
 @Component({ selector: 'vitamui-common-event-type-label', template: '' })
@@ -50,12 +50,8 @@ describe('HistoryEventsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        HistoryEventsComponent,
-        EventTypeLabelStubComponent,
-      ]
-    })
-    .compileComponents();
+      declarations: [HistoryEventsComponent, EventTypeLabelStubComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -66,5 +62,109 @@ describe('HistoryEventsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should return false', () => {
+    // Given
+    const eventDetails: Event = {
+      id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      type: 'PROCESS_AUDIT',
+      typeProc: 'AUDIT',
+      obIdReq: 'obIdReq',
+      data: '{}',
+      outcome: 'OK',
+      outDetail: 'PROCESS_AUDIT.STARTED',
+      outMessage: 'Début audit',
+      objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      agId: '247521940',
+      agIdApp: 'vitamui-context',
+      rightsStatementIdentifier: 'bad json format',
+      parentId: null,
+      dateTime: null,
+      collectionName: 'collectionName',
+      parsedData: {
+        dataKey: 'dataValue',
+      },
+      agIdExt: 'agIdExt',
+      events: [
+        null,
+        {
+          id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          type: 'PROCESS_AUDIT',
+          typeProc: 'AUDIT',
+          obIdReq: 'obIdReq',
+          data: 'data',
+          outcome: 'OK',
+          outDetail: 'PROCESS_AUDIT.STARTED',
+          outMessage: 'Audit terminé avec succès',
+          objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          agId: '247521940',
+          agIdApp: 'vitamui-context',
+          rightsStatementIdentifier: '{"AccessContract":"ContratTNR"}',
+          parentId: null,
+          dateTime: null,
+          collectionName: 'collectionName',
+          parsedData: {
+            dataKey: 'dataValue',
+          },
+          agIdExt: 'agIdExt',
+        },
+      ],
+    };
+    expect(component.checkEventData(eventDetails)).toBeFalsy();
+  });
+
+  it('should return true', () => {
+    // Given
+    const eventDetails: Event = {
+      id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      type: 'PROCESS_AUDIT',
+      typeProc: 'AUDIT',
+      obIdReq: 'obIdReq',
+      data: 'data',
+      outcome: 'OK',
+      outDetail: 'PROCESS_AUDIT.STARTED',
+      outMessage: 'Début audit',
+      objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      agId: '247521940',
+      agIdApp: 'vitamui-context',
+      rightsStatementIdentifier: 'bad json format',
+      parentId: null,
+      dateTime: null,
+      collectionName: 'collectionName',
+      parsedData: {
+        dataKey: 'dataValue',
+      },
+      agIdExt: 'agIdExt',
+      events: [
+        null,
+        {
+          id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          type: 'PROCESS_AUDIT',
+          typeProc: 'AUDIT',
+          obIdReq: 'obIdReq',
+          data: 'data',
+          outcome: 'OK',
+          outDetail: 'PROCESS_AUDIT.STARTED',
+          outMessage: 'Audit terminé avec succès',
+          objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          agId: '247521940',
+          agIdApp: 'vitamui-context',
+          rightsStatementIdentifier: '{"AccessContract":"ContratTNR"}',
+          parentId: null,
+          dateTime: null,
+          collectionName: 'collectionName',
+          parsedData: {
+            dataKey: 'dataValue',
+          },
+          agIdExt: 'agIdExt',
+        },
+      ],
+    };
+    expect(component.checkEventData(eventDetails)).toBeTruthy();
   });
 });

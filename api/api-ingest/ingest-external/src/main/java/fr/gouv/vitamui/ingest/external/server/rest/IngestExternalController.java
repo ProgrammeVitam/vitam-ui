@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.ingest.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -135,6 +136,7 @@ public class IngestExternalController {
             originalFileName);
         SanityChecker.checkSecureParameter(action, contextId, originalFileName);
         SanityChecker.isValidFileName(originalFileName);
+        SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
         return ingestExternalService.streamingUpload(inputStream, originalFileName, contextId, action);
     }

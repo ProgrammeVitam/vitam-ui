@@ -30,10 +30,13 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.ProcessQuery;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -69,20 +72,28 @@ public class LogbookManagementOperationInternalController {
         }
 
     @PostMapping(RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID)
-    public ProcessDetailDto cancelOperationProcessExecution(final @PathVariable("id") String operationId) throws VitamClientException, JsonProcessingException {
+    public ProcessDetailDto cancelOperationProcessExecution(final @PathVariable("id") String operationId)
+        throws VitamClientException, JsonProcessingException, InvalidParseOperationException,
+        PreconditionFailedException {
+
+        ParameterChecker
+            .checkParameter("The operation Id  is a mandatory paramater", operationId);
+        SanityChecker.checkSecureParameter(operationId);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.info("EvIdAppSession=  {}",vitamContext.getApplicationSessionId());
         LOGGER.info("Cancel the operation Id=  {}",operationId);
-        ParameterChecker.checkParameter("OperationId is mandatory : ", operationId);
         return logbookManagementOperationInternalService.cancelOperationProcessExecution(vitamContext,operationId);
     }
 
     @PostMapping(RestApi.UPDATE_OPERATION_PATH + CommonConstants.PATH_ID)
-    public ProcessDetailDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId) throws VitamClientException, JsonProcessingException, InterruptedException {
+    public ProcessDetailDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId)
+        throws VitamClientException, JsonProcessingException, InterruptedException, InvalidParseOperationException, PreconditionFailedException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        ParameterChecker.checkParameter("OperationId and actionId are mandatories : ", operationId, actionId);
+        SanityChecker.checkSecureParameter(actionId, operationId);
         LOGGER.info("EvIdAppSession=  {}",vitamContext.getApplicationSessionId());
         LOGGER.info("Update the operation Id=  {}",operationId);
-        ParameterChecker.checkParameter("OperationId and actionId are mandatories : ", operationId, actionId);
+
         return logbookManagementOperationInternalService.updateOperationActionProcess(vitamContext, actionId, operationId);
     }
 }
