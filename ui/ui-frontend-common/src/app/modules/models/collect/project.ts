@@ -24,9 +24,9 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { ProjectStatus } from "./project-status";
-import {Id} from "../id.interface";
-import {FacetDetails} from "../operation";
+import { Id } from '../id.interface';
+import { FacetDetails } from '../operation';
+import { ProjectStatus } from './project-status';
 
 export interface Project extends Id {
   archivalAgreement: string;
@@ -36,11 +36,11 @@ export interface Project extends Id {
   originatingAgencyIdentifier: string;
   submissionAgencyIdentifier: string;
   archivalProfile: string;
-  transactionId: string;
   unitUp: string;
   comment: string;
   status: ProjectStatus;
   createdOn?: Date;
   lastModifyOn?: Date;
   facets?: FacetDetails[];
+  tenant?: string;
 }

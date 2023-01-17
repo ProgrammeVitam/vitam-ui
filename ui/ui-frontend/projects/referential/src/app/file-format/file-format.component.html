@@ -23,10 +23,10 @@
           ></vitamui-common-search-bar>
 
           <div class="actions">
-            <button class="btn secondary" (click)="openCreateFileFormatDialog()">
+            <button class="btn secondary" (click)="openCreateFileFormatDialog()" [disabled]="!(hasCreateRole | async)">
               <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i> <span i18n="Create fileFormat button label@@fileFormatListCreateButton">Créer un format de fichier</span>
             </button>
-            <button class="btn more-actions" (click)="openFileFormatImportDialog()" i18n="Import fileFormat button label@@fileFormatListImportButton">
+            <button class="btn more-actions" (click)="openFileFormatImportDialog()" i18n="Import fileFormat button label@@fileFormatListImportButton" [disabled]="!(hasImportRole | async)">
               Importer
             </button>
           </div>

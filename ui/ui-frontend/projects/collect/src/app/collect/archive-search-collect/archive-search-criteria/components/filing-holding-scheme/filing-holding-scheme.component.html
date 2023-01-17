@@ -1,0 +1,27 @@
+<div class="vitamui-sidepanel-header">
+  <app-classification-tree
+    [accessContract]="accessContract"
+    [hasMatchesInSearch]="true"
+    [loadingHolding]="loadingHolding"
+    [nestedDataSourceFull]="nestedDataSourceFull"
+    [nestedTreeControlFull]="nestedTreeControlFull"
+    [showEveryNodes]="true"
+    [loadingNodeUnit]="loadingArchiveUnit.TREE"
+    (closePanel)="emitClose()"
+    (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'TREE')"
+    (switchView)="switchViewAllNodes()"
+  ></app-classification-tree>
+</div>
+
+<div *ngIf="projectHasRattachmentUnit" vitamuiVerticalResizeSidebar="top"></div>
+
+<div *ngIf="projectHasRattachmentUnit" class="vitamui-sidepanel-header flex-column">
+  <app-leaves-tree
+    [accessContract]="accessContract"
+    [transactionId]="transactionId"
+    [nestedDataSourceLeaves]="nestedDataSourceLeaves"
+    [searchRequestResultFacets]="requestResultFacets"
+    (addToSearchCriteria)="addToSearchCriteria($event)"
+    (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')">
+  </app-leaves-tree>
+</div>

@@ -37,6 +37,7 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
 import { Unit } from '../../core/models';
 
 @Component({
@@ -63,13 +64,12 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   updateStarted = false;
 
   @Input()
-  hasAccessContractManagementPermissions: boolean;
+  accessContractAllowUpdating: boolean;
 
   @Input()
   hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
-  constructor(private translateService: TranslateService) {
-  }
+  constructor(private translateService: TranslateService) {}
 
   ngOnInit() {}
 
@@ -103,5 +103,21 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     if (changes.archiveUnit) {
       this.showNormalPanel();
     }
+  }
+
+  getArchiveUnitType(archiveUnit: Unit) {
+    if (archiveUnit) {
+      return archiveUnit['#unitType'];
+    }
+  }
+
+  getArchiveUnitIcone(archiveUnit: Unit) {
+    return this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.HOLDING_UNIT
+      ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
+      : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.FILING_UNIT
+      ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
+      : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.INGEST && !archiveUnit['#object']
+      ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
+      : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
   }
 }

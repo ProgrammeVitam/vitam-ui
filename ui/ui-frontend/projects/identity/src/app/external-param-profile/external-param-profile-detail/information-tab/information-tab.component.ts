@@ -45,8 +45,7 @@ import { ExternalParamProfileValidators } from '../../external-param-profile.val
 
 @Component({
   selector: 'app-information-tab',
-  templateUrl: './information-tab.component.html',
-  styleUrls: ['./information-tab.component.scss'],
+  templateUrl: './information-tab.component.html'
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   constructor(

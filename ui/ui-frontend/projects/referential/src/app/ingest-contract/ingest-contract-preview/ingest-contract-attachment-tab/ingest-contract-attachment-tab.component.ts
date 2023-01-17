@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:object-literal-key-quotes quotemark */
-import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { AccessContract, IngestContract, SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
+import {HttpHeaders} from '@angular/common/http';
+import {Component, Input, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {AccessContract, IngestContract, SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 
-import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
-import { ExternalParametersService, ExternalParameters } from 'ui-frontend-common';
+import {IngestContractNodeUpdateComponent} from './ingest-contract-nodes-update/ingest-contract-node-update.component';
+import {ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
 import '@angular/localize/init';
 
 @Component({
@@ -55,6 +55,9 @@ export class IngestContractAttachmentTabComponent implements OnInit {
 
   @Input()
   tenantIdentifier: number;
+
+  @Input()
+  readOnly: boolean;
 
   accessContractId: string;
 
@@ -77,17 +80,14 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     return this._ingestContract;
   }
 
-  @Input()
-  set readOnly(readOnly: boolean) {
-    console.log('RO:', readOnly);
-  }
 
   constructor(
     private unitService: SearchUnitApiService,
     private externalParameterService: ExternalParametersService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

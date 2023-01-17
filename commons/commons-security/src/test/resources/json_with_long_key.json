@@ -1,0 +1,20 @@
+{
+  "authorizationRequestReplyIdentifier" : "test test",
+  "key":"customer",
+  "value":"toto",
+  "operator":"CONTAINSIGNORECASE",
+  "queryOperator":"OR",
+  "criteria":[
+    {
+      "key":"firstname",
+      "value":"toto",
+      "operator":"CONTAINSIGNORECASE"
+    },
+    {
+      "key":"lastname",
+      "value":"Titi",
+      "operator":"CONTAINSIGNORECASE"
+    }
+  ]
+
+}

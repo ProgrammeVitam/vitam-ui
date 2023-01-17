@@ -20,6 +20,7 @@
           [ingestContract]="ingestContract"
           [tenantIdentifier]="tenantIdentifier"
           (updated)="updatedChange($event, 0)"
+          [readOnly]="readOnly"
           #infoTab
         >
         </app-ingest-contract-information-tab>
@@ -30,23 +31,24 @@
           [ingestContract]="ingestContract"
           [tenantIdentifier]="tenantIdentifier"
           (updated)="updatedChange($event, 1)"
+          [readOnly]="readOnly"
           #formatsTab
         >
         </app-ingest-contract-format-tab>
       </mat-tab>
 
       <mat-tab label="Objets" i18n-label="Objets tab@@ingestContractPreviewTabObjects" class="no-padding">
-        <app-ingest-contract-object-tab [ingestContract]="ingestContract" (updated)="updatedChange($event, 2)" #objectsTab>
+        <app-ingest-contract-object-tab [readOnly]="readOnly" [ingestContract]="ingestContract" (updated)="updatedChange($event, 2)" #objectsTab>
         </app-ingest-contract-object-tab>
       </mat-tab>
 
       <mat-tab label="Héritage" i18n-label="Objets tab@@ingestContractPreviewTabHeritage" class="no-padding">
-        <app-ingest-contract-heritage-tab [ingestContract]="ingestContract" (updated)="updatedChange($event, 3)" #heritageTab>
+        <app-ingest-contract-heritage-tab  [readOnly]="readOnly" [ingestContract]="ingestContract" (updated)="updatedChange($event, 3)" #heritageTab>
         </app-ingest-contract-heritage-tab>
       </mat-tab>
 
       <mat-tab label="Rattachement" i18n-label="Rattachement tab@@ingestContractPreviewTabLink" class="no-padding">
-        <app-ingest-contract-attachment-tab [ingestContract]="ingestContract" [tenantIdentifier]="tenantIdentifier">
+        <app-ingest-contract-attachment-tab [readOnly]="readOnly" [ingestContract]="ingestContract" [tenantIdentifier]="tenantIdentifier">
         </app-ingest-contract-attachment-tab>
       </mat-tab>
 

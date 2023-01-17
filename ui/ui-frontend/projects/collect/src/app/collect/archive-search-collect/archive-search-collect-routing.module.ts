@@ -44,6 +44,10 @@ const routes: Route[] = [
     path: '',
     component: ArchiveSearchCollectComponent,
   },
+  {
+    path: '/{transactionId}',
+    component: ArchiveSearchCollectComponent,
+  },
 ];
 
 @NgModule({

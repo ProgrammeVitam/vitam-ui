@@ -1,0 +1,43 @@
+<div class="vitamui-sidepanel">
+  <div class="vitamui-sidepanel-header">
+    <div class="d-flex justify-content-end">
+      <button (click)="emitClose()" class="btn link cancel">
+        <i class="vitamui-icon vitamui-icon-close"></i>
+      </button>
+    </div>
+
+    <div class="title">
+      <div matTooltipClass="vitamui-tooltip">
+        <h5 class="m-0 text-primary">{{ inputProfile?.name }}</h5>
+        <p class="text large light m-0">{{ inputProfile?.identifier }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="isProfilAttached()" class="bouttonMenuModifierLateral">
+      <button (click)="onButtonClicked()" mat-icon-button [matMenuTriggerFor]="menu"
+              class="btn btn-circle secondary mr-3">
+        <mat-icon>
+          {{isClicked ? 'close' : 'more_horiz'}}
+        </mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" yPosition="below">
+        <button (click)="editProfile(inputProfile)" mat-menu-item>
+          <span>{{ 'PROFILE_PREVIEW.MENU.MODIFIER_PROFILE' | translate }}</span>
+        </button>
+        <button (click)="downloadProfile(inputProfile)" mat-menu-item>
+          <span>{{ 'PROFILE_PREVIEW.MENU.TELECHARGER_PROFILE' | translate }}</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+  <div class="vitamui-sidepanel-body">
+    <mat-tab-group #tabs class="preview-tab-group">
+
+      <mat-tab label="{{ 'PROFILE_PREVIEW.NOTICE' | translate }}">
+        <profile-information-tab #infoTab (updated)="updatedChange($event, 0)" (closed)="closeNotice($event)"
+                                 [inputProfile]="inputProfile" [readOnly]="isPopup"></profile-information-tab>
+      </mat-tab>
+
+    </mat-tab-group>
+  </div>
+</div>

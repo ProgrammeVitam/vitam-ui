@@ -28,16 +28,11 @@ package fr.gouv.vitamui.archives.search.service;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
-import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
-import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
+import fr.gouv.vitamui.archives.search.common.dto.*;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -45,19 +40,22 @@ import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.InputStream;
 import java.util.Objects;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.*;
 
 
 /**
@@ -71,15 +69,19 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
     private final ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
     private final ArchiveSearchExternalWebClient archiveSearchExternalWebClient;
+
+    private final ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient;
     private final CommonService commonService;
 
     @Autowired
     public ArchivesSearchService(final CommonService commonService,
-        final ArchiveSearchExternalRestClient archiveSearchExternalRestClient,
-        final ArchiveSearchExternalWebClient archiveSearchExternalWebClient) {
+                                 final ArchiveSearchExternalRestClient archiveSearchExternalRestClient,
+                                 final ArchiveSearchExternalWebClient archiveSearchExternalWebClient,
+                                 ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient) {
         this.commonService = commonService;
         this.archiveSearchExternalRestClient = archiveSearchExternalRestClient;
         this.archiveSearchExternalWebClient = archiveSearchExternalWebClient;
+        this.archiveSearchStreamingExternalRestClient = archiveSearchStreamingExternalRestClient;
     }
 
     @Override
@@ -92,7 +94,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     }
 
     public ArchiveUnitsDto findArchiveUnits(final SearchCriteriaDto searchQuery,
-        final ExternalHttpContext context) {
+                                            final ExternalHttpContext context) {
         LOGGER.debug("calling find archive units by criteria {} ", searchQuery);
         return getClient().searchArchiveUnitsByCriteria(context, searchQuery);
     }
@@ -102,13 +104,15 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     }
 
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, ObjectData objectData,
-        ExternalHttpContext context) {
+                                                                 ExternalHttpContext context) {
         LOGGER.debug("Download the Archive Unit Object with id {}", id);
 
         ResultsDto got = findObjectById(id, context).getBody();
-        String usage = getUsage(Objects.requireNonNull(got), objectData);
-        return archiveSearchExternalWebClient
-                .downloadObjectFromUnit(id, usage, getVersion(got.getQualifiers(), usage), context);
+        setObjectData(Objects.requireNonNull(got), objectData);
+        return archiveSearchExternalWebClient.downloadObjectFromUnit(id,
+            objectData.getQualifier(),
+            objectData.getVersion(),
+            context);
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
@@ -122,94 +126,146 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     }
 
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
-        ExternalHttpContext context) {
+                                                                    ExternalHttpContext context) {
         LOGGER.debug("export search archives Units by criteria into csv format with criteria {}", searchQuery);
         return archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(searchQuery, context);
     }
 
-    public String getUsage(ResultsDto got, ObjectData objectData) {
-        String finalUsage = null;
-        for (QualifiersDto qualifier : got.getQualifiers()) {
-            finalUsage = Arrays.stream(ObjectQualifierTypeEnum.values())
-                .map(ObjectQualifierTypeEnum::getValue)
-                .filter(value -> value.equals(qualifier.getQualifier()))
-                .findFirst().orElse(null);
-            String filename = getObjectDataFilename(objectData, qualifier);
-            if (filename == null) {
-                LOGGER.debug("Objectdata with first FileInfoModel.filename null : {}", objectData);
-                continue;
-            }
-            objectData.setFilename(filename);
-            objectData.setMimeType(qualifier.getVersions().get(0).getFormatIdentification().getMimeType());
+    public void setObjectData(ResultsDto got, ObjectData objectData) {
+        QualifiersDto qualifier = getLastObjectQualifier(got);
+        if (isNull(qualifier)) {
+            return;
         }
-        return finalUsage;
+        objectData.setQualifier(qualifier.getQualifier());
+        VersionsDto version = getLastVersion(qualifier);
+        if (isNull(version)) {
+            return;
+        }
+        objectData.setFilename(getFilename(version));
+        objectData.setMimeType(getMimeType(version));
+        objectData.setVersion(getVersion(version));
     }
 
-    private String getObjectDataFilename(ObjectData objectData, QualifiersDto qualifier) {
-        if (qualifier.getVersions() != null && qualifier.getVersions().get(0).getFileInfoModel() == null
-            || StringUtils.isNotEmpty(objectData.getFilename())) {
+    private QualifiersDto getLastObjectQualifier(ResultsDto got) {
+        for (String qualifierName : ObjectQualifierType.allValuesOrdered) {
+            QualifiersDto qualifierFound = got.getQualifiers().stream()
+                .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
+                .reduce((first, second) -> second)
+                .orElse(null);
+            if (nonNull(qualifierFound)) {
+                return qualifierFound;
+            }
+        }
+        return null;
+    }
+
+    private VersionsDto getLastVersion(QualifiersDto qualifier) {
+        if (isNull(qualifier) || CollectionUtils.isEmpty(qualifier.getVersions())) {
             return null;
         }
-        return qualifier.getVersions().get(0).getFileInfoModel().getFilename();
+        return qualifier.getVersions().stream()
+            .reduce((first, second) -> second)
+            .orElse(null);
     }
 
-    public Integer getVersion(List<QualifiersDto> qualifiers, String usage) {
-        List<VersionsDto> versions =
-            qualifiers.stream().filter(q -> q.getQualifier().equals(usage)).findFirst().orElseThrow().getVersions();
-        return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
+    private String getFilename(VersionsDto version) {
+        if (isNull(version) || isEmpty(version.getId())) {
+            return null;
+        }
+        return version.getId() + getExtension(version);
+    }
+
+    private String getExtension(VersionsDto version) {
+        String uriExtension = EMPTY;
+        if (isNotBlank(version.getUri()) && version.getUri().contains(".")) {
+            uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
+        }
+        String filenameExtension = EMPTY;
+        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")) {
+            filenameExtension = version.getFileInfoModel().getFilename()
+                .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
+        }
+        if (isNotBlank(filenameExtension)) {
+            return "." + filenameExtension;
+        } else if (isNotBlank(uriExtension)) {
+            return "." + uriExtension;
+        }
+        return EMPTY;
+    }
+
+    private String getMimeType(VersionsDto version) {
+        if (isNull(version) || isNull(version.getFormatIdentification())) {
+            return null;
+        }
+        return version.getFormatIdentification().getMimeType();
+    }
+
+    private Integer getVersion(VersionsDto version) {
+        if (isNull(version) || isNull(version.getDataObjectVersion())) {
+            return null;
+        }
+        return Integer.parseInt(version.getDataObjectVersion().split("_")[1]);
     }
 
     public ResponseEntity<String> exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
-        ExternalHttpContext context) {
+                                                      ExternalHttpContext context) {
         LOGGER.info("export DIP with criteria {}", exportDipCriteriaDto);
         return archiveSearchExternalRestClient.exportDIPCriteria(exportDipCriteriaDto, context);
     }
 
     public ResponseEntity<String> transferRequest(final TransferRequestDto transferRequestDto,
-        ExternalHttpContext context) {
+                                                  ExternalHttpContext context) {
         LOGGER.debug("Transfer request: {}", transferRequestDto);
         return archiveSearchExternalRestClient.transferRequest(transferRequestDto, context);
     }
 
     public ResponseEntity<JsonNode> startEliminationAnalysis(ExternalHttpContext context,
-        final SearchCriteriaDto searchQuery) {
+                                                             final SearchCriteriaDto searchQuery) {
         LOGGER.info("elimination analysis with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAnalysis(context, searchQuery);
     }
 
     public ResponseEntity<JsonNode> startEliminationAction(ExternalHttpContext context,
-        final SearchCriteriaDto searchQuery) {
+                                                           final SearchCriteriaDto searchQuery) {
         LOGGER.info("elimination action with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAction(context, searchQuery);
     }
 
     public ResponseEntity<String> updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,
-        ExternalHttpContext context) {
+                                                          ExternalHttpContext context) {
         LOGGER.info("Update Archive Units Rules  with criteria {}", ruleSearchCriteriaDto);
         return archiveSearchExternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, context);
     }
 
     public ResponseEntity<String> computedInheritedRules(final SearchCriteriaDto searchCriteriaDto,
-        ExternalHttpContext context) {
+                                                         ExternalHttpContext context) {
         LOGGER.info("computed Inherited Rules with criteria {}", searchCriteriaDto);
         return archiveSearchExternalRestClient.computedInheritedRules(searchCriteriaDto, context);
     }
 
     public ResponseEntity<ResultsDto> selectUnitsWithInheritedRules(final SearchCriteriaDto searchQuery,
-        final ExternalHttpContext context) {
+                                                                    final ExternalHttpContext context) {
         LOGGER.debug("calling select Unit With Inherited Rules by criteria {} ", searchQuery);
         return archiveSearchExternalRestClient.selectUnitWithInheritedRules(context, searchQuery);
     }
 
     public ResponseEntity<String> reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto,
-        ExternalHttpContext context) {
+                                                   ExternalHttpContext context) {
         LOGGER.info("Reclassification with criteria {}", reclassificationCriteriaDto);
         return archiveSearchExternalRestClient.reclassification(reclassificationCriteriaDto, context);
     }
 
     public ResponseEntity<String> updateUnitById(String id, final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
-        ExternalHttpContext context) {
+                                                 ExternalHttpContext context) {
         LOGGER.debug("Update the Archive Unit with id {}", id);
         return archiveSearchExternalRestClient.updateUnitById(id, unitDescriptiveMetadataDto, context);
+    }
+
+    public ResponseEntity<String> transferAcknowledgment(final ExternalHttpContext context, String fileName,
+                                                         InputStream inputStream) {
+        LOGGER.debug("transfer acknowledgment");
+        return archiveSearchStreamingExternalRestClient
+            .transferAcknowledgment(context, fileName, inputStream);
     }
 }

@@ -1,13 +1,13 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
   <div class="row">
     <div class="col-10 form-control">
-      <vitamui-common-slide-toggle formControlName="computeInheritedRulesAtIngest"
+      <vitamui-common-slide-toggle disabled="{{readOnly}}" formControlName="computeInheritedRulesAtIngest"
         >Calcul des héritages de règles et d'indexation des échéances
       </vitamui-common-slide-toggle>
     </div>
   </div>
 
   <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="unchanged() || submited">Enregistrer</button>
+    <button type="submit" class="btn secondary" [disabled]="readOnly || unchanged() || submited">Enregistrer</button>
   </div>
 </form>

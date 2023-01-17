@@ -105,6 +105,7 @@ public class ArchiveSearchMgtRulesInternalService {
         rulesUpdateCommonService
             .deleteAttributesFromObjectNode(dslRequest, ArchiveSearchInternalService.DSL_QUERY_PROJECTION,
                 ArchiveSearchInternalService.DSL_QUERY_FILTER, ArchiveSearchInternalService.DSL_QUERY_FACETS);
+
         rulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         JsonNode updateQuery = objectMapper.convertValue(massUpdateUnitRuleRequest, JsonNode.class);

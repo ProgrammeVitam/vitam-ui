@@ -39,7 +39,6 @@ import java.util.Optional;
 public class UnitService {
 
     private final UnitExternalRestClient unitRestClient;
-
     @Autowired
     public UnitService(final UnitExternalRestClient unitRestClient) {
         this.unitRestClient = unitRestClient;
@@ -54,14 +53,14 @@ public class UnitService {
     }
 
     public JsonNode findByDsl(final Optional<String> id, final JsonNode dsl, final ExternalHttpContext context) {
-    	return getClient().findUnitByDsl(context, id, dsl);
+        return getClient().findUnitByDsl(context, id, dsl);
     }
 
-    public JsonNode  findObjectMetadataById(final String id, final JsonNode dsl, final ExternalHttpContext context) {
-    	return getClient().findObjectMetadataById(context, id, dsl);
+    public JsonNode findObjectMetadataById(final String id, final JsonNode dsl, final ExternalHttpContext context) {
+        return getClient().findObjectMetadataById(context, id, dsl);
     }
 
-    public VitamUISearchResponseDto findFilingPlan(ExternalHttpContext context) {
-        return getClient().getFilingPlan(context);
+    public VitamUISearchResponseDto getFilingAndHoldingUnits(ExternalHttpContext context) {
+        return getClient().getFilingAndHoldingUnits(context);
     }
 }

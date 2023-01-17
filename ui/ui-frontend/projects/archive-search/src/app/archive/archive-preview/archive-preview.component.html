@@ -1,9 +1,9 @@
 <vitamui-common-sidenav-header
   [extended]="isPanelextended"
-  [title]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : (archiveUnit.Title_.en | truncate: 30)"
-  [icon]="
-    archiveUnit?.DescriptionLevel === 'File' || archiveUnit?.DescriptionLevel === 'Item' ? 'vitamui-icon-file' : 'vitamui-icon-folder'
+  [title]="
+    archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : (archiveUnit.Title_.en | truncate : 30)
   "
+  [icon]="getArchiveUnitIcone(archiveUnit)"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en"
   [toolTipTitleDuration]="300"
@@ -18,11 +18,11 @@
     </button>
     <button
       mat-menu-item
-      matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
+      matTooltip="{{ !accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : '' }}"
       matTooltipClass="vitamui-tooltip"
       [matTooltipShowDelay]="300"
       (click)="updateMetadataDesc()"
-      [disabled]="updateStarted || (!hasAccessContractManagementPermissions || !hasUpdateDescriptiveUnitMetadataRole)"
+      [disabled]="updateStarted || (!accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole)"
     >
       {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>

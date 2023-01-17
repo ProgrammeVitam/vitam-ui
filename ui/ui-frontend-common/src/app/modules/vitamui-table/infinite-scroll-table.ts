@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Subject} from 'rxjs';
+import { Subject } from 'rxjs';
 
-import {Id} from '../';
-import {Direction} from './direction.enum';
-import {DEFAULT_PAGE_SIZE, PageRequest} from './page-request.model';
-import {SearchService} from './search.service';
+import { Id } from '../';
+import { Direction } from './direction.enum';
+import { DEFAULT_PAGE_SIZE, PageRequest } from './page-request.model';
+import { SearchService } from './search.service';
 
 export const INFINITE_SCROLL_MAX_ITEMS = 100;
 

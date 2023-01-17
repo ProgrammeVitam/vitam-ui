@@ -88,6 +88,16 @@ customer-init:
         - ROLE_GET_MANAGEMENT_CONTRACTS
         - ROLE_GET_ARCHIVE_PROFILES
 
+    - name: Profil consultation des contrats d'entrée
+      description: Profil pour la consultation des contrats d'entrée dans Vitam sans mises à jour des contrats
+      app-name: INGEST_APP
+      level:
+      roles:
+        - ROLE_GET_INGEST_CONTRACTS
+        - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_GET_MANAGEMENT_CONTRACTS
+        - ROLE_GET_ARCHIVE_PROFILES
+
     - name: Profil pour les services agents
       description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour
       app-name: AGENCIES_APP
@@ -193,6 +203,16 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
 
+    - name: Profil pour la gestion des pua/pa de pastis
+      description: Gestion de Pastis dans Vitam
+      app-name: PASTIS_APP
+      level:
+      roles:
+          - ROLE_GET_PASTIS
+          - ROLE_CREATE_PASTIS
+          - ROLE_UPDATE_PASTIS
+          - ROLE_DELETE_PASTIS
+
 
     - name: Archiviste
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
@@ -209,7 +229,7 @@ customer-init:
         - ROLE_GET_RULES
 
     - name: Archiviste administrateur
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination
+      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, requête et aquittement de transfert, export DIP et opérations d'élimination
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
@@ -226,6 +246,7 @@ customer-init:
         - ROLE_UPDATE_UNIT_DESC_METADATA
         - ROLE_TRANSFER_REQUEST
         - ROLE_GET_RULES
+        - ROLE_TRANSFER_ACKNOWLEDGMENT
 
     - name: Collecte
       description: Collecte de données, Application de préparation de versements
@@ -237,6 +258,34 @@ customer-init:
         - ROLE_UPDATE_PROJECTS
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
+        - ROLE_SEND_TRANSACTIONS
+        - ROLE_CLOSE_TRANSACTIONS
+        - ROLE_UPDATE_UNITS_METADATA
+        - ROLE_REOPEN_TRANSACTIONS
+        - ROLE_ABORT_TRANSACTIONS
+        - ROLE_GET_TRANSACTIONS
+        - ROLE_CREATE_TRANSACTIONS
+        - ROLE_UPDATE_TRANSACTIONS
+        - ROLE_DELETE_TRANSACTIONS
+
+    - name: Pastis-Gestion des profils documentaires
+      description: Pastis-Gestion des profils documentaires
+      app-name: PASTIS_APP
+      level:
+      roles:
+        - ROLE_GET_PASTIS
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_UPDATE_ARCHIVE_PROFILES_UNIT
+        - ROLE_CREATE_ARCHIVE_PROFILES_UNIT
+        - ROLE_IMPORT_ARCHIVE_PROFILES_UNIT
+        - ROLE_DELETE_ARCHIVE_PROFILES_UNIT
+        - ROLE_GET_ARCHIVE_PROFILES
+        - ROLE_UPDATE_ARCHIVE_PROFILES
+        - ROLE_CREATE_ARCHIVE_PROFILES
+        - ROLE_IMPORT_ARCHIVE_PROFILES
+        - ROLE_DELETE_ARCHIVE_PROFILES
+
 
   #- name: profileName
   #  description: desc

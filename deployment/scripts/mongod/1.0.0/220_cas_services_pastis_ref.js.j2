@@ -1,0 +1,26 @@
+
+db = db.getSiblingDB('cas')
+
+
+print("START 218_cas_services_pastis_ref.js");
+
+var nbInsert = db.services.insert({
+   "_id" : NumberInt(8),
+   "_class": "org.apereo.cas.services.RegexRegisteredService",
+{% if vitamui.pastis.base_url is defined %}
+	"serviceId": "^{{ vitamui.pastis.base_url }}/.*",
+	"logoutUrl": "{{ vitamui.pastis.base_url }}/logout",
+{% else %}
+	"serviceId": "^{{ url_prefix }}/pastis/.*",
+	"logoutUrl": "{{ url_prefix }}/pastis/logout",
+{% endif %}
+   "name": "Pastis Application",
+   "logoutType" : "FRONT_CHANNEL",
+   "attributeReleasePolicy": {
+     "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+  }
+});
+
+print("inserted: " + nbInsert);
+
+print("END 220_cas_services_pastis_ref.js");

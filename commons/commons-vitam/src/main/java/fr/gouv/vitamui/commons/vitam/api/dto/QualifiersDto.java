@@ -36,16 +36,14 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
+@Data
+@Accessors(chain = true)
 public class QualifiersDto {
 
     private String qualifier;

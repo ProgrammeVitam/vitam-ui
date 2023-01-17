@@ -1,11 +1,16 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+
   <mat-sidenav
     mode="side"
     [fixedInViewport]="true"
     [opened]="show"
     *ngIf="foundAccessContract"
                vitamuiCommonResizeSidebar="left">
-    <app-filing-holding-scheme [accessContract]="accessContract"></app-filing-holding-scheme>
+    <app-filing-holding-scheme
+      [accessContract]="accessContract"
+      (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"
+    >
+    </app-filing-holding-scheme>
   </mat-sidenav>
 
   <mat-sidenav
@@ -21,8 +26,8 @@
       (showExtendedLateralPanel)="showExtendedLateralPanel()"
       [archiveUnit]="openedItem"
       [accessContract]="accessContract"
-      (backToNormalLateralPanel)="backToNormalLateralPanel()"
-      [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
+      (backToNormalLateralPanel)="backToNormalLateralPanel()"      
+      [accessContractAllowUpdating]="accessContractAllowUpdating"
       [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"
     ></app-archive-preview>
   </mat-sidenav>
@@ -50,7 +55,8 @@
       <app-archive-search
         (archiveUnitClick)="showPreviewArchiveUnit($event)"
         [accessContract]="accessContract"
-        [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
+        [accessContractAllowUpdating]="accessContractAllowUpdating"
+        [accessContractUpdatingRestrictedDesc]="accessContractUpdatingRestrictedDesc"
       >
       </app-archive-search>
     </div>

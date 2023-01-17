@@ -38,7 +38,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -58,6 +57,7 @@ import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHIVE_UNIT;
 import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 
 @Api(tags = "Collect")
@@ -68,6 +68,7 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 public class ProjectObjectGroupController extends AbstractUiRestController {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectObjectGroupController.class);
+    public static final String CONTENT_DISPOSITION = "Content-Disposition";
 
     private final ProjectObjectGroupService projectObjectGroupService;
 
@@ -79,27 +80,31 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
     @ApiOperation(value = "Download Archive Unit Object")
     @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
+    public ResponseEntity<Resource> downloadObjectFromUnit(
+        final @PathVariable("id") String unitId,
+        @QueryParam("objectId") String objectId,
         @QueryParam("tenantId") Integer tenantId,
         @QueryParam("contractId") String contractId) throws PreconditionFailedException,
         InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier, The contractId and The tenantId are mandatory parameters: ",
-            id, contractId, String.valueOf(tenantId));
-        SanityChecker.checkSecureParameter(id, contractId, String.valueOf(tenantId));
-        LOGGER.debug("Download the Archive Unit Object with Unit ID {}", id);
-        ObjectData objectData = new ObjectData();
-        ResponseEntity<Resource> responseResource =
-            projectObjectGroupService.downloadObjectFromUnit(id, objectData, buildUiHttpContext(tenantId, contractId))
-                .block();
-        List<String> headersValuesContentDispo = responseResource.getHeaders().get("Content-Disposition");
+            unitId, objectId, contractId, String.valueOf(tenantId));
+        SanityChecker.checkSecureParameter(unitId, contractId, String.valueOf(tenantId));
+        LOGGER.debug("Download the Archive Unit Object with Unit ID {}", unitId);
+        final ObjectData objectData = new ObjectData();
+        ResponseEntity<Resource> responseResource = projectObjectGroupService.downloadObjectFromUnit(unitId, objectId,
+            objectData, buildUiHttpContext(tenantId, contractId)).block();
+        List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
-        String fileNameHeader =
-            StringUtils.isNotEmpty(objectData.getFilename()) ? "attachment;filename=" + objectData.getFilename()
-                : "attachment";
+        String fileNameHeader = isNotEmpty(objectData.getFilename())
+            ? "attachment;filename=" + objectData.getFilename()
+            : "attachment";
+        MediaType contentType = isNotEmpty(objectData.getMimeType())
+            ? new MediaType(MimeType.valueOf(objectData.getMimeType()))
+            : MediaType.APPLICATION_OCTET_STREAM;
 
         return ResponseEntity.ok()
-            .contentType(new MediaType(MimeType.valueOf(objectData.getMimeType())))
-            .header("Content-Disposition", fileNameHeader)
+            .contentType(contentType)
+            .header(CONTENT_DISPOSITION, fileNameHeader)
             .body(responseResource.getBody());
     }
 

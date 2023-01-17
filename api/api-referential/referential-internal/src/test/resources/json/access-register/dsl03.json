@@ -1,6 +1,8 @@
 {
   "$query" : { },
   "$filter" : {
+    "$offset" : 12,
+    "$limit" : 1,
     "$orderby" : {
       "messageIdentifierOrder" : -1
     }

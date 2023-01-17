@@ -36,19 +36,36 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
+import java.util.List;
 
 public class ProfileInternalRestClient extends BasePaginatingAndSortingRestClient<ProfileDto, InternalHttpContext> {
-    
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalRestClient.class);
+
     public ProfileInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
@@ -70,4 +87,54 @@ public class ProfileInternalRestClient extends BasePaginatingAndSortingRestClien
         return new ParameterizedTypeReference<List<ProfileDto>>() { };
     }
 
+    public boolean check(InternalHttpContext context, ProfileDto accessContractDto) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
+        final HttpEntity<ProfileDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
+        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
+            request, Boolean.class);
+        return response.getStatusCode() == HttpStatus.OK;
+    }
+
+    public ResponseEntity<Resource> download(InternalHttpContext context, String id) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID);
+        final HttpEntity<ProfileDto> request = new HttpEntity<>(null, buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
+    }
+
+    public ResponseEntity<JsonNode> updateProfile(InternalHttpContext context, final ProfileDto dto) {
+        LOGGER.debug("Update {}", dto);
+        ApiUtils.checkValidity(dto);
+        final String dtoId = dto.getId();
+        final HttpEntity<ProfileDto> request = new HttpEntity<>(dto, buildHeaders(context));
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.PUT,
+            request, JsonNode.class, dtoId);
+        checkResponse(response);
+        return response;
+    }
+
+    public ResponseEntity<JsonNode> updateProfileFile(InternalHttpContext context, String id, MultipartFile profileFile) throws IOException {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID);
+        MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
+        bodyMap.add("file", new FileSystemResource(profileFile.getBytes(), profileFile.getOriginalFilename()));
+
+        final HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(bodyMap, buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id),
+            HttpMethod.PUT,
+            request,
+            JsonNode.class);
+    }
+
+    public static class FileSystemResource extends ByteArrayResource {
+
+        private String fileName;
+
+        public FileSystemResource(byte[] byteArray , String filename) {
+            super(byteArray);
+            this.fileName = filename;
+        }
+
+        public String getFilename() { return fileName; }
+        public void setFilename(String fileName) { this.fileName= fileName; }
+
+    }
 }

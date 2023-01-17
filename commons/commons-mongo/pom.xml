@@ -11,7 +11,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>6.rc.0-SNAPSHOT</version>
+        <version>6.0-SNAPSHOT</version>
     </parent>
     <properties>
         <spring.data.mongo.version>3.3.5</spring.data.mongo.version>
@@ -156,11 +156,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-test</artifactId>
             <type>test-jar</type>
@@ -170,6 +165,10 @@
             <groupId>javax.el</groupId>
             <artifactId>javax.el-api</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
         </dependency>
     </dependencies>
 

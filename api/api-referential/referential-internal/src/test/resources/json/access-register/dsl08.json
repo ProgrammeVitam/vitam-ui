@@ -1,9 +1,8 @@
 {
-  "$query": {},
-  "$filter": {
-    "$orderby": {
-      "messageIdentifierOrder": 1
-    }
+  "$query" : { },
+  "$filter" : {
+    "$offset" : 12,
+    "$limit" : 1
   },
-  "$projection": {}
+  "$projection" : { }
 }

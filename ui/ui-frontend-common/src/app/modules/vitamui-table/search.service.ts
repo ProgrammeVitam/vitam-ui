@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -47,16 +47,19 @@ import { PaginatedResponse } from './paginated-response.interface';
 export class SearchService<T extends Id> {
 
   protected pageRequest: PageRequest;
+  totalElements: number;
   protected hasMore: boolean;
   protected data: T[];
   protected optionalValues: BehaviorSubject<Map<string, any>> = new BehaviorSubject(new Map());
+
 
   constructor(
     protected http: HttpClient,
     protected paginatedApi: PaginatedApi<T>,
     protected embedded?: string,
     protected headers?: HttpHeaders
-  ) { }
+  ) {
+  }
 
   search(pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'name', Direction.ASCENDANT)): Observable<T[]> {
     this.pageRequest = pageRequest;
@@ -68,6 +71,7 @@ export class SearchService<T extends Id> {
           this.data = paginated.values;
           this.pageRequest.page = paginated.pageNum;
           this.hasMore = paginated.hasMore;
+          this.totalElements = paginated.totalElements;
           this.optionalValues.next(paginated.optionalValues);
 
           return this.data;
@@ -76,7 +80,9 @@ export class SearchService<T extends Id> {
   }
 
   loadMore(): Observable<T[]> {
-    if (!this.hasMore) { return of(this.data); }
+    if (!this.hasMore) {
+      return of(this.data);
+    }
     this.pageRequest.page += 1;
 
     // TODO catch errors
@@ -85,6 +91,7 @@ export class SearchService<T extends Id> {
         map((paginated: PaginatedResponse<T>) => {
           this.data = this.data.concat(paginated.values);
           this.pageRequest.page = paginated.pageNum;
+          this.totalElements = paginated.totalElements;
           this.hasMore = paginated.hasMore;
           this.optionalValues.next(paginated.optionalValues);
 
@@ -93,6 +100,12 @@ export class SearchService<T extends Id> {
       );
   }
 
-  get canLoadMore() { return this.hasMore; }
+  get canLoadMore() {
+    return this.hasMore;
+  }
+
+  get getTotalElements(): number {
+    return this.totalElements;
+  }
 
 }

@@ -1,0 +1,38 @@
+<div  *ngIf="pending then loadingSpinner"></div>
+
+
+<ng-template #loadingSpinner>
+  <div class="steackhouse">
+    <mat-spinner color="primary" class="vitamui-spinner x-large my-3"></mat-spinner>
+  </div>
+</ng-template>
+
+<ngx-ui-loader></ngx-ui-loader>
+
+<button (click)="openSideNav()"
+        *ngIf="!opened" class="pastis-btn-show-profile"
+        disableRipple="true"
+        mat-button>
+  <mat-icon class="pastis-icon-show-profile">keyboard_arrow_right</mat-icon>
+</button>
+
+<mat-sidenav-container class="pastis-page-container">
+  <mat-sidenav #sidenav (closed)="events.push('close!')" (opened)="events.push('open!')" [(opened)]="opened"
+               class='pastis-side-nav'
+               mode="side">
+    <pastis-edit-profile *ngIf="fileService.currentTreeLoaded"></pastis-edit-profile>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div>
+      <pastis-file-tree-metadata (addNode)="addNode($event)"
+                                 (duplicateNode)="duplicateNode($event)"
+                                 (insertAttributes)="insertAttribute($event)"
+                                 (insertItem)="insertionItem($event)"
+                                 (removeNode)="removeNode($event)">
+      </pastis-file-tree-metadata>
+    </div>
+    <div class="pastis-toaster-font" toastContainer></div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

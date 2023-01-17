@@ -39,9 +39,11 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
-import { diff, Rule, RuleService, SecurityService } from 'ui-frontend-common';
+import { diff, Rule, RuleService, SecurityService, VitamuiRoles } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
+
+const RULES_APP = 'RULES_APP';
 
 @Component({
   selector: 'app-rule-information-tab',
@@ -61,7 +63,6 @@ export class RuleInformationTabComponent implements OnInit {
   ruleMeasurements = RULE_MEASUREMENTS;
 
   tenantIdentifier: number;
-  appName = 'RULES_APP';
   hasUpdateAgencyRole$: Observable<boolean>;
 
   private oldRule: Rule;
@@ -110,7 +111,7 @@ export class RuleInformationTabComponent implements OnInit {
     this.hasUpdateAgencyRole$ = this.route.params.pipe(
       mergeMap((params) => {
         this.tenantIdentifier = +params.tenantIdentifier;
-        return this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_RULES');
+        return this.securityService.hasRole(RULES_APP, this.tenantIdentifier, VitamuiRoles.ROLE_UPDATE_RULES);
       })
     );
   }

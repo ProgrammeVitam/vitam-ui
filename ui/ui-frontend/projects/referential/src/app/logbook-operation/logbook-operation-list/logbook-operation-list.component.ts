@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
 
 import {
   Component,
@@ -43,21 +43,24 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
-import {merge, Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
-import {EventFilter} from '../event-filter.interface';
-import {LogbookDownloadService} from '../logbook-download.service';
-import {LOGBOOK_OPERATION_CATEGORIES} from '../logbook-operation-constants';
-import {LogbookSearchService} from '../logbook-search.service';
+import { merge, Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { EventFilter } from '../event-filter.interface';
+import { LogbookDownloadService } from '../logbook-download.service';
+import { LOGBOOK_OPERATION_CATEGORIES } from '../logbook-operation-constants';
+import { LogbookSearchService } from '../logbook-search.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
+const ARCHIVE_TRANSFER = 'ARCHIVE_TRANSFER';
+const ARCHIVE_TRANSFER_LABEL = 'ARCHIVE_TRANSFER_LABEL';
 
 @Component({
   selector: 'app-logbook-operation-list',
@@ -65,43 +68,40 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./logbook-operation-list.component.scss'],
   animations: [
     trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
+      state('collapsed', style({ height: '0px', visibility: 'hidden' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
 
     trigger('arrow', [
-      state('collapsed', style({transform: 'rotate(180deg)'})),
-      state('expanded', style({transform: 'none'})),
+      state('collapsed', style({ transform: 'rotate(180deg)' })),
+      state('expanded', style({ transform: 'none' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
-  ]
+  ],
 })
-export class LogbookOperationListComponent extends InfiniteScrollTable<Event> implements OnInit, OnChanges {
-
+export class LogbookOperationListComponent extends InfiniteScrollTable<Event> implements OnInit, OnChanges, OnDestroy {
   @Input() tenantIdentifier: number;
 
-  // tslint:disable-next-line:no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:no-input-rename
   @Input('filters')
   set searchFilters(searchFilters: Readonly<EventFilter>) {
     this._searchFilters = searchFilters;
     this.searchFiltersChange.next(searchFilters);
   }
 
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
-  // tslint:disable-next-line:variable-name
   private _searchFilters: Readonly<EventFilter>;
 
-  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<LogbookOperationListComponent>;
-  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
+  logbookOperationsSubscription: Subscription;
+
+  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<LogbookOperationListComponent>;
+  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
   @Output() eventClick = new EventEmitter<Event>();
 
@@ -116,25 +116,27 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   filterMap: { [key: string]: any[] } = {
     operationCategories: null,
   };
-  operationCategoriesFilterOptions: Array<{ value: string, label: string }> = [];
+  operationCategoriesFilterOptions: Array<{ value: string; label: string }> = [];
 
-  constructor(public logbookSearchService: LogbookSearchService,
-              private logbookDownloadService: LogbookDownloadService) {
+  constructor(public logbookSearchService: LogbookSearchService, private logbookDownloadService: LogbookDownloadService) {
     super(logbookSearchService);
   }
 
   ngOnInit() {
     this.pending = true;
     this.updatedData.subscribe(() => this.onDataSourceReloaded());
-    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange).pipe(
+      debounceTime(FILTER_DEBOUNCE_TIME_MS)
+    );
+
     searchCriteriaChange.subscribe(() => {
       this.refreshList();
     });
     this.refreshOperationCategoriesOptions();
     this.refreshList();
-    this.logbookDownloadService.logbookOperationsReloaded
-      .subscribe(logbookOperationsReloaded => this.updateLogbookOperations(logbookOperationsReloaded));
+    this.logbookOperationsSubscription = this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperationsReloaded) =>
+      this.updateLogbookOperations(logbookOperationsReloaded)
+    );
   }
 
   private onDataSourceReloaded() {
@@ -145,9 +147,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   }
 
   manageOperationLabel(type: string) {
-    if (type === 'ARCHIVE_TRANSFER') {
-      return 'ARCHIVE_TRANSFER_LABEL';
-    }
+    return type === ARCHIVE_TRANSFER ? ARCHIVE_TRANSFER_LABEL : type;
   }
 
   private updateLogbookOperations(logbookOperationsReloaded: Event[]) {
@@ -156,7 +156,6 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
       this.dataSource[index] = logbookOperation;
     });
   }
-
 
   buildCriteriaFromSearch() {
     const criteria: any = {};
@@ -189,7 +188,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   refreshOperationCategoriesOptions() {
     this.operationCategoriesFilterOptions = LOGBOOK_OPERATION_CATEGORIES.map((operationCategory) => ({
       value: operationCategory.key,
-      label: operationCategory.label
+      label: operationCategory.label,
     }));
   }
 
@@ -211,5 +210,9 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
 
   selectEvent(event: Event) {
     this.eventClick.emit(event);
+  }
+
+  ngOnDestroy(): void {
+    this.logbookOperationsSubscription?.unsubscribe();
   }
 }

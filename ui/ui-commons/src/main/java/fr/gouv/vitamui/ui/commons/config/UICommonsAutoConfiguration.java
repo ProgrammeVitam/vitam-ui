@@ -101,8 +101,8 @@ public class UICommonsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public UnitExternalRestClient unitExternalRestClient(final ReferentialExternalRestClientFactory referentialRestClientFactory) {
+    public UnitExternalRestClient unitExternalRestClient(
+        final ReferentialExternalRestClientFactory referentialRestClientFactory) {
         return referentialRestClientFactory.getUnitExternalRestClient();
     }
-
 }

@@ -273,5 +273,4 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
             throw new ApplicationServerException(exception.getMessage(), exception);
         }
     }
-
 }

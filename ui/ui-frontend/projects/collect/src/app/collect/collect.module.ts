@@ -36,21 +36,20 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CollectRoutingModule } from './collect-routing.module';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VitamUILibraryModule } from 'vitamui-library';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgxFilesizeModule } from 'ngx-filesize';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUILibraryModule } from 'vitamui-library';
+import { CollectRoutingModule } from './collect-routing.module';
 
 @NgModule({
   imports: [
@@ -65,7 +64,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     TableFilterModule,
     VitamUILibraryModule,
     ReactiveFormsModule,
-    NgxFilesizeModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatSelectModule,

@@ -1,6 +1,6 @@
 {
   "name": "ui-frontend-common",
-  "version": "2.1.38",
+  "version": "2.1.47",
   "main": "src/index.ts",
   "pki": {
     "path": "../../dev-deployment/environments/certs/server/hosts/localhost",
@@ -111,7 +111,7 @@
     "jasmine-core": "~3.7.0",
     "jasmine-spec-reporter": "~5.0.0",
     "jquery": "^3.5.1",
-    "karma": "~5.0.0",
+    "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
@@ -125,7 +125,7 @@
     "node-sass": "^4.14.1",
     "popper.js": "^1.16.1",
     "protractor": "~7.0.0",
-    "puppeteer": "^1.2.0",
+    "puppeteer": "^19.2.2",
     "rxjs": "^6.5.5",
     "ts-node": "~7.0.1",
     "tsickle": "0.39.1",

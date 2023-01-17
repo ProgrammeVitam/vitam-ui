@@ -27,6 +27,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,9 +36,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'ui-frontend-common';
+import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
+import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
+import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -50,6 +54,35 @@ class FakeLoader implements TranslateLoader {
 describe('ArchiveSearchCollectComponent', () => {
   let component: ArchiveSearchCollectComponent;
   let fixture: ComponentFixture<ArchiveSearchCollectComponent>;
+
+  const archiveSearchCommonService = {
+    addCriteria: () => of(),
+    buildNodesListForQUery: () => of(),
+    buildFieldsCriteriaListForQUery: () => of(),
+    buildManagementRulesCriteriaListForQuery: () => of(),
+    checkIfRulesFacetsCanBeComputed: () => of(),
+    updateCriteriaStatus: () => of(),
+    removeCriteria: () => of(),
+    recursiveCheck: () => of(),
+  };
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+
+  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+
+  const transaction: Transaction = {
+    id: 'transactionId',
+    archivalAgreement: 'archivalAgreement',
+    messageIdentifier: 'messageIdentifier',
+    archivalAgencyIdentifier: 'archivalAgencyIdentifier',
+    transferringAgencyIdentifier: 'transferringAgencyIdentifier',
+    originatingAgencyIdentifier: 'originatingAgencyIdentifier',
+    submissionAgencyIdentifier: 'submissionAgencyIdentifier',
+    archiveProfile: 'archivalProfile',
+    projectId: 'ProjectId',
+    comment: 'I am a comment',
+    status: TransactionStatus.SENDING,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -67,11 +100,22 @@ describe('ArchiveSearchCollectComponent', () => {
         }),
       ],
       providers: [
+        ArchiveSharedDataService,
+        { provide: ArchiveSearchHelperService, useValue: archiveSearchCommonService },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'COLLECT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'COLLECT_APP' }),
+            snapshot: {
+              queryParamMap: {
+                get: () => 'project messageIdentifier',
+              },
+            },
+          },
         },
-
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
@@ -83,6 +127,7 @@ describe('ArchiveSearchCollectComponent', () => {
     fixture = TestBed.createComponent(ArchiveSearchCollectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.transaction = transaction;
   });
 
   it('component should be created', () => {
@@ -107,5 +152,13 @@ describe('ArchiveSearchCollectComponent', () => {
     expect(component.isIndeterminate).toBeFalsy();
     expect(component.isAllchecked).toBeFalsy();
     expect(component.itemNotSelected).toBe(0);
+  });
+
+  it('should return true', () => {
+    // When
+    const response = component.updateUnitsMetadataDisabled();
+
+    // Then
+    expect(response).toBeTruthy();
   });
 });

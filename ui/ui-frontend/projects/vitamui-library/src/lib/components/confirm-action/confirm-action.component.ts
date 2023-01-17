@@ -35,12 +35,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'vitamui-confirm-action',
   templateUrl: './confirm-action.component.html',
-  styleUrls: ['./confirm-action.component.scss']
+  styleUrls: [ './confirm-action.component.scss' ]
 })
 export class ConfirmActionComponent implements OnInit {
   // delete or changeTab
@@ -49,6 +49,7 @@ export class ConfirmActionComponent implements OnInit {
   // delete message values
   @Input() objectName: string;
   @Input() objectType: string;
+  @Input() objectGender = 'M';
 
   constructor() {
   }

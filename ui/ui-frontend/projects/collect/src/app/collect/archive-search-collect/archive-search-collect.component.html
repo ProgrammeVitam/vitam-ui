@@ -1,5 +1,11 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="false" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
+  <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
+    <app-filing-holding-scheme
+      [accessContract]="accessContract"
+      [transactionId]="transaction.id"
+      (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"
+    >
+    </app-filing-holding-scheme>
   </mat-sidenav>
 
   <mat-sidenav
@@ -9,23 +15,43 @@
     position="end"
     [fixedInViewport]="true"
   >
-    <app-archive-preview *ngIf="openedItem" (previewClose)="closePanel()"
-            (showExtendedLateralPanel)="showExtendedLateralPanel()" [archiveUnit]="openedItem"
-            [accessContract]="accessContract" (backToNormalLateralPanel)="backToNormalLateralPanel()"
-            [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
-            [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"></app-archive-preview>
+    <app-archive-preview
+      *ngIf="openedItem"
+      (previewClose)="closePanel()"
+      (showExtendedLateralPanel)="showExtendedLateralPanel()"
+      [archiveUnit]="openedItem"
+      [accessContract]="accessContract"
+      (backToNormalLateralPanel)="backToNormalLateralPanel()"
+      [accessContractAllowUpdating]="accessContractAllowUpdating"
+      [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"
+    ></app-archive-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectId }} </vitamui-common-title-breadcrumb>
+      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectName }} </vitamui-common-title-breadcrumb>
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
-      <div class="row justify-content-around">
-        <div class="col-8 form-control">
-          <app-title-and-description-criteria-search-collect> </app-title-and-description-criteria-search-collect>
+      <div class="row row justify-content-around">
+        <div class="col-12">
+          <button
+            *ngIf="!show"
+            type="button"
+            class="btn secondary right-arround left-not-arround"
+            (click)="hiddenTreeBlock(show)"
+            matTooltip="{{ 'COLLECT.SHOW_TREES_PLANS' | translate }}"
+            matTooltipClass="vitamui-tooltip"
+            [matTooltipShowDelay]="300"
+          >
+            <i class="material-icons">chevron_right</i>
+          </button>
         </div>
-        <div class="col-1 form-control"></div>
+      </div>
+
+      <div class="row justify-content-around">
+        <div class="col-6 form-control">
+          <app-title-and-description-criteria-search-collect></app-title-and-description-criteria-search-collect>
+        </div>
         <div class="col-3 form-control text-right">
           <button
             type="button"
@@ -36,14 +62,310 @@
             {{ 'COLLECT.LAUNCH_SEARCH_ACTION' | translate }}
           </button>
         </div>
+        <div class="col-1 form-control">
+          <vitamui-common-menu-button
+            [overlayPos]="'end'"
+            [icon]="'vitamui-icon-more-horiz'"
+            matTooltip="{{ 'COLLECT.OTHER_ACTION' | translate }}"
+            matTooltipClass="vitamui-tooltip"
+          >
+            <button mat-menu-item [disabled]="updateUnitsMetadataDisabled(projectDetails)" (click)="openUpdateUnitsForm()">
+              {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate }}
+            </button>
+            <button mat-menu-item (click)="validateTransaction()" [disabled]="isNotOpen$ | async">
+              {{ 'COLLECT.VALIDATE_ACTION' | translate }}
+            </button>
+            <button mat-menu-item (click)="sendTransaction()" [disabled]="isNotReady$ | async">
+              {{ 'COLLECT.INGEST_ACTION' | translate }}
+            </button>
+          </vitamui-common-menu-button>
+        </div>
       </div>
+
+      <!-- Show criteria panels  -->
+      <div class="row justify-content-around">
+        <div class="col-11">
+          <div class="area-criteria">
+            <ng-container *ngFor="let criteriaKey of searchCriteriaKeys">
+              <ng-container *ngIf="searchCriterias.get(criteriaKey) as criteriaVal">
+                <app-criteria-search
+                  [criteriaKey]="criteriaKey"
+                  [criteriaVal]="criteriaVal"
+                  (criteriaRemoveEvent)="removeCriteriaEvent($event)"
+                ></app-criteria-search>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="d-flex justify-content-end button-space">
+            <button [matMenuTriggerFor]="menu" class="mat-boutton">
+              <button type="button" class="circle editable-field-cancel clickable">
+                <i class="material-icons primary-save-icon">save</i>
+              </button>
+            </button>
+
+            <mat-menu #menu="matMenu" class="my-menu">
+              <button
+                mat-menu-item
+                [disabled]="!searchCriterias || searchCriterias.size === 0"
+                (click)="mapSearchCriteriaHistory()"
+                class="btn-new-save"
+              >
+                <i class="material-icons btn-add">add</i>
+                {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_MENU' | translate }}
+              </button>
+              <app-search-criteria-list (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"> </app-search-criteria-list>
+            </mat-menu>
+            <div *ngIf="searchCriterias && searchCriterias.size > 0" class="d-flex justify-content-end div-btn-delete">
+              <button class="mat-boutton">
+                <button type="button" class="circle editable-field-cancel clickable" (click)="clearCriterias()">
+                  <i class="material-icons primary-save-icon">delete</i>
+                </button>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="pendingComputeFacets">
+        <mat-spinner diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
+      </div>
+      <div class="card-criteria" *ngIf="!pendingComputeFacets && submited && rulesFacetsComputed && showingFacets">
+        <i
+          id="show-hide-facet-button"
+          *ngIf="!pendingComputeFacets && showingFacets && submited"
+          (click)="showHideFacets(false)"
+          class="vitamui-icon vitamui-icon-chevron-down vitamui-row-icon clickable"
+          [ngClass]="'vitamui-icon vitamui-icon-cross vitamui-row-icon'"
+        ></i>
+        <app-archive-search-rules-facets
+          class="facet-div"
+          [exactCount]="!waitingToGetFixedCount"
+          [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
+          [accessRuleFacets]="archiveSearchResultFacets?.accessRuleFacets"
+          [storageRuleFacets]="archiveSearchResultFacets?.storageRuleFacets"
+          [reuseRuleFacets]="archiveSearchResultFacets?.reuseRuleFacets"
+          [disseminationRuleFacets]="archiveSearchResultFacets?.disseminationRuleFacets"
+          [holdRuleFacets]="archiveSearchResultFacets?.holdRuleFacets"
+          [classificationRuleFacets]="archiveSearchResultFacets?.classificationRuleFacets"
+          [tenantIdentifier]="tenantIdentifier"
+          [totalResults]="totalResults"
+          [defaultFacetTabIndex]="defaultFacetTabIndex"
+        >
+        </app-archive-search-rules-facets>
+      </div>
+      <div class="row" *ngIf="!pending">
+        <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{ 'COLLECT.SHOW_SEARCH_CRITERIA' | translate }}</a>
+        <a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
+          'COLLECT.COMPUTE_RULES_FACETS' | translate
+        }}</a>
+      </div>
+
+      <div [hidden]="!showCriteriaPanel">
+        <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex" (selectedIndexChange)="selectedCategoryChange($event)">
+          <mat-tab label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.TITLE' | translate }}">
+            <div class="card-criteria">
+              <app-simple-criteria-search></app-simple-criteria-search>
+            </div>
+          </mat-tab>
+          <mat-tab *ngFor="let category of additionalSearchCriteriaCategories; let index = index">
+            <ng-template mat-tab-label>
+              <span (click)="sendRuleCategorySelected(category.name)">
+                {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.' + category.name | translate }}
+              </span>
+              <button class="mat-boutton clickable" (click)="removeCriteriaCategory(category.name)">
+                <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
+              </button>
+            </ng-template>
+
+            <ng-container>
+              <div class="card-criteria" *ngIf="category.name === 'STORAGE_RULE'">
+                <div class="row justify-content-end text-on-right-side">
+                  <a class="hide-ink" (click)="removeCriteriaByCategory('STORAGE_RULE')">{{
+                    'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                  }}</a>
+                </div>
+                <app-storage-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                </app-storage-rule-search>
+              </div>
+            </ng-container>
+            <ng-container>
+              <div class="card-criteria" *ngIf="category.name === 'APPRAISAL_RULE'">
+                <div class="row justify-content-end text-on-right-side">
+                  <a class="hide-ink" (click)="removeCriteriaByCategory('APPRAISAL_RULE')">{{
+                    'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                  }}</a>
+                </div>
+                <app-appraisal-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                </app-appraisal-rule-search>
+              </div>
+            </ng-container>
+            <ng-container>
+              <div class="card-criteria" *ngIf="category.name === 'ACCESS_RULE'">
+                <div class="row justify-content-end text-on-right-side">
+                  <a class="hide-ink" (click)="removeCriteriaByCategory('ACCESS_RULE')">{{
+                    'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                  }}</a>
+                </div>
+                <app-access-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                </app-access-rule-search>
+              </div>
+            </ng-container>
+            <ng-container>
+              <div class="card-criteria" *ngIf="category.name === 'REUSE_RULE'">
+                <div class="row justify-content-end text-on-right-side">
+                  <a class="hide-ink" (click)="removeCriteriaByCategory('REUSE_RULE')">{{
+                    'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                  }}</a>
+                </div>
+                <app-reuse-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                </app-reuse-rule-search>
+              </div>
+            </ng-container>
+            <ng-container>
+              <div class="card-criteria" *ngIf="category.name === 'DISSEMINATION_RULE'">
+                <div class="row justify-content-end text-on-right-side">
+                  <a class="hide-ink" (click)="removeCriteriaByCategory('DISSEMINATION_RULE')">{{
+                    'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                  }}</a>
+                </div>
+                <app-dissemination-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                </app-dissemination-rule-search>
+              </div>
+            </ng-container>
+          </mat-tab>
+
+          <mat-tab disabled>
+            <ng-template mat-tab-label>
+              <button [matMenuTriggerFor]="menuTabs" class="mat-boutton clickable">
+                {{ 'COLLECT.CRITERIA_CATEGORY.ADD' | translate }}
+                <i class="vitamui-icon vitamui-icon-plus vitamui-row-icon"></i>
+              </button>
+            </ng-template>
+          </mat-tab>
+
+          <mat-menu #menuTabs="matMenu" class="my-menu">
+            <button
+              mat-menu-item
+              class="btn-new-save"
+              (click)="addCriteriaCategory('STORAGE_RULE')"
+              [disabled]="isCategoryAdded('STORAGE_RULE')"
+            >
+              {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.STORAGE_RULE' | translate }}
+            </button>
+            <button
+              mat-menu-item
+              class="btn-new-save"
+              (click)="addCriteriaCategory('APPRAISAL_RULE')"
+              [disabled]="isCategoryAdded('APPRAISAL_RULE')"
+            >
+              {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.APPRAISAL_RULE' | translate }}
+            </button>
+            <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL') || true">
+              {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.GEL' | translate }}
+            </button>
+            <button
+              mat-menu-item
+              class="btn-new-save"
+              (click)="addCriteriaCategory('ACCESS_RULE')"
+              [disabled]="isCategoryAdded('ACCESS_RULE')"
+            >
+              {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.ACCESS_RULE' | translate }}
+            </button>
+
+            <button
+              mat-menu-item
+              class="btn-new-save"
+              (click)="addCriteriaCategory('DISSEMINATION_RULE')"
+              [disabled]="isCategoryAdded('DISSEMINATION_RULE')"
+            >
+              {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.DISSEMINATION_RULE' | translate }}
+            </button>
+            <button
+              mat-menu-item
+              class="btn-new-save"
+              (click)="addCriteriaCategory('REUSE_RULE')"
+              [disabled]="isCategoryAdded('REUSE_RULE')"
+            >
+              {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.REUSE_RULE' | translate }}
+            </button>
+            <button
+              mat-menu-item
+              class="btn-new-save"
+              (click)="addCriteriaCategory('CLASSIFICATION')"
+              [disabled]="isCategoryAdded('CLASSIFICATION') || true"
+            >
+              {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.CLASSIFICATION' | translate }}
+            </button>
+          </mat-menu>
+        </mat-tab-group>
+      </div>
+      <div class="row justify-content-end text-on-right-side" *ngIf="showCriteriaPanel">
+        <a class="hide-ink" (click)="showHidePanel(false)">{{ 'COLLECT.HIDE_SEARCH_CRITERIA' | translate }}</a>
+      </div>
+
+      <!-- Show Units results -->
 
       <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()">
         <div class="vitamui-table">
           <div class="vitamui-table-head">
-            <div class="col-8">
-              <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
-              {{ totalResults }} {{ 'COLLECT.RESULTS' | translate }}
+            <div class="col-8" *ngIf="waitingToGetFixedCount">
+              <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"> </mat-spinner>
+              <ng-container *ngIf="!pendingGetFixedCount && !pending">
+                <a
+                  class="link-without-underline"
+                  (click)="loadExactCount()"
+                  matTooltip="{{ 'COLLECT.RETRIVE_EXACT_COUNT' | translate }}"
+                  matTooltipClass="vitamui-tooltip"
+                  [matTooltipShowDelay]="300"
+                >
+                  {{ 'COLLECT.MORE_THAN' | translate }} {{ totalResults }}
+                </a>
+                <ng-container *ngIf="isAllchecked">
+                  <span> {{ 'COLLECT.RESULTS' | translate }} / {{ 'COLLECT.MORE_THAN' | translate }} {{ totalResults }} </span>
+                </ng-container>
+                <ng-container *ngIf="!isAllchecked">
+                  <span> {{ 'COLLECT.RESULTS' | translate }} / {{ itemSelected }} </span>
+                </ng-container>
+              </ng-container>
+            </div>
+
+            <div class="col-8" *ngIf="!waitingToGetFixedCount">
+              <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"> </mat-spinner>
+
+              <ng-container *ngIf="totalResults > 1 && !pendingGetFixedCount && !pending">
+                <span
+                  >{{ totalResults }} {{ 'COLLECT.RESULTS' | translate }} / {{ itemSelected }}
+
+                  {{ itemSelected === 1 || itemSelected === 0 ? ('COLLECT.ONE_SELECTED' | translate) : ('COLLECT.SELECTED' | translate) }}
+                </span>
+              </ng-container>
+              <ng-container *ngIf="totalResults === 1">
+                <span>
+                  {{ totalResults }} {{ 'COLLECT.RESULT' | translate }} / {{ itemSelected }}
+                  {{ 'COLLECT.ONE_SELECTED' | translate }}
+                </span>
+              </ng-container>
+              <ng-container *ngIf="totalResults === 0">
+                <span>
+                  {{ totalResults }} {{ 'COLLECT.RESULT' | translate }} / {{ itemSelected }}
+                  {{ 'COLLECT.ONE_SELECTED' | translate }}
+                </span>
+              </ng-container>
+            </div>
+
+            <div class="col-1"></div>
+
+            <div
+              class="col-3 area-download"
+              [ngClass]="
+                criteriaSearchList != null && criteriaSearchList.length > 0 && totalResults > 0 && itemSelected > 0
+                  ? 'enabled-div'
+                  : 'disabled-div'
+              "
+            >
+              <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
             </div>
           </div>
 
@@ -62,7 +384,7 @@
               <span>{{ 'COLLECT.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}</span>
 
               <vitamui-common-order-by-button
-                orderByKey="#unitType"
+                orderByKey="DescriptionLevel"
                 [(orderBy)]="orderBy"
                 [(direction)]="direction"
                 (orderChange)="emitOrderChange()"
@@ -132,42 +454,22 @@
                   />
                 </div>
                 <div class="col-1 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  <span class="table-filter-icon" [ngSwitch]="archiveUnit?.DescriptionLevel">
-                    <ng-container *ngSwitchCase="'RecordGrp'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                  <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
+                    <ng-container *ngSwitchCase="'INGEST'">
+                      <span class="table-filter-icon">
+                        <ng-container *ngIf="!archiveUnit['#object']">
+                          <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                        </ng-container>
+                        <ng-container *ngIf="!!archiveUnit['#object']">
+                          <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
+                        </ng-container>
+                      </span>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'File'">
-                      <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
+                    <ng-container *ngSwitchCase="'HOLDING_UNIT'">
+                      <i class="vitamui-icon vitamui-icon-icone-arbre vitamui-row-icon status-badge"></i>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Item'">
-                      <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Collection'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Subfonds'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Class'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Subgrp'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Otherlevel'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Series'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Subseries'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Fonds'">
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                    </ng-container>
-                    <ng-container *NgSwitchDefault>
-                      <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                    <ng-container *ngSwitchCase="'FILING_UNIT'">
+                      <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge"></i>
                     </ng-container>
                   </span>
                 </div>
@@ -175,14 +477,14 @@
                   <ng-container *ngIf="archiveUnit?.Title; else subTitleFr">
                     <p matTooltip="{{ archiveUnit?.Description }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                       <b> {{ archiveUnit?.Title }}</b> <br />
-                      {{ archiveUnit?.Description | truncate: 100 }}
+                      {{ archiveUnit?.Description | truncate : 100 }}
                     </p>
                   </ng-container>
                   <ng-template #subTitleFr>
                     <ng-container *ngIf="archiveUnit.Title_.fr; else subTitleEn">
                       <p matTooltip="{{ archiveUnit?.Description_?.fr }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                         <b>{{ archiveUnit.Title_.fr }} </b> <br />
-                        {{ archiveUnit?.Description_?.fr | truncate: 100 }}
+                        {{ archiveUnit?.Description_?.fr | truncate : 100 }}
                       </p>
                     </ng-container>
                   </ng-template>
@@ -190,16 +492,16 @@
                     <ng-container *ngIf="archiveUnit.Title_.en">
                       <p matTooltip="{{ archiveUnit?.Description_?.en }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                         <b>{{ archiveUnit.Title_.en }} </b> <br />
-                        {{ archiveUnit?.Description_?.en | truncate: 100 }}
+                        {{ archiveUnit?.Description_?.en | truncate : 100 }}
                       </p>
                     </ng-container>
                   </ng-template>
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  {{ archiveUnit['#approximate_creation_date'] | dateTime: 'dd/MM/yyyy' }}
+                  {{ archiveUnit.StartDate | dateTime : 'dd/MM/yyyy' }}
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  {{ archiveUnit['#approximate_update_date'] | dateTime: 'dd/MM/yyyy' }}
+                  {{ archiveUnit.EndDate | dateTime : 'dd/MM/yyyy' }}
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
                   <p

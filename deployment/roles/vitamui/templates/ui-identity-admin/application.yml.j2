@@ -95,6 +95,7 @@ ui-identity:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
+
   assets: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
   portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
   header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"
@@ -166,7 +167,7 @@ opentracing:
       port: {{ opentracing.jaeger.udp_sender.port }}
 
 address:
-  max-street-length: {{ vitamui.identity.max_street_length }}
+  max-street-length: {{ vitamui_platform_informations.address.max_street_length }}
 
 portal:
   message: {{vitamui_platform_informations.portal_message}}

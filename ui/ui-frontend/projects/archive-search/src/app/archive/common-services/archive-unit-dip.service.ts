@@ -24,22 +24,21 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Injectable, TemplateRef} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
-import {filter} from 'rxjs/operators';
-import {ArchiveSearchComponent} from '../archive-search/archive-search.component';
-import {DipRequestCreateComponent} from '../archive-search/dip-request-create/dip-request-create.component';
-import {SearchCriteriaEltDto} from '../models/search.criteria';
-import {TransferRequestModalComponent} from "../archive-search/transfer-request-modal/transfer-request-modal.component";
+import { Injectable, TemplateRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { filter } from 'rxjs/operators';
+import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
+import { DipRequestCreateComponent } from '../archive-search/additional-actions-search/dip-request-create/dip-request-create.component';
+import { SearchCriteriaEltDto } from '../models/search.criteria';
+import { TransferRequestModalComponent } from '../archive-search/additional-actions-search/transfer-request-modal/transfer-request-modal.component';
 
 const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
 
 @Injectable()
 export class ArchiveUnitDipService {
-  constructor(private translateService: TranslateService, public dialog: MatDialog) {
-  }
+  constructor(private translateService: TranslateService, public dialog: MatDialog) {}
 
   launchExportDipModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
@@ -57,7 +56,7 @@ export class ArchiveUnitDipService {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        {panelClass: 'vitamui-dialog'}
+        { panelClass: 'vitamui-dialog' }
       );
 
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -113,17 +112,31 @@ export class ArchiveUnitDipService {
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
   ) {
     if (!isAllchecked && itemSelected < DEFAULT_RESULT_THRESHOLD) {
-      this.launchTransferRequest(listOfUACriteriaSearch, selectedItemCountKnown, accessContract, tenantIdentifier, itemSelected, currentPage);
+      this.launchTransferRequest(
+        listOfUACriteriaSearch,
+        selectedItemCountKnown,
+        accessContract,
+        tenantIdentifier,
+        itemSelected,
+        currentPage
+      );
     } else {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         confirmSecondActionBigNumberOfResultsActionDialog,
-        {panelClass: 'vitamui-dialog'}
+        { panelClass: 'vitamui-dialog' }
       );
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
         .afterClosed()
         .pipe(filter((result) => !!result))
         .subscribe(() => {
-          this.launchTransferRequest(listOfUACriteriaSearch, selectedItemCountKnown, accessContract, tenantIdentifier, itemSelected, currentPage);
+          this.launchTransferRequest(
+            listOfUACriteriaSearch,
+            selectedItemCountKnown,
+            accessContract,
+            tenantIdentifier,
+            itemSelected,
+            currentPage
+          );
         });
     }
   }

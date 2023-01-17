@@ -31,8 +31,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'dateTime',
 })
 export class DateTimePipe implements PipeTransform {
-  constructor(private datePipe: DatePipe) {
-  }
+  constructor(private datePipe: DatePipe) {}
 
   transform(value: any, format?: string, local?: string): any {
     if (value) {
@@ -53,11 +52,53 @@ export class DateTimePipe implements PipeTransform {
     return timezone;
   }
 
-  private formatDateTime(value): string {
-    if (!String(value).endsWith('Z') && value.includes(':')) {
-      value = value + 'Z';
-    }
-    return value;
+  formatDateTime(value): string {
+    const day = this.getDay(new Date(value).getDate());
+    const year = new Date(value).getFullYear();
+    const month = this.getMonth(new Date(value).getMonth() + 1);
+    const hour = this.getHour(new Date(value).getHours());
+    const minutes = this.getMinutes(new Date(value).getMinutes());
+    const seconds = this.getSeconds(new Date(value).getSeconds());
+    return year.toString() + '-' + month + '-' + day + 'T' + hour + ':' + minutes + ':' + seconds + '.000Z';
   }
 
+  getMonth(num: number): string {
+    if (num > 9) {
+      return num.toString();
+    } else {
+      return '0' + num.toString();
+    }
+  }
+
+  getDay(day: number): string {
+    if (day > 9) {
+      return day.toString();
+    } else {
+      return '0' + day.toString();
+    }
+  }
+
+  getHour(hour: number): string {
+    if (hour > 9) {
+      return hour.toString();
+    } else {
+      return '0' + hour.toString();
+    }
+  }
+
+  getSeconds(seconds: number): string {
+    if (seconds > 9) {
+      return seconds.toString();
+    } else {
+      return '0' + seconds.toString();
+    }
+  }
+
+  getMinutes(minutes: number): string {
+    if (minutes > 9) {
+      return minutes.toString();
+    } else {
+      return '0' + minutes.toString();
+    }
+  }
 }

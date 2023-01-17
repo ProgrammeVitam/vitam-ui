@@ -37,7 +37,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
 import { ApplicationId } from './application-id.enum';
@@ -53,26 +53,31 @@ import { TenantSelectionService } from './tenant-selection.service';
   providedIn: 'root',
 })
 export class ApplicationService {
-
   set applications(apps: Application[]) {
     this._applications = apps;
     this._applications$.next(this._applications);
   }
 
-  get applicationsAnalytics(): ApplicationAnalytics[] { return this._applicationsAnalytics; }
+  get applicationsAnalytics(): ApplicationAnalytics[] {
+    return this._applicationsAnalytics;
+  }
   set applicationsAnalytics(apps: ApplicationAnalytics[]) {
     this._applicationsAnalytics = apps;
   }
 
-  get categories(): Category[] { return this._categories; }
-  set categories(categories: Category[]) { this._categories = categories; }
-  // tslint:disable-next-line:variable-name
+  get categories(): Category[] {
+    return this._categories;
+  }
+  set categories(categories: Category[]) {
+    this._categories = categories;
+  }
+
   private _categories: Category[];
-  // tslint:disable-next-line:variable-name
+
   private _applications: Application[];
-  // tslint:disable-next-line:variable-name
+
   private _applications$ = new BehaviorSubject<Application[]>(null);
-  // tslint:disable-next-line:variable-name
+
   private _applicationsAnalytics: ApplicationAnalytics[];
   private appMap$ = new BehaviorSubject(null);
 
@@ -80,8 +85,8 @@ export class ApplicationService {
     private applicationApi: ApplicationApiService,
     private authService: AuthService,
     private tenantService: TenantSelectionService,
-    private globalEventService: GlobalEventService,
-  ) { }
+    private globalEventService: GlobalEventService
+  ) {}
 
   /**
    * Get and init applications list for the current auth user.
@@ -100,16 +105,14 @@ export class ApplicationService {
     );
   }
 
-
   /**
    * Get Applications list grouped by categories in a hashMap of the active tenant.
    */
   public getActiveTenantAppsMap(): Observable<Map<Category, Application[]>> {
-    return this.tenantService.getSelectedTenant$()
-      .pipe(
-        mergeMap((tenant: Tenant) => this.getTenantAppMap(tenant)),
-        tap((appMap: Map<Category, Application[]>) => this.appMap$.next(appMap))
-      );
+    return this.tenantService.getSelectedTenant$().pipe(
+      mergeMap((tenant: Tenant) => this.getTenantAppMap(tenant)),
+      tap((appMap: Map<Category, Application[]>) => this.appMap$.next(appMap))
+    );
   }
 
   /**
@@ -117,34 +120,36 @@ export class ApplicationService {
    * @param tenant - tenant whitch we want applications
    */
   public getTenantAppMap(tenant: Tenant): Observable<Map<Category, Application[]>> {
-    return this.getApplications$().pipe(map((applications: Application[]) => {
-      const apps: Application[] = [];
-      const tenantsByApp = this.authService.user.tenantsByApp;
-      if (tenantsByApp && tenant) {
-        tenantsByApp.forEach((tenantByAppItem: { name: string; tenants: Tenant[] }) => {
-          const appTenant = tenantByAppItem.tenants.find((value) => value.identifier === tenant.identifier);
-          const app = applications.find((value) => value.identifier === tenantByAppItem.name);
-          if (app && (appTenant || !app.hasTenantList)) {
-            apps.push(app);
+    return this.getApplications$().pipe(
+      map((applications: Application[]) => {
+        const apps: Application[] = [];
+        const tenantsByApp = this.authService.user.tenantsByApp;
+        if (tenantsByApp && tenant) {
+          tenantsByApp.forEach((tenantByAppItem: { name: string; tenants: Tenant[] }) => {
+            const appTenant = tenantByAppItem.tenants.find((value) => value.identifier === tenant.identifier);
+            const app = applications.find((value) => value.identifier === tenantByAppItem.name);
+            if (app && (appTenant || !app.hasTenantList)) {
+              apps.push(app);
+            }
+          });
+
+          const resultMap = this.fillCategoriesWithApps(this.categories, apps);
+          const lastUsedApps = this.getLastUsedApps(this.categories, apps);
+
+          if (lastUsedApps) {
+            resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
           }
-        });
 
-        const resultMap = this.fillCategoriesWithApps(this.categories, apps);
-        const lastUsedApps = this.getLastUsedApps(this.categories, apps);
-
-        if (lastUsedApps) {
-          resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
+          const convertedMap = this.convertToCategoryMap(resultMap);
+          return this.sortMapByCategory(convertedMap);
         }
-
-        const convertedMap = this.convertToCategoryMap(resultMap);
-        return this.sortMapByCategory(convertedMap);
-      }
-    }));
+      })
+    );
   }
 
   public openApplication(app: Application, router: Router, uiUrl: string, tenantIdentifier?: number): void {
     this.tenantService.saveTenantIdentifier(tenantIdentifier).subscribe((identifier: number) => {
-      if (app.serviceId.includes(uiUrl)) {
+      if (router && app.serviceId.includes(uiUrl)) {
         if (app.hasTenantList) {
           router.navigate([app.url.replace(uiUrl, ''), 'tenant', identifier]);
         } else {
@@ -190,14 +195,18 @@ export class ApplicationService {
    * Return an observable that notify if the current application has a tenant list or not.
    */
   public hasTenantList(): Observable<boolean> {
-    return this.globalEventService.pageEvent.pipe(mergeMap((appId: string) => {
-      return this.getAppById(appId).pipe(map((app: Application) => {
-        if (appId === ApplicationId.PORTAL_APP) {
-          return true;
-        }
-        return app ? app.hasTenantList : false;
-      }));
-    }));
+    return this.globalEventService.pageEvent.pipe(
+      mergeMap((appId: string) => {
+        return this.getAppById(appId).pipe(
+          map((app: Application) => {
+            if (appId === ApplicationId.PORTAL_APP) {
+              return true;
+            }
+            return app ? app.hasTenantList : false;
+          })
+        );
+      })
+    );
   }
 
   public isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
@@ -210,7 +219,10 @@ export class ApplicationService {
   }
 
   public getApplications$(): Observable<Application[]> {
-    return this._applications$.pipe(filter((apps: Application[]) => !!apps), take(1));
+    return this._applications$.pipe(
+      filter((apps: Application[]) => !!apps),
+      take(1)
+    );
   }
 
   /**
@@ -220,14 +232,14 @@ export class ApplicationService {
   private convertToCategoryMap(stringMap: Map<string, Application[]>): Map<Category, Application[]> {
     const categMap = new Map<Category, Application[]>();
     stringMap.forEach((val, key) => {
-      const categ = this.categories.find(value => value.identifier === key);
+      const categ = this.categories.find((value) => value.identifier === key);
       categMap.set(categ, val);
     });
     return categMap;
   }
 
   private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
-    return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
+    return new Map([...appMap.entries()].sort((a, b) => (a[0].order < b[0].order ? -1 : 1)));
   }
 
   private fillCategoriesWithApps(categories: Category[], applications: Application[]): Map<string, Application[]> {
@@ -241,7 +253,7 @@ export class ApplicationService {
     return resultMap;
   }
 
-  private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category, apps: Application[] } {
+  private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category; apps: Application[] } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
       dataSource = this.applicationsAnalytics;
@@ -300,5 +312,4 @@ export class ApplicationService {
       return a.order > b.order ? 1 : -1;
     });
   }
-
 }

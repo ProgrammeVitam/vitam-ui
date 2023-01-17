@@ -50,6 +50,7 @@ import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule } from
 import { environment } from '../../../../environments/environment.prod';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
+import { SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './search-criteria-saver.service';
@@ -83,9 +84,7 @@ describe('SearchCriteriaSaverComponent', () => {
 
   const SearchCriteriaSaverServiceStub = {
     getSearchCriteriaHistory: () => of([]),
-
     deleteSearchCriteriaHistory: () => of(),
-
     updateSearchCriteriaHistory: () => of(),
   };
 
@@ -129,14 +128,110 @@ describe('SearchCriteriaSaverComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.nameControl).toEqual('');
   });
 
-  describe('CriteriaCreate', () => {
-    describe('createNewSearchCriteriaHistory', () => {
-      it('should create new searchCriteria', () => {
-        component.createNewCriteria();
-        expect(component.ToUpdate).toBeFalsy();
-      });
+  it('should create new searchCriteria', () => {
+    component.createNewCriteria();
+    expect(component.ToUpdate).toBeFalsy();
+  });
+
+  it('savingDate of each criteria save should not be null', () => {
+    // Given
+    let searchCriteriaHistory: SearchCriteriaHistory;
+    const criteriaList: SearchCriteriaEltements[] = [];
+    searchCriteriaHistory = {
+      id: 'id ',
+      name: 'save name',
+      savingDate: new Date().toISOString(),
+      searchCriteriaList: criteriaList,
+    };
+
+    // When
+    component.searchCriteriaHistory = searchCriteriaHistory;
+    component.criteriaToUpdate = searchCriteriaHistory;
+
+    component.update();
+
+    // Then
+    expect(component.criteriaToUpdate.savingDate).toBeDefined();
+    expect(component.criteriaToUpdate.savingDate).not.toBeNull();
+  });
+
+  it('should showScrollFilter be false', () => {
+    component.out('scroll-filters');
+    expect(component.showScrollFilter).toBeFalsy();
+    expect(component.noScroll).toBeFalsy();
+  });
+
+  it('should call updateSearchCriteriaHistory', () => {
+    // Gievn
+    const criteriaToUpdate: SearchCriteriaHistory = {
+      id: 'criteriaToUpdateId',
+      name: 'criteriaToUpdateName',
+      userId: 'userId',
+      savingDate: 'criteriaToUpdateDate',
+      searchCriteriaList: [],
+    };
+    const searchCriteriaHistory: SearchCriteriaHistory = {
+      id: 'searchCriteriaSavedId',
+      name: 'searchCriteriaSaveedName',
+      userId: 'userId',
+      savingDate: new Date().toISOString(),
+      searchCriteriaList: [],
+    };
+    spyOn(SearchCriteriaSaverServiceStub, 'updateSearchCriteriaHistory').and.callThrough();
+
+    // When
+    component.criteriaToUpdate = criteriaToUpdate;
+    component.searchCriteriaHistory = searchCriteriaHistory;
+    component.update();
+
+    // Then
+    expect(SearchCriteriaSaverServiceStub.updateSearchCriteriaHistory).toHaveBeenCalled();
+  });
+
+  it('should initialize value parameters after cancel action', () => {
+    component.cancel();
+
+    expect(component.criteriaToUpdate).toBeNull();
+    expect(component.updateConfirm).toBeFalsy();
+    expect(component.ToUpdate).toBeTruthy();
+  });
+
+  it('should return APPRAISAL_RULE', () => {
+    const APPRAISAL_RULE = 'APPRAISAL_RULE';
+    const response = component.getCategoryName(SearchCriteriaTypeEnum.APPRAISAL_RULE);
+    expect(response).not.toBeNull();
+    expect(response).toEqual(APPRAISAL_RULE);
+  });
+
+  describe('DOM', () => {
+    it('should have 3 rows ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementRow = nativeElement.querySelectorAll('.row');
+
+      // Then
+      expect(elementRow.length).toBe(3);
+    });
+
+    it('should return true after over scroll-results event', () => {
+      // When
+      component.over('scroll-results');
+
+      // Then
+      expect(component.showScroll).toBeTruthy();
+      expect(component.noScroll).toBeFalsy();
+    });
+
+    it('should return true after over scroll-filters event', () => {
+      // When
+      component.over('scroll-filters');
+
+      // Then
+      expect(component.showScrollFilter).toBeTruthy();
+      expect(component.noScroll).toBeFalsy();
     });
   });
 
@@ -209,53 +304,10 @@ describe('SearchCriteriaSaverComponent', () => {
         },
       ];
     });
-    describe('filter size of SearchCriteriaHistory', () => {
-      it('should get filters size searchCriteria', () => {
-        const filterSize = component.getNbFilters(searchCriteriaHistory$[0]);
-        expect(filterSize).toEqual(8);
-      });
-    });
 
-    describe('the scroll component should be present', () => {
-      it('should showScroll be true', () => {
-        component.over('scroll-results');
-        expect(component.showScroll).toBeTruthy();
-        expect(component.noScroll).toBeFalsy();
-      });
-    });
-
-    describe('the scroll filter component should not be present', () => {
-      it('should showScrollFilter be false', () => {
-        component.out('scroll-filters');
-        expect(component.showScrollFilter).toBeFalsy();
-        expect(component.noScroll).toBeFalsy();
-      });
-    });
-
-    describe('the saving date must be added and calculated', () => {
-      it('savingDate of each criteria save should not be null', () => {
-        // Given
-        let searchCriteriaHistory: SearchCriteriaHistory;
-        const criteriaList: SearchCriteriaEltements[] = [];
-        searchCriteriaHistory = {
-          id: 'id ',
-          name: 'save name',
-          savingDate: 'saving date',
-          searchCriteriaList: criteriaList,
-        };
-
-        // When
-        component.searchCriteriaHistory = searchCriteriaHistory;
-        component.criteriaToUpdate = searchCriteriaHistory;
-
-        component.update();
-        const excpectedDate = new Date().toISOString();
-
-        // Then
-        expect(component.criteriaToUpdate.savingDate).toBeDefined();
-        expect(component.criteriaToUpdate.savingDate).not.toBeNull();
-        expect(component.criteriaToUpdate.savingDate).toEqual(excpectedDate);
-      });
+    it('should get filters size searchCriteria', () => {
+      const filterSize = component.getNbFilters(searchCriteriaHistory$[0]);
+      expect(filterSize).toEqual(8);
     });
   });
 });

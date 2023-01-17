@@ -136,6 +136,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
   it('the component should be created', () => {
     expect(component).toBeTruthy();
   });
+
   it('should the returned key as Final Action value be', () => {
     expect(component.getFinalActionStatus(inheritedProperty)).toEqual(
       'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED'
@@ -215,6 +216,40 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     expect(component.getClassificationRulePropertyStatus(property)).not.toBeNull();
   });
 
+  it('should have the correct values', () => {
+    component.initializeParameters();
+
+    expect(component.unitRuleDTO).toBeNull();
+    expect(component.listOfPropertiesCollapsed).toBeFalsy();
+    expect(component.propertiesList).toBeNull();
+    expect(component.isPreventInheritance).toBeFalsy();
+    expect(component.isShowHoldRuleDetails).toBeFalsy();
+    expect(component.holdRuleDetails).toBeNull();
+  });
+
+  it('should be false', () => {
+    component.listOfRulesCollapsed = true;
+    component.showlistOfRulesBloc();
+
+    expect(component.listOfRulesCollapsed).toBeFalsy();
+  });
+
+  it('should be true', () => {
+    component.listOfPropertiesCollapsed = false;
+    component.showListOfPropertiesBloc();
+
+    expect(component.listOfPropertiesCollapsed).toBeTruthy();
+  });
+
+  it('should return the rigth key to translate', () => {
+    // Given
+    const expectedResponse = 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.CLASSIFICATION_RULE_PROPERTIES.TEST';
+    // When
+    const response = component.getClassificationRulePropertyName('test');
+    // Then
+    expect(response).toEqual(expectedResponse);
+  });
+
   // new tests
   it('the returned key of getClassificationRulePropertyStatus when the proprty is ClassificationAudience should be', () => {
     // Given
@@ -239,7 +274,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       DisseminationRule: null,
       AccessRule: null,
     };
-    const archiveUnit: Unit = {
+    const archiveUnitDetails: Unit = {
       '#management': unitManagementRules,
       '#allunitups': [],
       '#id': 'id',
@@ -251,7 +286,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
     // When
-    component.archiveUnitRules = archiveUnit;
+    component.archiveUnitRules = archiveUnitDetails;
 
     // Then
     expect(component.getClassificationRulePropertyStatus(property)).toBeDefined();
@@ -259,5 +294,16 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     expect(component.getClassificationRulePropertyStatus(property)).toEqual(
       'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED'
     );
+  });
+
+  describe('DOM', () => {
+    it('should have 2 columns ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementColumn = nativeElement.querySelectorAll('.col');
+
+      // Then
+      expect(elementColumn.length).toBe(2);
+    });
   });
 });

@@ -124,6 +124,7 @@ ui:
     ingest: "{{ vitamui.ingest.base_url }}"
     archives-search: "{{ vitamui.archive_search.base_url }}"
     referential: "{{ vitamui.referential.base_url }}"
+    pastis: "{{ vitamui.pastis.base_url }}/pastis"
 
 ui:
   url: "{{ vitamui.portal.base_url }}"
@@ -156,3 +157,8 @@ opentracing:
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
+
+
+portal:
+  message: {{vitamui_platform_informations.portal_message}}
+  title: {{vitamui_platform_informations.portal_title}}

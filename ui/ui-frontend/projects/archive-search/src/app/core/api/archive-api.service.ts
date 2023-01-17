@@ -174,4 +174,11 @@ export class ArchiveApiService extends BaseHttpClient<any> {
       responseType: 'text' as 'json',
     });
   }
+
+  transferAcknowledgment(file: Blob, headers: HttpHeaders): Observable<string> {
+    return this.http.post(`${this.apiUrl}/transfer-acknowledgment`, file, {
+      responseType: 'text',
+      headers,
+    });
+  }
 }

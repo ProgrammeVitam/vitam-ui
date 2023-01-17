@@ -33,12 +33,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
-import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
-import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -46,23 +43,22 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
+import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,29 +70,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.NODES;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.REUSE_RULE;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaMgtRulesCategory;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.DEFAULT_DEPTH;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULES_COMPUTED;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.WAITING_RECALCULATE;
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createDslQueryWithFacets;
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery;
 
 /**
  * Archive-Search Internal service communication with VITAM.
  */
+@Getter
 @Service
 public class ArchiveSearchInternalService {
     private static final VitamUILogger LOGGER =
@@ -109,8 +94,10 @@ public class ArchiveSearchInternalService {
 
     public static final String TITLE_FIELD = "Title";
 
+    private static final Integer SEARCH_UNIT_MAX_RESULTS = 10000;
+
     private static final String[] FILING_PLAN_PROJECTION =
-        new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups"};
+        new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups", "#object"};
     public static final String FALSE = "false";
     public static final String TRUE = "true";
 
@@ -127,7 +114,6 @@ public class ArchiveSearchInternalService {
     private final RulesUpdateCommonService rulesUpdateCommonService;
     private final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
-
     @Autowired
     public ArchiveSearchInternalService(final ObjectMapper objectMapper, final UnitService unitService,
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
@@ -135,9 +121,7 @@ public class ArchiveSearchInternalService {
         final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService,
         final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService,
         final RulesUpdateCommonService rulesUpdateCommonService,
-        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService
-
-    ) {
+        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
@@ -156,78 +140,36 @@ public class ArchiveSearchInternalService {
             archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
             archiveSearchRulesInternalService.mapManagementRulesTitlesToCodes(searchQuery, vitamContext);
 
-            fillWaitingToComputeCriteria(searchQuery);
-            SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
-            archiveSearchFacetsInternalService.addPositionsNodesFacet(searchQuery, selectMultiQuery);
-            if (searchQuery.isComputeFacets()) {
-                selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COMPUTE_RULES_AU_NUMBER,
-                    SIMPLE_FIELDS_VALUES_MAPPING.get(RULES_COMPUTED), 3,
-                    FacetOrder.ASC));
-                selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
-                selectMultiQuery
-                    .setLimitFilter((long) searchQuery.getPageNumber() * searchQuery.getSize(), searchQuery.getSize());
-            }
-            JsonNode dslQuery = selectMultiQuery.getFinalSelect();
+            JsonNode dslQuery = createDslQueryWithFacets(searchQuery);
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
             ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
-            archiveSearchFacetsInternalService.fillFacets(searchQuery, archiveUnitsDto, vitamContext);
+            Integer totalResults = archiveUnitsDto.getArchives().getHits().getTotal();
+            boolean trackTotalHits = false;
+            if (totalResults >= SEARCH_UNIT_MAX_RESULTS) {
+                trackTotalHits = true;
+            }
+            fillManagementRulesFacets(searchQuery, archiveUnitsDto, trackTotalHits, vitamContext);
             return archiveUnitsDto;
         } catch (InvalidCreateOperationException ioe) {
             throw new VitamClientException("Unable to find archive units with pagination", ioe);
         }
     }
 
-    private void fillWaitingToComputeCriteria(SearchCriteriaDto searchQuery) {
-        List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaList =
-            searchQuery.extractCriteriaListByCategory(APPRAISAL_RULE);
-        List<SearchCriteriaEltDto> accessMgtRulesCriteriaList =
-            searchQuery.extractCriteriaListByCategory(ACCESS_RULE);
-        List<SearchCriteriaEltDto> reuseMgtRulesCriteriaList =
-            searchQuery.extractCriteriaListByCategory(REUSE_RULE);
-        List<SearchCriteriaEltDto> disseminationMgtRulesCriteriaList =
-            searchQuery.extractCriteriaListByCategory(DISSEMINATION_RULE);
-        List<SearchCriteriaEltDto> waitingToRecalculateCriteria = searchQuery
-            .extractCriteriaListByCategoryAndFieldNames(FIELDS,
-                List.of(WAITING_RECALCULATE));
-
-        boolean hasAppraisalRulesCriteria = !CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList);
-        boolean hasAccessRulesCriteria = !CollectionUtils.isEmpty(accessMgtRulesCriteriaList);
-        boolean hasReuseRulesCriteria = !CollectionUtils.isEmpty(reuseMgtRulesCriteriaList);
-        boolean hasDisseminationRulesCriteria = !CollectionUtils.isEmpty(disseminationMgtRulesCriteriaList);
-        boolean hasWaitingToRecalculateCriteria = !CollectionUtils.isEmpty(waitingToRecalculateCriteria);
-
-        if (hasWaitingToRecalculateCriteria &&
-            (hasAppraisalRulesCriteria || hasAccessRulesCriteria ||
-                hasReuseRulesCriteria ||
-                hasDisseminationRulesCriteria)) {
-            List<SearchCriteriaEltDto> initialCriteriaList = searchQuery.getCriteriaList().stream().filter(
-                searchCriteriaEltDto ->
-                    !(FIELDS.equals(searchCriteriaEltDto.getCategory()) &&
-                        (searchCriteriaEltDto.getCriteria()
-                            .equals(WAITING_RECALCULATE)))
-            ).collect(Collectors.toList());
-
-            if (hasAppraisalRulesCriteria) {
-                archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
-                        APPRAISAL_RULE);
+    private void fillManagementRulesFacets(SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto,
+        boolean trackTotalHits, VitamContext vitamContext)
+        throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+        try {
+            archiveUnitsDto.getArchives().getFacetResults()
+                .addAll(archiveSearchFacetsInternalService.fillManagementRulesFacets(searchQuery, trackTotalHits,
+                    vitamContext));
+        } catch (UnexpectedSettingsException e) {
+            if (!searchQuery.isComputeFacets()) {
+                LOGGER.error(
+                    "Could not compute facets,the setting track total hits is not allowed in vitam, we return units without facets");
+            } else {
+                LOGGER.error("Could not compute facets,the setting track total hits is not allowed in vitam, ");
+                throw new UnexpectedSettingsException(e.getMessage());
             }
-            if (hasAccessRulesCriteria) {
-                archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
-                        ACCESS_RULE);
-            }
-            if (hasReuseRulesCriteria) {
-                archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
-                        REUSE_RULE);
-            }
-            if (hasDisseminationRulesCriteria) {
-                archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
-                        DISSEMINATION_RULE);
-            }
-            searchQuery.setCriteriaList(initialCriteriaList);
         }
     }
 
@@ -236,7 +178,7 @@ public class ArchiveSearchInternalService {
         final VitamUISearchResponseDto archivesOriginResponse =
             objectMapper.treeToValue(vitamResponse, VitamUISearchResponseDto.class);
         Set<String> originatingAgenciesCodes = archivesOriginResponse.getResults().stream().map(
-            ResultsDto::getOriginatingAgency).
+                ResultsDto::getOriginatingAgency).
             filter(Objects::nonNull).collect(Collectors.toSet());
         List<AgencyModelDto> originAgenciesFound =
             archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originatingAgenciesCodes);
@@ -259,47 +201,6 @@ public class ArchiveSearchInternalService {
         SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
         return selectMultiQuery.getFinalSelect();
     }
-
-    /**
-     * Map search query to DSl Query Json node
-     *
-     * @param searchQuery
-     * @return
-     */
-    public SelectMultiQuery mapRequestToSelectMultiQuery(SearchCriteriaDto searchQuery)
-        throws VitamClientException {
-        if (searchQuery == null) {
-            throw new BadRequestException("Can't parse null criteria");
-        }
-        SelectMultiQuery selectMultiQuery;
-        Optional<String> orderBy = Optional.empty();
-        Optional<DirectionDto> direction = Optional.empty();
-        try {
-            if (searchQuery.getSortingCriteria() != null) {
-                direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
-                orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
-            }
-            selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
-            if (orderBy.isPresent()) {
-                if (DirectionDto.DESC.equals(direction.get())) {
-                    selectMultiQuery.addOrderByDescFilter(orderBy.get());
-                } else {
-                    selectMultiQuery.addOrderByAscFilter(orderBy.get());
-                }
-            }
-            selectMultiQuery
-                .setLimitFilter((long) searchQuery.getPageNumber() * searchQuery.getSize(), searchQuery.getSize());
-            selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
-            LOGGER.debug("Final query: {}", selectMultiQuery.getFinalSelect().toPrettyString());
-
-        } catch (InvalidCreateOperationException ioe) {
-            throw new VitamClientException("Unable to find archive units with pagination", ioe);
-        } catch (InvalidParseOperationException e) {
-            throw new BadRequestException("Can't parse criteria as Vitam query" + e.getMessage());
-        }
-        return selectMultiQuery;
-    }
-
 
     public JsonNode searchArchiveUnits(final JsonNode dslQuery, final VitamContext vitamContext)
         throws VitamClientException {
@@ -430,6 +331,7 @@ public class ArchiveSearchInternalService {
                         .get(ARCHIVE_UNIT_DETAILS)
                         .toString()
                         .substring(1));
+            LOGGER.debug("Object received: {}" + re);
             return objectMapper.readValue(re, ResultsDto.class);
         } catch (JsonProcessingException e) {
             LOGGER.error("Can not get the object group {} ", e);
@@ -453,41 +355,6 @@ public class ArchiveSearchInternalService {
             .getObjectStreamByUnitId(id, usage, version, vitamContext);
     }
 
-    public SelectMultiQuery createSelectMultiQuery(List<SearchCriteriaEltDto> criteriaList)
-        throws InvalidParseOperationException, InvalidCreateOperationException {
-        final BooleanQuery query = and();
-        final SelectMultiQuery select = new SelectMultiQuery();
-        //Handle roots
-        LOGGER.debug("Call create Query DSL for criteriaList {} ", criteriaList);
-        List<SearchCriteriaEltDto> mgtRulesCriteriaList = criteriaList.stream().filter(Objects::nonNull)
-            .filter(searchCriteriaEltDto -> (CriteriaMgtRulesCategory
-                .contains(searchCriteriaEltDto.getCategory().name()))).collect(Collectors.toList());
-
-        List<SearchCriteriaEltDto> simpleCriteriaList = criteriaList.stream().filter(
-            Objects::nonNull).filter(searchCriteriaEltDto -> FIELDS
-            .equals(searchCriteriaEltDto.getCategory())).collect(Collectors.toList());
-        List<String> nodesCriteriaList = criteriaList.stream().filter(
-            Objects::nonNull).filter(searchCriteriaEltDto -> NODES
-            .equals(searchCriteriaEltDto.getCategory())).flatMap(criteria -> criteria.getValues().stream())
-            .map(CriteriaValue::getValue).collect(Collectors.toList());
-
-        if (!CollectionUtils.isEmpty(nodesCriteriaList)) {
-            select.addRoots(nodesCriteriaList.toArray(new String[nodesCriteriaList.size()]));
-            query.setDepthLimit(DEFAULT_DEPTH);
-        }
-        archivesSearchFieldsQueryBuilderService.fillQueryFromCriteriaList(query, simpleCriteriaList);
-        archivesSearchManagementRulesQueryBuilderService.fillQueryFromMgtRulesCriteriaList(query, mgtRulesCriteriaList);
-        if (query.isReady()) {
-            select.setQuery(query);
-        }
-
-        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
-
-        return select;
-    }
-
-
-
     public JsonNode prepareDslQuery(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
         throws VitamClientException {
         searchQuery.setPageNumber(0);
@@ -495,8 +362,6 @@ public class ArchiveSearchInternalService {
         archiveSearchRulesInternalService.mapManagementRulesTitlesToCodes(searchQuery, vitamContext);
         return mapRequestToDslQuery(searchQuery);
     }
-
-
 
     public JsonNode createQueryForHoldingFillingUnit() {
         try {
@@ -577,7 +442,6 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("Reclassification query : {}", array);
         RequestResponse<JsonNode> jsonNodeRequestResponse = unitService.reclassification(vitamContext, array);
         return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
-
     }
 
 }

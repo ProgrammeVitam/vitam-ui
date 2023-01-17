@@ -29,7 +29,6 @@ package fr.gouv.vitamui.commons.security;
 
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
-import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -46,7 +45,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 
 public class SafeFileCheckerTest {
-    private final String VALID_ROOT_PATH = FileUtils.getTempDirectoryPath();
+    private final String VALID_ROOT_PATH = "mydirectory";
     private final String INVALID_ROOT_PATH = "my|filena?me?query=<code>danger</code>.json";
     private final String VALID_SUBPATH = "good_json_sanity";
     private final String INVALID_PATH = "file#..$$/text";
@@ -102,7 +101,8 @@ public class SafeFileCheckerTest {
     @Test
     public void checkValidRootPaths() {
         for(String rootPath : validPaths) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(rootPath, VALID_SUBPATH)).doesNotThrowAnyException();
+            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(rootPath, VALID_SUBPATH)).
+                isInstanceOf(InvalidFileSanitizeException.class);
         }
     }
 
@@ -117,7 +117,8 @@ public class SafeFileCheckerTest {
     @Test
     public void checkInvalidSubPaths() {
         for(String subPath : validFilenames) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(VALID_ROOT_PATH, subPath)).doesNotThrowAnyException();
+            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(VALID_ROOT_PATH, subPath)).
+                isInstanceOf(InvalidFileSanitizeException.class);
 
         }
     }
@@ -125,7 +126,7 @@ public class SafeFileCheckerTest {
     @Test
     public void checkValidSubNamePaths() {
         for(String subPath : validFilenames) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(VALID_ROOT_PATH, subPath)).
+            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(subPath)).
                 doesNotThrowAnyException();
 
         }

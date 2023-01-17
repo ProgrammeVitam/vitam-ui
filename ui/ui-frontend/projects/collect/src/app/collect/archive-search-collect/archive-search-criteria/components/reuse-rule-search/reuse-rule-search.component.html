@@ -1,0 +1,180 @@
+<div class="container">
+  <form [formGroup]="reuseRuleCriteriaForm">
+    <div class="row justify-content-start">
+      <div class="form-control">
+        <p class="title-text">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.REUSE_TITLE' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-5 form-control">
+        <vitamui-common-editable-input
+          formControlName="reuseRuleIdentifier"
+          [validator]="reuseRuleCriteriaForm?.get('reuseRuleIdentifier')?.validator"
+          [asyncValidator]="reuseRuleCriteriaForm?.get('reuseRuleIdentifier')?.asyncValidator"
+          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ID_REUSE' | translate }}"
+          minlength="1"
+        >
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="ruleIdPattern"
+            >{{ 'COLLECT.RULE.WRONG_FORMAT' | translate }}
+          </vitamui-common-field-error>
+
+          <vitamui-common-field-error errorKey="ruleIdExists"
+            >{{ 'COLLECT.RULE.CODE_NOT_EXIST' | translate }}
+          </vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-1 form-control"></div>
+      <div class="col-5 form-control">
+        <vitamui-common-editable-input
+          formControlName="reuseRuleTitle"
+          [validator]="reuseRuleCriteriaForm?.get('reuseRuleTitle')?.validator"
+          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.TITLE_REUSE' | translate }}"
+        >
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-1 form-control"></div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-11 form-control">
+        <p class="title-text">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_REUSE' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-5 form-control">
+        <div class="vitamui-input" (click)="pickerBeginReuseRule.open()">
+          <span
+            *ngIf="!reuseRuleCriteriaForm.get('reuseRuleStartDate').value; else showBeginDtReuseRule"
+            (click)="pickerBeginReuseRule.open()"
+            class="search-date-label"
+            >{{
+              (endDateInterval
+                ? 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_REUSE_BEGIN'
+                : 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_REUSE_EQUAL'
+              ) | translate
+            }}</span
+          >
+          <ng-template #showBeginDtReuseRule
+            ><span (click)="pickerBeginReuseRule.open()"
+              >{{ reuseRuleCriteriaForm.get('reuseRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
+            </span>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerBeginReuseRule"
+            formControlName="reuseRuleStartDate"
+            [max]="reuseRuleCriteriaForm.get('reuseRuleEndDate').value"
+          />
+          <mat-datepicker #pickerBeginReuseRule></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-1 form-control">
+        <button
+          class="validate-date-small-button"
+          *ngIf="!endDateInterval && reuseRuleCriteriaForm.get('reuseRuleStartDate').value"
+          type="button"
+          mat-mini-fab
+          (click)="addBeginDtReuseRuleCriteria()"
+        >
+          <i class="material-icons">check</i>
+        </button>
+      </div>
+
+      <div class="col-4 form-control">
+        <p *ngIf="!endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
+          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.REUSE_RULE.CREATE_INTERVAL' | translate }}
+        </p>
+
+        <div class="vitamui-input" (click)="pickerEndReuseRule.open()" *ngIf="endDateInterval">
+          <span
+            *ngIf="!reuseRuleCriteriaForm.get('reuseRuleEndDate').value; else showEndDtReuseRule"
+            (click)="pickerEndReuseRule.open()"
+            class="search-date-label"
+            >{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_REUSE_END' | translate }}</span
+          >
+          <ng-template #showEndDtReuseRule
+            ><span (click)="pickerEndReuseRule.open()"
+              >{{ reuseRuleCriteriaForm.get('reuseRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
+            </span>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerEndReuseRule"
+            formControlName="reuseRuleEndDate"
+            [min]="reuseRuleCriteriaForm.get('reuseRuleStartDate').value"
+          />
+          <mat-datepicker #pickerEndReuseRule></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-1 form-control">
+        <button
+          class="validate-date-small-button"
+          *ngIf="
+            endDateInterval && reuseRuleCriteriaForm.get('reuseRuleStartDate').value && reuseRuleCriteriaForm.get('reuseRuleEndDate').value
+          "
+          type="button"
+          mat-mini-fab
+          (click)="addIntervalDtReuseRuleCriteria()"
+        >
+          <i class="material-icons">check</i>
+        </button>
+      </div>
+      <div class="col-1 form-control">
+        <p *ngIf="endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
+          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.REUSE_RULE.DELETE_INTERVAL' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row justify-content-around">
+      <div class="col-4 form-control">
+        <div class="row criteria-choice">
+          <p class="title-text">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.TITLE' | translate }}
+          </p>
+        </div>
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              type="checkbox"
+              (click)="checkBoxChange('ORIGIN_HAS_AT_LEAST_ONE', $event)"
+              id="HAS_AT_LEAST_ONE_REUSE_RULE_ORIGIN"
+              [checked]="reuseAdditionalCriteria.get('ORIGIN_HAS_AT_LEAST_ONE')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_AT_LEAST_ONE_REUSE_RULE' | translate }}</span>
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              id="HAS_NO_REUSE_RULE_ORIGIN"
+              type="checkbox"
+              (click)="checkBoxChange('ORIGIN_HAS_NO_ONE', $event)"
+              [checked]="reuseAdditionalCriteria.get('ORIGIN_HAS_NO_ONE')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_NO_REUSE_RULE' | translate }}</span>
+          </label>
+        </div>
+        <div class="row">
+          <label class="criteria-checkbox-choice">
+            <input
+              id="WAITING_TO_RE_CALCULATE_REUSE_RULE_ORIGIN"
+              type="checkbox"
+              (click)="checkBoxChange('ORIGIN_WAITING_RECALCULATE', $event)"
+              [checked]="reuseAdditionalCriteria.get('ORIGIN_WAITING_RECALCULATE')"
+            />
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.WAITING_TO_RE_CALCULATE_REUSE_RULE' | translate }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-4 form-control"></div>
+      <div class="col-3 form-control"></div>
+    </div>
+  </form>
+</div>

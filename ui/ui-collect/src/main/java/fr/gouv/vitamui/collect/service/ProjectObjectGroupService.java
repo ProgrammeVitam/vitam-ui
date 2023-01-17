@@ -39,17 +39,21 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
-import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
  * UI Collect Object group Service
@@ -68,50 +72,98 @@ public class ProjectObjectGroupService extends AbstractPaginateService<CollectPr
         this.collectExternalWebClient = collectExternalWebClient;
     }
 
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, ObjectData objectData,
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String unitId, String objectId, ObjectData objectData,
         ExternalHttpContext context) {
-        LOGGER.debug("Download the Archive Unit Object with id {}", id);
+        LOGGER.debug("Download the Archive Unit Object with id {}", unitId);
 
-        ResultsDto got = findObjectById(id, context).getBody();
-        String usage = getUsage(Objects.requireNonNull(got), objectData);
-        Integer version = getVersion(got.getQualifiers(), usage);
-        return collectExternalWebClient.downloadObjectFromUnit(id, usage, version, context);
+        ResultsDto got = findObjectById(objectId, context).getBody();
+        setObjectData(Objects.requireNonNull(got), objectData);
+        return collectExternalWebClient.downloadObjectFromUnit(unitId,
+            objectData.getQualifier(),
+            objectData.getVersion(),
+            context);
+    }
+
+    public void setObjectData(ResultsDto got, ObjectData objectData) {
+        QualifiersDto qualifier = getLastObjectQualifier(got);
+        if (isNull(qualifier)) {
+            return;
+        }
+        objectData.setQualifier(qualifier.getQualifier());
+        VersionsDto version = getLastVersion(qualifier);
+        if (isNull(version)) {
+            return;
+        }
+        objectData.setFilename(getFilename(version));
+        objectData.setMimeType(getMimeType(version));
+        objectData.setVersion(getVersion(version));
+    }
+
+    private QualifiersDto getLastObjectQualifier(ResultsDto got) {
+        for (String qualifierName : ObjectQualifierType.allValuesOrdered) {
+            QualifiersDto qualifierFound = got.getQualifiers().stream()
+                .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
+                .reduce((first, second) -> second)
+                .orElse(null);
+            if (nonNull(qualifierFound)) {
+                return qualifierFound;
+            }
+        }
+        return null;
+    }
+
+    private VersionsDto getLastVersion(QualifiersDto qualifier) {
+        if (isNull(qualifier) || CollectionUtils.isEmpty(qualifier.getVersions())) {
+            return null;
+        }
+        return qualifier.getVersions().stream()
+            .reduce((first, second) -> second)
+            .orElse(null);
+    }
+
+    private String getFilename(VersionsDto version) {
+        if (isNull(version) || isEmpty(version.getId())) {
+            return null;
+        }
+        return version.getId() + getExtension(version);
+    }
+
+    private String getExtension(VersionsDto version) {
+        String uriExtension = EMPTY;
+        if (isNotBlank(version.getUri()) && version.getUri().contains(".")) {
+            uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
+        }
+        String filenameExtension = EMPTY;
+        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")) {
+            filenameExtension = version.getFileInfoModel().getFilename()
+                .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
+        }
+        if (isNotBlank(filenameExtension)) {
+            return "." + filenameExtension;
+        } else if (isNotBlank(uriExtension)) {
+            return "." + uriExtension;
+        }
+        return EMPTY;
+    }
+
+    private String getMimeType(VersionsDto version) {
+        if (isNull(version) || isNull(version.getFormatIdentification())) {
+            return null;
+        }
+        return version.getFormatIdentification().getMimeType();
+    }
+
+    private Integer getVersion(VersionsDto version) {
+        if (isNull(version) || isNull(version.getDataObjectVersion())) {
+            return null;
+        }
+        return Integer.parseInt(version.getDataObjectVersion().split("_")[1]);
     }
 
     public ResponseEntity<ResultsDto> findObjectById(String id, ExternalHttpContext context) {
         LOGGER.debug("Get the Object Group with Identifier {}", id);
         return collectExternalRestClient.findObjectById(id, context);
-    }
-
-    public String getUsage(ResultsDto got, ObjectData objectData) {
-        String finalUsage = null;
-        for (QualifiersDto qualifier : got.getQualifiers()) {
-            finalUsage = Arrays.stream(ObjectQualifierTypeEnum.values())
-                .map(ObjectQualifierTypeEnum::getValue)
-                .filter(value -> value.equals(qualifier.getQualifier()))
-                .findFirst().orElse(null);
-            String filename = getObjectDataFilename(objectData, qualifier);
-            if (filename == null) {
-                LOGGER.debug("Objectdata with first FileInfoModel.filename null : {}", objectData);
-                continue;
-            }
-            objectData.setFilename(filename);
-            objectData.setMimeType(qualifier.getVersions().get(0).getFormatIdentification().getMimeType());
-        }
-        return finalUsage;
-    }
-
-    private String getObjectDataFilename(ObjectData objectData, QualifiersDto qualifier) {
-        if (qualifier.getVersions().get(0).getFileInfoModel() == null || StringUtils.isNotEmpty(objectData.getFilename())) {
-            return null;
-        }
-        return qualifier.getVersions().get(0).getFileInfoModel().getFilename();
-    }
-
-    public Integer getVersion(List<QualifiersDto> qualifiers, String usage) {
-        List<VersionsDto> versions =
-            qualifiers.stream().filter(q -> q.getQualifier().equals(usage)).findFirst().orElseThrow().getVersions();
-        return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
     }
 
     public CollectExternalRestClient getClient() {

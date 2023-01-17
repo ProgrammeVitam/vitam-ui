@@ -36,11 +36,10 @@
  */
 package fr.gouv.vitamui.referential.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
-
 import fr.gouv.vitamui.ui.commons.service.UnitService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,8 +47,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;
 
@@ -104,10 +101,10 @@ public class UnitServiceTest {
 
     @Test
     public void testFindFilingPlan() {
-        when(client.getFilingPlan(isNull()))
+        when(client.getFilingAndHoldingUnits(isNull()))
     		.thenReturn(new VitamUISearchResponseDto());
 
-        final VitamUISearchResponseDto response = service.findFilingPlan(null);
+        final VitamUISearchResponseDto response = service.getFilingAndHoldingUnits(null);
         Assert.assertNotNull(response);
     }
 }

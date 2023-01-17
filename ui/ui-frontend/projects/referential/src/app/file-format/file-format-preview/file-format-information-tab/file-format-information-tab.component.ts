@@ -41,9 +41,9 @@ import {Observable, of} from 'rxjs';
 import {catchError, filter, map, switchMap} from 'rxjs/operators';
 import {diff} from 'ui-frontend-common';
 import {extend, isEmpty} from 'underscore';
-
+import { ActivatedRoute } from '@angular/router';
 import {FileFormatService} from '../../file-format.service';
-
+import { ApplicationId, Role, SecurityService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-file-format-information-tab',
@@ -59,6 +59,9 @@ export class FileFormatInformationTabComponent {
   submited = false;
 
   ruleFilter = new FormControl();
+
+
+  hasUpdatetRole = new Observable<boolean>();
 
   // tslint:disable-next-line:variable-name
   private _fileFormat: FileFormat;
@@ -97,7 +100,9 @@ export class FileFormatInformationTabComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private fileFormatService: FileFormatService
+    private fileFormatService: FileFormatService,
+    private route: ActivatedRoute,
+    private securityService: SecurityService
   ) {
     this.form = this.formBuilder.group({
       puid: [null, Validators.required],
@@ -106,6 +111,11 @@ export class FileFormatInformationTabComponent {
       version: [null, Validators.required],
       versionPronom: [null],
       extensions: [null]
+    });
+    this.route.params.subscribe((params) => {
+      if (params.tenantIdentifier) {
+        this.hasUpdatetRole = this.securityService.hasRole(ApplicationId.FILE_FORMATS_APP, parseInt(params.tenantIdentifier), Role.ROLE_UPDATE_FILE_FORMATS);
+      }
     });
   }
 

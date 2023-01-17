@@ -82,13 +82,14 @@ public class UnitController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "find units by custom dsl")
-    @PostMapping({RestApi.UNITS_PATH + RestApi.DSL_PATH, RestApi.UNITS_PATH + RestApi.DSL_PATH + CommonConstants.PATH_ID})
+    @PostMapping({RestApi.UNITS_PATH + RestApi.DSL_PATH,
+        RestApi.UNITS_PATH + RestApi.DSL_PATH + CommonConstants.PATH_ID})
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public JsonNode findByDsl(final @PathVariable Optional<String> id, @RequestBody final JsonNode dsl)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        if(id.isPresent()) {
+        if (id.isPresent()) {
             SanityChecker.checkSecureParameter(id.get());
         }
         SanityChecker.sanitizeJson(dsl);
@@ -104,7 +105,6 @@ public class UnitController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public JsonNode findObjectMetadataById(final @PathVariable String id, @RequestBody final JsonNode dsl)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeJson(dsl);
@@ -115,9 +115,9 @@ public class UnitController extends AbstractUiRestController {
     @ApiOperation(value = "Get filing plan")
     @GetMapping(RestApi.FILING_PLAN_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public VitamUISearchResponseDto findFilingPlan() throws InvalidParseOperationException,
+    public VitamUISearchResponseDto getFilingAndHoldingUnits() throws InvalidParseOperationException,
         PreconditionFailedException {
-        LOGGER.debug("find filing plan");
-        return searchService.findFilingPlan(buildUiHttpContext());
+        LOGGER.debug("Get filing AND holding units");
+        return searchService.getFilingAndHoldingUnits(buildUiHttpContext());
     }
 }

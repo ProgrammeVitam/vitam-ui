@@ -191,7 +191,8 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   deleteRuleDialog(rule: Rule) {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
-    dialog.componentInstance.objectType = 'format de fichier';
+    dialog.componentInstance.objectGender = 'F';
+    dialog.componentInstance.objectType = 'règle de gestion';
     dialog.componentInstance.objectName = rule.ruleId;
 
     dialog

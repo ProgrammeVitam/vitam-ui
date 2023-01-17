@@ -1,0 +1,104 @@
+spring:
+  application:
+    name: ${server-identity.identityRole}
+  api:
+    name: API for pastis UI
+    description: DESCRIPTION HERE.
+    version: v1
+  profiles:
+    active: test
+  jmx:
+    default-domain: pastis # Need to change endpoints bean name when there is multiple instance of spring boot
+  cloud:
+    consul:
+      discovery:
+        enabled: false
+        register: false
+
+ui-pastis:
+  prefix: pastis-api
+  iam-external-client:
+    server-host: localhost
+    server-port: 8083
+    secure: false
+    ssl-configuration:
+      keystore:
+        key-path: "@project.build.testOutputDirectory@/keystore_sae-app.p12"
+        key-password: azerty
+      truststore:
+        key-path: "@project.build.testOutputDirectory@/truststore_sae-app.jks"
+        key-password: azerty
+      hostname-verification: true
+  referential-external-client:
+    server-host: localhost
+    server-port: 8085
+    secure: false
+    ssl-configuration:
+      keystore:
+        key-path: "@project.build.testOutputDirectory@/keystore_sae-app.p12"
+        key-password: azerty
+      truststore:
+        key-path: "@project.build.testOutputDirectory@/truststore_sae-app.jks"
+        key-password: azerty
+      hostname-verification: true
+  pastis-external-client:
+    server-host: localhost
+    server-port: 8015
+    secure: false
+    ssl-configuration:
+      keystore:
+        key-path: "@project.build.testOutputDirectory@/keystore_sae-app.p12"
+        key-password: azerty
+      truststore:
+        key-path: "@project.build.testOutputDirectory@/truststore_sae-app.jks"
+        key-password: azerty
+      hostname-verification: true
+  base-url:
+    portal: "https://localhost:4200"
+    pastis: "${ui.url}"
+
+ui-prefix: pastis-api
+
+server-identity:
+  identityName: vitamui
+  identityRole: ui-pastis
+  identityServerId: 1
+
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/css,application/javascript,application/json
+  host: dev-pastis.vitamui.com
+  port: 8081
+  scheme: https
+  ssl:
+    key-store: src/main/resources/dev/keystore_ui-pastis.jks
+    key-store-password: changeme
+    key-password: changeme
+    enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
+    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+
+controller:
+  subrogation:
+    enabled: true
+  user:
+    enabled: true
+
+ui:
+  url: https://localhost:4201
+  redirect-url: ${ui.url}
+
+cas:
+  internal-url: https://dev.vitamui.com:8080
+  external-url: https://dev.vitamui.com:8080
+  callback-url: ${ui.url}/callback
+  ssl:
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store-password: changeme
+
+debug: false
+logging:
+  level:
+    fr.gouv.vitamui: DEBUG
+# Pastis Rest APi
+pua.definitions.file: pua_validation/ProfileJson.json

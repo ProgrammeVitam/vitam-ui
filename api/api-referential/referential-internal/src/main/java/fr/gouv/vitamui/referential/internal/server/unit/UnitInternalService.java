@@ -36,19 +36,26 @@
  */
 package fr.gouv.vitamui.referential.internal.server.unit;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.query.Query;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Optional;
 
-import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
+import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 
 @Service
 public class UnitInternalService {
@@ -56,6 +63,10 @@ public class UnitInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UnitInternalService.class);
 
     private final UnitService unitService;
+
+    private static final String[] FILING_PLAN_PROJECTION =
+        new String[] {"#id", "Title", "DescriptionLevel", "#unitType", "#unitups", "#allunitups", "#opi", "Keyword",
+            "Vtag", "#object", "Title_"};
 
     @Autowired
     public UnitInternalService(
@@ -81,9 +92,25 @@ public class UnitInternalService {
         RequestResponse<JsonNode> response = unitService.findUnitById(unitId, vitamContext);
         return response.toJsonNode();
     }
-    
+
     public JsonNode findObjectMetadataById(final String unitId, final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
         RequestResponse<JsonNode> response = unitService.findObjectMetadataById(unitId, dslQuery, vitamContext);
         return response.toJsonNode();
+    }
+
+    public JsonNode createQueryForFillingOrHoldingUnit() {
+
+        try {
+            final SelectMultiQuery select = new SelectMultiQuery();
+            final Query query =
+                in(unitType(), UnitTypeEnum.HOLDING_UNIT.getValue(), UnitTypeEnum.FILING_UNIT.getValue());
+            select.addQueries(query);
+            select.addUsedProjection(FILING_PLAN_PROJECTION);
+            LOGGER.debug("query =", select.getFinalSelect().toPrettyString());
+            return select.getFinalSelect();
+        } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
+            throw new UnexpectedDataException(
+                "Unexpected error occured while building holding dsl query : " + e.getMessage());
+        }
     }
 }

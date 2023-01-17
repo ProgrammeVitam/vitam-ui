@@ -20,6 +20,7 @@ pipeline {
     }
 
     options {
+        timeout(time: 4, unit: 'HOURS')
         disableConcurrentBuilds()
         buildDiscarder(
             logRotator(
@@ -30,9 +31,9 @@ pipeline {
         )
     }
 
-//    triggers {
-//        cron('45 2 * * *')
-//    }
+    triggers {
+        cron( env.BRANCH_NAME == 'develop' ? '00 20 * * *' : '')
+    }
 
     stages {
         stage('Set variables for automatic run') {
@@ -113,7 +114,7 @@ pipeline {
                 sh 'npmrc default'
 
                 sh '''
-                    $MVN_COMMAND clean verify -U -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+                    $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
                 '''
             }
             post {

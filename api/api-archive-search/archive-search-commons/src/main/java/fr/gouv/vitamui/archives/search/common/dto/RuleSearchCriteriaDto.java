@@ -40,6 +40,7 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

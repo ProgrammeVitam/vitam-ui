@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.collect.external.client.CollectClient;
 import fr.gouv.vitam.collect.external.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
+import fr.gouv.vitam.collect.external.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
@@ -57,18 +58,26 @@ public class CollectService {
     /**
      * Search units by projectId.
      *
-     * @param projectId
+     * @param transactionId
      * @param searchQuery
      * @param vitamContext
      * @return
      * @throws VitamClientException
      */
-    public RequestResponseOK<JsonNode> searchUnitsByProjectId(final String projectId, JsonNode searchQuery,
-        final VitamContext vitamContext)
-        throws VitamClientException {
-        LOGGER.debug("projectId : {}", projectId);
+    public RequestResponseOK<JsonNode> searchUnitsByTransactionId(final String transactionId, JsonNode searchQuery,
+        final VitamContext vitamContext) throws VitamClientException {
+        LOGGER.debug("transactionId : {}", transactionId);
         final RequestResponseOK<JsonNode> result =
-            collectClient.getUnitsByProjectId(vitamContext, projectId, searchQuery);
+            collectClient.getUnitsByTransaction(vitamContext, transactionId, searchQuery);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+    public RequestResponseOK<JsonNode> searchUnitsByTransaction(final String transactionId, JsonNode searchQuery,
+        final VitamContext vitamContext) throws VitamClientException {
+        LOGGER.debug("projectId : {}", transactionId);
+        final RequestResponseOK<JsonNode> result =
+            collectClient.getUnitsByTransaction(vitamContext, transactionId, searchQuery);
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -88,7 +97,21 @@ public class CollectService {
         VitamRestUtils.checkResponse(result);
         return result;
     }
-
+    /**
+     * initialize new transaction.
+     *
+     * @param vitamContext
+     * @param transactionDto
+     * @param projectId
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> initTransaction(final VitamContext vitamContext, final TransactionDto transactionDto, String projectId) throws VitamClientException {
+        LOGGER.debug("transactionId : {}", transactionDto.getId());
+        final RequestResponse<JsonNode> result = collectClient.initTransaction(vitamContext, transactionDto, projectId);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
     /**
      * update existing Project.
      *
@@ -105,6 +128,22 @@ public class CollectService {
         return result;
     }
 
+
+    /**
+     * update existing Transaction.
+     *
+     * @param vitamContext
+     * @param transactionDto
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> updateTransaction(final VitamContext vitamContext, final TransactionDto transactionDto) throws VitamClientException {
+        LOGGER.debug("transactionId : {}", transactionDto.getId());
+        final RequestResponse<JsonNode> result = collectClient.updateTransaction(vitamContext, transactionDto);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
     /**
      * get all created projects from Vitam
      *
@@ -112,9 +151,23 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> getProjects(final VitamContext vitamContext)
-        throws VitamClientException {
+    public RequestResponse<JsonNode> getProjects(final VitamContext vitamContext) throws VitamClientException {
         final RequestResponse<JsonNode> result = collectClient.getProjects(vitamContext);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+    /**
+     * get all created transactions from Vitam
+     *
+     * @param vitamContext
+     * @param projectId
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> getTransactionsByProject(final String projectId, final VitamContext vitamContext)
+        throws VitamClientException {
+        final RequestResponse<JsonNode> result = collectClient.getTransactionByProjectId(vitamContext, projectId);
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -144,19 +197,24 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public Response uploadProjectZip(final VitamContext vitamContext, final String projectId,
-        final InputStream inputStream)
-        throws VitamClientException {
-        LOGGER.debug("projectId : {}", projectId);
-        final Response result = collectClient.uploadProjectZip(vitamContext, projectId, inputStream);
+    public Response uploadProjectZip(final VitamContext vitamContext, final String transactionId, final InputStream inputStream) throws VitamClientException {
+        LOGGER.debug("upload zip by transaction id : {}", transactionId);
+        final Response result = collectClient.uploadProjectZip(vitamContext, transactionId, inputStream);
         VitamRestUtils.checkResponse(result);
         return result;
     }
 
-    public RequestResponse<JsonNode> getProjectById(final VitamContext vitamContext, final String projectId)
-        throws VitamClientException {
-        LOGGER.debug("projectId : {}", projectId);
+    public RequestResponse<JsonNode> getProjectById(final VitamContext vitamContext, final String projectId) throws VitamClientException {
+        LOGGER.debug("get project by id : {}", projectId);
         final RequestResponse<JsonNode> result = collectClient.getProjectById(vitamContext, projectId);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+
+    public RequestResponse<JsonNode> getLastTransactionForProjectId(final VitamContext vitamContext, final String projectId) throws VitamClientException {
+        LOGGER.debug("get last transaction by project id : {}", projectId);
+        final RequestResponse<JsonNode> result = collectClient.getTransactionByProjectId(vitamContext, projectId);
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -180,16 +238,15 @@ public class CollectService {
     /**
      * Download object by unitId/usage/version
      *
-     * @param unitId unit id
-     * @param usage usage
-     * @param version version
+     * @param unitId       unit id
+     * @param usage        usage
+     * @param version      version
      * @param vitamContext security context
      * @return Response
      * @throws VitamClientException Thrown exception
      */
     public Response getObjectStreamByUnitId(final String unitId, final String usage, final int version,
-        final VitamContext vitamContext)
-        throws VitamClientException {
+        final VitamContext vitamContext) throws VitamClientException {
         final Response response = collectClient.getObjectStreamByUnitId(vitamContext, unitId, usage, version);
         VitamRestUtils.checkResponse(response);
         return response;
@@ -203,4 +260,73 @@ public class CollectService {
         return result;
     }
 
+    public Response validateTransaction(final VitamContext vitamContext, final String idTransaction)
+        throws VitamClientException {
+        LOGGER.debug("transactionId : {}", idTransaction);
+        final Response response = collectClient.closeTransaction(vitamContext, idTransaction);
+        VitamRestUtils.checkResponse(response);
+        return response;
+    }
+
+    public RequestResponseOK<JsonNode> sendTransaction(final VitamContext vitamContext, final String idTransaction)
+        throws VitamClientException {
+        LOGGER.debug("transactionId : {}", idTransaction);
+        final RequestResponseOK<JsonNode> response = collectClient.ingest(vitamContext, idTransaction);
+        VitamRestUtils.checkResponse(response);
+        return response;
+    }
+
+    public Response reopenTransaction(final VitamContext vitamContext, final String idTransaction)
+        throws VitamClientException {
+        LOGGER.debug("transactionId : {}", idTransaction);
+        final Response response = collectClient.reopenTransaction(vitamContext, idTransaction);
+        VitamRestUtils.checkResponse(response);
+        return response;
+    }
+
+    public Response abortTransaction(final VitamContext vitamContext, final String idTransaction)
+        throws VitamClientException {
+        LOGGER.debug("transactionId : {}", idTransaction);
+        final Response response = collectClient.abortTransaction(vitamContext, idTransaction);
+        VitamRestUtils.checkResponse(response);
+        return response;
+    }
+
+
+    public RequestResponse<JsonNode> getTransactionById(VitamContext vitamContext, String transactionId)
+        throws VitamClientException {
+        LOGGER.debug("transactionId : {}", transactionId);
+        final RequestResponse<JsonNode> result = collectClient.getTransactionById(vitamContext, transactionId);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+    public RequestResponse<JsonNode> findUnitById(String unitId, VitamContext vitamContext) throws VitamClientException {
+        LOGGER.debug("Unit ID : {}", unitId);
+        RequestResponseOK<JsonNode> result = collectClient.getUnitById(vitamContext, unitId);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+    /**
+     * Start update collect units with a csv File.
+     * @param transactionId The transaction identifier
+     * @param csvFile The csv File to update units
+     * @param vitamContext The vitam context
+     * @return String
+     */
+
+    public String updateCollectArchiveUnits(VitamContext vitamContext, String transactionId, InputStream csvFile) {
+        LOGGER.debug("transactionId : {}", transactionId);
+        String response;
+        RequestResponse<JsonNode> result;
+        try {
+             result = collectClient.updateUnits(vitamContext, transactionId, csvFile);
+             response = Integer.toString(result.getHttpCode());
+        } catch (VitamClientException e) {
+              response = "ERROR_400";
+            LOGGER.debug("Unable to process units update operation");
+        }
+        return response;
+    }
 }

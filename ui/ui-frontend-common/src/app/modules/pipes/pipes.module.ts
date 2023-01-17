@@ -47,11 +47,11 @@ import { StrongifyPipe } from './strongify.pipe';
 import { TruncatePipe } from './truncate.pipe';
 import { YesNoPipe } from './yes-no.pipe';
 import { DateTimePipe } from './datetime.pipe';
-
+import { FileSizePipe } from './filesize.pipe';
 
 @NgModule({
-  declarations: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe],
+  declarations: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe,FileSizePipe],
   imports: [CommonModule],
-  exports: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe],
+  exports: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe,FileSizePipe],
 })
 export class PipesModule {}

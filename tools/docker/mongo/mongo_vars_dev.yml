@@ -97,5 +97,7 @@ vitamui:
     base_url: "https://dev.vitamui.com:4208"
   archive_search:
     base_url: "https://dev.vitamui.com:4209"
+  pastis:
+    base_url: "https://dev.vitamui.com:4251"
   collect:
     base_url: "https://dev.vitamui.com:4210"

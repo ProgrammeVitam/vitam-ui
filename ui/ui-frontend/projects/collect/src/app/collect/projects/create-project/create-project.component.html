@@ -4,7 +4,6 @@
 
 <form [formGroup]="projectForm">
   <vitamui-common-stepper [selectedIndex]="stepIndex">
-
     <!-- Step 1 : Upload fichiers -->
     <cdk-step>
       <div class="content">
@@ -18,10 +17,10 @@
             [ngClass]="{ 'on-over': hasDropZoneOver }"
             class="drag-and-drop-area"
           >
-            <div *ngIf="(uploadFiles$|async)?.length > 0" class="drag-container">
+            <div *ngIf="(uploadFiles$ | async)?.length > 0" class="drag-container">
               <div class="file-info-class">
                 <div class="vitamui-chip-list">
-                  <div *ngFor="let uploadFile of (uploadFiles$|async)" class="vitamui-chip">
+                  <div *ngFor="let uploadFile of uploadFiles$ | async" class="vitamui-chip">
                     <div [title]="uploadFile" class="vitamui-chip-content">
                       {{ uploadFile?.name }}
                       <span class="file-size">{{ uploadFile?.size | bytes }}</span>
@@ -33,10 +32,9 @@
                 </div>
               </div>
             </div>
-            <input #fileSearch (change)="handleFile($event)" class="input-file" directory multiple type="file"
-                   webkitdirectory/>
+            <input #fileSearch (change)="handleFile($event)" class="input-file" directory multiple type="file" webkitdirectory />
             <div class="drop-area">
-              <div class="sip-drop">{{ 'COLLECT.UPLOAD.ADD_FILE' | translate }} <br/></div>
+              <div class="sip-drop">{{ 'COLLECT.UPLOAD.ADD_FILE' | translate }} <br /></div>
               <div>
                 <div class="sip-drop">
                   <div class="upload">
@@ -49,10 +47,10 @@
           </div>
         </div>
         <div class="actions">
-          <button (click)="move()" [disabled]="(uploadFiles$|async)?.length === 0"
-                  class="btn primary"
-                  type="button">{{ 'COMMON.NEXT' | translate }}</button>
-          <button (click)="onClose()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
+          <button (click)="move()" [disabled]="(uploadFiles$ | async)?.length === 0" class="btn primary" type="button">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button (click)="onClose()" class="btn link" type="button">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
     </cdk-step>
@@ -74,7 +72,7 @@
         </div>
         <div class="actions">
           <button (click)="validateAndProcessUpload()" class="btn primary" type="button">{{ 'COMMON.NEXT' | translate }}</button>
-          <button (click)="onClose()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
+          <button (click)="onClose()" class="btn link" type="button">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
     </cdk-step>
@@ -105,8 +103,12 @@
                 <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</h4>
               </div>
               <div class="col-5 mt-2">
-                <vitamui-common-slide-toggle class="fields-padding" formControlName="referentialCheckup"
-                                             matTooltipPosition="below">
+                <vitamui-common-slide-toggle
+                  class="fields-padding"
+                  [disabled]="true"
+                  formControlName="referentialCheckup"
+                  matTooltipPosition="below"
+                >
                   {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
                 </vitamui-common-slide-toggle>
               </div>
@@ -140,18 +142,15 @@
           </vitamui-common-input>
         </div>
         <div class="actions">
-          <button type="button" class="btn link back" (click)="back()">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
+          <button (click)="move()" [disabled]="validateThirdStep()" class="btn primary" type="button">
+            {{ 'COMMON.NEXT' | translate }}
           </button>
-          <button (click)="move()" [disabled]="validateThirdStep()" class="btn primary"
-                  type="button">{{ 'COMMON.NEXT' | translate }}</button>
-          <button (click)="onCancel()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
+          <button (click)="onCancel()" class="btn link" type="button">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
     </cdk-step>
 
-    <!-- Step 4 : Contexte de versement -->
+    <!-- Step 4 : Contexte du versement -->
     <cdk-step>
       <div class="content">
         <div class="col-12 mt-4 mb-3">
@@ -160,8 +159,12 @@
               <h4>{{ 'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate }}</h4>
             </div>
             <div class="col-5 mt-2">
-              <vitamui-common-slide-toggle class="fields-padding" formControlName="referentialCheckup"
-                                           matTooltipPosition="below">
+              <vitamui-common-slide-toggle
+                class="fields-padding"
+                [disabled]="true"
+                formControlName="referentialCheckup"
+                matTooltipPosition="below"
+              >
                 {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
               </vitamui-common-slide-toggle>
             </div>
@@ -225,7 +228,9 @@
               <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
             </label>
             <mat-select formControlName="acquisitionInformation">
-              <mat-option *ngFor="let acqInfo of acquisitionInformationsList" [value]="acqInfo">{{ acqInfo }}</mat-option>
+              <mat-option *ngFor="let acquisitionInformation of acquisitionInformationsList" [value]="acquisitionInformation">{{
+                acquisitionInformation
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -234,18 +239,21 @@
               <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
             </label>
             <mat-select formControlName="legalStatus">
-              <mat-option *ngFor="let lgs of legalStatusList" [value]="lgs">{{ lgs }}</mat-option>
+              <mat-option *ngFor="let legalStatus of legalStatusList" [value]="legalStatus.id">{{ legalStatus.value }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <div class="actions">
           <button type="button" class="btn link back" (click)="back()">
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
+            <ng-container
+              ><span class="underline">{{ 'COMMON.BACK' | translate }}</span></ng-container
+            >
           </button>
-          <button (click)="updateProject()" [disabled]="validateFourStep()" class="btn primary"
-                  type="button">{{ 'COMMON.SUBMIT' | translate }}</button>
-          <button (click)="onCancel()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
+          <button (click)="updateProject()" [disabled]="validateFourStep()" class="btn primary" type="button">
+            {{ 'COMMON.SUBMIT' | translate }}
+          </button>
+          <button (click)="onCancel()" class="btn link" type="button">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
     </cdk-step>
@@ -260,40 +268,43 @@
         </div>
         <table class="vitamui-table">
           <thead>
-          <tr>
-            <th>{{ 'COLLECT.UPLOAD.ZIP_NAME' | translate }}</th>
-            <th>{{ 'COLLECT.UPLOAD.WEIGHT' | translate }}</th>
-            <th>{{ 'COLLECT.UPLOAD.ZIP_TRACKING_TITLE' | translate }}</th>
-            <th>{{ 'COLLECT.UPLOAD.STATUS' | translate }}</th>
-          </tr>
+            <tr>
+              <th>{{ 'COLLECT.UPLOAD.ZIP_NAME' | translate }}</th>
+              <th>{{ 'COLLECT.UPLOAD.WEIGHT' | translate }}</th>
+              <th>{{ 'COLLECT.UPLOAD.ZIP_TRACKING_TITLE' | translate }}</th>
+              <th>{{ 'COLLECT.UPLOAD.STATUS' | translate }}</th>
+            </tr>
           </thead>
           <tbody>
-          <tr class="vitamui-table-row">
-            <td>{{ (zippedFile$|async)?.name }}</td>
-            <td>{{ (zippedFile$|async)?.size | filesize }}</td>
-            <td>
-              <span class="purcent">{{ (zippedFile$|async)?.currentFileUploadedSize | number: '1.0-0' }} %</span>
-              <mat-progress-bar [value]="(zippedFile$|async)?.currentFileUploadedSize" class="stepper-progress-bar"
-                                mode="determinate"></mat-progress-bar>
-            </td>
-            <td>
-              <span class="purcent">{{ (zippedFile$|async)?.uploadedSize | number: '1.0-0' }} %</span>
-              <mat-progress-bar [value]="(zippedFile$|async)?.uploadedSize" class="stepper-progress-bar"
-                                mode="determinate"></mat-progress-bar>
-            </td>
-          </tr>
+            <tr class="vitamui-table-row">
+              <td>{{ (zippedFile$ | async)?.name }}</td>
+              <td>{{ (zippedFile$ | async)?.size | fileSize }}</td>
+              <td>
+                <span class="purcent">{{ (zippedFile$ | async)?.currentFileUploadedSize | number: '1.0-0' }} %</span>
+                <mat-progress-bar
+                  [value]="(zippedFile$ | async)?.currentFileUploadedSize"
+                  class="stepper-progress-bar"
+                  mode="determinate"
+                ></mat-progress-bar>
+              </td>
+              <td>
+                <span class="purcent">{{ (zippedFile$ | async)?.uploadedSize | number: '1.0-0' }} %</span>
+                <mat-progress-bar
+                  [value]="(zippedFile$ | async)?.uploadedSize"
+                  class="stepper-progress-bar"
+                  mode="determinate"
+                ></mat-progress-bar>
+              </td>
+            </tr>
           </tbody>
         </table>
         <div class="actions">
-          <button (click)="close()" [disabled]="!closeModal" class="btn primary"
-                  type="button">{{'COMMON.CLOSE' | translate}}</button>
+          <button (click)="close()" [disabled]="!closeModal" class="btn primary" type="button">{{ 'COMMON.CLOSE' | translate }}</button>
         </div>
       </div>
     </cdk-step>
   </vitamui-common-stepper>
-
 </form>
-
 
 <ng-template #confirmDeleteAddRuleDialog>
   <mat-dialog-content>
@@ -305,6 +316,6 @@
   <mat-dialog-actions>
     <button (click)="onConfirm()" class="btn primary btn-confirm-dialog margin-btn">{{ 'UNIT_UPDATE.CLOSE' | translate }}</button>
 
-    <button  (click)="onClose()" class="btn cancel">{{ 'COMMON.UNDO' | translate }}</button>
+    <button (click)="onClose()" class="btn cancel">{{ 'COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>

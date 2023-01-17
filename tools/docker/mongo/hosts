@@ -14,6 +14,7 @@ hosts_vitamui_iam_external
 hosts_vitamui_security_internal
 hosts_vitamui_referential_internal
 hosts_vitamui_referential_external
+hosts_vitamui_pastis_external
 
 [hosts_vitamui_iam_internal]
 localhost
@@ -30,6 +31,10 @@ localhost
 [hosts_vitamui_referential_external]
 localhost
 
+
+[hosts_vitamui_pastis_external]
+localhost
+
 ########################################################
 # ZONE UI
 ########################################################
@@ -42,6 +47,7 @@ hosts_ui_referential
 hosts_ui_ingest
 hosts_ui_archive_search
 hosts_ui_collect
+hosts_ui_pastis
 
 [hosts_ui_identity]
 # We deploy only ui_identity_admin on dev - same certificat is used for these apps.
@@ -56,6 +62,9 @@ localhost
 localhost
 
 [hosts_ui_archive_search]
+localhost
+
+[hosts_ui_pastis]
 localhost
 
 [hosts_ui_collect]

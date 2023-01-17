@@ -108,21 +108,21 @@ export class LogbookManagementOperationListComponent implements OnInit {
     this.initializeFacetDetails();
     this.stateFacetDetails.push({
       title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATE.IN_PROGRESS'),
-      totalResults: this.getTotalResultsByState(this.operationsList, 'RUNNING'),
+      totalResults: this.getTotalResultsByState(this.operationsList, 'RUNNING').toString(),
       clickable: true,
       color: Colors.DEFAULT,
       filter: 'RUNNING',
     });
     this.stateFacetDetails.push({
       title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATE.BREAK'),
-      totalResults: this.getTotalResultsByState(this.operationsList, 'PAUSE'),
+      totalResults: this.getTotalResultsByState(this.operationsList, 'PAUSE').toString(),
       clickable: true,
       color: Colors.DEFAULT,
       filter: 'PAUSE',
     });
     this.stateFacetDetails.push({
       title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATE.FINISHED'),
-      totalResults: this.getTotalResultsByState(this.operationsList, 'COMPLETED'),
+      totalResults: this.getTotalResultsByState(this.operationsList, 'COMPLETED').toString(),
       clickable: true,
       color: Colors.DEFAULT,
       filter: 'COMPLETED',
@@ -130,28 +130,28 @@ export class LogbookManagementOperationListComponent implements OnInit {
 
     this.statusFacetDetails.push({
       title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATUS.SUCCESS'),
-      totalResults: this.getTotalResultsByStatus(this.operationsList, 'OK'),
+      totalResults: this.getTotalResultsByStatus(this.operationsList, 'OK').toString(),
       clickable: true,
       color: Colors.OK_COLOR,
       filter: 'OK',
     });
     this.statusFacetDetails.push({
       title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATUS.WARNING'),
-      totalResults: this.getTotalResultsByStatus(this.operationsList, 'WARNING'),
+      totalResults: this.getTotalResultsByStatus(this.operationsList, 'WARNING').toString(),
       clickable: true,
       color: Colors.WARNING_COLOR,
       filter: 'WARNING',
     });
     this.statusFacetDetails.push({
       title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATUS.ERROR'),
-      totalResults: this.getTotalResultsByStatus(this.operationsList, 'KO'),
+      totalResults: this.getTotalResultsByStatus(this.operationsList, 'KO').toString(),
       clickable: true,
       color: Colors.KO_COLOR,
       filter: 'KO',
     });
     this.statusFacetDetails.push({
       title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATUS.FATAL'),
-      totalResults: this.getTotalResultsByStatus(this.operationsList, 'FATAL'),
+      totalResults: this.getTotalResultsByStatus(this.operationsList, 'FATAL').toString(),
       clickable: true,
       color: Colors.FATAL_COLOR,
       filter: 'FATAL',

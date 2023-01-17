@@ -39,7 +39,7 @@ import { Injectable } from '@angular/core';
 import { AccessContract } from 'projects/vitamui-library/src/public-api';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService , VitamUISnackBarService} from 'ui-frontend-common';
+import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 import { AccessContractApiService } from '../core/api/access-contract-api.service';
 
 @Injectable({
@@ -90,17 +90,14 @@ export class AccessContractService extends SearchService<AccessContract> {
     return this.accessContractApi.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
-        (response) => {
-             this.snackBarService.open({
-              message: 'SNACKBAR.ACCESS_CONTRACT_UPDATED',
-              translateParams:{
-                name: response.name,
-              },
-              icon: 'vitamui-icon-contrat'
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.ACCESS_CONTRACT_UPDATED',
+            icon: 'vitamui-icon-contrat'
           });
         },
         (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+          this.snackBarService.open({ message: error.error.message, translate: false });
         }
       )
     );
@@ -110,12 +107,9 @@ export class AccessContractService extends SearchService<AccessContract> {
     return this.accessContractApi.create(accessContract)
       .pipe(
         tap(
-          (response: AccessContract) => {
-             this.snackBarService .open({
+          () => {
+            this.snackBarService.open({
               message: 'SNACKBAR.ACCESS_CONTRACT_CREATED',
-              translateParams:{
-                name: response.name,
-              },
               icon: 'vitamui-icon-contrat'
             });
           },

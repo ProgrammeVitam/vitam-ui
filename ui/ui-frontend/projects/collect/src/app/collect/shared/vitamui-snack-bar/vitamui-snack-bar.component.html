@@ -1,0 +1,42 @@
+<div class="vitamui-snack-bar-container">
+  <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
+    <ng-container *ngSwitchCase="'sipUploaded'">
+      <i class="vitamui-icon vitamui-icon-archive-ingest"></i> Un ou plusieurs versement(s) sont en cours
+      <br />
+      <span> (Merci de ne pas éteindre votre navigateur pendant le processus)</span>
+    </ng-container>
+    <ng-container *ngSwitchCase="'searchCriteriaHistoryCreated'">
+      {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVED_WITH_SUCCESS' | translate }} "<strong>{{ data?.name }}</strong
+      >"
+    </ng-container>
+    <ng-container *ngSwitchCase="'exportCsvLimitReached'">
+      <span> {{ 'COLLECT.EXPORT_CSV.EXPORT_CSV_LIMIT_REACHED' | translate }} </span>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'searchCriteriaHistoryDeleted'">
+      {{ 'COLLECT.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS_1' | translate }} "<strong>{{ data?.name }}</strong> "
+      {{ 'COLLECT.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS_2' | translate }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'WorkflowSuccessSnackBar'">
+      <span class="space-style">{{ data?.message }}</span>
+      <button type="button" class="btn white" (click)="goToLogbook(data?.serviceUrl)">
+        {{ 'COLLECT.DIP.TO_OPERATION_APP' | translate }}
+      </button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'exportDIPLimitReached'">
+      {{ 'COLLECT.DIP.EXPORT_LIMITS' | translate }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'thresholdExceeded'">
+      {{ 'COLLECT.ELIMINATION.THRESHOLD_EXCEEDED' | translate }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'waitMassUpdateUnitsMetadata'">
+      {{ 'COLLECT.UPDATE_UNITS_METADATA.WAIT_MESSAGE' | translate }}
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'massUpdateUnitsMetadata'">
+      {{ 'COLLECT.UPDATE_UNITS_METADATA.SUCCESS_MESSAGE' | translate }}
+    </ng-container>
+  </span>
+
+  <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
+</div>

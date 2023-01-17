@@ -175,7 +175,7 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
 
     /**
      * Method allowing to perform checks/retrieve additional information before to delete the entity.
-     * @param partialDto Specifics fields to update.
+     * @param id doc id.
      * @return The entity to update.
      */
     @Override

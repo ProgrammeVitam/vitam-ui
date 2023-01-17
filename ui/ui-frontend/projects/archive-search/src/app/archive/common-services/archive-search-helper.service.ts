@@ -27,10 +27,9 @@
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator } from 'ui-frontend-common';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
 import {
   CriteriaValue,
   SearchCriteria,
@@ -351,6 +350,7 @@ export class ArchiveSearchHelperService {
       });
     });
   }
+
   openSnackBarForWorkflow(snackBar: MatSnackBar, message: string, serviceUrl?: string) {
     snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
@@ -374,18 +374,18 @@ export class ArchiveSearchHelperService {
         if (defaultFacetTabIndex > 1 && this.archiveService.isAppraisalRuleCriteria(criteria)) {
           defaultFacetTabIndex = 1;
         }
-        if (defaultFacetTabIndex > 3 && this.archiveService.isAccessRuleCriteria(criteria)) {
-          defaultFacetTabIndex = 3;
+        if (defaultFacetTabIndex > 2 && this.archiveService.isAccessRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 2;
         }
 
-        if (defaultFacetTabIndex > 4 && this.archiveService.isDisseminationRuleCriteria(criteria)) {
+        if (defaultFacetTabIndex > 3 && this.archiveService.isDisseminationRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 3;
+        }
+        if (defaultFacetTabIndex > 4 && this.archiveService.isReuseRuleCriteria(criteria)) {
           defaultFacetTabIndex = 4;
         }
-        if (defaultFacetTabIndex > 5 && this.archiveService.isReuseRuleCriteria(criteria)) {
+        if (defaultFacetTabIndex > 5 && this.archiveService.isClassificationRuleCriteria(criteria)) {
           defaultFacetTabIndex = 5;
-        }
-        if (defaultFacetTabIndex > 6 && this.archiveService.isClassificationRuleCriteria(criteria)) {
-          defaultFacetTabIndex = 6;
         }
       }
     }
@@ -394,6 +394,7 @@ export class ArchiveSearchHelperService {
     }
     return defaultFacetTabIndex;
   }
+
   checkIfRulesFacetsCanBeComputed(searchCriterias: Map<string, SearchCriteria>): boolean {
     let hasMgtRuleCriteria = false;
     if (searchCriterias && searchCriterias.size > 0) {
@@ -441,7 +442,7 @@ export class ArchiveSearchHelperService {
         criteria.values.forEach((elt) => {
           strValues.push(elt.value);
         });
-        let replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
+        const replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
 
         criteriaSearchList.push({
           criteria: replacedCriteria,

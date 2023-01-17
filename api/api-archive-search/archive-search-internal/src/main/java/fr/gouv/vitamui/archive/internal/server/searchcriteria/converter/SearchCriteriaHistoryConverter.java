@@ -38,7 +38,7 @@ package fr.gouv.vitamui.archive.internal.server.searchcriteria.converter;
 
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.domain.SearchCriteriaHistory;
 import fr.gouv.vitamui.commons.api.converter.Converter;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.Getter;

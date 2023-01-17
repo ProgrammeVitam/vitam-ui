@@ -112,8 +112,12 @@
         "ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT_ONE": "Action on one archive unit",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE": "Are you sure to launch this action on the selected archive unit ?",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirm you this action ?",
-        "CONFIRM": "Confirmer",
-        "CANCEL": "Annuler"
+        "CONFIRM": "Confirm",
+        "CANCEL": "Cancel",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, the operation reach the plateform allowed threshold.",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Validate rule change(s) ? ",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "This action is not allowed ont the selected items",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "The operation reach the allowed threshold, Please modify the selection and retry "
       }
     },
     "COMPUTED_INHERITED_RULES": {
@@ -123,6 +127,39 @@
       "CONFIRMATION_MESSAGE": "You are about to launch an inheritance calculation on {{itemSelected}} archival unit(s). Do you want to confirm?",
       "CONFIRM": "Confirm",
       "CANCEL": "Cancel"
+    },
+    "TRANSFER_ACKNOWLEDGMENT" : {
+      "ACTION_TITLE" : "Acknowledge an archive transfer",
+      "FILE_BAD_FORMAT": "The uploaded file is not in the correct format",
+      "TITLE_FIRST_STEP": "Acknowledgment of a transfer operation",
+      "DOWNLOAD_ATR_FILE": "Download Transfer Acknowledgment",
+      "DOWNLOAD_ATR_FILE_TEXT": "Please download the ATR retrieved when depositing the transferred archival units in the destination SAE",
+      "AUTHORIZED_SIZE": "File size exceeds maximum allowed",
+      "ATR_NOT_VALID": "The uploaded file is not a valid transfer atr",
+      "DRAG_AND_DROP": "Drag or drop",
+      "BROWSE": "Or browse",
+      "ACCEPTED_FORMAT": "Accepted format: xml",
+      "MAX_SIZE" : "Maximum recommended size: 10 GB",
+      "TRANSFER_REPLY_OPERATION": "Acknowledgment of a transfer operation",
+      "OPERATION_MESSAGE_IDENTIFIER": "Original transfer request identifier",
+      "TRANSFER_REALISATION_DATE": "Date of completion of the transfer",
+      "ENTRY_CONTRACT": "Transfer entry contract",
+      "ARCHIVAL_AGENCY_IDENTIFIER": "Archive service identifier",
+      "TRANSFERRING_AGENCY_IDENTIFIER": "Identifier of the service responsible for the transfer",
+      "TRANSFER_ACKNOWLEDGMENT_STATUS": "Transfer operation status",
+      "NEXT_STEP": "Next",
+      "CANCEL_ACTION": "Cancel",
+      "PREVIOUS_STEP": "Back",
+      "ACKNOWLEDGMENT_TRANSFER_CONTROL": "Transfer acknowledgment control",
+      "ACKNOWLEDGMENT_TRANSFER_VALIDATION": "Transfer acknowledgment validation",
+      "ACKNOWLEDGMENT_TRANSFER_REPLY_CODE" : "Transfer acknowledgment status is:",
+      "CONFIRM_SUCCESS_TRANSFER" : "Do you want to confirm the SUCCESS of the transfer?",
+      "CONFIRM_FAILURE_TRANSFER": "Do you want to confirm the transfer FAILED? No elimination will be carried out at this stage.",
+      "REPLY_TRANSFER": "Acknowledge the transfer",
+      "ACKNOWLEDGMENT_TRANSFER": "Transfer acknowledgment",
+      "CANCEL_TRANSFER_OPERATION" : "Are you sure you want to cancel the transfer acknowledgment operation?",
+      "TRANSFER_CONFIRM": "Confirm",
+      "REQUEST_MESSAGE": "Your transfer acknowledgment request has been taken into account "
     },
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
@@ -492,7 +529,7 @@
       "SHOW_TREE_PARENT": "Show only result",
       "TREE_TITLE": "Trees and plans",
       "TREE_LEAVES_TITLE": "Attachment position(s)",
-      "LOAD_MORE_UNITS": "Load more units"
+      "LOAD_MORE_UNITS": "See more..."
     },
     "EXPORT_CSV": {
       "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."

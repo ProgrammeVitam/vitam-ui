@@ -1,0 +1,119 @@
+@import '../../../../../assets/css/colors';
+@import '../../../../../assets/css/dropdown';
+@import '../../../../../assets/css/layout';
+
+.col-selection {
+  text-align: left;
+  padding-right: 0 !important;
+}
+
+.info-bulle {
+  padding-left: 28px;
+  padding-right: 2px;
+  vertical-align: baseline;
+  font-size: 24px;
+  color: var(--vitamui-secondary-300);
+}
+
+.col-nom {
+  width: 204px !important;
+}
+
+table {
+  background: none;
+  max-height: 454px;
+  border-spacing: 0 5px;
+  margin-bottom: 30px;
+}
+
+.table-container {
+  max-height: 270px;
+  overflow: auto;
+}
+
+th {
+  border: none;
+  background: white;
+}
+
+td {
+  border-radius: 5px;
+  border: none;
+}
+
+.check-box {
+  width: 150px;
+}
+
+::ng-deep .mat-checkbox {
+
+  .mat-checkbox-frame {
+    border-radius: 3px;
+    border: 1px solid var(--vitamui-grey-400);
+    background: white;
+  }
+
+  &.mat-checkbox-checked  .mat-checkbox-frame {
+    border-radius: 3px;
+    border: 1px solid var(--vitamui-primary);
+    background: var(--vitamui-primary);
+  }
+
+
+  &.mat-checkbox-checked .mat-checkbox-background,
+  .mat-checkbox-background {
+    background: transparent;
+    margin: 2px;
+  }
+
+  .mat-checkbox-checkmark-path {
+    stroke: var(--vitamui-grey-font) !important;
+    stroke-width: 5px;
+  }
+
+
+
+  span{
+    font-size:14px;
+    color:var(--vitamui-grey-900);
+  }
+
+  .mat-checkbox:checked {
+    background: yellow;
+    margin: 0px;
+    position: relative;
+
+    &:before {
+      font-family: Mulish;
+      content: '\f00c';
+      display: block;
+      color: #a61717;
+      font-size: 13px;
+      position: absolute;
+    }
+  }
+
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent.mat-checkbox-disabled .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  border: none! important;
+  border-color: var(--vitamui-grey-700);
+  background-color: var(--vitamui-grey-300);
+
+  .mat-checkbox-checkmark-path {
+    stroke: var(--vitamui-grey-700) !important;
+  }
+
+  &.mat-checkbox-checked  .mat-checkbox-frame {
+    border-radius: 3px;
+    border: 1px solid var(--vitamui-grey-700) !important;
+    background: var(--vitamui-grey-700);
+  }
+}
+
+::ng-deep .mat-checkbox.mat-checkbox-disabled .mat-checkbox-frame{
+  border: 1px solid var(--vitamui-primary);
+  border-color: var(--vitamui-grey-700);
+  background-color: var(--vitamui-grey-300);
+}

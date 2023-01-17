@@ -43,6 +43,10 @@ public abstract class RestApi {
 
     private static final String PREFIX = "/referential/v1";
 
+    public static final String ARCHIVAL_PROFILE = "/archival-profile";
+
+    public static final String PROFILE = "/profile";
+
     public static final String STATUS_URL = "/status";
 
     public static final String AUTOTEST_URL = "/autotest";
@@ -71,7 +75,7 @@ public abstract class RestApi {
 
     public static final String ACCESSION_REGISTER_URL = PREFIX + "/accession-register";
 
-    public static final String PROFILES_URL = PREFIX + "/profile";
+    public static final String PROFILES_URL = PREFIX + PROFILE;
 
     public static final String SEARCH_PATH = "/search";
 
@@ -89,6 +93,8 @@ public abstract class RestApi {
 
     public static final String OPERATIONS_PATH = "/operations";
 
+    public static final String  ARCHIVAL_PROFILE_URL = PREFIX + ARCHIVAL_PROFILE;
+
     public static final String DETAILS = "/details";
 
     public static final String EXPORT_CSV =  "/export-csv";
@@ -102,6 +108,15 @@ public abstract class RestApi {
     public static final String UPDATE_OPERATION_PATH = "/operations/update";
 
     public static final String CANCEL_OPERATION_PATH = "/operations/cancel";
+
+    /**
+     * Constants of Archival Profiles Operations Actions
+     */
+
+    public static final String DOWNLOAD_PROFILE = "/download";
+
+    public static final String UPDATE_PROFILE_FILE = "/updateProfileFile";
+
 
     private RestApi() {
         // do nothing

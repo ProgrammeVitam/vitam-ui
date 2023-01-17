@@ -1,0 +1,11 @@
+.span1{
+font-size: 11px;
+  font-family: 'Mulish', sans-serif;
+  font-style: normal;
+  color: #212121;
+  letter-spacing: normal;
+  font-weight: 700;
+}
+.span2{
+  @extend .span1
+}

@@ -37,7 +37,7 @@
 - name: Activate security on mongod instances
   blockinfile:
     dest: "{{ mongod_config_path }}/mongod.conf"
-    insertafter: "# ansible managed security conf"
+    insertafter: EOF
     block: |
       security:
         authorization: enabled

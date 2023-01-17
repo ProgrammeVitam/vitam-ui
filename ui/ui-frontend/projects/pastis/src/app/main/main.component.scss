@@ -1,0 +1,62 @@
+@import "../../assets/css/colors";
+@import "../../assets/css/mixins";
+@import "../../assets/css/layout";
+
+::ng-deep .vitamui-spinner.mat-progress-spinner circle, .vitamui-spinner .mat-spinner circle{
+  stroke: var(--vitamui-primary) !important;
+}
+
+.steackhouse{
+  display: block;
+  position: absolute;
+  right: 50%;
+  top: 30%;
+  z-index: 1000;
+}
+
+.pastis-btn-show-profile{
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  left: -1px;
+  top: 280px;
+  z-index: 10001;
+  background-color: map-get( $colors , 'primary-500');
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  transition-property: all;
+	transition-duration: .5s;
+
+}
+
+.pastis-icon-show-profile{
+  margin-bottom: 14px;
+  margin-right: 14px;
+  font-size: 40px;
+  color: #FFFFFF;
+}
+
+.pastis-side-nav {
+  box-shadow: 20px 20px 80px rgba(168, 153, 153, 0.5);
+}
+
+.mat-sidenav {
+  width: 100% !important;
+  height: 100%;
+  top: 0px;
+  position: fixed;
+  @extend .pastis-slide-nav-profile;
+}
+
+
+.pastis-toaster-font{
+  .pastis-toaster-font{
+      font-family: Mulish;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 20px;
+      /* identical to box height, or 133% */
+
+      color: black;
+  }
+}

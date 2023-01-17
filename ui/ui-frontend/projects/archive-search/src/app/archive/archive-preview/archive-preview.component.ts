@@ -38,6 +38,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
 import { Unit } from '../models/unit.interface';
 
 @Component({
@@ -65,7 +66,7 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
 
   updateStarted = false;
   @Input()
-  hasAccessContractManagementPermissions: boolean;
+  accessContractAllowUpdating: boolean;
   @Input()
   hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = '';
@@ -86,7 +87,9 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     this.selectedIndex = 0;
   }
   showNormalPanel() {
-    this.selectedIndex--;
+    if (this.selectedIndex > 0) {
+      this.selectedIndex--;
+    }
     this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
     this.updateStarted = false;
@@ -108,5 +111,21 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     if (changes.archiveUnit) {
       this.showNormalPanel();
     }
+  }
+
+  getArchiveUnitType(archiveUnit: Unit) {
+    if (archiveUnit) {
+      return archiveUnit['#unitType'];
+    }
+  }
+
+  getArchiveUnitIcone(archiveUnit: Unit) {
+    return this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.HOLDING_UNIT
+      ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
+      : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.FILING_UNIT
+      ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
+      : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.INGEST && !archiveUnit['#object']
+      ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
+      : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
   }
 }

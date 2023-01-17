@@ -118,6 +118,9 @@ public class AccessRegisterVitamQueryHelper {
 
         BooleanQuery orQuery = or();
         BooleanQuery andQuery = and();
+        if (nonNull(pageNumber) && nonNull(size)) {
+            select.setLimitFilter((long) pageNumber * size, size);
+        }
 
         addOrderToQuery(select, orderBy, direction);
         addFiltersToQuery(andQuery, criteria.getFilters());
@@ -159,7 +162,7 @@ public class AccessRegisterVitamQueryHelper {
         if (isNull(opi)) {
             return;
         }
-        orQuery.add(wildcard("#" + OPI, "*" + opi + "*"));
+        orQuery.add(wildcard(OPI, "*" + opi + "*"));
     }
 
     private static void addFiltersToQuery(BooleanQuery andQuery, Map<String, List<String>> filters)

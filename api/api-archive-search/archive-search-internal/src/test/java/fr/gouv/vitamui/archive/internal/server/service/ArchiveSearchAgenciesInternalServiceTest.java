@@ -34,11 +34,11 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -60,6 +60,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(SpringExtension.class)
+@SuppressWarnings("unchecked")
 public class ArchiveSearchAgenciesInternalServiceTest {
 
     private static final VitamUILogger LOGGER =
@@ -106,7 +107,8 @@ public class ArchiveSearchAgenciesInternalServiceTest {
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any())).thenReturn(getResponseAgencies());
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+            .thenReturn(getResponseAgencies());
 
         // When
         archiveSearchAgenciesInternalService
@@ -140,7 +142,8 @@ public class ArchiveSearchAgenciesInternalServiceTest {
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any())).thenReturn(getResponseAgencies());
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+            .thenReturn(getResponseAgencies());
 
         // When
         archiveSearchAgenciesInternalService

@@ -114,6 +114,11 @@ export interface ManagementRule {
   ClassificationRule: RuleCategoryVitamUiDto;
   DisseminationRule: RuleCategoryVitamUiDto;
   AccessRule: RuleCategoryVitamUiDto;
+  UpdateOperation: UpdateOperation;
+}
+
+export interface UpdateOperation {
+  SystemId: string;
 }
 
 export interface RuleCategoryVitamUiDto {

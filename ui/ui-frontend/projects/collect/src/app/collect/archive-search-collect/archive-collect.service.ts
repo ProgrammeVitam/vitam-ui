@@ -34,24 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AccessContract, AccessContractApiService, SearchService } from 'ui-frontend-common';
-import { FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchResponse } from '../core/models';
+import { AccessContract, AccessContractApiService, FilingHoldingSchemeNode, SearchService, Transaction } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
+import { TransactionApiService } from '../core/api/transaction-api.service';
+import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, Unit } from '../core/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArchiveCollectService extends SearchService<any> {
-  projectId: string;
-
   constructor(
     private projectsApiService: ProjectsApiService,
+    private transactionApiService: TransactionApiService,
+    private searchUnitApiService: SearchUnitApiService,
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
@@ -59,6 +61,8 @@ export class ArchiveCollectService extends SearchService<any> {
   ) {
     super(http, projectsApiService, 'ALL');
   }
+
+  projectId: string;
 
   headers = new HttpHeaders();
 
@@ -68,31 +72,6 @@ export class ArchiveCollectService extends SearchService<any> {
 
   public static fetchAuTitle(unit: any) {
     return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
-  }
-
-  public getOntologiesFromJson(): Observable<any> {
-    return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
-  }
-
-  sortByTitle(data: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
-    return data.sort(byTitle(this.locale));
-  }
-
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string): Observable<PagedResult> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-
-    return this.projectsApiService.searchArchiveUnitsByCriteria(criteriaDto, projectId, headers).pipe(
-      //   timeout(TIMEOUT_SEC),
-      catchError((error) => {
-        if (error instanceof TimeoutError) {
-          return throwError('Erreur : délai d’attente dépassé pour votre recherche');
-        }
-        // Return other errors
-        return of({ $hits: null, $results: [] });
-      }),
-      map((results) => ArchiveCollectService.buildPagedResults(results))
-    );
   }
 
   private static buildPagedResults(response: SearchResponse): PagedResult {
@@ -108,6 +87,56 @@ export class ArchiveCollectService extends SearchService<any> {
     return pagedResult;
   }
 
+  public getOntologiesFromJson(): Observable<any> {
+    return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
+  }
+
+  sortByTitle(data: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
+    return data.sort(byTitle(this.locale));
+  }
+
+  getTransactionById(transactionId: string): Observable<Transaction> {
+    return this.projectsApiService.getTransactionById(transactionId).pipe(map((result) => result));
+  }
+
+  getLastTransactionByProjectId(projectId: string): Observable<Transaction> {
+    return this.projectsApiService.getLastTransactionByProjectId(projectId).pipe(map((result) => result));
+  }
+
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, accessContract: string): Observable<PagedResult> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+
+    return this.transactionApiService.searchArchiveUnitsByCriteria(criteriaDto, transactionId, headers).pipe(
+      //   timeout(TIMEOUT_SEC),
+      catchError((error) => {
+        if (error instanceof TimeoutError) {
+          return throwError('Erreur : délai d’attente dépassé pour votre recherche');
+        }
+        // Return other errors
+        return of({ $hits: null, $results: [] });
+      }),
+      map((results) => ArchiveCollectService.buildPagedResults(results))
+    );
+  }
+
+  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], transactionId: string, accessContract: string): Observable<number> {
+    const searchCriteria = {
+      criteriaList: criteriaElts,
+      pageNumber: 0,
+      size: 1,
+      trackTotalHits: true,
+    };
+    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId, accessContract).pipe(
+      map((pagedResult: PagedResult) => {
+        return pagedResult.totalResults;
+      }),
+      catchError(() => {
+        return of(-1);
+      })
+    );
+  }
+
   normalizeTitle(title: string): string {
     title = title.replace(/[&\/\\|.'":*?<> ]/g, '');
     return title.substring(0, 218);
@@ -117,16 +146,6 @@ export class ArchiveCollectService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
-  }
-
-  hasAccessContractManagementPermissions(accessContract: AccessContract): boolean {
-    return accessContract.writingPermission && !accessContract.writingRestrictedDesc;
-  }
-
-  prepareHeaders(accessContract: string): HttpHeaders {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-    return headers;
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
@@ -141,18 +160,131 @@ export class ArchiveCollectService extends SearchService<any> {
     });
   }
 
-  launchDownloadObjectFromUnit(unitId: string, tenantIdentifier: number, accessContract: string) {
-    this.downloadFile(this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, accessContract, tenantIdentifier));
+  launchDownloadObjectFromUnit(unitId: string, objectId: string, tenantIdentifier: number, accessContract: string) {
+    this.downloadFile(this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, accessContract, tenantIdentifier));
   }
 
   downloadFile(url: string) {
     window.addEventListener('focus', window_focus, false);
+
     function window_focus() {
       window.removeEventListener('focus', window_focus, false);
       URL.revokeObjectURL(url);
     }
+
     location.href = url;
   }
+
+  validateTransaction(id: string) {
+    return this.projectsApiService.validateTransaction(id);
+  }
+
+  sendTransaction(id: string) {
+    return this.projectsApiService.sendTransaction(id);
+  }
+
+  getProjectById(projectId: string) {
+    return this.projectsApiService.getById(projectId);
+  }
+
+  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string) {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+
+    return this.transactionApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, projectId, headers).subscribe(
+      (file) => {
+        const element = document.createElement('a');
+        element.href = window.URL.createObjectURL(file);
+        element.download = 'export-archive-units.csv';
+        element.style.visibility = 'hidden';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      },
+      (errors: HttpErrorResponse) => {
+        if (errors.status === 413) {
+          console.log('Please update filter to reduce size of response' + errors.message);
+
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'exportCsvLimitReached' },
+            duration: 10000,
+          });
+        }
+      }
+    );
+  }
+
+  public loadFilingHoldingSchemeTree(tenantIdentifier: string, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
+    const headers = new HttpHeaders({
+      'X-Tenant-Id': '' + tenantIdentifier,
+      'X-Access-Contract-Id': accessContractId,
+    });
+
+    return this.searchUnitApiService.getFilingPlan(headers).pipe(
+      catchError(() => {
+        return of({ $hits: null, $results: [] });
+      }),
+      map((response) => {
+        return this.buildNestedTreeLevels(response.$results);
+      })
+    );
+  }
+
+  getReferentialUnitDetails(unitId: string, accessContract: string): Observable<SearchResponse> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.searchUnitApiService.getById(unitId, headers);
+  }
+
+  getCollectUnitDetails(unitId: string, accessContract: string): Observable<Unit> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.transactionApiService.getCollectUnitById(unitId, headers);
+  }
+
+  private buildNestedTreeLevels(arr: any[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
+    const out: FilingHoldingSchemeNode[] = [];
+
+    arr.forEach((unit) => {
+      if (
+        (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId) ||
+        (!parentNode && (!unit['#unitups'] || !unit['#unitups'].length || !idExists(arr, unit['#unitups'][0])))
+      ) {
+        const outNode: FilingHoldingSchemeNode = {
+          id: unit['#id'],
+          title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
+          type: unit.DescriptionLevel,
+          children: [],
+          parents: parentNode ? [parentNode] : [],
+          vitamId: unit['#id'],
+          checked: false,
+          hidden: false,
+          hasObject: unit['#object'] ? true : false,
+          unitType: unit['#unitType'],
+        };
+        outNode.children = this.buildNestedTreeLevels(arr, outNode);
+        out.push(outNode);
+      }
+    });
+
+    return this.sortByTitle(out);
+  }
+
+  // update metadata CSV file
+
+  updateUnitsAMetadata(tenantIdentifier: string, csvFile: Blob, fileName: string, transactionId: string): Observable<string> {
+    let headers = new HttpHeaders();
+    headers = headers.append('X-Tenant-Id', tenantIdentifier);
+    headers = headers.append('Content-Type', 'application/octet-stream');
+    headers = headers.append('fileName', fileName);
+
+    return this.transactionApiService.updateUnitsAMetadata(transactionId, csvFile, headers);
+  }
+}
+
+function idExists(units: Unit[], id: string): boolean {
+  return !!units.find((unit) => unit['#id'] === id);
 }
 
 function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingSchemeNode) => number {

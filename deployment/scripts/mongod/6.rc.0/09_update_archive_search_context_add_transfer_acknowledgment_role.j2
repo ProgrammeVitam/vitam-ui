@@ -1,0 +1,15 @@
+db = db.getSiblingDB('security')
+
+print("SRART 09_update_archive_search_context_add_transfer_acknowledgment_role.js");
+
+db.contexts.updateOne({
+    "_id":"ui_archive_search_context"
+},
+{
+    $addToSet:{
+         "roleNames":"ROLE_TRANSFER_ACKNOWLEDGMENT"
+}
+});
+
+print("END 09_update_archive_search_context_add_transfer_acknowledgment_role.js");
+

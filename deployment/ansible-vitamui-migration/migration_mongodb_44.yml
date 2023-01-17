@@ -29,7 +29,7 @@
   vars:
     mongo_type: mongod
     mongo_port: "{{ mongodb.mongod_port }}"
-    mongo_version: 4.4.0
+    mongo_version: 4.4.17
     mongo_primary: true
     action: mongodb_upgrade_package
 

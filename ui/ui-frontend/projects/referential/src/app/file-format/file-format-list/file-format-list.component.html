@@ -47,7 +47,11 @@
         <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.createdDate | dateTime: 'dd/MM/yyyy' }}</td>
         <td>
           <div class="actions" *ngIf="!isInternal(format)">
-            <button class="btn-circle primary" (click)="deleteFileFormatDialog(format)">
+            <button class="btn-circle primary" (click)="deleteFileFormatDialog(format)" *vitamuiCommonHasRole="{
+              appId: 'FILE_FORMATS_APP',
+              tenantIdentifier: +this.genericUserRole.tenantIdentifier,
+              role: 'ROLE_DELETE_FILE_FORMATS'
+            }">
               <i class="vitamui-icon vitamui-icon-trash"></i>
             </button>
           </div>

@@ -51,19 +51,18 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, VitamuiRoles, WINDOW_LOCATION } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { ArchiveSearchHelperService } from '../common-services/archive-search-helper.service';
-import {
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
-} from '../models/search.criteria';
+import { ArchiveUnitDipService } from '../common-services/archive-unit-dip.service';
+import { ArchiveUnitEliminationService } from '../common-services/archive-unit-elimination.service';
+import { ComputeInheritedRulesService } from '../common-services/compute-inherited-rules.service';
+import { UpdateUnitManagementRuleService } from '../common-services/update-unit-management-rule.service';
+import { PagedResult, SearchCriteriaStatusEnum } from '../models/search.criteria';
 import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { ArchiveSearchComponent } from './archive-search.component';
+import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -92,22 +91,33 @@ describe('ArchiveSearchComponent', () => {
 
   const archiveServiceStub = {
     loadFilingHoldingSchemeTree: () => of([]),
-
     getOntologiesFromJson: () => of([]),
-
     searchArchiveUnitsByCriteria: () => of(pagedResult),
-
     hasArchiveSearchRole: () => of(true),
-
-    getAccessContractById: () => of({}),
-
-    hasAccessContractPermissions: () => of(true),
-
-    hasAccessContractManagementPermissions: () => of(true),
+    getAccessContractById: () => of({})
   };
   const archiveSearchCommonService = {
     addCriteria: () => of(),
+    removeCriteria: () => of(),
+    buildNodesListForQUery: () => of(),
+    buildManagementRulesCriteriaListForQuery: () => of(),
+    buildFieldsCriteriaListForQUery: () => of(),
   };
+
+  const updateUnitManagementRuleServiceMock = {
+    goToUpdateManagementRule: () => of(),
+  };
+  const archiveUnitEliminationServiceMock = {
+    launchEliminationAnalysisModal: () => of(),
+    launchEliminationModal: () => of(),
+  };
+  const archiveUnitDipServiceMock = {
+    launchExportDipModal: () => of(),
+  };
+  const computeInheritedRulesServiceMock = {
+    launchComputedInheritedRulesModal: () => of(),
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -140,6 +150,10 @@ describe('ArchiveSearchComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
+        { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
+        { provide: ArchiveUnitEliminationService, useValue: archiveUnitEliminationServiceMock },
+        { provide: ComputeInheritedRulesService, useValue: computeInheritedRulesServiceMock },
+        { provide: ArchiveUnitDipService, useValue: archiveUnitDipServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -151,88 +165,81 @@ describe('ArchiveSearchComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Submit-Click', () => {
-    // const searchCriteria: SearchCriteria = {
-    //   key: 'Title',
-    //   values: [
-    //     {
-    //       value: { value: 'Titre 1', id: 'Titre 1' },
-    //       label: 'Titre 1',
-    //       status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-    //       valueShown: true,
-    //       valueTranslated: false,
-    //       keyTranslated: false,
-    //     },
-    //   ],
-    //   category: SearchCriteriaTypeEnum.FIELDS,
-    //   operator: CriteriaOperator.EQ,
-    //   dataType: CriteriaDataType.STRING,
-    //   valueTranslated: false,
-    //   keyTranslated: false,
-    // };
+  it('should have the corrects values', () => {
+    expect(component.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD).toEqual(100000);
+    expect(component.DEFAULT_DIP_EXPORT_THRESHOLD).toEqual(100000);
+    expect(component.DEFAULT_ELIMINATION_THRESHOLD).toEqual(10000);
+    expect(component.DEFAULT_TRANSFER_THRESHOLD).toEqual(100000);
+    expect(component.DEFAULT_UPDATE_MGT_RULES_THRESHOLD).toEqual(100000);
+  });
 
-    const searchCriteriaValues: SearchCriteriaValue[] = [
-      {
-        value: { value: 'Titre 1', id: 'Titre 1' },
-        label: 'Titre 1',
-        status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-        valueTranslated: false,
-        keyTranslated: false,
+  it('should be true', () => {
+    component.showHideDuaEndDate(true);
+    expect(component.showDuaEndDate).toBeTruthy();
+  });
+
+  it('should be false', () => {
+    component.showHidePanel(false);
+    expect(component.showCriteriaPanel).toBeFalsy();
+  });
+
+  it('should call hasArchiveSearchRole', () => {
+    spyOn(archiveServiceStub, 'hasArchiveSearchRole').and.callThrough();
+    // When
+    component.checkUserHasRole(VitamuiRoles.ROLE_EXPORT_DIP, 1);
+
+    // Then
+    expect(archiveServiceStub.hasArchiveSearchRole).toHaveBeenCalled();
+  });
+  it('should open a modal with TransferAcknowledgmentComponent', () => {
+    component.accessContract = 'accessContract';
+    component.showAcknowledgmentTransferForm();
+    expect(matDialogSpy.open).toHaveBeenCalledWith(TransferAcknowledgmentComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: true,
+      data: {
+        accessContract: 'accessContract',
+        tenantIdentifier: '1',
       },
-      {
-        value: { value: 'Titre2', id: 'Titre2' },
-        label: 'Titre 2',
-        status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-        valueShown: true,
-        valueTranslated: false,
-        keyTranslated: false,
-      },
-    ];
-
-    searchCriteriaValues.sort((a: any, b: any) => {
-      const valueA = a.value;
-      const valueB = b.value;
-      return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
     });
+  });
 
-    beforeEach(() => {
-      // Given
-      const currentCriteria: Map<string, SearchCriteria> = new Map<string, SearchCriteria>();
-      currentCriteria.set('Title', {
-        key: 'Title',
-        dataType: CriteriaDataType.STRING,
-        keyTranslated: true,
-        valueTranslated: false,
-        values: [
-          {
-            value: { value: 'Titre2', id: 'Titre2' },
-            label: 'Titre 2',
-            status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-            valueShown: true,
-            valueTranslated: false,
-            keyTranslated: false,
-          },
-        ],
-        category: SearchCriteriaTypeEnum.FIELDS,
-        operator: CriteriaOperator.EQ,
-      });
-
-      component.searchCriterias = currentCriteria;
-    });
-
-    describe('submit', () => {
-      it('should check all criteria as included when submit', () => {
-        component.submit();
-        component.searchCriterias.forEach((criteria) => {
-          criteria.values.forEach((criteriaValue) => {
-            expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.IN_PROGRESS);
-          });
+  describe('submit', () => {
+    it('should check all criteria as included when submit', () => {
+      component.submit();
+      component.searchCriterias.forEach((criteria) => {
+        criteria.values.forEach((criteriaValue) => {
+          expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.NOT_INCLUDED);
         });
       });
+    });
+  });
+
+  describe('DOM', () => {
+    it('should have 5 rows ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementRow = nativeElement.querySelectorAll('.row');
+
+      // Then
+      expect(elementRow.length).toBe(5);
+    });
+
+    it('should have 1 vitamui-common-menu-button ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementRow = nativeElement.querySelectorAll('vitamui-common-menu-button');
+
+      // Then
+      expect(elementRow.length).toBe(1);
+    });
+    it('should have 2 buttons ', () => {
+      const elementBtn = fixture.nativeElement.querySelectorAll('button[type=button]');
+      expect(elementBtn.length).toBe(2);
     });
   });
 });

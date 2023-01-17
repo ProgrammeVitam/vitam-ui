@@ -36,17 +36,7 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -56,11 +46,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A DTO with an identifier.
- *
- *
  */
 @Getter
 @Setter
@@ -71,7 +66,7 @@ public class CustomerDto extends IdDto {
     private static final long serialVersionUID = 997428479132350296L;
 
     @NotNull
-    @Length(min = 4, max = 25)
+    @Length(max = 15)
     private String code;
 
     @NotNull
@@ -120,7 +115,7 @@ public class CustomerDto extends IdDto {
 
     private Map<String, String> portalTitles = new HashMap<>();
 
-    private Map<String, String> portalMessages  = new HashMap<>();
+    private Map<String, String> portalMessages = new HashMap<>();
     //****
 
     private boolean gdprAlert = false;

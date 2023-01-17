@@ -39,12 +39,16 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
 import { ApplicationId } from '../../application-id.enum';
 import { ApplicationService } from '../../application.service';
-import { Application } from '../../models/application/application.interface';
+import { Application } from '../../models';
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 
 const DEFAULT_DURATION = 10000;
+const URL_SEPARATOR = '/';
+const END_TAG = '</a>';
+const START_TAG = ' <a href="';
 
 export interface SnackBarData {
   /**
@@ -66,13 +70,14 @@ export interface SnackBarData {
   icon?: string;
 
   duration?: number;
-
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VitamUISnackBarService {
+  private snackBarDataSubject = new BehaviorSubject<SnackBarData>(null);
+
   constructor(
     private matSnackBar: MatSnackBar,
     private applicationService: ApplicationService,
@@ -102,20 +107,22 @@ export class VitamUISnackBarService {
     data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
     urlName = this.getTranslateValue(data.translate, urlName, urlParams);
 
-    const application: Application = this.applicationService.applications.find((app: Application) => app.identifier === appId);
-    let url = application.url;
+    this.applicationService.getApplications$().subscribe((applications) => {
+      const application = applications.find((app: Application) => app.identifier === appId);
+      let url = application.url;
 
-    if (urlParams) {
-      let urlWithParams = application.url;
-      for (const [key, value] of urlParams.entries()) {
-        urlWithParams += '/' + key + '/' + value;
+      if (urlParams) {
+        let urlWithParams = application.url;
+        for (const [key, value] of urlParams.entries()) {
+          urlWithParams += URL_SEPARATOR + key + URL_SEPARATOR + value;
+        }
+        url = urlWithParams;
       }
+      data.message = data.message + START_TAG + url + '">' + urlName + END_TAG;
+      this.snackBarDataSubject.next(data);
+    });
 
-      url = urlWithParams;
-    }
-
-    data.message = data.message + ' <a href="' + url + '">' + urlName + '</a>';
-    return this.open(data);
+    return this.open(this.snackBarDataSubject.getValue());
   }
 
   public openWithStringUrl(
@@ -128,10 +135,10 @@ export class VitamUISnackBarService {
     data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
     urlName = this.getTranslateValue(data.translate, urlName);
 
-    const cssCl = cssClass ? 'class="' + cssClass + '\'' : '';
+    const cssCl = cssClass ? 'class="' + cssClass + "'" : '';
     const onClick = closeOnClick ? '(click)="close()"' : '';
 
-    data.message = data.message + ' <a href="' + url + '" ' + cssCl + ' ' + onClick + '">' + urlName + '</a>';
+    data.message = data.message + START_TAG + url + '" ' + cssCl + ' ' + onClick + '">' + urlName + END_TAG;
     return this.open(data);
   }
 
@@ -140,7 +147,7 @@ export class VitamUISnackBarService {
    */
   private getTranslateValue(translate: boolean, message: string, translateParams?: any): string {
     if (translate === undefined || translate) {
-       return this.translateService.instant(message, translateParams);
+      return this.translateService.instant(message, translateParams);
     }
     return message;
   }

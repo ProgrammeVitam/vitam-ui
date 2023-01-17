@@ -59,15 +59,16 @@ const moment = moment_;
 const HTTP_STATUS_CODE_UNAUTHORIZED = 401;
 const HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 const DEFAULT_API_TIMEOUT = 50000;
-const DEFAULT_SERVER_ERROR_MESSAGE = 'HTTP_INTERCEPTOR.SERVER_ERROR';
+const DEFAULT_SERVER_ERROR_MESSAGE = 'EXCEPTIONS.HTTP_INTERCEPTOR.SERVER_ERROR_START';
 const ERROR_NOTIFICATION_MESSAGE_BY_HTTP_STATUS: Map<number, string> = new Map([
-  [403, 'HTTP_INTERCEPTOR.HTTP_STATUS_CODE_FORBIDDEN'],
-  [400, 'HTTP_INTERCEPTOR.HTTP_STATUS_CODE_BAD_REQUEST'],
-  [404, 'HTTP_INTERCEPTOR.HTTP_STATUS_CODE_NOT_FOUND'],
-  [503, 'HTTP_INTERCEPTOR.HTTP_STATUS_CODE_SERVICE_UNAVAILABLE'],
-  [504, 'HTTP_INTERCEPTOR.HTTP_STATUS_CODE_GATEWAY_TIMEOUT'],
-  [417, 'HTTP_INTERCEPTOR.HTTP_STATUS_CODE_EXPECTATION_FAILED'],
-  [412, 'HTTP_INTERCEPTOR.HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION'],
+  [403, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_FORBIDDEN'],
+  [400, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_BAD_REQUEST'],
+  [404, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_NOT_FOUND'],
+  [503, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_SERVICE_UNAVAILABLE'],
+  [504, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_GATEWAY_TIMEOUT'],
+  [417, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_EXPECTATION_FAILED'],
+  [412, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION'],
+  [408, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_REQUEST_TIMEOUT'],
 ]);
 @Injectable()
 export class VitamUIHttpInterceptor implements HttpInterceptor {
@@ -84,7 +85,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     @Inject(ENVIRONMENT) private environment: any,
     @Inject(WINDOW_LOCATION) private location: any
   ) {
-    this.apiTimeout = environment?.apiTimeout ? environment.apiTimeout :  DEFAULT_API_TIMEOUT;
+    this.apiTimeout = environment?.apiTimeout ? environment.apiTimeout : DEFAULT_API_TIMEOUT;
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -107,7 +108,6 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
       this.apiTimeout = Number(headerTimeout);
     }
 
-
     const reqWithCredentials = request.clone({
       withCredentials: true,
       headers: request.headers.delete('X-By-Passed-Error'),
@@ -117,7 +117,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
         'X-Requested-With': 'XMLHttpRequest',
         'X-Tenant-Id': tenantIdentifier ? tenantIdentifier.toString() : '-1',
         'X-Application-Id': applicationId,
-      }
+      },
     });
 
     let errorToByPass: number = null;
@@ -126,52 +126,45 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     }
 
     return next.handle(reqWithCredentials).pipe(
-      timeoutWith(
-          this.apiTimeout,
-          throwError(new VitamUITimeoutError())
-        ),
-        tap((ev: HttpEvent<any>) => {
-          if (ev instanceof HttpResponse) {
-            this.logger.log(this, 'processing response', ev);
-          }
-        }),
-        catchError((response) => {
-          if (response instanceof HttpErrorResponse && response.status !== errorToByPass) {
-            this.logger.log(this, 'Processing http error', response);
-            if (response.status === HTTP_STATUS_CODE_UNAUTHORIZED) {
-              if (!this.environment.production && request && request.url.endsWith('/security')) {
-                // MDI : hack for dev purposes, with the first connection, we redirect the user to login
-                this.authService.user = null;
-                this.location.href = this.startupService.getLoginUrl();
-              } else {
-                // connection was lost, we need to logout the user
-                this.authService.logout();
-              }
+      timeoutWith(this.apiTimeout, throwError(new VitamUITimeoutError())),
+      tap((ev: HttpEvent<any>) => {
+        if (ev instanceof HttpResponse) {
+          this.logger.log(this, 'processing response', ev);
+        }
+      }),
+      catchError((response) => {
+        if (response instanceof HttpErrorResponse && response.status !== errorToByPass) {
+          this.logger.log(this, 'Processing http error', response);
+          if (response.status === HTTP_STATUS_CODE_UNAUTHORIZED) {
+            if (!this.environment.production && request && request.url.endsWith('/security')) {
+              // MDI : hack for dev purposes, with the first connection, we redirect the user to login
+              this.authService.user = null;
+              this.location.href = this.startupService.getLoginUrl();
+            } else {
+              // connection was lost, we need to logout the user
+              this.authService.logout();
             }
-            else {
-              this.errorNotification(response, request);
-            }
+          } else {
+            this.errorNotification(response, request);
           }
-          this.logger.log(this, 'Request error', response);
-          return throwError(response);
-        })
-      );
+        }
+        this.logger.log(this, 'Request error', response);
+        return throwError(response);
+      })
+    );
   }
 
   private initSnackBarService(): void {
     if (!this.snackBarService) {
       try {
         this.snackBarService = this.injector.get(VitamUISnackBarService);
-      }
-      catch (error) { }
+      } catch (error) {}
     }
   }
 
   private errorNotification(response: HttpErrorResponse, request: HttpRequest<any>): void {
     if (!request.headers.has(SKIP_ERROR_NOTIFICATION)) {
-      response.status === HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR
-        ? this.displayErrorDialog()
-        : this.displaySnackBar(response);
+      response.status === HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR ? this.displayErrorDialog() : this.displaySnackBar(response);
     }
   }
 
@@ -187,7 +180,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
       this.errorDialog = this.matDialog.open(ErrorDialogComponent, {
         panelClass: 'vitamui-modal',
       });
-      this.errorDialog.afterClosed().subscribe(() => this.errorDialog = null);
+      this.errorDialog.afterClosed().subscribe(() => (this.errorDialog = null));
     }
   }
 }

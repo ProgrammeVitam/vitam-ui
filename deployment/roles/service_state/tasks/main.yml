@@ -1,5 +1,5 @@
 
-- name: "{{ verbe }} service {{ service_name }}"
+- name: "Set service {{ vitamui_struct.service_name | default(service_name) }} to state {{ etat }}"
   service:
-    name: "{{ service_name }}"
+    name: "{{ vitamui_struct.service_name | default(service_name) }}"
     state: "{{ etat }}"

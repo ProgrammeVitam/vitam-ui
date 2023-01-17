@@ -9,3 +9,12 @@
   height: 2px;
   background-color: #E0E0E0;
 }
+
+.btn.more-actions {
+  background-color: transparent;
+  color: var(--vitamui-secondary);
+  border-color: var(--vitamui-secondary) !important;
+  &:disabled {
+    @include disabled(transparent, var(--vitamui-grey), transparent);
+  }
+}

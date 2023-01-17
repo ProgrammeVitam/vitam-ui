@@ -50,12 +50,12 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
-import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
@@ -84,6 +84,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
+@SuppressWarnings("unchecked")
 public class ArchiveSearchMgtRulesInternalServiceTest {
 
     @MockBean(name = "objectMapper")
@@ -182,7 +183,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
             .thenReturn(createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, true));
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
@@ -249,7 +250,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
+        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
             .thenReturn(createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, false));
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();

@@ -54,6 +54,162 @@ describe('DatePipe', () => {
     expect(timezone).toContain('UTC');
   });
 
+  it('formatDateTime should return the correct DateFormat', () => {
+    // Given
+    const expectedResult = '2022-10-18T00:00:00.000Z';
+    const dateValue = 'Tue Oct 18 2022 00:00:00 GMT+0200 (heure d’été d’Europe centrale)';
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.formatDateTime(dateValue);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('formatDateTime should return the correct DateFormat with hours, minutes and seconds', () => {
+    // Given
+    const expectedResult = '2022-10-18T15:03:14.000Z';
+    const dateValue = 'Tue Oct 18 2022 15:03:14 GMT+0200 (heure d’été d’Europe centrale)';
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.formatDateTime(dateValue);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct month', () => {
+    // Given
+    const expectedResult = '12';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getMonth(12);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct number of seconds', () => {
+    // Given
+    const expectedResult = '56';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getMinutes(56);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct number of minutes', () => {
+    // Given
+    const expectedResult = '56';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getMinutes(56);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct day', () => {
+    // Given
+    const expectedResult = '26';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getDay(26);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct hour', () => {
+    // Given
+    const expectedResult = '23';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getHour(23);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct month when month is less than 9', () => {
+    // Given
+    const expectedResult = '05';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getMonth(5);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct day when day is less than 9', () => {
+    // Given
+    const expectedResult = '09';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getDay(9);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct hour when hour is less than 9', () => {
+    // Given
+    const expectedResult = '07';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getHour(7);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct number of minutes when minutes is less than 9', () => {
+    // Given
+    const expectedResult = '02';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getMinutes(2);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('getMonth should return the correct number of seconds when seconds is less than 9', () => {
+    // Given
+    const expectedResult = '04';
+
+    const pipe = new DateTimePipe(fake as DatePipe);
+
+    // When
+    const result = pipe.getSeconds(4);
+
+    // Then
+    expect(result).toEqual(expectedResult);
+  });
+
   afterEach(() => {
     jasmine.clock().uninstall();
   });

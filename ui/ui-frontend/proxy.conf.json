@@ -29,6 +29,12 @@
     "pathRewrite": {},
     "logLevel": "debug"
   },
+  "/pastis-api": {
+    "target": "https://dev.vitamui.com:9015/",
+    "secure": false,
+    "pathRewrite": {},
+    "logLevel": "debug"
+  },
   "/collect-api": {
     "target": "https://dev.vitamui.com:9010/",
     "secure": false,

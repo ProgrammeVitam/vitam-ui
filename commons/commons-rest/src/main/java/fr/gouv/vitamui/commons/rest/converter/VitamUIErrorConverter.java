@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
+import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
@@ -69,7 +70,7 @@ public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIExc
         final HttpStatus status = HttpStatus.valueOf(source.getStatus());
         switch (status) {
             case INTERNAL_SERVER_ERROR:
-                exception = new InternalServerException(source.getMessage(), source.getError());
+                exception = new InternalServerException(source.getMessage(), source.getError(), source.getArgs());
                 break;
             case BAD_REQUEST:
                 exception = new InvalidFormatException(source.getMessage(), source.getError(), source.getArgs());
@@ -101,6 +102,9 @@ public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIExc
             case PAYLOAD_TOO_LARGE:
                 exception = new RequestEntityTooLargeException(source.getMessage(), source.getError());
                 break;
+            case REQUEST_TIMEOUT:
+                exception = new RequestTimeOutException(source.getMessage(), source.getError());
+                break;
             case EXPECTATION_FAILED:
                 exception = new UnexpectedSettingsException(source.getMessage(), source.getError());
                 break;default:
@@ -108,6 +112,7 @@ public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIExc
                 exception = new ApplicationServerException(source.getMessage());
                 break;
         }
+
         return exception;
     }
 

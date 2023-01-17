@@ -36,6 +36,7 @@ import { ArchiveSearchComponent } from '../archive-search/archive-search.compone
 import { ArchiveService } from '../archive.service';
 import { SearchCriteriaEltDto } from '../models/search.criteria';
 import { ArchiveSearchHelperService } from './archive-search-helper.service';
+
 const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
 
@@ -48,11 +49,11 @@ export class ArchiveUnitEliminationService {
     private archiveHelperService: ArchiveSearchHelperService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   launchEliminationAnalysisModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    eliminationAnalysisResponse: any,
     accessContract: string,
     selectedItemCountKnown: boolean,
     itemSelected: number,
@@ -62,32 +63,32 @@ export class ArchiveUnitEliminationService {
     showConfirmBigNumberOfResultsSuscription: Subscription
   ) {
     if (selectedItemCountKnown && itemSelected < DEFAULT_RESULT_THRESHOLD) {
-      this.launchEliminationAnalysis(listOfUACriteriaSearch, eliminationAnalysisResponse, accessContract, tenantIdentifier, currentPage);
+      this.launchEliminationAnalysis(listOfUACriteriaSearch, accessContract, tenantIdentifier, currentPage);
     } else {
+
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
-      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+      const showConfirmBigNumberOfResultsSuscription = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
         { panelClass: 'vitamui-dialog' }
       );
-      showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+
+      showConfirmBigNumberOfResultsSuscription
         .afterClosed()
         .pipe(filter((result) => !!result))
         .subscribe(() => {
           this.launchEliminationAnalysis(
             listOfUACriteriaSearch,
-            eliminationAnalysisResponse,
             accessContract,
             tenantIdentifier,
             currentPage
           );
         });
-      showConfirmBigNumberOfResultsSuscription?.unsubscribe();
     }
+    showConfirmBigNumberOfResultsSuscription?.unsubscribe();
   }
 
   private launchEliminationAnalysis(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    eliminationAnalysisResponse: any,
     accessContract: string,
     tenantIdentifier: number,
     currentPage: number
@@ -100,13 +101,11 @@ export class ArchiveUnitEliminationService {
     };
 
     this.archiveService.startEliminationAnalysis(exportDIPSearchCriteria, accessContract).subscribe((data) => {
-      eliminationAnalysisResponse = data.$results;
-
+      const eliminationAnalysisResponse = data.$results;
       if (eliminationAnalysisResponse && eliminationAnalysisResponse[0].itemId) {
         const guid = eliminationAnalysisResponse[0].itemId;
         const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
         const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + tenantIdentifier + '?guid=' + guid;
-
         this.archiveHelperService.openSnackBarForWorkflow(this.snackBar, message, serviceUrl);
       }
     });
@@ -114,28 +113,25 @@ export class ArchiveUnitEliminationService {
 
   launchEliminationModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    eliminationActionResponse: any,
     accessContract: string,
     tenantIdentifier: number,
     currentPage: number,
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
   ) {
-    const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
-      dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+      confirmSecondActionBigNumberOfResultsActionDialog,
       { panelClass: 'vitamui-dialog' }
     );
     dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.launchEliminationAction(listOfUACriteriaSearch, eliminationActionResponse, accessContract, tenantIdentifier, currentPage);
+        this.launchEliminationAction(listOfUACriteriaSearch, accessContract, tenantIdentifier, currentPage);
       });
   }
 
   private launchEliminationAction(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    eliminationActionResponse: any,
     accessContract: string,
     tenantIdentifier: number,
     currentPage: number
@@ -148,7 +144,7 @@ export class ArchiveUnitEliminationService {
     };
 
     this.archiveService.launchEliminationAction(exportDIPSearchCriteria, accessContract).subscribe((response) => {
-      eliminationActionResponse = response.$results;
+      const eliminationActionResponse = response.$results;
 
       if (eliminationActionResponse && eliminationActionResponse[0].itemId) {
         const guid = eliminationActionResponse[0].itemId;

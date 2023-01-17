@@ -33,7 +33,6 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -42,12 +41,14 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -58,11 +59,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+
+import java.io.InputStream;
 
 
 /**
@@ -230,7 +234,8 @@ public class ArchivesSearchExternalController {
 
     @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
-    public String updateUnitById(final @PathVariable("id") String id, @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
+    public String updateUnitById(final @PathVariable("id") String id,
+        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
@@ -238,4 +243,20 @@ public class ArchivesSearchExternalController {
         LOGGER.debug("update unit by id {} ", id);
         return archivesSearchExternalService.updateUnitById(id, unitDescriptiveMetadataDto);
     }
+
+    @Secured(ServicesData.ROLE_TRANSFER_ACKNOWLEDGMENT)
+    @ApiOperation(value = "Upload an ATR file for the transfer acknowledgment", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT , consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public String transferAcknowledgment(InputStream inputStream,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+
+        LOGGER.debug("[EXTERNAL] : Transfer Acknowledgment Operation");
+        ParameterChecker.checkParameter("The  fileName is mandatory parameter : ", originalFileName);
+        SanityChecker.checkSecureParameter(originalFileName);
+        SanityChecker.isValidFileName(originalFileName);
+        LOGGER.debug("atr xml fileName: {}", originalFileName);
+        return archivesSearchExternalService.transferAcknowledgment(inputStream, originalFileName);
+    }
+
 }

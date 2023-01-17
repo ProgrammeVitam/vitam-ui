@@ -30,3 +30,7 @@ export enum LogbookOperationReportState {
   DOWNLOADABLE,
   NON_EXISTENT,
 }
+
+export enum LogbookOperationTypeProc {
+  INGEST_TEST = 'INGEST_TEST'
+}

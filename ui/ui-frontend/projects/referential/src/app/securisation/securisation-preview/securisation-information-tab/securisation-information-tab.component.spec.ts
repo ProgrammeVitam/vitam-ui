@@ -34,15 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NgxFilesizeModule } from 'ngx-filesize';
+
 import { of } from 'rxjs';
 
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { Event } from '../../../../../../vitamui-library/src/lib/models/event';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationInformationTabComponent } from './securisation-information-tab.component';
-import { Event } from '../../../../../../vitamui-library/src/lib/models/event';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+
+@Pipe({ name: 'fileSize' })
+class MockFilesizePipe implements PipeTransform {
+  transform(value: number): number {
+    return value;
+  }
+}
 
 describe('SecurisationInformationTabComponent', () => {
   let component: SecurisationInformationTabComponent;
@@ -90,30 +97,25 @@ describe('SecurisationInformationTabComponent', () => {
         collectionName: 'collectionName',
         agId: 'agId',
         agIdApp: 'agIdApp',
-        obIdReq: 'obIdReq',
         agIdExt: 'agIdExt',
+        obIdReq: 'obIdReq',
         rightsStatementIdentifier: 'rightsStatementIdentifier',
       } as Event,
     ],
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      const securisationServiceMock = {
-        getInfoFromTimestamp: () => of({}),
-      };
+  beforeEach(waitForAsync(() => {
+    const securisationServiceMock = {
+      getInfoFromTimestamp: () => of({}),
+    };
 
     TestBed.configureTestingModule({
-      imports: [
-        NgxFilesizeModule, VitamUICommonTestModule
-      ],
-      declarations: [SecurisationInformationTabComponent],
-      providers: [
-        {provide: SecurisationService, useValue: securisationServiceMock}
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-  );
+      imports: [VitamUICommonTestModule],
+      declarations: [SecurisationInformationTabComponent, MockFilesizePipe],
+      providers: [{ provide: SecurisationService, useValue: securisationServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationInformationTabComponent);
