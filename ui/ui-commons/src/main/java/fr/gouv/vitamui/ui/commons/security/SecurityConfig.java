@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.ui.commons.security;
 
+import fr.gouv.vitamui.commons.security.client.config.BaseCasSecurityConfigurer;
+import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,9 +49,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import fr.gouv.vitamui.commons.security.client.config.BaseCasSecurityConfigurer;
-import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 
 @Configuration
 public class SecurityConfig extends BaseCasSecurityConfigurer {
@@ -67,22 +66,22 @@ public class SecurityConfig extends BaseCasSecurityConfigurer {
             .authorizeRequests()
             .antMatchers(getAuthList()).permitAll()
             .anyRequest().fullyAuthenticated()
-        .and().requiresChannel().anyRequest().requiresSecure()
-        .and()
+            .and().requiresChannel().anyRequest().requiresSecure()
+            .and()
             .addFilterAt(casAuthenticationFilter(), CasAuthenticationFilter.class)
             .addFilterAfter(new LogHeaderRegistrationFilter(), CasAuthenticationFilter.class)
             .authenticationProvider(casAuthenticationProvider())
             .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
             .authenticationEntryPoint(casAuthenticationEntryPoint())
-        .and()
+            .and()
             .logout()
             .logoutSuccessHandler((new LogoutSuccessHandler(HttpStatus.OK)))
             .logoutRequestMatcher(new AntPathRequestMatcher("/logout*"))
             .invalidateHttpSession(true)
             .addLogoutHandler(new CookieClearingLogoutHandler(env, "JSESSIONID", "XSRF-TOKEN"))
-        .and()
+            .and()
             .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-        http.headers().frameOptions().sameOrigin();
+        http.headers().xssProtection().and().frameOptions().sameOrigin();
         // @formatter:on
     }
 
