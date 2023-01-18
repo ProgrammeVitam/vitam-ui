@@ -6,10 +6,7 @@
       "name": "app",
       "installMode": "prefetch",
       "resources": {
-        "files": [
-          "/*.css",
-          "/*.js"
-        ]
+        "files": ["/*.css", "/*.js"]
       }
     },
     {
@@ -17,12 +14,7 @@
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
-        "files": [
-          "/assets/**",
-          "!/assets/**/*.json",
-          "/*.(eot|otf|svg|jpg|ttf|woff|woff2|ani)",
-          "/*-bg.png"
-        ]
+        "files": ["/assets/**", "!/assets/**/*.json", "/*.(eot|otf|svg|jpg|ttf|woff|woff2|ani)", "/*-bg.png"]
       }
     }
   ]
