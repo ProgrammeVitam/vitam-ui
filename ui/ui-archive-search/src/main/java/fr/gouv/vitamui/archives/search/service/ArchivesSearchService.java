@@ -23,16 +23,17 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+
 package fr.gouv.vitamui.archives.search.service;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
@@ -46,22 +47,27 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NotNull;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Objects;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 
 /**
  * UI
  * Archive-Search Service
  */
+
 @Service
 public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsDto> {
 
@@ -100,16 +106,17 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.getFilingHoldingScheme(context);
     }
 
+
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, ObjectData objectData,
-        ExternalHttpContext context) {
-        LOGGER.info("Download the Archive Unit Object with id {}", id);
+                                                                 ExternalHttpContext context) {
+        LOGGER.debug("Download the Archive Unit Object with id {}", id);
 
         ResultsDto got = findObjectById(id, context).getBody();
-        String usage = getUsage(Objects.requireNonNull(got), objectData);
-        final Mono<ResponseEntity<Resource>> resourceResponseEntityResponse =
-            archiveSearchExternalWebClient
-                .downloadObjectFromUnit(id, usage, getVersion(got.getQualifiers(), usage), context);
-        return resourceResponseEntityResponse;
+        setObjectData(Objects.requireNonNull(got), objectData);
+        return archiveSearchExternalWebClient.downloadObjectFromUnit(id,
+            objectData.getQualifier(),
+            objectData.getVersion(),
+            context);
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
@@ -128,52 +135,85 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(searchQuery, context);
     }
 
-    public String getUsage(ResultsDto got, ObjectData objectData) {
-        List<QualifiersDto> qualifiers = got.getQualifiers();
-        String finalUsage = null;
-        for (QualifiersDto qualifier : qualifiers) {
-            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.BINARYMASTER.getValue())) {
-                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.BINARYMASTER);
-                if (StringUtils.isEmpty(objectData.getFilename())) {
-                    continue;
-                }
-            }
-            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.DISSEMINATION.getValue())) {
-                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.DISSEMINATION);
-                if (StringUtils.isEmpty(objectData.getFilename())) {
-                    continue;
-                }
-            }
-            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.TEXTCONTENT.getValue())) {
-                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.TEXTCONTENT);
-                if (StringUtils.isEmpty(objectData.getFilename())) {
-                    continue;
-                }
-            }
-            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.THUMBNAIL.getValue())) {
-                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.THUMBNAIL);
+    public void setObjectData(ResultsDto got, ObjectData objectData) {
+        QualifiersDto qualifier = getLastObjectQualifier(got);
+        if (isNull(qualifier)) {
+            return;
+        }
+        objectData.setQualifier(qualifier.getQualifier());
+        VersionsDto version = getLastVersion(qualifier);
+        if (isNull(version)) {
+            return;
+        }
+        objectData.setFilename(getFilename(version));
+        objectData.setMimeType(getMimeType(version));
+        objectData.setVersion(getVersion(version));
+    }
+
+    private QualifiersDto getLastObjectQualifier(ResultsDto got) {
+        for (String qualifierName : ObjectQualifierTypeEnum.allValuesOrdered) {
+            QualifiersDto qualifierFound = got.getQualifiers().stream()
+                .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
+                .reduce((first, second) -> second)
+                .orElse(null);
+            if (nonNull(qualifierFound)) {
+                return qualifierFound;
             }
         }
-        return finalUsage;
+        return null;
     }
 
-    @NotNull
-    private String updateObjectDataFilename(ObjectData objectData, QualifiersDto qualifier, ObjectQualifierTypeEnum objectQualifierTypeEnum) {
-        if(qualifier.getVersions().get(0).getFileInfoModel() != null && StringUtils.isEmpty(objectData.getFilename())) {
-            String filename = qualifier.getVersions().get(0).getFileInfoModel().getFilename();
-            objectData.setFilename(filename);
+    private VersionsDto getLastVersion(QualifiersDto qualifier) {
+        if (isNull(qualifier) || CollectionUtils.isEmpty(qualifier.getVersions())) {
+            return null;
         }
-        objectData.setMimeType(qualifier.getVersions().get(0).getFormatIdentification().getMimeType());
-        return objectQualifierTypeEnum.getValue();
+        return qualifier.getVersions().stream()
+            .reduce((first, second) -> second)
+            .orElse(null);
     }
 
-    public Integer getVersion(List<QualifiersDto> qualifiers, String usage) {
-        List<VersionsDto> versions =
-            qualifiers.stream().filter(q -> q.getQualifier().equals(usage)).findFirst().get().getVersions();
-        return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
+    private String getFilename(VersionsDto version) {
+        if (isNull(version) || isEmpty(version.getId())) {
+            return null;
+        }
+        return version.getId() + getExtension(version);
     }
 
-    public ResponseEntity<String> exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,ExternalHttpContext context) {
+    private String getExtension(VersionsDto version) {
+        String uriExtension = EMPTY;
+        if (isNotBlank(version.getUri()) && version.getUri().contains(".")) {
+            uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
+        }
+        String filenameExtension = EMPTY;
+        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")) {
+            filenameExtension = version.getFileInfoModel().getFilename()
+                .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
+        }
+        if (isNotBlank(filenameExtension)) {
+            return "." + filenameExtension;
+        } else if (isNotBlank(uriExtension)) {
+            return "." + uriExtension;
+        }
+        return EMPTY;
+    }
+
+    private String getMimeType(VersionsDto version) {
+        if (isNull(version) || isNull(version.getFormatIdentification())) {
+            return null;
+        }
+        return version.getFormatIdentification().getMimeType();
+    }
+
+    private Integer getVersion(VersionsDto version) {
+        if (isNull(version) || isNull(version.getDataObjectVersion())) {
+            return null;
+        }
+        return Integer.parseInt(version.getDataObjectVersion().split("_")[1]);
+    }
+
+    public ResponseEntity<String> exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
+                                                      ExternalHttpContext context) {
         LOGGER.info("export DIP with criteria {}", exportDipCriteriaDto);
         return archiveSearchExternalRestClient.exportDIPCriteria(exportDipCriteriaDto, context);
     }

@@ -38,13 +38,20 @@ package fr.gouv.vitamui.commons.vitam.api.model;
 
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum ObjectQualifierTypeEnum {
+    // Ordered by download preference.
     BINARYMASTER("BinaryMaster"),
     DISSEMINATION("Dissemination"),
     THUMBNAIL("Thumbnail"),
     TEXTCONTENT("TextContent");
 
-
+    public static final List<String> allValuesOrdered = Arrays.stream(ObjectQualifierTypeEnum.values())
+        .map(ObjectQualifierTypeEnum::getValue)
+        .collect(Collectors.toList());
 
     private final String value;
 
@@ -57,9 +64,9 @@ public enum ObjectQualifierTypeEnum {
     }
 
     public static ObjectQualifierTypeEnum fromValue(String value) {
-        for (ObjectQualifierTypeEnum objectQualifierTypeEnum : ObjectQualifierTypeEnum.values()) {
-            if (objectQualifierTypeEnum.getValue().equalsIgnoreCase(value)) {
-                return objectQualifierTypeEnum;
+        for (ObjectQualifierTypeEnum objectQualifierType : ObjectQualifierTypeEnum.values()) {
+            if (objectQualifierType.getValue().equalsIgnoreCase(value)) {
+                return objectQualifierType;
             }
         }
         throw new BadRequestException("the object qualifier type " + value + " specified is not a valid one");
