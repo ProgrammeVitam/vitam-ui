@@ -48,15 +48,12 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ToastrModule } from 'ngx-toastr';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { InjectorModule } from 'ui-frontend-common';
-import { LoggerModule } from 'ui-frontend-common';
-import { BASE_URL } from 'ui-frontend-common';
-import { ENVIRONMENT } from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { PastisConfiguration } from './core/classes/pastis-configuration';
-import {HttpBackend, HttpClient} from "@angular/common/http";
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
@@ -64,12 +61,11 @@ export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpL
     { prefix: './assets/i18n/', suffix: '.json' },
   ]);
 }
+
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     InjectorModule,
     LoggerModule.forRoot(),
@@ -78,9 +74,8 @@ registerLocaleData(localeFr, 'fr');
     VitamUICommonModule,
     AppRoutingModule,
     MatToolbarModule,
-    // VitamUILibraryModule,
     QuicklinkModule,
-     TranslateModule.forRoot({
+    TranslateModule.forRoot({
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
       defaultLanguage: 'fr',
       loader: {
@@ -89,14 +84,14 @@ registerLocaleData(localeFr, 'fr');
         deps: [HttpBackend],
       },
     }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-full-width',
       preventDuplicates: false,
       timeOut: 3000,
       closeButton: false,
-      easeTime: 0
+      easeTime: 0,
     }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     Title,
@@ -109,8 +104,8 @@ registerLocaleData(localeFr, 'fr');
       provide: APP_INITIALIZER,
       useFactory: PastisConfigurationFactory,
       deps: [PastisConfiguration],
-      multi: true
-    }
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
