@@ -85,7 +85,8 @@ import java.util.Optional;
 @Setter
 public class ArchivalProfileUnitExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchivalProfileUnitExternalController.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(ArchivalProfileUnitExternalController.class);
 
     @Autowired
     private ArchivalProfileUnitExternalService archivalProfileUnitExternalService;
@@ -99,11 +100,14 @@ public class ArchivalProfileUnitExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
-    @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-                                                                      @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-                                                                      @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    @GetMapping(params = {"page", "size"})
+    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
+            direction);
         return archivalProfileUnitExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -111,21 +115,24 @@ public class ArchivalProfileUnitExternalController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public ArchivalProfileUnitDto getOne(final @PathVariable("identifier") String identifier) {
         LOGGER.debug("get archival unit profile identifier={}");
-        ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", identifier);
         return archivalProfileUnitExternalService.getOne(identifier);
     }
 
     @Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES_UNIT)
     @PutMapping(CommonConstants.PATH_ID)
-    public ArchivalProfileUnitDto update(final @PathVariable("id") String id, final @Valid @RequestBody ArchivalProfileUnitDto dto) throws InvalidParseOperationException {
+    public ArchivalProfileUnitDto update(final @PathVariable("id") String id,
+        final @Valid @RequestBody ArchivalProfileUnitDto dto) throws InvalidParseOperationException {
         LOGGER.debug("Update archival unit profile with identifier metadata {} to {}", id, dto);
         SanityChecker.sanitizeCriteria(id);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "Unable to update archival unit profile : the DTO id must match the path id");
+        Assert.isTrue(StringUtils.equals(id, dto.getId()),
+            "Unable to update archival unit profile : the DTO id must match the path id");
         return archivalProfileUnitExternalService.update(dto);
     }
 
     /**
      * Create an Archival Profile Unit
+     *
      * @param archivalProfileUnitDto Entity to create
      * @return entity created
      */
@@ -146,14 +153,20 @@ public class ArchivalProfileUnitExternalController {
      */
     @Secured(ServicesData.ROLE_IMPORT_ARCHIVE_PROFILES_UNIT)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity<JsonNode> importArchivalUnitProfiles(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<JsonNode> importArchivalUnitProfiles(@RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file)
+        throws InvalidParseOperationException {
         LOGGER.debug("Import Archival Unit Profile file {}", fileName);
         ParameterChecker.checkParameter("The fileName is mandatory parameter :", fileName);
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        SanityChecker.isValidFileName(file.getOriginalFilename());
+        SanityChecker.checkSecureParameter(fileName);
+        SanityChecker.isValidFileName(fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
         return archivalProfileUnitExternalService.importArchivalUnitProfiles(fileName, file);
     }
 
-    @Secured({ ServicesData.ROLE_GET_PASTIS })
+    @Secured({ServicesData.ROLE_GET_PASTIS})
     @PostMapping(CommonConstants.PATH_CHECK)
     public ResponseEntity<Void> check(@RequestBody ArchivalProfileUnitDto archivalProfileUnitDto,
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
@@ -165,10 +178,12 @@ public class ArchivalProfileUnitExternalController {
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_PASTIS)
-    public ArchivalProfileUnitDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ArchivalProfileUnitDto patch(final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update.");
         return archivalProfileUnitExternalService.patch(partialDto);
     }
 
@@ -176,7 +191,7 @@ public class ArchivalProfileUnitExternalController {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for accessContract with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return archivalProfileUnitExternalService.findHistoryById(id);
     }
 }
