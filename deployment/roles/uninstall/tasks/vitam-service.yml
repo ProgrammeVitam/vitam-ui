@@ -7,9 +7,13 @@
   ignore_errors: true
 
 - name: Uninstall vitam service
-  yum:
+  package:
     name: "vitam-{{ service_name }}"
     state: absent
+  register: result
+  retries: "{{ packages_install_retries_number | default(2) }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay | default(10) }}"
 
 - name: Delete file system of consul
   file:

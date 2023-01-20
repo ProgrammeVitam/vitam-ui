@@ -1,7 +1,7 @@
 ---
 - name: restart consul
   service:
-    name: "{{ service_consul }}"
+    name: "{{ consul.service_name | default('vitam-consul') }}"
     state: restarted
   listen: restart consul
 

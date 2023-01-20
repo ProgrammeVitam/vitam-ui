@@ -5,8 +5,7 @@ mongod_replicaset_name: "shard{{ mongo_shard_id | default(0) }}"
 mongod_client_connect_timeout_ms: 2000
 
 mongodb:
-    service_name: "vitamui-mongod"
-    package_name: "vitamui-mongod"
+    vitamui_component: "mongod"
     host: "mongo-vitamui-mongod.service.{{ consul_domain }}"
     mongod_port: 27017
     check_consul: 10 # in seconds

@@ -104,3 +104,13 @@ vitamui:
       # memory: "-Xms512m -Xmx512m"
       # gc: ""
       # java: ""
+  pastis_external:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  pastis:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""

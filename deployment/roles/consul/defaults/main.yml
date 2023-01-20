@@ -1,3 +1,4 @@
 ---
 
-package_name: "{{ consul.service_name }}"
+service_name: "{{ consul.service_name | default('vitam-consul') }}"
+package_name: "{{ consul.package_name | default('vitam-consul') }}"

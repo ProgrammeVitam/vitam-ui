@@ -35,21 +35,14 @@
     - ansible_os_family == "Debian"
     - disable_internet_repositories_install | default(false) | bool == true
 
-- name: Install logstash package from repo
+- name: "Install {{ package_name }} package from repo"
   package:
-    name: "{{ logstash.package_name }}"
+    name: "{{ package_name }}"
     state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
-  notify:
-    - restart logstash
-
-- name: Enable logstash
-  service:
-    name: "{{ logstash.service_name }}"
-    enabled: "{{ logstash.at_boot | default(service_at_boot) }}"
   notify:
     - restart logstash
 
@@ -71,7 +64,7 @@
   notify:
     - restart logstash
 
-- name: ensure json conf extra  directory exists
+- name: ensure json conf extra directory exists
   file:
     path: "{{ logstash_confextra_dir }}"
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
@@ -117,14 +110,6 @@
   notify:
     - restart logstash
 
-# - name: add vitam patterns conf
-#   template:
-#     src: "vitam-patterns.j2"
-#     dest: "/usr/share/logstash/vendor/bundle/jruby/2.5.0/gems/logstash-patterns-core-4.1.2/patterns/vitam"
-#     owner: "{{ logstash.user }}"
-#   notify:
-#     - restart logstash
-
 - name: Ensure conf.d subdir exists
   file:
     path: "{{ logstash_conf_dir }}/conf.d/extra"
@@ -149,34 +134,30 @@
 
 - name: Ensure consul config dir is OK
   file:
-    path: "{{ consul.conf_folder }}"
+    path: "{{ consul.conf_folder | default('/vitam/conf/consul') }}"
     state: directory
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitam_defaults.users.group }}"
+  tags: consul_conf
 
 - name: Deploy consul agent service declaration
   template:
-    src: "service-{{ item }}.json.j2"
-    dest: "{{ consul.conf_folder }}/service-{{ item }}.json"
+    src: "service-logstash.json.j2"
+    dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/service-logstash.json"
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitam_defaults.users.group }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
-  with_items:
-    - logstash
-  tags:
-    - consul_conf
-  notify:
-   - reload consul configuration
+  tags: consul_conf
+  notify: reload consul configuration for logstash
 
-- name: Ensure consul service is started
-  service:
-    name: "vitam-consul"
-    state: started
+- meta: flush_handlers
+  tags: consul_conf
 
 - name: Ensure logstash service is started
   service:
-    name: "{{ logstash.service_name }}"
+    name: "{{ service_name }}"
     state: started
+    enabled: "{{ logstash.at_boot | default(service_at_boot) }}"
 
 - name: Wait for logstash to be available
   wait_for:
@@ -186,6 +167,5 @@
     delay: 5
     timeout: 240
     host: "{{ ip_admin }}"
-  tags:
-    - start
+  tags: start
 

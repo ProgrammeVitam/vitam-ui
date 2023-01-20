@@ -10,7 +10,7 @@
         "name": "mongo-express-{{ mongo_cluster_name }} : TCP check",
         "notes": "Status mongo-express-{{ mongo_cluster_name }}",
         "tcp": "{{ ip_admin }}:{{ mongo_express.port | default('8081') }}",
-        "interval": "{{ mongodb.check_consul }}s"
+        "interval": "{{ mongo_express.check_consul | default('10') }}s"
       }
     ]
   }
