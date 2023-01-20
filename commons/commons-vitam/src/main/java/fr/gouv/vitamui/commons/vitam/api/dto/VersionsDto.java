@@ -36,29 +36,28 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import fr.gouv.vitam.common.model.objectgroup.FileInfoModel;
 import fr.gouv.vitam.common.model.objectgroup.FormatIdentificationModel;
 import fr.gouv.vitam.common.model.objectgroup.MetadataModel;
 import fr.gouv.vitam.common.model.objectgroup.PhysicalDimensionsModel;
 import fr.gouv.vitam.common.model.objectgroup.StorageJson;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-@Getter
-@Setter
-@ToString
+import java.util.HashMap;
+import java.util.Map;
+
+@Data
+@Accessors(chain = true)
 public class VersionsDto {
 
     @JsonProperty("#rank")
     private Integer rank;
 
     @JsonProperty("#id")
+    @JsonAlias({"_id"})
     private String id;
 
     @JsonProperty("DataObjectVersion")
