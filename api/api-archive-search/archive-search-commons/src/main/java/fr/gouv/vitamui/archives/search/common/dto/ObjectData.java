@@ -43,8 +43,8 @@ import java.io.Serializable;
 public class ObjectData implements Serializable {
     private Resource resource;
     private String filename;
-    /**
-    * mimeType to use to get the exacte vitam mimetype
-    **/
+    // mimeType to use to get the exact VITAM mimetype
     private String mimeType;
+    private String qualifier;
+    private Integer version;
 }
