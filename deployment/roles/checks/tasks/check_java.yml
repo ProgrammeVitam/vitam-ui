@@ -1,24 +1,34 @@
 ---
+
 - name: force java-1.8 is absent
   package:
     name: "openjdk-8-jdk-headless"
     state: absent
+  register: result
+  retries: "{{ packages_install_retries_number | default(2) }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay | default(10) }}"
   when: ansible_os_family == "Debian"
 
-- name: force java-1.8.0-openjdk is absent
-  package:
-    name: "java-1.8.0-openjdk"
-    state: absent
-  when: ansible_os_family == "RedHat"
+- block:
+  - name: force java-1.8.0-openjdk is absent
+    package:
+      name:
+        - "java-1.8.0-openjdk"
+        - "java-1.8.0-openjdk-headless"
+      state: absent
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
 
-- name: force java-1.8.0-openjdk-headless is absent
-  package:
-    name: "java-1.8.0-openjdk-headless"
-    state: absent
-  when: ansible_os_family == "RedHat"
+  - name: install java 11 on the machine
+    package:
+      name: "java-11-openjdk-headless"
+      state: present
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
 
-- name: install java 11 on the machine
-  package:
-    name: "java-11-openjdk-headless"
-    state: present
   when: ansible_os_family == "RedHat"

@@ -1,8 +1,7 @@
 ---
 
 mongo_express:
-    package_name: "vitamui-mongo-express"
-    service_name: "vitamui-mongo-express"
+    vitamui_component: "mongo-express"
     baseuri: "/mongo-express-{{ mongo_cluster_name }}"
     port: 8081
     readonly: true # components of writing and deleting are not visible

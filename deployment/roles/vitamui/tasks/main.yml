@@ -2,7 +2,7 @@
 
 - name: "Install {{ vitamui_struct.package_name | default(package_name) }} package"
   package:
-    name: "{{ vitamui_struct.package_name| default(package_name)  }}"
+    name: "{{ vitamui_struct.package_name | default(package_name) }}"
     state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"
