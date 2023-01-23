@@ -2,13 +2,16 @@ include /etc/nginx/conf.d/upstream;
 
 server {
 
-  listen 443 ssl;
+  listen {{ ip_service }}:443 ssl;
   include {{ nginx_ssl_conf }}/ssl.conf;
 
   server_name {{ vitam_reverse_external_dns }};
 
+  access_log  {{ root_path }}/log/nginx/access.log main;
+  error_log   {{ root_path }}/log/nginx/error.log;
+
   location = /favicon.ico {
-    alias {{ root_path }}/assets/favicon.ico;
+    alias {{ root_path }}/conf/assets/favicon.ico;
   }
 
   # UI IDENTITY_ADMIN
