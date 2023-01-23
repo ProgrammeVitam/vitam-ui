@@ -52,7 +52,7 @@ function constantToTranslate() {
 @Component({
   selector: 'pastis-create-profile',
   templateUrl: './create-profile.component.html',
-  styleUrls: [ './create-profile.component.scss' ]
+  styleUrls: ['./create-profile.component.scss'],
 })
 export class CreateProfileComponent implements OnInit {
   firstChoice: string;
@@ -61,9 +61,11 @@ export class CreateProfileComponent implements OnInit {
   profilPaChoice = true;
   isStandalone: boolean = environment.standalone;
 
-  constructor(private dialogRef: MatDialogRef<CreateProfileComponent>, private translateService: TranslateService,
-              @Inject(MAT_DIALOG_DATA) public data: PastisDialogData) {
-  }
+  constructor(
+    private dialogRef: MatDialogRef<CreateProfileComponent>,
+    private translateService: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public data: PastisDialogData
+  ) {}
 
   ngOnInit() {
     if (!this.isStandalone) {
@@ -72,16 +74,15 @@ export class CreateProfileComponent implements OnInit {
     } else if (this.isStandalone) {
       this.firstChoice = 'PA';
       this.secondChoice = 'PUA';
-      this.title = 'Sélectionner un profil d\'archivage :';
+      this.title = "Sélectionner un profil d'archivage :";
     }
   }
 
   translatedOnChange(): void {
-    this.translateService.onLangChange
-      .subscribe((event: LangChangeEvent) => {
-        constantToTranslate.call(this);
-        console.log(event.lang);
-      });
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      constantToTranslate.call(this);
+      console.log(event.lang);
+    });
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -97,7 +98,6 @@ export class CreateProfileComponent implements OnInit {
   }
 
   changeChoiceCreateProfile($event: string) {
-    console.log($event);
     if ($event === this.firstChoice) {
       this.profilPaChoice = true;
     } else {
@@ -112,5 +112,4 @@ export class CreateProfileComponent implements OnInit {
       this.dialogRef.close({ success: true, action: 'PUA' });
     }
   }
-
 }

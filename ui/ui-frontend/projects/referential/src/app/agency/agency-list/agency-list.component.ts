@@ -34,26 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute} from '@angular/router';
-import {Agency} from 'projects/vitamui-library/src/lib/models/agency';
-import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { merge, Subject } from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import {
   AccessContract,
   AdminUserProfile,
+  Agency,
   ApplicationId,
   AuthService,
   DEFAULT_PAGE_SIZE,
@@ -61,16 +51,16 @@ import {
   InfiniteScrollTable,
   PageRequest,
   Role,
-  User
+  User,
 } from 'ui-frontend-common';
-import {AgencyService} from '../agency.service';
+import { AgencyService } from '../agency.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
 @Component({
   selector: 'app-agency-list',
   templateUrl: './agency-list.component.html',
-  styleUrls: ['./agency-list.component.scss']
+  styleUrls: ['./agency-list.component.scss'],
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
@@ -85,16 +75,16 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
 
   @Output() agencyClick = new EventEmitter<Agency>();
 
-  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<AgencyListComponent>;
-  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
+  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<AgencyListComponent>;
+  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
   overridePendingChange: true;
   loaded = false;
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
-  private groups: Array<{ id: string, group: any }> = [];
+  private groups: Array<{ id: string; group: any }> = [];
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
@@ -121,12 +111,13 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS]
+      roles: [Role.ROLE_GENERIC_USERS],
     };
   }
 
   ngOnInit() {
-    this.agencyService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
+    this.agencyService
+      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe((data: AccessContract[]) => {
         this.dataSource = data;
       });
@@ -137,15 +128,16 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
       distinctUntilChanged(),
       tap((tenantIdentifier) => {
         this.agencyService.setTenantId(tenantIdentifier);
-      }),
+      })
     );
 
-    const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
+      debounceTime(FILTER_DEBOUNCE_TIME_MS)
+    );
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildAgencyCriteriaFromSearch();
-      console.log('query: ', query);
+
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
@@ -180,18 +172,18 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   }
 
   deleteAgencyDialog(agency: Agency) {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
 
     dialog.componentInstance.objectType = 'service agent';
     dialog.componentInstance.objectName = agency.identifier;
 
-    dialog.afterClosed().pipe(
-      filter((result) => !!result)
-    ).subscribe(() => {
-      this.agencyService.delete(agency).subscribe(() => {
-        this.searchAgencyOrdered();
+    dialog
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.agencyService.delete(agency).subscribe(() => {
+          this.searchAgencyOrdered();
+        });
       });
-    });
   }
-
 }

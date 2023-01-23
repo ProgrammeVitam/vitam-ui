@@ -15,16 +15,15 @@ import { ProfileInformationTabComponent } from './profile-information-tab/profil
 @Component({
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
-  styleUrls: [ './profile-preview.component.scss' ]
+  styleUrls: ['./profile-preview.component.scss'],
 })
 export class ProfilePreviewComponent implements AfterViewInit {
-
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
   @Input()
   inputProfile: ProfileDescription;
 
-  tabUpdated: boolean[] = [ false, false ];
+  tabUpdated: boolean[] = [false, false];
   isClicked = false;
   isStandalone: boolean = environment.standalone;
 
@@ -36,7 +35,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   tabLinks: Array<ProfileInformationTabComponent> = [];
   @ViewChild('infoTab', { static: false }) infoTab: ProfileInformationTabComponent;
 
-  @HostListener('window:beforeunload', [ '$event' ])
+  @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       event.preventDefault();
@@ -45,9 +44,13 @@ export class ProfilePreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private router: Router,
-              private pastisConfig: PastisConfiguration, private profileService: ProfileService, private route: ActivatedRoute) {
-  }
+  constructor(
+    private matDialog: MatDialog,
+    private router: Router,
+    private pastisConfig: PastisConfiguration,
+    private profileService: ProfileService,
+    private route: ActivatedRoute
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -68,8 +71,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
     if (await this.confirmAction()) {
       const submitProfileUpdate: Observable<ProfileDescription> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit(this.inputProfile);
 
-      submitProfileUpdate.subscribe(() => {
-      });
+      submitProfileUpdate.subscribe(() => {});
     } else {
       this.tabLinks[this.tabs.selectedIndex].resetForm(this.inputProfile);
     }
@@ -80,7 +82,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
       await this.checkBeforeExit();
     }
 
-    const args = [ tab, tabHeader, idx ];
+    const args = [tab, tabHeader, idx];
     return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
   }
 
@@ -98,8 +100,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   isProfilAttached() {
-    if (this.inputProfile.controlSchema && this.inputProfile.controlSchema.length != 2 || this.inputProfile.path) {
-      // console.log(this.inputProfile)
+    if ((this.inputProfile.controlSchema && this.inputProfile.controlSchema.length != 2) || this.inputProfile.path) {
       return true;
     }
   }
@@ -109,24 +110,27 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   editProfile(inputProfile: ProfileDescription) {
-    this.router.navigate([ this.pastisConfig.pastisEditPage, inputProfile.id ],
-      { state: inputProfile, relativeTo: this.route, skipLocationChange: false });
+    this.router.navigate([this.pastisConfig.pastisEditPage, inputProfile.id], {
+      state: inputProfile,
+      relativeTo: this.route,
+      skipLocationChange: false,
+    });
   }
 
   downloadProfile(inputProfile: ProfileDescription) {
     if (inputProfile.type === 'PA') {
-      this.profileService.downloadProfilePaVitam(inputProfile.identifier).subscribe(dataFile => {
+      this.profileService.downloadProfilePaVitam(inputProfile.identifier).subscribe((dataFile) => {
         if (dataFile) {
           this.downloadFile(dataFile, inputProfile.type, inputProfile);
         }
       });
     } else if (inputProfile.type === 'PUA') {
       // Send the retrieved JSON data to profile service
-      this.profileService.getProfile(inputProfile).subscribe(retrievedData => {
+      this.profileService.getProfile(inputProfile).subscribe((retrievedData) => {
         const profileResponse = retrievedData as ProfileResponse;
         this.fileNode.push(profileResponse.profile);
-        // console.log(profileResponse.notice.identifier + 'identifier');
-        this.profileService.uploadFile(this.fileNode, profileResponse.notice, inputProfile.type).subscribe(data => {
+
+        this.profileService.uploadFile(this.fileNode, profileResponse.notice, inputProfile.type).subscribe((data) => {
           this.downloadFile(data, inputProfile.type, inputProfile);
         });
       });
@@ -135,7 +139,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
 
   downloadFile(dataFile: any, typeProfile: string, inputProfile?: ProfileDescription): void {
     const typeFile = typeProfile === 'PA' ? 'application/xml' : 'application/json';
-    const newBlob = new Blob([ dataFile ], { type: typeFile });
+    const newBlob = new Blob([dataFile], { type: typeFile });
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(newBlob);
       return;

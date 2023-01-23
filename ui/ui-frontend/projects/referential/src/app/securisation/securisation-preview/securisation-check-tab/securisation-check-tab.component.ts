@@ -34,19 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {ApiEvent, Event, LogbookApiService} from 'ui-frontend-common';
-import {AccessContractService} from '../../../access-contract/access-contract.service';
-import {SecurisationService} from '../../securisation.service';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AccessContract, ApiEvent, Event, LogbookApiService } from 'ui-frontend-common';
+import { AccessContractService } from '../../../access-contract/access-contract.service';
+import { SecurisationService } from '../../securisation.service';
 
 @Component({
   selector: 'app-securisation-check-tab',
   templateUrl: './securisation-check-tab.component.html',
-  styleUrls: ['./securisation-check-tab.component.scss']
+  styleUrls: ['./securisation-check-tab.component.scss'],
 })
-
 export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   @Input() id: string;
   @Input() securisation: Event;
@@ -60,11 +58,11 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   constructor(
     private securisationService: SecurisationService,
     private accessContractService: AccessContractService,
-    private route: ActivatedRoute) { }
-
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       if (params.tenantIdentifier) {
         this.accessContractService.getAllForTenant(params.tenantIdentifier).subscribe((value) => {
           this.accessContracts = value;
@@ -85,7 +83,7 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   }
 
   checkTraceability() {
-    this.securisationService.checkTraceabilityOperation(this.id, this.accessContractId).subscribe((response: {$results: ApiEvent[]}) => {
+    this.securisationService.checkTraceabilityOperation(this.id, this.accessContractId).subscribe((response: { $results: ApiEvent[] }) => {
       this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
       this.display = true;
     });

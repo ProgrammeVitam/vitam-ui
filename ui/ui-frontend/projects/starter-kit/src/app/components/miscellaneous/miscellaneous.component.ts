@@ -22,9 +22,7 @@ export class MiscellaneousComponent implements OnInit {
     this.dialog
       .open(SampleDialogComponent, { panelClass: 'vitamui-modal', disableClose: true })
       .afterClosed()
-      .subscribe(() => {
-        console.log('Dialog closed !');
-      });
+      .subscribe(() => {});
   }
 
   onScroll() {

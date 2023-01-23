@@ -252,7 +252,6 @@ export class ProfileService implements OnDestroy {
     });
 
     this.subscription1$ = this.getAllProfilesPUAPaginated(pageRequest).subscribe((data: ProfileDescription[]) => {
-      // @ts-ignore
       if (data) {
         data.forEach(p => p.type = 'PUA');
         this.retrievedProfiles.next(data);
@@ -262,8 +261,7 @@ export class ProfileService implements OnDestroy {
     this.subscriptions.push(this.subscription1$);
     this.subscriptions.push(this.subscription2$);
 
-    // console.log(this.retrievedProfiles + ' tableau gell all profiles Paginated');
-    return this.retrievedProfiles;
+      return this.retrievedProfiles;
   }
 
 

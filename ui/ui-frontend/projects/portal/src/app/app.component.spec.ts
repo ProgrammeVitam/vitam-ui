@@ -51,7 +51,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AuthService, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
-const translations: any = {TEST: 'This is a test'};
+const translations: any = { TEST: 'This is a test' };
 
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
@@ -60,25 +60,21 @@ class FakeLoader implements TranslateLoader {
 }
 
 @Component({ selector: 'router-outlet', template: '' })
-class RouterOutletStubComponent { }
+class RouterOutletStubComponent {}
 
 describe('AppComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const startupServiceStub = {
       configurationLoaded: () => true,
-      printConfiguration: () => { },
+      printConfiguration: () => {},
       getPlatformName: () => '',
-      load: () => { },
+      load: () => {},
       getPortalUrl: () => '',
       getConfigStringValue: () => '',
     };
 
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        RouterOutletStubComponent,
-      ],
+      declarations: [AppComponent, RouterOutletStubComponent],
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
@@ -87,17 +83,17 @@ describe('AppComponent', () => {
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
-          loader: {provide: TranslateLoader, useClass: FakeLoader}
-        })
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
+        }),
       ],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
-        { provide: Router, useValue: { navigate: () => { }, events: of() } },
+        { provide: Router, useValue: { navigate: () => {}, events: of() } },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
-      ]
+      ],
     }).compileComponents();
   }));
 
@@ -105,15 +101,12 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     fixture.detectChanges();
-    console.log('Create App: ', app);
     expect(app).toBeTruthy();
   });
 
   it(`should have as title 'Portal App'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const title = fixture.componentInstance.title;
-    console.log('Title App: ', title);
     expect(title).toEqual('Portal App');
   });
-
 });

@@ -223,7 +223,6 @@ export class FileTreeComponent implements OnDestroy {
     this.sedaData = this.sedaService.sedaRules[0];
     this.sedaService.selectedSedaNode.next(this.sedaService.sedaRules[0]);
     this.sedaService.selectedSedaNodeParent.next(this.sedaData);
-    // console.log('Init seda node on file tree : %o', this.sedaService.selectedSedaNode.getValue(), ' on tab : ', this.rootElementName);
 
     this._fileServiceTabChildrenRulesChange = this.fileService.tabChildrenRulesChange.subscribe((rules) => {
       this.rulesChange = rules;
@@ -241,7 +240,6 @@ export class FileTreeComponent implements OnDestroy {
   translatedOnChange(): void {
     this.translateService.onLangChange.subscribe(() => {
       constantToTranslate.call(this);
-      // console.log(event.lang);
     });
   }
 
@@ -283,7 +281,6 @@ export class FileTreeComponent implements OnDestroy {
 
   /** Add an item (or a list of items) in the Tree */
   insertItem(parent: FileNode, elementsToAdd: string[], node?: FileNode, insertItemDuplicate?: boolean) {
-    console.log('After data is : %o', this.fileTreeService.nestedDataSource.data);
     const elementsToAddFromSeda: SedaData[] = [];
     for (const element of elementsToAdd) {
       parent.sedaData.Children.forEach((child) => {
@@ -305,11 +302,9 @@ export class FileTreeComponent implements OnDestroy {
       });
       // 5. Update tree
       this.sendNodeMetadata(parent);
-      console.log('New fileNode data is : %o', this.fileTreeService.nestedDataSource.data);
 
       // 6. No more nodes to add
     } else {
-      console.log('No More Nodes can be inserted : No node was selected or node name is invalid');
     }
   }
 
@@ -345,13 +340,10 @@ export class FileTreeComponent implements OnDestroy {
         newNode.puaData = new PUA();
         newNode.puaData.additionalProperties = false;
       }
-      console.log('Parent node name: ' + parent.name);
-      console.log('New node  : ', newNode);
 
       // 1.4. Update parent->children relashionship
       parent.children.push(newNode);
       this.parentNodeMap.set(newNode, parent);
-      console.log('Seda children and file children: ', parent.sedaData.Children, parent.children);
 
       // 2. Insert all children of complex elements based on SEDA definition
       if (sedaChild.Element === SedaElementConstants.complex) {
@@ -443,7 +435,6 @@ export class FileTreeComponent implements OnDestroy {
       FileTreeComponent.archiveUnits = node;
       this.generateArchiveUnitsNumbers(node);
       this.renderChanges(node, node.id);
-      console.log('Archive units : ', FileTreeComponent.archiveUnits);
     } else {
       this.renderChanges(node);
     }
@@ -497,7 +488,6 @@ export class FileTreeComponent implements OnDestroy {
 
     if (node.sedaData.Element === SedaElementConstants.complex) {
       this.fileMetadataService.shouldLoadMetadataTable.next(hasAtLeastOneComplexChild);
-      console.log('Filled data on table : ', dataTable, '...should load : ', this.fileMetadataService.shouldLoadMetadataTable.getValue());
       this.fileMetadataService.dataSource.next(dataTable);
     } else {
       this.fileMetadataService.shouldLoadMetadataTable.next(true);
@@ -627,7 +617,6 @@ export class FileTreeComponent implements OnDestroy {
 
     const parentNode = this.findParent(childToBeRemoved.parentId, rootNode);
     if (parentNode) {
-      console.log('On removeItem with node : ', childToBeRemoved, 'and parent : ', parentNode);
       const index = parentNode.children.indexOf(childToBeRemoved);
       if (index !== -1) {
         parentNode.children.splice(index, 1);
@@ -635,7 +624,7 @@ export class FileTreeComponent implements OnDestroy {
         this.parentNodeMap.delete(childToBeRemoved);
         this.dataChange.next(this.data);
       }
-      console.log('Deleted node : ', childToBeRemoved, 'and his parent : ', parentNode);
+
       this.sendNodeMetadata(parentNode);
     }
   }
@@ -653,7 +642,6 @@ export class FileTreeComponent implements OnDestroy {
 
   /** Find a parent tree node */
   findParent(id: number, parentNode: FileNode): FileNode {
-    console.log('On findParent with parent node id : ', id, ' and parent : ', parentNode);
     return this.fileService.getFileNodeById(parentNode, id);
   }
 
@@ -741,7 +729,6 @@ export class FileTreeComponent implements OnDestroy {
 
   addArchiveUnit(node: FileNode) {
     if (node.name == 'DescriptiveMetadata' || node.name == 'ArchiveUnit') {
-      console.log('Clicked seda node : ', node.sedaData);
       this.insertItem(node, ['ArchiveUnit']);
       // Refresh the metadata tree and the metadatatable
       this.renderChanges(node);

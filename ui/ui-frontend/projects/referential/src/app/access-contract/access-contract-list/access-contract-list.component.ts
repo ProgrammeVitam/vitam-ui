@@ -34,13 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {merge, Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
-import {collapseAnimation, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, rotateAnimation} from 'ui-frontend-common';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { merge, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import {
+  AccessContract,
+  collapseAnimation,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  rotateAnimation,
+} from 'ui-frontend-common';
 
-import {AccessContractService} from '../access-contract.service';
+import { AccessContractService } from '../access-contract.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -48,13 +55,9 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-access-contract-list',
   templateUrl: './access-contract-list.component.html',
   styleUrls: ['./access-contract-list.component.scss'],
-  animations: [
-    collapseAnimation,
-    rotateAnimation,
-  ]
+  animations: [collapseAnimation, rotateAnimation],
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {
-
   // tslint:disable-next-line:no-input-rename
   @Input('search')
   set searchText(searchText: string) {
@@ -71,31 +74,28 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
   filterMap: { [key: string]: any[] } = {
-    status: ['ACTIVE', 'INACTIVE']
+    status: ['ACTIVE', 'INACTIVE'],
   };
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 
-  constructor(
-    public accessContractService: AccessContractService
-  ) {
+  constructor(public accessContractService: AccessContractService) {
     super(accessContractService);
   }
 
   ngOnInit() {
     this.pending = true;
-    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
-    this.accessContractService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
-      .subscribe((data: AccessContract[]) => {
-          this.dataSource = data;
-        },
-        () => {
-        },
-        () => this.pending = false);
+    this.accessContractService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe(
+      (data: AccessContract[]) => {
+        this.dataSource = data;
+      },
+      () => {},
+      () => (this.pending = false)
+    );
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildAccessContractCriteriaFromSearch();

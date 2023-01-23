@@ -51,24 +51,20 @@ import { AuthService, ENVIRONMENT, InjectorModule, LoggerModule, StartupService 
 import { AppComponent } from './app.component';
 
 @Component({ selector: 'router-outlet', template: '' })
-class RouterOutletStubComponent { }
+class RouterOutletStubComponent {}
 
 describe('AppComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const startupServiceStub = {
       configurationLoaded: () => true,
-      printConfiguration: () => { },
+      printConfiguration: () => {},
       getPlatformName: () => '',
-      load: () => { },
+      load: () => {},
       getPortalUrl: () => '',
     };
 
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        RouterOutletStubComponent,
-      ],
+      declarations: [AppComponent, RouterOutletStubComponent],
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
@@ -80,10 +76,10 @@ describe('AppComponent', () => {
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
-        { provide: Router, useValue: { navigate: () => { } } },
+        { provide: Router, useValue: { navigate: () => {} } },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: BASE_URL, useValue: '/fake-api' },
-      ]
+      ],
     }).compileComponents();
   }));
 
@@ -91,15 +87,12 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     fixture.detectChanges();
-    console.log('Create App: ', app);
     expect(app).toBeTruthy();
   });
 
   it(`should have as title Starter-kit'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const title = fixture.componentInstance.title;
-    console.log('Title App: ', title);
     expect(title).toEqual('Starter-kit App');
   });
-
 });

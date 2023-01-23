@@ -46,8 +46,6 @@ export class ArraysComponent implements OnInit {
     this.dialog
       .open(SampleDialogComponent, { panelClass: 'vitamui-modal', disableClose: true })
       .afterClosed()
-      .subscribe(() => {
-        console.log('Dialog closed !');
-      });
+      .subscribe(() => {});
   }
 }

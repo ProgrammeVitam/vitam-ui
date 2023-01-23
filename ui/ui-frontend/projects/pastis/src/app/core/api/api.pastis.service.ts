@@ -42,10 +42,9 @@ import { BASE_URL } from 'ui-frontend-common';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PastisApiService {
-
   baseUrl: string;
 
   constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
@@ -54,7 +53,6 @@ export class PastisApiService {
     } else {
       this.baseUrl = baseUrl;
     }
-
   }
 
   getBaseUrl() {
@@ -63,33 +61,25 @@ export class PastisApiService {
 
   // Generic GET Method
   get<T = any>(path: string, options?: {}): Observable<T> {
-    // console.log('On API service using url : ', `${path}`);
     return this.http.get<T>(`${this.baseUrl}${path}`, options);
   }
 
-    // Generic GET Method
+  // Generic GET Method
   getLocally<T = any>(path: string): Observable<T> {
-    // console.log('On getLocally using filepath : ', `${path}`);
     return this.http.get<T>(`${path}`);
   }
 
   // Generic PUT Method
   put<T>(path: string, body: object = {}): Observable<T> {
-    return this.http.put<T>(
-      `${this.baseUrl}${path}`,
-      JSON.stringify(body));
+    return this.http.put<T>(`${this.baseUrl}${path}`, JSON.stringify(body));
   }
 
   // Generic POST Method
   post<T>(path: string, body?: {}, options?: {}): Observable<T> {
-    // console.log('Body', body, " path : ", `${this.baseUrl}${path}`);
-    // console.log('On api service post with params: ',options);
     return this.http.post<T>(`${this.baseUrl}${path}`, body, options);
   }
 
   delete(path: string): Observable<any> {
-    return this.http.delete(
-      `${this.baseUrl}${path}`);
+    return this.http.delete(`${this.baseUrl}${path}`);
   }
-
 }

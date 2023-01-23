@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Event } from 'projects/vitamui-library/src/public-api';
 import { tap } from 'rxjs/operators';
-import { SearchService , VitamUISnackBarService} from 'ui-frontend-common';
+import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 import { OperationApiService } from '../core/api/operation-api.service';
 
 @Injectable({
@@ -59,12 +59,11 @@ export class ProbativeValueService extends SearchService<Event> {
     return this.operationApiService.runProbativeValue(probativeValueRequest, headers).pipe(
       tap(
         () => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.PROBATIVE_VALUE_RUN',
+          this.snackBarService.open({
+            message: 'SNACKBAR.PROBATIVE_VALUE_RUN',
           });
         },
-          (error) => {
-          console.log('error: ', error);
+        (error) => {
           if (!error || !error.error) {
             return;
           }

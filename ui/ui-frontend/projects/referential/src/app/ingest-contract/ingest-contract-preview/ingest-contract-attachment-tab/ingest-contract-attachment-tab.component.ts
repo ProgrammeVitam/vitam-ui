@@ -35,15 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:object-literal-key-quotes quotemark */
-import {HttpHeaders} from '@angular/common/http';
-import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {AccessContract, IngestContract, SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
-
-import {IngestContractNodeUpdateComponent} from './ingest-contract-nodes-update/ingest-contract-node-update.component';
-import {ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
+import { HttpHeaders } from '@angular/common/http';
+import { Component, Input, OnInit } from '@angular/core';
 import '@angular/localize/init';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { IngestContract, SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
+import { AccessContract, ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 
 @Component({
   selector: 'app-ingest-contract-attachment-tab',
@@ -80,14 +79,12 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     return this._ingestContract;
   }
 
-
   constructor(
     private unitService: SearchUnitApiService,
     private externalParameterService: ExternalParametersService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

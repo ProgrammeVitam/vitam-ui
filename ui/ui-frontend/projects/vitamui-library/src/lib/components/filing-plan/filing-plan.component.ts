@@ -1,35 +1,34 @@
 /* tslint:disable:no-use-before-declare component-selector */
-import {NestedTreeControl} from '@angular/cdk/tree';
-import {Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {MatTreeNestedDataSource} from '@angular/material/tree';
-import {v4 as uuid} from 'uuid';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { v4 as uuid } from 'uuid';
 
-import {Node} from '../../models/node.interface';
-import {FilingPlanMode, FilingPlanService} from './filing-plan.service';
+import { Node } from '../../models/node.interface';
+import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 
 export const NODE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => FilingPlanComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-library-filing-plan',
   templateUrl: './filing-plan.component.html',
   styleUrls: ['./filing-plan.component.scss'],
-  providers: [NODE_SELECT_VALUE_ACCESSOR]
+  providers: [NODE_SELECT_VALUE_ACCESSOR],
 })
 export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChanges {
-
   @Input() tenantIdentifier: number;
   @Input() accessContract: string;
   @Input() mode: FilingPlanMode;
   @Input() componentId: string = uuid();
 
-  selectedNodes: { included: string[], excluded: string[] } = {
+  selectedNodes: { included: string[]; excluded: string[] } = {
     included: [],
-    excluded: []
+    excluded: [],
   };
 
   disabled: boolean;
@@ -38,26 +37,21 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
   nestedDataSource: MatTreeNestedDataSource<Node>;
 
   // tslint:disable-next-line:variable-name
-  onChange = (_x: { included: string[], excluded: string[] }) => {
-  }
+  onChange = (_x: { included: string[]; excluded: string[] }) => {};
 
-  onTouched = () => {
-  }
+  onTouched = () => {};
 
   constructor(public filingPlanService: FilingPlanService) {
-    console.log('Construct component: ', this.mode, this.accessContract);
     this.nestedTreeControl = new NestedTreeControl<Node>((node) => node.children);
     this.nestedDataSource = new MatTreeNestedDataSource();
   }
 
   initFiningTree() {
-    this.filingPlanService
-      .loadTree(this.tenantIdentifier, this.accessContract, this.componentId)
-      .subscribe(nodes => {
-        this.nestedDataSource.data = nodes;
-        this.nestedTreeControl.dataNodes = nodes;
-        this.initCheckedNodes(this.selectedNodes, nodes);
-      });
+    this.filingPlanService.loadTree(this.tenantIdentifier, this.accessContract, this.componentId).subscribe((nodes) => {
+      this.nestedDataSource.data = nodes;
+      this.nestedTreeControl.dataNodes = nodes;
+      this.initCheckedNodes(this.selectedNodes, nodes);
+    });
   }
 
   ngOnInit() {
@@ -77,7 +71,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
       return;
     }
 
-    children.forEach(childNode => {
+    children.forEach((childNode) => {
       if (!childNode) {
         return;
       }
@@ -87,10 +81,10 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
         childNode.disabled = check;
       }
 
-      this.selectedNodes.included = this.selectedNodes.included.filter(id => childNode.id !== id);
+      this.selectedNodes.included = this.selectedNodes.included.filter((id) => childNode.id !== id);
 
       if (this.mode === FilingPlanMode.BOTH) {
-        this.selectedNodes.excluded = this.selectedNodes.excluded.filter(id => childNode.id !== id);
+        this.selectedNodes.excluded = this.selectedNodes.excluded.filter((id) => childNode.id !== id);
       }
 
       this.updateChildrenStatusAndSelectedNodes(childNode.children, check);
@@ -102,17 +96,19 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
       return;
     }
 
-    parents.forEach(parentNode => {
+    parents.forEach((parentNode) => {
       if (!parentNode || !parentNode.checked) {
         return;
       }
 
       if (!nodeChecked || childDisabled) {
         parentNode.disabledChild = true;
-      } else if (nodeChecked
-        && !childDisabled
-        && parentNode.disabledChild
-        && !parentNode.children.find(child => !child.checked || childDisabled)) {
+      } else if (
+        nodeChecked &&
+        !childDisabled &&
+        parentNode.disabledChild &&
+        !parentNode.children.find((child) => !child.checked || childDisabled)
+      ) {
         parentNode.disabledChild = false;
       }
 
@@ -127,14 +123,14 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
       return;
     }
 
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       if (!node) {
         return;
       }
 
       if (node.vitamId !== nodeId && node.checked) {
         node.checked = false;
-        const index = this.selectedNodes.included.findIndex(id => node.vitamId === id);
+        const index = this.selectedNodes.included.findIndex((id) => node.vitamId === id);
         if (index !== -1) {
           this.selectedNodes.included.splice(index, 1);
         }
@@ -145,8 +141,6 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
   }
 
   emitVitamId(node: Node) {
-    console.log('emit: ', node);
-    console.log('mode: ', this.mode);
     const nodeChecked = node.checked;
 
     if (this.mode === FilingPlanMode.BOTH) {
@@ -164,14 +158,14 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
     // Update selectedNodes with new update
     // remove old inclusion/exclusion because of a parent change status
     if (nodeChecked) {
-      const oldExcludedIndex = this.selectedNodes.excluded.findIndex(id => node.vitamId === id);
+      const oldExcludedIndex = this.selectedNodes.excluded.findIndex((id) => node.vitamId === id);
       if (this.mode === FilingPlanMode.BOTH && oldExcludedIndex !== -1) {
         this.selectedNodes.excluded.splice(oldExcludedIndex, 1);
       } else {
         this.selectedNodes.included.push(node.vitamId);
       }
     } else {
-      const oldIncludedIndex = this.selectedNodes.included.findIndex(id => node.vitamId === id);
+      const oldIncludedIndex = this.selectedNodes.included.findIndex((id) => node.vitamId === id);
       if (this.mode === FilingPlanMode.BOTH && oldIncludedIndex === -1) {
         this.selectedNodes.excluded.push(node.vitamId);
       } else {
@@ -183,43 +177,35 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
     this.onChange(this.selectedNodes);
   }
 
-  initCheckedNodes(obj: { included: string[], excluded: string[] }, nodes: Node[], parentChecked: boolean = false) {
-    console.log('init Component: ', obj);
-    console.log('nodes: ', nodes);
-    console.log('mode: ', this.mode);
-    if (!obj || !nodes) { return; }
+  initCheckedNodes(obj: { included: string[]; excluded: string[] }, nodes: Node[], parentChecked: boolean = false) {
+    if (!obj || !nodes) {
+      return;
+    }
 
     let shouldStop = false;
 
-    nodes.forEach(node => {
-      console.log('Node: ', node);
-      console.log('stop?', shouldStop);
+    nodes.forEach((node) => {
       if (!node || shouldStop) {
-        console.log('stop !');
         return;
       }
 
       if (this.mode === FilingPlanMode.SOLO && obj.included && obj.included.includes(node.vitamId)) {
         node.checked = true;
         shouldStop = true;
-        console.log('find solo node !');
         return;
       }
 
       if (this.mode === FilingPlanMode.INCLUDE_ONLY && !parentChecked && obj.included && obj.included.includes(node.vitamId)) {
-        console.log('find an included node !');
         node.checked = true;
         this.updateChildrenStatusAndSelectedNodes(node.children, true);
         return;
       }
 
-      if (this.mode === FilingPlanMode.BOTH && (!parentChecked && obj.included && obj.included.includes(node.vitamId)) || parentChecked) {
-        console.log('find an included node !');
+      if ((this.mode === FilingPlanMode.BOTH && !parentChecked && obj.included && obj.included.includes(node.vitamId)) || parentChecked) {
         node.checked = true;
       }
 
       if (this.mode === FilingPlanMode.BOTH && parentChecked && obj.excluded && obj.excluded.includes(node.vitamId)) {
-        console.log('find an excluded node !');
         node.checked = false;
         this.updateParentsStatus(node.parents, false, node.disabledChild);
       }
@@ -230,7 +216,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
     return shouldStop;
   }
 
-  writeValue(obj: { included: string[], excluded: string[] }): void {
+  writeValue(obj: { included: string[]; excluded: string[] }): void {
     this.initCheckedNodes(obj, this.nestedDataSource.data);
     this.selectedNodes = obj;
   }
@@ -246,5 +232,4 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
   setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
-
 }

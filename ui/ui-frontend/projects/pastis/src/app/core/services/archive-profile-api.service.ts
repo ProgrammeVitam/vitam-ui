@@ -45,20 +45,16 @@ import { PastisConfiguration } from '../classes/pastis-configuration';
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
-
-  // @ts-ignore
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, private pastisConfig: PastisConfiguration) {
-    // console.log('passage dans service archive API');
     super(http, baseUrl);
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
-
 
   getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Profile>> {
     return super.getAllPaginated(pageRequest, embedded, headers);
@@ -72,10 +68,10 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
     return super.getHttp().get(super.getApiUrl() + this.pastisConfig.downloadProfile + '/' + id, { responseType: 'blob', headers });
   }
 
-
   uploadProfileArchivageFile(id: string, profile: FormData, headers?: HttpHeaders): Observable<any> {
-    return super.getHttp().put(this.apiUrl + this.pastisConfig.importProfileInExistingNotice + '/' + id,
-      profile, { responseType: 'json', headers });
+    return super
+      .getHttp()
+      .put(this.apiUrl + this.pastisConfig.importProfileInExistingNotice + '/' + id, profile, { responseType: 'json', headers });
   }
 
   updateProfilePa(profile: Profile, headers?: HttpHeaders): Observable<Profile> {
@@ -83,7 +79,7 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
     return this.http.put<Profile>(this.apiUrl + this.pastisConfig.archiveProfileApiPath + '/' + profile.identifier, profile, { headers });
   }
 
-  patch(partialAgency: { id: string, [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialAgency, headers);
   }
 
@@ -92,10 +88,11 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
   }
 
   check(profile: Profile, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + this.pastisConfig.archiveProfileApiPath + '/check',
-      profile, {
+    return super
+      .getHttp()
+      .post<any>(super.getApiUrl() + this.pastisConfig.archiveProfileApiPath + '/check', profile, {
         observe: 'response',
-        headers
+        headers,
       })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
@@ -103,5 +100,4 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
   delete(id: string, headers?: HttpHeaders) {
     return super.getHttp().delete(super.getApiUrl() + '/' + id, { headers });
   }
-
 }

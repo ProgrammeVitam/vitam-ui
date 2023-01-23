@@ -34,43 +34,40 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {ApplicationService, GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AccessContract, ApplicationService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
 
-import {AccessContractCreateComponent} from './access-contract-create/access-contract-create.component';
-import {AccessContractListComponent} from './access-contract-list/access-contract-list.component';
-
+import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
+import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
 
 @Component({
   selector: 'app-access',
   templateUrl: './access-contract.component.html',
-  styleUrls: ['./access-contract.component.scss']
+  styleUrls: ['./access-contract.component.scss'],
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit {
-
   search = '';
   tenantId: number;
   isSlaveMode: boolean;
 
-  @ViewChild(AccessContractListComponent, {static: true}) accessContractListComponent: AccessContractListComponent;
+  @ViewChild(AccessContractListComponent, { static: true }) accessContractListComponent: AccessContractListComponent;
 
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
     globalEventService: GlobalEventService,
-    private applicationService: ApplicationService) {
-
+    private applicationService: ApplicationService
+  ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
       this.updateSlaveMode();
     });
 
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       if (params.tenantIdentifier) {
         this.tenantId = params.tenantIdentifier;
       }
@@ -80,7 +77,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   openCreateAccesscontractDialog() {
     const dialogRef = this.dialog.open(AccessContractCreateComponent, {
       panelClass: 'vitamui-modal',
-      disableClose: true
+      disableClose: true,
     });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
     dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
@@ -100,7 +97,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
 
   changeTenant(tenantIdentifier: number) {
     this.tenantId = tenantIdentifier;
-    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
   updateSlaveMode() {
@@ -120,5 +117,4 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   showAccessContract(item: AccessContract) {
     this.openPanel(item);
   }
-
 }
