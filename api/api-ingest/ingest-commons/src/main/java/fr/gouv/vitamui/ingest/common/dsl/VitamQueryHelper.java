@@ -77,6 +77,7 @@ public class VitamQueryHelper {
     private static final String EV_DATE_TIME_START = "evDateTime_Start";
     private static final String EV_DATE_TIME_END = "evDateTime_End";
     private static final String COMMENT = "events.evDetData.EvDetailReq";
+    private static final String SELECTED_ORIGINATING_AGENCIES = "SELECTED_ORIGINATING_AGENCIES";
 
     /**
      * create a valid VITAM DSL Query from a map of criteria
@@ -87,8 +88,8 @@ public class VitamQueryHelper {
      * @throws InvalidCreateOperationException
      */
     public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber,
-                                          final Integer size,
-                                          final Optional<String> orderBy, final Optional<DirectionDto> direction)
+        final Integer size,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction)
         throws InvalidParseOperationException, InvalidCreateOperationException {
 
         final Select select = new Select();
@@ -123,7 +124,6 @@ public class VitamQueryHelper {
                         // string equals operation
                         final String stringValue = (String) entry.getValue();
                         query.add(eq(searchKey, stringValue));
-
                         break;
                     case OB_ID_IN:
                     case TRANSFERRING_AGENCY:
@@ -131,9 +131,19 @@ public class VitamQueryHelper {
                     case ORIGINATING_AGENCY:
                     case ID:
                     case COMMENT:
-                        final String searchValue = (String) entry.getValue();
-                        queryOr.add(eq(searchKey, searchValue));
-                        haveOrParameters = true;
+                        if (entry.getValue() instanceof ArrayList) {
+                            final List<String> stringsValues = (ArrayList) entry.getValue();
+                            for (String elt : stringsValues) {
+                                queryOr.add(eq(searchKey, elt));
+                            }
+                            haveOrParameters = true;
+                        } else {
+                            if (entry.getValue() instanceof String) {
+                                final String searchValue = (String) entry.getValue();
+                                queryOr.add(eq(searchKey, searchValue));
+                                haveOrParameters = true;
+                            }
+                        }
                         break;
                     case EV_TYPE:
                         // Special case EvType can be String or String[]
@@ -152,6 +162,15 @@ public class VitamQueryHelper {
                         break;
                     case EV_DATE_TIME_END:
                         query.add(lt("evDateTime", (String) entry.getValue()));
+                        break;
+                    case SELECTED_ORIGINATING_AGENCIES:
+                        if (entry.getValue() instanceof ArrayList) {
+                            final List<String> stringsValues = (ArrayList) entry.getValue();
+                            for (String elt : stringsValues) {
+                                orGroup.add(eq(ORIGINATING_AGENCY, elt));
+                            }
+                            haveOrGroup = true;
+                        }
                         break;
                     default:
                         LOGGER.error("Can not find binding for key: {}", searchKey);

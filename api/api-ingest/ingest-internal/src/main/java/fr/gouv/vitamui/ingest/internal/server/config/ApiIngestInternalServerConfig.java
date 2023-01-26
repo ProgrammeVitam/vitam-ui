@@ -49,12 +49,17 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamIngestConfig;
 import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
 import fr.gouv.vitamui.iam.internal.client.CustomerInternalRestClient;
+import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.server.security.WebSecurityConfig;
+import fr.gouv.vitamui.ingest.internal.server.service.AccessContractConverter;
+import fr.gouv.vitamui.ingest.internal.server.service.AccessContractInternalService;
+import fr.gouv.vitamui.ingest.internal.server.service.IngestExternalParametersService;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestGeneratorODTFile;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -132,6 +137,22 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
     }
 
     @Bean
+    ExternalSecurityService externalSecurityService() {
+        return new ExternalSecurityService();
+    }
+
+    @Bean
+    public ExternalParametersInternalRestClient externalParametersInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
+    }
+
+    @Bean
+    public AccessContractConverter accessContractConverter() {
+        return new AccessContractConverter();
+    }
+
+    @Bean
     public IngestInternalService ingestInternalService(
         final InternalSecurityService internalSecurityService,
         final LogbookService logbookService,
@@ -139,9 +160,12 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
         final IngestExternalClient ingestExternalClient,
         final IngestService ingestService,
         final CustomerInternalRestClient customerInternalRestClient,
-        final IngestGeneratorODTFile ingestGeneratorODTFile) {
+        final IngestGeneratorODTFile ingestGeneratorODTFile,
+        final IngestExternalParametersService ingestExternalParametersService,
+        final AccessContractInternalService accessContractInternalService) {
         return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestExternalClient,
             ingestService,
-            customerInternalRestClient, ingestGeneratorODTFile);
+            customerInternalRestClient, ingestGeneratorODTFile, ingestExternalParametersService,
+            accessContractInternalService);
     }
 }
