@@ -922,6 +922,8 @@
                   "with": "projects/pastis/src/environments/environment.prod.ts"
                 }
               ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/pastis/ngsw-config.json",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
