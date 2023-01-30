@@ -35,9 +35,9 @@
     - ansible_os_family == "Debian"
     - disable_internet_repositories_install | default(false) | bool == true
 
-- name: "Install {{ package_name }} package from repo"
+- name: "Install {{ logstash.package_name | default('vitamui-logstash') }} package from repo"
   package:
-    name: "{{ package_name }}"
+    name: "{{ logstash.package_name | default('vitamui-logstash') }}"
     state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"
@@ -155,7 +155,7 @@
 
 - name: Ensure logstash service is started
   service:
-    name: "{{ service_name }}"
+    name: "{{ logstash.service_name | default('vitamui-logstash') }}"
     state: started
     enabled: "{{ logstash.at_boot | default(service_at_boot) }}"
 

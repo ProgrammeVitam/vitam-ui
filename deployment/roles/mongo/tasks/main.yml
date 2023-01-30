@@ -1,8 +1,8 @@
 ---
 
-- name: "Install {{ package_name }} package"
+- name: "Install {{ mongodb.package_name | default('vitamui-mongod') }} package"
   package:
-    name: "{{ package_name }}"
+    name: "{{ mongodb.package_name | default('vitamui-mongod') }}"
     state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"
@@ -82,9 +82,9 @@
     - consul_conf
     - update_mongodb_configuration
 
-- name: "Ensure {{ service_name }} is started"
+- name: "Ensure {{ mongodb.service_name | default('vitamui-mongod') }} is started"
   service:
-    name: "{{ service_name }}"
+    name: "{{ mongodb.service_name | default('vitamui-mongod') }}"
     state: started
     enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
   tags: update_mongodb_configuration

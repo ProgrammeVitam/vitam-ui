@@ -5,5 +5,3 @@ logstash_tmp_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}
 logstash_conf_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/logstash"
 logstash_confextra_dir: "{{ logstash_conf_dir }}/extra"
 logstash_data_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/data/logstash"
-
-service_at_boot: "{{ vitam_defaults.services.at_boot | default(false) }}"

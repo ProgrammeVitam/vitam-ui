@@ -3,5 +3,3 @@
 mongo_tmp_path:  "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/mongod"
 mongo_config_path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/mongod"
 mongo_db_path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/data/mongod/db"
-
-service_at_boot: "{{ vitamui_defaults.services.at_boot | default(false) }}"

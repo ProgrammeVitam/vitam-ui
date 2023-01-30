@@ -1,5 +1,8 @@
 ---
 
+package_name: "vitamui-{{ vitamui_struct.vitamui_component }}"
+service_name: "vitamui-{{ vitamui_struct.vitamui_component }}"
+
 vitamui_folder_app: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/{{ vitamui_struct.vitamui_component }}"
 vitamui_folder_bin: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/bin/{{ vitamui_struct.vitamui_component }}"
 vitamui_folder_conf: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/{{ vitamui_struct.vitamui_component }}"
@@ -8,4 +11,3 @@ vitamui_folder_lib: "{{ vitamui_defaults.folder.root_path | default('/vitamui') 
 vitamui_folder_log: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/log/{{ vitamui_struct.vitamui_component }}"
 vitamui_folder_scripts: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/script/{{ vitamui_struct.vitamui_component }}"
 vitamui_folder_tmp: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/{{ vitamui_struct.vitamui_component }}"
-
