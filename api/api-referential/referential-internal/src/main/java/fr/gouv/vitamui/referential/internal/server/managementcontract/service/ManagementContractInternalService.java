@@ -1,40 +1,32 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
- * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
- * contact@programmevitam.fr
+ * contact.vitam@culture.gouv.fr
  *
- * This software is a computer program whose purpose is to implement
- * implement a digital archiving front-office system for the secure and
- * efficient high volumetry VITAM solution.
+ * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
+ * high volumetry securely and efficiently.
  *
- * This software is governed by the CeCILL-C license under French law and
- * abiding by the rules of distribution of free software.  You can  use,
- * modify and/ or redistribute the software under the terms of the CeCILL-C
- * license as circulated by CEA, CNRS and INRIA at the following URL
- * "http://www.cecill.info".
+ * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
+ * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
- * As a counterpart to the access to the source code and  rights to copy,
- * modify and redistribute granted by the license, users are provided only
- * with a limited warranty  and the software's author,  the holder of the
- * economic rights,  and the successive licensors  have only  limited
- * liability.
+ * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
+ * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
+ * successive licensors have only limited liability.
  *
- * In this respect, the user's attention is drawn to the risks associated
- * with loading,  using,  modifying and/or developing or reproducing the
- * software by the user in light of its specific status of free software,
- * that may mean  that it is complicated to manipulate,  and  that  also
- * therefore means  that it is reserved for developers  and  experienced
- * professionals having in-depth computer knowledge. Users are therefore
- * encouraged to load and test the software's suitability as regards their
- * requirements in conditions enabling the security of their systems and/or
- * data to be ensured and,  more generally, to use and operate it in the
- * same conditions as regards security.
+ * In this respect, the user's attention is drawn to the risks associated with loading, using, modifying and/or
+ * developing or reproducing the software by the user in light of its specific status of free software, that may mean
+ * that it is complicated to manipulate, and that also therefore means that it is reserved for developers and
+ * experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the
+ * software's suitability as regards their requirements in conditions enabling the security of their systems and/or data
+ * to be ensured and, more generally, to use and operate it in the same conditions as regards security.
  *
- * The fact that you are presently reading this means that you have had
- * knowledge of the CeCILL-C license and that you accept its terms.
+ * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
+ * accept its terms.
+ *
+ *
  */
-package fr.gouv.vitamui.referential.internal.server.managementcontract;
+package fr.gouv.vitamui.referential.internal.server.managementcontract.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -52,6 +44,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.ManagementContractModel;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
@@ -61,10 +54,10 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractVitamDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
+import fr.gouv.vitamui.referential.internal.server.managementcontract.converter.ManagementContractConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +65,6 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -114,7 +106,7 @@ public class ManagementContractInternalService {
             final ManagementContractResponseDto managementContractResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
 
-            return converter.convertVitamsToDtos(managementContractResponseDto.getResults());
+            return converter.convertVitamListMgtContractToVitamUIMgtContractDtos(managementContractResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
             LOGGER.error(MANAGEMENT_CONTRACT_NOT_FOUND + e.getMessage());
             throw new InternalServerException(MANAGEMENT_CONTRACT_NOT_FOUND, e);
@@ -129,7 +121,7 @@ public class ManagementContractInternalService {
                 .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
 
             return managementContractResponseDto.getResults().isEmpty() ? null
-                : converter.convertVitamToDto(managementContractResponseDto.getResults().get(0));
+                : converter.convertVitamMgtContractToVitamUiDto(managementContractResponseDto.getResults().get(0));
         } catch (VitamClientException | JsonProcessingException exception) {
             LOGGER.error("Unable to get Management Contract");
             throw new InternalServerException("Unable to get Management Contract", exception);
@@ -159,7 +151,8 @@ public class ManagementContractInternalService {
         ManagementContractResponseDto results = this.findAll(vitamContext, query);
         boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
 
-        final List<ManagementContractDto> valuesDto = converter.convertVitamsToDtos(results.getResults());
+        final List<ManagementContractDto> valuesDto = converter.
+            convertVitamListMgtContractToVitamUIMgtContractDtos(results.getResults());
         LOGGER.debug("Vitam UI DTO: {}", valuesDto);
         return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
     }
@@ -183,7 +176,8 @@ public class ManagementContractInternalService {
         try {
             LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
             Integer managementContractCheckedTenant = managementContractService.checkAbilityToCreateManagementContractInVitam(converter
-                .convertDtosToVitams(Collections.singletonList(managementContractDto)), vitamContext.getApplicationSessionId());
+                .convertVitamUiListMgtContractToVitamListMgtContract(Collections.singletonList(managementContractDto)),
+                vitamContext.getApplicationSessionId());
             return !vitamContext.getTenantId().equals(managementContractCheckedTenant);
         } catch (ConflictException e) {
             LOGGER.error("Error while checking management Contract", e.getMessage());
@@ -195,10 +189,12 @@ public class ManagementContractInternalService {
         try {
             LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
             RequestResponse requestResponse = managementContractService.createManagementContracts(vitamContext,
-                Collections.singletonList(converter.convertDtoToVitam(managementContractDto)));
+                Collections.singletonList(converter
+                    .convertVitamUiManagementContractToVitamMgt(managementContractDto)));
             final ManagementContractVitamDto managementContractModelDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), ManagementContractVitamDto.class);
-            return converter.convertVitamToDto(managementContractModelDto);
+            return converter
+                .convertVitamMgtContractToVitamUiDto(managementContractModelDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             LOGGER.error("Can't create management contract");
             throw new InternalServerException("Can't create management contract", e);
@@ -232,41 +228,19 @@ public class ManagementContractInternalService {
             propertiesToUpdate.put("CreationDate", (String) partialDto.get("creationDate"));
         }
         if (partialDto.get("unitStrategy") != null) {
-            propertiesToUpdate.put("UnitStrategy", (String) partialDto.get("unitStrategy"));
+            propertiesToUpdate.put("Storage.UnitStrategy", (String) partialDto.get("unitStrategy"));
         }
         if (partialDto.get("objectStrategy") != null) {
-            propertiesToUpdate.put("ObjectStrategy", (String) partialDto.get("objectStrategy"));
+            propertiesToUpdate.put("Storage.ObjectStrategy", (String) partialDto.get("objectStrategy"));
         }
         if (partialDto.get("objectGroupStrategy") != null) {
-            propertiesToUpdate.put("ObjectGroupStrategy", (String) partialDto.get("objectGroupStrategy"));
-        }
-        if (partialDto.get("storage") != null) {
-            for (Map.Entry<String, String> entry: ((LinkedHashMap<String,String>) partialDto.get("storage")).entrySet()) {
-                String propertyName = "";
-                switch (entry.getKey()){
-                    case "unitStrategy":
-                        propertyName = "UnitStrategy";
-                        break;
-                    case "objectGroupStrategy":
-                        propertyName = "ObjectGroupStrategy";
-                        break;
-                    case "objectStrategy":
-                        propertyName = "ObjectStrategy";
-                        break;
-                    default:
-                        propertyName = "";
-                }
-                if(entry.getValue() != null) {
-                    propertiesToUpdate.put("Storage." + propertyName, entry.getValue());
-                }
-
-            }
+            propertiesToUpdate.put("Storage.ObjectGroupStrategy", (String) partialDto.get("objectGroupStrategy"));
         }
         /**
          * the versionRetentionPolicy property is not taken into account by the back of vitam
          * therefore impossible to test at this time.
          */
-        if (partialDto.get("versionRetentionPolicy") != null){
+        if (partialDto.get("versionRetentionPolicy") != null) {
             LOGGER.debug("versionRetentionPolicy = {}", partialDto.get("versionRetentionPolicy"));
         }
         return propertiesToUpdate;

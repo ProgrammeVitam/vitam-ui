@@ -29,12 +29,14 @@ package fr.gouv.vitamui.commons.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
 public class ManagementContractModelDto implements Serializable {
 
     private StorageDetailDto storage;
@@ -145,27 +147,27 @@ public class ManagementContractModelDto implements Serializable {
         return version;
     }
 
-    @JsonProperty("name")
+    @JsonProperty("Name")
     public String getName() {
         return name;
     }
 
-    @JsonProperty("identifier")
+    @JsonProperty("Identifier")
     public String getIdentifier() {
         return identifier;
     }
 
-    @JsonProperty("description")
+    @JsonProperty("Description")
     public String getDescription() {
         return description;
     }
 
-    @JsonProperty("status")
+    @JsonProperty("Status")
     public String getStatus() {
         return status;
     }
 
-    @JsonProperty("creationDate")
+    @JsonProperty("CreationDate")
     public String getCreationDate() {
         return creationDate;
     }
@@ -175,22 +177,22 @@ public class ManagementContractModelDto implements Serializable {
         return lastUpdate;
     }
 
-    @JsonProperty("activationDate")
+    @JsonProperty("ActivationDate")
     public String getActivationDate() {
         return activationDate;
     }
 
-    @JsonProperty("storage")
+    @JsonProperty("Storage")
     public StorageDetailDto getStorage() {
         return storage;
     }
 
-    @JsonProperty("versionRetentionPolicy")
+    @JsonProperty("VersionRetentionPolicy")
     public VersionRetentionPolicyDto getVersionRetentionPolicy() {
         return versionRetentionPolicy;
     }
 
-    @JsonProperty("deactivationDate")
+    @JsonProperty("DeactivationDate")
     public String getDeactivationDate() {
         return deactivationDate;
     }

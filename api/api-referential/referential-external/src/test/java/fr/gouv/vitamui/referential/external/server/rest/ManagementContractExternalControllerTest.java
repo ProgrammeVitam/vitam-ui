@@ -30,7 +30,7 @@ package fr.gouv.vitamui.referential.external.server.rest;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.ManagementContractExternalService;
 import org.junit.Assert;

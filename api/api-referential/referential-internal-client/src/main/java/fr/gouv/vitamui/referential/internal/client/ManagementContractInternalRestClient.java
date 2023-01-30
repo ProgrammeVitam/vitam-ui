@@ -40,7 +40,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;

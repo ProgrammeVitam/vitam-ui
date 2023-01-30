@@ -23,54 +23,31 @@
  *
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
+ *
+ *
  */
 
 package fr.gouv.vitamui.commons.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitamui.commons.api.enums.IntermediaryVersionEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
-public class VersionUsageDto implements Serializable {
-
-    private String usageName;
+public class VersionRetentionPolicyMgtContractDto implements Serializable {
     private boolean initialVersion;
     private IntermediaryVersionEnum intermediaryVersion;
-
-    @JsonProperty("initialVersion")
-    public boolean getInitialVersion() {
-        return initialVersion;
-    }
-
-    @JsonProperty("InitialVersion")
-    public void setInitialVersion(boolean initialVersion) {
-        this.initialVersion = initialVersion;
-    }
-
-    @JsonProperty("intermediaryVersion")
-    public IntermediaryVersionEnum getIntermediaryVersion() {
-        return intermediaryVersion;
-    }
-
-    @JsonProperty("IntermediaryVersion")
-    public void setIntermediaryVersion(IntermediaryVersionEnum intermediaryVersion) {
-        this.intermediaryVersion = intermediaryVersion;
-    }
-
-    @JsonProperty("usageName")
-    public String getUsageName() {
-        return usageName;
-    }
-
-    @JsonProperty("UsageName")
-    public void setUsageName(String usageName) {
-        this.usageName = usageName;
-    }
+    Set<VersionUsageMgtContractDto> usages;
 }

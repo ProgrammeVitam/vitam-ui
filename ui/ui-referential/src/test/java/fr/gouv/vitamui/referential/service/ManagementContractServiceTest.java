@@ -27,10 +27,9 @@
 
 package fr.gouv.vitamui.referential.service;
 
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
 import fr.gouv.vitamui.referential.external.client.ManagementContractExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.junit.Assert;
@@ -41,7 +40,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

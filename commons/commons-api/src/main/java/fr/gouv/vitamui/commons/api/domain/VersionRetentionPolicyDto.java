@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitamui.commons.api.enums.IntermediaryVersionEnum;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -39,7 +40,7 @@ import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString
-
+@NoArgsConstructor
 public class VersionRetentionPolicyDto implements Serializable {
 
     private boolean initialVersion;

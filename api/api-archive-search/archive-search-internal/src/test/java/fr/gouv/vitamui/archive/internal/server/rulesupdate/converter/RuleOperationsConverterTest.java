@@ -65,7 +65,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 class RuleOperationsConverterTest {
-    private RuleOperationsConverter ruleOperationsConverter = new RuleOperationsConverter();
+    private final RuleOperationsConverter ruleOperationsConverter = new RuleOperationsConverter();
 
     @Test
     void testConvertVitamUiRuleActionToVitamRuleAction() {

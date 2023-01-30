@@ -23,9 +23,11 @@
  *
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
+ *
+ *
  */
 
-package fr.gouv.vitamui.referential.internal.server.service;
+package fr.gouv.vitamui.referential.internal.server.service.managementContracts;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,8 +43,8 @@ import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
 import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
-import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractConverter;
-import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractInternalService;
+import fr.gouv.vitamui.referential.internal.server.managementcontract.converter.ManagementContractConverter;
+import fr.gouv.vitamui.referential.internal.server.managementcontract.service.ManagementContractInternalService;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;

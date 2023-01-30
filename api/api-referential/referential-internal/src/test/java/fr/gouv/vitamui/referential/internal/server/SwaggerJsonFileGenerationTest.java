@@ -50,7 +50,7 @@ import fr.gouv.vitamui.referential.internal.server.context.ContextInternalServic
 import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatInternalService;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractInternalService;
 import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
-import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractInternalService;
+import fr.gouv.vitamui.referential.internal.server.managementcontract.service.ManagementContractInternalService;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyInternalService;
 import fr.gouv.vitamui.referential.internal.server.operation.OperationInternalService;
 import fr.gouv.vitamui.referential.internal.server.probativevalue.ProbativeValueInternalService;

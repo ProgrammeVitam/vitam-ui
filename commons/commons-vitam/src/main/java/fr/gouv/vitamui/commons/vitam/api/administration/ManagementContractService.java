@@ -39,7 +39,6 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.ManagementContractModel;
-import fr.gouv.vitamui.commons.api.domain.AgencyDto;
 import fr.gouv.vitamui.commons.api.domain.ManagementContractModelDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
@@ -48,7 +47,6 @@ import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.ManagementContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +55,6 @@ import org.springframework.http.HttpStatus;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -96,9 +93,10 @@ public class ManagementContractService {
 
     private ByteArrayInputStream serializeManagementContracts(final List<ManagementContractModelDto> managementContractModelDtos)
         throws IOException {
-        final List<AgencyDto> listOfAgencies = convertManagementContractsToModelOfCreation(managementContractModelDtos);
+        //final List<AgencyDto> listOfAgencies = convertManagementContractsToModelOfCreation(managementContractModelDtos);
         final ObjectMapper mapper = new ObjectMapper();
-        final JsonNode node = mapper.convertValue(listOfAgencies, JsonNode.class);
+        //final JsonNode node = mapper.convertValue(listOfAgencies, JsonNode.class);
+        final JsonNode node = mapper.convertValue(managementContractModelDtos, JsonNode.class);
         LOGGER.debug("The json for creation management contract, sent to Vitam {}", node);
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
@@ -107,7 +105,7 @@ public class ManagementContractService {
         }
     }
 
-    private List<AgencyDto> convertManagementContractsToModelOfCreation(final List<ManagementContractModelDto> managementContractModelDtos) {
+/*    private List<AgencyDto> convertManagementContractsToModelOfCreation(final List<ManagementContractModelDto> managementContractModelDtos) {
         final List<AgencyDto> agencyDtoList = new ArrayList<>();
         for (final ManagementContractModelDto model : managementContractModelDtos) {
             final AgencyDto agency = new AgencyDto();
@@ -116,7 +114,7 @@ public class ManagementContractService {
             agencyDtoList.add(VitamUIUtils.copyProperties(model, agency));
         }
         return agencyDtoList;
-    }
+    }*/
 
     /**
      * check if all conditions are Ok to create an managment contract in the tenant

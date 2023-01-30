@@ -28,14 +28,21 @@
 package fr.gouv.vitamui.commons.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ManagementContractDto implements Serializable {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ManagementContractDto extends IdDto implements Serializable {
 
     private Integer tenant;
 
@@ -57,107 +64,8 @@ public class ManagementContractDto implements Serializable {
 
     private String activationDate;
 
-    private StorageDetailDto storage;
+    private StorageManagementContractDto storage;
 
-    @JsonProperty("tenant")
-    public void setTenant(Integer tenant) {
-        this.tenant = tenant;
-    }
-
-    @JsonProperty("version")
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @JsonProperty("identifier")
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    @JsonProperty("description")
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @JsonProperty("creationDate")
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    @JsonProperty("lastUpdate")
-    public void setLastUpdate(String lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    @JsonProperty("activationDate")
-    public void setActivationDate(String activationDate) {
-        this.activationDate = activationDate;
-    }
-
-    @JsonProperty("deactivationDate")
-    public void setDeactivationDate(String deactivationDate) {
-        this.deactivationDate = deactivationDate;
-    }
-
-    @JsonProperty("#tenant")
-    public Integer getTenant() {
-        return tenant;
-    }
-
-    @JsonProperty("#version")
-    public Integer getVersion() {
-        return version;
-    }
-
-    @JsonProperty("Name")
-    public String getName() {
-        return name;
-    }
-
-    @JsonProperty("Identifier")
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    @JsonProperty("Description")
-    public String getDescription() {
-        return description;
-    }
-
-    @JsonProperty("Status")
-    public String getStatus() {
-        return status;
-    }
-
-    @JsonProperty("CreationDate")
-    public String getCreationDate() {
-        return creationDate;
-    }
-
-    @JsonProperty("LastUpdate")
-    public String getLastUpdate() {
-        return lastUpdate;
-    }
-
-    @JsonProperty("ActivationDate")
-    public String getActivationDate() {
-        return activationDate;
-    }
-
-
-    @JsonProperty("Storage")
-    public StorageDetailDto getStorage() {
-        return storage;
-    }
+    private VersionRetentionPolicyMgtContractDto versionRetentionPolicy;
 
 }

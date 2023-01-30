@@ -29,11 +29,11 @@ package fr.gouv.vitamui.referential.rest;
 
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
 import fr.gouv.vitamui.referential.service.ManagementContractService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
