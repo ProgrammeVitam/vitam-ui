@@ -43,6 +43,11 @@ export class ManagementContractStorageTabComponent implements OnInit, OnDestroy 
   form: FormGroup;
   submited = false;
   showSpinner = false;
+  storageStrategy: StorageStrategy = {
+    unitStrategy: '',
+    objectGroupStrategy: '',
+    objectStrategy: '',
+  };
 
   statusControlValueChangesSubscribe: Subscription;
 
@@ -56,6 +61,10 @@ export class ManagementContractStorageTabComponent implements OnInit, OnDestroy 
     }
     if (managementContract.storage && !managementContract.storage.objectStrategy) {
       managementContract.storage.objectStrategy = '';
+    }
+
+    if (managementContract.storage === undefined) {
+      managementContract.storage = this.storageStrategy;
     }
 
     this._inputManagementContract = managementContract;
@@ -85,9 +94,11 @@ export class ManagementContractStorageTabComponent implements OnInit, OnDestroy 
   ngOnInit(): void {}
 
   unchanged(): boolean {
+    // if (this.previousValue() !== undefined) {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
+    // }
   }
 
   prepareSubmit(): Observable<ManagementContract> {
