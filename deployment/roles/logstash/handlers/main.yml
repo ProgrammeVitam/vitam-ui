@@ -2,7 +2,7 @@
 
 - name: restart logstash
   service:
-    name: "{{ service_name }}"
+    name: "{{ logstash.service_name | default('vitamui-logstash') }}"
     state: restarted
 
 - name: reload consul configuration for logstash

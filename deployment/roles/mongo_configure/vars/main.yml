@@ -1,6 +1,3 @@
 ---
 
 mongod_config_path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/mongod"
-
-service_at_boot: "{{ vitamui_defaults.services.at_boot | default(false) }}"
-service_name: "vitamui-{{ mongodb.vitamui_component }}"

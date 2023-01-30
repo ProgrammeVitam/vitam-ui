@@ -7,5 +7,5 @@
 
 - name: restart mongod
   service:
-    name: "{{ service_name }}"
+    name: "{{ mongodb.service_name | default('vitamui-mongod') }}"
     state: restarted

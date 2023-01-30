@@ -1,4 +1,3 @@
 ---
 
-package_name: "{{ logstash.package_name | default('vitamui-logstash') }}"
-service_name: "{{ logstash.service_name | default('vitamui-logstash') }}"
+service_at_boot: "{{ vitam_defaults.services.at_boot | default(false) }}"
