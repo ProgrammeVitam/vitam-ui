@@ -50,7 +50,6 @@ import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -73,6 +72,8 @@ import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Objects;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 
 @Api(tags = "archives Search")
 @RestController
@@ -84,6 +85,8 @@ public class ArchivesSearchController extends AbstractUiRestController {
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AbstractUiRestController.class);
 
     private final ArchivesSearchService archivesSearchService;
+
+    public static final String CONTENT_DISPOSITION = "Content-Disposition";
 
     @Autowired
     public ArchivesSearchController(final ArchivesSearchService service) {
@@ -165,15 +168,17 @@ public class ArchivesSearchController extends AbstractUiRestController {
         ResponseEntity<Resource> responseResource =
             archivesSearchService.downloadObjectFromUnit(id, objectData, buildUiHttpContext(tenantId, contractId))
                 .block();
-        List<String> headersValuesContentDispo = responseResource.getHeaders().get("Content-Disposition");
+        List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
-        String fileNameHeader =
-            StringUtils.isNotEmpty(objectData.getFilename()) ? "attachment;filename=" + objectData.getFilename()
-                : "attachment";
-
+        String fileNameHeader = isNotEmpty(objectData.getFilename())
+            ? "attachment;filename=" + objectData.getFilename()
+            : "attachment";
+        MediaType contentType = isNotEmpty(objectData.getMimeType())
+            ? new MediaType(MimeType.valueOf(objectData.getMimeType()))
+            : MediaType.APPLICATION_OCTET_STREAM;
         return ResponseEntity.ok()
-            .contentType(new MediaType(MimeType.valueOf(objectData.getMimeType())))
-            .header("Content-Disposition", fileNameHeader)
+            .contentType(contentType)
+            .header(CONTENT_DISPOSITION, fileNameHeader)
             .body(responseResource.getBody());
     }
 
@@ -187,7 +192,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
             archivesSearchService.exportCsvArchiveUnitsByCriteria(searchQuery, buildUiHttpContext()).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .header("Content-Disposition", "attachment")
+            .header(CONTENT_DISPOSITION, "attachment")
             .body(exportedCsvResult);
     }
 
