@@ -44,6 +44,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
@@ -52,9 +54,12 @@ public class ProfileDto extends IdDto {
     private Integer tenant;
     private Integer version;
     private String identifier;
+    @NotNull
     private String name;
     private String description;
+    @NotNull
     private ProfileStatus status;
+    @NotNull
     private ProfileFormat format;
     private String path;
     private String creationDate;

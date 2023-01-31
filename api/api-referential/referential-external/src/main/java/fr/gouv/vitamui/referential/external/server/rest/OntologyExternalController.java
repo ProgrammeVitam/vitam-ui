@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -44,6 +45,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -90,8 +92,8 @@ public class OntologyExternalController {
     @GetMapping()
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
     public Collection<OntologyDto> getAll(final Optional<String> criteria) {
-        LOGGER.debug("get all ontology criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("get all ontology criteria={}", criteria);
         return ontologyExternalService.getAll(criteria);
     }
 
@@ -106,15 +108,19 @@ public class OntologyExternalController {
 
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public OntologyDto getOne(final @PathVariable("identifier") String identifier) {
-        LOGGER.debug("get ontology identifier={}");
+    public OntologyDto getOne(final @PathVariable("identifier") String identifier)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        SanityChecker.checkSecureParameter(identifier);
+        LOGGER.debug("get ontology identifier={}", identifier);
         return ontologyExternalService.getOne(identifier);
     }
 
     @Secured({ ServicesData.ROLE_GET_ONTOLOGIES })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody OntologyDto ontologyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> check(@RequestBody OntologyDto ontologyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("check exist ontology={}", ontologyDto);
         final boolean exist = ontologyExternalService.check(ontologyDto);
         return RestUtils.buildBooleanResponse(exist);
@@ -122,9 +128,12 @@ public class OntologyExternalController {
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_AGENCIES)
-    public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+    public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return ontologyExternalService.patch(partialDto);
     }
@@ -132,24 +141,29 @@ public class OntologyExternalController {
     @Secured(ServicesData.ROLE_CREATE_ONTOLOGIES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public OntologyDto create(final @Valid @RequestBody OntologyDto ontologyDto) {
+    public OntologyDto create(final @Valid @RequestBody OntologyDto ontologyDto) throws InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("Create {}", ontologyDto);
         return ontologyExternalService.create(ontologyDto);
     }
 
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
-        LOGGER.debug("get logbook for ontology with id :{}", id);
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for ontology with id :{}", id);
         return ontologyExternalService.findHistoryById(id);
     }
 
     @Secured(ServicesData.ROLE_DELETE_ONTOLOGIES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
-        LOGGER.debug("Delete ontology with id :{}", id);
+    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Delete ontology with id :{}", id);
         ontologyExternalService.delete(id);
     }
 
@@ -164,6 +178,7 @@ public class OntologyExternalController {
     public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         if(file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+            SanityChecker.isValidFileName(file.getOriginalFilename());
         }
         SanityChecker.isValidFileName(fileName);
         SafeFileChecker.checkSafeFilePath(fileName);

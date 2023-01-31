@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -100,7 +101,10 @@ public class AccessContractExternalController {
 
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public AccessContractDto getOne(final @PathVariable("identifier") String identifier) {
+    public AccessContractDto getOne(final @PathVariable("identifier") String identifier)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
+        SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getAccessContract identifier={}");
         return accessContractExternalService.getOne(identifier);
     }
@@ -108,7 +112,9 @@ public class AccessContractExternalController {
 
     @Secured({ ServicesData.ROLE_GET_ACCESS_CONTRACTS })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody AccessContractDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> check(@RequestBody AccessContractDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(accessContractDto);
         LOGGER.debug("check exist accessContract={}", accessContractDto);
         final boolean exist = accessContractExternalService.check(accessContractDto);
         return RestUtils.buildBooleanResponse(exist);
@@ -117,7 +123,9 @@ public class AccessContractExternalController {
     @Secured(ServicesData.ROLE_CREATE_ACCESS_CONTRACTS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public AccessContractDto create(final @Valid @RequestBody AccessContractDto accessContractDto) {
+    public AccessContractDto create(final @Valid @RequestBody AccessContractDto accessContractDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(accessContractDto);
         LOGGER.debug("Create {}", accessContractDto);
         return accessContractExternalService.create(accessContractDto);
     }

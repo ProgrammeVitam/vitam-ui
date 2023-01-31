@@ -88,14 +88,16 @@ public class AgencyExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyExternalController.class);
 
+    public static final String MANDATORY_IDENTIFIER = "Identifier is mandatory : ";
+
     @Autowired
     private AgencyExternalService agencyExternalService;
 
     @GetMapping()
     @Secured(ServicesData.ROLE_GET_AGENCIES)
     public Collection<AgencyDto> getAll(final Optional<String> criteria) {
-        LOGGER.debug("get all customer criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("get all customer criteria={}", criteria);
         return agencyExternalService.getAll(criteria);
     }
 
@@ -110,17 +112,21 @@ public class AgencyExternalController {
 
     @Secured(ServicesData.ROLE_GET_AGENCIES)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public AgencyDto getOne(final @PathVariable("identifier") String identifier) {
+    public AgencyDto getOne(final @PathVariable("identifier") String identifier) throws InvalidParseOperationException,
+        PreconditionFailedException {
         LOGGER.debug("get agency identifier={}");
-        ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , identifier);
+        SanityChecker.checkSecureParameter(identifier);
         return agencyExternalService.getOne(identifier);
     }
 
     @Secured({ ServicesData.ROLE_GET_AGENCIES })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody @Valid AgencyDto agencyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
-        LOGGER.debug("check exist accessContract={}", agencyDto);
+    public ResponseEntity<Void> check(@RequestBody @Valid AgencyDto agencyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(agencyDto);
         ApiUtils.checkValidity(agencyDto);
+        LOGGER.debug("check exist accessContract={}", agencyDto);
         final boolean exist = agencyExternalService.check(agencyDto);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -128,24 +134,32 @@ public class AgencyExternalController {
     @Secured(ServicesData.ROLE_CREATE_AGENCIES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public AgencyDto create(final @Valid @RequestBody AgencyDto agencyDto) {
-        LOGGER.debug("Create {}", agencyDto);
+    public AgencyDto create(final @Valid @RequestBody AgencyDto agencyDto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(agencyDto);
         ApiUtils.checkValidity(agencyDto);
+        LOGGER.debug("Create {}", agencyDto);
         return agencyExternalService.create(agencyDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_AGENCIES)
-    public AgencyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public AgencyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return agencyExternalService.patch(partialDto);
     }
 
     @Secured(ServicesData.ROLE_GET_AGENCIES)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return agencyExternalService.findHistoryById(id);
     }
@@ -155,7 +169,7 @@ public class AgencyExternalController {
     public ResponseEntity<Boolean> delete(final @PathVariable("id") String id) throws InvalidParseOperationException,
         PreconditionFailedException {
         LOGGER.debug("Delete agency with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , id);
         SanityChecker.checkSecureParameter(id);
         return agencyExternalService.deleteWithResponse(id);
     }
@@ -177,6 +191,7 @@ public class AgencyExternalController {
     public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         if(file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+            SanityChecker.isValidFileName(file.getOriginalFilename());
         }
         SanityChecker.isValidFileName(fileName);
         SafeFileChecker.checkSafeFilePath(fileName);

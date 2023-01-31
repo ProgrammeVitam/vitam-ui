@@ -39,6 +39,7 @@ import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
@@ -89,7 +90,8 @@ public class IngestInternalController {
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) throws PreconditionFailedException, InvalidParseOperationException {
+        @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws PreconditionFailedException, InvalidParseOperationException, IOException {
 
         if(orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
@@ -98,6 +100,10 @@ public class IngestInternalController {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
+        if(criteria.isPresent()) {
+            SanityChecker.sanitizeCriteria(VitamUIUtils
+                .convertObjectFromJson(criteria.get(), Object.class));
+        }
         LOGGER
             .debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
                 orderBy, direction);

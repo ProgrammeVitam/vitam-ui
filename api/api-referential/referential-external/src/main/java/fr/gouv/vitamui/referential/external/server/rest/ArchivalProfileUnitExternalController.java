@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
@@ -113,20 +114,22 @@ public class ArchivalProfileUnitExternalController {
 
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public ArchivalProfileUnitDto getOne(final @PathVariable("identifier") String identifier) {
+    public ArchivalProfileUnitDto getOne(final @PathVariable("identifier") String identifier)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("get archival unit profile identifier={}");
-        ParameterChecker.checkParameter("Identifier is mandatory : ", identifier);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
+        SanityChecker.checkSecureParameter(identifier);
         return archivalProfileUnitExternalService.getOne(identifier);
     }
 
     @Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES_UNIT)
     @PutMapping(CommonConstants.PATH_ID)
-    public ArchivalProfileUnitDto update(final @PathVariable("id") String id,
-        final @Valid @RequestBody ArchivalProfileUnitDto dto) throws InvalidParseOperationException {
+    public ArchivalProfileUnitDto update(final @PathVariable("id") String id, final @Valid @RequestBody ArchivalProfileUnitDto dto) throws InvalidParseOperationException {
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update archival unit profile with identifier metadata {} to {}", id, dto);
-        SanityChecker.sanitizeCriteria(id);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()),
-            "Unable to update archival unit profile : the DTO id must match the path id");
+        Assert.isTrue(StringUtils.equals(id, dto.getId()), "Unable to update archival unit profile : the DTO id must match the path id");
         return archivalProfileUnitExternalService.update(dto);
     }
 
@@ -139,7 +142,9 @@ public class ArchivalProfileUnitExternalController {
     @Secured(ServicesData.ROLE_CREATE_ARCHIVE_PROFILES_UNIT)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ArchivalProfileUnitDto create(final @Valid @RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) {
+    public ArchivalProfileUnitDto create(final @Valid @RequestBody ArchivalProfileUnitDto archivalProfileUnitDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(archivalProfileUnitDto);
         LOGGER.debug("Create {}", archivalProfileUnitDto);
         ApiUtils.checkValidity(archivalProfileUnitDto);
         return archivalProfileUnitExternalService.create(archivalProfileUnitDto);
@@ -158,8 +163,10 @@ public class ArchivalProfileUnitExternalController {
         throws InvalidParseOperationException {
         LOGGER.debug("Import Archival Unit Profile file {}", fileName);
         ParameterChecker.checkParameter("The fileName is mandatory parameter :", fileName);
-        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
-        SanityChecker.isValidFileName(file.getOriginalFilename());
+        if(file != null) {
+            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+            SanityChecker.isValidFileName(file.getOriginalFilename());
+        }
         SanityChecker.checkSecureParameter(fileName);
         SanityChecker.isValidFileName(fileName);
         SafeFileChecker.checkSafeFilePath(fileName);
@@ -169,29 +176,34 @@ public class ArchivalProfileUnitExternalController {
     @Secured({ServicesData.ROLE_GET_PASTIS})
     @PostMapping(CommonConstants.PATH_CHECK)
     public ResponseEntity<Void> check(@RequestBody ArchivalProfileUnitDto archivalProfileUnitDto,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
-        LOGGER.debug("check exist accessContract={}", archivalProfileUnitDto);
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ApiUtils.checkValidity(archivalProfileUnitDto);
+        SanityChecker.sanitizeCriteria(archivalProfileUnitDto);
+        LOGGER.debug("check exist accessContract={}", archivalProfileUnitDto);
         final boolean exist = archivalProfileUnitExternalService.check(archivalProfileUnitDto);
         return RestUtils.buildBooleanResponse(exist);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_PASTIS)
-    public ArchivalProfileUnitDto patch(final @PathVariable("id") String id,
-        @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+    public ArchivalProfileUnitDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")),
-            "The DTO identifier must match the path identifier for update.");
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return archivalProfileUnitExternalService.patch(partialDto);
     }
 
     @Secured(ServicesData.ROLE_GET_PASTIS)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return archivalProfileUnitExternalService.findHistoryById(id);
     }
 }

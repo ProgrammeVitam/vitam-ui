@@ -1,6 +1,8 @@
 package fr.gouv.vitamui.pastis.rest;
 
 import com.google.common.collect.ImmutableMap;
+import fr.gouv.vitam.common.model.administration.ProfileFormat;
+import fr.gouv.vitam.common.model.administration.ProfileStatus;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -69,6 +71,11 @@ public class ProfileControllerTest extends UIPastisRestControllerTest<ProfileDto
     @Override
     protected ProfileDto buildDto() {
         final ProfileDto dto = new ProfileDto();
+        dto.setTenant(0);
+        dto.setId("id");
+        dto.setName("ProfileName");
+        dto.setFormat(ProfileFormat.RNG);
+        dto.setStatus(ProfileStatus.ACTIVE);
         return dto;
     }
 

@@ -40,7 +40,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.logbook.LogbookLifecycle;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalRestClient;
@@ -129,7 +131,8 @@ public class LogbookExternalService extends AbstractInternalClientService {
      * @return
      * @throws VitamClientException
      */
-    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) throws VitamClientException {
+    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) throws PreconditionFailedException {
+        SanityChecker.sanitizeJson(select);
         return responseMapping(logbookRestClient.findOperations(getInternalHttpContext(), select),
             LogbookOperationsResponseDto.class);
     }
@@ -162,10 +165,8 @@ public class LogbookExternalService extends AbstractInternalClientService {
      */
 
     public Mono<ResponseEntity<Resource>> downloadReport(final String id, final String downloadType) {
-        final Mono<ResponseEntity<Resource>> resourceResponseEntityResponse =
-            logbookWebClient
+            return logbookWebClient
                 .downloadReport(getInternalHttpContext(), id, downloadType);
-        return resourceResponseEntityResponse;
     }
 
     @Override

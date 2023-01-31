@@ -202,6 +202,7 @@ public class RuleExternalController {
     public JsonNode importRules(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         if(file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+            SanityChecker.isValidFileName(file.getOriginalFilename());
         }
         SanityChecker.isValidFileName(fileName);
         SafeFileChecker.checkSafeFilePath(fileName);
