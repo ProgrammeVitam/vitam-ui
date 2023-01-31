@@ -1,8 +1,5 @@
 ---
 
-package_name: "vitamui-{{ vitamui_struct.vitamui_component }}"
-service_name: "vitamui-{{ vitamui_struct.vitamui_component }}"
-
 jvm_opts:
   memory: "{{ vitamui_defaults.services.jvm_opts.memory | default('-Xms512m -Xmx512m') }}"
   gc: "{{ vitamui_defaults.services.jvm_opts.gc | default('') }}"

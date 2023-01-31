@@ -4,9 +4,9 @@
   fail: msg="{{ vitam_site_name }} not correctly configured"
   when: vitam_site_name|regex_search('[^a-zA-Z0-9\\-]') # found a bug ; no "_" allowed
 
-- name: Install {{ package_name }} package
+- name: "Install {{ consul.package_name | default('vitam-consul') }} package"
   package:
-    name: "{{ package_name }}"
+    name: "{{ consul.package_name | default('vitam-consul') }}"
     state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"
@@ -55,9 +55,9 @@
 # Ensure that the installation is complete and consul up before setting up the system-wide dns resolver...
 - meta: flush_handlers
 
-- name: "Ensure {{ service_name }} service is started"
+- name: "Ensure {{ consul.service_name | default('vitam-consul') }} service is started"
   service:
-    name: "{{ service_name }}"
+    name: "{{ consul.service_name | default('vitam-consul') }}"
     state: started
     enabled: "{{ consul.at_boot | default(service_at_boot) }}"
 

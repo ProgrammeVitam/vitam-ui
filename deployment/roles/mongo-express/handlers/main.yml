@@ -7,5 +7,5 @@
 
 - name: restart mongo-express
   service:
-    name: "{{ service_name }}"
+    name: "{{ mongo_express.service_name | default('vitamui-mongo-express') }}"
     state: restarted

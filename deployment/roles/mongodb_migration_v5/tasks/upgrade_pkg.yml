@@ -26,6 +26,7 @@
 
 - name: "Start vitam-mongo service"
   systemd:
-    name: "vitamui-mongod"
-    enabled: yes
+    name: vitamui-mongod
+    daemon_reload: yes
     state: restarted
+    enabled: {{ mongodb.at_boot | default(service_at_boot) }}

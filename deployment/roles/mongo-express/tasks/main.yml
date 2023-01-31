@@ -2,7 +2,7 @@
 
 - name: Install mongo-express package
   package:
-    name: "{{ package_name }}"
+    name: "{{ mongo_express.package_name | default('vitamui-mongo-express') }}"
     state: latest
   register: result
   retries: "{{ packages_install_retries_number | default(2) }}"
@@ -43,7 +43,7 @@
 
 - name: Ensure mongo-express is started & at boot
   systemd:
-    name: "{{ service_name }}"
+    name: "{{ mongo_express.service_name | default('vitamui-mongo-express') }}"
     state: started
     enabled: "{{ mongo_express.at_boot | default(service_at_boot) }}"
     daemon_reload: yes
