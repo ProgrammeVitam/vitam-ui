@@ -183,6 +183,7 @@ public class ProviderController extends AbstractUiRestController {
         ParameterChecker.checkParameter("Parameters are mandatory : ", keystore, provider, id);
         SanityChecker.isValidFileName(keystore.getOriginalFilename());
         SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(VitamUIUtils.convertObjectFromJson(provider, Map.class));
         LOGGER.debug("Update keystore provider id={} with partialDto={}", id, provider);
         return service.patch(buildUiHttpContext(), VitamUIUtils.convertObjectFromJson(provider, Map.class), keystore, null, id, ProviderPatchType.KEYSTORE);
     }
@@ -198,6 +199,7 @@ public class ProviderController extends AbstractUiRestController {
         ParameterChecker.checkParameter("Parameters are mandatory : ", provider, idpMetadata, id);
         SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
         SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(VitamUIUtils.convertObjectFromJson(provider, Map.class));
         LOGGER.debug("Update idpMetadata provider id={} with partialDto", id, provider);
         return service.patch(buildUiHttpContext(), VitamUIUtils.convertObjectFromJson(provider, Map.class), null, idpMetadata, id, ProviderPatchType.IDPMETADATA);
     }

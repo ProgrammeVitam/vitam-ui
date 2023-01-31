@@ -171,9 +171,9 @@ public final class VitamUIUtils {
         }
     }
 
-    public static <T> T convertObjectFromJson(final String json, final Class<T> clazz)
+    public static <T> T convertObjectFromJson(final String json, final Class<T> cls)
         throws JsonParseException, JsonMappingException, IOException {
-        return new ObjectMapper().readValue(json, clazz);
+        return new ObjectMapper().readValue(json, cls);
     }
 
     public static void saveContentInFile(final String filename, final String content) throws IOException {
