@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12 title-text mb-2">
       <div class="result-layout">
-        <div>{{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: { nb: dataSource?.length } }}</div>
+        <div>{{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: {nb: dataSource?.length} }}</div>
       </div>
     </div>
   </div>
@@ -59,7 +59,7 @@
           <button
             class="vitamui-filter-button ml-1"
             [vitamuiCommonTableFilter]="statusFilterTemplate"
-            [class.active]="filterMap['Status'] && filterMap['Status'].length > 0"
+            [class.active]="filterMap.get('Status') && filterMap.get('Status').length > 0"
             #statusFilterTrigger="vitamuiCommonTableFilter"
           >
             <em class="material-icons vitamui-row-icon">filter_list</em>
@@ -95,7 +95,8 @@
               </p>
             </div>
             <div class="col-1">
-              <p matTooltip="{{ accessionRegisterDetail.archivalAgreement }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+              <p matTooltip="{{ accessionRegisterDetail.archivalAgreement }}" matTooltipClass="vitamui-tooltip"
+                 [matTooltipShowDelay]="300">
                 {{ accessionRegisterDetail.archivalAgreement | truncate: 12 }}
               </p>
             </div>
