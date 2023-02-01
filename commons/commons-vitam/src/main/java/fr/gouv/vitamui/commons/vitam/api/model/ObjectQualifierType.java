@@ -38,9 +38,7 @@ package fr.gouv.vitamui.commons.vitam.api.model;
 
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum ObjectQualifierType {
     // Ordered by download preference.
@@ -50,9 +48,12 @@ public enum ObjectQualifierType {
     TEXTCONTENT("TextContent"),
     PHYSICALMASTER("PhysicalMaster");
 
-    public static final List<String> allValuesOrdered = Arrays.stream(ObjectQualifierType.values())
-        .map(ObjectQualifierType::getValue)
-        .collect(Collectors.toList());
+    public static final List<String> downloadableValuesOrdered = List.of(
+        BINARYMASTER.value,
+        DISSEMINATION.value,
+        THUMBNAIL.value,
+        TEXTCONTENT.value
+    );
 
     private final String value;
 

@@ -158,7 +158,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     }
 
     private QualifiersDto getLastObjectQualifier(ResultsDto got) {
-        for (String qualifierName : ObjectQualifierType.allValuesOrdered) {
+        for (String qualifierName : ObjectQualifierType.downloadableValuesOrdered) {
             QualifiersDto qualifierFound = got.getQualifiers().stream()
                 .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
                 .reduce((first, second) -> second)
