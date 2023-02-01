@@ -402,7 +402,7 @@ public final class MetadataSearchCriteriaUtils {
                 List<String> searchValues =
                     ruleInheritanceCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                         Collectors.toList());
-                buildInheritedCategoryQuery(searchValues,
+                buildInheritedCategoryQuery(searchValues, ruleInheritanceCriteria.getCategory(),
                     ArchiveSearchConsts.CriteriaOperators.valueOf(ruleInheritanceCriteria.getOperator()),
                     query);
             }
@@ -691,7 +691,7 @@ public final class MetadataSearchCriteriaUtils {
     }
 
     private static void buildInheritedCategoryQuery(final List<String> searchValues,
-        ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
+        ArchiveSearchConsts.CriteriaCategory category, ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryOr = or();
         if (!CollectionUtils.isEmpty(searchValues)) {
@@ -700,7 +700,7 @@ public final class MetadataSearchCriteriaUtils {
                 try {
                     subQueryOr
                         .add(VitamQueryHelper
-                            .buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_INHERITED, searchValue,
+                            .buildSubQueryByOperator(buildInheritedValueFromCategory(category), searchValue,
                                 operator));
                 } catch (InvalidCreateOperationException exception) {
                     LOGGER.error(INVALID_CREATION_OPERATION, exception);
@@ -712,6 +712,42 @@ public final class MetadataSearchCriteriaUtils {
         subQueryAnd.add(subQueryOr);
     }
 
+    private static String buildInheritedValueFromCategory(ArchiveSearchConsts.CriteriaCategory category)
+        throws InvalidCreateOperationException {
+
+        String inheritedValue = "";
+
+        switch (category.name()) {
+            case "APPRAISAL_RULE":
+                inheritedValue = ArchiveSearchConsts.APPRAISAL_RULE_INHERITED;
+                break;
+            case "ACCESS_RULE":
+                inheritedValue = ArchiveSearchConsts.ACCESS_RULE_INHERITED;
+                break;
+            case "STORAGE_RULE":
+                inheritedValue = ArchiveSearchConsts.STORAGE_RULE_INHERITED;
+                break;
+            case "HOLD_RULE":
+                inheritedValue = ArchiveSearchConsts.HOLD_RULE_INHERITED;
+                break;
+            case "DISSEMINATION_RULE":
+                inheritedValue = ArchiveSearchConsts.DISSEMINATION_RULE_INHERITED;
+                break;
+            case "REUSE_RULE":
+                inheritedValue = ArchiveSearchConsts.REUSE_RULE_INHERITED;
+                break;
+            case "CLASSIFICATION_RULE":
+                inheritedValue = ArchiveSearchConsts.CLASSIFICATION_RULE_INHERITED;
+                break;
+            default:
+        }
+
+        if (inheritedValue.isEmpty()) {
+            throw new InvalidCreateOperationException("inheritedValue is empty or null ");
+        }
+
+        return inheritedValue;
+    }
     private static void buildRuleStartDateQuery(String ruleCategory, final List<String> searchValues,
         ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
         throws InvalidCreateOperationException {

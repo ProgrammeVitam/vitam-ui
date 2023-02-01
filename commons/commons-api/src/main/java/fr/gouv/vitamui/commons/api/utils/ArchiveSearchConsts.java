@@ -153,6 +153,12 @@ public class ArchiveSearchConsts {
 
     public final static String DISSEMINATION_RULE_IDENTIFIER = "#management.DisseminationRule.Rules.Rule";
     public final static String APPRAISAL_RULE_INHERITED = "#management.AppraisalRule.Inheritance.PreventInheritance";
+    public final static String ACCESS_RULE_INHERITED = "#management.AccessRule.Inheritance.PreventInheritance";
+    public final static String STORAGE_RULE_INHERITED = "#management.StorageRule.Inheritance.PreventInheritance";
+    public final static String HOLD_RULE_INHERITED = "#management.HoldRule.Inheritance.PreventInheritance";
+    public final static String DISSEMINATION_RULE_INHERITED = "#management.DisseminationRule.Inheritance.PreventInheritance";
+    public final static String REUSE_RULE_INHERITED = "#management.ReuseRule.Inheritance.PreventInheritance";
+    public final static String CLASSIFICATION_RULE_INHERITED = "#management.ClassificationRule.Inheritance.PreventInheritance";
 
     public final static String APPRAISAL_PREVENT_RULE_IDENTIFIER = "#management.AppraisalRule.Inheritance.PreventRulesId";
 
