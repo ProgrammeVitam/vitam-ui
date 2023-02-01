@@ -34,30 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable, LOCALE_ID} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Observable, of, throwError, TimeoutError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
+  ApiUnitObject,
   CriteriaDataType,
   CriteriaOperator,
   FilingHoldingSchemeNode,
   SearchService,
   SecurityService
 } from 'ui-frontend-common';
-import { ArchiveApiService } from '../core/api/archive-api.service';
-import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
-import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
-import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
-import { SearchResponse } from './models/search-response.interface';
-import { PagedResult, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from './models/search.criteria';
-import { TransferRequestDto } from './models/transfer-request-detail.interface';
-import { Unit } from './models/unit.interface';
-import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
-import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
+import {ArchiveApiService} from '../core/api/archive-api.service';
+import {ExportDIPCriteriaList} from './models/dip-request-detail.interface';
+import {ReclassificationCriteriaDto} from './models/reclassification-request.interface';
+import {RuleSearchCriteriaDto} from './models/ruleAction.interface';
+import {SearchResponse} from './models/search-response.interface';
+import {
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum
+} from './models/search.criteria';
+import {TransferRequestDto} from './models/transfer-request-detail.interface';
+import {Unit} from './models/unit.interface';
+import {UnitDescriptiveMetadataDto} from './models/unitDescriptiveMetadata.interface';
+import {VitamUISnackBarComponent} from './shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -96,7 +103,7 @@ export class ArchiveService extends SearchService<any> {
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
       catchError(() => {
-        return of({ $hits: null, $results: [] });
+        return of({$hits: null, $results: []});
       }),
       map((response) => response.$results),
       map((results) => this.buildNestedTreeLevels(results))
@@ -153,7 +160,7 @@ export class ArchiveService extends SearchService<any> {
 
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: { type: 'exportCsvLimitReached' },
+            data: {type: 'exportCsvLimitReached'},
             duration: 10000,
           });
         }
@@ -172,14 +179,14 @@ export class ArchiveService extends SearchService<any> {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
         }
         // Return other errors
-        return of({ $hits: null, $results: [] });
+        return of({$hits: null, $results: []});
       }),
       map((results) => this.buildPagedResults(results))
     );
   }
 
-  launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
-    this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
+  launchDownloadObjectFromUnit(unitId: string, tenantIdentifier: number, accessContract: string, qualifier?: string, version?: number) {
+    this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(unitId, accessContract, tenantIdentifier, qualifier, version));
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {
@@ -204,7 +211,7 @@ export class ArchiveService extends SearchService<any> {
     return this.archiveApiService.findArchiveUnit(id, headers);
   }
 
-  getObjectById(id: string, headers?: HttpHeaders) {
+  getObjectById(id: string, headers?: HttpHeaders): Observable<ApiUnitObject> {
     return this.archiveApiService.getObjectById(id, headers);
   }
 
@@ -273,7 +280,7 @@ export class ArchiveService extends SearchService<any> {
   }
 
   buildArchiveUnitPath(archiveUnit: Unit, accessContract: string) {
-    const allunitups = archiveUnit['#allunitups'].map((unitUp) => ({ id: unitUp, value: unitUp }));
+    const allunitups = archiveUnit['#allunitups'].map((unitUp) => ({id: unitUp, value: unitUp}));
 
     if (!allunitups || allunitups.length === 0) {
       return of({
@@ -422,6 +429,6 @@ function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingS
       return 0;
     }
 
-    return a.title.localeCompare(b.title, locale, { numeric: true });
+    return a.title.localeCompare(b.title, locale, {numeric: true});
   };
 }

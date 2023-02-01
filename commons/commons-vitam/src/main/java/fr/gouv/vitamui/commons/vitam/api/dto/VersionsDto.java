@@ -99,4 +99,9 @@ public class VersionsDto {
     @JsonProperty("OtherMetadata")
     private Map<String, Object> otherMetadata = new HashMap<>();
 
+    @JsonProperty("#opi")
+    private String opi;
+
+    @JsonProperty("DataObjectProfile")
+    private String dataObjectProfile;
 }

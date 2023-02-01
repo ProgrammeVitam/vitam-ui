@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Id } from '../../models';
+import {Id} from '../../models';
 
 export interface FilingHoldingSchemeNode extends Id {
   title: string;

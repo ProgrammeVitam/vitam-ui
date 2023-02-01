@@ -38,7 +38,8 @@
           <div (click)="expendChildren(node);$event.stopPropagation()"
             [ngStyle]="{'margin-left': calculateNodePosition(node)  + 'px' , 'width': '360px' }">
             <span *ngIf="isElementComplexAndHasChildren(node)"
-              [ngClass]="{'pastis-chevron-icon': !fileTreeService.nestedTreeControl.isExpanded(node),'pastis-chevron-icon-selected':fileTreeService.nestedTreeControl.isExpanded(node)}">
+              [ngClass]="{'pastis-chevron-icon': !fileTreeService.nestedTreeControl.isExpanded(node),
+              'pastis-chevron-icon-selected':fileTreeService.nestedTreeControl.isExpanded(node)}">
               <mat-icon>{{fileTreeService.nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
               </mat-icon>
             </span>
