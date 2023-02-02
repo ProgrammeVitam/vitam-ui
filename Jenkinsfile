@@ -133,7 +133,7 @@ pipeline {
                     'Build and Test Apis': {
                       //  sh ''' $MVN_COMMAND verify -Psonar-metrics,vitam -f api/pom.xml '''
                         sh '''
-                            $MVN_COMMAND clean install -Psonar-metrics,vitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express,!ui,!ui/ui-portal,!ui/ui-identity,!ui/ui-frontend,!ui/ui-frontend-common,!ui/ui-ingest,!ui/ui-archive-search ,!ui/ui-referential ,!ui-pastis,!ui-collect ' $JAVA_TOOL_OPTIONS
+                            $MVN_COMMAND clean install -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express,!ui,!ui/ui-portal,!ui/ui-identity,!ui/ui-frontend,!ui/ui-frontend-common,!ui/ui-ingest,!ui/ui-archive-search ,!ui/ui-referential ,!ui/ui-pastis,!ui/ui-collect ' $JAVA_TOOL_OPTIONS
                         '''
                     },
                     'Build and Test Ui Frontend Common': {
