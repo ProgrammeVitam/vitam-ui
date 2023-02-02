@@ -143,10 +143,10 @@ describe('ArchivePreviewComponent', () => {
     expect(component.updateStarted).toBeTruthy();
   });
 
-  it('should not change the selectedIndex value ', () => {
+  it('should change the selectedIndex value ', () => {
     component.selectedIndex = -3;
     component.showNormalPanel();
-    expect(component.selectedIndex).toEqual(-3);
+    expect(component.selectedIndex).toEqual(0);
   });
 
   it('should return vitamui-icon-folder ', () => {
