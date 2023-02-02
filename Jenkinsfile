@@ -8,15 +8,16 @@ pipeline {
         MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true "
         M2_REPO = "${HOME}/.m2"
-        CI = credentials("app-jenkins")
-
-        SERVICE_GIT_URL = credentials("service-gitlab-url")
-        SERVICE_NEXUS_URL = credentials("service-nexus-url")
-        SERVICE_PROXY_HOST = credentials("http-proxy-host")
-        SERVICE_PROXY_PORT = credentials("http-proxy-port")
-        NOPROXY_HOST = credentials("http_nonProxyHosts")
-        SERVICE_REPO_SSHURL = credentials("repository-connection-string")
-        SERVICE_REPOSITORY_URL=credentials("service-repository-url")
+        CI = credentials('app-jenkins')
+        SERVICE_CHECKMARX_URL = credentials('service-checkmarx-url')
+        SERVICE_SONAR_URL = credentials('service-sonar-url')
+        SERVICE_GIT_URL = credentials('service-gitlab-url')
+        SERVICE_NEXUS_URL = credentials('service-nexus-url')
+        SERVICE_PROXY_HOST = credentials('http-proxy-host')
+        SERVICE_PROXY_PORT = credentials('http-proxy-port')
+        NOPROXY_HOST = credentials('http_nonProxyHosts')
+        SERVICE_REPO_SSHURL = credentials('repository-connection-string')
+        SERVICE_REPOSITORY_URL = credentials('service-repository-url')
         JAVA_TOOL_OPTIONS = "-Dhttp.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttp.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttps.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttps.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttp.nonProxyHosts=${env.NOPROXY_HOST}"
     }
 
@@ -37,7 +38,7 @@ pipeline {
     }
 
     stages {
-        stage('Set variables for automatic run') {
+          stage('Set variables for automatic run') {
             agent none
             steps {
                 script {
@@ -95,39 +96,132 @@ pipeline {
             steps {
                 sh 'sudo yum remove -y nodejs'
                 sh "curl -fsSL ${env.NODE_JS_DOWNLOAD_URL} | sudo -E bash -"
-                sh 'sudo yum --enablerepo=nodesource clean all'
+          //      sh 'sudo yum --enablerepo=nodesource clean all'
                 sh 'sudo yum install -y nodejs gcc-c++ make'
                 sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
                 sh 'node -v;npm -v'
             }
         }
 
-        stage('Check vulnerabilities and tests') {
-            when {
+        stage('Build common.') {
+             when {
                 environment(name: 'DO_TEST', value: 'true')
             }
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
-                NODE_OPTIONS="--max_old_space_size=12288"
+                JAVA_TOOL_OPTIONS=""
             }
             steps {
-                sh 'node -v'
-                sh 'npmrc default'
-
-                sh '''
-                    $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
-                '''
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
+                parallel(
+                    'Common': {
+                         sh ''' $MVN_COMMAND verify -Psonar-metrics,vitam -f commons/pom.xml '''
+                    }
+                )
             }
         }
 
-        stage('Build sources') {
+        stage('Build and tests.') {
+             when {
+                environment(name: 'DO_TEST', value: 'true')
+            }
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
+                JAVA_TOOL_OPTIONS=""
+            }
+            steps {
+                parallel(
+                    'Build and Test Apis': {
+                      //  sh ''' $MVN_COMMAND verify -Psonar-metrics,vitam -f api/pom.xml '''
+
+
+                sh '''
+                    $MVN_COMMAND clean install -Psonar-metrics,vitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express,!ui,!ui/ui-portal,!ui/ui-identity,!ui/ui-frontend,!ui/ui-frontend-common,!ui/ui-ingest,!ui/ui-archive-search ,!ui/ui-referential ,!ui-pastis,!ui-collect ' $JAVA_TOOL_OPTIONS
+                '''
+
+
+                    },
+                    'Build and Test Ui Frontend Common': {
+                        sh 'node -v'
+                        sh 'npmrc default'
+                        sh ''' $MVN_COMMAND clean install  -Psonar-metrics,vitam -f ui/ui-frontend-common/pom.xml  '''
+                        sh '''
+                            diff_check=$(git diff HEAD~1 ui/ui-frontend/ | wc -l)
+                            if [[ $diff_check -gt 0 ]]
+                            then
+                              $MVN_COMMAND install -Pvitam,sonar-metrics -f ui/ui-frontend/pom.xml
+                            else
+                              $MVN_COMMAND install -DskipAllFrontend -Pvitam,sonar-metrics -f ui/ui-frontend/pom.xml
+                            fi
+                        '''
+                    }
+                )
+            }
+        }
+
+
+        stage('Ui Frontend') {
+          when {
+                    environment(name: 'DO_TEST', value: 'true')
+                }
+            steps {
+                parallel(
+                    'Build ui parent': {
+                        sh ''' $MVN_COMMAND install -DskipTests=true -DskipAllFrontendTest -Pvitam -f ui/pom.xml -pl !ui-frontend-common,!ui-frontend,!ui-portal,!ui-identity,!ui-referential,!ui-pastis,!ui-collect '''
+                    },
+                    'Build and Test Ui Frontend': {
+                        sh ''' $MVN_COMMAND install -Pvitam -DskipAllFrontendTest -DskipTests=true -f ui/ui-frontend/pom.xml '''
+                    }
+                )
+            }
+        }
+
+        stage('Uis ') {
+              when {
+                        environment(name: 'DO_TEST', value: 'true')
+                    }
+            steps {
+                parallel(
+                    'Ui identity': {
+                        sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-identity/pom.xml '''
+                    },
+                    'Ui portal': {
+                        sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-portal/pom.xml '''
+                    },
+                    'Ui referential': {
+                        sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-referential/pom.xml  '''
+                    },
+                     'Ui collect': {
+                         sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-collect/pom.xml  '''
+                     },
+                      'Ui pastis': {
+                          sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-pastis/pom.xml  '''
+                      }
+                )
+            }
+        }
+
+
+        stage('Build and tests.') {
+              when {
+                        environment(name: 'DO_TEST', value: 'true')
+                    }
+            steps {
+                parallel(
+                    'Back install and Test': {
+                        sh ''' $MVN_COMMAND install -Pvitam -pl !ui,!ui/ui-frontend-common,!ui/ui-frontend,!ui/ui-portal,!ui/ui-identity,!ui/ui-referential,!ui/ui-pastis,!ui/ui-collect '''
+                    },
+                    'Build and Test Ui Frontend Common': {
+                        sh ''' $MVN_COMMAND install -DskipAllFrontendTest -DskipTests=true -Pvitam -f ui/ui-frontend-common/pom.xml  '''
+                    }
+                )
+            }
+        }
+
+
+
+        stage('Build sources') {
+            environment {
+                PUPPETEER_DOWNLOAD_HOST = "${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
             }
             when {
                 environment(name: 'DO_BUILD', value: 'true')
@@ -142,8 +236,8 @@ pipeline {
 
         stage('Build COTS') {
             environment {
-                http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
-                https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                http_proxy = "http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                https_proxy = "http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
             }
             when {
                 environment(name: 'DO_BUILD', value: 'true')
@@ -158,7 +252,7 @@ pipeline {
             }
         }
 
-        stage("Get publishing scripts") {
+        stage('Get publishing scripts') {
             when {
                 environment(name: 'DO_PUBLISH', value: 'true')
                 environment(name: 'DO_BUILD', value: 'true')
@@ -174,7 +268,7 @@ pipeline {
             }
         }
 
-        stage("Publish rpm and deb") {
+        stage('Publish rpm and deb') {
             when {
                 environment(name: 'DO_PUBLISH', value: 'true')
                 environment(name: 'DO_BUILD', value: 'true')
@@ -187,12 +281,12 @@ pipeline {
             }
         }
 
-        stage("Update symlink") {
+        stage('Update symlink') {
             when {
                 anyOf {
-                    branch "develop"
-                    branch "master_*"
-                    tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: "REGEXP"
+                    branch 'develop*'
+                    branch 'master_*'
+                    tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: 'REGEXP'
                 }
                 environment(name: 'DO_PUBLISH', value: 'true')
                 environment(name: 'DO_BUILD', value: 'true')
@@ -204,12 +298,18 @@ pipeline {
             }
         }
 
-        stage("Checkmarx analysis") {
+        stage('Checkmarx analysis') {
             when {
+                anyOf {
+                    branch 'develop*'
+                    branch 'master_*'
+                    branch 'master'
+                    tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: 'REGEXP'
+                }
                 environment(name: 'DO_CHECKMARX', value: 'true')
             }
             environment {
-                SERVICE_CHECKMARX_URL = credentials("service-checkmarx-url")
+                JAVA_TOOL_OPTIONS = ''
             }
             steps {
                 dir('vitam-build.git') {
