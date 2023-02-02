@@ -114,13 +114,13 @@ pipeline {
             steps {
                 parallel(
                     'Common': {
-                         sh ''' $MVN_COMMAND verify -Psonar-metrics,vitam -f commons/pom.xml '''
+                         sh ''' $MVN_COMMAND clean install -Psonar-metrics,vitam -f commons/pom.xml '''
                     }
                 )
             }
         }
 
-        stage('Build and tests.') {
+        stage('Build and tests apis.') {
              when {
                 environment(name: 'DO_TEST', value: 'true')
             }
@@ -132,13 +132,9 @@ pipeline {
                 parallel(
                     'Build and Test Apis': {
                       //  sh ''' $MVN_COMMAND verify -Psonar-metrics,vitam -f api/pom.xml '''
-
-
-                sh '''
-                    $MVN_COMMAND clean install -Psonar-metrics,vitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express,!ui,!ui/ui-portal,!ui/ui-identity,!ui/ui-frontend,!ui/ui-frontend-common,!ui/ui-ingest,!ui/ui-archive-search ,!ui/ui-referential ,!ui-pastis,!ui-collect ' $JAVA_TOOL_OPTIONS
-                '''
-
-
+                        sh '''
+                            $MVN_COMMAND clean install -Psonar-metrics,vitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express,!ui,!ui/ui-portal,!ui/ui-identity,!ui/ui-frontend,!ui/ui-frontend-common,!ui/ui-ingest,!ui/ui-archive-search ,!ui/ui-referential ,!ui-pastis,!ui-collect ' $JAVA_TOOL_OPTIONS
+                        '''
                     },
                     'Build and Test Ui Frontend Common': {
                         sh 'node -v'
