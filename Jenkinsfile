@@ -114,7 +114,7 @@ pipeline {
             steps {
                 parallel(
                     'Common': {
-                         sh ''' $MVN_COMMAND clean install -Psonar-metrics,vitam -f commons/pom.xml '''
+                         sh ''' $MVN_COMMAND clean install -Pvitam -f commons/pom.xml '''
                     }
                 )
             }
@@ -133,20 +133,20 @@ pipeline {
                     'Build and Test Apis': {
                       //  sh ''' $MVN_COMMAND verify -Psonar-metrics,vitam -f api/pom.xml '''
                         sh '''
-                            $MVN_COMMAND clean install -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express,!ui,!ui/ui-portal,!ui/ui-identity,!ui/ui-frontend,!ui/ui-frontend-common,!ui/ui-ingest,!ui/ui-archive-search ,!ui/ui-referential ,!ui/ui-pastis,!ui/ui-collect ' $JAVA_TOOL_OPTIONS
+                            $MVN_COMMAND clean install:install -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express,!ui,!ui/ui-portal,!ui/ui-identity,!ui/ui-frontend,!ui/ui-frontend-common,!ui/ui-ingest,!ui/ui-archive-search ,!ui/ui-referential ,!ui/ui-pastis,!ui/ui-collect ' $JAVA_TOOL_OPTIONS
                         '''
                     },
                     'Build and Test Ui Frontend Common': {
                         sh 'node -v'
                         sh 'npmrc default'
-                        sh ''' $MVN_COMMAND clean install  -Psonar-metrics,vitam -f ui/ui-frontend-common/pom.xml  '''
+                        sh ''' $MVN_COMMAND clean install:install  -Psonar-metrics,vitam -f ui/ui-frontend-common/pom.xml  '''
                         sh '''
                             diff_check=$(git diff HEAD~1 ui/ui-frontend/ | wc -l)
                             if [[ $diff_check -gt 0 ]]
                             then
-                              $MVN_COMMAND install -Pvitam,sonar-metrics -f ui/ui-frontend/pom.xml
+                              $MVN_COMMAND install:install -Pvitam,sonar-metrics -f ui/ui-frontend/pom.xml
                             else
-                              $MVN_COMMAND install -DskipAllFrontend -Pvitam,sonar-metrics -f ui/ui-frontend/pom.xml
+                              $MVN_COMMAND install:install -DskipAllFrontend -Pvitam,sonar-metrics -f ui/ui-frontend/pom.xml
                             fi
                         '''
                     }
@@ -162,10 +162,10 @@ pipeline {
             steps {
                 parallel(
                     'Build ui parent': {
-                        sh ''' $MVN_COMMAND install -DskipTests=true -DskipAllFrontendTest -Pvitam -f ui/pom.xml -pl !ui-frontend-common,!ui-frontend,!ui-portal,!ui-identity,!ui-referential,!ui-pastis,!ui-collect '''
+                        sh ''' $MVN_COMMAND install:install -DskipTests=true -DskipAllFrontendTest -Pvitam -f ui/pom.xml -pl !ui-frontend-common,!ui-frontend,!ui-portal,!ui-identity,!ui-referential,!ui-pastis,!ui-collect '''
                     },
                     'Build and Test Ui Frontend': {
-                        sh ''' $MVN_COMMAND install -Pvitam -DskipAllFrontendTest -DskipTests=true -f ui/ui-frontend/pom.xml '''
+                        sh ''' $MVN_COMMAND install:install -Pvitam -DskipAllFrontendTest -DskipTests=true -f ui/ui-frontend/pom.xml '''
                     }
                 )
             }
@@ -178,43 +178,26 @@ pipeline {
             steps {
                 parallel(
                     'Ui identity': {
-                        sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-identity/pom.xml '''
+                        sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-identity/pom.xml '''
                     },
                     'Ui portal': {
-                        sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-portal/pom.xml '''
+                        sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-portal/pom.xml '''
                     },
                     'Ui referential': {
-                        sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-referential/pom.xml  '''
+                        sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-referential/pom.xml  '''
                     },
                      'Ui collect': {
-                         sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-collect/pom.xml  '''
+                         sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-collect/pom.xml  '''
                      },
                       'Ui pastis': {
-                          sh ''' $MVN_COMMAND install -Pvitam -f ui/ui-pastis/pom.xml  '''
+                          sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-pastis/pom.xml  '''
                       }
                 )
             }
         }
 
 
-        stage('Build and tests.') {
-              when {
-                        environment(name: 'DO_TEST', value: 'true')
-                    }
-            steps {
-                parallel(
-                    'Back install and Test': {
-                        sh ''' $MVN_COMMAND install -Pvitam -pl !ui,!ui/ui-frontend-common,!ui/ui-frontend,!ui/ui-portal,!ui/ui-identity,!ui/ui-referential,!ui/ui-pastis,!ui/ui-collect '''
-                    },
-                    'Build and Test Ui Frontend Common': {
-                        sh ''' $MVN_COMMAND install -DskipAllFrontendTest -DskipTests=true -Pvitam -f ui/ui-frontend-common/pom.xml  '''
-                    }
-                )
-            }
-        }
-
-
-
+   
         stage('Build sources') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST = "${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
@@ -225,7 +208,7 @@ pipeline {
             steps {
                 sh 'npmrc default'
                 sh '''
-                    $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+                    $MVN_COMMAND deploy:deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
                 '''
             }
         }
@@ -242,7 +225,7 @@ pipeline {
                 sh 'npmrc internet'
                 dir('cots/') {
                     sh '''
-                        $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -Dlicense.skip=true $JAVA_TOOL_OPTIONS
+                        $MVN_COMMAND deploy:deploy -Pvitam,deb,rpm -DskipTests -Dlicense.skip=true $JAVA_TOOL_OPTIONS
                     '''
                 }
             }
