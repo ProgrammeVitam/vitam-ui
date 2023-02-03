@@ -136,4 +136,5 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     public PuaPastisValidator puaPastisValidator() {
         return new PuaPastisValidator();
     }
+
 }
