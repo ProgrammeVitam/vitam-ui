@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.external.server.service.IngestExternalService;
@@ -65,6 +66,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
@@ -92,7 +94,8 @@ public class IngestExternalController {
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) throws PreconditionFailedException,  InvalidParseOperationException {
+        @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws PreconditionFailedException, InvalidParseOperationException, IOException {
         if(direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
@@ -100,6 +103,10 @@ public class IngestExternalController {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
+        if(criteria.isPresent()) {
+            SanityChecker.sanitizeCriteria(VitamUIUtils
+                .convertObjectFromJson(criteria.get(), Object.class));
+        }
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
             direction);
         return ingestExternalService.getAllPaginated(page, size, criteria, orderBy, direction);

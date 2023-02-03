@@ -207,7 +207,7 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<JsonNode> updateProfile(@RequestBody final ProfileDto profileDto) throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<JsonNode> updateProfile(@Valid @RequestBody final ProfileDto profileDto) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("update profile {}", profileDto.getId());
         return service.updateProfile(buildUiHttpContext(), profileDto);

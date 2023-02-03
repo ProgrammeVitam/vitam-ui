@@ -92,7 +92,8 @@ public class SanityChecker {
     private static final List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST =
         List.of("$action", "$add", "$pull", "#unitups", "#allunitups", "#id", "$in",
             "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields", "authorizationRequestReplyIdentifier",
-            "$limit", "$orderby", "$eq", "$offset");
+            "$limit", "$orderby", "$eq", "$offset", "events.agIdExt.TransferringAgency",
+            "events.agIdExt.originatingAgency","events.evDetData.ArchivalAgreement", "events.evDetData.EvDetailReq" );
 
     private SanityChecker() {
         // Empty constructor

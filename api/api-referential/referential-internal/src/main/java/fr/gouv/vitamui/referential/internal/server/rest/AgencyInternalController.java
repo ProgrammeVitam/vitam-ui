@@ -175,8 +175,13 @@ public class AgencyInternalController {
 
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        if(file != null) {
+            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+            SanityChecker.isValidFileName(file.getOriginalFilename());
+        }
+        SanityChecker.isValidFileName(fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug("import agency file {}", fileName);
-        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return agencyInternalService.importAgencies(vitamContext, fileName, file);
     }

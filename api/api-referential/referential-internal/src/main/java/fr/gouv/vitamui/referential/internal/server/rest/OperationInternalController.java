@@ -174,6 +174,7 @@ public class OperationInternalController {
 
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, operationId);
         SafeFileChecker.checkSafeFilePath(operationId);
+        SanityChecker.isValidFileName(operationId);
         SanityChecker.checkSecureParameter(operationId, accessContractId);
         LOGGER.debug("Export probative with operationId : ", operationId);
         LOGGER.debug("Export probative accessContractId : ", accessContractId);

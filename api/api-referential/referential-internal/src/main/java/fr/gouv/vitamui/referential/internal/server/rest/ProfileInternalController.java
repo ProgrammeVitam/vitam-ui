@@ -48,6 +48,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -130,8 +131,11 @@ public class ProfileInternalController {
 
     @GetMapping(RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> downloadByMetadataIdentifier(
-        final @PathVariable("id") String id) throws AccessExternalNotFoundException, AccessExternalClientException {
+        final @PathVariable("id") String id)
+        throws AccessExternalNotFoundException, AccessExternalClientException, InvalidParseOperationException,
+        PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("download profile with id :{}", id);
         Response response = profileInternalService.download(vitamContext, id);
@@ -152,20 +156,26 @@ public class ProfileInternalController {
      */
     @PutMapping(value = RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID)
     public JsonNode updateProfileFile(final @PathVariable("id") String id,
-        @RequestParam("file") MultipartFile file) throws AccessExternalClientException {
-        LOGGER.debug("Update {}  profile file with id :{}", id);
+        @RequestParam("file") MultipartFile file) throws AccessExternalClientException, InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Update {}  profile file with id :{}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return profileInternalService.updateProfileFile(vitamContext, id, file);
     }
 
 
     @PutMapping(CommonConstants.PATH_ID)
-    public JsonNode updateProfile(final @PathVariable("id") String id, final @RequestBody ProfileDto dto)
-        throws AccessExternalClientException, InvalidParseOperationException {
-        LOGGER.debug("Update {} with {}", id, dto);
+    public JsonNode updateProfile(final @PathVariable("id") String id, final @Valid @RequestBody ProfileDto dto)
+        throws PreconditionFailedException, InvalidParseOperationException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Update {} with {}", id, dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()),
             "The DTO identifier must match the path identifier for update.");
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());

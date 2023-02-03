@@ -169,6 +169,7 @@ public class ProfileExternalController {
     @PutMapping(CommonConstants.PATH_ID)
     public ResponseEntity<JsonNode> update(final @PathVariable("id") String id,
         final @Valid @RequestBody ProfileDto dto) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeCriteria(id);
         SanityChecker.checkSecureParameter(id);
         Assert.isTrue(StringUtils.equals(id, dto.getId()),

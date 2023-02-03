@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.service.IngestService;
@@ -67,6 +68,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
@@ -93,13 +95,17 @@ public class IngestController extends AbstractUiRestController {
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
         @RequestParam final Optional<DirectionDto> direction) throws PreconditionFailedException,
-        InvalidParseOperationException {
+        InvalidParseOperationException, IOException {
         SanityChecker.sanitizeCriteria(criteria);
         if(orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         if(direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
+        }
+        if(criteria.isPresent()) {
+            SanityChecker.sanitizeCriteria(VitamUIUtils
+                .convertObjectFromJson(criteria.get(), Object.class));
         }
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);

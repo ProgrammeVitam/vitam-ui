@@ -45,6 +45,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
@@ -141,7 +142,9 @@ public class FileFormatExternalController {
     @Secured(ServicesData.ROLE_CREATE_FILE_FORMATS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public FileFormatDto create(final @Valid @RequestBody FileFormatDto fileFormatDto) {
+    public FileFormatDto create(final @Valid @RequestBody FileFormatDto fileFormatDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(fileFormatDto);
         LOGGER.debug("Create {}", fileFormatDto);
         ApiUtils.checkValidity(fileFormatDto);
         return fileFormatExternalService.create(fileFormatDto);
@@ -149,24 +152,30 @@ public class FileFormatExternalController {
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_FILE_FORMATS)
-    public FileFormatDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+    public FileFormatDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return fileFormatExternalService.patch(partialDto);
     }
 
-    private JsonNode findHistoryById(final @PathVariable("id") String id) {
-        LOGGER.debug("get logbook for accessContract with id :{}", id);
+    private JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for accessContract with id :{}", id);
         return fileFormatExternalService.findHistoryById(id);
     }
 
     @Secured(ServicesData.ROLE_DELETE_FILE_FORMATS)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
-        LOGGER.debug("Delete fileFormat with id :{}", id);
+    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Delete fileFormat with id :{}", id);
         fileFormatExternalService.delete(id);
     }
 
@@ -177,7 +186,7 @@ public class FileFormatExternalController {
     }
 
     /***
-     * Import file format from an xml file
+     * Import file format from a xml file
      * @param fileName the file name
      * @param file the agency csv file to import
      * @return the vitam response
@@ -185,9 +194,14 @@ public class FileFormatExternalController {
     @Secured(ServicesData.ROLE_IMPORT_FILE_FORMATS)
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-        LOGGER.debug("Import file format file {}", fileName);
         ParameterChecker.checkParameter("The fileName is mandatory parameter :", fileName);
-        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        if(file != null) {
+            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+            SanityChecker.isValidFileName(file.getOriginalFilename());
+        }
+        SanityChecker.isValidFileName(fileName);
+        SafeFileChecker.checkSafeFilePath(fileName);
+        LOGGER.debug("Import file format file {}", fileName);
         return fileFormatExternalService.importFileFormats(fileName, file);
     }
 }

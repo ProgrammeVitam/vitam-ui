@@ -1,0 +1,9 @@
+{
+  "evTypeProc":"INGEST",
+  "#id":"test",
+  "obIdIn":"test",
+  "events.agIdExt.TransferringAgency":"test",
+  "events.agIdExt.originatingAgency":"test",
+  "events.evDetData.ArchivalAgreement":"test",
+  "events.evDetData.EvDetailReq":"test"
+}

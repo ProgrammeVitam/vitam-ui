@@ -302,4 +302,15 @@ public class SanityCheckerTest {
             doesNotThrowAnyException();
     }
 
+    @Test
+    public void sanitizeJson_should_not_fail_with_ingest_search_keys()
+        throws FileNotFoundException, InvalidParseOperationException {
+        final String jsonWithIngestComplexe_Keys = "ingest_search_complexe_key.json";
+        final File file = PropertiesUtils.findFile(jsonWithIngestComplexe_Keys);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
+            doesNotThrowAnyException();
+    }
+
 }

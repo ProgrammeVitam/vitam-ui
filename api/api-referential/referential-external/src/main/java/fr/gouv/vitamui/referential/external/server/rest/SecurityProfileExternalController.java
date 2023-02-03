@@ -37,12 +37,14 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -104,50 +106,61 @@ public class SecurityProfileExternalController {
 
     @Secured(ServicesData.ROLE_GET_SECURITY_PROFILES)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public SecurityProfileDto getOne(final @PathVariable("identifier") String identifier) {
-        LOGGER.debug("get security profile identifier={}");
+    public SecurityProfileDto getOne(final @PathVariable("identifier") String identifier)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        SanityChecker.checkSecureParameter(identifier);
+        LOGGER.debug("get security profile identifier={}");
         return securityProfileExternalService.getOne(identifier);
     }
 
     @Secured({ ServicesData.ROLE_GET_SECURITY_PROFILES })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody SecurityProfileDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
-        LOGGER.debug("check exist accessContract={}", accessContractDto);
-        final boolean exist = securityProfileExternalService.check(accessContractDto);
+    public ResponseEntity<Void> check(@RequestBody SecurityProfileDto securityProfileDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(securityProfileDto);
+        LOGGER.debug("check exist accessContract={}", securityProfileDto);
+        final boolean exist = securityProfileExternalService.check(securityProfileDto);
         return RestUtils.buildBooleanResponse(exist);
     }
 
     @Secured(ServicesData.ROLE_CREATE_SECURITY_PROFILES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public SecurityProfileDto create(final @Valid @RequestBody SecurityProfileDto accessContractDto) {
-        LOGGER.debug("Create {}", accessContractDto);
-        return securityProfileExternalService.create(accessContractDto);
+    public SecurityProfileDto create(final @Valid @RequestBody SecurityProfileDto securityProfileDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(securityProfileDto);
+        LOGGER.debug("Create {}", securityProfileDto);
+        return securityProfileExternalService.create(securityProfileDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_SECURITY_PROFILES)
-    public SecurityProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+    public SecurityProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return securityProfileExternalService.patch(partialDto);
     }
 
     @Secured(ServicesData.ROLE_GET_SECURITY_PROFILES)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
-        LOGGER.debug("get logbook for accessContract with id :{}", id);
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for accessContract with id :{}", id);
         return securityProfileExternalService.findHistoryById(id);
     }
 
     @Secured(ServicesData.ROLE_DELETE_SECURITY_PROFILES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
-        LOGGER.debug("Delete securityProfile with id :{}", id);
+    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Event Identifier is mandatory : " , id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Delete securityProfile with id :{}", id);
         securityProfileExternalService.delete(id);
     }
 

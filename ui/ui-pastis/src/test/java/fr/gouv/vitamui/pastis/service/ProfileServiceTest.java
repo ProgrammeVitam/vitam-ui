@@ -2,6 +2,8 @@ package fr.gouv.vitamui.pastis.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.model.administration.ProfileFormat;
+import fr.gouv.vitam.common.model.administration.ProfileStatus;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
@@ -60,6 +62,9 @@ public class ProfileServiceTest extends AbstractCrudService<ProfileDto> {
         final ProfileDto dto = new ProfileDto();
         dto.setTenant(0);
         dto.setId(id);
+        dto.setName("ProfileName");
+        dto.setFormat(ProfileFormat.RNG);
+        dto.setStatus(ProfileStatus.ACTIVE);
         return dto;
     }
 
