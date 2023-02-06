@@ -32,6 +32,7 @@ package fr.gouv.vitamui.collect.service;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -49,6 +50,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -155,6 +158,22 @@ public class TransactionServiceTest {
         assertNotNull(response);
         assertThat(response).isInstanceOf(ResponseEntity.class);
         assertThat(response.getBody()).isInstanceOf(ResultsDto.class);
+    }
+
+    @Test
+    public void get_ontologies_list_should_call_appropriate_rest_client_one_time() {
+        // Given
+        List<OntologyDto> ontologiesList = new ArrayList<>();
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        Mockito.when(collectTransactionExternalRestClient.getExternalOntologiesList(ArgumentMatchers.any()))
+            .thenReturn( ontologiesList );
+
+        // When
+        transactionService.getExternalOntologiesList(eq(context));
+
+        // Then
+        verify(collectTransactionExternalRestClient, Mockito.times(1))
+            .getExternalOntologiesList(ArgumentMatchers.any());
     }
 
 }

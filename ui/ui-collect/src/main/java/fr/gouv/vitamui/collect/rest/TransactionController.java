@@ -36,6 +36,7 @@ import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -62,6 +63,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.io.InputStream;
+import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
@@ -243,6 +245,14 @@ public class TransactionController extends AbstractUiRestController {
         SanityChecker.checkSecureParameter(objectId);
         LOGGER.debug("[UI] : Find the Object Group details with ID {}", objectId);
         return transactionService.getObjectGroupById(objectId, buildUiHttpContext());
+    }
+
+    @ApiOperation(value = "get external ontologies list")
+    @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
+    @ResponseStatus(HttpStatus.OK)
+    public List<OntologyDto> getExternalOntologiesList() throws InvalidParseOperationException {
+        LOGGER.debug("[UI] : Get All External Ontologies");
+        return transactionService.getExternalOntologiesList(buildUiHttpContext());
     }
 
 

@@ -32,6 +32,7 @@ import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -45,6 +46,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
@@ -168,6 +170,12 @@ public class CollectTransactionExternalRestClient
             UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.OBJECTS_PATH + PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
+    }
+
+    public  List<OntologyDto> getExternalOntologiesList(ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
     }
 
 

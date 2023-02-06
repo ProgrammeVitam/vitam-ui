@@ -51,7 +51,7 @@ import {
   RuleCategoryVitamUiDto,
   Unit,
   UnitRuleDto,
-  VitamuiMissingTranslationHandler
+  VitamuiMissingTranslationHandler,
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';

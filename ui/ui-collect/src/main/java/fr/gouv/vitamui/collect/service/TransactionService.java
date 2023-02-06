@@ -31,6 +31,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -44,6 +45,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * UI Collect Transaction Service
@@ -130,6 +132,11 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
     }
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
         return collectTransactionExternalRestClient.findUnitById(id, context);
+    }
+
+    public List<OntologyDto> getExternalOntologiesList(ExternalHttpContext context) {
+        LOGGER.debug("Get All External Ontologies");
+        return collectTransactionExternalRestClient.getExternalOntologiesList(context);
     }
 
     public ResponseEntity<ResultsDto> getObjectGroupById(String objectId, ExternalHttpContext context) {

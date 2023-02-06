@@ -1,0 +1,12 @@
+- name: Check if ontologies file exist
+  local_action: stat path={{ inventory_dir }}/ontology/external_ontology_fields.json
+  register: ontologies_field
+
+- name: "Copy ontologies file to the service conf repository"
+  copy:
+    src: "{{ inventory_dir }}/ontology/external_ontology_fields.json"
+    dest: "{{ vitamui_folder_data }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+  when: ontologies_field.stat.exists

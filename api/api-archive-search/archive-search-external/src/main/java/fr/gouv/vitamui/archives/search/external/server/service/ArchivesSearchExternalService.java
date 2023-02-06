@@ -33,6 +33,7 @@ import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -53,6 +54,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -196,6 +198,10 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
         return
             archiveSearchStreamingInternalRestClient
                 .transferAcknowledgment(getInternalHttpContext(), originalFileName, atrInputStream);
+    }
+
+    public List<OntologyDto> getExternalOntologiesList() {
+        return archiveInternalRestClient.getExternalOntologiesList(getInternalHttpContext());
     }
 
 }

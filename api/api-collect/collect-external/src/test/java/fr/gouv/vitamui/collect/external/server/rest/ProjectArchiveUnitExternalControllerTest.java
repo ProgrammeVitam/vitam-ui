@@ -35,6 +35,7 @@ import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExt
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
@@ -51,6 +52,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
@@ -135,5 +137,21 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternal
         ArchiveUnitsDto
             responseDto = transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query);
         Assertions.assertEquals(responseDto, expectedResponse);
+    }
+
+    @Test
+    void testGetOntologiesListThenReturnOntologiesValuesList()
+        throws PreconditionFailedException {
+        // Given
+        List<OntologyDto> expectedResponse = new ArrayList<>();
+
+        // When
+        Mockito
+            .when(transactionArchiveUnitExternalService.getExternalOntologiesList())
+            .thenReturn(expectedResponse);
+        List<OntologyDto> response = transactionArchiveUnitExternalController.getExternalOntologiesList();
+
+        // Then
+        Assertions.assertEquals(response, expectedResponse);
     }
 }

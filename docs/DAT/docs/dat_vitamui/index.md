@@ -144,4 +144,5 @@
     5.3. [Logs techniques](exploitation/chaine_deploiement.md#logs-techniques)
     5.4. [Supervision](exploitation/chaine_deploiement.md#supervision)
     5.5. [Métriques](exploitation/chaine_deploiement.md#mtriques)
-    5.6. [PRA](exploitation/chaine_deploiement.md#pra)  
+    5.6. [PRA](exploitation/chaine_deploiement.md#pra)
+    5.7. [Les ontologies dans VitamUI](exploitation/gestion_ontologies.md#les-ontologies-dans-vitamui)  

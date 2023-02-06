@@ -14,8 +14,8 @@ spring:
         register: false
 
   data:
-      mongodb:
-        uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_archivesearch@localhost:27018/archivesearch?connectTimeoutMS=2000
+    mongodb:
+      uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_archivesearch@localhost:27018/archivesearch?connectTimeoutMS=2000
 
 multipart:
   enabled: true
@@ -64,5 +64,5 @@ logging:
     reactor.netty.*: DEBUG
 #    org.springframework.core.env: DEBUG
 
-
-
+# ontologies file path
+ontologies_file_path: "src/main/resources/ontology/external_ontology_fields.json"

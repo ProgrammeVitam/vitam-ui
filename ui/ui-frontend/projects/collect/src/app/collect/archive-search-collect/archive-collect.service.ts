@@ -46,6 +46,7 @@ import {
   AccessContractApiService,
   ApiUnitObject,
   FilingHoldingSchemeNode,
+  Ontology,
   SearchService,
   Transaction,
   Unit,
@@ -304,6 +305,10 @@ export class ArchiveCollectService extends SearchService<any> {
     headers = headers.append('fileName', fileName);
 
     return this.transactionApiService.updateUnitsAMetadata(transactionId, csvFile, headers);
+  }
+
+  getExternalOntologiesList(): Observable<Ontology[]> {
+    return this.transactionApiService.getExternalOntologiesList();
   }
 }
 

@@ -28,7 +28,14 @@ package fr.gouv.vitamui.archives.search.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.dto.*;
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
@@ -36,6 +43,7 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.VitamuiRoles;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
@@ -54,7 +62,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MimeType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -335,5 +351,13 @@ public class ArchivesSearchController extends AbstractUiRestController {
             archivesSearchService.transferAcknowledgment(buildUiHttpContext(), fileName, inputStream);
         LOGGER.debug("The transfer acknowledgment operation id : {} ", response.toString());
         return response;
+    }
+
+    @ApiOperation(value = "get external ontologies list")
+    @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
+    @ResponseStatus(HttpStatus.OK)
+    public List<OntologyDto> getExternalOntologiesList() throws InvalidParseOperationException {
+        LOGGER.debug("[UI] : Get All External Ontologies");
+        return archivesSearchService.getExternalOntologiesList(buildUiHttpContext());
     }
 }

@@ -1,0 +1,46 @@
+[
+  {
+    "Identifier": "DeactivationDate",
+    "ApiField": "DeactivationDate",
+    "Description": "Mapping : accesscontract-es-mapping.json",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2022-09-30T12:11:56.902",
+    "LastUpdate": "2022-09-30T12:52:56.308",
+    "ShortName": "Date de désactivation",
+    "TenantIds": [1]
+  },
+  {
+    "Identifier": "DeactivationDate2",
+    "ApiField": "DeactivationDate2",
+    "Description": "Mapping : accesscontract-es-mapping.json2",
+    "Type": "DATE",
+    "Origin": "INTERNAL2",
+    "CreationDate": "2022-09-30T12:11:56.9022",
+    "LastUpdate": "2022-09-30T12:52:56.3082",
+    "ShortName": "Date de désactivation2",
+    "TenantIds": [1]
+  },
+  {
+    "Identifier": "sdfsd",
+    "ApiField": "sdfsdf",
+    "Description": "Mapping : mapping.json2",
+    "Type": "DATE",
+    "Origin": "retretre",
+    "CreationDate": "2022-09-30T12:11:56.9022",
+    "LastUpdate": "2022-09-30T12:52:56.3082",
+    "ShortName": "Date de désactivation2",
+    "TenantIds": [5, 19, 25]
+  },
+  {
+    "Identifier": "ddf",
+    "ApiField": "sdfsdf",
+    "Description": "sdfdsf",
+    "Type": "DATE",
+    "Origin": "zerzerez",
+    "CreationDate": "2022-09-30T12:11:56.9022",
+    "LastUpdate": "2022-09-30T12:52:56.3082",
+    "ShortName": "Date de désactivation2",
+    "TenantIds": [2, 6, 8]
+  }
+]

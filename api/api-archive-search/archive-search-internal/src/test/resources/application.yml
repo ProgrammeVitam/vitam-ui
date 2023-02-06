@@ -26,5 +26,7 @@ server-identity:
   identityRole: archive
   identityServerId: 1
 
-
 logbook.scheduling.sendEventToVitamTasks.enabled: false
+
+# ontologies file path
+ontologies_file_path: "src/test/resources/ontologies/external_ontology_fields.json"

@@ -38,6 +38,7 @@ import fr.gouv.vitamui.collect.internal.server.service.TransactionArchiveUnitInt
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -57,6 +58,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
@@ -146,6 +148,14 @@ public class TransactionArchiveUnitInternalController {
         VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier());
         return transactionArchiveUnitInternalService.findObjectGroupById(id, vitamContext);
+    }
+
+    @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
+    public List<OntologyDto> getExternalOntologiesList() throws IOException {
+        LOGGER.debug("[INTERNAL] : Get All ontologies values for tenant {}",
+            securityService.getTenantIdentifier());
+        final Integer tenantId = securityService.getTenantIdentifier();
+        return transactionArchiveUnitInternalService.readExternalOntologiesFromFile(tenantId);
     }
 
 }

@@ -48,6 +48,7 @@ import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -81,6 +82,7 @@ import reactor.core.scheduler.Schedulers;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @RestController
 @RequestMapping(RestApi.ARCHIVE_SEARCH_PATH)
@@ -413,4 +415,13 @@ public class ArchiveSearchInternalController {
 
         return transferVitamOperationsInternalService.transferAcknowledgmentService(inputStream, vitamContext);
     }
+
+    @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
+    public List<OntologyDto> getExternalOntologiesList() throws IOException {
+        LOGGER.debug("[INTERNAL] : Get All ontologies values for tenant {}",
+            securityService.getTenantIdentifier());
+        final Integer tenantId = securityService.getTenantIdentifier();
+        return archiveInternalService.readExternalOntologiesFromFile(tenantId);
+    }
+
 }

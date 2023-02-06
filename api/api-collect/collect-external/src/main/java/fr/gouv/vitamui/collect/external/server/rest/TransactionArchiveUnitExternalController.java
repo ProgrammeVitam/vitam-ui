@@ -34,6 +34,7 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -57,6 +58,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
+
+import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
@@ -130,6 +133,13 @@ public class TransactionArchiveUnitExternalController {
         SanityChecker.checkSecureParameter(objectId);
         LOGGER.debug("[EXTERNAL] : Get ObjectGroup By id : {}", objectId);
         return transactionArchiveUnitExternalService.findObjectGroupById(objectId);
+    }
+
+    @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public List<OntologyDto> getExternalOntologiesList() {
+        LOGGER.debug("[EXTERNAL] : Get external ontologies list");
+        return transactionArchiveUnitExternalService.getExternalOntologiesList();
     }
 
 }

@@ -355,4 +355,5 @@ public class CommonConstants {
     public static final String X_CHUNK_OFFSET = "X-Chunk-Offset";
     public static final String LOGO = "LOGO";
     public static final String HISTORY = "history";
+    public static final String EXTERNAL_ONTOLOGIES_LIST = "/external-ontologies";
 }

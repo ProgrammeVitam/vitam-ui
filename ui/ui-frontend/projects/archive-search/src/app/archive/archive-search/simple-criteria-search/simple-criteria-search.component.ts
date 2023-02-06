@@ -117,6 +117,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       });
     });
 
+    this.archiveService.getExternalOntologiesList().subscribe((data) => {
+      this.ontologies.push(...data);
+    });
+
     this.translateService.onLangChange.subscribe(() => {
       if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITH_OBJECTS)) {
         this.manageUnitObjectUnitCriteria(ARCHIVE_UNIT_WITH_OBJECTS);
@@ -333,7 +337,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           criteriaSearch.category as SearchCriteriaTypeEnum
         );
       });
-    });    
+    });
   }
 
   onSelectOtherCriteria() {

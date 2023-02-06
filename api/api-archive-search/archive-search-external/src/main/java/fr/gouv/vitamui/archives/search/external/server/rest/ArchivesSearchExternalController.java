@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -68,6 +69,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.List;
 
 
 /**
@@ -259,6 +261,13 @@ public class ArchivesSearchExternalController {
         SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("atr xml fileName: {}", originalFileName);
         return archivesSearchExternalService.transferAcknowledgment(inputStream, originalFileName);
+    }
+
+    @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public List<OntologyDto> getExternalOntologiesList() {
+        LOGGER.debug("[EXTERNAL] : Get External ontologies list");
+        return archivesSearchExternalService.getExternalOntologiesList();
     }
 
 }
