@@ -531,6 +531,7 @@
         "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT",
         "OBJECT_ID": "Identifiant de l'objet technique",
         "OBJECT_GROUP_ID": "Identifiant du groupe d'objets techniques",
+        "OPERATION_ID": "Identifiant de l'opération",
         "CREATION_DATE": "Date de création",
         "USAGE": "Usage",
         "USAGE_VERSION": "Version d'usage",
