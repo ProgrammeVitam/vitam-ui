@@ -1,6 +1,7 @@
 {
   "service": {
     "name": "mongo-express-{{ mongo_cluster_name }}",
+    "service_name": "mongo-express-{{ mongo_cluster_name }}",
     "address": "{{ ip_admin }}",
     "port": {{ mongo_express.port | default('8081') }},
     "enable_tag_override": false,

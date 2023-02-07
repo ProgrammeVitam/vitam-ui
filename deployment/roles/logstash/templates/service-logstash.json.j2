@@ -2,6 +2,7 @@
   "service": {
     "name": "{{ logstash.service_name }}",
     "port": {{ logstash.port }},
+    "service_name": "{{ logstash.service_name }}",
     "address": "{{ ip_admin }}",
     "enable_tag_override": false,
     "tags": ["logstash"],
