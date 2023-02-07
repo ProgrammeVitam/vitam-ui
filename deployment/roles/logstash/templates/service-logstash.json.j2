@@ -1,8 +1,7 @@
 {
   "service": {
-    "name": "{{ logstash.service_name }}",
+    "name": "{{ logstash.service_name | default('vitamui-logstash') }}",
     "port": {{ logstash.port }},
-    "service_name": "{{ logstash.service_name }}",
     "address": "{{ ip_admin }}",
     "enable_tag_override": false,
     "tags": ["logstash"],
