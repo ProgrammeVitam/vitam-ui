@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {first} from 'rxjs/operators';
 import {LogbookService} from 'ui-frontend-common';
-import {IngestService} from '../ingest.service';
 import {
   IngestStatus,
   ingestStatus,
   ingestStatusVisualColor,
   LogbookOperation
-} from "../../models/logbook-event.interface";
-import {first} from "rxjs/operators";
+} from '../../models/logbook-event.interface';
+import {IngestService} from '../ingest.service';
 
 @Component({
   selector: 'app-ingest-preview',
@@ -69,7 +69,8 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.ingestService.logbookOperationsReloaded.subscribe(logbookOperations => this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations));
+    this.ingestService.logbookOperationsReloaded.subscribe(logbookOperations =>
+      this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations));
   }
 
   ngOnDestroy() {
@@ -77,7 +78,7 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setLogbookOperationIfIfHasBeenReloaded(logbookOperations: LogbookOperation[]) {
-    const logbookOperationUpdated = logbookOperations.find(e => e.id == this.ingestFromParent.id);
+    const logbookOperationUpdated = logbookOperations.find(e => e.id === this.ingestFromParent.id);
     if (logbookOperationUpdated) {
       this.reloadLogbookOperation()
     }
@@ -87,7 +88,7 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
     this.ingestService.getIngestOperation(this.ingestFromParent.id)
       .pipe(first())
       .subscribe(receivedLogbookOperation => {
-        if (this.ingestFromParent.id == receivedLogbookOperation.id) {
+        if (this.ingestFromParent.id === receivedLogbookOperation.id) {
           this.updateIngest(receivedLogbookOperation)
         }
       })
