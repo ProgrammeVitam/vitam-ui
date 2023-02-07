@@ -44,8 +44,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.*;
-import fr.gouv.vitamui.pastis.common.dto.profiles.*;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.AnnotationXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.AnyNameXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.AttributeXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.BaliseXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.ChoiceXml;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.DataXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.DocumentationXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.ElementXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.ExceptXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.GrammarXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.NsNameXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.OneOrMoreXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.OptionalXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.StartXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.ValueXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.ZeroOrMoreXML;
+import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
+import fr.gouv.vitamui.pastis.common.dto.profiles.PastisProfile;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
@@ -74,7 +93,12 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -110,7 +134,8 @@ public class PastisService {
     private Random rand;
 
     @Autowired
-    public PastisService(ResourceLoader resourceLoader, PuaPastisValidator puaPastisValidator, JsonFromPUA jsonFromPUA, PuaFromJSON puaFromJSON) {
+    public PastisService(ResourceLoader resourceLoader, PuaPastisValidator puaPastisValidator, JsonFromPUA jsonFromPUA,
+        PuaFromJSON puaFromJSON) {
         this.resourceLoader = resourceLoader;
         this.puaPastisValidator = puaPastisValidator;
         this.jsonFromPUA = jsonFromPUA;
@@ -157,7 +182,9 @@ public class PastisService {
         try {
             controlSchema = puaFromJSON.getControlSchemaFromElementProperties(json.getElementProperties());
         } catch (IOException e) {
-            throw new TechnicalException("Problems when deserializing using Jackson with Element Properties of AUP json to have ControlsShema", e);
+            throw new TechnicalException(
+                "Problems when deserializing using Jackson with Element Properties of AUP json to have ControlsShema",
+                e);
         }
         notice.setControlSchema(controlSchema);
 
@@ -173,7 +200,8 @@ public class PastisService {
         return new ClassPathResource(rngLocation + filename + ".rng");
     }
 
-    public ProfileResponse createProfile(String type, boolean standalone) throws TechnicalException, NoSuchAlgorithmException {
+    public ProfileResponse createProfile(String type, boolean standalone)
+        throws TechnicalException, NoSuchAlgorithmException {
         Resource resource;
         ProfileResponse profileResponse = null;
         if (type != null && !type.isEmpty()) {
@@ -181,9 +209,9 @@ public class PastisService {
             if (type.equals(ProfileType.PA.getType())) {
                 resource = new ClassPathResource(rngFile);
             } else {
-                if(standalone)
-                resource = new ClassPathResource(jsonFileStandalone);
-                else{
+                if (standalone)
+                    resource = new ClassPathResource(jsonFileStandalone);
+                else {
                     resource = new ClassPathResource(jsonFileVitam);
                 }
             }
@@ -208,8 +236,7 @@ public class PastisService {
                 InputStream inputStream = getClass().getClassLoader().getResourceAsStream(rngLocation +
                     notice.getPath());
                 InputSource inputSource = new InputSource(inputStream);
-                XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-                xmlReader.setContentHandler(handler);
+                XMLReader xmlReader = createXmlReader(handler);
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
                 LOGGER.info("Starting editing Archive Profile with id : {}", notice.getId());
@@ -233,8 +260,7 @@ public class PastisService {
 
         try {
             InputSource inputSource = new InputSource(file.getInputStream());
-            XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-            xmlReader.setContentHandler(handler);
+            XMLReader xmlReader = createXmlReader(handler);
             xmlReader.parse(inputSource);
             elementProperties = getJson.getJsonParsedTree(handler.getElementRNGRoot());
         } catch (SAXException | IOException e) {
@@ -244,7 +270,19 @@ public class PastisService {
         return elementProperties;
     }
 
-    public ProfileResponse createProfileByType(Resource resource, ProfileType profileType) throws TechnicalException, NoSuchAlgorithmException {
+    private XMLReader createXmlReader(PastisSAX2Handler handler) throws SAXException {
+        XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+        xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        // This may not be strictly required as DTDs shouldn't be allowed at all, per previous line.
+        xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        xmlReader.setContentHandler(handler);
+        return xmlReader;
+    }
+
+    public ProfileResponse createProfileByType(Resource resource, ProfileType profileType)
+        throws TechnicalException, NoSuchAlgorithmException {
         PastisSAX2Handler handler = new PastisSAX2Handler();
         PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
         ProfileResponse profileResponse = new ProfileResponse();
@@ -259,8 +297,7 @@ public class PastisService {
             InputSource inputSource = new InputSource(resource.getInputStream());
 
             if (profileType.equals(ProfileType.PA)) {
-                XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-                xmlReader.setContentHandler(handler);
+                XMLReader xmlReader = createXmlReader(handler);
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
                 LOGGER.info("Starting editing Archive Profile from file : {}", resource.getFilename());
@@ -281,7 +318,8 @@ public class PastisService {
         return profileResponse;
     }
 
-    public ProfileResponse loadProfileFromFile(MultipartFile file, String fileName, boolean standalone) throws NoSuchAlgorithmException, TechnicalException {
+    public ProfileResponse loadProfileFromFile(MultipartFile file, String fileName, boolean standalone)
+        throws NoSuchAlgorithmException, TechnicalException {
 
         PastisSAX2Handler handler = new PastisSAX2Handler();
         PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
@@ -300,8 +338,7 @@ public class PastisService {
             InputSource inputSource = new InputSource(file.getInputStream());
 
             if (profileResponse.getType().equals(ProfileType.PA)) {
-                XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-                xmlReader.setContentHandler(handler);
+                XMLReader xmlReader = createXmlReader(handler);
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
                 LOGGER.info("Starting editing Archive Profile from file : {}", fileName);
@@ -342,4 +379,3 @@ public class PastisService {
         return notices;
     }
 }
-
