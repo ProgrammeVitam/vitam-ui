@@ -155,7 +155,7 @@
 
 - name: Ensure logstash service is started
   service:
-    name: "{{ logstash.service_name | default('vitamui-logstash') }}"
+    name: "vitamui-logstash"
     state: started
     enabled: "{{ logstash.at_boot | default(service_at_boot) }}"
 
