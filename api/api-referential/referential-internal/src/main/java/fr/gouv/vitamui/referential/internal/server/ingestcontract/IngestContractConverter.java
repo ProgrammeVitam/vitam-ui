@@ -76,22 +76,11 @@ public class IngestContractConverter {
         }
 
         // copyProperties() doesn't handle Boolean properties
-        if (ingestContract.isMasterMandatory() != null) {
-            dto.setMasterMandatory(ingestContract.isMasterMandatory());
-        }
-        if (ingestContract.isFormatUnidentifiedAuthorized() != null) {
-            dto.setFormatUnidentifiedAuthorized(ingestContract.isFormatUnidentifiedAuthorized());
-        }
-        if (ingestContract.isEveryFormatType() != null) {
-            dto.setEveryFormatType(ingestContract.isEveryFormatType());
-        }
-        if (ingestContract.isEveryDataObjectVersion() != null) {
-            dto.setEveryDataObjectVersion(ingestContract.isEveryDataObjectVersion());
-        }
-        if (ingestContract.isComputeInheritedRulesAtIngest() != null) {
-            dto.setComputeInheritedRulesAtIngest(ingestContract.isComputeInheritedRulesAtIngest());
-        }
-
+        dto.setMasterMandatory(ingestContract.isMasterMandatory());
+        dto.setFormatUnidentifiedAuthorized(ingestContract.isFormatUnidentifiedAuthorized());
+        dto.setEveryFormatType(ingestContract.isEveryFormatType());
+        dto.setEveryDataObjectVersion(ingestContract.isEveryDataObjectVersion());
+        dto.setComputeInheritedRulesAtIngest(ingestContract.isComputeInheritedRulesAtIngest());
         dto.setCreationdate(ingestContract.getCreationdate());
         dto.setLastupdate(ingestContract.getLastupdate());
         dto.setActivationdate(ingestContract.getActivationdate());
