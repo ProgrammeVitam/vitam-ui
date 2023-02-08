@@ -517,6 +517,7 @@
         "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH",
         "OBJECT_ID": "Technical object identifier",
         "OBJECT_GROUP_ID": "Technical object group identifier",
+        "OPERATION_ID": "Operation identifier",
         "CREATION_DATE": "Creation date",
         "USAGE": "Usage",
         "USAGE_VERSION": "Usage version",

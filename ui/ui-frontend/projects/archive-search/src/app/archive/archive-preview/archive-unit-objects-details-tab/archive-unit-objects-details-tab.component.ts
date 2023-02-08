@@ -85,7 +85,14 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
       .subscribe((unitObject) => {
         this.unitObject = unitObject
         this.versionsWithQualifiersOrdered = qualifiersToVersionsWithQualifier(this.unitObject['#qualifiers'])
+        this.setFirstVersionWithQualifierOpen();
       });
+  }
+
+  setFirstVersionWithQualifierOpen() {
+    if (this.versionsWithQualifiersOrdered && this.versionsWithQualifiersOrdered.length > 0) {
+      this.versionsWithQualifiersOrdered[0].opened = true;
+    }
   }
 
   openClose(versionWithQualifier: VersionWithQualifierDto) {

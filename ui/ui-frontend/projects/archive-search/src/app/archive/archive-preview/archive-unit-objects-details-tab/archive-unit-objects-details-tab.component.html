@@ -50,9 +50,9 @@
       <div class="line shrink object-type">
         {{ versionWithQualifier.FormatIdentification.FormatLitteral }}
       </div>
-      <button class="btn primary download-btn"
+      <button class="download-button"
               (click)="onClickDownloadObject($event, versionWithQualifier)">
-        <i class="vitamui-icon vitamui-icon-deposit"></i>
+        <i class="vitamui-icon vitamui-icon-telecharger"></i>
       </button>
     </div>
 
@@ -72,8 +72,8 @@
         </div>
         <div class="col">
           <div class="read-only-field">
-            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECT_GROUP_ID' | translate }}</label>
-            <div>{{ versionWithQualifier.DataObjectGroupId }}</div>
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.OPERATION_ID' | translate }}</label>
+            <div>{{ versionWithQualifier["#opi"] }}</div>
           </div>
         </div>
       </div>
@@ -253,8 +253,8 @@
     <div class="object-details-group download-object">
       <button class="btn primary download-btn"
               (click)="onClickDownloadObject($event, versionWithQualifier)">
+        <i class="vitamui-icon vitamui-icon-telecharger"></i>
         <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
-        <i class="vitamui-icon vitamui-icon-deposit"></i>
       </button>
     </div>
 
