@@ -29,6 +29,7 @@ import {Clipboard} from '@angular/cdk/clipboard';
 import {HttpHeaders} from '@angular/common/http';
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {ApiUnitObject, qualifiersToVersionsWithQualifier, VersionWithQualifierDto} from 'ui-frontend-common';
+import {DescriptionLevel} from 'vitamui-library';
 import {ArchiveService} from '../../archive.service';
 import {Unit} from '../../models/unit.interface';
 
@@ -59,8 +60,16 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
-      this.sendCalls(this.archiveUnit);
+      this.unitObject = null;
+      this.versionsWithQualifiersOrdered = null;
+      if (this.uniHasObject()) {
+        this.sendCalls(this.archiveUnit);
+      }
     }
+  }
+
+  private uniHasObject(): boolean {
+    return this.archiveUnit.DescriptionLevel === DescriptionLevel.ITEM;
   }
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
