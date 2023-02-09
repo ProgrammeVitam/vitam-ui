@@ -36,12 +36,14 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
-import {FileFormat} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {FileFormatService} from '../../file-format.service';
-import {FileFormatInformationTabComponent} from './file-format-information-tab.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { FileFormat } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { WINDOW_LOCATION } from 'ui-frontend-common';
+import { FileFormatService } from '../../file-format.service';
+import { FileFormatInformationTabComponent } from './file-format-information-tab.component';
 
 describe('FileFormatInformationTabComponent', () => {
   let component: FileFormatInformationTabComponent;
@@ -49,7 +51,7 @@ describe('FileFormatInformationTabComponent', () => {
 
   const fileFormatServiceMock = {
     // tslint:disable-next-line:variable-name
-    patch: (_data: any) => of(null)
+    patch: (_data: any) => of(null),
   };
 
   const fileFormatValue = {
@@ -58,7 +60,7 @@ describe('FileFormatInformationTabComponent', () => {
     mimeType: 'application/puid',
     version: '1.0',
     versionPronom: '3.0',
-    extensions: ['.puid']
+    extensions: ['.puid'],
   };
 
   const previousValue: FileFormat = {
@@ -75,19 +77,23 @@ describe('FileFormatInformationTabComponent', () => {
     alert: false,
     comment: 'No Comment',
     extensions: ['.puid'],
-    createdDate: '20/02/2020'
+    createdDate: '20/02/2020',
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [FileFormatInformationTabComponent],
       providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }) },
+        },
+        { provide: WINDOW_LOCATION, useValue: window.location },
         FormBuilder,
-        {provide: FileFormatService, useValue: fileFormatServiceMock}
+        { provide: FileFormatService, useValue: fileFormatServiceMock },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

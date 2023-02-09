@@ -1,0 +1,37 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--vitamui-primary);
+  font-family: Mulish;
+  box-sizing: inherit;
+  visibility: visible;
+}
+
+label + div {
+  font-size: 16px;
+  color: var(--vitamui-grey-900);
+  font-weight: 700;
+  display: block;
+  box-sizing: inherit;
+  display: block;
+  font-family: Mulish;
+  visibility: visible;
+}
+.status {
+  font-weight: bold;
+}
+
+.side-form {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+
+  .bottom {
+    margin-top: auto;
+  }
+}
+.date-hms {
+  padding-left: 10px;
+}

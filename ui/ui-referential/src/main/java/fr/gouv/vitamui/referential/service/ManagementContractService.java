@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -36,32 +36,57 @@
  */
 package fr.gouv.vitamui.referential.service;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
 import fr.gouv.vitamui.referential.external.client.ManagementContractExternalRestClient;
-import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
+import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
+import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Optional;
 
 @Service
-public class ManagementContractService extends AbstractCrudService<ManagementContractDto> {
+public class ManagementContractService extends AbstractPaginateService<ManagementContractDto> {
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractService.class);
 
     private ManagementContractExternalRestClient client;
 
+    private CommonService commonService;
+
     @Autowired
-    public ManagementContractService(final ManagementContractExternalRestClient client) {
+    public ManagementContractService(final CommonService commonService, final ManagementContractExternalRestClient client) {
+        this.commonService = commonService;
         this.client = client;
     }
 
     public Collection<ManagementContractDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
         return client.getAll(context, criteria);
+    }
+
+    public boolean check(ExternalHttpContext context, ManagementContractDto managementContractDto) {
+        return client.check(context,managementContractDto);
+    }
+
+    @Override
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
+                                                                 final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+        return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
+    }
+
+    public ManagementContractDto create(final ExternalHttpContext context, final ManagementContractDto managementContractDto) {
+        super.beforeCreate(managementContractDto);
+        return client.create(context, managementContractDto);
+    }
+
+    @Override
+    protected Integer beforePaginate(final Integer page, final Integer size) {
+        return commonService.checkPagination(page, size);
     }
 
     @Override public ManagementContractExternalRestClient getClient() {

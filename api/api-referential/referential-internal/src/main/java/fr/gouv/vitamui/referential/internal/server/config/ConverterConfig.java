@@ -43,7 +43,7 @@ import fr.gouv.vitamui.referential.internal.server.archivalprofileunit.ArchivalP
 import fr.gouv.vitamui.referential.internal.server.context.ContextConverter;
 import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatConverter;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractConverter;
-import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractConverter;
+import fr.gouv.vitamui.referential.internal.server.managementcontract.converter.ManagementContractConverter;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
 import fr.gouv.vitamui.referential.internal.server.profile.ProfileConverter;
 import fr.gouv.vitamui.referential.internal.server.securityprofile.SecurityProfileConverter;

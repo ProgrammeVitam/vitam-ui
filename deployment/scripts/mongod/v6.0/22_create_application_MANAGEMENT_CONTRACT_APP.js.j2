@@ -1,0 +1,31 @@
+db = db.getSiblingDB('iam')
+
+print("START_22_create_application_MANAGEMENT_CONTRACT_APP.js");
+
+// -------- CREATE NEW VITAMUI APPLICATION : MANAGEMENT CONTRACT -----
+
+db.applications.insert({
+    "identifier" : "MANAGEMENT_CONTRACT_APP",
+{% if vitamui.referential.base_url is defined %}
+    "url": "{{ vitamui.referential.base_url }}/management-contract",
+{% else %}
+    "url": "{{ url_prefix }}/referential/management-contract",
+{% endif %}
+{% if vitamui.referential.base_url is defined %}
+	"serviceId": "^{{ vitamui.referential.base_url }}/.*",
+{% else %}
+	"serviceId": "^{{ url_prefix }}/referential/.*",
+{% endif %}
+    "icon" : "vitamui-icon vitamui-icon-ontologie",
+    "name" : "Contrats de Gestion",
+    "category" : "referential",
+    "position" : NumberInt(30),
+    "hasCustomerList" : false,
+    "hasTenantList" : false,
+    "hasHighlight" : false,
+    "tooltip" : "Accéder à l'application des Contrats de gestion",
+    "target" : "_self"
+});
+
+
+print("END_22_create_application_MANAGEMENT_CONTRACT_APP.js");

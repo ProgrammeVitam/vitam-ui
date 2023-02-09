@@ -36,22 +36,23 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.referential.internal.client.ManagementContractInternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -76,5 +77,42 @@ public class ManagementContractExternalService extends AbstractResourceClientSer
     @Override
     protected Collection<String> getAllowedKeys() {
         return Arrays.asList("name", "identifier");
+    }
+
+    public ManagementContractDto getOne(String id) {
+        return getClient().getOne(getInternalHttpContext(), id);
+    }
+
+    @Override
+    public ManagementContractDto patch(final Map<String, Object> partialDto) {
+        return super.patch(partialDto);
+    }
+
+    public ManagementContractDto create(final ManagementContractDto managementContractDto) {
+        return managementContractInternalRestClient.create(getInternalHttpContext(), managementContractDto);
+    }
+
+    public boolean checkExists(final String criteria) {
+        return super.checkExists(criteria);
+    }
+
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
+                                                                 final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+        ParameterChecker.checkPagination(size, page);
+        final PaginatedValuesDto<ManagementContractDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        return new PaginatedValuesDto<>(
+            result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
+            result.getPageNum(),
+            result.getPageSize(),
+            result.isHasMore());
+    }
+
+    @Override
+    public JsonNode findHistoryById(final String id) {
+        return getClient().findHistoryById(getInternalHttpContext(), id);
+    }
+
+    public boolean check(ManagementContractDto managementContractDto) {
+        return managementContractInternalRestClient.check(getInternalHttpContext(), managementContractDto);
     }
 }

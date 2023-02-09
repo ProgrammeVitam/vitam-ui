@@ -375,13 +375,6 @@ public class ServicesData {
     public static final String ROLE_RUN_PROBATIVE_VALUE = "ROLE_RUN_" + SERVICE_PROBATIVE_VALUE;
 
 
-    /**
-     * Management Contracts and Profiles are used in IngestContract forms
-     **/
-    //----------------------------------- MANAGEMENT CONTRACTS --------------------------------------
-
-    public static final String ROLE_GET_MANAGEMENT_CONTRACTS = ROLE_PREFIX + "GET_MANAGEMENT_CONTRACTS";
-
     //------------------------------ PROFILES (ARCHIVE PROFILES) --------------------------------------
 
     public static final String SERVICE_ARCHIVE_PROFILES = "ARCHIVE_PROFILES";
@@ -501,6 +494,19 @@ public class ServicesData {
     public static final String ROLE_ABORT_TRANSACTIONS = ABORT_ROLE_PREFIX + TRANSACTIONS;
 
     public static final String ROLE_UPDATE_UNITS_METADATA = UPDATE_ROLE_PREFIX + UNITS_METADATA;
+
+    //------------------------------------ MANAGEMENT CONTRACT -------------------------------------------
+    public static final String SERVICE_MANAGEMENT_CONTRACT = "MANAGEMENT_CONTRACT";
+
+    public static final String ROLE_GET_MANAGEMENT_CONTRACT = CREATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+    public static final String ROLE_CREATE_MANAGEMENT_CONTRACT = GET_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+    public static final String ROLE_DELETE_MANAGEMENT_CONTRACT = DELETE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+    public static final String ROLE_UPDATE_MANAGEMENT_CONTRACT = UPDATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+
 
     //@formatter:off
 
@@ -625,6 +631,17 @@ public class ServicesData {
         ROLE_GET_ALL_LOGBOOK_OPERATION,
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
+        ROLE_RECLASSIFICATION,
+        ROLE_UPDATE_UNIT_DESC_METADATA,
+        ROLE_GET_ACCESSION_REGISTER_DETAIL,
+
+        ROLE_GET_MANAGEMENT_CONTRACT,
+        ROLE_CREATE_MANAGEMENT_CONTRACT,
+        ROLE_DELETE_MANAGEMENT_CONTRACT,
+        ROLE_UPDATE_MANAGEMENT_CONTRACT,
+
+        ROLE_GET_ACCESSION_REGISTER_DETAIL,
+
         ROLE_RECLASSIFICATION,
         ROLE_UPDATE_UNIT_DESC_METADATA,
 
@@ -800,8 +817,20 @@ public class ServicesData {
 
         ROLE_CLOSE_TRANSACTIONS,
         ROLE_SEND_TRANSACTIONS,
-        ROLE_UPDATE_UNITS_METADATA
-    );
+        ROLE_UPDATE_UNITS_METADATA,
+
+        ROLE_GET_ACCESSION_REGISTER_DETAIL,
+
+        ROLE_GET_MANAGEMENT_CONTRACT,
+        ROLE_CREATE_MANAGEMENT_CONTRACT,
+        ROLE_DELETE_MANAGEMENT_CONTRACT,
+        ROLE_UPDATE_MANAGEMENT_CONTRACT,
+
+        ROLE_GET_ACCESSION_REGISTER_DETAIL,
+        ROLE_RECLASSIFICATION,
+        ROLE_UPDATE_UNIT_DESC_METADATA
+
+            );
     //@formatter:on
 
     public static List<String> getAdminVitamUIRoleNames() {

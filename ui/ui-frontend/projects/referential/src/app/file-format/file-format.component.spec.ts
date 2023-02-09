@@ -34,28 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, NO_ERRORS_SCHEMA} from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {RouterTestingModule} from '@angular/router/testing';
-import {InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterTestingModule } from '@angular/router/testing';
+import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {FileFormatComponent} from './file-format.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FileFormatComponent } from './file-format.component';
 
-@Component({selector: 'app-file-format-preview', template: ''})
+@Component({ selector: 'app-file-format-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({selector: 'app-file-format-list', template: ''})
+@Component({ selector: 'app-file-format-list', template: '' })
 // tslint:disable-next-line:component-class-suffix
-class AgencyListStub {
-}
+class AgencyListStub {}
 
 describe('FileFormatComponent', () => {
   let component: FileFormatComponent;
@@ -63,11 +62,7 @@ describe('FileFormatComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        FileFormatComponent,
-        AgencyListStub,
-        AgencyPreviewStub
-      ],
+      declarations: [FileFormatComponent, AgencyListStub, AgencyPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -75,11 +70,11 @@ describe('FileFormatComponent', () => {
         LoggerModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
-        MatDialogModule
+        MatDialogModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

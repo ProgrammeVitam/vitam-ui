@@ -1,0 +1,27 @@
+@import '~ui-frontend-common/sass/variables/colors';
+@import '~ui-frontend-common/sass/mixins/elevation';
+
+span.date {
+  font-size: 14px;
+  text-align: left;
+  font-weight: normal;
+  color: var(--vitamui-grey-600);
+}
+
+.vitamui-table-head {
+  > div {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+.status {
+  font-weight: bold;
+}
+.text-grey {
+  color: #a6a6a6;
+}

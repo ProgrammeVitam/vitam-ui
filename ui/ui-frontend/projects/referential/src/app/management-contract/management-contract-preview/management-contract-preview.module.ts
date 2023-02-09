@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,37 +34,43 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.managementcontract;
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RouterModule } from '@angular/router';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
-import java.util.List;
-import java.util.stream.Collectors;
+import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
+import { ManagementContractPreviewComponent } from './management-contract-preview.component';
+import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';
 
-import fr.gouv.vitam.common.model.administration.ManagementContractModel;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
-
-public class ManagementContractConverter {
-
-    // TODO : Make a model DTO able to be converted as XML Droid format ?
-
-    public ManagementContractModel convertDtoToVitam(final ManagementContractDto dto) {
-        final ManagementContractModel ManagementContract = VitamUIUtils.copyProperties(dto, new ManagementContractModel());
-
-        return ManagementContract;
-    }
-
-    public ManagementContractDto convertVitamToDto(final ManagementContractModel managementContract) {
-        final ManagementContractDto dto = VitamUIUtils.copyProperties(managementContract, new ManagementContractDto());
-
-        return dto;
-    }
-
-    public List<ManagementContractModel> convertDtosToVitams(final List<ManagementContractDto> dtos) {
-        return dtos.stream().map(this::convertDtoToVitam).collect(Collectors.toList());
-    }
-
-    public List<ManagementContractDto> convertVitamsToDtos(final List<ManagementContractModel> managementContracts) {
-        return managementContracts.stream().map(this::convertVitamToDto).collect(Collectors.toList());
-    }
-
-}
+@NgModule({
+  imports: [
+    CommonModule,
+    RouterModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatTabsModule,
+  ],
+  declarations: [ManagementContractPreviewComponent, ManagementContractInformationTabComponent, ManagementContractStorageTabComponent],
+  exports: [ManagementContractPreviewComponent],
+})
+export class ManagementContractPreviewModule {}

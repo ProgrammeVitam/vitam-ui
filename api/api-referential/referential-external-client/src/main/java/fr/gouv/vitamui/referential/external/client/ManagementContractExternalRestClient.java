@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -36,16 +36,21 @@
  */
 package fr.gouv.vitamui.referential.external.client;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 public class ManagementContractExternalRestClient extends BasePaginatingAndSortingRestClient<ManagementContractDto, ExternalHttpContext> {
 
@@ -69,5 +74,13 @@ public class ManagementContractExternalRestClient extends BasePaginatingAndSorti
     protected ParameterizedTypeReference<List<ManagementContractDto>> getDtoListClass() {
         return new ParameterizedTypeReference<List<ManagementContractDto>>() {
         };
+    }
+
+    public boolean check(ExternalHttpContext context, ManagementContractDto managementContractDto) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
+        final HttpEntity<ManagementContractDto> request = new HttpEntity<>(managementContractDto, buildHeaders(context));
+        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
+            request, Boolean.class);
+        return response.getStatusCode() == HttpStatus.OK;
     }
 }

@@ -1,0 +1,35 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-management-contract-preview *ngIf="openedItem" (previewClose)="closePanel()" [inputManagementContract]="openedItem">
+    </app-management-contract-preview>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.TITLE' | translate }}
+      </vitamui-common-title-breadcrumb>
+
+      <vitamui-common-banner
+        [searchbarPlaceholder]="'CONTRACT_MANAGEMENT.CONTRACT_PAGE.SEARCH_CRITERIA' | translate"
+        (search)="onSearchSubmit($event)"
+      >
+        <button
+          class="btn secondary"
+          (click)="openCreateManagementcontractDialog()"
+          matTooltip="{{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CREATE_MANAGEMENT_CONTRACT' | translate }}"
+          matTooltipClass="vitamui-tooltip"
+        >
+          <i class="vitamui-icon vitamui-icon-refresh"></i>
+          <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CREATE_MANAGEMENT_CONTRACT' | translate }}</span>
+        </button>
+      </vitamui-common-banner>
+    </div>
+
+    <div class="vitamui-content">
+      <h5 class="mt-0 mb-4">{{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CONTRACTS_LIST' | translate }}</h5>
+      <app-management-contract-list (managementContractClick)="showManagementContract($event)" [search]="search">
+      </app-management-contract-list>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

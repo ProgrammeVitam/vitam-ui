@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,40 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ManagementContract } from 'ui-frontend-common';
+@Component({
+  selector: 'app-management-contract-preview',
+  templateUrl: './management-contract-preview.component.html',
+  styleUrls: ['./management-contract-preview.component.scss'],
+})
+export class ManagementContractPreviewComponent implements OnInit {
+  @Output()
+  previewClose: EventEmitter<any> = new EventEmitter();
 
-import java.io.Serializable;
+  @Input()
+  inputManagementContract: ManagementContract;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+  tabUpdated: boolean[] = [false, false];
 
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+  constructor() {}
 
-@ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter
-@Setter
-public class ManagementContractDto extends IdDto implements Serializable {
-    private Integer tenant;
+  ngOnInit() {}
 
-    private Integer version;
+  updatedChange(updated: boolean, index: number) {
+    this.tabUpdated[index] = updated;
+  }
 
-    private String name;
+  filterEvents(event: any): boolean {
+    return (
+      event.outDetail &&
+      (event.outDetail.toString().includes('STP_UPDATE_MANAGEMENT_CONTRACT') ||
+        event.outDetail.toString().includes('STP_IMPORT_MANAGEMENT_CONTRACT'))
+    );
+  }
 
-    private String identifier;
-
-    private String description;
-
-    private String status;
-
-    private String creationDate;
-
-    private String lastUpdate;
-
-    private String activationDate;
-
-    private StorageDto storage;
-
+  emitClose() {
+    this.previewClose.emit();
+  }
 }

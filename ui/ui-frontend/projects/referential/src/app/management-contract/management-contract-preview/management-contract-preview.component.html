@@ -1,0 +1,36 @@
+<vitamui-common-sidenav-header
+  [title]="inputManagementContract?.identifier | truncate : 30"
+  [icon]="'vitamui-icon-document-layers vitamui-row-icon'"
+  [hasToolTipOnTitle]="true"
+  [toolTipTitleText]="inputManagementContract?.name"
+  [toolTipTitleDuration]="300"
+  (onclose)="emitClose()"
+>
+  <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" disabled="true"> </vitamui-common-menu-button>
+</vitamui-common-sidenav-header>
+
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab label="{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATIONS' | translate }}">
+      <app-management-contract-information-tab
+        [inputManagementContract]="inputManagementContract"
+        (updated)="updatedChange($event, 0)"
+      ></app-management-contract-information-tab>
+    </mat-tab>
+    <mat-tab label="{{ 'CONTRACT_MANAGEMENT.PREVIEW.STORAGE' | translate }}">
+      <app-management-contract-storage-tab
+        [inputManagementContract]="inputManagementContract"
+        (updated)="updatedChange($event, 0)"
+      ></app-management-contract-storage-tab>
+    </mat-tab>
+
+    <mat-tab label="{{ 'CONTRACT_MANAGEMENT.PREVIEW.HISTORY' | translate }}">
+      <vitamui-common-operation-history-tab
+        [id]="inputManagementContract?.id"
+        [identifier]="inputManagementContract?.identifier"
+        [filter]="filterEvents"
+      >
+      </vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
+</div>

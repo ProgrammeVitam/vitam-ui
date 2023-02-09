@@ -211,6 +211,16 @@ const routes: Routes = [
     data: { appId: 'ACCESSION_REGISTER_APP' },
   },
   // =====================================================
+  //                    MANAGEMENT_CONTRACT_APP
+  // =====================================================
+  {
+    path: 'management-contract',
+    loadChildren: () => import('./management-contract/management-contract.module').then((m) => m.ManagementContractModule),
+    canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
+    data: { appId: 'MANAGEMENT_CONTRACT_APP' },
+  },
+  // =====================================================
   //                      unknown path
   // =====================================================
   { path: '**', redirectTo: '' },

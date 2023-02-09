@@ -1,0 +1,63 @@
+<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
+  <h5 class="mt-0 mb-4">{{ 'CONTRACT_MANAGEMENT.PREVIEW.STORAGE_DETAILS.STORAGE_STRATEGY' | translate }}</h5>
+  <div class="row">
+    <div class="col-10 form-control">
+      <vitamui-common-input
+        formControlName="unitStrategy"
+        placeholder="{{ 'CONTRACT_MANAGEMENT.PREVIEW.STORAGE_DETAILS.UNIT_STRATEGY' | translate }}"
+      >
+        <ng-container *ngIf="form.get('unitStrategy')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('unitStrategy')?.errors?.required"
+            >{{ 'COMMON.REQUIRED' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-10 form-control">
+      <vitamui-common-input
+        formControlName="objectGroupStrategy"
+        placeholder="  {{ 'CONTRACT_MANAGEMENT.PREVIEW.STORAGE_DETAILS.OBJECT_GROUP_STRATEGY' | translate }}"
+      >
+        <ng-container *ngIf="form.get('objectGroupStrategy')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('objectGroupStrategy')?.errors?.required"
+            >{{ 'COMMON.REQUIRED' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-10 form-control">
+      <vitamui-common-input
+        formControlName="objectStrategy"
+        placeholder="  {{ 'CONTRACT_MANAGEMENT.PREVIEW.STORAGE_DETAILS.OBJECT_STRATEGY' | translate }}"
+      >
+        <ng-container *ngIf="form.get('objectStrategy')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('objectStrategy')?.errors?.required"
+            >{{ 'COMMON.REQUIRED' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+    </div>
+  </div>
+
+  <div class="form-group bottom" *ngIf="showSpinner; then loadingSpinner; else saveBtn"></div>
+</form>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #saveBtn>
+  <div class="form-group bottom">
+    <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submited">
+      {{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.SAVE' | translate }}
+    </button>
+  </div>
+</ng-template>
