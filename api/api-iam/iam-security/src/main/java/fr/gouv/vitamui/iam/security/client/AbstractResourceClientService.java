@@ -38,19 +38,16 @@ package fr.gouv.vitamui.iam.security.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.QueryOperator;
 import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
 import fr.gouv.vitamui.commons.api.domain.RequestParamGroupDto;
 import fr.gouv.vitamui.commons.api.domain.ResultsDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
@@ -75,13 +72,13 @@ import java.util.stream.Collectors;
 /**
  * Class for ExternalVitamUICrudService
  *
- *
  * @param <E> External DTO type
  * @param <I> Internal DTO Type
  */
 @Getter
 @Setter
-public abstract class AbstractResourceClientService<E extends IdDto, I extends IdDto> extends AbstractInternalClientService {
+public abstract class AbstractResourceClientService<E extends IdDto, I extends IdDto>
+    extends AbstractInternalClientService {
 
     protected static final String EXTERNAL_PARAM_ID_KEY = "externalParamId";
 
@@ -124,22 +121,22 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     }
 
     protected PaginatedValuesDto<E> getAllPaginated(final Integer page, final Integer size,
-            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+        final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
         ParameterChecker.checkPagination(size, page);
         final PaginatedValuesDto<I> result = getClient().getAllPaginated(getInternalHttpContext(), page, size,
-                checkAuthorization(criteria), orderBy, direction);
+            checkAuthorization(criteria), orderBy, direction);
         return new PaginatedValuesDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
-                .collect(Collectors.toList()), result.getPageNum(), result.getPageSize(), result.isHasMore());
+            .collect(Collectors.toList()), result.getPageNum(), result.getPageSize(), result.isHasMore());
     }
 
     protected PaginatedValuesDto<E> getAllPaginated(final Integer page, final Integer size,
-            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
-            final Optional<String> embedded) {
+        final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
+        final Optional<String> embedded) {
         ParameterChecker.checkPagination(size, page);
         final PaginatedValuesDto<I> result = getClient().getAllPaginated(getInternalHttpContext(), page, size,
-                checkAuthorization(criteria), orderBy, direction, embedded);
+            checkAuthorization(criteria), orderBy, direction, embedded);
         return new PaginatedValuesDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
-                .collect(Collectors.toList()), result.getPageNum(), result.getPageSize(), result.isHasMore());
+            .collect(Collectors.toList()), result.getPageNum(), result.getPageSize(), result.isHasMore());
     }
 
     protected ResultsDto<E> getAllRequest(final RequestParamDto requestParamDto) {
@@ -147,7 +144,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         requestParamDto.setCriteria(checkRequestAuthorization(requestParamDto));
         final ResultsDto<I> result = getClient().getAllRequest(getInternalHttpContext(), requestParamDto);
         return new ResultsDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
-                .collect(Collectors.toList()), result);
+            .collect(Collectors.toList()), result);
     }
 
     /**
@@ -155,6 +152,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      *
      * Convert Json to CriteriaWrapper <br>
      * Check if the criteria keys are allowed
+     *
      * @param criteria
      * @return
      * @throws InvalidFormatException
@@ -170,15 +168,17 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      * Check if the criteria keys are allowed
      * Check if the groups fields keys are allowed
      * Check if the aggregation operator is allowed
+     *
      * @param requestParamDto
      * @return
      * @throws InvalidFormatException
      */
-    protected Optional<String> checkRequestAuthorization(RequestParamDto requestParamDto) throws InvalidFormatException {
+    protected Optional<String> checkRequestAuthorization(RequestParamDto requestParamDto)
+        throws InvalidFormatException {
         if (requestParamDto.getGroups().isPresent()) {
             RequestParamGroupDto requestParamGroupDto = requestParamDto.getGroups().get();
-            for(String field: requestParamGroupDto.getFields()){
-                if(!getAllowedAggregationKeys().contains(field))
+            for (String field : requestParamGroupDto.getFields()) {
+                if (!getAllowedAggregationKeys().contains(field))
                     throw new ForbiddenException(String.format("Not allowed to get aggregation %s values", field));
             }
         }
@@ -190,12 +190,13 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      *
      * Convert Json to CriteriaWrapper <br>
      * Check if the criteria keys are allowed
+     *
      * @param criteria
      * @return
      * @throws InvalidFormatException
      */
     protected Optional<QueryDto> checkCriteriaAuthorization(final Optional<QueryDto> criteria)
-            throws InvalidFormatException {
+        throws InvalidFormatException {
         return Optional.of(addAccessRestriction(criteria.orElse(new QueryDto())));
     }
 
@@ -211,6 +212,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     /**
      * Create an andQuery and add security filter
+     *
      * @param query
      * @return
      */
@@ -225,6 +227,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     /**
      * Check if the query and subqueries only contains criteria on allowed keys.
+     *
      * @param query
      * @throws ForbiddenException If a key is not allowed
      */
@@ -243,13 +246,14 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         getRestrictedKeys().forEach(key -> addAccessRestrictionByKey(key, criteria));
         if (!(criteria.getQueryOperator() == null || QueryOperator.AND.equals(criteria.getQueryOperator()))) {
             throw new UnsupportedOperationException("Unsupported operator " + criteria.getQueryOperator()
-            + ". This API only supports the queryOperator \"AND\" on the root query.");
+                + ". This API only supports the queryOperator \"AND\" on the root query.");
         }
         return criteria;
     }
 
     /**
      * Override this method for use the desired version
+     *
      * @return
      */
     protected String getVersionApiCrtieria() {
@@ -258,13 +262,13 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     protected void addAccessRestrictionByKey(final String key, final QueryDto criteria) {
         switch (key) {
-            case CUSTOMER_ID_KEY :
+            case CUSTOMER_ID_KEY:
                 addCustomerRestriction(criteria);
                 break;
-            case TENANT_IDENTIFIER_KEY :
+            case TENANT_IDENTIFIER_KEY:
                 addTenantIdentifierRestriction(criteria);
                 break;
-            default :
+            default:
                 addRestriction(key, criteria);
                 break;
         }
@@ -273,6 +277,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     /**
      * Method allowing to defined restrictions for criterion's field.
      * This method must be implemented by any service using restrictions.
+     *
      * @param key Key of the restriction.
      * @param criteria Criteria linked to the search.
      */
@@ -292,10 +297,10 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     protected void checkTenantIdentifierCriteria(final Criterion tenantIdentifierCriteria) {
         if (!CastUtils.toInteger(tenantIdentifierCriteria.getValue())
-                .equals(externalSecurityService.getTenantIdentifier())
-                || !tenantIdentifierCriteria.getOperator().equals(CriterionOperator.EQUALS)) {
+            .equals(externalSecurityService.getTenantIdentifier())
+            || !tenantIdentifierCriteria.getOperator().equals(CriterionOperator.EQUALS)) {
             throw new ForbiddenException(
-                    "tenantIdentifier's criteria is not equal to the tenantIdentifier from context");
+                "tenantIdentifier's criteria is not equal to the tenantIdentifier from context");
         }
     }
 
@@ -310,15 +315,14 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     protected void checkCustomerCriteria(final Criterion customerCriteria) {
         if (!StringUtils.equals(CastUtils.toString(customerCriteria.getValue()),
-                externalSecurityService.getCustomerId())
-                || !customerCriteria.getOperator().equals(CriterionOperator.EQUALS)) {
+            externalSecurityService.getCustomerId())
+            || !customerCriteria.getOperator().equals(CriterionOperator.EQUALS)) {
             throw new ForbiddenException("customerId's criteria is not equal to the customerId from context");
         }
     }
 
     /**
      * Override for add restriction, like customerId, tenantIdentifier etc.
-     *
      */
     protected Collection<String> getRestrictedKeys() {
         return Arrays.asList(CUSTOMER_ID_KEY);
@@ -328,6 +332,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      * The Collection contains keys allowed
      * By default the collection is null and all keys are authorized
      * Function as a whitelist
+     *
      * @return
      */
     protected Collection<String> getAllowedKeys() {
@@ -338,6 +343,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      * The Collection contains keys allowed for aggregation.
      * By default the collection is null and all keys are authorized
      * Function as a whitelist
+     *
      * @return
      */
     protected Collection<String> getAllowedAggregationKeys() {
@@ -350,7 +356,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     protected Criterion getTenantIdentifierRestriction() {
         return new Criterion(TENANT_IDENTIFIER_KEY, externalSecurityService.getTenantIdentifier(),
-                CriterionOperator.EQUALS);
+            CriterionOperator.EQUALS);
     }
 
     protected E update(final E dto) {
@@ -360,17 +366,17 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     protected List<E> getAll(final Optional<String> criteria) {
         return getClient().getAll(getInternalHttpContext(), checkAuthorization(criteria)).stream()
-                .map(element -> converterToExternalDto(element)).collect(Collectors.toList());
+            .map(element -> converterToExternalDto(element)).collect(Collectors.toList());
     }
 
     protected List<E> getAll(final Optional<String> criteria, final Optional<String> embedded) {
         return getClient().getAll(getInternalHttpContext(), checkAuthorization(criteria), embedded).stream()
-                .map(element -> converterToExternalDto(element)).collect(Collectors.toList());
+            .map(element -> converterToExternalDto(element)).collect(Collectors.toList());
     }
 
     protected boolean checkExists(final String criteria) {
         return getClient().checkExist(getInternalHttpContext(),
-                checkAuthorization(Optional.ofNullable(criteria)).get());
+            checkAuthorization(Optional.ofNullable(criteria)).get());
     }
 
     protected void delete(final String id) {
@@ -382,12 +388,12 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     protected void checkCustomerId(final String customerId, final String message) {
         Assert.isTrue(StringUtils.equals(customerId, externalSecurityService.getCustomerId()),
-                message + ": customerId " + customerId + " is not allowed");
+            message + ": customerId " + customerId + " is not allowed");
     }
 
     protected void checkTenantIdentifier(final Integer tenantIdentifier, final String message) {
         Assert.isTrue(externalSecurityService.getTenantIdentifier().equals(tenantIdentifier),
-                message + ": tenantIdentifier " + tenantIdentifier + " is not allowed");
+            message + ": tenantIdentifier " + tenantIdentifier + " is not allowed");
     }
 
     protected void checkLevel(final String level, final String message) {

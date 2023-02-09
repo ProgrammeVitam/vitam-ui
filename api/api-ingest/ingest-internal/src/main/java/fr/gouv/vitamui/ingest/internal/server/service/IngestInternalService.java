@@ -41,6 +41,7 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
@@ -71,9 +72,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -83,6 +87,7 @@ public class IngestInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
 
     private static final String ILLEGAL_CHARACTERS = "[\uFEFF-\uFFFF]";
+    private static final String SELECTED_ORIGINATING_AGENCIES = "SELECTED_ORIGINATING_AGENCIES";
 
     private final InternalSecurityService internalSecurityService;
 
@@ -98,13 +103,18 @@ public class IngestInternalService {
 
     private final IngestGeneratorODTFile ingestGeneratorODTFile;
 
+    private final IngestExternalParametersService ingestExternalParametersService;
+
+    private final AccessContractInternalService accessContractInternalService;
 
     @Autowired
     public IngestInternalService(final InternalSecurityService internalSecurityService,
         final LogbookService logbookService, final ObjectMapper objectMapper,
         final IngestExternalClient ingestExternalClient, final IngestService ingestService,
         final CustomerInternalRestClient customerInternalRestClient,
-        final IngestGeneratorODTFile ingestGeneratorODTFile) {
+        final IngestGeneratorODTFile ingestGeneratorODTFile,
+        final IngestExternalParametersService ingestExternalParametersService,
+        final AccessContractInternalService accessContractInternalService) {
         this.internalSecurityService = internalSecurityService;
         this.ingestExternalClient = ingestExternalClient;
         this.logbookService = logbookService;
@@ -112,7 +122,8 @@ public class IngestInternalService {
         this.ingestService = ingestService;
         this.customerInternalRestClient = customerInternalRestClient;
         this.ingestGeneratorODTFile = ingestGeneratorODTFile;
-
+        this.ingestExternalParametersService = ingestExternalParametersService;
+        this.accessContractInternalService = accessContractInternalService;
     }
 
     public RequestResponseOK upload(MultipartFile path, String contextId, String action)
@@ -144,6 +155,20 @@ public class IngestInternalService {
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer pageNumber, final Integer size,
         final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
         Optional<String> criteria) {
+
+        Optional<String> accessContractdOpt =
+            ingestExternalParametersService.retrieveProfilAccessContract(internalSecurityService.getHttpContext());
+        Set<String> originatingAgencies = new HashSet<>();
+        Boolean everyOriginatingAgency = false;
+        if (accessContractdOpt.isPresent()) {
+            Optional<AccessContractDto>
+                accessContractDtoOpt = accessContractInternalService.getOne(vitamContext, accessContractdOpt.get());
+            if (accessContractDtoOpt.isPresent()) {
+                originatingAgencies = accessContractDtoOpt.get().getOriginatingAgencies();
+                everyOriginatingAgency = accessContractDtoOpt.get().getEveryOriginatingAgency();
+            }
+        }
+
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
@@ -152,8 +177,12 @@ public class IngestInternalService {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
                 };
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
+                if (!everyOriginatingAgency) {
+                    vitamCriteria.put(SELECTED_ORIGINATING_AGENCIES, originatingAgencies.stream().collect(Collectors.toList()));
+                }
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
+
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Unable to find LogbookOperations with pagination", ioe);
         } catch (IOException e) {
