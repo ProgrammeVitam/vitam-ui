@@ -1,28 +1,18 @@
-import {Id} from 'ui-frontend-common';
+import {ProfileCommon} from './profile-common-models';
 
-export interface ArchivalProfileUnit extends Id {
-  tenant: number;
-  version: number;
-  identifier: string;
-  name: string;
-  description: string;
-  status: string;
-  creationDate: string;
-  lastUpdate: string;
-  activationDate: string;
-  deactivationDate: string;
+export interface ArchivalProfileUnit extends ProfileCommon {
   controlSchema: string;
   fields: string[];
 }
 
 export class ArchivalProfileUnitModel implements ArchivalProfileUnit {
   id: string;
-  tenant: number;
-  version: number;
   identifier: string;
   name: string;
   description: string;
   status: string;
+  tenant: number;
+  version: number;
   creationDate: string;
   lastUpdate: string;
   activationDate: string;

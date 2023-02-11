@@ -66,7 +66,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const submitProfileUpdate: Observable<ProfileDescription> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit(this.inputProfile);
+      const submitProfileUpdate: Observable<ProfileDescription> = this.tabLinks[this.tabs.selectedIndex].updateProfile(this.inputProfile);
 
       submitProfileUpdate.subscribe(() => {
       });
@@ -125,7 +125,6 @@ export class ProfilePreviewComponent implements AfterViewInit {
       this.profileService.getProfile(inputProfile).subscribe(retrievedData => {
         const profileResponse = retrievedData as ProfileResponse;
         this.fileNode.push(profileResponse.profile);
-        // console.log(profileResponse.notice.identifier + 'identifier');
         this.profileService.uploadFile(this.fileNode, profileResponse.notice, inputProfile.type).subscribe(data => {
           this.downloadFile(data, inputProfile.type, inputProfile);
         });

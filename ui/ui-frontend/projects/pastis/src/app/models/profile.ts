@@ -1,28 +1,18 @@
-import {Id} from 'ui-frontend-common';
+import {ProfileCommon} from './profile-common-models';
 
-export interface Profile extends Id {
-  status: string;
-  tenant: number;
-  version: number;
-  identifier: string;
-  name: string;
-  description: string;
-  creationDate: string;
-  lastUpdate: string;
-  activationDate: string;
-  deactivationDate: string;
+export interface Profile extends ProfileCommon {
   format: string;
   path: string;
 }
 
 export class ProfileModel implements Profile {
   id: string;
-  status: string;
-  tenant: number;
-  version: number;
   identifier: string;
   name: string;
   description: string;
+  status: string;
+  tenant: number;
+  version: number;
   creationDate: string;
   lastUpdate: string;
   activationDate: string;
