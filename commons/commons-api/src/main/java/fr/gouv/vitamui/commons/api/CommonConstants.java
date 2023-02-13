@@ -353,4 +353,5 @@ public class CommonConstants {
     public static final String X_SIZE_TOTAL = "X-Size-Total";
     public static final String X_CHUNK_OFFSET = "X-Chunk-Offset";
     public static final String LOGO = "LOGO";
+    public static final String HISTORY = "history";
 }
