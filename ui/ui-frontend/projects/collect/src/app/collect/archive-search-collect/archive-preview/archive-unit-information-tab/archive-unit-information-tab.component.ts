@@ -41,9 +41,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Option } from 'ui-frontend-common';
+import { diff, Option, Unit } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-import { Unit } from '../../../core/models';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({

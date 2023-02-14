@@ -39,10 +39,9 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Unit } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 import { SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
-import { Unit } from '../../models/unit.interface';
 
 const PAGE_SIZE = 10;
 const CURRENT_PAGE = 0;

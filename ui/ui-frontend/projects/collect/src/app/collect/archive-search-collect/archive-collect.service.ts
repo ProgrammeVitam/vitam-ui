@@ -41,10 +41,10 @@ import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archiv
 import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AccessContract, AccessContractApiService, FilingHoldingSchemeNode, SearchService, Transaction } from 'ui-frontend-common';
+import { AccessContract, AccessContractApiService, FilingHoldingSchemeNode, SearchService, Transaction, Unit } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
-import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, Unit } from '../core/models';
+import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
 
 @Injectable({
   providedIn: 'root',

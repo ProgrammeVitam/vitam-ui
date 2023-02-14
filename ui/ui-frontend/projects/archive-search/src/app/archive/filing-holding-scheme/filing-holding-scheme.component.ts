@@ -29,12 +29,11 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, Unit } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { NodeData } from '../models/nodedata.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../models/search.criteria';
-import { Unit } from '../models/unit.interface';
 import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 
 @Component({

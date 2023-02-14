@@ -42,9 +42,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT,InjectorModule, LoggerModule, StartupService, Unit, WINDOW_LOCATION } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
-import { Unit } from '../../models/unit.interface';
 import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata.interface';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
 

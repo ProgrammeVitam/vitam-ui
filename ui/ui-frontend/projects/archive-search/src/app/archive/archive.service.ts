@@ -47,7 +47,8 @@ import {
   CriteriaOperator,
   FilingHoldingSchemeNode,
   SearchService,
-  SecurityService
+  SecurityService,
+  Unit
 } from 'ui-frontend-common';
 import {ArchiveApiService} from '../core/api/archive-api.service';
 import {ExportDIPCriteriaList} from './models/dip-request-detail.interface';
@@ -62,7 +63,6 @@ import {
   SearchCriteriaTypeEnum
 } from './models/search.criteria';
 import {TransferRequestDto} from './models/transfer-request-detail.interface';
-import {Unit} from './models/unit.interface';
 import {UnitDescriptiveMetadataDto} from './models/unitDescriptiveMetadata.interface';
 import {VitamUISnackBarComponent} from './shared/vitamui-snack-bar';
 

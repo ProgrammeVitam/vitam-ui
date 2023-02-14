@@ -46,7 +46,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeNode, Logger, VitamuiRoles } from 'ui-frontend-common';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  Direction,
+  FilingHoldingSchemeNode,
+  Logger,
+  Unit,
+  VitamuiRoles
+} from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -71,7 +79,6 @@ import {
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum
 } from '../models/search.criteria';
-import { Unit } from '../models/unit.interface';
 import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
@@ -342,7 +349,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
     this.addInitalCriteriaValues();
-  
+
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
     searchCriteriaChange.subscribe(() => {
       this.submit();
@@ -787,7 +794,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     if (this.pendingComputeFacets || !this.hasSearchCriterias()) {
       return;
     }
-    
+
     if(this.waitingToGetFixedCount){
       if (this.hasSearchCriterias()) {
         this.pendingGetFixedCount = true;
@@ -806,7 +813,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     } else {
       this.managementRulesSharedDataService.emitHasExactCount(false);
       this.launchComputingManagementRulesFacets();
-    }    
+    }
   }
 
   showHideFacets(show: boolean) {

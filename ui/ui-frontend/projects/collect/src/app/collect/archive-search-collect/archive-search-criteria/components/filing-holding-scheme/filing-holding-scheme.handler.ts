@@ -25,8 +25,7 @@
  * accept its terms.
  */
 import { DescriptionLevel } from 'projects/vitamui-library/src/lib/models/description-level.enum';
-import { copyNodeWithoutChildren, FilingHoldingSchemeNode, MatchingNodesNumbers } from 'ui-frontend-common';
-import { Unit } from '../../../../core/models/unit.interface';
+import { copyNodeWithoutChildren, FilingHoldingSchemeNode, MatchingNodesNumbers, Unit } from 'ui-frontend-common';
 import { ResultFacet } from '../../models/search.criteria';
 import { VitamInternalFields } from '../../models/utils';
 

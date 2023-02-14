@@ -41,11 +41,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEventService, Logger, SidenavPage } from 'ui-frontend-common';
+import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEventService, Logger, SidenavPage, Unit } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
-import { Unit } from './models/unit.interface';
 
 @Component({
   selector: 'app-archive',

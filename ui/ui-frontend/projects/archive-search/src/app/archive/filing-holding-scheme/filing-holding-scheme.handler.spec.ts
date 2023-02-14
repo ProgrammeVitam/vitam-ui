@@ -24,10 +24,9 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { FilingHoldingSchemeNode, MatchingNodesNumbers } from 'ui-frontend-common';
+import { FilingHoldingSchemeNode,MatchingNodesNumbers, Unit } from 'ui-frontend-common';
 import { DescriptionLevel } from '../../../../../vitamui-library/src/lib/models/description-level.enum';
 import { ResultFacet } from '../models/search.criteria';
-import { Unit } from '../models/unit.interface';
 import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 
 export function newNode(
