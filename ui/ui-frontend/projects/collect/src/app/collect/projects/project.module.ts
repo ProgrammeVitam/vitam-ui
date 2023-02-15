@@ -36,7 +36,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { VitamUILibraryModule } from 'vitamui-library';
 
@@ -55,25 +55,28 @@ import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectPreviewComponent } from './project-preview/project-preview.component';
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectsComponent } from './projects.component';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ProjectRoutingModule,
-    VitamUICommonModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    TableFilterModule,
-    VitamUILibraryModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    MatTabsModule,
-  ],
+    imports: [
+        CommonModule,
+        ProjectRoutingModule,
+        VitamUICommonModule,
+        MatMenuModule,
+        MatSnackBarModule,
+        MatDialogModule,
+        MatSidenavModule,
+        MatProgressSpinnerModule,
+        TableFilterModule,
+        VitamUILibraryModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatSelectModule,
+        MatTabsModule,
+        MatButtonToggleModule,
+        FormsModule,
+    ],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
   declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent, ProjectPreviewComponent],
 })

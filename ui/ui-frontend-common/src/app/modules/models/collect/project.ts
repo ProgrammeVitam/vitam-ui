@@ -36,6 +36,9 @@ export interface Project extends Id {
   originatingAgencyIdentifier: string;
   submissionAgencyIdentifier: string;
   archivalProfile: string;
+  archiveProfile: string;
+  acquisitionInformation: string;
+  legalStatus: string;
   unitUp: string;
   comment: string;
   status: ProjectStatus;
