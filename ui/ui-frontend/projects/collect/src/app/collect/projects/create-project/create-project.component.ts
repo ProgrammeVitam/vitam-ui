@@ -31,7 +31,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { ExternalParameters, ExternalParametersService, Logger, Project, Transaction, ProjectStatus, TransactionStatus } from 'ui-frontend-common';
+import { ExternalParameters, ExternalParametersService, Logger, Project, ProjectStatus, Transaction, TransactionStatus } from 'ui-frontend-common';
 import { FilingPlanMode } from 'vitamui-library';
 
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';

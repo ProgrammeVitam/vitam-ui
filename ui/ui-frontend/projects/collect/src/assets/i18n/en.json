@@ -16,6 +16,14 @@
       "SUCCESS_MESSAGE": "The metadata update operation was successfully processed",
       "WAIT_MESSAGE": "The operation is in progress, please do not shut down or refresh your browser"
     },
+    "UPDATE_PROJECT": {
+      "TERMINATED": "The project has been well updated",
+      "TRANSACTIONS_KO": "on the other hand there are KO transactions",
+      "POPUP_ACTIONS_TITLE": "Action on a project",
+      "POPUP_ACTIONS_CONTENT_MAJ1": "You have [N] ingest in edit. Do you want to update automatically",
+      "POPUP_ACTIONS_CONTENT_MAJ2": "these ingests? If the answer is negative, only the new ingests will include",
+      "POPUP_ACTIONS_CONTENT_MAJ3": "these modifications"
+    },
     "SEARCH_PLACEHOLDER": "Code and message identifier, Submission agency",
     "APP_BREADCRUMB": "Collection and Remittance Preparation",
     "NB_ENTRIES": "{{nb}} projects",
@@ -99,7 +107,8 @@
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
-        "SHOW_TRANSACTIONS": "go to list transactions"
+        "SHOW_TRANSACTIONS": "go to list transactions",
+        "VALIDATE": "Validate"
       },
       "STATUS": {
         "OPEN": "Open in edition",
@@ -203,6 +212,7 @@
       },
       "ACTIONS": {
         "SHOW_MORE_DETAILS": "Show all metadata",
+        "EDIT_PROJECT": "Edir project",
         "SHOW_ONLY_INFORMATION_DETAILS": "Hide metadata",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
       },
@@ -614,6 +624,7 @@
     "SERIES": "Series",
     "SUBSERIES": "Subseries",
     "FONDS": "Fonds",
-    "SAVE": "SAVE"
+    "SAVE": "SAVE",
+    "EDIT": "EDIT"
   }
 }

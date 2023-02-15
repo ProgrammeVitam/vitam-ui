@@ -5,6 +5,9 @@
   "COMMON": {
     "ADD": "Ajouter",
     "UNDO": "Annuler",
+    "YES": "OUI",
+    "NO": "NON",
+    "VALIDATE": "Valider",
     "BACK": "Retour",
     "SUBMIT": "Terminer",
     "UPDATE": "Modifier",

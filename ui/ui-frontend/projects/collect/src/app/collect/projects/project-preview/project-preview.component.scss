@@ -1,7 +1,55 @@
+
 .spinnerClass {
-    min-height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 50%;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50%;
+}
+
+
+
+.dialog-content {
+  padding-bottom: 15px;
+}
+
+.text-action {
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #757575;
+}
+
+.text-title {
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  color: #212121;
+}
+
+:host::ng-deep .mat-form-field {
+
+  .mat-form-field-outline {
+    background-color: #FFFFFF;
+  }
+
+
+  label, .mat-select {
+    padding: 0 20px !important;
+
+  }
+
+  label {
+    font-weight: 700;
+    color: var(--vitamui-primary);
+
+  }
 }
