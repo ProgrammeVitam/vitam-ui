@@ -34,7 +34,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -51,6 +51,8 @@ public class CollectProjectDto extends IdDto {
     private String transactionId;
     @JsonProperty("unitUp")
     private String unitUp;
+    @JsonProperty("unitUps")
+    private List<CollectMetadataUnitUpDto> unitUps;
 
     private String name;
     private String archivalAgreement;

@@ -27,17 +27,25 @@
 
 package fr.gouv.vitamui.collect.internal.server.service.converters;
 
+import fr.gouv.vitam.collect.common.dto.MetadataUnitUp;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectMetadataUnitUpDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @UtilityClass
 public class ProjectConverter {
-    public static CollectProjectDto toVitamuiDto(ProjectDto projectDto) {
+
+    public static List<CollectProjectDto> toVitamuiCollectProjectDtos(List<ProjectDto> projectDtos) {
+        return projectDtos.stream().map(ProjectConverter::toVitamuiCollectProjectDto).collect(Collectors.toList());
+    }
+
+    public static CollectProjectDto toVitamuiCollectProjectDto(ProjectDto projectDto) {
         return CollectProjectDto.builder()
             .tenant(Optional.of(projectDto.getTenant()).orElseThrow())
             .archivalAgencyIdentifier(projectDto.getArchivalAgencyIdentifier())
@@ -47,6 +55,7 @@ public class ProjectConverter {
             .id(projectDto.getId())
             .messageIdentifier(projectDto.getMessageIdentifier())
             .unitUp(projectDto.getUnitUp())
+            .unitUps(toVitamuiCollectMetadataUnitUpDtos(projectDto.getUnitUps()))
             .originatingAgencyIdentifier(projectDto.getOriginatingAgencyIdentifier())
             .submissionAgencyIdentifier(projectDto.getSubmissionAgencyIdentifier())
             .transferringAgencyIdentifier(projectDto.getTransferringAgencyIdentifier())
@@ -59,11 +68,24 @@ public class ProjectConverter {
             .build();
     }
 
-    public static List<CollectProjectDto> toVitamuiDtos(List<ProjectDto> projectDtos) {
-        return projectDtos.stream().map(ProjectConverter::toVitamuiDto).collect(Collectors.toList());
+    public static List<CollectMetadataUnitUpDto> toVitamuiCollectMetadataUnitUpDtos(
+        List<MetadataUnitUp> metadataUnitUps) {
+        if (Objects.isNull(metadataUnitUps)) {
+            return null;
+        }
+        return metadataUnitUps.stream().map(ProjectConverter::toVitamuiCollectMetadataUnitUpDto)
+            .collect(Collectors.toList());
     }
 
-    public static ProjectDto toVitamDto(CollectProjectDto collectProjectDto) {
+    public static CollectMetadataUnitUpDto toVitamuiCollectMetadataUnitUpDto(MetadataUnitUp metadataUnitUp) {
+        return CollectMetadataUnitUpDto.builder()
+            .metadataKey(metadataUnitUp.getMetadataKey())
+            .metadataValue(metadataUnitUp.getMetadataValue())
+            .unitUp(metadataUnitUp.getUnitUp())
+            .build();
+    }
+
+    public static ProjectDto toVitamProjectDto(CollectProjectDto collectProjectDto) {
         ProjectDto externalDto = new ProjectDto();
         externalDto.setArchivalAgencyIdentifier(collectProjectDto.getArchivalAgencyIdentifier());
         externalDto.setArchivalAgreement(collectProjectDto.getArchivalAgreement());
@@ -75,6 +97,7 @@ public class ProjectConverter {
         externalDto.setSubmissionAgencyIdentifier(collectProjectDto.getSubmissionAgencyIdentifier());
         externalDto.setTransferringAgencyIdentifier(collectProjectDto.getTransferringAgencyIdentifier());
         externalDto.setUnitUp(collectProjectDto.getUnitUp());
+        externalDto.setUnitUps(toVitamMetadataUnitUps(collectProjectDto.getUnitUps()));
         externalDto.setAcquisitionInformation(collectProjectDto.getAcquisitionInformation());
         externalDto.setLegalStatus(collectProjectDto.getLegalStatus());
         externalDto.setStatus(collectProjectDto.getStatus());
@@ -82,5 +105,20 @@ public class ProjectConverter {
         externalDto.setLastUpdate(collectProjectDto.getLastModifyOn());
         externalDto.setName(collectProjectDto.getName());
         return externalDto;
+    }
+
+    public static List<MetadataUnitUp> toVitamMetadataUnitUps(List<CollectMetadataUnitUpDto> collectMetadataUnitUpDtos) {
+        if (Objects.isNull(collectMetadataUnitUpDtos)) {
+            return null;
+        }
+        return collectMetadataUnitUpDtos.stream().map(ProjectConverter::toVitamMetadataUnitUp).collect(Collectors.toList());
+    }
+
+    public static MetadataUnitUp toVitamMetadataUnitUp(CollectMetadataUnitUpDto collectMetadataUnitUpDto) {
+        MetadataUnitUp metadataUnitUp = new MetadataUnitUp();
+        metadataUnitUp.setMetadataKey(collectMetadataUnitUpDto.getMetadataKey());
+        metadataUnitUp.setMetadataValue(collectMetadataUnitUpDto.getMetadataValue());
+        metadataUnitUp.setUnitUp(collectMetadataUnitUpDto.getUnitUp());
+        return metadataUnitUp;
     }
 }

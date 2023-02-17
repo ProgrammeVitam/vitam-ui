@@ -106,7 +106,7 @@ class ProjectInternalServiceTest {
 
         // WHEN
         CollectProjectDto resultedProject =
-            projectInternalService.createProject((vitamContext), ProjectConverter.toVitamuiDto(projectDto));
+            projectInternalService.createProject((vitamContext), ProjectConverter.toVitamuiCollectProjectDto(projectDto));
 
         // THEN
         assertNotNull(resultedProject);
@@ -137,7 +137,7 @@ class ProjectInternalServiceTest {
 
         // WHEN
         assertThrows(InternalServerException.class, () -> {
-            projectInternalService.createProject(vitamContext, ProjectConverter.toVitamuiDto(projectDto));
+            projectInternalService.createProject(vitamContext, ProjectConverter.toVitamuiCollectProjectDto(projectDto));
         });
     }
 
@@ -311,7 +311,7 @@ class ProjectInternalServiceTest {
 
         // WHEN
         CollectProjectDto updatedProject = projectInternalService.update(vitamContext, PROJECT_ID,
-            ProjectConverter.toVitamuiDto(projectDto));
+            ProjectConverter.toVitamuiCollectProjectDto(projectDto));
 
         // THEN
         assertNotNull(updatedProject);
@@ -340,7 +340,7 @@ class ProjectInternalServiceTest {
 
         // THEN
         assertThrows(InternalServerException.class, () -> projectInternalService.update(vitamContext, PROJECT_ID,
-            ProjectConverter.toVitamuiDto(projectDto)));
+            ProjectConverter.toVitamuiCollectProjectDto(projectDto)));
     }
 
     @Test

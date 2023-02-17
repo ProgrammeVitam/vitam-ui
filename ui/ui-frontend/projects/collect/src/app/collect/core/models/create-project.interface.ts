@@ -23,35 +23,15 @@
  *
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
+ *
  */
-import { Id } from '../id.interface';
-import { FacetDetails } from '../operation';
-import { ProjectStatus } from './project-status';
 
-export interface Project extends Id {
-  name: string;
-  archivalAgreement: string;
-  messageIdentifier: string;
-  archivalAgencyIdentifier: string;
-  transferringAgencyIdentifier: string;
-  originatingAgencyIdentifier: string;
-  submissionAgencyIdentifier: string;
-  archivalProfile: string;
-  archiveProfile?: string;
-  acquisitionInformation?: string;
-  legalStatus?: string;
-  unitUp: string;
-  unitUps: Array<MetadataUnitUp>;
-  comment: string;
-  status: ProjectStatus;
-  createdOn?: Date;
-  lastModifyOn?: Date;
-  facets?: FacetDetails[];
-  tenant?: string;
+export enum Workflow {
+  MANUAL = 'MANUAL',
+  FLOW = 'FLOW',
 }
 
-export interface MetadataUnitUp {
-  metadataKey: string;
-  metadataValue: string;
-  unitUp: string;
+export enum FlowType {
+  FIX = 'FIX',
+  RULES = 'RULES'
 }

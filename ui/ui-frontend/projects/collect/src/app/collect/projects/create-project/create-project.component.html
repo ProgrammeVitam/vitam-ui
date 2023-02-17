@@ -2,21 +2,240 @@
   <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
 </div>
 
+<!-- workflow 1 projet de versement manuel -->
+<!-- workflow 2 projet de versement de flux + position de rattachement fixe -->
+<!-- workflow 3 projet de versement de flux + parametrage des regles de rattachement -->
+
 <form [formGroup]="projectForm">
   <vitamui-common-stepper [selectedIndex]="stepIndex">
-    <!-- Step 1 : Upload fichiers -->
+
+    <!-- ########## stepIndex 1 : workflow 1-2-3 , step 1/6 : Choix du type de projet ########## -->
+
     <cdk-step>
       <div class="content">
-        <h2>{{ 'COLLECT.UPLOAD_TITLE' | translate }}</h2>
-        <h4>{{ 'COLLECT.UPLOAD_SUB_TITLE' | translate }}</h4>
-        <div class="d-flex">
-          <div
-            (dragleave)="onDragLeave($event)"
-            (dragover)="onDragOver($event)"
-            (drop)="onDropped($event)"
-            [ngClass]="{ 'on-over': hasDropZoneOver }"
-            class="drag-and-drop-area"
-          >
+        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <h2>{{ 'COLLECT.MODAL.WORKFLOW_CHOICE' | translate }}</h2>
+        <div class="main-content">
+          <vitamui-radio-group formControlName="selectedWorkflow" primary="true">
+            <vitamui-radio value="{{ Workflow.MANUAL }}" label="{{ 'COLLECT.MODAL.MANUAL_WORKFLOW' | translate }}"
+                           (click)="setWorkflow(Workflow.MANUAL)" primary="true" checked>
+            </vitamui-radio>
+            <vitamui-radio value="{{ Workflow.FLOW }}" label="{{ 'COLLECT.MODAL.FLOW_WORKFLOW' | translate }}"
+                           (click)="setWorkflow(Workflow.FLOW)" primary="true">
+            </vitamui-radio>
+          </vitamui-radio-group>
+        </div>
+        <div class="actions">
+          <button (click)="moveToNextStep()" class="btn primary" type="button">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button (click)="onClose()" class="btn link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <!-- ########## stepIndex 2 : workflow 1-2-3 , step 2/6 : Description du versement ########## -->
+    <cdk-step>
+      <div class="content">
+        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <h2>{{ 'COLLECT.PROJECT_DESCRIPTION_SUB_TITLE' | translate }}</h2>
+        <div class="main-content">
+          <div class="row">
+            <vitamui-common-input
+              class="col"
+              formControlName="messageIdentifier"
+              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_LABEL' | translate }}"
+              required>
+            </vitamui-common-input>
+          </div>
+          <div class="row">
+            <vitamui-common-textarea
+              class="col"
+              formControlName="comment"
+              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_DESC' | translate }}">
+            </vitamui-common-textarea>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</h4>
+            </div>
+            <div class="col toggle-right">
+              <vitamui-common-slide-toggle
+                class="fields-padding d-flex"
+                [disabled]="true"
+                formControlName="referentialCheckup"
+                matTooltipPosition="below">
+                {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
+              </vitamui-common-slide-toggle>
+            </div>
+          </div>
+
+          <div class="row">
+            <vitamui-common-input
+              class="col"
+              formControlName="originatingAgencyIdentifier"
+              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}"
+              required>
+            </vitamui-common-input>
+            <vitamui-common-input
+              [disabled]="true"
+              class="col offset-1"
+              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}">
+            </vitamui-common-input>
+          </div>
+          <div class="row">
+            <vitamui-common-input
+              class="col"
+              formControlName="submissionAgencyIdentifier"
+              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}"
+              required>
+            </vitamui-common-input>
+            <vitamui-common-input
+              [disabled]="true"
+              class="col offset-1"
+              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}">
+            </vitamui-common-input>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn link back" (click)="backToPreviousStep()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+          </button>
+          <button (click)="moveToNextStep()" [disabled]="stepDescriptionIsInvalid()" class="btn primary" type="button">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button (click)="onClose()" class="btn link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <!-- ########## stepIndex 3 : workflow 1-2-3 , step 3/6 : Contexte du versement ########## -->
+    <cdk-step>
+      <div class="content">
+        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <div class="row">
+          <div class="col">
+            <h2>{{ 'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate }}</h2>
+          </div>
+          <div class="col toggle-right">
+            <vitamui-common-slide-toggle
+              class="fields-padding"
+              [disabled]="true"
+              formControlName="referentialCheckup"
+              matTooltipPosition="below">
+              {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
+            </vitamui-common-slide-toggle>
+          </div>
+        </div>
+        <div class="main-content">
+          <div class="row">
+            <vitamui-common-input
+              class="col"
+              formControlName="archivalAgencyIdentifier"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
+              required>
+            </vitamui-common-input>
+            <vitamui-common-input
+              [disabled]="true"
+              class="col offset-1"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}">
+            </vitamui-common-input>
+          </div>
+          <div class="row">
+            <vitamui-common-input
+              class="col"
+              formControlName="transferringAgencyIdentifier"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
+              required>
+            </vitamui-common-input>
+            <vitamui-common-input
+              [disabled]="true"
+              class="col offset-1"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}">
+            </vitamui-common-input>
+          </div>
+          <div class="row">
+            <vitamui-common-input
+              class="col"
+              formControlName="archivalAgreement"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
+              required>
+            </vitamui-common-input>
+            <vitamui-common-input
+              [disabled]="true"
+              class="col offset-1"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}">
+            </vitamui-common-input>
+          </div>
+          <div class="row">
+            <vitamui-common-input
+              class="col"
+              formControlName="archiveProfile"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}">
+            </vitamui-common-input>
+            <vitamui-common-input
+              [disabled]="true"
+              class="col offset-1"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}">
+            </vitamui-common-input>
+          </div>
+          <div class="row">
+            <mat-form-field appearance="outline" class="col" id="acquisition-informations">
+              <label for="acquisition-informations">
+                <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
+              </label>
+              <mat-select formControlName="acquisitionInformation">
+                <mat-option *ngFor="let acquisitionInformation of acquisitionInformationsList"
+                            [value]="acquisitionInformation">{{
+                  acquisitionInformation
+                  }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field appearance="outline" class="col" id="legal-status">
+              <label for="legal-status">
+                <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
+              </label>
+              <mat-select formControlName="legalStatus">
+                <mat-option *ngFor="let legalStatus of legalStatusList"
+                            [value]="legalStatus.id">{{ legalStatus.value }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn link back" (click)="backToPreviousStep()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+          </button>
+          <button (click)="moveToNextStep()" [disabled]="stepContextIsInvalid()" class="btn primary" type="button">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button (click)="onClose()" class="btn link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <!-- ########## stepIndex 4 : workflow 1     , step 4/6 : Upload fichiers ########## -->
+    <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
+      <div class="content">
+        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <h2>{{ 'COLLECT.UPLOAD_SUB_TITLE' | translate }}</h2>
+        <div class="main-content">
+          <div class="drag-and-drop-area"
+               (dragleave)="onDragLeave($event)"
+               (dragover)="onDragOver($event)"
+               (drop)="onDropped($event)"
+               [ngClass]="{ 'on-over': hasDropZoneOver }">
             <div *ngIf="(uploadFiles$ | async)?.length > 0" class="drag-container">
               <div class="file-info-class">
                 <div class="vitamui-chip-list">
@@ -32,290 +251,258 @@
                 </div>
               </div>
             </div>
-            <input #fileSearch (change)="handleFile($event)" class="input-file" directory multiple type="file" webkitdirectory />
+            <input #fileSearch (change)="handleFile($event)" class="input-file" directory multiple type="file"
+                   webkitdirectory/>
             <div class="drop-area">
-              <div class="sip-drop">{{ 'COLLECT.UPLOAD.ADD_FILE' | translate }} <br /></div>
-              <div>
-                <div class="sip-drop">
-                  <div class="upload">
-                    <span (click)="addFolder()" class="url-select">{{ 'COLLECT.UPLOAD.BROWSE' | translate }}</span>
-                  </div>
-                  <span class="sip-drop-small">{{ 'COLLECT.UPLOAD.ADD_FILE_DESCRIPTION' | translate }}</span>
-                </div>
+              <div class="sip-drop">
+                <span (click)="addFolder()" class="url-select">
+                  {{ 'COLLECT.UPLOAD.DRAG_AND_DROP_OR_BROWSE' | translate }}
+                </span>
+                <span class="sip-drop-small">{{ 'COLLECT.UPLOAD.ADD_FILE_DESCRIPTION' | translate }}</span>
               </div>
             </div>
           </div>
         </div>
         <div class="actions">
-          <button (click)="move()" [disabled]="(uploadFiles$ | async)?.length === 0" class="btn primary" type="button">
+          <button type="button" class="btn link back" (click)="backToPreviousStep()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+          </button>
+          <button (click)="moveToNextStep()" [disabled]="(uploadFiles$ | async)?.length === 0"
+                  class="btn primary" type="button">
             {{ 'COMMON.NEXT' | translate }}
           </button>
-          <button (click)="onClose()" class="btn link" type="button">{{ 'COMMON.UNDO' | translate }}</button>
+          <button (click)="onClose()" class="btn link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
         </div>
       </div>
     </cdk-step>
 
-    <!-- Step 2 : Rattachement des archives à une position -->
-    <cdk-step>
+    <!-- stepIndex 5 : workflow 2-3   , step 4/6 : Choisir le type de rattachement -->
+    <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
       <div class="content">
-        <h2>{{ 'COLLECT.ARCHIVE_POSITION_TITLE' | translate }}</h2>
-        <h4>{{ 'COLLECT.ARCHIVE_POSITION_SUB_TITLE' | translate }}</h4>
-        <div class="d-flex">
+        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <h2>{{ 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE' | translate }}</h2>
+        <div class="main-content">
+          <vitamui-radio-group formControlName="selectedFlowType" primary="true">
+            <vitamui-radio value="{{ FlowType.FIX }}" label="{{ 'COLLECT.MODAL.FIX_FLOW_WORKFLOW' | translate }}"
+                           (click)="setFlowType(FlowType.FIX)" primary="true" checked>
+            </vitamui-radio>
+            <vitamui-radio value="{{ FlowType.RULES }}" label="{{ 'COLLECT.MODAL.RULES_FLOW_WORKFLOW' | translate }}"
+                           (click)="setFlowType(FlowType.RULES)" primary="true">
+            </vitamui-radio>
+          </vitamui-radio-group>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn link back" (click)="backToPreviousStep()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+          </button>
+          <button (click)="moveToNextStep()" class="btn primary" type="button">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button (click)="onClose()" class="btn link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <!-- stepIndex 6 : workflow 1-2   , step 5/6 : Définir la position fixe de rattachement -->
+    <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL || selectedFlowType === FlowType.FIX">
+      <div class="content">
+        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <h2>{{ 'COLLECT.ARCHIVE_POSITION_SUB_TITLE' | translate }}</h2>
+        <div class="main-content">
           <div class="form-group">
             <vitamui-library-filing-plan
               [accessContract]="accessContractSelect.value"
               [formControl]="linkParentIdControl"
-              [mode]="FILLING_PLAN_MODE.SOLO"
-              [tenantIdentifier]="tenantIdentifier"
-            ></vitamui-library-filing-plan>
+              [mode]="FilingPlanMode.SOLO"
+              [tenantIdentifier]="tenantIdentifier">
+            </vitamui-library-filing-plan>
           </div>
         </div>
         <div class="actions">
-          <button (click)="validateAndProcessUpload()" class="btn primary" type="button">{{ 'COMMON.NEXT' | translate }}</button>
-          <button (click)="onClose()" class="btn link" type="button">{{ 'COMMON.UNDO' | translate }}</button>
-        </div>
-      </div>
-    </cdk-step>
-
-    <!-- Step 3 : Description du versement -->
-    <cdk-step>
-      <div class="content">
-        <h2>{{ 'COLLECT.PROJECT_DESCRIPTION_TITLE' | translate }}</h2>
-        <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_SUB_TITLE' | translate }}</h4>
-        <div>
-          <vitamui-common-input
-            class="col-12"
-            formControlName="messageIdentifier"
-            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_LABEL' | translate }}"
-            required
-          >
-          </vitamui-common-input>
-          <vitamui-common-textarea
-            class="col-12"
-            formControlName="comment"
-            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_DESC' | translate }}"
-          >
-          </vitamui-common-textarea>
-
-          <div class="col-12 mt-4 mb-3">
-            <div class="row">
-              <div class="col-7">
-                <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</h4>
-              </div>
-              <div class="col-5 mt-2">
-                <vitamui-common-slide-toggle
-                  class="fields-padding"
-                  [disabled]="true"
-                  formControlName="referentialCheckup"
-                  matTooltipPosition="below"
-                >
-                  {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
-                </vitamui-common-slide-toggle>
-              </div>
-            </div>
-          </div>
-          <vitamui-common-input
-            class="col-5"
-            formControlName="originatingAgencyIdentifier"
-            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}"
-            required
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            [disabled]="true"
-            class="col-6 offset-1"
-            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}"
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            class="col-5"
-            formControlName="submissionAgencyIdentifier"
-            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}"
-            required
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            [disabled]="true"
-            class="col-6 offset-1"
-            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}"
-          >
-          </vitamui-common-input>
-        </div>
-        <div class="actions">
-          <button (click)="move()" [disabled]="validateThirdStep()" class="btn primary" type="button">
+          <button type="button" class="btn link back" (click)="backToPreviousStep()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+          </button>
+          <button (click)="validateAndCreateProject()" class="btn primary" type="button">
             {{ 'COMMON.NEXT' | translate }}
           </button>
-          <button (click)="onCancel()" class="btn link" type="button">{{ 'COMMON.UNDO' | translate }}</button>
+          <button (click)="onClose()" class="btn link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
         </div>
       </div>
     </cdk-step>
 
-    <!-- Step 4 : Contexte du versement -->
-    <cdk-step>
+    <!-- stepIndex 7 : workflow 3     , step 5/6 : Parametrer les regles de rattachement -->
+    <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW && selectedFlowType === FlowType.RULES">
       <div class="content">
-        <div class="col-12 mt-4 mb-3">
-          <div class="row">
-            <div class="col-7">
-              <h4>{{ 'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate }}</h4>
+        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <h2>{{ 'COLLECT.MODAL.RULES_TITLE' | translate }}</h2>
+        <div class="main-content">
+          <ng-container formArrayName="rulesParams">
+            <div class="object-container" *ngFor="let ruleParamForm of rulesParams.controls; let index = index;">
+              <ng-container [formGroup]="asFormGroup(ruleParamForm)">
+                <div class="object-menu"
+                     [ngClass]="{'opened': ruleParamForm.value.opened}"
+                     (click)="openCloseRuleParam(ruleParamForm.value)">
+                  <div class="line split">
+                    <div class="line open-close-icon">
+                      <i
+                        class="vitamui-icon {{ ruleParamForm.value.opened ? 'vitamui-icon-chevron-down':'vitamui-icon-chevron-right'}}"></i>
+                    </div>
+                    <div class="line shrink object-name">
+                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + index }}
+                    </div>
+                  </div>
+                  <div class="line split">
+                    <div class="line shrink object-type">
+                    </div>
+                    <button class="delete-button" (click)="deleteRuleParam(index)"
+                            matTooltip="{{ 'COLLECT.MODAL.REMOVE_PARAM' | translate }}"
+                            matTooltipClass="vitamui-tooltip">
+                      <i class="vitamui-icon vitamui-icon-delete"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="object-details" *ngIf="ruleParamForm.value.opened">
+                  <div class="object-details-group">
+                    <div class="row">
+                      <div class="col">
+                        <label>{{ 'COLLECT.MODAL.SELECT_METADATA' | translate }}</label>
+                        <mat-form-field class="vitamui-mat-select">
+                          <mat-select class="select"
+                                      formControlName="metadata"
+                                      placeholder="{{ 'COLLECT.MODAL.SELECT_THE_METADATA' | translate }}">
+                            <mat-option *ngFor="let ontology of ontologies"
+                                        class="option"
+                                        value="{{ ontology.ApiField }}"
+                                        matTooltip="{{ ontology.ApiField }}"
+                                        matTooltipClass="vitamui-tooltip"
+                                        [matTooltipShowDelay]="300">
+                              {{ ontology.Identifier }}
+                            </mat-option>
+                          </mat-select>
+                          <div class="select-arrow">
+                            <i class="material-icons">keyboard_arrow_up</i>
+                            <i class="material-icons">keyboard_arrow_down</i>
+                          </div>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <label>{{ 'COLLECT.MODAL.SET_VALUE' | translate }}</label>
+                        <vitamui-common-input
+                          formControlName="value"
+                          class="col"
+                          placeholder="{{ 'COLLECT.MODAL.VALUE' | translate }}">
+                        </vitamui-common-input>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <label>{{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}</label>
+                        <vitamui-library-filing-plan
+                          [formControl]="asFormControl(ruleParamForm.get('unitUp'))"
+                          [accessContract]="accessContractSelect.value"
+                          [mode]="FilingPlanMode.SOLO"
+                          [tenantIdentifier]="tenantIdentifier">
+                        </vitamui-library-filing-plan>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
             </div>
-            <div class="col-5 mt-2">
-              <vitamui-common-slide-toggle
-                class="fields-padding"
-                [disabled]="true"
-                formControlName="referentialCheckup"
-                matTooltipPosition="below"
-              >
-                {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
-              </vitamui-common-slide-toggle>
-            </div>
+          </ng-container>
+
+          <div>
+            <button type="button" class="btn link back" (click)="addRuleParam()">
+              <i class="vitamui-icon vitamui-icon-chevron-right"></i>
+              <span>{{ 'COLLECT.MODAL.RULES_PARAMS_ADD' | translate }}</span>
+            </button>
           </div>
-        </div>
-        <div>
-          <vitamui-common-input
-            class="col-5"
-            formControlName="archivalAgencyIdentifier"
-            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
-            required
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            [disabled]="true"
-            class="col-6 offset-1"
-            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            class="col-5"
-            formControlName="transferringAgencyIdentifier"
-            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
-            required
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            [disabled]="true"
-            class="col-6 offset-1"
-            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            class="col-5"
-            formControlName="archivalAgreement"
-            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
-            required
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            [disabled]="true"
-            class="col-6 offset-1"
-            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            class="col-5"
-            formControlName="archiveProfile"
-            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
-          >
-          </vitamui-common-input>
-          <vitamui-common-input
-            [disabled]="true"
-            class="col-6 offset-1"
-            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
-          >
-          </vitamui-common-input>
-
-          <mat-form-field appearance="outline" class="col-12" id="acquisition-informations">
-            <label for="acquisition-informations">
-              <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
-            </label>
-            <mat-select formControlName="acquisitionInformation">
-              <mat-option *ngFor="let acquisitionInformation of acquisitionInformationsList" [value]="acquisitionInformation">{{
-                acquisitionInformation
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="col-12" id="legal-status">
-            <label for="legal-status">
-              <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
-            </label>
-            <mat-select formControlName="legalStatus">
-              <mat-option *ngFor="let legalStatus of legalStatusList" [value]="legalStatus.id">{{ legalStatus.value }}</mat-option>
-            </mat-select>
-          </mat-form-field>
         </div>
         <div class="actions">
-          <button type="button" class="btn link back" (click)="back()">
+          <button type="button" class="btn link back" (click)="backToPreviousStep()">
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <ng-container
-              ><span class="underline">{{ 'COMMON.BACK' | translate }}</span></ng-container
-            >
+            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
           </button>
-          <button (click)="updateProject()" [disabled]="validateFourStep()" class="btn primary" type="button">
-            {{ 'COMMON.SUBMIT' | translate }}
+          <button (click)="validateAndCreateProject()" [disabled]="stepRulesParamsIsInvalid()" class="btn primary" type="button">
+            {{ 'COMMON.NEXT' | translate }}
           </button>
-          <button (click)="onCancel()" class="btn link" type="button">{{ 'COMMON.UNDO' | translate }}</button>
+          <button (click)="onClose()" class="btn link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
         </div>
       </div>
     </cdk-step>
 
-    <!-- Step 5 : Téléchargements -->
-    <cdk-step>
+    <!-- stepIndex 8 : workflow 1     , step 6/6     : Upload fichiers -->
+    <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <div class="content">
-        <div class="row">
-          <div class="col-11">
-            <h2>{{ 'COLLECT.UPLOAD.TRACKING_TITLE' | translate }}</h2>
-          </div>
-        </div>
-        <table class="vitamui-table">
-          <thead>
-            <tr>
-              <th>{{ 'COLLECT.UPLOAD.ZIP_NAME' | translate }}</th>
-              <th>{{ 'COLLECT.UPLOAD.WEIGHT' | translate }}</th>
-              <th>{{ 'COLLECT.UPLOAD.ZIP_TRACKING_TITLE' | translate }}</th>
-              <th>{{ 'COLLECT.UPLOAD.STATUS' | translate }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="vitamui-table-row">
-              <td>{{ (zippedFile$ | async)?.name }}</td>
-              <td>{{ (zippedFile$ | async)?.size | fileSize }}</td>
-              <td>
+        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <h2>{{ 'COLLECT.MODAL.UPLOAD_FILES' | translate }}</h2>
+        <div class="main-content">
+
+          <div class="new-design-table">
+            <div class="new-design-row new-design-head">
+              <div class="name">{{ 'COLLECT.UPLOAD.ZIP_NAME' | translate }}</div>
+              <div class="size">{{ 'COLLECT.UPLOAD.WEIGHT' | translate }}</div>
+              <div class="compression">{{ 'COLLECT.UPLOAD.ZIP_TRACKING_TITLE' | translate }}</div>
+              <div class="upload">{{ 'COLLECT.UPLOAD.STATUS' | translate }}</div>
+            </div>
+
+            <div class="new-design-row">
+              <div class="name">{{ (zippedFile$ | async)?.name }}</div>
+              <div class="size">{{ (zippedFile$ | async)?.size | fileSize }}</div>
+              <div class="compression">
                 <span class="purcent">{{ (zippedFile$ | async)?.currentFileUploadedSize | number: '1.0-0' }} %</span>
                 <mat-progress-bar
                   [value]="(zippedFile$ | async)?.currentFileUploadedSize"
                   class="stepper-progress-bar"
-                  mode="determinate"
-                ></mat-progress-bar>
-              </td>
-              <td>
+                  mode="determinate">
+                </mat-progress-bar>
+              </div>
+              <div class="upload">
                 <span class="purcent">{{ (zippedFile$ | async)?.uploadedSize | number: '1.0-0' }} %</span>
                 <mat-progress-bar
                   [value]="(zippedFile$ | async)?.uploadedSize"
                   class="stepper-progress-bar"
-                  mode="determinate"
-                ></mat-progress-bar>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  mode="determinate">
+                </mat-progress-bar>
+              </div>
+            </div>
+
+          </div>
+        </div>
         <div class="actions">
-          <button (click)="close()" [disabled]="!closeModal" class="btn primary" type="button">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button (click)="close()" [disabled]="pending" class="btn primary" type="button">
+            {{ 'COMMON.CLOSE' | translate }}
+          </button>
         </div>
       </div>
     </cdk-step>
+
+    <!-- workflow 2-3 step 6/6   : Projet de versement cree -->
+    <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
+      <div class="content">
+        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <h2>{{ 'COLLECT.MODAL.PROJECT_CREATED' | translate }}</h2>
+        <div class="main-content">
+
+        </div>
+        <div class="actions">
+          <button (click)="close()" [disabled]="pending" class="btn primary" type="button">
+            {{ 'COMMON.CLOSE' | translate }}
+          </button>
+        </div>
+      </div>
+    </cdk-step>
+
   </vitamui-common-stepper>
 </form>
-
-<ng-template #confirmDeleteAddRuleDialog>
-  <mat-dialog-content>
-    <br />
-
-    <div class="text large bold">{{ 'UNIT_UPDATE.CONFIRM_CLOSE' | translate }}</div>
-  </mat-dialog-content>
-  <br />
-  <mat-dialog-actions>
-    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog margin-btn">{{ 'UNIT_UPDATE.CLOSE' | translate }}</button>
-
-    <button (click)="onClose()" class="btn cancel">{{ 'COMMON.UNDO' | translate }}</button>
-  </mat-dialog-actions>
-</ng-template>

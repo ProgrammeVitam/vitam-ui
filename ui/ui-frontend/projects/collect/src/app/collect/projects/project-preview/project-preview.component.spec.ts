@@ -1,19 +1,19 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {EMPTY, of} from 'rxjs';
-import {ProjectsService} from '../projects.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { EMPTY, of } from 'rxjs';
+import { ProjectsService } from '../projects.service';
 
-import {FormBuilder} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {Project, ProjectStatus} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {ProjectsApiService} from '../../core/api/project-api.service';
-import {ProjectPreviewComponent} from './project-preview.component';
+import { FormBuilder } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { Project, ProjectStatus } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ProjectsApiService } from '../../core/api/project-api.service';
+import { ProjectPreviewComponent } from './project-preview.component';
 
 describe('ProjectPreviewComponent', () => {
   let component: ProjectPreviewComponent;
@@ -32,7 +32,7 @@ describe('ProjectPreviewComponent', () => {
     unitUp: '878dfdfd',
     comment: 'hello',
     status: ProjectStatus.CLOSE,
-  };
+  } as Project;
 
   const projectAfterUpdate = {
     project, ...{messageIdentifier: 'test'}
@@ -103,12 +103,9 @@ describe('ProjectPreviewComponent', () => {
   }));
 
   it('should get project when update', waitForAsync(() => {
-
-
     component.showEditProject();
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-
       expect(component.form.value.messageIdentifier).toEqual(project.messageIdentifier);
       expect(component.form.value.legalStatus).toEqual(project.legalStatus);
       expect(component.form.value.archivalAgreement).toEqual(project.archivalAgreement);
@@ -119,52 +116,34 @@ describe('ProjectPreviewComponent', () => {
   }));
 
   it('should update project without transactions', waitForAsync(() => {
-
     spyOn(projectServiceMock, 'updateProject').and.returnValue(of(projectAfterUpdate));
-
-
     component.showEditProject();
     fixture.detectChanges();
-
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.launchUpdate();
     fixture.detectChanges();
-
     component.selectedValue = 'NON'
     component.onConfirm();
     fixture.detectChanges();
-
     fixture.whenStable().then(() => {
       expect(projectServiceMock.updateProject).toHaveBeenCalled();
-
     });
-
-
   }));
 
 
   it('should update project with transactions', waitForAsync(() => {
-
     spyOn(projectServiceMock, 'updateProject').and.returnValue(of(projectAfterUpdate));
-
-
     component.showEditProject();
     fixture.detectChanges();
-
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.launchUpdate();
     fixture.detectChanges();
-
     component.selectedValue = 'YES'
     component.onConfirm();
     fixture.detectChanges();
-
     fixture.whenStable().then(() => {
       expect(projectServiceMock.updateProject).toHaveBeenCalled();
-
     });
-
-
   }));
 
 });

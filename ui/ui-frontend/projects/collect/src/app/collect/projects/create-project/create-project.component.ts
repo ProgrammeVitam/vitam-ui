@@ -25,15 +25,36 @@
  * accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subscription } from 'rxjs';
-import { ExternalParameters, ExternalParametersService, Logger, Project, ProjectStatus, Transaction, TransactionStatus } from 'ui-frontend-common';
-import { FilingPlanMode } from 'vitamui-library';
+import { Observable } from 'rxjs';
+import {
+  ExternalParameters,
+  ExternalParametersService,
+  Logger,
+  MetadataUnitUp,
+  Ontology,
+  Project,
+  ProjectStatus,
+  Transaction,
+  TransactionStatus
+} from 'ui-frontend-common';
 
+import { FilingPlanMode, oneIncludedNodeRequired } from 'vitamui-library';
+import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
+import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
@@ -45,27 +66,37 @@ import { TransactionsService } from '../transactions.service';
   styleUrls: ['./create-project.component.scss'],
   animations: [
     trigger('rotateAnimation', [
-      state('collapse', style({ transform: 'rotate(-180deg)' })),
-      state('expand', style({ transform: 'rotate(0deg)' })),
+      state('collapse', style({transform: 'rotate(-180deg)'})),
+      state('expand', style({transform: 'rotate(0deg)'})),
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
   ],
 })
 export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewChecked {
+  // enums for html
+  Workflow = Workflow;
+  FilingPlanMode = FilingPlanMode;
+  FlowType = FlowType;
+  // http calls
+  pending: boolean;
+
+  selectedWorkflow: Workflow = Workflow.MANUAL;
+  selectedFlowType: FlowType = FlowType.FIX;
   public stepIndex = 0;
-  public stepCount = 5;
+  public stepCount = 6;
+
   projectForm: FormGroup;
+
   hasDropZoneOver = false;
   hasError = false;
   uploadFiles$: Observable<CollectUploadFile[]>;
   zippedFile$: Observable<CollectZippedUploadFile>;
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
-  FILLING_PLAN_MODE = FilingPlanMode;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
   tenantIdentifier: number;
   createdProject: Project;
   createdTransaction: Transaction;
-  createDialogSub: Subscription;
-  updateDialogSub: Subscription;
+  ontologies: Ontology[];
+
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
     this.translationService.instant('ACQUISITION_INFORMATION.PROTOCOL'),
@@ -82,15 +113,14 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   ];
 
   legalStatusList = [
-    { id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE') },
-    { id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
-    { id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
+    {id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE')},
+    {id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE')},
+    {id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE')},
   ];
 
-  closeModal = false;
   uploadZipCompleted = false;
 
-  @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
+  @ViewChild('confirmDeleteAddRuleDialog', {static: true}) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -105,8 +135,10 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     private externalParameterService: ExternalParametersService,
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
+    private archiveCollectService: ArchiveCollectService,
     public dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   get linkParentIdControl() {
     return this.projectForm.controls.linkParentIdControl as FormControl;
@@ -122,12 +154,18 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.accessContract();
     this.uploadFiles$ = this.uploadService.getUploadingFiles();
     this.zippedFile$ = this.uploadService.getZipFile();
+    this.archiveCollectService.getOntologiesFromJson().subscribe((data: Ontology[]) => {
+      this.ontologies = data.filter((ontology) => ontology.ApiField !== undefined);
+      this.ontologies.sort((a: any, b: any) => {
+        const shortNameA = a.Identifier;
+        const shortNameB = b.Identifier;
+        return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
+      });
+    });
   }
 
   ngOnDestroy(): void {
     this.uploadService.reinitializeZip();
-    this.createDialogSub?.unsubscribe();
-    this.updateDialogSub?.unsubscribe();
   }
 
   ngAfterViewChecked(): void {
@@ -148,38 +186,26 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     });
   }
 
-  onCancel() {
-    const dialogToOpen = this.confirmDeleteAddRuleDialog;
-    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-  }
-
   onClose() {
     this.dialogRefToClose.close(true);
   }
 
-  onConfirm() {
-    if (this.uploadZipCompleted) {
-      this.projectsService.deleteProjectId(this.createdProject.id).subscribe(() => {
-        this.dialogRefToClose.close(true);
-        this.close();
-      });
-    } else {
-      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TRACKING_TITLE'), null, {
-        panelClass: 'vitamui-snack-bar',
-        duration: 10000,
-      });
-    }
+  setWorkflow(value: Workflow) {
+    this.selectedWorkflow = value;
   }
 
-  move() {
+  setFlowType(value: FlowType) {
+    this.selectedFlowType = value;
+  }
+
+  moveToNextStep() {
     this.stepIndex = this.stepIndex + 1;
   }
 
-  back() {
+  backToPreviousStep() {
     this.stepIndex = this.stepIndex - 1;
   }
 
-  /*** Step 1 : Upload Fichiers ***/
   onDragOver(event: any) {
     event.preventDefault();
     this.hasDropZoneOver = true;
@@ -196,7 +222,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     const items = event.dataTransfer.items;
     const exists = this.uploadService.directoryExistInZipFile(items, true);
     if (exists) {
-      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, { duration: 3000 });
+      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, {duration: 3000});
       return;
     }
     await this.uploadService.handleDragAndDropUpload(items);
@@ -207,7 +233,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     const items = event.target.files;
     const exists = this.uploadService.directoryExistInZipFile(items, false);
     if (exists) {
-      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, { duration: 3000 });
+      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, {duration: 3000});
       return;
     }
     await this.uploadService.handleUpload(items);
@@ -221,52 +247,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.uploadService.removeFolder(file);
   }
 
-  async validateAndProcessUpload() {
-    const project = {
-      status: ProjectStatus.OPEN,
-      unitUp: this.linkParentIdControl.value.included[0],
-    } as Project;
-    const transaction = {
-      status: TransactionStatus.OPEN,
-    } as Transaction;
-    this.move();
-    this.closeModal = false;
-    await this.projectsService
-      .create(project)
-      .toPromise()
-      .then((response) => {
-        this.createdProject = response;
-        transaction.projectId = this.createdProject.id;
-        this.transactionsService.create(transaction)
-        .toPromise()
-        .then((response) => {
-          this.createdTransaction = response;
-          return this.uploadService.uploadZip(this.tenantIdentifier, this.createdTransaction.id);
-        })
-        .then((uploadOperation) => {
-          uploadOperation.subscribe(
-            () => {},
-            (error: any) => {
-              this.logger.error(error);
-            },
-            () => {
-              this.uploadZipCompleted = true;
-              this.closeModal = true;
-              this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
-                panelClass: 'vitamui-snack-bar',
-                duration: 10000,
-              });
-            }
-          );
-        })
-        .catch((error) => {
-          this.logger.error(error);
-        });
-      })
-  }
-
-  /*** Step 3 : Description du versement ***/
-  validateThirdStep() {
+  /*** Form validator Step : Description du versement ***/
+  stepDescriptionIsInvalid() {
     return (
       this.projectForm.controls.originatingAgencyIdentifier.invalid ||
       this.projectForm.controls.messageIdentifier.invalid ||
@@ -274,8 +256,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     );
   }
 
-  /*** Step 4 : Contexte du versement ***/
-  validateFourStep() {
+  /*** Form validator Step : Contexte du versement ***/
+  stepContextIsInvalid() {
     return (
       this.projectForm.controls.archivalAgencyIdentifier.invalid ||
       this.projectForm.controls.transferringAgencyIdentifier.invalid ||
@@ -283,37 +265,13 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     );
   }
 
-  updateProject() {
-    // Project name should be setted from messageIdentifier field until further notice
-    const projectToUpdate = {
-      ...this.projectForm.value,
-      name: this.projectForm.controls.messageIdentifier.value,
-    };
-    const transactionToUpdate = {
-      ...this.projectForm.value,
-      name: this.projectForm.controls.messageIdentifier.value,
-    };
-    this.mapProjectInternalFields(projectToUpdate);
-    this.projectsService.updateProject(projectToUpdate).subscribe(
-      () => {
-              this.mapProjectInternalFieldsToTransaction(transactionToUpdate);
-              this.transactionsService.updateTransaction(transactionToUpdate).subscribe();
-              this.move();
-            }
+  /*** Form validator Step : Parametrer les regles de rattachement ***/
+  stepRulesParamsIsInvalid() {
+    return (
+      this.projectForm.controls.rulesParams.invalid
     );
   }
 
-  mapProjectInternalFields(project: Project) {
-    project.id = this.createdProject.id;
-    project.createdOn = this.createdProject.createdOn;
-    project.unitUp = this.createdProject.unitUp;
-    project.status = this.createdProject.status;
-  }
-
-  mapProjectInternalFieldsToTransaction(transaction: Transaction) {
-    transaction.id = this.createdTransaction.id;
-    transaction.creationDate = this.createdTransaction.creationDate;
-  }
   /*** Step 5 : Téléchargements ***/
   close() {
     this.dialogRef.close(true);
@@ -321,22 +279,169 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   }
 
   /*** All Steps ***/
-  private initForm() {
+  initForm() {
     this.projectForm = this.formBuilder.group({
-      messageIdentifier: [null],
-      comment: [null],
-      originatingAgencyIdentifier: [null, Validators.required],
-      submissionAgencyIdentifier: [null, Validators.required],
+      accessContractSelect: [null],
+      selectedWorkflow: [null, Validators.required],
+      selectedFlowType: [null],
       referentialCheckup: [false],
+
+      archivalAgreement: [null, Validators.required],
+      messageIdentifier: [null],
       archivalAgencyIdentifier: [null, Validators.required],
       transferringAgencyIdentifier: [null, Validators.required],
-      archivalAgreement: [null, Validators.required],
+      originatingAgencyIdentifier: [null, Validators.required],
+      submissionAgencyIdentifier: [null, Validators.required],
+      // add archivalProfile ?
       archiveProfile: [null],
       acquisitionInformation: [null],
       legalStatus: [null],
+      // for unitUp :
+      linkParentIdControl: [{included: [], excluded: []}],
+      // for unitUps :
+      rulesParams: this.formBuilder.array([]),
+      comment: [null],
       status: [null],
-      linkParentIdControl: [{ included: [], excluded: [] }],
-      accessContractSelect: [null],
     });
   }
+
+  formToProject(): Project {
+    const project: Project = {
+      name: this.projectForm.value.messageIdentifier,
+      archivalAgreement: this.projectForm.value.archivalAgreement,
+      messageIdentifier: this.projectForm.value.messageIdentifier,
+      archivalAgencyIdentifier: this.projectForm.value.archivalAgencyIdentifier,
+      transferringAgencyIdentifier: this.projectForm.value.transferringAgencyIdentifier,
+      originatingAgencyIdentifier: this.projectForm.value.originatingAgencyIdentifier,
+      submissionAgencyIdentifier: this.projectForm.value.submissionAgencyIdentifier,
+      archivalProfile: this.projectForm.value.archivalProfile,
+      archiveProfile: this.projectForm.value.archiveProfile,
+      acquisitionInformation: this.projectForm.value.acquisitionInformation,
+      legalStatus: this.projectForm.value.legalStatus,
+      comment: this.projectForm.value.comment,
+      status: ProjectStatus.OPEN,
+    } as Project;
+    if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
+      project.unitUp = this.linkParentIdControl.value.included[0];
+    } else {
+      project.unitUps = this.convertRuleParamsToMetadata();
+    }
+    return project as Project;
+  }
+
+  convertRuleParamsToMetadata(): Array<MetadataUnitUp> {
+    return this.rulesParams.controls.map((ruleParamControl: FormControl) => {
+      const ruleParam = ruleParamControl.value;
+      return {
+        metadataKey: ruleParam.metadata,
+        metadataValue: ruleParam.value,
+        unitUp: ruleParam.unitUp.included[0],
+      }
+    })
+  }
+
+  get rulesParams(): FormArray {
+    return this.projectForm.controls.rulesParams as FormArray;
+  }
+
+  openCloseRuleParam(ruleParam: any) {
+    ruleParam.opened = !ruleParam.opened;
+  }
+
+  addRuleParam() {
+    for (const ruleParamForm of this.rulesParams.controls) {
+      ruleParamForm.value.opened = false;
+    }
+    const newRuleParamForm = this.formBuilder.group({
+      opened: [true],
+      metadata: ['', Validators.required],
+      value: ['', Validators.required],
+      unitUp: [{included: [], excluded: []}, oneIncludedNodeRequired()],
+    });
+    this.rulesParams.push(newRuleParamForm);
+  }
+
+  deleteRuleParam(index: number) {
+    this.rulesParams.removeAt(index);
+  }
+
+  async validateAndCreateProject() {
+    if (this.selectedWorkflow === Workflow.MANUAL) {
+      this.createProjectAndTransactionAndUpload();
+    } else if (this.selectedFlowType === FlowType.FIX) {
+      this.createProject();
+    }
+  }
+
+  async createProject() {
+    this.pending = true;
+    const project: Project = this.formToProject();
+    this.moveToNextStep();
+    await this.projectsService.create(project).subscribe(
+      _result => {
+        this.pending = false;
+        this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
+      },
+      _error => {
+        this.pending = false;
+        this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATION_ERROR'), null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
+      },
+    );
+  }
+
+  async createProjectAndTransactionAndUpload() {
+    this.pending = true;
+    const project: Project = this.formToProject();
+    const transaction = {
+      status: TransactionStatus.OPEN,
+    } as Transaction;
+    this.uploadZipCompleted = false;
+    this.moveToNextStep();
+    await this.projectsService.create(project).toPromise()
+      .then((createProjectResponse) => {
+        this.createdProject = createProjectResponse;
+        transaction.projectId = this.createdProject.id;
+        this.transactionsService.create(transaction)
+          .toPromise()
+          .then((createTransactionResponse) => {
+            this.createdTransaction = createTransactionResponse;
+            return this.uploadService.uploadZip(this.tenantIdentifier, this.createdTransaction.id);
+          })
+          .then((uploadOperation) => {
+            uploadOperation.subscribe(
+              () => {
+              },
+              (error: any) => {
+                this.logger.error(error);
+              },
+              () => {
+                this.uploadZipCompleted = true;
+                this.pending = false;
+                this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
+                  panelClass: 'vitamui-snack-bar',
+                  duration: 10000,
+                });
+              }
+            );
+          })
+          .catch((error) => {
+            this.logger.error(error);
+          });
+      })
+  }
+
+  asFormGroup(control: AbstractControl) {
+    return control as FormGroup;
+  }
+
+  asFormControl(control: AbstractControl) {
+    return control as FormControl;
+  }
+
 }
