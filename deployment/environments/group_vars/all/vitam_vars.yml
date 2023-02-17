@@ -25,6 +25,14 @@ vitam_vars:
           - ACCESS_CONTRACT
           - MANAGEMENT_CONTRACT
           - ARCHIVE_UNIT_PROFILE
+      - name: 1
+        identifiers:
+          - INGEST_CONTRACT
+          - ACCESS_CONTRACT
+          - MANAGEMENT_CONTRACT
+          - PROFILE
+          - SECURITY_PROFILE
+          - CONTEXT
   access_external:
     host: "access-external.service.{{ vitam_site_name }}.{{ consul_domain }}"
     port_service: 8444
