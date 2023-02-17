@@ -125,14 +125,35 @@ public class FileFormatController extends AbstractUiRestController {
     @RequestMapping(value = "/**", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Object getByIdOrHistory(HttpServletRequest request) throws UnsupportedEncodingException, InvalidParseOperationException {
-        LOGGER.debug("getByIdOrHistory ");
-        String requestURL = request.getRequestURL().toString();
-        String path = StringUtils.substringAfter(requestURL,"/fileformat/");
-        if (StringUtils.endsWith("/history", path)) {
-            return findHistoryById(StringUtils.substringBefore(path,"/history"));
-        } else {
-            return getById(StringUtils.removeEndIgnoreCase(path,"/"));
+        LOGGER.debug("Entering in 'getByIdOrHistory' method");
+
+        final String requestUrl = request.getRequestURL().toString();
+        final String fileFormatId = extractFileFormatId(requestUrl);
+        final boolean isHistoryRequest = isHistoryRequest(requestUrl);
+
+        LOGGER.debug("Search history for {} file format", fileFormatId);
+
+        return isHistoryRequest ? findHistoryById(fileFormatId) : getById(fileFormatId);
+    }
+
+    private String extractFileFormatId(final String url) {
+        final String pathSeparator = "/fileformat/";
+        final String historySuffix = "/history";
+        final String path = StringUtils.substringAfter(url, pathSeparator);
+        final boolean isHistoryRequest = isHistoryRequest(url);
+
+        LOGGER.debug("Is history request: {}", isHistoryRequest);
+
+        if (isHistoryRequest) {
+            return StringUtils.substringBefore(path, historySuffix);
         }
+        return StringUtils.removeEndIgnoreCase(path,"/");
+    }
+
+    private boolean isHistoryRequest(final String url) {
+        final String historySuffix = "/history";
+
+        return StringUtils.endsWith(url, historySuffix);
     }
 
     private FileFormatDto getById(final String identifier) throws UnsupportedEncodingException {
@@ -172,7 +193,9 @@ public class FileFormatController extends AbstractUiRestController {
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
-    private LogbookOperationsResponseDto findHistoryById(String id) {
+    private LogbookOperationsResponseDto findHistoryById(String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for file format with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
