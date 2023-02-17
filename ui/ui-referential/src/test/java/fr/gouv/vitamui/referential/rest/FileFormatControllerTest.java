@@ -36,19 +36,7 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import static org.mockito.ArgumentMatchers.any;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import com.google.common.collect.ImmutableMap;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -58,6 +46,21 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.service.FileFormatService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = { FileFormatController.class })
@@ -103,11 +106,39 @@ public class FileFormatControllerTest extends UiReferentialRestControllerTest<Fi
 		super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
 	}
 
-	@Test
-	public void testFindHistoryById() {
-		Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(new LogbookOperationsResponseDto());
-		super.performGet("/1/history");
-	}
+    @Test
+    public void shouldFindFileFormatByPUID() throws Exception {
+        final FileFormatDto fileFormatDto = new FileFormatDto();
+        fileFormatDto.setPuid("fmt/23");
+
+        Mockito.when(service.getOne(any(ExternalHttpContext.class), eq("fmt/23"))).thenReturn(fileFormatDto);
+
+        super.performGet("/fmt/23")
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().json("{ \"puid\": \"fmt/23\" }"));
+    }
+
+    @Test
+    public void shouldReturnEmptyStringWhenSearchForNotExistingFileFormat() throws Exception {
+        this.mockMvc.perform(
+            MockMvcRequestBuilders.get(this.getUriBuilder("/not-existing-fmt/999999").build().toUri())
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-Tenant-Id", 1)
+                .with(SecurityMockMvcRequestPostProcessors.authentication(buildUserAuthenticated()))
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string(""));
+    }
+
+    @Test
+    public void shouldFindHistoryByPUID() throws Exception {
+        Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(new LogbookOperationsResponseDto());
+
+        super.performGet("/fmt/23/history")
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().json("{ \"$hits\": null, \"$results\": [] }"));
+    }
 
     @Test
     public void testExportFileFormat() {
