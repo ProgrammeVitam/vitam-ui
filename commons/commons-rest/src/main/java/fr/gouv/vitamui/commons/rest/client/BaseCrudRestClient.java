@@ -209,12 +209,15 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
      */
     public JsonNode findHistoryById(final C context, final String id) {
         LOGGER.debug("Get logbook of id :{}", id);
-        SanityChecker.check(id);
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
-        uriBuilder.path(CommonConstants.PATH_LOGBOOK);
+        final URI uri = UriComponentsBuilder
+            .fromHttpUrl(getUrl())
+            .path(CommonConstants.PATH_LOGBOOK)
+            .pathSegment(id, CommonConstants.HISTORY)
+            .build()
+            .toUri();
         final HttpEntity<Map<String, Object>> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<JsonNode> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request,
-                JsonNode.class);
+        LOGGER.debug("Attempt to get logbook at {}", uri);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(uri, HttpMethod.GET, request, JsonNode.class);
         checkResponse(response);
         return response.getBody();
     }
