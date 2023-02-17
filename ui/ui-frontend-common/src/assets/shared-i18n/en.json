@@ -3181,7 +3181,21 @@
     "STP_TRANSFER_REPLY_FINALIZATION.WARNING": "Warning during transfer acknowledgment finalization process",
     "STP_TRANSFER_REPLY_FINALIZATION.FATAL": "Technical error during the transfer acknowledgment finalization process",
     "CHECK_ATR_AND_ADD_IT_TO_WORKSPACE": "Checking and adding ATR to workspace",
-    "CHECK_ATR_AND_ADD_IT_TO_WORKSPACE.OK": "Successful verification and addition of the ATR in the workspace"
+    "CHECK_ATR_AND_ADD_IT_TO_WORKSPACE.OK": "Successful verification and addition of the ATR in the workspace",
+    "CHECK_OBJECT_GROUP_SCHEMA": "Global verification of object groups",
+    "CHECK_OBJECT_GROUP_SCHEMA.STARTED": "Beginning of the global verification of the object groups",
+    "CHECK_OBJECT_GROUP_SCHEMA.STARTED.OK": "Successful start of the overall verification of the object groups",
+    "CHECK_OBJECT_GROUP_SCHEMA.OK": "Success of the overall verification of the object groups",
+    "CHECK_OBJECT_GROUP_SCHEMA.KO": "Failure of the global check of the object groups",
+    "CHECK_OBJECT_GROUP_SCHEMA.WARNING": "Warning during the global check of the object group",
+    "CHECK_OBJECT_GROUP_SCHEMA.FATAL": "Technical error during the global check of the object groups",
+    "LFC.CHECK_OBJECT_GROUP_SCHEMA": "Global verification of object group",
+    "LFC.CHECK_OBJECT_GROUP_SCHEMA.STARTED": "Successful start of the overall verification of the object groups",
+    "LFC.CHECK_OBJECT_GROUP_SCHEMA.STARTED.OK": "Successful start of the overall verification of the object groups",
+    "LFC.CHECK_OBJECT_GROUP_SCHEMA.OK": "Success of the overall verification of the object groups",
+    "LFC.CHECK_OBJECT_GROUP_SCHEMA.KO": "Failure of the global check of the object groups",
+    "LFC.CHECK_OBJECT_GROUP_SCHEMA.WARNING": "Warning during the global check of the object group",
+    "LFC.CHECK_OBJECT_GROUP_SCHEMA.FATAL": "Technical error during the global check of the object groups"
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
