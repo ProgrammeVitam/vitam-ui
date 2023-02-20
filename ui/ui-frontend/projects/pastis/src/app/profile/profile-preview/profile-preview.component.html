@@ -34,8 +34,12 @@
     <mat-tab-group #tabs class="preview-tab-group">
 
       <mat-tab label="{{ 'PROFILE_PREVIEW.NOTICE' | translate }}">
-        <profile-information-tab #infoTab (updated)="updatedChange($event, 0)" (closed)="closeNotice($event)"
-                                 [inputProfile]="inputProfile" [readOnly]="isPopup"></profile-information-tab>
+        <profile-information-tab #infoTab
+                                 (updated)="updatedChange($event, 0)"
+                                 (closed)="closeNotice($event)"
+                                 [inputProfile]="inputProfile"
+                                 [readOnly]="isPopup">
+        </profile-information-tab>
       </mat-tab>
 
     </mat-tab-group>

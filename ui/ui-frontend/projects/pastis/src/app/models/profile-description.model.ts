@@ -1,38 +1,25 @@
-import { Id } from 'ui-frontend-common';
+import {ArchivalProfileUnit} from './archival-profile-unit';
+import {Profile} from './profile';
 
-export interface ProfileDescription extends Id {
-    identifier: string;
-    name: string;
-    description?: string;
-    status?: string;
-    creationDate: string;
-    lastUpdate: string;
-    type: string;
-    activationDate?: string;
-    deactivationDate?: string;
-    controlSchema?: string;
-    tenant?: number;
-    version?: number;
-    fields?: string[];
-    path?: string;
-    format?: string;
+export interface ProfileDescription extends Partial<Profile>, Partial<ArchivalProfileUnit> {
+  type: string;
 }
 
-export  class ProfileDescriptionModel implements ProfileDescription {
-    id: string;
-    identifier: string;
-    name: string;
-    description: string;
-    status: string;
-    creationDate: string;
-    lastUpdate: string;
-    type: string;
-    activationDate: string;
-    deactivationDate: string;
-    controlSchema: string;
-    tenant: number;
-    version: number;
-    fields: string[];
-    path: string;
-    format: string;
-  }
+export class ProfileDescriptionModel implements ProfileDescription {
+  id: string;
+  identifier: string;
+  name: string;
+  description: string;
+  status: string;
+  tenant: number;
+  version: number;
+  creationDate: string;
+  lastUpdate: string;
+  activationDate: string;
+  deactivationDate: string;
+  type: string;
+  controlSchema: string;
+  fields: string[];
+  format: string;
+  path: string;
+}

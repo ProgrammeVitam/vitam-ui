@@ -1,14 +1,13 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
-import {Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-import {diff} from 'ui-frontend-common';
-import {NotificationService} from '../../../../core/services/notification.service';
-import {ProfileService} from '../../../../core/services/profile.service';
-import {ArchivalProfileUnit} from '../../../../models/archival-profile-unit';
-import {Profile} from '../../../../models/profile';
-import {ProfileDescription} from '../../../../models/profile-description.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { ProfileService } from '../../../../core/services/profile.service';
+import { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
+import { Profile } from '../../../../models/profile';
+import { ProfileDescription } from '../../../../models/profile-description.model';
 
 @Component({
   selector: 'profile-information-tab',
@@ -67,40 +66,40 @@ export class ProfileInformationTabComponent {
 
   submited = false;
 
-  archivalProfileUnit: ArchivalProfileUnit;
-
-  profile: Profile;
-
   private _inputProfile: ProfileDescription;
   pending = false;
 
-  previousValue = (): ProfileDescription => {
-    return this._inputProfile;
-  };
-
-  isInvalid(): boolean {
-    return false;
-  }
-
-  unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
-    this.updated.emit(!unchanged);
-    return unchanged;
-  }
-
-  prepareSubmit(inputProfile: ProfileDescription): Observable<ProfileDescription> {
+  updateProfile(inputProfile: ProfileDescription): Observable<ProfileDescription> {
+    const profileDescription = {...inputProfile, ...this.form.value};
     if (inputProfile.type === 'PA') {
-      this.profile = this.form.value;
-      return this.profileService.updateProfilePa(this.profile).pipe(catchError(() => of(null)));
+      return this.profileService.updateProfilePa(profileDescription as Profile).pipe(catchError(() => of(null)));
     } else {
-      this.archivalProfileUnit = this.form.value;
-      return this.profileService.updateProfilePua(this.archivalProfileUnit).pipe(catchError(() => of(null)));
+      return this.profileService.updateProfilePua(profileDescription as ArchivalProfileUnit).pipe(catchError(() => of(null)));
     }
   }
 
+  canSubmit() {
+    return this.form.valid && !this.submited && this.formHasChanged()
+  }
+
+  formHasChanged() {
+    for (const k of Object.keys(this.form.value)) {
+      const key = k as keyof ProfileDescription
+      if (!this.form.value[key] && !this._inputProfile[key]) {
+        continue;
+      }
+      if (this.form.value[key] !== this._inputProfile[key]) {
+        this.updated.emit(true);
+        return true;
+      }
+    }
+    return false;
+  }
+
   onSubmit() {
+    this.pending = !this.pending;
     this.submited = true;
-    this.prepareSubmit(this.inputProfile).subscribe(
+    this.updateProfile(this.inputProfile).subscribe(
       () => {
         this.submited = false;
         this.pending = !this.pending;
@@ -125,7 +124,4 @@ export class ProfileInformationTabComponent {
     return !!((inputProfile.controlSchema && inputProfile.controlSchema.length !== 2) || inputProfile.path);
   }
 
-  enregistrement() {
-    this.pending = !this.pending;
-  }
 }
