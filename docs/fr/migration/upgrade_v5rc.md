@@ -7,7 +7,7 @@
 
 Avant de procéder à l'application de la montée de version, dans la préparation de vos sources de deploiement, il est indispensable de rajouter la configuration de cette nouvelle base dans le fichier `environments/group_vars/all/vault-mongodb.yml`.
 
-```yml
+```yaml
     archivesearch:
         db: archivesearch
         user: api-archive-search

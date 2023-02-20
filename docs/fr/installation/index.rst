@@ -14,5 +14,6 @@ Documentation d'installation de Vitam-UI
    sections/introduction
    sections/prerequis
    sections/procedure
+   sections/password_configurations.md
    sections/annexes
 
