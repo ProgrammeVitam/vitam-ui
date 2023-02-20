@@ -101,9 +101,7 @@ public class ManagementContractController extends AbstractUiRestController {
 
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        Collection<ManagementContractDto> managementContractDtoList =  service.getAll(buildUiHttpContext(), criteria);
-        LOGGER.debug(managementContractDtoList.stream().iterator().next().getStorage().toString());
-        return  managementContractDtoList;
+        return  service.getAll(buildUiHttpContext(), criteria);
     }
 
     @ApiOperation(value = "Get entities paginated")
