@@ -1,6 +1,6 @@
 {
   "name": "vitamui-mongo-express",
-  "version": "5.0.13",
+  "version": "5.0.14",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -9,6 +9,6 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "mongo-express": "^1.0.0"
+    "mongo-express": "1.0.0"
   }
 }

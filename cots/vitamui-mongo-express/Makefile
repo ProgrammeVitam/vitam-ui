@@ -4,7 +4,7 @@
 
 # Args parsing with default values
 NAME                := mongo-express
-VERSION             := 5.0.13
+VERSION             := 5.0.14
 DEPENDENCIES        := nodejs,npm
 
 # Src configuration:
