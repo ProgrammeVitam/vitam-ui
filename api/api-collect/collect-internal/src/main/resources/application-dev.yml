@@ -57,10 +57,10 @@ opentracing:
 
 logging:
   level:
-    fr.gouv.vitamui.archive: DEBUG
+    fr.gouv.vitamui.collect: DEBUG
     fr.gouv.vitamui.iam.security: INFO
-    fr.gouv.vitam.archive: DEBUG
-    fr.gouv.vitam.archive.*: DEBUG
+    fr.gouv.vitam.collect: DEBUG
+    fr.gouv.vitam.collect.*: DEBUG
     reactor.netty.*: DEBUG
 #    org.springframework.core.env: DEBUG
 
