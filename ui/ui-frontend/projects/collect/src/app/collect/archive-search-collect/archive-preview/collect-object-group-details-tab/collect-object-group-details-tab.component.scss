@@ -1,0 +1,138 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.col {
+  display: flex;
+  flex-shrink: 1;
+  overflow: hidden;
+}
+
+.line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.shrink {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.object-details-group {
+  .title {
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--vitamui-primary);
+  }
+
+  .no-title {
+    height: 10px;
+  }
+
+  .read-only-field {
+    min-height: 51px;
+    margin-bottom: 0px;
+
+    .button-copy {
+      padding: 0 10px;
+      cursor: pointer;
+
+      :hover {
+        color: var(--vitamui-secondary);
+      }
+
+      :active {
+        color: var(--vitamui-primary-100);
+      }
+
+      :focus {
+        color: var(--vitamui-primary);
+      }
+    }
+
+    .label {
+    }
+
+    div {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  .row-separator {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+
+  &.download-object {
+    padding: 15px 0px 15px 20px;
+  }
+}
+
+.object-container {
+  .object-menu {
+    height: 50px;
+    margin-top: 20px;
+    padding: 0 5px;
+    border-radius: 5px;
+    display: flex;
+    background-color: #ffffff;
+    flex-direction: row;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 22px;
+    cursor: pointer;
+
+    &.opened {
+      border-left: 5px solid var(--vitamui-primary);
+      padding-left: 0;
+      color: var(--vitamui-primary);
+    }
+
+    .split {
+      padding: 0 10px;
+      width: 50%;
+    }
+
+    .open-close-icon {
+      padding-right: 5px;
+    }
+
+    .object-name {
+    }
+
+    .object-size {
+    }
+
+    .object-type {
+    }
+
+    .download-button {
+      border: none;
+      border-radius: 50%;
+      background-color: var(--vitamui-primary);
+      width: 30px;
+      height: 30px;
+      font-size: medium;
+      color: var(--vitamui-primary-font);
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--vitamui-primary-800);
+      }
+    }
+  }
+
+  .object-details {
+    padding: 0 15px;
+    margin-top: 5px;
+    background-color: #ffffff;
+  }
+}

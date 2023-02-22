@@ -24,13 +24,20 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { DescriptionLevel } from 'projects/vitamui-library/src/lib/models/description-level.enum';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  DescriptionLevel,
+  FilingHoldingSchemeNode,
+  VitamuiIcons,
+  VitamuiUnitTypes,
+} from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
 import { Pair, VitamInternalFields } from '../../../models/utils';

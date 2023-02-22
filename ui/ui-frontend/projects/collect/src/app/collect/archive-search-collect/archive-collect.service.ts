@@ -41,7 +41,15 @@ import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archiv
 import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AccessContract, AccessContractApiService, FilingHoldingSchemeNode, SearchService, Transaction, Unit } from 'ui-frontend-common';
+import {
+  AccessContract,
+  AccessContractApiService,
+  ApiUnitObject,
+  FilingHoldingSchemeNode,
+  SearchService,
+  Transaction,
+  Unit,
+} from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
 import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
@@ -160,8 +168,17 @@ export class ArchiveCollectService extends SearchService<any> {
     });
   }
 
-  launchDownloadObjectFromUnit(unitId: string, objectId: string, tenantIdentifier: number, accessContract: string) {
-    this.downloadFile(this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, accessContract, tenantIdentifier));
+  launchDownloadObjectFromUnit(
+    unitId: string,
+    objectId: string,
+    tenantIdentifier: number,
+    accessContract: string,
+    qualifier?: string,
+    version?: number
+  ) {
+    this.downloadFile(
+      this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, accessContract, tenantIdentifier, qualifier, version)
+    );
   }
 
   downloadFile(url: string) {
@@ -241,6 +258,13 @@ export class ArchiveCollectService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.transactionApiService.getCollectUnitById(unitId, headers);
+  }
+
+  // Get the technical group object of a unit
+
+  getObjectGroupDetailsById(objectId: string): Observable<ApiUnitObject> {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.transactionApiService.getObjectGroupDetailsById(objectId, headers);
   }
 
   private buildNestedTreeLevels(arr: any[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {

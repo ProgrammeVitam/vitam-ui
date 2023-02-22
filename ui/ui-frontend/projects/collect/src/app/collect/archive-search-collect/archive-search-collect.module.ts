@@ -77,6 +77,7 @@ import { ArchiveSearchHelperService } from './archive-search-criteria/services/a
 import { RuleValidator } from './archive-search-criteria/services/rule.validator';
 import { SearchCriteriaSaverService } from './archive-search-criteria/services/search-criteria-saver.service';
 import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
+import { CollectObjectGroupDetailsTabComponent } from './archive-preview/collect-object-group-details-tab/collect-object-group-details-tab.component';
 
 @NgModule({
   imports: [
@@ -123,6 +124,7 @@ import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-un
     ClassificationTreeComponent,
     SearchCriteriaListComponent,
     UpdateUnitsaMetadataComponent,
+    CollectObjectGroupDetailsTabComponent,
   ],
 })
 export class ArchiveSearchCollectModule {}

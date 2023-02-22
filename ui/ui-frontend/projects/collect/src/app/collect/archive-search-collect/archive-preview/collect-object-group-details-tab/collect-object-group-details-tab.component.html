@@ -1,0 +1,252 @@
+<div class="object-details-group IDS" *ngIf="unitObject">
+  <div class="row">
+    <div class="col title">
+      {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.TECHNICAL_OBJECT_GROUP' | translate }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="read-only-field">
+        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECT_GROUP_ID' | translate }}</label>
+        <div>{{ unitObject['#id'] }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="read-only-field">
+        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATION_DATE' | translate }}</label>
+        <div>{{ unitObject['#approximate_creation_date'] }}</div>
+      </div>
+      <div class="read-only-field">
+        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.LAST_MODIFIED_DATE' | translate }}</label>
+        <div>{{ unitObject['#approximate_update_date'] }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="object-container" *ngFor="let versionWithQualifier of versionsWithQualifiersOrdered">
+  <div class="object-menu" [ngClass]="{ opened: versionWithQualifier.opened }" (click)="openClose(versionWithQualifier)">
+    <div class="line split">
+      <div class="line open-close-icon">
+        <i class="vitamui-icon {{ versionWithQualifier.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
+      </div>
+      <div class="line shrink object-name">
+        {{
+          ('COLLECT.UNIT_OBJECT_QUALIFIER_TYPE.' + versionWithQualifier?.qualifier | translate) + ' (' + versionWithQualifier?.version + ')'
+        }}
+      </div>
+      <div class="line object-size">{{ versionWithQualifier.Size | bytes }}</div>
+    </div>
+    <div class="line split">
+      <div class="line shrink object-type">
+        {{ versionWithQualifier?.FormatIdentification.FormatLitteral }}
+      </div>
+      <button class="download-button" (click)="onClickDownloadObject($event, versionWithQualifier)">
+        <i class="vitamui-icon vitamui-icon-telecharger"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="object-details" *ngIf="versionWithQualifier.opened">
+    <div class="object-details-group IDS">
+      <div class="row no-title"></div>
+
+      <div class="row">
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECT_ID' | translate }}</label>
+            <div>{{ versionWithQualifier['#id'] }}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.OPERATION_ID' | translate }}</label>
+            <div>{{ versionWithQualifier['#opi'] }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.USAGE' | translate }}</label>
+            <div>{{ versionWithQualifier?.qualifier }}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.USAGE_VERSION' | translate }}</label>
+            <div>{{ versionWithQualifier.version }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-separator"></div>
+    </div>
+
+    <div class="object-details-group FORMAT">
+      <div class="row title">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FORMAT' | translate }}</div>
+
+      <div class="row">
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FORMAT_PUID' | translate }}</label>
+            <div>{{ versionWithQualifier?.FormatIdentification.FormatId }}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FORMAT_NAME' | translate }}</label>
+            <div>{{ versionWithQualifier?.FormatIdentification.FormatLitteral }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.MIME_TYPE' | translate }}</label>
+            <div>{{ versionWithQualifier?.FormatIdentification.MimeType }}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="read-only-field">
+            <label *ngIf="versionWithQualifier.FormatIdentification.Encoding">
+              {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FILE_ENCODING' | translate }}
+            </label>
+            <div>{{ versionWithQualifier?.FormatIdentification.Encoding }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-separator"></div>
+    </div>
+
+    <div class="object-details-group FILE">
+      <div class="row title">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FILE' | translate }}</div>
+
+      <div class="row">
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FILE_NAME' | translate }}</label>
+            <div>{{ versionWithQualifier?.FileInfo.Filename }}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.URI' | translate }}</label>
+            <div>{{ versionWithQualifier?.Uri }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.OCTET_SIZE' | translate }}</label>
+            <div>{{ versionWithQualifier?.Size }}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="read-only-field">
+            <label>
+              {{ ('COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ALGORITHM' | translate) + versionWithQualifier.Algorithm }}
+            </label>
+            <div class="line">
+              <div class="shrink">{{ versionWithQualifier?.MessageDigest }}</div>
+              <div
+                class="button-copy"
+                (click)="copyToClipboard(versionWithQualifier?.MessageDigest)"
+                matTooltip="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.COPY' | translate }}"
+                matTooltipClass="vitamui-tooltip"
+                [matTooltipShowDelay]="300"
+              >
+                <i class="vitamui-icon vitamui-icon-content-copy"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.LAST_MODIFIED_DATE' | translate }}</label>
+            <div>{{ versionWithQualifier?.FileInfo.LastModified }}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="read-only-field">
+            <label *ngIf="versionWithQualifier?.FileInfo.CreatingApplicationName">
+              {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATING_APPLICATION_NAME' | translate }}
+            </label>
+            <div>{{ versionWithQualifier?.FileInfo.CreatingApplicationName }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="versionWithQualifier.FileInfo.CreatingOs && versionWithQualifier.FileInfo.CreatingApplicationVersion">
+        <div class="col">
+          <div class="read-only-field">
+            <label *ngIf="versionWithQualifier.FileInfo.CreatingOs">
+              {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATING_OS' | translate }}
+            </label>
+            <div>{{ versionWithQualifier?.FileInfo.CreatingOs }}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="read-only-field">
+            <label *ngIf="versionWithQualifier.FileInfo.CreatingApplicationVersion">
+              {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATING_APPLICATION_VERSION' | translate }}
+            </label>
+            <div>{{ versionWithQualifier?.FileInfo.CreatingApplicationVersion }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="versionWithQualifier?.FileInfo.CreatingOsVersion && versionWithQualifier.FileInfo.DateCreatedByApplication">
+        <div class="col">
+          <div class="read-only-field">
+            <label *ngIf="versionWithQualifier.FileInfo.CreatingOsVersion">
+              {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATING_OS_VERSION' | translate }}
+            </label>
+            <div>{{ versionWithQualifier?.FileInfo.CreatingOsVersion }}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="read-only-field">
+            <label *ngIf="versionWithQualifier.FileInfo.DateCreatedByApplication">
+              {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATED_APPLICATION_DATE' | translate }}
+            </label>
+            <div>{{ versionWithQualifier?.FileInfo.DateCreatedByApplication }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="row-separator"></div>
+    </div>
+
+    <div class="object-details-group STOCKAGE">
+      <div class="row title">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.STOCKAGE' | translate }}</div>
+      <div class="row">
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.STOCKAGE_STRATEGY_ID' | translate }}</label>
+            <div>{{ versionWithQualifier['#storage']?.strategyId }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="row-separator"></div>
+    </div>
+
+    <div class="object-details-group download-object">
+      <button class="btn primary download-btn" (click)="onClickDownloadObject($event, versionWithQualifier)">
+        <i class="vitamui-icon vitamui-icon-telecharger"></i>
+        <span>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
+      </button>
+    </div>
+  </div>
+</div>

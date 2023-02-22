@@ -1,6 +1,6 @@
 {
   "name": "ui-frontend-common",
-  "version": "2.1.50",
+  "version": "2.1.51",
   "main": "src/index.ts",
   "pki": {
     "path": "../../dev-deployment/environments/certs/server/hosts/localhost",

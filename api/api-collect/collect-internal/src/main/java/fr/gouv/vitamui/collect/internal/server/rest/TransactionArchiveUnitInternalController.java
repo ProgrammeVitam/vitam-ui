@@ -73,6 +73,9 @@ public class TransactionArchiveUnitInternalController {
     private final InternalSecurityService securityService;
     private final TransactionArchiveUnitInternalService transactionArchiveUnitInternalService;
 
+    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY=
+        "The identifier, the accessContract Id  are mandatory parameters: ";
+
     public TransactionArchiveUnitInternalController(InternalSecurityService securityService,
         TransactionArchiveUnitInternalService transactionArchiveUnitInternalService) {
         this.securityService = securityService;
@@ -131,6 +134,18 @@ public class TransactionArchiveUnitInternalController {
         VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         return transactionArchiveUnitInternalService.findArchiveUnitById(id, vitamContext);
+    }
+
+    @GetMapping(CommonConstants.OBJECTS_PATH + CommonConstants.PATH_ID)
+    public ResultsDto findObjectGroupById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, VitamClientException {
+        ParameterChecker
+            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("[INTERNAL] : Get ObjectGroup By id : {}", id);
+        VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return transactionArchiveUnitInternalService.findObjectGroupById(id, vitamContext);
     }
 
 }

@@ -24,8 +24,7 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { FilingHoldingSchemeNode,MatchingNodesNumbers, Unit } from 'ui-frontend-common';
-import { DescriptionLevel } from '../../../../../vitamui-library/src/lib/models/description-level.enum';
+import { DescriptionLevel, FilingHoldingSchemeNode, MatchingNodesNumbers, Unit } from 'ui-frontend-common';
 import { ResultFacet } from '../models/search.criteria';
 import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 
@@ -149,9 +148,7 @@ describe('FilingHoldingSchemeHandler', () => {
     node = uaNodes[2].children[2];
     expect(node.id).toEqual('node-2-2');
     expect(node.count).toEqual(65);
-    facets = [
-      { node: 'node-2-2', count: 12 },
-    ];
+    facets = [{ node: 'node-2-2', count: 12 }];
     expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(1);
     node = uaNodes[0].children[0].children[2];
     expect(node.id).toEqual('node-0-0-2');

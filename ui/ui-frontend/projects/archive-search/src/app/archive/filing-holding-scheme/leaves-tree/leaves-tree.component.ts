@@ -29,8 +29,14 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
-import { DescriptionLevel } from '../../../../../../vitamui-library/src/lib/models/description-level.enum';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  DescriptionLevel,
+  FilingHoldingSchemeNode,
+  VitamuiIcons,
+  VitamuiUnitTypes,
+} from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';

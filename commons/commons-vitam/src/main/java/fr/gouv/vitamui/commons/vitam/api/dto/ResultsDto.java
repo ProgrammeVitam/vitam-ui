@@ -145,7 +145,6 @@ public class ResultsDto {
     private String createdDate;
 
     @JsonProperty("AcquiredDate")
-    @JsonAlias({"_acd"})
     private String acquiredDate;
 
     @JsonProperty("SentDate")
@@ -192,9 +191,11 @@ public class ResultsDto {
     private List<KeywordDto> keyword = new ArrayList<>();
 
     @JsonProperty("#approximate_creation_date")
+    @JsonAlias({"_acd"})
     private String approximateCreationDate;
 
     @JsonProperty("#approximate_update_date")
+    @JsonAlias({"_aud"})
     private String approximateEndDate;
 
     @JsonProperty("id")

@@ -71,6 +71,10 @@ public class TransactionArchiveUnitExternalService extends
         return collectTransactionInternalRestClient.findUnitById(id, getInternalHttpContext());
     }
 
+    public ResponseEntity<ResultsDto> findObjectGroupById(String objectId) {
+        return collectTransactionInternalRestClient.findObjectGroupById(objectId, getInternalHttpContext());
+    }
+
     @Override
     protected CollectInternalRestClient getClient() {
         return collectInternalRestClient;

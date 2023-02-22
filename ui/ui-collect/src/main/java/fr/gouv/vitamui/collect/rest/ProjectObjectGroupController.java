@@ -84,6 +84,8 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
         final @PathVariable("id") String unitId,
         @QueryParam("objectId") String objectId,
         @QueryParam("tenantId") Integer tenantId,
+        @QueryParam("qualifier") String qualifier,
+        @QueryParam("version") Integer version,
         @QueryParam("contractId") String contractId) throws PreconditionFailedException,
         InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier, The contractId and The tenantId are mandatory parameters: ",
@@ -92,7 +94,7 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
         LOGGER.debug("Download the Archive Unit Object with Unit ID {}", unitId);
         final ObjectData objectData = new ObjectData();
         ResponseEntity<Resource> responseResource = projectObjectGroupService.downloadObjectFromUnit(unitId, objectId,
-            objectData, buildUiHttpContext(tenantId, contractId)).block();
+            qualifier, version, objectData, buildUiHttpContext(tenantId, contractId)).block();
         List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
         String fileNameHeader = isNotEmpty(objectData.getFilename())

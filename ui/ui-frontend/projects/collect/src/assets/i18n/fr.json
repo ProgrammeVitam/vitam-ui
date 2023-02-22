@@ -1,5 +1,12 @@
 {
   "COLLECT": {
+    "UNIT_OBJECT_QUALIFIER_TYPE": {
+      "BinaryMaster": "Original numérique",
+      "Dissemination": "Copie de diffusion",
+      "Thumbnail": "Vignette",
+      "TextContent": "Contenu brut",
+      "PhysicalMaster": "Original papier"
+    },
     "UPDATE_UNITS_METADATA": {
       "ACTION_UPDATE": "Mettre à jour les metadonnées",
       "ACTION_TITLE": "Mise à jour des métadonnées des archives",
@@ -157,7 +164,33 @@
         "PATH": "Chemin",
         "DESCRIPTION_LEVEL": "Niveau de description",
         "DOWNLOAD_DOC": "Télécharger le document",
-        "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT"
+        "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT",
+        "OBJECT_ID": "Identifiant de l'objet technique",
+        "OBJECT_GROUP_ID": "Identifiant du groupe d'objets techniques",
+        "CREATION_DATE": "Date de création",
+        "USAGE": "Usage",
+        "USAGE_VERSION": "Version d'usage",
+        "FORMAT": "FORMAT",
+        "FORMAT_PUID": "PUID du format",
+        "FORMAT_NAME": "Nom du format",
+        "MIME_TYPE": "Type MIME",
+        "FILE_ENCODING": "Encodage du fichier",
+        "FILE": "FICHIER",
+        "FILE_NAME": "Nom du fichier d'origine",
+        "URI": "URI",
+        "OCTET_SIZE": "Taille en octet",
+        "ALGORITHM": "Empreinte - ",
+        "LAST_MODIFIED_DATE": "Date de dernière modification",
+        "CREATING_APPLICATION_NAME": "Nom de l'application d'origine",
+        "CREATING_OS": "Système d'exploitation d'origine",
+        "CREATING_APPLICATION_VERSION": "Version d'application d'origine",
+        "CREATING_OS_VERSION": "Version du système d'exploitation d'origine",
+        "CREATED_APPLICATION_DATE": "Date de création par l'application",
+        "STOCKAGE": "STOCKAGE",
+        "STOCKAGE_STRATEGY_ID": "Identifiant de la stratégie de stockage",
+        "COPY": "Copier",
+        "OPERATION_ID": "Identifiant de l'opération",
+        "TECHNICAL_OBJECT_GROUP": "GROUPE D'OBJETS TECHNIQUES"
       },
       "TABS": {
         "INFORMATIONS": "Informations",
