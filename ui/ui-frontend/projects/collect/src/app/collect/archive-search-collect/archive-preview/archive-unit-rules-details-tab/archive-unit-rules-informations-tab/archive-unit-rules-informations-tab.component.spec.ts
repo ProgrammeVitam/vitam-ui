@@ -43,9 +43,17 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { InjectorModule, LoggerModule, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
+import {
+  InheritedPropertyDto,
+  InjectorModule,
+  LoggerModule,
+  ManagementRule,
+  RuleCategoryVitamUiDto,
+  Unit,
+  UnitRuleDto,
+  VitamuiMissingTranslationHandler,
+} from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { InheritedPropertyDto, ManagementRule, RuleCategoryVitamUiDto, Unit, UnitRuleDto } from '../../../../core/models';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';
 
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
@@ -234,7 +242,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       ClassificationRule: classificationRule,
       DisseminationRule: null,
       AccessRule: null,
-      UpdateOperation: null
+      UpdateOperation: null,
     };
     const archiveUnit: Unit = {
       '#management': unitManagementRules,

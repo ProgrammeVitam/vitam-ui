@@ -25,15 +25,14 @@
  * accept its terms.
  */
 
-import {Clipboard} from '@angular/cdk/clipboard';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {TranslateModule} from '@ngx-translate/core';
-import {of} from 'rxjs';
-import {ApiUnitObject, ObjectQualifierType, VersionWithQualifierDto} from 'ui-frontend-common';
-import {ArchiveService} from '../../archive.service';
-import {Unit} from '../../models/unit.interface';
-import {ArchiveUnitObjectsDetailsTabComponent} from './archive-unit-objects-details-tab.component';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { ApiUnitObject, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
+import { ArchiveService } from '../../archive.service';
+import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
 import createSpyObj = jasmine.createSpyObj;
 import anything = jasmine.anything;
 
@@ -45,13 +44,11 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot(),
-      ],
+      imports: [TranslateModule.forRoot()],
       declarations: [ArchiveUnitObjectsDetailsTabComponent],
       providers: [
-        {provide: ArchiveService, useValue: archiveServiceSpy},
-        {provide: Clipboard, useValue: clipboardSpy},
+        { provide: ArchiveService, useValue: archiveServiceSpy },
+        { provide: Clipboard, useValue: clipboardSpy },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -67,8 +64,8 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
       '#unitType': '',
       '#unitups': [],
       '#opi': '',
-      Title_: {fr: 'Teste', en: 'Test'},
-      Description_: {fr: 'DescriptionFr', en: 'DescriptionEn'},
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
     component.archiveUnit = archiveUnit;
     component.tenantIdentifier = 1;
@@ -85,37 +82,39 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     expect(clipboardSpy.copy).toHaveBeenCalledWith('à copié');
   });
 
-  it('onClickDownloadObject',
-    () => {
-      const event = {
-        stopPropagation: () => {
-        }
-      } as Event;
-      const preventDefaultSpy = spyOn(event, 'stopPropagation');
-      component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
-      expect(archiveServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
-        'archiveUnitTestID', 1, 'accessContractTest', ObjectQualifierType.BINARYMASTER, 1);
-      expect(preventDefaultSpy).toHaveBeenCalled();
-    });
+  it('onClickDownloadObject', () => {
+    const event = {
+      stopPropagation: () => {},
+    } as Event;
+    const preventDefaultSpy = spyOn(event, 'stopPropagation');
+    component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
+    expect(archiveServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
+      'archiveUnitTestID',
+      1,
+      'accessContractTest',
+      ObjectQualifierType.BINARYMASTER,
+      1
+    );
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
 
   it('sendCalls', () => {
     const unit = newUnit('zertyuhtfrc');
-    archiveServiceSpy.getObjectById.and.returnValue(of(newApiUnitObject()))
+    archiveServiceSpy.getObjectById.and.returnValue(of(newApiUnitObject()));
     component.sendCalls(unit);
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalled();
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalledWith(unit['#id'], anything());
   });
 
   function newVersionWithQualifier(qualifier: ObjectQualifierType, version: number): VersionWithQualifierDto {
-    return {qualifier, version} as VersionWithQualifierDto;
+    return { qualifier, version } as VersionWithQualifierDto;
   }
 
   function newUnit(id: string): Unit {
-    return {'#id': id} as Unit;
+    return { '#id': id } as Unit;
   }
 
   function newApiUnitObject(): ApiUnitObject {
-    return {'#id': 'ApiUnitObjectID'} as ApiUnitObject;
+    return { '#id': 'ApiUnitObjectID' } as ApiUnitObject;
   }
-
 });
