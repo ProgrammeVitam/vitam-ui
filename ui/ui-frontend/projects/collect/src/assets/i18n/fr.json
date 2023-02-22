@@ -16,6 +16,14 @@
       "SUCCESS_MESSAGE": "L’opération de mise à jour des métadonnées a bien été traitée",
       "WAIT_MESSAGE": "L'opération est en cours, merci de ne pas éteindre ou rafraichir votre navigateur"
     },
+    "UPDATE_PROJECT": {
+      "TERMINATED": "Le projet a été bien mis à jour",
+      "TRANSACTIONS_KO": "par contre il y a des transactions ko",
+      "POPUP_ACTIONS_TITLE": " Action sur un projet de versement",
+      "POPUP_ACTIONS_CONTENT_MAJ1": "Vous avez [N] versements en édition. Voulez-vous mettre à jour automatiquement",
+      "POPUP_ACTIONS_CONTENT_MAJ2": "ces versements ? En cas de réponse négative, seuls les nouveaux versements intègreront",
+      "POPUP_ACTIONS_CONTENT_MAJ3": "ces modifications"
+    },
     "SEARCH_PLACEHOLDER": "Code et intitulé du versement, service versant",
     "APP_BREADCRUMB": "Collecte et préparation des versements",
     "NB_ENTRIES": "{{nb}} projets",
@@ -120,7 +128,8 @@
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
-        "SHOW_TRANSACTIONS": "Accéder à la liste des versements du project"
+        "SHOW_TRANSACTIONS": "Accéder à la liste des versements du project",
+        "VALIDATE": "Valider"
       },
       "STATUS": {
         "OPEN": "Ouvert en édition",
@@ -225,6 +234,7 @@
       },
       "ACTIONS": {
         "SHOW_MORE_DETAILS": "Afficher l'ensemble des métadonnées",
+        "EDIT_PROJECT": "Modifier le projet de versement",
         "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Accéder aux archives"
       },
@@ -656,6 +666,7 @@
     "SERIES": "Série",
     "SUBSERIES": "Sous-série",
     "FONDS": "Fonds",
-    "SAVE": "ENREGISTRER"
+    "SAVE": "ENREGISTRER",
+    "EDIT": "MODIFIER"
   }
 }

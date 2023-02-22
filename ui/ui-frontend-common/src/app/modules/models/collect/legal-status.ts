@@ -24,8 +24,9 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-export * from './project';
-export * from './project-status';
-export * from './transaction';
-export * from './transaction-status';
-export * from './legal-status';
+import {Id} from '../id.interface';
+
+export interface LegalStatus extends Id {
+  value: string;
+
+}

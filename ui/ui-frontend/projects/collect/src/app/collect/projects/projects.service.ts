@@ -26,6 +26,7 @@
  */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
 import { Project, SearchService } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
@@ -38,12 +39,42 @@ export class ProjectsService extends SearchService<Project> {
   tenantEvent = new Subject<string>();
   customerEvent = new Subject<string>();
 
-  constructor(http: HttpClient, private projectsApiService: ProjectsApiService) {
+  acquisitionInformationsList = [
+    this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
+    this.translationService.instant('ACQUISITION_INFORMATION.PROTOCOL'),
+    this.translationService.instant('ACQUISITION_INFORMATION.PURCHASE'),
+    this.translationService.instant('ACQUISITION_INFORMATION.COPY'),
+    this.translationService.instant('ACQUISITION_INFORMATION.DATION'),
+    this.translationService.instant('ACQUISITION_INFORMATION.DEPOSIT'),
+    this.translationService.instant('ACQUISITION_INFORMATION.DEVOLUTION'),
+    this.translationService.instant('ACQUISITION_INFORMATION.DONATION'),
+    this.translationService.instant('ACQUISITION_INFORMATION.BEQUEST'),
+    this.translationService.instant('ACQUISITION_INFORMATION.REINSTATEMENT'),
+    this.translationService.instant('ACQUISITION_INFORMATION.OTHER'),
+    this.translationService.instant('ACQUISITION_INFORMATION.UNKNOWN'),
+  ];
+
+  legalStatusList = [
+    { id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE') },
+    { id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
+    { id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
+  ];
+
+  constructor(http: HttpClient, private projectsApiService: ProjectsApiService,private translationService: TranslateService) {
     super(http, projectsApiService, 'ALL');
   }
 
   public create(project: Project): Observable<any> {
     return this.projectsApiService.create(project);
+  }
+
+  public getLegalStatusList(){
+    return this.legalStatusList;
+  }
+
+
+  public getAcquisitionInformationsList(){
+    return this.acquisitionInformationsList;
   }
 
   public updateProject(project: Project) {
@@ -57,4 +88,6 @@ export class ProjectsService extends SearchService<Project> {
   public deleteProjectId(projectId: string) : Observable<void> {
     return this.projectsApiService.deletebyId(projectId);
   }
+
+
 }

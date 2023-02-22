@@ -5,6 +5,9 @@
   "COMMON": {
     "ADD": "Add",
     "UNDO": "Cancel",
+    "YES": "YES",
+    "NO": "NO",
+    "VALIDATE": "Validate",
     "BACK": "Back",
     "SUBMIT": "Submit",
     "UPDATE": "Update",
