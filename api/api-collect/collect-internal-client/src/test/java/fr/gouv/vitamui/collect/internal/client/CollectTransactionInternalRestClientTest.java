@@ -28,6 +28,7 @@ package fr.gouv.vitamui.collect.internal.client;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
@@ -55,6 +56,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.Objects;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
@@ -91,6 +93,8 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
     private static final String PROJECT_ID = "PROJECT_ID";
     private static final String TRANSACTION_ID = "TRANSACTION_ID";
     private static final String UNIT_ID = "UNI_ID";
+
+    private static final String OBJECT_ID = "OBJECT_ID";
 
     @BeforeEach
     public void setUp() {
@@ -282,5 +286,27 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
         headers.put(X_USER_LEVEL_HEADER, Collections.singletonList(""));
         headers.put(X_CUSTOMER_ID_HEADER, Collections.singletonList(""));
         return Pair.of(context, headers);
+    }
+
+    @Test
+    public void shouldGetObjecTGroupByIdRunWithSuccess() {
+        // GIVEN
+        ResultsDto resultsDto = factory.manufacturePojo(ResultsDto.class);
+        Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
+        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + CommonConstants.OBJECTS_PATH + "/" + OBJECT_ID),
+            HttpMethod.GET,
+            new HttpEntity<>(params.getValue()), ResultsDto.class))
+            .thenReturn(new ResponseEntity<>(resultsDto, HttpStatus.OK));
+
+        // WHEN
+        ResponseEntity<ResultsDto> response =
+            collectTransactionInternalRestClient.findObjectGroupById(OBJECT_ID, params.getKey());
+        // THEN
+        assertNotNull(response);
+        assertThat(response).isInstanceOf(ResponseEntity.class);
+        assertThat(response.getBody()).isInstanceOf(ResultsDto.class);
+        assertEquals(resultsDto.getId(), Objects.requireNonNull(response.getBody()).getId());
+        assertEquals(resultsDto.getDescription(), response.getBody().getDescription());
+        assertEquals(resultsDto.getNbobjects(), response.getBody().getNbobjects());
     }
 }

@@ -59,6 +59,7 @@ import fr.gouv.vitamui.commons.api.dtos.ExportSearchResultParam;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -149,6 +150,8 @@ public class TransactionArchiveUnitInternalService {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(TransactionArchiveUnitInternalService.class);
 
+    private static final String RESULTS = "$results";
+
     public TransactionArchiveUnitInternalService(CollectService collectService, AgencyService agencyService,
         ObjectMapper objectMapper) {
         this.collectService = collectService;
@@ -201,7 +204,7 @@ public class TransactionArchiveUnitInternalService {
         try {
             LOGGER.debug("Archive Unit Id : {}", id);
             String re = StringUtils
-                .chop(collectService.findUnitById(id, vitamContext).toJsonNode().get("$results").toString()
+                .chop(collectService.findUnitById(id, vitamContext).toJsonNode().get(RESULTS).toString()
                     .substring(1));
             return objectMapper.readValue(re, ResultsDto.class);
         } catch (JsonProcessingException e) {
@@ -617,6 +620,23 @@ public class TransactionArchiveUnitInternalService {
             return new ByteArrayResource(outputStream.toByteArray());
         } catch (IOException ex) {
             throw new BadRequestException("Unable to export csv file ", ex);
+        }
+    }
+
+    public ResultsDto findObjectGroupById(String objectId, VitamContext vitamContext) throws VitamClientException {
+        try {
+            LOGGER.debug("[INTERNAL] : Get Object Group by Id");
+            String resultStringValue = StringUtils
+                .chop(
+                    collectService.getObjectById(vitamContext, objectId).toJsonNode()
+                        .get(RESULTS)
+                        .toString()
+                        .substring(1));
+            LOGGER.info("salam {}", resultStringValue);
+            return objectMapper.readValue(resultStringValue, ResultsDto.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Can not get the object group {} ", e);
+            throw new InternalServerException("Unable to find the ObjectGroup", e);
         }
     }
 

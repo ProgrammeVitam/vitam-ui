@@ -53,12 +53,13 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -69,11 +70,12 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class TransactionArchiveUnitInternalServiceTest {
-    @InjectMocks
+
     TransactionArchiveUnitInternalService transactionArchiveUnitInternalService;
     @Mock
     CollectService collectService;
@@ -90,6 +92,8 @@ class TransactionArchiveUnitInternalServiceTest {
     @BeforeEach
     public void beforeEach() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        transactionArchiveUnitInternalService = new TransactionArchiveUnitInternalService(collectService, agencyService, objectMapper);
     }
 
     @Test
@@ -182,6 +186,86 @@ class TransactionArchiveUnitInternalServiceTest {
         );
     }
 
+    @Test
+    void test_find_object_group_by_id() throws VitamClientException {
+        String resultStringValue = "{\n" +
+            "  \"httpCode\": 200,\n" +
+            "  \"$hits\": {\n" +
+            "    \"total\": 1,\n" +
+            "    \"offset\": 0,\n" +
+            "    \"limit\": 0,\n" +
+            "    \"size\": 1\n" +
+            "  },\n" +
+            "  \"$results\": [\n" +
+            "    {\n" +
+            "      \"_id\": \"aebaaaaaaehjuynkaa3goamemgtl6wiaaaba\",\n" +
+            "      \"_tenant\": 1,\n" +
+            "          \"_nbc\": 1,\n" +
+            "      \"FileInfo\": {\n" +
+            "        \"Filename\": \"file1.pem\"\n" +
+            "      },\n" +
+            "      \"_opi\": \"aeeaaaaaaghjuynkaa3goamemgtj73yaaaaq\",\n" +
+            "      \"_qualifiers\": [\n" +
+            "        {\n" +
+            "          \"qualifier\": \"BinaryMaster\",\n" +
+            "          \"_nbc\": 1,\n" +
+            "          \"versions\": [\n" +
+            "            {\n" +
+            "              \"_id\": \"aebqaaaaaghjuynkaa3goamemgtl6wiaaaaq\",\n" +
+            "              \"DataObjectVersion\": \"BinaryMaster_1\",\n" +
+            "              \"FormatIdentification\": {\n" +
+            "                \"FormatLitteral\": \"Plain Text File\",\n" +
+            "                \"MimeType\": \"text/plain\",\n" +
+            "                \"FormatId\": \"x-fmt/111\"\n" +
+            "              },\n" +
+            "              \"FileInfo\": {\n" +
+            "                \"Filename\": \"file1.pem\"\n" +
+            "              },\n" +
+            "              \"Size\": 2313,\n" +
+            "              \"Uri\": \"Content/aebqaaaaaghjuynkaa3goamemgtl6wiaaaaq.pem\",\n" +
+            "              \"MessageDigest\": \"5391974484dbd1a3a9c4d3892f4bfc19c4b79fd4b27e8059ce92ca742e7f627b9f6dfa7a9c27484254214615210e796eeb29440da97251388a942a3d581c594e\",\n" +
+            "              \"Algorithm\": \"SHA-512\",\n" +
+            "              \"_opi\": \"aeeaaaaaaghjuynkaa3goamemgtj73yaaaaq\"\n" +
+            "            }\n" +
+            "          ]\n" +
+            "        }\n" +
+            "      ],\n" +
+            "      \"_acd\": \"2022-11-10T13:07:08.784\",\n" +
+            "      \"_aud\": \"2022-11-10T13:07:09.039\",\n" +
+            "      \"_v\": 1,\n" +
+            "      \"_av\": 1\n" +
+            "    }\n" +
+            "  ],\n" +
+            "  \"$facetResults\": [],\n" +
+            "  \"$context\": {}\n" +
+            "}";
+        RequestResponse<JsonNode> mockResponse = RequestResponse
+            .parseFromResponse(Response.ok(resultStringValue).build());
+        Mockito.when(collectService.getObjectById(any(), eq("aebaaaaaaehjuynkaa3goamemgtl6wiaaaba")))
+            .thenReturn(mockResponse);
+
+        ResultsDto resultsDto = transactionArchiveUnitInternalService
+            .findObjectGroupById("aebaaaaaaehjuynkaa3goamemgtl6wiaaaba", null);
+
+        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getId(), "aebaaaaaaehjuynkaa3goamemgtl6wiaaaba");
+        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getOpi(), "aeeaaaaaaghjuynkaa3goamemgtj73yaaaaq");
+        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().size(), 1);
+        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0).getQualifier(), "BinaryMaster");
+        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0).getVersions().size(), 1);
+        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0)
+                .getVersions().get(0)
+                .getFileInfoModel().getFilename(),
+            "file1.pem");
+        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0)
+                .getVersions().get(0)
+                .getFormatIdentification().getMimeType(),
+            "text/plain");
+        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0)
+                .getVersions().get(0)
+                .getDataObjectVersion(),
+            "BinaryMaster_1");
+    }
+
     private ResultsDto buildResults(RequestResponse<JsonNode> jsonNodeRequestResponse) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -210,4 +294,6 @@ class TransactionArchiveUnitInternalServiceTest {
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
+
+
 }

@@ -132,5 +132,10 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return collectTransactionExternalRestClient.findUnitById(id, context);
     }
 
+    public ResponseEntity<ResultsDto> getObjectGroupById(String objectId, ExternalHttpContext context) {
+        LOGGER.debug("[UI] Get the Object Group with Identifier {}", objectId);
+        return collectTransactionExternalRestClient.findObjectGroupById(objectId, context);
+    }
+
 
 }

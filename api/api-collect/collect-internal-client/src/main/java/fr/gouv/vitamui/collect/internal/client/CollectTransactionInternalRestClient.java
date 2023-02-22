@@ -160,4 +160,11 @@ public class CollectTransactionInternalRestClient
         return response.getBody();
     }
 
+    public ResponseEntity<ResultsDto> findObjectGroupById(String id, final InternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.OBJECTS_PATH + CommonConstants.PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
+    }
+
 }
