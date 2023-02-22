@@ -36,6 +36,7 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { TranslateService } from '@ngx-translate/core';
 import { Unit, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
 
@@ -73,23 +74,37 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   emitClose() {
-    this.isPanelextended = false;
     this.previewClose.emit();
+    this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
     this.selectedIndex = 0;
   }
 
+  selectedTabChangeEvent($event: MatTabChangeEvent) {
+    switch ($event.index) {
+      case 0:
+        this.isPanelextended = false;
+        this.backToNormalLateralPanel.emit();
+        break;
+      case 1:
+        this.isPanelextended = true;
+        this.showExtendedLateralPanel.emit();
+        break;
+      case 2:
+        this.isPanelextended = true;
+        this.showExtendedLateralPanel.emit();
+        break;
+    }
+    this.selectedIndex = $event.index;
+  }
+
   showNormalPanel() {
-    this.selectedIndex--;
-    this.isPanelextended = false;
-    this.backToNormalLateralPanel.emit();
     this.updateStarted = false;
+    this.selectedTabChangeEvent({ index: 0, tab: null });
   }
 
   showExtendedPanel() {
-    this.isPanelextended = true;
-    this.showExtendedLateralPanel.emit();
-    this.selectedIndex = 1;
+    this.selectedTabChangeEvent({ index: 1, tab: null });
   }
 
   updateMetadataDesc() {

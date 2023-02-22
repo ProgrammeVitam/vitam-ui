@@ -122,4 +122,14 @@ public class TransactionArchiveUnitExternalController {
         return transactionArchiveUnitExternalService.findUnitById(id);
     }
 
+    @GetMapping(CommonConstants.OBJECTS_PATH + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public ResponseEntity<ResultsDto> getObjectGroupById(final @PathVariable("id") String objectId)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, objectId);
+        SanityChecker.checkSecureParameter(objectId);
+        LOGGER.debug("[EXTERNAL] : Get ObjectGroup By id : {}", objectId);
+        return transactionArchiveUnitExternalService.findObjectGroupById(objectId);
+    }
+
 }
