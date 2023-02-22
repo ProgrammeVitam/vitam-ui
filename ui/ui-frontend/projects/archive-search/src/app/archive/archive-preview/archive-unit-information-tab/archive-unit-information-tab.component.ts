@@ -52,10 +52,9 @@ import {MatDialog} from '@angular/material/dialog';
 import {TranslateService} from '@ngx-translate/core';
 import {Observable, of, Subscription} from 'rxjs';
 import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff, Logger, Option, StartupService} from 'ui-frontend-common';
+import {diff, Logger, Option, StartupService, Unit} from 'ui-frontend-common';
 import {extend, isEmpty} from 'underscore';
 import {ArchiveService} from '../../archive.service';
-import {Unit} from '../../models/unit.interface';
 import {UnitDescriptiveMetadataDto} from '../../models/unitDescriptiveMetadata.interface';
 
 @Component({

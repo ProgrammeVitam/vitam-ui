@@ -35,8 +35,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Direction, FilingHoldingSchemeNode } from 'ui-frontend-common';
-import { Unit } from '../../../core/models/unit.interface';
+import {Direction, FilingHoldingSchemeNode, Unit} from 'ui-frontend-common';
 import { NodeData } from '../models/nodedata.interface';
 import { SearchCriteriaHistory } from '../models/search-criteria-history.interface';
 import { ResultFacet, SearchCriteriaAddAction, SearchCriteriaDto, SearchCriteriaRemoveAction } from '../models/search.criteria';

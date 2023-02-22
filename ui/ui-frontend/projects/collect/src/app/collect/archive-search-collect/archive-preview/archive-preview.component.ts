@@ -37,8 +37,7 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
-import { Unit } from '../../core/models';
+import { Unit, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-archive-preview',

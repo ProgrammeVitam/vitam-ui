@@ -37,7 +37,8 @@
 
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input } from '@angular/core';
-import { SearchCriteriaEltDto, Unit } from '../../../core/models';
+import { Unit } from 'ui-frontend-common';
+import { SearchCriteriaEltDto } from '../../../core/models';
 
 @Component({
   selector: 'app-archive-unit-rules-details-tab',

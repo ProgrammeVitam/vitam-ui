@@ -1,4 +1,4 @@
-import {Unit} from './unit.interface';
+import { Unit } from 'ui-frontend-common';
 
 export interface SearchResponse<T = Unit> {
   $hits: any;

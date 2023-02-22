@@ -39,8 +39,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {MatTabChangeEvent} from '@angular/material/tabs';
 import {ActivatedRoute} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
-import {VitamuiIcons, VitamuiUnitTypes} from 'ui-frontend-common';
-import {Unit} from '../models/unit.interface';
+import {Unit, VitamuiIcons,VitamuiUnitTypes} from 'ui-frontend-common';
 
 @Component({
   selector: 'app-archive-preview',
