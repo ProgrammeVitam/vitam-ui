@@ -48,8 +48,8 @@ import {
   FilingHoldingSchemeNode,
   SearchService,
   Transaction,
+  Unit,
 } from 'ui-frontend-common';
-import { AccessContract, AccessContractApiService, FilingHoldingSchemeNode, SearchService, Transaction, Unit } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
 import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';

@@ -26,7 +26,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { Unit } from '../../../core/models';
+import { Unit } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({
