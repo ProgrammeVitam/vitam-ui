@@ -92,7 +92,7 @@ function constantToTranslate() {
 @Component({
   selector: 'pastis-file-tree-metadata',
   templateUrl: './file-tree-metadata.component.html',
-  styleUrls: [ './file-tree-metadata.component.scss' ],
+  styleUrls: ['./file-tree-metadata.component.scss'],
   // Encapsulation has to be disabled in order for the
   // component style to apply to the select panel.
   encapsulation: ViewEncapsulation.None,
@@ -112,7 +112,7 @@ export class FileTreeMetadataComponent {
 
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
-  displayedColumns: string[] = [ 'nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption' ];
+  displayedColumns: string[] = ['nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption'];
 
   selectedRegex = '';
 
@@ -212,10 +212,10 @@ export class FileTreeMetadataComponent {
 
   languagePopup: boolean;
 
-  metadatadaValueFormControl = new FormControl('', [ Validators.required, Validators.pattern(this.regexPattern) ]);
+  metadatadaValueFormControl = new FormControl('', [Validators.required, Validators.pattern(this.regexPattern)]);
 
   valueForm = this.fb.group({
-    valeurFixe: [ '', [ Validators.pattern(this.regexPattern) ] ],
+    valeurFixe: ['', [Validators.pattern(this.regexPattern)]],
   });
   public searchForm: FormGroup;
   id: number;
@@ -228,10 +228,10 @@ export class FileTreeMetadataComponent {
   additionalPropertiesMetadonnee: boolean;
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
-              private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
-              private router: Router, private startupService: StartupService, public profileService: ProfileService,
-              private fileTreeService: FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
-              private translateService: TranslateService) {
+    private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
+    private router: Router, private startupService: StartupService, public profileService: ProfileService,
+    private fileTreeService: FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
+    private translateService: TranslateService) {
 
     this.config = {
       locale: 'fr',
@@ -277,21 +277,21 @@ export class FileTreeMetadataComponent {
         this.fileService.tabRootNode.subscribe(tabRootNode => {
           if (tabRootNode) {
             const tabLabel = (nodeNameToLabel as any)[tabRootNode.name];
-            this.breadcrumbDataMetadata = [ { label: tabLabel, node: tabRootNode } ];
+            this.breadcrumbDataMetadata = [{ label: tabLabel, node: tabRootNode }];
             if (tabRootNode.name !== breadCrumbNodeLabel) {
               if (node.parent) {
                 if (node.parent.name !== tabRootNode.name) {
                   if (node.parent.parent) {
                     if (node.parent.parent.name !== tabRootNode.name) {
-                      this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: '...' } ]);
+                      this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: '...' }]);
                     }
                   }
-                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ {
+                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{
                     label: node.parent.name,
                     node: node.parent
-                  } ]);
+                  }]);
                 }
-                this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: breadCrumbNodeLabel, node } ]);
+                this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: breadCrumbNodeLabel, node }]);
               }
             }
           }
@@ -300,11 +300,11 @@ export class FileTreeMetadataComponent {
     });
     // BreadCrump Top for navigation
     this.profileModeLabel = this.profileService.profileMode === 'PUA' ? 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA' : 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA';
-    this.breadcrumbDataTop = [ {
+    this.breadcrumbDataTop = [{
       label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL',
       url: this.startupService.getPortalUrl(),
       external: true
-    }, { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/' }, { label: this.profileModeLabel } ];
+    }, { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/' }, { label: this.profileModeLabel }];
 
     this._fileServiceSubscription = this.fileService.currentTree.subscribe(fileTree => {
       if (fileTree) {
@@ -351,7 +351,7 @@ export class FileTreeMetadataComponent {
     if (d.external) {
       window.location.assign(d.url);
     } else {
-      this.router.navigate([ d.url ], { skipLocationChange: false });
+      this.router.navigate([d.url], { skipLocationChange: false });
     }
   }
 
@@ -838,7 +838,7 @@ export class FileTreeMetadataComponent {
   }
 
   goBack() {
-    this.router.navigate([ '/' ], { skipLocationChange: false });
+    this.router.navigate(['/'], { skipLocationChange: false });
   }
 
   ngOnDestroy() {
@@ -1005,15 +1005,23 @@ export class FileTreeMetadataComponent {
     this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element);
   }
 
-  private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: MetadataHeaders) {
+  private setNodeAdditionalPropertiesChange(additionalProperties: boolean, element: MetadataHeaders) {
+    this.clickedNode.children = this.clickedNode.children.map(node => {
+      const hasSameId = node.id === element.id
+      const hasSameName = node.name === element.nomDuChamp
 
-    for (const node of this.clickedNode.children) {
-      if (node.name === element.nomDuChamp && node.id === element.id) {
-
-        node.puaData.additionalProperties = additionalPropertiesMetadonnee;
+      if (hasSameId && hasSameName) {
+        return {
+          ...node,
+          puaData: {
+            additionalProperties
+          },
+          additionalProperties,
+        }
       }
-    }
 
+      return node
+    })
   }
 
   getNodeAdditionalProperties(element: MetadataHeaders): boolean {
