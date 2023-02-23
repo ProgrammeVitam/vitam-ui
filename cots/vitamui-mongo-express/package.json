@@ -9,6 +9,6 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "mongo-express": "^1.0.0"
+    "mongo-express": "1.0.0"
   }
 }
