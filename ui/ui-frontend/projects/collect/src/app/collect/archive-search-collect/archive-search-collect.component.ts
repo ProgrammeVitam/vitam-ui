@@ -959,6 +959,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     return this.transaction.status !== TransactionStatus.OPEN;
   }
 
+  isArchiveUnitsEmpty(): boolean {
+    return this.archiveUnits.length === 0;
+  }
+
   getArchiveUnitType(archiveUnit: any) {
     if (archiveUnit) {
       return archiveUnit['#unitType'];
