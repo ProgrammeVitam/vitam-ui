@@ -57,11 +57,7 @@
                 <mat-option
                   [disabled]="
                     !isRuleCategorySelected ||
-                    isAddValidActions ||
-                    isStorageRuleActionDisabled ||
-                    isReuseRuleActionDisabled ||
-                    isAccessRuleActionDisabled ||
-                    isDisseminationActionDisabled
+                    isAddValidActions
                   "
                   (click)="onSelectAction('BLOCK_RULE_INHERITANCE')"
                 >
@@ -71,11 +67,7 @@
                   [disabled]="
                     isUnlockRulesInheritanceDisabled ||
                     isDeleteValidActions ||
-                    !isRuleCategorySelected ||
-                    isStorageRuleActionDisabled ||
-                    isAccessRuleActionDisabled ||
-                    isReuseRuleActionDisabled ||
-                    isDisseminationActionDisabled
+                    !isRuleCategorySelected
                   "
                   (click)="onSelectAction('UNLOCK_RULE_INHERITANCE')"
                 >

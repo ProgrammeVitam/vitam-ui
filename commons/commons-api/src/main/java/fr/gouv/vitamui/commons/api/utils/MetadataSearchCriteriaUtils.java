@@ -373,7 +373,7 @@ public final class MetadataSearchCriteriaUtils {
                 List<String> searchValues =
                     appraisalPreventRuleIdentifiersCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                         Collectors.toList());
-                buildAppraisalPreventRuleIdentifierQuery(searchValues,
+                buildAppraisalPreventRuleIdentifierQuery(searchValues, appraisalPreventRuleIdentifiersCriteria.getCategory(),
                     ArchiveSearchConsts.CriteriaOperators.valueOf(
                         appraisalPreventRuleIdentifiersCriteria.getOperator()), query);
             }
@@ -670,7 +670,7 @@ public final class MetadataSearchCriteriaUtils {
         }
     }
 
-    private static void buildAppraisalPreventRuleIdentifierQuery(final List<String> searchValues,
+    private static void buildAppraisalPreventRuleIdentifierQuery(final List<String> searchValues, ArchiveSearchConsts.CriteriaCategory category,
         ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryOr = or();
@@ -679,7 +679,7 @@ public final class MetadataSearchCriteriaUtils {
                 try {
                     subQueryOr
                         .add(VitamQueryHelper.buildSubQueryByOperator(
-                            ArchiveSearchConsts.APPRAISAL_PREVENT_RULE_IDENTIFIER, value, operator));
+                            buildPreventRuleIdentifierFromCategory(category), value, operator));
                 } catch (InvalidCreateOperationException exception) {
                     LOGGER.error(INVALID_CREATION_OPERATION, exception);
                     throw new InvalidCreateOperationVitamUIException(COULD_NOT_CREATE_OPERATION,
@@ -712,31 +712,75 @@ public final class MetadataSearchCriteriaUtils {
         subQueryAnd.add(subQueryOr);
     }
 
+    private static String buildPreventRuleIdentifierFromCategory(ArchiveSearchConsts.CriteriaCategory category)
+        throws InvalidCreateOperationException {
+
+        String preventRuleIdentifier = "";
+
+        switch (category.name()) {
+            case "APPRAISAL_RULE":
+                preventRuleIdentifier = ArchiveSearchConsts.APPRAISAL_PREVENT_RULE_IDENTIFIER;
+                break;
+            case "ACCESS_RULE":
+                preventRuleIdentifier = ArchiveSearchConsts.ACCESS_PREVENT_RULE_IDENTIFIER;
+                break;
+            case "STORAGE_RULE":
+                preventRuleIdentifier = ArchiveSearchConsts.STORAGE_PREVENT_RULE_IDENTIFIER;
+                break;
+            case "HOLD_RULE":
+                preventRuleIdentifier = ArchiveSearchConsts.HOLD_PREVENT_RULE_IDENTIFIER;
+                break;
+            case "DISSEMINATION_RULE":
+                preventRuleIdentifier = ArchiveSearchConsts.DISSEMINATION_PREVENT_RULE_IDENTIFIER;
+                break;
+            case "REUSE_RULE":
+                preventRuleIdentifier = ArchiveSearchConsts.REUSE_PREVENT_RULE_IDENTIFIER;
+                break;
+            case "CLASSIFICATION_RULE":
+                preventRuleIdentifier = ArchiveSearchConsts.CLASSIFICATION_PREVENT_RULE_IDENTIFIER;
+                break;
+            default:
+        }
+
+        if (preventRuleIdentifier.isEmpty()) {
+            throw new InvalidCreateOperationException("inheritedValue is empty or null ");
+        }
+
+        return preventRuleIdentifier;
+    }
+
     private static String buildInheritedValueFromCategory(ArchiveSearchConsts.CriteriaCategory category)
         throws InvalidCreateOperationException {
 
         String inheritedValue = "";
 
-        switch (category.name()) {
-            case "APPRAISAL_RULE":
+        ArchiveSearchConsts.CriteriaCategory criteriaCategory = null;
+        try {
+            criteriaCategory = ArchiveSearchConsts.CriteriaCategory.valueOf(category.name());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidCreateOperationException("category name is invalid ");
+        }
+
+        switch (criteriaCategory) {
+            case APPRAISAL_RULE:
                 inheritedValue = ArchiveSearchConsts.APPRAISAL_RULE_INHERITED;
                 break;
-            case "ACCESS_RULE":
+            case ACCESS_RULE:
                 inheritedValue = ArchiveSearchConsts.ACCESS_RULE_INHERITED;
                 break;
-            case "STORAGE_RULE":
+            case STORAGE_RULE:
                 inheritedValue = ArchiveSearchConsts.STORAGE_RULE_INHERITED;
                 break;
-            case "HOLD_RULE":
+            case HOLD_RULE:
                 inheritedValue = ArchiveSearchConsts.HOLD_RULE_INHERITED;
                 break;
-            case "DISSEMINATION_RULE":
+            case DISSEMINATION_RULE:
                 inheritedValue = ArchiveSearchConsts.DISSEMINATION_RULE_INHERITED;
                 break;
-            case "REUSE_RULE":
+            case REUSE_RULE:
                 inheritedValue = ArchiveSearchConsts.REUSE_RULE_INHERITED;
                 break;
-            case "CLASSIFICATION_RULE":
+            case CLASSIFICATION_RULE:
                 inheritedValue = ArchiveSearchConsts.CLASSIFICATION_RULE_INHERITED;
                 break;
             default:
@@ -754,26 +798,34 @@ public final class MetadataSearchCriteriaUtils {
         BooleanQuery subQueryOr = or();
 
         String searchKey = null;
-        switch (ruleCategory) {
-            case "APPRAISAL_RULE":
+
+        ArchiveSearchConsts.CriteriaCategory criteriaCategory = null;
+        try {
+            criteriaCategory = ArchiveSearchConsts.CriteriaCategory.valueOf(ruleCategory);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidCreateOperationException("category name is invalid ");
+        }
+
+        switch (criteriaCategory) {
+            case APPRAISAL_RULE:
                 searchKey = ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD;
                 break;
-            case "ACCESS_RULE":
+            case ACCESS_RULE:
                 searchKey = ArchiveSearchConsts.ACCESS_RULE_START_DATE_FIELD;
                 break;
-            case "STORAGE_RULE":
+            case STORAGE_RULE:
                 searchKey = ArchiveSearchConsts.STORAGE_RULE_START_DATE_FIELD;
                 break;
-            case "HOLD_RULE":
+            case HOLD_RULE:
                 searchKey = ArchiveSearchConsts.HOLD_RULE_START_DATE_FIELD;
                 break;
-            case "DISSEMINATION_RULE":
+            case DISSEMINATION_RULE:
                 searchKey = ArchiveSearchConsts.DISSEMINATION_RULE_START_DATE_FIELD;
                 break;
-            case "REUSE_RULE":
+            case REUSE_RULE:
                 searchKey = ArchiveSearchConsts.REUSE_RULE_START_DATE_FIELD;
                 break;
-            case "CLASSIFICATION_RULE":
+            case CLASSIFICATION_RULE:
                 searchKey = ArchiveSearchConsts.CLASSIFICATION_RULE_START_DATE_FIELD;
                 break;
             default:

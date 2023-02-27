@@ -30,6 +30,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash';
+import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -37,7 +38,7 @@ import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService } from 'ui-
 import { ArchiveService } from '../../../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
-import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../../../../models/search.criteria';
+import { SearchCriteriaDto, SearchCriteriaEltDto } from '../../../../../models/search.criteria';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
 
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
@@ -97,7 +98,8 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
     private ruleService: RuleService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private updateUnitManagementRuleService: UpdateUnitManagementRuleService
   ) {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
@@ -212,7 +214,7 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
@@ -222,7 +224,7 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
     const criteriaWithRuleIdToCheck: SearchCriteriaEltDto = {
       criteria: APPRAISAL_PREVENT_RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       operator: CriteriaOperator.IN,
       dataType: CriteriaDataType.STRING,
     };
@@ -230,7 +232,7 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
     const onlyUAWithNoInheritance: SearchCriteriaEltDto = {
       criteria: APPRAISAL_RULE_INHERITED_CRITERIA,
       values: [{ id: 'false', value: 'false' }],
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };
