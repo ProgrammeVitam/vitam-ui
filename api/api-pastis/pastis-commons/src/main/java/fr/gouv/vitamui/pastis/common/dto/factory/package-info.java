@@ -37,7 +37,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 @XmlSchema(
-
     xmlns = {
         @XmlNs(prefix = "a", namespaceURI = "http://relaxng.org/ns/compatibility/annotations/1.0"),
         @XmlNs(prefix = "rng", namespaceURI = "http://relaxng.org/ns/structure/1.0"),

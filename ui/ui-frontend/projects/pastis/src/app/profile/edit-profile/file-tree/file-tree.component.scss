@@ -1,9 +1,9 @@
-@import "../../../../assets/css/mixins";
-@import "../../../../assets/css/layout";
-@import "../../../../assets/css/colors";
+@import '../../../../assets/css/mixins';
+@import '../../../../assets/css/layout';
+@import '../../../../assets/css/colors';
 
-.pastis-btn-container-add-ua{
-  background-color: #F6F3FB;
+.pastis-btn-container-add-ua {
+  background-color: #f6f3fb;
   height: 70px;
   margin-left: 40px;
 }
@@ -14,7 +14,7 @@
   box-shadow: none !important;
 }
 
-.pastis-tree-node-root-name{
+.pastis-tree-node-root-name {
   @extend .pastis-black-height;
   @extend .pastis-font-headline-6;
   line-height: 50px;
@@ -23,33 +23,33 @@
   margin-bottom: -15px;
 }
 
-.pastis-divider{
+.pastis-divider {
   max-width: 100%;
   height: 1px;
 }
 
-.pastis-tree-node-name{
+.pastis-tree-node-name {
   @extend .pastis-surface-snackbar;
   @extend .pastis-font-label;
   line-height: 50px;
   cursor: pointer;
 }
 
-.pastis-chevron-icon{
+.pastis-chevron-icon {
   margin-right: 10px;
 }
 
-.pastis-chevron-icon-selected{
+.pastis-chevron-icon-selected {
   @extend .pastis-chevron-icon;
   color: var(--vitamui-primary);
 }
 
-.pastis-btn-add-ua{
+.pastis-btn-add-ua {
   background-color: transparent;
   border: none;
 }
 
-.pastis-btn-add-ua-text{
+.pastis-btn-add-ua-text {
   color: var(--vitamui-primary);
   font-family: Mulish;
   font-style: normal;
@@ -70,37 +70,43 @@
 .buttons {
   position: relative;
   height: 35px;
- }
-
+}
 
 /* PASTIS File tree Item list*/
-.mat-list-item{
+.mat-list-item {
   display: block !important;
-  text-align-last:left;
-  background-color: #FFFF;
+  text-align-last: left;
+  background-color: #ffff;
   margin-top: 5px;
-  margin-left:40px;
-  margin-right:40px;
+  margin-left: 40px;
+  margin-right: 40px;
 }
-.list-item-select{
+.list-item-select {
   @extend .list-item;
   border-left: solid var(--vitamui-primary);
 }
-.list-item:hover{
-  background: #F6F3FB;
+.list-item:hover {
+  background: #f6f3fb;
 }
 
-.pastis-tree{
+.pastis-tree {
   display: inline-block;
   min-width: 100%;
-  background-color: #F6F3FB;
+  background-color: #f6f3fb;
 }
-
 
 .text-medium-normal {
   @extend .text-text-medium;
 }
 .text-medium-primary {
   @extend .text-text-medium;
+  color: var(--vitamui-primary);
+}
+
+.float-right {
+  float: right;
+}
+
+.text-primary {
   color: var(--vitamui-primary);
 }

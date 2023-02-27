@@ -66,7 +66,7 @@ import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
-import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
+import fr.gouv.vitamui.pastis.common.service.JsonFromPua;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
@@ -110,7 +110,6 @@ import java.util.Random;
 @Setter
 @Service
 public class PastisService {
-
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisService.class);
 
     private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
@@ -125,7 +124,7 @@ public class PastisService {
     private String rngLocation;
     private final PuaPastisValidator puaPastisValidator;
 
-    private final JsonFromPUA jsonFromPUA;
+    private final JsonFromPua jsonFromPua;
 
     private final PuaFromJSON puaFromJSON;
     private List<PastisProfile> pastisProfiles = new ArrayList<>();
@@ -134,11 +133,11 @@ public class PastisService {
     private Random rand;
 
     @Autowired
-    public PastisService(ResourceLoader resourceLoader, PuaPastisValidator puaPastisValidator, JsonFromPUA jsonFromPUA,
+    public PastisService(ResourceLoader resourceLoader, PuaPastisValidator puaPastisValidator, JsonFromPua jsonFromPua,
         PuaFromJSON puaFromJSON) {
         this.resourceLoader = resourceLoader;
         this.puaPastisValidator = puaPastisValidator;
-        this.jsonFromPUA = jsonFromPUA;
+        this.jsonFromPua = jsonFromPua;
         this.puaFromJSON = puaFromJSON;
     }
 
@@ -173,26 +172,25 @@ public class PastisService {
 
 
     public String getArchiveUnitProfile(final ProfileNotice json, final boolean standalone) throws TechnicalException {
-        Notice notice = new Notice();
-        if (!standalone && json.getNotice() != null) {
-            notice = json.getNotice();
+        final Notice notice = (!standalone && json.getNotice() != null) ? json.getNotice() : new Notice();
+        final ElementProperties elementProperties = json.getElementProperties();
 
-        }
-        String controlSchema;
         try {
-            controlSchema = puaFromJSON.getControlSchemaFromElementProperties(json.getElementProperties());
+            final String controlSchema = puaFromJSON.getControlSchemaFromElementProperties(elementProperties);
+
+            LOGGER.debug("Control schema generated: {}", controlSchema);
+
+            notice.setControlSchema(controlSchema);
         } catch (IOException e) {
-            throw new TechnicalException(
-                "Problems when deserializing using Jackson with Element Properties of AUP json to have ControlsShema",
-                e);
-        }
-        notice.setControlSchema(controlSchema);
+            final String message = "The control schema build from the current element properties has failed";
 
-        ObjectMapper objectMapper = new ObjectMapper();
+            throw new TechnicalException(message, e);
+        }
+
         try {
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(notice);
+            return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(notice);
         } catch (JsonProcessingException e) {
-            throw new TechnicalException("Problems during conversion objectMapper to string", e);
+            throw new TechnicalException("The notice serialization has failed", e);
         }
     }
 
@@ -242,7 +240,7 @@ public class PastisService {
                 LOGGER.info("Starting editing Archive Profile with id : {}", notice.getId());
             } else if (fileType.equals(ProfileType.PUA)) {
                 puaPastisValidator.validatePUA(profileJson, false);
-                profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
+                profileResponse.setProfile(jsonFromPua.toElementProperties(profileJson));
             }
             profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
         } catch (SAXException | IOException e) {
@@ -306,7 +304,7 @@ public class PastisService {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
                 JSONObject profileJson = new JSONObject(tokener);
                 puaPastisValidator.validatePUA(profileJson, false);
-                profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
+                profileResponse.setProfile(jsonFromPua.toElementProperties(profileJson));
                 profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", resource.getFilename());
             }
@@ -318,40 +316,38 @@ public class PastisService {
         return profileResponse;
     }
 
-    public ProfileResponse loadProfileFromFile(MultipartFile file, String fileName, boolean standalone)
-        throws NoSuchAlgorithmException, TechnicalException {
+    public ProfileResponse loadProfileFromFile(MultipartFile file, String fileName, boolean standalone) throws NoSuchAlgorithmException, TechnicalException {
+        final ProfileResponse profileResponse = new ProfileResponse();
 
-        PastisSAX2Handler handler = new PastisSAX2Handler();
-        PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
-        ProfileResponse profileResponse = new ProfileResponse();
         this.rand = SecureRandom.getInstanceStrong();
-
         try {
-            String originalFileName = fileName;
-            if (originalFileName != null) {
-                String fileExtension = originalFileName.split("\\.")[1];
-                String profileName = originalFileName.split("\\.(?=[^\\.]+$)")[0];
+            if (fileName != null) {
+                final String fileExtension = fileName.split("\\.")[1];
+                final String profileName = fileName.split("\\.(?=[^.]+$)")[0];
+
                 profileResponse.setType(fileExtension.equals("rng") ? ProfileType.PA : ProfileType.PUA);
                 profileResponse.setName(profileName);
             }
-            InputStream fileInputStream = file.getInputStream();
-            InputSource inputSource = new InputSource(file.getInputStream());
 
             if (profileResponse.getType().equals(ProfileType.PA)) {
-                XMLReader xmlReader = createXmlReader(handler);
+                final InputSource inputSource = new InputSource(file.getInputStream());
+                final PastisSAX2Handler handler = new PastisSAX2Handler();
+                final PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
+                final XMLReader xmlReader = createXmlReader(handler);
+
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
                 LOGGER.info("Starting editing Archive Profile from file : {}", fileName);
-
             } else {
-                JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
-                JSONObject profileJson = new JSONObject(tokener);
+                final InputStreamReader reader = new InputStreamReader(file.getInputStream());
+                final JSONTokener tokener = new JSONTokener(reader);
+                final JSONObject profileJson = new JSONObject(tokener);
+
                 puaPastisValidator.validatePUA(profileJson, standalone);
-                profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
+                profileResponse.setProfile(jsonFromPua.toElementProperties(profileJson));
                 profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", file.getOriginalFilename());
             }
-
         } catch (SAXException | IOException e) {
             throw new TechnicalException("Failed to load profile " + fileName, e);
         } catch (AssertionError ae) {

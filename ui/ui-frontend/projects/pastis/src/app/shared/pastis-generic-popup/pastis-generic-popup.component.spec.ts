@@ -10,13 +10,9 @@ describe('PastisGenericPopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PastisGenericPopupComponent ],
-      providers: [
-        DataGeneriquePopupService,
-        PastisPopupSelectionService
-      ]
-    })
-    .compileComponents();
+      declarations: [PastisGenericPopupComponent],
+      providers: [DataGeneriquePopupService, PastisPopupSelectionService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

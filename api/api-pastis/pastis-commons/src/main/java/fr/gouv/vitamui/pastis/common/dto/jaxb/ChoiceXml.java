@@ -42,5 +42,4 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "rng:choice")
 public class ChoiceXml extends BaliseXML {
 
-
 }

@@ -44,7 +44,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 @Setter
 public class DocumentationTag extends RngTag {
-
     String documentation;
 
     @XmlElement(name = "xsd:documentation")

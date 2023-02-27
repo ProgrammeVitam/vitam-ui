@@ -37,6 +37,10 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.util;
 
+import fr.gouv.vitamui.pastis.common.model.Cardinality;
+import fr.gouv.vitamui.pastis.common.model.DataType;
+import fr.gouv.vitamui.pastis.common.model.GroupOrChoice;
+import fr.gouv.vitamui.pastis.common.model.MetadataDataType;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -46,13 +50,11 @@ import java.util.Map;
  * @author rachid Sala <rachid@cines.fr>
  */
 public class RNGConstants {
-
     private static final String ELEMENT = "element";
     private static final String GROUP = "group";
     private static final String CHOICE = "choice";
 
-    @Getter
-    private static final Map<String, String> typeElement = new HashMap<>();
+    @Getter private static final Map<String, String> typeElement = new HashMap<>();
 
     static {
         typeElement.put("Simple", ELEMENT);
@@ -60,8 +62,7 @@ public class RNGConstants {
         typeElement.put("Attribute", "attribute");
     }
 
-    @Getter
-    private static final Map<String, String> CardinalityMap = new HashMap<>();
+    @Getter private static final Map<String, String> CardinalityMap = new HashMap<>();
 
     static {
         CardinalityMap.put("optional", "0-1");
@@ -70,16 +71,14 @@ public class RNGConstants {
         CardinalityMap.put("oneOrMore", "1-N");
     }
 
-    @Getter
-    private static final Map<String, String> GroupOrChoiceMap = new HashMap<>();
+    @Getter private static final Map<String, String> GroupOrChoiceMap = new HashMap<>();
 
     static {
         GroupOrChoiceMap.put(GROUP, GROUP);
         GroupOrChoiceMap.put(CHOICE, CHOICE);
     }
 
-    @Getter
-    private static final Map<String, DataType> TypesMap = new HashMap<>();
+    @Getter private static final Map<String, DataType> TypesMap = new HashMap<>();
 
     static {
         TypesMap.put("CodeListVersions", DataType.STRING);
@@ -111,7 +110,7 @@ public class RNGConstants {
         TypesMap.put("DataObjectGroupId", DataType.TOKEN);
         TypesMap.put("DataObjectVersion", DataType.TOKEN);
         TypesMap.put("Attachment", DataType.BASE64BINARY);
-        TypesMap.put("Uri", DataType.ANYURI);
+        TypesMap.put("Uri", DataType.ANY_URI);
         TypesMap.put("MessageDigest", DataType.BASE64BINARY);
         TypesMap.put("Size", DataType.POSITIVE_INTEGER);
         TypesMap.put("Compressed", DataType.BOOLEAN_TYPE);
@@ -241,7 +240,7 @@ public class RNGConstants {
         TypesMap.put("algorithm", DataType.TOKEN);
         TypesMap.put("lang", DataType.LANGUAGE);
         TypesMap.put("xml:lang", DataType.LANGUAGE);
-        TypesMap.put("href", DataType.ANYURI);
+        TypesMap.put("href", DataType.ANY_URI);
         TypesMap.put("listID", DataType.TOKEN);
         TypesMap.put("listAgencyID", DataType.TOKEN);
         TypesMap.put("listAgencyName", DataType.STRING);
@@ -249,45 +248,45 @@ public class RNGConstants {
         TypesMap.put("listVersionID", DataType.TOKEN);
         TypesMap.put("Name", DataType.STRING);
         TypesMap.put("languageID", DataType.LANGUAGE);
-        TypesMap.put("listURI", DataType.ANYURI);
-        TypesMap.put("listSchemeURI", DataType.ANYURI);
+        TypesMap.put("listURI", DataType.ANY_URI);
+        TypesMap.put("listSchemeURI", DataType.ANY_URI);
         TypesMap.put("schemeID", DataType.TOKEN);
         TypesMap.put("schemeName", DataType.STRING);
         TypesMap.put("schemeAgencyID", DataType.TOKEN);
         TypesMap.put("schemeAgencyName", DataType.STRING);
         TypesMap.put("schemeVersionID", DataType.TOKEN);
-        TypesMap.put("schemeDataURI", DataType.ANYURI);
-        TypesMap.put("schemeURI", DataType.ANYURI);
+        TypesMap.put("schemeDataURI", DataType.ANY_URI);
+        TypesMap.put("schemeURI", DataType.ANY_URI);
         TypesMap.put("target", DataType.NC_NAME);
         TypesMap.put("type", DataType.TOKEN);
         TypesMap.put("filename", DataType.STRING);
-        TypesMap.put("anyURI", DataType.ANYURI);
+        TypesMap.put("anyURI", DataType.ANY_URI);
         TypesMap.put("unCompressedSize", DataType.POSITIVE_INTEGER);
         TypesMap.put("unit", DataType.STRING);
         TypesMap.put("when", DataType.TOKEN);
     }
 
-    public static boolean isElement(String type) {
-        for (MetadaDataType typeElement : MetadaDataType.values()) {
-            if (typeElement.toString().equals(type)) {
+    public static boolean isElement(String value) {
+        for (MetadataDataType metadataDataType : MetadataDataType.values()) {
+            if (metadataDataType.toString().equals(value)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean isCardinality(String type) {
-        for (Cardinality typeElement : Cardinality.values()) {
-            if (typeElement.getName().equals(type)) {
+    public static boolean isCardinality(String value) {
+        for (Cardinality cardinality : Cardinality.values()) {
+            if (cardinality.getName().equals(value)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean hasGroupOrChoice(String type) {
-        for (GroupOrChoice typeElement : GroupOrChoice.values()) {
-            if (typeElement.toString().equals(type)) {
+    public static boolean hasGroupOrChoice(String value) {
+        for (GroupOrChoice groupOrChoice : GroupOrChoice.values()) {
+            if (groupOrChoice.toString().equals(value)) {
                 return true;
             }
         }
@@ -304,106 +303,7 @@ public class RNGConstants {
     }
 
     public static boolean isValueOrData(String type) {
-
-        return (null != type && (MetadaDataType.DATA.label.equals(type)
-            || MetadaDataType.NS_NAME.label.equals(type)
-            || MetadaDataType.VALUE.label.equals(type)));
-
+        return (MetadataDataType.DATA.getLabel().equals(type) || MetadataDataType.NS_NAME.getLabel().equals(type) ||
+            MetadataDataType.VALUE.getLabel().equals(type));
     }
-
-    public enum DataType {
-        STRING("string"),
-        DATETIME("dateTime"),
-        DATE("date"),
-        ID("ID"),
-        //id("id"),
-        ANYURI("anyURI"),
-        TOKEN("token"),
-        TOKENTYPE("tokenType"),
-        BASE64BINARY("base64Binary"),
-        POSITIVE_INTEGER("positiveInteger"),
-        BOOLEAN_TYPE("boolean"),
-        DECIMAL("decimal"),
-        INT_TYPE("int"),
-        LANGUAGE("language"),
-        NC_NAME("NCName"),
-        UNDEFINED("undefined");
-
-        private String label;
-
-        DataType(final String value) {
-            setLabel(value);
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        void setLabel(final String label) {
-            this.label = label;
-        }
-    }
-
-    public enum MetadaDataType {
-        ELEMENT(RNGConstants.ELEMENT),
-        ATTRIBUTE("attribute"),
-        DATA("data"),
-        EXCEPT("except"),
-        NS_NAME("nsName"),
-        VALUE("value"),
-        TEXT("text"),
-        ID("ID");
-        private String label;
-
-        MetadaDataType(final String value) {
-            setLabel(value);
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        void setLabel(final String label) {
-            this.label = label;
-        }
-    }
-
-    public enum Cardinality {
-        OPTIONAL("0-1", "optional"),
-        ZERO_OR_MORE("0-N", "zeroOrMore"),
-        OBLIGATOIRE("1", "obligatoire"),
-        ONE_OR_MORE("1-N", "oneOrMore");
-        private String label;
-        private String name;
-
-        Cardinality(final String value, String name) {
-            setName(name);
-            setLabel(value);
-        }
-
-        public String getLabel() {
-            return label;
-        }
-        public String getName() { return name; }
-
-        void setLabel(final String label) {
-            this.label = label;
-        }
-        void setName(final String name) { this.name = name; }
-    }
-
-    public enum GroupOrChoice {
-        GROUP(RNGConstants.GROUP),
-        CHOICE(RNGConstants.CHOICE);
-        private String label;
-
-        GroupOrChoice(final String value) {
-            setLabel(value);
-        }
-
-        void setLabel(final String label) {
-            this.label = label;
-        }
-    }
-
 }

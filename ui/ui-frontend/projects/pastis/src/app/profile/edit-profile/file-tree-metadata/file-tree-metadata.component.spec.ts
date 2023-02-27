@@ -28,25 +28,35 @@
  */
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
-import { BASE_URL, LoggerModule, ProfileService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { PastisApiService } from '../../../core/api/api.pastis.service';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
-import { PastisApiService } from '../../../core/services';
 import { FileService } from '../../../core/services/file.service';
+import { ProfileService } from '../../../core/services/profile.service';
+import { SedaService } from '../../../core/services/seda.service';
+import { DataTypeConstants, FileNode, TypeConstants, ValueOrDataConstants } from '../../../models/file-node';
 import { MetadataHeaders } from '../../../models/models';
+import { ProfileMode } from '../../../models/profile-response';
+import { SedaBoolean, SedaCardinality, SedaCollections, SedaData } from '../../../models/seda-data';
 import { FileTreeMetadataComponent } from './file-tree-metadata.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
 
 describe('FileTreeMetadataComponent', () => {
   let component: FileTreeMetadataComponent;
   let fixture: ComponentFixture<FileTreeMetadataComponent>;
-  let metadataHeaders: MetadataHeaders = {
+  let fileService: FileService;
+  let sedaService: SedaService;
+  let profileService: ProfileService;
+  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+  const metadataHeaders: MetadataHeaders = {
     id: 0,
     nomDuChamp: '',
     nomDuChampFr: '',
@@ -57,8 +67,6 @@ describe('FileTreeMetadataComponent', () => {
     commentaire: '',
     enumeration: [],
   };
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
   const PA_MANDATORY_ENUM_FIELDS = [
     'NeedAuthorization',
     'LegalStatus',
@@ -69,16 +77,17 @@ describe('FileTreeMetadataComponent', () => {
     'NeedReassessingAuthorization',
   ];
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [FileTreeMetadataComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         FileTreeMetadataService,
         FileService,
         ProfileService,
         PastisApiService,
         PastisConfiguration,
-        FormBuilder,
+        SedaService,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -99,6 +108,12 @@ describe('FileTreeMetadataComponent', () => {
   });
 
   beforeEach(() => {
+    fileService = TestBed.inject(FileService);
+    sedaService = TestBed.inject(SedaService);
+    profileService = TestBed.inject(ProfileService);
+
+    profileService.profileMode = ProfileMode.PUA;
+
     fixture = TestBed.createComponent(FileTreeMetadataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -142,5 +157,143 @@ describe('FileTreeMetadataComponent', () => {
     metadataHeaders.nomDuChamp = 'StartDate';
     metadataHeaders.type = 'date';
     expect(component.getMetadataInputType(metadataHeaders)).not.toEqual('');
+  });
+
+  it('should create component', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should be candidate to additional properties toggling', () => {
+    const fileNode: FileNode = {
+      additionalProperties: true,
+      id: 1,
+      parentId: 0,
+      name: 'Fake FileNode',
+      groupOrChoice: '',
+      choices: '',
+      valueOrData: ValueOrDataConstants.value,
+      value: 'idk',
+      type: TypeConstants.element,
+      dataType: DataTypeConstants.string,
+      cardinality: SedaCardinality.ZERO_OR_ONE,
+      level: 1,
+      children: [],
+      parent: null,
+      sedaData: {
+        Cardinality: SedaCardinality.ZERO_OR_ONE,
+        Children: [],
+        Choice: SedaBoolean.YES,
+        Collection: SedaCollections.OBJECT,
+        Definition: '',
+        Element: '',
+        Enumeration: [],
+        Extensible: SedaBoolean.YES,
+        Name: 'Fake Seda Node',
+        NameFr: 'Faux Noeud Seda',
+        Type: 'object',
+      },
+    };
+
+    expect(component.canEnableAdditionalPropertiesEdition(fileNode)).toBeTruthy();
+  });
+
+  it('should not be candidate to additional properties toggling', () => {
+    const fileNode: FileNode = {
+      additionalProperties: true,
+      id: 1,
+      parentId: 0,
+      name: 'Fake FileNode',
+      groupOrChoice: '',
+      choices: '',
+      valueOrData: ValueOrDataConstants.value,
+      value: 'idk',
+      type: TypeConstants.element,
+      dataType: DataTypeConstants.string,
+      cardinality: SedaCardinality.ZERO_OR_ONE,
+      level: 1,
+      children: [],
+      parent: null,
+      sedaData: {
+        Cardinality: SedaCardinality.ZERO_OR_ONE,
+        Children: [],
+        Choice: SedaBoolean.YES,
+        Collection: SedaCollections.OBJECT,
+        Definition: '',
+        Element: '',
+        Enumeration: [],
+        Extensible: SedaBoolean.NO,
+        Name: 'Fake Seda Node',
+        NameFr: 'Faux Noeud Seda',
+        Type: 'object',
+      },
+    };
+
+    expect(component.canEnableAdditionalPropertiesEdition(fileNode)).toBeFalsy();
+  });
+
+  it('should reset controls', () => {
+    component.arrayControl = ['aaa'];
+    component.enumerationControl = true;
+    component.expressionControl = true;
+    component.enumsControlSeleted = ['bbb'];
+    component.editedEnumControl = ['ccc'];
+    component.openControls = true;
+    component.regex = '^w+$';
+    component.customRegex = '^w+$';
+    component.enumerationsSedaControl = ['ddd'];
+
+    component.resetControls();
+
+    expect(component.arrayControl).toEqual([]);
+    expect(component.enumerationControl).toEqual(false);
+    expect(component.expressionControl).toEqual(false);
+    expect(component.enumsControlSeleted).toEqual([]);
+    expect(component.editedEnumControl).toEqual([]);
+    expect(component.openControls).toEqual(false);
+    expect(component.regex).toEqual(undefined);
+    expect(component.customRegex).toEqual(undefined);
+    expect(component.enumerationsSedaControl).toEqual([]);
+  });
+
+  it('should create component with file node filled', () => {
+    expect(sedaService).toBeDefined('Seda service is not defined');
+    expect(sedaService.sedaRules).toBeDefined('Seda rules are not defined');
+
+    const sedaRule: SedaData = sedaService.sedaRules[0];
+
+    expect(sedaRule).toBeDefined('First seda rules tree is not defined');
+    expect(sedaRule.Children).toBeDefined('First seda rules tree children are not defined');
+
+    const managementSedaNode: SedaData = sedaService.findSedaChildByName('Management', sedaRule);
+    const fileNode: FileNode = {
+      additionalProperties: true,
+      id: 1,
+      parentId: 0,
+      name: 'Fake FileNode',
+      groupOrChoice: '',
+      choices: '',
+      valueOrData: ValueOrDataConstants.value,
+      value: 'idk',
+      type: TypeConstants.element,
+      dataType: DataTypeConstants.string,
+      cardinality: SedaCardinality.ZERO_OR_ONE,
+      level: 1,
+      children: [],
+      parent: null,
+      sedaData: managementSedaNode,
+    };
+
+    fileService.nodeChange.next(fileNode);
+    fileService.currentTree.next([fileNode]);
+
+    expect(component).toBeTruthy();
+    expect(component.clickedNode).toBeDefined('clickedNode is undefined');
+  });
+
+  it('should create component in standalone mode', () => {
+    component.isStandalone = true;
+
+    expect(component).toBeTruthy();
+    expect(component.isStandalone).toBeTruthy();
   });
 });

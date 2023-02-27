@@ -36,16 +36,15 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
-
-   constructor(private toasterService: ToastrService, private snackBar: MatSnackBar) {}
+  constructor(private toasterService: ToastrService, private snackBar: MatSnackBar) {}
 
   // Toaster
   showSuccess(message: string) {
@@ -78,8 +77,5 @@ export class NotificationService {
     snackBarConfig.panelClass = 'pastis-notifier-bg';
     snackBarConfig.duration = duration * 1000;
     this.snackBar.open(message, action, snackBarConfig);
-}
-
-
-
+  }
 }

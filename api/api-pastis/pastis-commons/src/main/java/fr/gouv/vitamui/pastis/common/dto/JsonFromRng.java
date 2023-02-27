@@ -46,30 +46,17 @@ import java.util.List;
 
 @Data
 public class JsonFromRng {
-
     String name;
-
     String type;
-
     String cardinality;
-
     String valueOrData;
-
     String dataType;
-
     String value;
-
     String documentation;
-
     int level;
-
     Long id;
-
     Long parentId;
-
-    @JsonIgnore
-    ElementProperties parent;
-
+    @JsonIgnore ElementProperties parent;
     List<ElementProperties> children = new ArrayList<>();
 
     public void setCardinality(String cardinality) {

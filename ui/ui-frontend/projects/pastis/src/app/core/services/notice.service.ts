@@ -43,24 +43,18 @@ import { ProfileDescription, ProfileDescriptionModel } from '../../models/profil
 import { FileService } from './file.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NoticeService {
-
-  constructor(private fileService: FileService) { }
+  constructor(private fileService: FileService) {}
 
   notice: Notice;
 
   getNotice() {
-    this.fileService.notice.subscribe(
-      (value: any) => {
-        this.notice = value;
-        return this.notice;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.fileService.notice.subscribe((value: any) => {
+      this.notice = value;
+      return this.notice;
+    }, console.error);
   }
 
   puaNotice(retour: any): ArchivalProfileUnit {
@@ -72,7 +66,7 @@ export class NoticeService {
     profileDescription.controlSchema = '{}';
 
     return profileDescription;
-    }
+  }
 
   paNotice(retour: any, create: boolean): Profile {
     const profile = new ProfileModel();
@@ -82,7 +76,6 @@ export class NoticeService {
     profile.status = retour.selectedStatus;
     profile.format = create ? 'RNG' : retour.format;
     return profile;
-
   }
 
   profileFromNotice(retour: any, edit: boolean, pua: boolean): ProfileDescription {
@@ -96,7 +89,6 @@ export class NoticeService {
     }
 
     return profile;
-
   }
 
   profileDescriptionToPaProfile(profileDescription: ProfileDescription): Profile {
@@ -110,6 +102,4 @@ export class NoticeService {
     archivalProfileUnit = Object.assign(archivalProfileUnit, profileDescription);
     return archivalProfileUnit;
   }
-
-
 }

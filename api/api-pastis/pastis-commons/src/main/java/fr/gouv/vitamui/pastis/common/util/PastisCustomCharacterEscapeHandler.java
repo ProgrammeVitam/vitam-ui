@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 public class PastisCustomCharacterEscapeHandler implements CharacterEscapeHandler {
-
     public PastisCustomCharacterEscapeHandler() {
         super();
     }

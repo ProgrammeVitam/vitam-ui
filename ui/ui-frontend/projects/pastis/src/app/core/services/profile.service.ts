@@ -46,24 +46,22 @@ import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { FileNode } from '../../models/file-node';
 import { Profile } from '../../models/profile';
 import { ProfileDescription } from '../../models/profile-description.model';
-import { ProfileResponse } from '../../models/profile-response';
+import { ProfileMode, ProfileResponse } from '../../models/profile-response';
 import { PastisApiService } from '../api/api.pastis.service';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 import { ArchivalProfileUnitApiService } from './archival-profile-unit-api.service';
 import { ArchiveProfileApiService } from './archive-profile-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileService implements OnDestroy {
-
+  private _profileMode: ProfileMode;
   public page: number;
   public size: number;
   public orderBy: string;
   public direction: string;
   public criteria?: string;
-
-  public profileMode: string;
   public profileName: string;
   public profileId: string;
   protected pageRequest: PageRequest;
@@ -77,10 +75,19 @@ export class ProfileService implements OnDestroy {
   subscription4$: Subscription;
   subscriptions: Subscription[] = [];
 
+  constructor(
+    private apiService: PastisApiService,
+    private pastisConfig: PastisConfiguration,
+    private puaService: ArchivalProfileUnitApiService,
+    private paService: ArchiveProfileApiService
+  ) {}
 
-  constructor(private apiService: PastisApiService, private pastisConfig: PastisConfiguration,
-              private puaService: ArchivalProfileUnitApiService,
-              private paService: ArchiveProfileApiService) {
+  public get profileMode(): ProfileMode {
+    return this._profileMode;
+  }
+
+  public set profileMode(profileMode: ProfileMode) {
+    this._profileMode = profileMode;
   }
 
   ngOnDestroy(): void {
@@ -124,9 +131,9 @@ export class ProfileService implements OnDestroy {
       if (profiles) {
         for (const profile of profiles) {
           if (profile.controlSchema) {
-            profile.type = 'PUA';
+            profile.type = ProfileMode.PUA;
           } else {
-            profile.type = 'PA';
+            profile.type = ProfileMode.PA;
           }
         }
         this.retrievedProfiles.next(profiles);
@@ -139,13 +146,13 @@ export class ProfileService implements OnDestroy {
     this.subscription3$ = this.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[]) => {
       if (profileListPUA) {
         profileListPUA.forEach((p) => {
-          p.type = 'PUA';
+          p.type = ProfileMode.PUA;
           profiles.push(p);
         });
         this.subscription4$ = this.getAllProfilesPA().subscribe((profileListPA: ProfileDescription[]) => {
           if (profileListPA) {
             profileListPA.forEach((p) => {
-              p.type = 'PA';
+              p.type = ProfileMode.PA;
               profiles.push(p);
             });
             this.retrievedProfiles.next(profiles);
@@ -172,14 +179,14 @@ export class ProfileService implements OnDestroy {
       headers: new HttpHeaders({
         'Content-type': 'application/json',
       }),
-      responseType: 'blob'
+      responseType: 'blob',
     };
     let profile: any = cloneDeep(file[0]);
 
-    const endPointUrl = profileType === 'PA' ? this.pastisConfig.savePAasFileUrl : this.pastisConfig.savePUAasFileUrl;
+    const endPointUrl = profileType === ProfileMode.PA ? this.pastisConfig.savePAasFileUrl : this.pastisConfig.savePUAasFileUrl;
     this.fixCircularReference(profile);
 
-    if (profileType === 'PUA') {
+    if (profileType === ProfileMode.PUA) {
       profile = { elementProperties: profile, notice };
     }
 
@@ -189,7 +196,7 @@ export class ProfileService implements OnDestroy {
   fixCircularReference(node: FileNode) {
     node.parent = null;
     node.sedaData = null;
-    node.children.forEach(child => {
+    node.children.forEach((child) => {
       this.fixCircularReference(child);
     });
   }
@@ -200,10 +207,7 @@ export class ProfileService implements OnDestroy {
     this.size = pageRequest.size;
     this.direction = pageRequest.direction;
 
-    const params = new HttpParams()
-      .set('page', this.page.toString())
-      .set('size', this.size.toString())
-      .set('direction', this.direction);
+    const params = new HttpParams().set('page', this.page.toString()).set('size', this.size.toString()).set('direction', this.direction);
     let allProfilesPA: any;
     allProfilesPA = this.apiService.get(this.pastisConfig.getProfilePaginatedUrl, { params }).pipe(
       map((paginated: PaginatedResponse<ProfileDescription>) => {
@@ -222,10 +226,7 @@ export class ProfileService implements OnDestroy {
     this.size = pageRequest.size;
     this.direction = pageRequest.direction;
 
-    const params = new HttpParams()
-      .set('page', this.page.toString())
-      .set('size', this.size.toString())
-      .set('direction', this.direction);
+    const params = new HttpParams().set('page', this.page.toString()).set('size', this.size.toString()).set('direction', this.direction);
     let allProfilesPUA: any;
     allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitPaginatedUrl, { params }).pipe(
       map((paginated: PaginatedResponse<ProfileDescription>) => {
@@ -239,14 +240,13 @@ export class ProfileService implements OnDestroy {
     return allProfilesPUA;
   }
 
-
   getAllProfilesPaginated(pageRequest: PageRequest): Observable<ProfileDescription[]> {
     const tabVide: ProfileDescription[] = [];
 
     this.subscription2$ = this.getAllProfilesPAPaginated(pageRequest).subscribe((data: ProfileDescription[]) => {
       if (data) {
-        data.forEach(p => p.type = 'PA');
-        data.forEach(p => tabVide.push(p));
+        data.forEach((p) => (p.type = ProfileMode.PA));
+        data.forEach((p) => tabVide.push(p));
         this.retrievedProfiles.next(data);
       }
     });
@@ -254,7 +254,7 @@ export class ProfileService implements OnDestroy {
     this.subscription1$ = this.getAllProfilesPUAPaginated(pageRequest).subscribe((data: ProfileDescription[]) => {
       // @ts-ignore
       if (data) {
-        data.forEach(p => p.type = 'PUA');
+        data.forEach((p) => (p.type = ProfileMode.PUA));
         this.retrievedProfiles.next(data);
       }
     });
@@ -262,10 +262,8 @@ export class ProfileService implements OnDestroy {
     this.subscriptions.push(this.subscription1$);
     this.subscriptions.push(this.subscription2$);
 
-    // console.log(this.retrievedProfiles + ' tableau gell all profiles Paginated');
     return this.retrievedProfiles;
   }
-
 
   getPuaProfile(id: string, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
     return this.puaService.getOne(id, headers);
@@ -314,4 +312,11 @@ export class ProfileService implements OnDestroy {
     return this.paService.download(id);
   }
 
+  public isArchiveProfileMode(): boolean {
+    return this.profileMode === ProfileMode.PA;
+  }
+
+  public isArchiveUnitProfileMode(): boolean {
+    return this.profileMode === ProfileMode.PUA;
+  }
 }

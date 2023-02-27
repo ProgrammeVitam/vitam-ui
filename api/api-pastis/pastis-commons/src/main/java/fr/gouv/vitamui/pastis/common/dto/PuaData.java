@@ -45,15 +45,13 @@ import java.util.List;
 
 @Data
 public class PuaData implements Serializable {
-
     Boolean additionalProperties;
     List<String> Enum;
     String pattern;
-    Integer minLenght;
-    Integer maxLenght;
+    Integer minLength;
+    Integer maxLength;
     Integer minimum;
     Integer maximum;
     Boolean exclusiveMinimum;
     Boolean exclusiveMaximum;
-
 }

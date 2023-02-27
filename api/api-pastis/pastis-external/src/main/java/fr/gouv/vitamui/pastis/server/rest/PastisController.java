@@ -92,7 +92,8 @@ class PastisController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PUA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json)
-        throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
+        throws TechnicalException, InvalidParseOperationException, PreconditionFailedException
+    {
         SanityChecker.sanitizeCriteria(json);
         String archiveUnitProfile = profileService.getArchiveUnitProfile(json, false);
         if (archiveUnitProfile != null) {
@@ -100,7 +101,6 @@ class PastisController {
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @ApiOperation(value = "Retrieve json representation from PUA notice")
@@ -119,12 +119,14 @@ class PastisController {
 
     @ApiOperation(value = "Retrieve json representation from input file")
     @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
-    @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE,
-        consumes = "multipart/form-data", produces = "application/json")
-    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file, @RequestParam("fileName") String fileName) throws NoSuchAlgorithmException,
-        TechnicalException, PreconditionFailedException {
+    @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE, consumes = "multipart/form-data", produces = "application/json")
+    ResponseEntity<ProfileResponse> loadProfileFromFile(
+        @RequestParam MultipartFile file,
+        @RequestParam("fileName") String fileName
+    ) throws NoSuchAlgorithmException, TechnicalException, PreconditionFailedException {
         SanityChecker.isValidFileName(fileName);
-        ProfileResponse profileResponse = profileService.loadProfileFromFile(file,fileName, false);
+        final ProfileResponse profileResponse = profileService.loadProfileFromFile(file, fileName, false);
+
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
         } else {

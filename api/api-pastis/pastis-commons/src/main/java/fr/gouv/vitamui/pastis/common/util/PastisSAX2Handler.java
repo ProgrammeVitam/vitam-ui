@@ -46,14 +46,11 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.Stack;
 
 public class PastisSAX2Handler extends DefaultHandler {
-
-    @Getter
-    private ElementRNG elementRNGRoot;
+    @Getter private ElementRNG elementRNGRoot;
     boolean isValue;
     private Stack<ElementRNG> stackRNG = new Stack<>();
     private boolean isInDocumentationTag;
     private StringBuilder documentationContent;
-
 
     /**
      * BEGIN OF OVERRIDE OF SAX 5 METHODS : startElement, endElement, startDocument, endDocument and characters
@@ -85,26 +82,20 @@ public class PastisSAX2Handler extends DefaultHandler {
                 e.getChildren().add(elementRNG);
             }
             stackRNG.push(elementRNG);
-
-
-
         }
 
         documentationContent = new StringBuilder();
         if (qName.equalsIgnoreCase("xsd:documentation")) {
             isInDocumentationTag = true;
         }
-
     }
 
     /**
      * Actions à réaliser lors de la détection de la fin d'un élément.
      */
     public void endElement(String nameSpace, String localName, String qName) throws SAXException {
-
         if (qName.equalsIgnoreCase("xsd:documentation")) {
             isInDocumentationTag = false;
-
         }
         if (!stackRNG.isEmpty()) {
             stackRNG.pop();

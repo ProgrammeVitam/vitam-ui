@@ -42,48 +42,48 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
 const standalone: boolean = environment.standalone;
-const routes: Route[] = standalone ?
-[
-  {
-    path: '',
-    loadChildren: () => import('./pastis/pastis.module').then((m) => m.PastisModule),
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'PASTIS_APP' },
-  },
-  {
-    path: 'pastis',
-    loadChildren: () => import('./pastis/pastis.module').then((m) => m.PastisModule),
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'PASTIS_APP' },
-  },
+const routes: Route[] = standalone
+  ? [
+      {
+        path: '',
+        loadChildren: () => import('./pastis/pastis.module').then((m) => m.PastisModule),
+        resolve: { userAnalytics: AnalyticsResolver },
+        data: { appId: 'PASTIS_APP' },
+      },
+      {
+        path: 'pastis',
+        loadChildren: () => import('./pastis/pastis.module').then((m) => m.PastisModule),
+        resolve: { userAnalytics: AnalyticsResolver },
+        data: { appId: 'PASTIS_APP' },
+      },
 
-  { path: '**', redirectTo: '' },
-] :
-[
-  {
-    path: '',
-    component: AppComponent,
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'PORTAL_APP' },
-  },
-  {
-    path: 'account',
-    component: AccountComponent,
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'ACCOUNTS_APP' },
-  },
-  {
-    path: 'pastis',
-    loadChildren: () => import('./pastis/pastis.module').then((m) => m.PastisModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'PASTIS_APP' },
-  },
+      { path: '**', redirectTo: '' },
+    ]
+  : [
+      {
+        path: '',
+        component: AppComponent,
+        canActivate: [AuthGuard, AppGuard],
+        resolve: { userAnalytics: AnalyticsResolver },
+        data: { appId: 'PORTAL_APP' },
+      },
+      {
+        path: 'account',
+        component: AccountComponent,
+        canActivate: [AuthGuard, AppGuard],
+        resolve: { userAnalytics: AnalyticsResolver },
+        data: { appId: 'ACCOUNTS_APP' },
+      },
+      {
+        path: 'pastis',
+        loadChildren: () => import('./pastis/pastis.module').then((m) => m.PastisModule),
+        canActivate: [AuthGuard, AppGuard],
+        resolve: { userAnalytics: AnalyticsResolver },
+        data: { appId: 'PASTIS_APP' },
+      },
 
-  { path: '**', redirectTo: '' },
-];
+      { path: '**', redirectTo: '' },
+    ];
 
 @NgModule({
   imports: [

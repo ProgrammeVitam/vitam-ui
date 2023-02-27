@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataGeneriquePopupService {
-
   private test = ['', '', ''];
   private donneeSource = new BehaviorSubject(this.test);
 
   currentDonnee = this.donneeSource.asObservable();
 
-  constructor() { }
+  constructor() {}
 
   changeDonnees(donnees: Array<string>) {
     this.donneeSource.next(donnees);

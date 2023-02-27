@@ -40,13 +40,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'pastis-under-construction',
   templateUrl: './pastis-under-construction.component.html',
-  styleUrls: ['./pastis-under-construction.component.scss']
+  styleUrls: ['./pastis-under-construction.component.scss'],
 })
 export class PastisUnderConstructionComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

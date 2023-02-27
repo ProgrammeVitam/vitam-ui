@@ -43,21 +43,22 @@ import { PastisPopupMetadataLanguageService } from '../../pastis-popup-metadata-
 @Component({
   selector: 'pastis-breadcrumb',
   templateUrl: './pastis-breadcrumb.component.html',
-  styleUrls: ['./pastis-breadcrumb.component.scss']
+  styleUrls: ['./pastis-breadcrumb.component.scss'],
 })
 export class PastisBreadcrumbComponent implements OnInit {
-
   @Input()
   public data: Array<any>;
 
   @Output()
   public selected = new EventEmitter<any>();
 
-  constructor(private metadataLanguageService: PastisPopupMetadataLanguageService, private tenantService: TenantSelectionService
-    ,         private pastisConfig: PastisConfiguration) {}
+  constructor(
+    private metadataLanguageService: PastisPopupMetadataLanguageService,
+    private tenantService: TenantSelectionService,
+    private pastisConfig: PastisConfiguration
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public onClick(d: any, emit: boolean): void {
     if (emit) {
@@ -69,7 +70,7 @@ export class PastisBreadcrumbComponent implements OnInit {
   }
 
   getLabel(data: BreadcrumbDataMetadata): string {
-    if (data.node && (data.label === data.node.name)) {
+    if (data.node && data.label === data.node.name) {
       if (!this.metadataLanguageService.sedaLanguage.getValue()) {
         if (data.node.sedaData.NameFr) {
           return data.node.sedaData.NameFr;

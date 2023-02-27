@@ -42,8 +42,8 @@ package fr.gouv.vitamui.pastis.common.rest;
  * The URLs of the REST API.
  */
 public class RestApi {
-
-    private RestApi(){}
+    private RestApi() {
+    }
 
     // Return
     public static final String PASTIS_GET_ALL_PROFILES = "/getprofiles";
@@ -55,5 +55,4 @@ public class RestApi {
     public static final String PASTIS_DOWNLOAD_PA = "/archiveprofile";
     public static final String PASTIS_CREATE_PROFILE = "/profile";
     public static final String PASTIS = "/pastis";
-
 }

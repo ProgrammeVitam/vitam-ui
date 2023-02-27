@@ -40,18 +40,17 @@ import { BehaviorSubject } from 'rxjs';
 import { ApplicationService } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PopupService {
-
   popUpDataBeforeClose = new BehaviorSubject<any>(null);
   popUpDataAfterOpen = new BehaviorSubject<any>(null);
   btnYesShoudBeDisabled = new BehaviorSubject<boolean>(false);
 
   externalIdentifierEnabled: boolean;
 
-  constructor(private applicationService: ApplicationService,) {
-    this.updateSlaveMode()
+  constructor(private applicationService: ApplicationService) {
+    this.updateSlaveMode();
   }
 
   private updateSlaveMode() {
@@ -79,5 +78,4 @@ export class PopupService {
   disableYesButton(condition: boolean) {
     condition ? this.btnYesShoudBeDisabled.next(true) : this.btnYesShoudBeDisabled.next(false);
   }
-
 }

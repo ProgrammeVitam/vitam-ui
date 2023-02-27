@@ -45,7 +45,6 @@ import javax.xml.bind.annotation.XmlValue;
 
 @Setter
 public class DocumentationXML {
-
     String documentation;
     BaliseXML parent;
 

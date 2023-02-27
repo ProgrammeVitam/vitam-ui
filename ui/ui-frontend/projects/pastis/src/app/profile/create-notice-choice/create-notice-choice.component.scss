@@ -40,24 +40,24 @@
   color: var(--vitamui-grey-900);
 }
 
-.conteneur{
+.conteneur {
   display: block;
   margin: 35px 23px;
 }
 
-.gauche{
+.gauche {
   margin: 10px 0px -20px 30px;
   float: left;
-  width:34%
+  width: 34%;
 }
 
-.flex{
+.flex {
   flex-grow: 1;
 }
 
 .pastis-dialog-confirm-buttons {
   position: relative;
-  margin : 0 0 10px 5%;
+  margin: 0 0 10px 5%;
 }
 
 .pastis-btn-oui-dialog-confirm {
@@ -65,7 +65,7 @@
   font-size: 0.9em;
   font-family: Mulish, sans-serif !important;
   border-radius: 100px;
-  padding:0 30px;
+  padding: 0 30px;
   min-width: 92px;
   height: 50px;
   letter-spacing: 0.5px;
@@ -74,7 +74,7 @@
 }
 
 .pastis-btn-non-dialog-confirm {
- padding: 0 30px;
+  padding: 0 30px;
   border: none;
   min-width: 92px;
   height: 50px;
@@ -87,7 +87,4 @@
   font-size: 0.9em;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-
 }
-
-

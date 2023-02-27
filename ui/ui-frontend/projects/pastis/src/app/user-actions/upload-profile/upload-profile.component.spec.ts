@@ -36,14 +36,13 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { BASE_URL, ProfileService } from 'ui-frontend-common';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 
 import { UserActionUploadProfileComponent } from './upload-profile.component';
-
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -52,21 +51,17 @@ describe('UserActionUploadComponent', () => {
   let component: UserActionUploadProfileComponent;
   let fixture: ComponentFixture<UserActionUploadProfileComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      declarations: [ UserActionUploadProfileComponent ],
+      imports: [HttpClientTestingModule],
+      declarations: [UserActionUploadProfileComponent],
       providers: [
         ProfileService,
         PastisConfiguration,
         { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
-      ]
-
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

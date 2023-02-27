@@ -36,9 +36,11 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { ProfileMode } from '../../models/profile-response';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION.CHOICE';
@@ -52,7 +54,7 @@ function constantToTranslate() {
 @Component({
   selector: 'pastis-create-profile',
   templateUrl: './create-profile.component.html',
-  styleUrls: [ './create-profile.component.scss' ]
+  styleUrls: ['./create-profile.component.scss'],
 })
 export class CreateProfileComponent implements OnInit {
   firstChoice: string;
@@ -61,27 +63,31 @@ export class CreateProfileComponent implements OnInit {
   profilPaChoice = true;
   isStandalone: boolean = environment.standalone;
 
-  constructor(private dialogRef: MatDialogRef<CreateProfileComponent>, private translateService: TranslateService,
-              @Inject(MAT_DIALOG_DATA) public data: PastisDialogData) {
-  }
+  private subscriptions = new Subscription();
+
+  constructor(
+    private dialogRef: MatDialogRef<CreateProfileComponent>,
+    private translateService: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public data: PastisDialogData
+  ) {}
 
   ngOnInit() {
     if (!this.isStandalone) {
       constantToTranslate.call(this);
       this.translatedOnChange();
     } else if (this.isStandalone) {
-      this.firstChoice = 'PA';
-      this.secondChoice = 'PUA';
-      this.title = 'Sélectionner un profil d\'archivage :';
+      this.firstChoice = ProfileMode.PA;
+      this.secondChoice = ProfileMode.PUA;
+      this.title = "Sélectionner un profil d'archivage :";
     }
   }
 
   translatedOnChange(): void {
-    this.translateService.onLangChange
-      .subscribe((event: LangChangeEvent) => {
+    this.subscriptions.add(
+      this.translateService.onLangChange.subscribe(() => {
         constantToTranslate.call(this);
-        console.log(event.lang);
-      });
+      })
+    );
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -97,7 +103,6 @@ export class CreateProfileComponent implements OnInit {
   }
 
   changeChoiceCreateProfile($event: string) {
-    console.log($event);
     if ($event === this.firstChoice) {
       this.profilPaChoice = true;
     } else {
@@ -107,10 +112,9 @@ export class CreateProfileComponent implements OnInit {
 
   onYesClick() {
     if (this.profilPaChoice) {
-      this.dialogRef.close({ success: true, action: 'PA' });
+      this.dialogRef.close({ success: true, action: ProfileMode.PA });
     } else if (!this.profilPaChoice) {
-      this.dialogRef.close({ success: true, action: 'PUA' });
+      this.dialogRef.close({ success: true, action: ProfileMode.PUA });
     }
   }
-
 }

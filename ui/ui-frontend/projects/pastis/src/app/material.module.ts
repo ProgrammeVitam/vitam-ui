@@ -27,7 +27,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 
-
 @NgModule({
   imports: [
     MatButtonModule,
@@ -57,7 +56,7 @@ import { MatTreeModule } from '@angular/material/tree';
     MatDialogModule,
     MatSnackBarModule,
     MatDividerModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
   ],
   exports: [
     MatButtonModule,
@@ -87,8 +86,7 @@ import { MatTreeModule } from '@angular/material/tree';
     MatTooltipModule,
     MatSnackBarModule,
     MatDividerModule,
-    MatButtonToggleModule
-  ]
+    MatButtonToggleModule,
+  ],
 })
-
 export class PastisMaterialModule {}

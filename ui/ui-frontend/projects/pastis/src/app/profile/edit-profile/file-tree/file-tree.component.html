@@ -1,73 +1,96 @@
-<mat-tree #treeSelector *ngIf="fileTreeService.nestedTreeControl && fileTreeService.nestedDataSource"
-  [dataSource]="fileTreeService.nestedDataSource" [treeControl]="fileTreeService.nestedTreeControl" class="pastis-tree">
-
+<mat-tree
+  #treeSelector
+  *ngIf="fileTreeService.nestedTreeControl && fileTreeService.nestedDataSource"
+  [dataSource]="fileTreeService.nestedDataSource"
+  [treeControl]="fileTreeService.nestedTreeControl"
+  class="pastis-tree"
+>
   <!-- Nested tree node-->
-  <mat-nested-tree-node *matTreeNodeDef="let node;when:hasNestedChild">
-    <div *ngIf="node.name === rootElementName && (activeTabIndex === 2 && this.profileService.profileMode === 'PA') "
-      class="pastis-btn-container-add-ua">
-      <button (click)=addArchiveUnit(node) class="btn primary">
-        {{'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA' | translate}}
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasNestedChild">
+    <div
+      *ngIf="node.name === rootElementName && activeTabIndex === 2 && this.profileService.isArchiveProfileMode()"
+      class="pastis-btn-container-add-ua"
+    >
+      <button (click)="addArchiveUnit(node)" class="btn primary">
+        {{ 'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA' | translate }}
       </button>
     </div>
     <ng-container *ngIf="!isAttribute(node) && shouldBeOnTab(node) && node">
-      <mat-list-item (click)="updateMedataTable(node);fileTreeService.nestedTreeControl.expand(node)"
-        (mouseover)="hover=node.children.length"
-        [ngClass]="{'list-item':!selectedItem(node),'list-item-select':selectedItem(node)}">
-
+      <mat-list-item
+        (click)="updateMedataTable(node); fileTreeService.nestedTreeControl.expand(node)"
+        (mouseover)="hover = node.children.length"
+        [ngClass]="{ 'list-item': !selectedItem(node), 'list-item-select': selectedItem(node) }"
+      >
         <!--Root node name-->
-        <span *ngIf="node.name === rootElementName && this.profileService.profileMode === 'PA'"
-          class="pastis-tree-node-root-name">
-          <span [ngStyle]="{'margin-left': calculateNodePosition(node) + 'px'}">
-            {{rootElementShowName}}
+        <span *ngIf="node.name === rootElementName && this.profileService.isArchiveProfileMode()" class="pastis-tree-node-root-name">
+          <span [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px' }">
+            {{ rootElementShowName }}
           </span>
           <mat-divider class="pastis-divider"></mat-divider>
         </span>
 
         <!--Root children without children-->
-        <span (click)="updateMedataTable(node);$event.stopPropagation()" *ngIf="!node.children.length && node.name !== rootElementName
-                    && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)"
-          [ngStyle]="{'margin-left': calculateNodePosition(node)  + 'px'}" class="pastis-tree-node-name">
-          <span class="text text-medium">{{onResolveName(node)}}</span>
+        <span
+          (click)="updateMedataTable(node); $event.stopPropagation()"
+          *ngIf="
+            !node.children.length && node.name !== rootElementName && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)
+          "
+          [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px' }"
+          class="pastis-tree-node-name"
+        >
+          <span class="text text-medium">{{ onResolveName(node) }}</span>
           <mat-divider class="pastis-divider"></mat-divider>
         </span>
 
         <!--Root children with children-->
 
-        <span *ngIf="node.children.length && node.name !== rootElementName
-                    && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)">
-          <div (click)="expendChildren(node);$event.stopPropagation()"
-            [ngStyle]="{'margin-left': calculateNodePosition(node)  + 'px' , 'width': '360px' }">
-            <span *ngIf="isElementComplexAndHasChildren(node)"
-              [ngClass]="{'pastis-chevron-icon': !fileTreeService.nestedTreeControl.isExpanded(node),
-              'pastis-chevron-icon-selected':fileTreeService.nestedTreeControl.isExpanded(node)}">
-              <mat-icon>{{fileTreeService.nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-              </mat-icon>
+        <span
+          *ngIf="
+            node.children.length && node.name !== rootElementName && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)
+          "
+        >
+          <div
+            (click)="expendChildren(node); $event.stopPropagation()"
+            [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px', width: '360px' }"
+          >
+            <span
+              *ngIf="isElementComplexAndHasChildren(node)"
+              [ngClass]="{
+                'pastis-chevron-icon': !fileTreeService.nestedTreeControl.isExpanded(node),
+                'pastis-chevron-icon-selected': fileTreeService.nestedTreeControl.isExpanded(node)
+              }"
+            >
+              <mat-icon>{{ fileTreeService.nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }} </mat-icon>
             </span>
-            <button [id]="'child' + node.id" [ngStyle]="{'display': 'none' }" mat-icon-button matTreeNodeToggle>
-            </button>
+            <button [id]="'child' + node.id" [ngStyle]="{ display: 'none' }" mat-icon-button matTreeNodeToggle></button>
             <span class="pastis-tree-node-name">
-              <span [ngClass]="{'text-medium-normal':!selectedItem(node),'text-medium-primary':selectedItem(node)}"
-                class="text text-medium" *ngIf="node.nonEditFileNode || node.name==='ArchiveUnit'; else elseBlock">
-                <modify-text-button  *ngIf="this.profileService.profileMode ==='PA'"
-                  (textEdit)="changeFileNode($event, node)" [node]="node"></modify-text-button>
-                {{this.profileService.profileMode ==='PUA' ? onResolveName(node) : ''}}
+              <span
+                [ngClass]="{ 'text-medium-normal': !selectedItem(node), 'text-medium-primary': selectedItem(node) }"
+                class="text text-medium"
+                *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'; else elseBlock"
+              >
+                <modify-text-button
+                  *ngIf="this.profileService.profileMode === 'PA'"
+                  (textEdit)="changeFileNode($event, node)"
+                  [node]="node"
+                ></modify-text-button>
+                {{ this.profileService.isArchiveUnitProfileMode() ? onResolveName(node) : '' }}
               </span>
-              <ng-template #elseBlock>{{onResolveName(node)}}</ng-template>
-              <span *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'" matTooltip="Ajouter une UA"
-                matTooltipClass="pastis-tooltip-class" style="float: right;">
-
-
+              <ng-template #elseBlock>{{ onResolveName(node) }}</ng-template>
+              <span
+                *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'"
+                matTooltip="Ajouter une UA"
+                matTooltipClass="pastis-tooltip-class"
+                class="float-right"
+              >
                 <!--Button plus-->
-                <button (click)="addArchiveUnit(node)" *ngIf="this.profileService.profileMode === 'PA'"
-                  class="pastis-btn-add-ua">
-                  <i class="vitamui-icon vitamui-icon-add" style="color: var(--vitamui-primary);"></i>
-                  <span class="pastis-btn-add-ua-text">{{'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA_ICON' |
-                    translate}}</span>
+                <button (click)="addArchiveUnit(node)" *ngIf="this.profileService.isArchiveProfileMode()" class="pastis-btn-add-ua">
+                  <i class="vitamui-icon vitamui-icon-add text-primary"></i>
+                  <span class="pastis-btn-add-ua-text">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA_ICON' | translate }}</span>
                 </button>
               </span>
             </span>
           </div>
-          <mat-divider class="pastis-divider"></mat-divider>
         </span>
       </mat-list-item>
 
@@ -76,6 +99,4 @@
       </ul>
     </ng-container>
   </mat-nested-tree-node>
-
-
 </mat-tree>

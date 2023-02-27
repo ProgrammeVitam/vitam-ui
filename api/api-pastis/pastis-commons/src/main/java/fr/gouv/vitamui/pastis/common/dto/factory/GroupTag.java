@@ -42,4 +42,5 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:group")
 public class GroupTag extends RngTag {
+
 }

@@ -45,7 +45,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ProfileNotice {
-
     ElementProperties elementProperties;
     Notice notice;
 

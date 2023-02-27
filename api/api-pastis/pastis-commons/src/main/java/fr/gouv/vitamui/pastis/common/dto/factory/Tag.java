@@ -47,7 +47,6 @@ import java.util.List;
 
 @Setter
 public abstract class Tag {
-
     Tag parent;
     List<Tag> children = new ArrayList<>();
 
@@ -65,6 +64,4 @@ public abstract class Tag {
     String getTagName() {
         return this.getClass().getSimpleName();
     }
-
-
 }

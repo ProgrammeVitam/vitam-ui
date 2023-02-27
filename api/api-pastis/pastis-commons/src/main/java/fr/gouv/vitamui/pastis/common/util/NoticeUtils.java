@@ -43,19 +43,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
 
 public class NoticeUtils {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(NoticeUtils.class);
 
     private NoticeUtils() {

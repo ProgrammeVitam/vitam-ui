@@ -39,21 +39,18 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CardinalityConstants, FileNode, TypeConstants } from '../../../models/file-node';
 import { CardinalityValues, MetadataHeaders } from '../../../models/models';
-import { SedaData, SedaElementConstants } from '../../../models/seda-data';
+import { SedaData, SedaElement } from '../../../models/seda-data';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FileTreeMetadataService {
-
   cardinalityValues: CardinalityValues[] = [];
   allowedCardinality: Map<string, string[]>;
   dataSource = new BehaviorSubject<MetadataHeaders[]>(null);
   selectedCardinalities = new BehaviorSubject<string[]>([]);
   allowedSedaCardinalities = new BehaviorSubject<string[][]>([]);
-
   shouldLoadMetadataTable = new BehaviorSubject<boolean>(true);
-
 
   constructor() {
     this.initCardinalityValues();
@@ -77,14 +74,12 @@ export class FileTreeMetadataService {
 
   fillDataTable(sedaChild: SedaData, clickedNode: FileNode, _childrenToInclude: string[], childrenToExclude: string[]): MetadataHeaders[] {
     const data: MetadataHeaders[] = [];
-    let allowedCardList: string[][];
-    if (clickedNode.children.length > 0 ) {
-      for (const child of clickedNode.children) {
-       // There are cases where there are no childrenToExclude declared
-       // So we must check if it exists to avoid and undefined of includes error
-       if (childrenToExclude && !childrenToExclude.includes(child.name) &&
-          child.type !== TypeConstants.attribute) {
 
+    if (clickedNode.children.length > 0) {
+      for (const child of clickedNode.children) {
+        // There are cases where there are no childrenToExclude declared
+        // So we must check if it exists to avoid and undefined of includes error
+        if (childrenToExclude && !childrenToExclude.includes(child.name) && child.type !== TypeConstants.attribute) {
           data.push({
             nomDuChampEdit: child.editName,
             id: child.id,
@@ -106,8 +101,9 @@ export class FileTreeMetadataService {
             cardinalite: this.findSedaAllowedCardinalityList(sedaChild, child),
             commentaire: child.documentation,
             type: child.dataType,
-            enumeration: child.sedaData.Enumeration});
-        } else if (clickedNode.type  === TypeConstants.element && sedaChild.Element === SedaElementConstants.simple) {
+            enumeration: child.sedaData.Enumeration,
+          });
+        } else if (clickedNode.type === TypeConstants.element && sedaChild.Element === SedaElement.SIMPLE) {
           data.push({
             nomDuChampEdit: child.editName,
             id: clickedNode.id,
@@ -135,7 +131,7 @@ export class FileTreeMetadataService {
         enumeration: clickedNode.sedaData.Enumeration,
       });
     }
-    this.allowedSedaCardinalities.next(allowedCardList);
+    this.allowedSedaCardinalities.next(undefined);
     this.selectedCardinalities.next(this.findCardinalities(clickedNode, sedaChild, data));
     return data;
   }
@@ -148,9 +144,10 @@ export class FileTreeMetadataService {
     }
     return null;
   }
+
   onResolveName(elementName: string, sedaChild: SedaData) {
     const node = this.getSedaNode(elementName, sedaChild);
-    if (node != null) {
+    if (node !== null) {
       if (node.NameFr) {
         return node.NameFr;
       }
@@ -167,10 +164,10 @@ export class FileTreeMetadataService {
     if (sedaNode.Name === fileNode.name) {
       allowedCardinalityListResult = this.allowedCardinality.get(sedaNode.Cardinality);
     }
-    if (sedaNode.Children.length > 0 ) {
+    if (sedaNode.Children.length > 0) {
       // Search the sedaNode children to find the correnpondent cardinality list
       for (const child of sedaNode.Children) {
-        if ((child.Name === fileNode.name)  ) {
+        if (child.Name === fileNode.name) {
           // Used in the case we wish to "correct" the node's cardinality, since
           // the seda cardinality wont include the cardinality retrieved by node's rng file.
           // In this case, the condition will return the rng file cardinality list
@@ -192,23 +189,24 @@ export class FileTreeMetadataService {
     this.allowedSedaCardinalities.next(resultList);
     if (allowedCardinalityListResult.length < 1) {
       allowedCardinalityListResult = this.allowedCardinality.get(fileNode.cardinality);
-
     }
     return allowedCardinalityListResult;
   }
 
   findCardinalities(clickedNode: FileNode, sedaNode: SedaData, data: MetadataHeaders[]): string[] {
     const childrenCardMap = new Map();
-    const idsToKeep = data.map(name => name.id);
-    const nodesToKeep = clickedNode.children.filter(child => idsToKeep.includes(child.id));
+    const idsToKeep = data.map((name) => name.id);
+    const nodesToKeep = clickedNode.children.filter((child) => idsToKeep.includes(child.id));
 
     if (sedaNode.Children.length > 0) {
-        for (const fileNodechild of nodesToKeep) {
-          sedaNode.Children.forEach((sedaGrandChild: { Name: string; }) => {
-            if (fileNodechild.name === sedaGrandChild.Name) {
-              fileNodechild.cardinality ? childrenCardMap.set(fileNodechild.id, fileNodechild.cardinality) : childrenCardMap.set(fileNodechild.id, '1');
-            }
-          });
+      for (const fileNodechild of nodesToKeep) {
+        sedaNode.Children.forEach((sedaGrandChild: { Name: string }) => {
+          if (fileNodechild.name === sedaGrandChild.Name) {
+            fileNodechild.cardinality
+              ? childrenCardMap.set(fileNodechild.id, fileNodechild.cardinality)
+              : childrenCardMap.set(fileNodechild.id, '1');
+          }
+        });
       }
     } else {
       !clickedNode.cardinality ? childrenCardMap.set(clickedNode.id, '1') : childrenCardMap.set(clickedNode.id, clickedNode.cardinality);
@@ -228,15 +226,17 @@ export class FileTreeMetadataService {
     if (sedaParent.Name === childName) {
       return sedaParent.Enumeration;
     }
-    const sedaNode: SedaData = sedaParent.Children.find((c: { Name: string; }) => c.Name === childName);
+    const sedaNode: SedaData = sedaParent.Children.find((c: { Name: string }) => c.Name === childName);
     if (sedaNode) {
       return sedaNode.Enumeration;
     }
     return [];
   }
+
   shouldLoadTable() {
     return this.shouldLoadMetadataTable.getValue();
   }
+
   enableAttributeOption(nodeType: string) {
     return nodeType === TypeConstants.attribute;
   }

@@ -40,7 +40,6 @@ package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
-import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -55,19 +54,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "/application-test.yml")
 public class JsonFromPuaTest {
 
-    JsonFromPUA jsonFromPUA = new JsonFromPUA();
+    final JsonFromPua jsonFromPua = new JsonFromPua();
 
     @Test
     public void testImportOK() throws IOException {
         InputStream inputStreamPua = getClass().getClassLoader().getResourceAsStream("pua/pua_OK.json");
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profileActual = jsonFromPua.toElementProperties(profileJson);
         ObjectMapper mapper = new ObjectMapper();
         String fileNodeActual = mapper.writeValueAsString(profileActual);
         JSONObject fileNodeJSONActual = new JSONObject(fileNodeActual);
@@ -80,10 +78,9 @@ public class JsonFromPuaTest {
     @Test
     public void testImportOK_with_management() throws IOException {
         InputStream inputStreamPua = getClass().getClassLoader().getResourceAsStream("pua/pua_OK_with_management.json");
-
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profileActual = jsonFromPua.toElementProperties(profileJson);
         ObjectMapper mapper = new ObjectMapper();
         String fileNodeActual = mapper.writeValueAsString(profileActual);
         JSONObject fileNodeJSONActual = new JSONObject(fileNodeActual);
@@ -98,10 +95,9 @@ public class JsonFromPuaTest {
     public void testImportNOK_missing_definitions() throws IOException {
         InputStream inputStreamPua =
             getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_missing_definitions.json");
-
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPua.toElementProperties(profileJson);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
@@ -111,10 +107,9 @@ public class JsonFromPuaTest {
     public void testImportNOK_missing_management() throws IOException {
         InputStream inputStreamPua =
             getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_missing_management.json");
-
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPua.toElementProperties(profileJson);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
@@ -124,10 +119,9 @@ public class JsonFromPuaTest {
     public void testImportNOK_missing_properties() throws IOException {
         InputStream inputStreamPua =
             getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_missing_properties.json");
-
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPua.toElementProperties(profileJson);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
@@ -137,10 +131,9 @@ public class JsonFromPuaTest {
     public void testImportNOK_both_management_present() throws IOException {
         InputStream inputStreamPua =
             getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_both_management_present.json");
-
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPua.toElementProperties(profileJson);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
