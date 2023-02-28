@@ -34,8 +34,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import fr.gouv.vitam.collect.external.dto.ProjectDto;
-import fr.gouv.vitam.collect.external.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.dto.ProjectDto;
+import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -270,7 +270,7 @@ class ProjectInternalServiceTest {
     void shouldStreamUploadWithSuccess() throws VitamClientException {
         // GIVEN
         Mockito.when(collectService.uploadProjectZip(any(), any(), any()))
-            .thenReturn(Response.ok().build());
+            .thenReturn(new RequestResponseOK());
         InputStream csvFileInputStream = ProjectInternalService.class.getClassLoader()
             .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
 

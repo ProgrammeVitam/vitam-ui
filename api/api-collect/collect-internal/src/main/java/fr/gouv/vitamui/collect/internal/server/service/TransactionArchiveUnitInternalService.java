@@ -287,8 +287,9 @@ public class TransactionArchiveUnitInternalService {
             SelectMultiQuery selectMultiQuery = createSelectMultiQuery(indexedArchiveUnitsCriteriaList);
             selectMultiQuery.addUsedProjection("#id");
             selectMultiQuery.setLimitFilter(0, 1);
-            RequestResponseOK<JsonNode> result =
-                collectService.searchUnitsByTransactionId(transactionId, selectMultiQuery.getFinalSelect(), vitamContext);
+            RequestResponse<JsonNode> result =
+                collectService.searchUnitsByTransactionId(transactionId, selectMultiQuery.getFinalSelect(),
+                    vitamContext);
             VitamRestUtils.checkResponse(result);
             final VitamUISearchResponseDto archivesUnitsResults =
                 objectMapper.treeToValue(result.toJsonNode(), VitamUISearchResponseDto.class);
@@ -300,7 +301,8 @@ public class TransactionArchiveUnitInternalService {
                     computeNoRulesFacets(transactionId, indexedArchiveUnitsCriteriaList, category, vitamContext);
                 globalRulesFacets.add(withoutRulesByCategoryFacet);
                 List<FacetResultsDto> facetsForAuHavingRules =
-                    computeFacetsForAuHavingRules(transactionId, indexedArchiveUnitsCriteriaList, category, vitamContext);
+                    computeFacetsForAuHavingRules(transactionId, indexedArchiveUnitsCriteriaList, category,
+                        vitamContext);
                 globalRulesFacets.addAll(facetsForAuHavingRules);
             }
         } catch (InvalidParseOperationException e) {
@@ -386,7 +388,7 @@ public class TransactionArchiveUnitInternalService {
             throw new InvalidCreateOperationException(e);
         }
 
-        RequestResponseOK<JsonNode> result =
+        RequestResponse<JsonNode> result =
             collectService.searchUnitsByTransactionId(transactionId, selectMultiQuery.getFinalSelect(), vitamContext);
         VitamRestUtils.checkResponse(result);
         final VitamUISearchResponseDto archivesUnitsResults =
@@ -665,7 +667,8 @@ public class TransactionArchiveUnitInternalService {
         throws VitamClientException, IOException, InvalidCreateOperationException, InvalidParseOperationException {
         SearchCriteriaDto searchQueryCounting = new SearchCriteriaDto();
         searchQueryCounting.setCriteriaList(searchQuery.getCriteriaList());
-        ArchiveUnitsDto archiveUnitsResult = searchArchiveUnitsByCriteria(transactionId, searchQueryCounting, vitamContext);
+        ArchiveUnitsDto archiveUnitsResult =
+            searchArchiveUnitsByCriteria(transactionId, searchQueryCounting, vitamContext);
         Integer nbResults = archiveUnitsResult.getArchives().getHits().getTotal();
         if (nbResults >= EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS) {
             LOGGER.error("The archives units result found is greater than allowed {} ",

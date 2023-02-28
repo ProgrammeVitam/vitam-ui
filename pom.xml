@@ -827,7 +827,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitam</groupId>
-                <artifactId>collect-client</artifactId>
+                <artifactId>collect-external-client</artifactId>
                 <version>${vitam.version}</version>
                 <exclusions>
                     <exclusion>

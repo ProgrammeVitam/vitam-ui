@@ -32,8 +32,8 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClientFactory;
 import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2Factory;
-import fr.gouv.vitam.collect.external.client.CollectClient;
-import fr.gouv.vitam.collect.external.client.CollectClientFactory;
+import fr.gouv.vitam.collect.external.client.CollectExternalClient;
+import fr.gouv.vitam.collect.external.client.CollectExternalClientFactory;
 import fr.gouv.vitam.common.client.VitamClientFactoryInterface.VitamClientType;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClientFactory;
@@ -85,8 +85,8 @@ public abstract class VitamClientConfig {
 
     @Bean
     @Profile("!test")
-    public CollectClient collectClient() {
-        final CollectClientFactory factory = CollectClientFactory.getInstance();
+    public CollectExternalClient collectExternalClient() {
+        final CollectExternalClientFactory factory = CollectExternalClientFactory.getInstance();
         if (VitamClientType.MOCK.equals(factory.getVitamClientType())) {
             throw new InternalServerException("Failed to load Vitam configuration: Vitam client is in MOCK mode");
         }

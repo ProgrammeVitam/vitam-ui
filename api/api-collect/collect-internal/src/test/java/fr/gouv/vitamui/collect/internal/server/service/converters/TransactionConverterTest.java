@@ -1,12 +1,13 @@
 package fr.gouv.vitamui.collect.internal.server.service.converters;
 
-import fr.gouv.vitam.collect.external.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TransactionConverterTest {
 

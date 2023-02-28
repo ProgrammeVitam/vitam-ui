@@ -33,9 +33,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitam.collect.external.dto.CriteriaProjectDto;
-import fr.gouv.vitam.collect.external.dto.ProjectDto;
-import fr.gouv.vitam.collect.external.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
+import fr.gouv.vitam.collect.common.dto.ProjectDto;
+import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -261,7 +261,8 @@ public class ProjectInternalService {
     public CollectTransactionDto getLastTransactionForProjectId(String projectId, VitamContext vitamContext)
         throws VitamClientException {
         try {
-            RequestResponse<JsonNode> requestResponse = collectService.getLastTransactionForProjectId(vitamContext, projectId);
+            RequestResponse<JsonNode> requestResponse =
+                collectService.getLastTransactionForProjectId(vitamContext, projectId);
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when getting last transaction by project!");
             }
