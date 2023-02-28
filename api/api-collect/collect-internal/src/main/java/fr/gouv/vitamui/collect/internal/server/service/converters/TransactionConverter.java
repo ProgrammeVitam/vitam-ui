@@ -27,8 +27,8 @@
 
 package fr.gouv.vitamui.collect.internal.server.service.converters;
 
-import fr.gouv.vitam.collect.external.dto.ProjectDto;
-import fr.gouv.vitam.collect.external.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.dto.ProjectDto;
+import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import lombok.experimental.UtilityClass;
 

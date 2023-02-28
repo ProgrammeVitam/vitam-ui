@@ -51,7 +51,7 @@ management:
 
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
-  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityRole: vitamui-{{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
 collect-external:

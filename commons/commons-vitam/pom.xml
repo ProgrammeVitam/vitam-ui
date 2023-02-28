@@ -1,75 +1,55 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>fr.gouv.vitamui.commons</groupId>
-	<artifactId>commons-vitam</artifactId>
-	<name>VITAMUI Commons Vitam</name>
-	<packaging>jar</packaging>
+    <groupId>fr.gouv.vitamui.commons</groupId>
+    <artifactId>commons-vitam</artifactId>
+    <name>VITAMUI Commons Vitam</name>
+    <packaging>jar</packaging>
 
-	<parent>
-		<groupId>fr.gouv.vitamui</groupId>
-		<artifactId>commons-parent</artifactId>
-		<version>6.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>fr.gouv.vitamui</groupId>
+        <artifactId>commons-parent</artifactId>
+        <version>6.0-SNAPSHOT</version>
+    </parent>
 
-	<dependencies>
-		<!-- Spring boot -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-json</artifactId>
-		</dependency>
+    <dependencies>
+        <!-- Spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-autoconfigure</artifactId>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-		<!-- VITAMUI -->
-		<dependency>
-			<groupId>fr.gouv.vitamui.commons</groupId>
-			<artifactId>commons-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>fr.gouv.vitamui.commons</groupId>
-			<artifactId>commons-utils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>fr.gouv.vitamui.commons</groupId>
-			<artifactId>commons-rest</artifactId>
-		</dependency>
+        <!-- VITAMUI -->
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-rest</artifactId>
+        </dependency>
 
-		<!-- VITAM Access API -->
+        <!-- VITAM Access API -->
         <dependency>
             <groupId>fr.gouv.vitam</groupId>
             <artifactId>ingest-external-client</artifactId>
-            <exclusions>
-            	<exclusion>
-            		<groupId>com.fasterxml.jackson.core</groupId>
-            		<artifactId>jackson-annotations</artifactId>
-            	</exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitam</groupId>
-            <artifactId>access-external-client</artifactId>
-            <exclusions>
-            	<exclusion>
-            		<groupId>com.fasterxml.jackson.core</groupId>
-            		<artifactId>jackson-annotations</artifactId>
-            	</exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitam</groupId>
-            <artifactId>collect-client</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>com.fasterxml.jackson.core</groupId>
@@ -77,139 +57,159 @@
                 </exclusion>
             </exclusions>
         </dependency>
-		<dependency>
-			<groupId>fr.gouv.vitam</groupId>
-			<artifactId>common-public</artifactId>
-		</dependency>
-
-		<!-- UTIL -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>javax.ws.rs-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>xml-apis</groupId>
-			<artifactId>xml-apis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jaxb</groupId>
-			<artifactId>jaxb-runtime</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		<!-- convert relaxng to xsd -->
         <dependency>
-		    <groupId>org.relaxng</groupId>
-		    <artifactId>trang</artifactId>
-		</dependency>
+            <groupId>fr.gouv.vitam</groupId>
+            <artifactId>access-external-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitam</groupId>
+            <artifactId>collect-external-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitam</groupId>
+            <artifactId>common-public</artifactId>
+        </dependency>
 
-		<!-- convert xsd to xml -->
-         <dependency>
-		    <groupId>in.jlibs</groupId>
-		    <artifactId>jlibs-xsd</artifactId>
-		</dependency>
-         <dependency>
-		    <groupId>xerces</groupId>
-		    <artifactId>xercesImpl</artifactId>
-		</dependency>
+        <!-- UTIL -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
-		<!-- Testing -->
+        <!-- convert relaxng to xsd -->
+        <dependency>
+            <groupId>org.relaxng</groupId>
+            <artifactId>trang</artifactId>
+        </dependency>
+
+        <!-- convert xsd to xml -->
+        <dependency>
+            <groupId>in.jlibs</groupId>
+            <artifactId>jlibs-xsd</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+        </dependency>
+
+        <!-- Testing -->
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
             <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>org.easymock</groupId>
-			<artifactId>easymock</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-easymock</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>fr.gouv.vitamui.commons</groupId>
-			<artifactId>commons-test</artifactId>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-easymock</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-test</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
-	<profiles>
-		<profile>
-			<id>seda</id>
-			<build>
-				<plugins>
-					<!-- Plugin required to build java classes from XSD using XJC -->
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>jaxb2-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>xjc</id>
-								<goals>
-									<goal>xjc</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<laxSchemaValidation>true</laxSchemaValidation>
-							<!-- The package of your generated sources -->
-							<packageName>fr.gouv.vitamui.commons.vitam.seda</packageName>
-							<sources>
-								<source>${project.basedir}/src/main/config/seda</source>
-							</sources>
-							<outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
-							<clearOutputDir>false</clearOutputDir>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+    <profiles>
+        <profile>
+            <id>seda</id>
+            <build>
+                <plugins>
+                    <!-- Plugin required to build java classes from XSD using XJC -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jaxb2-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>xjc</id>
+                                <goals>
+                                    <goal>xjc</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <laxSchemaValidation>true</laxSchemaValidation>
+                            <!-- The package of your generated sources -->
+                            <packageName>fr.gouv.vitamui.commons.vitam.seda</packageName>
+                            <sources>
+                                <source>${project.basedir}/src/main/config/seda</source>
+                            </sources>
+                            <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+                            <clearOutputDir>false</clearOutputDir>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-	</profiles>
+    </profiles>
 
 </project>

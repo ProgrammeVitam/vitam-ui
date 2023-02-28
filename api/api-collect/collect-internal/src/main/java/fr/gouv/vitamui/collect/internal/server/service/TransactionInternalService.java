@@ -30,7 +30,7 @@
 package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitam.collect.external.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -62,7 +62,8 @@ public class TransactionInternalService {
 
     public static final String ERROR_400 = "ERROR_400";
 
-    public static final String REQUEST_TIMEOUT_EXCEPTION_MESSAGE = "the server has decided to close the connection rather than continue waiting";
+    public static final String REQUEST_TIMEOUT_EXCEPTION_MESSAGE =
+        "the server has decided to close the connection rather than continue waiting";
 
     public TransactionInternalService(CollectService collectService) {
         this.collectService = collectService;
@@ -71,7 +72,7 @@ public class TransactionInternalService {
 
     public void validateTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
         try {
-            Response requestResponse = collectService.validateTransaction(vitamContext, idTransaction);
+            RequestResponse requestResponse = collectService.validateTransaction(vitamContext, idTransaction);
             if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
                 throw new VitamClientException("Error occurs when validating transaction!");
             }
@@ -82,7 +83,7 @@ public class TransactionInternalService {
 
     public void sendTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
         try {
-            RequestResponseOK<JsonNode> requestResponse = collectService.sendTransaction(vitamContext, idTransaction);
+            RequestResponse requestResponse = collectService.sendTransaction(vitamContext, idTransaction);
             if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
                 throw new VitamClientException("Error occurs when sending transaction!");
             }
@@ -93,7 +94,7 @@ public class TransactionInternalService {
 
     public void abortTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
         try {
-            Response requestResponse = collectService.abortTransaction(vitamContext, idTransaction);
+            RequestResponse requestResponse = collectService.abortTransaction(vitamContext, idTransaction);
             if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
                 throw new VitamClientException("Error occurs when aborting transaction!");
             }
@@ -104,7 +105,7 @@ public class TransactionInternalService {
 
     public void reopenTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
         try {
-            Response requestResponse = collectService.reopenTransaction(vitamContext, idTransaction);
+            RequestResponse requestResponse = collectService.reopenTransaction(vitamContext, idTransaction);
             if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
                 throw new VitamClientException("Error occurs when reopening transaction!");
             }
@@ -129,7 +130,8 @@ public class TransactionInternalService {
         }
     }
 
-    public CollectTransactionDto updateTransaction(CollectTransactionDto collectTransactionDto, VitamContext vitamContext) throws VitamClientException {
+    public CollectTransactionDto updateTransaction(CollectTransactionDto collectTransactionDto,
+        VitamContext vitamContext) {
         LOGGER.debug("CollectTransactionDto: ", collectTransactionDto);
         try {
             TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
@@ -151,14 +153,13 @@ public class TransactionInternalService {
     }
 
     public String updateArchiveUnitsFromFile(VitamContext vitamContext, InputStream inputStream, String transactionId)
-        throws RequestTimeOutException
-         {
+        throws RequestTimeOutException {
         LOGGER.debug("[Internal] call update Archive Units From File for transaction Id {}  ", transactionId);
         final String result = collectService.updateCollectArchiveUnits(vitamContext, transactionId, inputStream);
         if (result.equals(ERROR_400)) {
             LOGGER.debug(UNABLE_TO_PROCESS_UNIT_UPDATE);
-            throw new RequestTimeOutException(REQUEST_TIMEOUT_EXCEPTION_MESSAGE ,REQUEST_TIMEOUT_EXCEPTION_MESSAGE);
+            throw new RequestTimeOutException(REQUEST_TIMEOUT_EXCEPTION_MESSAGE, REQUEST_TIMEOUT_EXCEPTION_MESSAGE);
         }
-        return result ;
+        return result;
     }
 }
