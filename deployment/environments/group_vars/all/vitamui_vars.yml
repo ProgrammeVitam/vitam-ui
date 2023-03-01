@@ -140,7 +140,7 @@ vitamui:
     #   delay: 60000
 
   cas_server:
-    host: "vitamui-cas-server.service.{{ consul_domain }}"
+    host: "cas-server.service.{{ consul_domain }}"
     vitamui_component: "cas-server"
     vitamui_component_type: "ui"
     port_service: 8001
