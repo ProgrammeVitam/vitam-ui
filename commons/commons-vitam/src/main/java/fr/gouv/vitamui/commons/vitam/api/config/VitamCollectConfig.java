@@ -38,6 +38,6 @@ public class VitamCollectConfig extends VitamClientConfig {
 
     @Bean
     public CollectService getCollectService() {
-        return new CollectService(collectClient());
+        return new CollectService(collectExternalClient());
     }
 }

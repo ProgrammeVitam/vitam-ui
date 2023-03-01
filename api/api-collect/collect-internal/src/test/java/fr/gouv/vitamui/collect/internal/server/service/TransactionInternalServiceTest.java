@@ -30,32 +30,20 @@
 package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.ByteStreams;
-import fr.gouv.vitam.collect.external.dto.CriteriaProjectDto;
-import fr.gouv.vitam.collect.external.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitam.common.model.administration.AgenciesModel;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
-import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import org.apache.commons.lang.StringUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -67,12 +55,8 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -100,7 +84,7 @@ class TransactionInternalServiceTest {
     void shouldValidateTransactionWithSuccess() throws VitamClientException {
         // GIVEN
         when(collectService.validateTransaction(vitamContext, TRANSACTION_ID))
-            .thenReturn(Response.ok().build());
+            .thenReturn(new RequestResponseOK().setHttpCode(200));
         // THEN
         assertDoesNotThrow(() -> transactionInternalService.validateTransaction(TRANSACTION_ID, vitamContext));
     }
@@ -109,7 +93,7 @@ class TransactionInternalServiceTest {
     void shouldThrowExceptionWhenValidateTransaction() throws VitamClientException {
         // GIVEN
         when(collectService.validateTransaction(vitamContext, TRANSACTION_ID))
-            .thenReturn(Response.serverError().build());
+            .thenThrow(VitamClientException.class);
         // THEN
         assertThrows(VitamClientException.class,
             () -> transactionInternalService.validateTransaction(TRANSACTION_ID, vitamContext));
@@ -118,10 +102,8 @@ class TransactionInternalServiceTest {
     @Test
     void shouldSendTransactionWithSuccess() throws VitamClientException {
         // GIVEN
-        RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
-        fakeResponse.setHttpCode(200);
         when(collectService.sendTransaction(vitamContext, TRANSACTION_ID))
-            .thenReturn(fakeResponse);
+            .thenReturn(new RequestResponseOK().setHttpCode(200));
         // THEN
         assertDoesNotThrow(() -> transactionInternalService.sendTransaction(TRANSACTION_ID, vitamContext));
     }
@@ -140,7 +122,7 @@ class TransactionInternalServiceTest {
     void shouldAbortTransactionWithSuccess() throws VitamClientException {
         // GIVEN
         when(collectService.abortTransaction(vitamContext, TRANSACTION_ID))
-            .thenReturn(Response.ok().build());
+            .thenReturn(new RequestResponseOK().setHttpCode(200));
         // THEN
         assertDoesNotThrow(() -> transactionInternalService.abortTransaction(TRANSACTION_ID, vitamContext));
     }
@@ -159,7 +141,7 @@ class TransactionInternalServiceTest {
     void shouldReopenTransactionWithSuccess() throws VitamClientException {
         // GIVEN
         when(collectService.reopenTransaction(vitamContext, TRANSACTION_ID))
-            .thenReturn(Response.ok().build());
+            .thenReturn(new RequestResponseOK().setHttpCode(200));
         // THEN
         assertDoesNotThrow(() -> transactionInternalService.reopenTransaction(TRANSACTION_ID, vitamContext));
     }
@@ -225,7 +207,8 @@ class TransactionInternalServiceTest {
             .thenReturn(mockResponse);
         // WHEN
         CollectTransactionDto resultedTransaction =
-            transactionInternalService.updateTransaction(TransactionConverter.toVitamUiDto(transactionDto), vitamContext);
+            transactionInternalService.updateTransaction(TransactionConverter.toVitamUiDto(transactionDto),
+                vitamContext);
         // THEN
         assertNotNull(resultedTransaction);
         assertEquals(transactionDto.getId(), resultedTransaction.getId());

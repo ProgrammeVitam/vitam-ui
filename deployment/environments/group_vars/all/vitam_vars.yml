@@ -39,8 +39,8 @@ vitam_vars:
   ingest_external:
     host: "ingest-external.service.{{ vitam_site_name }}.{{ consul_domain }}"
     port_service: 8443
-  collect:
-    host: "collect.service.{{ vitam_site_name }}.{{ consul_domain }}"
+  collect_external:
+    host: "collect-external.service.{{ vitam_site_name }}.{{ consul_domain }}"
     port_service: 8030
     connect_timeout: 30
     read_timeout: 240000
