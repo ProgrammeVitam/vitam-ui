@@ -35,6 +35,7 @@ import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestCl
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,16 +50,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 public class TransactionServiceTest {
 
     private TransactionService transactionService;
+
+    private static final String OBJECT_ID = "objectId";
 
     @Mock
     private UpdateUnitsMetadataExternalRestClient updateUnitsMetadataExternalRestClient;
@@ -132,6 +138,23 @@ public class TransactionServiceTest {
             .updateArchiveUnitsMetadataFromFile(ArgumentMatchers.any() ,
                 ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()
             );
+    }
+    @Test
+    public void find_object_group_by_id_should_call_appropriate_client() {
+        // Given
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        when(collectTransactionExternalRestClient.findObjectGroupById(ArgumentMatchers.any(), ArgumentMatchers.any()))
+            .thenReturn(new ResponseEntity<>(new ResultsDto(), HttpStatus.OK));
+
+        // When
+        ResponseEntity<ResultsDto> response = transactionService.getObjectGroupById(OBJECT_ID, context);
+
+        // Then
+        verify(collectTransactionExternalRestClient, times(1))
+            .findObjectGroupById(ArgumentMatchers.any(), ArgumentMatchers.any());
+        assertNotNull(response);
+        assertThat(response).isInstanceOf(ResponseEntity.class);
+        assertThat(response.getBody()).isInstanceOf(ResultsDto.class);
     }
 
 }

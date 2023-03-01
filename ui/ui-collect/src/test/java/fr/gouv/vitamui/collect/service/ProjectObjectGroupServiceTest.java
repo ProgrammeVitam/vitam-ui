@@ -73,6 +73,8 @@ public class ProjectObjectGroupServiceTest {
 
     private static final String UNIT_ID = "unitId";
     private static final String OBJECT_ID = "objectId";
+    private static final String OBJECT_QUALIFIER = "qualifier";
+    private static final Integer OBJECT_VERSION = 5;
 
     @Before
     public void init() {
@@ -92,7 +94,8 @@ public class ProjectObjectGroupServiceTest {
 
         // When
         Mono<ResponseEntity<Resource>> response =
-            projectObjectGroupService.downloadObjectFromUnit(UNIT_ID, OBJECT_ID, new ObjectData(), context);
+            projectObjectGroupService.downloadObjectFromUnit(UNIT_ID, OBJECT_ID, OBJECT_QUALIFIER, OBJECT_VERSION,
+                new ObjectData(), context);
 
         // Then
         verify(collectExternalWebClient, times(1))

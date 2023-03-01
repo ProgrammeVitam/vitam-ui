@@ -40,6 +40,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -164,6 +165,17 @@ describe('ArchivePreviewComponent', () => {
     expect(response).toEqual('INGEST');
   });
 
+  it('should show the extended panel ', () => {
+    // Given
+    const matTabEvent = { index: 1 } as MatTabChangeEvent;
+
+    // When
+    component.selectedTabChangeEvent(matTabEvent);
+
+    // Then
+    expect(component.isPanelextended).toBeTruthy();
+  });
+
   it('should return vitamui-icon-folder" as response ', () => {
     const archiveUnit: Unit = {
       '#id': 'aeaqaaaaaehlvxukaazfaame7fyo5myaaaba',
@@ -206,5 +218,22 @@ describe('ArchivePreviewComponent', () => {
   it('should the selectedIndex to be 1 after choosing the extended lateral panel ', () => {
     component.showExtendedPanel();
     expect(component.selectedIndex).toEqual(1);
+  });
+
+  it('should return the exact values ', () => {
+    component.updateMetadataDesc();
+    expect(component.isPanelextended).toBeTruthy();
+    expect(component.updateStarted).toBeTruthy();
+  });
+
+  it('should show the extended panel ', () => {
+    // Given
+    const matTabEvent = { index: 2 } as MatTabChangeEvent;
+
+    // When
+    component.selectedTabChangeEvent(matTabEvent);
+
+    // Then
+    expect(component.isPanelextended).toBeTruthy();
   });
 });

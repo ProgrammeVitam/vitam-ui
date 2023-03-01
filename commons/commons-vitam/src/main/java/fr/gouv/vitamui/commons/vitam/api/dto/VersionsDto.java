@@ -54,6 +54,7 @@ import java.util.Map;
 public class VersionsDto {
 
     @JsonProperty("#rank")
+    @JsonAlias({"_rank"})
     private Integer rank;
 
     @JsonProperty("#id")
@@ -88,6 +89,7 @@ public class VersionsDto {
     private String algorithm;
 
     @JsonProperty("#storage")
+    @JsonAlias({"_storage"})
     private StorageJson storage;
 
     @JsonProperty("PhysicalDimensions")
@@ -100,6 +102,7 @@ public class VersionsDto {
     private Map<String, Object> otherMetadata = new HashMap<>();
 
     @JsonProperty("#opi")
+    @JsonAlias({"_opi"})
     private String opi;
 
     @JsonProperty("DataObjectProfile")

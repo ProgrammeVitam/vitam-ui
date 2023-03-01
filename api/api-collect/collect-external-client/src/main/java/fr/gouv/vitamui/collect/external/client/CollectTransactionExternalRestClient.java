@@ -54,6 +54,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.REOPEN_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 
 
 public class CollectTransactionExternalRestClient
@@ -160,6 +161,13 @@ public class CollectTransactionExternalRestClient
             request, CollectTransactionDto.class);
         checkResponse(response);
         return response.getBody();
+    }
+
+    public ResponseEntity<ResultsDto> findObjectGroupById(String id, ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.OBJECTS_PATH + PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
 

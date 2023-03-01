@@ -27,9 +27,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateModule } from '@ngx-translate/core';
-import { DescriptionLevel } from 'projects/vitamui-library/src/lib/models/description-level.enum';
 import { of } from 'rxjs';
-import { FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { DescriptionLevel, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { ResultFacet, SearchCriteriaDto } from '../../../models/search.criteria';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';

@@ -80,6 +80,7 @@ export * from './components/vitamui-tenant-select/index';
 export * from './components/vitamui-tree-node/index';
 export * from './country.service';
 export * from './customer-selection.service';
+export * from './description-level.enum';
 export * from './directives/collapse/index';
 export * from './directives/drag-and-drop/index';
 export * from './directives/infinite-scroll/index';

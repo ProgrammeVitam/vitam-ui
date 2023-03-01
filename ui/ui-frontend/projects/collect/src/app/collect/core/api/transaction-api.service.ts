@@ -37,7 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Transaction } from 'ui-frontend-common';
+import { ApiUnitObject, BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Transaction } from 'ui-frontend-common';
 import { SearchResponse } from '../../archive-search-collect/archive-search-criteria/models/search-response.interface';
 import { SearchCriteriaDto } from '../../archive-search-collect/archive-search-criteria/models/search.criteria';
 
@@ -105,5 +105,10 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
       responseType: 'blob',
       headers,
     });
+  }
+
+  // Get the technical group object of a unit
+  getObjectGroupDetailsById(objectId: string, headers?: HttpHeaders): Observable<ApiUnitObject> {
+    return this.http.get<ApiUnitObject>(this.apiUrl + '/objects/' + objectId, { headers, responseType: 'json' });
   }
 }

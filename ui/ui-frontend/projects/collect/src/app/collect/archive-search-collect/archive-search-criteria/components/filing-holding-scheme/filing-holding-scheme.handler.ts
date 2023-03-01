@@ -24,8 +24,8 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { DescriptionLevel } from 'projects/vitamui-library/src/lib/models/description-level.enum';
-import { copyNodeWithoutChildren, FilingHoldingSchemeNode, MatchingNodesNumbers, Unit } from 'ui-frontend-common';
+
+import { copyNodeWithoutChildren, DescriptionLevel, FilingHoldingSchemeNode, MatchingNodesNumbers, Unit } from 'ui-frontend-common';
 import { ResultFacet } from '../../models/search.criteria';
 import { VitamInternalFields } from '../../models/utils';
 

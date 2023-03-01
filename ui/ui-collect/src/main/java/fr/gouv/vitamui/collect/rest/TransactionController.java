@@ -234,5 +234,16 @@ public class TransactionController extends AbstractUiRestController {
             .updateArchiveUnitsMetadataFromFile(transactionId, fileName, inputStream, buildUiHttpContext()).getBody();
     }
 
+    @ApiOperation(value = "Find the Object Group Details")
+    @GetMapping(CommonConstants.OBJECTS_PATH + CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ResultsDto> getObjectGroupById(final @PathVariable("id") String objectId)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, objectId);
+        SanityChecker.checkSecureParameter(objectId);
+        LOGGER.debug("[UI] : Find the Object Group details with ID {}", objectId);
+        return transactionService.getObjectGroupById(objectId, buildUiHttpContext());
+    }
+
 
 }

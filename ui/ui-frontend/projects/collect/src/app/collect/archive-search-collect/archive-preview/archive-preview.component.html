@@ -22,7 +22,7 @@
       matTooltipClass="vitamui-tooltip"
       [matTooltipShowDelay]="300"
       (click)="updateMetadataDesc()"
-      [disabled]="updateStarted || (!accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole)"
+      [disabled]="updateStarted || !accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole"
     >
       {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>
@@ -30,7 +30,11 @@
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
-  <mat-tab-group [selectedIndex]="selectedIndex" [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'">
+  <mat-tab-group
+    [selectedIndex]="selectedIndex"
+    [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'"
+    (selectedTabChange)="selectedTabChangeEvent($event)"
+  >
     <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate }}">
       <app-archive-unit-information-tab
         [archiveUnit]="archiveUnit"
@@ -40,13 +44,17 @@
       ></app-archive-unit-information-tab>
     </mat-tab>
 
-    <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}" [disabled]="!isPanelextended">
+    <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}">
       <app-archive-unit-rules-details-tab
         [archiveUnit]="archiveUnit"
         [accessContract]="accessContract"
       ></app-archive-unit-rules-details-tab>
     </mat-tab>
 
-    <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.OBJECTS' | translate }}" [disabled]="true"> </mat-tab>
+    <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.OBJECTS' | translate }}">
+      <app-collect-object-group-details-tab [archiveUnit]="archiveUnit" [accessContract]="accessContract"
+        >></app-collect-object-group-details-tab
+      >
+    </mat-tab>
   </mat-tab-group>
 </div>
