@@ -241,6 +241,17 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
             managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
       )?.ruleCategoryAction.preventInheritance;
+
+      const preventRulesIdToAdd: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.ACCESSRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+      )?.ruleCategoryAction?.preventRulesIdToAdd;
+
+      const preventRulesIdToRemove: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.ACCESSRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+      )?.ruleCategoryAction?.preventRulesIdToRemove;
+
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
           (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.ADD_RULES
@@ -250,13 +261,15 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           actionAddOnRules.AccessRule = {
             rules: this.ruleCategoryDuaActionsToAdd?.rules,
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
           };
         }
         if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
           actionAddOnRules.AccessRule = {
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
           };
         }
       }
@@ -280,10 +293,25 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.AccessRule = {
             rules: this.ruleCategoryDuaActionsToDelete?.rules,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
+          };
+        } else {
+          actionDeleteOnRules.AccessRule = {
+            rules: undefined,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToRemove,
           };
         }
       }
+
+      if (actionAddOnRules.AccessRule && actionAddOnRules.AccessRule.preventRulesIdToAdd) {
+        actionAddOnRules.AccessRule.preventRulesIdToAdd = preventRulesIdToAdd;
+      }
+      if (actionDeleteOnRules.AccessRule && actionDeleteOnRules.AppraisalRule.preventRulesIdToRemove) {
+        actionDeleteOnRules.AccessRule.preventRulesIdToRemove = preventRulesIdToRemove;
+      }
+
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
         preventInheritance !== undefined &&
@@ -335,6 +363,17 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
             managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
       )?.ruleCategoryAction.preventInheritance;
+      
+      const preventRulesIdToAdd: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.REUSERULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+      )?.ruleCategoryAction?.preventRulesIdToAdd;
+
+      const preventRulesIdToRemove: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.REUSERULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+      )?.ruleCategoryAction?.preventRulesIdToRemove;
+
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
           (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.ADD_RULES
@@ -344,13 +383,15 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           actionAddOnRules.ReuseRule = {
             rules: this.ruleCategoryDuaActionsToAdd?.rules,
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
           };
         }
         if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
           actionAddOnRules.ReuseRule = {
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
           };
         }
       }
@@ -376,8 +417,21 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
             rules: this.ruleCategoryDuaActionsToDelete?.rules,
             preventInheritance,
           };
+        } else {
+          actionDeleteOnRules.ReuseRule = {
+            rules: undefined,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToRemove,
+          };
         }
       }
+      if (actionAddOnRules.ReuseRule && actionAddOnRules.ReuseRule.preventRulesIdToAdd) {
+        actionAddOnRules.ReuseRule.preventRulesIdToAdd = preventRulesIdToAdd;
+      }
+      if (actionDeleteOnRules.ReuseRule && actionDeleteOnRules.ReuseRule.preventRulesIdToRemove) {
+        actionDeleteOnRules.ReuseRule.preventRulesIdToRemove = preventRulesIdToRemove;
+      }
+
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
         preventInheritance !== undefined &&
@@ -548,11 +602,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       case 'BLOCK_RULE_INHERITANCE':
         if (
           this.isRuleCategorySelected &&
-          !this.isAddValidActions &&
-          !this.isStorageRuleActionDisabled &&
-          !this.isAccessRuleActionDisabled &&
-          !this.isReuseRuleActionDisabled &&
-          !this.isDisseminationActionDisabled
+          !this.isAddValidActions
         ) {
           this.prepareActionToAdd(rule);
         }
@@ -561,11 +611,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         if (
           this.isRuleCategorySelected &&
           !this.isDeleteValidActions &&
-          !this.isUnlockRulesInheritanceDisabled &&
-          !this.isAccessRuleActionDisabled &&
-          !this.isStorageRuleActionDisabled &&
-          !this.isReuseRuleActionDisabled &&
-          !this.isDisseminationActionDisabled
+          !this.isUnlockRulesInheritanceDisabled
         ) {
           this.prepareActionToAdd(rule);
         }
@@ -752,6 +798,17 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
             managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
       )?.ruleCategoryAction.preventInheritance;
+      
+      const preventRulesIdToAdd: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.STORAGERULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+      )?.ruleCategoryAction?.preventRulesIdToAdd;
+
+      const preventRulesIdToRemove: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.STORAGERULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+      )?.ruleCategoryAction?.preventRulesIdToRemove;
+      
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
           (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES
@@ -761,13 +818,15 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           actionAddOnRules.StorageRule = {
             rules: this.ruleCategoryDuaActionsToAdd?.rules,
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
           };
         }
         if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
           actionAddOnRules.StorageRule = {
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
           };
         }
       }
@@ -791,10 +850,25 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.StorageRule = {
             rules: this.ruleCategoryDuaActionsToDelete?.rules,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
+          };
+        } else {
+          actionDeleteOnRules.StorageRule = {
+            rules: undefined,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToRemove,
           };
         }
       }
+
+      if (actionAddOnRules.StorageRule && actionAddOnRules.StorageRule.preventRulesIdToAdd) {
+        actionAddOnRules.StorageRule.preventRulesIdToAdd = preventRulesIdToAdd;
+      }
+      if (actionDeleteOnRules.StorageRule && actionDeleteOnRules.StorageRule.preventRulesIdToRemove) {
+        actionDeleteOnRules.StorageRule.preventRulesIdToRemove = preventRulesIdToRemove;
+      }
+
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
         preventInheritance !== undefined &&
@@ -817,6 +891,17 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
             managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
       )?.ruleCategoryAction.preventInheritance;
+
+      const preventRulesIdToAdd: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.DISSEMINATIONRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+      )?.ruleCategoryAction?.preventRulesIdToAdd;
+
+      const preventRulesIdToRemove: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.DISSEMINATIONRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+      )?.ruleCategoryAction?.preventRulesIdToRemove;
+
       if (
         data.findIndex((rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1
       ) {
@@ -828,13 +913,15 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           actionAddOnRules.DisseminationRule = {
             rules: this.ruleCategoryDuaActionsToAdd?.rules,
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
           };
         }
         if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
           actionAddOnRules.DisseminationRule = {
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
           };
         }
       }
@@ -864,10 +951,25 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.DisseminationRule = {
             rules: this.ruleCategoryDuaActionsToDelete?.rules,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToRemove,
+          };
+        } else {
+          actionDeleteOnRules.DisseminationRule = {
+            rules: undefined,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToRemove,
           };
         }
       }
+
+      if (actionAddOnRules.DisseminationRule && actionAddOnRules.DisseminationRule.preventRulesIdToAdd) {
+        actionAddOnRules.DisseminationRule.preventRulesIdToAdd = preventRulesIdToAdd;
+      }
+      if (actionDeleteOnRules.DisseminationRule && actionDeleteOnRules.DisseminationRule.preventRulesIdToRemove) {
+        actionDeleteOnRules.DisseminationRule.preventRulesIdToRemove = preventRulesIdToRemove;
+      }
+
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
         preventInheritance !== undefined &&

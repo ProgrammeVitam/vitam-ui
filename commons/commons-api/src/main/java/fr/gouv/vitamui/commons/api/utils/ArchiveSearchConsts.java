@@ -161,6 +161,12 @@ public class ArchiveSearchConsts {
     public final static String CLASSIFICATION_RULE_INHERITED = "#management.ClassificationRule.Inheritance.PreventInheritance";
 
     public final static String APPRAISAL_PREVENT_RULE_IDENTIFIER = "#management.AppraisalRule.Inheritance.PreventRulesId";
+    public final static String ACCESS_PREVENT_RULE_IDENTIFIER = "#management.AccessRule.Inheritance.PreventRulesId";
+    public final static String STORAGE_PREVENT_RULE_IDENTIFIER = "#management.StorageRule.Inheritance.PreventRulesId";
+    public final static String HOLD_PREVENT_RULE_IDENTIFIER = "#management.HoldRule.Inheritance.PreventRulesId";
+    public final static String DISSEMINATION_PREVENT_RULE_IDENTIFIER = "#management.DisseminationRule.Inheritance.PreventRulesId";
+    public final static String REUSE_PREVENT_RULE_IDENTIFIER = "#management.ReuseRule.Inheritance.PreventRulesId";
+    public final static String CLASSIFICATION_PREVENT_RULE_IDENTIFIER = "#management.ClassificationRule.Inheritance.PreventRulesId";
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String ONLY_DATE_FORMAT = "yyyy-MM-dd";
