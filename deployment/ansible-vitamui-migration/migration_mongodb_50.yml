@@ -1,7 +1,7 @@
 ---
 
-# Mongodb migration from 4.4 to 5.0.x
-######################################
+# Mongodb migration from 4.4 to 5.0
+###################################
 
 # Confirm launching this playbook
 - hosts: localhost
@@ -9,7 +9,7 @@
   gather_facts: no
   vars_prompt:
     name: "confirmation"
-    prompt: "Are you sure you want to run this playbook ?\nAnswer with 'YES'"
+    prompt: "This playbook will migrate your mongo clusters from 4.4 to 5.0.\n\nAre you sure you want to run this playbook ?\nAnswer with 'YES'"
     default: "NO"
     private: no
   tasks:
@@ -17,31 +17,65 @@
       fail: msg="Playbook run confirmation failed"
       when: confirmation|upper != "YES"
 
-####################################
-# Début de la migration mongod     #
-####################################
+################################################################################
+# Starting mongo-vitamui migration
+################################################################################
 
+# Checks feature compatibility version & state
 - hosts: hosts_vitamui_mongod
+  gather_facts: no
   roles:
-    - mongodb_set_feature_compatibility
+    - mongodb_check_feature_compatibility
+    - mongodb_check_replica_state
   vars:
-    mongo_version: "4.4"
+    mongo_compatibility_list: ['4.4']
 
+################################################################################
+
+# Reconfig specific before upgrade to v5
 - hosts: hosts_vitamui_mongod
   gather_facts: no
   roles:
     - mongodb_migration_v5
-  vars:
-    action: reconfig
-    mongo_type: mongod
-    mongo_port: "{{ mongodb.mongod_port }}"
+  serial: 1
 
+################################################################################
+## Upgrade replica set (mongod)
+
+# set_members_groups for mongod
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - mongodb_set_members_groups
+
+# upgrade secondaries mongod
 - hosts: hosts_vitamui_mongod
   roles:
-    - mongodb_migration_v5
+    - mongodb_upgrade_package
   vars:
-    action: upgrade_pkg
+    mongo_version: 5.0.13
+    mongo_primary: false
+  serial: 1
 
-##################################
-# Fin de la migration mongod     #
-##################################
+# upgrade primary mongod
+- hosts: hosts_vitamui_mongod
+  roles:
+    - mongodb_upgrade_package
+  vars:
+    mongo_version: 5.0.13
+    mongo_primary: true
+  serial: 1
+
+################################################################################
+
+# set_featurecompatibility
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - mongodb_set_feature_compatibility
+  vars:
+    mongo_version: 5.0
+
+################################################################################
+# End of mongo-vitamui migration
+################################################################################
