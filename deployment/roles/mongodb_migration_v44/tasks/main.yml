@@ -1,4 +1,0 @@
----
-
-- include_tasks: update_packages_mongod.yml
-  when: mongo_type == 'mongod'
