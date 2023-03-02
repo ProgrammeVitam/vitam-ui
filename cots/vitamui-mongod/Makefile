@@ -4,8 +4,7 @@
 
 # Args parsing with default values
 NAME                := mongod
-VERSION             := 5.0.13
-DEPENDENCIES        := mongodb-org
+DEPENDENCIES        := mongodb-org-server
 
 # Staging root configuration
 DESTDIR             := $(abspath ./package-stage/)
@@ -57,7 +56,6 @@ template-files:
 		sed  \
 			-e "s/__NAME__/$(NAME)/g" \
 			-e "s/__JAR_FILE__/$(JAR_FILE)/g" \
-			-e "s/__VERSION__/$(VERSION)/g" \
 			-e "s/__USER__/$(USER)/g" \
 			-e "s/__GROUP__/$(GROUP)/g" \
 			-e "s/__ARGS__/$(ARGS)/g" \
