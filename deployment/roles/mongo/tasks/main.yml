@@ -18,6 +18,12 @@
   notify:
     - restart mongod
 
+- name: Disable mongod default service
+  service:
+    name: mongod
+    state: stopped
+    enabled: no
+
 #### Configuration ####
 
 - name: Check that the directories exists (must be removed when the RPM plugin will be patched)
