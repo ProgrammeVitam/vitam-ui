@@ -86,6 +86,19 @@ export class ProjectPreviewComponent implements OnInit {
     this.legalStatusList = this.projectService.getLegalStatusList();
     this.acquisitionInformationsList = this.projectService.getAcquisitionInformationsList();
 
+    this.form = this.formBuilder.group({
+      messageIdentifier: [null, [Validators.required]],
+      id: [null],
+      comment: [],
+      originatingAgencyIdentifier: [null, [Validators.required]],
+      submissionAgencyIdentifier: [],
+      archivalAgencyIdentifier: [null, Validators.required],
+      transferringAgencyIdentifier: [null, Validators.required],
+      archivalAgreement: [null, Validators.required],
+      archiveProfile: [null],
+      acquisitionInformation: [null],
+      legalStatus: [null]
+    });
 
   }
 
@@ -118,19 +131,7 @@ export class ProjectPreviewComponent implements OnInit {
   showEditProject() {
     this.updateStarted = true;
     this.showExtendedPanel();
-    this.form = this.formBuilder.group({
-      messageIdentifier: [null, [Validators.required]],
-      id: [null],
-      comment: [],
-      originatingAgencyIdentifier: [null, [Validators.required]],
-      submissionAgencyIdentifier: [],
-      archivalAgencyIdentifier: [null, Validators.required],
-      transferringAgencyIdentifier: [null, Validators.required],
-      archivalAgreement: [null, Validators.required],
-      archiveProfile: [null],
-      acquisitionInformation: [null],
-      legalStatus: [null]
-    });
+
     this.initFormForEdit()
 
   }
@@ -223,14 +224,14 @@ export class ProjectPreviewComponent implements OnInit {
       });
     } else {
       updateProjectOperation$.subscribe(
-        () => {
+        (project) => {
           this.snackBar.open(this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED'), null, {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
           this.dialogRefToClose.close(true);
           this.updateStarted = false;
-          this.selectedProject$ = updateProjectOperation$;
+          this.project = project;
         }
         , () => {
           this.project = previousProject;
