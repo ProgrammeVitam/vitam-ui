@@ -21,6 +21,14 @@
 # Starting mongo-vitamui migration
 ################################################################################
 
+# Force set_featurecompatibility as it is set to 4.0 by default
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - mongodb_set_feature_compatibility
+  vars:
+    mongo_version: 4.2
+
 # Checks feature compatibility version & state
 - hosts: hosts_vitamui_mongod
   gather_facts: no
