@@ -1,14 +1,30 @@
 ---
 
+- name: Copy is_master database script
+  copy:
+    src: is_master.js
+    dest: "{{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+
+- name: Check if the member is primary of the replicaset or not
+  shell: "mongo {{ ip_service }}:{{ mongo_port }}/admin -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet < {{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}/is_master.js"
+  register: primary_test_command
+  no_log: "{{ hide_passwords_during_deploy }}"
+
 - name: Copy reconfiguration database script when primary
   copy:
-    src: "reconfig.js"
-    dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/{{ mongo_type }}"
+    src: reconfig.js
+    dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/script/{{ mongo_type }}"
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+  when: primary_test_command.stdout == 'true'
 
-- name: Reconfigure replicaset for mongod
-  shell: "mongo --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet < {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/reconfig.js"
+- name: "Reconfigure replicaset for {{ mongo_type }}"
+  shell: "mongo --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet < {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/script/{{ mongo_type }}/reconfig.js"
+  no_log: "{{ hide_passwords_during_deploy }}"
   when:
     - mongo_type == 'mongod'
+    - primary_test_command.stdout == 'true'
