@@ -31,6 +31,7 @@ import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequestParameters;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -63,6 +64,7 @@ import org.springframework.core.io.Resource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -290,6 +292,22 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
             .when(archivesSearchExternalService.transferAcknowledgment(atrFile, fileName))
             .thenReturn(expectedResponse);
         String response = archivesSearchExternalController.transferAcknowledgment(atrFile, fileName);
+
+        // Then
+        Assertions.assertEquals(response, expectedResponse);
+    }
+
+    @Test
+    void testGetOntologiesListThenReturnOntologiesValuesList()
+        throws PreconditionFailedException {
+        // Given
+        List<OntologyDto> expectedResponse = new ArrayList<>();
+
+        // When
+        Mockito
+            .when(archivesSearchExternalService.getExternalOntologiesList())
+            .thenReturn(expectedResponse);
+        List<OntologyDto> response = archivesSearchExternalController.getExternalOntologiesList();
 
         // Then
         Assertions.assertEquals(response, expectedResponse);

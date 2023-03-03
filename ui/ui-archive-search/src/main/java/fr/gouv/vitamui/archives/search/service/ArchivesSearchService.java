@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -57,6 +58,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Objects;
 
 import static java.util.Objects.isNull;
@@ -278,5 +280,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         LOGGER.debug("transfer acknowledgment");
         return archiveSearchStreamingExternalRestClient
             .transferAcknowledgment(context, fileName, inputStream);
+    }
+
+    public List<OntologyDto> getExternalOntologiesList(ExternalHttpContext context) {
+        LOGGER.debug("Get All External Ontologies");
+        return archiveSearchExternalRestClient.getExternalOntologiesList(context);
     }
 }

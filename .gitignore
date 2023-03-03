@@ -234,10 +234,12 @@ deployment/playbooks/templates/vitamui/conf/*/*.p12
 # Vitam development configuration #
 ###################################
 api/api-archive-search/archive-search-internal/src/main/resources/dev/vitam/
+api/api-archive-search/archive-search-internal/src/main/resources/ontology/
 api/api-ingest/ingest-internal/src/main/resources/dev/vitam/
 api/api-referential/referential-internal/src/main/resources/dev/vitam/
 api/api-iam/iam-internal/src/main/resources/dev/vitam/
 api/api-collect/collect-internal/src/main/resources/dev/vitam/
+api/api-collect/collect-internal/src/main/resources/ontology/
 
 ##########################################
 # Mongo workspace entry-point #

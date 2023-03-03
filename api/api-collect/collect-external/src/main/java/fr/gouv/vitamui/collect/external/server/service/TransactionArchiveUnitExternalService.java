@@ -33,6 +33,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
@@ -42,6 +43,8 @@ import lombok.Setter;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -73,6 +76,10 @@ public class TransactionArchiveUnitExternalService extends
 
     public ResponseEntity<ResultsDto> findObjectGroupById(String objectId) {
         return collectTransactionInternalRestClient.findObjectGroupById(objectId, getInternalHttpContext());
+    }
+
+    public List<OntologyDto> getExternalOntologiesList() {
+        return collectTransactionInternalRestClient.getExternalOntologiesList(getInternalHttpContext());
     }
 
     @Override

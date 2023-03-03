@@ -91,7 +91,7 @@
                 >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate }}</span
               >
               <ng-template #showBeginDt
-                ><span (click)="pickerBegin.open()">{{ simpleCriteriaForm.get('beginDt').value | dateTime: 'dd/MM/yyyy' }} </span>
+                ><span (click)="pickerBegin.open()">{{ simpleCriteriaForm.get('beginDt').value | dateTime : 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input
                 class="hidden"
@@ -110,7 +110,7 @@
                 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
               }}</span>
               <ng-template #showEndDt
-                ><span (click)="pickerEnd.open()">{{ simpleCriteriaForm.get('endDt').value | dateTime: 'dd/MM/yyyy' }} </span>
+                ><span (click)="pickerEnd.open()">{{ simpleCriteriaForm.get('endDt').value | dateTime : 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input
                 class="hidden"
@@ -173,7 +173,7 @@
                   <mat-option
                     style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary)"
                     value="{{ ontology.ApiField }}"
-                    matTooltip="{{ ontology?.ApiField }}"
+                    matTooltip="{{ ontology?.ShortName }}"
                     matTooltipClass="vitamui-tooltip"
                     [matTooltipShowDelay]="300"
                     >{{ ontology.Identifier }}
@@ -248,7 +248,7 @@
               >
               <ng-template #showOtherCriteria
                 ><span (click)="pickerOtherCriteria.open()"
-                  >{{ simpleCriteriaForm.get('otherCriteriaValue').value | dateTime: 'dd/MM/yyyy' }}
+                  >{{ simpleCriteriaForm.get('otherCriteriaValue').value | dateTime : 'dd/MM/yyyy' }}
                 </span>
               </ng-template>
               <input

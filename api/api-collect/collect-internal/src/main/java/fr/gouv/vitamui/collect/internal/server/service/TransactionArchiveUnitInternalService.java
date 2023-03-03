@@ -56,6 +56,7 @@ import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.ExportSearchResultParam;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -65,6 +66,7 @@ import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetBucketDto;
@@ -75,6 +77,7 @@ import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.CollectionUtils;
@@ -151,6 +154,9 @@ public class TransactionArchiveUnitInternalService {
         VitamUILoggerFactory.getInstance(TransactionArchiveUnitInternalService.class);
 
     private static final String RESULTS = "$results";
+
+    @Value("${ontologies_file_path}")
+    private String ontologiesFilePath;
 
     public TransactionArchiveUnitInternalService(CollectService collectService, AgencyService agencyService,
         ObjectMapper objectMapper) {
@@ -802,5 +808,16 @@ public class TransactionArchiveUnitInternalService {
             archiveUnit.getOriginatingAgencyName() != null ? cleanString(archiveUnit.getOriginatingAgencyName()) :
                 null);
         return archiveUnitCsv;
+    }
+
+    /**
+     * Read ontologies list from a file
+     *
+     * @param tenantId : tenant identifier
+     * @throws IOException : throw an exception while parsing ontologies file
+     */
+    public List<OntologyDto> readExternalOntologiesFromFile(Integer tenantId) throws IOException {
+        LOGGER.debug("get ontologies file from path : {} ", ontologiesFilePath);
+        return OntologyServiceReader.readExternalOntologiesFromFile(tenantId, ontologiesFilePath);
     }
 }

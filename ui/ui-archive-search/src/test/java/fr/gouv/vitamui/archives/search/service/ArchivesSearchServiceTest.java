@@ -35,6 +35,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
@@ -64,6 +65,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -440,6 +443,22 @@ public class ArchivesSearchServiceTest {
         // Then
         verify(archiveSearchStreamingExternalRestClient, Mockito.times(1))
             .transferAcknowledgment(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
+    }
+
+    @Test
+    public void get_external_ontologies_list_should_call_appropriate_rest_client_one_time() {
+        // Given
+        List<OntologyDto> ontologiesList = new ArrayList<>();
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        Mockito.when(archiveSearchExternalRestClient.getExternalOntologiesList(ArgumentMatchers.any()))
+            .thenReturn( ontologiesList );
+
+        // When
+        archivesSearchService.getExternalOntologiesList(eq(context));
+
+        // Then
+        verify(archiveSearchExternalRestClient, Mockito.times(1))
+            .getExternalOntologiesList(ArgumentMatchers.any());
     }
 
 }

@@ -27,17 +27,13 @@
  *
  */
 
-import { Id } from '../id.interface';
+package fr.gouv.vitamui.commons.api.dtos;
 
-export interface Ontology extends Id {
-  Identifier: string;
-  ApiField: string;
-  Type: string;
-  Origin: string;
-  SedaField: string;
-  ShortName: string;
-  Description: string;
-  CreationDate: string;
-  LastUpdate: string;
-  TenantIds?: string[];
+public enum OntologyType {
+    KEYWORD,
+    DATE,
+    LONG,
+    BOOLEAN,
+    DOUBLE,
+    TEXT
 }

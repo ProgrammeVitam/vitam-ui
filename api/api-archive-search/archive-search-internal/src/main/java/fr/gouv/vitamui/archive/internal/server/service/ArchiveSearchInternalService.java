@@ -47,6 +47,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -54,6 +55,7 @@ import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -61,6 +63,7 @@ import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -104,6 +107,9 @@ public class ArchiveSearchInternalService {
     private static final String SET = "$set";
     private static final String UNSET = "$unset";
     private static final String ACTION = "$action";
+
+    @Value("${ontologies_file_path}")
+    private String ontologiesFilePath;
 
     private final ObjectMapper objectMapper;
     private final UnitService unitService;
@@ -442,6 +448,17 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("Reclassification query : {}", array);
         RequestResponse<JsonNode> jsonNodeRequestResponse = unitService.reclassification(vitamContext, array);
         return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
+    }
+
+    /**
+     * Read ontologies list from a file
+     *
+     * @param tenantId : tenant identifier
+     * @throws IOException : throw an exception while parsing ontologies file
+     */
+    public List<OntologyDto> readExternalOntologiesFromFile(Integer tenantId) throws IOException {
+        LOGGER.debug("get ontologies file from path : {} ", ontologiesFilePath);
+        return OntologyServiceReader.readExternalOntologiesFromFile(tenantId, ontologiesFilePath);
     }
 
 }
