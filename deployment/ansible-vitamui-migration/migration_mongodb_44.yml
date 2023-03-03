@@ -1,7 +1,7 @@
 ---
 
 # Mongodb migration from 4.2 to 4.4
-######################################
+###################################
 
 # Confirm launching this playbook
 - hosts: localhost
@@ -9,7 +9,7 @@
   gather_facts: no
   vars_prompt:
     name: "confirmation"
-    prompt: "Are you sure you want to run this playbook ?\nAnswer with 'YES'"
+    prompt: "This playbook will migrate your mongo clusters from 4.2 to 4.4.\n\nAre you sure you want to run this playbook ?\nAnswer with 'YES'"
     default: "NO"
     private: no
   tasks:
@@ -17,19 +17,64 @@
       fail: msg="Playbook run confirmation failed"
       when: confirmation|upper != "YES"
 
+################################################################################
+# Starting mongo-vitamui migration
+################################################################################
+
+# Force set_featurecompatibility as it is set to 4.0 by default
 - hosts: hosts_vitamui_mongod
+  gather_facts: no
   roles:
     - mongodb_set_feature_compatibility
   vars:
-    mongo_version: "4.2"
+    mongo_version: 4.2
 
+# Checks feature compatibility version & state
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - mongodb_check_feature_compatibility
+    - mongodb_check_replica_state
+  vars:
+    mongo_compatibility_list: ['4.2']
+
+################################################################################
+## Upgrade replica set (mongod)
+
+# set_members_groups for mongod
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - mongodb_set_members_groups
+
+# upgrade secondaries mongod
 - hosts: hosts_vitamui_mongod
   roles:
-    - mongodb_migration_v44
+    - mongodb_upgrade_package
   vars:
-    mongo_type: mongod
-    mongo_port: "{{ mongodb.mongod_port }}"
+    mongo_version: 4.4.17
+    mongo_primary: false
+  serial: 1
+
+# upgrade primary mongod
+- hosts: hosts_vitamui_mongod
+  roles:
+    - mongodb_upgrade_package
+  vars:
     mongo_version: 4.4.17
     mongo_primary: true
-    action: mongodb_upgrade_package
+  serial: 1
 
+################################################################################
+
+# set_featurecompatibility
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - mongodb_set_feature_compatibility
+  vars:
+    mongo_version: 4.4
+
+################################################################################
+# End of mongo-vitamui migration
+################################################################################
