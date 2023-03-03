@@ -55,6 +55,7 @@ const selectedTransaction: Transaction = {
   submissionAgencyIdentifier: 'submissionAgencyIdentifier',
   archiveProfile: 'archivalProfile',
   comment: 'comment',
+  legalStatus: 'legalStatus',
 };
 
 describe('UpdateUaMetadataComponent', () => {
@@ -121,6 +122,13 @@ describe('UpdateUaMetadataComponent', () => {
     const blob = new Blob([contents], { type: 'text/plain' });
     const file = new File([blob], 'updateFileExample.csv', { type: 'text/plain' });
     expect(component.checkFileExtension(file.name)).toBeTruthy();
+  });
+
+  it('should go to the next step', () => {
+    component.stepIndex = 2;
+    component.updateUAMetadatas();
+    expect(component.stepIndex).not.toBeNull();
+    expect(component.stepIndex).toEqual(3);
   });
 
   describe('DOM', () => {

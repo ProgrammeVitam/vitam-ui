@@ -82,6 +82,7 @@ describe('ArchiveSearchCollectComponent', () => {
     projectId: 'ProjectId',
     comment: 'I am a comment',
     status: TransactionStatus.SENDING,
+    legalStatus: 'legalStatus',
   };
 
   beforeEach(async () => {

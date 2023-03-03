@@ -75,6 +75,7 @@ describe('TransactionListComponent', () => {
     submissionAgencyIdentifier: 'submissionAgencyIdentifier',
     archiveProfile: 'archivalProfile',
     comment: 'comment',
+    legalStatus: 'legalStatus',
   };
 
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
