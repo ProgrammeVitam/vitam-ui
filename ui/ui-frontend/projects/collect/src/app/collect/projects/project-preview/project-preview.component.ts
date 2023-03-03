@@ -5,7 +5,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatTabGroup} from '@angular/material/tabs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
-import {combineLatest, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {map, mergeMap} from 'rxjs/operators';
 import {
   DEFAULT_PAGE_SIZE,
@@ -48,21 +48,22 @@ export class ProjectPreviewComponent implements OnInit {
 
   @Input()
   get projectId(): string {
-    return this._projectId;
+    return this.projectId$.getValue();
   }
 
   set projectId(value: string) {
-    this.selectedProject$ = this.projectService.getProjectById(value);
+    this.project = null;
+    this.projectId$.next(value);
     this.selectedTabIndex = 0;
   }
 
-  private _projectId: string;
+
+  private projectId$ = new BehaviorSubject<string>(null);
   private tenantIdentifier: string;
 
   updateStarted = false;
   isPanelextended = false;
   selectedTabIndex = 0;
-  selectedProject$ = new Observable<Project>();
   dialogRefToClose: MatDialogRef<ProjectPreviewComponent>;
   selectedValue = 'YES';
 
@@ -80,9 +81,12 @@ export class ProjectPreviewComponent implements OnInit {
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
-    this.selectedProject$.subscribe(project => {
-      this.project = project;
-    })
+    this.projectId$.pipe(mergeMap(() => this.projectService.getProjectById(this.projectId$.getValue())))
+      .subscribe((project) => {
+        this.project = project;
+      });
+
+
     this.legalStatusList = this.projectService.getLegalStatusList();
     this.acquisitionInformationsList = this.projectService.getAcquisitionInformationsList();
 
@@ -114,6 +118,7 @@ export class ProjectPreviewComponent implements OnInit {
     this.isPanelextended = true;
     this.showExtendedLateralPanel.emit();
   }
+
   configForm() {
     this.form = this.formBuilder.group({
       messageIdentifier: [null, [Validators.required]],
