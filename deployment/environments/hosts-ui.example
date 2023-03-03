@@ -127,7 +127,6 @@ hosts_vitamui_mongod
 
 [hosts_vitamui_mongod]
 # EDIT: Mandatory
-# WARNING: put only one server for this service, not more !
 # Mandatory params
 #  - mongo_rs_bootstrap=true (default: false)
 # Optional params
