@@ -55,6 +55,7 @@ const selectedTransaction: Transaction = {
   submissionAgencyIdentifier: 'submissionAgencyIdentifier',
   archiveProfile: 'archivalProfile',
   comment: 'comment',
+    legalStatus:'A legal status'
 };
 
 describe('UpdateUaMetadataComponent', () => {
