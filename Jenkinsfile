@@ -7,6 +7,7 @@ pipeline {
         SLACK_MESSAGE = "${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.RUN_DISPLAY_URL}|Open>)"
         MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true "
+        M2_REPO = "${HOME}/.m2"
         CI = credentials("app-jenkins")
 
         SERVICE_GIT_URL = credentials("service-gitlab-url")
@@ -267,6 +268,21 @@ pipeline {
                     )
                 }
             }
+        }
+    }
+
+    post {
+        // Clean after build
+        always {
+
+            // Cleanup any remaining docker volumes
+            sh 'docker volume prune -f'
+
+            // Cleanup M2 repo
+            sh 'rm -fr ${M2_REPO}/repository/fr/gouv/vitamui/'
+
+            // Cleanup workspace
+            cleanWs()
         }
     }
 }
