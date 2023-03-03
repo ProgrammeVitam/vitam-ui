@@ -64,7 +64,7 @@ export class ProjectPreviewComponent implements OnInit {
   selectedTabIndex = 0;
   selectedProject$ = new Observable<Project>();
   dialogRefToClose: MatDialogRef<ProjectPreviewComponent>;
-  selectedValue = 'NO';
+  selectedValue = 'YES';
 
   constructor(private formBuilder: FormBuilder, private projectService: ProjectsService,
               private projectApiService: ProjectsApiService,
@@ -86,20 +86,7 @@ export class ProjectPreviewComponent implements OnInit {
     this.legalStatusList = this.projectService.getLegalStatusList();
     this.acquisitionInformationsList = this.projectService.getAcquisitionInformationsList();
 
-    this.form = this.formBuilder.group({
-      messageIdentifier: [null, [Validators.required]],
-      id: [null],
-      comment: [],
-      originatingAgencyIdentifier: [null, [Validators.required]],
-      submissionAgencyIdentifier: [],
-      archivalAgencyIdentifier: [null, Validators.required],
-      transferringAgencyIdentifier: [null, Validators.required],
-      archivalAgreement: [null, Validators.required],
-      archiveProfile: [null],
-      acquisitionInformation: [null],
-      legalStatus: [null]
-    });
-
+    this.configForm();
   }
 
   searchArchiveUnitsByProject() {
@@ -127,14 +114,30 @@ export class ProjectPreviewComponent implements OnInit {
     this.isPanelextended = true;
     this.showExtendedLateralPanel.emit();
   }
+  configForm() {
+    this.form = this.formBuilder.group({
+      messageIdentifier: [null, [Validators.required]],
+      id: [null],
+      comment: [],
+      originatingAgencyIdentifier: [null, [Validators.required]],
+      submissionAgencyIdentifier: [],
+      archivalAgencyIdentifier: [null, Validators.required],
+      transferringAgencyIdentifier: [null, Validators.required],
+      archivalAgreement: [null, Validators.required],
+      archiveProfile: [null],
+      acquisitionInformation: [null],
+      legalStatus: [null]
+    });
+  }
+
 
   showEditProject() {
+    this.form.markAsPristine();
     this.updateStarted = true;
     this.showExtendedPanel();
-
-    this.initFormForEdit()
-
+    this.initFormForEdit();
   }
+
 
   initFormForEdit() {
     this.form.get('messageIdentifier').setValue(this.project.messageIdentifier);
@@ -174,6 +177,8 @@ export class ProjectPreviewComponent implements OnInit {
     transaction.originatingAgencyIdentifier = this.project.originatingAgencyIdentifier;
     transaction.submissionAgencyIdentifier = this.project.submissionAgencyIdentifier;
     transaction.archiveProfile = this.project.archiveProfile;
+    transaction.legalStatus = this.project.legalStatus;
+
   }
 
   onConfirm() {

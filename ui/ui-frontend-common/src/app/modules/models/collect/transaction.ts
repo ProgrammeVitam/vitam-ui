@@ -28,16 +28,18 @@ import {Id} from '../id.interface';
 import {TransactionStatus} from './transaction-status';
 
 export interface Transaction extends Id {
-    status: TransactionStatus;
-    projectId: string;
-    archivalAgreement: string;
-    messageIdentifier: string;
-    archivalAgencyIdentifier: string;
-    transferringAgencyIdentifier: string;
-    originatingAgencyIdentifier: string;
-    submissionAgencyIdentifier: string;
-    archiveProfile: string;
-    comment: string;
-    creationDate?: Date;
-    lastUpdate?: Date;
+  status: TransactionStatus;
+  projectId: string;
+  archivalAgreement: string;
+  messageIdentifier: string;
+  archivalAgencyIdentifier: string;
+  transferringAgencyIdentifier: string;
+  originatingAgencyIdentifier: string;
+  submissionAgencyIdentifier: string;
+  archiveProfile: string;
+  legalStatus: string;
+  comment: string;
+  creationDate?: Date;
+  lastUpdate?: Date;
+
 }
