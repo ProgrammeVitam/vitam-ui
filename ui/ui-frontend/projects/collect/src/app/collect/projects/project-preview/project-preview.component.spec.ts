@@ -86,7 +86,6 @@ describe('ProjectPreviewComponent', () => {
   beforeEach(waitForAsync(() => {
     fixture = TestBed.createComponent(ProjectPreviewComponent);
     component = fixture.componentInstance;
-    component.selectedProject$ = of(project);
     fixture.detectChanges();
   }));
 
