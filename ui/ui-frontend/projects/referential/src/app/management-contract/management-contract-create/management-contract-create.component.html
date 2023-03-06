@@ -47,10 +47,7 @@
                 placeholder="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER' | translate }}"
               >
                 <ng-container *ngIf="form.get('identifier')?.touched">
-                  <vitamui-common-input-error
-                    *ngIf="!!form.get('identifier')?.errors?.required"
-                    i18n="Required field error hint@@formErrorRequiredField"
-                  >
+                  <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">
                     {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.MANDATORY_FIELD' | translate }}
                   </vitamui-common-input-error>
                   <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.identifierExists">

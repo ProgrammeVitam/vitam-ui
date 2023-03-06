@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -36,23 +36,10 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -63,7 +50,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.SecurityProfileModel;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -72,6 +59,18 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dto.SecurityProfileResponseDto;
 import fr.gouv.vitamui.referential.common.dto.SecurityProfileVitamDto;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class VitamSecurityProfileService {
 
@@ -79,7 +78,7 @@ public class VitamSecurityProfileService {
 
     private final AdminExternalClient adminExternalClient;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public VitamSecurityProfileService(AdminExternalClient adminExternalClient, ObjectMapper objectMapper) {
@@ -151,7 +150,8 @@ public class VitamSecurityProfileService {
 
     /**
      * check if all conditions are Ok to create a securityProfile
-     * @param securityProfiles
+     * @param securityProfiles : security profile to verify existence
+     * @param vitamSecurityProfile : list of security profiles in vitam
      * @return true if the securityProfile can be created, false if the ile format already exists
      */
     public boolean checkAbilityToCreateSecurityProfileInVitam(final List<SecurityProfileModel> securityProfiles, VitamContext vitamSecurityProfile) {
@@ -162,16 +162,19 @@ public class VitamSecurityProfileService {
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<SecurityProfileModel> response = findSecurityProfiles(vitamSecurityProfile, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    throw new PreconditionFailedException("Can't create file format for the tenant : UNAUTHORIZED");
+                    LOGGER.error("Can't create Security Profile for the tenant : {}  not found in Vitam", vitamSecurityProfile.getTenantId());
+                    throw new NotFoundException("Can't create Security Profile for the tenant : UNAUTHORIZED");
                 }
                 else if (response.getStatus() != HttpStatus.OK.value()) {
-                    throw new UnavailableServiceException("Can't create file format for this tenant, Vitam response code : " + response.getStatus());
+                    LOGGER.error("Can't create Security Profile for this tenant");
+                    throw new UnavailableServiceException("Can't create Security Profile for this tenant, Vitam response code : " + response.getStatus());
                 }
 
-                verifyFileFormatExistence(securityProfiles, response);
+                verifySecurityProfileExistence(securityProfiles, response);
             }
             catch (final VitamClientException e) {
-                throw new UnavailableServiceException("Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage());
+                LOGGER.error("Can't create Security Profile for this tenant, error while calling Vitam ");
+                throw new UnavailableServiceException("Can't create Security Profile for this tenant, error while calling Vitam : " + e.getMessage());
             }
             return true;
         }
@@ -180,25 +183,35 @@ public class VitamSecurityProfileService {
 
     /**
      * Check if access contract is not already created in Vitam.
-     * @param checkFileFormats
-     * @param vitamFileFormats
+     * @param securityProfileModelList : security profile to verify existence
+     * @param vitamSecurityProfiles : list of security profiles in vitam
      */
-    private void verifyFileFormatExistence(final List<SecurityProfileModel> checkFileFormats, final RequestResponse<SecurityProfileModel> vitamFileFormats) {
+    private void verifySecurityProfileExistence(final List<SecurityProfileModel> securityProfileModelList, final RequestResponse<SecurityProfileModel> vitamSecurityProfiles) {
         try {
-            final ObjectMapper objectMapper = new ObjectMapper();
+
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final SecurityProfileResponseDto securityProfileResponseDto = objectMapper.treeToValue(vitamFileFormats.toJsonNode(), SecurityProfileResponseDto.class);
-            final List<String> securityProfileNames = checkFileFormats.stream().map(securityProfile -> securityProfile.getName()).collect(Collectors.toList());
+            final SecurityProfileResponseDto securityProfileResponseDto = objectMapper.treeToValue(vitamSecurityProfiles.toJsonNode(), SecurityProfileResponseDto.class);
+            final List<String> securityProfileNames = securityProfileModelList.stream().map(SecurityProfileModel::getName)
+                .filter(Objects::nonNull).map(String::strip)
+                .collect(Collectors.toList());
             if (securityProfileResponseDto.getResults().stream().anyMatch(securityProfile -> securityProfileNames.contains(securityProfile.getName()))) {
-                throw new ConflictException("Can't create securityProfile, a format with the same name already exist in Vitam");
+                final String messageError = "Can't create securityProfile, a format with the same name already exist in Vitam";
+                LOGGER.error(messageError);
+                throw new ConflictException(messageError);
             }
-            final List<String> securityProfileIds = checkFileFormats.stream().map(securityProfile -> securityProfile.getIdentifier()).collect(Collectors.toList());
+            final List<String> securityProfileIds = securityProfileModelList.stream().map(SecurityProfileModel::getIdentifier)
+                .filter(Objects::nonNull).map(String::strip)
+                .collect(Collectors.toList());
             if (securityProfileResponseDto.getResults().stream().anyMatch(securityProfile -> securityProfileIds.contains(securityProfile.getIdentifier()))) {
-                throw new ConflictException("Can't create securityProfile, a format with the same puid already exist in Vitam");
+                final String messageError = "Can't create securityProfile, a Security Profile  with the same identifier already exist in Vitam";
+                LOGGER.error(messageError);
+                throw new ConflictException(messageError);
             }
         }
-        catch (final JsonProcessingException e) {
-            throw new UnexpectedDataException("Can't create access contracts, Error while parsing Vitam response : " + e.getMessage());
+        catch (final JsonProcessingException exception) {
+            final String errorMessage = "Can't create management contracts, Error while parsing Vitam response : " + exception.getMessage();
+            LOGGER.error(errorMessage);
+            throw new UnexpectedDataException(errorMessage);
         }
     }
 

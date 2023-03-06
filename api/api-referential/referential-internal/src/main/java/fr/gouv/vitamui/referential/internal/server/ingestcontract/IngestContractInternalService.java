@@ -42,7 +42,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -51,7 +50,6 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.administration.ActivationStatus;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -70,7 +68,11 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class IngestContractInternalService {
@@ -100,7 +102,7 @@ public class IngestContractInternalService {
             RequestResponse<IngestContractModel> requestResponse = ingestContractService.findIngestContractById(vitamContext, identifier);
             final IngestContractResponseDto ingestContractResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class);
-            if (ingestContractResponseDto.getResults().size() == 0) {
+            if (ingestContractResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
                 return converter.convertVitamToDto(ingestContractResponseDto.getResults().get(0));
@@ -284,7 +286,6 @@ public class IngestContractInternalService {
         try {
             LOGGER.debug("Patch Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
-            // Manual setting instead of updateRequest.addActions( UpdateActionHelper.set(fieldsUpdated));
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
 
             ObjectNode action = JsonHandler.createObjectNode();
