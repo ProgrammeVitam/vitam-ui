@@ -12,10 +12,9 @@
 }
 
 .vitamui-mat-select.mat-form-field {
-  
+
     font-size: 16px;
     font-weight: 500;
-    width: 240px;
 
     .mat-form-field-subscript-wrapper {
         padding-left: 30px;
@@ -111,7 +110,7 @@
         transition: box-shadow 200ms ease-out;
         height: 60px;
         align-items: center;
-        
+
         padding: 0 30px;
         border: none;
 
@@ -141,7 +140,7 @@
     }
 
     :not(.mat-form-field-disabled).mat-form-field-flex {
-      
+
 
         .mat-select .mat-select-value {
             color: var(--vitamui-grey-900);

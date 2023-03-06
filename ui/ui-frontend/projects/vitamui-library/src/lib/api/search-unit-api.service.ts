@@ -1,20 +1,20 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import {BASE_URL} from 'ui-frontend-common';
-import {SearchResponse} from '../models/search-response.interface';
+import { BASE_URL } from 'ui-frontend-common';
+import { SearchResponse } from '../models/search-response.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchUnitApiService {
 
-  private readonly apiUrl: string;
-
   constructor(private http: HttpClient, @Inject(BASE_URL) private baseUrl: string) {
     this.apiUrl = this.baseUrl + '/search';
   }
+
+  private readonly apiUrl: string;
 
   check(unitId: string, headers?: HttpHeaders): Observable<boolean> {
     return this.http.get<any>(this.apiUrl + '/units/check/' + unitId, {headers});
@@ -38,6 +38,7 @@ export class SearchUnitApiService {
 
   // Manage filling and holding units
   getFilingHoldingScheme(headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', { headers });
+    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', {headers});
   }
+
 }

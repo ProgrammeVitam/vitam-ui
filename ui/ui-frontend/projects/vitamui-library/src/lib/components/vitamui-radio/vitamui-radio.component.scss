@@ -1,5 +1,9 @@
 @import "~ui-frontend-common/sass/variables/colors";
 
+:host(.primary) {
+  display: flex;
+}
+
 input[type="radio"] {
   position: absolute;
   visibility: hidden;
@@ -11,7 +15,7 @@ input[type="radio"] {
   display: inline-block;
   cursor: pointer;
   font-weight: bold;
-  padding: 5px 20px;
+  padding: 10px 30px;
 
   span {
     -webkit-user-select: none;
@@ -21,7 +25,18 @@ input[type="radio"] {
   }
 }
 
+.radio-label.primary {
+  color: black;
+  font-weight: normal;
+  align-items: center;
+  justify-content: center;
+}
+
 .radio-label.checked {
   color: $white;
-  background: var(--vitamui-secondary);
+  background: var(--vitamui-primary);
+}
+
+.radio-label.checked.primary {
+  color: white;
 }

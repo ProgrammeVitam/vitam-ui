@@ -61,7 +61,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter.toVitamuiDto;
+import static fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter.toVitamuiCollectProjectDto;
 
 public class ProjectInternalService {
 
@@ -82,14 +82,14 @@ public class ProjectInternalService {
     }
 
     public CollectProjectDto createProject(VitamContext vitamContext, CollectProjectDto collectProjectDto) {
-        LOGGER.debug("CollectProjectDto: ", collectProjectDto);
+        LOGGER.debug("CollectProjectDto: {}", collectProjectDto);
         try {
-            ProjectDto projectDto = ProjectConverter.toVitamDto(collectProjectDto);
+            ProjectDto projectDto = ProjectConverter.toVitamProjectDto(collectProjectDto);
             RequestResponse<JsonNode> requestResponse = collectService.initProject(vitamContext, projectDto);
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }
-            return toVitamuiDto(
+            return toVitamuiCollectProjectDto(
                 JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     ProjectDto.class));
         } catch (VitamClientException e) {
@@ -153,7 +153,7 @@ public class ProjectInternalService {
             for (JsonNode result : results) {
                 projectDtos.add(objectMapper.treeToValue(result, ProjectDto.class));
             }
-            List<CollectProjectDto> collectProjectDtos = ProjectConverter.toVitamuiDtos(projectDtos);
+            List<CollectProjectDto> collectProjectDtos = ProjectConverter.toVitamuiCollectProjectDtos(projectDtos);
             return new PaginatedValuesDto<>(collectProjectDtos, 1, MAX_RESULTS, false);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_RETRIEVE_PROJECT + ": {}", e);
@@ -180,7 +180,7 @@ public class ProjectInternalService {
         LOGGER.debug("Id: ", id);
         LOGGER.debug("CollectProjectDto: ", collectProjectDto);
         try {
-            ProjectDto projectDto = ProjectConverter.toVitamDto(collectProjectDto);
+            ProjectDto projectDto = ProjectConverter.toVitamProjectDto(collectProjectDto);
             RequestResponse<JsonNode> requestResponse = collectService.updateProject(vitamContext, projectDto);
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when updating project!");
@@ -188,7 +188,7 @@ public class ProjectInternalService {
             ProjectDto responseProjectDto =
                 JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     ProjectDto.class);
-            return toVitamuiDto(responseProjectDto);
+            return toVitamuiCollectProjectDto(responseProjectDto);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPDATE_PROJECT + ": {}", e);
             throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT, e);
@@ -204,7 +204,7 @@ public class ProjectInternalService {
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when getting project!");
             }
-            return toVitamuiDto(
+            return toVitamuiCollectProjectDto(
                 JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     ProjectDto.class));
         } catch (VitamClientException | InvalidParseOperationException e) {

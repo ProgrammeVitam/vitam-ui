@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkStepper } from '@angular/cdk/stepper';
 import { Component } from '@angular/core';
 import { transitionAnimation } from '../../animations/vitamui-common-animations';
@@ -45,7 +44,7 @@ import { transitionAnimation } from '../../animations/vitamui-common-animations'
   styleUrls: ['./stepper.component.scss'],
   // This custom stepper provides itself as CdkStepper so that it can be recognized
   // by other components.
-  providers: [{ provide: CdkStepper, useExisting: StepperComponent }],
+  providers: [{provide: CdkStepper, useExisting: StepperComponent}],
   animations: [
     transitionAnimation,
   ]

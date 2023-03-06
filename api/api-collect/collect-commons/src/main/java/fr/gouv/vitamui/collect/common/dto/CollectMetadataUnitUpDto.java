@@ -24,34 +24,21 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { Id } from '../id.interface';
-import { FacetDetails } from '../operation';
-import { ProjectStatus } from './project-status';
+package fr.gouv.vitamui.collect.common.dto;
 
-export interface Project extends Id {
-  name: string;
-  archivalAgreement: string;
-  messageIdentifier: string;
-  archivalAgencyIdentifier: string;
-  transferringAgencyIdentifier: string;
-  originatingAgencyIdentifier: string;
-  submissionAgencyIdentifier: string;
-  archivalProfile: string;
-  archiveProfile?: string;
-  acquisitionInformation?: string;
-  legalStatus?: string;
-  unitUp: string;
-  unitUps: Array<MetadataUnitUp>;
-  comment: string;
-  status: ProjectStatus;
-  createdOn?: Date;
-  lastModifyOn?: Date;
-  facets?: FacetDetails[];
-  tenant?: string;
-}
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-export interface MetadataUnitUp {
-  metadataKey: string;
-  metadataValue: string;
-  unitUp: string;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class CollectMetadataUnitUpDto {
+
+    private String metadataKey;
+    private String metadataValue;
+    private String unitUp;
+
 }

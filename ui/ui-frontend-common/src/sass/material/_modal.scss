@@ -3,186 +3,192 @@ $header-height: 72px !default;
 $footer-height: 100px !default;
 
 %mat-dialog-container {
-    border-radius: 20px;
-    padding: 0;
-    max-height: calc(100vh - #{$header-height + $footer-height});
-    min-width: 800px;
-    top: 72px;
+  border-radius: 20px;
+  padding: 0;
+  max-height: calc(100vh - #{$header-height + $footer-height});
+  min-width: 800px;
+  top: 72px;
 }
 
 .vitamui-modal .mat-dialog-container {
 
-    @extend %mat-dialog-container;
+  @extend %mat-dialog-container;
 
-    .header {
-            padding: 20px 60px 0 60px;
-        }
+  .header {
+    padding: 20px 60px 0 60px;
+  }
 
-        .content {
-            padding: 0px 60px 30px 60px;
+  .content {
+    padding: 0px 60px 30px 60px;
 
-            // dialog title
-            > .text.large:first-of-type {
-                margin: 1.5rem 0;
-            }
+    // dialog title
+    > .text.large:first-of-type {
+      margin: 1.5rem 0;
+    }
 
-            .actions:last-of-type {
-                display: flex;
-                margin-top: 35px;
-            }
+    .actions:last-of-type {
+      display: flex;
+      margin-top: 35px;
+    }
 
-            .actions:last-of-type > button:not(:last-child) {
-                margin-right: 20px;
-            }
-        }
+    .actions:last-of-type > button:not(:last-child) {
+      margin-right: 20px;
+    }
 
-        .error-message {
-            color: $red;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
+    .main-content {
+      min-height: 25vh;
+    }
+  }
 
-        .vitamui-table {
-            overflow: auto;
-            max-height: 43vh;
+  .error-message {
+    color: $red;
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
 
-            &::-webkit-scrollbar {
-                display: none;
-            }
-        }
+  .vitamui-table {
+    overflow: auto;
+    max-height: 43vh;
 
-        // TODO : depereacted, remove at the end of the redesign
-        .form-group {
-            margin-bottom: 20px;
-        }
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // TODO : depereacted, remove at the end of the redesign
+  .form-group {
+    margin-bottom: 20px;
+  }
 }
 
 .vitamui-form-dual-panel .mat-dialog-container {
 
-    @extend %mat-dialog-container;
+  @extend %mat-dialog-container;
 
-    .vitamui-form-dual-panel-content {
-        display: flex;
-        align-items: stretch;
-        position: relative;
+  .vitamui-form-dual-panel-content {
+    display: flex;
+    align-items: stretch;
+    position: relative;
 
-        .vitamui-form-left-panel {
-            background: var(--vitamui-grey-200);
-            padding: 65px 38px;
-            position: relative;
-            flex-basis: 30%;
+    .vitamui-form-left-panel {
+      background: var(--vitamui-grey-200);
+      padding: 65px 38px;
+      position: relative;
+      flex-basis: 30%;
 
-            &:before {
-                content: '';
-                display: block;
-                position: absolute;
-                border-color: transparent transparent transparent var(--vitamui-grey-200);
-                border-width: ($arrow-size * 0.5) 0 ($arrow-size * 0.5) ($arrow-size * 0.5);
-                border-style: solid;
-                width: $arrow-size * 0.5;
-                height: $arrow-size;
-                top: 50%;
-                left: 100%;
-                margin-top: $arrow-size * -0.5;
-                pointer-events: none;
-            }
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        border-color: transparent transparent transparent var(--vitamui-grey-200);
+        border-width: ($arrow-size * 0.5) 0 ($arrow-size * 0.5) ($arrow-size * 0.5);
+        border-style: solid;
+        width: $arrow-size * 0.5;
+        height: $arrow-size;
+        top: 50%;
+        left: 100%;
+        margin-top: $arrow-size * -0.5;
+        pointer-events: none;
+      }
 
-            &:after {
-                content: '';
-                display: block;
-                position: absolute;
-                border-color: transparent transparent transparent var(--vitamui-grey-200);
-                border-width: ($arrow-size - 2px) * 0.5 0 ($arrow-size - 2px) * 0.5 ($arrow-size - 2px) * 0.5;
-                border-style: solid;
-                width: $arrow-size * 0.5 - 2px;
-                height: $arrow-size - 2px;
-                top: 50%;
-                left: 100%;
-                margin-top: ($arrow-size - 2px) * -0.5;
-                pointer-events: none;
-            }
+      &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        border-color: transparent transparent transparent var(--vitamui-grey-200);
+        border-width: ($arrow-size - 2px) * 0.5 0 ($arrow-size - 2px) * 0.5 ($arrow-size - 2px) * 0.5;
+        border-style: solid;
+        width: $arrow-size * 0.5 - 2px;
+        height: $arrow-size - 2px;
+        top: 50%;
+        left: 100%;
+        margin-top: ($arrow-size - 2px) * -0.5;
+        pointer-events: none;
+      }
 
-            &-title {
-                margin-bottom: 30px;
-                font-weight: bold;
-                font-size: 20px;
-                color: var(--vitamui-grey-900);
-            }
+      &-title {
+        margin-bottom: 30px;
+        font-weight: bold;
+        font-size: 20px;
+        color: var(--vitamui-grey-900);
+      }
 
-            &-property {
-                margin-bottom: 10px;
+      &-property {
+        margin-bottom: 10px;
 
-                &-label {
-                    font-size: 12px;
-                    color: var(--vitamui-primary);
-                    font-weight: bold;
-                }
-
-                &-content {
-                    font-size: 16px;
-                    font-weight: normal;
-                    color: var(--vitamui-grey-900);
-                    word-break: break-word;
-                }
-            }
-
-            .scroll-container {
-                max-height: 400px;
-                overflow: auto;
-                padding-right: 20px;
-                &::-webkit-scrollbar {
-                    display: none;
-                }
-            }
+        &-label {
+          font-size: 12px;
+          color: var(--vitamui-primary);
+          font-weight: bold;
         }
 
-        .vitamui-form-right-panel {
-            padding: 50px 70px 110px 50px;
-            flex-basis: 70%;
-
-            &-header {
-                margin-top: -30px;
-                margin-bottom: 30px;
-            }
-
-            &-title {
-                margin-bottom: 30px;
-                font-weight: bold;
-                font-size: 20px;
-                color: var(--vitamui-grey-900);
-            }
-
-            &-actions {
-                position: absolute;
-                bottom: 25px;
-                display: flex;
-                align-items: center;
-                > :not(:last-child) {
-                    margin-right: 20px;
-                }
-            }
-
-            .scroll-container {
-                max-height: 400px;
-                overflow: auto;
-                padding-right: 20px;
-            }
+        &-content {
+          font-size: 16px;
+          font-weight: normal;
+          color: var(--vitamui-grey-900);
+          word-break: break-word;
         }
+      }
 
-        .btn-close {
-            background: none;
-            border: none;
-            padding: 0;
-            margin: 0;
-            position: absolute;
-            top: 30px;
-            right: 30px;
+      .scroll-container {
+        max-height: 400px;
+        overflow: auto;
+        padding-right: 20px;
 
-            > i {
-                color: var(--vitamui-grey-600);
-                opacity: 0.5;
-                font-size: 35px;
-            }
+        &::-webkit-scrollbar {
+          display: none;
         }
+      }
     }
+
+    .vitamui-form-right-panel {
+      padding: 50px 70px 110px 50px;
+      flex-basis: 70%;
+
+      &-header {
+        margin-top: -30px;
+        margin-bottom: 30px;
+      }
+
+      &-title {
+        margin-bottom: 30px;
+        font-weight: bold;
+        font-size: 20px;
+        color: var(--vitamui-grey-900);
+      }
+
+      &-actions {
+        position: absolute;
+        bottom: 25px;
+        display: flex;
+        align-items: center;
+
+        > :not(:last-child) {
+          margin-right: 20px;
+        }
+      }
+
+      .scroll-container {
+        max-height: 400px;
+        overflow: auto;
+        padding-right: 20px;
+      }
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      top: 30px;
+      right: 30px;
+
+      > i {
+        color: var(--vitamui-grey-600);
+        opacity: 0.5;
+        font-size: 35px;
+      }
+    }
+  }
 }

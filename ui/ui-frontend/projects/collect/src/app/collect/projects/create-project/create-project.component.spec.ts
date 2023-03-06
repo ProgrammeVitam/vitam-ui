@@ -37,11 +37,20 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, Project, ProjectStatus, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  BASE_URL,
+  ENVIRONMENT,
+  InjectorModule,
+  LoggerModule,
+  Project,
+  ProjectStatus,
+  WINDOW_LOCATION
+} from 'ui-frontend-common';
+import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { ProjectsService } from '../projects.service';
 import { CreateProjectComponent } from './create-project.component';
 
-@Pipe({ name: 'fileSize' })
+@Pipe({name: 'fileSize'})
 export class MockFileSizePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
@@ -73,13 +82,13 @@ describe('CreateProjectComponent', () => {
       declarations: [CreateProjectComponent, MockFileSizePipe],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: ProjectsService, useValue: projectsServiceMock },
+        {provide: BASE_URL, useValue: '/fake-api'},
+        {provide: ENVIRONMENT, useValue: environment},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {provide: MatDialog, useValue: matDialogSpy},
+        {provide: WINDOW_LOCATION, useValue: window.location},
+        {provide: ProjectsService, useValue: projectsServiceMock},
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -96,13 +105,13 @@ describe('CreateProjectComponent', () => {
   });
   it('stepIndex should be 2', () => {
     component.stepIndex = 1;
-    component.move();
+    component.moveToNextStep();
     expect(component.stepIndex).toEqual(2);
   });
 
   it('stepIndex should be 0', () => {
     component.stepIndex = 1;
-    component.back();
+    component.backToPreviousStep();
     expect(component.stepIndex).toEqual(0);
   });
 
@@ -110,45 +119,6 @@ describe('CreateProjectComponent', () => {
     const matDialogSpyTest = TestBed.inject(MatDialogRef);
     component.onClose();
     expect(matDialogSpyTest.close).toHaveBeenCalled();
-  });
-
-  it('should have the right values', () => {
-    // Given
-    const project: Project = {
-      id: 'newId',
-      archivalAgreement: 'archivalAgreement',
-      messageIdentifier: 'test test',
-      archivalAgencyIdentifier: 'archivalAgencyIdentifier',
-      transferringAgencyIdentifier: 'transferringAgencyIdentifier',
-      originatingAgencyIdentifier: 'originatingAgencyIdentifier',
-      submissionAgencyIdentifier: 'submissionAgencyIdentifier',
-      archivalProfile: 'string',
-      unitUp: '878dfdfd',
-      comment: 'hello',
-      status: ProjectStatus.CLOSE,
-    };
-    const newProject: Project = {
-      id: 'id',
-      archivalAgreement: null,
-      messageIdentifier: null,
-      archivalAgencyIdentifier: null,
-      transferringAgencyIdentifier: null,
-      originatingAgencyIdentifier: null,
-      submissionAgencyIdentifier: null,
-      archivalProfile: null,
-      unitUp: null,
-      comment: 'hello',
-      status: ProjectStatus.OPEN,
-    };
-
-    // When
-    component.createdProject = project;
-    component.mapProjectInternalFields(newProject);
-
-    // Then
-    expect(newProject.id).toEqual('newId');
-    expect(newProject.unitUp).toEqual('878dfdfd');
-    expect(newProject.status).toEqual('CLOSE');
   });
 
   it('should call create', () => {
@@ -165,21 +135,46 @@ describe('CreateProjectComponent', () => {
       unitUp: 'sdfsdf54sd5f4ds5f4',
       comment: 'test test',
       status: ProjectStatus.OPEN,
-    };
+    } as Project;
 
     // When
     component.createdProject = project;
-    component.validateAndProcessUpload();
+    component.createProjectAndTransactionAndUpload();
 
     // Then
     expect(projectsServiceMock.create).toHaveBeenCalled();
   });
 
+  it('should createProject with form', () => {
+    // Given
+    component.selectedWorkflow = Workflow.FLOW
+    component.selectedFlowType = FlowType.FIX
+    component.initForm();
+    const project: Project = {
+      id: 'id',
+      archivalAgreement: 'string',
+      messageIdentifier: 'string',
+      archivalAgencyIdentifier: 'id id id',
+      transferringAgencyIdentifier: '787878dfdferer454dfd2fd1f21d',
+      originatingAgencyIdentifier: 'originatingAgencyIdentifier',
+      submissionAgencyIdentifier: 'string',
+      archivalProfile: 'test',
+      unitUp: 'sdfsdf54sd5f4ds5f4',
+      comment: 'test test',
+      status: ProjectStatus.OPEN,
+    } as Project;
+    expect(component.stepIndex).toEqual(0);
+
+    // When
+    component.createdProject = project;
+    component.validateAndCreateProject();
+
+    // Then
+    expect(projectsServiceMock.create).toHaveBeenCalled();
+    expect(component.stepIndex).toEqual(1);
+  });
+
   describe('DOM', () => {
-    it('should have 10 buttons ', () => {
-      const elementBtn = fixture.nativeElement.querySelectorAll('button[type=button]');
-      expect(elementBtn.length).toBe(10);
-    });
 
     it('should have an input file', () => {
       const nativeElement = fixture.nativeElement;
@@ -189,7 +184,7 @@ describe('CreateProjectComponent', () => {
 
     it('should have 3 cdk steps', () => {
       const elementCdkStep = fixture.nativeElement.querySelectorAll('cdk-step');
-      expect(elementCdkStep.length).toBe(5);
+      expect(elementCdkStep.length).toBe(6);
     });
 
     it('should have 13 VitamUI Common Input', () => {

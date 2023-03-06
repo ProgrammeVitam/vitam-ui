@@ -1,12 +1,12 @@
 /* tslint:disable:no-use-before-declare component-selector */
-import {NestedTreeControl} from '@angular/cdk/tree';
-import {Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {MatTreeNestedDataSource} from '@angular/material/tree';
-import {v4 as uuid} from 'uuid';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { v4 as uuid } from 'uuid';
 
-import {Node} from '../../models/node.interface';
-import {FilingPlanMode, FilingPlanService} from './filing-plan.service';
+import { Node } from '../../models/node.interface';
+import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 
 export const NODE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -45,7 +45,6 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
   }
 
   constructor(public filingPlanService: FilingPlanService) {
-    console.log('Construct component: ', this.mode, this.accessContract);
     this.nestedTreeControl = new NestedTreeControl<Node>((node) => node.children);
     this.nestedDataSource = new MatTreeNestedDataSource();
   }
@@ -145,8 +144,6 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
   }
 
   emitVitamId(node: Node) {
-    console.log('emit: ', node);
-    console.log('mode: ', this.mode);
     const nodeChecked = node.checked;
 
     if (this.mode === FilingPlanMode.BOTH) {
@@ -184,42 +181,36 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
   }
 
   initCheckedNodes(obj: { included: string[], excluded: string[] }, nodes: Node[], parentChecked: boolean = false) {
-    console.log('init Component: ', obj);
-    console.log('nodes: ', nodes);
-    console.log('mode: ', this.mode);
-    if (!obj || !nodes) { return; }
+
+    if (!obj || !nodes) {
+      return;
+    }
 
     let shouldStop = false;
 
     nodes.forEach(node => {
-      console.log('Node: ', node);
-      console.log('stop?', shouldStop);
+
       if (!node || shouldStop) {
-        console.log('stop !');
         return;
       }
 
       if (this.mode === FilingPlanMode.SOLO && obj.included && obj.included.includes(node.vitamId)) {
         node.checked = true;
         shouldStop = true;
-        console.log('find solo node !');
         return;
       }
 
       if (this.mode === FilingPlanMode.INCLUDE_ONLY && !parentChecked && obj.included && obj.included.includes(node.vitamId)) {
-        console.log('find an included node !');
         node.checked = true;
         this.updateChildrenStatusAndSelectedNodes(node.children, true);
         return;
       }
 
       if (this.mode === FilingPlanMode.BOTH && (!parentChecked && obj.included && obj.included.includes(node.vitamId)) || parentChecked) {
-        console.log('find an included node !');
         node.checked = true;
       }
 
       if (this.mode === FilingPlanMode.BOTH && parentChecked && obj.excluded && obj.excluded.includes(node.vitamId)) {
-        console.log('find an excluded node !');
         node.checked = false;
         this.updateParentsStatus(node.parents, false, node.disabledChild);
       }

@@ -1,17 +1,18 @@
-import {Observable, of} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
-import {HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable, LOCALE_ID} from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 
-import {SearchUnitApiService} from '../../api/search-unit-api.service';
+import { SearchUnitApiService } from '../../api/search-unit-api.service';
 
-import {DescriptionLevel} from '../../models/description-level.enum';
-import {FileType} from '../../models/file-type.enum';
-import {Node} from '../../models/node.interface';
-import {Unit} from '../../models/unit.interface';
+import { DescriptionLevel } from '../../models/description-level.enum';
+import { FileType } from '../../models/file-type.enum';
+import { Node } from '../../models/node.interface';
+import { Unit } from '../../models/unit.interface';
 
-import {getKeywordValue} from '../../utils/keyword.util';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { getKeywordValue } from '../../utils/keyword.util';
 
 export enum ExpandLevel {
   NONE,
@@ -29,7 +30,6 @@ export enum FilingPlanMode {
   providedIn: 'root'
 })
 export class FilingPlanService {
-
   // tslint:disable-next-line:variable-name
   private _pending = 0;
 
@@ -43,21 +43,44 @@ export class FilingPlanService {
     return this._pending > 0;
   }
 
-  public loadTree(tenantIdentifier: number, accessContractId: string, idPrefix: string): Observable<Node[]> {
-    this._pending++;
-    const headers = new HttpHeaders({
-      'X-Tenant-Id': tenantIdentifier.toString(),
-      'X-Access-Contract-Id': accessContractId
-    });
+  private cache: {
+    [id: string]: {
+      value: Observable<Unit[]>
+    }
+  } = {};
 
-    return this.searchUnitApi.getFilingPlan(headers).pipe(
-      catchError(() => {
-        return of({$hits: null, $results: []});
-      }),
-      map(response => response.$results),
-      tap(() => this._pending--),
-      map(results => this.getNestedChildren(results, idPrefix))
-    );
+  getCachedValue(accessContractId: string): Observable<Unit[]> {
+    const item = this.cache[accessContractId];
+    if (!item) {
+      return null;
+    }
+    return item.value;
+  }
+
+  setCachedValue(value: Observable<Unit[]>, accessContractId: string) {
+    this.cache[accessContractId] = {value};
+  }
+
+  public loadTree(tenantIdentifier: number, accessContractId: string, idPrefix: string): Observable<Node[]> {
+    let units$ = this.getCachedValue(accessContractId);
+    if (!units$) {
+      this._pending++;
+      const headers = new HttpHeaders({
+        'X-Tenant-Id': tenantIdentifier.toString(),
+        'X-Access-Contract-Id': accessContractId
+      });
+      units$ = this.searchUnitApi.getFilingPlan(headers).pipe(
+        catchError(() => {
+          return of({$hits: null, $results: []});
+        }),
+        map(response => response.$results),
+        tap(() => this._pending--)
+      );
+      this.setCachedValue(units$, accessContractId);
+    }
+    return units$.pipe(map(results => {
+      return this.getNestedChildren(results, idPrefix)
+    }));
   }
 
   private getFileTypeFromUnit(unit: Unit): FileType {
@@ -115,5 +138,19 @@ function byTitle(locale: string): (a: Node, b: Node) => number {
       return 0;
     }
     return a.label.localeCompare(b.label, locale);
+  };
+}
+
+/** Required at least one node in included */
+export function oneIncludedNodeRequired(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const nodes: { included: string[], excluded: string[] } = control.value;
+    if (!nodes) {
+      return {missingNodes: {value: 'nodes required'}}
+    }
+    if (!nodes.included || nodes.included.length < 1) {
+      return {missingIncludedNodes: {value: 'included nodes required'}}
+    }
+    return null;
   };
 }

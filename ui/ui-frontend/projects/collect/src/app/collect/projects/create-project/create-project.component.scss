@@ -1,5 +1,21 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
+
+.content {
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+  }
+
+  .actions {
+    button {
+      margin-right: 20px;
+    }
+  }
+}
+
 h2 {
   font-size: 23px;
   line-height: 46px;
@@ -15,16 +31,42 @@ h4 {
 
 .drag-and-drop-area {
   width: 100%;
-  height: 300px;
+  height: 25vh;
   border: 2px dashed var(--vitamui-primary);
   border-radius: 6px;
   box-shadow: 0 0 80px rgba(255, 255, 249, 0.3);
   background: $white;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 
   p {
     padding-top: 20px;
   }
+
+  .drag-container {
+    width: 100%;
+    vertical-align: middle;
+    text-align: center;
+    overflow-y: scroll;
+  }
+
+  .drop-area {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+
+    .sip-drop {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
 }
 
 .on-over {
@@ -44,19 +86,6 @@ h4 {
   }
 }
 
-.drag-container {
-  width: 100%;
-  height: 210px;
-  vertical-align: middle;
-  text-align: center;
-  overflow-y: scroll;
-}
-
-.drop-area {
-  text-align: center;
-  height: 156px;
-}
-
 .input-file {
   display: none;
 }
@@ -69,6 +98,18 @@ h4 {
   white-space: nowrap;
   transform-origin: left;
   transition: transform 150ms ease-out;
+}
+
+.select {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--vitamui-primary);
+
+  .option {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--vitamui-primary);
+  }
 }
 
 .vitamui-chip-list {
@@ -95,5 +136,170 @@ h4 {
   label {
     font-weight: 700;
     color: var(--vitamui-primary);
+  }
+}
+
+.radio-group {
+  border: solid 1px var(--vitamui-primary);
+  display: flex;
+  flex: 1;
+  border-radius: 5px;
+  overflow: hidden;
+  text-align: right;
+
+  .radio-label {
+    color: var(--vitamui-primary);
+    display: flex;
+    flex: 1;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px 20px;
+
+    .checked {
+      background: var(--vitamui-primary);
+    }
+  }
+}
+
+.object-container {
+  .object-menu {
+    height: 50px;
+    margin-top: 20px;
+    padding: 0 5px;
+    border-radius: 5px;
+    display: flex;
+    background-color: var(--vitamui-background);
+    flex-direction: row;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 22px;
+    cursor: pointer;
+
+    &.opened {
+      border-left: 5px solid var(--vitamui-primary);
+      padding-left: 0;
+      color: var(--vitamui-primary);
+    }
+
+    .split {
+      padding: 0 10px;
+      width: 50%;
+    }
+
+    .open-close-icon {
+      padding-right: 5px;
+    }
+
+    .object-name {
+    }
+
+    .object-size {
+    }
+
+    .object-type {
+    }
+
+    .delete-button {
+      border: none;
+      border-radius: 50%;
+      background-color: var(--vitamui-primary);
+      width: 30px;
+      height: 30px;
+      font-size: medium;
+      color: var(--vitamui-primary-font);
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--vitamui-primary-800)
+      }
+    }
+  }
+
+  .object-details {
+    padding: 15px 15px;
+    margin-top: 5px;
+    background-color: var(--vitamui-background);
+
+    .object-details-group {
+      label {
+        padding-bottom: 10px;
+      }
+
+      &.delete-button {
+        padding: 15px 0 15px 20px;
+      }
+
+    }
+  }
+}
+
+
+.col {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 1;
+}
+
+.line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.toggle-right {
+  margin-top: 7px;
+  align-items: end;
+  justify-content: center;
+}
+
+.shrink {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.new-design-table {
+  font-family: 'Mulish', sans-serif;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+
+  .new-design-head {
+    box-shadow: 0 4px 2px -2px var(--vitamui-grey-300);
+    font-weight: bold;
+  }
+
+  .new-design-row {
+    border: 1px solid var(--vitamui-grey-300);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    padding: 8px 14px;
+    margin-bottom: 3px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      flex-basis: auto;
+    }
+
+    .name {
+      flex-grow: 2;
+    }
+
+    .size {
+      flex-grow: 1;
+    }
+
+    .compression {
+      flex-grow: 2;
+    }
+
+    .upload {
+      flex-grow: 2;
+    }
   }
 }
