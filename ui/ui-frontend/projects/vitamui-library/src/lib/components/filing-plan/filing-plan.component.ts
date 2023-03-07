@@ -1,6 +1,6 @@
 /* tslint:disable:no-use-before-declare component-selector */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { v4 as uuid } from 'uuid';
@@ -20,7 +20,7 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
   styleUrls: ['./filing-plan.component.scss'],
   providers: [NODE_SELECT_VALUE_ACCESSOR]
 })
-export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChanges {
+export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
 
   @Input() tenantIdentifier: number;
   @Input() accessContract: string;
@@ -57,10 +57,6 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
         this.nestedTreeControl.dataNodes = nodes;
         this.initCheckedNodes(this.selectedNodes, nodes);
       });
-  }
-
-  ngOnInit() {
-    this.initFiningTree();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

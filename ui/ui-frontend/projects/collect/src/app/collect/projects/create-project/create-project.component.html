@@ -330,7 +330,7 @@
             <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
           </button>
           <button (click)="validateAndCreateProject()" class="btn primary" type="button">
-            {{ 'COMMON.NEXT' | translate }}
+            {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <button (click)="onClose()" class="btn link" type="button">
             {{ 'COMMON.UNDO' | translate }}
@@ -370,7 +370,7 @@
                     </button>
                   </div>
                 </div>
-                <div class="object-details" *ngIf="ruleParamForm.value.opened">
+                <div class="object-details" [hidden]="!ruleParamForm.value.opened">
                   <div class="object-details-group">
                     <div class="row">
                       <div class="col">
@@ -433,7 +433,7 @@
             <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
           </button>
           <button (click)="validateAndCreateProject()" [disabled]="stepRulesParamsIsInvalid()" class="btn primary" type="button">
-            {{ 'COMMON.NEXT' | translate }}
+            {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <button (click)="onClose()" class="btn link" type="button">
             {{ 'COMMON.UNDO' | translate }}

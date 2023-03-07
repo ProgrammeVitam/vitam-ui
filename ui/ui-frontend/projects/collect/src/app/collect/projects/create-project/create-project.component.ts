@@ -368,7 +368,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   async validateAndCreateProject() {
     if (this.selectedWorkflow === Workflow.MANUAL) {
       this.createProjectAndTransactionAndUpload();
-    } else if (this.selectedFlowType === FlowType.FIX) {
+    } else {
       this.createProject();
     }
   }
@@ -380,7 +380,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     await this.projectsService.create(project).subscribe(
       _result => {
         this.pending = false;
-        this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
+        this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATED'), null, {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
