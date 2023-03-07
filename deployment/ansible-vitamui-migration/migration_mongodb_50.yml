@@ -28,7 +28,7 @@
     - mongodb_check_feature_compatibility
     - mongodb_check_replica_state
   vars:
-    mongo_compatibility_list: ['4.4']
+    mongo_compatibility_list: ['4.4', '5.0']
 
 ################################################################################
 
