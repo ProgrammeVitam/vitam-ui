@@ -1,5 +1,4 @@
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
 
 import { HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
@@ -12,6 +11,7 @@ import { Node } from '../../models/node.interface';
 import { Unit } from '../../models/unit.interface';
 
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { getKeywordValue } from '../../utils/keyword.util';
 
 export enum ExpandLevel {
@@ -74,7 +74,8 @@ export class FilingPlanService {
           return of({$hits: null, $results: []});
         }),
         map(response => response.$results),
-        tap(() => this._pending--)
+        tap(() => this._pending--),
+        shareReplay(1)
       );
       this.setCachedValue(units$, accessContractId);
     }
