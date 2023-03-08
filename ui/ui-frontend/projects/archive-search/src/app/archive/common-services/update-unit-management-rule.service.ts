@@ -57,8 +57,7 @@ export class UpdateUnitManagementRuleService {
 
   goToUpdateManagementRule(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    criteriaSearchList: SearchCriteriaEltDto[],
-    accessContract: string,
+    criteriaSearchList: SearchCriteriaEltDto[],    
     currentPage: number,
     tenantIdentifier: number,
     numberOfHoldingUnitType: number,
@@ -80,7 +79,6 @@ export class UpdateUnitManagementRuleService {
         this.updateManagementRule(
           listOfUACriteriaSearch,
           criteriaSearchList,
-          accessContract,
           currentPage,
           tenantIdentifier,
           numberOfHoldingUnitType,
@@ -114,8 +112,7 @@ export class UpdateUnitManagementRuleService {
 
   private updateManagementRule(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    criteriaSearchList: SearchCriteriaEltDto[],
-    accessContract: string,
+    criteriaSearchList: SearchCriteriaEltDto[],    
     currentPage: number,
     tenantIdentifier: number,
     numberOfHoldingUnitType: number,
@@ -138,7 +135,7 @@ export class UpdateUnitManagementRuleService {
       size: PAGE_SIZE,
       language: this.translateService.currentLang,
     };
-    this.archiveService.searchArchiveUnitsByCriteria(criteriaSearchDSLQuery, accessContract).subscribe((data) => {
+    this.archiveService.searchArchiveUnitsByCriteria(criteriaSearchDSLQuery).subscribe((data) => {
       numberOfHoldingUnitType = data.totalResults;
       if (numberOfHoldingUnitType > 0) {
         const dialogToOpen = updateArchiveUnitAlerteMessageDialog;
@@ -167,7 +164,6 @@ export class UpdateUnitManagementRuleService {
   updateManagementRuleWithThresholds(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     criteriaSearchList: SearchCriteriaEltDto[],
-    accessContract: string,
     currentPage: number,
     tenantIdentifier: number,
     numberOfHoldingUnitType: number,
@@ -205,7 +201,6 @@ export class UpdateUnitManagementRuleService {
               this.goToUpdateManagementRule(
                 listOfUACriteriaSearch,
                 criteriaSearchList,
-                accessContract,
                 currentPage,
                 tenantIdentifier,
                 numberOfHoldingUnitType,
@@ -221,7 +216,6 @@ export class UpdateUnitManagementRuleService {
           this.goToUpdateManagementRule(
             listOfUACriteriaSearch,
             criteriaSearchList,
-            accessContract,
             currentPage,
             tenantIdentifier,
             numberOfHoldingUnitType,
@@ -248,7 +242,6 @@ export class UpdateUnitManagementRuleService {
             this.goToUpdateManagementRule(
               listOfUACriteriaSearch,
               criteriaSearchList,
-              accessContract,
               currentPage,
               tenantIdentifier,
               numberOfHoldingUnitType,
@@ -264,7 +257,6 @@ export class UpdateUnitManagementRuleService {
         this.goToUpdateManagementRule(
           listOfUACriteriaSearch,
           criteriaSearchList,
-          accessContract,
           currentPage,
           tenantIdentifier,
           numberOfHoldingUnitType,

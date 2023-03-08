@@ -209,7 +209,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
 
     if (this.hasExactCount) {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList, this.accessContract)
+        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .subscribe((resultsNumber) => {
           this.itemsWithSameRule = resultsNumber.toString();
           this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
@@ -217,7 +217,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
         });
     } else {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
+        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
         .subscribe((data) => {
           this.itemsWithSameRule = data.totalResults.toString();
 
@@ -272,13 +272,13 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
 
       if (this.hasExactCount) {
         this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList, this.accessContract)
+          .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
           .subscribe((resultsNumber) => {
             this.itemsWithSameRuleAndDate = resultsNumber.toString();
             this.isWarningLoading = false;
           });
       } else {
-        this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
+        this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe((data) => {
           this.itemsWithSameRuleAndDate =
             data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ? this.resultNumberToShow : data.totalResults.toString();
         });

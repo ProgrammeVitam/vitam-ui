@@ -51,8 +51,7 @@ export class ComputeInheritedRulesService {
   ) {}
 
   launchComputedInheritedRulesModal(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    accessContract: string,
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],    
     numberOfHoldingUnitTypeOnComputedRules: number,
     tenantIdentifier: number,
     currentPage: number,
@@ -74,7 +73,7 @@ export class ComputeInheritedRulesService {
       language: this.translateService.currentLang,
     };
 
-    this.archiveService.searchArchiveUnitsByCriteria(computedInheritedRulesSearchCriteria, accessContract).subscribe((response) => {
+    this.archiveService.searchArchiveUnitsByCriteria(computedInheritedRulesSearchCriteria).subscribe((response) => {
       numberOfHoldingUnitTypeOnComputedRules = response.totalResults;
       if (numberOfHoldingUnitTypeOnComputedRules > 0) {
         const dialogToOpen = launchComputeInheritedRuleAlerteMessageDialog;
@@ -102,7 +101,7 @@ export class ComputeInheritedRulesService {
               size: PAGE_SIZE,
               language: this.translateService.currentLang,
             };
-            this.archiveService.launchComputedInheritedRules(computedInheritedRulesDSLQuery, accessContract).subscribe((operationId) => {
+            this.archiveService.launchComputedInheritedRules(computedInheritedRulesDSLQuery).subscribe((operationId) => {
               const guid = operationId;
               const message = this.translateService.instant('ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.OPERATION_MESSAGE');
               const serviceUrl =

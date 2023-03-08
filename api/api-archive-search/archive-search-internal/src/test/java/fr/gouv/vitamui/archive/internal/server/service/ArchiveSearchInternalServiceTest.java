@@ -116,7 +116,7 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     @Test
-     void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() throws VitamClientException,
+    void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() throws VitamClientException,
         IOException, InvalidParseOperationException {
         // Given
         when(unitService.searchUnits(any(), any()))
@@ -201,9 +201,9 @@ public class ArchiveSearchInternalServiceTest {
 
         //When //Then
         String expectingGuid =
-            archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
+            archiveSearchInternalService.reclassification(reclassificationCriteriaDto, new VitamContext(1));
         assertThatCode(() -> {
-            archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
+            archiveSearchInternalService.reclassification(reclassificationCriteriaDto, new VitamContext(1));
         }).doesNotThrowAnyException();
 
         Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");

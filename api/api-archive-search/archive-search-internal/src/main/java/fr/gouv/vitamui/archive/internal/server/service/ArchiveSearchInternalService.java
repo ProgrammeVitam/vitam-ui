@@ -380,7 +380,7 @@ public class ArchiveSearchInternalService {
     }
 
 
-    public String computedInheritedRules(final VitamContext vitamContext, final SearchCriteriaDto searchCriteriaDto)
+    public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
         LOGGER.debug("Computed Inherited Rules by criteria {} ", searchCriteriaDto.toString());
         JsonNode jsonNode = mapRequestToDslQuery(searchCriteriaDto);
@@ -422,8 +422,8 @@ public class ArchiveSearchInternalService {
         return response;
     }
 
-    public String reclassification(final VitamContext vitamContext,
-        final ReclassificationCriteriaDto reclassificationCriteriaDto)
+    public String reclassification(
+        final ReclassificationCriteriaDto reclassificationCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
         if (reclassificationCriteriaDto == null) {
             throw new BadRequestException("Error reclassification criteria");

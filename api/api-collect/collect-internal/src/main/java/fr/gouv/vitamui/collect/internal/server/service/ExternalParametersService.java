@@ -25,52 +25,66 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.ingest.internal.server.service;
+package fr.gouv.vitamui.collect.internal.server.service;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * The service to retrieve profile thresholds.
  */
 @Service
-public class IngestExternalParametersService {
+public class ExternalParametersService {
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    @Autowired
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
+    private final InternalSecurityService securityService;
 
-    public IngestExternalParametersService(
-        final ExternalParametersInternalRestClient externalParametersInternalRestClient) {
+    @Autowired
+    public ExternalParametersService(final ExternalParametersInternalRestClient externalParametersInternalRestClient,
+        final InternalSecurityService securityService) {
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
+        this.securityService = securityService;
     }
 
     /**
      * Service to return the access contract defined on profil using external parameters
      *
-     * @return Optional of access contract otherwise Optional.empty
+     * @return access contract throws IllegalArgumentException
      */
-    public Optional<String> retrieveProfilAccessContract(InternalHttpContext internalHttpContext) {
-        Optional<String> accessContractOpt = Optional.empty();
+    public String retrieveAccessContractFromExternalParam() {
         ExternalParametersDto myExternalParameter =
-            externalParametersInternalRestClient.getMyExternalParameters(internalHttpContext);
-        if (myExternalParameter != null && CollectionUtils.isNotEmpty(myExternalParameter.getParameters())) {
-            ParameterDto parameterAccessContract = myExternalParameter.getParameters().stream().filter(
-                    parameter -> PARAM_ACCESS_CONTRACT_NAME
-                        .equals(parameter.getKey()))
-                .findFirst().orElse(null);
-            if (parameterAccessContract != null && parameterAccessContract.getValue() != null) {
-                String accessContractValue = parameterAccessContract.getValue();
-                accessContractOpt = Optional.of(accessContractValue);
-            }
+            externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext());
+        if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
+            throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
-        return accessContractOpt;
+
+        ParameterDto parameterAccessContract = myExternalParameter.getParameters().stream().filter(
+                parameter -> PARAM_ACCESS_CONTRACT_NAME
+                    .equals(parameter.getKey()))
+            .findFirst().orElse(null);
+        if (Objects.isNull(parameterAccessContract) || Objects.isNull(parameterAccessContract.getValue())) {
+            throw new IllegalArgumentException("No access contract defined");
+        }
+        return parameterAccessContract.getValue();
+    }
+
+    /**
+     * This function create a VitamContext
+     *
+     * @return
+     */
+    public VitamContext buildVitamContextFromExternalParam() {
+        return new VitamContext(securityService.getTenantIdentifier()).setAccessContract(
+                retrieveAccessContractFromExternalParam())
+            .setApplicationSessionId(securityService.getApplicationId());
     }
 }

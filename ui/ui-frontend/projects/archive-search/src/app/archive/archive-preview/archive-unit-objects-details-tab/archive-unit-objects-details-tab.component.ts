@@ -72,7 +72,6 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
     return this.archiveService.launchDownloadObjectFromUnit(
       this.archiveUnit['#id'],
       this.tenantIdentifier,
-      this.accessContract,
       versionWithQualifier.qualifier,
       versionWithQualifier.version
     );

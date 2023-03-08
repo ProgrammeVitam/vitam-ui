@@ -44,5 +44,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString
 public class ArchiveUnitsDto extends IdDto implements Serializable {
+    private static final long serialVersionUID = 19051220419502517L;
     private VitamUIArchiveUnitResponseDto archives;
 }

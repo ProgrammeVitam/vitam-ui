@@ -47,15 +47,15 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
-import {Observable, of, Subscription} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff, Logger, Option, StartupService, Unit} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
-import {ArchiveService} from '../../archive.service';
-import {UnitDescriptiveMetadataDto} from '../../models/unitDescriptiveMetadata.interface';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, of, Subscription } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, Logger, Option, StartupService, Unit } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { ArchiveService } from '../../archive.service';
+import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata.interface';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
@@ -129,7 +129,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
 
   ngOnInit() {
     this.initTitleAndDescriptionsFlagValues(this.archiveUnit);
-    this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
+    this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
 
     this.form = this.formBuilder.group({
       title: [null, [Validators.required]],
@@ -217,7 +217,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
 
     if (changes.archiveUnit?.currentValue['#id']) {
       this.initTitleAndDescriptionsFlagValues(changes.archiveUnit.currentValue);
-      this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
+      this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
       this.form?.reset();
       this.previousValue = {
         title: this.getAuTitle(changes.archiveUnit.currentValue),
@@ -424,7 +424,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   updateUnit(archiveUnit: Unit, metadataToUpdate: UnitDescriptiveMetadataDto) {
-    this.archiveService.updateUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract, metadataToUpdate).subscribe(
+    this.archiveService.updateUnit(archiveUnit['#id'], this.tenantIdentifier, metadataToUpdate).subscribe(
       (response) => {
         this.updateStarted = false;
         this.showNormalPanel.emit();
@@ -504,7 +504,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract);
+    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.tenantIdentifier);
   }
 
   showArchiveUniteFullPath() {
