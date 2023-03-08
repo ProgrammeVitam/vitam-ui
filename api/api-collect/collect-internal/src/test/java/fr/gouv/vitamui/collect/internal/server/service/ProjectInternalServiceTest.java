@@ -106,7 +106,7 @@ class ProjectInternalServiceTest {
 
         // WHEN
         CollectProjectDto resultedProject =
-            projectInternalService.createProject((vitamContext), ProjectConverter.toVitamuiCollectProjectDto(projectDto));
+            projectInternalService.createProject(ProjectConverter.toVitamuiCollectProjectDto(projectDto), vitamContext);
 
         // THEN
         assertNotNull(resultedProject);
@@ -137,7 +137,7 @@ class ProjectInternalServiceTest {
 
         // WHEN
         assertThrows(InternalServerException.class, () -> {
-            projectInternalService.createProject(vitamContext, ProjectConverter.toVitamuiCollectProjectDto(projectDto));
+            projectInternalService.createProject(ProjectConverter.toVitamuiCollectProjectDto(projectDto), vitamContext);
         });
     }
 
@@ -158,8 +158,8 @@ class ProjectInternalServiceTest {
 
         // WHEN
         CollectTransactionDto resultedTransaction =
-            projectInternalService.createTransactionForProject(vitamContext,
-                TransactionConverter.toVitamUiDto(transactionDto), PROJECT_ID);
+            projectInternalService.createTransactionForProject(
+                TransactionConverter.toVitamUiDto(transactionDto), PROJECT_ID, vitamContext);
 
         // THEN
         assertNotNull(resultedTransaction);
@@ -188,8 +188,8 @@ class ProjectInternalServiceTest {
 
         // WHEN
         assertThrows(InternalServerException.class, () ->
-            projectInternalService.createTransactionForProject(vitamContext,
-                TransactionConverter.toVitamUiDto(transactionDto), PROJECT_ID)
+            projectInternalService.createTransactionForProject(
+                TransactionConverter.toVitamUiDto(transactionDto), PROJECT_ID, vitamContext)
         );
     }
 
@@ -210,8 +210,8 @@ class ProjectInternalServiceTest {
 
         // WHEN
         PaginatedValuesDto<CollectProjectDto> paginatedProjects =
-            projectInternalService.getAllProjectsPaginated(vitamContext, 1, 1, Optional.empty(),
-                Optional.empty(), Optional.empty());
+            projectInternalService.getAllProjectsPaginated(1, 1, Optional.empty(),
+                Optional.empty(), Optional.empty(), vitamContext);
 
         // THEN
         assertNotNull(paginatedProjects);
@@ -237,8 +237,8 @@ class ProjectInternalServiceTest {
 
         // WHEN
         PaginatedValuesDto<CollectProjectDto> paginatedProjects =
-            projectInternalService.getAllProjectsPaginated(vitamContext, 1, 1, Optional.empty(),
-                Optional.empty(), Optional.of(JsonHandler.writeAsString(criteriaNode)));
+            projectInternalService.getAllProjectsPaginated(1, 1, Optional.empty(),
+                Optional.empty(), Optional.of(JsonHandler.writeAsString(criteriaNode)), vitamContext);
 
         // THEN
         assertNotNull(paginatedProjects);
@@ -261,8 +261,8 @@ class ProjectInternalServiceTest {
 
         // WHEN
         assertThrows(InternalServerException.class, () ->
-            projectInternalService.getAllProjectsPaginated(vitamContext, 1, 1, Optional.empty(),
-                Optional.empty(), Optional.empty())
+            projectInternalService.getAllProjectsPaginated(1, 1, Optional.empty(),
+                Optional.empty(), Optional.empty(), vitamContext)
         );
     }
 
@@ -276,8 +276,8 @@ class ProjectInternalServiceTest {
 
         // THEN
         assertDoesNotThrow(() ->
-            projectInternalService.streamingUpload(vitamContext, csvFileInputStream, "FAKE_TRANSACTION_ID",
-                "FAKE_VALUE"));
+            projectInternalService.streamingUpload(csvFileInputStream, "FAKE_TRANSACTION_ID",
+                "FAKE_VALUE", vitamContext));
     }
 
     @Test
@@ -290,8 +290,8 @@ class ProjectInternalServiceTest {
 
         // THEN
         assertThrows(InternalServerException.class, () ->
-            projectInternalService.streamingUpload(vitamContext, csvFileInputStream, "FAKE_TRANSACTION_ID",
-                "FAKE_VALUE"));
+            projectInternalService.streamingUpload(csvFileInputStream, "FAKE_TRANSACTION_ID",
+                "FAKE_VALUE", vitamContext));
     }
 
     @Test
@@ -310,8 +310,8 @@ class ProjectInternalServiceTest {
             .thenReturn(mockResponse);
 
         // WHEN
-        CollectProjectDto updatedProject = projectInternalService.update(vitamContext, PROJECT_ID,
-            ProjectConverter.toVitamuiCollectProjectDto(projectDto));
+        CollectProjectDto updatedProject = projectInternalService.update(PROJECT_ID,
+            ProjectConverter.toVitamuiCollectProjectDto(projectDto), vitamContext);
 
         // THEN
         assertNotNull(updatedProject);
@@ -339,8 +339,8 @@ class ProjectInternalServiceTest {
             .thenReturn(mockResponse);
 
         // THEN
-        assertThrows(InternalServerException.class, () -> projectInternalService.update(vitamContext, PROJECT_ID,
-            ProjectConverter.toVitamuiCollectProjectDto(projectDto)));
+        assertThrows(InternalServerException.class, () -> projectInternalService.update(PROJECT_ID,
+            ProjectConverter.toVitamuiCollectProjectDto(projectDto), vitamContext));
     }
 
     @Test

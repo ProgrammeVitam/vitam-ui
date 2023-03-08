@@ -86,11 +86,11 @@ public class AccessionRegisterDetailExternalRestClient extends
     }
 
     public ResponseEntity<Resource> exportAccessionRegisterCsv(AccessionRegisterSearchDto query,
-                                                               ExternalHttpContext context) {
+        ExternalHttpContext context) {
         LOGGER.debug("Accession register details csv export");
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<AccessionRegisterSearchDto> request = new HttpEntity<>(query, headers);
         return restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV, HttpMethod.POST,
-                              request, Resource.class);
+            request, Resource.class);
     }
 }

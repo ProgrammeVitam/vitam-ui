@@ -27,12 +27,12 @@
 
 package fr.gouv.vitamui.collect.internal.server.rest;
 
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
+import fr.gouv.vitamui.collect.internal.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -43,7 +43,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,14 +72,14 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 public class ProjectInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectInternalController.class);
-    private final InternalSecurityService securityService;
     private final ProjectInternalService projectInternalService;
+    private final ExternalParametersService externalParametersService;
 
     @Autowired
     public ProjectInternalController(final ProjectInternalService projectInternalService,
-        final InternalSecurityService securityService) {
-        this.securityService = securityService;
+        final ExternalParametersService externalParametersService) {
         this.projectInternalService = projectInternalService;
+        this.externalParametersService = externalParametersService;
     }
 
     @GetMapping(params = {"page", "size"})
@@ -91,8 +90,8 @@ public class ProjectInternalController {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
             criteria, orderBy, direction);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return projectInternalService.getAllProjectsPaginated(vitamContext, page, size, orderBy, direction, criteria);
+        return projectInternalService.getAllProjectsPaginated(page, size, orderBy, direction, criteria,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @PostMapping()
@@ -101,20 +100,21 @@ public class ProjectInternalController {
         ParameterChecker.checkParameter("the project is mandatory : ", collectProjectDto);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create {}", collectProjectDto);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return projectInternalService.createProject(vitamContext, collectProjectDto);
+        return projectInternalService.createProject(collectProjectDto,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
-    @PostMapping(value = CommonConstants.PATH_ID+ "/transactions")
-    public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody CollectTransactionDto collectTransactionDto)
+    @PostMapping(value = CommonConstants.PATH_ID + "/transactions")
+    public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id,
+        @RequestBody CollectTransactionDto collectTransactionDto)
         throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         ParameterChecker.checkParameter("The transaction is a mandatory parameter: ", collectTransactionDto);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectTransactionDto);
         LOGGER.debug("Transaction to create {}", collectTransactionDto);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return projectInternalService.createTransactionForProject(vitamContext, collectTransactionDto, id);
+        return projectInternalService.createTransactionForProject(collectTransactionDto, id,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @ApiOperation(value = "Upload and stream collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -129,8 +129,8 @@ public class ProjectInternalController {
         SafeFileChecker.checkSafeFilePath(originalFileName);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("[Internal] upload collect zip file : {}", originalFileName);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        projectInternalService.streamingUpload(vitamContext, inputStream, transactionId, originalFileName);
+        projectInternalService.streamingUpload(inputStream, transactionId, originalFileName,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @PutMapping(PATH_ID)
@@ -141,8 +141,9 @@ public class ProjectInternalController {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return projectInternalService.update(vitamContext, id, collectProjectDto);
+
+        return projectInternalService.update(id, collectProjectDto,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @GetMapping(PATH_ID)
@@ -151,8 +152,9 @@ public class ProjectInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Project to get  {}", id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return projectInternalService.getProjectById(id, vitamContext);
+
+        return projectInternalService.getProjectById(id,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @DeleteMapping(PATH_ID)
@@ -161,18 +163,17 @@ public class ProjectInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Project to delete  {}", id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        projectInternalService.deleteProjectById(id, vitamContext);
+        projectInternalService.deleteProjectById(id, externalParametersService.buildVitamContextFromExternalParam());
     }
 
-    @GetMapping(PATH_ID  + LAST_TRANSACTION_PATH)
+    @GetMapping(PATH_ID + LAST_TRANSACTION_PATH)
     public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the transaction by project with ID {}", id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return projectInternalService.getLastTransactionForProjectId(id, vitamContext);
+        return projectInternalService.getLastTransactionForProjectId(id,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @ApiOperation(value = "Get transactions by project paginated")
@@ -184,9 +185,8 @@ public class ProjectInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, projectId);
         SanityChecker.checkSecureParameter(projectId);
         LOGGER.debug("getPaginateEntities page={}, size={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return projectInternalService.getTransactionsByProjectPaginated(projectId, page, size, orderBy, direction,
-            vitamContext);
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
 

@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
+import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
@@ -133,4 +134,9 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
             searchCriteriaHistoryConverter, internalSecurityService);
     }
 
+    @Bean
+    public ExternalParametersInternalRestClient externalParametersInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
+    }
 }

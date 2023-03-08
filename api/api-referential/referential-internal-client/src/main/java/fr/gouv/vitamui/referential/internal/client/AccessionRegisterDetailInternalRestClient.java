@@ -88,7 +88,7 @@ public class AccessionRegisterDetailInternalRestClient
     public Resource exportAccessionRegisterCsv(final AccessionRegisterSearchDto query,
         final InternalHttpContext context) {
         LOGGER.debug("Calling exportAccessionRegisterCsv with query {} ", query);
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<AccessionRegisterSearchDto> request = new HttpEntity<>(query, headers);
         final ResponseEntity<Resource> response = restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV,
             HttpMethod.POST, request, Resource.class);

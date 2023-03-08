@@ -45,8 +45,7 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @NoArgsConstructor
-public class
-SearchCriteriaDto implements Serializable {
+public class SearchCriteriaDto implements Serializable {
     /**
      * Criteria list for searching archive units
      */

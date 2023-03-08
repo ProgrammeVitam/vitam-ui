@@ -58,7 +58,6 @@ public class ArchiveSearchEliminationInternalService {
 
     private final EliminationService eliminationService;
     private final ArchiveSearchInternalService archiveSearchInternalService;
-
     private final ObjectMapper objectMapper;
 
     @Autowired

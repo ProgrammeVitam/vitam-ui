@@ -140,7 +140,7 @@ public class CollectTransactionInternalRestClient
 
     public ArchiveUnitsDto searchCollectProjectArchiveUnits(InternalHttpContext context, String projectId,
         SearchCriteriaDto searchQuery) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
             restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST,
@@ -151,7 +151,7 @@ public class CollectTransactionInternalRestClient
 
     public Resource exportCsvArchiveUnitsByCriteria(String projectId, final SearchCriteriaDto query,
         final InternalHttpContext context) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ResponseEntity<Resource> response =
             restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
@@ -187,7 +187,7 @@ public class CollectTransactionInternalRestClient
     public ResultsDto selectUnitWithInheritedRules(InternalHttpContext context, String transactionId,
         SearchCriteriaDto query) {
         LOGGER.debug("Calling select Unit With Inherited Rules with query {} ", query);
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ResponseEntity<ResultsDto> response =
             restTemplate.exchange(

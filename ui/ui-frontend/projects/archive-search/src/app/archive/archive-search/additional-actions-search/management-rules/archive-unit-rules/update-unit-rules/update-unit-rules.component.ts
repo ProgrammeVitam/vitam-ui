@@ -401,7 +401,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
 
     if (this.hasExactCount) {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList, this.accessContract)
+        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .subscribe((resultsNumber) => {
           this.itemsWithSameRule = resultsNumber.toString();
           this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
@@ -409,7 +409,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
         });
     } else {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
+        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
         .subscribe((data) => {
           this.itemsWithSameRule = data.totalResults.toString();
           this.itemsToUpdate =

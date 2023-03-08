@@ -80,8 +80,8 @@ public class ArchiveSearchMgtRulesInternalService {
         this.unitService = unitService;
     }
 
-    public String updateArchiveUnitsRules(final VitamContext vitamContext,
-        final RuleSearchCriteriaDto ruleSearchCriteriaDto)
+    public String updateArchiveUnitsRules(
+        final RuleSearchCriteriaDto ruleSearchCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
         LOGGER.debug("Add Rules to ArchiveUnits using query : {} and DSL actions : {}",
             ruleSearchCriteriaDto.getSearchCriteriaDto().toString(), ruleSearchCriteriaDto.getRuleActions());
