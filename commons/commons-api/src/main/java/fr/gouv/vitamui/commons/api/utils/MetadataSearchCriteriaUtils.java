@@ -99,6 +99,7 @@ public final class MetadataSearchCriteriaUtils {
     public static final String WAITING_TO_COMPUTE_RULES_STATUS = "#validComputedInheritedRules";
     private static final String INVALID_CREATION_OPERATION = "Invalid creation operation exception {}";
     private static final String COULD_NOT_CREATE_OPERATION = "Invalid creation operation exception ";
+    private static final String FINAL_QUERY = "Final query: {}";
 
     public static final String SOME_OLD_DATE = "01/01/0001";
     public static final String SOME_FUTUR_DATE = "31/12/9999";
@@ -159,7 +160,7 @@ public final class MetadataSearchCriteriaUtils {
             selectMultiQuery
                 .setLimitFilter((long) searchQuery.getPageNumber() * searchQuery.getSize(), searchQuery.getSize());
             selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
-            LOGGER.debug("Final query: {}", selectMultiQuery.getFinalSelect().toPrettyString());
+            LOGGER.debug(FINAL_QUERY, selectMultiQuery.getFinalSelect().toPrettyString());
 
         } catch (InvalidCreateOperationException ioe) {
             throw new VitamClientException("Unable to find archive units with pagination", ioe);
@@ -201,7 +202,7 @@ public final class MetadataSearchCriteriaUtils {
             selectMultiQuery
                 .setLimitFilter((long) searchQuery.getPageNumber() * searchQuery.getSize(), searchQuery.getSize());
             selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
-            LOGGER.debug("Final query: {}", selectMultiQuery.getFinalSelect().toPrettyString());
+            LOGGER.debug(FINAL_QUERY, selectMultiQuery.getFinalSelect().toPrettyString());
 
             if (searchQuery.getThreshold() != null) {
                 selectMultiQuery.setThreshold(searchQuery.getThreshold());
@@ -233,7 +234,7 @@ public final class MetadataSearchCriteriaUtils {
             .map(CriteriaValue::getValue).collect(Collectors.toList());
 
         if (!CollectionUtils.isEmpty(nodesCriteriaList)) {
-            select.addRoots(nodesCriteriaList.toArray(new String[nodesCriteriaList.size()]));
+            select.addRoots(nodesCriteriaList.toArray(new String[0]));
             query.setDepthLimit(DEFAULT_DEPTH);
         }
         fillQueryFromCriteriaList(query, simpleCriteriaList);
@@ -242,7 +243,7 @@ public final class MetadataSearchCriteriaUtils {
             select.setQuery(query);
         }
 
-        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
+        LOGGER.debug(FINAL_QUERY, select.getFinalSelect().toPrettyString());
 
         return select;
     }
@@ -1165,7 +1166,7 @@ public final class MetadataSearchCriteriaUtils {
                 criteria = ArchiveSearchConsts.END_DATE;
                 break;
             default:
-                criteria = null;
+                criteria = searchCriteria;
         }
         LOGGER.debug("The search criteria Date is {} ", criteria);
         if (!CollectionUtils.isEmpty(searchValues)) {
