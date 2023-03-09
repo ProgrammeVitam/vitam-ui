@@ -1,13 +1,19 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 :host {
-  display: flex;
 
-  button {
-    margin: 1.5rem;
+    display: flex;
+
+  .row {
+    padding: 0;
+    margin: 0;
   }
-  .contrast-container {
+
+  .col {
+    padding: 5px;
+  }
+
+  .inverted-background {
     background-color: var(--vitamui-primary-600);
-    color: $white;
   }
 }

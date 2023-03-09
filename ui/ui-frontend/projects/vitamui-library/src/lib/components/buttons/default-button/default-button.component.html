@@ -1,0 +1,10 @@
+<button type="button"
+        class="{{ type }}"
+        [ngClass]="{'LeftIcon' : leftIcon, 'RightIcon' : rightIcon, 'Outline' : outline}"
+        [attr.cdkStepperPrevious]="isCdkStepperPrevious ? '' : null"
+        [disabled]="disabled"
+        (click)="click()">
+  <i *ngIf="leftIcon" class="vitamui-icon {{ leftIcon }}"></i>
+  <span>{{ text }}</span>
+  <i *ngIf="rightIcon" class="vitamui-icon {{ rightIcon }}"></i>
+</button>

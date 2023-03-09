@@ -1,0 +1,415 @@
+// https://www.figma.com/file/m5EfQ0suI0YGr8oqLih0NL/%2F%2FDesign-System-Vitam-UI?node-id=589-815&t=ri1YmTwViA7867jG-0
+:host {
+  display: flex;
+
+  // TODO: les borders augmentent s'additionne aux paddings !
+
+  button {
+    cursor: pointer;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 20px;
+    height: 50px;
+
+    border-radius: 100px;
+
+    span {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      padding-bottom: 2px; // text alignement
+      padding-left: 10px;
+      padding-right: 10px;
+      /* Button/Button-medium */
+      font-family: 'Mulish';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 18px;
+      /* identical to box height, or 129% */
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      /* Basics/White */
+      color: #FFFFFF;
+      /* Inside auto layout */
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+    }
+
+    i {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      font-size: 22px;
+      /* Basics/White */
+      color: #FFFFFF;
+    }
+
+    &.Primary {
+      /* Primary/Primary-500 */
+      background: #9C31B5;
+      border: 2px solid transparent;
+
+      &:focus:enabled {
+        /* Primary/Primary-500 */
+        background: #9C31B5;
+        /* Basics/White */
+        border: 2px dashed #FFFFFF;
+        outline: none;
+        box-shadow: none;
+      }
+
+      &:hover:enabled {
+        /* Primary/Primary-300 */
+        background: #C672D9;
+        border: 2px solid transparent;
+        /* Primary/2dp-primary */
+        box-shadow: 0px 0px 2px rgba(112, 35, 130, 0.4), 0px 1px 4px rgba(112, 35, 130, 0.2);
+      }
+
+      &:active:enabled {
+        /* Primary/Primary-700 */
+        background: #571B64;
+        border: 2px solid transparent;
+      }
+
+      &.Outline {
+        background: #FFFFFF;
+        /* Primary/Primary-500 */
+        border: 1px solid #9C31B5;
+
+        span, i {
+          /* Primary/Primary-500 */
+          color: #9C31B5;
+        }
+
+        &:focus:enabled {
+          /* Basics/White */
+          background: #FFFFFF;
+          /* Primary/Primary-500 */
+          border: 2px dashed #9C31B5;
+          outline: none;
+          box-shadow: none;
+
+          span, i {
+            /* Primary/Primary-500 */
+            color: #9C31B5;
+          }
+        }
+
+        &:hover:enabled {
+          /* Primary/Primary-50 */
+          background: #F7EBFA;
+          /* Primary/Primary-300 */
+          border: 1px solid #C672D9;
+          /* Primary/2dp-primary */
+          box-shadow: 0px 0px 2px rgba(112, 35, 130, 0.4), 0px 1px 4px rgba(112, 35, 130, 0.2);
+
+          span, i {
+            /* Primary/Primary-300 */
+            color: #C672D9;
+          }
+        }
+
+        &:active:enabled {
+          /* Primary/Primary-100 */
+          background: #E6C3EF;
+          /* Primary/Primary-700 */
+          border: 1px solid #571B64;
+
+          span, i {
+            /* Primary/Primary-700 */
+            color: #571B64;
+          }
+        }
+      }
+    }
+
+    &.Secondary {
+      /* Secondary/Secondary-500 */
+      background: #2563A9;
+      border: 2px solid transparent;
+
+      &:focus:enabled {
+        /* Secondary/Secondary-500 */
+        background: #2563A9;
+        /* Basics/White */
+        border: 2px dashed #FFFFFF;
+        outline: none;
+        box-shadow: none;
+      }
+
+      &:hover:enabled {
+        /* Secondary/Secondary-400 */
+        background: #4388D6;
+        border: 2px dashed transparent;
+        /* Secondary/2dp-secondary */
+        box-shadow: 0px 0px 2px rgba(37, 99, 169, 0.4), 0px 1px 4px rgba(37, 99, 169, 0.2);
+      }
+
+      &:active:enabled {
+        /* Secondary/Secondary-700 */
+        background: #173D69;
+        border: 2px dashed transparent;
+      }
+
+      &.Outline {
+        /* Basics/White */
+        background: #FFFFFF;
+        /* Secondary/Secondary-500 */
+        border: 1px solid #2563A9;
+
+        span, i {
+          /* Secondary/Secondary-500 */
+          color: #2563A9;
+        }
+
+        &:focus:enabled {
+          /* Basics/White */
+          background: #FFFFFF;
+          /* Secondary/Secondary-500 */
+          border: 2px dashed #2563A9;
+          outline: none;
+          box-shadow: none;
+
+          span, i {
+            /* Secondary/Secondary-500 */
+            color: #2563A9;
+          }
+        }
+
+        &:hover:enabled {
+          /* Secondary/Secondary-50 */
+          background: #EAF2FA;
+          /* Secondary/Secondary-400 */
+          border: 1px solid #4388D6;
+          /* Secondary/2dp-secondary */
+          box-shadow: 0px 0px 2px rgba(37, 99, 169, 0.4), 0px 1px 4px rgba(37, 99, 169, 0.2);
+
+          span, i {
+            /* Secondary/Secondary-400 */
+            color: #4388D6;
+          }
+        }
+
+        &:active:enabled {
+          /* Secondary/Secondary-100 */
+          background: #C0D7F1;
+          /* Secondary/Secondary-700 */
+          border: 1px solid #173D69;
+          /* X_Secondary/2dp-secondary */
+          box-shadow: 0px 0px 2px rgba(14, 188, 255, 0.4), 0px 1px 4px rgba(14, 188, 255, 0.2);
+
+          span, i {
+            /* Secondary/Secondary-700 */
+            color: #173D69;
+          }
+        }
+      }
+    }
+
+    &.Tertiary {
+      background: #FFFFFF;
+      border: 1px solid transparent;
+
+      span, i {
+        /* Grey/Grey-900 */
+        color: #212121;
+      }
+
+      &:focus:enabled {
+        background: #FFFFFF;
+        /* Primary/Primary-500 */
+        border: 1px dashed #9C31B5;
+        outline: none;
+        box-shadow: none;
+
+        span, i {
+          /* Grey/Grey-900 */
+          color: #212121;
+        }
+      }
+
+      &:hover:enabled {
+        /* Primary/Primary-50 */
+        background: #F7EBFA;
+        border: 1px solid transparent;
+        /* Primary/2dp-primary */
+        box-shadow: 0px 0px 2px rgba(112, 35, 130, 0.4), 0px 1px 4px rgba(112, 35, 130, 0.2);
+
+        span, i {
+          /* Primary/Primary-400 */
+          color: #B54ACE;
+        }
+      }
+
+      &:active:enabled {
+        /* Primary/Primary-100 */
+        background: #E6C3EF;
+        border: 1px solid transparent;
+
+        span, i {
+          /* Primary/Primary-700 */
+          color: #571B64;
+        }
+      }
+    }
+
+    &:disabled {
+      /* Grey/Grey-300 */
+      background: #E0E0E0;
+      cursor: default;
+
+      span, i {
+        /* Grey/Grey-700 - color: #616161; */
+        color: var(--vitamui-grey-700);
+      }
+
+      &.Outline {
+        /* Grey/Grey-300 */
+        background: #E0E0E0;
+        /* Grey/Grey-700 */
+        border: 1px solid #616161;
+
+        span, i {
+          /* Grey/Grey-700 - color: #616161; */
+          color: var(--vitamui-grey-700);
+        }
+
+      }
+    }
+
+    &.Contrast {
+      /* Basics/White */
+      background: #FFFFFF;
+      border: 2px solid transparent;
+
+      span, i {
+        /* Primary/Primary-500 */
+        color: #9C31B5;
+      }
+
+      &:focus:enabled {
+        /* Basics/White */
+        background: #FFFFFF;
+        /* TODO: avec le border blanc on le voit pas border Basics/White */
+        // TODO : replace border by outline ?? mais
+        border: 2px dashed #9C31B5;
+        //outline: 2px dashed #FFFFFF;
+        outline: none;
+        box-shadow: none;
+
+        span, i {
+          /* Primary/Primary-500 */
+          color: #9C31B5;
+        }
+      }
+
+      &:hover:enabled {
+        /* Primary/Primary-50 */
+        background: #F7EBFA;
+        border: 2px solid transparent;
+        /* Dark/2dp-dark */
+        box-shadow: 0px 0px 2px rgba(33, 33, 33, 0.2), 0px 1px 4px rgba(33, 33, 33, 0.05);
+
+        span, i {
+          /* Primary/Primary-700 */
+          color: #571B64;
+        }
+      }
+
+      &:active:enabled {
+        /* Primary/Primary-100 */
+        background: #E6C3EF;
+        border: 2px solid transparent;
+
+        span, i {
+          /* Primary/Primary-700 */
+          color: #571B64;
+        }
+      }
+
+      &:disabled {
+        /* Basics/White */
+        background: #FFFFFF;
+        opacity: 0.5;
+        cursor: default;
+
+        span, i {
+          /* Primary/Primary-500 */
+          color: #9C31B5;
+        }
+      }
+
+      &.Outline {
+        background: none;
+        /* Basics/White */
+        border: 1px solid #FFFFFF;
+
+        span, i {
+          /* Basics/White */
+          color: #FFFFFF;
+        }
+
+        &:focus:enabled {
+          background: none;
+          /* Basics/White */
+          border: 1px dashed #FFFFFF;
+          outline: none;
+          box-shadow: none;
+
+          span, i {
+            /* Basics/White */
+            color: #FFFFFF;
+          }
+        }
+
+        &:hover:enabled {
+          /* Primary/Primary-300 */
+          background: #C672D9;
+          /* Basics/White */
+          border: 1px solid #FFFFFF;
+          /* Dark/2dp-dark */
+          box-shadow: 0px 0px 2px rgba(33, 33, 33, 0.2), 0px 1px 4px rgba(33, 33, 33, 0.05);
+
+          span, i {
+            /* Basics/White */
+            color: #FFFFFF;
+          }
+        }
+
+        &:active:enabled {
+          /* Primary/Primary-600 */
+          background: #79268D;
+          /* Basics/White */
+          border: 1px solid #FFFFFF;
+
+          span, i {
+            /* Basics/White */
+            color: #FFFFFF;
+          }
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          /* Basics/White */
+          border: 1px solid #FFFFFF;
+        }
+
+      }
+    }
+
+    &.LeftIcon {
+    }
+
+    &.RightIcon {
+    }
+
+  }
+}

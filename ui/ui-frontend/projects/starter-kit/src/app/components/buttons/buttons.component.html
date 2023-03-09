@@ -1,280 +1,601 @@
-<div class="d-flex flex-column">
-  <div class="row m-0">
-    <button class="btn primary" (click)="onClick()">
-      {{ 'BUTTON.PRIMARY' | translate }}
-    </button>
+<!-- DESIGN SYSTEM : https://www.figma.com/file/m5EfQ0suI0YGr8oqLih0NL/%2F%2FDesign-System-Vitam-UI?node-id=589-815&t=AIHTt4a3BnjScTh6-0 -->
+<div class="col">
 
-    <button class="btn primary" (click)="onClick()">
-      <span>{{ 'BUTTON.PRIMARY' | translate }}</span>
-      <i class="material-icons">keyboard_arrow_right</i>
-    </button>
-    <button class="btn primary" (click)="onClick()">
-      <i class="material-icons">keyboard_arrow_left</i>
-      <span>{{ 'BUTTON.PRIMARY' | translate }}</span>
-    </button>
-    <button class="btn primary text-transform-none" (click)="onClick()">
-      <span>{{ 'BUTTON.PRIMARY' | translate }}</span>
-    </button>
-  </div>
+  <h3>vitamui-default-button</h3>
+  <div class="col default-button">
+    <div class="col default-background">
 
-  <div class="row m-0">
-    <button class="btn secondary" (click)="onClick()">
-      {{ 'BUTTON.SECONDARY' | translate }}
-    </button>
+      <div class="row Primary">
+        <div class="col">
+          <vitamui-default-button [text]="'Primary'"
+                                  [type]="'Primary'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary'"
+                                  [type]="'Primary'"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary'"
+                                  [type]="'Primary'"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary'"
+                                  [type]="'Primary'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary'"
+                                  [type]="'Primary'"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary'"
+                                  [type]="'Primary'"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+      </div>
 
-    <button class="btn secondary" (click)="onClick()">
-      <span>{{ 'BUTTON.SECONDARY' | translate }}</span>
-      <i class="material-icons">keyboard_arrow_right</i>
-    </button>
+      <div class="row Primary outline">
+        <div class="col">
+          <vitamui-default-button [text]="'Primary Outline'"
+                                  [type]="'Primary'"
+                                  [outline]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary Outline'"
+                                  [type]="'Primary'"
+                                  [outline]="true"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary Outline'"
+                                  [type]="'Primary'"
+                                  [outline]="true"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary Outline'"
+                                  [type]="'Primary'"
+                                  [outline]="true"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary Outline'"
+                                  [type]="'Primary'"
+                                  [outline]="true"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Primary Outline'"
+                                  [type]="'Primary'"
+                                  [outline]="true"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+      </div>
 
-    <button class="btn secondary" (click)="onClick()">
-      <i class="material-icons">keyboard_arrow_left</i>
-      <span>{{ 'BUTTON.SECONDARY' | translate }}</span>
-    </button>
-    <button class="btn secondary text-transform-none" (click)="onClick()">
-      {{ 'BUTTON.SECONDARY' | translate }}
-    </button>
-  </div>
+      <div class="row Secondary">
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary'"
+                                  [type]="'Secondary'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary'"
+                                  [type]="'Secondary'"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary'"
+                                  [type]="'Secondary'"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary'"
+                                  [type]="'Secondary'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary'"
+                                  [type]="'Secondary'"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary'"
+                                  [type]="'Secondary'"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+      </div>
 
-  <div class="row m-0">
-    <button disabled class="btn" (click)="onClick()">
-      {{ 'BUTTON.DISABLED_LABEL' | translate }}
-    </button>
-    <button disabled class="btn" (click)="onClick()">
-      <span>{{ 'BUTTON.DISABLED_LABEL' | translate }}</span>
-      <i class="material-icons">keyboard_arrow_right</i>
-    </button>
+      <div class="row Secondary outline">
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary Outline'"
+                                  [type]="'Secondary'"
+                                  [outline]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary Outline'"
+                                  [type]="'Secondary'"
+                                  [outline]="true"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary Outline'"
+                                  [type]="'Secondary'"
+                                  [outline]="true"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary Outline'"
+                                  [type]="'Secondary'"
+                                  [outline]="true"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary Outline'"
+                                  [type]="'Secondary'"
+                                  [outline]="true"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Secondary Outline'"
+                                  [type]="'Secondary'"
+                                  [outline]="true"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+      </div>
 
-    <button disabled class="btn" (click)="onClick()">
-      <i class="material-icons">keyboard_arrow_left</i>
-      <span>{{ 'BUTTON.DISABLED_LABEL' | translate }}</span>
-    </button>
-    <button disabled class="btn text-transform-none" (click)="onClick()">
-      {{ 'BUTTON.DISABLED_LABEL' | translate }}
-    </button>
-  </div>
-
-  <div class="row m-0">
-    <button class="btn link" (click)="onClick()">
-      <span>{{ 'BUTTON.TERTIARY' | translate }}</span>
-    </button>
-
-    <button class="btn link underline" (click)="onClick()">
-      <span>{{ 'BUTTON.TERTIARY' | translate }}</span>
-    </button>
-
-    <button class="btn link" (click)="onClick()">
-      <span>{{ 'BUTTON.TERTIARY' | translate }}</span>
-      <i class="material-icons">keyboard_arrow_right</i>
-    </button>
-
-    <button class="btn link" (click)="onClick()">
-      <i class="material-icons">keyboard_arrow_left</i>
-      <span>{{ 'BUTTON.TERTIARY' | translate }}</span>
-    </button>
-
-    <button class="btn link text-transform-none" (click)="onClick()">
-      <span>{{ 'BUTTON.TERTIARY' | translate }}</span>
-    </button>
-
-    <button class="btn link" disabled (click)="onClick()">
-      {{ 'BUTTON.TERTIARY' | translate }}
-    </button>
-  </div>
-
-  <div class="row m-0">
-    <button class="btn cancel link" (click)="onClick()">
-      <span>{{ 'BUTTON.CANCEL' | translate }}</span>
-    </button>
-
-    <button class="btn cancel link text-transform-none" (click)="onClick()">
-      <span>{{ 'BUTTON.CANCEL' | translate }}</span>
-    </button>
-  </div>
-
-  <div class="row m-0">
-    <button class="btn outline outline-primary" (click)="onClick()">
-      {{ 'BUTTON.PRIMARY_OUTLINE' | translate }}
-    </button>
-
-    <button class="btn outline outline-primary" (click)="onClick()">
-      <span> {{ 'BUTTON.PRIMARY_OUTLINE' | translate }}</span>
-      <i class="material-icons">keyboard_arrow_right</i>
-    </button>
-
-    <button class="btn outline outline-primary" (click)="onClick()">
-      <i class="material-icons">keyboard_arrow_left</i>
-      <span> {{ 'BUTTON.PRIMARY_OUTLINE' | translate }}</span>
-    </button>
-  </div>
-
-  <div class="row m-0">
-    <button class="btn outline outline-secondary" (click)="onClick()">
-      {{ 'BUTTON.SECONDARY_OUTLINE' | translate }}
-    </button>
-
-    <button class="btn outline outline-secondary" (click)="onClick()">
-      <span> {{ 'BUTTON.SECONDARY_OUTLINE' | translate }}</span>
-      <i class="material-icons">keyboard_arrow_right</i>
-    </button>
-
-    <button class="btn outline outline-secondary" (click)="onClick()">
-      <i class="material-icons">keyboard_arrow_left</i>
-      <span> {{ 'BUTTON.SECONDARY_OUTLINE' | translate }}</span>
-    </button>
-
-    <button class="btn outline outline" disabled (click)="onClick()">
-      {{ 'BUTTON.DISABLED_OUTLINE' | translate }}
-    </button>
-  </div>
-
-  <div class="d-flex flex-column contrast-container">
-    <div class="row m-0">
-      <button class="btn contrast contrast-primary" (click)="onClick()">
-        {{ 'BUTTON.PRIMARY_CONTRAST' | translate }}
-      </button>
-
-      <button class="btn contrast contrast-primary" (click)="onClick()">
-        <span>{{ 'BUTTON.PRIMARY_CONTRAST' | translate }}</span>
-        <i class="material-icons">keyboard_arrow_right</i>
-      </button>
-
-      <button class="btn contrast contrast-primary" (click)="onClick()">
-        <i class="material-icons">keyboard_arrow_left</i>
-        <span>{{ 'BUTTON.PRIMARY_CONTRAST' | translate }}</span>
-      </button>
+      <div class="row Tertiary">
+        <div class="col">
+          <vitamui-default-button [text]="'Tertiary'"
+                                  [type]="'Tertiary'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Tertiary'"
+                                  [type]="'Tertiary'"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Tertiary'"
+                                  [type]="'Tertiary'"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Tertiary'"
+                                  [type]="'Tertiary'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Tertiary'"
+                                  [type]="'Tertiary'"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Tertiary'"
+                                  [type]="'Tertiary'"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+      </div>
     </div>
-    <div class="row m-0">
-      <button class="btn contrast contrast-secondary" (click)="onClick()">
-        {{ 'BUTTON.SECONDARY_CONTRAST' | translate }}
-      </button>
+    <div class="col inverted-background">
+      <div class="row Contrast">
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+      </div>
 
-      <button class="btn contrast contrast-secondary" (click)="onClick()">
-        <span>{{ 'BUTTON.SECONDARY_CONTRAST' | translate }}</span>
-        <i class="material-icons">keyboard_arrow_right</i>
-      </button>
-
-      <button class="btn contrast contrast-secondary" (click)="onClick()">
-        <i class="material-icons">keyboard_arrow_left</i>
-        <span>{{ 'BUTTON.SECONDARY_CONTRAST' | translate }}</span>
-      </button>
-    </div>
-    <div class="row m-0">
-      <button class="btn contrast-outline contrast-outline-primary" (click)="onClick()">
-        {{ 'BUTTON.PRIMARY_CONTRAST_OUTLINE' | translate }}
-      </button>
-
-      <button class="btn contrast-outline contrast-outline-primary" (click)="onClick()">
-        <span>{{ 'BUTTON.PRIMARY_CONTRAST_OUTLINE' | translate }}</span>
-        <i class="material-icons">keyboard_arrow_right</i>
-      </button>
-
-      <button class="btn contrast-outline contrast-outline-primary" (click)="onClick()">
-        <i class="material-icons">keyboard_arrow_left</i>
-        <span>{{ 'BUTTON.PRIMARY_CONTRAST_OUTLINE' | translate }}</span>
-      </button>
-    </div>
-    <div class="row m-0">
-      <button class="btn contrast-outline contrast-outline-secondary" (click)="onClick()">
-        {{ 'BUTTON.SECONDARY_CONTRAST_OUTLINE' | translate }}
-      </button>
-
-      <button class="btn contrast-outline contrast-outline-secondary" (click)="onClick()">
-        <span>{{ 'BUTTON.SECONDARY_CONTRAST_OUTLINE' | translate }}</span>
-        <i class="material-icons">keyboard_arrow_right</i>
-      </button>
-
-      <button class="btn contrast-outline contrast-outline-secondary" (click)="onClick()">
-        <i class="material-icons">keyboard_arrow_left</i>
-        <span>{{ 'BUTTON.SECONDARY_CONTRAST_OUTLINE' | translate }}</span>
-      </button>
-    </div>
-    <div class="row m-0">
-      <button class="btn contrast" disabled (click)="onClick()">
-        {{ 'BUTTON.DISABLED_CONTRAST' | translate }}
-      </button>
-
-      <button class="btn contrast-outline" disabled (click)="onClick()">
-        {{ 'BUTTON.DISABLED_CONTRAST_OUTLINE' | translate }}
-      </button>
+      <div class="row Contrast outline">
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [outline]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [outline]="true"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [outline]="true"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [outline]="true"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [outline]="true"
+                                  [leftIcon]="'vitamui-icon-chevron-left'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+        <div class="col">
+          <vitamui-default-button [text]="'Contrast'"
+                                  [type]="'Contrast'"
+                                  [outline]="true"
+                                  [rightIcon]="'vitamui-icon-chevron-right'"
+                                  [disabled]="true"
+          ></vitamui-default-button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="d-flex flex-column">
-    <div class="row m-0">
-      <button class="btn btn-circle primary small" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle primary" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle primary large" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle secondary small" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle secondary" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle secondary large" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle small" disabled (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle" disabled (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle large" disabled (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-    </div>
-
-    <div class="row m-0">
-      <button class="btn btn-circle outline outline-primary small" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
+  <h3>vitamui-text-button</h3>
+  <div class="col text-button">
+    <div class="col default-background">
       <button class="btn btn-circle outline outline-primary" (click)="onClick()">
         <i class="material-icons">keyboard_backspace</i>
       </button>
 
-      <button class="btn btn-circle outline outline-primary large" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
+      <div class="row Primary Large">
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Large'"
+                               [type]="'Primary'"
+                               [size]="'Large'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Large'"
+                               [type]="'Primary'"
+                               [size]="'Large'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Large'"
+                               [type]="'Primary'"
+                               [size]="'Large'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Large'"
+                               [type]="'Primary'"
+                               [size]="'Large'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+      </div>
+      <div class="row Primary Medium">
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Medium'"
+                               [type]="'Primary'"
+                               [size]="'Medium'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Medium'"
+                               [type]="'Primary'"
+                               [size]="'Medium'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Medium'"
+                               [type]="'Primary'"
+                               [size]="'Medium'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Medium'"
+                               [type]="'Primary'"
+                               [size]="'Medium'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+      </div>
+      <div class="row Primary Small">
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Small'"
+                               [type]="'Primary'"
+                               [size]="'Small'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Small'"
+                               [type]="'Primary'"
+                               [size]="'Small'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Small'"
+                               [type]="'Primary'"
+                               [size]="'Small'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Primary Small'"
+                               [type]="'Primary'"
+                               [size]="'Small'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+      </div>
 
-      <button class="btn btn-circle outline outline-secondary small" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
+      <div class="row Secondary Large">
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Large'"
+                               [type]="'Secondary'"
+                               [size]="'Large'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Large'"
+                               [type]="'Secondary'"
+                               [size]="'Large'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Large'"
+                               [type]="'Secondary'"
+                               [size]="'Large'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Large'"
+                               [type]="'Secondary'"
+                               [size]="'Large'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+      </div>
+      <div class="row Secondary Medium">
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Medium'"
+                               [type]="'Secondary'"
+                               [size]="'Medium'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Medium'"
+                               [type]="'Secondary'"
+                               [size]="'Medium'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Medium'"
+                               [type]="'Secondary'"
+                               [size]="'Medium'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Medium'"
+                               [type]="'Secondary'"
+                               [size]="'Medium'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+      </div>
+      <div class="row Secondary Small">
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Small'"
+                               [type]="'Secondary'"
+                               [size]="'Small'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Small'"
+                               [type]="'Secondary'"
+                               [size]="'Small'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Small'"
+                               [type]="'Secondary'"
+                               [size]="'Small'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Secondary Small'"
+                               [type]="'Secondary'"
+                               [size]="'Small'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+      </div>
 
-      <button class="btn btn-circle outline outline-secondary" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
+      <div class="row Destructive Large">
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Large'"
+                               [type]="'Destructive'"
+                               [size]="'Large'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Large'"
+                               [type]="'Destructive'"
+                               [size]="'Large'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Large'"
+                               [type]="'Destructive'"
+                               [size]="'Large'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Large'"
+                               [type]="'Destructive'"
+                               [size]="'Large'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+      </div>
+      <div class="row Destructive Medium">
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Medium'"
+                               [type]="'Destructive'"
+                               [size]="'Medium'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Medium'"
+                               [type]="'Destructive'"
+                               [size]="'Medium'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Medium'"
+                               [type]="'Destructive'"
+                               [size]="'Medium'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Medium'"
+                               [type]="'Destructive'"
+                               [size]="'Medium'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+      </div>
+      <div class="row Destructive Small">
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Small'"
+                               [type]="'Destructive'"
+                               [size]="'Small'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Small'"
+                               [type]="'Destructive'"
+                               [size]="'Small'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Small'"
+                               [type]="'Destructive'"
+                               [size]="'Small'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+        <div class="col">
+          <vitamui-text-button [text]="'Destructive Small'"
+                               [type]="'Destructive'"
+                               [size]="'Small'"
+                               [leftIcon]="'vitamui-icon-chevron-left'"
+                               [disabled]="true"
+          ></vitamui-text-button>
+        </div>
+      </div>
 
-      <button class="btn btn-circle outline outline-secondary large" (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
+    </div>
+    <div class="col inverted-background">
+    </div>
+  </div>
 
-      <button class="btn btn-circle outline small" disabled (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle outline" disabled (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
-
-      <button class="btn btn-circle outline large" disabled (click)="onClick()">
-        <i class="material-icons">keyboard_backspace</i>
-      </button>
+  <h3>vitamui-icon-button</h3>
+  <div class="col icon-button">
+    <div class="col default-background">
+    </div>
+    <div class="col inverted-background">
     </div>
   </div>
 </div>
