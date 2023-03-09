@@ -26,12 +26,14 @@
           </vitamui-radio-group>
         </div>
         <div class="actions">
-          <button (click)="moveToNextStep()" class="btn primary" type="button">
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
-          <button (click)="onClose()" class="btn link" type="button">
-            {{ 'COMMON.UNDO' | translate }}
-          </button>
+          <div class="line">
+            <button (click)="moveToNextStep()" class="btn primary" type="button">
+              {{ 'COMMON.NEXT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
         </div>
       </div>
     </cdk-step>
@@ -101,15 +103,18 @@
           </div>
         </div>
         <div class="actions">
+          <div class="line">
+            <button (click)="moveToNextStep()" [disabled]="stepDescriptionIsInvalid()" class="btn primary"
+                    type="button">
+              {{ 'COMMON.NEXT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
           <button type="button" class="btn link back" (click)="backToPreviousStep()">
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
             <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-          </button>
-          <button (click)="moveToNextStep()" [disabled]="stepDescriptionIsInvalid()" class="btn primary" type="button">
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
-          <button (click)="onClose()" class="btn link" type="button">
-            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
       </div>
@@ -211,15 +216,17 @@
           </div>
         </div>
         <div class="actions">
+          <div class="line">
+            <button (click)="moveToNextStep()" [disabled]="stepContextIsInvalid()" class="btn primary" type="button">
+              {{ 'COMMON.NEXT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
           <button type="button" class="btn link back" (click)="backToPreviousStep()">
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
             <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-          </button>
-          <button (click)="moveToNextStep()" [disabled]="stepContextIsInvalid()" class="btn primary" type="button">
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
-          <button (click)="onClose()" class="btn link" type="button">
-            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
       </div>
@@ -264,16 +271,18 @@
           </div>
         </div>
         <div class="actions">
+          <div class="line">
+            <button (click)="moveToNextStep()" [disabled]="(uploadFiles$ | async)?.length === 0"
+                    class="btn primary" type="button">
+              {{ 'COMMON.NEXT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
           <button type="button" class="btn link back" (click)="backToPreviousStep()">
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
             <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-          </button>
-          <button (click)="moveToNextStep()" [disabled]="(uploadFiles$ | async)?.length === 0"
-                  class="btn primary" type="button">
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
-          <button (click)="onClose()" class="btn link" type="button">
-            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
       </div>
@@ -295,15 +304,17 @@
           </vitamui-radio-group>
         </div>
         <div class="actions">
+          <div class="line">
+            <button (click)="moveToNextStep()" class="btn primary" type="button">
+              {{ 'COMMON.NEXT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
           <button type="button" class="btn link back" (click)="backToPreviousStep()">
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
             <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-          </button>
-          <button (click)="moveToNextStep()" class="btn primary" type="button">
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
-          <button (click)="onClose()" class="btn link" type="button">
-            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
       </div>
@@ -325,15 +336,17 @@
           </div>
         </div>
         <div class="actions">
+          <div class="line">
+            <button (click)="validateAndCreateProject()" class="btn primary" type="button">
+              {{ 'COMMON.SUBMIT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
           <button type="button" class="btn link back" (click)="backToPreviousStep()">
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
             <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-          </button>
-          <button (click)="validateAndCreateProject()" class="btn primary" type="button">
-            {{ 'COMMON.SUBMIT' | translate }}
-          </button>
-          <button (click)="onClose()" class="btn link" type="button">
-            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
       </div>
@@ -428,15 +441,18 @@
           </div>
         </div>
         <div class="actions">
+          <div class="line">
+            <button (click)="validateAndCreateProject()" [disabled]="stepRulesParamsIsInvalid()" class="btn primary"
+                    type="button">
+              {{ 'COMMON.SUBMIT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
           <button type="button" class="btn link back" (click)="backToPreviousStep()">
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
             <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-          </button>
-          <button (click)="validateAndCreateProject()" [disabled]="stepRulesParamsIsInvalid()" class="btn primary" type="button">
-            {{ 'COMMON.SUBMIT' | translate }}
-          </button>
-          <button (click)="onClose()" class="btn link" type="button">
-            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
       </div>
