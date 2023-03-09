@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -50,8 +50,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitam.common.json.JsonHandler;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -195,7 +194,6 @@ public class FileFormatController extends AbstractUiRestController {
 
     private LogbookOperationsResponseDto findHistoryById(String id) throws InvalidParseOperationException,
         PreconditionFailedException {
-        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for file format with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
