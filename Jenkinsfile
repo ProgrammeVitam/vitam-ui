@@ -103,10 +103,7 @@ pipeline {
             }
         }
 
-        stage('Build common.') {
-             when {
-                environment(name: 'DO_TEST', value: 'true')
-            }
+        stage('Build commons.') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
                 JAVA_TOOL_OPTIONS=""
@@ -114,7 +111,7 @@ pipeline {
             steps {
                 parallel(
                     'Common': {
-                         sh ''' $MVN_COMMAND clean install -Pvitam -f commons/pom.xml '''
+                         sh ''' $MVN_COMMAND clean install -Pvitam -f commons/pom.xml $JAVA_TOOL_OPTIONS  '''
                     }
                 )
             }
@@ -130,10 +127,9 @@ pipeline {
             }
             steps {
                 parallel(
-                    'Build and Test Apis': {
-                      //  sh ''' $MVN_COMMAND verify -Psonar-metrics,vitam -f api/pom.xml '''
+                    'Build Apis': {                      
                         sh '''
-                            $MVN_COMMAND clean install:install -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express,!ui,!ui/ui-portal,!ui/ui-identity,!ui/ui-frontend,!ui/ui-frontend-common,!ui/ui-ingest,!ui/ui-archive-search ,!ui/ui-referential ,!ui/ui-pastis,!ui/ui-collect ' $JAVA_TOOL_OPTIONS
+                            $MVN_COMMAND clean install:install -Pvitam -f api/pom.xml $JAVA_TOOL_OPTIONS                            
                         '''
                     },
                     'Build and Test Ui Frontend Common': {
@@ -149,23 +145,6 @@ pipeline {
                               $MVN_COMMAND install:install -DskipAllFrontend -Pvitam,sonar-metrics -f ui/ui-frontend/pom.xml
                             fi
                         '''
-                    }
-                )
-            }
-        }
-
-
-        stage('Ui Frontend') {
-          when {
-                    environment(name: 'DO_TEST', value: 'true')
-                }
-            steps {
-                parallel(
-                    'Build ui parent': {
-                        sh ''' $MVN_COMMAND install:install -DskipTests=true -DskipAllFrontendTest -Pvitam -f ui/pom.xml -pl !ui-frontend-common,!ui-frontend,!ui-portal,!ui-identity,!ui-referential,!ui-pastis,!ui-collect '''
-                    },
-                    'Build and Test Ui Frontend': {
-                        sh ''' $MVN_COMMAND install:install -Pvitam -DskipAllFrontendTest -DskipTests=true -f ui/ui-frontend/pom.xml '''
                     }
                 )
             }
@@ -197,7 +176,23 @@ pipeline {
         }
 
 
-   
+        stage('Ui Frontend') {
+          when {
+                    environment(name: 'DO_TEST', value: 'true')
+                }
+            steps {
+                parallel(
+                    'Build uis': {
+                        sh ''' $MVN_COMMAND install:install -DskipTests=true -DskipAllFrontendTest -Pvitam -f ui/pom.xml -pl !ui-frontend-common,!ui-frontend,!ui-portal,!ui-identity,!ui-referential,!ui-pastis,!ui-collect '''
+                    },
+                    'Build and Test Ui Frontend': {
+                        sh ''' $MVN_COMMAND install:install -Pvitam -DskipAllFrontendTest -DskipTests=true -f ui/ui-frontend/pom.xml '''
+                    }
+                )
+            }
+        }
+
+       
         stage('Build sources') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST = "${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
