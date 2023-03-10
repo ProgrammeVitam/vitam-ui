@@ -64,6 +64,8 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         VitamUILoggerFactory.getInstance(ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest.class);
 
     public static String SEARCH_QUERY_WITH_UNIT_TYPE = "data/queries/appraisal/search_query_with_unit_type.json";
+    public static String SEARCH_QUERY_WITH_ONTOLOGY_FIELD_TYPE_DATE = "data/search_query_with_ontology_field_type_date.json";
+    public static String SEARCH_QUERY_WITH_ONTOLOGY_FIELD_TYPE_TEXT = "data/search_query_with_ontology_field_type_text.json";
     public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER =
         "data/queries/appraisal/search_query_with_object_parameter.json";
     public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER_AND_UNIT_TYPE =
@@ -806,7 +808,74 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).hasSize(1);
 
     }
+    @Test
+    void testFillQueryFromCriteriaListWithOntologyFieldTypeDateThenReturnTheExactQueryWithoutException()
+        throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue(ARCHIVE_UNIT_HOLDING_UNIT), new CriteriaValue(ARCHIVE_UNIT_FILING_UNIT)));
 
+        SearchCriteriaEltDto searchCriteriaEltDtoWithOntology = new SearchCriteriaEltDto();
+        searchCriteriaEltDtoWithOntology.setCriteria("ontologyField");
+        searchCriteriaEltDtoWithOntology.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDtoWithOntology.setDataType(ArchiveSearchConsts.CriteriaDataType.DATE.name());
+        searchCriteriaEltDtoWithOntology.setValues(List.of(new CriteriaValue("2080-05-08T23:00:00.000Z")));
+        searchCriteriaEltDtoWithOntology.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
 
+        criteriaList.add(searchCriteriaEltDto);
+        criteriaList.add(searchCriteriaEltDtoWithOntology);
+
+        //When
+        BooleanQuery query = and();
+        fillQueryFromCriteriaList(query, criteriaList);
+
+        //then
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        JsonNode expectedQuery =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_QUERY_WITH_ONTOLOGY_FIELD_TYPE_DATE));
+        JSONAssert
+            .assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(),
+                true);
+
+    }
+
+    @Test
+    void testFillQueryFromCriteriaListWithOntologyFieldTypeTextThenReturnTheExactQueryWithoutException()
+        throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue(ARCHIVE_UNIT_HOLDING_UNIT), new CriteriaValue(ARCHIVE_UNIT_FILING_UNIT)));
+
+        SearchCriteriaEltDto searchCriteriaEltDtoWithOntology = new SearchCriteriaEltDto();
+        searchCriteriaEltDtoWithOntology.setCriteria("ontologyFieldText");
+        searchCriteriaEltDtoWithOntology.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDtoWithOntology.setDataType(ArchiveSearchConsts.CriteriaDataType.STRING.name());
+        searchCriteriaEltDtoWithOntology.setValues(List.of(new CriteriaValue("test test value")));
+        searchCriteriaEltDtoWithOntology.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+
+        criteriaList.add(searchCriteriaEltDto);
+        criteriaList.add(searchCriteriaEltDtoWithOntology);
+
+        //When
+        BooleanQuery query = and();
+        fillQueryFromCriteriaList(query, criteriaList);
+
+        //then
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        JsonNode expectedQuery =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_QUERY_WITH_ONTOLOGY_FIELD_TYPE_TEXT));
+        JSONAssert
+            .assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(),
+                true);
+
+    }
 
 }

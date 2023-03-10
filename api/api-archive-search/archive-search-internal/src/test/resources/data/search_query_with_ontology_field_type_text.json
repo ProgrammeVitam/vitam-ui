@@ -1,0 +1,23 @@
+{
+  "$and":[
+    {
+      "$or":[
+        {
+          "$eq":{
+            "#unitType":"HOLDING_UNIT"
+          }
+        },
+        {
+          "$eq":{
+            "#unitType":"FILING_UNIT"
+          }
+        }
+      ]
+    },
+    {
+      "$eq":{
+        "ontologyFieldText":"test test value"
+      }
+    }
+  ]
+}
