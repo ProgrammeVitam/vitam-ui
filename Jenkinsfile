@@ -111,7 +111,7 @@ pipeline {
             steps {
                 parallel(
                     'Common': {
-                         sh ''' $MVN_COMMAND clean install -Pvitam -f commons/pom.xml $JAVA_TOOL_OPTIONS  '''
+                         sh ''' $MVN_COMMAND clean install -Pvitam -f commons/pom.xml  '''
                     }
                 )
             }
