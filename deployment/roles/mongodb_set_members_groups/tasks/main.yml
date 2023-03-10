@@ -1,0 +1,28 @@
+---
+
+- name: Copy is_master database script
+  copy:
+    src: is_master.js
+    dest: "{{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+
+- name: Check if the member is primary of the replicaset or not
+  shell: "mongo {{ ip_service }}:{{ mongo_port }}/admin -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet < {{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}/is_master.js"
+  register: primary_test_command
+  no_log: "{{ hide_passwords_during_deploy }}"
+
+# set the is_primary var for each host to find out if the member is primary or not, used later to upgrade first secondary nodes
+- name: Set is_primary = true var
+  set_fact:
+    is_primary: true
+  when:
+    - primary_test_command.stdout == 'true'
+
+- name: Set is_primary = false var
+  set_fact:
+    is_primary: false
+  when:
+    - primary_test_command.stdout != 'true'
+

@@ -1,4 +1,3 @@
 ---
 
-mongo_type: mongod
 mongo_port: "{{ mongodb.mongod_port | default(27017) }}"
