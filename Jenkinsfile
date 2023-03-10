@@ -132,7 +132,7 @@ pipeline {
                 parallel(
                     'Build Apis': {
                         sh '''
-                            $MVN_COMMAND clean install:install -Pvitam -f api/pom.xml
+                            $MVN_COMMAND clean clean install -Pvitam -f api/pom.xml
                         '''
                     },
                     'Build and Test Ui Frontend Common': {
