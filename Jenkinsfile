@@ -108,7 +108,6 @@ pipeline {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
                 http_proxy = "http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
                 https_proxy = "http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
-                JAVA_TOOL_OPTIONS=""
             }
             steps {
                 parallel(
@@ -129,9 +128,9 @@ pipeline {
             }
             steps {
                 parallel(
-                    'Build Apis': {                      
+                    'Build Apis': {
                         sh '''
-                            $MVN_COMMAND clean install:install -Pvitam -f api/pom.xml $JAVA_TOOL_OPTIONS                            
+                            $MVN_COMMAND clean install:install -Pvitam -f api/pom.xml $JAVA_TOOL_OPTIONS
                         '''
                     },
                     'Build and Test Ui Frontend Common': {
@@ -194,7 +193,7 @@ pipeline {
             }
         }
 
-       
+
         stage('Build sources') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST = "${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
