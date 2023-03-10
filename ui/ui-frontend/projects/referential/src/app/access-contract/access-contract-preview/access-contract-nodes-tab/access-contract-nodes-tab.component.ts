@@ -34,21 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpHeaders} from '@angular/common/http';
-import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {AccessContract, SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
-import {AccessContractNodeUpdateComponent} from './access-contract-nodes-update/access-contract-node-update.component';
-import {ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
+import { HttpHeaders } from '@angular/common/http';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import '@angular/localize/init';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AccessContract, SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
+import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { AccessContractNodeUpdateComponent } from './access-contract-nodes-update/access-contract-node-update.component';
 
 @Component({
   selector: 'app-access-contract-nodes-tab',
   templateUrl: './access-contract-nodes-tab.component.html',
   styleUrls: ['./access-contract-nodes-tab.component.scss']
 })
-export class AccessContractNodesTabComponent implements OnInit {
+export class AccessContractNodesTabComponent implements OnInit, OnChanges {
 
   @Input() accessContract: AccessContract;
   @Input() tenantIdentifier: number;
@@ -80,6 +80,10 @@ export class AccessContractNodesTabComponent implements OnInit {
         });
       }
     });
+  }
+
+  ngOnChanges() {
+    this.initTitles();
   }
 
   initTitles() {
