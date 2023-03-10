@@ -39,7 +39,6 @@ import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { IngestContract } from 'projects/vitamui-library/src/public-api';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-
 import { IngestContractService } from '../ingest-contract.service';
 
 @Injectable({
@@ -65,7 +64,7 @@ export class IngestContractCreateValidators {
   private uniqueFieldsWhileEdit(ingestContract: () => IngestContract, field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
       const properties: any = {};
-      properties[field] = control.value;
+      properties[field] = control.value.trim();
       const existField: any = {};
       existField[existTag] = true;
 
@@ -84,7 +83,7 @@ export class IngestContractCreateValidators {
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
       const properties: any = {};
-      properties[field] = control.value;
+      properties[field] = control.value.trim();
       const existField: any = {};
       existField[existTag] = true;
 

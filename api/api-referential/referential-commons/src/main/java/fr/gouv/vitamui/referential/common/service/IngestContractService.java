@@ -49,8 +49,13 @@ import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.administration.AbstractContractModel;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
-import fr.gouv.vitamui.commons.api.exception.*;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ConflictException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -62,10 +67,9 @@ import org.springframework.http.HttpStatus;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -210,15 +214,17 @@ public class IngestContractService {
     /**
      * Check if ingest contract is not already created in Vitam.
      *
-     * @param ingestContracts
-     * @param response
+     * @param ingestContracts : ingest contract to verify existence
+     * @param response : list of ingest contracts in vitam
      */
     private void verifyIngestContractExistence(final List<IngestContractModel> ingestContracts, final RequestResponse<IngestContractModel> response) {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final IngestContractResponseDto ingestContractResponseDto = objectMapper.treeToValue(response.toJsonNode(), IngestContractResponseDto.class);
-            final List<String> ingestContractsNames = ingestContracts.stream().map(ac -> ac.getName()).collect(Collectors.toList());
+            final List<String> ingestContractsNames = ingestContracts.stream().map(AbstractContractModel::getName)
+                .filter(Objects::nonNull).map(String::strip)
+                .collect(Collectors.toList());
             boolean alreadyCreated = ingestContractResponseDto.getResults().stream().anyMatch(ac -> ingestContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
                 final String msg = "Can't create ingest contract, a contract with the same name already exist in Vitam";
@@ -226,7 +232,9 @@ public class IngestContractService {
                 throw new ConflictException(msg);
             }
 
-            final List<String> ingestContractsIdentifiers = ingestContracts.stream().map(ac -> ac.getIdentifier()).collect(Collectors.toList());
+            final List<String> ingestContractsIdentifiers = ingestContracts.stream().map(AbstractContractModel::getIdentifier)
+                .filter(Objects::nonNull).map(String::strip)
+                .collect(Collectors.toList());
             alreadyCreated = ingestContractResponseDto.getResults().stream().anyMatch(ac -> ingestContractsIdentifiers.contains(ac.getIdentifier()));
             if (alreadyCreated) {
                 final String msg = "Can't create ingest contract, a contract with the same identifier already exist in Vitam";
