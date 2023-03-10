@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -56,6 +56,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -93,9 +94,7 @@ public class ManagementContractService {
 
     private ByteArrayInputStream serializeManagementContracts(final List<ManagementContractModelDto> managementContractModelDtos)
         throws IOException {
-        //final List<AgencyDto> listOfAgencies = convertManagementContractsToModelOfCreation(managementContractModelDtos);
         final ObjectMapper mapper = new ObjectMapper();
-        //final JsonNode node = mapper.convertValue(listOfAgencies, JsonNode.class);
         final JsonNode node = mapper.convertValue(managementContractModelDtos, JsonNode.class);
         LOGGER.debug("The json for creation management contract, sent to Vitam {}", node);
 
@@ -104,17 +103,6 @@ public class ManagementContractService {
             return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         }
     }
-
-/*    private List<AgencyDto> convertManagementContractsToModelOfCreation(final List<ManagementContractModelDto> managementContractModelDtos) {
-        final List<AgencyDto> agencyDtoList = new ArrayList<>();
-        for (final ManagementContractModelDto model : managementContractModelDtos) {
-            final AgencyDto agency = new AgencyDto();
-            // we don't want to inculde the tenant field in the json sent to vitam
-            model.setTenant(null);
-            agencyDtoList.add(VitamUIUtils.copyProperties(model, agency));
-        }
-        return agencyDtoList;
-    }*/
 
     /**
      * check if all conditions are Ok to create an managment contract in the tenant
@@ -171,8 +159,8 @@ public class ManagementContractService {
     /**
      *
      * Check if management contract is not already created in Vitam.
-     * @param managementContractModelDtos
-     * @param response
+     * @param managementContractModelDtos : management contract to verify existence
+     * @param response : list of management contracts in vitam
      *
      */
     private void verifyManagementContractExistence(final List<ManagementContractModelDto> managementContractModelDtos , final RequestResponse<ManagementContractModel> response) {
@@ -181,7 +169,7 @@ public class ManagementContractService {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final ManagementContractResponseDto managementContractResponseDto = objectMapper.treeToValue(response.toJsonNode(), ManagementContractResponseDto.class);
             final List<String> managementContractsNames = managementContractModelDtos.stream().map(
-                ManagementContractModelDto::getName).collect(Collectors.toList());
+                ManagementContractModelDto::getName).filter(Objects::nonNull).map(String::strip).collect(Collectors.toList());
             boolean alreadyCreated = managementContractResponseDto.getResults().stream().anyMatch(ac -> managementContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
                 final String msg = "Can't create management contract, a contract with the same name already exist in Vitam";
@@ -190,7 +178,7 @@ public class ManagementContractService {
             }
 
             final List<String> managementContractsIdentifiers = managementContractModelDtos.stream().map(
-                ManagementContractModelDto::getIdentifier).collect(Collectors.toList());
+                ManagementContractModelDto::getIdentifier).filter(Objects::nonNull).map(String::strip).collect(Collectors.toList());
             alreadyCreated = managementContractResponseDto.getResults().stream().anyMatch(ac -> managementContractsIdentifiers.contains(ac.getIdentifier()));
             if (alreadyCreated) {
                 final String msg = "Can't create management contract, a contract with the same identifier already exist in Vitam";
