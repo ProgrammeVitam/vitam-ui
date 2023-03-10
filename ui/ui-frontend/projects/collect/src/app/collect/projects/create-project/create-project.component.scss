@@ -10,6 +10,13 @@
   }
 
   .actions {
+    flex-direction: column;
+    align-items: start;
+
+    .line {
+      margin-bottom: 20px;
+    }
+
     button {
       margin-right: 20px;
     }
@@ -232,7 +239,6 @@ h4 {
     }
   }
 }
-
 
 .col {
   display: flex;
