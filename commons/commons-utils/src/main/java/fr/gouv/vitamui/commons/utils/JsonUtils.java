@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.commons.utils;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -51,6 +48,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import java.io.IOException;
+import java.util.List;
 
 public class JsonUtils {
 
@@ -158,9 +158,8 @@ public class JsonUtils {
 
     /**
      * Convert Object to {@link JsonNode}.
-     * @param Object
-     * @return
-     * @throws JsonProcessingException
+     * @param object : the object to check
+     * @return a jsonNode
      */
     public static JsonNode toJsonNode(final Object object) {
         return mapper.valueToTree(object);

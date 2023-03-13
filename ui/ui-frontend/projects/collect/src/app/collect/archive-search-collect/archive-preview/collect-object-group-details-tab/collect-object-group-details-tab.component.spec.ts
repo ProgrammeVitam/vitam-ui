@@ -39,6 +39,8 @@ import {
   ApiUnitObject,
   BASE_URL,
   ENVIRONMENT,
+  FileInfoDto,
+  FormatIdentificationDto,
   InjectorModule,
   LoggerModule,
   ObjectQualifierType,
@@ -58,6 +60,23 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     'launchDownloadObjectFromUnit',
     'getObjectGroupDetailsById',
   ]);
+
+  const formatIdentificationDto: FormatIdentificationDto = {
+    FormatLitteral: 'FormatLitteral',
+    MimeType: 'MimeType',
+    FormatId: 'FormatId',
+    Encoding: 'Encoding',
+  };
+
+  const fileInfo: FileInfoDto = {
+    Filename: 'Filename',
+    CreatingApplicationName: 'CreatingApplicationName',
+    CreatingApplicationVersion: 'CreatingApplicationVersion',
+    CreatingOs: 'CreatingOs',
+    CreatingOsVersion: 'CreatingOsVersion',
+    LastModified: 'LastModified',
+    DateCreatedByApplication: 'DateCreatedByApplication',
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -103,6 +122,13 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   it('Component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Should return null', () => {
+    expect(component.getFormatId(null)).toBeNull();
+    expect(component.getMimeType(null)).toBeNull();
+    expect(component.getEncoding(null)).toBeNull();
+    expect(component.getFormatLitteral(null)).toBeNull();
   });
 
   it('should be opened', () => {
@@ -165,6 +191,16 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
+  it('Should return null', () => {
+    expect(component.getFileName(null)).toBeNull();
+    expect(component.getCreatingApplicationName(null)).toBeNull();
+    expect(component.getCreatingApplicationVersion(null)).toBeNull();
+    expect(component.getCreatingOs(null)).toBeNull();
+    expect(component.getCreatingOsVersion(null)).toBeNull();
+    expect(component.getLastModified(null)).toBeNull();
+    expect(component.getDateCreatedByApplication(null)).toBeNull();
+  });
+
   it('should change the open close status', () => {
     // Given
     const versionWithQualifier = {
@@ -181,14 +217,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     // Then
     expect(component.versionsWithQualifiersOrdered[0]).not.toBeNull();
     expect(component.versionsWithQualifiersOrdered[0].opened).toBeTruthy();
-  });
-
-  it('getObjectGroupDetailsById', () => {
-    const unit = newUnit('unitId', 'objectId');
-    archiveCollectServiceSpy.getObjectGroupDetailsById.and.returnValue(of(newApiUnitObject()));
-    component.getObjectGroupDetailsById(unit);
-    expect(archiveCollectServiceSpy.getObjectGroupDetailsById).toHaveBeenCalled();
-    expect(archiveCollectServiceSpy.getObjectGroupDetailsById).toHaveBeenCalledWith(unit['#object']);
   });
 
   it('should return false', () => {
@@ -213,6 +241,17 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(response).toBeFalsy();
   });
 
+  it('Should return the DateCreatedByApplication value', () => {
+    const response = component.getDateCreatedByApplication(fileInfo);
+    expect(response).not.toBeNull();
+    expect(response).toEqual('DateCreatedByApplication');
+  });
+  it('Should return the Filename value', () => {
+    const response = component.getFileName(fileInfo);
+    expect(response).not.toBeNull();
+    expect(response).toEqual('Filename');
+  });
+
   it('should be closed', () => {
     // Given
     const versionWithQualifier = {
@@ -227,6 +266,68 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     // Then
     expect(versionWithQualifier).not.toBeNull();
     expect(versionWithQualifier.opened).toBeFalsy();
+  });
+
+  it('Should return the LastModified value', () => {
+    const response = component.getLastModified(fileInfo);
+    expect(response).not.toBeNull();
+    expect(response).toEqual('LastModified');
+  });
+
+  it('Should return the FormatId value', () => {
+    const formatId = component.getFormatId(formatIdentificationDto);
+    expect(formatId).not.toBeNull();
+    expect(formatId).toEqual('FormatId');
+  });
+
+  it('Should return the CreatingOsVersion value', () => {
+    const response = component.getCreatingOsVersion(fileInfo);
+    expect(response).not.toBeNull();
+    expect(response).toEqual('CreatingOsVersion');
+  });
+
+  it('Should return the Encoding value', () => {
+    const encoding = component.getEncoding(formatIdentificationDto);
+    expect(encoding).not.toBeNull();
+    expect(encoding).toEqual('Encoding');
+  });
+
+  it('Should return the CreatingOs value', () => {
+    const response = component.getCreatingOs(fileInfo);
+    expect(response).not.toBeNull();
+    expect(response).toEqual('CreatingOs');
+  });
+
+  it('Should return the FormatLitteral value', () => {
+    const formatLitteral = component.getFormatLitteral(formatIdentificationDto);
+    expect(formatLitteral).not.toBeNull();
+    expect(formatLitteral).toEqual('FormatLitteral');
+  });
+
+  it('Should return the CreatingApplicationVersion value', () => {
+    const response = component.getCreatingApplicationVersion(fileInfo);
+    expect(response).not.toBeNull();
+    expect(response).toEqual('CreatingApplicationVersion');
+  });
+
+  it('getObjectGroupDetailsById', () => {
+    const unit = newUnit('unitId', 'objectId');
+    archiveCollectServiceSpy.getObjectGroupDetailsById.and.returnValue(of(newApiUnitObject()));
+    component.getObjectGroupDetailsById(unit);
+    expect(archiveCollectServiceSpy.getObjectGroupDetailsById).toHaveBeenCalled();
+    expect(archiveCollectServiceSpy.getObjectGroupDetailsById).toHaveBeenCalledWith(unit['#object']);
+  });
+
+  it('Should return the MimeType value', () => {
+    const mimeType = component.getMimeType(formatIdentificationDto);
+    expect(mimeType).not.toBeNull();
+    expect(mimeType).toEqual('MimeType');
+  });
+
+  it('Should return the CreatingApplicationName value', () => {
+    const response = component.getCreatingApplicationName(fileInfo);
+    expect(response).not.toBeNull();
+    expect(response).toEqual('CreatingApplicationName');
   });
 
   function newVersionWithQualifier(qualifier: ObjectQualifierType, version: number): VersionWithQualifierDto {

@@ -28,7 +28,15 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ApiUnitObject, DescriptionLevel, qualifiersToVersionsWithQualifier, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
+import {
+  ApiUnitObject,
+  DescriptionLevel,
+  FileInfoDto,
+  FormatIdentificationDto,
+  qualifiersToVersionsWithQualifier,
+  Unit,
+  VersionWithQualifierDto,
+} from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({
@@ -101,5 +109,40 @@ export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges 
 
   openClose(versionWithQualifier: VersionWithQualifierDto) {
     versionWithQualifier.opened = !versionWithQualifier.opened;
+  }
+
+  getFormatLitteral(formatIdentificationDto: FormatIdentificationDto): string {
+    return formatIdentificationDto ? formatIdentificationDto.FormatLitteral : null;
+  }
+  getMimeType(formatIdentificationDto: FormatIdentificationDto): string {
+    return formatIdentificationDto ? formatIdentificationDto.MimeType : null;
+  }
+  getFormatId(formatIdentificationDto: FormatIdentificationDto): string {
+    return formatIdentificationDto ? formatIdentificationDto.FormatId : null;
+  }
+  getEncoding(formatIdentificationDto: FormatIdentificationDto): string {
+    return formatIdentificationDto ? formatIdentificationDto.Encoding : null;
+  }
+  getFileName(fileInfoDto: FileInfoDto): string {
+    return fileInfoDto ? fileInfoDto.Filename : null;
+  }
+
+  getLastModified(fileInfoDto: FileInfoDto): string {
+    return fileInfoDto ? fileInfoDto.LastModified : null;
+  }
+  getDateCreatedByApplication(fileInfoDto: FileInfoDto): string {
+    return fileInfoDto ? fileInfoDto.DateCreatedByApplication : null;
+  }
+  getCreatingOsVersion(fileInfoDto: FileInfoDto): string {
+    return fileInfoDto ? fileInfoDto.CreatingOsVersion : null;
+  }
+  getCreatingOs(fileInfoDto: FileInfoDto): string {
+    return fileInfoDto ? fileInfoDto.CreatingOs : null;
+  }
+  getCreatingApplicationVersion(fileInfoDto: FileInfoDto): string {
+    return fileInfoDto ? fileInfoDto.CreatingApplicationVersion : null;
+  }
+  getCreatingApplicationName(fileInfoDto: FileInfoDto): string {
+    return fileInfoDto ? fileInfoDto.CreatingApplicationName : null;
   }
 }
