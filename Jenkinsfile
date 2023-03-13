@@ -157,6 +157,12 @@ pipeline {
               when {
                         environment(name: 'DO_TEST', value: 'true')
                     }
+            environment {
+                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
+                http_proxy = "http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                https_proxy = "http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                JAVA_TOOL_OPTIONS=""
+            }
             steps {
                 parallel(
                     'Ui identity': {
