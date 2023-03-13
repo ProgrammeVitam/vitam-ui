@@ -198,7 +198,7 @@ public class CustomerController extends AbstractUiRestController {
         Assert.isTrue(StringUtils.equals(id, (String) customerPatchFormData.getPartialCustomerDto().get("id")),
                 "Unable to patch customer : the DTO id must match the path id");
         SanityChecker.checkSecureParameter(id);
-        SanityChecker.sanitizeCriteria(customerPatchFormData);
+        SanityChecker.sanitizeCriteria(customerPatchFormData.getPartialCustomerDto());
         LOGGER.debug("Patch Customer {} with {}", id, customerPatchFormData);
         return service.patch(buildUiHttpContext(), id, customerPatchFormData);
     }
