@@ -43,9 +43,13 @@
     </div>
     <div class="line split">
       <div class="line shrink object-type">
-        {{ versionWithQualifier?.FormatIdentification.FormatLitteral }}
+        {{ getFormatLitteral(versionWithQualifier?.FormatIdentification) }}
       </div>
-      <button class="download-button" (click)="onClickDownloadObject($event, versionWithQualifier)">
+      <button
+        class="download-button"
+        [disabled]="versionWithQualifier?.Size === 0"
+        (click)="onClickDownloadObject($event, versionWithQualifier)"
+      >
         <i class="vitamui-icon vitamui-icon-telecharger"></i>
       </button>
     </div>
@@ -95,13 +99,13 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FORMAT_PUID' | translate }}</label>
-            <div>{{ versionWithQualifier?.FormatIdentification.FormatId }}</div>
+            <div>{{ getFormatId(versionWithQualifier?.FormatIdentification) }}</div>
           </div>
         </div>
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FORMAT_NAME' | translate }}</label>
-            <div>{{ versionWithQualifier?.FormatIdentification.FormatLitteral }}</div>
+            <div>{{ getFormatLitteral(versionWithQualifier?.FormatIdentification) }}</div>
           </div>
         </div>
       </div>
@@ -110,15 +114,15 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.MIME_TYPE' | translate }}</label>
-            <div>{{ versionWithQualifier?.FormatIdentification.MimeType }}</div>
+            <div>{{ getMimeType(versionWithQualifier?.FormatIdentification) }}</div>
           </div>
         </div>
         <div class="col">
           <div class="read-only-field">
-            <label *ngIf="versionWithQualifier.FormatIdentification.Encoding">
+            <label *ngIf="getEncoding(versionWithQualifier?.FormatIdentification)">
               {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FILE_ENCODING' | translate }}
             </label>
-            <div>{{ versionWithQualifier?.FormatIdentification.Encoding }}</div>
+            <div>{{ getEncoding(versionWithQualifier?.FormatIdentification) }}</div>
           </div>
         </div>
       </div>
@@ -133,7 +137,7 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.FILE_NAME' | translate }}</label>
-            <div>{{ versionWithQualifier?.FileInfo.Filename }}</div>
+            <div>{{ getFileName(versionWithQualifier?.FileInfo) }}</div>
           </div>
         </div>
         <div class="col">
@@ -176,53 +180,59 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.LAST_MODIFIED_DATE' | translate }}</label>
-            <div>{{ versionWithQualifier?.FileInfo.LastModified }}</div>
+            <div>{{ getLastModified(versionWithQualifier?.FileInfo) }}</div>
           </div>
         </div>
         <div class="col">
           <div class="read-only-field">
-            <label *ngIf="versionWithQualifier?.FileInfo.CreatingApplicationName">
+            <label *ngIf="getCreatingApplicationName(versionWithQualifier?.FileInfo)">
               {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATING_APPLICATION_NAME' | translate }}
             </label>
-            <div>{{ versionWithQualifier?.FileInfo.CreatingApplicationName }}</div>
+            <div>{{ getCreatingApplicationName(versionWithQualifier?.FileInfo) }}</div>
           </div>
         </div>
       </div>
 
-      <div class="row" *ngIf="versionWithQualifier.FileInfo.CreatingOs && versionWithQualifier.FileInfo.CreatingApplicationVersion">
+      <div
+        class="row"
+        *ngIf="getCreatingOs(versionWithQualifier?.FileInfo) && getCreatingApplicationVersion(versionWithQualifier?.FileInfo)"
+      >
         <div class="col">
           <div class="read-only-field">
-            <label *ngIf="versionWithQualifier.FileInfo.CreatingOs">
+            <label *ngIf="getCreatingOs(versionWithQualifier?.FileInfo)">
               {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATING_OS' | translate }}
             </label>
-            <div>{{ versionWithQualifier?.FileInfo.CreatingOs }}</div>
+            <div>{{ getCreatingOs(versionWithQualifier?.FileInfo) }}</div>
           </div>
         </div>
         <div class="col">
           <div class="read-only-field">
-            <label *ngIf="versionWithQualifier.FileInfo.CreatingApplicationVersion">
+            <label *ngIf="getCreatingApplicationVersion(versionWithQualifier?.FileInfo)">
               {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATING_APPLICATION_VERSION' | translate }}
             </label>
-            <div>{{ versionWithQualifier?.FileInfo.CreatingApplicationVersion }}</div>
+            <div>{{ getCreatingApplicationVersion(versionWithQualifier?.FileInfo) }}</div>
           </div>
         </div>
       </div>
 
-      <div class="row" *ngIf="versionWithQualifier?.FileInfo.CreatingOsVersion && versionWithQualifier.FileInfo.DateCreatedByApplication">
+      <div
+        class="row"
+        *ngIf="getCreatingOsVersion(versionWithQualifier?.FileInfo) && getDateCreatedByApplication(versionWithQualifier?.FileInfo)"
+      >
         <div class="col">
           <div class="read-only-field">
-            <label *ngIf="versionWithQualifier.FileInfo.CreatingOsVersion">
+            <label *ngIf="getCreatingOsVersion(versionWithQualifier?.FileInfo)">
               {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATING_OS_VERSION' | translate }}
             </label>
-            <div>{{ versionWithQualifier?.FileInfo.CreatingOsVersion }}</div>
+            <div>{{ getCreatingOsVersion(versionWithQualifier?.FileInfo) }}</div>
           </div>
         </div>
         <div class="col">
           <div class="read-only-field">
-            <label *ngIf="versionWithQualifier.FileInfo.DateCreatedByApplication">
+            <label *ngIf="getDateCreatedByApplication(versionWithQualifier?.FileInfo)">
               {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATED_APPLICATION_DATE' | translate }}
             </label>
-            <div>{{ versionWithQualifier?.FileInfo.DateCreatedByApplication }}</div>
+            <div>{{ getDateCreatedByApplication(versionWithQualifier?.FileInfo) }}</div>
           </div>
         </div>
       </div>
@@ -243,7 +253,11 @@
     </div>
 
     <div class="object-details-group download-object">
-      <button class="btn primary download-btn" (click)="onClickDownloadObject($event, versionWithQualifier)">
+      <button
+        class="btn primary download-btn"
+        [disabled]="versionWithQualifier?.Size === 0"
+        (click)="onClickDownloadObject($event, versionWithQualifier)"
+      >
         <i class="vitamui-icon vitamui-icon-telecharger"></i>
         <span>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
       </button>
