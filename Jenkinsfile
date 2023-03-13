@@ -132,7 +132,7 @@ pipeline {
                 parallel(
                     'Build Apis': {
                         sh '''
-                            $MVN_COMMAND clean clean install -Pvitam -f api/pom.xml
+                            $MVN_COMMAND clean install -Pvitam -f api/pom.xml
                         '''
                     },
                     'Build and Test Ui Frontend Common': {
@@ -160,19 +160,19 @@ pipeline {
             steps {
                 parallel(
                     'Ui identity': {
-                        sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-identity/pom.xml '''
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-identity/pom.xml '''
                     },
                     'Ui portal': {
-                        sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-portal/pom.xml '''
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-portal/pom.xml '''
                     },
                     'Ui referential': {
-                        sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-referential/pom.xml  '''
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-referential/pom.xml  '''
                     },
                      'Ui collect': {
-                         sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-collect/pom.xml  '''
+                         sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-collect/pom.xml  '''
                      },
                       'Ui pastis': {
-                          sh ''' $MVN_COMMAND install:install -Pvitam -f ui/ui-pastis/pom.xml  '''
+                          sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-pastis/pom.xml  '''
                       }
                 )
             }
@@ -186,10 +186,10 @@ pipeline {
             steps {
                 parallel(
                     'Build uis': {
-                        sh ''' $MVN_COMMAND install:install -DskipTests=true -DskipAllFrontendTest -Pvitam -f ui/pom.xml -pl !ui-frontend-common,!ui-frontend,!ui-portal,!ui-identity,!ui-referential,!ui-pastis,!ui-collect '''
+                        sh ''' $MVN_COMMAND clean install -DskipTests=true -DskipAllFrontendTest -Pvitam -f ui/pom.xml -pl !ui-frontend-common,!ui-frontend,!ui-portal,!ui-identity,!ui-referential,!ui-pastis,!ui-collect '''
                     },
                     'Build and Test Ui Frontend': {
-                        sh ''' $MVN_COMMAND install:install -Pvitam -DskipAllFrontendTest -DskipTests=true -f ui/ui-frontend/pom.xml '''
+                        sh ''' $MVN_COMMAND clean install -Pvitam -DskipAllFrontendTest -DskipTests=true -f ui/ui-frontend/pom.xml '''
                     }
                 )
             }
