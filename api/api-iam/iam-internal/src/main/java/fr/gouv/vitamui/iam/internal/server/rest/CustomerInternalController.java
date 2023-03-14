@@ -221,7 +221,7 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
         LOGGER.debug("Patch customer {}", customerData);
         ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
-        SanityChecker.sanitizeCriteria(customerData);
+        SanityChecker.sanitizeCriteria(customerData.getPartialCustomerDto());
         Assert.isTrue(StringUtils.equals(id, (String) customerData.getPartialCustomerDto().get("id")), "The DTO identifier must match the path identifier for update.");
         return internalCustomerService.patch(customerData);
     }

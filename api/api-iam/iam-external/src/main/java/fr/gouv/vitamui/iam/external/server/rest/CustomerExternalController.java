@@ -213,7 +213,7 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
 
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
-        SanityChecker.sanitizeCriteria(customerData);
+        SanityChecker.sanitizeCriteria(customerData.getPartialCustomerDto());
         LOGGER.debug("Patch customer with {}", customerData.getPartialCustomerDto().get("id"));
         return customerExternalService.patch(customerData);
     }
