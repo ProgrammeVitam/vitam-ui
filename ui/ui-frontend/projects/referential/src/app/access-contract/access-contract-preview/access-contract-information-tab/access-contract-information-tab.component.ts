@@ -133,8 +133,8 @@ export class AccessContractInformationTabComponent {
     { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
     { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
     { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AccessRule', label: "Durée d'utilité administrative", info: '' },
-    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' }
+    { key: 'AccessRule', label: 'Délai de communicabilité', info: '' },
+    { key: 'AppraisalRule', label: "Durée d'utilité administrative", info: '' }
   ];
   previousValue = (): AccessContract => {
     return this._accessContract;
