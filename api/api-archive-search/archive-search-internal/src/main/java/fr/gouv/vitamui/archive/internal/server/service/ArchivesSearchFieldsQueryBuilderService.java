@@ -186,7 +186,7 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
         String criteria = ArchiveSearchConsts.START_DATE_CRITERIA.equals(searchCriteria) ?
             ArchiveSearchConsts.START_DATE :
             (ArchiveSearchConsts.END_DATE_CRITERIA.equals(searchCriteria) ?
-                ArchiveSearchConsts.END_DATE : null);
+                ArchiveSearchConsts.END_DATE : searchCriteria);
 
         LOGGER.info("The search criteria Date is {} ", criteria);
         if (!CollectionUtils.isEmpty(searchValues)) {
