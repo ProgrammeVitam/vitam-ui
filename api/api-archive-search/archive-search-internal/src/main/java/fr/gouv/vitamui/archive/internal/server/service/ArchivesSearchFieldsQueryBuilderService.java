@@ -257,7 +257,7 @@ public class ArchivesSearchFieldsQueryBuilderService {
                 criteria = ArchiveSearchConsts.END_DATE;
                 break;
             default:
-                criteria = null;
+                criteria = searchCriteria;
         }
         LOGGER.info("The search criteria Date is {} ", criteria);
         if (!CollectionUtils.isEmpty(searchValues)) {
