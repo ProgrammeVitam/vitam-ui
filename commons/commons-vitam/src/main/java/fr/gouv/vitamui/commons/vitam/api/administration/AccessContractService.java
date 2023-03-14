@@ -36,23 +36,10 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -73,6 +60,18 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class AccessContractService {
 
@@ -134,7 +133,7 @@ public class AccessContractService {
 
     /**
      * check if all conditions are Ok to create an access contract in the tenant
-     * @param accessContracts
+     * @param accessContracts : access Contracts to verify existence
      * @return
      * the tenant where the access contract will be created
      */
@@ -191,15 +190,17 @@ public class AccessContractService {
 
     /**
      * Check if access contract is not already created in Vitam.
-     * @param accessContracts
-     * @param response
+     * @param accessContracts : access Contracts to verify existence
+     * @param response : list of access Contracts in vitam
      */
     private void verifyAccessContractExistence(final List<AccessContractModelDto> accessContracts, final RequestResponse<AccessContractModel> response) {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final AccessContractResponseDto accessContractResponseDto = objectMapper.treeToValue(response.toJsonNode(), AccessContractResponseDto.class);
-            final List<String> accessContractsNames = accessContracts.stream().map(ac -> ac.getName()).collect(Collectors.toList());
+            final List<String> accessContractsNames = accessContracts.stream().map(AccessContractModelDto::getName)
+                .filter(Objects::nonNull).map(String::strip)
+                .collect(Collectors.toList());
             boolean alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
                 final String msg = "Can't create access contract, a contract with the same name already exist in Vitam";
@@ -207,7 +208,9 @@ public class AccessContractService {
                 throw new ConflictException(msg);
             }
 
-            final List<String> accessContractsIdentifiers = accessContracts.stream().map(ac -> ac.getIdentifier()).collect(Collectors.toList());
+            final List<String> accessContractsIdentifiers = accessContracts.stream().map(AccessContractModelDto::getIdentifier)
+                .filter(Objects::nonNull).map(String::strip)
+                .collect(Collectors.toList());
             alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsIdentifiers.contains(ac.getIdentifier()));
             if (alreadyCreated) {
                 final String msg = "Can't create access contract, a contract with the same identifier already exist in Vitam";
