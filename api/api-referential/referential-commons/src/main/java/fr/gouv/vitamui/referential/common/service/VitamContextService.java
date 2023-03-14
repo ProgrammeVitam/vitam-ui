@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -36,29 +36,12 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import fr.gouv.vitamui.referential.common.dto.PermissionVitamDto;
-import fr.gouv.vitamui.referential.common.dto.converter.ContextDtoConverterUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -69,16 +52,28 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.ContextModel;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.dto.ContextResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ContextVitamDto;
+import fr.gouv.vitamui.referential.common.dto.converter.ContextDtoConverterUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class VitamContextService {
 
@@ -86,7 +81,10 @@ public class VitamContextService {
 
     private final AdminExternalClient adminExternalClient;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
+
+    private static final String INGEST_CONTRACTS = "ingestContracts";
+    private static final String ACCESS_CONTRACTS = "accessContracts";
 
     @Autowired
     public VitamContextService(AdminExternalClient adminExternalClient, ObjectMapper objectMapper) {
@@ -142,7 +140,8 @@ public class VitamContextService {
 
     /**
      * check if all conditions are Ok to create a context
-     * @param contexts
+     * @param contexts : List of Contexts in Vitam
+     * @param vitamContext : Vitam Context
      * @return true if the context can be created, false if the ile format already exists
      */
     public boolean checkAbilityToCreateContextInVitam(final List<ContextModel> contexts, VitamContext vitamContext) {
@@ -153,16 +152,19 @@ public class VitamContextService {
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<ContextModel> response = findContexts(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    throw new PreconditionFailedException("Can't create file format for the tenant : UNAUTHORIZED");
+                    LOGGER.error("Can't create Vitam Contexts for the tenant : {}  not found in Vitam", vitamContext.getTenantId());
+                    throw new NotFoundException("Can't create Vitam Contexts for the tenant : UNAUTHORIZED");
                 }
                 else if (response.getStatus() != HttpStatus.OK.value()) {
-                    throw new UnavailableServiceException("Can't create file format for this tenant, Vitam response code : " + response.getStatus());
+                    LOGGER.error("Can't create Vitam Context for this tenant");
+                    throw new UnavailableServiceException("Can't create Vitam Context for this tenant, Vitam response code : " + response.getStatus());
                 }
 
                 verifyFileFormatExistence(contexts, response);
             }
-            catch (final VitamClientException e) {
-                throw new UnavailableServiceException("Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage());
+            catch (final VitamClientException exception) {
+                LOGGER.error("Can't create Vitam Context for this tenant");
+                throw new UnavailableServiceException("Can't create Vitam Contexts for this tenant, error while calling Vitam : " + exception.getMessage());
             }
             return true;
         }
@@ -171,25 +173,35 @@ public class VitamContextService {
 
     /**
      * Check if access contract is not already created in Vitam.
-     * @param checkFileFormats
-     * @param vitamFileFormats
+     * @param contextModelList : application context to verify existence
+     * @param vitamContextModelList : list of application contexts in vitam
      */
-    private void verifyFileFormatExistence(final List<ContextModel> checkFileFormats, final RequestResponse<ContextModel> vitamFileFormats) {
+    private void verifyFileFormatExistence(final List<ContextModel> contextModelList, final RequestResponse<ContextModel> vitamContextModelList) {
         try {
-            final ObjectMapper objectMapper = new ObjectMapper();
+
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final ContextResponseDto contextResponseDto = objectMapper.treeToValue(vitamFileFormats.toJsonNode(), ContextResponseDto.class);
-            final List<String> contextNames = checkFileFormats.stream().map(context -> context.getName()).collect(Collectors.toList());
+            final ContextResponseDto contextResponseDto = objectMapper.treeToValue(vitamContextModelList.toJsonNode(), ContextResponseDto.class);
+            final List<String> contextNames = contextModelList.stream().map(ContextModel::getName)
+                .filter(Objects::nonNull).map(String::strip)
+                .collect(Collectors.toList());
             if (contextResponseDto.getResults().stream().anyMatch(context -> contextNames.contains(context.getName()))) {
-                throw new ConflictException("Can't create context, a format with the same name already exist in Vitam");
+                final String messageError = "Can't create context, an application context with the same name already exist in Vitam";
+                LOGGER.error(messageError);
+                throw new ConflictException(messageError);
             }
-            final List<String> contextIds = checkFileFormats.stream().map(context -> context.getIdentifier()).collect(Collectors.toList());
+            final List<String> contextIds = contextModelList.stream().map(ContextModel::getIdentifier)
+                .filter(Objects::nonNull).map(String::strip)
+                .collect(Collectors.toList());
             if (contextResponseDto.getResults().stream().anyMatch(context -> contextIds.contains(context.getIdentifier()))) {
-                throw new ConflictException("Can't create context, a format with the same puid already exist in Vitam");
+                final String messageError = "Can't create context, an application context with the same puid already exist in Vitam";
+                LOGGER.error(messageError);
+                throw new ConflictException(messageError);
             }
         }
-        catch (final JsonProcessingException e) {
-            throw new UnexpectedDataException("Can't create access contracts, Error while parsing Vitam response : " + e.getMessage());
+        catch (final JsonProcessingException exception) {
+            final String messageError = "Can't create application contexts, Error while parsing Vitam response : " ;
+            LOGGER.error(messageError);
+            throw new UnexpectedDataException(messageError + exception.getMessage());
         }
     }
 
@@ -205,13 +217,13 @@ public class VitamContextService {
         	if (permissionsNode != null) {
             	permissionsNode.forEach(permissionNode -> {
             		final ObjectNode objectNode = (ObjectNode) permissionNode;
-                	if (permissionNode.get("accessContracts") != null) {
-                		objectNode.set("AccessContracts", permissionNode.get("accessContracts"));
-                		objectNode.remove("accessContracts");
+                	if (permissionNode.get(ACCESS_CONTRACTS) != null) {
+                		objectNode.set("AccessContracts", permissionNode.get(ACCESS_CONTRACTS));
+                		objectNode.remove(ACCESS_CONTRACTS);
                 	}
-                	if (permissionNode.get("ingestContracts") != null) {
-                		objectNode.set("IngestContracts", permissionNode.get("ingestContracts"));
-                		objectNode.remove("ingestContracts");
+                	if (permissionNode.get(INGEST_CONTRACTS) != null) {
+                		objectNode.set("IngestContracts", permissionNode.get(INGEST_CONTRACTS));
+                		objectNode.remove(INGEST_CONTRACTS);
                 	}
             	});
         	}

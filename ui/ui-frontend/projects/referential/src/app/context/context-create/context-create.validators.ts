@@ -34,42 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Injectable} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
+import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 
-import {ContextPermission} from 'projects/vitamui-library/src/public-api';
-import {of, timer} from 'rxjs';
-import {map, switchMap, take} from 'rxjs/operators';
-import {ContextService} from '../context.service';
+import { ContextPermission } from 'projects/vitamui-library/src/public-api';
+import { of, timer } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { ContextService } from '../context.service';
 
 @Injectable()
 export class ContextCreateValidators {
-
   private debounceTime = 400;
 
-  constructor(private contextService: ContextService) {
-  }
+  constructor(private contextService: ContextService) {}
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    console.log('Triggered uniqueName');
     return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  }
+  };
 
   uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  }
+  };
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
       const properties: any = {};
-      properties[field] = control.value;
+      properties[field] = control.value.trim();
       const existField: any = {};
       existField[existTag] = true;
 
       return timer(this.debounceTime).pipe(
-        switchMap(() => control.value !== valueToIgnore ? this.contextService.existsProperties(properties) : of(false)),
+        switchMap(() => (control.value !== valueToIgnore ? this.contextService.existsProperties(properties) : of(false))),
         take(1),
-        map((exists: boolean) => exists ? existField : null)
+        map((exists: boolean) => (exists ? existField : null))
       );
     };
   }
@@ -77,9 +74,12 @@ export class ContextCreateValidators {
   public permissionInvalid() {
     return (control: AbstractControl) => {
       switch (this.checkTenantsValid(control.value)) {
-        case 'tenant': return of({ permissionsTenant: true });
-        case 'empty': return of({ noPermissions: true });
-        default: return of(null);
+        case 'tenant':
+          return of({ permissionsTenant: true });
+        case 'empty':
+          return of({ noPermissions: true });
+        default:
+          return of(null);
       }
     };
   }
@@ -97,5 +97,4 @@ export class ContextCreateValidators {
 
     return null;
   }
-
 }
