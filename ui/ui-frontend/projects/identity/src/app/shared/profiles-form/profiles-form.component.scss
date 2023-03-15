@@ -11,3 +11,8 @@
     width: 25%;
   }
 }
+:host {
+  .unscrollable {
+    max-height: none;
+  }
+}
