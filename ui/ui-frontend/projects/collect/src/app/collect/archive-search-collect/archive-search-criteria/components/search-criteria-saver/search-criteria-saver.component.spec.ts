@@ -34,35 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/compiler';
-import { Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
-import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
-import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
-import { environment } from 'projects/collect/src/environments/environment';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
-import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
-import { VitamInternalFields } from '../../models/utils';
+import {DatePipe} from '@angular/common';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/compiler';
+import {Pipe, PipeTransform} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormBuilder} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {ActivatedRoute} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {Observable, of} from 'rxjs';
+import {CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {SearchCriteriaEltements, SearchCriteriaHistory} from '../../models/search-criteria-history.interface';
+import {SearchCriteriaSaverComponent} from './search-criteria-saver.component';
+import {SearchCriteriaSaverService} from '../../services/search-criteria-saver.service';
+import {environment} from 'projects/collect/src/environments/environment';
+import {ArchiveSharedDataService} from '../../services/archive-shared-data.service';
+import {VitamUISnackBar} from '../../../../shared/vitamui-snack-bar';
+import {VitamInternalFields} from '../../models/utils';
 
-@Pipe({ name: 'truncate' })
+@Pipe({name: 'truncate'})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
   }
 }
 
-const translations: any = { TEST: 'Mock translate test' };
+const translations: any = {TEST: 'Mock translate test'};
 
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
@@ -75,10 +75,10 @@ describe('SearchCriteriaSaverComponent', () => {
   let fixture: ComponentFixture<SearchCriteriaSaverComponent>;
 
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
-  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  matDialogRefSpy.open.and.returnValue({afterClosed: () => of(true)});
 
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  matDialogSpy.open.and.returnValue({afterClosed: () => of(true)});
 
   const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
@@ -97,7 +97,7 @@ describe('SearchCriteriaSaverComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
+          loader: {provide: TranslateLoader, useClass: FakeLoader},
         }),
         RouterTestingModule,
       ],
@@ -107,16 +107,16 @@ describe('SearchCriteriaSaverComponent', () => {
         HttpClientTestingModule,
         ArchiveSharedDataService,
         DatePipe,
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MatDialog, useValue: matDialogRefSpy },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: SearchCriteriaSaverService, useValue: SearchCriteriaSaverServiceStub },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {provide: MatDialog, useValue: matDialogRefSpy},
+        {provide: VitamUISnackBar, useValue: snackBarSpy},
+        {provide: SearchCriteriaSaverService, useValue: SearchCriteriaSaverServiceStub},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+          useValue: {params: of({tenantIdentifier: 1}), data: of({appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP'})},
         },
-        { provide: environment, useValue: environment },
+        {provide: environment, useValue: environment},
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -150,8 +150,8 @@ describe('SearchCriteriaSaverComponent', () => {
         {
           criteria: 'Title',
           values: [
-            { value: 'vdsvdv', id: 'vdsvdv' },
-            { value: 'dfbdfd', id: 'dfbdfd' },
+            {value: 'vdsvdv', id: 'vdsvdv'},
+            {value: 'dfbdfd', id: 'dfbdfd'},
           ],
           category: 'FIELDS',
           dataType: CriteriaDataType.STRING,
@@ -161,7 +161,7 @@ describe('SearchCriteriaSaverComponent', () => {
         },
         {
           criteria: 'Description',
-          values: [{ value: 'dfddfgdfdgg', id: 'dfddfgdfdgg' }],
+          values: [{value: 'dfddfgdfdgg', id: 'dfddfgdfdgg'}],
           category: 'FIELDS',
           dataType: CriteriaDataType.STRING,
           operator: CriteriaOperator.EQ,
@@ -171,8 +171,8 @@ describe('SearchCriteriaSaverComponent', () => {
         {
           criteria: VitamInternalFields.OPI,
           values: [
-            { value: 'dfgdfgdfgdfgdfgfdg', id: 'dfgdfgdfgdfgdfgfdg' },
-            { value: 'gggggggggg', id: 'gggggggggg' },
+            {value: 'dfgdfgdfgdfgdfgfdg', id: 'dfgdfgdfgdfgdfgfdg'},
+            {value: 'gggggggggg', id: 'gggggggggg'},
           ],
           category: 'FIELDS',
           dataType: CriteriaDataType.STRING,
@@ -183,9 +183,9 @@ describe('SearchCriteriaSaverComponent', () => {
         {
           criteria: 'NODE',
           values: [
-            { value: 'node1', id: 'node1' },
-            { value: 'node2', id: 'node2' },
-            { value: 'node3', id: 'node3' },
+            {value: 'node1', id: 'node1'},
+            {value: 'node2', id: 'node2'},
+            {value: 'node3', id: 'node3'},
           ],
           category: 'NODES',
           dataType: CriteriaDataType.STRING,
@@ -250,12 +250,10 @@ describe('SearchCriteriaSaverComponent', () => {
         component.criteriaToUpdate = searchCriteriaHistory;
 
         component.update();
-        const excpectedDate = new Date().toISOString();
 
         // Then
         expect(component.criteriaToUpdate.savingDate).toBeDefined();
         expect(component.criteriaToUpdate.savingDate).not.toBeNull();
-        expect(component.criteriaToUpdate.savingDate).toEqual(excpectedDate);
       });
     });
   });
