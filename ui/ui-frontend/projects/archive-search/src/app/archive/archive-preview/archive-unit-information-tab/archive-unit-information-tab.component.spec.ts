@@ -27,7 +27,7 @@
  *
  */
 
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -42,7 +42,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, ENVIRONMENT,InjectorModule, LoggerModule, StartupService, Unit, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, Unit, WINDOW_LOCATION } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata.interface';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
@@ -116,7 +116,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
         { provide: StartupService, useValue: startUpServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

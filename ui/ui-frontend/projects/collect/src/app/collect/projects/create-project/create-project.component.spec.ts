@@ -28,7 +28,7 @@
  */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -38,13 +38,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  Project,
-  ProjectStatus,
-  WINDOW_LOCATION
+    BASE_URL,
+    ENVIRONMENT,
+    InjectorModule,
+    LoggerModule,
+    Project,
+    ProjectStatus,
+    WINDOW_LOCATION
 } from 'ui-frontend-common';
 import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { ProjectsService } from '../projects.service';
@@ -90,7 +90,7 @@ describe('CreateProjectComponent', () => {
         {provide: WINDOW_LOCATION, useValue: window.location},
         {provide: ProjectsService, useValue: projectsServiceMock},
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

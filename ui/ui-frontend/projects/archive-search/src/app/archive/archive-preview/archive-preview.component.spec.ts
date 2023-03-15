@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -47,13 +47,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  Unit,
-  WINDOW_LOCATION
+    BASE_URL,
+    ENVIRONMENT,
+    InjectorModule,
+    LoggerModule,
+    StartupService,
+    Unit,
+    WINDOW_LOCATION
 } from 'ui-frontend-common';
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveService } from '../archive.service';
@@ -109,7 +109,7 @@ describe('ArchivePreviewComponent', () => {
           }
         },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

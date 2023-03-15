@@ -36,7 +36,7 @@
  */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -108,7 +108,7 @@ describe('LogbookManagementOperationListComponent', () => {
       declarations: [LogbookManagementOperationListComponent, MockTruncatePipe],
       imports: [TranslateModule.forRoot(), HttpClientTestingModule, VitamUICommonTestModule],
       providers: [{ provide: LogbookManagementOperationService, useValue: logbookManagementOperationServiceMock }],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
     const logbookManagementOperationService = TestBed.get(LogbookManagementOperationService);

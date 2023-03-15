@@ -28,16 +28,16 @@
  */
 
 
-import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
-import {BehaviorSubject, Observable, of} from "rxjs";
-import {AccessionRegisterListComponent} from "./accession-register-list.component";
-import {AccessionRegistersService} from "../accession-register.service";
-import {Direction, InfiniteScrollTable, PageRequest, SearchService, TableFilterModule} from "ui-frontend-common";
-import {TranslateModule} from "@ngx-translate/core";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {VitamUICommonTestModule} from "ui-frontend-common/testing";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { TranslateModule } from "@ngx-translate/core";
+import { BehaviorSubject, Observable, of } from "rxjs";
+import { Direction, InfiniteScrollTable, PageRequest, SearchService, TableFilterModule } from "ui-frontend-common";
+import { VitamUICommonTestModule } from "ui-frontend-common/testing";
+import { AccessionRegistersService } from "../accession-register.service";
+import { AccessionRegisterListComponent } from "./accession-register-list.component";
 
 describe('AccessionRegisterListComponent', () => {
 
@@ -75,7 +75,7 @@ describe('AccessionRegisterListComponent', () => {
         {provide: AccessionRegistersService, useValue: accessionRegistersService},
         {provide: SearchService, useValue: searchService},
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
     fixture = TestBed.createComponent(AccessionRegisterListComponent);
     component = fixture.componentInstance;

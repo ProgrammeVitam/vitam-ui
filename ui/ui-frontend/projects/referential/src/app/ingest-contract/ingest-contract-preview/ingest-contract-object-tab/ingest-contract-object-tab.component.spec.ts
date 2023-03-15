@@ -36,12 +36,12 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab.component';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 describe('IngestContractObjectTabComponent', () => {
   let component: IngestContractObjectTabComponent;
@@ -79,7 +79,7 @@ describe('IngestContractObjectTabComponent', () => {
         imports: [ReactiveFormsModule, VitamUICommonTestModule],
         declarations: [IngestContractObjectTabComponent],
         providers: [FormBuilder, { provide: IngestContractService, useValue: {} }],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );

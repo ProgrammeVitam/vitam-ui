@@ -1,8 +1,8 @@
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {FileType} from '../../models/file-type.enum';
-import {NodeComponent} from './node.component';
+import { FileType } from '../../models/file-type.enum';
+import { NodeComponent } from './node.component';
 
 describe('NodeComponent', () => {
   let component: NodeComponent;
@@ -12,7 +12,7 @@ describe('NodeComponent', () => {
     TestBed.configureTestingModule({
       declarations: [NodeComponent],
       providers: [],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

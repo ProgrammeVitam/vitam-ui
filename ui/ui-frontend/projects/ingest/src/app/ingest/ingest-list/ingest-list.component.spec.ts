@@ -27,7 +27,7 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { IngestService } from '../ingest.service';
@@ -47,7 +47,7 @@ describe('IngestListComponent', () => {
       declarations: [IngestListComponent],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: IngestService, useValue: ingestServiceMock }],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

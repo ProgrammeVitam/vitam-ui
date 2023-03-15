@@ -36,17 +36,17 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
-import {GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {AuditComponent} from './audit.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { GlobalEventService, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AuditComponent } from './audit.component';
 
 
 describe('AuditComponent', () => {
@@ -82,7 +82,7 @@ describe('AuditComponent', () => {
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: Router, useValue: routerSpy}
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

@@ -28,7 +28,7 @@
  */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -38,14 +38,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
-  ConfirmDialogService,
-  CriteriaDataType,
-  CriteriaOperator,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  WINDOW_LOCATION,
+    BASE_URL,
+    ConfirmDialogService,
+    CriteriaDataType,
+    CriteriaOperator,
+    InjectorModule,
+    LoggerModule,
+    StartupService,
+    WINDOW_LOCATION
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ArchiveService } from '../../../archive.service';
@@ -159,7 +159,7 @@ describe('ReclassificationComponent', () => {
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
         { provide: ArchiveService, useValue: archiveServiceMock },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

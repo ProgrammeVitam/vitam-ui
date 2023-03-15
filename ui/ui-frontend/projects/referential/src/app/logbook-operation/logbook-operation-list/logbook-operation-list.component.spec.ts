@@ -36,7 +36,7 @@
  */
 import { EMPTY, of } from 'rxjs';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LogbookDownloadService } from '../logbook-download.service';
@@ -57,7 +57,7 @@ describe('LogbookOperationListComponent', () => {
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

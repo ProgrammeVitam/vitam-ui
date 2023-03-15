@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {SecurityProfile} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
+import { FormBuilder } from '@angular/forms';
+import { SecurityProfile } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
 
-import {SecurityProfileService} from '../../security-profile.service';
-import {SecurityProfilePermissionsTabComponent} from './security-profile-permissions-tab.component';
+import { SecurityProfileService } from '../../security-profile.service';
+import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab.component';
 
 describe('SecurityProfilePermissionsTabComponent', () => {
   let component: SecurityProfilePermissionsTabComponent;
@@ -72,7 +72,7 @@ describe('SecurityProfilePermissionsTabComponent', () => {
         FormBuilder,
         {provide: SecurityProfileService, useValue: securityProfileServiceMock}
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {EventDisplayComponent} from './event-display.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IngestService } from '../../../../ingest.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { EventDisplayComponent } from './event-display.component';
 
 describe('EventDisplayComponent', () => {
   let component: EventDisplayComponent;
@@ -50,7 +50,7 @@ describe('EventDisplayComponent', () => {
       imports: [
       ],
       providers: [{ provide: IngestService, useValue: {} }],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

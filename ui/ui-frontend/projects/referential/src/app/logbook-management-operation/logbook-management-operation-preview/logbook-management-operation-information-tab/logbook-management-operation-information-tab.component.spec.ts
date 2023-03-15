@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { LogbookService } from 'ui-frontend-common';
@@ -63,7 +63,7 @@ describe('LogbookManagementOperationInformationTabComponent', () => {
         declarations: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
         imports: [TranslateModule.forRoot()],
         providers: [{ provide: LogbookService, useValue: {} }],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );

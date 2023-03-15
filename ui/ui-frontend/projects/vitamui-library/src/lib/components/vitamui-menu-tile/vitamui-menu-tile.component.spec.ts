@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {Directive, Input, NO_ERRORS_SCHEMA} from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
-  Application,
-  ApplicationId,
-  BASE_URL,
-  LoggerModule,
-  StartupService,
-  SUBROGRATION_REFRESH_RATE_MS
+    Application,
+    ApplicationId,
+    BASE_URL,
+    LoggerModule,
+    StartupService,
+    SUBROGRATION_REFRESH_RATE_MS
 } from 'ui-frontend-common';
-import {UpdatedVitamUIMenuTileComponent} from './vitamui-menu-tile.component';
+import { UpdatedVitamUIMenuTileComponent } from './vitamui-menu-tile.component';
 
 @Directive({
   selector: '[libVitamuiCommonTooltip]',
@@ -78,7 +78,7 @@ describe('UpdatedVitamUIMenuTileComponent', () => {
         {provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100},
       ],
       schemas: [
-        NO_ERRORS_SCHEMA
+        CUSTOM_ELEMENTS_SCHEMA
       ]
     })
       .compileComponents();

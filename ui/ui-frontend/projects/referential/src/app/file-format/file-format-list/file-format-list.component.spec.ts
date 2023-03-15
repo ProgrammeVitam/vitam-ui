@@ -36,13 +36,13 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {FileFormat} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {AuthService, BASE_URL, VitamUISnackBarService} from 'ui-frontend-common';
-import {FileFormatService} from '../file-format.service';
-import {FileFormatListComponent} from './file-format-list.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { FileFormat } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { AuthService, BASE_URL, VitamUISnackBarService } from 'ui-frontend-common';
+import { FileFormatService } from '../file-format.service';
+import { FileFormatListComponent } from './file-format-list.component';
 
 
 describe('FileFormatListComponent', () => {
@@ -65,7 +65,7 @@ describe('FileFormatListComponent', () => {
         {provide: VitamUISnackBarService, useValue: {}},
         {provide: MatDialog, useValue: {}}
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 

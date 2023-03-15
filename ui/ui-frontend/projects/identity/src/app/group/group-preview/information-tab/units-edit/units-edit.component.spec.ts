@@ -36,7 +36,7 @@
  */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component, forwardRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, forwardRef } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -83,7 +83,7 @@ describe('UnitsEditComponent', () => {
           { provide: BASE_URL, useValue: '/fake-api' },
           { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
         ],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );

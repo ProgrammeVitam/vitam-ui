@@ -36,12 +36,12 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
-import {SecurityProfile} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {SecurityProfileService} from '../../security-profile.service';
-import {SecurityProfileInformationTabComponent} from './security-profile-information-tab.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { SecurityProfile } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { SecurityProfileService } from '../../security-profile.service';
+import { SecurityProfileInformationTabComponent } from './security-profile-information-tab.component';
 
 describe('SecurityProfileInformationTabComponent', () => {
   let component: SecurityProfileInformationTabComponent;
@@ -73,7 +73,7 @@ describe('SecurityProfileInformationTabComponent', () => {
         FormBuilder,
         {provide: SecurityProfileService, useValue: securityProfileServiceMock}
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

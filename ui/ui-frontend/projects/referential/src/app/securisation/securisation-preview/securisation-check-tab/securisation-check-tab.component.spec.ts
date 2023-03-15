@@ -35,12 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {of} from 'rxjs';
-import {AccessContractService} from '../../../access-contract/access-contract.service';
-import {SecurisationService} from '../../securisation.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { of } from 'rxjs';
+import { AccessContractService } from '../../../access-contract/access-contract.service';
+import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 
 describe('SecurisationCheckTabComponent', () => {
@@ -111,7 +111,7 @@ describe('SecurisationCheckTabComponent', () => {
         {provide: SecurisationService, useValue: {}},
         {provide: ActivatedRoute, useValue: activatedRouteMock}
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));

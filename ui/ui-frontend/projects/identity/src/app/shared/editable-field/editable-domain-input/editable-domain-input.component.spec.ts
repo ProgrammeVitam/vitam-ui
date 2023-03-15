@@ -37,13 +37,13 @@
 import { of } from 'rxjs';
 
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, forwardRef, Input, Output, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import {
-  CustomerCreateValidators
+    CustomerCreateValidators
 } from '../../../customer/customer-create/customer-create.validators';
 import { EditableDomainInputComponent } from './editable-domain-input.component';
 
@@ -107,7 +107,7 @@ describe('EditableDomainInputComponent', () => {
       providers: [
         { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 

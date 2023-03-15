@@ -34,27 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import {IngestComponent} from './ingest.component';
-import {InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
-import {ActivatedRoute} from '@angular/router';
-import {of} from 'rxjs';
-import {environment} from '../../environments/environment';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {IngestService} from './ingest.service';
-import {Component, NO_ERRORS_SCHEMA} from '@angular/core';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatDialog} from '@angular/material/dialog';
-import {IngestListComponent} from './ingest-list/ingest-list.component';
-import {UploadService} from '../core/common/upload.service';
-import {IngestType} from "../core/common/ingest-type.enum";
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { environment } from '../../environments/environment';
+import { IngestType } from "../core/common/ingest-type.enum";
+import { UploadService } from '../core/common/upload.service';
+import { IngestListComponent } from './ingest-list/ingest-list.component';
+import { IngestComponent } from './ingest.component';
+import { IngestService } from './ingest.service';
 
 @Component({selector: 'app-ingest-list', template: ''})
 export class IngestListStubComponent {
@@ -105,7 +105,7 @@ describe('IngestComponent test:', () => {
         },
         {provide: environment, useValue: environment}
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

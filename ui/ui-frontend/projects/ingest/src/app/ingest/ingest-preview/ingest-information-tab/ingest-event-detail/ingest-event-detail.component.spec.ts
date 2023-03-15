@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {MatMenuModule} from '@angular/material/menu';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatMenuModule } from '@angular/material/menu';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {IngestService} from '../../../ingest.service';
-import {IngestEventDetailComponent} from './ingest-event-detail.component';
-import {EventDisplayHelperService} from '../../event-display-helper.service';
-import {Event} from '../../event';
-import {of} from 'rxjs';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
+import { IngestService } from '../../../ingest.service';
+import { Event } from '../../event';
+import { EventDisplayHelperService } from '../../event-display-helper.service';
+import { IngestEventDetailComponent } from './ingest-event-detail.component';
 
 describe('IngestEventDetailComponent', () => {
   let component: IngestEventDetailComponent;
@@ -64,7 +64,7 @@ describe('IngestEventDetailComponent', () => {
         provide: EventDisplayHelperService,
         useValue: eventDisplayHelperServiceSpy
       }],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

@@ -28,7 +28,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -38,13 +38,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import {
-  BASE_URL,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  Transaction,
-  TransactionStatus,
-  WINDOW_LOCATION
+    BASE_URL,
+    InjectorModule,
+    LoggerModule,
+    StartupService,
+    Transaction,
+    TransactionStatus,
+    WINDOW_LOCATION
 } from 'ui-frontend-common';
 import { environment } from '../../../../../../archive-search/src/environments/environment';
 import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
@@ -154,7 +154,7 @@ describe('TransactionListComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

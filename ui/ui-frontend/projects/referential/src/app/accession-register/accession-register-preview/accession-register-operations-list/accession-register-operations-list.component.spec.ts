@@ -24,18 +24,18 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
-import {MatMenuModule} from "@angular/material/menu";
-import {MatTreeModule} from "@angular/material/tree";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {InjectorModule, LoggerModule, RegisterValueEventType} from "ui-frontend-common";
-import {MatIconModule} from "@angular/material/icon";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {AccessionRegisterOperationsListComponent} from "./accession-register-operations-list.component";
-import {TranslateModule} from "@ngx-translate/core";
-import {AccessionRegisterFixtures} from "./accession-register-operations-list.component.statics.spec";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
+import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatTreeModule } from "@angular/material/tree";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { TranslateModule } from "@ngx-translate/core";
+import { InjectorModule, LoggerModule, RegisterValueEventType } from "ui-frontend-common";
+import { AccessionRegisterOperationsListComponent } from "./accession-register-operations-list.component";
+import { AccessionRegisterFixtures } from "./accession-register-operations-list.component.statics.spec";
 
 describe('AccessionRegisterOperationsListComponent', () => {
 
@@ -58,7 +58,7 @@ describe('AccessionRegisterOperationsListComponent', () => {
         ],
         declarations: [AccessionRegisterOperationsListComponent],
         providers: [],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );

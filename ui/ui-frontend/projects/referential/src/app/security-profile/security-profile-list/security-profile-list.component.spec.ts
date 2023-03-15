@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {SecurityProfile} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {AuthService, BASE_URL} from 'ui-frontend-common';
-import {SecurityProfileService} from '../security-profile.service';
-import {SecurityProfileListComponent} from './security-profile-list.component';
+import { SecurityProfile } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { AuthService, BASE_URL } from 'ui-frontend-common';
+import { SecurityProfileService } from '../security-profile.service';
+import { SecurityProfileListComponent } from './security-profile-list.component';
 
 describe('SecurityProfileListComponent', () => {
   let component: SecurityProfileListComponent;
@@ -60,7 +60,7 @@ describe('SecurityProfileListComponent', () => {
         {provide: SecurityProfileService, useValue: securityProfileServiceMock},
         {provide: AuthService, useValue: {user: {proofTenantIdentifier: '1'}}}
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 

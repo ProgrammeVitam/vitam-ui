@@ -34,19 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {Component,Input,NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed} from '@angular/core/testing';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatTabsModule} from '@angular/material/tabs';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {Observable, of, Subject} from 'rxjs';
-import {AuthService,BASE_URL,LoggerModule,WINDOW_LOCATION} from 'ui-frontend-common';
-import {environment} from '../../../environments/environment.prod';
-import {TestHostComponent} from '../../shared/domains-input/domains-input.component.spec';
-import {ExternalParamProfileService} from '../external-param-profile.service';
-import {ExternalParamProfileDetailComponent} from './external-param-profile-detail.component';
-import {TranslateLoader,TranslateModule} from '@ngx-translate/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable, of, Subject } from 'rxjs';
+import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { environment } from '../../../environments/environment.prod';
+import { TestHostComponent } from '../../shared/domains-input/domains-input.component.spec';
+import { ExternalParamProfileService } from '../external-param-profile.service';
+import { ExternalParamProfileDetailComponent } from './external-param-profile-detail.component';
 
 
 @Component({selector: 'app-information-tab',template: ''})
@@ -96,7 +96,7 @@ describe('ExternalParamProfilDetailComponent',() => {
         {provide: BASE_URL,useValue: '/fake-api'},
         {provide: environment,useValue: environment}
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   });
 

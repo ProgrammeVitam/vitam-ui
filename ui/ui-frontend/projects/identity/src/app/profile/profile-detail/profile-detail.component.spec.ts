@@ -40,7 +40,7 @@ import { EMPTY, of, Subject } from 'rxjs';
 import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from './../../../environments/environment';
 
-import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -149,7 +149,7 @@ describe('ProfileDetailComponent', () => {
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } }
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

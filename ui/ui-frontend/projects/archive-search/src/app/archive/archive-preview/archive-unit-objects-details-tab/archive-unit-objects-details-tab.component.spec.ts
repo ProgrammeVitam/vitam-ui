@@ -26,7 +26,7 @@
  */
 
 import { Clipboard } from '@angular/cdk/clipboard';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -50,7 +50,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
         { provide: ArchiveService, useValue: archiveServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

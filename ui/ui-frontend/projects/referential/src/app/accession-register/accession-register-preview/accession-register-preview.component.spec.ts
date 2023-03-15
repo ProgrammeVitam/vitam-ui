@@ -24,30 +24,30 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatTreeModule} from '@angular/material/tree';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute} from '@angular/router';
-import {RouterTestingModule} from '@angular/router/testing';
-import {TranslateModule} from '@ngx-translate/core';
-import {of} from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import {
-  AccessionRegisterDetail,
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  WINDOW_LOCATION
+    AccessionRegisterDetail,
+    BASE_URL,
+    ENVIRONMENT,
+    InjectorModule,
+    LoggerModule,
+    StartupService,
+    WINDOW_LOCATION
 } from 'ui-frontend-common';
-import {environment} from '../../../environments/environment.prod';
-import {AccessionRegisterPreviewComponent} from './accession-register-preview.component';
-import {AccessionRegistersService} from "../accession-register.service";
+import { environment } from '../../../environments/environment.prod';
+import { AccessionRegistersService } from "../accession-register.service";
+import { AccessionRegisterPreviewComponent } from './accession-register-preview.component';
 
 describe('AccessionRegisterPreviewComponent', () => {
   let component: AccessionRegisterPreviewComponent;
@@ -100,7 +100,7 @@ describe('AccessionRegisterPreviewComponent', () => {
             }
           },
         ],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );

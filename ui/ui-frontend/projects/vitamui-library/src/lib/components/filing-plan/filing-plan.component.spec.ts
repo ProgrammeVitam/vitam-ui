@@ -36,11 +36,11 @@
  */
 /* tslint:disable:component-selector max-classes-per-file */
 
-import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatTreeModule} from '@angular/material/tree';
-import {EMPTY, of} from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTreeModule } from '@angular/material/tree';
+import { EMPTY, of } from 'rxjs';
 import { AuthService } from 'ui-frontend-common';
 import { FileType } from '../../models/file-type.enum';
 import { Node } from '../../models/node.interface';
@@ -77,7 +77,7 @@ describe('FilingPlanComponent', () => {
         {provide: FilingPlanService, useValue: fillingPlanStub},
         {provide: AuthService, useValue: {user: {profileGroup: {profiles: []}}}},
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

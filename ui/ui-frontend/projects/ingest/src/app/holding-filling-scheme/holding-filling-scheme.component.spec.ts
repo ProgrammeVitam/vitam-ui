@@ -34,26 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
 
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import {Component, NO_ERRORS_SCHEMA} from '@angular/core';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {ActivatedRoute} from '@angular/router';
-import {of} from 'rxjs';
-import {InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {environment} from '../../environments/environment';
-import {IngestService} from '../ingest/ingest.service';
-import {HoldingFillingSchemeComponent} from './holding-filling-scheme.component';
-import {IngestType} from "../core/common/ingest-type.enum";
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { environment } from '../../environments/environment';
+import { IngestType } from "../core/common/ingest-type.enum";
+import { IngestService } from '../ingest/ingest.service';
+import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 
 @Component({selector: 'app-ingest-list', template: ''})
 class IngestListStubComponent {
@@ -101,7 +101,7 @@ describe('HoldingFilingSchemeComponent', () => {
         },
         {provide: environment, useValue: environment}
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

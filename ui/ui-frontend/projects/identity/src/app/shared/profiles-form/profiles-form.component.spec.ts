@@ -36,7 +36,7 @@
  */
 
 
-import { Component, Directive, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -176,7 +176,7 @@ describe('ProfilesFormComponent', () => {
         { provide: ApplicationApiService, useValue: { getAllByParams: () => of(expectedApp) } },
         { provide: ApplicationService, useValue: { list: () => of(expectedApp), buildApplications: () => expectedApp } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 

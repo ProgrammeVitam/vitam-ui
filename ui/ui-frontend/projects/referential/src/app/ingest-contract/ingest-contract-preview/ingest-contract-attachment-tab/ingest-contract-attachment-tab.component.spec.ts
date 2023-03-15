@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {ExternalParameters,ExternalParametersService} from 'ui-frontend-common';
-import {IngestContractAttachmentTabComponent} from './ingest-contract-attachment-tab.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
 
 
 describe('IngestContractAttachmentTabComponent',() => {
@@ -94,7 +94,7 @@ describe('IngestContractAttachmentTabComponent',() => {
           {provide: SearchUnitApiService,useValue: unitValueMock},
           {provide: ExternalParametersService,useValue: externalParametersServiceMock},
         ],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );

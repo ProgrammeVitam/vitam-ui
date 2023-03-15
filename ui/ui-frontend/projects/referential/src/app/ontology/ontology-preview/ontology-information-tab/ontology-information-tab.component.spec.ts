@@ -1,13 +1,13 @@
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
-import {FormBuilder,ReactiveFormsModule} from '@angular/forms';
-import {MatSelectModule} from '@angular/material/select';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {Ontology} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {OntologyService} from '../../ontology.service';
-import {OntologyInformationTabComponent} from './ontology-information-tab.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Ontology } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { OntologyService } from '../../ontology.service';
+import { OntologyInformationTabComponent } from './ontology-information-tab.component';
 
 
 describe('OntologyInformationTabComponent',() => {
@@ -48,7 +48,7 @@ describe('OntologyInformationTabComponent',() => {
         FormBuilder,
         {provide: OntologyService,useValue: ontologyServiceMock}
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
