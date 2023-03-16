@@ -57,7 +57,7 @@ export class SecurityProfileCreateValidators {
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
       const properties: any = {};
-      properties[field] = control.value.trim();
+      properties[field] = control.value?.trim();
       const existField: any = {};
       existField[existTag] = true;
 
