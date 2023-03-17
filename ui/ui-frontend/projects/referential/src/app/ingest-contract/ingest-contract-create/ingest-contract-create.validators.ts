@@ -64,7 +64,7 @@ export class IngestContractCreateValidators {
   private uniqueFieldsWhileEdit(ingestContract: () => IngestContract, field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
       const properties: any = {};
-      properties[field] = control.value.trim();
+      properties[field] = control.value?.trim();
       const existField: any = {};
       existField[existTag] = true;
 
@@ -83,7 +83,7 @@ export class IngestContractCreateValidators {
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
       const properties: any = {};
-      properties[field] = control.value.trim();
+      properties[field] = control.value?.trim();
       const existField: any = {};
       existField[existTag] = true;
 
