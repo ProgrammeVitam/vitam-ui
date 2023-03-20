@@ -100,7 +100,8 @@ public class ArchiveSearchInternalService {
     private static final Integer SEARCH_UNIT_MAX_RESULTS = 10000;
 
     private static final String[] FILING_PLAN_PROJECTION =
-        new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups", "#object"};
+        new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups",
+            "#object"};
     public static final String FALSE = "false";
     public static final String TRUE = "true";
 
@@ -150,10 +151,7 @@ public class ArchiveSearchInternalService {
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
             ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
             Integer totalResults = archiveUnitsDto.getArchives().getHits().getTotal();
-            boolean trackTotalHits = false;
-            if (totalResults >= SEARCH_UNIT_MAX_RESULTS) {
-                trackTotalHits = true;
-            }
+            boolean trackTotalHits = totalResults >= SEARCH_UNIT_MAX_RESULTS;
             fillManagementRulesFacets(searchQuery, archiveUnitsDto, trackTotalHits, vitamContext);
             return archiveUnitsDto;
         } catch (InvalidCreateOperationException ioe) {

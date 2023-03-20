@@ -29,21 +29,19 @@ package fr.gouv.vitamui.commons.api.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
-@ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SearchCriteriaEltDto implements Serializable {
     @NotNull
     private String criteria;

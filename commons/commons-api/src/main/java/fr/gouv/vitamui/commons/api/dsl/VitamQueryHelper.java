@@ -38,6 +38,7 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -64,9 +65,12 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 public class VitamQueryHelper {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
 
-    public static void addParameterCriteria(BooleanQuery query, ArchiveSearchConsts.CriteriaOperators operator,
-        String searchKey, final List<String> searchValues) throws InvalidCreateOperationException {
-        if (searchKey == null || "".equals(searchKey.trim())) {
+    public static void addParameterCriteria(BooleanQuery query,
+        ArchiveSearchConsts.CriteriaOperators operator,
+        String searchKey,
+        final List<String> searchValues
+    ) throws InvalidCreateOperationException {
+        if (StringUtils.isBlank(searchKey)) {
             throw new InvalidCreateOperationException("searchKey is empty or null ");
         }
         if (CollectionUtils.isEmpty(searchValues)) {
@@ -96,7 +100,6 @@ public class VitamQueryHelper {
     public static Query buildSubQueryByOperator(String searchKey, String value,
         ArchiveSearchConsts.CriteriaOperators operator)
         throws InvalidCreateOperationException {
-        LOGGER.debug("buildSubQueryByOperator  searchKey : {}  value : {} operator : {} ", searchKey, value, operator);
         Query criteriaSubQuery;
         switch (operator) {
             case MATCH:
@@ -120,7 +123,6 @@ public class VitamQueryHelper {
             case EXISTS:
                 criteriaSubQuery = exists(searchKey);
                 break;
-
             case MISSING:
                 criteriaSubQuery = missing(searchKey);
                 break;
@@ -237,4 +239,3 @@ public class VitamQueryHelper {
     }
 
 }
-

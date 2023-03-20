@@ -88,10 +88,11 @@
                 *ngIf="!simpleCriteriaForm.get('beginDt').value; else showBeginDt"
                 (click)="pickerBegin.open()"
                 class="search-date-label"
-                >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate }}</span
+              >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate }}</span
               >
               <ng-template #showBeginDt
-                ><span (click)="pickerBegin.open()">{{ simpleCriteriaForm.get('beginDt').value | dateTime : 'dd/MM/yyyy' }} </span>
+              ><span
+                (click)="pickerBegin.open()">{{ simpleCriteriaForm.get('beginDt').value | dateTime : 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input
                 class="hidden"
@@ -106,11 +107,13 @@
 
           <div class="col-6 form-control">
             <div class="vitamui-input" (click)="pickerEnd.open()">
-              <span *ngIf="!simpleCriteriaForm.get('endDt').value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
+              <span *ngIf="!simpleCriteriaForm.get('endDt').value; else showEndDt" (click)="pickerEnd.open()"
+                    class="search-date-label">{{
                 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
-              }}</span>
+                }}</span>
               <ng-template #showEndDt
-                ><span (click)="pickerEnd.open()">{{ simpleCriteriaForm.get('endDt').value | dateTime : 'dd/MM/yyyy' }} </span>
+              ><span
+                (click)="pickerEnd.open()">{{ simpleCriteriaForm.get('endDt').value | dateTime : 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input
                 class="hidden"
@@ -176,7 +179,7 @@
                     matTooltip="{{ ontology?.ShortName }}"
                     matTooltipClass="vitamui-tooltip"
                     [matTooltipShowDelay]="300"
-                    >{{ ontology.Identifier }}
+                  >{{ ontology.Identifier }}
                   </mat-option>
                 </ng-container>
               </mat-select>
@@ -188,7 +191,7 @@
                 <i class="material-icons">keyboard_arrow_down</i>
               </div>
             </mat-form-field>
-            <br />
+            <br/>
           </div>
         </div>
 
@@ -231,38 +234,30 @@
                   otherCriteriaValueType === 'BOOLEAN')
               "
               [validator]="simpleCriteriaForm?.get('otherCriteriaValue')?.validator"
-              label="{{ selectedValueOntolonogy }}"
-            >
+              label="{{ selectedValueOntolonogy }}">
             </vitamui-common-editable-input>
 
-            <div
-              class="vitamui-input"
-              (click)="pickerOtherCriteria.open()"
-              *ngIf="otherCriteriaValueEnabled && otherCriteriaValueType === 'DATE'"
-            >
-              <span
-                *ngIf="!simpleCriteriaForm.get('otherCriteriaValue').value; else showOtherCriteria"
-                (click)="pickerOtherCriteria.open()"
-                class="search-date-label"
-                >{{ selectedValueOntolonogy }}</span
-              >
-              <ng-template #showOtherCriteria
-                ><span (click)="pickerOtherCriteria.open()"
-                  >{{ simpleCriteriaForm.get('otherCriteriaValue').value | dateTime : 'dd/MM/yyyy' }}
+            <div class="vitamui-input"
+                 (click)="pickerOtherCriteria.open()"
+                 *ngIf="otherCriteriaValueEnabled && otherCriteriaValueType === 'DATE'">
+              <span *ngIf="!simpleCriteriaForm.get('otherCriteriaValue').value; else showOtherCriteria"
+                    (click)="pickerOtherCriteria.open()"
+                    class="search-date-label"
+              >{{ selectedValueOntolonogy }}</span>
+              <ng-template #showOtherCriteria>
+                <span (click)="pickerOtherCriteria.open()">
+                  {{ simpleCriteriaForm.get('otherCriteriaValue').value | dateTime : 'dd/MM/yyyy' }}
                 </span>
               </ng-template>
-              <input
-                class="hidden"
-                size="0"
-                [matDatepicker]="pickerOtherCriteria"
-                formControlName="otherCriteriaValue"
-                [min]="simpleCriteriaForm.get('otherCriteriaValue').value"
-              />
+              <input class="hidden" size="0"
+                     [matDatepicker]="pickerOtherCriteria"
+                     formControlName="otherCriteriaValue"
+                     [min]="simpleCriteriaForm.get('otherCriteriaValue').value"/>
               <mat-datepicker #pickerOtherCriteria></mat-datepicker>
             </div>
           </div>
         </div>
-        <br />
+        <br/>
       </div>
     </div>
   </form>

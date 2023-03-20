@@ -163,7 +163,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         filter(() => this.simpleCriteriaForm.valid),
         map(() => this.simpleCriteriaForm.value),
         map(() => diff(this.simpleCriteriaForm.value, this.previousSimpleCriteriaValue)),
-        filter((formData) => this.isEmpty(formData))
+        filter((formData) => this.isNotEmpty(formData))
       )
       .subscribe(() => {
         this.resetSimpleCriteriaForm();
@@ -180,131 +180,142 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     });
   }
 
-  isEmpty(formData: any): boolean {
-    if (formData) {
-      if (formData.title) {
-        this.addCriteria(
-          'TITLE',
-          { value: formData.title.trim(), id: formData.title.trim() },
-          formData.title.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING
-        );
-        return true;
-      } else if (formData.description) {
-        this.addCriteria(
-          'DESCRIPTION',
-          { value: formData.description.trim(), id: formData.description.trim() },
-          formData.description.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING
-        );
-        return true;
-      } else if (formData.beginDt) {
-        this.addCriteria(
-          'START_DATE',
-          { value: this.simpleCriteriaForm.value.beginDt, id: this.simpleCriteriaForm.value.beginDt },
-          this.simpleCriteriaForm.value.beginDt,
-          true,
-          CriteriaOperator.GTE,
-          false,
-          CriteriaDataType.DATE
-        );
-        return true;
-      } else if (formData.endDt) {
-        this.addCriteria(
-          'END_DATE',
-          { value: this.simpleCriteriaForm.value.endDt, id: this.simpleCriteriaForm.value.endDt },
-          this.simpleCriteriaForm.value.endDt,
-          true,
-          CriteriaOperator.LTE,
-          false,
-          CriteriaDataType.DATE
-        );
-        return true;
-      } else if (formData.serviceProdCode) {
-        this.addCriteria(
-          'SP_CODE',
-          { value: formData.serviceProdCode.trim(), id: formData.serviceProdCode.trim() },
-          formData.serviceProdCode.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING
-        );
-        return true;
-      } else if (formData.serviceProdLabel) {
-        this.addCriteria(
-          'SP_LABEL',
-          { value: formData.serviceProdLabel.trim(), id: formData.serviceProdLabel.trim() },
-          formData.serviceProdLabel.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING
-        );
-        return true;
-      } else if (formData.guid) {
-        const splittedGuids = formData.guid.split(',');
-        splittedGuids.forEach((guidElt: string) => {
-          if (guidElt && guidElt.trim() !== '') {
-            this.addCriteria(
-              'GUID',
-              { value: guidElt.trim(), id: guidElt.trim() },
-              guidElt.trim(),
-              true,
-              CriteriaOperator.EQ,
-              false,
-              CriteriaDataType.STRING
-            );
-          }
-        });
-        return true;
-      } else if (formData.guidopi) {
-        this.addCriteria(
-          'GUID_OPI',
-          { value: formData.guidopi, id: formData.guidopi },
-          formData.guidopi,
-          true,
-          'IN',
-          false,
-          CriteriaDataType.STRING
-        );
-        return true;
-      } else if (formData.otherCriteriaValue) {
-        const ontologyElt = this.ontologies.find((ontoElt) => ontoElt.ApiField === formData.otherCriteria);
-        if (this.otherCriteriaValueType === CriteriaDataType.DATE) {
+  isNotEmpty(formData: any): boolean {
+    if (!formData) {
+      return false;
+    }
+
+    if (formData.title) {
+      this.addCriteria(
+        'TITLE',
+        {value: formData.title.trim(), id: formData.title.trim()},
+        formData.title.trim(),
+        true,
+        CriteriaOperator.EQ,
+        false,
+        CriteriaDataType.STRING
+      );
+      return true;
+    }
+    if (formData.description) {
+      this.addCriteria(
+        'DESCRIPTION',
+        {value: formData.description.trim(), id: formData.description.trim()},
+        formData.description.trim(),
+        true,
+        CriteriaOperator.EQ,
+        false,
+        CriteriaDataType.STRING
+      );
+      return true;
+    }
+    if (formData.beginDt) {
+      this.addCriteria(
+        'START_DATE',
+        {value: this.simpleCriteriaForm.value.beginDt, id: this.simpleCriteriaForm.value.beginDt},
+        this.simpleCriteriaForm.value.beginDt,
+        true,
+        CriteriaOperator.GTE,
+        false,
+        CriteriaDataType.DATE
+      );
+      return true;
+    }
+    if (formData.endDt) {
+      this.addCriteria(
+        'END_DATE',
+        {value: this.simpleCriteriaForm.value.endDt, id: this.simpleCriteriaForm.value.endDt},
+        this.simpleCriteriaForm.value.endDt,
+        true,
+        CriteriaOperator.LTE,
+        false,
+        CriteriaDataType.DATE
+      );
+      return true;
+    }
+    if (formData.serviceProdCode) {
+      this.addCriteria(
+        'SP_CODE',
+        {value: formData.serviceProdCode.trim(), id: formData.serviceProdCode.trim()},
+        formData.serviceProdCode.trim(),
+        true,
+        CriteriaOperator.EQ,
+        false,
+        CriteriaDataType.STRING
+      );
+      return true;
+    }
+    if (formData.serviceProdLabel) {
+      this.addCriteria(
+        'SP_LABEL',
+        {value: formData.serviceProdLabel.trim(), id: formData.serviceProdLabel.trim()},
+        formData.serviceProdLabel.trim(),
+        true,
+        CriteriaOperator.EQ,
+        false,
+        CriteriaDataType.STRING
+      );
+      return true;
+    }
+    if (formData.guid) {
+      const splittedGuids = formData.guid.split(',');
+      splittedGuids.forEach((guidElt: string) => {
+        if (guidElt && guidElt.trim() !== '') {
           this.addCriteria(
-            ontologyElt.ApiField,
-            { value: this.simpleCriteriaForm.value.otherCriteriaValue, id: this.simpleCriteriaForm.value.otherCriteriaValue },
-            this.simpleCriteriaForm.value.otherCriteriaValue,
-            false,
-            CriteriaOperator.EQ,
-            false,
-            CriteriaDataType.DATE
-          );
-        } else {
-          this.addCriteria(
-            ontologyElt.ApiField,
-            { value: formData.otherCriteriaValue.trim(), id: formData.otherCriteriaValue.trim() },
-            formData.otherCriteriaValue.trim(),
-            false,
+            'GUID',
+            {value: guidElt.trim(), id: guidElt.trim()},
+            guidElt.trim(),
+            true,
             CriteriaOperator.EQ,
             false,
             CriteriaDataType.STRING
           );
         }
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
+      });
+      return true;
     }
+    if (formData.guidopi) {
+      this.addCriteria(
+        'GUID_OPI',
+        {value: formData.guidopi, id: formData.guidopi},
+        formData.guidopi,
+        true,
+        'IN',
+        false,
+        CriteriaDataType.STRING
+      );
+      return true;
+    }
+    if (formData.otherCriteriaValue) {
+      const ontologyElt = this.ontologies.find((ontoElt) => ontoElt.ApiField === formData.otherCriteria);
+      if (this.otherCriteriaValueType === CriteriaDataType.DATE) {
+        const theDay = this.simpleCriteriaForm.value.otherCriteriaValue;
+        this.addCriteria(
+          ontologyElt.ApiField,
+          {
+            id: theDay,
+            value: theDay,
+          },
+          theDay,
+          false,
+          CriteriaOperator.EQ,
+          false,
+          CriteriaDataType.DATE
+        );
+      } else {
+        this.addCriteria(
+          ontologyElt.ApiField,
+          {value: formData.otherCriteriaValue.trim(), id: formData.otherCriteriaValue.trim()},
+          formData.otherCriteriaValue.trim(),
+          false,
+          CriteriaOperator.EQ,
+          false,
+          CriteriaDataType.STRING
+        );
+      }
+      return true;
+    }
+    return false;
   }
 
   private resetSimpleCriteriaForm() {
@@ -314,6 +325,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   isValueTranslated(criteria: string) {
     return criteria === FINAL_ACTION_TYPE || criteria === ALL_ARCHIVE_UNIT_TYPES;
   }
+
   ngOnInit() {
     this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((data) => {
       this.criteriaSearchListToSave = data;
@@ -390,7 +402,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         if (action) {
           this.addCriteria(
             ALL_ARCHIVE_UNIT_TYPES,
-            { value: ARCHIVE_UNIT_FILING_UNIT, id: ARCHIVE_UNIT_FILING_UNIT },
+            {value: ARCHIVE_UNIT_FILING_UNIT, id: ARCHIVE_UNIT_FILING_UNIT},
             this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_PLAN'),
             true,
             CriteriaOperator.EQ,
@@ -399,14 +411,17 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             SearchCriteriaTypeEnum.FIELDS
           );
         } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_FILING_UNIT, id: ARCHIVE_UNIT_FILING_UNIT });
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
+            value: ARCHIVE_UNIT_FILING_UNIT,
+            id: ARCHIVE_UNIT_FILING_UNIT
+          });
         }
         break;
       case ARCHIVE_UNIT_HOLDING_UNIT:
         if (action) {
           this.addCriteria(
             ALL_ARCHIVE_UNIT_TYPES,
-            { value: ARCHIVE_UNIT_HOLDING_UNIT, id: ARCHIVE_UNIT_HOLDING_UNIT },
+            {value: ARCHIVE_UNIT_HOLDING_UNIT, id: ARCHIVE_UNIT_HOLDING_UNIT},
             this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING'),
             true,
             CriteriaOperator.EQ,
@@ -415,14 +430,17 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             SearchCriteriaTypeEnum.FIELDS
           );
         } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_HOLDING_UNIT, id: ARCHIVE_UNIT_HOLDING_UNIT });
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
+            value: ARCHIVE_UNIT_HOLDING_UNIT,
+            id: ARCHIVE_UNIT_HOLDING_UNIT
+          });
         }
         break;
       case ARCHIVE_UNIT_WITH_OBJECTS:
         if (action) {
           this.addCriteria(
             ALL_ARCHIVE_UNIT_TYPES,
-            { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
+            {value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS},
             this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
             true,
             CriteriaOperator.EQ,
@@ -431,14 +449,17 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             SearchCriteriaTypeEnum.FIELDS
           );
         } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS });
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
+            value: ARCHIVE_UNIT_WITH_OBJECTS,
+            id: ARCHIVE_UNIT_WITH_OBJECTS
+          });
         }
         break;
       case ARCHIVE_UNIT_WITHOUT_OBJECTS:
         if (action) {
           this.addCriteria(
             ALL_ARCHIVE_UNIT_TYPES,
-            { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
+            {value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS},
             this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
             true,
             CriteriaOperator.EQ,
@@ -447,7 +468,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             SearchCriteriaTypeEnum.FIELDS
           );
         } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS });
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
+            value: ARCHIVE_UNIT_WITHOUT_OBJECTS,
+            id: ARCHIVE_UNIT_WITHOUT_OBJECTS
+          });
         }
         break;
       default:
@@ -456,14 +480,18 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {
-    this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.REMOVE });
+    this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
+      keyElt,
+      valueElt,
+      action: ActionOnCriteria.REMOVE
+    });
   }
 
   manageUnitObjectUnitCriteria(unitObjectProperty: string) {
-    this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: unitObjectProperty, id: unitObjectProperty });
+    this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {value: unitObjectProperty, id: unitObjectProperty});
     this.addCriteria(
       ALL_ARCHIVE_UNIT_TYPES,
-      { value: unitObjectProperty, id: unitObjectProperty },
+      {value: unitObjectProperty, id: unitObjectProperty},
       this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + unitObjectProperty),
       true,
       CriteriaOperator.EQ,
@@ -477,24 +505,31 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   get guid() {
     return this.simpleCriteriaForm.controls.guid;
   }
+
   get archiveCriteria() {
     return this.simpleCriteriaForm.controls.archiveCriteria;
   }
+
   get title() {
     return this.simpleCriteriaForm.controls.title;
   }
+
   get description() {
     return this.simpleCriteriaForm.controls.description;
   }
+
   get guidopi() {
     return this.simpleCriteriaForm.controls.guidopi;
   }
+
   get beginDt() {
     return this.simpleCriteriaForm.controls.beginDt;
   }
+
   get endDt() {
     return this.simpleCriteriaForm.controls.endDt;
   }
+
   get serviceProdLabel() {
     return this.simpleCriteriaForm.controls.serviceProdLabel;
   }
@@ -506,6 +541,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   get otherCriteria() {
     return this.simpleCriteriaForm.controls.otherCriteria;
   }
+
   get otherCriteriaValue() {
     return this.simpleCriteriaForm.controls.otherCriteriaValue;
   }

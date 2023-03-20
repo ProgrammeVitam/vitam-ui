@@ -27,11 +27,16 @@
 package fr.gouv.vitamui.commons.api.utils;
 
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
+import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.fillQueryFromMgtRulesCriteriaList;
@@ -49,4 +54,43 @@ public class MetadataSearchCriteriaUtilsTest {
         //then
         Assertions.assertTrue(query.getQueries().isEmpty());
     }
+
+    @Test
+    public void handleSimpleFieldCriteria() throws InvalidCreateOperationException {
+        BooleanQuery queryToFill = new BooleanQuery(BuilderToken.QUERY.OR);
+        SearchCriteriaEltDto searchCriteria = new SearchCriteriaEltDto()
+            .setCriteria("ActivationDate")
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.GT.name())
+            .setValues(List.of(new CriteriaValue().setValue("2023-03-05T23:00:00.000Z")))
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.DATE.name());
+
+        MetadataSearchCriteriaUtils.handleSimpleFieldCriteria(queryToFill, searchCriteria);
+
+        Assertions.assertEquals(
+            "{\"$or\":[{\"$gt\":{\"ActivationDate\":\"2023-03-05T23:00:00.000Z\"}}]}",
+            queryToFill.toString()
+        );
+    }
+
+    @Test
+    public void handleSimpleFieldCriteria_with_DATE_and_EQ() throws InvalidCreateOperationException {
+        BooleanQuery queryToFill = new BooleanQuery(BuilderToken.QUERY.OR);
+        SearchCriteriaEltDto searchCriteria = new SearchCriteriaEltDto()
+            .setCriteria("ontologyFieldDate")
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name())
+            .setValues(List.of(new CriteriaValue().setValue("2023-03-05T12:34:56.789Z")))
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.DATE.name());
+
+        MetadataSearchCriteriaUtils.handleSimpleFieldCriteria(queryToFill, searchCriteria);
+
+        Assertions.assertEquals(
+            "{\"$or\":[" +
+                "{\"$gte\":{\"ontologyFieldDate\":\"2023-03-05T00:00:00.000Z\"}}," +
+                "{\"$lt\":{\"ontologyFieldDate\":\"2023-03-06T00:00:00.000Z\"}}]}",
+            queryToFill.toString()
+        );
+    }
+
 }
