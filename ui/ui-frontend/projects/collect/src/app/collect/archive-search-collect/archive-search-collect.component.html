@@ -2,7 +2,7 @@
   <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
     <app-filing-holding-scheme
       [accessContract]="accessContract"
-      [transactionId]="transaction.id"
+      [transactionId]="!!transaction?transaction.id:null"
       (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"
     >
     </app-filing-holding-scheme>

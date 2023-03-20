@@ -272,7 +272,7 @@ public class ProjectInternalService {
                     });
             List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos);
             if (collectTransactionDtos.isEmpty()) {
-                throw new VitamClientException("Unable to find transactions by project");
+                return null;
             }
             return collectTransactionDtos.get(collectTransactionDtos.size() - 1);
         } catch (VitamClientException | JsonProcessingException e) {
