@@ -41,7 +41,6 @@ import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { RuleService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
-import { RuleTypeEnum } from '../models/rule-type-enum';
 import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interface';
 
 @Injectable()
@@ -76,9 +75,13 @@ export class ManagementRulesValidatorService {
       this.managementRules = data;
     });
 
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
+    this.managementRulesSharedDataService.getRuleCategory().subscribe((data) => {
+      this.ruleCategorySelected = data;
+    });
+
+    if (this.managementRules.findIndex((managementRule) => managementRule.category === this.ruleCategorySelected) !== -1) {
       this.ruleActions = this.managementRules.find(
-        (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE
+        (managementRule) => managementRule.category === this.ruleCategorySelected
       ).ruleCategoryAction;
       if (this.ruleActions.preventRulesIdToAdd) {
         return this.ruleActions.preventRulesIdToAdd?.filter((rule) => rule === ruleId).length !== 0 ? true : false;
