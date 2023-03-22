@@ -54,11 +54,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
-import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationAction;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
@@ -66,9 +61,12 @@ import fr.gouv.vitamui.archives.search.common.dto.ReclassificationQueryActionTyp
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
@@ -121,13 +119,6 @@ public class ArchiveSearchInternalServiceTest {
 
     @MockBean(name = "archiveSearchInternalService")
     private ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
-
-    @InjectMocks
-    private RulesUpdateCommonService rulesUpdateCommonService;
-
-    @MockBean(name = "accessContractService")
-    private AccessContractService accessContractService;
-
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
     public final String UPDATE_RULES_ASYNC_RESPONSE = "data/update_rules_async_response.json";
     public final String UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE =
@@ -142,8 +133,7 @@ public class ArchiveSearchInternalServiceTest {
         archiveSearchInternalService =
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
                 archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
-                archivesSearchManagementRulesQueryBuilderService, rulesUpdateCommonService,
-                archiveSearchFacetsInternalService);
+                archivesSearchManagementRulesQueryBuilderService, archiveSearchFacetsInternalService);
     }
 
     @Test

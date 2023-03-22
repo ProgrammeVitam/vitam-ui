@@ -37,27 +37,52 @@
  *
  */
 
-package fr.gouv.vitamui.archive.internal.server.rulesupdate.service;
+package fr.gouv.vitamui.archives.search.common.common;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.model.massupdate.MassUpdateUnitRuleRequest;
 import fr.gouv.vitam.common.model.massupdate.RuleActions;
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
+import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Update Archive units Rules Common Service
  */
-public class RulesUpdateCommonService {
+public final class RulesUpdateCommonService {
 
-    public void deleteAttributesFromObjectNode(ObjectNode dslRequest, String ...attributes) {
-
+    public static void deleteAttributesFromObjectNode(ObjectNode dslRequest, String... attributes) {
         Arrays.stream(attributes).forEach(dslRequest::remove);
     }
 
-    public void setMassUpdateUnitRuleRequest(MassUpdateUnitRuleRequest massUpdateUnitRuleRequest, RuleActions ruleActions, ObjectNode dslRequest ) {
+    public static void setMassUpdateUnitRuleRequest(MassUpdateUnitRuleRequest massUpdateUnitRuleRequest,
+        RuleActions ruleActions, ObjectNode dslRequest) {
         massUpdateUnitRuleRequest.setRuleActions(ruleActions);
         massUpdateUnitRuleRequest.setDslRequest(dslRequest);
 
+    }
+
+    /**
+     * fill archive unit by adding originResponse
+     *
+     * @param originResponse
+     * @param actualAgenciesMapById
+     * @return
+     */
+    public static ArchiveUnit fillOriginatingAgencyName(ResultsDto originResponse,
+        Map<String, AgencyModelDto> actualAgenciesMapById) {
+        ArchiveUnit archiveUnit = new ArchiveUnit();
+        BeanUtils.copyProperties(originResponse, archiveUnit);
+        if (actualAgenciesMapById != null && !actualAgenciesMapById.isEmpty()) {
+            AgencyModelDto agencyModel = actualAgenciesMapById.get(originResponse.getOriginatingAgency());
+            if (agencyModel != null) {
+                archiveUnit.setOriginatingAgencyName(agencyModel.getName());
+            }
+        }
+        return archiveUnit;
     }
 }

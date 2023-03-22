@@ -49,7 +49,7 @@ import {
   Ontology,
   SearchService,
   Transaction,
-  Unit,
+  Unit
 } from 'ui-frontend-common';
 import {ProjectsApiService} from '../core/api/project-api.service';
 import {TransactionApiService} from '../core/api/transaction-api.service';
@@ -130,7 +130,6 @@ export class ArchiveCollectService extends SearchService<any> {
     } else {
       return of({pageNumbers: 1, results: [], totalResults: 0});
     }
-
   }
 
   getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], transactionId: string, accessContract: string): Observable<number> {
@@ -313,6 +312,12 @@ export class ArchiveCollectService extends SearchService<any> {
 
   getExternalOntologiesList(): Observable<Ontology[]> {
     return this.transactionApiService.getExternalOntologiesList();
+  }
+
+  selectUnitWithInheritedRules(transactionId: string, criteriaDto: SearchCriteriaDto, accessContract: string): Observable<Unit> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);
   }
 }
 

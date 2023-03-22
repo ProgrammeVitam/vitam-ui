@@ -29,7 +29,6 @@ package fr.gouv.vitamui.archive.internal.server.config;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
@@ -113,7 +112,8 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
     }
 
     @Bean
-    public TransferAcknowledgmentService transferAcknowledgmentService(final AccessExternalClient accessExternalClient) {
+    public TransferAcknowledgmentService transferAcknowledgmentService(
+        final AccessExternalClient accessExternalClient) {
         return new TransferAcknowledgmentService(accessExternalClient);
     }
 
@@ -122,10 +122,6 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
         return new RuleOperationsConverter();
     }
 
-    @Bean
-    public RulesUpdateCommonService rulesUpdateCommonService() {
-        return new RulesUpdateCommonService();
-    }
 
     @Bean
     public SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService(

@@ -33,6 +33,7 @@ import com.opencsv.ICSVWriter;
 import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitCsv;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
@@ -216,7 +217,7 @@ public class ArchiveSearchUnitExportCsvInternalService {
             Map<String, AgencyModelDto> agenciesMapByIdentifier =
                 originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
             return archivesResponse.getResults().stream().map(
-                    archiveUnit -> archiveSearchAgenciesInternalService
+                    archiveUnit -> RulesUpdateCommonService
                         .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
                 ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit, searchQuery.getLanguage()))
                 .collect(Collectors.toList());

@@ -52,7 +52,7 @@ import {
   TransactionStatus
 } from 'ui-frontend-common';
 
-import { FilingPlanMode, oneIncludedNodeRequired } from 'vitamui-library';
+import { FilingPlanMode } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
@@ -356,7 +356,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       opened: [true],
       metadata: ['', Validators.required],
       value: ['', Validators.required],
-      unitUp: [{included: [], excluded: []}, oneIncludedNodeRequired()],
+      unitUp: [{included: [], excluded: []}],
     });
     this.rulesParams.push(newRuleParamForm);
   }

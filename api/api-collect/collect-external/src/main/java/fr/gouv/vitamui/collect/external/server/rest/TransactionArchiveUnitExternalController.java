@@ -58,7 +58,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
-
 import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
@@ -142,4 +141,15 @@ public class TransactionArchiveUnitExternalController {
         return transactionArchiveUnitExternalService.getExternalOntologiesList();
     }
 
+    @PostMapping("/{transactionId}" + RestApi.UNIT_WITH_INHERITED_RULES)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public ResultsDto selectUnitWithInheritedRules(final @PathVariable("transactionId") String transactionId,
+        final @RequestBody SearchCriteriaDto query)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
+        SanityChecker.checkSecureParameter(transactionId);
+        SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling select Unit With Inherited Rules By Criteria {} ", query);
+        return transactionArchiveUnitExternalService.selectUnitWithInheritedRules(transactionId, query);
+    }
 }

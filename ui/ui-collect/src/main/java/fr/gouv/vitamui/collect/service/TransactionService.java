@@ -67,7 +67,7 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         this.collectTransactionExternalRestClient = collectTransactionExternalRestClient;
         this.updateUnitsMetadataExternalRestClient = updateUnitsMetadataExternalRestClient;
         this.commonService = commonService;
-            }
+    }
 
 
     @Override
@@ -100,7 +100,8 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return collectTransactionExternalRestClient.getTransactionById(context, transactionId);
     }
 
-    public ArchiveUnitsDto searchArchiveUnitsByTransactionAndSearchQuery(ExternalHttpContext context, String transactionId,
+    public ArchiveUnitsDto searchArchiveUnitsByTransactionAndSearchQuery(ExternalHttpContext context,
+        String transactionId,
         SearchCriteriaDto searchQuery) {
         return collectTransactionExternalRestClient.searchArchiveUnitsByProjectAndSearchQuery(context, transactionId,
             searchQuery);
@@ -108,7 +109,8 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
 
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(String transactionId,
         final SearchCriteriaDto searchQuery, ExternalHttpContext context) {
-        return collectTransactionExternalRestClient.exportCsvArchiveUnitsByCriteria(transactionId, searchQuery, context);
+        return collectTransactionExternalRestClient.exportCsvArchiveUnitsByCriteria(transactionId, searchQuery,
+            context);
     }
 
     public CollectTransactionDto updateTransaction(ExternalHttpContext context, CollectTransactionDto transactionDto) {
@@ -125,11 +127,14 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
      * @return a String
      */
 
-    public ResponseEntity<String> updateArchiveUnitsMetadataFromFile(final String transactionId, String fileName, InputStream inputStream,
+    public ResponseEntity<String> updateArchiveUnitsMetadataFromFile(final String transactionId, String fileName,
+        InputStream inputStream,
         final ExternalHttpContext context) {
         LOGGER.debug("[UI] start updating archive units from file for transactionId {}", transactionId);
-        return updateUnitsMetadataExternalRestClient.updateArchiveUnitsMetadataFromFile(context, fileName, transactionId, inputStream );
+        return updateUnitsMetadataExternalRestClient.updateArchiveUnitsMetadataFromFile(context, fileName,
+            transactionId, inputStream);
     }
+
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
         return collectTransactionExternalRestClient.findUnitById(id, context);
     }
@@ -144,5 +149,11 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return collectTransactionExternalRestClient.findObjectGroupById(objectId, context);
     }
 
+    public ResponseEntity<ResultsDto> selectUnitsWithInheritedRules(final String transactionId,
+        final SearchCriteriaDto searchQuery,
+        final ExternalHttpContext context) {
+        LOGGER.debug("calling select Unit With Inherited Rules by criteria {} ", searchQuery);
+        return collectTransactionExternalRestClient.selectUnitWithInheritedRules(context, transactionId, searchQuery);
+    }
 
 }

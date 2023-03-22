@@ -1,0 +1,35 @@
+{
+  "$roots": [],
+  "$query" : [ {
+    "$and" : [ {
+      "$eq" : {
+        "#id" : "aeaqaaaaaehggwihabhcmal5e73embaaaaba"
+      }
+    }, {
+      "$eq" : {
+        "#management.AppraisalRule.Rules.StartDate" : "2021-11-01"
+      }
+    }, {
+      "$eq" : {
+        "#unitType" : "INGEST"
+      }
+    }, {
+      "$eq" : {
+        "#management.AppraisalRule.Rules.Rule" : "APP-00001"
+      }
+    }
+    ]
+  } ],
+  "$filter" : {
+    "$limit" : 10
+  },
+  "$projection" : { },
+  "$facets" : [ {
+    "$name" : "COUNT_BY_NODE",
+    "$terms" : {
+      "$field" : "#allunitups",
+      "$size" : 100,
+      "$order" : "ASC"
+    }
+  } ]
+}
