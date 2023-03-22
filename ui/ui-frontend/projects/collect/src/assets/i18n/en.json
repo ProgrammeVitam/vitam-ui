@@ -39,7 +39,6 @@
     "PROJECT_LIST_TITLE": "Remittance projects",
     "INGEST_LIST_TITLE": "Ingests of project",
     "CREATE_PROJECT": "Create a remittance project",
-    "CREATE_PROJECT_TOOLTIP": "Create a remittance project",
     "CONFIRM_UPLOAD_FILES_TITLE": "Ask for validation",
     "CONFIRM_UPLOAD_FILES": "Moving on to the next step, the file download will begin.",
     "CREATE_PROJECT_TITLE": "Create a remittance project",
@@ -56,9 +55,7 @@
     "NO_RESULT": "No result",
     "LOAD_MORE_RESULTS": "Load more results...",
     "NO_ACCESS_CONTRACT": "No access contract is associated with the user",
-    "UPLOAD_SUB_TITLE": "Loading directories to be poured",
     "UPLOAD_FILE_ALREADY_IMPORTED": "File already imported!",
-    "ARCHIVE_POSITION_SUB_TITLE": "Position of attachment",
     "PROJECT_DESCRIPTION_SUB_TITLE": "Remittance description",
     "PROJECT_DESCRIPTION_LABEL": "Entitled",
     "PROJECT_DESCRIPTION_DESC": "Description",
@@ -112,7 +109,9 @@
       "SET_VALUE": "Set value",
       "VALUE": "Metadata value",
       "ATTACH_POSITION": "Set attachment position",
-      "PROJECT_CREATION_ERROR": "Error while creating attachment project"
+      "PROJECT_CREATION_ERROR": "Error while creating attachment project",
+      "UPLOAD_SUB_TITLE": "Loading directories and documents to be poured",
+      "ARCHIVE_POSITION_SUB_TITLE": "Define fixed attachment position"
     },
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching by title or description",

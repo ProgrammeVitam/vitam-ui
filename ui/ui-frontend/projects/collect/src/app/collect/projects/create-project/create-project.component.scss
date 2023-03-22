@@ -207,18 +207,15 @@ h4 {
     }
 
     .delete-button {
-      border: none;
+      border: 1px solid var(--vitamui-primary);
       border-radius: 50%;
-      background-color: var(--vitamui-primary);
+      background-color: #FFFFFF;
       width: 30px;
       height: 30px;
       font-size: medium;
-      color: var(--vitamui-primary-font);
+      color: var(--vitamui-primary);
       cursor: pointer;
 
-      &:hover {
-        background-color: var(--vitamui-primary-800)
-      }
     }
   }
 
