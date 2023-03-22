@@ -215,7 +215,6 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         LOGGER.debug("Get logbook of id :{}", id);
         final URI uri = UriComponentsBuilder
             .fromHttpUrl(getUrl())
-            .path(CommonConstants.PATH_LOGBOOK)
             .pathSegment(id, CommonConstants.HISTORY)
             .build()
             .toUri();
