@@ -30,12 +30,12 @@ package fr.gouv.vitamui.archive.internal.server.service;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -50,6 +50,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 /**
  * Service to build DSL Query for simple fields criteria for extracting archive units
  */
+//TODO: to delete ??? replaced by MetadataSearchCriteriaUtils
 @Service
 public class ArchivesSearchFieldsQueryBuilderService {
     private static final VitamUILogger LOGGER =
@@ -345,4 +346,3 @@ public class ArchivesSearchFieldsQueryBuilderService {
     }
 
 }
-

@@ -41,7 +41,9 @@ export enum CriteriaOperator {
   EXISTS = 'EXISTS',
   MISSING = 'MISSING',
   GTE = 'GTE',
+  GT = 'GT',
   LTE = 'LTE',
+  LT = 'LT',
   IN = 'IN',
   BETWEEN = 'BETWEEN',
 }
