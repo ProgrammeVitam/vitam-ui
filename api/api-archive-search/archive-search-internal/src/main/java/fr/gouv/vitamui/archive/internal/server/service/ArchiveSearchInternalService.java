@@ -40,7 +40,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
+import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
@@ -118,7 +118,6 @@ public class ArchiveSearchInternalService {
     private final ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
     private final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService;
     private final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
-    private final RulesUpdateCommonService rulesUpdateCommonService;
     private final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
     @Autowired
@@ -127,7 +126,6 @@ public class ArchiveSearchInternalService {
         final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
         final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService,
         final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService,
-        final RulesUpdateCommonService rulesUpdateCommonService,
         final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
@@ -135,7 +133,6 @@ public class ArchiveSearchInternalService {
         this.archiveSearchRulesInternalService = archiveSearchRulesInternalService;
         this.archivesSearchFieldsQueryBuilderService = archivesSearchFieldsQueryBuilderService;
         this.archivesSearchManagementRulesQueryBuilderService = archivesSearchManagementRulesQueryBuilderService;
-        this.rulesUpdateCommonService = rulesUpdateCommonService;
         this.archiveSearchFacetsInternalService = archiveSearchFacetsInternalService;
     }
 
@@ -190,8 +187,7 @@ public class ArchiveSearchInternalService {
             originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
 
         List<ArchiveUnit> archivesFilled = archivesOriginResponse.getResults().stream().map(
-            archiveUnit -> archiveSearchAgenciesInternalService
-                .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
+            archiveUnit -> RulesUpdateCommonService.fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
         ).collect(Collectors.toList());
         VitamUIArchiveUnitResponseDto responseFilled = new VitamUIArchiveUnitResponseDto();
         responseFilled.setContext(archivesOriginResponse.getContext());
@@ -393,8 +389,8 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("Computed Inherited Rules by criteria {} ", searchCriteriaDto.toString());
         JsonNode jsonNode = mapRequestToDslQuery(searchCriteriaDto);
         ObjectNode dslRequest = (ObjectNode) jsonNode;
-        rulesUpdateCommonService
-            .deleteAttributesFromObjectNode(dslRequest, DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS);
+        RulesUpdateCommonService.deleteAttributesFromObjectNode(dslRequest, DSL_QUERY_PROJECTION, DSL_QUERY_FILTER,
+            DSL_QUERY_FACETS);
         LOGGER.debug("Computed Inherited Rules final dslQuery : {}", dslRequest);
         JsonNode response = computedInheritedRules(vitamContext, dslRequest);
         return response.findValue(OPERATION_IDENTIFIER).textValue();
@@ -420,7 +416,7 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("calling select Units With Inherited Rules by criteria {} ", searchQuery.toString());
         archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
         JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
-        rulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) dslQuery, DSL_QUERY_FACETS);
+        RulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) dslQuery, DSL_QUERY_FACETS);
         JsonNode vitamResponse = selectUnitWithInheritedRules(dslQuery, vitamContext);
         ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
         if (Objects.nonNull(archiveUnitsDto.getArchives()) &&

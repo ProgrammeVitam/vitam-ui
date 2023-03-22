@@ -340,4 +340,12 @@ public class CollectService {
         }
         return response;
     }
+
+    public JsonNode selectUnitWithInheritedRules(final JsonNode dslQuery, String transactionId,
+        final VitamContext vitamContext)
+        throws VitamClientException {
+        RequestResponse<JsonNode> response =
+            collectExternalClient.selectUnitsWithInheritedRules(vitamContext, transactionId, dslQuery);
+        return response.toJsonNode();
+    }
 }

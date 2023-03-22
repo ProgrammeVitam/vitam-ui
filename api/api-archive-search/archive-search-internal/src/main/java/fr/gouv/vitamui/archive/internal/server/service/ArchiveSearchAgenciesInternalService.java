@@ -37,7 +37,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
@@ -47,8 +46,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
-import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -93,40 +90,22 @@ public class ArchiveSearchAgenciesInternalService {
         if (!agencyOriginNamesCriteria.isEmpty()) {
             LOGGER.debug(" trying to mapping agencies labels {} ", agencyOriginNamesCriteria.toString());
             agenciesOrigins = findOriginAgenciesByNames(vitamContext, agencyOriginNamesCriteria);
-            if(!CollectionUtils.isEmpty(agenciesOrigins)) {
+            if (!CollectionUtils.isEmpty(agenciesOrigins)) {
                 mapAgenciesNamesToAgenciesCodesInCriteria(searchQuery, agenciesOrigins);
             }
 
         }
     }
 
-    /**
-     * fill archive unit by adding originResponse
-     *
-     * @param originResponse
-     * @param actualAgenciesMapById
-     * @return
-     */
-    public ArchiveUnit fillOriginatingAgencyName(ResultsDto originResponse,
-        Map<String, AgencyModelDto> actualAgenciesMapById) {
-        ArchiveUnit archiveUnit = new ArchiveUnit();
-        BeanUtils.copyProperties(originResponse, archiveUnit);
-        if (actualAgenciesMapById != null && !actualAgenciesMapById.isEmpty()) {
-            AgencyModelDto agencyModel = actualAgenciesMapById.get(originResponse.getOriginatingAgency());
-            if (agencyModel != null) {
-                archiveUnit.setOriginatingAgencyName(agencyModel.getName());
-            }
-        }
-        return archiveUnit;
-    }
+
 
     private void mapAgenciesNamesToAgenciesCodesInCriteria(SearchCriteriaDto searchQuery,
         List<AgencyModelDto> actualAgencies) {
 
         if (searchQuery != null && searchQuery.getCriteriaList() != null && !searchQuery.getCriteriaList().isEmpty()) {
             List<SearchCriteriaEltDto> mergedCriteriaList = searchQuery.getCriteriaList().stream().filter(
-                criteria -> (!ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD.equals(criteria.getCriteria())
-                    && !ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD.equals(criteria.getCriteria())))
+                    criteria -> (!ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD.equals(criteria.getCriteria())
+                        && !ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD.equals(criteria.getCriteria())))
                 .collect(Collectors.toList());
 
             List<String> filteredAgenciesId = actualAgencies.stream()

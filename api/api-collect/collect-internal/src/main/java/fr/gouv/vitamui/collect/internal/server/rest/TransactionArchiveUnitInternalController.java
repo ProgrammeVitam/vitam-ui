@@ -34,6 +34,7 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.TransactionArchiveUnitInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -75,7 +76,9 @@ public class TransactionArchiveUnitInternalController {
     private final InternalSecurityService securityService;
     private final TransactionArchiveUnitInternalService transactionArchiveUnitInternalService;
 
-    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY=
+    private static final String MANDATORY_PARAMETERS =
+        "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ";
+    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY =
         "The identifier, the accessContract Id  are mandatory parameters: ";
 
     public TransactionArchiveUnitInternalController(InternalSecurityService securityService,
@@ -103,7 +106,8 @@ public class TransactionArchiveUnitInternalController {
             accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         return
-            transactionArchiveUnitInternalService.searchArchiveUnitsByCriteria(transactionId, searchQuery, vitamContext);
+            transactionArchiveUnitInternalService.searchArchiveUnitsByCriteria(transactionId, searchQuery,
+                vitamContext);
 
     }
 
@@ -158,4 +162,21 @@ public class TransactionArchiveUnitInternalController {
         return transactionArchiveUnitInternalService.readExternalOntologiesFromFile(tenantId);
     }
 
+    @PostMapping("/{transactionId}" + RestApi.UNIT_WITH_INHERITED_RULES)
+    public ResultsDto selectUnitsWithInheritedRules(
+        @PathVariable("transactionId") final String transactionId,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(searchQuery);
+        ParameterChecker.checkParameter(MANDATORY_PARAMETERS, tenantId, accessContractId, searchQuery);
+        SanityChecker.checkSecureParameter(accessContractId, transactionId);
+        LOGGER.debug(
+            "Calling service select Unit With Inherited Rules for tenantId {}, accessContractId {} By Criteria {} ",
+            tenantId, accessContractId, searchQuery);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        return transactionArchiveUnitInternalService.selectUnitWithInheritedRules(searchQuery, transactionId,
+            vitamContext);
+    }
 }
