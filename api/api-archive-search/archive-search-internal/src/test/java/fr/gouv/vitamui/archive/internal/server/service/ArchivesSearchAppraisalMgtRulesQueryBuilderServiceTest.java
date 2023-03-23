@@ -64,8 +64,10 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         VitamUILoggerFactory.getInstance(ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest.class);
 
     public static String SEARCH_QUERY_WITH_UNIT_TYPE = "data/queries/appraisal/search_query_with_unit_type.json";
-    public static String SEARCH_QUERY_WITH_ONTOLOGY_FIELD_TYPE_DATE = "data/search_query_with_ontology_field_type_date.json";
-    public static String SEARCH_QUERY_WITH_ONTOLOGY_FIELD_TYPE_TEXT = "data/search_query_with_ontology_field_type_text.json";
+    public static String SEARCH_QUERY_WITH_ONTOLOGY_FIELD_TYPE_DATE =
+        "data/search_query_with_ontology_field_type_date.json";
+    public static String SEARCH_QUERY_WITH_ONTOLOGY_FIELD_TYPE_TEXT =
+        "data/search_query_with_ontology_field_type_text.json";
     public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER =
         "data/queries/appraisal/search_query_with_object_parameter.json";
     public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER_AND_UNIT_TYPE =
@@ -808,6 +810,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries()).hasSize(1);
 
     }
+
     @Test
     void testFillQueryFromCriteriaListWithOntologyFieldTypeDateThenReturnTheExactQueryWithoutException()
         throws Exception {
