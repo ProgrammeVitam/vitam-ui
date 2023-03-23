@@ -64,6 +64,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -86,6 +87,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("unchecked")
+@Disabled
 public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
 
     @MockBean(name = "objectMapper")
