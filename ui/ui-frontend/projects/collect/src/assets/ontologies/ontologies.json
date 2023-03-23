@@ -4458,5 +4458,95 @@
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
     "ShortName": "Signature.Signer.BirthPlace.Country"
+  },
+  {
+    "Identifier": "SystemId",
+    "ApiField": "SystemId",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "System Identifier"
+  },
+  {
+    "Identifier": "OriginatingSystemId",
+    "ApiField": "OriginatingSystemId",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "Originating System Identifier"
+  },
+  {
+    "Identifier": "ArchivalAgencyArchiveUnitIdentifier",
+    "ApiField": "ArchivalAgencyArchiveUnitIdentifier",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "Archival Agency Archive Unit Identifier"
+  },
+  {
+    "Identifier": "TransferringAgencyArchiveUnitIdentifier",
+    "ApiField": "TransferringAgencyArchiveUnitIdentifier",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "Transferring Agency Archive Unit Identifier"
+  },
+  {
+    "Identifier": "DocumentType",
+    "ApiField": "DocumentType",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "Document Type"
+  },
+  {
+    "Identifier": "FilePlanPosition",
+    "ApiField": "FilePlanPosition",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "File Plan Position"
+  },
+  {
+    "Identifier": "Tag",
+    "ApiField": "Tag",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "Tag"
+  },
+  {
+    "Identifier": "OriginatingAgency",
+    "ApiField": "OriginatingAgency",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "Originating Agency"
+  },
+  {
+    "Identifier": "ArchivalAgency",
+    "ApiField": "ArchivalAgency",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "Archival Agency"
+  },
+  {
+    "Identifier": "ArchiveUnitIdentifier",
+    "ApiField": "ArchiveUnitIdentifier",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.047",
+    "LastUpdate": "2020-11-02T14:21:33.798",
+    "ShortName": "Archive Unit Identifier"
   }
 ]
