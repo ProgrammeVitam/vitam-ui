@@ -24,13 +24,13 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/animations';
-import {Clipboard} from '@angular/cdk/clipboard';
-import {HttpHeaders} from '@angular/common/http';
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {ApiUnitObject, qualifiersToVersionsWithQualifier, Unit,VersionWithQualifierDto} from 'ui-frontend-common';
-import {DescriptionLevel} from 'vitamui-library';
-import {ArchiveService} from '../../archive.service';
+import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { HttpHeaders } from '@angular/common/http';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ApiUnitObject, qualifiersToVersionsWithQualifier, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
+import { DescriptionLevel } from 'vitamui-library';
+import { ArchiveService } from '../../archive.service';
 
 @Component({
   selector: 'app-archive-unit-objects-details-tab',
@@ -60,14 +60,14 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
     if (changes.archiveUnit) {
       this.unitObject = null;
       this.versionsWithQualifiersOrdered = null;
-      if (this.uniHasObject()) {
+      if (this.unitHasObject()) {
         this.sendCalls(this.archiveUnit);
       }
     }
   }
 
-  private uniHasObject(): boolean {
-    return this.archiveUnit.DescriptionLevel === DescriptionLevel.ITEM;
+  unitHasObject(): boolean {
+    return this.archiveUnit.DescriptionLevel === DescriptionLevel.ITEM && !!this.archiveUnit['#object'];
   }
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
