@@ -56,7 +56,9 @@ import java.util.Map;
 public final class RulesUpdateCommonService {
 
     public static void deleteAttributesFromObjectNode(ObjectNode dslRequest, String... attributes) {
-        Arrays.stream(attributes).forEach(dslRequest::remove);
+        if (dslRequest != null && attributes.length > 0) {
+            Arrays.stream(attributes).forEach(dslRequest::remove);
+        }
     }
 
     public static void setMassUpdateUnitRuleRequest(MassUpdateUnitRuleRequest massUpdateUnitRuleRequest,

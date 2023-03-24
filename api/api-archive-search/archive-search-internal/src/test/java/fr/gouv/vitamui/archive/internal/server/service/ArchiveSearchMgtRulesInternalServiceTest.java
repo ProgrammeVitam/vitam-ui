@@ -207,14 +207,18 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
         ruleSearchCriteriaDto.setSearchCriteriaDto(searchQuery);
 
+
         //When //Then
         String expectingGuid =
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1),
+                ruleSearchCriteriaDto);
         assertThatCode(() -> {
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1),
+                ruleSearchCriteriaDto);
         }).doesNotThrowAnyException();
 
         Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
+
     }
 
 
