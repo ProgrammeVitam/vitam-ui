@@ -12,6 +12,7 @@
     <artifactId>api-pastis</artifactId>
     <packaging>pom</packaging>
     <description>VITAMUI Pastis API</description>
+    <name>VITAMUI Pastis API</name>
 
     <modules>
         <module>pastis-commons</module>
