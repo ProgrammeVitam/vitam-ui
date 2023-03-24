@@ -34,7 +34,6 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.FileRulesModel;
@@ -150,8 +149,7 @@ public class ArchiveSearchRulesInternalService {
                 Collectors.toList()));
             appraisalMgtRulesCriteriaMap
                 .put(ArchiveSearchConsts.RULE_IDENTIFIER, ruleIdCriteria);
-            searchQuery.setCriteriaList(appraisalMgtRulesCriteriaMap.values().stream().collect(
-                Collectors.toList()));
+            searchQuery.setCriteriaList(new ArrayList<>(appraisalMgtRulesCriteriaMap.values()));
         }
     }
 
@@ -198,10 +196,9 @@ public class ArchiveSearchRulesInternalService {
     /**
      * Search rules by their names
      *
-     * @param vitamContext
-     * @param rulesIdentifiers
-     * @return
-     * @throws InvalidParseOperationException
+     * @param vitamContext : the Vitam context
+     * @param rulesIdentifiers : list of rule identifiers
+     * @return : list of vitam rules
      * @throws VitamClientException
      */
     public List<FileRulesModel> findRulesByNames(VitamContext vitamContext, List<String> rulesIdentifiers,
