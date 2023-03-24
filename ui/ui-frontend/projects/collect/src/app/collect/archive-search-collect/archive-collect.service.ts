@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable, LOCALE_ID} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {VitamUISnackBarComponent} from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
-import {SearchUnitApiService} from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
-import {Observable, of, throwError, TimeoutError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
+import { Observable, of, throwError, TimeoutError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
@@ -49,11 +49,11 @@ import {
   Ontology,
   SearchService,
   Transaction,
-  Unit,
+  Unit
 } from 'ui-frontend-common';
-import {ProjectsApiService} from '../core/api/project-api.service';
-import {TransactionApiService} from '../core/api/transaction-api.service';
-import {PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse} from '../core/models';
+import { ProjectsApiService } from '../core/api/project-api.service';
+import { TransactionApiService } from '../core/api/transaction-api.service';
+import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
 
 @Injectable({
   providedIn: 'root',
@@ -130,7 +130,6 @@ export class ArchiveCollectService extends SearchService<any> {
     } else {
       return of({pageNumbers: 1, results: [], totalResults: 0});
     }
-
   }
 
   getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], transactionId: string, accessContract: string): Observable<number> {
@@ -313,6 +312,12 @@ export class ArchiveCollectService extends SearchService<any> {
 
   getExternalOntologiesList(): Observable<Ontology[]> {
     return this.transactionApiService.getExternalOntologiesList();
+  }
+
+  selectUnitWithInheritedRules(transactionId: string, criteriaDto: SearchCriteriaDto, accessContract: string): Observable<Unit> {    
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);    
   }
 }
 

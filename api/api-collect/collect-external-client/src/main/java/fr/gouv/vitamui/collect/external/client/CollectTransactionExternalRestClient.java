@@ -51,6 +51,7 @@ import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.UNIT_WITH_INHERITED_RULES;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.REOPEN_PATH;
@@ -152,14 +153,15 @@ public class CollectTransactionExternalRestClient
             UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         ResponseEntity<CollectTransactionDto> response =
-            restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.GET, request, CollectTransactionDto.class);
+            restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.GET, request,
+                CollectTransactionDto.class);
         return response.getBody();
     }
 
     public CollectTransactionDto updateTransaction(ExternalHttpContext context,
         CollectTransactionDto collectTransactionDto) {
         final HttpEntity<?> request = new HttpEntity<>(collectTransactionDto, buildHeaders(context));
-        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange( getUrl(), HttpMethod.PUT,
+        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(getUrl(), HttpMethod.PUT,
             request, CollectTransactionDto.class);
         checkResponse(response);
         return response.getBody();
@@ -172,12 +174,26 @@ public class CollectTransactionExternalRestClient
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
-    public  List<OntologyDto> getExternalOntologiesList(ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST);
+    public List<OntologyDto> getExternalOntologiesList(ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
     }
 
+    public ResponseEntity<ResultsDto> selectUnitWithInheritedRules(ExternalHttpContext context, String transactionId,
+        SearchCriteriaDto query) {
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
 
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<ResultsDto> response =
+            restTemplate.exchange(
+                getUrl() + "/" + transactionId +
+                    UNIT_WITH_INHERITED_RULES,
+                HttpMethod.POST,
+                request, ResultsDto.class);
+        checkResponse(response);
+        return response;
+    }
 
 }

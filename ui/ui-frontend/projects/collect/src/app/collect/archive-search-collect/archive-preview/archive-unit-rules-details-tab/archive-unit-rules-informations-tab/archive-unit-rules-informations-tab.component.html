@@ -15,7 +15,7 @@
   <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showListOfPropertiesBloc()">
     {{ listOfPropertiesCollapsed ? 'expand_less' : 'expand_more' }}
   </i>
-  {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.PROPERTIES' | translate }}
+  {{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.PROPERTIES' | translate }}
 </div>
 <div
   class="vitamui-table collapsible"
@@ -23,9 +23,9 @@
   *ngIf="isToShowPropertiesList && ruleCategory !== 'ClassificationRule' && ruleCategory !== 'HoldRule'"
 >
   <div class="vitamui-table-head" *ngIf="categoryHasPropertiesList">
-    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.PROPERTY' | translate }}</div>
-    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.VALUE' | translate }}</div>
-    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.STATUS' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.PROPERTY' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.VALUE' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.STATUS' | translate }}</div>
   </div>
 
   <div class="vitamui-table-body" *ngIf="categoryHasPropertiesList">
@@ -43,7 +43,7 @@
   <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showListOfPropertiesBloc()">
     {{ listOfPropertiesCollapsed ? 'expand_less' : 'expand_more' }}
   </i>
-  {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.PROPERTIES' | translate }}
+  {{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.PROPERTIES' | translate }}
 </div>
 <div
   class="vitamui-table collapsible"
@@ -51,9 +51,9 @@
   *ngIf="isToShowPropertiesList && ruleCategory === 'HoldRule'"
 >
   <div class="vitamui-table-head" *ngIf="categoryHasPropertiesList">
-    <div class="col-6">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.PROPERTY' | translate }}</div>
-    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.VALUE' | translate }}</div>
-    <div class="col-2">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.STATUS' | translate }}</div>
+    <div class="col-6">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.PROPERTY' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.VALUE' | translate }}</div>
+    <div class="col-2">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.STATUS' | translate }}</div>
   </div>
 
   <div class="vitamui-table-body" *ngIf="categoryHasPropertiesList">
@@ -91,7 +91,7 @@
   <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showListOfPropertiesBloc()">
     {{ listOfPropertiesCollapsed ? 'expand_less' : 'expand_more' }}
   </i>
-  {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.PROPERTIES' | translate }}
+  {{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.PROPERTIES' | translate }}
 </div>
 <div
   class="vitamui-table collapsible"
@@ -99,9 +99,9 @@
   *ngIf="isToShowPropertiesList && ruleCategory === 'ClassificationRule'"
 >
   <div class="vitamui-table-head" *ngIf="categoryHasPropertiesList">
-    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.PROPERTY' | translate }}</div>
-    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.VALUE' | translate }}</div>
-    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.STATUS' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.PROPERTY' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.VALUE' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.STATUS' | translate }}</div>
   </div>
 
   <div class="vitamui-table-body" *ngIf="categoryHasPropertiesList">
@@ -117,10 +117,10 @@
 
 <ng-template #resultsFound>
   <div class="vitamui-table-head" *ngIf="isToShowRulesList || isToShowBlockedRulesList">
-    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.RULE.IDENTIFIER' | translate }}</div>
-    <div class="col-3">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.RULE.START_DATE' | translate }}</div>
-    <div class="col-3">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.RULE.END_DATE' | translate }}</div>
-    <div class="col-2">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.RULE.STATUS' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULE.IDENTIFIER' | translate }}</div>
+    <div class="col-3">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULE.START_DATE' | translate }}</div>
+    <div class="col-3">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULE.END_DATE' | translate }}</div>
+    <div class="col-2">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULE.STATUS' | translate }}</div>
   </div>
 
   <div class="vitamui-table-body" *ngIf="isToShowRulesList">
@@ -140,5 +140,5 @@
 </ng-template>
 
 <ng-template #noResults>
-  <div class="vitamui-table-head text-color">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.INHERITANCE_BLOCKED' | translate }}</div>
+  <div class="vitamui-table-head text-color">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.INHERITANCE_BLOCKED' | translate }}</div>
 </ng-template>

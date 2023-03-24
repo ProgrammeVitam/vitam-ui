@@ -48,6 +48,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
@@ -273,7 +274,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_TO_ENCODE);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+        when(RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -336,7 +337,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_FILING_UNIT);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+        when(RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -399,7 +400,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_HOLDING_UNIT);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+        when(RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -462,7 +463,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITH_OBJECT);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+        when(RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -525,7 +526,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITHOUT_OBJECT);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+        when(RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -586,7 +587,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_ONE_RESULTS);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+        when(RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
             .thenReturn(buildArchiveUnits(resultsDto));
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

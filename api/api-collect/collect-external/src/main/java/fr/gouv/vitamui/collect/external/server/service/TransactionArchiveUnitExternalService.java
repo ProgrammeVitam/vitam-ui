@@ -62,12 +62,15 @@ public class TransactionArchiveUnitExternalService extends
         this.collectInternalRestClient = collectInternalRestClient;
         this.collectTransactionInternalRestClient = collectTransactionInternalRestClient;
     }
+
     public ArchiveUnitsDto searchCollectTransactionArchiveUnits(String transactionId, SearchCriteriaDto searchQuery) {
-        return collectTransactionInternalRestClient.searchCollectProjectArchiveUnits(getInternalHttpContext(), transactionId, searchQuery);
+        return collectTransactionInternalRestClient.searchCollectProjectArchiveUnits(getInternalHttpContext(),
+            transactionId, searchQuery);
     }
 
     public Resource exportCsvArchiveUnitsByCriteria(String transactionId, final SearchCriteriaDto query) {
-        return collectTransactionInternalRestClient.exportCsvArchiveUnitsByCriteria(transactionId, query, getInternalHttpContext());
+        return collectTransactionInternalRestClient.exportCsvArchiveUnitsByCriteria(transactionId, query,
+            getInternalHttpContext());
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id) {
@@ -80,6 +83,11 @@ public class TransactionArchiveUnitExternalService extends
 
     public List<OntologyDto> getExternalOntologiesList() {
         return collectTransactionInternalRestClient.getExternalOntologiesList(getInternalHttpContext());
+    }
+
+    public ResultsDto selectUnitWithInheritedRules(String transactionId, final SearchCriteriaDto query) {
+        return collectTransactionInternalRestClient.selectUnitWithInheritedRules(getInternalHttpContext(),
+            transactionId, query);
     }
 
     @Override

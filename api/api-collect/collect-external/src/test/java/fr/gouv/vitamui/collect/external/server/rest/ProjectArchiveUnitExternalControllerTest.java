@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,6 +66,7 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternal
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalControllerTest.class);
 
+    private static final String ANY_TRANSACTION_CODE = "ANY_TRANSACTION_CODE";
     @MockBean
     private TransactionArchiveUnitExternalService transactionArchiveUnitExternalService;
 
@@ -150,6 +152,26 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternal
             .when(transactionArchiveUnitExternalService.getExternalOntologiesList())
             .thenReturn(expectedResponse);
         List<OntologyDto> response = transactionArchiveUnitExternalController.getExternalOntologiesList();
+
+        // Then
+        Assertions.assertEquals(response, expectedResponse);
+    }
+
+    @Test
+    void testSelectUnitWithInheritedRulesThenReturnVitamOperationId()
+        throws InvalidParseOperationException, PreconditionFailedException {
+        // Given
+        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
+        ResultsDto expectedResponse = new ResultsDto();
+
+        // When
+        Mockito
+            .when(transactionArchiveUnitExternalService.selectUnitWithInheritedRules(Mockito.anyString(),
+                Mockito.any(SearchCriteriaDto.class)))
+            .thenReturn(expectedResponse);
+        ResultsDto response =
+            transactionArchiveUnitExternalController.selectUnitWithInheritedRules(ANY_TRANSACTION_CODE,
+                searchCriteriaDto);
 
         // Then
         Assertions.assertEquals(response, expectedResponse);
