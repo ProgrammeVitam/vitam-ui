@@ -330,6 +330,10 @@
     "TRANSACTIONS_MONITORING": {
       "NAME": "Suivi des versements",
       "TOOLTIP": "Suivi des versements"
+    },
+    "PASTIS_APP": {
+      "NAME": "Profils Documentaires",
+      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique"
     }
   },
   "FOOTER": {
