@@ -74,7 +74,7 @@ export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges 
   }
 
   unitHasObject(): boolean {
-    return this.archiveUnit.DescriptionLevel === DescriptionLevel.ITEM;
+    return this.archiveUnit.DescriptionLevel === DescriptionLevel.ITEM && !!this.archiveUnit['#object'];
   }
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
