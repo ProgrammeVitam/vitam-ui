@@ -183,7 +183,8 @@ export class ProjectPreviewComponent implements OnInit {
     transaction.submissionAgencyIdentifier = this.project.submissionAgencyIdentifier;
     transaction.archiveProfile = this.project.archiveProfile;
     transaction.legalStatus = this.project.legalStatus;
-
+    transaction.comment = this.project.comment;
+    transaction.acquisitionInformation = this.project.acquisitionInformation;
   }
 
   onConfirm() {
