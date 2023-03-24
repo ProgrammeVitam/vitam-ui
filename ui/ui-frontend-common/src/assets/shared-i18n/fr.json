@@ -334,9 +334,13 @@
       "NAME": "Suivi des versements",
       "TOOLTIP": "Suivi des versements"
     },
-    "MANAGEMENT_CONTRACT_APP" : {
+    "MANAGEMENT_CONTRACT_APP": {
       "NAME": "Contrats de gestion",
       "TOOLTIP": "Application des contrats de gestion"
+    },
+    "PASTIS_APP": {
+      "NAME": "Profils Documentaires",
+      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique"
     }
   },
   "FOOTER": {
