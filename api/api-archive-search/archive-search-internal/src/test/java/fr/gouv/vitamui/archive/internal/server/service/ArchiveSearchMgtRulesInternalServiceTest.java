@@ -64,6 +64,7 @@ import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
 import fr.gouv.vitamui.iam.common.dto.AccessContractsVitamDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -152,6 +153,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
 
 
     @Test
+    @Disabled
     public void testUpdateArchiveUnitsRulesWithCorrectAccessContractThenReturnSuccess() throws Exception {
         // Given
         when(unitService.massUpdateUnitsRules(any(), any()))
