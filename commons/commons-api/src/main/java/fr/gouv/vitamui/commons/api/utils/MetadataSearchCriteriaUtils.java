@@ -174,10 +174,6 @@ public final class MetadataSearchCriteriaUtils {
     /**
      * contextCall is an Optional arg to avoid filling it in case it's never used, otherwise it will be handled for
      * specific cases ( ARCHIVE_UNIT_WITH_OBJECTS && ARCHIVE_UNIT_WITHOUT_OBJECTS )
-     *
-     * @param searchQuery
-     * @return
-     * @throws VitamClientException
      */
     public static SelectMultiQuery mapRequestToSelectMultiQuery(SearchCriteriaDto searchQuery)
         throws VitamClientException {
@@ -308,7 +304,7 @@ public final class MetadataSearchCriteriaUtils {
             .count();
 
         if (originRulesCriteriaCount > 0) {
-            initialCriteriaList.stream().forEach(searchCriteriaEltDto -> {
+            initialCriteriaList.forEach(searchCriteriaEltDto -> {
                 if (criteriaCategory.equals(searchCriteriaEltDto.getCategory()) &&
                     (RULE_ORIGIN_CRITERIA.equals(searchCriteriaEltDto.getCriteria()))) {
                     List<CriteriaValue> values = searchCriteriaEltDto.getValues();
@@ -1283,16 +1279,17 @@ public final class MetadataSearchCriteriaUtils {
             .collect(Collectors.toList());
         if (isADateToReplace(searchCriteria)) {
             String stringDate = searchCriteria.getValues().get(0).getValue();
-            LocalDateTime date = LocalDateTime.parse(stringDate, ArchiveSearchConsts.ISO_FRENCH_FORMATER)
-                .toLocalDate().atStartOfDay();
+            LocalDateTime date = LocalDateTime.parse(stringDate, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
             String theDay = ArchiveSearchConsts.ISO_FRENCH_FORMATER.format(date);
             String theNextDay = ArchiveSearchConsts.ISO_FRENCH_FORMATER.format(date.plusDays(1));
-            VitamQueryHelper.addParameterCriteria(queryToFill,
+            BooleanQuery andQuery = and();
+            VitamQueryHelper.addParameterCriteria(andQuery,
                 ArchiveSearchConsts.CriteriaOperators.GTE,
                 mappedCriteriaName, List.of(theDay));
-            VitamQueryHelper.addParameterCriteria(queryToFill,
+            VitamQueryHelper.addParameterCriteria(andQuery,
                 ArchiveSearchConsts.CriteriaOperators.LT,
                 mappedCriteriaName, List.of(theNextDay));
+            queryToFill.add(andQuery);
         } else {
             VitamQueryHelper.addParameterCriteria(queryToFill,
                 ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator()),

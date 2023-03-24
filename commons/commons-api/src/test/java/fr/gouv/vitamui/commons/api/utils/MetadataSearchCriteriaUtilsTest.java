@@ -75,20 +75,25 @@ public class MetadataSearchCriteriaUtilsTest {
 
     @Test
     public void handleSimpleFieldCriteria_with_DATE_and_EQ() throws InvalidCreateOperationException {
-        BooleanQuery queryToFill = new BooleanQuery(BuilderToken.QUERY.OR);
+        BooleanQuery queryToFill = or();
         SearchCriteriaEltDto searchCriteria = new SearchCriteriaEltDto()
             .setCriteria("ontologyFieldDate")
             .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
             .setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name())
-            .setValues(List.of(new CriteriaValue().setValue("2023-03-05T12:34:56.789Z")))
+            .setValues(List.of(new CriteriaValue().setValue("2023-03-05T23:00:00.000Z")))
             .setDataType(ArchiveSearchConsts.CriteriaDataType.DATE.name());
 
+        // When
         MetadataSearchCriteriaUtils.handleSimpleFieldCriteria(queryToFill, searchCriteria);
 
+        // Then
         Assertions.assertEquals(
             "{\"$or\":[" +
-                "{\"$gte\":{\"ontologyFieldDate\":\"2023-03-05T00:00:00.000Z\"}}," +
-                "{\"$lt\":{\"ontologyFieldDate\":\"2023-03-06T00:00:00.000Z\"}}]}",
+                "{\"$and\":[" +
+                "{\"$gte\":{\"ontologyFieldDate\":\"2023-03-05T23:00:00.000Z\"}}," +
+                "{\"$lt\":{\"ontologyFieldDate\":\"2023-03-06T23:00:00.000Z\"}}" +
+                "]}" +
+                "]}",
             queryToFill.toString()
         );
     }
