@@ -56,21 +56,12 @@
       background: #9C31B5;
       border: 2px solid transparent;
 
-      &:focus:enabled {
-        /* Primary/Primary-500 */
-        background: #9C31B5;
-        /* Basics/White */
-        border: 2px dashed #FFFFFF;
-        outline: none;
-        box-shadow: none;
-      }
-
       &:hover:enabled {
         /* Primary/Primary-300 */
         background: #C672D9;
         border: 2px solid transparent;
         /* Primary/2dp-primary */
-        box-shadow: 0px 0px 2px rgba(112, 35, 130, 0.4), 0px 1px 4px rgba(112, 35, 130, 0.2);
+        box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
       }
 
       &:active:enabled {
@@ -89,27 +80,13 @@
           color: #9C31B5;
         }
 
-        &:focus:enabled {
-          /* Basics/White */
-          background: #FFFFFF;
-          /* Primary/Primary-500 */
-          border: 2px dashed #9C31B5;
-          outline: none;
-          box-shadow: none;
-
-          span, i {
-            /* Primary/Primary-500 */
-            color: #9C31B5;
-          }
-        }
-
         &:hover:enabled {
           /* Primary/Primary-50 */
           background: #F7EBFA;
           /* Primary/Primary-300 */
           border: 1px solid #C672D9;
           /* Primary/2dp-primary */
-          box-shadow: 0px 0px 2px rgba(112, 35, 130, 0.4), 0px 1px 4px rgba(112, 35, 130, 0.2);
+          box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
 
           span, i {
             /* Primary/Primary-300 */
@@ -136,21 +113,12 @@
       background: #2563A9;
       border: 2px solid transparent;
 
-      &:focus:enabled {
-        /* Secondary/Secondary-500 */
-        background: #2563A9;
-        /* Basics/White */
-        border: 2px dashed #FFFFFF;
-        outline: none;
-        box-shadow: none;
-      }
-
       &:hover:enabled {
         /* Secondary/Secondary-400 */
         background: #4388D6;
         border: 2px dashed transparent;
         /* Secondary/2dp-secondary */
-        box-shadow: 0px 0px 2px rgba(37, 99, 169, 0.4), 0px 1px 4px rgba(37, 99, 169, 0.2);
+        box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
       }
 
       &:active:enabled {
@@ -170,27 +138,13 @@
           color: #2563A9;
         }
 
-        &:focus:enabled {
-          /* Basics/White */
-          background: #FFFFFF;
-          /* Secondary/Secondary-500 */
-          border: 2px dashed #2563A9;
-          outline: none;
-          box-shadow: none;
-
-          span, i {
-            /* Secondary/Secondary-500 */
-            color: #2563A9;
-          }
-        }
-
         &:hover:enabled {
           /* Secondary/Secondary-50 */
           background: #EAF2FA;
           /* Secondary/Secondary-400 */
           border: 1px solid #4388D6;
           /* Secondary/2dp-secondary */
-          box-shadow: 0px 0px 2px rgba(37, 99, 169, 0.4), 0px 1px 4px rgba(37, 99, 169, 0.2);
+          box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
 
           span, i {
             /* Secondary/Secondary-400 */
@@ -204,7 +158,7 @@
           /* Secondary/Secondary-700 */
           border: 1px solid #173D69;
           /* X_Secondary/2dp-secondary */
-          box-shadow: 0px 0px 2px rgba(14, 188, 255, 0.4), 0px 1px 4px rgba(14, 188, 255, 0.2);
+          box-shadow: 0 0 2px rgba(14, 188, 255, 0.4), 0 1px 4px rgba(14, 188, 255, 0.2);
 
           span, i {
             /* Secondary/Secondary-700 */
@@ -223,25 +177,12 @@
         color: #212121;
       }
 
-      &:focus:enabled {
-        background: #FFFFFF;
-        /* Primary/Primary-500 */
-        border: 1px dashed #9C31B5;
-        outline: none;
-        box-shadow: none;
-
-        span, i {
-          /* Grey/Grey-900 */
-          color: #212121;
-        }
-      }
-
       &:hover:enabled {
         /* Primary/Primary-50 */
         background: #F7EBFA;
         border: 1px solid transparent;
         /* Primary/2dp-primary */
-        box-shadow: 0px 0px 2px rgba(112, 35, 130, 0.4), 0px 1px 4px rgba(112, 35, 130, 0.2);
+        box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
 
         span, i {
           /* Primary/Primary-400 */
@@ -295,28 +236,12 @@
         color: #9C31B5;
       }
 
-      &:focus:enabled {
-        /* Basics/White */
-        background: #FFFFFF;
-        /* TODO: avec le border blanc on le voit pas border Basics/White */
-        // TODO : replace border by outline ?? mais
-        border: 2px dashed #9C31B5;
-        //outline: 2px dashed #FFFFFF;
-        outline: none;
-        box-shadow: none;
-
-        span, i {
-          /* Primary/Primary-500 */
-          color: #9C31B5;
-        }
-      }
-
       &:hover:enabled {
         /* Primary/Primary-50 */
         background: #F7EBFA;
         border: 2px solid transparent;
         /* Dark/2dp-dark */
-        box-shadow: 0px 0px 2px rgba(33, 33, 33, 0.2), 0px 1px 4px rgba(33, 33, 33, 0.05);
+        box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
 
         span, i {
           /* Primary/Primary-700 */
@@ -357,26 +282,13 @@
           color: #FFFFFF;
         }
 
-        &:focus:enabled {
-          background: none;
-          /* Basics/White */
-          border: 1px dashed #FFFFFF;
-          outline: none;
-          box-shadow: none;
-
-          span, i {
-            /* Basics/White */
-            color: #FFFFFF;
-          }
-        }
-
         &:hover:enabled {
           /* Primary/Primary-300 */
           background: #C672D9;
           /* Basics/White */
           border: 1px solid #FFFFFF;
           /* Dark/2dp-dark */
-          box-shadow: 0px 0px 2px rgba(33, 33, 33, 0.2), 0px 1px 4px rgba(33, 33, 33, 0.05);
+          box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
 
           span, i {
             /* Basics/White */
@@ -403,12 +315,6 @@
         }
 
       }
-    }
-
-    &.LeftIcon {
-    }
-
-    &.RightIcon {
     }
 
   }
