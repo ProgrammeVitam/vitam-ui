@@ -101,6 +101,11 @@ public class ArchiveSearchFacetsInternalService {
     public static final String SOME_OLD_DATE = "01/01/0001";
     public static final String SOME_FUTUR_DATE = "31/12/9999";
 
+    public static final String COMPUTED_FIELDS = "#computedInheritedRules.";
+    public static final String MAX_END_DATE_FIELD = ".MaxEndDate";
+    public static final String RULES_RULE_ID_FIELD = ".Rules.Rule";
+    public static final String FINAL_ACTION_FIELD = ".FinalAction";
+
 
     private final ArchiveSearchInternalService archiveSearchInternalService;
     private final ObjectMapper objectMapper;
@@ -138,16 +143,13 @@ public class ArchiveSearchFacetsInternalService {
                 searchQuery.getCriteriaList().stream().filter(Objects::nonNull)
                     .filter(searchCriteriaEltDto -> (category.equals(searchCriteriaEltDto.getCategory())))
                     .collect(Collectors.toList());
-            String computedRulesIdentifierMapping =
-                ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS
+            String computedRulesIdentifierMapping = COMPUTED_FIELDS
                     +
-                    ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
-                    ArchivesSearchManagementRulesQueryBuilderService.RULES_RULE_ID_FIELD;
+                    ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() + RULES_RULE_ID_FIELD;
             if (APPRAISAL_RULE.equals(category) || STORAGE_RULE.equals(category)) {
-                String computedRulesFinalActionMapping =
-                    ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS
+                String computedRulesFinalActionMapping = COMPUTED_FIELDS
                         + ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name())
-                        .getFieldMapping() + ArchivesSearchManagementRulesQueryBuilderService.FINAL_ACTION_FIELD;
+                        .getFieldMapping() + FINAL_ACTION_FIELD;
                 selectMultiQuery.addFacets(FacetHelper.terms(FACETS_FINAL_ACTION_COMPUTED + "_" + category.name(),
                     computedRulesFinalActionMapping, 3, FacetOrder.ASC));
             }
@@ -176,8 +178,6 @@ public class ArchiveSearchFacetsInternalService {
         }
         return auWithRulesFacets;
     }
-
-
 
     @NotNull
     private List<FacetBucketDto> computeFinalActionFacetsForComputedAppraisalRules(
@@ -348,9 +348,8 @@ public class ArchiveSearchFacetsInternalService {
         throws InvalidCreateOperationException {
         String strDateExpirationCriteria =
             extractRuleExpirationDateFromCriteria(mgtRulesCriteriaList, category);
-        String managementRuleEndDateMapping = ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS +
-            ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
-            ArchivesSearchManagementRulesQueryBuilderService.MAX_END_DATE_FIELD;
+        String managementRuleEndDateMapping = COMPUTED_FIELDS +
+            ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() + MAX_END_DATE_FIELD;
         select.addFacets(FacetHelper.dateRange(FACETS_EXPIRED_RULES_COMPUTED + "_" + category.name(),
             managementRuleEndDateMapping, FR_DATE_FORMAT_WITH_SLASH,
             List.of(new RangeFacetValue(SOME_OLD_DATE, strDateExpirationCriteria))));

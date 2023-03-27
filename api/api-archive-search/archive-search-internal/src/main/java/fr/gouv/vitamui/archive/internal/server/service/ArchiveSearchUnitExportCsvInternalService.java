@@ -83,15 +83,6 @@ public class ArchiveSearchUnitExportCsvInternalService {
     public static final String HOLDING_UNIT = "HOLDING_UNIT";
     private static final String INGEST_ARCHIVE_TYPE = "INGEST";
 
-    public static final String SEMI_COLON = ";";
-    public static final String COMMA = ",";
-    public static final String DOUBLE_QUOTE = "\"";
-    public static final String SINGLE_QUOTE = "'";
-    public static final String NEW_LINE = "\n";
-    public static final String NEW_TAB = "\t";
-    public static final String NEW_LINE_1 = "\r\n";
-    public static final String SPACE = " ";
-
     private final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
     private final ArchiveSearchInternalService archiveSearchInternalService;
     private final ObjectMapper objectMapper;
@@ -223,6 +214,7 @@ public class ArchiveSearchUnitExportCsvInternalService {
                 .collect(Collectors.toList());
 
         } catch (IOException e) {
+            LOGGER.error("Can't parse criteria as Vitam query {} : ", e);
             throw new BadRequestException("Can't parse criteria as Vitam query", e);
         }
     }

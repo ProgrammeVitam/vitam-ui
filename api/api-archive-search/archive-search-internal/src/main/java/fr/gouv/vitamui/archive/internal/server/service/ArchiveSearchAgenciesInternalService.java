@@ -97,8 +97,6 @@ public class ArchiveSearchAgenciesInternalService {
         }
     }
 
-
-
     private void mapAgenciesNamesToAgenciesCodesInCriteria(SearchCriteriaDto searchQuery,
         List<AgencyModelDto> actualAgencies) {
 

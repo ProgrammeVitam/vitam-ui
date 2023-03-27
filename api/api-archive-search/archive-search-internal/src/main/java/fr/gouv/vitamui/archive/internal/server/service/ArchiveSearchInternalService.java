@@ -116,23 +116,17 @@ public class ArchiveSearchInternalService {
     private final UnitService unitService;
     private final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
     private final ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
-    private final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService;
-    private final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
     private final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
     @Autowired
     public ArchiveSearchInternalService(final ObjectMapper objectMapper, final UnitService unitService,
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
         final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
-        final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService,
-        final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService,
         final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
         this.archiveSearchRulesInternalService = archiveSearchRulesInternalService;
-        this.archivesSearchFieldsQueryBuilderService = archivesSearchFieldsQueryBuilderService;
-        this.archivesSearchManagementRulesQueryBuilderService = archivesSearchManagementRulesQueryBuilderService;
         this.archiveSearchFacetsInternalService = archiveSearchFacetsInternalService;
     }
 
@@ -230,6 +224,7 @@ public class ArchiveSearchInternalService {
         VitamContext vitamContext) throws VitamClientException {
 
         if (unitDescriptiveMetadataDto == null) {
+            LOGGER.error("Error update unit criteria");
             throw new BadRequestException("Error update unit criteria");
         }
 
@@ -247,6 +242,7 @@ public class ArchiveSearchInternalService {
                 List<String> operations = archivesResponse.getResults().get(0).getOperations();
                 response = operations.get(operations.size() - 1);
             } catch (Exception e) {
+                LOGGER.error("Error fetching unit from vitam while updating descriptive metadata");
                 throw new VitamClientException("Error fetching unit from vitam while updating descriptive metadata");
             }
         }

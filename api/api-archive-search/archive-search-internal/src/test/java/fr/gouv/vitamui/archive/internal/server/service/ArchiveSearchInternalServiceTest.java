@@ -42,8 +42,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.ByteStreams;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
@@ -52,39 +50,27 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitam.common.model.administration.AccessContractModel;
-import fr.gouv.vitam.common.model.administration.AgenciesModel;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationAction;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationQueryActionType;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
-import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
-import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
-import fr.gouv.vitamui.iam.common.dto.AccessContractsVitamDto;
-import lombok.SneakyThrows;
-import org.apache.commons.lang.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -109,12 +95,6 @@ public class ArchiveSearchInternalServiceTest {
     private ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
 
     @InjectMocks
-    private ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
-
-    @InjectMocks
-    private ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService;
-
-    @InjectMocks
     private ArchiveSearchInternalService archiveSearchInternalService;
 
     @MockBean(name = "archiveSearchInternalService")
@@ -132,12 +112,11 @@ public class ArchiveSearchInternalServiceTest {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         archiveSearchInternalService =
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
-                archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
-                archivesSearchManagementRulesQueryBuilderService, archiveSearchFacetsInternalService);
+                archiveSearchRulesInternalService, archiveSearchFacetsInternalService);
     }
 
     @Test
-    public void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() throws VitamClientException,
+     void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() throws VitamClientException,
         IOException, InvalidParseOperationException {
         // Given
         when(unitService.searchUnits(any(), any()))
@@ -266,7 +245,7 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     @Test
-    public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest2() throws Exception {
+    void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest2() throws Exception {
         // Given
         when(unitService.updateUnitById(any(), any(), any()))
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
@@ -445,110 +424,4 @@ public class ArchiveSearchInternalServiceTest {
         return unitDescriptiveMetadataDto;
     }
 
-
-    AccessContractModel createAccessContractModel(String identifier, String name, Integer tenant,
-        Boolean writingPermission) {
-        AccessContractModel accessContractModel = new AccessContractModel();
-        accessContractModel.setIdentifier(identifier);
-        accessContractModel.setName(name);
-        accessContractModel.setTenant(tenant);
-        accessContractModel.setWritingPermission(writingPermission);
-        return accessContractModel;
-    }
-
-    AccessContractsResponseDto createAccessContractsResponseDto(String identifier, String name, Integer tenant,
-        Boolean writingPermission) {
-        AccessContractsResponseDto accessContractModel = new AccessContractsResponseDto();
-        accessContractModel
-            .setResults(List.of(createAccessContractsVitamDto(identifier, name, tenant, writingPermission)));
-        return accessContractModel;
-    }
-
-    AccessContractsVitamDto createAccessContractsVitamDto(String identifier, String name, Integer tenant,
-        Boolean writingPermission) {
-        AccessContractsVitamDto accessContractModel = new AccessContractsVitamDto();
-        accessContractModel.setIdentifier(identifier);
-        accessContractModel.setName(name);
-        accessContractModel.setTenant(tenant);
-        accessContractModel.setWritingPermission(writingPermission);
-        return accessContractModel;
-    }
-
-    AccessContractModelDto createAccessContractModelDto(String identifier, String name, Integer tenant,
-        Boolean writingPermission) {
-        AccessContractModelDto accessContractModel = new AccessContractModelDto();
-        accessContractModel.setIdentifier(identifier);
-        accessContractModel.setName(name);
-        accessContractModel.setTenant(tenant);
-        accessContractModel.setWritingPermission(writingPermission);
-        return accessContractModel;
-    }
-
-    @SneakyThrows
-    private List<String[]> readCSVFromInputStream(InputStream inputStream) {
-        List<String[]> results;
-        try (CSVReader reader = new CSVReader(new InputStreamReader(inputStream))) {
-            results = reader.readAll();
-        } catch (IOException | CsvException e) {
-            throw e;
-        }
-        return results;
-    }
-
-    private ArchiveUnit buildArchiveUnits(ResultsDto resultsDto) {
-        ArchiveUnit archiveUnit = new ArchiveUnit();
-        BeanUtils.copyProperties(resultsDto, archiveUnit);
-        return archiveUnit;
-    }
-
-    private RequestResponse<JsonNode> buildArchiveUnit(String filename)
-        throws IOException, InvalidParseOperationException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream(filename);
-        return RequestResponseOK
-            .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
-    }
-
-    private ResultsDto buildResults(RequestResponse<JsonNode> jsonNodeRequestResponse) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String re = StringUtils.chop(jsonNodeRequestResponse.toJsonNode().get("$results").toString().substring(1));
-        return objectMapper.readValue(re, ResultsDto.class);
-    }
-
-    private AgencyModelDto buildAgencyModelDtos() {
-        AgencyModelDto agencyModelDto = new AgencyModelDto();
-        agencyModelDto.setIdentifier("FRAN_NP_009915");
-        agencyModelDto.setName("name");
-        agencyModelDto.setTenant(1);
-        return agencyModelDto;
-    }
-
-    AgenciesModel createAgencyModel(String identifier, String name, Integer tenant) {
-
-        AgenciesModel agency = new AgenciesModel();
-        agency.setIdentifier(identifier);
-        agency.setName(name);
-        agency.setTenant(tenant);
-        return agency;
-    }
-
-    private VitamUISearchResponseDto buildVitamUISearchResponseDto(String filename) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream(filename);
-        return objectMapper.readValue(ByteStreams.toByteArray(inputStream), VitamUISearchResponseDto.class);
-    }
-
-    private RequestResponse<AgenciesModel> buildAgenciesResponse() {
-        JsonNode query = null;
-        List<AgenciesModel> agenciesModelList = List.of(createAgencyModel("FRAN_NP_009915", "Service producteur1", 0));
-        RequestResponseOK response =
-            new RequestResponseOK<>(query, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
-
-        return response;
-    }
 }
