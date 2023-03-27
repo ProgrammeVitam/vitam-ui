@@ -16,6 +16,8 @@ export * from './lib/components/card/card.component';
 export * from './lib/components/card/card.module';
 export * from './lib/components/buttons/default-button/default-button.component';
 export * from './lib/components/buttons/default-button/default-button.module';
+export * from './lib/components/buttons/icon-button/icon-button.component';
+export * from './lib/components/buttons/icon-button/icon-button.module';
 export * from './lib/components/buttons/text-button/text-button.component';
 export * from './lib/components/buttons/text-button/text-button.module';
 export * from './lib/components/confirm-action/confirm-action.component';

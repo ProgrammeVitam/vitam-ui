@@ -33,7 +33,7 @@
       letter-spacing: 0.5px;
       text-transform: uppercase;
       /* Basics/White */
-      color: #FFFFFF;
+      color: white;
       /* Inside auto layout */
       flex: none;
       order: 0;
@@ -48,17 +48,17 @@
       height: 24px;
       font-size: 22px;
       /* Basics/White */
-      color: #FFFFFF;
+      color: white;
     }
 
     &.Primary {
       /* Primary/Primary-500 */
-      background: #9C31B5;
+      background: var(--vitamui-primary);
       border: 2px solid transparent;
 
       &:hover:enabled {
         /* Primary/Primary-300 */
-        background: #C672D9;
+        background: var(--vitamui-primary-300);
         border: 2px solid transparent;
         /* Primary/2dp-primary */
         box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
@@ -66,43 +66,43 @@
 
       &:active:enabled {
         /* Primary/Primary-700 */
-        background: #571B64;
+        background: var(--vitamui-primary-700);
         border: 2px solid transparent;
       }
 
       &.Outline {
-        background: #FFFFFF;
+        background: white;
         /* Primary/Primary-500 */
-        border: 1px solid #9C31B5;
+        border: 1px solid var(--vitamui-primary);
 
         span, i {
           /* Primary/Primary-500 */
-          color: #9C31B5;
+          color: var(--vitamui-primary);
         }
 
         &:hover:enabled {
           /* Primary/Primary-50 */
-          background: #F7EBFA;
+          background: var(--vitamui-primary-50);
           /* Primary/Primary-300 */
-          border: 1px solid #C672D9;
+          border: 1px solid var(--vitamui-primary-300);
           /* Primary/2dp-primary */
           box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
 
           span, i {
             /* Primary/Primary-300 */
-            color: #C672D9;
+            color: var(--vitamui-primary-300);
           }
         }
 
         &:active:enabled {
           /* Primary/Primary-100 */
-          background: #E6C3EF;
+          background: var(--vitamui-primary-100);
           /* Primary/Primary-700 */
-          border: 1px solid #571B64;
+          border: 1px solid var(--vitamui-primary-700);
 
           span, i {
             /* Primary/Primary-700 */
-            color: #571B64;
+            color: var(--vitamui-primary-700);
           }
         }
       }
@@ -110,12 +110,12 @@
 
     &.Secondary {
       /* Secondary/Secondary-500 */
-      background: #2563A9;
+      background: var(--vitamui-secondary);
       border: 2px solid transparent;
 
       &:hover:enabled {
         /* Secondary/Secondary-400 */
-        background: #4388D6;
+        background: var(--vitamui-secondary-400);
         border: 2px dashed transparent;
         /* Secondary/2dp-secondary */
         box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
@@ -123,88 +123,88 @@
 
       &:active:enabled {
         /* Secondary/Secondary-700 */
-        background: #173D69;
+        background: var(--vitamui-secondary-700);
         border: 2px dashed transparent;
       }
 
       &.Outline {
         /* Basics/White */
-        background: #FFFFFF;
+        background: white;
         /* Secondary/Secondary-500 */
-        border: 1px solid #2563A9;
+        border: 1px solid var(--vitamui-secondary);
 
         span, i {
           /* Secondary/Secondary-500 */
-          color: #2563A9;
+          color: var(--vitamui-secondary);
         }
 
         &:hover:enabled {
           /* Secondary/Secondary-50 */
-          background: #EAF2FA;
+          background: var(--vitamui-secondary-50);
           /* Secondary/Secondary-400 */
-          border: 1px solid #4388D6;
+          border: 1px solid var(--vitamui-secondary-400);
           /* Secondary/2dp-secondary */
           box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
 
           span, i {
             /* Secondary/Secondary-400 */
-            color: #4388D6;
+            color: var(--vitamui-secondary-400);
           }
         }
 
         &:active:enabled {
           /* Secondary/Secondary-100 */
-          background: #C0D7F1;
+          background: var(--vitamui-secondary-100);
           /* Secondary/Secondary-700 */
-          border: 1px solid #173D69;
+          border: 1px solid var(--vitamui-secondary-700);
           /* X_Secondary/2dp-secondary */
           box-shadow: 0 0 2px rgba(14, 188, 255, 0.4), 0 1px 4px rgba(14, 188, 255, 0.2);
 
           span, i {
             /* Secondary/Secondary-700 */
-            color: #173D69;
+            color: var(--vitamui-secondary-700);
           }
         }
       }
     }
 
     &.Tertiary {
-      background: #FFFFFF;
+      background: white;
       border: 1px solid transparent;
 
       span, i {
-        /* Grey/Grey-900 */
-        color: #212121;
+        /* Grey/Grey-900  #212121 */
+        color: var(--vitamui-grey-900);
       }
 
       &:hover:enabled {
         /* Primary/Primary-50 */
-        background: #F7EBFA;
+        background: var(--vitamui-primary-50);
         border: 1px solid transparent;
         /* Primary/2dp-primary */
         box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
 
         span, i {
           /* Primary/Primary-400 */
-          color: #B54ACE;
+          color: var(--vitamui-primary-400);
         }
       }
 
       &:active:enabled {
         /* Primary/Primary-100 */
-        background: #E6C3EF;
+        background: var(--vitamui-primary-100);
         border: 1px solid transparent;
 
         span, i {
           /* Primary/Primary-700 */
-          color: #571B64;
+          color: var(--vitamui-primary-700);
         }
       }
     }
 
     &:disabled {
       /* Grey/Grey-300 */
-      background: #E0E0E0;
+      background: var(--vitamui-grey-300);
       cursor: default;
 
       span, i {
@@ -214,9 +214,9 @@
 
       &.Outline {
         /* Grey/Grey-300 */
-        background: #E0E0E0;
+        background: var(--vitamui-grey-300);
         /* Grey/Grey-700 */
-        border: 1px solid #616161;
+        border: 1px solid var(--vitamui-grey-700);
 
         span, i {
           /* Grey/Grey-700 - color: #616161; */
@@ -228,90 +228,90 @@
 
     &.Contrast {
       /* Basics/White */
-      background: #FFFFFF;
+      background: white;
       border: 2px solid transparent;
 
       span, i {
         /* Primary/Primary-500 */
-        color: #9C31B5;
+        color: var(--vitamui-primary);
       }
 
       &:hover:enabled {
         /* Primary/Primary-50 */
-        background: #F7EBFA;
+        background: var(--vitamui-primary-50);
         border: 2px solid transparent;
         /* Dark/2dp-dark */
         box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
 
         span, i {
           /* Primary/Primary-700 */
-          color: #571B64;
+          color: var(--vitamui-primary-700);
         }
       }
 
       &:active:enabled {
         /* Primary/Primary-100 */
-        background: #E6C3EF;
+        background: var(--vitamui-primary-100);
         border: 2px solid transparent;
 
         span, i {
           /* Primary/Primary-700 */
-          color: #571B64;
+          color: var(--vitamui-primary-700);
         }
       }
 
       &:disabled {
         /* Basics/White */
-        background: #FFFFFF;
+        background: white;
         opacity: 0.5;
         cursor: default;
 
         span, i {
           /* Primary/Primary-500 */
-          color: #9C31B5;
+          color: var(--vitamui-primary);
         }
       }
 
       &.Outline {
         background: none;
         /* Basics/White */
-        border: 1px solid #FFFFFF;
+        border: 1px solid white;
 
         span, i {
           /* Basics/White */
-          color: #FFFFFF;
+          color: white;
         }
 
         &:hover:enabled {
           /* Primary/Primary-300 */
-          background: #C672D9;
+          background: var(--vitamui-primary-300);
           /* Basics/White */
-          border: 1px solid #FFFFFF;
+          border: 1px solid white;
           /* Dark/2dp-dark */
           box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
 
           span, i {
             /* Basics/White */
-            color: #FFFFFF;
+            color: white;
           }
         }
 
         &:active:enabled {
           /* Primary/Primary-600 */
-          background: #79268D;
+          background: var(--vitamui-primary-600);
           /* Basics/White */
-          border: 1px solid #FFFFFF;
+          border: 1px solid white;
 
           span, i {
             /* Basics/White */
-            color: #FFFFFF;
+            color: white;
           }
         }
 
         &:disabled {
           opacity: 0.5;
           /* Basics/White */
-          border: 1px solid #FFFFFF;
+          border: 1px solid white;
         }
 
       }

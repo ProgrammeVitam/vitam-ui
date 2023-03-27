@@ -1,0 +1,8 @@
+<button type="button"
+        class="{{ type }} {{ size }}"
+        [ngClass]="{'Outline' : outline}"
+        [attr.cdkStepperPrevious]="isCdkStepperPrevious ? '' : null"
+        [disabled]="disabled"
+        (click)="click()">
+  <i *ngIf="icon" class="vitamui-icon {{ icon }}"></i>
+</button>

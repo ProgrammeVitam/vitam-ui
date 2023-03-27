@@ -1,0 +1,195 @@
+// https://www.figma.com/file/m5EfQ0suI0YGr8oqLih0NL/%2F%2FDesign-System-Vitam-UI?node-id=589-815&t=ri1YmTwViA7867jG-0
+:host {
+  display: flex;
+
+  // TODO: les borders augmentent s'additionne aux paddings !
+
+  button {
+    cursor: pointer;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Basics/White */
+      color: white;
+    }
+
+    &.Large {
+      height: 50px;
+      width: 50px;
+      border-radius: 50px;
+      line-height: 20px;
+
+      i {
+        width: 24px;
+        height: 24px;
+        font-size: 20px;
+      }
+    }
+
+    &.Medium {
+      height: 40px;
+      width: 40px;
+      border-radius: 40px;
+      line-height: 18px;
+
+      i {
+        width: 20px;
+        height: 20px;
+        font-size: 18px;
+      }
+    }
+
+    &.Small {
+      height: 30px;
+      width: 30px;
+      border-radius: 50px;
+      line-height: 16px;
+
+      i {
+        width: 18px;
+        height: 18px;
+        font-size: 16px;
+      }
+    }
+
+    &.Primary {
+      /* Primary/Primary-500  #9C31B5 */
+      background: var(--vitamui-primary);
+      border: 2px solid transparent;
+
+      &:hover:enabled {
+        /* Primary/Primary-300  #C672D9 */
+        background: var(--vitamui-primary-300);
+        border: 2px solid transparent;
+        /* Primary/2dp-primary */
+        box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
+      }
+
+      &:active:enabled {
+        /* Primary/Primary-700  #571B64 */
+        background: var(--vitamui-primary-700);
+        border: 2px solid transparent;
+      }
+
+      &.Outline {
+        background: white;
+        /* Primary/Primary-500  #9C31B5 */
+        border: 1px solid var(--vitamui-primary);
+
+        i {
+          color: var(--vitamui-primary);
+        }
+
+        &:hover:enabled {
+          /* Primary/Primary-50  #F7EBFA */
+          background: var(--vitamui-primary-50);
+          /* Primary/Primary-300  #C672D9 */
+          border: 1px solid var(--vitamui-primary-300);
+          /* Primary/2dp-primary */
+          box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
+
+        }
+
+        &:active:enabled {
+          /* Primary/Primary-100  #E6C3EF */
+          background: var(--vitamui-primary-100);
+          /* Primary/Primary-700  #571B64 */
+          border: 1px solid var(--vitamui-primary-700);
+        }
+      }
+    }
+
+    &.Secondary {
+      /* Secondary/Secondary-500  #2563A9 */
+      background: var(--vitamui-secondary);
+      border: 2px solid transparent;
+
+      &:hover:enabled {
+        /* Secondary/Secondary-400  #4388D6 */
+        background: var(--vitamui-secondary-400);
+        border: 2px dashed transparent;
+        /* Secondary/2dp-secondary */
+        box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
+      }
+
+      &:active:enabled {
+        /* Secondary/Secondary-700  #173D69 */
+        background: var(--vitamui-secondary-700);
+        border: 2px dashed transparent;
+      }
+
+      &.Outline {
+        /* Basics/White */
+        background: white;
+        /* Secondary/Secondary-500 */
+        border: 1px solid var(--vitamui-secondary);
+
+        i {
+          /* Secondary/Secondary-500 */
+          color: var(--vitamui-secondary);
+        }
+
+        &:hover:enabled {
+          /* Secondary/Secondary-50 */
+          background: var(--vitamui-secondary-50);
+          /* Secondary/Secondary-400 */
+          border: 1px solid var(--vitamui-secondary-400);
+          /* Secondary/2dp-secondary */
+          box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
+
+          i {
+            /* Secondary/Secondary-400 */
+            color: var(--vitamui-secondary-400);
+          }
+        }
+
+        &:active:enabled {
+          /* Secondary/Secondary-100 */
+          background: var(--vitamui-secondary-100);
+          /* Secondary/Secondary-700 */
+          border: 1px solid var(--vitamui-secondary-700);
+          /* X_Secondary/2dp-secondary */
+          box-shadow: 0 0 2px rgba(14, 188, 255, 0.4), 0 1px 4px rgba(14, 188, 255, 0.2);
+
+          i {
+            /* Secondary/Secondary-700 */
+            color: var(--vitamui-secondary-700);
+          }
+        }
+      }
+    }
+
+    &:disabled {
+      cursor: default;
+      /* Grey/Grey-600  #757575 */
+      background: var(--vitamui-grey-700);
+
+      i {
+        /* Grey/Grey-300  #E0E0E0 */
+        color: var(--vitamui-grey-300);
+      }
+
+      &.Outline {
+        /* Basics/White --vitamui-background --vitamui-grey-100 .....-font ? ?  */
+        background: white;
+        /* Grey/Grey-700  #616161 */
+        border: 1px solid var(--vitamui-grey-700);
+
+        i {
+          /* Grey/Grey-700  #616161; */
+          color: var(--vitamui-grey-700);
+        }
+
+      }
+    }
+
+
+  }
+}
