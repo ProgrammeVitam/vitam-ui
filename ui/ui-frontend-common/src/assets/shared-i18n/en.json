@@ -306,6 +306,10 @@
     "TRANSACTIONS_MONITORING": {
       "NAME": "Transactions monitoring",
       "TOOLTIP": "Transactions monitoring"
+    },
+    "PASTIS_APP": {
+      "NAME": "Documentary Profiles",
+      "TOOLTIP": "Access, Create, Edit, or Delete Archive Profiles and Unit Profiles"
     }
   },
   "FOOTER": {
