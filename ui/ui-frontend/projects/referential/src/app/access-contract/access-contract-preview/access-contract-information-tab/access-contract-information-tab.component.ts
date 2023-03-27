@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Option } from 'ui-frontend-common';
+import { AccessContract, diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
 import { AccessContractService } from '../../access-contract.service';
@@ -47,7 +47,7 @@ import { AccessContractService } from '../../access-contract.service';
 @Component({
   selector: 'app-access-contract-information-tab',
   templateUrl: './access-contract-information-tab.component.html',
-  styleUrls: ['./access-contract-information-tab.component.scss']
+  styleUrls: ['./access-contract-information-tab.component.scss'],
 })
 export class AccessContractInformationTabComponent {
   @Input()
@@ -94,7 +94,7 @@ export class AccessContractInformationTabComponent {
       description: [null],
       accessLog: ['ACTIVE'],
       ruleCategoryToFilter: [new Array<string>()],
-      creationDate: [null]
+      creationDate: [null],
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
@@ -134,7 +134,7 @@ export class AccessContractInformationTabComponent {
     { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
     { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
     { key: 'AccessRule', label: 'Délai de communicabilité', info: '' },
-    { key: 'AppraisalRule', label: "Durée d'utilité administrative", info: '' }
+    { key: 'AppraisalRule', label: "Durée d'utilité administrative", info: '' },
   ];
   previousValue = (): AccessContract => {
     return this._accessContract;

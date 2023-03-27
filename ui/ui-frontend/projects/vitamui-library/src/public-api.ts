@@ -31,10 +31,7 @@ export * from './lib/components/vitamui-radio/vitamui-radio.module';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.component';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.module';
 /* MODELS */
-export * from './lib/models/access-contract';
-export * from './lib/models/agency';
 export * from './lib/models/autocomplete-response.interface';
-export * from './lib/models/context';
 export * from './lib/models/date-query.interface';
 export * from './lib/models/date-range-query.interface';
 export * from './lib/models/description-level.enum';
@@ -47,11 +44,9 @@ export * from './lib/models/metadata.interface';
 export * from './lib/models/node.interface';
 export * from './lib/models/ontology';
 export * from './lib/models/precise-date-query.interface';
-export * from './lib/models/rule';
 export * from './lib/models/search-criteria.interface';
 export * from './lib/models/search-query.interface';
 export * from './lib/models/search-response.interface';
-export * from './lib/models/security-profile';
 export * from './lib/models/unit.interface';
 export * from './lib/models/year-month-query.interface';
 /* SERVICES */

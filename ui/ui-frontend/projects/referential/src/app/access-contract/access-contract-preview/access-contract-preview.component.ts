@@ -37,8 +37,9 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { AccessContract, ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
+import { AccessContract } from 'ui-frontend-common';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
 import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
@@ -47,7 +48,7 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
 @Component({
   selector: 'app-access-contract-preview',
   templateUrl: './access-contract-preview.component.html',
-  styleUrls: ['./access-contract-preview.component.scss']
+  styleUrls: ['./access-contract-preview.component.scss'],
 })
 export class AccessContractPreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

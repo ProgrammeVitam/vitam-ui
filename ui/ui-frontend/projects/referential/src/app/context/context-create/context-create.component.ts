@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option } from 'ui-frontend-common';
-import { Context } from '../../../../../vitamui-library/src/lib/models/context';
+import { ConfirmDialogService, Context, Option } from 'ui-frontend-common';
 import { SecurityProfileService } from '../../security-profile/security-profile.service';
 import { ContextService } from '../context.service';
 import { ContextCreateValidators } from './context-create.validators';

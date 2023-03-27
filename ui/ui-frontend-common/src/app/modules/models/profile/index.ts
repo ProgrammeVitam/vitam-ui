@@ -36,9 +36,8 @@
  */
 export * from './access-right.enum';
 export * from './admin-user-profile.interface';
+export * from './archive-param.interface';
 export * from './display-profile-group.interface';
 export * from './ingest-right.enum';
 export * from './profile-selection.interface';
 export * from './profile.interface';
-export * from './archive-param.interface';
-export * from './access-contract.interface';

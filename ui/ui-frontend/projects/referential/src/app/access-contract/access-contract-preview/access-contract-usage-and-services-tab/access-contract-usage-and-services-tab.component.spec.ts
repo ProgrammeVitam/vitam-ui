@@ -34,28 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {AgencyService} from '../../../agency/agency.service';
-import {AccessContractService} from '../../access-contract.service';
-import {AccessContractUsageAndServicesTabComponent} from './access-contract-usage-and-services-tab.component';
-
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { of } from 'rxjs';
+import { AccessContract } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AgencyService } from '../../../agency/agency.service';
+import { AccessContractService } from '../../access-contract.service';
+import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab.component';
 
 describe('AccessContractUsageAndServicesTabComponent', () => {
   let component: AccessContractUsageAndServicesTabComponent;
   let fixture: ComponentFixture<AccessContractUsageAndServicesTabComponent>;
 
-
   const accessContractValue = {
     everyOriginatingAgency: true,
     originatingAgencies: ['test'],
     everyDataObjectVersion: true,
-    dataObjectVersion: ['test']
+    dataObjectVersion: ['test'],
   };
 
   const previousValue: AccessContract = {
@@ -80,33 +78,28 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
     ruleFilter: true,
     ruleCategoryToFilter: ['rule'],
     rootUnits: [],
-    excludedRootUnits: []
+    excludedRootUnits: [],
   };
 
   const agencyServiceMock = {
-    getAll: () => of([])
+    getAll: () => of([]),
   };
   const accessContractServiceMock = {
     // tslint:disable-next-line:variable-name
-    patch: (_data: any) => of(null)
+    patch: (_data: any) => of(null),
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports:
-        [
-          ReactiveFormsModule,
-          VitamUICommonTestModule
-        ],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [AccessContractUsageAndServicesTabComponent],
       providers: [
         FormBuilder,
-        {provide: AccessContractService, useValue: accessContractServiceMock},
-        {provide: AgencyService, useValue: agencyServiceMock}
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+        { provide: AgencyService, useValue: agencyServiceMock },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

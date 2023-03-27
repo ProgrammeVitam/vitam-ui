@@ -34,23 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {Observable, of} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff, Option} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
-import {AgencyService} from '../../../agency/agency.service';
-import {AccessContractService} from '../../access-contract.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { AccessContract, diff, Option } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { AgencyService } from '../../../agency/agency.service';
+import { AccessContractService } from '../../access-contract.service';
 
 @Component({
   selector: 'app-access-contract-usage-and-services-tab',
   templateUrl: './access-contract-usage-and-services-tab.component.html',
-  styleUrls: ['./access-contract-usage-and-services-tab.component.scss']
+  styleUrls: ['./access-contract-usage-and-services-tab.component.scss'],
 })
 export class AccessContractUsageAndServicesTabComponent implements OnInit {
-
   @Input()
   set accessContract(accessContract: AccessContract) {
     this._accessContract = accessContract;
@@ -75,69 +73,62 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({emitEvent: false});
+      this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
-      this.form.enable({emitEvent: false});
-      this.form.get('identifier').disable({emitEvent: false});
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
   constructor(
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
-    private agencyService: AgencyService) {
+    private agencyService: AgencyService
+  ) {
     this.form = this.formBuilder.group({
       everyOriginatingAgency: [true, Validators.required],
       originatingAgencies: [[]],
       everyDataObjectVersion: [true, Validators.required],
-      dataObjectVersion: [[]]
+      dataObjectVersion: [[]],
     });
 
-    this.agencyService.getAll().subscribe(agencies =>
-      this.originatingAgencies = agencies.map(x => ({label: x.name, key: x.identifier}))
-    );
+    this.agencyService
+      .getAll()
+      .subscribe((agencies) => (this.originatingAgencies = agencies.map((x) => ({ label: x.name, key: x.identifier }))));
 
-    this.originatingAgencySelect.valueChanges.subscribe(
-      x => {
-        this.form.controls.originatingAgencies.setValue(x);
-      }
-    );
+    this.originatingAgencySelect.valueChanges.subscribe((x) => {
+      this.form.controls.originatingAgencies.setValue(x);
+    });
 
-    this.form.controls.everyOriginatingAgency.valueChanges.subscribe(
-      allAgencies => {
-        if (allAgencies) {
-          // remove required validator on originatingAgencySelect
-          this.originatingAgencySelect.setValidators([]);
-          this.originatingAgencySelect.updateValueAndValidity();
-        } else {
-          // add required validator on originatingAgencySelect
-          this.originatingAgencySelect.setValidators(Validators.required);
-          this.originatingAgencySelect.markAllAsTouched();
-          this.originatingAgencySelect.updateValueAndValidity();
-        }
+    this.form.controls.everyOriginatingAgency.valueChanges.subscribe((allAgencies) => {
+      if (allAgencies) {
+        // remove required validator on originatingAgencySelect
+        this.originatingAgencySelect.setValidators([]);
+        this.originatingAgencySelect.updateValueAndValidity();
+      } else {
+        // add required validator on originatingAgencySelect
+        this.originatingAgencySelect.setValidators(Validators.required);
+        this.originatingAgencySelect.markAllAsTouched();
+        this.originatingAgencySelect.updateValueAndValidity();
       }
-    );
-    
-    this.form.controls.everyDataObjectVersion.valueChanges.subscribe(
-      allUsage => {
-        if (allUsage) {
-          // remove required validator on usageSelect
-          this.usageSelect.setValidators([]);
-          this.usageSelect.updateValueAndValidity();
-        } else {
-          // add required validator on usageSelect
-          this.usageSelect.setValidators(Validators.required);
-          this.usageSelect.markAllAsTouched();
-          this.usageSelect.updateValueAndValidity();
-        }
-      }
-    );
+    });
 
-    this.usageSelect.valueChanges.subscribe(
-      x => {
-        this.form.controls.dataObjectVersion.setValue(x);
+    this.form.controls.everyDataObjectVersion.valueChanges.subscribe((allUsage) => {
+      if (allUsage) {
+        // remove required validator on usageSelect
+        this.usageSelect.setValidators([]);
+        this.usageSelect.updateValueAndValidity();
+      } else {
+        // add required validator on usageSelect
+        this.usageSelect.setValidators(Validators.required);
+        this.usageSelect.markAllAsTouched();
+        this.usageSelect.updateValueAndValidity();
       }
-    );
+    });
+
+    this.usageSelect.valueChanges.subscribe((x) => {
+      this.form.controls.dataObjectVersion.setValue(x);
+    });
   }
 
   form: FormGroup;
@@ -150,11 +141,11 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
 
   // FIXME: Get list from common var ?
   usages: Option[] = [
-    {key: 'BinaryMaster', label: 'Archives numériques originales', info: ''},
-    {key: 'Dissemination', label: 'Copies de diffusion', info: ''},
-    {key: 'Thumbnail', label: 'Vignettes', info: ''},
-    {key: 'TextContent', label: 'Contenu textuel', info: ''},
-    {key: 'PhysicalMaster', label: 'Archives physiques', info: ''}
+    { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
+    { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
+    { key: 'Thumbnail', label: 'Vignettes', info: '' },
+    { key: 'TextContent', label: 'Contenu textuel', info: '' },
+    { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
   ];
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -164,7 +155,7 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
 
   previousValue = (): AccessContract => {
     return this._accessContract;
-  }
+  };
 
   unchanged(): boolean {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
@@ -177,29 +168,30 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
   prepareSubmit(): Observable<AccessContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
-      switchMap(
-        (formData: { id: string, [key: string]: any }) => this.accessContractService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      switchMap((formData: { id: string; [key: string]: any }) =>
+        this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
+      )
+    );
   }
 
   onSubmit() {
     this.submited = true;
     // if (this.isInvalid()) { return; }
-    this.prepareSubmit().subscribe(() => {
-      this.accessContractService.get(this._accessContract.identifier).subscribe(
-        response => {
+    this.prepareSubmit().subscribe(
+      () => {
+        this.accessContractService.get(this._accessContract.identifier).subscribe((response) => {
           this.submited = false;
           this.accessContract = response;
-        }
-      );
-    }, () => {
-      this.submited = false;
-    });
+        });
+      },
+      () => {
+        this.submited = false;
+      }
+    );
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   resetForm(accessContract: AccessContract) {
     if (accessContract.everyOriginatingAgency) {
@@ -218,11 +210,10 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
       this.usageSelect.setValidators(Validators.required);
     }
 
-    this.form.reset(accessContract, {emitEvent: false});
+    this.form.reset(accessContract, { emitEvent: false });
   }
 
   isInvalid(): boolean {
     return this.form.invalid || this.usageSelect.invalid || this.originatingAgencySelect.invalid;
   }
-
 }

@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ContextPermission } from 'projects/vitamui-library/src/public-api';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
+import { ConfirmDialogService, ContextPermission } from 'ui-frontend-common';
 import { ContextCreateValidators } from '../context-create/context-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
@@ -47,11 +47,9 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 @Component({
   selector: 'app-context-edit',
   templateUrl: './context-edit.component.html',
-  styleUrls: ['./context-edit.component.scss']
+  styleUrls: ['./context-edit.component.scss'],
 })
-
 export class ContextEditComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
   stepIndex = 0;
   hasError = true;
@@ -72,23 +70,23 @@ export class ContextEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: ContextPermission[],
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
-    private contextCreateValidators: ContextCreateValidators,
+    private contextCreateValidators: ContextCreateValidators
   ) {
     this.permissions = data;
 
     let permissions: any[] = new Array();
     if (this.permissions) {
-      permissions = this.permissions.map(permission => {
+      permissions = this.permissions.map((permission) => {
         return {
           tenant: permission.tenant,
           accessContracts: permission.accessContracts,
-          ingestContracts: permission.ingestContracts
+          ingestContracts: permission.ingestContracts,
         };
       });
     }
 
     this.form = this.formBuilder.group({
-      permissions: [permissions, null, this.contextCreateValidators.permissionInvalid()]
+      permissions: [permissions, null, this.contextCreateValidators.permissionInvalid()],
     });
   }
 
@@ -134,9 +132,9 @@ export class ContextEditComponent implements OnInit, OnDestroy {
     }
 
     // Update the context permissions
-    this.permissions = this.form.value.permissions.map((item:
-      { tenant: string; accessContracts: string[]; ingestContracts: string[]; }) =>
-      new ContextPermission('' + item.tenant, item.accessContracts, item.ingestContracts)
+    this.permissions = this.form.value.permissions.map(
+      (item: { tenant: string; accessContracts: string[]; ingestContracts: string[] }) =>
+        new ContextPermission('' + item.tenant, item.accessContracts, item.ingestContracts)
     );
 
     this.dialogRef.close({ permissions: this.permissions });

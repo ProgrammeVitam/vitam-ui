@@ -34,8 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
+export * from './access-contract/index';
 export * from './access-register/index';
+export * from './agency/index';
 export * from './app.configuration.interface';
+export * from './application-context/index';
 export * from './application/index';
 export * from './breadcrumb/breadcrumb.interface';
 export * from './collect/index';
@@ -54,8 +58,9 @@ export * from './operation/index';
 export * from './position/index';
 export * from './profile/index';
 export * from './rule/index';
+export * from './security-profile/index';
 export * from './subrogation/index';
 export * from './tree-node.interface';
+export * from './units/index';
 export * from './user/index';
 export * from './vitam/index';
-export * from './units/index';
