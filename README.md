@@ -39,7 +39,7 @@ Il est possible que l'ajout du lien vers ansible dans le PATH et/ou qu'un redém
 - Build project using `vitam` profile (see [Build for Vitam developers
 ](#Build-for-Vitam-internal-developers))
 - Set up environment variables : `SERVICE_NEXUS_URL` and `SERVICE_REPOSITORY_URL`
-- Copy files: `collect-client.conf`,`access-external-client.conf`, `ingest-external-client.conf`, `keystore_ihm-demo.p12` and `truststore_ihm-demo.jks` into `api/api-(iam|referential)/(iam|referential)-internal/src/main/config/dev-vitam/`
+- Copy files: `collect-external-client.conf`,`access-external-client.conf`, `ingest-external-client.conf`, `keystore_ihm-demo.p12` and `truststore_ihm-demo.jks` into `api/api-(iam|referential)/(iam|referential)-internal/src/main/config/dev-vitam/`
 - Redirect `dev.vitamui.com` URL defined in code to `localhost` : add this line `127.0.0.1       dev.vitamui.com` to your `hosts` (`/etc/hosts`) file
 
 ### For non Vitam developers
@@ -267,7 +267,23 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
 │   │   ├── ingest-internal: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
-## 7 - Lancement de l'application SpringBoot Ingest-External
+## 7 - Lancement de l'application SpringBoot Collect-Internal
+
+```
+├── api
+│   ├── api-collect
+│   │   ├── collect-internal: 'mvn clean spring-boot:run' ou './run.sh'
+```
+
+## 8 - Lancement de l'application SpringBoot Archive-Search-Internal
+
+```
+├── api
+│   ├── api-archive-search
+│   │   ├── archive-search-internal: 'mvn clean spring-boot:run' ou './run.sh'
+```
+
+## 9 - Lancement de l'application SpringBoot Ingest-External
 
 ```
 ├── api
@@ -275,7 +291,7 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
 │   │   ├── ingest-external: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
-## 8 - Lancement de l'application CAS Server.
+## 10 - Lancement de l'application CAS Server.
 La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
 
 **CAS-Server dépend de security-internal, iam-internal & iam-external**
@@ -331,6 +347,28 @@ La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
     ├── ui-frontend: 'npm run start:ingest'
 ```
 
+### 12b - Lancement de l'application Angular UI-Archive-Search
+
+```
+└── ui
+    ├── ui-frontend: 'npm run start:archive-search'
+```
+
+### 13b - Lancement de l'application Angular UI-Collect
+
+```
+└── ui
+    ├── ui-frontend: 'npm run start:collect'
+```
+
+### 14b - Lancement de l'application Angular UI-Pastis
+
+```
+└── ui
+    ├── ui-frontend: 'npm run start:pastis'
+```
+
+
 ## Scénario 2 : utilisation en mode recette
 Une compilation avec `-Pwebpack` a été effectuée.
 
@@ -357,7 +395,31 @@ Une compilation avec `-Pwebpack` a été effectuée.
     └── ui-ingest : './run.sh'
 ```
 
-## 12 - Les certificats sont auto-signés, il faut les accepter dans le navigateur pour :
+### 12 - Lancement de l'application SpringBoot correspondant au back de UI-Archive-Search
+
+```
+└── ui
+    └── ui-archive-search : './run.sh'
+```
+
+### 13 - Lancement de l'application SpringBoot correspondant au back de UI-Collect
+
+```
+
+└── ui
+    └── ui-collect : './run.sh'
+```
+
+### 14 - Lancement de l'application SpringBoot correspondant au back de UI-Pastis
+
+```
+
+└── ui
+    └── ui-pastis : './run.sh'
+```
+
+    
+## 15 - Les certificats sont auto-signés, il faut les accepter dans le navigateur pour :
 - UI-Frontend
     - https://dev.vitamui.com:4200
     - https://dev.vitamui.com:4201/user
@@ -369,8 +431,15 @@ Une compilation avec `-Pwebpack` a été effectuée.
 
 **Attention : sans cette étape, le logout sur toutes les applications par CAS ne fonctionne pas**.
 
-## 13 - Se connecter sur le portail via :
+## 16 - Se connecter sur le portail via :
 - https://dev.vitamui.com:4200
 
-## 14 - Se connecter sur la page de réception des mails smpt4dev via :
+## 17 - Se connecter sur la page de réception des mails smpt4dev via :
 - http://localhost:3000/
+
+## 18 - Lancer l'application 'starter-kit' contenant des exemples de composants graphiques du design system
+
+```
+└── ui
+    ├── ui-frontend: 'npm run start:starter-kit'
+```
