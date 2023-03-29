@@ -38,9 +38,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Rule } from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
-import { AuthService, RuleService, SecurityService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { RULE_MEASUREMENTS } from '../../rules.constants';
 import { RuleInformationTabComponent } from './rule-information-tab.component';
 

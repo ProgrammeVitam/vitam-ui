@@ -35,24 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Agency } from 'projects/vitamui-library/src/public-api';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, SecurityService, ApplicationId, Role } from 'ui-frontend-common';
+import { Agency, ApplicationId, diff, Role, SecurityService } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-
-
 import { AgencyService } from '../../agency.service';
 
 @Component({
   selector: 'app-agency-information-tab',
   templateUrl: './agency-information-tab.component.html',
-  styleUrls: ['./agency-information-tab.component.scss']
+  styleUrls: ['./agency-information-tab.component.scss'],
 })
 export class AgencyInformationTabComponent {
-
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   tenantIdentifier: number;
@@ -65,7 +61,7 @@ export class AgencyInformationTabComponent {
   form: FormGroup;
   previousValue = (): Agency => {
     return this._agency;
-  }
+  };
 
   @Input()
   set agency(agency: Agency) {
@@ -95,12 +91,12 @@ export class AgencyInformationTabComponent {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private agencyService: AgencyService,
-    private securityService: SecurityService) {
-
+    private securityService: SecurityService
+  ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       name: [null, Validators.required],
-      description: [null]
+      description: [null],
     });
 
     this.route.params.subscribe((params) => {
@@ -124,7 +120,8 @@ export class AgencyInformationTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.agencyService.patch(formData).pipe(catchError(() => of(null)))));
+      switchMap((formData: { id: string; [key: string]: any }) => this.agencyService.patch(formData).pipe(catchError(() => of(null))))
+    );
   }
 
   onSubmit() {
@@ -132,16 +129,17 @@ export class AgencyInformationTabComponent {
     if (this.isInvalid()) {
       return;
     }
-    this.prepareSubmit().subscribe(() => {
-      this.agencyService.get(this._agency.identifier).subscribe(
-        response => {
+    this.prepareSubmit().subscribe(
+      () => {
+        this.agencyService.get(this._agency.identifier).subscribe((response) => {
           this.submited = false;
           this.agency = response;
-        }
-      );
-    }, () => {
-      this.submited = false;
-    });
+        });
+      },
+      () => {
+        this.submited = false;
+      }
+    );
   }
 
   // tslint:disable-next-line:no-shadowed-variable

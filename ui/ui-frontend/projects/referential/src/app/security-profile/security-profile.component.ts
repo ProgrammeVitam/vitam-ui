@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { SecurityProfile } from 'projects/vitamui-library/src/lib/models/security-profile';
-import { ApplicationService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ApplicationService, GlobalEventService, SecurityProfile, SidenavPage } from 'ui-frontend-common';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
 

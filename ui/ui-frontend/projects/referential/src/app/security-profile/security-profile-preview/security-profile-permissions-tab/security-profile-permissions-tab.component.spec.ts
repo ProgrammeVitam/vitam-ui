@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {SecurityProfile} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
 
-import {SecurityProfileService} from '../../security-profile.service';
-import {SecurityProfilePermissionsTabComponent} from './security-profile-permissions-tab.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { of } from 'rxjs';
+import { SecurityProfile } from 'ui-frontend-common';
+import { SecurityProfileService } from '../../security-profile.service';
+import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab.component';
 
 describe('SecurityProfilePermissionsTabComponent', () => {
   let component: SecurityProfilePermissionsTabComponent;
@@ -49,12 +49,12 @@ describe('SecurityProfilePermissionsTabComponent', () => {
 
   const securityProfileServiceMock = {
     // tslint:disable-next-line:variable-name
-    patch: (_data: any) => of(null)
+    patch: (_data: any) => of(null),
   };
 
   const securityProfileValue = {
     fullAccess: true,
-    permissions: ['']
+    permissions: [''],
   };
 
   const previousValue: SecurityProfile = {
@@ -62,19 +62,15 @@ describe('SecurityProfilePermissionsTabComponent', () => {
     name: 'Name',
     identifier: 'SP-000001',
     fullAccess: true,
-    permissions: []
+    permissions: [],
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SecurityProfilePermissionsTabComponent],
-      providers: [
-        FormBuilder,
-        {provide: SecurityProfileService, useValue: securityProfileServiceMock}
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      providers: [FormBuilder, { provide: SecurityProfileService, useValue: securityProfileServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

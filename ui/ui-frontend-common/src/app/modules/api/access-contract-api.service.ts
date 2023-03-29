@@ -38,10 +38,10 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../injection-tokens';
-import { AccessContract } from '../models';
+import { AccessContract } from '../models/access-contract';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccessContractApiService {
   private readonly apiUrl: string;

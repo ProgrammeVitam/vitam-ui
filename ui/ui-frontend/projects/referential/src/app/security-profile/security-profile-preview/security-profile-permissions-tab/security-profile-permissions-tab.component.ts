@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { SecurityProfile } from 'projects/vitamui-library/src/public-api';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Option } from 'ui-frontend-common';
+import { diff, Option, SecurityProfile } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { SecurityProfileService } from '../../security-profile.service';
 
@@ -128,15 +128,9 @@ export class SecurityProfilePermissionsTabComponent {
           unchanged = false;
         }
       }
-    } else if ((
-        !this.form.getRawValue().permissions &&
-        this.previousValue().permissions &&
-        this.previousValue().permissions.length > 0
-      ) || (
-        this.form.getRawValue().permissions &&
-        this.form.getRawValue().permissions.length > 0 &&
-        !this.previousValue().permissions
-      )
+    } else if (
+      (!this.form.getRawValue().permissions && this.previousValue().permissions && this.previousValue().permissions.length > 0) ||
+      (this.form.getRawValue().permissions && this.form.getRawValue().permissions.length > 0 && !this.previousValue().permissions)
     ) {
       unchanged = false;
     }

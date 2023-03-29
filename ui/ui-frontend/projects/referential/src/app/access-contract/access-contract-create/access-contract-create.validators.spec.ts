@@ -34,18 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:no-magic-numbers */
+
 import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, Observable, of } from 'rxjs';
-
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import { AccessContract } from 'ui-frontend-common';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
-  if (!(isObservable(obs))) {
+  if (!isObservable(obs)) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
 
@@ -53,7 +52,6 @@ function toObservable(r: any): Observable<any> {
 }
 
 describe('AccessContract Create Validators', () => {
-
   describe('uniqueName', () => {
     it('uniqueName should return null', fakeAsync(() => {
       const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
@@ -63,7 +61,7 @@ describe('AccessContract Create Validators', () => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     }));
 
     it('should return { nameExists: true }', fakeAsync(() => {
@@ -74,7 +72,7 @@ describe('AccessContract Create Validators', () => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     }));
 
     it('should call the service', fakeAsync(() => {
@@ -85,7 +83,7 @@ describe('AccessContract Create Validators', () => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '111111'});
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
     }));
   });
 
@@ -112,7 +110,7 @@ describe('AccessContract Create Validators', () => {
       ruleCategoryToFilter: [],
       originatingAgencies: [],
       rootUnits: [],
-      excludedRootUnits: []
+      excludedRootUnits: [],
     });
 
     it('should return null', fakeAsync(() => {
@@ -123,7 +121,7 @@ describe('AccessContract Create Validators', () => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     }));
 
     it('should return { nameExists: true }', fakeAsync(() => {
@@ -134,7 +132,7 @@ describe('AccessContract Create Validators', () => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     }));
 
     it('should call the service', fakeAsync(() => {
@@ -145,8 +143,7 @@ describe('AccessContract Create Validators', () => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '111111'});
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
     }));
   });
-
 });

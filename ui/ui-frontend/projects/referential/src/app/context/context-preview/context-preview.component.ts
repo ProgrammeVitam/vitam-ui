@@ -34,32 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
-import {ConfirmActionComponent, Context} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
 
-import {ContextService} from '../context.service';
-import {ContextInformationTabComponent} from './context-information-tab/context-information-tab.component';
-import {ContextPermissionTabComponent} from './context-permission-tab/context-permission-tab.component';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import { Observable } from 'rxjs';
+import { Context } from 'ui-frontend-common';
+import { ContextService } from '../context.service';
+import { ContextInformationTabComponent } from './context-information-tab/context-information-tab.component';
+import { ContextPermissionTabComponent } from './context-permission-tab/context-permission-tab.component';
 
 @Component({
   selector: 'app-context-preview',
   templateUrl: './context-preview.component.html',
-  styleUrls: ['./context-preview.component.scss']
+  styleUrls: ['./context-preview.component.scss'],
 })
 export class ContextPreviewComponent implements AfterViewInit {
-
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() context: Context;
 
   tabUpdated: boolean[] = [false, false, false];
-  @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
+  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
 
   tabLinks: Array<ContextInformationTabComponent | ContextPermissionTabComponent> = [];
-  @ViewChild('infoTab', {static: false}) infoTab: ContextInformationTabComponent;
-  @ViewChild('permsTab', {static: false}) permsTab: ContextInformationTabComponent;
+  @ViewChild('infoTab', { static: false }) infoTab: ContextInformationTabComponent;
+  @ViewChild('permsTab', { static: false }) permsTab: ContextInformationTabComponent;
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
@@ -70,8 +70,7 @@ export class ContextPreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private contextService: ContextService) {
-  }
+  constructor(private matDialog: MatDialog, private contextService: ContextService) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -88,11 +87,9 @@ export class ContextPreviewComponent implements AfterViewInit {
       const submitAccessContractUpdate: Observable<Context> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
-        this.contextService.get(this.context.identifier).subscribe(
-          response => {
-            this.context = response;
-          }
-        );
+        this.contextService.get(this.context.identifier).subscribe((response) => {
+          this.context = response;
+        });
       });
     } else {
       this.tabLinks[this.tabs.selectedIndex].resetForm(this.context);
@@ -109,15 +106,15 @@ export class ContextPreviewComponent implements AfterViewInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
   }
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_ACCESS_CONTRACT') ||
-      event.outDetail.includes('EXT_VITAMUI_CREATE_ACCESS_CONTRACT')
+    return (
+      event.outDetail &&
+      (event.outDetail.includes('EXT_VITAMUI_UPDATE_ACCESS_CONTRACT') || event.outDetail.includes('EXT_VITAMUI_CREATE_ACCESS_CONTRACT'))
     );
   }
 
@@ -127,5 +124,4 @@ export class ContextPreviewComponent implements AfterViewInit {
     }
     this.previewClose.emit();
   }
-
 }
