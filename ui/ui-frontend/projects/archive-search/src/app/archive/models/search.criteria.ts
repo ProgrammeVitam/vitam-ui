@@ -147,6 +147,7 @@ export interface SearchCriteriaCategory {
 export interface CriteriaValue {
   id: string;
   value?: string;
+  label?: string;
   beginInterval?: string;
   endInterval?: string;
 }
