@@ -2,9 +2,8 @@ user    {{ reverse_user }} {{ reverse_group }};
 
 worker_processes auto;
 
-error_log {{ nginx_log_dir }}/master-error.log;
+error_log /var/log/nginx/master-error.log;
 pid       /run/nginx.pid;
-
 
 # Load dynamic modules. See /usr/share/nginx/README.dynamic.
 include /usr/share/nginx/modules/*.conf;
@@ -18,9 +17,9 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
 
-    client_body_temp_path   {{ nginx_tmp_dir }}/;
-    access_log              {{ nginx_log_dir }}/access.log main;
-    error_log               {{ nginx_log_dir }}/error.log;
+    client_body_temp_path   /etc/nginx/tmp/;
+    access_log              /var/log/nginx/access.log main;
+    error_log               /var/log/nginx/error.log;
 
     # Force consul agent resolution
     resolver            127.0.0.1;
@@ -48,9 +47,6 @@ http {
 
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
-
-    # Password file for ssl cert:
-    ssl_password_file {{ nginx_conf_dir }}/ssl/reverse.key_pass;
 
     # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
