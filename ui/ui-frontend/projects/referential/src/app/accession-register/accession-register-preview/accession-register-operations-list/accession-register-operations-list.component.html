@@ -18,7 +18,8 @@
       <ng-template #statusFilterTemplate>
         <vitamui-common-table-filter [(filter)]="selectedFilters"
                                      (filterChange)="changeFilter($event)">
-          <vitamui-common-table-filter-option *ngFor="let filter of availableOperationTypeTranslated" value="{{ filter }}">
+          <vitamui-common-table-filter-option *ngFor="let filter of availableOperationTypeTranslated"
+                                              value="{{ filter }}">
             <div class="table-filter-icon">{{ filter }}</div>
           </vitamui-common-table-filter-option>
         </vitamui-common-table-filter>
