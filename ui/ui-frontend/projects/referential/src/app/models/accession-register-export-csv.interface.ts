@@ -44,7 +44,7 @@ export interface AccessionRegisterSearchDto {
   acquisitionInformations?: Array<string>;
 
   elimination?: string;
-  transfer_reply?: string;
+  transferReply?: string;
 
 }
 
