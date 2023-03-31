@@ -24,10 +24,10 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/animations';
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {Direction, RegisterValueEventModel} from 'ui-frontend-common';
-import {TranslateService} from "@ngx-translate/core";
+import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-accession-register-operations-list',
@@ -42,43 +42,44 @@ import {TranslateService} from "@ngx-translate/core";
     ]),
   ],
 })
-export class AccessionRegisterOperationsListComponent implements OnInit, OnChanges {
+export class AccessionRegisterOperationsListComponent implements OnChanges {
 
-  @Input()
-  operationsIds: string[];
-  @Input()
-  operations: RegisterValueEventModel[];
+  @Input() operationsIds: string[];
+  @Input() operations: RegisterValueEventModel[];
 
-  selectedFilters: Array<string>;
-  orderColumn: keyof RegisterValueEventModel = "OpType"
+  orderColumn: keyof RegisterValueEventModel = 'OpType'
   orderDirection = Direction.ASCENDANT;
-  availableOperationTypeTranslated: Array<string>;
+  availableOperationsType: Array<{ name: RegisterValueEventType, translation: string }>;
+  selectedFilters: Array<string>;
   operationsProcessed: RegisterValueEventModel[];
 
-  orderKeyOperationType: keyof RegisterValueEventModel = "OpType"
-  orderKeyOperationGots: keyof RegisterValueEventModel = "Gots"
-  orderKeyOperationUnits: keyof RegisterValueEventModel = "Units"
-  orderKeyOperationObjects: keyof RegisterValueEventModel = "Objects"
-  orderKeyOperationObjSize: keyof RegisterValueEventModel = "ObjSize"
-  orderKeyOperationCreationDate: keyof RegisterValueEventModel = "CreationDate"
+  orderKeyOperationGots: keyof RegisterValueEventModel = 'Gots'
+  orderKeyOperationUnits: keyof RegisterValueEventModel = 'Units'
+  orderKeyOperationObjects: keyof RegisterValueEventModel = 'Objects'
+  orderKeyOperationObjSize: keyof RegisterValueEventModel = 'ObjSize'
+  orderKeyOperationCreationDate: keyof RegisterValueEventModel = 'CreationDate'
 
   constructor(
     private translateService: TranslateService,
   ) {
   }
 
-  ngOnInit(): void {
-    this.reloadOperations();
-  }
-
-  ngOnChanges(): void {
-    this.reloadOperations();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.operations) {
+      this.reloadOperations();
+    }
   }
 
   private reloadOperations() {
-    this.availableOperationTypeTranslated = this.operations.map(o => o.OpType)
+    this.availableOperationsType = this.operations.map(o => o.OpType)
       .filter((value, index, array) => index === array.indexOf(value))
-      .map(operationType => this.translateService.instant('ACCESSION_REGISTER.PREVIEW.OPERATIONS.TYPE.' + operationType));
+      .map(operationType => {
+        return {
+          name: operationType,
+          translation: this.translateService.instant('ACCESSION_REGISTER.PREVIEW.OPERATIONS.TYPE.' + operationType),
+        }
+      });
+    this.selectedFilters = this.availableOperationsType.map(operationType => operationType.name);
     this.operationsProcessed = [...this.operations]
   }
 
@@ -93,7 +94,7 @@ export class AccessionRegisterOperationsListComponent implements OnInit, OnChang
   sortTable() {
     const sens: number = this.orderDirection === Direction.ASCENDANT ? -1 : 1;
     this.operationsProcessed.sort((a, b) => {
-        return a[this.orderColumn] == b[this.orderColumn] ? 0 :
+        return a[this.orderColumn] === b[this.orderColumn] ? 0 :
           a[this.orderColumn] > b[this.orderColumn] ? sens : -sens;
       }
     );
