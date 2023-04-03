@@ -77,7 +77,7 @@ public class SafeFileChecker {
      *                 using File.separator FileSystem String
      * @throws IOException thrown when any check fails with UnChecked or Runtime exception
      */
-    public static void checkSafeFilePath(String rootPath, String... subPaths) {
+    public static void checkSafeFilePath(String rootPath, String... subPaths) throws InvalidFileSanitizeException {
         try {
             checkNullParameter(rootPath);
             String finalPath = rootPath;
@@ -86,7 +86,7 @@ public class SafeFileChecker {
             }
             checkSafeFilePath(finalPath);
         } catch (Exception e) {
-            throw e;
+            throw new InvalidFileSanitizeException(e.getMessage());
         }
     }
 
@@ -145,7 +145,7 @@ public class SafeFileChecker {
             if(!pathName.matches(FILENAME_PATTERN)) {
                 LOGGER.error("Invalid pathName {} ", pathName);
                 throw new InvalidFileSanitizeException(String
-                    .format("Invalid filename (%s) (has unauthorized characters in part %s", pathName));
+                    .format("Invalid filename (%s) : has unauthorized characters", pathName));
             }
         }
 

@@ -28,8 +28,6 @@ public class UserControllerTest extends UiIdentityRestControllerTest<UserDto> {
     @Value("${ui-identity.prefix}")
     protected String apiUrl;
 
-    private final String PREFIX = "/users";
-
     @MockBean
     private UserService service;
 
@@ -90,13 +88,13 @@ public class UserControllerTest extends UiIdentityRestControllerTest<UserDto> {
     }
 
     @Test
-    public void testCheckExistByTotoWithBadCriteraiThenReturnBadRequest() {
-        LOGGER.debug("testCheckExistByTotoWithBadCriteraiThenReturnBadRequest");
+    public void testCheckExistByTotoWithBadCriteraiThenReturnPreconditionFailedException() {
+        LOGGER.debug("testCheckExistByTotoWithBadCriteraiThenReturnPreconditionFailedException");
         Mockito.when(service.checkExist(any(), any())).thenReturn(false);
         final QueryDto criteria = QueryDto.criteria().addCriterion("toto<s></s>", "titi",
             CriterionOperator.EQUALS);
         super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()),
-            status().isBadRequest());
+            status().isPreconditionFailed());
     }
 
     @Test
@@ -113,6 +111,7 @@ public class UserControllerTest extends UiIdentityRestControllerTest<UserDto> {
 
     @Override
     protected String getRessourcePrefix() {
+        final String PREFIX = "/users";
         return "/" + apiUrl + PREFIX;
     }
 

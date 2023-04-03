@@ -38,7 +38,6 @@ import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -61,7 +60,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = {TransactionArchiveUnitExternalController.class})
-public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
+class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalControllerTest.class);
@@ -109,7 +108,7 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternal
     }
 
     @Test
-    void when_searchCollectUnitsByCriteria_Service_ko_should_return_ko() {
+    void test_searchCollectUnitsByCriteria_with_invalid_criteria_should_return_ko() {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
         SearchCriteriaEltDto nodeCriteria = new SearchCriteriaEltDto();
@@ -124,11 +123,12 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternal
             .thenReturn(expectedResponse);
 
         assertThatCode(() -> transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query))
-            .isInstanceOf(InvalidSanitizeCriteriaException.class);
+            .isInstanceOf(PreconditionFailedException.class)
+            .hasMessage("The object is not valid ");
     }
 
     @Test
-    void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws InvalidParseOperationException,
+    void test_searchArchiveUnitsByCriteria_with_valid_criteria_should_return_ok() throws InvalidParseOperationException,
         PreconditionFailedException {
 
         SearchCriteriaDto query = new SearchCriteriaDto();

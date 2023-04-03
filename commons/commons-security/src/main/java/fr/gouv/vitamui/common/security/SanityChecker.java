@@ -53,8 +53,6 @@ import java.util.Optional;
  */
 public class SanityChecker {
 
-    private static final String INVALID_IDENTIFIER_SANITIZE = "Sanitizing failed; Invalid input identifier : ";
-    private static final String INVALID_HEADER_SANITIZE = "Sanitizing failed; Invalid request header : ";
     private static final String INVALID_CRITERIA = "Criteria failed when sanitizing, it may contains insecure data : ";
     private static final String JSON_IS_NOT_VALID_FROM_SANITIZE_CHECK = "Json is not valid from Sanitize check";
     private static final int DEFAULT_LIMIT_PARAMETER_SIZE = 5000;
@@ -63,11 +61,7 @@ public class SanityChecker {
     private static final long DEFAULT_LIMIT_FILE_SIZE = 8000000000L;
 
     public static final String HTTP_PARAMETER_VALUE = "HTTPParameterValue";
-    private static final String HTTP_PARAMETER_NAME = "HTTPParameterName";
-    private static final String HTTP_HEADER_NAME = "HTTPHeaderName";
-    private static final String HTTP_HEADER_VALUE = "HTTPHeaderValue";
 
-    // TODO : verify the difference between this defined limit and the previous ones
     private static final int REQUEST_LIMIT = 10000;
 
     /**
@@ -108,14 +102,10 @@ public class SanityChecker {
         return !isStringInfected(value, HTTP_PARAMETER_VALUE) || PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST.contains(value);
     }
 
-    public static boolean isValidParameterName(String value) {
-        return !isStringInfected(value, HTTP_PARAMETER_NAME);
-    }
-
     /**
      * Sanitize the fileName
      *
-     * @param fileName
+     * @param fileName : name of a file
      * @return true/false
      */
     public static void isValidFileName(String fileName) throws PreconditionFailedException {
@@ -170,7 +160,7 @@ public class SanityChecker {
      * checkSecureParameter : Check sanity of String: no javascript/xml tag, neither html tag
      * check if the string is not infected or contains illegal characters
      *
-     * @param params
+     * @param params : sequence of strings de check
      * @throws PreconditionFailedException
      * @throws InvalidParseOperationException
      */
@@ -227,11 +217,11 @@ public class SanityChecker {
             try {
                 checkSanityTags(param, getLimitParamSize());
                 checkHtmlPattern(param);
-            } catch (InvalidParseOperationException exception) {
+            } catch (InvalidParseOperationException | PreconditionFailedException exception) {
                 throw new InvalidParseOperationException("Error with the parameter ", exception);
             }
         } else {
-            throw new PreconditionFailedException("the parameter is not valid");
+            throw new PreconditionFailedException("the parameter " + param +  " is not valid");
         }
     }
 
@@ -299,11 +289,11 @@ public class SanityChecker {
      * checkHtmlPattern : check against Html Pattern within value (not allowed)
      *
      * @param param
-     * @throws InvalidParseOperationException when Sanity Check is in error
+     * @throws PreconditionFailedException when Sanity Check is in error
      */
-    private static void checkHtmlPattern(String param) throws InvalidParseOperationException {
+    public static void checkHtmlPattern(String param) throws PreconditionFailedException {
         if (StringUtils.HTML_PATTERN.matcher(param).find()) {
-            throw new InvalidParseOperationException("HTML PATTERN found");
+            throw new PreconditionFailedException("the parameter : " + param +  " is not valid");
         }
     }
 
@@ -334,7 +324,7 @@ public class SanityChecker {
             while (fields.hasNext()) {
                 final Map.Entry<String, JsonNode> entry = fields.next();
                 final String key = entry.getKey();
-                if (isValidParameterName(key) || PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST.contains(key)) {
+                if (isValidParameter(key)) {
                     checkSanityTags(key, getLimitFieldSize());
                 } else {
                     throw new PreconditionFailedException("Invalid JSON key: " + key);
@@ -352,7 +342,11 @@ public class SanityChecker {
                     }
                 } else if (!value.isValueNode()) {
                     checkJsonSanity(value);
-                } else {
+                } else if(value.isTextual()) {
+                    checkHtmlPattern(value.textValue());
+                    checkSanityTags(value.textValue(), getLimitParamSize());
+                }
+                else {
                     validateJSONField(value);
                 }
             }
@@ -378,20 +372,6 @@ public class SanityChecker {
         }
     }
 
-    /*
-     * @return the limit File Size (XML or JSON)
-     */
-    public static long getLimitFileSize() {
-        return limitFileSize;
-    }
-
-    /**
-     * @param limitFileSize the limit File Size to set (XML or JSON)
-     */
-    public static void setLimitFileSize(long limitFileSize) {
-        SanityChecker.limitFileSize = limitFileSize;
-    }
-
     /**
      * @return the limit Size of a Json
      */
@@ -411,13 +391,6 @@ public class SanityChecker {
      */
     public static int getLimitFieldSize() {
         return limitFieldSize;
-    }
-
-    /**
-     * @param limitFieldSize the limit Size of a Field in a Json to set
-     */
-    public static void setLimitFieldSize(int limitFieldSize) {
-        SanityChecker.limitFieldSize = limitFieldSize;
     }
 
     /**

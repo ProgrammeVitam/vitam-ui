@@ -71,19 +71,16 @@ export class UserService extends SearchService<User> {
     user.email = user.email;
 
     return this.userApi.create(user).pipe(
-      tap(
-        (response: User) => {
-          this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.USER_CREATE',
-            icon: 'vitamui-icon-key',
-            translateParams: {
-              param1: response.firstname,
-              param2: response.lastname,
-            },
-          });
-        },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-      )
+      tap((response: User) => {
+        this.snackBarService.open({
+          message: 'SHARED.SNACKBAR.USER_CREATE',
+          icon: 'vitamui-icon-key',
+          translateParams: {
+            param1: response.firstname,
+            param2: response.lastname,
+          },
+        });
+      })
     );
   }
 

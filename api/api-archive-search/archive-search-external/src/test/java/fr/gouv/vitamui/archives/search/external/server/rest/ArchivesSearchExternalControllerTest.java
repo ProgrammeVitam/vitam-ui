@@ -31,7 +31,6 @@ import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequestParameters;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -40,9 +39,9 @@ import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExt
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -76,7 +75,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = {ArchivesSearchExternalController.class})
-public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalControllerTest<IdDto> {
+class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchivesSearchExternalControllerTest.class);
@@ -143,7 +142,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
 
 
     @Test
-    void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws InvalidParseOperationException,
+    void test_searchArchiveUnitsByCriteria_with_ok_criteria_should_return_ok() throws InvalidParseOperationException,
         PreconditionFailedException {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
@@ -156,7 +155,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
     }
 
     @Test
-    void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ko() {
+    void test_searchArchiveUnitsByCriteria_with_invalid_criteria_should_return_ko() {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
         SearchCriteriaEltDto nodeCriteria = new SearchCriteriaEltDto();
@@ -171,7 +170,8 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
             .thenReturn(expectedResponse);
 
         assertThatCode(() -> archivesSearchExternalController.searchArchiveUnitsByCriteria(query))
-            .isInstanceOf(InvalidSanitizeCriteriaException.class);
+            .isInstanceOf(PreconditionFailedException.class)
+            .hasMessage("The object is not valid ");
     }
 
     @Test
@@ -191,7 +191,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
 
 
     @Test
-    void when_exportCsvArchiveUnitsByCriteria_Srvc_ok_should_return_ok()
+    void test_exportCsvArchiveUnitsByCriteria_with_valid_criteria_should_return_ok()
         throws InvalidParseOperationException, PreconditionFailedException, IOException {
         // Given
         SearchCriteriaDto query = new SearchCriteriaDto();
