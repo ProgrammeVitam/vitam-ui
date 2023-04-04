@@ -55,7 +55,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
-import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HitsDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterCsv;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;

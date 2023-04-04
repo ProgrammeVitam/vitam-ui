@@ -36,10 +36,9 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Option } from 'ui-frontend-common';
+import { IngestContract, Option, diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 
 import { IngestContractService } from '../../ingest-contract.service';

@@ -38,17 +38,15 @@
 
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatTreeModule} from '@angular/material/tree';
-import {EMPTY, of} from 'rxjs';
-import { AuthService } from 'ui-frontend-common';
-import { FileType } from '../../models/file-type.enum';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTreeModule } from '@angular/material/tree';
+import { EMPTY, of } from 'rxjs';
+import { AuthService, FileType } from 'ui-frontend-common';
 import { Node } from '../../models/node.interface';
 import { FilingPlanComponent } from './filing-plan.component';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 
-
-@Component({selector: 'lib-vitamui-library-node', template: ''})
+@Component({ selector: 'lib-vitamui-library-node', template: '' })
 class NodeStubComponent {
   @Input() tenantIdentifier: any;
   @Input() node: any;
@@ -63,23 +61,19 @@ describe('FilingPlanComponent', () => {
   const fillingPlanStub = {
     tree$: of([]),
     expandChange$: EMPTY,
-    loadTree: () => of([])
+    loadTree: () => of([]),
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatTreeModule,
-        MatProgressSpinnerModule,
-      ],
+      imports: [MatTreeModule, MatProgressSpinnerModule],
       declarations: [FilingPlanComponent, NodeStubComponent],
       providers: [
-        {provide: FilingPlanService, useValue: fillingPlanStub},
-        {provide: AuthService, useValue: {user: {profileGroup: {profiles: []}}}},
+        { provide: FilingPlanService, useValue: fillingPlanStub },
+        { provide: AuthService, useValue: { user: { profileGroup: { profiles: [] } } } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -95,7 +89,6 @@ describe('FilingPlanComponent', () => {
   describe('Checkbox-Clic', () => {
     let nodes: Node[] = [];
 
-
     beforeEach(() => {
       const rootNode: Node = {
         id: 'rootId',
@@ -106,7 +99,7 @@ describe('FilingPlanComponent', () => {
         vitamId: 'rootId',
         parents: [],
         checked: false,
-        disabledChild: false
+        disabledChild: false,
       };
 
       const rootChildren: Node[] = [
@@ -119,8 +112,9 @@ describe('FilingPlanComponent', () => {
           vitamId: 'rootChild-1',
           parents: [rootNode],
           checked: false,
-          disabledChild: false
-        }, {
+          disabledChild: false,
+        },
+        {
           id: 'rootChild-2',
           label: 'RootChild 2',
           type: FileType.FOLDER_HOLDING,
@@ -129,31 +123,34 @@ describe('FilingPlanComponent', () => {
           vitamId: 'rootChild-2',
           parents: [rootNode],
           checked: false,
-          disabledChild: false
-        }
+          disabledChild: false,
+        },
       ];
       rootNode.children = rootChildren;
-      rootChildren[0].children = [{
-        id: 'leaf-1',
-        label: 'Leaf 1',
-        type: FileType.FOLDER_HOLDING,
-        children: [],
-        ingestContractIdentifier: 'string',
-        vitamId: 'leaf-1',
-        parents: [rootChildren[0]],
-        checked: false,
-        disabledChild: false
-      }, {
-        id: 'leaf-2',
-        label: 'Leaf 2',
-        type: FileType.FOLDER_HOLDING,
-        children: [],
-        ingestContractIdentifier: 'string',
-        vitamId: 'leaf-2',
-        parents: [rootChildren[0]],
-        checked: false,
-        disabledChild: false
-      }];
+      rootChildren[0].children = [
+        {
+          id: 'leaf-1',
+          label: 'Leaf 1',
+          type: FileType.FOLDER_HOLDING,
+          children: [],
+          ingestContractIdentifier: 'string',
+          vitamId: 'leaf-1',
+          parents: [rootChildren[0]],
+          checked: false,
+          disabledChild: false,
+        },
+        {
+          id: 'leaf-2',
+          label: 'Leaf 2',
+          type: FileType.FOLDER_HOLDING,
+          children: [],
+          ingestContractIdentifier: 'string',
+          vitamId: 'leaf-2',
+          parents: [rootChildren[0]],
+          checked: false,
+          disabledChild: false,
+        },
+      ];
 
       nodes = [rootNode];
       component.nestedDataSource.data = nodes;
@@ -323,10 +320,12 @@ describe('FilingPlanComponent', () => {
 
         // Then: Check selected and all children checked (and children disabled)
         expect(nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and not Disabled');
-        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled)
-        .toBeTruthy('Leaf 1 should be Checked and Disabled');
-        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled)
-        .toBeTruthy('Leaf 2 should be Checked and Disabled');
+        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy(
+          'Leaf 1 should be Checked and Disabled'
+        );
+        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy(
+          'Leaf 2 should be Checked and Disabled'
+        );
 
         // Then: Check sibling and parent nodes not checked nor disabled
         expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy('Root node should not be Checked nor Disabled');
@@ -346,10 +345,12 @@ describe('FilingPlanComponent', () => {
 
         // Then: Check selected and all children checked (and children disabled)
         expect(nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and not Disabled');
-        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled)
-          .toBeTruthy('Leaf 1 should be Checked and Disabled');
-        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled)
-          .toBeTruthy('Leaf 2 should be Checked and Disabled');
+        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy(
+          'Leaf 1 should be Checked and Disabled'
+        );
+        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy(
+          'Leaf 2 should be Checked and Disabled'
+        );
         expect(nodes[0].children[1].checked && !nodes[0].children[1].disabled).toBeTruthy('Child 2 should be Checked and not Disabled');
 
         // Then: Check sibling and parent nodes not checked nor disabled
@@ -376,10 +377,12 @@ describe('FilingPlanComponent', () => {
         // Then: Check sibling and parent nodes not checked nor disabled
         expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy('Root node should not be Checked nor Disabled');
         expect(!nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should not be Checked nor Disabled');
-        expect(!nodes[0].children[0].children[0].checked && !nodes[0].children[0].children[0].disabled)
-          .toBeTruthy('Leaf 1 should not be Checked nor Disabled');
-        expect(!nodes[0].children[0].children[1].checked && !nodes[0].children[0].children[1].disabled)
-          .toBeTruthy('Leaf 2 should not be Checked nor Disabled');
+        expect(!nodes[0].children[0].children[0].checked && !nodes[0].children[0].children[0].disabled).toBeTruthy(
+          'Leaf 1 should not be Checked nor Disabled'
+        );
+        expect(!nodes[0].children[0].children[1].checked && !nodes[0].children[0].children[1].disabled).toBeTruthy(
+          'Leaf 2 should not be Checked nor Disabled'
+        );
 
         // Then: Check selected nodes
         expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
@@ -401,10 +404,12 @@ describe('FilingPlanComponent', () => {
         expect(nodes[0].checked && !nodes[0].disabled).toBeTruthy('Root node should be Checked and not Disabled');
         expect(nodes[0].children[0].checked && nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and Disabled');
         expect(nodes[0].children[1].checked && nodes[0].children[1].disabled).toBeTruthy('Child 2 should be Checked and Disabled');
-        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled)
-          .toBeTruthy('Leaf 1 should be Checked and Disabled');
-        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled)
-          .toBeTruthy('Leaf 2 should be Checked and Disabled');
+        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy(
+          'Leaf 1 should be Checked and Disabled'
+        );
+        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy(
+          'Leaf 2 should be Checked and Disabled'
+        );
 
         // Then: Check selected nodes
         expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
@@ -471,6 +476,5 @@ describe('FilingPlanComponent', () => {
         expect(component.selectedNodes.included[0]).toBe('rootChild-2', 'rootChild-2 should be included');
       });
     });
-
   });
 });

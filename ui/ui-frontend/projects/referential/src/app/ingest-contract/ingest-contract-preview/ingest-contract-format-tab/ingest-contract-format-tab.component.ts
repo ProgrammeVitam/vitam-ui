@@ -36,10 +36,10 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FileFormat, IngestContract } from 'projects/vitamui-library/src/public-api';
+import { FileFormat } from 'projects/vitamui-library/src/public-api';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
+import { IngestContract, diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';

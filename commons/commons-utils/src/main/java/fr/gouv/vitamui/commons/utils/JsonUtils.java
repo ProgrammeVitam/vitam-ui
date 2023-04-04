@@ -71,7 +71,7 @@ public class JsonUtils {
 
     /**
      * Convert Object to json string
-     * @param Object
+     * @param object : the object to convert
      * @return
      * @throws JsonProcessingException
      */
@@ -95,7 +95,7 @@ public class JsonUtils {
     /**
      * Convert value Object to specified Type.
      * @param fromValue
-     * @param toValueTypeRef
+     * @param clazz
      * @return
      * @throws JsonParseException
      * @throws JsonMappingException
