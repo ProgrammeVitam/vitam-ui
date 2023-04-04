@@ -178,7 +178,7 @@
     "ngx-markdown": "10.1.1",
     "node-sass": "^4.14.1",
     "protractor": "^7.0.0",
-    "puppeteer": "^19.2.2",
+    "puppeteer": "~19.6.3",
     "ts-node": "~7.0.1",
     "tsickle": "^0.39.1",
     "tslint": "~6.1.0",
