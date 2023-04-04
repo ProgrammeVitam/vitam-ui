@@ -246,9 +246,3 @@ api/api-collect/collect-internal/src/main/resources/ontology/
 ##########################################
 tools/docker/mongo/mongo-entrypoint
 
-##########################################
-#  Angular Package-lock files ###########
-################################""
-
-ui/ui-frontend-common/package-lock.json
-ui/ui-frontend/package-lock.json
