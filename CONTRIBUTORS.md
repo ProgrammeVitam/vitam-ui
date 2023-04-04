@@ -9,13 +9,11 @@
 * Emmanuel DEVILLER
 * Makhtar DIAGNE
 * Jamal EL AOUFI
-* Romain GORDOLO
 * Sarah GRALL
 * Abdelmoez GUETAT
 * Yahya KAMAZ
 * Guillaume LAFARGUE
 * Mathieu LEGUAY
-* Jérôme LELEU
 * Olivier MARSOL
 * Pierre NOLE
 * Noureddine OUAGHRIS
@@ -34,4 +32,11 @@
 * Clément SOL
 * Jérome LELEU
 * Mehdi NAJAHI
+* Anass HAIFI
+* Mohamed TIZAOUI
+* Alexandre PARIS
+* Souhaib FATAN
+* Mohamed HAMEG
+* Daniel RADEAU
+ 
 
