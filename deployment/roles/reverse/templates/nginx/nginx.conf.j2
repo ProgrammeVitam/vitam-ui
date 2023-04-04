@@ -49,9 +49,6 @@ http {
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
 
-    # Password file for ssl cert:
-    ssl_password_file {{ nginx_conf_dir }}/ssl/reverse.key_pass;
-
     # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.

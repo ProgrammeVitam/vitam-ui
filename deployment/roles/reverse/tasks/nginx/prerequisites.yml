@@ -4,9 +4,9 @@
   package:
     state: present
     name: epel-release
-  become: true
   when:
     - ansible_os_family == "Centos"
+    - disable_internet_repositories_install | default(false) | bool == false
 
 - name: 'Tasks > reverse > prerequisites.yml | Install nginx package'
   package:
@@ -16,13 +16,11 @@
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
-  become: true
 
 - name: 'Tasks > reverse > prerequisites.yml | Install module nginx-mod-stream'
   package:
     state: present
     name: nginx-mod-stream
-  become: true
   when:
     - ansible_os_family == "Centos"
 
@@ -30,25 +28,5 @@
   package:
     state: present
     name: libnginx-mod-stream
-  become: true
   when:
     - ansible_os_family == "Debian"
-
-- name: 'Tasks > reverse > prerequisites.yml | Set vars user and group'
-  set_fact:
-    reverse_user: "root"
-    reverse_group: "root"
-
-- name: 'Tasks > reverse > prerequisites.yml | Ensure that reverse group exists'
-  group:
-    name: "{{ reverse_group }}"
-    state: present
-
-- name: 'Tasks > reverse > prerequisites.yml | Ensure that reverse user exists'
-  user:
-    name: "{{ reverse_user }}"
-    create_home: no
-    group: "{{ reverse_group }}"
-    state: present
-  become: true
-

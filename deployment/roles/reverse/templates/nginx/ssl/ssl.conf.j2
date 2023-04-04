@@ -1,5 +1,7 @@
 ssl_certificate {{ nginx_conf_dir }}/ssl/reverse.crt;
 ssl_certificate_key {{ nginx_conf_dir }}/ssl/reverse.key;
+# Password file for ssl cert
+ssl_password_file {{ nginx_conf_dir }}/ssl/reverse.key_pass;
 
 ssl_prefer_server_ciphers on;
 ssl_session_cache shared:SSL:10m;
@@ -9,4 +11,3 @@ ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES2
 
 ssl_dhparam {{ nginx_conf_dir }}/ssl/dhparam.pem;
 ssl_ecdh_curve secp384r1;
-
