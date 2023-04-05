@@ -36,15 +36,11 @@
  */
 package fr.gouv.vitamui.security.server.context.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
-
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
@@ -54,6 +50,11 @@ import fr.gouv.vitamui.security.server.context.dao.ContextRepository;
 import fr.gouv.vitamui.security.server.context.domain.Context;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the application contexts.
@@ -63,6 +64,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ContextService extends VitamUICrudService<ContextDto, Context> {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ContextService.class);
 
     private final ContextRepository contextRepository;
 
@@ -80,6 +83,7 @@ public class ContextService extends VitamUICrudService<ContextDto, Context> {
 
         final Certificate certificate = certificateRepository.findByData(data);
         if (certificate == null) {
+            LOGGER.error("the certificate is not found");
             throw new NotFoundException("Certificate not found");
         }
         else {
@@ -88,9 +92,11 @@ public class ContextService extends VitamUICrudService<ContextDto, Context> {
             final List<ContextDto> contexts = getMany(contextId);
 
             if (contexts == null) {
+                LOGGER.debug("Certificate not found");
                 throw new InternalServerException("No context was found with id: " + certificate.getContextId());
             }
             if (contexts.size() != 1) {
+                LOGGER.debug("Unable to find only one context for certificate");
                 throw new InternalServerException("Unable to find only one context with id " + certificate.getContextId() + " for certificate");
             }
             else {
@@ -108,6 +114,7 @@ public class ContextService extends VitamUICrudService<ContextDto, Context> {
     public ContextDto addTenant(final String contextId, final Integer tenantIdentifier) {
         final ContextDto contextDto = getOne(contextId, Optional.empty(), Optional.empty());
         if (contextDto == null) {
+            LOGGER.error("the Context is not found");
             throw new NotFoundException("Context not found");
         }
         else {

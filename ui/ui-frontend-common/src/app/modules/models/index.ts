@@ -51,6 +51,7 @@ export * from './customer/index';
 export * from './externalparamprofile/index';
 export * from './group/index';
 export * from './id.interface';
+export * from './ingest-contract/index';
 export * from './logbook/index';
 export * from './managementContract/index';
 export * from './ontology/index';

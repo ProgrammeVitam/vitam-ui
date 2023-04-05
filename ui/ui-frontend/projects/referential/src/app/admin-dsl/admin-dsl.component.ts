@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import '@angular/localize/init';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppRootComponent, Option, VitamUISnackBarService } from 'ui-frontend-common';
-import { DslQueryType } from '../../../../vitamui-library/src/lib/models/dsl-query-type.enum';
+import { AppRootComponent, DslQueryType, Option, VitamUISnackBarService } from 'ui-frontend-common';
 import { AccessContractService } from '../access-contract/access-contract.service';
 import { AdminDslService } from './admin-dsl.service';
 

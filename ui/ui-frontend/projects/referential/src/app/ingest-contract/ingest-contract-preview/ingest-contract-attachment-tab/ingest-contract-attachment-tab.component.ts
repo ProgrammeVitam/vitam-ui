@@ -40,8 +40,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import '@angular/localize/init';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IngestContract, SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-import { AccessContract, ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
+import { AccessContract, ExternalParameters, ExternalParametersService, IngestContract } from 'ui-frontend-common';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 
 @Component({

@@ -36,25 +36,24 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.util;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitamui.commons.vitam.api.dto.CollectionsDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetBucketDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetResultsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class VitamResponseHandler {
 
@@ -69,7 +68,7 @@ public class VitamResponseHandler {
     public static CollectionsDto extractCollections(JsonNode jsonResponse) throws Exception {
         VitamUISearchResponseDto searchResponse = extractResponse(jsonResponse, VitamUISearchResponseDto.class);
         List<String> ids = searchResponse.getResults().stream()
-                .filter(res -> UnitTypeEnum.HOLDING_UNIT.getValue().equals(res.getUnitType())).map(res -> res.getId())
+                .filter(res -> UnitTypeEnum.HOLDING_UNIT.getValue().equals(res.getUnitType())).map(ResultsDto::getId)
                 .collect(Collectors.toList());
         return new CollectionsDto(ids, new ArrayList<>());
     }
@@ -92,11 +91,11 @@ public class VitamResponseHandler {
             List<FacetBucketDto> bucks = buckets.stream()
                     .filter(b -> StringUtils.containsIgnoreCase(b.getValue(), parts[parts.length - 1]))
                     .sorted((b1, b2) -> b2.getCount().compareTo(b1.getCount())).collect(Collectors.toList());
-            Long total = bucks.stream().map(b -> b.getCount()).reduce(0L, (a, b) -> a + b);
+            Long total = bucks.stream().map(FacetBucketDto::getCount).reduce(0L, Long::sum);
             bucks = bucks.stream().limit(5).collect(Collectors.toList());
 
             for (FacetBucketDto facetBucket : bucks) {
-                String titre = vitamuiSearchResponseDto.getResults().stream().map(res -> res.getTitle())
+                String titre = vitamuiSearchResponseDto.getResults().stream().map(ResultsDto::getTitle)
                         .filter(title -> isTitlePartStartWithValue(title, facetBucket.getValue())).findFirst()
                         .orElse(null);
                 if (titre != null) {

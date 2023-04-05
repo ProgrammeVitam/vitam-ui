@@ -28,8 +28,7 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ApiUnitObject, qualifiersToVersionsWithQualifier, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
-import { DescriptionLevel } from 'vitamui-library';
+import { ApiUnitObject, DescriptionLevel, qualifiersToVersionsWithQualifier, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 
 @Component({
@@ -38,8 +37,8 @@ import { ArchiveService } from '../../archive.service';
   styleUrls: ['./archive-unit-objects-details-tab.component.scss'],
   animations: [
     trigger('collapse', [
-      state('false', style({height: AUTO_STYLE, visibility: AUTO_STYLE})),
-      state('true', style({height: '0', visibility: 'hidden'})),
+      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
+      state('true', style({ height: '0', visibility: 'hidden' })),
       transition('false => true', animate(300 + 'ms ease-in')),
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
@@ -52,9 +51,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
 
-  constructor(private archiveService: ArchiveService,
-              private clipboard: Clipboard) {
-  }
+  constructor(private archiveService: ArchiveService, private clipboard: Clipboard) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
@@ -72,11 +69,13 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
     event.stopPropagation();
-    return this.archiveService.launchDownloadObjectFromUnit(this.archiveUnit['#id'],
+    return this.archiveService.launchDownloadObjectFromUnit(
+      this.archiveUnit['#id'],
       this.tenantIdentifier,
       this.accessContract,
       versionWithQualifier.qualifier,
-      versionWithQualifier.version);
+      versionWithQualifier.version
+    );
   }
 
   copyToClipboard(text: string) {
@@ -84,16 +83,12 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
   }
 
   sendCalls(archiveUnit: Unit) {
-    const headers = new HttpHeaders()
-      .append('Content-Type', 'application/json')
-      .append('X-Access-Contract-Id', this.accessContract);
-    this.archiveService
-      .getObjectById(archiveUnit['#id'], headers)
-      .subscribe((unitObject) => {
-        this.unitObject = unitObject
-        this.versionsWithQualifiersOrdered = qualifiersToVersionsWithQualifier(this.unitObject['#qualifiers'])
-        this.setFirstVersionWithQualifierOpen();
-      });
+    const headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', this.accessContract);
+    this.archiveService.getObjectById(archiveUnit['#id'], headers).subscribe((unitObject) => {
+      this.unitObject = unitObject;
+      this.versionsWithQualifiersOrdered = qualifiersToVersionsWithQualifier(this.unitObject['#qualifiers']);
+      this.setFirstVersionWithQualifierOpen();
+    });
   }
 
   setFirstVersionWithQualifierOpen() {

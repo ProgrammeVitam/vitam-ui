@@ -34,12 +34,8 @@ export * from './lib/components/vitamui-select-all-option/vitamui-select-all-opt
 export * from './lib/models/autocomplete-response.interface';
 export * from './lib/models/date-query.interface';
 export * from './lib/models/date-range-query.interface';
-export * from './lib/models/description-level.enum';
-export * from './lib/models/dsl-query-type.enum';
 export * from './lib/models/event';
 export * from './lib/models/file-format';
-export * from './lib/models/file-type.enum';
-export * from './lib/models/ingest-contract';
 export * from './lib/models/metadata.interface';
 export * from './lib/models/node.interface';
 export * from './lib/models/ontology';

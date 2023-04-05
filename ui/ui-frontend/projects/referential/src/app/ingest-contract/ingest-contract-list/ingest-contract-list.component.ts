@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
-import { merge, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
+import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, IngestContract, PageRequest } from 'ui-frontend-common';
 
 import { IngestContractService } from '../ingest-contract.service';
 

@@ -37,10 +37,9 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
+import { IngestContract, diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 
 import { ArchiveProfileApiService } from '../../../core/api/archive-profile-api.service';
