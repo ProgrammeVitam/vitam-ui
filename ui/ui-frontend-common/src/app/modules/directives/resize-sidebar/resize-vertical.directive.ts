@@ -38,13 +38,16 @@ import { DOCUMENT } from '@angular/common';
 import { Directive, ElementRef, HostListener, Inject, Input, OnInit } from '@angular/core';
 
 @Directive({
+  // tslint:disable-next-line: directive-selector
   selector: '[vitamuiVerticalResizeSidebar]',
 })
 export class ResizeVerticalDirective implements OnInit {
   @Input('vitamuiVerticalResizeSidebar') orientation: 'top' | 'bottom' = 'top';
-  @Input() paddingSize: number = 75;
-  @Input() minSize: number = 150;
+  @Input() paddingSize = 75;
+  @Input() minSize = 150;
 
+  isDragging = false;
+  siblingElement: Element;
   @HostListener('window:mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
     if (event && this.elementRef && event.target === this.elementRef.nativeElement) {
@@ -74,8 +77,6 @@ export class ResizeVerticalDirective implements OnInit {
     this.siblingElement.setAttribute('style', `flex:0 0 auto;max-height:75%;${height}`);
   }
 
-  isDragging = false;
-  siblingElement: Element;
 
   constructor(private elementRef: ElementRef, @Inject(DOCUMENT) private document: any) {}
 

@@ -37,7 +37,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -45,9 +45,9 @@ import {EMPTY, of} from 'rxjs';
 import {ConfirmDialogService, ExternalParametersService} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {ProbativeValueService} from '../probative-value.service';
 import {ProbativeValueCreateComponent} from './probative-value-create.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('ProbativeValueCreateComponent', () => {
   let component: ProbativeValueCreateComponent;

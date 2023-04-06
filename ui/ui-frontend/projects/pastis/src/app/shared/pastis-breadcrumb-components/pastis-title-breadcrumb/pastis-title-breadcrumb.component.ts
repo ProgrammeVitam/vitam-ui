@@ -40,6 +40,7 @@ import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-title-breadcrumb',
   templateUrl: './pastis-title-breadcrumb.component.html',
   styleUrls: ['./pastis-title-breadcrumb.component.scss']

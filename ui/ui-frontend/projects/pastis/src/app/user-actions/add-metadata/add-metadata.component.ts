@@ -1,3 +1,4 @@
+import { OnDestroy } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -42,18 +43,19 @@ import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { SedaService } from '../../core/services/seda.service';
+import { FileNode } from '../../models/file-node';
 import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import { FileNode } from "../../models/file-node";
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-metadata.component.html',
   styleUrls: [ './add-metadata.component.scss' ]
 })
-export class UserActionAddMetadataComponent implements OnInit {
+export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
 
   btnIsDisabled: boolean;
 
@@ -122,7 +124,7 @@ export class UserActionAddMetadataComponent implements OnInit {
 
       }
       this.fileNode.children.forEach((child: FileNode) => {
-        if (child.cardinality.endsWith("1")) {
+        if (child.cardinality.endsWith('1')) {
           this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== child.name);
         }
       })
@@ -166,8 +168,8 @@ export class UserActionAddMetadataComponent implements OnInit {
   onAddSelectedElement(element: SedaData) {
     this.addedItems.push(element);
 
-    if (element.Cardinality.endsWith("1")) {
-      this.allowedChildren = this.allowedChildren.filter(e => e != element);
+    if (element.Cardinality.endsWith('1')) {
+      this.allowedChildren = this.allowedChildren.filter(e => e !== element);
     }
 
     if (this.fileNode.sedaData.Children.filter((e: SedaData) => e.Name.endsWith('Rule')).length > 0) {

@@ -36,7 +36,7 @@
  */
 export interface Option {
 
-  key: any;
+  key?: any;
   label: string;
   info?: string;
 

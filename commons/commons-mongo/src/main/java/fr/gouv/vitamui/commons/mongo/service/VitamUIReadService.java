@@ -117,8 +117,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
     @Override
     public List<D> getMany(final List<String> ids) {
         final String[] arrayIds = (ids == null) ? new String[0] : ids.toArray(new String[0]);
-        final List<D> dtos = getMany(arrayIds);
-        return dtos;
+        return getMany(arrayIds);
     }
 
     /**
@@ -230,27 +229,32 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * {@inheritDoc}
      */
     @Override
-    public ResultsDto<D> getAllRequest(final RequestParamDto requestParam) {
+    public ResultsDto<D> getAllRequest(final RequestParamDto requestParamDto) {
 
-        final Query query = getQuerySecured(requestParam.getCriteria());
-        final PaginatedValuesDto<E> entitiesValues = getRepository().getPaginatedValues(requestParam.getPage(), requestParam.getSize(), Optional.of(query),
-                requestParam.getOrderBy(), requestParam.getDirection());
+        final Query query = getQuerySecured(Optional.ofNullable(requestParamDto.getCriteria()));
+
+        if (requestParamDto.getExcludeFields() != null) {
+            query.fields().exclude(requestParamDto.getExcludeFields().toArray(String[]::new));
+        };
+
+        final PaginatedValuesDto<E> entitiesValues = getRepository().getPaginatedValues(requestParamDto.getPage(), requestParamDto.getSize(), Optional.ofNullable(query),
+            Optional.ofNullable(requestParamDto.getOrderBy()), Optional.ofNullable(requestParamDto.getDirection()));
 
         final List<D> valuesDto = entitiesValues.getValues().stream().map(this::convertFromEntityToDto)
                 .collect(Collectors.toList());
         // get aggregation results if request param group was given.
         Map<String, Object> groups = null;
-        if(requestParam.getGroups().isPresent()) {
-            RequestParamGroupDto requestParamGroups = requestParam.getGroups().get();
-            final Collection<CriteriaDefinition> criteria = convertCriteriaJsonToMongoCriteria(requestParam.getCriteria());
+        if(requestParamDto.getGroups() != null && requestParamDto.getGroups().getFields() != null) {
+            RequestParamGroupDto requestParamGroups = requestParamDto.getGroups();
+            final Collection<CriteriaDefinition> criteria = convertCriteriaJsonToMongoCriteria(Optional.ofNullable(requestParamDto.getCriteria()));
             groups = getRepository()
                 .aggregation(requestParamGroups.getFields(),
                              criteria,
                              requestParamGroups.getOperator(),
-                             requestParam.getOrderBy(),
-                             requestParam.getDirection());
+                             Optional.ofNullable(requestParamDto.getOrderBy()),
+                             Optional.ofNullable(requestParamDto.getDirection()));
         }
-        return new ResultsDto(valuesDto, entitiesValues.getPageNum(), entitiesValues.getPageSize(),
+        return new ResultsDto<>(valuesDto, entitiesValues.getPageNum(), entitiesValues.getPageSize(),
                 entitiesValues.isHasMore(), groups);
     }
 
@@ -547,8 +551,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
     private List<D> getAll(final Query query) {
         LOGGER.debug("Get all {}s", getObjectName());
         final Iterable<E> entities = (query == null) ? getRepository().findAll() : getRepository().findAll(query);
-        final List<D> dtos = convertIterableToList(entities);
-        return dtos;
+        return convertIterableToList(entities);
     }
 
     /**

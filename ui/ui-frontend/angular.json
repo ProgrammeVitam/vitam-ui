@@ -931,17 +931,18 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
+              "aot": true,
               "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "14mb",
-                  "maximumError": "14mb"
+                  "maximumWarning": "50mb",
+                  "maximumError": "50mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "180kb",
+                  "maximumError": "180kb"
                 }
               ]
             }

@@ -80,7 +80,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nestedDataSourceLeaves || changes.searchRequestResultFacets) {
-      if (changes.searchRequestResultFacets && changes.searchRequestResultFacets.currentValue.length == 0) {
+      if (changes.searchRequestResultFacets && changes.searchRequestResultFacets.currentValue.length === 0) {
         // Render EMPTY attachment units
         this.nestedDataSourceLeaves.data.forEach((node) => {
           node.toggled = undefined;
@@ -340,7 +340,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onLabelClick(selectedUnit: FilingHoldingSchemeNode) {
-    if (selectedUnit.id == selectedUnit.vitamId) {
+    if (selectedUnit.id === selectedUnit.vitamId) {
       this.showNodeDetail.emit(new Pair(selectedUnit.vitamId, true));
     } else {
       this.showNodeDetail.emit(new Pair(selectedUnit.vitamId, false));

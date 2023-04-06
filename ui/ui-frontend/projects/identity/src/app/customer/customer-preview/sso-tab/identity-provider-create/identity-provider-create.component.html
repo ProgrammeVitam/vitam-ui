@@ -130,6 +130,25 @@
           </label>
           <input id="idpMetadata" type="file" accept=".xml" (change)="setIdpMetadata($event.target.files)" />
         </div>
+
+        <div class="row">
+          <vitamui-common-input
+            class="col-6"
+            formControlName="maximumAuthenticationLifetime"
+            [placeholder]="'CUSTOMER.SSO.MAXIMUM_AUTHENTICATION_LIFETIME' | translate">
+
+          </vitamui-common-input>
+          <div class="row ml-0">
+            <vitamui-common-slide-toggle formControlName="wantsAssertionsSigned" class="col-12">
+              <span>{{ 'CUSTOMER.SSO.WANTS_ASSERTION_SIGNED' | translate }}</span>
+            </vitamui-common-slide-toggle>
+
+            <vitamui-common-slide-toggle formControlName="authnRequestSigned" class="col-12">
+              <span>{{ 'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate }}</span>
+            </vitamui-common-slide-toggle>
+          </div>
+        </div>
+
         <div class="actions mt-3">
           <button (click)="onSubmit()" type="submit" class="btn primary" [disabled]="!isFormValid">
             {{ 'COMMON.SUBMIT' | translate }}

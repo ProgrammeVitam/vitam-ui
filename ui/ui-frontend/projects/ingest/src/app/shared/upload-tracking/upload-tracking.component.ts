@@ -36,8 +36,8 @@
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { UploadService } from '../../core/common/upload.service';
 import { IngestList } from '../../core/common/ingest-list';
+import { UploadService } from '../../core/common/upload.service';
 
 @Component({
   selector: 'app-upload-tracking',

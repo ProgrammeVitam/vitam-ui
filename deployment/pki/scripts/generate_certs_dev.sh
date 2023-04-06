@@ -42,6 +42,7 @@ function generateCerts {
     generateHostCertAndStorePassphrase          archive-search-external     hosts_vitamui_archive_search_external
     generateHostCertAndStorePassphrase          collect-external     hosts_vitamui_collect_external
     generateHostCertAndStorePassphrase          pastis-external     hosts_vitamui_pastis_external
+    generateHostCertAndStorePassphrase          api-gateway         hosts_vitamui_api_gateway
     #Zone UI
     generateHostCertAndStorePassphrase          ui-portal           hosts_ui_portal
     generateHostCertAndStorePassphrase          ui-identity         hosts_ui_identity

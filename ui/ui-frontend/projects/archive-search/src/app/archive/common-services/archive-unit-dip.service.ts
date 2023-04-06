@@ -28,10 +28,10 @@ import { Injectable, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
-import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { DipRequestCreateComponent } from '../archive-search/additional-actions-search/dip-request-create/dip-request-create.component';
-import { SearchCriteriaEltDto } from '../models/search.criteria';
 import { TransferRequestModalComponent } from '../archive-search/additional-actions-search/transfer-request-modal/transfer-request-modal.component';
+import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
+import { SearchCriteriaEltDto } from '../models/search.criteria';
 
 const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;

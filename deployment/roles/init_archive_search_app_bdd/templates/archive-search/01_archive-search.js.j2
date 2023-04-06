@@ -152,7 +152,7 @@ db.services.update(
     { "_id" :  NumberInt(4) },
     {
         "$set" : {
-            "_class": "org.apereo.cas.services.RegexRegisteredService",
+            "_class": "org.apereo.cas.services.CasRegisteredService",
         	"serviceId": "^{{ vitamui.archive_search.base_url | default(url_prefix) }}/archive-search/.*",
             "name": "Archive Application",
             "logoutType" : "FRONT_CHANNEL",

@@ -74,14 +74,14 @@ db.owners.insert({
 	"_class": "owners"
 });
 
-db.tenants.update({"identifier": 1},{"$set" : {"itemIngestContractIdentifier" : "IC-000005"}});
+db.tenants.update({"identifier": NumberInt({{ vitamui_platform_informations.proof_tenant }})},{"$set" : {"itemIngestContractIdentifier" : "IC-000005"}});
 
 db.tenants.insert({
 	"_id": "5c7927537884583d1ebb6e682b0f33f74d9c4483b7b3b12c8a075dc2e21fa771",
 	"enabled": true,
 	"proof": false,
 	"name": "Docs VitamUI",
-	"identifier": NumberInt(9),
+	"identifier": NumberInt({{ vitamui_platform_informations.doc_tenant | default(9) }}),
 	"ownerId": "5c7927537884583d1ebb6e66aaacceedbb0541fb97538964f8fc26f58085b92b",
 	"readonly": false,
 	"customerId": "system_customer",
@@ -132,7 +132,7 @@ db.profiles.insert({
 	"name": "Hierarchy Profiles 9",
 	"enabled": true,
 	"description": "Hierarchy Profiles 9",
-	"tenantIdentifier": NumberInt(9),
+	"tenantIdentifier": NumberInt({{ vitamui_platform_informations.doc_tenant | default(9) }}),
 	"applicationName": "HIERARCHY_PROFILE_APP",
 	"roles": [
 		{

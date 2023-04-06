@@ -60,6 +60,7 @@ export class FileTreeMetadataService {
   }
 
   initCardinalityValues() {
+    // tslint:disable-next-line:forin
     for (const key in CardinalityConstants) {
       const cardinality: CardinalityValues = { value: CardinalityConstants[key as keyof typeof CardinalityConstants], viewValue: key };
       this.cardinalityValues.push(cardinality);
@@ -77,6 +78,7 @@ export class FileTreeMetadataService {
 
   fillDataTable(sedaChild: SedaData, clickedNode: FileNode, _childrenToInclude: string[], childrenToExclude: string[]): MetadataHeaders[] {
     const data: MetadataHeaders[] = [];
+    // tslint:disable-next-line:prefer-const
     let allowedCardList: string[][];
     if (clickedNode.children.length > 0 ) {
       for (const child of clickedNode.children) {
@@ -206,7 +208,8 @@ export class FileTreeMetadataService {
         for (const fileNodechild of nodesToKeep) {
           sedaNode.Children.forEach((sedaGrandChild: { Name: string; }) => {
             if (fileNodechild.name === sedaGrandChild.Name) {
-              fileNodechild.cardinality ? childrenCardMap.set(fileNodechild.id, fileNodechild.cardinality) : childrenCardMap.set(fileNodechild.id, '1');
+              fileNodechild.cardinality ? childrenCardMap.set(fileNodechild.id, fileNodechild.cardinality)
+               : childrenCardMap.set(fileNodechild.id, '1');
             }
           });
       }

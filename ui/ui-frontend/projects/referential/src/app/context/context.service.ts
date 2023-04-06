@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {Context,SearchService, VitamUISnackBarService} from 'ui-frontend-common';
 
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { Context, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
-import { ContextApiService } from '../core/api/context-api.service';
+
+import {ContextApiService} from '../core/api/context-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -72,9 +73,12 @@ export class ContextService extends SearchService<Context> {
   create(context: Context) {
     return this.contextApiService.create(context, this.headers).pipe(
       tap(
-        (_: Context) => {
+        (response: Context) => {
           this.snackBarService.open({
             message: 'SNACKBAR.CONTEXT_CREATED',
+              translateParams:{
+                name: response.identifier,
+              },
             icon: 'vitamui-icon-admin-key',
           });
         },
@@ -89,9 +93,12 @@ export class ContextService extends SearchService<Context> {
     return this.contextApiService.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
-        (_: Context) => {
+        (response) => {
           this.snackBarService.open({
             message: 'SNACKBAR.CONTEXT_UPDATED',
+              translateParams:{
+                name: response.identifier,
+              },
             icon: 'vitamui-icon-admin-key',
           });
         },
@@ -101,4 +108,9 @@ export class ContextService extends SearchService<Context> {
       )
     );
   }
+
+  setTenantId(tenantIdentifier: number) {
+    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+  }
+
 }

@@ -46,7 +46,7 @@
     "FIELD_STATUS_TRANSACTION": "Statut du versement",
     "NO_RESULT": "Aucun résultat",
     "LOAD_MORE_RESULTS": "Afficher plus de résultats...",
-    "NO_ACCESS_CONTRACT": "Aucun contrat d'accès n'est associé à l'utiisateur",
+    "NO_ACCESS_CONTRACT": "Aucun contrat d'accès n'est associé à l'utilisateur",
     "UPLOAD_FILE_ALREADY_IMPORTED": "Dossier déjà importer !",
     "PROJECT_DESCRIPTION_SUB_TITLE": "Description du versement",
     "PROJECT_DESCRIPTION_LABEL": "Intitulé",
@@ -111,6 +111,7 @@
     "VALIDATE_TRANSACTION_VALIDATED": "La demande de versement du projet a été bien validée",
     "TRANSACTION_ABORTED": "La demande de versement du projet a été bien abandonné",
     "TRANSACTION_REOPENED": "La demande de versement du projet a été bien reouvert",
+    "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utilisateur",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
         "SHOW_TRANSACTIONS": "Accéder à la liste des versements du project",

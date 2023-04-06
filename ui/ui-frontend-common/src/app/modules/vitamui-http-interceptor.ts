@@ -37,12 +37,12 @@
 import { uniqueId } from 'lodash-es';
 import * as moment_ from 'moment';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap, timeoutWith } from 'rxjs/operators';
 
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, Injector } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
+import { catchError, tap, timeoutWith } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { ENVIRONMENT, WINDOW_LOCATION } from './injection-tokens';
@@ -56,9 +56,16 @@ import { VitamUITimeoutError } from './models/http-interceptor/vitamui-timeout-e
 
 const moment = moment_;
 
+const URLS_INCREASED_TIMEOUT = ['file', 'download', 'export', 'documents', 'ingest'];
+const HTTP_STATUS_CODE_BAD_REQUEST = 400;
 const HTTP_STATUS_CODE_UNAUTHORIZED = 401;
 const HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 const DEFAULT_API_TIMEOUT = 50000;
+const CLIENT_ERROR_START = 400;
+const SERVER_ERROR_START = 500;
+
+const NOTIFICATION_DELAY_MS = 20000;
+const DEFAULT_DOWNLOAD_UPLOAD_API_TIMEOUT = 1000 * 60 * 60 * 5;
 const DEFAULT_SERVER_ERROR_MESSAGE = 'EXCEPTIONS.HTTP_INTERCEPTOR.SERVER_ERROR_START';
 const ERROR_NOTIFICATION_MESSAGE_BY_HTTP_STATUS: Map<number, string> = new Map([
   [403, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_FORBIDDEN'],
@@ -75,6 +82,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
   private errorDialog: MatDialogRef<ErrorDialogComponent>;
   private apiTimeout: number;
   private snackBarService: VitamUISnackBarService;
+  private request: HttpRequest<any>;
 
   constructor(
     private logger: Logger,
@@ -92,7 +100,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     this.initSnackBarService();
 
     let tenantIdentifier = request.headers.get('X-Tenant-Id');
-    if ((!tenantIdentifier || tenantIdentifier === undefined || tenantIdentifier === '') && this.authService.user) {
+    if ((!tenantIdentifier || tenantIdentifier === '') && this.authService.user) {
       tenantIdentifier = this.startupService.getTenantIdentifier();
     }
     let requestId = request.headers.get('X-Request-Id');
@@ -126,7 +134,10 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     }
 
     return next.handle(reqWithCredentials).pipe(
-      timeoutWith(this.apiTimeout, throwError(new VitamUITimeoutError())),
+      timeoutWith(
+        URLS_INCREASED_TIMEOUT.some(url => request.url.includes(url)) ?  DEFAULT_DOWNLOAD_UPLOAD_API_TIMEOUT : this.apiTimeout,
+        throwError(new VitamUITimeoutError())
+      ),
       tap((ev: HttpEvent<any>) => {
         if (ev instanceof HttpResponse) {
           this.logger.log(this, 'processing response', ev);
@@ -138,8 +149,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
           if (response.status === HTTP_STATUS_CODE_UNAUTHORIZED) {
             if (!this.environment.production && request && request.url.endsWith('/security')) {
               // MDI : hack for dev purposes, with the first connection, we redirect the user to login
-              this.authService.user = null;
-              this.location.href = this.startupService.getLoginUrl();
+              this.authService.redirectToLoginPage();
             } else {
               // connection was lost, we need to logout the user
               this.authService.logout();

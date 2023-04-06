@@ -40,9 +40,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
 
 const RULE_TYPE_SUFFIX = '_ACCESS_RULE';
@@ -110,6 +110,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
 
       accessRuleEliminationIdentifier: ['', []],
     });
+    // tslint:disable-next-line:no-unused-expression
     merge(this.accessRuleCriteriaForm.statusChanges, this.accessRuleCriteriaForm.valueChanges)
       .pipe(
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
@@ -121,6 +122,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
         this.resetAccessRuleCriteriaForm();
       }).unsubscribe;
 
+    // tslint:disable-next-line:no-unused-expression
     this.accessRuleCriteriaForm.get('accessRuleTitle').valueChanges.subscribe((value) => {
       if (
         this.accessRuleCriteriaForm.get('accessRuleTitle').value !== null &&

@@ -40,6 +40,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-language.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-popup-metadata-language',
   templateUrl: './pastis-popup-metadata-language.component.html',
   styleUrls: ['./pastis-popup-metadata-language.component.scss']
@@ -62,7 +63,7 @@ export class PastisPopupMetadataLanguageComponent implements OnInit {
     );
   }
   changeLanguage(sedaLanguage: boolean): void {
-    if (sedaLanguage != undefined) {
+    if (sedaLanguage !== undefined) {
       this.sedaLanguage = sedaLanguage;
       this.metadataLanguageService.sedaLanguage.next(this.sedaLanguage);
     }

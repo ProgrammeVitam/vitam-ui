@@ -198,7 +198,7 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
       this.storageRuleFacets.waitingToRecalculateRulesListFacets &&
       this.storageRuleFacets.waitingToRecalculateRulesListFacets.length > 0
     ) {
-      let facetComputedUnits = this.storageRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+      const facetComputedUnits = this.storageRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {

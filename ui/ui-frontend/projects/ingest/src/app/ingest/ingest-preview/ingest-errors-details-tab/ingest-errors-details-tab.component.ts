@@ -1,9 +1,9 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {EventDisplayHelperService} from '../event-display-helper.service';
 import {NestedTreeControl} from '@angular/cdk/tree';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {MatTreeNestedDataSource} from '@angular/material/tree';
+import {LogbookOperation} from '../../../models/logbook-event.interface';
 import {Event} from '../event';
-import {LogbookOperation} from "../../../models/logbook-event.interface";
+import {EventDisplayHelperService} from '../event-display-helper.service';
 
 
 @Component({
@@ -47,7 +47,7 @@ export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
   }
 
   isStepOK(event: Event) {
-    return event.eventData.outcome === "OK";
+    return event.eventData.outcome === 'OK';
   }
 
 

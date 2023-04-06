@@ -45,6 +45,7 @@ import { MatInputModule} from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
+import { EllipsisDirectiveModule } from '../../directives/ellipsis/ellipsis.directive.module';
 import { ConfirmDialogModule } from '../confirm-dialog/confirm-dialog.module';
 import { EditableDurationInputComponent } from './editable-duration-input/editable-duration-input.component';
 import { HumanizedDurationPipe } from './editable-duration-input/humanized-duration.pipe';
@@ -79,7 +80,8 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     LevelInputModule,
     MatInputModule,
     MatFormFieldModule,
-    TranslateModule
+    TranslateModule,
+    EllipsisDirectiveModule
   ],
   declarations: [
     EditableFieldComponent,

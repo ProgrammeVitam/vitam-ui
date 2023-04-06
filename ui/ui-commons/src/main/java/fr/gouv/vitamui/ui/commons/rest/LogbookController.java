@@ -57,17 +57,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.QueryParam;
 import java.util.Optional;
 
 /**
@@ -132,11 +123,11 @@ public class LogbookController extends AbstractUiRestController {
 
     @ApiOperation(value = "Get logbook operations by json select")
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
-    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select)
+    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select, @RequestParam(required = false) final Integer vitamTenantIdentifier)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Parameter is a mandatory parameter: ", select);
         SanityChecker.sanitizeJson(select);
-        return logbookService.findOperations(buildUiHttpContext(), select);
+        return logbookService.findOperations(buildUiHttpContext(), select, vitamTenantIdentifier);
     }
 
     @ApiOperation(value = "Download the manifest for a given operation")
@@ -145,9 +136,7 @@ public class LogbookController extends AbstractUiRestController {
     public ResponseEntity<Resource> downloadManifest(@PathVariable final String id,
         @RequestParam final Optional<ContentDispositionType> disposition) throws InvalidParseOperationException,
         PreconditionFailedException {
-        if(disposition.isPresent()){
-            SanityChecker.sanitizeCriteria(disposition.get());
-        }
+        disposition.ifPresent(SanityChecker::sanitizeCriteria);
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("downloadManifest: id={}, disposition={}", id, disposition);
@@ -176,18 +165,13 @@ public class LogbookController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadReport(@PathVariable final String id,
         @PathVariable final String downloadType,
-        @RequestParam final Optional<ContentDispositionType> disposition,
-        @QueryParam("tenantId") Integer tenantId,
-        @QueryParam("contractId") String contractId) throws InvalidParseOperationException,
-        PreconditionFailedException {
+        @RequestParam final Optional<ContentDispositionType> disposition) throws PreconditionFailedException {
 
-        if(disposition.isPresent()){
-            SanityChecker.sanitizeCriteria(disposition.get());
-        }
+        disposition.ifPresent(SanityChecker::sanitizeCriteria);
         SanityChecker.checkSecureParameter(id);
         ParameterChecker
             .checkParameter("The Identifier, the downloadType are mandatory parameters: ", id, downloadType);
-        SanityChecker.checkSecureParameter(id, String.valueOf(tenantId), contractId, downloadType);
+        SanityChecker.checkSecureParameter(id, downloadType);
         String fileName = id + ".json";
         if (DOWNLOAD_TYPE_OBJECT.equals(downloadType)) {
             fileName = id + ".xml";
@@ -201,7 +185,7 @@ public class LogbookController extends AbstractUiRestController {
         }
         LOGGER.debug("downloadReport: id={}, downloadType:{}, disposition={}", id, downloadType, disposition);
         final ResponseEntity<Resource> response =
-            logbookService.downloadReport(buildUiHttpContext(tenantId, contractId), id, downloadType).block();
+            logbookService.downloadReport(buildUiHttpContext(), id, downloadType).block();
         return RestUtils.buildFileResponse(response, disposition, Optional.of(fileName));
     }
 

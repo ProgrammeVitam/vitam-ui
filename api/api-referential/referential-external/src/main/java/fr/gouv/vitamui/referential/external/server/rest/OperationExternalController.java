@@ -37,7 +37,10 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -46,16 +49,26 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.OperationExternalService;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.cms.SignerId;
+import org.bouncycastle.tsp.TSPException;
+import org.bouncycastle.tsp.TimeStampResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -64,6 +77,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -92,15 +107,15 @@ public class OperationExternalController {
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
                                                          @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
                                                          @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        orderBy.ifPresent(SanityChecker::checkSecureParameter);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
         return operationExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException {
+        LOGGER.debug("get logbook for audit with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for audit with id :{}", id);
@@ -128,6 +143,27 @@ public class OperationExternalController {
         LOGGER.debug("Create {}", auditOptions);
         return operationExternalService.runAudit(auditOptions);
     }
+
+    @PostMapping(value = "/timestamp")
+    public ObjectNode extractInfoFromTimestamp(final @RequestBody String timestamp) {
+        final ObjectNode result = JsonHandler.createObjectNode();
+        try {
+            ASN1InputStream bIn = new ASN1InputStream(new ByteArrayInputStream(
+                org.bouncycastle.util.encoders.Base64.decode(timestamp.getBytes())));
+            ASN1Primitive obj = bIn.readObject();
+            TimeStampResponse tsResp = new TimeStampResponse(obj.toASN1Primitive().getEncoded());
+            SignerId signerId = tsResp.getTimeStampToken().getSID();
+            X500Name signerCertIssuer = signerId.getIssuer();
+            result.put("genTime", LocalDateUtil.getString(
+                LocalDateUtil.fromDate(tsResp.getTimeStampToken().getTimeStampInfo().getGenTime())));
+            result.put("signerCertIssuer", signerCertIssuer.toString());
+        } catch (TSPException | IOException e) {
+            LOGGER.error("Error while transforming timestamp", e);
+            throw new BadRequestException("Error while transforming timestamp", e);
+        }
+        return result;
+    }
+
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping(value = "/check" + CommonConstants.PATH_ID)

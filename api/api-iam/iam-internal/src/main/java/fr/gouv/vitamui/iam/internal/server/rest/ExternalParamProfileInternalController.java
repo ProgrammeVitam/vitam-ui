@@ -59,16 +59,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
@@ -131,9 +122,8 @@ public class ExternalParamProfileInternalController {
     }
 
     @ApiOperation(value = "get history by external parameter profile profile's id")
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for external parameter profile with id :{}", id);

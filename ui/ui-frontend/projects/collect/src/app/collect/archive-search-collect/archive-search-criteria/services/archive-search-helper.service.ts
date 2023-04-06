@@ -448,7 +448,7 @@ export class ArchiveSearchHelperService {
         criteria.values.forEach((elt) => {
           strValues.push(elt.value);
         });
-        let replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
+        const replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
 
         criteriaSearchList.push({
           criteria: replacedCriteria,

@@ -66,10 +66,22 @@ import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.UserInfoExternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -163,8 +175,8 @@ public class UserInfoExternalController implements CrudController<UserInfoDto> {
         return userInfoExternalService.patch(partialDto);
     }
 
-    @GetMapping(CommonConstants.USER_INFO_HISTORY)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for user info with id :{}", id);
         return userInfoExternalService.findHistoryById(id);
     }

@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {environment} from '../../../environments/environment';
-import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import {MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
+import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
 const POP_UP_SAVE_CHOICE_PATH = 'PROFILE.POP_UP_SAVE.CHOICE';
 
@@ -20,6 +20,7 @@ function constantToTranslate() {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'save-profile-options',
   templateUrl: './save-profile-options.component.html',
   styleUrls: ['./save-profile-options.component.scss']
@@ -89,7 +90,8 @@ export class SaveProfileOptionsComponent implements OnInit {
   }
 
   changeStatusGestionNoticeProfil($event: string) {
-    if ($event === this.firstChoiceGestionNotice) {
+
+    if ($event ===  this.firstChoiceGestionNotice) {
       this.gestionNotice = true;
     } else {
       this.gestionNotice = false;

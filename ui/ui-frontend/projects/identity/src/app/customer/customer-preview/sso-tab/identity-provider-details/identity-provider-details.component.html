@@ -114,6 +114,19 @@
         </vitamui-common-editable-toggle-group>
       </div>
     </div>
+    <div class="row" *ngIf="!identityProvider.internal">
+      <div class="col-12">
+        <vitamui-common-editable-input
+          type="number"
+          formControlName="maximumAuthenticationLifetime"
+          label="{{'CUSTOMER.SSO.MAXIMUM_AUTHENTICATION_LIFETIME' | translate}}"
+          [validator]="form?.get('maximumAuthenticationLifetime')?.validator"
+          [asyncValidator]="form?.get('maximumAuthenticationLifetime')?.asyncValidator"
+        >
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+    </div>
     <div class="row">
       <div class="col-6">
         <app-editable-keystore [identityProvider]="identityProvider" [disabled]="readOnly"></app-editable-keystore>
@@ -128,6 +141,20 @@
         >
           <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-file>
+      </div>
+    </div>
+    <div class="row" *ngIf="!identityProvider.internal">
+      <div class="col-5">
+        <vitamui-common-slide-toggle
+          formControlName="wantsAssertionsSigned">
+          {{'CUSTOMER.SSO.WANTS_ASSERTION_SIGNED' | translate}}
+        </vitamui-common-slide-toggle>
+      </div>
+      <div class="col-6">
+        <vitamui-common-slide-toggle
+          formControlName="authnRequestSigned" >
+          {{'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate}}
+        </vitamui-common-slide-toggle>
       </div>
     </div>
   </div>

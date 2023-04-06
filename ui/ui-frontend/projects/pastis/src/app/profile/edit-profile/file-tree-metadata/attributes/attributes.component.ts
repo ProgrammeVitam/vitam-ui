@@ -35,9 +35,9 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {MatCheckboxChange} from '@angular/material/checkbox';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
 import {FileService} from 'projects/pastis/src/app/core/services/file.service';
 import {PopupService} from 'projects/pastis/src/app/core/services/popup.service';
@@ -57,11 +57,12 @@ import {SedaData} from '../../../../models/seda-data';
 import {FileTreeMetadataService} from '../file-tree-metadata.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-edit-attributes',
   templateUrl: './attributes.component.html',
   styleUrls: ['./attributes.component.scss']
 })
-export class AttributesPopupComponent implements OnInit {
+export class AttributesPopupComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['selected', 'nomDuChamp', 'valeurFixe', 'commentaire'];
 
@@ -119,6 +120,7 @@ export class AttributesPopupComponent implements OnInit {
 
   // Checks if a file node has an atttribute child
   initAttributeCardinality() {
+    // tslint:disable-next-line:forin
     for (const index in this.matDataSource.data) {
       const fileNode = this.dialogReceivedData.fileNode;
       const att = this.matDataSource.data[index];
@@ -163,24 +165,21 @@ export class AttributesPopupComponent implements OnInit {
    * If all checkboxs are checked, then the "select all" checkbox is checked
    */
   isChecked(): boolean {
-    return this.matDataSource.data.filter(a => !a.selected).length == 0;
+    return this.matDataSource.data.filter(a => !a.selected).length === 0;
   }
 
   isSedaObligatory(attribute: AttributeData): boolean {
     if (attribute) {
       const popUpData = this.popUpService.getPopUpDataOnOpen() as PastisDialogData;
       if (popUpData) {
-        const popSendSedaNodeFilted = popUpData.fileNode.sedaData.Children.find((child: { Name: string; }) => child.Name === attribute.nomDuChamp);
+        const popSendSedaNodeFilted = popUpData.fileNode.sedaData.Children.
+        find((child: { Name: string; }) => child.Name === attribute.nomDuChamp);
         return popSendSedaNodeFilted.Cardinality.startsWith('1');
       }
     }
     return;
   }
 
-  /**
-   * Function that checks/unchecks all attributes
-   * @param change
-   */
   toggleAllAttributes(toggleAllCheckChange: MatCheckboxChange): void {
     const istoggleAllChecked = toggleAllCheckChange.checked;
     this.matDataSource.data.forEach(a => {
@@ -190,10 +189,6 @@ export class AttributesPopupComponent implements OnInit {
     );
   }
 
-    /**
-   * Function that checks/unchecks the attribute
-   * @param change
-   */
   toggleAttribute(change: MatCheckboxChange, elementName: string): void {
     const element = this.matDataSource.data.find(a => a.nomDuChamp === elementName);
     element.selected = change.checked;
@@ -220,7 +215,8 @@ export class AttributesPopupComponent implements OnInit {
         attributeFileNode.id = window.crypto.getRandomValues(new Uint32Array(10))[0];
         attributeFileNode.cardinality = attributeData.selectedCardinality;
         attributeFileNode.children = [];
-        attributeFileNode.dataType = DataTypeConstants[(fileNode.sedaData.Children.find(child => child.Name === attributeData.nomDuChamp).Type.toString()) as keyof typeof DataTypeConstants];
+        attributeFileNode.dataType = DataTypeConstants[(fileNode.sedaData.Children
+          .find(child => child.Name === attributeData.nomDuChamp).Type.toString()) as keyof typeof DataTypeConstants];
         attributeFileNode.documentation = attributeData.commentaire ? attributeData.commentaire : null;
         attributeFileNode.level = fileNode.level + 1;
         attributeFileNode.name = attributeData.nomDuChamp;

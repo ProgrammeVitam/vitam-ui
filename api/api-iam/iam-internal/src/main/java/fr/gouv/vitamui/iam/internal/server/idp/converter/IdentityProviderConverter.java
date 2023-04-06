@@ -77,6 +77,10 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
 
     public static final String MAXIMUM_AUTHENTICATION_LIFE_TIME = "Temps maximum de connexion";
 
+    public static final String WANTS_ASSERTIONS_SIGNED = "Assertions signées";
+
+    public static final String AUTHN_REQUEST_SIGNED = "Requête d'authentification signée";
+
     public static final String AUTO_PROVISIONING_ENABLED_KEY = "Mise à jour automatique des utilisateurs";
 
     public static final String CLIENT_ID_KEY = "Identifiant client";
@@ -150,6 +154,8 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         provider.setAuthnRequestBinding(dto.getAuthnRequestBinding());
         provider.setSpMetadata(spMetadataGenerator.generate(dto));
         provider.setMaximumAuthenticationLifetime(dto.getMaximumAuthenticationLifetime());
+        provider.setWantsAssertionsSigned(dto.getWantsAssertionsSigned());
+        provider.setAuthnRequestSigned(dto.getAuthnRequestSigned());
         // OIDC
         provider.setClientId(dto.getClientId());
         provider.setClientSecret(dto.getClientSecret());

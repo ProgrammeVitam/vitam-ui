@@ -48,7 +48,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule,
+import { AuthenticationModule, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule,
   VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -81,6 +81,7 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     AppComponent,
   ],
   imports: [
+    AuthenticationModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     InjectorModule,

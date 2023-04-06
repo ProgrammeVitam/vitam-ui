@@ -156,7 +156,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
       this.disseminationRuleFacets.waitingToRecalculateRulesListFacets &&
       this.disseminationRuleFacets.waitingToRecalculateRulesListFacets.length > 0
     ) {
-      let facetComputedUnits = this.disseminationRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+      const facetComputedUnits = this.disseminationRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {

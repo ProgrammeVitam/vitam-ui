@@ -43,3 +43,4 @@ export * from './theme-color-type.enum';
 export * from './colors.util';
 export * from './oject-utils';
 export * from './http-header.util';
+export * from './download.utils';

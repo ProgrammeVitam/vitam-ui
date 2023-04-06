@@ -45,7 +45,8 @@ import { RuleApiService } from '../core/api/rule-api.service';
   providedIn: 'root',
 })
 /**
- * @deprecated This class is deprecated since 5.0.2, and it will be removed in the next minor version, use commonized service RuleService instead
+ * @deprecated This class is deprecated since 5.0.2, and it will
+ * be removed in the next minor version, use commonized service RuleService instead
  */
 export class RuleService extends SearchService<Rule> {
   updated = new Subject<Rule>();
@@ -79,11 +80,8 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.createRule(rule, this.headers).pipe(
       tap(
         (success) => {
-          this.snackBarService.open({
-            message: success ? 'SNACKBAR.RULE_CREATE_SUCCESS' : 'SNACKBAR.RULE_CREATE_FAILED',
-            translateParams: { name: rule.ruleId },
-            icon: 'vitamui-icon-rules'
-          });
+          const message = success ? 'SNACKBAR.RULE_CREATE_SUCCESS' : 'SNACKBAR.RULE_CREATE_FAILED';
+          this.snackBarService.open({ message, translateParams: { name: rule.ruleId }, icon: 'vitamui-icon-rules' });
         },
         (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
@@ -94,11 +92,8 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.patchRule(data).pipe(
       tap(
         (success) => {
-          this.snackBarService.open({
-            message: success ? 'SNACKBAR.RULE_UPDATE_SUCCESS' : 'SNACKBAR.RULE_UPDATE_FAILED',
-            translateParams: { name: data.id },
-            icon: 'vitamui-icon-admin-rules'
-          });
+          const message = success ? 'SNACKBAR.RULE_UPDATE_SUCCESS' : 'SNACKBAR.RULE_UPDATE_FAILED';
+          this.snackBarService.open({ message, translateParams: { name: data.id }, icon: 'vitamui-icon-admin-rules' });
         },
         (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
@@ -109,11 +104,8 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.deleteRule(rule.ruleId).pipe(
       tap(
         (success) => {
-          this.snackBarService.open({
-            message: success ? 'SNACKBAR.RULE_DELETE_SUCCESS' : 'SNACKBAR.RULE_DELETE_FAILED',
-            translateParams: { name: rule.ruleId },
-            icon: 'vitamui-icon-admin-rules'
-          });
+          const message = success ? 'SNACKBAR.RULE_DELETE_SUCCESS' : 'SNACKBAR.RULE_DELETE_FAILED';
+          this.snackBarService.open({ message, translateParams: { name: rule.ruleId }, icon: 'vitamui-icon-admin-rules' });
         },
         (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )

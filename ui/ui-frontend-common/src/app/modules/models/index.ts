@@ -65,3 +65,5 @@ export * from './tree-node.interface';
 export * from './units/index';
 export * from './user/index';
 export * from './vitam/index';
+export * from './breadcrumb/breadcrumb.interface';
+export * from './units/index';

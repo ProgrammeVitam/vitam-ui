@@ -67,11 +67,13 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
   let component: ArchiveUnitRulesInformationsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitRulesInformationsTabComponent>;
 
+  // tslint:disable-next-line:directive-selector
   @Directive({ selector: '[app-VitamuiCommonCollapseTriggerFor]' })
   class CollapseTriggerForStubDirective {
     @Input() vitamuiCommonCollapseTriggerFor: any;
   }
 
+  // tslint:disable-next-line:directive-selector
   @Directive({ selector: '[app-vitamuiCommonCollapse]', exportAs: 'vitamuiCommonCollapse' })
   class CollapseStubDirective {
     @Input() vitamuiCommonCollapse: any;
@@ -244,6 +246,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       AccessRule: null,
       UpdateOperation: null,
     };
+    // tslint:disable-next-line:no-shadowed-variable
     const archiveUnit: Unit = {
       '#management': unitManagementRules,
       '#allunitups': [],

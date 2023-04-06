@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.converter.VitamUIErrorConverter;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.utils.SecurePathUtils;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
@@ -147,7 +148,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         if (multipartFile.isPresent()) {
             final String paramName = multipartFile.get().getKey();
             final MultipartFile valueMultipartFile = multipartFile.get().getValue();
-            SafeFileChecker.checkSafeFilePath(valueMultipartFile.getOriginalFilename());
+            SecurePathUtils.checkDirectoryTraversalVulnerability(valueMultipartFile.getOriginalFilename());
             final String contentDisposition = buildContentDisposition(paramName, valueMultipartFile.getName());
             addPartFile(builder, paramName, valueMultipartFile, contentDisposition);
         }
@@ -175,7 +176,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         if (multipartFile.isPresent()) {
             final String paramName = multipartFile.get().getKey();
             final MultipartFile valueMultipartFile = multipartFile.get().getValue();
-            SafeFileChecker.checkSafeFilePath(valueMultipartFile.getOriginalFilename());
+            SecurePathUtils.checkDirectoryTraversalVulnerability(valueMultipartFile.getOriginalFilename());
             final String contentDisposition = buildContentDisposition(paramName, valueMultipartFile.getName());
             addPartFile(builder, paramName, valueMultipartFile, contentDisposition);
         }
@@ -242,7 +243,6 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param url
      * @param context
      * @param dto
-     * @param multipartFile
      * @param clazz
      * @return
      */
@@ -276,7 +276,6 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param url
      * @param context
      * @param dto
-     * @param multipartFile
      * @param clazz
      * @return
      */
@@ -286,13 +285,11 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         final Class<T> clazz) {
         final MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
-        checkHttpMethod(httpMethod);
-
         addMapEntriesToBuilder(dto, builder);
         if (filePath.isPresent()) {
             final String paramName = filePath.get().getKey();
             final Path path = filePath.get().getValue();
-            SafeFileChecker.checkSafeFilePath(path.toString());
+            SecurePathUtils.checkDirectoryTraversalVulnerability(path.toString());
             final String contentDisposition = buildContentDisposition(paramName, path.getFileName().toString());
             builder.asyncPart(paramName, DataBufferUtils
                 .readAsynchronousFileChannel(() -> AsynchronousFileChannel.open(path, StandardOpenOption.READ),
@@ -310,8 +307,15 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
                 .retrieve()
                 .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
                 .block();
-        } else {
+        } else if (HttpMethod.PATCH == httpMethod) {
             return webClient.patch().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(multiValueMap))
+                .retrieve()
+                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                .block();
+        } else {
+            return webClient.put().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(multiValueMap))
                 .retrieve()

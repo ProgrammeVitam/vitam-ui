@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-12">
-    <div class="row" *ngIf="!(advancedSearchPanelOpenState$|async)">
+    <div class="row" *ngIf="(advancedSearchPanelOpenState$|async) !== true">
       <div class="col my-4">
           <a (click)="showAdvancedSearchPanel.emit(true)" class="head-title">{{ 'ACCESSION_REGISTER.FACETS.SHOW_SEARCH_FILTERS' | translate }}</a>
       </div>

@@ -1,0 +1,10 @@
+FROM swaggerapi/swagger-ui:v3.50.0
+
+LABEL maintainer="Xelians DevOps"
+
+ADD ./docs /usr/share/nginx/html/docs
+
+ENV URLS_PRIMARY_NAME=${URLS_PRIMARY_NAME} \
+    URLS="[${URLS_CONFIG}]"
+
+EXPOSE 8080

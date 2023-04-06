@@ -10,7 +10,9 @@ export class FilterByStringNamePipe implements PipeTransform {
     if (!nameToFilter) { return listOfProfiles; }
 
 
-    this.listOfProfiles = listOfProfiles.filter(profile => profile.identifier.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0 || profile.name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
+    this.listOfProfiles = listOfProfiles.filter(profile =>
+      profile.identifier.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0 ||
+       profile.name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
     return this.listOfProfiles;
   }
 }

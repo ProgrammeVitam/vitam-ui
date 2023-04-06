@@ -5,7 +5,7 @@ print("START cas_services_ref.js");
 // Added a Z in the Name to ensure the regex is used last because CAS order them by 'Name' field
 db.services.insert({
 	"_id": NumberInt(1),
-	"_class": "org.apereo.cas.services.RegexRegisteredService",
+	"_class": "org.apereo.cas.services.CasRegisteredService",
 	"serviceId": "^{{ vitamui.portal.base_url|default(url_prefix) }}/.*",
 	"name": "Z Portal Application",
 	"logoutType" : "FRONT_CHANNEL",
@@ -17,7 +17,7 @@ db.services.insert({
 
 db.services.insert({
 	"_id" : NumberInt(2),
-	"_class": "org.apereo.cas.services.RegexRegisteredService",
+	"_class": "org.apereo.cas.services.CasRegisteredService",
 {% if vitamui.identity.base_url is defined %}
 	"serviceId": "^{{ vitamui.identity.base_url }}/.*",
 {% else %}
@@ -37,7 +37,7 @@ db.services.insert({
 
 db.services.insert({
 	"_id" : NumberInt(3),
-	"_class": "org.apereo.cas.services.RegexRegisteredService",
+	"_class": "org.apereo.cas.services.CasRegisteredService",
 {% if vitamui.identity_admin.base_url is defined %}
 	"serviceId": "^{{ vitamui.identity_admin.base_url }}/.*",
 {% else %}

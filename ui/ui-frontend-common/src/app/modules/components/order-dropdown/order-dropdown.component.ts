@@ -36,9 +36,7 @@
  */
 import { startWith } from 'rxjs/operators';
 
-import {
-  AfterContentInit, Component, ContentChildren, Input, OnChanges, OnInit, QueryList
-} from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, Input, OnChanges, OnInit, QueryList } from '@angular/core';
 
 import { Direction } from '../../vitamui-table';
 import { OrderOptionComponent } from './order-option/order-option.component';
@@ -49,7 +47,6 @@ import { OrderOptionComponent } from './order-option/order-option.component';
   styleUrls: ['./order-dropdown.component.scss'],
 })
 export class OrderDropdownComponent implements AfterContentInit, OnInit, OnChanges {
-
   @Input() orderBy: string;
   @Input() direction: Direction;
 
@@ -58,10 +55,9 @@ export class OrderDropdownComponent implements AfterContentInit, OnInit, OnChang
   dropdownOpen = false;
   active = false;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngAfterContentInit() {
     this.options.changes.pipe(startWith(null)).subscribe(() => {
@@ -79,5 +75,4 @@ export class OrderDropdownComponent implements AfterContentInit, OnInit, OnChang
     const activeOption = this.options.find((option) => option.orderByKey === this.orderBy);
     this.active = !!activeOption;
   }
-
 }

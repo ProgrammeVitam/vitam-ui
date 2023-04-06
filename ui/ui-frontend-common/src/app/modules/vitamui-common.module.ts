@@ -42,7 +42,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
+import { first, switchMap } from 'rxjs/operators';
 import { AccountModule } from './account/account.module';
+import { AuthService } from './auth.service';
+import { ApplicationCardModule } from './components/application';
 import { ArchiveModule } from './archive/archive.module';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import { BlankComponent } from './components/blank/blank.component';
@@ -68,6 +71,7 @@ import { SearchBarWithSiblingButtonModule } from './components/search-bar-with-s
 import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
+import { UserAlertCardModule } from './components/user-alerts/user-alerts-card';
 import { VitamUIAutocompleteModule } from './components/vitamui-autocomplete/vitamui-autocomplete.module';
 import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamuiCommonBannerModule } from './components/vitamui-common-banner/vitamui-common-banner.module';
@@ -89,6 +93,8 @@ import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
 import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
+import { ConfigService } from './config.service';
+import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
 import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
 import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
 import { DragAndDropModule } from './directives/drag-and-drop/drag-and-drop.module';
@@ -98,7 +104,7 @@ import { ResizeSidebarModule } from './directives/resize-sidebar/resize-sidebar.
 import { RowCollapseModule } from './directives/row-collapse/row-collapse.module';
 import { TooltipModule } from './directives/tooltip/tooltip.module';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
-import { SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-tokens';
+import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-tokens';
 import { LogbookModule } from './logbook/logbook.module';
 import { LoggerModule } from './logger/logger.module';
 import { PipesModule } from './pipes/pipes.module';
@@ -107,12 +113,25 @@ import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 
-export function startupServiceFactory(startupService: StartupService) {
-  // leave it like this due to run packagr issue :
-  // https://github.com/ng-packagr/ng-packagr/issues/696 & https://github.com/angular/angular/issues/23629
-  const val = () => startupService.load();
+export function loadConfigFactory(configService: ConfigService, environment: any) {
+  // tslint:disable-next-line: semicolon whitespace
+  return () => configService.load(environment.configUrls).toPromise();;
+}
 
-  return val;
+export function startupServiceFactory(startupService: StartupService, authService: AuthService) {
+  // leave it like this due to run packagr issue :
+  // https://github.com/ng-packagr/ng-packagr/issues/696 & https://github.com/angular/angular/issues/
+  return () =>
+    new Promise((resolve) => {
+      authService
+        .login()
+        .pipe(
+          first((authenticated) => authenticated),
+          switchMap(() => startupService.load())
+        )
+        .subscribe(() => resolve(true));
+    // tslint:disable-next-line: semicolon whitespace
+    });;
 }
 
 @NgModule({
@@ -178,6 +197,8 @@ export function startupServiceFactory(startupService: StartupService) {
     TranslateModule,
     ReactiveFormsModule,
     MatDatepickerModule,
+    UserAlertCardModule,
+    ApplicationCardModule,
     ArchiveModule,
   ],
   entryComponents: [ErrorDialogComponent],
@@ -237,7 +258,9 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamuiFacetModule,
     VitamuiIntervalDatePickerComponent,
     VitamuiMultiInputsModule,
+    UserAlertCardModule,
     VitamuiTreeNodeModule,
+    ApplicationCardModule,
     ArchiveModule,
   ],
   providers: [
@@ -245,8 +268,14 @@ export function startupServiceFactory(startupService: StartupService) {
     { provide: WINDOW_LOCATION, useValue: window.location },
     {
       provide: APP_INITIALIZER,
+      useFactory: loadConfigFactory,
+      deps: [ConfigService, ENVIRONMENT],
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
       useFactory: startupServiceFactory,
-      deps: [StartupService],
+      deps: [StartupService, AuthService],
       multi: true,
     },
     { provide: HTTP_INTERCEPTORS, useClass: VitamUIHttpInterceptor, multi: true },

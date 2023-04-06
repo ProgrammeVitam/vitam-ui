@@ -63,7 +63,7 @@ export class SubrogationBannerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.user$.pipe(filter((user: AuthUser) => !!user.superUser))
+    this.authService.user$.pipe(filter((user: AuthUser) => !!user?.superUser))
       .subscribe(() => {
         this.subrogationService.getCurrent().pipe(filter((data) => !!data))
           .subscribe((data) => {

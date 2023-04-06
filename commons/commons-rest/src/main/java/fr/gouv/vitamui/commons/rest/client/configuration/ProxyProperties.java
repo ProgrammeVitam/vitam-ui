@@ -74,7 +74,8 @@ public class ProxyProperties {
     /**
      * Username used for proxy authentication
      */
-    private @Nullable String username;
+    private @Nullable
+    String username;
 
     /**
      * Password used for proxy authentication

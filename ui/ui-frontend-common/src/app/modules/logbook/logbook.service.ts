@@ -38,7 +38,6 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-
 import { LogbookApiService } from '../api/logbook-api.service';
 import { Logger } from '../logger/logger';
 import { Event } from '../models';
@@ -95,12 +94,8 @@ export class LogbookService {
 
     return this.logbookApi.findOperationByIdAndCollectionName(identifier, collectionName, headers).pipe(
       catchError(() => of({ $results: [] as Event[] })),
-      map((response) =>
-        response.$results
-          .reduce(flattenChildEvents, [])
-          .filter((e) => e.obIdReq.toLowerCase() === collectionName.toLowerCase())
-          .sort(sortEventByDate)
-      )
+      map((response) => response.$results.reduce(flattenChildEvents, [])
+        .filter(e => e.obIdReq.toLowerCase() === collectionName.toLowerCase()).sort(sortEventByDate))
     );
   }
 
@@ -138,12 +133,9 @@ export class LogbookService {
     );
   }
 
-  listOperationByIdentifierAndCollectionName(
-    id: string,
-    identifier: string,
-    collectionName: string,
-    tenantIdentifier: number
-  ): Observable<Event[]> {
+
+  listOperationByIdentifierAndCollectionName(id: string, identifier: string, collectionName: string, tenantIdentifier: number):
+    Observable<Event[]> {
     const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
 
     return this.logbookApi.findOperationByIdAndCollectionName(id, collectionName, headers).pipe(
@@ -198,10 +190,15 @@ export class LogbookService {
     );
   }
 
-  listOperationsBySelectQuery(query: VitamSelectQuery, accessContract: string, tenantIdentifier: number): Observable<Event[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString(), 'X-Access-Contract-Id': accessContract });
+  listOperationsBySelectQuery(query: VitamSelectQuery, tenantIdentifier: number, accessContract?: string,
+                              vitamTenantIdentifier?: number): Observable<Event[]> {
+    let headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString()});
 
-    return this.logbookApi.findOperationsBySelectQuery(query, headers).pipe(
+    if (accessContract) {
+      headers = headers.append('X-Access-Contract-Id', accessContract);
+    }
+
+    return this.logbookApi.findOperationsBySelectQuery(query, vitamTenantIdentifier, headers).pipe(
       catchError(() => of({ $results: [] as Event[] })),
       map((response) => {
         return response.$results.reduce(flattenChildEvents, []).sort(sortEventByDate);
@@ -270,7 +267,7 @@ function sortEventByDate(ev1: Event, ev2: Event): number {
 }
 
 function getEffectiveDate(event: Event): Date {
-  const operationDate = event.parsedData ? event.parsedData["Date d'opération"] : null;
+  const operationDate = event.parsedData ? event.parsedData['Date d\'opération'] : null;
 
   if (operationDate) {
     return new Date(operationDate);

@@ -36,7 +36,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
@@ -50,6 +50,7 @@ function constantToTranslate() {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-create-profile',
   templateUrl: './create-profile.component.html',
   styleUrls: [ './create-profile.component.scss' ]

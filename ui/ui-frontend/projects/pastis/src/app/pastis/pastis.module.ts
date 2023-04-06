@@ -108,7 +108,6 @@ import { PastisRoutingModule } from './pastis-routing.module';
     UserActionRemoveMetadataComponent,
     UserActionAddMetadataComponent,
     SedaVisualizerComponent
-    
   ],
   exports: [
   ],

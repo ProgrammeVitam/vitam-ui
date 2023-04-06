@@ -1,14 +1,13 @@
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {MatMenuModule} from '@angular/material/menu';
-
-import {BASE_URL, LogbookService} from 'ui-frontend-common';
-import {IngestPreviewComponent} from './ingest-preview.component';
-import {IngestService} from '../ingest.service';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {TranslateModule} from '@ngx-translate/core';
-import {of} from "rxjs";
-import {LogbookOperation} from "../../models/logbook-event.interface";
+import {of} from 'rxjs';
+import {BASE_URL, LogbookService} from 'ui-frontend-common';
+import {LogbookOperation} from '../../models/logbook-event.interface';
+import {IngestService} from '../ingest.service';
+import {IngestPreviewComponent} from './ingest-preview.component';
 
 @Pipe({name: 'truncate'})
 class MockTruncatePipe implements PipeTransform {

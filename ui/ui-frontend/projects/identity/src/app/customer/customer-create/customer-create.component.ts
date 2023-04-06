@@ -207,7 +207,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       return;
     }
     this.creating = true;
-    const customer: Customer = this.updateForCustomerModel(this.form.value);
+    const customer: Customer = this.getCustomerFromForm();
 
     this.customerService
       .create(customer, this.logos)
@@ -223,12 +223,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       );
   }
 
-  private updateForCustomerModel(formValue: any): Customer {
-    let customer = formValue;
+  public getCustomerFromForm(): Customer {
+    let customer = this.form.value;
 
     if (this.customerForm && this.customerForm.get('hasCustomGraphicIdentity').value === true) {
       customer = {
-        ...formValue,
+        ...this.form.value,
         ...{
           hasCustomGraphicIdentity: this.customerForm.get('hasCustomGraphicIdentity').value,
           themeColors: this.customerForm.get('themeColors').value,

@@ -37,21 +37,16 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.util.Utils;
-import org.apereo.cas.authentication.principal.Principal;
-import org.apereo.cas.configuration.model.support.mfa.CasSimpleMultifactorAuthenticationProperties;
-import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
-import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
-import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicketFactory;
-import org.apereo.cas.mfa.simple.web.flow.CasSimpleMultifactorSendTokenAction;
-import org.apereo.cas.notifications.CommunicationsManager;
-import org.apereo.cas.ticket.Ticket;
-import org.apereo.cas.ticket.registry.TicketRegistry;
-import org.apereo.cas.web.flow.CasWebflowConstants;
-import org.apereo.cas.web.support.WebUtils;
-
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.bucket4j.consumer.BucketConsumer;
+import org.apereo.cas.configuration.model.support.mfa.simple.CasSimpleMultifactorAuthenticationProperties;
+import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
+import org.apereo.cas.mfa.simple.validation.CasSimpleMultifactorAuthenticationService;
+import org.apereo.cas.mfa.simple.web.flow.CasSimpleMultifactorSendTokenAction;
+import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.web.flow.CasWebflowConstants;
+import org.apereo.cas.web.support.WebUtils;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -62,38 +57,22 @@ import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
  */
 @Slf4j
 public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
+    private static final String MESSAGE_MFA_TOKEN_SENT = "cas.mfa.simple.label.tokensent";
 
     private final Utils utils;
 
-    public CustomSendTokenAction(final TicketRegistry ticketRegistry,
-                                 final CommunicationsManager communicationsManager,
-                                 final CasSimpleMultifactorAuthenticationTicketFactory ticketFactory,
+    public CustomSendTokenAction(final CommunicationsManager communicationsManager,
+                                 final CasSimpleMultifactorAuthenticationService multifactorAuthenticationService,
                                  final CasSimpleMultifactorAuthenticationProperties properties,
                                  final CasSimpleMultifactorTokenCommunicationStrategy tokenCommunicationStrategy,
+                                 final BucketConsumer bucketConsumer,
                                  final Utils utils) {
-        super(ticketRegistry, communicationsManager, ticketFactory, properties, tokenCommunicationStrategy);
+        super(communicationsManager, multifactorAuthenticationService, properties, tokenCommunicationStrategy, bucketConsumer);
         this.utils = utils;
     }
 
     @Override
-    protected boolean isSmsSent(final CommunicationsManager communicationsManager,
-                                     final CasSimpleMultifactorAuthenticationProperties properties,
-                                     final Principal principal,
-                                     final Ticket token) {
-        if (communicationsManager.isSmsSenderDefined()) {
-            val smsProperties = properties.getSms();
-            String smsText = StringUtils.isNotBlank(smsProperties.getText())
-                ? smsProperties.getFormattedText(token.getId())
-                : token.getId();
-            // CUSTO: remove the prefix
-            smsText = smsText.replace(CasSimpleMultifactorAuthenticationTicket.PREFIX + "-", "");
-            return communicationsManager.sms(principal, smsProperties.getAttributeName(), smsText, smsProperties.getFrom());
-        }
-        return false;
-    }
-
-    @Override
-    protected Event doExecute(final RequestContext requestContext) {
+    protected Event doExecute(final RequestContext requestContext) throws Exception {
         val authentication = WebUtils.getInProgressAuthentication();
         val principal = resolvePrincipal(authentication.getPrincipal());
 

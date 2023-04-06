@@ -44,7 +44,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AuthenticationModule, VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -62,6 +62,7 @@ registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AuthenticationModule.forRoot(),
     CoreModule,
     BrowserAnimationsModule,
     BrowserModule,

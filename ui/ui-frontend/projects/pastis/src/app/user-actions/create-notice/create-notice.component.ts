@@ -28,6 +28,7 @@ function constantToTranslate() {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'create-notice',
   templateUrl: './create-notice.component.html',
   styleUrls: [ './create-notice.component.scss' ]
@@ -159,6 +160,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   }
 
 
+  // tslint:disable-next-line:use-lifecycle-interface
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

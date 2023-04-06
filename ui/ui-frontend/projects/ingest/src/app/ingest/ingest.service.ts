@@ -39,7 +39,7 @@ import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {SearchService} from 'ui-frontend-common';
 import {IngestApiService} from '../core/api/ingest-api.service';
-import {LogbookOperation} from "../models/logbook-event.interface";
+import {LogbookOperation} from '../models/logbook-event.interface';
 
 
 @Injectable({

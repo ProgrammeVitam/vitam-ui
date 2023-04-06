@@ -80,6 +80,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -171,8 +172,7 @@ public final class VitamUIUtils {
         }
     }
 
-    public static <T> T convertObjectFromJson(final String json, final Class<T> cls)
-        throws JsonParseException, JsonMappingException, IOException {
+    public static <T> T convertObjectFromJson(final String json, final Class<T> cls) throws JsonParseException, JsonMappingException,IOException {
         return new ObjectMapper().readValue(json, cls);
     }
 
@@ -292,8 +292,7 @@ public final class VitamUIUtils {
      * Use {@link #getSha512Print(InputStream)} instead.
      */
     @Deprecated
-    public static String getSha512Print(final byte[] data)
-        throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
+    public static String getSha512Print(final byte[] data) throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
         Security.addProvider(new BouncyCastleProvider());
         final MessageDigest digest = MessageDigest.getInstance(PRINT_ALGORITHM, "BC");
         digest.digest(data);

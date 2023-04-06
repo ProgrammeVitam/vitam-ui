@@ -40,6 +40,7 @@ function constantToTranslate(edit: boolean) {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-popup-option',
   templateUrl: './pastis-popup-option.component.html',
   styleUrls: [ './pastis-popup-option.component.scss' ]
@@ -152,18 +153,21 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
       if (result.success) {
         // console.log(result.action + ' PA ou PUA ?');
         if (result.action === 'PA' || result.action === 'PUA') {
+          // tslint:disable-next-line:no-shadowed-variable
           const dataToSendToPopUp = {} as PastisDialogDataCreate;
           dataToSendToPopUp.titleDialog = this.popupSaveCreateNoticeTitleDialog;
           dataToSendToPopUp.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
           dataToSendToPopUp.okLabel = this.popupSaveCreateNoticeOkLabel;
           dataToSendToPopUp.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
           dataToSendToPopUp.modeProfile = result.action;
+          // tslint:disable-next-line:no-shadowed-variable
           const dialogRef = this.dialog.open(CreateNoticeComponent, {
               width: '800px',
               panelClass: 'pastis-popup-modal-box',
               data: dataToSendToPopUp
             }
           );
+          // tslint:disable-next-line:no-shadowed-variable
           dialogRef.afterClosed().subscribe((result) => {
             let retour;
             if (result.success) {

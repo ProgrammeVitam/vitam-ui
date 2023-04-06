@@ -50,6 +50,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.UserExternalService;
 import lombok.Getter;
@@ -188,12 +189,8 @@ public class UserExternalController implements CrudController<UserDto> {
         return userExternalService.patchMe(partialDto);
     }
 
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.checkSecureParameter(id);
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for user with id :{}", id);
         return userExternalService.findHistoryById(id);
     }

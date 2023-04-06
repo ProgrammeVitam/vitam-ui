@@ -3308,6 +3308,53 @@
         }
       }
     },
+    "/userinfos/{id}/history": {
+      "get": {
+        "tags": [
+          "UserInfos"
+        ],
+        "summary": "Récupération de l'historique d'un user infos",
+        "operationId": "findHistoryOfUserInfos",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-tenant-id"
+          },
+          {
+            "$ref": "#/parameters/x-user-token"
+          },
+          {
+            "$ref": "#/parameters/x-application-id"
+          },
+          {
+            "$ref": "#/parameters/x-user-level"
+          },
+          {
+            "$ref": "#/parameters/x-customer-id"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant technique des informations de l'utilisateur",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historique des informations de l'utilisateur",
+            "schema": {
+              "$ref": "#/definitions/JsonNode"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
     "/userinfos/me": {
       "get": {
         "tags": [

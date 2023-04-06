@@ -137,7 +137,7 @@ public class AccessContractInternalController {
         return accessContractInternalService.patch(vitamContext, partialDto);
     }
 
-    @GetMapping("/{id}/history")
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for accessContract with id :{}", id);

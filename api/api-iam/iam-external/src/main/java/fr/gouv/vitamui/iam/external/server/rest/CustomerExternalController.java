@@ -49,7 +49,9 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
+import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
@@ -71,19 +73,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -218,12 +208,8 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
         return customerExternalService.patch(customerData);
     }
 
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.checkSecureParameter(id);
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for customer with id :{}", id);
         return customerExternalService.findHistoryById(id);
     }
@@ -248,7 +234,11 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logo for customer with id :{}, type : {}", id, type);
         final ResponseEntity<Resource> response = customerExternalService.getLogo(id, type);
-        return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
+        if(HttpStatus.NO_CONTENT.equals(response.getStatusCode())) {
+            return response;
+        } else {
+            return RestUtils.buildFileResponse(response, Optional.of(ContentDispositionType.INLINE), Optional.empty());
+        }
     }
 
     /**

@@ -4,7 +4,7 @@ print("START 213_cas_services_ref.js");
 
 var nbInsert = db.services.insert({
    "_id" : NumberInt(5),
-   "_class": "org.apereo.cas.services.RegexRegisteredService",
+   "_class": "org.apereo.cas.services.CasRegisteredService",
 {% if vitamui.ingest.base_url is defined %}
    "serviceId": "^{{ vitamui.ingest.base_url }}/.*",
    "logoutUrl": "{{ vitamui.ingest.base_url }}/logout",

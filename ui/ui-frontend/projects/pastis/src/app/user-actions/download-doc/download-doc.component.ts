@@ -38,6 +38,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { Component, OnInit } from '@angular/core';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-download-doc',
   templateUrl: './download-doc.component.html',
   styleUrls: ['./download-doc.component.scss']

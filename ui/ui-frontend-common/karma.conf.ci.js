@@ -15,6 +15,10 @@ module.exports = function (config) {
     browserDisconnectTimeout : 210000,
     browserNoActivityTimeout : 210000,
     browsers: ['ChromeHeadless_custom'],
+    client:{
+      clearContext: false, // leave  Spec Runner output visible in browser
+      captureConsole: false,
+    },
     customLaunchers: {
       'ChromeHeadless_custom': {
         base: 'ChromeHeadless',

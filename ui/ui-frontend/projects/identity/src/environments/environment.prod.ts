@@ -36,5 +36,6 @@
  */
 export const environment = {
   production: true,
-  userRefreshRate: 60000
+  userRefreshRate: 60000,
+  configUrls: ['./assets/config.json'],
 };

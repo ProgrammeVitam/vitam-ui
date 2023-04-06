@@ -40,7 +40,7 @@ import { ENTER } from '@angular/cdk/keycodes';
 import { AfterContentInit, Component, ContentChildren, forwardRef, Input, QueryList } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { VitamUIFieldErrorComponent } from 'ui-frontend-common';
-
+/*eslint no-use-before-define: "error"*/
 export const LIST_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => CustomParamsComponent),
@@ -81,10 +81,10 @@ export class CustomParamsComponent implements AfterContentInit, ControlValueAcce
   }
 
   writeValue(values: any) {
-    if(values!=null && values!= undefined)
-    Object.keys(values).forEach(key=>{
-      this.values.set(key,values[key]);
-    })
+    if (values !== null && values !== undefined)
+      Object.keys(values).forEach((key) => {
+        this.values.set(key, values[key]);
+      });
   }
 
   registerOnChange(fn: (_: any) => void) {
@@ -131,8 +131,8 @@ export class CustomParamsComponent implements AfterContentInit, ControlValueAcce
   }
 
   private strMapToObj(strMap: Map<string, string>) {
-    let obj = Object.create(null);
-    for (let [k, v] of strMap) {
+    const obj = Object.create(null);
+    for (const [k, v] of strMap) {
       // We don’t escape the key '__proto__'
       // which can cause problems on older engines
       obj[k] = v;

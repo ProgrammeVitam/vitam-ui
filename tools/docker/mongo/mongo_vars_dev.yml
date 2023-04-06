@@ -2,6 +2,9 @@ pki_dir: "{{lookup('env','PWD')}}/../../../dev-deployment/environments/certs"
 
 # Overwrite vitamui defaults in order to perform transparent execution of deployment scripts.
 
+gateway:
+  enabled: true
+
 vitamui_defaults:
   folder:
     root_path: "{{lookup('env','PWD')}}/mongo-entrypoint"
@@ -86,12 +89,24 @@ vitamui_platform_informations:
 vitam_site_name: "dev"
 vitamui:
   identity:
+    clientId: identity
+    serviceId: "^https://dev.vitamui.com:4201/.*"
+    name: Identity Access Management Application
     base_url: "https://dev.vitamui.com:4201"
   identity_admin:
+    clientId: identityadmin
+    serviceId: "^https://dev.vitamui.com:4201/.*"
+    name: Identity Admin Access Management Application
     base_url: "https://dev.vitamui.com:4201"
   portal:
+    clientId: portal
+    serviceId: "^https://dev.vitamui.com:4200/.*"
+    name: Portal Application
     base_url: "https://dev.vitamui.com:4200"
   referential:
+    clientId: referential
+    serviceId: "^https://dev.vitamui.com:4202/.*"
+    name: Referential Application
     base_url: "https://dev.vitamui.com:4202"
   ingest:
     base_url: "https://dev.vitamui.com:4208"

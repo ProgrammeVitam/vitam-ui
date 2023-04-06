@@ -36,20 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.ws.rs.core.Response;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -57,7 +43,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
@@ -70,11 +55,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.exception.ConflictException;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
-import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
+import fr.gouv.vitamui.commons.api.exception.*;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
@@ -83,6 +64,18 @@ import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AgencyCSVDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.ws.rs.core.Response;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class VitamAgencyService {
 
@@ -120,7 +113,7 @@ public class VitamAgencyService {
     public Response export(VitamContext context) throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException {
         JsonNode query = VitamQueryHelper.getLastOperationQuery(VitamQueryHelper.AGENCY_IMPORT_OPERATION_TYPE);
         RequestResponse<LogbookOperation> lastImportOperationResponse = accessExternalClient.selectOperations(context, query);
-        LogbookOperationsResponseDto lastImportOperation = VitamRestUtils.responseMapping(lastImportOperationResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+        fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto lastImportOperation = VitamRestUtils.responseMapping(lastImportOperationResponse.toJsonNode(), LogbookOperationsResponseDto.class);
 
         if (lastImportOperation.getHits().getTotal() == 0) {
             throw new VitamClientException("Can't get a result while selecting lase agency import");
@@ -128,8 +121,8 @@ public class VitamAgencyService {
         LOGGER.info("Export Agencies EvIdAppSession : {} " , context.getApplicationSessionId());
         return adminExternalClient.downloadAgenciesCsvAsStream(context, lastImportOperation.getResults().get(0).getEvId());
     }
-    
-    public RequestResponse<?> importAgencies(VitamContext vitamContext, String fileName, MultipartFile file) 
+
+    public RequestResponse<?> importAgencies(VitamContext vitamContext, String fileName, MultipartFile file)
     	throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
     	LOGGER.debug("Import agency file {}", fileName);
     	return this.importAgencies(vitamContext, file.getInputStream(), fileName);

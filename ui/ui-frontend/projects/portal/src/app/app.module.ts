@@ -48,6 +48,7 @@ import { AngularSvgIconModule, SvgLoader } from 'angular-svg-icon';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import {
+  AuthenticationModule,
   BASE_URL,
   ENVIRONMENT,
   InjectorModule,
@@ -78,6 +79,7 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AuthenticationModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     PortalModule,

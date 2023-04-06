@@ -39,12 +39,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
+import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApplicationSelectContentModule } from 'ui-frontend-common';
-import { ApplicationListModule } from '../components/application-list/application-list.module';
+import { ContentListModule } from '../components/content-list/content-list.module';
 import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
 import { PortalComponent } from './portal.component';
 
@@ -57,8 +57,9 @@ import { PortalComponent } from './portal.component';
     RouterModule,
     ApplicationSelectContentModule,
     WelcomeMessageModule,
-    ApplicationListModule,
+    ContentListModule,
     MatProgressSpinnerModule,
+    BrowserTransferStateModule
   ],
   declarations: [PortalComponent]
 })

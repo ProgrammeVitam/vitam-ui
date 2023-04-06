@@ -91,7 +91,7 @@
           "IMPOSSIBLE_SUBROGATION": "La subrogation pour cet utilisateur est momentanément impossible",
           "DENIED_SUBROGATION": "Votre demande de subrogation a été refusée",
           "CANCEL_SUBROGATION": "Votre demande de subrogation a bien été annulée",
-          "ACTIVE_SUBROGATION": "Vous avez déjà une subrogation en cours avec l'utilisateur",
+          "ACTIVE_SUBROGATION": "Vous avez déjà une subrogation en cours avec l'utilisateur : {{ email }}",
           "WAITING_ACCEPTATION": "Attente de l'acceptation de l'utilisateur",
           "ACCEPT_SUBROGATION": "Afin de vous aider le support dispose pour les prochaines 30 minutes des mêmes droits que vous",
           "ASK_SUBROGATION": "Vous avez demandé à subroger l'utilisateur"
@@ -255,6 +255,10 @@
       "NAME": "Salles d'archives",
       "TOOLTIP": "Gestion des archives physiques"
     },
+    "ARCHIVE_ROOM_PROFILE_APP": {
+      "NAME": "Profils APP Salle d'archives",
+      "TOOLTIP": "Paramétrer des profils d’accès pour l’APP Salle d’archives"
+    },
     "BARCODES_APP": {
       "NAME": "Etiquettes",
       "TOOLTIP": "Gestion des etiquettes"
@@ -273,7 +277,7 @@
     },
     "ITEM_SUPERVISION_PROFILE_APP": {
       "NAME": "Profils APP Supervision des bordereaux",
-      "TOOLTIP": "Paramétrer des profils de supervision pour l’APP de supervision des bordereaux"
+      "TOOLTIP": "Paramétrer des profils de supervision pour l'APP de supervision des bordereaux"
     },
     "ARCHIVE_SEARCH_MANAGEMENT_APP": {
       "NAME": "Recherche, consultation et gestion des archives",
@@ -334,6 +338,10 @@
       "NAME": "Suivi des versements",
       "TOOLTIP": "Suivi des versements"
     },
+    "ARCHIVAL_PROFILE_APP": {
+      "NAME": "Profils d'archivage et d'unités archivistiques",
+      "TOOLTIP": "Visualiser et importer des profils d'archivage et d'unités archivistiques"
+    },
     "MANAGEMENT_CONTRACT_APP": {
       "NAME": "Contrats de gestion",
       "TOOLTIP": "Application des contrats de gestion"
@@ -372,7 +380,8 @@
     "ingest_and_consultation": "Versement & consultation",
     "supervision_and_audits": "Supervision & Audits",
     "security_and_application_rights": "Sécurité & droits applicatifs",
-    "organization_and_user_rights": "Organisation & droits utilisateurs"
+    "organization_and_user_rights": "Organisation & droits utilisateurs",
+    "USER_ALERTS": "Mes actions"
   },
   "MENU_APPLICATION_TILE": {
     "ENTER_APPLICATION": "Entrée pour lancer l'application"
@@ -425,15 +434,15 @@
     "CANCELLED": "Téléchargement annulé",
     "CANCEL_ACTION": "Annuler le téléchargement",
     "CONFIRM_CANCEL_ACTION": "Êtes-vous sûr de vouloir annuler le téléchargement du fichier ?",
-    "FILE_COMPRESSION": {
-      "SINGULAR": "Compression du fichier : 1 élément",
-      "PLURAL": "Compression du fichier : {{ count }} éléments"
+    "FILE_PREPARATION": {
+      "SINGULAR": "Préparation du téléchargement : 1 élément",
+      "PLURAL": "Préparation du téléchargement : {{ count }} éléments"
     },
-    "FILE_COMPRESSION_TOTAL": {
+    "FILE_PREPARATION_TOTAL": {
       "SINGULAR": "sur {{ total }} (1 élément non téléchargeable)",
       "PLURAL": "sur {{ total }} ({{ count }} éléments non téléchargeables)"
     },
-    "FILE_GENERATION": "Génération du fichier"
+    "FILE_TRANSFER": "Transfert en cours"
   },
   "EDITABLE_SELECT": {
     "CONFIM_UPDATE": "Êtes-vous sûr de vouloir effectuer cette modification ?"
@@ -448,6 +457,47 @@
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Défaut)"
+  },
+  "USER_ALERTS_CARD": {
+    "APPLICATION": "Application",
+    "DETAIL": "Détails",
+    "OPEN": "Réaliser la tâche"
+  },
+  "USER_ALERTS": {
+    "KEYS": {
+      "ACCESS_ITEM": "Communication",
+      "DISPOSAL_ITEM": "Elimination",
+      "REMOVAL_ITEM": "Enlèvement",
+      "STORAGE_ITEM": "Entreposage",
+      "INDEX_ITEM": "Indexation",
+      "TRANSFER_ITEM": "Transfert"
+    },
+    "ACTIONS": {
+      "INDEX_ITEM_PREPARATION": "ajout des documents",
+      "DOCUMENTS_INDEXATION": "indexation",
+      "PHYSICAL_SIGNIFICATIVE_INDEXATION": "indexation",
+      "DOCUMENTS_SIGNIFICATIVE_INDEXATION": "indexation",
+      "PHYSICAL_BANALISE_INDEXATION": "indexation",
+      "DOCUMENTS_BANALISE_INDEXATION": "indexation",
+      "PROCESS_TRANSFER_REQUEST": "acceptation de la demande",
+      "RECEIPT_CONFIRMATION": "confirmation de la réception",
+      "STORAGE_AFFECTATION": "affectation",
+      "REMOVAL_AFFECTATION": "affectation",
+      "VALIDATION": "validation",
+      "ITEM_SIGNATURE": "signature",
+      "DISPOSAL": "élimination",
+      "ITEM_CONSOLIDATION": "validation des archives",
+      "DOCUMENTS_IMPORT": "import des documents",
+      "CONTROL": "contrôle",
+      "AFFECTATION": "affectation",
+      "TRANSFER_REQUEST_VALIDATION": "acceptation de la demande",
+      "DISPOSAL_CONFIRMATION": "validation des archives consolidées",
+      "PHYSICAL_DOCUMENTS_INDEXATION": "indexation"
+    },
+    "STATUS": {
+      "BLOCKED": "à faire"
+    },
+    "SEE_MORE": "Voir plus"
   },
   "SNACKBAR": {
     "UPDATED_ACCOUNT": "Les informations ont été mises à jour",
@@ -464,9 +514,6 @@
   "EVENT_TYPE_LABEL": {
     "RECLASSIFICATION_PREPARATION_CHECK_HOLD_RULES": "Contrôle du blocage de reclassification des unités archivistiques par des règles de gel.",
     "EXPORT_CHECK_RESOURCE_AVAILABILITY": "Vérification de la disponibilité des objets binaires sur l'offre de stockage",
-    "CHECK_ATTACHEMENT": "Vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux",
-    "CHECK_ATTACHEMENT.OK": "Succès de la vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux",
-    "CHECK_ATTACHEMENT.KO": "Échec de la vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux",
     "COMPUTE_INHERITED_RULES": "Calcul des règles de gestion applicables",
     "COMPUTE_INHERITED_RULES_FINALIZATION": "Finalisation du calcul des règles de gestion applicables",
     "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD": "Vérification des seuils de limitation de traitement des unités archivistiques",
@@ -480,6 +527,9 @@
     "STP_COMPUTE_INHERITED_RULES_FINALIZATION": "Finalisation du calcul des règles de gestion applicables",
     "CHECK_OBJECT_SIZE": "Vérification de la taille des fichiers",
     "OBJ_STORAGE": "Écriture des objets et des groupes d'objets sur l'offre de stockage",
+    "CHECK_ATTACHEMENT": "Vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux",
+    "CHECK_ATTACHEMENT.OK": "Succès de la vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux",
+    "CHECK_ATTACHEMENT.KO": "Échec de la vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux",
     "AUDIT": "Audit",
     "STP_DELETE_MASTERDATA_CONTEXT.WARNING": "Avertissement lors du processus de suppression des contextes applicatifs",
     "STP_CORRECTIVE_AUDIT.KO": "Échec de la correction des signatures de chaque unité archivistique ou objet ou groupe d'objets corrompue",
@@ -3001,7 +3051,9 @@
     "LFC.CHECK_ARCHIVE_UNIT_PROFILE.INVALID_AU_PROFILE.KO": "Échec de la vérification de la conformité aux profils d'unité archivistique : profil d'unité archivistique non conforme",
     "LFC.CHECK_OBJECT_SIZE.CHECK_SIZE": "Vérification de la taille d'un fichier binaire",
     "LFC.CHECK_OBJECT_SIZE": "Vérification de la taille des fichiers",
-    "STP_RECLASSIFICATION_FINALIZATION.KO": "Échec du processus de finalisation de la modification d'arborescence des unités archivistiques",
+    "CHECK_OBJECT_SIZE.CHECK_SIZE": "Vérification de la taille d'un fichier binaire",
+    "CHECK_OBJECT_SIZE.KO": "La taille de l'objet binaire n'est pas correcte ou bien le champ size n'est pas renseigné",
+     "STP_RECLASSIFICATION_FINALIZATION.KO": "Échec du processus de finalisation de la modification d'arborescence des unités archivistiques",
     "STP_CHECK_AND_COMPUTE.STARTED.FATAL": "Erreur technique lors du début du processus de préparation de la liste des unités archivistiques à mettre à jour et des autorisations de modification",
     "STORAGE_BACKUP.KO": "Échec de la sauvegarde des journaux des écritures",
     "ELIMINATION_ACTION_ACCESSION_REGISTER_PREPARATION": "Préparation du Registre des Fonds suite à l'élimination définitive des unités archivistiques",
@@ -3061,9 +3113,6 @@
     "EXT_VITAMUI_CREATE_TENANT": "Création du coffre du propriétaire",
     "EXT_VITAMUI_UPDATE_TENANT": "Modification du coffre du propriétaire",
     "EXT_VITAMUI_CREATE_USER": "Création de l'utilisateur",
-    "EXT_VITAMUI_UPDATE_USER": "Modification de l'utilisateur",
-    "EXT_VITAMUI_CREATE_USER_INFO": "Création des informations utilisateur",
-    "EXT_VITAMUI_UPDATE_USER_INFO": "Modification des informations utilisateur",
     "EXT_VITAMUI_CREATE_EXTERNAL_PARAM_PROFILE": "Création du profil de paramétrages externes",
     "EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE": "Modification du profil de paramétrages externes",
     "EXT_VITAMUI_CREATE_EXTERNAL_PARAM": "Création d'un paramétrage externe",
@@ -3249,6 +3298,71 @@
     "LFC.CHECK_OBJECT_GROUP_SCHEMA.KO": "Échec lors de la vérification globale du groupe d''objet",
     "LFC.CHECK_OBJECT_GROUP_SCHEMA.WARNING": "Avertissement lors de la vérification globale du groupe d''objet",
     "LFC.CHECK_OBJECT_GROUP_SCHEMA.FATAL": "Erreur fatale de la vérification globale du groupe d''objet"
+    "CHECK_ATR_AND_ADD_IT_TO_WORKSPACE.OK": "Succès de vérification et de l'ajout de l'ATR dans le workspace",
+    "EXT_VITAMUI_UPDATE_USER": "Modification de l'utilisateur",
+    "EXT_VITAMUI_CREATE_USER_INFO": "Création des informations utilisateur",
+    "EXT_VITAMUI_UPDATE_USER_INFO": "Modification des informations utilisateur",
+    "MASS_UPDATE_CHECK": "Vérification des droits et des paramètres",
+    "MASS_UPDATE_CHECK.STARTED": "Début de la Vérification des droits et des paramètres",
+    "MASS_UPDATE_CHECK.OK": "Succès de la Vérification des droits et des paramètres",
+    "MASS_UPDATE_CHECK.KO": "Échec de la Vérification des droits et des paramètres",
+    "MASS_UPDATE_CHECK.FATAL": "Erreur technique lors de la Vérification des droits et des paramètres",
+    "MASS_UPDATE_CHECK.WARNING": "Avertissement lors de la Vérification des droits et des paramètres",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.STARTED.OK": "Succès du début du processus de préparation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.OK": "Succès du processus de préparation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.KO": "Échec du processus de préparation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.WARNING": "Avertissement lors du processus de préparation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.FATAL": "Erreur technique lors du processus de préparation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_PREPARATION.STARTED": "Début de la préparation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_PREPARATION.OK": "Succès de la préparation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_PREPARATION.KO": "Échec de la préparation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_PREPARATION.FATAL": "Erreur technique lors de la préparation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_PREPARATION.WARNING": "Avertissement lors de la préparation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES.STARTED.OK": "Succès du début du processus de calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES.OK": "Succès du processus de calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES.KO": "Échec du processus de calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES.WARNING": "Avertissement lors du processus de calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES.FATAL": "Erreur technique lors du processus de calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.STARTED.OK": "Succès du début du processus de finalisation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.OK": "Succès du processus de finalisation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.KO": "Échec du processus de finalisation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.WARNING": "Avertisssement lors du processus de finalisation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.FATAL": "Erreur technique lors du processus de finalisation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.STARTED": "Début de la finalisation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.OK": "Succès de la finalisation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.KO": "Échec de la finalisation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.WARNING": "Avertisssement de la finalisation du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.FATAL": "Erreur technique de la finalisation du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_DELETE": "Processus de suppression du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.STARTED": "Début du processus de suppression du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.STARTED.OK": "Succès du début du processus de suppression du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.OK": "Succès du processus de suppression du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.KO": "Échec du processus de suppression du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.WARNING": "Avertisssement lors du processus de suppression du calcul des règles de gestion applicables",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.FATAL": "Erreur technique lors du processus de suppression du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES.STARTED": "Début du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES.STARTED.OK": "Succès du début du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES.OK": "Succès du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES.KO": "Échec du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES.WARNING": "Avertissement lors du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES.FATAL": "Erreur technique lors du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_DELETE": "Suppression du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_DELETE.STARTED": "Début supression du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_DELETE.STARTED.OK": "Succès début de suppression du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_DELETE.OK": "Succès suppression du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_DELETE.KO": "Échec suppression du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_DELETE.WARNING": "Avertissement lors de suppression du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_DELETE.FATAL": "Erreur technique lors de suppression du calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.STARTED": "Début de l'identification des unités archivistiques héritières",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.OK": "Succès de l'identification des unités archivistiques héritières",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.KO": "Erreur lors de l'identification des unités archivistiques héritières",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.FATAL": "Erreur technique lors de l'identification des unités archivistiques héritières",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.WARNING": "Avertissement lors de l'identification des unités archivistiques héritières",
+    "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.OK": "Succès de la vérification des seuils de limitation de traitement des unités archivistiques",
+    "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.KO": "Echec de la vérification des seuils de limitation de traitement des unités archivistiques",
+    "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.FATAL": "Erreur technique lors de la vérification des seuils de limitation de traitement des unités archivistiques",
+    "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.WARNING": "Avertissement lors de la vérification des seuils de limitation de traitement des unités archivistiques"
+
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "Vous n'avez pas les droits nécessaires pour effectuer cette opération.",

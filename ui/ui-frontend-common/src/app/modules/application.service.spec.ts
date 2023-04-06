@@ -41,9 +41,11 @@ import { Router } from '@angular/router';
 import { ApplicationId } from './application-id.enum';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
+import { ConfigService } from './config.service';
 import { BASE_URL } from './injection-tokens';
 import { Application } from './models/application/application.interface';
 import { StartupService } from './startup.service';
+
 
 describe('ApplicationService', () => {
   let httpTestingController: HttpTestingController;
@@ -58,6 +60,9 @@ describe('ApplicationService', () => {
       userId: 'fakeUserId',
       customerId: 'fakeCustomerId',
     };
+    const configServiceStub = {
+      config: {GATEWAY_ENABLED: false}
+    };
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -68,6 +73,7 @@ describe('ApplicationService', () => {
         { provide: LOCALE_ID, useValue: 'fr' },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ConfigService, useValue: configServiceStub },
       ],
     });
 
@@ -79,7 +85,7 @@ describe('ApplicationService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should call /fake-api/ui/applications?filterApp=true', () => {
+  it('should call /fake-api/ui/applications/filtered?filterApp=true', () => {
     appService.list().subscribe((response) => {
       expect(response.APPLICATION_CONFIGURATION).toEqual([
         {
@@ -97,7 +103,7 @@ describe('ApplicationService', () => {
         } as Application,
       ]);
     }, fail);
-    const req = httpTestingController.expectOne('/fake-api/ui/applications?filterApp=true');
+    const req = httpTestingController.expectOne('/fake-api/ui/applications/filtered?filterApp=true');
     expect(req.request.method).toEqual('GET');
     req.flush({
       APPLICATION_CONFIGURATION: [

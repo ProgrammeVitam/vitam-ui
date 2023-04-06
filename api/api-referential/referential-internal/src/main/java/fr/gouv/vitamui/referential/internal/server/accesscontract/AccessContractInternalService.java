@@ -106,7 +106,7 @@ public class AccessContractInternalService {
             RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(vitamContext, identifier);
             final AccessContractResponseDto accessContractResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
-            if (accessContractResponseDto.getResults().size() == 0) {
+            if (accessContractResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
                 return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
@@ -303,11 +303,9 @@ public class AccessContractInternalService {
 
             LOGGER.debug("Send AccessContract update request: {}", query);
 
-            RequestResponse requestResponse =  vitamUIAccessContractService.patchAccessContract(vitamContext, id, query);
-            final AccessContractVitamDto accessContractVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AccessContractVitamDto.class);
-            return converter.convertVitamToDto(accessContractVitamDto);
-        } catch (InvalidParseOperationException | AccessExternalClientException | JsonProcessingException e) {
+            vitamUIAccessContractService.patchAccessContract(vitamContext, id, query);
+            return getOne(vitamContext, id);
+        } catch (InvalidParseOperationException | AccessExternalClientException e) {
             throw new InternalServerException("Can't patch access contract", e);
         }
     }

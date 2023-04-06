@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
+/*eslint no-use-before-define: "error"*/
 import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
@@ -44,17 +44,18 @@ import { CountryOption, CountryService, Customer, StartupService } from 'ui-fron
 import { Owner } from 'ui-frontend-common';
 import { ALPHA_NUMERIC_REGEX, OwnerFormValidators, OWNER_CODE_MAX_LENGTH } from './owner-form.validators';
 
+/*eslint no-use-before-define: "error"*/
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => OwnerFormComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'app-owner-form',
   templateUrl: './owner-form.component.html',
   styleUrls: ['./owner-form.component.scss'],
-  providers: [OWNER_FORM_VALUE_ACCESSOR]
+  providers: [OWNER_FORM_VALUE_ACCESSOR],
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
   public form: FormGroup;
@@ -67,11 +68,15 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   @Input()
   set customerId(customerId: string) {
     this._customerId = customerId;
-    if (!this.form) { return; }
+    if (!this.form) {
+      return;
+    }
     this.form.get('customerId').setValue(customerId);
   }
 
-  get customerId() { return this._customerId; }
+  get customerId() {
+    return this._customerId;
+  }
 
   // tslint:disable-next-line:variable-name
   private _customerId: string;
@@ -81,14 +86,16 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     this._customerInfo = customerInfo;
     if (customerInfo && this.form) {
       this.form.patchValue({
-          code: customerInfo.code,
-          name: customerInfo.name,
-          companyName: customerInfo.companyName,
-        });
+        code: customerInfo.code,
+        name: customerInfo.name,
+        companyName: customerInfo.companyName,
+      });
     }
   }
 
-  get customerInfo() { return this._customerInfo; }
+  get customerInfo() {
+    return this._customerInfo;
+  }
   // tslint:disable-next-line:variable-name
   private _customerInfo: any;
 
@@ -117,7 +124,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
         city: null,
         country: 'FR',
       }),
-      readonly: false
+      readonly: false,
     });
   }
 
@@ -139,20 +146,22 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   writeValue(owner: Owner) {
     this.sub.unsubscribe();
 
-    this.form.reset(owner || {
-      customerId: this.customerId,
-      code: null,
-      name: null,
-      companyName: null,
-      internalCode: null,
-      address: {
-        street: null,
-        zipCode: null,
-        city: null,
-        country: 'FR'
-      },
-      readonly: false
-    });
+    this.form.reset(
+      owner || {
+        customerId: this.customerId,
+        code: null,
+        name: null,
+        companyName: null,
+        internalCode: null,
+        address: {
+          street: null,
+          zipCode: null,
+          city: null,
+          country: 'FR',
+        },
+        readonly: false,
+      }
+    );
 
     this.subscribeToValueChanges();
   }
@@ -168,10 +177,9 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   subscribeToValueChanges() {
     this.sub = merge(this.form.statusChanges, this.form.valueChanges)
       .pipe(
-        map(() => this.form.pending || this.form.invalid ? null : this.form.value),
+        map(() => (this.form.pending || this.form.invalid ? null : this.form.value)),
         distinctUntilChanged()
       )
       .subscribe((value) => this.onChange(value));
   }
-
 }

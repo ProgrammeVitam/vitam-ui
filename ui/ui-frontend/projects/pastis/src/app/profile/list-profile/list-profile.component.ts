@@ -71,6 +71,7 @@ function constantToTranslate() {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
   styleUrls: [ './list-profile.component.scss' ],
@@ -168,7 +169,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     } else if (this.isStandalone) {
       this.popupCreationCancelLabel = 'Annuler';
       this.popupCreationTitleDialog = 'Choix du type de profil';
-      this.popupCreationSubTitleDialog = "Création d'un profil";
+      this.popupCreationSubTitleDialog = 'Création d\'un profil';
       this.popupCreationOkLabel = 'VALIDER';
     }
     this.dataGeneriquePopupService.currentDonnee.subscribe((donnees) => (this.donnees = donnees));
@@ -214,7 +215,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   retrievePAorPUA(term: string, filter: boolean): number {
-    const profiles: ProfileDescription[] = filter == false ? this.retrievedProfiles : this.numProfilesFiltered;
+    const profiles: ProfileDescription[] = filter === false ? this.retrievedProfiles : this.numProfilesFiltered;
     const profileNum = profiles.filter((p) => p.type === term).length;
     return profileNum ? profileNum : 0;
   }
@@ -285,7 +286,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       search = '';
     }
     this.search = search;
-    let profileDescriptions = this.retrievedProfiles.filter(
+    const profileDescriptions = this.retrievedProfiles.filter(
       (profile) =>
         profile.identifier.toLowerCase().indexOf(search.toLowerCase()) >= 0 || profile.name.toLowerCase().indexOf(search.toLowerCase()) >= 0
     );
@@ -311,7 +312,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   changeType(type: string) {
-    if (type != undefined) {
+    if (type !== undefined) {
       this.filterType = type;
     }
   }

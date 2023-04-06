@@ -24,10 +24,6 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-export interface LogbookOperation extends LogbookEvent {
-  obIdIn?: string;
-  events?: LogbookEvent[];
-}
 
 export interface LogbookEvent {
   id?: string;
@@ -50,6 +46,11 @@ export interface LogbookEvent {
   rightsStatementIdentifier?: string;
 }
 
+export interface LogbookOperation extends LogbookEvent {
+  obIdIn?: string;
+  events?: LogbookEvent[];
+}
+
 export enum IngestStatus {
   STARTED = 'STARTED',
   IN_PROGRESS = 'En cours',
@@ -59,7 +60,7 @@ export enum IngestStatus {
   FATAL = 'FATAL',
 }
 
-//evDetData
+// evDetData
 export interface EvDetDataDeflateJson {
   EvDetailReq?: string,
   EvDateTimeReq?: string,
@@ -70,7 +71,7 @@ export interface EvDetDataDeflateJson {
   LegalStatus?: string,
 }
 
-//agIdExt
+// agIdExt
 export interface AgIdExtDeflateJson {
   originatingAgency?: string,
   submissionAgency?: string,

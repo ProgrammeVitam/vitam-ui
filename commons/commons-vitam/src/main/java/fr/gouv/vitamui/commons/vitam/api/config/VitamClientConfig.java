@@ -83,14 +83,20 @@ public abstract class VitamClientConfig {
         return factory.getClient();
     }
 
+    /**
+     *   this bean is declared in common module so it's required by all modules
+     *   despite it's used only in collect module,
+     */
     @Bean
     @Profile("!test")
     public CollectExternalClient collectExternalClient() {
         final CollectExternalClientFactory factory = CollectExternalClientFactory.getInstance();
-        if (VitamClientType.MOCK.equals(factory.getVitamClientType())) {
-            throw new InternalServerException("Failed to load Vitam configuration: Vitam client is in MOCK mode");
-        }
-        return factory.getClient();
+      /*
+       if (VitamClientType.MOCK.equals(factory.getVitamClientType())) {
+       throw new InternalServerException("Failed to load Vitam configuration: Vitam client is in MOCK mode");
+       }
+       */
+      return factory.getClient();
     }
 
 }

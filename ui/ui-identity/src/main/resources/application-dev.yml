@@ -98,16 +98,11 @@ server:
     key-store: src/main/resources/dev/keystore_ui-identity-admin.jks
     key-store-password: changeme
     key-password: changeme
-    enabled-protocols: TLSv1.2,TLSv1.3
-    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
-
   servlet.session.cookie.path: /identity-api
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
     min-response-size: 1024
-  error:
-    path: /error
 
 management:
   server:

@@ -59,6 +59,8 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
+import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.assertj.core.api.Assertions;

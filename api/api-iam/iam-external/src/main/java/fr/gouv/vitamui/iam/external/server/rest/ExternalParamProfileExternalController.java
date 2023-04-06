@@ -51,6 +51,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.ExternalParamProfileExternalService;
@@ -62,17 +63,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
@@ -117,6 +108,8 @@ public class ExternalParamProfileExternalController implements
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}",
             page, size, criteria, orderBy, direction, embedded);
+        //RestUtils.checkCriteria(criteria);
+        EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, embedded);
     }
 
@@ -162,11 +155,11 @@ public class ExternalParamProfileExternalController implements
     }
 
     @ApiOperation(value = "get history by external parameter profile profile's id")
-    @GetMapping("/{id}/history")
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
     @Secured(ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)throws InvalidParseOperationException,
+        PreconditionFailedException  {
+        LOGGER.debug("get logbook for external parameter profile with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for external parameter profile with id :{}", id);

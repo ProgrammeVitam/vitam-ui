@@ -41,6 +41,7 @@ import { map } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { BASE_URL } from '../injection-tokens';
 import { Analytics } from '../models/user/analytics.interface';
+import { AlertAnalytics } from '../models/user/user-alerts.interface';
 import { User } from '../models/user/user.interface';
 
 @Injectable({
@@ -54,9 +55,8 @@ export class UserApiService {
     this.apiUrl = baseUrl + '/users';
   }
 
-  public analytics(data: { applicationId?: string, lastTenantIdentifier?: number }): Observable<User> {
+  public analytics(data: { applicationId?: string, lastTenantIdentifier?: number, alerts?: AlertAnalytics []}): Observable<User> {
     const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
     return this.http.post<User>(this.apiUrl + '/analytics', data, { headers });
   }
-
 }

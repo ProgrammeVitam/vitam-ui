@@ -41,10 +41,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -54,23 +56,23 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { RoleToggleModule, TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
 import { SharedModule } from '../shared/shared.module';
-import { AccessionRegisterListComponent } from './accession-register-list/accession-register-list.component';
-import { AccessionRegisterRoutingModule } from './accession-register-routing.module';
-import { AccessionRegisterComponent } from './accession-register.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
+// tslint:disable-next-line:max-line-length
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
-import { MatRadioModule } from '@angular/material/radio';
-import {AccessionRegisterPreviewComponent} from "./accession-register-preview/accession-register-preview.component";
+import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
+import { AccessionRegisterListComponent } from './accession-register-list/accession-register-list.component';
 import {
   AccessionRegisterDetailComponent
-} from "./accession-register-preview/accession-register-detail/accession-register-detail.component";
-import {
-  AccessionRegisterOperationsListComponent
-} from "./accession-register-preview/accession-register-operations-list/accession-register-operations-list.component";
+} from './accession-register-preview/accession-register-detail/accession-register-detail.component';
 import {
   AccessionRegisterOperationComponent
-} from "./accession-register-preview/accession-register-operations-list/accession-register-operation/accession-register-operation.component";
+// tslint:disable-next-line:max-line-length
+} from './accession-register-preview/accession-register-operations-list/accession-register-operation/accession-register-operation.component';
+import {
+  AccessionRegisterOperationsListComponent
+} from './accession-register-preview/accession-register-operations-list/accession-register-operations-list.component';
+import {AccessionRegisterPreviewComponent} from './accession-register-preview/accession-register-preview.component';
+import { AccessionRegisterRoutingModule } from './accession-register-routing.module';
+import { AccessionRegisterComponent } from './accession-register.component';
 
 @NgModule({
   imports: [

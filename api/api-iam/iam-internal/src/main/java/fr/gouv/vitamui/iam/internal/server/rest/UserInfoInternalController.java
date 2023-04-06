@@ -66,6 +66,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import java.util.Map;
+import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.Optional;
 
@@ -155,7 +166,7 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
         return userInfoInternalService.patch(partialDto);
     }
 
-    @GetMapping("/{id}/history")
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
     public JsonNode findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);

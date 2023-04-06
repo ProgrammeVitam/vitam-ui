@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.commons.api.domain;
 
 import java.io.Serializable;
-import java.util.Optional;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.Builder;
 
 /**
  * Request Param Dto.
@@ -20,21 +21,50 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @ToString(callSuper = true)
 public class RequestParamDto implements Serializable {
 
+    /**
+     * page number
+     */
     @NotNull
     private Integer page;
 
+    /**
+     * result set size
+     */
     @NotNull
     private Integer size;
 
-    private Optional<String> criteria;
+    /**
+     * filter criteria
+     */
+    private String criteria;
 
-    private Optional<String> orderBy;
+    /**
+     * order by fields separated by ','
+     */
+    private String orderBy;
 
-    private Optional<DirectionDto> direction;
+    /**
+     * orderby direction
+     */
+    private DirectionDto direction;
 
-    private Optional<RequestParamGroupDto> groups;
+    /**
+     * aggregation groups
+     */
+    private RequestParamGroupDto groups;
+
+    /**
+     * fields to be excluded from each dto result, separated by ','
+     */
+    private List<String> excludeFields;
+
+    /**
+     * embed external dependency in the response
+     */
+    String embedded;
 
 }

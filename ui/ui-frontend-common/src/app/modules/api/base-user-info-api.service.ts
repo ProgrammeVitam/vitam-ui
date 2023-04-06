@@ -39,8 +39,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
-import { UserInfo } from '../models/user/user-info.interface';
 import { Account } from '../models/account/account.interface';
+import { UserInfo } from '../models/user/user-info.interface';
 import { AuthService } from './../auth.service';
 
 @Injectable({

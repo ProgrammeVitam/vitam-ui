@@ -8,11 +8,21 @@
   <div class="header-actions">
     <ng-content select="[extended-content]"></ng-content>
 
-    <div class="d-flex align-items-center">
-      <vitamui-common-select-language *ngIf="hasLangSelection" [displayMode]="'select'"></vitamui-common-select-language>
+    <div class="d-flex align-items-center user-alerts" *ngIf="userAlerts">
+      <vitamui-common-user-alerts-menu
+        [userAlerts]="userAlerts"
+        [hasMoreAlerts]="hasMoreAlerts"
+        (openAlert)="openAlert($event)"
+        (closeAlert)="removeAlert($event)"
+        (seeMoreAlerts)="seeMoreAlerts()">
+      </vitamui-common-user-alerts-menu>
     </div>
 
-    <div class="d-flex align-items-center" [class.select-tenant]="hasTenantSelection || hasCustomerSelection">
+    <div class="d-flex align-items-center" *ngIf="hasLangSelection">
+      <vitamui-common-select-language [displayMode]="'select'"></vitamui-common-select-language>
+    </div>
+
+    <div class="d-flex align-items-center" [class.selection]="hasTenantSelection || hasCustomerSelection">
       <!-- tenant selection -->
       <vitamui-common-item-select
         *ngIf="hasTenantSelection"

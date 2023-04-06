@@ -153,7 +153,7 @@ export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
   private handleWaitingToRecalculateRulesFacets(): number {
     let archiveUnitWithRules = 0;
     if (this.reuseRuleFacets.waitingToRecalculateRulesListFacets && this.reuseRuleFacets.waitingToRecalculateRulesListFacets.length > 0) {
-      let facetComputedUnits = this.reuseRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+      const facetComputedUnits = this.reuseRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {

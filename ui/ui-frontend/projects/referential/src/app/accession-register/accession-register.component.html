@@ -44,7 +44,7 @@
       </search-bar-with-sibling-button>
 
       <app-accession-register-advanced-search
-        [ngClass]="{ 'hide-panel': !(advancedSearchPanelOpenState$ | async) }"
+        [ngClass]="{ 'hide-panel': (advancedSearchPanelOpenState$ | async)!==true }"
         (showAdvancedSearchPanel)="openAdvancedSearchPanel()"
       >
       </app-accession-register-advanced-search>

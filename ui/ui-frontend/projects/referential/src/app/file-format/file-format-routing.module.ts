@@ -50,11 +50,13 @@ const routes: Route[] = [
     path: 'tenant',
     component: VitamUITenantSelectComponent,
     canActivate: [TenantSelectionGuard],
+    data: { appId: 'FILE_FORMATS_APP' },
   },
   {
     path: 'tenant/:tenantIdentifier',
     component: FileFormatComponent,
     canActivate: [ActiveTenantGuard],
+    data: { appId: 'FILE_FORMATS_APP' },
   },
 ];
 

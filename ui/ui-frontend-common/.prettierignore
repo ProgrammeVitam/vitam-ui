@@ -7,7 +7,7 @@ target
 /*
 
 # Except files in projects:
-!/projects
+!/src
 
 # Ignore all given extensions files:
 *.css

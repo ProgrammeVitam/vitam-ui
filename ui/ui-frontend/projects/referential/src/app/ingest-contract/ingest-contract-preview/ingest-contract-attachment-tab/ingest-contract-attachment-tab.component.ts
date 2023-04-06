@@ -42,6 +42,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
 import { AccessContract, ExternalParameters, ExternalParametersService, IngestContract } from 'ui-frontend-common';
+import '@angular/localize/init';
+import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 
 @Component({
@@ -94,7 +96,7 @@ export class IngestContractAttachmentTabComponent implements OnInit {
         this.initTitles();
       } else {
         this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
+          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
           null,
           {
             panelClass: 'vitamui-snack-bar',

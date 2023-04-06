@@ -1,8 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { AuthService, Customer, StartupService } from 'ui-frontend-common';
-import { UserInfoService } from './../../../user/user-info.service';
+import { Customer, StartupService } from 'ui-frontend-common';
 import { HomepageMessageUpdateComponent } from './homepage-message-update/homepage-message-update.component';
 
 @Component({
@@ -46,28 +45,17 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
 
   public language: string;
 
-  constructor(
-    private dialog: MatDialog,
-    private startupService: StartupService,
-    private authService: AuthService,
-    private userInfoService: UserInfoService
-  ) {
-  }
+  constructor(private dialog: MatDialog, private startupService: StartupService) {}
 
   ngOnDestroy(): void {
     this.destroy.next();
   }
 
-  ngOnInit() {
-    const userInfosId = this.authService.user.userInfoId;
-    this.userInfoService.get(userInfosId).subscribe((userInfo) => {
-      this.language = userInfo.language;
-    });
-  }
+  ngOnInit() {}
 
   private resetTab(customer: Customer): void {
-    const title = this.startupService.getConfigStringValue('PORTAL_MESSAGE')
-    const message = this.startupService.getConfigStringValue('PORTAL_TITLE')
+    const title = this.startupService.getConfigStringValue('PORTAL_TITLE');
+    const message = this.startupService.getConfigStringValue('PORTAL_MESSAGE');
 
     if (customer) {
       if (customer.language) {
@@ -81,8 +69,8 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.portalTitle = (this.portalTitles && this.portalTitles[this.language]) ? (this.portalTitles[this.language]) : title;
-    this.portalMessage = (this.portalMessages && this.portalMessages[this.language]) ? this.portalMessages[this.language] : message;
+    this.portalTitle = this.portalTitles && this.portalTitles[this.language] ? this.portalTitles[this.language] : title;
+    this.portalMessage = this.portalMessages && this.portalMessages[this.language] ? this.portalMessages[this.language] : message;
   }
 
   openUpdateHomepageMessage() {

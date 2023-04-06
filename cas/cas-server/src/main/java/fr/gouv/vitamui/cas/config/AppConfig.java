@@ -62,23 +62,19 @@ import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
-import org.apereo.cas.authentication.AuthenticationHandler;
-import org.apereo.cas.authentication.AuthenticationMetaDataPopulator;
 import org.apereo.cas.authentication.AuthenticationPostProcessor;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
+import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
+import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.ticket.BaseTicketCatalogConfigurer;
-import org.apereo.cas.ticket.ExpirationPolicyBuilder;
-import org.apereo.cas.ticket.TicketCatalog;
-import org.apereo.cas.ticket.TicketDefinition;
-import org.apereo.cas.ticket.TicketGrantingTicketFactory;
-import org.apereo.cas.ticket.UniqueTicketIdGenerator;
+import org.apereo.cas.ticket.*;
+import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
 import org.apereo.cas.ticket.registry.TicketRegistry;
@@ -98,9 +94,12 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.Ordered;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
+
+import java.util.EnumSet;
 
 /**
  * Configure all beans to customize the CAS server.
@@ -122,14 +121,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Autowired
     @Qualifier("principalFactory")
     private PrincipalFactory principalFactory;
-
-    @Autowired
-    @Qualifier("clientAuthenticationHandler")
-    private AuthenticationHandler clientAuthenticationHandler;
-
-    @Autowired
-    @Qualifier("clientAuthenticationMetaDataPopulator")
-    private AuthenticationMetaDataPopulator clientAuthenticationMetaDataPopulator;
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
@@ -154,9 +145,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     private AuditableExecution surrogateEligibilityAuditableExecution;
 
     @Autowired
-    private RestTemplateBuilder restTemplateBuilder;
-
-    @Autowired
     @Qualifier("ticketGrantingTicketUniqueIdGenerator")
     private UniqueTicketIdGenerator ticketGrantingTicketUniqueIdGenerator;
 
@@ -177,10 +165,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Autowired
     private JavaMailSender mailSender;
-
-    @Autowired
-    @Qualifier("delegatedClientDistributedSessionStore")
-    private SessionStore delegatedClientDistributedSessionStore;
 
     @Autowired
     @Qualifier("centralAuthenticationService")
@@ -236,55 +220,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Value("${vitamui.authn.x509.defaultDomain:}")
     private String x509DefaultDomain;
 
-    // position matters unfortunately: the ticketRegistry must be autowired after (= under) others
-    // as it depends on the catalog instantiated above
-    @Autowired
-    private TicketRegistry ticketRegistry;
-
-    @Bean
-    public PasswordValidator passwordValidator() {
-        return new PasswordValidator();
-    }
-
-    @Bean
-    public UserAuthenticationHandler userAuthenticationHandler() {
-        return new UserAuthenticationHandler(servicesManager, principalFactory, casRestClient(), utils(), ipHeaderName);
-    }
-
-    @Bean
-    @RefreshScope
-    public PrincipalResolver surrogatePrincipalResolver() {
-        val emailMapping = new X509AttributeMapping(x509EmailAttribute, x509EmailAttributeParsing, x509EmailAttributeExpansion);
-        val identifierMapping = new X509AttributeMapping(x509IdentifierAttribute, x509IdentifierAttributeParsing, x509IdentifierAttributeExpansion);
-        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore,
-            identityProviderHelper(), providersService(), emailMapping, identifierMapping, x509DefaultDomain);
-    }
-
-    @Bean
-    @RefreshScope
-    public PrincipalResolver x509SubjectDNPrincipalResolver() {
-        return surrogatePrincipalResolver();
-    }
-
-    @Bean
-    public AuthenticationEventExecutionPlanConfigurer registerInternalHandler() {
-        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler(), surrogatePrincipalResolver());
-    }
-
-    @Bean
-    public AuthenticationEventExecutionPlanConfigurer pac4jAuthenticationEventExecutionPlanConfigurer() {
-        return plan -> {
-            plan.registerAuthenticationHandlerWithPrincipalResolver(clientAuthenticationHandler, surrogatePrincipalResolver());
-            plan.registerAuthenticationMetadataPopulator(clientAuthenticationMetaDataPopulator);
-        };
-    }
-
-    @Bean
-    public AuthenticationPostProcessor surrogateAuthenticationPostProcessor() {
-        return new DelegatedSurrogateAuthenticationPostProcessor(surrogateAuthenticationService, servicesManager, eventPublisher,
-                registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution, delegatedClientDistributedSessionStore);
-    }
-
     // overrides the CAS specific message converter to prevent
     // the CasRestExternalClient to use the 'application/vnd.cas.services+yaml;charset=UTF-8'
     // content type and to fail
@@ -294,19 +229,69 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public IamExternalRestClientFactory iamRestClientFactory() {
+    public PasswordValidator passwordValidator() {
+        return new PasswordValidator();
+    }
+
+    @Bean
+    public UserAuthenticationHandler userAuthenticationHandler(final IamExternalRestClientFactory iamRestClientFactory,
+                                                               final CasExternalRestClient casRestClient) {
+        return new UserAuthenticationHandler(servicesManager, principalFactory, casRestClient, utils(), ipHeaderName);
+    }
+
+    @Bean
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public PrincipalResolver defaultPrincipalResolver(final ProvidersService providersService,
+                                                      @Qualifier("delegatedClientDistributedSessionStore")
+                                                      final SessionStore delegatedClientDistributedSessionStore,
+                                                      final CasExternalRestClient casRestClient) {
+        val emailMapping = new X509AttributeMapping(x509EmailAttribute, x509EmailAttributeParsing, x509EmailAttributeExpansion);
+        val identifierMapping = new X509AttributeMapping(x509IdentifierAttribute, x509IdentifierAttributeParsing, x509IdentifierAttributeExpansion);
+        return new UserPrincipalResolver(principalFactory, casRestClient, utils(), delegatedClientDistributedSessionStore,
+            identityProviderHelper(), providersService, emailMapping, identifierMapping, x509DefaultDomain);
+    }
+
+    @Bean
+    public AuthenticationEventExecutionPlanConfigurer registerInternalHandler(
+        final UserAuthenticationHandler userAuthenticationHandler,
+        @Qualifier("defaultPrincipalResolver")
+        PrincipalResolver defaultPrincipalResolver) {
+        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler, defaultPrincipalResolver);
+    }
+
+    @Bean
+    @RefreshScope
+    public PrincipalResolver surrogatePrincipalResolver(@Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver) {
+        return defaultPrincipalResolver;
+    }
+
+    @Bean
+    @RefreshScope
+    public PrincipalResolver x509SubjectDNPrincipalResolver(@Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver) {
+        return defaultPrincipalResolver;
+    }
+
+    @Bean
+    public AuthenticationPostProcessor surrogateAuthenticationPostProcessor(@Qualifier("delegatedClientDistributedSessionStore")
+                                                                            SessionStore delegatedClientDistributedSessionStore) {
+        return new DelegatedSurrogateAuthenticationPostProcessor(surrogateAuthenticationService, servicesManager, eventPublisher,
+            registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution, delegatedClientDistributedSessionStore);
+    }
+
+    @Bean
+    public IamExternalRestClientFactory iamRestClientFactory(final RestTemplateBuilder restTemplateBuilder) {
         LOGGER.debug("Iam client factory: {}", iamClientProperties);
         return new IamExternalRestClientFactory(iamClientProperties, restTemplateBuilder);
     }
 
     @Bean
-    public CasExternalRestClient casRestClient() {
-        return iamRestClientFactory().getCasExternalRestClient();
+    public CasExternalRestClient casRestClient(final IamExternalRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getCasExternalRestClient();
     }
 
     @Bean
-    public IdentityProviderExternalRestClient identityProviderCrudRestClient() {
-        return iamRestClientFactory().getIdentityProviderExternalRestClient();
+    public IdentityProviderExternalRestClient identityProviderCrudRestClient(final IamExternalRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getIdentityProviderExternalRestClient();
     }
 
     @RefreshScope
@@ -316,8 +301,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public ProvidersService providersService() {
-        return new ProvidersService(builtClients(), identityProviderCrudRestClient(), pac4jClientBuilder(), utils());
+    public ProvidersService providersService(@Qualifier("builtClients") final Clients builtClients,
+                                             final IdentityProviderExternalRestClient identityProviderCrudRestClient) {
+        return new ProvidersService(builtClients, identityProviderCrudRestClient, pac4jClientBuilder(), utils());
     }
 
     @Bean
@@ -338,7 +324,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory() {
         return new DynamicTicketGrantingTicketFactory(ticketGrantingTicketUniqueIdGenerator, grantingTicketExpirationPolicy.getObject(),
-                protocolTicketCipherExecutor, servicesManager, utils());
+            protocolTicketCipherExecutor, servicesManager, utils());
     }
 
     @Bean
@@ -348,8 +334,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Override
-    public void configureTicketCatalog(final TicketCatalog plan) {
-        final TicketDefinition metadata = buildTicketDefinition(plan, "TOK", OAuth20DefaultAccessToken.class, Ordered.HIGHEST_PRECEDENCE);
+    public void configureTicketCatalog(final TicketCatalog plan, final CasConfigurationProperties casProperties) {
+        final TicketDefinition metadata = buildTicketDefinition(
+            plan, "TOK", OAuth20AccessToken.class, OAuth20DefaultAccessToken.class, Ordered.HIGHEST_PRECEDENCE);
         metadata.getProperties().setStorageName(casProperties.getAuthn().getOauth().getAccessToken().getStorageName());
         val timeout = Beans.newDuration(casProperties.getAuthn().getOauth().getAccessToken().getMaxTimeToLiveInSeconds()).getSeconds();
         metadata.getProperties().setStorageTimeout(timeout);
@@ -360,16 +347,29 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @RefreshScope
     @Bean
     @SneakyThrows
-    public SurrogateAuthenticationService surrogateAuthenticationService() {
-        return new IamSurrogateAuthenticationService(casRestClient(), servicesManager, utils());
+    public SurrogateAuthenticationService surrogateAuthenticationService(final CasExternalRestClient casRestClient) {
+        return new IamSurrogateAuthenticationService(casRestClient, servicesManager, utils());
     }
 
     @RefreshScope
     @Bean
-    public PasswordManagementService passwordChangeService() {
+    public PasswordManagementService passwordChangeService(final ProvidersService providersService,
+                                                           final TicketRegistry ticketRegistry,
+                                                           final CasExternalRestClient casRestClient) {
         return new IamPasswordManagementService(casProperties.getAuthn().getPm(), passwordManagementCipherExecutor, casProperties.getServer().getPrefix(),
-                passwordHistoryService, casRestClient(), providersService(), identityProviderHelper(), centralAuthenticationService.getObject(), utils(),
-                ticketRegistry, passwordValidator(), passwordConfiguration);
+            passwordHistoryService, casRestClient, providersService, identityProviderHelper(), centralAuthenticationService.getObject(), utils(),
+            ticketRegistry, passwordValidator(), passwordConfiguration);
+    }
+
+    @Bean
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public CasSimpleMultifactorTokenCommunicationStrategy mfaSimpleMultifactorTokenCommunicationStrategy() {
+        return new CasSimpleMultifactorTokenCommunicationStrategy() {
+            @Override
+            public EnumSet<TokenSharingStrategyOptions> determineStrategy(CasSimpleMultifactorAuthenticationTicket token) {
+                return EnumSet.of(TokenSharingStrategyOptions.SMS);
+            }
+        };
     }
 
     @Bean

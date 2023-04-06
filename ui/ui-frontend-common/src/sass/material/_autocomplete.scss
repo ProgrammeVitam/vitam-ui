@@ -30,11 +30,6 @@
         color: var(--vitamui-grey-900);
         letter-spacing: 0.1px;
 
-        .vitamui-option-label {
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         > i {
             color: var(--vitamui-primary);
             margin-left: 10px;

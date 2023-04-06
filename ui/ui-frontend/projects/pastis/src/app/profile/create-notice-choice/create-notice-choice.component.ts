@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
@@ -13,6 +13,7 @@ function constantToTranslate() {
   this.title = this.translated('.TITLE');
 }
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'create-notice-choice',
   templateUrl: './create-notice-choice.component.html',
   styleUrls: ['./create-notice-choice.component.scss']
@@ -63,7 +64,7 @@ export class CreateNoticeChoiceComponent implements OnInit {
 
   changeChoiceCreateProfile($event: string) {
     console.log($event)
-    this.noticePaChoice = $event == this.firstChoice;
+    this.noticePaChoice = $event === this.firstChoice;
   }
 
   onYesClick() {

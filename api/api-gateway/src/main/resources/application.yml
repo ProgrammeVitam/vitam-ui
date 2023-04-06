@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: api-gateway
+
+authn:
+  client-certificate-header-name: x-ssl-cert

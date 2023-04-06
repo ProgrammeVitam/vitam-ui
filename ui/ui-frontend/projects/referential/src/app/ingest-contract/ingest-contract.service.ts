@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IngestContract, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import {IngestContract,SearchService, VitamUISnackBarService} from 'ui-frontend-common';
 
 import { IngestContractApiService } from '../core/api/ingest-contract-api.service';
 
@@ -90,9 +90,12 @@ export class IngestContractService extends SearchService<IngestContract> {
     return this.ingestContractApi.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
-        (_) => {
+        (response) => {
           this.snackBarService.open({
             message: 'SNACKBAR.INGEST_CONTRACT_UPDATED',
+              translateParams: {
+                name: response.name,
+              },
             icon: 'vitamui-icon-contrat',
           });
         },
@@ -106,9 +109,12 @@ export class IngestContractService extends SearchService<IngestContract> {
   create(ingestContract: IngestContract) {
     return this.ingestContractApi.create(ingestContract).pipe(
       tap(
-        (_: IngestContract) => {
+        (response: IngestContract) => {
           this.snackBarService.open({
             message: 'SNACKBAR.INGEST_CONTRACT_CREATED',
+              translateParams:{
+                name: response.name,
+              },
             icon: 'vitamui-icon-contrat',
           });
         },

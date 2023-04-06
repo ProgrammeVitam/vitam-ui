@@ -155,9 +155,12 @@
 
   <div class="row">
     <div class="col-6">
-      <vitamui-common-slide-toggle formControlName="otp" [matTooltipDisabled]="!showTooltip"
-        [matTooltip]="'USER.INFORMATIONS.VALIDATIONS_TOOLTIP' | translate"
-        matTooltipClass="vitamui-tooltip">{{'USER.INFORMATIONS.VALIDATIONS' | translate}}
+      <vitamui-common-slide-toggle formControlName="otp">
+        <span vitamuiCommonToolTip="{{ 'USER.INFORMATIONS.VALIDATIONS_TOOLTIP' | translate }}"
+              vitamuiCommonToolTipPosition="TOP"
+              vitamuiCommonToolTipDisabled="{{ !this.showTooltip }}">
+          {{'USER.INFORMATIONS.VALIDATIONS' | translate}}
+        </span>
       </vitamui-common-slide-toggle>
     </div>
   </div>

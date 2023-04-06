@@ -86,7 +86,7 @@ export class FilingHoldingSchemeHandler {
       if (!node.children || node.children.length < 1) {
         if (
           !attachmenUnitsFromCollect.some(
-            (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId == node.id
+            (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId === node.id
           )
         ) {
           continue;
@@ -96,7 +96,8 @@ export class FilingHoldingSchemeHandler {
       }
 
       // Add the parent children
-      const childResult: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.unflatAndFilterTreeNodes(
+      const childResult: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.
+      unflatAndFilterTreeNodes(
         node.children,
         attachmenUnitsFromCollect
       );

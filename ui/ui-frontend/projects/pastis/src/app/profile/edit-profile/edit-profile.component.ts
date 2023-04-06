@@ -1,3 +1,4 @@
+import { AfterViewInit } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -61,12 +62,13 @@ export interface UploadedProfileResponse {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss'],
 })
 
-export class EditProfileComponent implements OnDestroy {
+export class EditProfileComponent implements OnDestroy, AfterViewInit {
 
   nodeToSend: FileNode;
   sedaParentNode: SedaData;

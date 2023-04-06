@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ElevationComponent } from './elevations.component';
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { ElevationComponent } from './elevations.component';
 
 @NgModule({
   imports: [

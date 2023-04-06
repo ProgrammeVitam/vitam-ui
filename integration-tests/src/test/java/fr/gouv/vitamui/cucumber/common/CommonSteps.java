@@ -304,7 +304,7 @@ public abstract class CommonSteps extends BaseIntegration {
             final Integer tenantIdentifier) {
         Optional<LogbookEventDto> event = Optional.empty();
         final JsonNode responseJson = getLogbookRestClient(true, null, new String[] { ServicesData.ROLE_LOGBOOKS })
-                .findOperations(getArchiveTenantUserAdminContext(tenantIdentifier), buildOperationQuery(identifier, collectionNames, eventType));
+                .findOperations(getArchiveTenantUserAdminContext(tenantIdentifier), buildOperationQuery(identifier, collectionNames, eventType), tenantIdentifier);
 
         final LogbookOperationsResponseDto response;
         try {

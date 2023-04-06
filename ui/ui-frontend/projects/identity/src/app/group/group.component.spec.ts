@@ -65,6 +65,7 @@ let page: Page;
 @Component({ selector: 'app-group-list', template: '' })
 class GroupListStubComponent {
 
+  // tslint:disable-next-line:no-input-rename
   @Input('search') searchText: string;
 
   search() { }

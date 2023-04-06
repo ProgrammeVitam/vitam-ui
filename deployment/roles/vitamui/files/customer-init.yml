@@ -40,6 +40,8 @@ customer-init:
         - ROLE_CREATE_ACCESS_CONTRACTS
         - ROLE_UPDATE_ACCESS_CONTRACTS
         - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_GET_UNITS
+        - ROLE_GET_EXTERNAL_PARAMS
 
     - name: Profil pour la gestion des contrats d'entrée
       description: Gestion des contrats d'entrée dans Vitam
@@ -52,6 +54,10 @@ customer-init:
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_MANAGEMENT_CONTRACTS
         - ROLE_GET_ARCHIVE_PROFILES
+        - ROLE_GET_FILE_FORMATS
+        - ROLE_GET_UNITS
+        - ROLE_GET_EXTERNAL_PARAMS
+
 
     - name: Profil consultation des contrats d'entrée
       description: Profil pour la consultation des contrats d'entrée dans Vitam sans mises à jour des contrats

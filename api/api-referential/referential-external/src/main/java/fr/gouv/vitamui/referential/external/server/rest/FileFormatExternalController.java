@@ -50,6 +50,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.FileFormatExternalService;
@@ -62,18 +63,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,6 +97,8 @@ public class FileFormatExternalController {
     public PaginatedValuesDto<FileFormatDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
             @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        SanityChecker.sanitizeCriteria(criteria);
+        orderBy.ifPresent(SanityChecker::checkSecureParameter);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
         return fileFormatExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
@@ -117,7 +109,7 @@ public class FileFormatExternalController {
         LOGGER.debug("getByIdOrHistory ");
         String requestURL = request.getRequestURL().toString();
         String path = StringUtils.substringAfter(requestURL,RestApi.FILE_FORMATS_URL + "/");
-        if (StringUtils.endsWith("/history", path)) {
+        if (StringUtils.endsWith( path, "/history")) {
             return findHistoryById(StringUtils.substringBefore(path,"/history"));
         } else {
             return getOne(StringUtils.removeEndIgnoreCase(path,"/"));
@@ -133,6 +125,7 @@ public class FileFormatExternalController {
     @Secured({ ServicesData.ROLE_GET_FILE_FORMATS })
     @PostMapping(CommonConstants.PATH_CHECK)
     public ResponseEntity<Void> check(@RequestBody FileFormatDto fileFormatDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+        SanityChecker.sanitizeCriteria(fileFormatDto);
         LOGGER.debug("check exist accessContract={}", fileFormatDto);
         ApiUtils.checkValidity(fileFormatDto);
         final boolean exist = fileFormatExternalService.check(fileFormatDto);
@@ -154,19 +147,18 @@ public class FileFormatExternalController {
     @Secured(ServicesData.ROLE_UPDATE_FILE_FORMATS)
     public FileFormatDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return fileFormatExternalService.patch(partialDto);
     }
 
-    private JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+    private LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         return fileFormatExternalService.findHistoryById(id);
     }
 

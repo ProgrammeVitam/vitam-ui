@@ -37,29 +37,31 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {FileUploadModule} from 'ng2-file-upload';
-import {PastisMaterialModule} from '../material.module';
-import {SharedModule} from '../shared/shared.module';
-import {FilterByNamePipe} from './add-metadata/add-metadata.component';
-import {UserActionsDownloadDocComponent} from './download-doc/download-doc.component';
-import {DuplicateMetadataComponent} from './duplicate-metadata/duplicate-metadata.component';
-import {UserActionAddPuaControlComponent} from './add-pua-control/add-pua-control.component';
-import {UserActionSaveProfileComponent} from './save-profile/save-profile.component';
-import {UserActionUploadProfileComponent} from './upload-profile/upload-profile.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {FileUploadModule} from 'ng2-file-upload';
 import {VitamUIInputModule} from 'vitamui-library';
 import {CoreModule} from '../core/core.module';
-import {CreateNoticeComponent} from './create-notice/create-notice.component';
-import {SaveProfileOptionsComponent} from './save-profile-options/save-profile-options.component';
+import {PastisMaterialModule} from '../material.module';
+import {SharedModule} from '../shared/shared.module';
+import {FilterByNamePipe} from './add-metadata/add-metadata.component';
+import {UserActionAddPuaControlComponent} from './add-pua-control/add-pua-control.component';
 import { AllowAdditionalPropertiesComponent } from './allow-additional-properties/allow-additional-properties.component';
+import {CreateNoticeComponent} from './create-notice/create-notice.component';
+import {UserActionsDownloadDocComponent} from './download-doc/download-doc.component';
+import {DuplicateMetadataComponent} from './duplicate-metadata/duplicate-metadata.component';
+import {SaveProfileOptionsComponent} from './save-profile-options/save-profile-options.component';
+import {UserActionSaveProfileComponent} from './save-profile/save-profile.component';
 import { SelectNoticeComponent } from './select-notice/select-notice.component';
+import {UserActionUploadProfileComponent} from './upload-profile/upload-profile.component';
 
 
 @NgModule({
-  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, AllowAdditionalPropertiesComponent, UserActionAddPuaControlComponent, SelectNoticeComponent],
+  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent,
+     DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, AllowAdditionalPropertiesComponent,
+      UserActionAddPuaControlComponent, SelectNoticeComponent],
   imports: [
     CommonModule,
     PastisMaterialModule,
@@ -73,7 +75,8 @@ import { SelectNoticeComponent } from './select-notice/select-notice.component';
     FormsModule,
     MatSlideToggleModule
   ],
-  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, FilterByNamePipe, AllowAdditionalPropertiesComponent,UserActionAddPuaControlComponent],
+  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent,
+    UserActionsDownloadDocComponent, FilterByNamePipe, AllowAdditionalPropertiesComponent,UserActionAddPuaControlComponent],
 })
 export class UserActionsModule {
 

@@ -52,16 +52,16 @@ export class AccessionRegisterDetailComponent implements OnInit {
   @Input()
   accessionRegisterDetail: AccessionRegisterDetail;
 
-  longCommentSize: number = 200
-  hasLongComment: boolean = false;
-  showFullComment: boolean = false;
+  longCommentSize = 200
+  hasLongComment = false;
+  showFullComment = false;
 
   constructor() {
   }
 
   ngOnInit(): void {
     const comment = this.accessionRegisterDetail.comment;
-    this.hasLongComment = !(comment == undefined || comment.length < 1 || comment.join('').length < this.longCommentSize);
+    this.hasLongComment = !(comment === undefined || comment.length < 1 || comment.join('').length < this.longCommentSize);
   }
 
   onClicShowMoreOrLessOfComment() {
@@ -69,17 +69,17 @@ export class AccessionRegisterDetailComponent implements OnInit {
   }
 
   formatedComment() {
-    if (this.accessionRegisterDetail.comment == undefined || this.accessionRegisterDetail.comment.length < 1) {
-      return "";
+    if (this.accessionRegisterDetail.comment === undefined || this.accessionRegisterDetail.comment.length < 1) {
+      return '';
     }
     if (this.showFullComment) {
-      return this.accessionRegisterDetail.comment.join("\n\n")
+      return this.accessionRegisterDetail.comment.join('\n\n')
     }
     const premierParagraph = this.accessionRegisterDetail.comment[0];
     if (premierParagraph) {
       return premierParagraph.substring(0, 200);
     }
-    return "";
+    return '';
   }
 
 }

@@ -36,11 +36,19 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.iam.internal.client.UserInfoInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
@@ -101,9 +109,14 @@ public class UserInfoExternalService extends AbstractResourceClientService<UserI
         return userInfoInternalRestClient;
     }
 
-    public JsonNode findHistoryById(final String id) {
+    public LogbookOperationsResponseDto findHistoryById(final String id) {
         checkLogbookRight(id);
-        return getClient().findHistoryById(getInternalHttpContext(), id);
+        final JsonNode body = getClient().findHistoryById(getInternalHttpContext(), id);
+        try {
+            return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
+        } catch (final JsonProcessingException e) {
+            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
+        }
     }
 
     public void checkLogbookRight(final String id) {

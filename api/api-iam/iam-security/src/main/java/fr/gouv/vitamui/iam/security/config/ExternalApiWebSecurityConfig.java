@@ -36,14 +36,20 @@
  */
 package fr.gouv.vitamui.iam.security.config;
 
+import fr.gouv.vitamui.iam.security.filter.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.iam.security.filter.ExternalRequestHeadersAuthenticationFilter;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_USER_TOKEN_HEADER;
 
 /**
  * The security configuration.
@@ -54,13 +60,41 @@ import lombok.Setter;
 @Setter
 public class ExternalApiWebSecurityConfig extends AbstractApiWebSecurityConfig {
 
+    private static final String GATEWAY_ENABLED = "gateway.enabled";
+
+    private static final String CLIENT_CERTIFICATE_HEADER_NAME = "server.ssl.client-certificate-header-name";
+
+    private final boolean isGatewayEnabled;
+
     public ExternalApiWebSecurityConfig(final AuthenticationProvider apiAuthenticationProvider,
-            final RestExceptionHandler restExceptionHandler, final Environment env) {
+                                        final RestExceptionHandler restExceptionHandler, final Environment env) {
         super(apiAuthenticationProvider, restExceptionHandler, env);
+        isGatewayEnabled = env.getProperty(GATEWAY_ENABLED, Boolean.class, false);
     }
 
     @Override
     protected AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter() throws Exception {
-        return new ExternalRequestHeadersAuthenticationFilter(authenticationManager());
+        return new ExternalRequestHeadersAuthenticationFilter(authenticationManager(), getX509CertificateExtractors(), getTokenExtractors());
+    }
+
+    // This is a temporary patch to allow mTLS authentication behind reverse proxy or full mTLS during migration
+    private List<X509CertificateExtractor> getX509CertificateExtractors() {
+        final List<X509CertificateExtractor> x509CertificateExtractors = new ArrayList<>();
+        x509CertificateExtractors.add(X509CertificateExtractor.requestAttributeX509CertificateExtractor());
+        if (isGatewayEnabled) {
+            final String certificateHeaderName = env.getProperty(CLIENT_CERTIFICATE_HEADER_NAME);
+            x509CertificateExtractors.add(X509CertificateExtractor.requestHeaderX509CertificateExtractor(certificateHeaderName));
+        }
+        return x509CertificateExtractors;
+    }
+
+    // This is a temporary patch to get authentication token when service is behind a gateway during migration
+    private List<TokenExtractor> getTokenExtractors() {
+        final List<TokenExtractor> tokenExtractors = new ArrayList<>();
+        tokenExtractors.add(TokenExtractor.headerExtractor(X_USER_TOKEN_HEADER));
+        if (isGatewayEnabled) {
+            tokenExtractors.add(TokenExtractor.bearerExtractor());
+        }
+        return tokenExtractors;
     }
 }

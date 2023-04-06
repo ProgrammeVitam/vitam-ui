@@ -145,7 +145,7 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
   private handleWaitingToRecalculateRulesFacets(): number {
     let archiveUnitWithRules = 0;
     if (this.accessRuleFacets.waitingToRecalculateRulesListFacets && this.accessRuleFacets.waitingToRecalculateRulesListFacets.length > 0) {
-      let facetComputedUnits = this.accessRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+      const facetComputedUnits = this.accessRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {

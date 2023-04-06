@@ -36,14 +36,17 @@
  */
 
 /**
- * This class is used as a tuple of 2 values to represent a Pair structure. 
- * Both key and value have the native object type in order to apply polymorphism 
+ * This class is used as a tuple of 2 values to represent a Pair structure.
+ * Both key and value have the native object type in order to apply polymorphism
  * on the wanted types!
  */
 export class Pair {
+  // tslint:disable-next-line:ban-types
   key: Object;
+  // tslint:disable-next-line:ban-types
   value: Object;
 
+  // tslint:disable-next-line:ban-types
   constructor(key: Object, value: Object) {
     this.key = key;
     this.value = value;
@@ -55,7 +58,6 @@ export class Pair {
  * and optimize code !
  */
 export enum VitamInternalFields {
-  
   // UNITS
   ID = '#id',
   MANAGEMENT = '#management',

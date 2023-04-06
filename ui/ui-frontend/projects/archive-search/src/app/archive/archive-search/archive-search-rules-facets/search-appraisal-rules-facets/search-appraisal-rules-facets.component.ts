@@ -210,7 +210,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
       this.appraisalRuleFacets.waitingToRecalculateRulesListFacets &&
       this.appraisalRuleFacets.waitingToRecalculateRulesListFacets.length > 0
     ) {
-      let facetComputedUnits = this.appraisalRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+      const facetComputedUnits = this.appraisalRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {

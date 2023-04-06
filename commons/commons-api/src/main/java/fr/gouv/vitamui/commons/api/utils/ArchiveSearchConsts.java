@@ -265,4 +265,15 @@ public class ArchiveSearchConsts {
     public static final String START_DATE_CRITERIA = "START_DATE";
     public static final String END_DATE = "EndDate";
     public static final String END_DATE_CRITERIA = "END_DATE";
+    public static final String RULE_TITLE_FIELD = "AppraisalRuleTitle";
+    public static final String APPRAISAL_RULE_TYPE = "AppraisalRule";
+    public static final String ACCESS_RULE_TYPE = "AccessRule";
+
+
+
+    public final static String APPRAISAL_RULE_IDENTIFIER_CRITERIA = "APPRAISAL_RULE_IDENTIFIER";
+    public final static String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
+
+    public static final String UNITS_UPS = "#allunitups";
+
 }

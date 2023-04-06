@@ -37,10 +37,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Event} from 'projects/vitamui-library/src/public-api';
 
-import {SecurisationService} from '../securisation.service';
-import {ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import '@angular/localize/init';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
+import {SecurisationService} from '../securisation.service';
 
 @Component({
   selector: 'app-securisation-preview',
@@ -67,7 +67,7 @@ export class SecurisationPreviewComponent implements OnInit {
         this.accessContractId = accessContratId;
       } else {
         this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
+          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
           null, {
             panelClass: 'vitamui-snack-bar',
             duration: 10000
