@@ -267,8 +267,8 @@ vitamui_platform_informations:
   proof_tenant: 1
   cas_tenant: -1
   first_customer_tenant: 9
-  portal_message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics."
-  portal_title: "Portail des applications de l'archivage"
+  portal_message: "Pour gérer vos archives, profitez d'un portail d'applications proposé par le Programme Vitam et ses contributeurs."
+  portal_title: "Portail des applications Vitam"
   theme:
     portal_logo: logo_PORTAL.png
     header_logo: logo_HEADER.png
