@@ -27,9 +27,10 @@
       "TERMINATED": "Le projet a été bien mis à jour",
       "TRANSACTIONS_KO": "par contre il y a des transactions ko",
       "POPUP_ACTIONS_TITLE": " Action sur un projet de versement",
-      "POPUP_ACTIONS_CONTENT_MAJ1": "Vous avez [N] versements en édition. Voulez-vous mettre à jour automatiquement",
-      "POPUP_ACTIONS_CONTENT_MAJ2": "ces versements ? En cas de réponse négative, seuls les nouveaux versements intègreront",
-      "POPUP_ACTIONS_CONTENT_MAJ3": "ces modifications"
+      "POPUP_ACTIONS_CONTENT_MAJ1": "Vous avez",
+      "POPUP_ACTIONS_CONTENT_MAJ2": "versements en édition. Voulez-vous mettre à jour automatiquement",
+      "POPUP_ACTIONS_CONTENT_MAJ3": "ces versements ? En cas de réponse négative, seuls les nouveaux versements intègreront",
+      "POPUP_ACTIONS_CONTENT_MAJ4": "ces modifications"
     },
     "SEARCH_PLACEHOLDER": "Code et intitulé du versement, service versant",
     "APP_BREADCRUMB": "Collecte et préparation des versements",

@@ -24,12 +24,12 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import { Observable, Subject } from 'rxjs';
-import { Project, SearchService } from 'ui-frontend-common';
-import { ProjectsApiService } from '../core/api/project-api.service';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {Project, SearchService} from 'ui-frontend-common';
+import {ProjectsApiService} from '../core/api/project-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +38,8 @@ export class ProjectsService extends SearchService<Project> {
   pageEvent = new Subject<string>();
   tenantEvent = new Subject<string>();
   customerEvent = new Subject<string>();
+
+  projectUpdated$ = new BehaviorSubject<Project>(null);
 
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
@@ -55,12 +57,12 @@ export class ProjectsService extends SearchService<Project> {
   ];
 
   legalStatusList = [
-    { id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE') },
-    { id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
-    { id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
+    {id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE')},
+    {id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE')},
+    {id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE')},
   ];
 
-  constructor(http: HttpClient, private projectsApiService: ProjectsApiService,private translationService: TranslateService) {
+  constructor(http: HttpClient, private projectsApiService: ProjectsApiService, private translationService: TranslateService) {
     super(http, projectsApiService, 'ALL');
   }
 
@@ -68,12 +70,12 @@ export class ProjectsService extends SearchService<Project> {
     return this.projectsApiService.create(project);
   }
 
-  public getLegalStatusList(){
+  public getLegalStatusList() {
     return this.legalStatusList;
   }
 
 
-  public getAcquisitionInformationsList(){
+  public getAcquisitionInformationsList() {
     return this.acquisitionInformationsList;
   }
 
@@ -85,9 +87,16 @@ export class ProjectsService extends SearchService<Project> {
     return this.projectsApiService.getById(projectId);
   }
 
-  public deleteProjectId(projectId: string) : Observable<void> {
+  public deleteProjectId(projectId: string): Observable<void> {
     return this.projectsApiService.deletebyId(projectId);
   }
 
 
+  getUpdatedProject$(): BehaviorSubject<Project> {
+    return this.projectUpdated$;
+  }
+
+  nextUpdatedProject(project: Project) {
+    this.projectUpdated$.next(project);
+  }
 }

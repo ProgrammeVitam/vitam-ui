@@ -36,7 +36,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -52,7 +52,10 @@ import {
   TransactionStatus
 } from 'ui-frontend-common';
 
-import { FilingPlanMode, oneIncludedNodeRequired } from 'vitamui-library';
+import { FilingPlanMode } from 'vitamui-library';
+import {
+  oneIncludedNodeRequired
+} from '../../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
