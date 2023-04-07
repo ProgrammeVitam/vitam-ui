@@ -25,8 +25,9 @@
       group: root
       mode: 0644
 
-  - name: Update apt cache
+  - name: Update & clean apt cache
     apt:
+      clean: yes
       update_cache: yes
     register: result
     retries: "{{ packages_install_retries_number }}"
