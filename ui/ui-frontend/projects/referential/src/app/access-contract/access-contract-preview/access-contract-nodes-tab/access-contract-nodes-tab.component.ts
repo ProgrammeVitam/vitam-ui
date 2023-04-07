@@ -42,7 +42,6 @@ import '@angular/localize/init';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
 import { AccessContract, ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
 import { AccessContractNodeUpdateComponent } from './access-contract-nodes-update/access-contract-node-update.component';
 

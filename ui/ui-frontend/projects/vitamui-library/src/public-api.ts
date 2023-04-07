@@ -31,6 +31,7 @@ export * from './lib/components/vitamui-radio/vitamui-radio.module';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.component';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.module';
 /* MODELS */
+export * from './lib/models/access-contract';
 export * from './lib/models/autocomplete-response.interface';
 export * from './lib/models/date-query.interface';
 export * from './lib/models/date-range-query.interface';
