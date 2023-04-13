@@ -5,17 +5,6 @@
   display: inline-block;
   border-radius: 5px;
   overflow: hidden;
-
-}
-
-.primary {
-  display: flex;
-
-  .radio-group {
-    border: solid 1px var(--vitamui-primary);
-    border-radius: 8px;
-    display: flex;
-  }
 }
 
 label {
