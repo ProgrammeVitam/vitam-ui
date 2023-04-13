@@ -30,6 +30,9 @@ ansible-playbook --ask-vault-pass --extra-vars=@./environments/vitamui_extra_var
 
 ### Lancement du master playbook vitamui
 
+> **Important !**
+> Sous Debian, si vous appliquez la montée de version depuis la V6.RC, vous devrez rajouter le paramètre ``-e force_vitamui_version=6.0`` aux commandes suivantes. Sinon les packages vitamui ne seront pas correctement mis à jour. En effet, Debian considère que 6.rc.X > 6.X.
+
 ```sh
 ansible-playbook --ask-vault-pass --extra-vars=@./environments/vitamui_extra_vars.yml -i environments/<hostfile_vitamui> ansible-vitamui/vitamui.yml
 ```
