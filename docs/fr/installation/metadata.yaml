@@ -1,15 +1,16 @@
 ---
 #documentclass: extarticle
 documentclass: article
-title:  Dossier d'installation de VITAMUI
+title: Dossier d'installation de VITAMUI
 author:
-  - MAC VITAM
-date: Avril 2021
+    - Programme Vitam
+date: Avril 2023
 fontsize: 11pt
 fontfamily: arev
 #papersize: a4
 geometry: margin=1in
-linkcolor : cyan
+linkcolor: cyan
 toc: true
 lang: fr-CA
 ---
+
