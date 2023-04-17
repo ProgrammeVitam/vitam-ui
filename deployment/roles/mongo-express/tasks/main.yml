@@ -1,11 +1,47 @@
 ---
 
-- name: Install mongo-express package
+- name: "Install {{ package_name }} package"
   package:
     name: "{{ package_name }}"
     state: latest
-  tags:
-    - mongo-express
+  register: result
+  retries: "{{ packages_install_retries_number | default(2) }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay | default(10) }}"
+  tags: mongo-express
+  notify: restart mongo-express
+  when: force_vitamui_version is not defined
+
+# Force a specific version to install (even downgrade)
+- block:
+
+  - name: "Install {{ package_name }} package"
+    apt:
+      name: "{{ package_name }}={{ force_vitamui_version }}"
+      force: yes
+      state: present
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
+    tags: mongo-express
+    notify: restart mongo-express
+    when: ansible_os_family == "Debian"
+
+  - name: "Install {{ package_name }} package"
+    yum:
+      name: "{{ package_name }}-{{ force_vitamui_version }}"
+      allow_downgrade : yes
+      state: present
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
+    tags: mongo-express
+    notify: restart mongo-express
+    when: ansible_os_family == "RedHat"
+
+  when: force_vitamui_version is defined
 
 - name: Push mongo-express script and config
   template:

@@ -35,16 +35,45 @@
     - ansible_os_family == "Debian"
     - disable_internet_repositories_install | default(false) | bool == true
 
-- name: Install logstash package from repo
+- name: "Install {{ package_name }} package"
   package:
-    name: "{{ logstash.package_name }}"
+    name: "{{ package_name }}"
     state: latest
   register: result
-  retries: "{{ packages_install_retries_number }}"
+  retries: "{{ packages_install_retries_number | default(2) }}"
   until: result is succeeded
-  delay: "{{ packages_install_retries_delay }}"
-  notify:
-    - restart logstash
+  delay: "{{ packages_install_retries_delay | default(10) }}"
+  notify: restart logstash
+  when: force_vitamui_version is not defined
+
+# Force a specific version to install (even downgrade)
+- block:
+
+  - name: "Install {{ package_name }} package"
+    apt:
+      name: "{{ package_name }}={{ force_vitamui_version }}"
+      force: yes
+      state: present
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
+    notify: restart logstash
+    when: ansible_os_family == "Debian"
+
+  - name: "Install {{ package_name }} package"
+    yum:
+      name: "{{ package_name }}-{{ force_vitamui_version }}"
+      allow_downgrade : yes
+      state: present
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
+    notify: restart logstash
+    when: ansible_os_family == "RedHat"
+
+  when: force_vitamui_version is defined
 
 - name: Enable logstash
   service:
