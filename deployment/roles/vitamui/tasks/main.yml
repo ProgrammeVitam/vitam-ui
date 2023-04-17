@@ -14,6 +14,37 @@
     - restart service
   when: force_vitamui_version is not defined
 
+# Force a specific version to install (even downgrade)
+- block:
+
+  - name: "Install {{ vitamui_struct.package_name | default(package_name) }} package"
+    apt:
+      name: "{{ vitamui_struct.package_name | default(package_name) }}={{ force_vitamui_version }}"
+      force: yes
+      state: present
+    register: result
+    retries: "{{ packages_install_retries_number }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay }}"
+    tags: update_package_vitamui
+    notify: restart service
+    when: ansible_os_family == "Debian"
+
+  - name: "Install {{ vitamui_struct.package_name | default(package_name) }} package"
+    yum:
+      name: "{{ vitamui_struct.package_name | default(package_name) }}-{{ force_vitamui_version }}"
+      allow_downgrade : yes
+      state: present
+    register: result
+    retries: "{{ packages_install_retries_number }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay }}"
+    tags: update_package_vitamui
+    notify: restart service
+    when: ansible_os_family == "RedHat"
+
+  when: force_vitamui_version is defined
+
 #### Configuration ####
 
 - name: Check that the directories exist (must be removed when the RPM plugin will be patched)
