@@ -137,7 +137,8 @@
     "utf-8-validate": "^5.0.2",
     "web-animations-js": "^2.3.2",
     "webpack-bundle-analyzer": "^3.8.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "@types/lodash": "4.14.191"
   },
   "resolutions": {
     "moment": "2.26.0"
