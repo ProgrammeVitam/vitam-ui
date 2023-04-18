@@ -47,12 +47,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class SafeFileCheckerTest {
     private final String VALID_ROOT_PATH = "mydirectory";
     private final String INVALID_ROOT_PATH = "my|filena?me?query=<code>danger</code>.json";
-    private final String VALID_SUBPATH = "good_json_sanity";
+    private final String VALID_SUBPATH = "good_json_sanity.json";
     private final String INVALID_PATH = "file#..$$/text";
 
-    private static List<String> validPaths = new ArrayList<>();
-    private static List<String> invalidPaths = new ArrayList<>();
-    private static List<String> validFilenames = new ArrayList<>();
+    private static final List<String> validPaths = new ArrayList<>();
+    private static final List<String> invalidPaths = new ArrayList<>();
+    private static final List<String> validFilenames = new ArrayList<>();
 
     @BeforeClass
     public static void setUpBeforeClass() {
