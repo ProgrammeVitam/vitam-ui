@@ -34,20 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MatSelectModule} from '@angular/material/select';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
-import {InjectorModule, LoggerModule, VitamUISnackBarService} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {DslQueryType} from '../../../../vitamui-library/src/lib/models/dsl-query-type.enum';
-import {AccessContractService} from '../access-contract/access-contract.service';
-import {AdminDslComponent} from './admin-dsl.component';
-import {AdminDslService} from './admin-dsl.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { DslQueryType, InjectorModule, LoggerModule, VitamUISnackBarService } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AccessContractService } from '../access-contract/access-contract.service';
+import { AdminDslComponent } from './admin-dsl.component';
+import { AdminDslService } from './admin-dsl.service';
 
 describe('AdminDslComponent', () => {
   let component: AdminDslComponent;
@@ -59,44 +58,41 @@ describe('AdminDslComponent', () => {
     accessContract: 'AC-000001',
     dslQueryType: DslQueryType.ARCHIVE_UNIT,
     dsl: {},
-    response: {}
+    response: {},
   };
 
   beforeEach(waitForAsync(() => {
-
     const adminDslServiceMock = {
-      getByDsl: () => of({})
+      getByDsl: () => of({}),
     };
     const accessContractServiceMock = {
-      getAllForTenant: () => of([])
+      getAllForTenant: () => of([]),
     };
     const activatedRouteMock = {
-      params: of({tenantIdentifier: 1}),
-      data: of({appId: 'DSL_APP'})
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'DSL_APP' }),
     };
 
     TestBed.configureTestingModule({
-      imports:
-        [
-          ReactiveFormsModule,
-          VitamUICommonTestModule,
-          InjectorModule,
-          LoggerModule.forRoot(),
-          MatSelectModule,
-          NoopAnimationsModule
-        ],
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        MatSelectModule,
+        NoopAnimationsModule,
+      ],
       declarations: [AdminDslComponent],
       providers: [
         FormBuilder,
-        {provide: Router, useValue: {}},
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        {provide: AdminDslService, useValue: adminDslServiceMock},
-        {provide: AccessContractService, useValue: accessContractServiceMock},
-        {provide: VitamUISnackBarService, useValue: snackBarSpy},
+        { provide: Router, useValue: {} },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: AdminDslService, useValue: adminDslServiceMock },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

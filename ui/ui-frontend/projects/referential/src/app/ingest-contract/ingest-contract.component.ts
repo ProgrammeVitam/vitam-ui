@@ -37,11 +37,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IngestContract } from 'projects/vitamui-library/src/lib/models/ingest-contract';
-import {ApplicationService, GlobalEventService, SecurityService, SidenavPage} from 'ui-frontend-common';
-
-import {Observable} from 'rxjs';
-import {mergeMap} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+import { ApplicationService, GlobalEventService, IngestContract, SecurityService, SidenavPage } from 'ui-frontend-common';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
 
@@ -118,11 +116,12 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   }
 
   ngOnInit() {
-
-    this.hasUpdateIngestRole$ = this.route.params.pipe(mergeMap(params => {
-      this.tenantIdentifier = +params.tenantIdentifier;
-      return  this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_INGEST_CONTRACTS')
-    }));
+    this.hasUpdateIngestRole$ = this.route.params.pipe(
+      mergeMap((params) => {
+        this.tenantIdentifier = +params.tenantIdentifier;
+        return this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_INGEST_CONTRACTS');
+      })
+    );
 
     this.updateSlaveMode();
   }

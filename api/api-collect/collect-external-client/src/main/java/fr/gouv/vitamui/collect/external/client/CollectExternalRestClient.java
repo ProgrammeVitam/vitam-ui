@@ -45,7 +45,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -99,8 +98,8 @@ public class CollectExternalRestClient
 
     public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String projectId,
         SearchCriteriaDto searchQuery) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
+
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery);
         final ResponseEntity<ArchiveUnitsDto> response =
             restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST, request,
                 ArchiveUnitsDto.class);

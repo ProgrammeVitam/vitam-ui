@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } from 'ui-frontend-common';
+import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/animations';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto} from 'ui-frontend-common';
 
 @Component({
   selector: 'app-archive-unit-rules-informations-tab',
@@ -46,8 +46,8 @@ import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } fr
   styleUrls: ['./archive-unit-rules-informations-tab.component.css'],
   animations: [
     trigger('collapse', [
-      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
-      state('true', style({ height: '0', visibility: 'hidden' })),
+      state('false', style({height: AUTO_STYLE, visibility: AUTO_STYLE})),
+      state('true', style({height: '0', visibility: 'hidden'})),
       transition('false => true', animate(300 + 'ms ease-in')),
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
@@ -73,7 +73,8 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
   isToShowRulesList: boolean;
   isToShowBlockedRulesList: boolean;
 
-  constructor(private translateService: TranslateService, private logger: Logger) {}
+  constructor(private translateService: TranslateService, private logger: Logger) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.initializeParameters();
@@ -89,7 +90,8 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   getRuleStatus(ruleDUA: UnitRuleDto): string {
     if (ruleDUA && ruleDUA.status && ruleDUA.status === 'BLOCKED') {
@@ -118,9 +120,9 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
         return propertiesDUA.filter((property) => property.PropertyName === 'FinalAction').length > 1
           ? this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CONFLICT')
           : this.translateService.instant(
-              'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.' +
-                String(propertiesDUA.find((property) => property.PropertyName === 'FinalAction').PropertyValue).toUpperCase()
-            );
+            'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.' +
+            String(propertiesDUA.find((property) => property.PropertyName === 'FinalAction').PropertyValue).toUpperCase()
+          );
       }
     }
   }
@@ -245,7 +247,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
               const list: string[] = archiveUnit['#management'].AppraisalRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
-                  this.unitRuleDTO.push({ Rule: ruleId, status: 'BLOCKED' });
+                  this.unitRuleDTO.push({Rule: ruleId, status: 'BLOCKED'});
                 });
               }
             }
@@ -259,7 +261,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
               this.isToShowBlockedRulesList = archiveUnit['#management'].StorageRule.Inheritance.PreventRulesId.length !== 0;
               if (list) {
                 list.forEach((ruleId) => {
-                  this.unitRuleDTO.push({ Rule: ruleId, status: 'BLOCKED' });
+                  this.unitRuleDTO.push({Rule: ruleId, status: 'BLOCKED'});
                 });
               }
             }
@@ -273,7 +275,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
               const list: string[] = archiveUnit['#management'].AccessRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
-                  this.unitRuleDTO.push({ Rule: ruleId, status: 'BLOCKED' });
+                  this.unitRuleDTO.push({Rule: ruleId, status: 'BLOCKED'});
                 });
               }
             }
@@ -287,7 +289,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
               const list: string[] = archiveUnit['#management'].ReuseRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
-                  this.unitRuleDTO.push({ Rule: ruleId, status: 'BLOCKED' });
+                  this.unitRuleDTO.push({Rule: ruleId, status: 'BLOCKED'});
                 });
               }
             }
@@ -301,7 +303,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
               const list: string[] = archiveUnit['#management'].DisseminationRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
-                  this.unitRuleDTO.push({ Rule: ruleId, status: 'BLOCKED' });
+                  this.unitRuleDTO.push({Rule: ruleId, status: 'BLOCKED'});
                 });
               }
             }
@@ -315,7 +317,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
               const list: string[] = archiveUnit['#management'].HoldRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
-                  this.unitRuleDTO.push({ Rule: ruleId, status: 'BLOCKED' });
+                  this.unitRuleDTO.push({Rule: ruleId, status: 'BLOCKED'});
                 });
               }
             }
@@ -329,7 +331,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
               const list: string[] = archiveUnit['#management'].ClassificationRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
-                  this.unitRuleDTO.push({ Rule: ruleId, status: 'BLOCKED' });
+                  this.unitRuleDTO.push({Rule: ruleId, status: 'BLOCKED'});
                 });
               }
             }
@@ -340,6 +342,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
       }
     }
   }
+
   getClassificationRulePropertyName(property: string) {
     if (property) {
       return this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.CLASSIFICATION_RULE_PROPERTIES.' + property.toUpperCase());

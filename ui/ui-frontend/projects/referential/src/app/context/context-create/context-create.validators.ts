@@ -36,10 +36,9 @@
  */
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-
-import { ContextPermission } from 'projects/vitamui-library/src/public-api';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
+import { ContextPermission } from 'ui-frontend-common';
 import { ContextService } from '../context.service';
 
 @Injectable()

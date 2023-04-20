@@ -1,5 +1,7 @@
 ---
 
+package_name: "{{ logstash.package_name | default('vitamui-logstash') }}"
+
 logstash_log_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/log/logstash"
 logstash_tmp_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/logstash"
 logstash_conf_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/logstash"

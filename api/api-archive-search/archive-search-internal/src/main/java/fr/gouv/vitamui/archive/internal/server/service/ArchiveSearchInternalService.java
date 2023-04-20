@@ -40,7 +40,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
+import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
@@ -100,7 +100,8 @@ public class ArchiveSearchInternalService {
     private static final Integer SEARCH_UNIT_MAX_RESULTS = 10000;
 
     private static final String[] FILING_PLAN_PROJECTION =
-        new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups", "#object"};
+        new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups",
+            "#object"};
     public static final String FALSE = "false";
     public static final String TRUE = "true";
 
@@ -115,26 +116,17 @@ public class ArchiveSearchInternalService {
     private final UnitService unitService;
     private final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
     private final ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
-    private final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService;
-    private final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
-    private final RulesUpdateCommonService rulesUpdateCommonService;
     private final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
     @Autowired
     public ArchiveSearchInternalService(final ObjectMapper objectMapper, final UnitService unitService,
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
         final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
-        final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService,
-        final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService,
-        final RulesUpdateCommonService rulesUpdateCommonService,
         final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
         this.archiveSearchRulesInternalService = archiveSearchRulesInternalService;
-        this.archivesSearchFieldsQueryBuilderService = archivesSearchFieldsQueryBuilderService;
-        this.archivesSearchManagementRulesQueryBuilderService = archivesSearchManagementRulesQueryBuilderService;
-        this.rulesUpdateCommonService = rulesUpdateCommonService;
         this.archiveSearchFacetsInternalService = archiveSearchFacetsInternalService;
     }
 
@@ -150,10 +142,7 @@ public class ArchiveSearchInternalService {
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
             ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
             Integer totalResults = archiveUnitsDto.getArchives().getHits().getTotal();
-            boolean trackTotalHits = false;
-            if (totalResults >= SEARCH_UNIT_MAX_RESULTS) {
-                trackTotalHits = true;
-            }
+            boolean trackTotalHits = totalResults >= SEARCH_UNIT_MAX_RESULTS;
             fillManagementRulesFacets(searchQuery, archiveUnitsDto, trackTotalHits, vitamContext);
             return archiveUnitsDto;
         } catch (InvalidCreateOperationException ioe) {
@@ -192,8 +181,7 @@ public class ArchiveSearchInternalService {
             originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
 
         List<ArchiveUnit> archivesFilled = archivesOriginResponse.getResults().stream().map(
-            archiveUnit -> archiveSearchAgenciesInternalService
-                .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
+            archiveUnit -> RulesUpdateCommonService.fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
         ).collect(Collectors.toList());
         VitamUIArchiveUnitResponseDto responseFilled = new VitamUIArchiveUnitResponseDto();
         responseFilled.setContext(archivesOriginResponse.getContext());
@@ -236,6 +224,7 @@ public class ArchiveSearchInternalService {
         VitamContext vitamContext) throws VitamClientException {
 
         if (unitDescriptiveMetadataDto == null) {
+            LOGGER.error("Error update unit criteria");
             throw new BadRequestException("Error update unit criteria");
         }
 
@@ -253,6 +242,7 @@ public class ArchiveSearchInternalService {
                 List<String> operations = archivesResponse.getResults().get(0).getOperations();
                 response = operations.get(operations.size() - 1);
             } catch (Exception e) {
+                LOGGER.error("Error fetching unit from vitam while updating descriptive metadata");
                 throw new VitamClientException("Error fetching unit from vitam while updating descriptive metadata");
             }
         }
@@ -390,13 +380,13 @@ public class ArchiveSearchInternalService {
     }
 
 
-    public String computedInheritedRules(final VitamContext vitamContext, final SearchCriteriaDto searchCriteriaDto)
+    public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
         LOGGER.debug("Computed Inherited Rules by criteria {} ", searchCriteriaDto.toString());
         JsonNode jsonNode = mapRequestToDslQuery(searchCriteriaDto);
         ObjectNode dslRequest = (ObjectNode) jsonNode;
-        rulesUpdateCommonService
-            .deleteAttributesFromObjectNode(dslRequest, DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS);
+        RulesUpdateCommonService.deleteAttributesFromObjectNode(dslRequest, DSL_QUERY_PROJECTION, DSL_QUERY_FILTER,
+            DSL_QUERY_FACETS);
         LOGGER.debug("Computed Inherited Rules final dslQuery : {}", dslRequest);
         JsonNode response = computedInheritedRules(vitamContext, dslRequest);
         return response.findValue(OPERATION_IDENTIFIER).textValue();
@@ -422,7 +412,7 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("calling select Units With Inherited Rules by criteria {} ", searchQuery.toString());
         archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
         JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
-        rulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) dslQuery, DSL_QUERY_FACETS);
+        RulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) dslQuery, DSL_QUERY_FACETS);
         JsonNode vitamResponse = selectUnitWithInheritedRules(dslQuery, vitamContext);
         ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
         if (Objects.nonNull(archiveUnitsDto.getArchives()) &&
@@ -432,8 +422,8 @@ public class ArchiveSearchInternalService {
         return response;
     }
 
-    public String reclassification(final VitamContext vitamContext,
-        final ReclassificationCriteriaDto reclassificationCriteriaDto)
+    public String reclassification(
+        final ReclassificationCriteriaDto reclassificationCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
         if (reclassificationCriteriaDto == null) {
             throw new BadRequestException("Error reclassification criteria");

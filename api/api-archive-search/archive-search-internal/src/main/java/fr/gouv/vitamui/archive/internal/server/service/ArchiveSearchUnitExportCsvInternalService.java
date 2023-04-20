@@ -33,6 +33,7 @@ import com.opencsv.ICSVWriter;
 import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitCsv;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
@@ -81,15 +82,6 @@ public class ArchiveSearchUnitExportCsvInternalService {
     public static final String FILING_UNIT = "FILING_UNIT";
     public static final String HOLDING_UNIT = "HOLDING_UNIT";
     private static final String INGEST_ARCHIVE_TYPE = "INGEST";
-
-    public static final String SEMI_COLON = ";";
-    public static final String COMMA = ",";
-    public static final String DOUBLE_QUOTE = "\"";
-    public static final String SINGLE_QUOTE = "'";
-    public static final String NEW_LINE = "\n";
-    public static final String NEW_TAB = "\t";
-    public static final String NEW_LINE_1 = "\r\n";
-    public static final String SPACE = " ";
 
     private final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
     private final ArchiveSearchInternalService archiveSearchInternalService;
@@ -216,12 +208,13 @@ public class ArchiveSearchUnitExportCsvInternalService {
             Map<String, AgencyModelDto> agenciesMapByIdentifier =
                 originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
             return archivesResponse.getResults().stream().map(
-                    archiveUnit -> archiveSearchAgenciesInternalService
+                    archiveUnit -> RulesUpdateCommonService
                         .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
                 ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit, searchQuery.getLanguage()))
                 .collect(Collectors.toList());
 
         } catch (IOException e) {
+            LOGGER.error("Can't parse criteria as Vitam query {} : ", e);
             throw new BadRequestException("Can't parse criteria as Vitam query", e);
         }
     }

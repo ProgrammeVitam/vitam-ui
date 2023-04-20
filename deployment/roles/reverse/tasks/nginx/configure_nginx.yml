@@ -15,7 +15,7 @@
 
 - name: 'Tasks > reverse > configure_nginx.yml | Put nginx.conf in conf folder'
   template:
-    src: "{{ role_path }}/templates/nginx/nginx.conf.j2"
+    src: "nginx/nginx.conf.j2"
     dest: "/etc/nginx/nginx.conf"
     group: "{{ reverse_group }}"
     owner: "{{ reverse_user }}"
@@ -24,7 +24,7 @@
 
 - name: 'Tasks > reverse > configure_nginx.yml | Put ssl conf'
   template:
-    src: "{{ role_path }}/templates/nginx/ssl/{{ item }}"
+    src: "nginx/ssl/{{ item }}"
     dest: "{{ nginx_ssl_conf }}/{{ item | regex_replace('\\.j2$') }}"
     group: "{{ reverse_group }}"
     owner: "{{ reverse_user }}"

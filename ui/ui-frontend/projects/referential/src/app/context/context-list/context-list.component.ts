@@ -36,7 +36,6 @@
  */
 
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { Context } from 'projects/vitamui-library/src/lib/models/context';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
@@ -44,6 +43,7 @@ import {
   ApplicationId,
   AuthService,
   collapseAnimation,
+  Context,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,

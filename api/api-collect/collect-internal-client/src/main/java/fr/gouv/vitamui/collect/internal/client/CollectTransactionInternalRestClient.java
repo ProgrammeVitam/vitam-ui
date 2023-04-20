@@ -140,7 +140,7 @@ public class CollectTransactionInternalRestClient
 
     public ArchiveUnitsDto searchCollectProjectArchiveUnits(InternalHttpContext context, String projectId,
         SearchCriteriaDto searchQuery) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
             restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST,
@@ -151,7 +151,7 @@ public class CollectTransactionInternalRestClient
 
     public Resource exportCsvArchiveUnitsByCriteria(String projectId, final SearchCriteriaDto query,
         final InternalHttpContext context) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ResponseEntity<Resource> response =
             restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
@@ -161,9 +161,11 @@ public class CollectTransactionInternalRestClient
 
     }
 
-    public CollectTransactionDto updateTransaction(final InternalHttpContext context, CollectTransactionDto transactionDto) {
+    public CollectTransactionDto updateTransaction(final InternalHttpContext context,
+        CollectTransactionDto transactionDto) {
         final HttpEntity<?> request = new HttpEntity<>(transactionDto, buildHeaders(context));
-        ResponseEntity<CollectTransactionDto> response =  restTemplate.exchange(getUrl(), HttpMethod.PUT, request, CollectTransactionDto.class);
+        ResponseEntity<CollectTransactionDto> response =
+            restTemplate.exchange(getUrl(), HttpMethod.PUT, request, CollectTransactionDto.class);
         return response.getBody();
     }
 
@@ -176,9 +178,25 @@ public class CollectTransactionInternalRestClient
 
     public List<OntologyDto> getExternalOntologiesList(final InternalHttpContext context) {
         LOGGER.debug("[INTERNAL] : Calling Get External ontologies list");
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST);
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
+    }
+
+    public ResultsDto selectUnitWithInheritedRules(InternalHttpContext context, String transactionId,
+        SearchCriteriaDto query) {
+        LOGGER.debug("Calling select Unit With Inherited Rules with query {} ", query);
+        MultiValueMap<String, String> headers = buildHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<ResultsDto> response =
+            restTemplate.exchange(
+                getUrl() + "/" + transactionId +
+                    fr.gouv.vitamui.archives.search.common.rest.RestApi.UNIT_WITH_INHERITED_RULES,
+                HttpMethod.POST,
+                request, ResultsDto.class);
+        checkResponse(response);
+        return response.getBody();
     }
 
 }

@@ -53,7 +53,6 @@ import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.server.security.WebSecurityConfig;
@@ -134,11 +133,6 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
     @Bean
     public IngestGeneratorODTFile ingestGeneratorODTFile() {
         return new IngestGeneratorODTFile();
-    }
-
-    @Bean
-    ExternalSecurityService externalSecurityService() {
-        return new ExternalSecurityService();
     }
 
     @Bean

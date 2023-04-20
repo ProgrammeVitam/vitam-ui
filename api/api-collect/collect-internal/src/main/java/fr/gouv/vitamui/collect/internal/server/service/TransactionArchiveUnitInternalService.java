@@ -32,6 +32,7 @@ package fr.gouv.vitamui.collect.internal.server.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;
 import fr.gouv.vitam.common.LocalDateUtil;
@@ -47,6 +48,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
@@ -140,11 +142,12 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.clea
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createDslQueryWithFacets;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createSelectMultiQuery;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.getBasicQuery;
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class TransactionArchiveUnitInternalService {
-
+    public static final String DSL_QUERY_FACETS = "$facets";
     public static final String TITLE_FIELD = "Title";
     private final CollectService collectService;
 
@@ -820,4 +823,48 @@ public class TransactionArchiveUnitInternalService {
         LOGGER.debug("get ontologies file from path : {} ", ontologiesFilePath);
         return OntologyServiceReader.readExternalOntologiesFromFile(tenantId, ontologiesFilePath);
     }
+
+
+    /**
+     * select archive Unit With Inherited Rules
+     *
+     * @param searchQuery the search Query
+     * @param vitamContext vitam context
+     * @return the unit
+     * @throws VitamClientException
+     * @throws IOException
+     */
+    public ResultsDto selectUnitWithInheritedRules(final SearchCriteriaDto searchQuery, String transactionId,
+        final VitamContext vitamContext)
+        throws VitamClientException, IOException {
+        ResultsDto resultsDto = new ResultsDto();
+        LOGGER.debug("calling select Units With Inherited Rules by criteria {} ", searchQuery.toString());
+        mapAgenciesNameToCodes(searchQuery, vitamContext);
+
+        SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
+        JsonNode dslQuery = selectMultiQuery.getFinalSelect();
+        RulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) dslQuery, DSL_QUERY_FACETS);
+        JsonNode vitamResponse = collectService.selectUnitWithInheritedRules(dslQuery, transactionId, vitamContext);
+
+        final VitamUISearchResponseDto archivesOriginResponse =
+            objectMapper.treeToValue(vitamResponse, VitamUISearchResponseDto.class);
+
+        VitamUIArchiveUnitResponseDto responseFilled = new VitamUIArchiveUnitResponseDto();
+        responseFilled.setContext(archivesOriginResponse.getContext());
+        responseFilled.setFacetResults(archivesOriginResponse.getFacetResults());
+        responseFilled.setResults(archivesOriginResponse.getResults().stream().map(
+            archiveUnit -> RulesUpdateCommonService.fillOriginatingAgencyName(archiveUnit, null)
+        ).collect(Collectors.toList()));
+        responseFilled.setHits(archivesOriginResponse.getHits());
+
+        ArchiveUnitsDto archiveUnitsFound = new ArchiveUnitsDto(responseFilled);
+
+        if (Objects.nonNull(archiveUnitsFound.getArchives()) &&
+            !CollectionUtils.isEmpty(archiveUnitsFound.getArchives().getResults())) {
+            resultsDto = archiveUnitsFound.getArchives().getResults().get(0);
+        }
+        return resultsDto;
+    }
+
+
 }

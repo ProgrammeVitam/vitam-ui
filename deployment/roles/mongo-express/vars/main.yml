@@ -1,0 +1,3 @@
+---
+
+package_name: "{{ mongo_express.package_name | default('vitamui-mongo-express') }}"

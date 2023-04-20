@@ -34,26 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
-
-import { Context } from '../../../../vitamui-library/src/lib/models/context';
+import { Context, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 import { ContextApiService } from '../core/api/context-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContextService extends SearchService<Context> {
-
   updated = new Subject<Context>();
 
-  constructor(
-    private contextApiService: ContextApiService,
-    private snackBarService: VitamUISnackBarService,
-    http: HttpClient) {
+  constructor(private contextApiService: ContextApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
     super(http, contextApiService, 'ALL');
   }
 
@@ -61,7 +56,7 @@ export class ContextService extends SearchService<Context> {
     return this.contextApiService.getOne(encodeURI(id));
   }
 
-  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
     const existContext: any = {};
     if (properties.name) {
       existContext.name = properties.name;
@@ -75,38 +70,35 @@ export class ContextService extends SearchService<Context> {
   }
 
   create(context: Context) {
-    return this.contextApiService.create(context, this.headers)
-      .pipe(
-        tap(
-          (_: Context) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.CONTEXT_CREATED',
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+    return this.contextApiService.create(context, this.headers).pipe(
+      tap(
+        (_: Context) => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.CONTEXT_CREATED',
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        }
+      )
+    );
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Context> {
-    return this.contextApiService.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          (_: Context) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.CONTEXT_UPDATED',
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+  patch(data: { id: string; [key: string]: any }): Observable<Context> {
+    return this.contextApiService.patch(data).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        (_: Context) => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.CONTEXT_UPDATED',
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        }
+      )
+    );
   }
-
 }

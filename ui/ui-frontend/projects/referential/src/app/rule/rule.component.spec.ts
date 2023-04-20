@@ -39,11 +39,16 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-// tslint:disable-next-line: max-line-length
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
-// tslint:disable-next-line: max-line-length
 import {
   AuthService,
   BASE_URL,
@@ -51,22 +56,13 @@ import {
   GlobalEventService,
   InjectorModule,
   LoggerModule,
+  Rule,
   SecurityService,
   VitamUISnackBarService,
 } from 'ui-frontend-common';
-
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { Rule } from '../../../../vitamui-library/src/lib/models/rule';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from '../../environments/environment';
 import { RuleComponent } from './rule.component';
-
-import { MatOptionModule } from '@angular/material/core';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTabsModule } from '@angular/material/tabs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 @Component({ selector: 'app-rule-preview', template: '' })
 class RulePreviewStubComponent {
@@ -87,25 +83,24 @@ describe('RuleComponent', () => {
   let component: RuleComponent;
   let fixture: ComponentFixture<RuleComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-      const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+  beforeEach(waitForAsync(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
-      const authServiceMock = {
-        user: {
-          proofTenantIdentifier: '1',
-          profileGroup: {
-            profiles: [{ applicationName: 'USERS_APP' }],
-          },
+    const authServiceMock = {
+      user: {
+        proofTenantIdentifier: '1',
+        profileGroup: {
+          profiles: [{ applicationName: 'USERS_APP' }],
         },
-      };
+      },
+    };
 
-      const activatedRouteMock = {
-        params: of({ tenantIdentifier: 1 }),
-        data: of({ appId: 'RULE_APP' }),
-        paramMap: EMPTY,
-      };
+    const activatedRouteMock = {
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'RULE_APP' }),
+      paramMap: EMPTY,
+    };
 
     const securityServiceMock = {
       hasRole: () => of(true),

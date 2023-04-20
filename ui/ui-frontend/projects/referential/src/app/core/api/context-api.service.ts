@@ -34,20 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse} from 'ui-frontend-common';
-import {Context} from '../../../../../vitamui-library/src/lib/models/context';
+
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BaseHttpClient, BASE_URL, Context, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContextApiService extends BaseHttpClient<Context> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/context');
   }
@@ -64,17 +63,18 @@ export class ContextApiService extends BaseHttpClient<Context> {
     return super.getOne(id, headers);
   }
 
-  patch(partialContext: { id: string, [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialContext: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialContext, headers);
   }
 
   create(context: Context, headers?: HttpHeaders): Observable<Context> {
-    return super.getHttp().post<any>(super.getApiUrl(), context, {headers});
+    return super.getHttp().post<any>(super.getApiUrl(), context, { headers });
   }
 
   check(context: Context, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', context, {observe: 'response', headers})
+    return super
+      .getHttp()
+      .post<any>(super.getApiUrl() + '/check', context, { observe: 'response', headers })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
-
 }

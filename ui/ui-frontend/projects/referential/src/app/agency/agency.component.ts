@@ -34,27 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApplicationId, GlobalEventService, Role, SidenavPage } from 'ui-frontend-common';
-import { Agency } from '../../../../vitamui-library/src/lib/models/agency';
+import { Observable } from 'rxjs';
+import { Agency, ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'ui-frontend-common';
 import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
-import { SecurityService } from 'ui-frontend-common';
+import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
 import { AgencyService } from './agency.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-agency',
   templateUrl: './agency.component.html',
-  styleUrls: ['./agency.component.scss']
+  styleUrls: ['./agency.component.scss'],
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
-
   search = '';
   tenantIdentifier: number;
 
@@ -70,7 +67,8 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     private router: Router,
     globalEventService: GlobalEventService,
     private securityService: SecurityService,
-    private agencyService: AgencyService) {
+    private agencyService: AgencyService
+  ) {
     super(route, globalEventService);
   }
 
@@ -97,11 +95,10 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   }
 
   openAgencyImportDialog() {
-    const dialogRef = this.dialog.open(
-      VitamUIImportDialogComponent, {
+    const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
       panelClass: 'vitamui-modal',
       data: Referential.AGENCY,
-      disableClose: true
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.success) {
@@ -132,5 +129,4 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   changeTenant(tenantIdentifier: number) {
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
-
 }

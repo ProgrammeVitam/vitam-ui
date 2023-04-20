@@ -28,15 +28,9 @@
 package fr.gouv.vitamui.ingest.internal.server.service;
 
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
-import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,20 +38,17 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * The service to retrieve profil thresholds.
+ * The service to retrieve profile thresholds.
  */
 @Service
-public class IngestExternalParametersService extends AbstractResourceClientService<IdDto, IdDto> {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(IngestExternalParametersService.class);
+public class IngestExternalParametersService {
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
     @Autowired
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
 
-    public IngestExternalParametersService(final ExternalSecurityService externalSecurityService,
+    public IngestExternalParametersService(
         final ExternalParametersInternalRestClient externalParametersInternalRestClient) {
-        super(externalSecurityService);
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
     }
 
@@ -81,10 +72,5 @@ public class IngestExternalParametersService extends AbstractResourceClientServi
             }
         }
         return accessContractOpt;
-    }
-
-    @Override
-    protected BasePaginatingAndSortingRestClient<IdDto, InternalHttpContext> getClient() {
-        return null;
     }
 }

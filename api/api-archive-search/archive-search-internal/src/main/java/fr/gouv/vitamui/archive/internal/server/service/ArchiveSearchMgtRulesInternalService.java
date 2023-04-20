@@ -38,7 +38,7 @@ import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.massupdate.MassUpdateUnitRuleRequest;
 import fr.gouv.vitam.common.model.massupdate.RuleActions;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
+import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -64,7 +64,6 @@ public class ArchiveSearchMgtRulesInternalService {
     private final ObjectMapper objectMapper;
     private final ArchiveSearchInternalService archiveSearchInternalService;
     private final RuleOperationsConverter ruleOperationsConverter;
-    private final RulesUpdateCommonService rulesUpdateCommonService;
     private final AccessContractService accessContractService;
     private final UnitService unitService;
 
@@ -72,19 +71,17 @@ public class ArchiveSearchMgtRulesInternalService {
     public ArchiveSearchMgtRulesInternalService(
         final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
         final RuleOperationsConverter ruleOperationsConverter,
-        final RulesUpdateCommonService rulesUpdateCommonService,
         final AccessContractService accessContractService, final UnitService unitService,
         final ObjectMapper objectMapper) {
         this.archiveSearchInternalService = archiveSearchInternalService;
         this.objectMapper = objectMapper;
         this.ruleOperationsConverter = ruleOperationsConverter;
-        this.rulesUpdateCommonService = rulesUpdateCommonService;
         this.accessContractService = accessContractService;
         this.unitService = unitService;
     }
 
-    public String updateArchiveUnitsRules(final VitamContext vitamContext,
-        final RuleSearchCriteriaDto ruleSearchCriteriaDto)
+    public String updateArchiveUnitsRules(
+        final RuleSearchCriteriaDto ruleSearchCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
         LOGGER.debug("Add Rules to ArchiveUnits using query : {} and DSL actions : {}",
             ruleSearchCriteriaDto.getSearchCriteriaDto().toString(), ruleSearchCriteriaDto.getRuleActions());
@@ -102,11 +99,11 @@ public class ArchiveSearchMgtRulesInternalService {
         JsonNode dslQuery =
             archiveSearchInternalService.mapRequestToDslQuery(ruleSearchCriteriaDto.getSearchCriteriaDto());
         ObjectNode dslRequest = (ObjectNode) dslQuery;
-        rulesUpdateCommonService
+        RulesUpdateCommonService
             .deleteAttributesFromObjectNode(dslRequest, ArchiveSearchInternalService.DSL_QUERY_PROJECTION,
                 ArchiveSearchInternalService.DSL_QUERY_FILTER, ArchiveSearchInternalService.DSL_QUERY_FACETS);
 
-        rulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
+        RulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         JsonNode updateQuery = objectMapper.convertValue(massUpdateUnitRuleRequest, JsonNode.class);
         LOGGER.debug("Add Rules to UA final updateQuery : {}", updateQuery);

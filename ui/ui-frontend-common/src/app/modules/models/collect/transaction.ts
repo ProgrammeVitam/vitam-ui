@@ -39,6 +39,7 @@ export interface Transaction extends Id {
   archiveProfile: string;
   legalStatus: string;
   comment: string;
+  acquisitionInformation?: string;
   creationDate?: Date;
   lastUpdate?: Date;
 

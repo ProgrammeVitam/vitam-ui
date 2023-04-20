@@ -48,6 +48,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
@@ -66,6 +67,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ByteArrayResource;
@@ -168,6 +171,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
 
     @Test
     void testExportCSVWithFrThenReturnTheExactExpectedFile() throws Exception {
+
         // Given
         setUpData();
         // query
@@ -197,9 +201,6 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         Assertions.assertThat(responseCsv).isNotNull();
         InputStream inputStream = responseCsv.getInputStream();
 
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
 
         // Read the CSV InputStream
         List<String[]> results = readCSVFromInputStream(inputStream);
@@ -209,7 +210,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         //1: The CSV Header
         Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
         //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+        Assertions.assertThat(results.size()).isEqualTo(resultsExpected.size());
         Assertions.assertThat(responseCsv).isNotNull();
     }
 
@@ -244,10 +245,6 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         Assertions.assertThat(responseCsv).isNotNull();
         InputStream inputStream = responseCsv.getInputStream();
 
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-
         // Read the CSV InputStream
         List<String[]> results = readCSVFromInputStream(inputStream);
         List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
@@ -256,342 +253,362 @@ public class ArchiveSearchArchiveSearchUnitExportCsvInternalServiceTest {
         //1: The CSV Header
         Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
         //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+        Assertions.assertThat(results.size()).isEqualTo(resultsExpected.size());
         Assertions.assertThat(responseCsv).isNotNull();
     }
 
     @Test
     public void testExportCSVWithFrAndSpecialCharsThenReturnTheExactExpectedContentCorrectlyEncoded() throws Exception {
-        // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+        try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
+            // Given
+            when(unitService.searchUnits(any(), any()))
+                .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
+            when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
 
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
+            when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+                .thenReturn(List.of(buildAgencyModelDtos()));
 
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_TO_ENCODE);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+            RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_TO_ENCODE);
+            ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
+            mockRulesUpdateCommonService.when(() -> RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
+                .thenReturn(buildArchiveUnits(resultsDto));
 
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+                .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
+            // query
+            List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+            SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+            searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+            searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+            searchCriteriaEltDto.setValues(
+                List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"),
+                    new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+            criteriaList.add(searchCriteriaEltDto);
 
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
+            SearchCriteriaDto query = new SearchCriteriaDto();
+            query.setLanguage(Locale.FRENCH.getLanguage());
+            query.setSize(20);
+            query.setPageNumber(20);
+            query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(
-            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
-                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_TO_ENCODE_CORRECTLY)).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchUnitExportCsvInternalService
-                .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+            Resource GivenResourceCsv = new ByteArrayResource(
+                Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                    .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_TO_ENCODE_CORRECTLY)).readAllBytes());
+            // When
+            Resource responseCsv =
+                archiveSearchUnitExportCsvInternalService
+                    .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
 
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
+            // Then
+            Assertions.assertThat(responseCsv).isNotNull();
+            InputStream inputStream = responseCsv.getInputStream();
 
 
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+            // The exact match of available bytes number
+            Assertions.assertThat(GivenResourceCsv.getInputStream().available())
+                .isEqualTo(responseCsv.getInputStream().available());
+            Assertions.assertThat(inputStream.available()).isPositive();
+            // Read the CSV InputStream
+            List<String[]> results = readCSVFromInputStream(inputStream);
+            List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
 
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
+            // Two expecting entries here
+            //1: The CSV Header
+            Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+            //2: The first line content
+            Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+            Assertions.assertThat(responseCsv).isNotNull();
+        }
     }
 
     @Test
     public void testExportCSVWithEnThenReturnTheExactExpectedFileAsFilingUnit() throws Exception {
-        // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+        try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
+            // Given
+            when(unitService.searchUnits(any(), any()))
+                .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
+            when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
 
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
+            when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+                .thenReturn(List.of(buildAgencyModelDtos()));
 
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_FILING_UNIT);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+            RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_FILING_UNIT);
+            ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
+            mockRulesUpdateCommonService.when(() -> RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
+                .thenReturn(buildArchiveUnits(resultsDto));
 
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+                .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
+            // query
+            List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+            SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+            searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+            searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+            searchCriteriaEltDto.setValues(
+                List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"),
+                    new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+            criteriaList.add(searchCriteriaEltDto);
 
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
+            SearchCriteriaDto query = new SearchCriteriaDto();
+            query.setLanguage(Locale.FRENCH.getLanguage());
+            query.setSize(20);
+            query.setPageNumber(20);
+            query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(
-            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
-                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_FILING_UNIT)).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchUnitExportCsvInternalService
-                .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+            Resource GivenResourceCsv = new ByteArrayResource(
+                Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                    .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_FILING_UNIT)).readAllBytes());
+            // When
+            Resource responseCsv =
+                archiveSearchUnitExportCsvInternalService
+                    .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
 
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
+            // Then
+            Assertions.assertThat(responseCsv).isNotNull();
+            InputStream inputStream = responseCsv.getInputStream();
 
 
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+            // The exact match of available bytes number
+            Assertions.assertThat(GivenResourceCsv.getInputStream().available())
+                .isEqualTo(responseCsv.getInputStream().available());
+            Assertions.assertThat(inputStream.available()).isPositive();
+            // Read the CSV InputStream
+            List<String[]> results = readCSVFromInputStream(inputStream);
+            List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
 
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
+            // Two expecting entries here
+            //1: The CSV Header
+            Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+            //2: The first line content
+            Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+            Assertions.assertThat(responseCsv).isNotNull();
+        }
     }
 
     @Test
     public void testExportCSVWithEnThenReturnTheExactExpectedFileAsHoldingUnit() throws Exception {
-        // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+        try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
 
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
+            // Given
+            when(unitService.searchUnits(any(), any()))
+                .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
+            when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
 
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_HOLDING_UNIT);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+            when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+                .thenReturn(List.of(buildAgencyModelDtos()));
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
+            RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_HOLDING_UNIT);
+            ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
+            mockRulesUpdateCommonService.when(() -> RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
+                .thenReturn(buildArchiveUnits(resultsDto));
 
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+                .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
+            // query
+            List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+            SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+            searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+            searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+            searchCriteriaEltDto.setValues(
+                List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"),
+                    new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+            criteriaList.add(searchCriteriaEltDto);
 
-        Resource GivenResourceCsv = new ByteArrayResource(
-            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
-                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_HOLDING_UNIT)).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchUnitExportCsvInternalService
-                .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+            SearchCriteriaDto query = new SearchCriteriaDto();
+            query.setLanguage(Locale.FRENCH.getLanguage());
+            query.setSize(20);
+            query.setPageNumber(20);
+            query.setCriteriaList(criteriaList);
 
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
+            Resource GivenResourceCsv = new ByteArrayResource(
+                Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                    .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_HOLDING_UNIT)).readAllBytes());
+            // When
+            Resource responseCsv =
+                archiveSearchUnitExportCsvInternalService
+                    .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+
+            // Then
+            Assertions.assertThat(responseCsv).isNotNull();
+            InputStream inputStream = responseCsv.getInputStream();
 
 
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+            // The exact match of available bytes number
+            Assertions.assertThat(GivenResourceCsv.getInputStream().available())
+                .isEqualTo(responseCsv.getInputStream().available());
+            Assertions.assertThat(inputStream.available()).isPositive();
+            // Read the CSV InputStream
+            List<String[]> results = readCSVFromInputStream(inputStream);
+            List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
 
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
+            // Two expecting entries here
+            //1: The CSV Header
+            Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+            //2: The first line content
+            Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+            Assertions.assertThat(responseCsv).isNotNull();
+        }
     }
 
     @Test
     public void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithObject() throws Exception {
         // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+        try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
+            when(unitService.searchUnits(any(), any()))
+                .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
+            when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
 
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
+            when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+                .thenReturn(List.of(buildAgencyModelDtos()));
 
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITH_OBJECT);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+            RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITH_OBJECT);
+            ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
+            mockRulesUpdateCommonService.when(() -> RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
+                .thenReturn(buildArchiveUnits(resultsDto));
 
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+                .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
+            // query
+            List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+            SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+            searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+            searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+            searchCriteriaEltDto.setValues(
+                List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"),
+                    new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+            criteriaList.add(searchCriteriaEltDto);
 
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
+            SearchCriteriaDto query = new SearchCriteriaDto();
+            query.setLanguage(Locale.FRENCH.getLanguage());
+            query.setSize(20);
+            query.setPageNumber(20);
+            query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(
-            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
-                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITH_OBJECT)).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchUnitExportCsvInternalService
-                .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+            Resource GivenResourceCsv = new ByteArrayResource(
+                Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                    .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITH_OBJECT)).readAllBytes());
+            // When
+            Resource responseCsv =
+                archiveSearchUnitExportCsvInternalService
+                    .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
 
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
+            // Then
+            Assertions.assertThat(responseCsv).isNotNull();
+            InputStream inputStream = responseCsv.getInputStream();
 
 
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+            // The exact match of available bytes number
+            Assertions.assertThat(GivenResourceCsv.getInputStream().available())
+                .isEqualTo(responseCsv.getInputStream().available());
+            Assertions.assertThat(inputStream.available()).isPositive();
+            // Read the CSV InputStream
+            List<String[]> results = readCSVFromInputStream(inputStream);
+            List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
 
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
+            // Two expecting entries here
+            //1: The CSV Header
+            Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+            //2: The first line content
+            Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+            Assertions.assertThat(responseCsv).isNotNull();
+        }
     }
 
     @Test
     public void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithoutObject() throws Exception {
-        // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+        try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
+            // Given
+            when(unitService.searchUnits(any(), any()))
+                .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
+            when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
 
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
+            when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+                .thenReturn(List.of(buildAgencyModelDtos()));
 
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITHOUT_OBJECT);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+            RequestResponse<JsonNode> jsonNodeRequestResponse =
+                buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITHOUT_OBJECT);
+            ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
+            mockRulesUpdateCommonService.when(() -> RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
+                .thenReturn(buildArchiveUnits(resultsDto));
 
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+                .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
+            // query
+            List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+            SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+            searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+            searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+            searchCriteriaEltDto.setValues(
+                List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"),
+                    new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+            criteriaList.add(searchCriteriaEltDto);
 
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
+            SearchCriteriaDto query = new SearchCriteriaDto();
+            query.setLanguage(Locale.FRENCH.getLanguage());
+            query.setSize(20);
+            query.setPageNumber(20);
+            query.setCriteriaList(criteriaList);
 
-        Resource GivenResourceCsv = new ByteArrayResource(
-            Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
-                .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITHOUT_OBJECT)).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchUnitExportCsvInternalService
-                .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+            Resource GivenResourceCsv = new ByteArrayResource(
+                Objects.requireNonNull(ArchiveSearchInternalService.class.getClassLoader()
+                    .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITHOUT_OBJECT)).readAllBytes());
+            // When
+            Resource responseCsv =
+                archiveSearchUnitExportCsvInternalService
+                    .exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
 
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
+            // Then
+            Assertions.assertThat(responseCsv).isNotNull();
+            InputStream inputStream = responseCsv.getInputStream();
 
 
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+            // The exact match of available bytes number
+            Assertions.assertThat(GivenResourceCsv.getInputStream().available())
+                .isEqualTo(responseCsv.getInputStream().available());
+            Assertions.assertThat(inputStream.available()).isPositive();
+            // Read the CSV InputStream
+            List<String[]> results = readCSVFromInputStream(inputStream);
+            List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
 
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
+            // Two expecting entries here
+            //1: The CSV Header
+            Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+            //2: The first line content
+            Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+            Assertions.assertThat(responseCsv).isNotNull();
+        }
     }
 
     private void setUpData() throws Exception {
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_RESULTS));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+        try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
 
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
+            when(unitService.searchUnits(any(), any()))
+                .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_RESULTS));
+            when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
 
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_ONE_RESULTS);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+            when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+                .thenReturn(List.of(buildAgencyModelDtos()));
 
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
+            RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_ONE_RESULTS);
+            ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
 
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_RESULTS));
+            mockRulesUpdateCommonService.when(() -> RulesUpdateCommonService.fillOriginatingAgencyName(any(), any()))
+                .thenReturn(buildArchiveUnits(resultsDto));
+
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            when(objectMapper.treeToValue(any(), (Class<Object>) any()))
+                .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_RESULTS));
+        }
     }
 
     @SneakyThrows

@@ -49,7 +49,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
@@ -99,9 +98,6 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
     @MockBean(name = "unitService")
     private UnitService unitService;
 
-    @MockBean(name = "rulesUpdateCommonService")
-    private RulesUpdateCommonService rulesUpdateCommonService;
-
     @InjectMocks
     private ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService;
 
@@ -118,7 +114,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         archiveSearchMgtRulesInternalService =
             new ArchiveSearchMgtRulesInternalService(archiveSearchInternalService,
                 ruleOperationsConverter,
-                rulesUpdateCommonService, accessContractService, unitService, objectMapper);
+                accessContractService, unitService, objectMapper);
     }
 
     @Test
@@ -211,14 +207,18 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
         ruleSearchCriteriaDto.setSearchCriteriaDto(searchQuery);
 
+
         //When //Then
         String expectingGuid =
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(
+                ruleSearchCriteriaDto, new VitamContext(1));
         assertThatCode(() -> {
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(
+                ruleSearchCriteriaDto, new VitamContext(1));
         }).doesNotThrowAnyException();
 
         Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
+
     }
 
 
@@ -280,7 +280,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
 
         //When //Then
         assertThatCode(() -> {
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto, new VitamContext(1));
         }).hasMessage("the access contract using to update unit rules has no writing permission to update units");
 
     }

@@ -38,11 +38,11 @@ import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,11 +60,12 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = {TransactionArchiveUnitExternalController.class})
-public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
+class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalControllerTest.class);
 
+    private static final String ANY_TRANSACTION_CODE = "ANY_TRANSACTION_CODE";
     @MockBean
     private TransactionArchiveUnitExternalService transactionArchiveUnitExternalService;
 
@@ -107,7 +108,7 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternal
     }
 
     @Test
-    void when_searchCollectUnitsByCriteria_Service_ko_should_return_ko() {
+    void test_searchCollectUnitsByCriteria_with_invalid_criteria_should_return_ko() {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
         SearchCriteriaEltDto nodeCriteria = new SearchCriteriaEltDto();
@@ -122,11 +123,12 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternal
             .thenReturn(expectedResponse);
 
         assertThatCode(() -> transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query))
-            .isInstanceOf(InvalidSanitizeCriteriaException.class);
+            .isInstanceOf(PreconditionFailedException.class)
+            .hasMessage("The object is not valid ");
     }
 
     @Test
-    void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws InvalidParseOperationException,
+    void test_searchArchiveUnitsByCriteria_with_valid_criteria_should_return_ok() throws InvalidParseOperationException,
         PreconditionFailedException {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
@@ -150,6 +152,26 @@ public class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternal
             .when(transactionArchiveUnitExternalService.getExternalOntologiesList())
             .thenReturn(expectedResponse);
         List<OntologyDto> response = transactionArchiveUnitExternalController.getExternalOntologiesList();
+
+        // Then
+        Assertions.assertEquals(response, expectedResponse);
+    }
+
+    @Test
+    void testSelectUnitWithInheritedRulesThenReturnVitamOperationId()
+        throws InvalidParseOperationException, PreconditionFailedException {
+        // Given
+        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
+        ResultsDto expectedResponse = new ResultsDto();
+
+        // When
+        Mockito
+            .when(transactionArchiveUnitExternalService.selectUnitWithInheritedRules(Mockito.anyString(),
+                Mockito.any(SearchCriteriaDto.class)))
+            .thenReturn(expectedResponse);
+        ResultsDto response =
+            transactionArchiveUnitExternalController.selectUnitWithInheritedRules(ANY_TRANSACTION_CODE,
+                searchCriteriaDto);
 
         // Then
         Assertions.assertEquals(response, expectedResponse);

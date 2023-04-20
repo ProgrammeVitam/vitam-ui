@@ -2,7 +2,7 @@ include /etc/nginx/conf.d/upstream;
 
 server {
 
-  listen 443 ssl;
+  listen {{ ip_service }}:443 ssl;
   include {{ nginx_ssl_conf }}/ssl.conf;
 
   server_name {{ vitam_reverse_external_dns }};

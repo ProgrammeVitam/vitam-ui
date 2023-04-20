@@ -30,10 +30,10 @@ package fr.gouv.vitamui.collect.internal.server.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.collect.internal.server.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.collect.internal.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.collect.internal.server.service.TransactionArchiveUnitInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.ProjectObjectGroupInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.SearchCriteriaHistoryInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.TransactionArchiveUnitInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.TransactionInternalService;
 import fr.gouv.vitamui.collect.internal.server.service.converters.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamCollectConfig;
+import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
@@ -133,5 +134,9 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
     }
 
 
-
+    @Bean
+    public ExternalParametersInternalRestClient externalParametersInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
+    }
 }

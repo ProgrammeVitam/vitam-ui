@@ -10,3 +10,6 @@ nginx_log_dir: "/var/log/nginx"
 nginx_tmp_dir: "/etc/nginx/tmp"
 
 secure: "{{ vitamui_default.services.secure | default('true') | lower }}"
+
+reverse_group: root
+reverse_user: root

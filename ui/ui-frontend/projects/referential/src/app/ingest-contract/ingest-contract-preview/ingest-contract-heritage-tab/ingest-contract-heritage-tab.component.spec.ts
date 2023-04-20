@@ -37,10 +37,10 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import { IngestContract } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab.component';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 describe('IngestContractHeritageTabComponent', () => {
   let component: IngestContractHeritageTabComponent;
@@ -72,16 +72,14 @@ describe('IngestContractHeritageTabComponent', () => {
     computeInheritedRulesAtIngest: false,
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, VitamUICommonTestModule],
-        declarations: [IngestContractHeritageTabComponent],
-        providers: [FormBuilder, { provide: IngestContractService, useValue: {} }],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      declarations: [IngestContractHeritageTabComponent],
+      providers: [FormBuilder, { provide: IngestContractService, useValue: {} }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractHeritageTabComponent);

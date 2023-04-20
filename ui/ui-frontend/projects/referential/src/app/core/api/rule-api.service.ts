@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
-import { Rule } from '../../../../../vitamui-library/src/lib/models/rule';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Rule } from 'ui-frontend-common';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 /**
  * @deprecated This class is deprecated since 5.0.2, and it will be removed in the next minor version, use RuleApiService of ui-frontend-commons instead!

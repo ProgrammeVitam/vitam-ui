@@ -36,15 +36,13 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter

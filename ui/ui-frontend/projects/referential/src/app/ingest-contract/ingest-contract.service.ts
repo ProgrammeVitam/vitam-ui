@@ -36,10 +36,9 @@
  */
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { IngestContract, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
 import { IngestContractApiService } from '../core/api/ingest-contract-api.service';
 
@@ -92,13 +91,13 @@ export class IngestContractService extends SearchService<IngestContract> {
       tap((response) => this.updated.next(response)),
       tap(
         (_) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.INGEST_CONTRACT_UPDATED',
-              icon: 'vitamui-icon-contrat'
+          this.snackBarService.open({
+            message: 'SNACKBAR.INGEST_CONTRACT_UPDATED',
+            icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+          this.snackBarService.open({ message: error.error.message, translate: false });
         }
       )
     );
@@ -108,13 +107,13 @@ export class IngestContractService extends SearchService<IngestContract> {
     return this.ingestContractApi.create(ingestContract).pipe(
       tap(
         (_: IngestContract) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.INGEST_CONTRACT_CREATED',
-              icon: 'vitamui-icon-contrat'
+          this.snackBarService.open({
+            message: 'SNACKBAR.INGEST_CONTRACT_CREATED',
+            icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
+          this.snackBarService.open({ message: error.error.message, translate: false });
         }
       )
     );

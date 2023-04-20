@@ -44,6 +44,7 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidCreateOperationVitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
@@ -173,10 +174,6 @@ public final class MetadataSearchCriteriaUtils {
     /**
      * contextCall is an Optional arg to avoid filling it in case it's never used, otherwise it will be handled for
      * specific cases ( ARCHIVE_UNIT_WITH_OBJECTS && ARCHIVE_UNIT_WITHOUT_OBJECTS )
-     *
-     * @param searchQuery
-     * @return
-     * @throws VitamClientException
      */
     public static SelectMultiQuery mapRequestToSelectMultiQuery(SearchCriteriaDto searchQuery)
         throws VitamClientException {
@@ -307,7 +304,7 @@ public final class MetadataSearchCriteriaUtils {
             .count();
 
         if (originRulesCriteriaCount > 0) {
-            initialCriteriaList.stream().forEach(searchCriteriaEltDto -> {
+            initialCriteriaList.forEach(searchCriteriaEltDto -> {
                 if (criteriaCategory.equals(searchCriteriaEltDto.getCategory()) &&
                     (RULE_ORIGIN_CRITERIA.equals(searchCriteriaEltDto.getCriteria()))) {
                     List<CriteriaValue> values = searchCriteriaEltDto.getValues();
@@ -374,7 +371,8 @@ public final class MetadataSearchCriteriaUtils {
                 List<String> searchValues =
                     appraisalPreventRuleIdentifiersCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                         Collectors.toList());
-                buildAppraisalPreventRuleIdentifierQuery(searchValues, appraisalPreventRuleIdentifiersCriteria.getCategory(),
+                buildAppraisalPreventRuleIdentifierQuery(searchValues,
+                    appraisalPreventRuleIdentifiersCriteria.getCategory(),
                     ArchiveSearchConsts.CriteriaOperators.valueOf(
                         appraisalPreventRuleIdentifiersCriteria.getOperator()), query);
             }
@@ -671,7 +669,8 @@ public final class MetadataSearchCriteriaUtils {
         }
     }
 
-    private static void buildAppraisalPreventRuleIdentifierQuery(final List<String> searchValues, ArchiveSearchConsts.CriteriaCategory category,
+    private static void buildAppraisalPreventRuleIdentifierQuery(final List<String> searchValues,
+        ArchiveSearchConsts.CriteriaCategory category,
         ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryOr = or();
@@ -692,7 +691,8 @@ public final class MetadataSearchCriteriaUtils {
     }
 
     private static void buildInheritedCategoryQuery(final List<String> searchValues,
-        ArchiveSearchConsts.CriteriaCategory category, ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
+        ArchiveSearchConsts.CriteriaCategory category, ArchiveSearchConsts.CriteriaOperators operator,
+        BooleanQuery subQueryAnd)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryOr = or();
         if (!CollectionUtils.isEmpty(searchValues)) {
@@ -793,6 +793,7 @@ public final class MetadataSearchCriteriaUtils {
 
         return inheritedValue;
     }
+
     private static void buildRuleStartDateQuery(String ruleCategory, final List<String> searchValues,
         ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
         throws InvalidCreateOperationException {
@@ -1063,7 +1064,7 @@ public final class MetadataSearchCriteriaUtils {
                         handleSimpleFieldCriteria(queryToFill, searchCriteria);
                         break;
                 }
-                if (ArchiveSearchConsts.CriteriaDataType.DATE.name().equals(searchCriteria.getDataType())) {
+                if (isADate(searchCriteria) && !isADateToReplace(searchCriteria)) {
                     queryToFill.add(buildStartDateEndDateQuery(searchCriteria.getCriteria(),
                         searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                             Collectors.toList()),
@@ -1171,12 +1172,10 @@ public final class MetadataSearchCriteriaUtils {
         LOGGER.debug("The search criteria Date is {} ", criteria);
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
-                LocalDateTime searchDate =
-                    LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
-                        .withMinute(0).withSecond(0).withNano(0);
-                subQueryOr
-                    .add(VitamQueryHelper.buildSubQueryByOperator(criteria,
-                        ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(searchDate.plusDays(1)), operator));
+                LocalDateTime searchDate = LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER)
+                    .withHour(0).withMinute(0).withSecond(0).withNano(0);
+                subQueryOr.add(VitamQueryHelper.buildSubQueryByOperator(criteria,
+                    ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(searchDate.plusDays(1)), operator));
             }
             subQueryAnd.add(subQueryOr);
         }
@@ -1257,33 +1256,56 @@ public final class MetadataSearchCriteriaUtils {
             if (validInheritedRulesValueOpt.get().equals(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)) {
                 VitamQueryHelper.addParameterCriteria(queryToFill,
                     notEq,
-                    ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
+                    SIMPLE_FIELDS_VALUES_MAPPING
                         .get(ArchiveSearchConsts.RULES_COMPUTED),
                     List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
             } else {
                 VitamQueryHelper.addParameterCriteria(queryToFill,
                     eq,
-                    ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
+                    SIMPLE_FIELDS_VALUES_MAPPING
                         .get(ArchiveSearchConsts.RULES_COMPUTED),
                     List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
             }
         }
     }
 
-    private static String handleSimpleFieldCriteria(BooleanQuery queryToFill, SearchCriteriaEltDto searchCriteria)
+    public static void handleSimpleFieldCriteria(BooleanQuery queryToFill, SearchCriteriaEltDto searchCriteria)
         throws InvalidCreateOperationException {
-        String mappedCriteriaName;
-        mappedCriteriaName =
-            ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.containsKey(searchCriteria.getCriteria()) ?
-                ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.get(searchCriteria.getCriteria()) :
-                searchCriteria.getCriteria();
+        String mappedCriteriaName = SIMPLE_FIELDS_VALUES_MAPPING.containsKey(searchCriteria.getCriteria()) ?
+            SIMPLE_FIELDS_VALUES_MAPPING.get(searchCriteria.getCriteria()) :
+            searchCriteria.getCriteria();
 
-        VitamQueryHelper.addParameterCriteria(queryToFill,
-            ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator()),
-            mappedCriteriaName,
-            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
-                Collectors.toList()));
-        return mappedCriteriaName;
+        List<String> stringValues = searchCriteria.getValues().stream().map(CriteriaValue::getValue)
+            .collect(Collectors.toList());
+        if (isADateToReplace(searchCriteria)) {
+            String stringDate = searchCriteria.getValues().get(0).getValue();
+            LocalDateTime date = LocalDateTime.parse(stringDate, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
+            String theDay = ArchiveSearchConsts.ISO_FRENCH_FORMATER.format(date);
+            String theNextDay = ArchiveSearchConsts.ISO_FRENCH_FORMATER.format(date.plusDays(1));
+            BooleanQuery andQuery = and();
+            VitamQueryHelper.addParameterCriteria(andQuery,
+                ArchiveSearchConsts.CriteriaOperators.GTE,
+                mappedCriteriaName, List.of(theDay));
+            VitamQueryHelper.addParameterCriteria(andQuery,
+                ArchiveSearchConsts.CriteriaOperators.LT,
+                mappedCriteriaName, List.of(theNextDay));
+            queryToFill.add(andQuery);
+        } else {
+            VitamQueryHelper.addParameterCriteria(queryToFill,
+                ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator()),
+                mappedCriteriaName, stringValues);
+        }
+    }
+
+    public static boolean isADate(SearchCriteriaEltDto searchCriteria) {
+        return ArchiveSearchConsts.CriteriaDataType.DATE.name().equals(searchCriteria.getDataType());
+    }
+
+    public static boolean isADateToReplace(SearchCriteriaEltDto searchCriteria) {
+        return isADate(searchCriteria)
+            && ArchiveSearchConsts.CriteriaOperators.EQ.name().equals(searchCriteria.getOperator())
+            && searchCriteria.getValues().size() == 1
+            && StringUtils.isNotEmpty(searchCriteria.getValues().get(0).getValue());
     }
 
     private static void addPositionsNodesFacet(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)

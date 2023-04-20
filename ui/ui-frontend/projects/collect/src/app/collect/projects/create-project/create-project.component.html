@@ -10,20 +10,20 @@
   <vitamui-common-stepper [selectedIndex]="stepIndex">
 
     <!-- ########## stepIndex 1 : workflow 1-2-3 , step 1/6 : Choix du type de projet ########## -->
-
     <cdk-step>
       <div class="content">
         <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
         <h2>{{ 'COLLECT.MODAL.WORKFLOW_CHOICE' | translate }}</h2>
         <div class="main-content">
-          <vitamui-radio-group formControlName="selectedWorkflow" primary="true">
-            <vitamui-radio value="{{ Workflow.MANUAL }}" label="{{ 'COLLECT.MODAL.MANUAL_WORKFLOW' | translate }}"
-                           (click)="setWorkflow(Workflow.MANUAL)" primary="true" checked>
-            </vitamui-radio>
-            <vitamui-radio value="{{ Workflow.FLOW }}" label="{{ 'COLLECT.MODAL.FLOW_WORKFLOW' | translate }}"
-                           (click)="setWorkflow(Workflow.FLOW)" primary="true">
-            </vitamui-radio>
-          </vitamui-radio-group>
+          <mat-button-toggle-group formControlName="selectedWorkflow" #group="matButtonToggleGroup"
+                                   class="vitamui-button-toggle-group">
+            <mat-button-toggle value="{{ Workflow.MANUAL }}" (click)="setWorkflow(Workflow.MANUAL)" [checked]="true">
+              {{'COLLECT.MODAL.MANUAL_WORKFLOW' | translate}}
+            </mat-button-toggle>
+            <mat-button-toggle value="{{ Workflow.FLOW }}" (click)="setWorkflow(Workflow.FLOW)">
+              {{'COLLECT.MODAL.FLOW_WORKFLOW' | translate}}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
         </div>
         <div class="actions">
           <div class="line">
@@ -236,7 +236,7 @@
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <div class="content">
         <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.UPLOAD_SUB_TITLE' | translate }}</h2>
+        <h2>{{ 'COLLECT.MODAL.UPLOAD_SUB_TITLE' | translate }}</h2>
         <div class="main-content">
           <div class="drag-and-drop-area"
                (dragleave)="onDragLeave($event)"
@@ -294,18 +294,19 @@
         <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
         <h2>{{ 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE' | translate }}</h2>
         <div class="main-content">
-          <vitamui-radio-group formControlName="selectedFlowType" primary="true">
-            <vitamui-radio value="{{ FlowType.FIX }}" label="{{ 'COLLECT.MODAL.FIX_FLOW_WORKFLOW' | translate }}"
-                           (click)="setFlowType(FlowType.FIX)" primary="true" checked>
-            </vitamui-radio>
-            <vitamui-radio value="{{ FlowType.RULES }}" label="{{ 'COLLECT.MODAL.RULES_FLOW_WORKFLOW' | translate }}"
-                           (click)="setFlowType(FlowType.RULES)" primary="true">
-            </vitamui-radio>
-          </vitamui-radio-group>
+          <mat-button-toggle-group formControlName="selectedFlowType" #group="matButtonToggleGroup"
+                                   class="vitamui-button-toggle-group">
+            <mat-button-toggle value="{{ FlowType.FIX }}" (click)="setFlowType(FlowType.FIX)" [checked]="true">
+              {{'COLLECT.MODAL.FIX_FLOW_WORKFLOW' | translate}}
+            </mat-button-toggle>
+            <mat-button-toggle value="{{ FlowType.RULES }}" (click)="setFlowType(FlowType.RULES)">
+              {{'COLLECT.MODAL.RULES_FLOW_WORKFLOW' | translate}}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
         </div>
         <div class="actions">
           <div class="line">
-            <button (click)="moveToNextStep()" class="btn primary" type="button">
+            <button (click)="prepareRulesAndMoveToNextStep()" class="btn primary" type="button">
               {{ 'COMMON.NEXT' | translate }}
             </button>
             <button (click)="onClose()" class="btn link" type="button">
@@ -324,7 +325,7 @@
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL || selectedFlowType === FlowType.FIX">
       <div class="content">
         <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.ARCHIVE_POSITION_SUB_TITLE' | translate }}</h2>
+        <h2>{{ 'COLLECT.MODAL.ARCHIVE_POSITION_SUB_TITLE' | translate }}</h2>
         <div class="main-content">
           <div class="form-group">
             <vitamui-library-filing-plan
@@ -370,7 +371,7 @@
                         class="vitamui-icon {{ ruleParamForm.value.opened ? 'vitamui-icon-chevron-down':'vitamui-icon-chevron-right'}}"></i>
                     </div>
                     <div class="line shrink object-name">
-                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + index }}
+                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (index + 1) }}
                     </div>
                   </div>
                   <div class="line split">
@@ -390,14 +391,12 @@
                         <label>{{ 'COLLECT.MODAL.SELECT_METADATA' | translate }}</label>
                         <mat-form-field class="vitamui-mat-select">
                           <mat-select class="select"
-                                      formControlName="metadata"
-                                      placeholder="{{ 'COLLECT.MODAL.SELECT_THE_METADATA' | translate }}">
+                                      formControlName="ontology"
+                                      placeholder="{{ 'COLLECT.MODAL.SELECT_THE_METADATA' | translate }}"
+                          >
                             <mat-option *ngFor="let ontology of ontologies"
                                         class="option"
-                                        value="{{ ontology.ApiField }}"
-                                        matTooltip="{{ ontology.ApiField }}"
-                                        matTooltipClass="vitamui-tooltip"
-                                        [matTooltipShowDelay]="300">
+                                        [value]="ontology">
                               {{ ontology.Identifier }}
                             </mat-option>
                           </mat-select>
@@ -409,11 +408,28 @@
                       </div>
                       <div class="col">
                         <label>{{ 'COLLECT.MODAL.SET_VALUE' | translate }}</label>
-                        <vitamui-common-input
-                          formControlName="value"
-                          class="col"
-                          placeholder="{{ 'COLLECT.MODAL.VALUE' | translate }}">
+                        <vitamui-common-input *ngIf="ruleParamForm.value.ontology.Type !== 'DATE'"
+                                              formControlName="metadataValue"
+                                              class="col"
+                                              placeholder="{{ 'COLLECT.MODAL.VALUE' | translate }}">
                         </vitamui-common-input>
+                        <div class="vitamui-input" *ngIf="ruleParamForm.value.ontology.Type === 'DATE'"
+                             (click)="pickerOtherCriteria.open()">
+                          <span *ngIf="!ruleParamForm.value.metadataValue; else showOtherCriteria"
+                                (click)="pickerOtherCriteria.open()"
+                                class="search-date-label">
+                            {{ ruleParamForm.value.metadataValue }}
+                          </span>
+                          <ng-template #showOtherCriteria>
+                            <span (click)="pickerOtherCriteria.open()">
+                              {{ ruleParamForm.value.metadataValue | dateTime : 'dd/MM/yyyy' }}
+                            </span>
+                          </ng-template>
+                          <input class="hidden" size="0"
+                                 [matDatepicker]="pickerOtherCriteria"
+                                 formControlName="metadataValue"/>
+                          <mat-datepicker #pickerOtherCriteria></mat-datepicker>
+                        </div>
                       </div>
                     </div>
                     <div class="row">

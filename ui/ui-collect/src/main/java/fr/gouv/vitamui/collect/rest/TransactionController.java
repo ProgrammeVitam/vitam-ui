@@ -30,6 +30,7 @@ package fr.gouv.vitamui.collect.rest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
+import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.service.TransactionService;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
@@ -125,7 +126,8 @@ public class TransactionController extends AbstractUiRestController {
     @PostMapping(ARCHIVE_UNITS + "/{transactionId}" + EXPORT_CSV_SEARCH_PATH)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(final @PathVariable("transactionId") String transactionId,
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
+        final @PathVariable("transactionId") String transactionId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
@@ -133,7 +135,8 @@ public class TransactionController extends AbstractUiRestController {
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("Export search archives Units by criteria into csv format = {}", searchQuery);
         Resource exportedCsvResult =
-            transactionService.exportCsvArchiveUnitsByCriteria(transactionId, searchQuery, buildUiHttpContext()).getBody();
+            transactionService.exportCsvArchiveUnitsByCriteria(transactionId, searchQuery, buildUiHttpContext())
+                .getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .header("Content-Disposition", "attachment")
@@ -222,9 +225,11 @@ public class TransactionController extends AbstractUiRestController {
      */
 
     @ApiOperation(value = "Upload on streaming metadata file and update archive units", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PutMapping(value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PutMapping(value = CommonConstants.TRANSACTION_PATH_ID +
+        UPDATE_UNITS_METADATA_PATH, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId, InputStream inputStream,
+    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId,
+        InputStream inputStream,
         @RequestHeader(value = "fileName") final String fileName)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("[UI] The transaction id is a mandatory parameter: ", transactionId);
@@ -255,5 +260,18 @@ public class TransactionController extends AbstractUiRestController {
         return transactionService.getExternalOntologiesList(buildUiHttpContext());
     }
 
+    @ApiOperation(value = "select Unit With Inherited Rules")
+    @PostMapping("/{transactionId}" + RestApi.UNIT_WITH_INHERITED_RULES)
+    @ResponseStatus(HttpStatus.OK)
+    public ResultsDto selectUnitsWithInheritedRules(@PathVariable("transactionId") final String transactionId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+        SanityChecker.sanitizeCriteria(searchQuery);
+        SanityChecker.checkSecureParameter(transactionId);
+        LOGGER.debug("select Unit With Inherited Rules by criteria = {}", searchQuery);
+        return transactionService.selectUnitsWithInheritedRules(transactionId, searchQuery, buildUiHttpContext())
+            .getBody();
 
+    }
 }

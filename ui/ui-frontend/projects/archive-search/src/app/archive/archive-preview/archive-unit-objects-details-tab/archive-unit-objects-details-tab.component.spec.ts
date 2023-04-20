@@ -69,7 +69,6 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     };
     component.archiveUnit = archiveUnit;
     component.tenantIdentifier = 1;
-    component.accessContract = 'accessContractTest';
     fixture.detectChanges();
   });
 
@@ -90,8 +89,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
     expect(archiveServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
       'archiveUnitTestID',
-      1,
-      'accessContractTest',
+      1,      
       ObjectQualifierType.BINARYMASTER,
       1
     );
@@ -104,6 +102,71 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     component.sendCalls(unit);
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalled();
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalledWith(unit['#id'], anything());
+  });
+
+  it('should return true', () => {
+    // Given
+    component.archiveUnit = {
+      '#allunitups': [],
+      '#id': 'archiveUnitTestID',
+      '#object': 'objectId',
+      '#unitType': '',
+      '#unitups': [],
+      '#opi': '',
+      '#tenant': 1,
+      DescriptionLevel: 'Item',
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+    };
+
+    // When
+    const response = component.unitHasObject();
+
+    // Then
+    expect(response).toBeTruthy();
+  });
+
+  it('should return false', () => {
+    // Given
+    component.archiveUnit = {
+      '#allunitups': [],
+      '#id': 'archiveUnitTestID',
+      '#object': 'objectId',
+      '#unitType': '',
+      '#unitups': [],
+      '#opi': '',
+      '#tenant': 1,
+      DescriptionLevel: 'RecordGrp',
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+    };
+
+    // When
+    const response = component.unitHasObject();
+
+    // Then
+    expect(response).toBeFalsy();
+  });
+
+  it('should return true', () => {
+    // Given
+    component.archiveUnit = {
+      '#allunitups': [],
+      '#id': 'archiveUnitTestID',
+      '#unitType': '',
+      '#unitups': [],
+      '#opi': '',
+      '#tenant': 1,
+      DescriptionLevel: 'Item',
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+    };
+
+    // When
+    const response = component.unitHasObject();
+
+    // Then
+    expect(response).toBeFalsy();
   });
 
   function newVersionWithQualifier(qualifier: ObjectQualifierType, version: number): VersionWithQualifierDto {

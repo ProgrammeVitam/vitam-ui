@@ -36,34 +36,31 @@
  */
 package fr.gouv.vitamui.commons.logbook.util;
 
-import java.io.IOException;
-import java.util.Collection;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
-import org.apache.commons.lang3.StringUtils;
-
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
+import java.util.Collection;
 
 /**
  *
  * Logbook utility
- *
  *
  */
 public class LogbookUtils {
@@ -90,13 +87,13 @@ public class LogbookUtils {
         try {
             ObjectNode evData = JsonUtils.getEmptyObjectNode();
             ObjectNode diff = JsonUtils.getEmptyObjectNode();
-            logbooks.forEach((l) -> {
-                if (StringUtils.isBlank(l.getKey())) {
+            logbooks.forEach(logbook -> {
+                if (StringUtils.isBlank(logbook.getKey())) {
                     throw new IllegalArgumentException("key should not be blank");
                 }
-                String key = StringUtils.capitalize(l.getKey().toLowerCase());
-                String oldValue = l.getOldValue() != null ? l.getOldValue().toString() : StringUtils.EMPTY;
-                String newValue = l.getNewValue() != null ? l.getNewValue().toString() : StringUtils.EMPTY;
+                String key = StringUtils.capitalize(logbook.getKey().toLowerCase());
+                String oldValue = logbook.getOldValue() != null ? logbook.getOldValue().toString() : StringUtils.EMPTY;
+                String newValue = logbook.getNewValue() != null ? logbook.getNewValue().toString() : StringUtils.EMPTY;
                 diff.put("-" + key, oldValue);
                 diff.put("+" + key, newValue);
 
@@ -137,10 +134,6 @@ public class LogbookUtils {
     }
 
     public static String getValue(final Object value) {
-        if (value == null) {
-            return StringUtils.EMPTY;
-        } else {
-            return value.toString();
-        }
+        return value == null ? StringUtils.EMPTY : value.toString();
     }
 }

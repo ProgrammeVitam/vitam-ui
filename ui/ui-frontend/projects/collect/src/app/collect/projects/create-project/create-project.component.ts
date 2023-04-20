@@ -36,7 +36,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -198,6 +198,13 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.selectedFlowType = value;
   }
 
+  prepareRulesAndMoveToNextStep() {
+    if (this.selectedFlowType === FlowType.RULES && this.rulesParams.length === 0) {
+      this.addRuleParam();
+    }
+    this.moveToNextStep();
+  }
+
   moveToNextStep() {
     this.stepIndex = this.stepIndex + 1;
   }
@@ -299,7 +306,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       // for unitUp :
       linkParentIdControl: [{included: [], excluded: []}],
       // for unitUps :
-      rulesParams: this.formBuilder.array([]),
+      rulesParams: this.formBuilder.array([], Validators.required),
       comment: [null],
       status: [null],
     });
@@ -333,8 +340,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     return this.rulesParams.controls.map((ruleParamControl: FormControl) => {
       const ruleParam = ruleParamControl.value;
       return {
-        metadataKey: ruleParam.metadata,
-        metadataValue: ruleParam.value,
+        metadataKey: ruleParam.ontology.ApiField,
+        metadataValue: ruleParam.metadataValue,
         unitUp: ruleParam.unitUp.included[0],
       }
     })
@@ -352,10 +359,11 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     for (const ruleParamForm of this.rulesParams.controls) {
       ruleParamForm.value.opened = false;
     }
+    // rulesParams interface:
     const newRuleParamForm = this.formBuilder.group({
       opened: [true],
-      metadata: ['', Validators.required],
-      value: ['', Validators.required],
+      ontology: ['', Validators.required],
+      metadataValue: ['', Validators.required],
       unitUp: [{included: [], excluded: []}, oneIncludedNodeRequired()],
     });
     this.rulesParams.push(newRuleParamForm);

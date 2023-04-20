@@ -1,32 +1,28 @@
 {
-  "$and":[
+  "$and": [
     {
-      "$or":[
+      "$or": [
         {
-          "$eq":{
-            "#unitType":"HOLDING_UNIT"
+          "$eq": {
+            "#unitType": "HOLDING_UNIT"
           }
         },
         {
-          "$eq":{
-            "#unitType":"FILING_UNIT"
+          "$eq": {
+            "#unitType": "FILING_UNIT"
           }
         }
       ]
     },
     {
-      "$eq":{
-        "ontologyField":"2080-05-08T23:00:00.000Z"
+      "$gte": {
+        "ontologyField": "2080-05-08T23:00:00.000Z"
       }
     },
     {
-      "$or":[
-        {
-          "$eq":{
-            "ontologyField":"2080-05-09"
-          }
-        }
-      ]
+      "$lt": {
+        "ontologyField": "2080-05-09T23:00:00.000Z"
+      }
     }
   ]
 }

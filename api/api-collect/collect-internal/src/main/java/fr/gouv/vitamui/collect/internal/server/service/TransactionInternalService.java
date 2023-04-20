@@ -152,7 +152,7 @@ public class TransactionInternalService {
         }
     }
 
-    public String updateArchiveUnitsFromFile(VitamContext vitamContext, InputStream inputStream, String transactionId)
+    public String updateArchiveUnitsFromFile(InputStream inputStream, String transactionId, VitamContext vitamContext)
         throws RequestTimeOutException {
         LOGGER.debug("[Internal] call update Archive Units From File for transaction Id {}  ", transactionId);
         final String result = collectService.updateCollectArchiveUnits(vitamContext, transactionId, inputStream);

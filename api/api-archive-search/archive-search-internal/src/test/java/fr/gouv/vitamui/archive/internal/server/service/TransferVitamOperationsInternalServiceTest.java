@@ -116,8 +116,10 @@ class TransferVitamOperationsInternalServiceTest {
             (new ObjectMapper().readTree(vitamResponseToString));
 
         //When
-        Mockito.when(transferAcknowledgmentService.transferAcknowledgment(eq(vitamContext), any())).thenReturn(vitamJsonResponse);
-        String response = transferVitamOperationsInternalService.transferAcknowledgmentService(atrFileInputStream, vitamContext);
+        Mockito.when(transferAcknowledgmentService.transferAcknowledgment(eq(vitamContext), any()))
+            .thenReturn(vitamJsonResponse);
+        String response =
+            transferVitamOperationsInternalService.transferAcknowledgmentService(atrFileInputStream, vitamContext);
 
         //Then
         assertThat(response).isEqualTo("aeeaaaaaaghduohdabjwkamdgezrs7aaaaaq");

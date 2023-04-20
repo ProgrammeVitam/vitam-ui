@@ -81,7 +81,7 @@ public class ProjectInternalService {
         this.objectMapper = objectMapper;
     }
 
-    public CollectProjectDto createProject(VitamContext vitamContext, CollectProjectDto collectProjectDto) {
+    public CollectProjectDto createProject(CollectProjectDto collectProjectDto, VitamContext vitamContext) {
         LOGGER.debug("CollectProjectDto: {}", collectProjectDto);
         try {
             ProjectDto projectDto = ProjectConverter.toVitamProjectDto(collectProjectDto);
@@ -101,8 +101,8 @@ public class ProjectInternalService {
         }
     }
 
-    public CollectTransactionDto createTransactionForProject(VitamContext vitamContext,
-        CollectTransactionDto collectTransactionDto, String projectId) {
+    public CollectTransactionDto createTransactionForProject(
+        CollectTransactionDto collectTransactionDto, String projectId, VitamContext vitamContext) {
         LOGGER.debug("CollectTransactionDto: ", collectTransactionDto);
         try {
             SanityChecker.checkSecureParameter(projectId);
@@ -125,9 +125,9 @@ public class ProjectInternalService {
         }
     }
 
-    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(VitamContext vitamContext, Integer page,
-        Integer size,
-        Optional<String> orderBy, Optional<DirectionDto> direction, Optional<String> criteria) {
+    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(Integer page,
+        Integer size, Optional<String> orderBy, Optional<DirectionDto> direction, Optional<String> criteria,
+        VitamContext vitamContext) {
         LOGGER.debug("Page: ", page);
         LOGGER.debug("Size: ", size);
         LOGGER.debug("OrderBy: ", orderBy.orElse(null));
@@ -164,8 +164,8 @@ public class ProjectInternalService {
         }
     }
 
-    public void streamingUpload(VitamContext vitamContext, InputStream inputStream, String transactionId,
-        String originalFileName) {
+    public void streamingUpload(InputStream inputStream, String transactionId,
+        String originalFileName, VitamContext vitamContext) {
         LOGGER.debug("TransactionId: ", transactionId);
         LOGGER.debug("OriginalFileName: ", originalFileName);
         try {
@@ -176,7 +176,7 @@ public class ProjectInternalService {
         }
     }
 
-    public CollectProjectDto update(VitamContext vitamContext, String id, CollectProjectDto collectProjectDto) {
+    public CollectProjectDto update(String id, CollectProjectDto collectProjectDto, VitamContext vitamContext) {
         LOGGER.debug("Id: ", id);
         LOGGER.debug("CollectProjectDto: ", collectProjectDto);
         try {
@@ -272,7 +272,7 @@ public class ProjectInternalService {
                     });
             List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos);
             if (collectTransactionDtos.isEmpty()) {
-                throw new VitamClientException("Unable to find transactions by project");
+                return null;
             }
             return collectTransactionDtos.get(collectTransactionDtos.size() - 1);
         } catch (VitamClientException | JsonProcessingException e) {

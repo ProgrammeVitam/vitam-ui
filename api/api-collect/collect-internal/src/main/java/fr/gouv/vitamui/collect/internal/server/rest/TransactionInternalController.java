@@ -27,11 +27,11 @@
 
 package fr.gouv.vitamui.collect.internal.server.rest;
 
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
+import fr.gouv.vitamui.collect.internal.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.internal.server.service.TransactionInternalService;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -41,7 +41,6 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -67,16 +66,16 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 public class TransactionInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalController.class);
-    private final InternalSecurityService securityService;
     private final TransactionInternalService transactionInternalService;
 
+    private final ExternalParametersService externalParametersService;
     private static final String IDENTIFIER_MANDATORY_MESSAGE = "The Identifier is a mandatory parameter: ";
 
     @Autowired
     public TransactionInternalController(final TransactionInternalService transactionInternalService,
-        final InternalSecurityService securityService) {
-        this.securityService = securityService;
+        final ExternalParametersService externalParametersService) {
         this.transactionInternalService = transactionInternalService;
+        this.externalParametersService = externalParametersService;
     }
 
     @PutMapping(CommonConstants.PATH_ID + SEND_PATH)
@@ -85,8 +84,7 @@ public class TransactionInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to send  {}", id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        transactionInternalService.sendTransaction(id, vitamContext);
+        transactionInternalService.sendTransaction(id, externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @PutMapping(CommonConstants.PATH_ID + VALIDATE_PATH)
@@ -95,8 +93,8 @@ public class TransactionInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to close  {}", id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        transactionInternalService.validateTransaction(id, vitamContext);
+        transactionInternalService.validateTransaction(id,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @PutMapping(CommonConstants.PATH_ID + REOPEN_PATH)
@@ -105,8 +103,8 @@ public class TransactionInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to reopen  {}", id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        transactionInternalService.reopenTransaction(id, vitamContext);
+        transactionInternalService.reopenTransaction(id,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @PutMapping(CommonConstants.PATH_ID + ABORT_PATH)
@@ -115,22 +113,23 @@ public class TransactionInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to abort  {}", id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        transactionInternalService.abortTransaction(id, vitamContext);
+        transactionInternalService.abortTransaction(id, externalParametersService.buildVitamContextFromExternalParam());
     }
 
-    @GetMapping(CommonConstants.PATH_ID )
-    public CollectTransactionDto getTransactionById(final @PathVariable("id") String id) throws VitamClientException, InvalidParseOperationException {
+    @GetMapping(CommonConstants.PATH_ID)
+    public CollectTransactionDto getTransactionById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Project Id  {}", id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return transactionInternalService.getTransactionById(id, vitamContext);
+        return transactionInternalService.getTransactionById(id,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @PutMapping(value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
         consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId, InputStream inputStream,
+    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId,
+        InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName)
         throws InvalidParseOperationException, PreconditionFailedException, RequestTimeOutException {
 
@@ -140,18 +139,20 @@ public class TransactionInternalController {
         SanityChecker.isValidFileName(originalFileName);
         SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[Internal] csv FileName  {}", originalFileName);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return transactionInternalService.updateArchiveUnitsFromFile(vitamContext, inputStream, transactionId);
+
+        return transactionInternalService.updateArchiveUnitsFromFile(inputStream, transactionId,
+            externalParametersService.buildVitamContextFromExternalParam());
 
     }
+
     @PutMapping
     public CollectTransactionDto updateTransaction(@RequestBody CollectTransactionDto transactionDto)
-        throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, transactionDto);
         SanityChecker.sanitizeCriteria(transactionDto);
         LOGGER.debug("[Internal] Transaction to update : {}", transactionDto);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return transactionInternalService.updateTransaction(transactionDto, vitamContext);
+        return transactionInternalService.updateTransaction(transactionDto,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
 }

@@ -39,7 +39,6 @@
     "PROJECT_LIST_TITLE": "Les projets de versements",
     "INGEST_LIST_TITLE": "Versements du projet",
     "CREATE_PROJECT": "Créer un projet de versement",
-    "CREATE_PROJECT_TOOLTIP": "Créer un projet de versement",
     "CONFIRM_UPLOAD_FILES_TITLE": "Demande de validation",
     "CONFIRM_UPLOAD_FILES": "En passant à l'étape suivante, le téléchargement des fichiers va commencer.",
     "CREATE_PROJECT_TITLE": "Créer un projet de versement",
@@ -53,9 +52,7 @@
     "NO_RESULT": "Aucun résultat",
     "LOAD_MORE_RESULTS": "Afficher plus de résultats...",
     "NO_ACCESS_CONTRACT": "Aucun contrat d'accès n'est associé à l'utiisateur",
-    "UPLOAD_SUB_TITLE": "Chargement des répertoires à verser",
     "UPLOAD_FILE_ALREADY_IMPORTED": "Dossier déjà importer !",
-    "ARCHIVE_POSITION_SUB_TITLE": "Position de rattachement",
     "PROJECT_DESCRIPTION_SUB_TITLE": "Description du versement",
     "PROJECT_DESCRIPTION_LABEL": "Intitulé",
     "PROJECT_DESCRIPTION_DESC": "Description",
@@ -134,7 +131,9 @@
       "SET_VALUE": "Définir la valeur",
       "VALUE": "Valeur de la Métadonnée",
       "ATTACH_POSITION": "Définir la position de rattachement",
-      "PROJECT_CREATION_ERROR": "Erreur lors de la creation du projet de versement"
+      "PROJECT_CREATION_ERROR": "Erreur lors de la creation du projet de versement",
+      "UPLOAD_SUB_TITLE": "Chargement des répertoires et des documents à verser ",
+      "ARCHIVE_POSITION_SUB_TITLE": "Définir la position fixe de rattachement"
     },
     "TITLE_SEARCH": "Recherche : ",
     "TITLE_SEARCH_AREA": "Recherche par intitulé ou description ",

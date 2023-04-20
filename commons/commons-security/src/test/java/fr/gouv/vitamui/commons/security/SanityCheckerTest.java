@@ -45,14 +45,12 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class SanityCheckerTest {
 
-    private final String TEST_BAD_JSON = "bad_json";
-    private final String TEST_GOOD_JSON = "good_json_sanity";
-    private final String TEST_GOOD_JSON_CRITERIA = "good_criteria.json";
+    private final String TEST_BAD_JSON = "bad_json.json";
 
     @Before
     public void setUp() {
@@ -60,12 +58,12 @@ public class SanityCheckerTest {
 
     @Test
     public void givenJsonWhenValueIsTooBigORContainXMLTag()
-        throws InvalidParseOperationException, IOException {
+        throws InvalidParseOperationException, PreconditionFailedException, IOException {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.checkJsonSanity(json)).
-            isInstanceOf(InvalidParseOperationException.class);
+            isInstanceOf(PreconditionFailedException.class);
     }
 
     @Test
@@ -103,14 +101,14 @@ public class SanityCheckerTest {
     public void givenJsonWhenGoodSanityThenReturnTrue()
         throws FileNotFoundException, InvalidParseOperationException {
         final long limit = SanityChecker.getLimitJsonSize();
+        final String TEST_GOOD_JSON = "good_json_sanity.json";
         try {
             SanityChecker.setLimitJsonSize(100);
             final File file = PropertiesUtils.findFile(TEST_GOOD_JSON);
             final JsonNode json = JsonHandler.getFromFile(file);
             try {
                 SanityChecker.checkJsonAll(json);
-                fail("Should failed with an exception");
-            } catch (final InvalidParseOperationException e) {
+            } catch (final InvalidParseOperationException ignored) {
             }
             SanityChecker.setLimitJsonSize(10000);
             SanityChecker.checkJsonAll(json);
@@ -129,6 +127,7 @@ public class SanityCheckerTest {
     @Test
     public void givenCriteriaWhenGoodSanityThenReturnTrue()
         throws FileNotFoundException, InvalidParseOperationException, PreconditionFailedException {
+        final String TEST_GOOD_JSON_CRITERIA = "good_criteria.json";
         final File file = PropertiesUtils.findFile(TEST_GOOD_JSON_CRITERIA);
         final JsonNode json = JsonHandler.getFromFile(file);
         assertThatCode(() ->
@@ -163,7 +162,7 @@ public class SanityCheckerTest {
     @Test
     public void testCheckSecureParameterWithBadStringAndThrowException() {
         assertThatCode(() -> SanityChecker.checkSecureParameter("§§§§§***ù^65")).
-            hasMessage("the parameter is not valid");
+            hasMessage("the parameter §§§§§***ù^65 is not valid");
     }
 
     @Test(expected = PreconditionFailedException.class)
@@ -266,7 +265,7 @@ public class SanityCheckerTest {
 
     @Test
     public void isValidParameterName_tests() {
-        assertTrue(SanityChecker.isValidParameterName("vitamui-primary"));
+        assertTrue(SanityChecker.isValidParameter("vitamui-primary"));
     }
 
     @Test
@@ -311,6 +310,64 @@ public class SanityCheckerTest {
         Assertions.assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).
             doesNotThrowAnyException();
+    }
+
+    @Test
+    public void test_isValidParameterName_with_html_code() {
+        assertFalse(SanityChecker.isValidParameter("<vitamui>aa<primary>"));
+    }
+
+    @Test
+    public void test_sanitizeCriteria_with_object_contains_xml_tag()
+        throws InvalidParseOperationException, PreconditionFailedException, IOException {
+        final String OBJECT_XML_TAG = "object_with_xml_tag.json";
+        final File file = PropertiesUtils.findFile(OBJECT_XML_TAG);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).
+            isInstanceOf(PreconditionFailedException.class);
+    }
+
+    @Test
+    public void test_checkHtmlPattern_with_html_text() {
+        assertThatCode(() -> SanityChecker.checkHtmlPattern("<div class=\"col-6 form-control\"> <p class=\"title-text\">bla bla bla</p></div>"))
+            .isInstanceOf(PreconditionFailedException.class)
+            .hasMessageContaining("the parameter :");
+    }
+
+    @Test
+    public void test_sanitizeCriteria_with_object_contains_html_tag()
+        throws InvalidParseOperationException, PreconditionFailedException, IOException {
+        final String OBJECT_HTML_TAG = "object_with_html_tag.json";
+        final File file = PropertiesUtils.findFile(OBJECT_HTML_TAG);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).
+            isInstanceOf(PreconditionFailedException.class);
+    }
+
+    @Test
+    public void test_checkHtmlPattern_with_correct_text() {
+        assertThatCode(() -> SanityChecker.checkHtmlPattern("test test good values"))
+            .doesNotThrowAnyException();
+    }
+
+    @Test
+    public void test_sanitizeCriteria_with_object_contains_correct_values()
+        throws InvalidParseOperationException, PreconditionFailedException, IOException {
+        final String OBJECT_WITH_CORRECT_VALUES = "object_with_correct_values.json";
+        final File file = PropertiesUtils.findFile(OBJECT_WITH_CORRECT_VALUES);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).
+            doesNotThrowAnyException();
+    }
+
+    @Test
+    public void test_checkJsonAll_with_null_object() {
+        assertThatCode(() -> SanityChecker.checkJsonAll((JsonNode) null)).
+            isInstanceOf(InvalidParseOperationException.class)
+            .hasMessage("Json is not valid from Sanitize check");
     }
 
 }

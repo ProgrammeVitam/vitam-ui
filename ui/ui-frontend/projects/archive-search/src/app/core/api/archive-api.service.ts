@@ -88,8 +88,8 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     });
   }
 
-  getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number, qualifier?: string, version?: number): string {
-    let url = `${this.apiUrl}/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  getDownloadObjectFromUnitUrl(unitId: string, tenantId: number, qualifier?: string, version?: number): string {
+    let url = `${this.apiUrl}/downloadobjectfromunit/${unitId}?tenantId=${tenantId}`;
     if (qualifier && version) {
       url += `&qualifier=${qualifier}&version=${version}`;
     }

@@ -34,25 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { registerLocaleData } from '@angular/common';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
-// import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import { VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
+import { ToastrModule } from 'ngx-toastr';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import {
+  BASE_URL,
+  ENVIRONMENT,
+  InjectorModule,
+  LoggerModule,
+  VitamUICommonModule,
+  VitamuiMissingTranslationHandler,
+  WINDOW_LOCATION,
+} from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-import { HttpBackend, HttpClient } from '@angular/common/http';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { ToastrModule } from 'ngx-toastr';
-import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { PastisConfiguration } from './core/classes/pastis-configuration';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {

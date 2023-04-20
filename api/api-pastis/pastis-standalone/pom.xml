@@ -5,13 +5,13 @@
     <parent>
         <artifactId>api-pastis</artifactId>
         <groupId>fr.gouv.vitamui</groupId>
-        <version>6.0-SNAPSHOT</version>
+        <version>7.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>pastis-standalone</artifactId>
     <description>Pastis Standalone Version</description>
-
+    <name>VITAMUI Pastis API</name>
     <properties>
         <maven.compile.target>11</maven.compile.target>
         <maven.compile.source>11</maven.compile.source>

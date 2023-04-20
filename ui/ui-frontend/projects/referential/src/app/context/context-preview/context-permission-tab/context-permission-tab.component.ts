@@ -34,14 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Context, ContextPermission } from 'projects/vitamui-library/src/public-api';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
-import { forkJoin, Observable, of } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import { AuthService, Customer, diff, Tenant } from 'ui-frontend-common';
+import { AccessContract, AuthService, Context, ContextPermission, Customer, IngestContract, Tenant, diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { AccessContractService } from '../../../access-contract/access-contract.service';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
@@ -53,17 +51,15 @@ import { ContextService } from '../../context.service';
 @Component({
   selector: 'app-context-permission-tab',
   templateUrl: './context-permission-tab.component.html',
-  styleUrls: ['./context-permission-tab.component.scss']
+  styleUrls: ['./context-permission-tab.component.scss'],
 })
 export class ContextPermissionTabComponent implements OnInit {
-
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   submited = false;
   unchanged = true;
   dataLoaded = false;
   isPermissionsOnMultipleOrganisations = false;
-
 
   private _context: Context;
   private updatedPermissions: ContextPermission[] = new Array();
@@ -96,11 +92,13 @@ export class ContextPermissionTabComponent implements OnInit {
     this.updated.emit(false);
   }
 
-  get context(): Context { return this._context; }
+  get context(): Context {
+    return this._context;
+  }
 
   previousValue = (): Context => {
     return this._context;
-  }
+  };
 
   constructor(
     public dialog: MatDialog,
@@ -110,7 +108,7 @@ export class ContextPermissionTabComponent implements OnInit {
     private authService: AuthService,
     private accessService: AccessContractService,
     private ingestService: IngestContractService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     let accessContractObservable: Observable<any> = of();
@@ -119,33 +117,35 @@ export class ContextPermissionTabComponent implements OnInit {
     // Build the forkJoins used to get the access and ingest contracts
     if (this.authService.user) {
       // Get the access contracts
-      const accessTenantsInfo = this.authService.user.tenantsByApp.find(
-        appTenantInfo => appTenantInfo.name === 'ACCESS_APP');
+      const accessTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === 'ACCESS_APP');
       if (accessTenantsInfo && accessTenantsInfo.tenants && accessTenantsInfo.tenants.length > 0) {
-        accessContractObservable = forkJoin(accessTenantsInfo.tenants.map(tenant => {
-          return this.accessService.getAllForTenant('' + tenant.identifier).pipe(
-            tap((accessContracts) => {
-              accessContracts.forEach(accessContract => {
-                this.accessContracts.set(accessContract.identifier, accessContract);
-              });
-            })
-          );
-        }));
+        accessContractObservable = forkJoin(
+          accessTenantsInfo.tenants.map((tenant) => {
+            return this.accessService.getAllForTenant('' + tenant.identifier).pipe(
+              tap((accessContracts) => {
+                accessContracts.forEach((accessContract) => {
+                  this.accessContracts.set(accessContract.identifier, accessContract);
+                });
+              })
+            );
+          })
+        );
       }
 
       // Get the ingest contracts
-      const ingestTenantsInfo = this.authService.user.tenantsByApp.find(
-        appTenantInfo => appTenantInfo.name === 'INGEST_APP');
+      const ingestTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === 'INGEST_APP');
       if (ingestTenantsInfo && ingestTenantsInfo.tenants && ingestTenantsInfo.tenants.length > 0) {
-        ingestContractObservable = forkJoin(ingestTenantsInfo.tenants.map(tenant => {
-          return this.ingestService.getAllForTenant('' + tenant.identifier).pipe(
-            tap((ingestContracts) => {
-              ingestContracts.forEach(ingestContract => {
-                this.ingestContracts.set(ingestContract.identifier, ingestContract);
-              });
-            })
-          );
-        }));
+        ingestContractObservable = forkJoin(
+          ingestTenantsInfo.tenants.map((tenant) => {
+            return this.ingestService.getAllForTenant('' + tenant.identifier).pipe(
+              tap((ingestContracts) => {
+                ingestContracts.forEach((ingestContract) => {
+                  this.ingestContracts.set(ingestContract.identifier, ingestContract);
+                });
+              })
+            );
+          })
+        );
       }
     }
 
@@ -154,15 +154,15 @@ export class ContextPermissionTabComponent implements OnInit {
       this.tenantApiService.getAll(),
       this.customerApiService.getAll(),
       accessContractObservable,
-      ingestContractObservable
+      ingestContractObservable,
     ]).subscribe(([tenants, customers]) => {
       if (tenants && tenants.length > 0) {
-        tenants.forEach(tenant => {
+        tenants.forEach((tenant) => {
           this.tenants.set('' + tenant.identifier, tenant);
         });
       }
       if (customers && customers.length > 0) {
-        customers.forEach(customer => {
+        customers.forEach((customer) => {
           this.organisations.set(customer.id, customer);
         });
       }
@@ -179,11 +179,11 @@ export class ContextPermissionTabComponent implements OnInit {
       return false;
     }
 
-    if (a.filter(item => b.indexOf(item) < 0).length > 0) {
+    if (a.filter((item) => b.indexOf(item) < 0).length > 0) {
       return false;
     }
 
-    if (b.filter(item => a.indexOf(item) < 0).length > 0) {
+    if (b.filter((item) => a.indexOf(item) < 0).length > 0) {
       return false;
     }
 
@@ -191,8 +191,12 @@ export class ContextPermissionTabComponent implements OnInit {
   }
 
   samePermission(p1: ContextPermission[], p2: ContextPermission[]): boolean {
-    if (!p1 && !p2) { return true; }
-    if (!p1 || !p2) { return false; }
+    if (!p1 && !p2) {
+      return true;
+    }
+    if (!p1 || !p2) {
+      return false;
+    }
     if (p1.length !== p2.length) {
       return false;
     }
@@ -218,33 +222,33 @@ export class ContextPermissionTabComponent implements OnInit {
   }
 
   prepareSubmit(): Observable<Context> {
-    return of(diff({permissions: this.updatedPermissions}, this.previousValue())).pipe(
+    return of(diff({ permissions: this.updatedPermissions }, this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.contextService.patch(formData).pipe(catchError(() => of(null)))));
+      switchMap((formData: { id: string; [key: string]: any }) => this.contextService.patch(formData).pipe(catchError(() => of(null))))
+    );
   }
 
   onSubmit() {
     this.submited = true;
-    this.prepareSubmit().subscribe(() => {
-      this.contextService.get(this._context.identifier).subscribe(
-        response => {
+    this.prepareSubmit().subscribe(
+      () => {
+        this.contextService.get(this._context.identifier).subscribe((response) => {
           this.submited = false;
           this.context = response;
           this.hasChanged();
-        }
-      );
-    }, () => {
-      this.submited = false;
-    });
+        });
+      },
+      () => {
+        this.submited = false;
+      }
+    );
   }
 
   resetForm(context: Context) {
     this.updatedPermissions = new Array();
     for (const permission of context.permissions) {
-      this.updatedPermissions.push(
-        new ContextPermission(permission.tenant, permission.accessContracts, permission.ingestContracts)
-      );
+      this.updatedPermissions.push(new ContextPermission(permission.tenant, permission.accessContracts, permission.ingestContracts));
     }
   }
 
@@ -252,9 +256,9 @@ export class ContextPermissionTabComponent implements OnInit {
     const dialogRef = this.dialog.open(ContextEditComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: this.updatedPermissions
+      data: this.updatedPermissions,
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result && result.permissions) {
         this.updatedPermissions = result.permissions;
         // Check if the permissions have been modified

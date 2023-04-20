@@ -147,28 +147,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(versionWithQualifier.opened).toBeTruthy();
   });
 
-  it('should return true', () => {
-    // Given
-    component.archiveUnit = {
-      '#allunitups': [],
-      '#id': 'archiveUnitTestID',
-      '#object': 'objectId',
-      '#unitType': '',
-      '#unitups': [],
-      '#opi': '',
-      '#tenant': 1,
-      DescriptionLevel: 'Item',
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-
-    // When
-    const response = component.unitHasObject();
-
-    // Then
-    expect(response).toBeTruthy();
-  });
-
   it('should copy to clipboard', () => {
     component.copyToClipboard('à copié');
     expect(clipboardSpy.copy).toHaveBeenCalledWith('à copié');
@@ -219,6 +197,28 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(component.versionsWithQualifiersOrdered[0].opened).toBeTruthy();
   });
 
+  it('should return true', () => {
+    // Given
+    component.archiveUnit = {
+      '#allunitups': [],
+      '#id': 'archiveUnitTestID',
+      '#object': 'objectId',
+      '#unitType': '',
+      '#unitups': [],
+      '#opi': '',
+      '#tenant': 1,
+      DescriptionLevel: 'Item',
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+    };
+
+    // When
+    const response = component.unitHasObject();
+
+    // Then
+    expect(response).toBeTruthy();
+  });
+
   it('should return false', () => {
     // Given
     component.archiveUnit = {
@@ -230,6 +230,27 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#opi': '',
       '#tenant': 1,
       DescriptionLevel: 'RecordGrp',
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+    };
+
+    // When
+    const response = component.unitHasObject();
+
+    // Then
+    expect(response).toBeFalsy();
+  });
+
+  it('should return true', () => {
+    // Given
+    component.archiveUnit = {
+      '#allunitups': [],
+      '#id': 'archiveUnitTestID',
+      '#unitType': '',
+      '#unitups': [],
+      '#opi': '',
+      '#tenant': 1,
+      DescriptionLevel: 'Item',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };

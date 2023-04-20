@@ -34,17 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FilingPlanMode } from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import { IngestContract } from 'ui-frontend-common';
 import { IngestContractService } from '../../../ingest-contract.service';
 
 @Component({
   selector: 'app-ingest-contract-node-update',
   templateUrl: './ingest-contract-node-update.component.html',
-  styleUrls: [ './ingest-contract-node-update.component.scss' ],
+  styleUrls: ['./ingest-contract-node-update.component.scss'],
 })
 export class IngestContractNodeUpdateComponent implements OnInit {
   ingestContract: IngestContract;
@@ -72,9 +73,9 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     this.ingestContract = this.data.ingestContract;
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.selectNodesForm = this.formBuilder.group({
-      linkParentId: [ { value: null, disabled: true }, Validators.required ],
-      checkParentLink: [ 'AUTHORIZED', Validators.required ],
-      checkParentId: [ { value: null, disabled: true }, Validators.required ],
+      linkParentId: [{ value: null, disabled: true }, Validators.required],
+      checkParentLink: ['AUTHORIZED', Validators.required],
+      checkParentId: [{ value: null, disabled: true }, Validators.required],
     });
   }
 
@@ -91,13 +92,11 @@ export class IngestContractNodeUpdateComponent implements OnInit {
       this.selectNodesForm.controls.checkParentId.setValue(value.included);
     });
 
-    this.linkParentIdControl.setValue(this.ingestContract.linkParentId
-      ? { included: [ this.ingestContract.linkParentId ], excluded: [] }
-      : { included: [], excluded: [] }
+    this.linkParentIdControl.setValue(
+      this.ingestContract.linkParentId ? { included: [this.ingestContract.linkParentId], excluded: [] } : { included: [], excluded: [] }
     );
-    this.checkParentIdControl.setValue(this.ingestContract.checkParentId
-      ? { included: this.ingestContract.checkParentId, excluded: [] }
-      : { included: [], excluded: [] }
+    this.checkParentIdControl.setValue(
+      this.ingestContract.checkParentId ? { included: this.ingestContract.checkParentId, excluded: [] } : { included: [], excluded: [] }
     );
   }
 

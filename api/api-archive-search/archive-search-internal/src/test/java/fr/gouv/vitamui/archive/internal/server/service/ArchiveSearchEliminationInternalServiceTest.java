@@ -74,7 +74,7 @@ public class ArchiveSearchEliminationInternalServiceTest {
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         archiveSearchEliminationInternalService =
-            new ArchiveSearchEliminationInternalService(archiveSearchInternalService, eliminationService,objectMapper);
+            new ArchiveSearchEliminationInternalService(archiveSearchInternalService, eliminationService, objectMapper);
     }
 
     @Test

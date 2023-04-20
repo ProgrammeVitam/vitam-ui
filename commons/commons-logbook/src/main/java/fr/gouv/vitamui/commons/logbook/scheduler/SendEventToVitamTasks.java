@@ -36,37 +36,8 @@
  */
 package fr.gouv.vitamui.commons.logbook.scheduler;
 
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import javax.annotation.PostConstruct;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -83,6 +54,7 @@ import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.common.EventStatus;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
+import fr.gouv.vitamui.commons.mongo.IdDocument;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.Getter;
@@ -113,6 +85,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
 
 /**
  * Task for send to vitam vitamui's events
@@ -265,7 +238,7 @@ public class SendEventToVitamTasks {
      * @param vitamResponse
      */
     protected void updateEventStatus(final TreeSet<Event> events, final EventStatus status, final String vitamResponse) {
-        final Collection<String> ids = events.stream().map(e -> e.getId()).collect(Collectors.toList());
+        final Collection<String> ids = events.stream().map(IdDocument::getId).collect(Collectors.toList());
         final Query query = new Query(Criteria.where("id").in(ids));
         final Update update = new Update();
         update.set(EVENT_KEY_STATUS, status);
@@ -286,7 +259,7 @@ public class SendEventToVitamTasks {
         final LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory.newLogbookOperationParameters();
 
         logbookOperationParameters.putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
-            .putParameterValue(LogbookParameterName.eventType, event.getEvType().toString())
+            .putParameterValue(LogbookParameterName.eventType, event.getEvType())
             .putParameterValue(LogbookParameterName.eventIdentifierProcess, event.getEvIdProc())
             .setTypeProcess(LogbookTypeProcess.getLogbookTypeProcess(event.getEvTypeProc().toString()))
             .setStatus(StatusCode.OK)
@@ -308,7 +281,7 @@ public class SendEventToVitamTasks {
         final LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory.newLogbookOperationParameters();
 
         logbookOperationParameters.putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
-            .putParameterValue(LogbookParameterName.eventType, event.getEvType().toString())
+            .putParameterValue(LogbookParameterName.eventType, event.getEvType())
             .putParameterValue(LogbookParameterName.eventIdentifierProcess, event.getEvIdProc())
             .setTypeProcess(LogbookTypeProcess.getLogbookTypeProcess(event.getEvTypeProc().toString()))
             .setStatus(event.getOutcome())
