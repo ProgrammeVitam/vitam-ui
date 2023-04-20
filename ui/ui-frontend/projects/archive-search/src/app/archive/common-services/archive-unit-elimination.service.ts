@@ -53,8 +53,7 @@ export class ArchiveUnitEliminationService {
   }
 
   launchEliminationAnalysisModal(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    accessContract: string,
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],    
     selectedItemCountKnown: boolean,
     itemSelected: number,
     tenantIdentifier: number,
@@ -63,7 +62,7 @@ export class ArchiveUnitEliminationService {
     showConfirmBigNumberOfResultsSuscription: Subscription
   ) {
     if (selectedItemCountKnown && itemSelected < DEFAULT_RESULT_THRESHOLD) {
-      this.launchEliminationAnalysis(listOfUACriteriaSearch, accessContract, tenantIdentifier, currentPage);
+      this.launchEliminationAnalysis(listOfUACriteriaSearch, tenantIdentifier, currentPage);
     } else {
 
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
@@ -78,7 +77,6 @@ export class ArchiveUnitEliminationService {
         .subscribe(() => {
           this.launchEliminationAnalysis(
             listOfUACriteriaSearch,
-            accessContract,
             tenantIdentifier,
             currentPage
           );
@@ -88,8 +86,7 @@ export class ArchiveUnitEliminationService {
   }
 
   private launchEliminationAnalysis(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    accessContract: string,
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],    
     tenantIdentifier: number,
     currentPage: number
   ) {
@@ -100,7 +97,7 @@ export class ArchiveUnitEliminationService {
       language: this.translateService.currentLang,
     };
 
-    this.archiveService.startEliminationAnalysis(exportDIPSearchCriteria, accessContract).subscribe((data) => {
+    this.archiveService.startEliminationAnalysis(exportDIPSearchCriteria).subscribe((data) => {
       const eliminationAnalysisResponse = data.$results;
       if (eliminationAnalysisResponse && eliminationAnalysisResponse[0].itemId) {
         const guid = eliminationAnalysisResponse[0].itemId;
@@ -113,7 +110,6 @@ export class ArchiveUnitEliminationService {
 
   launchEliminationModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    accessContract: string,
     tenantIdentifier: number,
     currentPage: number,
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
@@ -126,13 +122,12 @@ export class ArchiveUnitEliminationService {
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.launchEliminationAction(listOfUACriteriaSearch, accessContract, tenantIdentifier, currentPage);
+        this.launchEliminationAction(listOfUACriteriaSearch, tenantIdentifier, currentPage);
       });
   }
 
   private launchEliminationAction(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    accessContract: string,
     tenantIdentifier: number,
     currentPage: number
   ) {
@@ -143,7 +138,7 @@ export class ArchiveUnitEliminationService {
       language: this.translateService.currentLang,
     };
 
-    this.archiveService.launchEliminationAction(exportDIPSearchCriteria, accessContract).subscribe((response) => {
+    this.archiveService.launchEliminationAction(exportDIPSearchCriteria).subscribe((response) => {
       const eliminationActionResponse = response.$results;
 
       if (eliminationActionResponse && eliminationActionResponse[0].itemId) {

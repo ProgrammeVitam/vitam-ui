@@ -122,7 +122,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       lifeCycleLogs: this.exportDIPform.get('lifeCycleLogs').value === this.translate.instant('ARCHIVE_SEARCH.DIP.INCLUDE'),
     };
 
-    this.archiveService.exportDIPService(exportDIPCriteriaList, this.data.accessContract).subscribe(
+    this.archiveService.exportDIPService(exportDIPCriteriaList).subscribe(
       (response) => {
         this.dialogRef.close(true);
         const serviceUrl =

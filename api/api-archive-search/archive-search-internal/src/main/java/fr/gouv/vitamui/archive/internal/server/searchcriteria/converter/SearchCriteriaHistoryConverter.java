@@ -51,9 +51,6 @@ import java.util.Map;
 @Setter
 public class SearchCriteriaHistoryConverter implements Converter<SearchCriteriaHistoryDto, SearchCriteriaHistory> {
 
-    public SearchCriteriaHistoryConverter() {
-    }
-
     @Override
     public String convertToLogbook(final SearchCriteriaHistoryDto dto) {
         final Map<String, String> data = new LinkedHashMap<>();

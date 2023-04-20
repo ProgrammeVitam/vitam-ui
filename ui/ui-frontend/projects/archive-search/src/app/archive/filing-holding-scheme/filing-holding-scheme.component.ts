@@ -140,7 +140,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   initFilingHoldingSchemeTree() {
     this.loadingHolding = true;
     this.subscriptions.add(
-      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract).subscribe((nodes) => {
+      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier).subscribe((nodes) => {
         this.fullNodes = nodes;
         this.nestedDataSourceFull.data = nodes;
         this.nestedTreeControlFull.dataNodes = nodes;
@@ -190,7 +190,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
       size: 1,
     };
     this.subscriptions.add(
-      this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
+      this.archiveService.searchArchiveUnitsByCriteria(searchCriteria)
         .subscribe((pageResult: PagedResult) => {
           this.showArchiveUnitDetails.emit(pageResult.results[0]);
           this.loadingArchiveUnit[`${from}`] = false;
