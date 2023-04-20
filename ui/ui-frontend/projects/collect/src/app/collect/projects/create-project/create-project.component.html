@@ -15,14 +15,15 @@
         <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
         <h2>{{ 'COLLECT.MODAL.WORKFLOW_CHOICE' | translate }}</h2>
         <div class="main-content">
-          <vitamui-radio-group formControlName="selectedWorkflow" primary="true">
-            <vitamui-radio value="{{ Workflow.MANUAL }}" label="{{ 'COLLECT.MODAL.MANUAL_WORKFLOW' | translate }}"
-                           (click)="setWorkflow(Workflow.MANUAL)" primary="true" checked>
-            </vitamui-radio>
-            <vitamui-radio value="{{ Workflow.FLOW }}" label="{{ 'COLLECT.MODAL.FLOW_WORKFLOW' | translate }}"
-                           (click)="setWorkflow(Workflow.FLOW)" primary="true">
-            </vitamui-radio>
-          </vitamui-radio-group>
+          <mat-button-toggle-group formControlName="selectedWorkflow" #group="matButtonToggleGroup"
+                                   class="vitamui-button-toggle-group">
+            <mat-button-toggle value="{{ Workflow.MANUAL }}" (click)="setWorkflow(Workflow.MANUAL)" [checked]="true">
+              {{'COLLECT.MODAL.MANUAL_WORKFLOW' | translate}}
+            </mat-button-toggle>
+            <mat-button-toggle value="{{ Workflow.FLOW }}" (click)="setWorkflow(Workflow.FLOW)">
+              {{'COLLECT.MODAL.FLOW_WORKFLOW' | translate}}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
         </div>
         <div class="actions">
           <div class="line">
@@ -293,14 +294,15 @@
         <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
         <h2>{{ 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE' | translate }}</h2>
         <div class="main-content">
-          <vitamui-radio-group formControlName="selectedFlowType" primary="true">
-            <vitamui-radio value="{{ FlowType.FIX }}" label="{{ 'COLLECT.MODAL.FIX_FLOW_WORKFLOW' | translate }}"
-                           (click)="setFlowType(FlowType.FIX)" primary="true" checked>
-            </vitamui-radio>
-            <vitamui-radio value="{{ FlowType.RULES }}" label="{{ 'COLLECT.MODAL.RULES_FLOW_WORKFLOW' | translate }}"
-                           (click)="setFlowType(FlowType.RULES)" primary="true">
-            </vitamui-radio>
-          </vitamui-radio-group>
+          <mat-button-toggle-group formControlName="selectedFlowType" #group="matButtonToggleGroup"
+                                   class="vitamui-button-toggle-group">
+            <mat-button-toggle value="{{ FlowType.FIX }}" (click)="setFlowType(FlowType.FIX)" [checked]="true">
+              {{'COLLECT.MODAL.FIX_FLOW_WORKFLOW' | translate}}
+            </mat-button-toggle>
+            <mat-button-toggle value="{{ FlowType.RULES }}" (click)="setFlowType(FlowType.RULES)">
+              {{'COLLECT.MODAL.RULES_FLOW_WORKFLOW' | translate}}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
         </div>
         <div class="actions">
           <div class="line">
