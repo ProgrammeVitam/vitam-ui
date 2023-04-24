@@ -42,7 +42,7 @@
   },
   "EXCEPTIONS": {
     "HTTP_INTERCEPTOR": {
-      "HTTP_STATUS_CODE_BAD_REQUEST": "Erreur : requête invalide",
+      "HTTP_STATUS_CODE_BAD_REQUEST": "Requête invalide : L'objet ajouté est invalide et non propre, merci de le corriger",
       "HTTP_STATUS_CODE_FORBIDDEN": "Vous n'avez pas les droits nécessaires pour effectuer cette opération.",
       "HTTP_STATUS_CODE_NOT_FOUND": "Erreur : La ressource n'existe pas",
       "HTTP_STATUS_CODE_SERVICE_UNAVAILABLE": "Une erreur technique est survenue : service indisponible",
