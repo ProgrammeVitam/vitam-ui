@@ -1,12 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatTabGroup} from '@angular/material/tabs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
-import {map, mergeMap} from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabGroup } from '@angular/material/tabs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import {
   DEFAULT_PAGE_SIZE,
   Direction,
@@ -17,8 +17,8 @@ import {
   Transaction,
   TransactionStatus
 } from 'ui-frontend-common';
-import {ProjectsApiService} from '../../core/api/project-api.service';
-import {ProjectsService} from '../projects.service';
+import { ProjectsApiService } from '../../core/api/project-api.service';
+import { ProjectsService } from '../projects.service';
 
 @Component({
   selector: 'app-project-preview',
@@ -171,6 +171,7 @@ export class ProjectPreviewComponent implements OnInit {
     projectToUpdate.createdOn = this.project.createdOn;
     projectToUpdate.unitUp = this.project.unitUp;
     projectToUpdate.status = this.project.status;
+    projectToUpdate.unitUps = this.project.unitUps;
   }
 
 
@@ -191,6 +192,7 @@ export class ProjectPreviewComponent implements OnInit {
     const projectToUpdate = {
       ...this.form.value,
       name: this.form.value.messageIdentifier,
+      
     };
     this.mapProjectInternalFields(projectToUpdate);
 
