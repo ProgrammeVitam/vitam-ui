@@ -26,7 +26,7 @@
  *  * accept its terms.
  *
  */
-import {Direction} from "ui-frontend-common";
+import {Direction} from 'ui-frontend-common';
 
 export interface AccessionRegisterSearchDto {
 
@@ -44,7 +44,7 @@ export interface AccessionRegisterSearchDto {
   acquisitionInformations?: Array<string>
 
   elimination?: string;
-  transfer_reply?: string;
+  transferReply?: string;
 
 }
 
