@@ -12,14 +12,15 @@
       {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.FILTER_BY_OPERATIONS' | translate }}
       <button class="vitamui-filter-button ml-1"
               [vitamuiCommonTableFilter]="statusFilterTemplate"
-              [class.active]="availableOperationTypeTranslated.length > 0">
+              [class.active]="availableOperationsType.length > 0">
         <em class="material-icons vitamui-row-icon">filter_list</em>
       </button>
       <ng-template #statusFilterTemplate>
         <vitamui-common-table-filter [(filter)]="selectedFilters"
                                      (filterChange)="changeFilter($event)">
-          <vitamui-common-table-filter-option *ngFor="let filter of availableOperationTypeTranslated" value="{{ filter }}">
-            <div class="table-filter-icon">{{ filter }}</div>
+          <vitamui-common-table-filter-option *ngFor="let operationType of availableOperationsType"
+                                              value="{{ operationType.name }}">
+            <div class="table-filter-icon">{{ operationType.translation }}</div>
           </vitamui-common-table-filter-option>
         </vitamui-common-table-filter>
       </ng-template>
