@@ -341,7 +341,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         this.addCriteria(
           criteriaSearch.criteria,
           value,
-          value.id,
+          value.label,
           true,
           criteriaSearch.operator,
           this.isValueTranslated(criteriaSearch.criteria),

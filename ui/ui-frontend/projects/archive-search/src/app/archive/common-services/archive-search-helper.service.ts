@@ -459,14 +459,10 @@ export class ArchiveSearchHelperService {
   buildNodesListForQUery(searchCriterias: Map<string, SearchCriteria>, criteriaSearchList: SearchCriteriaEltDto[]) {
     searchCriterias.forEach((criteria: SearchCriteria) => {
       if (criteria.category === SearchCriteriaTypeEnum.NODES) {
-        const strValues: CriteriaValue[] = [];
-        criteria.values.forEach((elt) => {
-          strValues.push(elt.value);
-        });
         this.updateCriteriaStatus(searchCriterias, SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
         criteriaSearchList.push({
           criteria: 'NODE',
-          values: strValues,
+          values: criteria.values.map((item: SearchCriteriaValue) => ({ ...item.value, label: item.label })),
           operator: criteria.operator,
           category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES],
           dataType: criteria.dataType,
