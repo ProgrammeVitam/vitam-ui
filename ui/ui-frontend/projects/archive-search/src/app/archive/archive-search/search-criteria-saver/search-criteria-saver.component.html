@@ -6,112 +6,18 @@
       (mouseleave)="out('scroll-filters')"
       [ngClass]="showScrollFilter ? 'scroll-filters' : 'scroll-div'"
     >
-      <div *ngFor="let criteria of searchCriterias | keyvalue">
-        <div class="separate-div">
-          <ng-container *ngIf="criteria.value.key === 'NODE'">
-            <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index">
-              <div class="row pad-bottom">
-                <button
-                  type="button"
-                  matTooltip="{{
-                    criteria.value.keyTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
-                        | translate)
-                      : criteria.value.key
-                  }}"
-                  matTooltipClass="vitamui-tooltip"
-                  [matTooltipShowDelay]="300"
-                  class="button-content right-arround left-arround after-search-launched-button"
-                >
-                  <ng-container>
-                    <i class="vitamui-icon vitamui-icon-target vitamui-row-icon"></i>
-                    {{
-                      (criteriaValue.translated
-                        ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.' + criteria.value.key | translate)
-                        : criteria.value.label) +
-                        ' : ' +
-                        criteriaValue.value.value | truncate: 45
-                    }}
-
-                    {{
-                      criteria.value.keyTranslated
-                        ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
-                          | translate)
-                        : criteria.value.key
-                    }}
-                  </ng-container>
-                </button>
-              </div>
-            </ng-container>
-          </ng-container>
+      <div class="separate-div" *ngFor="let displaySearchCriteria of displaySearchCriterias">
+        <div class="row pad-bottom">
+          <button
+            type="button"
+            [matTooltip]="displaySearchCriteria.tooltip"
+            matTooltipClass="vitamui-tooltip"
+            matTooltipShowDelay="300"
+            class="button-content right-arround left-arround after-search-launched-button"
+          >
+            {{ displaySearchCriteria.label }}: {{ displaySearchCriteria.value }}
+          </button>
         </div>
-      </div>
-
-      <div class="btn-group" *ngFor="let criteria of searchCriterias | keyvalue">
-        <ng-container *ngIf="criteria.value.key !== 'NODE'">
-          <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index">
-            <div class="row pad-bottom">
-              <button
-                type="button"
-                matTooltip="{{
-                  criteria.value.keyTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
-                      | translate)
-                    : criteria.value.key
-                }}"
-                matTooltipClass="vitamui-tooltip"
-                [matTooltipShowDelay]="300"
-                class="button-content right-arround left-arround after-search-launched-button"
-              >
-                <ng-container *ngIf="criteria.value.dataType === 'STRING'">
-                  {{
-                    criteria.value.keyTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
-                        | translate)
-                      : criteria.value.key
-                  }}:
-                  {{
-                    criteria.value.valueTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' +
-                          getCategoryName(criteria.value.category) +
-                          '.' +
-                          criteriaValue.value.value | translate)
-                      : criteriaValue.label
-                  }}
-                </ng-container>
-                <ng-container *ngIf="criteria.value.dataType === 'DATE'">
-                  {{
-                    criteria.value.keyTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
-                        | translate)
-                      : criteria.value.key
-                  }}:
-                  {{ criteriaValue.value.value | dateTime: 'dd/MM/yyyy' | truncate: 45 }}
-                </ng-container>
-                <ng-container *ngIf="criteria.value.dataType === 'INTERVAL'">
-                  {{
-                    criteria.value.keyTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteria.value.category) + '.' + criteria.value.key
-                        | translate)
-                      : criteria.value.key
-                  }}:
-
-                  <ng-container *ngIf="criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_BETWEEN' | translate }}
-                    {{ criteriaValue.value.beginInterval | dateTime: 'dd/MM/yyyy' }} {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_AND' | translate }}
-                    {{ criteriaValue.value.endInterval | dateTime: 'dd/MM/yyyy' }}
-                  </ng-container>
-                  <ng-container *ngIf="criteriaValue.value.beginInterval && !criteriaValue.value.endInterval">
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_GTE' | translate }} {{ criteriaValue.value.beginInterval | dateTime: 'dd/MM/yyyy' }}
-                  </ng-container>
-                  <ng-container *ngIf="!criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_LTE' | translate }} {{ criteriaValue.value.endInterval | dateTime: 'dd/MM/yyyy' }}
-                  </ng-container>
-                </ng-container>
-              </button>
-            </div>
-          </ng-container>
-        </ng-container>
       </div>
     </div>
   </div>
@@ -179,7 +85,7 @@
             <i class="material-icons save-icon">save</i>
             <ng-container (click)="preUpdate(criteria, $event)">
               <span class="results-message">
-                {{ criteria.name | truncate: 30 }}
+                {{ criteria.name | truncate : 30 }}
               </span>
               <span class="results-nb-filters"> - ({{ getNbFilters(criteria) }} filtres) </span>
             </ng-container>
@@ -228,7 +134,7 @@
               matTooltipClass="vitamui-tooltip"
               [matTooltipShowDelay]="300"
             >
-              {{ criteriaToUpdate.name | truncate: 30 }}
+              {{ criteriaToUpdate.name | truncate : 30 }}
             </span>
             <span class="results-nb-filters"> - ({{ getNbFilters(criteriaToUpdate) }} filtres) </span>
           </ng-container>
