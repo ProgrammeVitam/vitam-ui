@@ -606,7 +606,8 @@
       "DELETED_WITH_SUCCESS_2": "  a bien été supprimée.",
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Limite de caractères atteinte",
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "Vous avez atteint le nombre de caractère maximal autorisé.",
-      "OBJECT_TYPE": "recherche sauvegardée"
+      "OBJECT_TYPE": "recherche sauvegardée",
+      "NO_VALUE_FOUND_TO_DISPLAY": "Aucune valeur à afficher"
     },
     "FILING_SCHEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbre ou Plan trouvés avec le contrat choisi",

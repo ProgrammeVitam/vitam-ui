@@ -37,7 +37,7 @@ nb-configuration.xml
 **/node_modules/
 **/npm-debug.log.*
 **/.awcache/*
-
+coverage/
 ######################
 # SASS
 ######################
