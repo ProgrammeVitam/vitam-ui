@@ -14,8 +14,8 @@
   - name: force java-1.8.0-openjdk is absent
     package:
       name:
-        - "java-1.8.0-openjdk"
-        - "java-1.8.0-openjdk-headless"
+        - "java-1.17.0-openjdk"
+        - "java-1.17.0-openjdk-headless"
       state: absent
     register: result
     retries: "{{ packages_install_retries_number | default(2) }}"
@@ -24,7 +24,7 @@
 
   - name: install java 11 on the machine
     package:
-      name: "java-11-openjdk-headless"
+      name: "java-17-openjdk-headless"
       state: present
     register: result
     retries: "{{ packages_install_retries_number | default(2) }}"

@@ -6,8 +6,8 @@
 # Image name: docker.vitamui.com/vitamui-base
 #########################################################################################
 
-# Set the base image to Centos 7
-FROM centos:7
+# Set the base image to Centos 8
+FROM centos:8.4.2105
 MAINTAINER vitamui
 
 #########################################################################################

@@ -49,6 +49,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -113,7 +114,7 @@ public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBui
 		zipOutputStream.close();
 
 		assertTrue(zip.exists());
-		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), Map.of());
 		Path zipJsonFile = zipFs.getPath(operationId + ".json");
 		assertTrue(Files.exists(zipJsonFile));
 		Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
@@ -151,7 +152,7 @@ public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBui
 		zipOutputStream.close();
 
 		assertTrue(zip.exists());
-		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), Map.of());
 		Path zipJsonFile = zipFs.getPath(operationId + ".json");
 		assertTrue(Files.exists(zipJsonFile));
 		Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
@@ -183,7 +184,7 @@ public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBui
 		zipOutputStream.close();
 
 		assertTrue(zip.exists());
-		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), Map.of());
 		Path zipJsonFile = zipFs.getPath(operationId + ".json");
 		assertTrue(Files.exists(zipJsonFile));
 		Path zipPdfFile = zipFs.getPath(operationId + ".pdf");

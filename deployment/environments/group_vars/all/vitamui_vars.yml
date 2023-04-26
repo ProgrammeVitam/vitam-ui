@@ -367,5 +367,5 @@ opentracing:
       port: changeme
 
 java_prerequisites:
-  debian: "openjdk-11-jre-headless"
-  redhat: "java-11-openjdk-headless"
+  debian: "openjdk-17-jre-headless"
+  redhat: "java-17-openjdk-headless"

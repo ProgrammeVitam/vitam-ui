@@ -1,7 +1,9 @@
 pipeline {
+
     agent {
-        label 'contrib'
+        label 'java17'
     }
+
 
     environment {
         SLACK_MESSAGE = "${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.RUN_DISPLAY_URL}|Open>)"
