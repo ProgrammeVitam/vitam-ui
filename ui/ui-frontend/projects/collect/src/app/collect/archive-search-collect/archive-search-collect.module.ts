@@ -51,6 +51,7 @@ import { ArchivePreviewComponent } from './archive-preview/archive-preview.compo
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
+import { CollectObjectGroupDetailsTabComponent } from './archive-preview/collect-object-group-details-tab/collect-object-group-details-tab.component';
 import { ArchiveSearchCollectRoutingModule } from './archive-search-collect-routing.module';
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
 import { AccessRuleSearchComponent } from './archive-search-criteria/components/access-rule-search/access-rule-search.component';
@@ -77,7 +78,6 @@ import { ArchiveSearchHelperService } from './archive-search-criteria/services/a
 import { RuleValidator } from './archive-search-criteria/services/rule.validator';
 import { SearchCriteriaSaverService } from './archive-search-criteria/services/search-criteria-saver.service';
 import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
-import { CollectObjectGroupDetailsTabComponent } from './archive-preview/collect-object-group-details-tab/collect-object-group-details-tab.component';
 
 @NgModule({
   imports: [
