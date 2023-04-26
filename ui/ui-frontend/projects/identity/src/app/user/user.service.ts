@@ -101,35 +101,29 @@ export class UserService extends SearchService<User> {
   patch(partialUser: { id: string; [key: string]: any }): Observable<User> {
     return this.userApi.patch(partialUser).pipe(
       tap((response) => this.userUpdated.next(response)),
-      tap(
-        (updatedUser: User) => {
-          this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.USER_UPDATE',
-            icon: 'vitamui-icon-key',
-            translateParams: {
-              param1: updatedUser.firstname,
-              param2: updatedUser.lastname,
-            },
-          });
-        },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-      )
+      tap((updatedUser: User) => {
+        this.snackBarService.open({
+          message: 'SHARED.SNACKBAR.USER_UPDATE',
+          icon: 'vitamui-icon-key',
+          translateParams: {
+            param1: updatedUser.firstname,
+            param2: updatedUser.lastname,
+          },
+        });
+      })
     );
   }
 
   deleteUser(partialUser: { id: string; [key: string]: any }): Observable<User> {
     return this.userApi.patch(partialUser).pipe(
       tap((response) => this.userUpdated.next(response)),
-      tap(
-        (user: User) => {
-          this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.USER_DELETE',
-            icon: 'vitamui-icon-key',
-            translateParams: { param1: user.firstname, param2: user.lastname },
-          });
-        },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-      )
+      tap((user: User) => {
+        this.snackBarService.open({
+          message: 'SHARED.SNACKBAR.USER_DELETE',
+          icon: 'vitamui-icon-key',
+          translateParams: { param1: user.firstname, param2: user.lastname },
+        });
+      })
     );
   }
 

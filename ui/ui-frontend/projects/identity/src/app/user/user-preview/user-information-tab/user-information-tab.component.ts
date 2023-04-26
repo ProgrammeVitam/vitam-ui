@@ -38,7 +38,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { AdminUserProfile, CountryOption, CountryService, Customer, diff, OtpState, StartupService, User } from 'ui-frontend-common';
+import { AdminUserProfile, CountryOption, CountryService, Customer, OtpState, StartupService, User, diff } from 'ui-frontend-common';
 import { UserInfo } from 'ui-frontend-common/app/modules/models/user/user-info.interface';
 import { extend, isEmpty } from 'underscore';
 import { UserInfoService } from './../../user-info.service';
@@ -156,7 +156,11 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         map((formData) => extend({ id: this.user.id }, formData)),
         switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null))))
       )
-      .subscribe((user: User) => this.resetForm(this.form, user, this.customer, this.adminUserProfile, this.readOnly));
+      .subscribe((user: User) => {
+        if (user) {
+          this.resetForm(this.form, user, this.customer, this.adminUserProfile, this.readOnly);
+        }
+      });
 
     merge(this.userInfoForm.valueChanges, this.userInfoForm.statusChanges)
       .pipe(
