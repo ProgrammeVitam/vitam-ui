@@ -98,8 +98,6 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     this.searchCriterias = data.originalSearchCriteria;
     this.displaySearchCriterias = this.computeSearchCriterias(this.searchCriterias);
 
-    console.table(this.displaySearchCriterias);
-
     this.subscriptionAllSearchCriteriaHistory = this.archiveExchangeDataService.getAllSearchCriteriaHistoryShared().subscribe((results) => {
       if (results) {
         this.searchCriteriaHistories = results;
