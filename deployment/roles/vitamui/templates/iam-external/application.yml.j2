@@ -29,6 +29,14 @@ server:
   error:
     path: /error
 
+cas:
+{% if vitamui.cas_server.base_url is defined %}
+  external-url: "{{ vitamui.cas_server.base_url}}"
+{% else %}
+  external-url: "{{ url_prefix }}/cas"
+{% endif %}
+  internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
+
 {% endif %}
   tomcat:
     accesslog:
