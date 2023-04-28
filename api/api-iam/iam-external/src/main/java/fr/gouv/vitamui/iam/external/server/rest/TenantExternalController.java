@@ -161,6 +161,7 @@ public class TenantExternalController implements CrudController<TenantDto> {
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for tenant with id :{}", id);
         return tenantExternalService.findHistoryById(id);
     }

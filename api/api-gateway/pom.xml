@@ -43,6 +43,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

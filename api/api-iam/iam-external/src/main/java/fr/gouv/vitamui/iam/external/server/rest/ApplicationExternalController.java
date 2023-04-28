@@ -92,7 +92,6 @@ public class ApplicationExternalController implements CrudController<Application
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
-        //RestUtils.checkCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return applicationExternalService.getAll(criteria, embedded);
     }
@@ -107,6 +106,7 @@ public class ApplicationExternalController implements CrudController<Application
     @GetMapping(path = "/{identifier:.+}/externalid")
     @ApiOperation(value = "Check if an application can have an external identifier")
     public Boolean isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String identifier) {
+        SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("isApplicationExternalIdentifierEnabled");
         return applicationService.isApplicationExternalIdentifierEnabled(identifier);
     }

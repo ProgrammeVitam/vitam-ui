@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
@@ -232,7 +233,7 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
             final boolean hasRolePatchUserAnalytics = externalSecurityService.hasRole(ServicesData.ROLE_UPDATE_USER_INFOS);
 
             if (!hasRolePatchUserAnalytics) {
-                throw new ForbiddenException(String.format("Unable to patch analytics for user with id: %s", partialDto.get(USER_ID_ATTRIBUTE)));
+                throw new UnAuthorizedException(String.format("Unable to patch analytics for user with id: %s", partialDto.get(USER_ID_ATTRIBUTE)));
             }
         }
 

@@ -174,7 +174,6 @@ public class GroupExternalController implements CrudController<GroupDto> {
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException {
-        LOGGER.debug("get logbook for group with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for group with id :{}", id);

@@ -49,6 +49,7 @@ import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -175,15 +176,7 @@ public class UserConverter implements Converter<UserDto, User> {
             List<AlertAnalyticsDto> alertAnalyticsDtoDtoList = new ArrayList<>();
             user.getAnalytics().getAlerts().forEach(alert -> {
                 AlertAnalyticsDto alertAnalyticsDto = new AlertAnalyticsDto();
-                alertAnalyticsDto.setType(alert.getType());
-                alertAnalyticsDto.setAction(alert.getAction());
-                alertAnalyticsDto.setIdentifier(alert.getIdentifier());
-                alertAnalyticsDto.setCreationDate(alert.getCreationDate());
-                alertAnalyticsDto.setKey(alert.getKey());
-                alertAnalyticsDto.setApplicationId(alert.getApplicationId());
-                alertAnalyticsDto.setStatus(alert.getStatus());
-                alertAnalyticsDto.setId(alert.getId());
-
+                BeanUtils.copyProperties(alert, alertAnalyticsDto);
                 alertAnalyticsDtoDtoList.add(alertAnalyticsDto);
             });
             analyticsDto.setApplications(applicationAnalyticsDtoList);

@@ -150,7 +150,6 @@ public class OwnerExternalController implements CrudController<OwnerDto> {
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException {
-        LOGGER.debug("get logbook for owner with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for owner with id :{}", id);

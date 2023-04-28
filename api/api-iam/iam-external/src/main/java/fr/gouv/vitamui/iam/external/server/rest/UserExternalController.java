@@ -191,6 +191,7 @@ public class UserExternalController implements CrudController<UserDto> {
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for user with id :{}", id);
         return userExternalService.findHistoryById(id);
     }

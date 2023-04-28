@@ -4,7 +4,7 @@
   "VERSION_RELEASE": "6.4",
   "PLATFORM_NAME": "VITAM-UI",
   "INGEST_URL": null,
-  "PORTAL_TITLE": "Portail des applications de l'archivage",
+  "PORTAL_TITLE": "Portail des applications de Vitam",
   "MAX_STREET_LENGTH": 250,
   "THEME_COLORS": {
     "vitamui-primary": "#702382",

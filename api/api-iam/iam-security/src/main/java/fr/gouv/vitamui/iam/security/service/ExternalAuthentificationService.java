@@ -43,6 +43,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 
@@ -112,7 +113,7 @@ public class ExternalAuthentificationService {
 
     public AuthUserDto getAuthenticatedUser(ExternalHttpContext httpContext) {
         final String userToken = httpContext.getUserToken();
-        if (userToken == null) {
+        if (StringUtils.isBlank(userToken)) {
             throw new BadCredentialsException("User token is empty");
         }
 

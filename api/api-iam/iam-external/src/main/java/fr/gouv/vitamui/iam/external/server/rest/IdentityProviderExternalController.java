@@ -127,6 +127,8 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public ResponseEntity<Resource> getIdpMetadataProviderByProviderId(final @PathVariable("id") String id)
         throws PreconditionFailedException, IOException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
         final Resource resource = identityProviderCrudService.getMetadataProviderByProviderId(id, ProviderEmbeddedOptions.IDPMETADATA, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA));
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=" + "idpmetadata.xml");
@@ -137,6 +139,8 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public ResponseEntity<Resource> getSpMetadataProviderByProviderId(final @PathVariable("id") String id)
         throws PreconditionFailedException, IOException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
         final Resource resource = identityProviderCrudService.getMetadataProviderByProviderId(id, ProviderEmbeddedOptions.SPMETADATA, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.SPMETADATA));
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=" + "spmetadata.xml");
@@ -154,7 +158,6 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @ApiOperation(value = "Create entity request to upload the file", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @Secured(ServicesData.ROLE_CREATE_PROVIDERS)
-    // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'keystore' must not be blank
     public IdentityProviderDto create(@RequestPart final String provider, @RequestPart(value = "keystore",required = false) final MultipartFile keystore,
                                       @RequestPart(value = "idpMetadata",required = false) final MultipartFile idpMetadata) throws Exception {
         LOGGER.debug("Create provider: {}", provider);

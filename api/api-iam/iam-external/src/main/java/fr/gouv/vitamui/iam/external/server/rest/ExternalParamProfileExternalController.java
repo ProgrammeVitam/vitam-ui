@@ -108,7 +108,6 @@ public class ExternalParamProfileExternalController implements
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}",
             page, size, criteria, orderBy, direction, embedded);
-        //RestUtils.checkCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, embedded);
     }
@@ -159,7 +158,6 @@ public class ExternalParamProfileExternalController implements
     @Secured(ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)throws InvalidParseOperationException,
         PreconditionFailedException  {
-        LOGGER.debug("get logbook for external parameter profile with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for external parameter profile with id :{}", id);

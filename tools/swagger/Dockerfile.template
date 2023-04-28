@@ -1,6 +1,6 @@
 FROM swaggerapi/swagger-ui:v3.50.0
 
-LABEL maintainer="Xelians DevOps"
+LABEL maintainer="Vitam"
 
 ADD ./docs /usr/share/nginx/html/docs
 
