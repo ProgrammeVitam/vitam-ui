@@ -47,6 +47,7 @@ export * from './lib/models/unit.interface';
 export * from './lib/models/year-month-query.interface';
 /* SERVICES */
 export * from './lib/services/metadata.service';
+export * from './lib/components/filing-plan/filing-plan.service';
 /* UTILS */
 export * from './lib/utils/download';
 export * from './lib/utils/keyword.util';

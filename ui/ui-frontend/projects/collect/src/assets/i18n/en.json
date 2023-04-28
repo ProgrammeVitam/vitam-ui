@@ -27,9 +27,10 @@
       "TERMINATED": "The project has been well updated",
       "TRANSACTIONS_KO": "on the other hand there are KO transactions",
       "POPUP_ACTIONS_TITLE": "Action on a project",
-      "POPUP_ACTIONS_CONTENT_MAJ1": "You have [N] ingest in edit. Do you want to update automatically",
-      "POPUP_ACTIONS_CONTENT_MAJ2": "these ingests? If the answer is negative, only the new ingests will include",
-      "POPUP_ACTIONS_CONTENT_MAJ3": "these modifications"
+      "POPUP_ACTIONS_CONTENT_MAJ1": "You have",
+      "POPUP_ACTIONS_CONTENT_MAJ2": "ingest in edit. Do you want to update automatically",
+      "POPUP_ACTIONS_CONTENT_MAJ3": "these ingests? If the answer is negative, only the new ingests will include",
+      "POPUP_ACTIONS_CONTENT_MAJ4": "these modifications"
     },
     "SEARCH_PLACEHOLDER": "Code and message identifier, Submission agency",
     "APP_BREADCRUMB": "Collection and Remittance Preparation",

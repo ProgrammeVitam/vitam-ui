@@ -67,6 +67,9 @@ export class ProjectPreviewComponent implements OnInit {
   dialogRefToClose: MatDialogRef<ProjectPreviewComponent>;
   selectedValue = 'YES';
 
+  transactions$: BehaviorSubject<PaginatedResponse<Transaction>> = new BehaviorSubject<PaginatedResponse<Transaction>>(null);
+
+
   constructor(private formBuilder: FormBuilder, private projectService: ProjectsService,
               private projectApiService: ProjectsApiService,
               private route: ActivatedRoute, private router: Router,
@@ -162,6 +165,13 @@ export class ProjectPreviewComponent implements OnInit {
   launchUpdate() {
 
     const dialogToOpen = this.confirmEditProject;
+    this.selectedValue = 'YES';
+    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT);
+    this.projectApiService.getTransactionsByProjectId(pageRequest, this.projectId$.getValue()).subscribe(transactions => {
+      this.transactions$.next(transactions);
+    });
+
+
     this.dialogRefToClose = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
 
   }
@@ -199,12 +209,13 @@ export class ProjectPreviewComponent implements OnInit {
     this.project = null;
     if (this.selectedValue !== 'NO') {
       updateProjectOperation$.pipe(mergeMap((project): Observable<PaginatedResponse<Transaction>> => {
-          const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT);
+
           this.dialogRefToClose.close(true);
           this.project = project;
-          this.updateStarted = false;
+          this.projectService.nextUpdatedProject(project);
 
-          return this.projectApiService.getTransactionsByProjectId(pageRequest, projectToUpdate.id);
+          this.updateStarted = false;
+          return this.transactions$;
         }),
         map(paginated => paginated.values),
         mergeMap((transactions: Transaction[]) => {
@@ -243,6 +254,7 @@ export class ProjectPreviewComponent implements OnInit {
           this.dialogRefToClose.close(true);
           this.updateStarted = false;
           this.project = project;
+          this.projectService.nextUpdatedProject(project);
         }
         , () => {
           this.project = previousProject;

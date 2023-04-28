@@ -309,7 +309,7 @@
 
 <ng-template #confirmEditProject>
 
-  <mat-dialog-content class="row">
+  <mat-dialog-content  *ngIf="( transactions$.getValue()); let transactions; else loadingSpinner" class="row">
 
     <div class=" text-title bold">
       {{'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_TITLE' | translate}}
@@ -318,10 +318,12 @@
 
     <div class="text  d-flex mt-4">
       {{'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ1' | translate}}
-      <br/>
+      {{transactions.values?.length}}
       {{'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ2' | translate}}
       <br/>
       {{'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ3' | translate}}
+      <br/>
+      {{'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ4' | translate}}
 
     </div>
 
