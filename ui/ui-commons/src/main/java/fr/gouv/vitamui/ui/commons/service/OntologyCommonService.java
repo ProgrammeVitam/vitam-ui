@@ -27,15 +27,33 @@
  *
  */
 
-package fr.gouv.vitamui.commons.api.dtos;
+package fr.gouv.vitamui.ui.commons.service;
 
-public enum OntologyType {
-    KEYWORD,
-    DATE,
-    LONG,
-    BOOLEAN,
-    DOUBLE,
-    TEXT,
-    GEO_POINT,
-    ENUM
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+
+@Service
+public class OntologyCommonService {
+
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyCommonService.class);
+
+    private OntologyExternalRestClient ontologyExternalRestClient;
+
+    @Autowired
+    public OntologyCommonService(OntologyExternalRestClient ontologyExternalRestClient) {
+        this.ontologyExternalRestClient = ontologyExternalRestClient;
+    }
+
+    public List<VitamUiOntologyDto> getInternalOntologyList(ExternalHttpContext context) {
+        LOGGER.debug("Get All default internal Ontology");
+        return ontologyExternalRestClient.getInternalOntologyList(context);
+    }
 }

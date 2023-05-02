@@ -32,7 +32,7 @@ import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -176,7 +176,7 @@ public class CollectTransactionInternalRestClient
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
-    public List<OntologyDto> getExternalOntologiesList(final InternalHttpContext context) {
+    public List<VitamUiOntologyDto> getExternalOntologiesList(final InternalHttpContext context) {
         LOGGER.debug("[INTERNAL] : Calling Get External ontologies list");
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST);

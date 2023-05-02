@@ -27,12 +27,13 @@
  *
  */
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, InjectorModule } from 'ui-frontend-common';
+import { BASE_URL, CriteriaDataType, CriteriaOperator, InjectorModule } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../archive.service';
@@ -60,6 +61,7 @@ describe('SimpleCriteriaSearchComponent', () => {
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchListToSave: () => of([]),
   };
+
   beforeEach(async () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -71,8 +73,9 @@ describe('SimpleCriteriaSearchComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveSharedDataService, useValue: archiveExchangeDataServiceMock },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
-      imports: [InjectorModule, TranslateModule.forRoot()],
+      imports: [HttpClientTestingModule, InjectorModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

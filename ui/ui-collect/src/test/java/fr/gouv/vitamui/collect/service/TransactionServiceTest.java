@@ -32,7 +32,7 @@ package fr.gouv.vitamui.collect.service;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClient;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -163,7 +163,7 @@ public class TransactionServiceTest {
     @Test
     public void get_ontologies_list_should_call_appropriate_rest_client_one_time() {
         // Given
-        List<OntologyDto> ontologiesList = new ArrayList<>();
+        List<VitamUiOntologyDto> ontologiesList = new ArrayList<>();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         Mockito.when(collectTransactionExternalRestClient.getExternalOntologiesList(ArgumentMatchers.any()))
             .thenReturn( ontologiesList );

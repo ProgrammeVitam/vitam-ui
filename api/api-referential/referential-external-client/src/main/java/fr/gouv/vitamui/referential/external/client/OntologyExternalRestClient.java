@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.external.client;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
@@ -51,6 +52,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OntologyExternalRestClient extends BasePaginatingAndSortingRestClient<OntologyDto, ExternalHttpContext> {
@@ -89,5 +91,12 @@ public class OntologyExternalRestClient extends BasePaginatingAndSortingRestClie
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/export");
         final HttpEntity<OntologyDto> request = new HttpEntity<>(null, buildHeaders(context));
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Resource.class);
+    }
+
+    public List<VitamUiOntologyDto> getInternalOntologyList(ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.INTERNAL_ONTOLOGY_LIST);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
     }
 }

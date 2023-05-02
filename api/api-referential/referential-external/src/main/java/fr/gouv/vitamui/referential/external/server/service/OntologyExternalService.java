@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
@@ -66,12 +67,12 @@ import java.util.stream.Collectors;
 public class OntologyExternalService extends AbstractResourceClientService<OntologyDto, OntologyDto> {
 
     private OntologyInternalRestClient ontologyInternalRestClient;
-    
+
     private OntologyInternalWebClient ontologyInternalWebClient;
 
     @Autowired
     public OntologyExternalService(
-    	ExternalSecurityService externalSecurityService, 
+    	ExternalSecurityService externalSecurityService,
     	OntologyInternalRestClient ontologyInternalRestClient,
     	OntologyInternalWebClient ontologyInternalWebClient) {
         super(externalSecurityService);
@@ -132,8 +133,12 @@ public class OntologyExternalService extends AbstractResourceClientService<Ontol
     public boolean check(OntologyDto ontologyDto) {
         return ontologyInternalRestClient.check(getInternalHttpContext(), ontologyDto);
     }
-    
+
     public JsonNode importOntologies(String fileName, MultipartFile file) {
         return ontologyInternalWebClient.importOntologies(getInternalHttpContext(), fileName, file);
+    }
+
+    public List<VitamUiOntologyDto> getInternalOntologyList() {
+        return ontologyInternalRestClient.getInternalOntologyList(getInternalHttpContext());
     }
 }

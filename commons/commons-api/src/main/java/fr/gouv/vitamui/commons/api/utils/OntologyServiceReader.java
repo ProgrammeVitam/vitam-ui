@@ -32,7 +32,7 @@ package fr.gouv.vitamui.commons.api.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
@@ -55,10 +55,10 @@ public class OntologyServiceReader {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-     public static List<OntologyDto> readExternalOntologiesFromFile(Integer tenantId, String ontologiesFilePath)
+     public static List<VitamUiOntologyDto> readExternalOntologiesFromFile(Integer tenantId, String ontologiesFilePath)
         throws IOException {
 
-        List<OntologyDto> ontologyDtoList = new ArrayList<>();
+        List<VitamUiOntologyDto> ontologyDtoList = new ArrayList<>();
         LOGGER.debug("Read ontologies list from file {} for tenant {}", ontologiesFilePath, tenantId);
 
         File file = new File( ontologiesFilePath);
@@ -85,6 +85,37 @@ public class OntologyServiceReader {
         return ontologyDtoList.stream().filter(ontologyDto -> ontologyDto.getTenantIds().contains(DEFAULT_TENANT_IDENTIFIER) ||
                 ontologyDto.getTenantIds().contains(tenantId))
             .collect(Collectors.toList());
+    }
+
+
+    public static List<VitamUiOntologyDto> readInternalOntologyFromFile(String internalOntologyFilePath)
+        throws IOException {
+
+        List<VitamUiOntologyDto> internalOntologyDtoList;
+        LOGGER.debug("Read internal ontology fields list from file : {} ", internalOntologyFilePath);
+
+        File file = new File( internalOntologyFilePath);
+
+        StringBuilder resultStringBuilder = new StringBuilder();
+        try (BufferedReader bufferedReader
+            = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                resultStringBuilder.append(line).append("\n");
+            }
+        } catch (FileNotFoundException notFoundException) {
+            LOGGER.error("Can not find the internal ontology fields list file : {} ", notFoundException);
+            return Collections.emptyList();
+        }
+        try {
+            internalOntologyDtoList = objectMapper.readValue(resultStringBuilder.toString(), new TypeReference<>() {
+            });
+        } catch (JsonProcessingException exception) {
+            LOGGER.error("Can not parse the internal ontology fields list file : {}", exception);
+            return Collections.emptyList();
+        }
+
+        return internalOntologyDtoList;
     }
 
 }

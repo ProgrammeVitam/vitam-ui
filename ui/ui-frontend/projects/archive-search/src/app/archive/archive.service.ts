@@ -37,7 +37,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
+import { Observable, TimeoutError, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
@@ -49,7 +49,7 @@ import {
   Ontology,
   SearchService,
   SecurityService,
-  Unit
+  Unit,
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
@@ -86,13 +86,9 @@ export class ArchiveService extends SearchService<any> {
     return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
   }
 
-  public getOntologiesFromJson(): Observable<any> {
-    return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
-  }
-
   public loadFilingHoldingSchemeTree(tenantIdentifier: number): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
-      'X-Tenant-Id': '' + tenantIdentifier
+      'X-Tenant-Id': '' + tenantIdentifier,
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -136,7 +132,6 @@ export class ArchiveService extends SearchService<any> {
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
 
     return this.archiveApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, headers).subscribe(
       (file) => {
@@ -164,7 +159,6 @@ export class ArchiveService extends SearchService<any> {
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto): Observable<PagedResult> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
 
     return this.archiveApiService.searchArchiveUnitsByCriteria(criteriaDto, headers).pipe(
       //   timeout(TIMEOUT_SEC),
@@ -179,7 +173,7 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  launchDownloadObjectFromUnit(unitId: string, tenantIdentifier: number,  qualifier?: string, version?: number) {
+  launchDownloadObjectFromUnit(unitId: string, tenantIdentifier: number, qualifier?: string, version?: number) {
     this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(unitId, tenantIdentifier, qualifier, version));
   }
 
@@ -216,35 +210,35 @@ export class ArchiveService extends SearchService<any> {
 
   exportDIPService(exportDIPCriteriaList: ExportDIPCriteriaList): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.archiveApiService.exportDipApiService(exportDIPCriteriaList, headers);
   }
 
   transferRequestService(transferDipCriteriaDto: TransferRequestDto): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.archiveApiService.transferDipApiService(transferDipCriteriaDto, headers);
   }
 
-  startEliminationAnalysis(criteriaDto: SearchCriteriaDto, ) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');    
+  startEliminationAnalysis(criteriaDto: SearchCriteriaDto) {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
     return this.archiveApiService.startEliminationAnalysis(criteriaDto, headers);
   }
 
   launchEliminationAction(criteriaDto: SearchCriteriaDto) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');    
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
     return this.archiveApiService.launchEliminationAction(criteriaDto, headers);
   }
 
   updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
   }
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
 
@@ -329,7 +323,7 @@ export class ArchiveService extends SearchService<any> {
 
   launchComputedInheritedRules(criteriaDto: SearchCriteriaDto): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.archiveApiService.launchComputedInheritedRules(criteriaDto, headers);
   }
 
@@ -352,13 +346,13 @@ export class ArchiveService extends SearchService<any> {
 
   selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto): Observable<Unit> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.archiveApiService.selectUnitWithInheritedRules(criteriaDto, headers);
   }
 
   reclassification(criteriaDto: ReclassificationCriteriaDto): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.archiveApiService.reclassification(criteriaDto, headers);
   }
 
@@ -373,7 +367,6 @@ export class ArchiveService extends SearchService<any> {
     headers = headers.append('X-Tenant-Id', tenantIdentifier);
     headers = headers.append('Content-Type', 'application/octet-stream');
     headers = headers.append('fileName', fileName);
-    
 
     return this.archiveApiService.transferAcknowledgment(xmlFile, headers);
   }
@@ -412,6 +405,10 @@ export class ArchiveService extends SearchService<any> {
 
   getExternalOntologiesList(): Observable<Ontology[]> {
     return this.archiveApiService.getExternalOntologiesList();
+  }
+
+  getInternalOntologiesList(): Observable<Ontology[]> {
+    return this.archiveApiService.getInternalOntologiesList();
   }
 }
 

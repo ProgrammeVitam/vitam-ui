@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.referential.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -43,7 +45,6 @@ import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,9 +58,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,16 +77,16 @@ public class OntologyServiceTest {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyService.class);
     @Mock
-    private OntologyExternalRestClient client;
+    private OntologyExternalRestClient ontologyExternalRestClient;
     @Mock
     private OntologyExternalWebClient webClient;
     @Mock
     private CommonService commonService;
-    private OntologyService service;
+    private OntologyService ontologyService;
 
     @Before
     public void setUp() {
-        service = new OntologyService(commonService, client, webClient);
+        ontologyService = new OntologyService(commonService, ontologyExternalRestClient, webClient);
     }
 
     @Test
@@ -98,9 +96,9 @@ public class OntologyServiceTest {
         ontologyDto.setId("id");
         ontologyDtos.add(ontologyDto);
 
-        Mockito.when(client.getAll(isNull(), any(Optional.class))).thenReturn(ontologyDtos);
+        Mockito.when(ontologyExternalRestClient.getAll(isNull(), any(Optional.class))).thenReturn(ontologyDtos);
 
-        final Collection<OntologyDto> ontologyList = service.getAll(null, Optional.empty());
+        final Collection<OntologyDto> ontologyList = ontologyService.getAll(null, Optional.empty());
         Assert.assertNotNull(ontologyList);
         assertThat(ontologyList).containsExactly(ontologyDto);
     }
@@ -110,9 +108,9 @@ public class OntologyServiceTest {
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("id");
 
-        Mockito.when(client.check(isNull(), any(OntologyDto.class))).thenReturn(true);
+        Mockito.when(ontologyExternalRestClient.check(isNull(), any(OntologyDto.class))).thenReturn(true);
 
-        final boolean check = service.check(null, ontologyDto);
+        final boolean check = ontologyService.check(null, ontologyDto);
         assertThat(check).isEqualTo(true);
     }
 
@@ -121,9 +119,9 @@ public class OntologyServiceTest {
 
         ResponseEntity<Resource> responseEntity = new ResponseEntity<Resource>(HttpStatus.OK);
 
-        Mockito.when(client.export(isNull())).thenReturn(responseEntity);
+        Mockito.when(ontologyExternalRestClient.export(isNull())).thenReturn(responseEntity);
 
-        final ResponseEntity<Resource> response = service.export(null);
+        final ResponseEntity<Resource> response = ontologyService.export(null);
         Assert.assertNotNull(response);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
@@ -142,7 +140,7 @@ public class OntologyServiceTest {
         	.thenReturn(jsonResponse);
 
         assertThatCode(() -> {
-        	service.importOntologies(null, multipartFile);
+            ontologyService.importOntologies(null, multipartFile);
         }).doesNotThrowAnyException();
     }
 }

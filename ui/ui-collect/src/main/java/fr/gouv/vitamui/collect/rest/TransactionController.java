@@ -37,7 +37,7 @@ import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -255,7 +255,7 @@ public class TransactionController extends AbstractUiRestController {
     @ApiOperation(value = "get external ontologies list")
     @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
     @ResponseStatus(HttpStatus.OK)
-    public List<OntologyDto> getExternalOntologiesList() throws InvalidParseOperationException {
+    public List<VitamUiOntologyDto> getExternalOntologiesList() throws InvalidParseOperationException {
         LOGGER.debug("[UI] : Get All External Ontologies");
         return transactionService.getExternalOntologiesList(buildUiHttpContext());
     }

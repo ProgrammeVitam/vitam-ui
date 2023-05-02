@@ -39,6 +39,9 @@ package fr.gouv.vitamui.referential.internal.client;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
@@ -51,10 +54,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OntologyInternalRestClient extends BasePaginatingAndSortingRestClient<OntologyDto, InternalHttpContext> {
-    
+
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(OntologyInternalRestClient.class);
+
     public OntologyInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
@@ -82,5 +89,13 @@ public class OntologyInternalRestClient extends BasePaginatingAndSortingRestClie
         final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
                 request, Boolean.class);
         return response.getStatusCode() == HttpStatus.OK;
+    }
+
+    public List<VitamUiOntologyDto> getInternalOntologyList(final InternalHttpContext context) {
+        LOGGER.debug("[INTERNAL] : Calling Get default internal ontology fields list");
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.INTERNAL_ONTOLOGY_LIST);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
     }
 }

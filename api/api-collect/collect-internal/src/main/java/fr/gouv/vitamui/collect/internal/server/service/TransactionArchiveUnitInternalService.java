@@ -58,7 +58,7 @@ import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.ExportSearchResultParam;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -819,7 +819,7 @@ public class TransactionArchiveUnitInternalService {
      * @param tenantId : tenant identifier
      * @throws IOException : throw an exception while parsing ontologies file
      */
-    public List<OntologyDto> readExternalOntologiesFromFile(Integer tenantId) throws IOException {
+    public List<VitamUiOntologyDto> readExternalOntologiesFromFile(Integer tenantId) throws IOException {
         LOGGER.debug("get ontologies file from path : {} ", ontologiesFilePath);
         return OntologyServiceReader.readExternalOntologiesFromFile(tenantId, ontologiesFilePath);
     }

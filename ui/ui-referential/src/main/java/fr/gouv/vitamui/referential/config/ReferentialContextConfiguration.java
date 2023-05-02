@@ -133,11 +133,6 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     }
 
     @Bean
-    public OntologyExternalRestClient ontologyCrudRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
-        return referentialExternalRestClientFactory.getOntologyRestClient();
-    }
-
-    @Bean
     public TenantExternalRestClient tenantCrudRestClient(final IamExternalRestClientFactory iamExternalRestClientFactory) {
         return iamExternalRestClientFactory.getTenantExternalRestClient();
     }
@@ -210,6 +205,11 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     @Bean
     public AccessionRegisterDetailExternalRestClient aaccessionRegisterDetailExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
         return referentialExternalRestClientFactory.getAccessionRegisterDetailExternalRestClient();
+    }
+
+    @Bean
+    public OntologyExternalRestClient ontologyExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+        return referentialExternalRestClientFactory.getOntologyRestClient();
     }
 
 }

@@ -27,15 +27,22 @@
  *
  */
 
-package fr.gouv.vitamui.commons.api.dtos;
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BaseHttpClient } from '../base-http-client';
+import { BASE_URL } from '../injection-tokens';
+import { Ontology } from '../models';
 
-public enum OntologyType {
-    KEYWORD,
-    DATE,
-    LONG,
-    BOOLEAN,
-    DOUBLE,
-    TEXT,
-    GEO_POINT,
-    ENUM
+@Injectable({
+  providedIn: 'root',
+})
+export class OntologyApiService extends BaseHttpClient<Ontology> {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, baseUrl + '/ontology');
+  }
+
+  getInternalOntologyFieldsList(): Observable<Ontology[]> {
+    return this.http.get<Ontology[]>(`${this.apiUrl}/internal-ontologies`);
+  }
 }

@@ -64,5 +64,5 @@ logging:
     reactor.netty.*: DEBUG
 #    org.springframework.core.env: DEBUG
 
-# ontologies file path
+# ontology fields file path
 ontologies_file_path: "src/main/resources/ontology/external_ontology_fields.json"

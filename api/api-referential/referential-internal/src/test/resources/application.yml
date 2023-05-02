@@ -28,3 +28,6 @@ server-identity:
 
 
 logbook.scheduling.sendEventToVitamTasks.enabled: false
+
+# internal ontology fields file path
+internal_ontology_file_path: "src/test/resources/internal-ontology/internal_ontology_fields.json"

@@ -34,7 +34,7 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -136,7 +136,7 @@ public class TransactionArchiveUnitExternalController {
 
     @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public List<OntologyDto> getExternalOntologiesList() {
+    public List<VitamUiOntologyDto> getExternalOntologiesList() {
         LOGGER.debug("[EXTERNAL] : Get external ontologies list");
         return transactionArchiveUnitExternalService.getExternalOntologiesList();
     }

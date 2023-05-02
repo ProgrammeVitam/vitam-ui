@@ -25,18 +25,9 @@
  * accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import {
-  AfterViewChecked,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnDestroy,
-  OnInit,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -46,17 +37,14 @@ import {
   Logger,
   MetadataUnitUp,
   Ontology,
+  OntologyService,
   Project,
   ProjectStatus,
   Transaction,
-  TransactionStatus
+  TransactionStatus,
 } from 'ui-frontend-common';
 
-import { FilingPlanMode } from 'vitamui-library';
-import {
-  oneIncludedNodeRequired
-} from '../../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.service';
-import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
+import { FilingPlanMode, oneIncludedNodeRequired } from 'vitamui-library';
 import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
@@ -69,8 +57,8 @@ import { TransactionsService } from '../transactions.service';
   styleUrls: ['./create-project.component.scss'],
   animations: [
     trigger('rotateAnimation', [
-      state('collapse', style({transform: 'rotate(-180deg)'})),
-      state('expand', style({transform: 'rotate(0deg)'})),
+      state('collapse', style({ transform: 'rotate(-180deg)' })),
+      state('expand', style({ transform: 'rotate(0deg)' })),
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
   ],
@@ -94,7 +82,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   hasError = false;
   uploadFiles$: Observable<CollectUploadFile[]>;
   zippedFile$: Observable<CollectZippedUploadFile>;
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
   tenantIdentifier: number;
   createdProject: Project;
   createdTransaction: Transaction;
@@ -116,14 +104,14 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   ];
 
   legalStatusList = [
-    {id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE')},
-    {id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE')},
-    {id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE')},
+    { id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE') },
+    { id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
+    { id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
   ];
 
   uploadZipCompleted = false;
 
-  @ViewChild('confirmDeleteAddRuleDialog', {static: true}) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
+  @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -138,10 +126,9 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     private externalParameterService: ExternalParametersService,
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
-    private archiveCollectService: ArchiveCollectService,
-    public dialog: MatDialog
-  ) {
-  }
+    public dialog: MatDialog,
+    private ontologyService: OntologyService
+  ) {}
 
   get linkParentIdControl() {
     return this.projectForm.controls.linkParentIdControl as FormControl;
@@ -157,8 +144,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.accessContract();
     this.uploadFiles$ = this.uploadService.getUploadingFiles();
     this.zippedFile$ = this.uploadService.getZipFile();
-    this.archiveCollectService.getOntologiesFromJson().subscribe((data: Ontology[]) => {
-      this.ontologies = data.filter((ontology) => ontology.ApiField !== undefined);
+    this.ontologyService.getInternalOntologyFieldsList().subscribe((data) => {
+      this.ontologies.push(...data);
       this.ontologies.sort((a: any, b: any) => {
         const shortNameA = a.Identifier;
         const shortNameB = b.Identifier;
@@ -232,7 +219,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     const items = event.dataTransfer.items;
     const exists = this.uploadService.directoryExistInZipFile(items, true);
     if (exists) {
-      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, {duration: 3000});
+      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, { duration: 3000 });
       return;
     }
     await this.uploadService.handleDragAndDropUpload(items);
@@ -243,7 +230,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     const items = event.target.files;
     const exists = this.uploadService.directoryExistInZipFile(items, false);
     if (exists) {
-      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, {duration: 3000});
+      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, { duration: 3000 });
       return;
     }
     await this.uploadService.handleUpload(items);
@@ -277,9 +264,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   /*** Form validator Step : Parametrer les regles de rattachement ***/
   stepRulesParamsIsInvalid() {
-    return (
-      this.projectForm.controls.rulesParams.invalid
-    );
+    return this.projectForm.controls.rulesParams.invalid;
   }
 
   /*** Step 5 : Téléchargements ***/
@@ -307,7 +292,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       acquisitionInformation: [null],
       legalStatus: [null],
       // for unitUp :
-      linkParentIdControl: [{included: [], excluded: []}],
+      linkParentIdControl: [{ included: [], excluded: [] }],
       // for unitUps :
       rulesParams: this.formBuilder.array([], Validators.required),
       comment: [null],
@@ -346,8 +331,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
         metadataKey: ruleParam.ontology.ApiField,
         metadataValue: ruleParam.metadataValue,
         unitUp: ruleParam.unitUp.included[0],
-      }
-    })
+      };
+    });
   }
 
   get rulesParams(): FormArray {
@@ -367,7 +352,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       opened: [true],
       ontology: ['', Validators.required],
       metadataValue: ['', Validators.required],
-      unitUp: [{included: [], excluded: []}, oneIncludedNodeRequired()],
+      unitUp: [{ included: [], excluded: [] }, oneIncludedNodeRequired()],
     });
     this.rulesParams.push(newRuleParamForm);
   }
@@ -389,20 +374,20 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     const project: Project = this.formToProject();
     this.moveToNextStep();
     await this.projectsService.create(project).subscribe(
-      _result => {
+      (_result) => {
         this.pending = false;
         this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATED'), null, {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       },
-      _error => {
+      (_error) => {
         this.pending = false;
         this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATION_ERROR'), null, {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      },
+      }
     );
   }
 
@@ -414,11 +399,14 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     } as Transaction;
     this.uploadZipCompleted = false;
     this.moveToNextStep();
-    await this.projectsService.create(project).toPromise()
+    await this.projectsService
+      .create(project)
+      .toPromise()
       .then((createProjectResponse) => {
         this.createdProject = createProjectResponse;
         transaction.projectId = this.createdProject.id;
-        this.transactionsService.create(transaction)
+        this.transactionsService
+          .create(transaction)
           .toPromise()
           .then((createTransactionResponse) => {
             this.createdTransaction = createTransactionResponse;
@@ -426,8 +414,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
           })
           .then((uploadOperation) => {
             uploadOperation.subscribe(
-              () => {
-              },
+              () => {},
               (error: any) => {
                 this.logger.error(error);
               },
@@ -444,7 +431,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
           .catch((error) => {
             this.logger.error(error);
           });
-      })
+      });
   }
 
   asFormGroup(control: AbstractControl) {
@@ -454,5 +441,4 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   asFormControl(control: AbstractControl) {
     return control as FormControl;
   }
-
 }

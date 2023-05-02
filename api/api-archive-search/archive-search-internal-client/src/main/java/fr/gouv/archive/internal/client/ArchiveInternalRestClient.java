@@ -36,7 +36,7 @@ import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -251,7 +251,7 @@ public class ArchiveInternalRestClient
         return response.getBody();
     }
 
-    public List<OntologyDto> getExternalOntologiesList(final InternalHttpContext context) {
+    public List<VitamUiOntologyDto> getExternalOntologiesList(final InternalHttpContext context) {
         LOGGER.debug("[INTERNAL] : Calling Get External ontologies list");
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST);

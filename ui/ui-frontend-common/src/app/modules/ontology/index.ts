@@ -27,15 +27,4 @@
  *
  */
 
-package fr.gouv.vitamui.commons.api.dtos;
-
-public enum OntologyType {
-    KEYWORD,
-    DATE,
-    LONG,
-    BOOLEAN,
-    DOUBLE,
-    TEXT,
-    GEO_POINT,
-    ENUM
-}
+export * from './ontology.service';

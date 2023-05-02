@@ -39,7 +39,7 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
+import { Observable, TimeoutError, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
@@ -49,7 +49,7 @@ import {
   Ontology,
   SearchService,
   Transaction,
-  Unit
+  Unit,
 } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
@@ -96,10 +96,6 @@ export class ArchiveCollectService extends SearchService<any> {
     return pagedResult;
   }
 
-  public getOntologiesFromJson(): Observable<any> {
-    return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
-  }
-
   sortByTitle(data: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
     return data.sort(byTitle(this.locale));
   }
@@ -123,12 +119,12 @@ export class ArchiveCollectService extends SearchService<any> {
             return throwError('Erreur : délai d’attente dépassé pour votre recherche');
           }
           // Return other errors
-          return of({$hits: null, $results: []});
+          return of({ $hits: null, $results: [] });
         }),
         map((results) => ArchiveCollectService.buildPagedResults(results))
       );
     } else {
-      return of({pageNumbers: 1, results: [], totalResults: 0});
+      return of({ pageNumbers: 1, results: [], totalResults: 0 });
     }
   }
 
@@ -228,7 +224,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: {type: 'exportCsvLimitReached'},
+            data: { type: 'exportCsvLimitReached' },
             duration: 10000,
           });
         }
@@ -244,7 +240,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
     return this.searchUnitApiService.getFilingPlan(headers).pipe(
       catchError(() => {
-        return of({$hits: null, $results: []});
+        return of({ $hits: null, $results: [] });
       }),
       map((response) => {
         return this.buildNestedTreeLevels(response.$results);
@@ -314,10 +310,10 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.transactionApiService.getExternalOntologiesList();
   }
 
-  selectUnitWithInheritedRules(transactionId: string, criteriaDto: SearchCriteriaDto, accessContract: string): Observable<Unit> {    
+  selectUnitWithInheritedRules(transactionId: string, criteriaDto: SearchCriteriaDto, accessContract: string): Observable<Unit> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
-    return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);    
+    return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);
   }
 }
 
@@ -330,6 +326,6 @@ function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingS
     if (!a || !b || !a.title || !b.title) {
       return 0;
     }
-    return a.title.localeCompare(b.title, locale, {numeric: true});
+    return a.title.localeCompare(b.title, locale, { numeric: true });
   };
 }

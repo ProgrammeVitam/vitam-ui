@@ -31,7 +31,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClient;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -139,7 +139,7 @@ public class TransactionService extends AbstractPaginateService<CollectTransacti
         return collectTransactionExternalRestClient.findUnitById(id, context);
     }
 
-    public List<OntologyDto> getExternalOntologiesList(ExternalHttpContext context) {
+    public List<VitamUiOntologyDto> getExternalOntologiesList(ExternalHttpContext context) {
         LOGGER.debug("Get All External Ontologies");
         return collectTransactionExternalRestClient.getExternalOntologiesList(context);
     }

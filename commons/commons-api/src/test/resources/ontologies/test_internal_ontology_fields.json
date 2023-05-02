@@ -1,0 +1,38 @@
+[
+  {
+    "Identifier": "Recipient.FullName",
+    "ApiField": "Recipient.FullName",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.042",
+    "LastUpdate": "2020-11-02T14:21:29.887",
+    "ShortName": "Recipient.FullName"
+  },
+  {
+    "Identifier": "Recipient.FirstName",
+    "ApiField": "Recipient.FirstName",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.042",
+    "LastUpdate": "2020-11-02T14:21:29.887",
+    "ShortName": "Recipient.FirstName"
+  },
+  {
+    "Identifier": "Recipient.GivenName",
+    "ApiField": "Recipient.GivenName",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.042",
+    "LastUpdate": "2020-11-02T14:21:29.887",
+    "ShortName": "Recipient.GivenName"
+  },
+  {
+    "Identifier": "Recipient.Position",
+    "ApiField": "Recipient.Position",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2020-11-02T12:25:58.042",
+    "LastUpdate": "2020-11-02T14:21:29.887",
+    "ShortName": "Recipient.Position"
+  }
+  ]

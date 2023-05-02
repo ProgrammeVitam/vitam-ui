@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -43,7 +44,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
-import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
@@ -54,8 +54,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.Collection;
 import java.util.Optional;
 
@@ -63,8 +61,8 @@ import java.util.Optional;
 public class OntologyService extends AbstractPaginateService<OntologyDto> {
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyService.class);
 
-    private OntologyExternalRestClient client;
-    
+    private OntologyExternalRestClient ontologyExternalRestClient;
+
     private OntologyExternalWebClient webClient;
 
     private CommonService commonService;
@@ -72,7 +70,7 @@ public class OntologyService extends AbstractPaginateService<OntologyDto> {
     @Autowired
     public OntologyService(final CommonService commonService, final OntologyExternalRestClient client, final OntologyExternalWebClient webClient) {
         this.commonService = commonService;
-        this.client = client;
+        this.ontologyExternalRestClient = client;
         this.webClient = webClient;
     }
 
@@ -88,25 +86,25 @@ public class OntologyService extends AbstractPaginateService<OntologyDto> {
     }
 
     @Override public BasePaginatingAndSortingRestClient<OntologyDto, ExternalHttpContext> getClient() {
-        return client;
+        return ontologyExternalRestClient;
     }
 
     public Collection<OntologyDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
-        return client.getAll(context, criteria);
+        return ontologyExternalRestClient.getAll(context, criteria);
     }
 
     public boolean check(ExternalHttpContext context, OntologyDto accessContractDto) {
-        return client.check(context,accessContractDto);
+        return ontologyExternalRestClient.check(context,accessContractDto);
     }
 
     public void delete(ExternalHttpContext context, String id) {
-        client.delete(context, id);
+        ontologyExternalRestClient.delete(context, id);
     }
 
     public ResponseEntity<Resource> export(ExternalHttpContext context) {
-        return client.export(context);
+        return ontologyExternalRestClient.export(context);
     }
-    
+
     public JsonNode importOntologies(ExternalHttpContext context, MultipartFile file) {
         return webClient.importOntologies(context, file);
     }

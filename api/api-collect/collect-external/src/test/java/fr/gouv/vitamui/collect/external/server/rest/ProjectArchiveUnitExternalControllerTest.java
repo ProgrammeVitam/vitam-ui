@@ -35,7 +35,7 @@ import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExt
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
@@ -145,13 +145,13 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
     void testGetOntologiesListThenReturnOntologiesValuesList()
         throws PreconditionFailedException {
         // Given
-        List<OntologyDto> expectedResponse = new ArrayList<>();
+        List<VitamUiOntologyDto> expectedResponse = new ArrayList<>();
 
         // When
         Mockito
             .when(transactionArchiveUnitExternalService.getExternalOntologiesList())
             .thenReturn(expectedResponse);
-        List<OntologyDto> response = transactionArchiveUnitExternalController.getExternalOntologiesList();
+        List<VitamUiOntologyDto> response = transactionArchiveUnitExternalController.getExternalOntologiesList();
 
         // Then
         Assertions.assertEquals(response, expectedResponse);
