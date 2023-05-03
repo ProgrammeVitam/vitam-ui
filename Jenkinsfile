@@ -1,7 +1,7 @@
 pipeline {
 
     agent {
-        label 'java17'
+        label 'contrib-java-17'
     }
 
 
