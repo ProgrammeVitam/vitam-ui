@@ -37,7 +37,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -256,6 +256,9 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
    * @returns A list search criteria values of display.
    */
   private computeSearchCriterias(searchCriteriaMap: Map<string, SearchCriteria>): DisplaySearchCriteria[] {
+    if (!searchCriteriaMap) {
+      return [];
+    }
     return [...searchCriteriaMap.values()]
       .map((searchCriteria) => {
         const { dataType, category, keyTranslated, key, values } = searchCriteria;
@@ -311,7 +314,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
             label,
             tooltip,
             type: dataType,
-            value: value,
+            value,
             searchCriteria,
           };
         });

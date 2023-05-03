@@ -152,8 +152,6 @@ export class ProjectPreviewComponent implements OnInit {
     this.form.get('comment').setValue(this.project.comment);
     this.form.get('originatingAgencyIdentifier').setValue(this.project.originatingAgencyIdentifier);
     this.form.get('submissionAgencyIdentifier').setValue(this.project.submissionAgencyIdentifier);
-
-
     this.form.get('archivalAgencyIdentifier').setValue(this.project.archivalAgencyIdentifier);
     this.form.get('transferringAgencyIdentifier').setValue(this.project.transferringAgencyIdentifier);
     this.form.get('archivalAgreement').setValue(this.project.archivalAgreement);
@@ -163,17 +161,13 @@ export class ProjectPreviewComponent implements OnInit {
   }
 
   launchUpdate() {
-
     const dialogToOpen = this.confirmEditProject;
     this.selectedValue = 'YES';
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT);
     this.projectApiService.getTransactionsByProjectId(pageRequest, this.projectId$.getValue()).subscribe(transactions => {
       this.transactions$.next(transactions);
     });
-
-
     this.dialogRefToClose = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
-
   }
 
   mapProjectInternalFields(projectToUpdate: Project) {

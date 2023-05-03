@@ -36,7 +36,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -104,6 +104,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   ngOnDestroy(): void {
     this.updateSearchCriteriaHistorySubscription?.unsubscribe();
     this.saveSearchCriteriaHistorySubscription?.unsubscribe();
@@ -128,7 +129,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
           this.dialogRef.close(true);
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: { type: 'searchCriteriaHistoryCreated', name: response.name },
+            data: {type: 'searchCriteriaHistoryCreated', name: response.name},
             duration: 10000,
           });
         },
@@ -195,7 +196,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
           this.dialogRef.close(true);
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: { type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name },
+            data: {type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name},
             duration: 10000,
           });
         },
@@ -230,6 +231,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
         break;
     }
   }
+
   out(eventType: string) {
     switch (eventType) {
       case 'scroll-results':
@@ -255,9 +257,12 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
    * @returns A list search criteria values of display.
    */
   private computeSearchCriterias(searchCriteriaMap: Map<string, SearchCriteria>): DisplaySearchCriteria[] {
+    if (!searchCriteriaMap) {
+      return [];
+    }
     return [...searchCriteriaMap.values()]
       .map((searchCriteria) => {
-        const { dataType, category, keyTranslated, key, values } = searchCriteria;
+        const {dataType, category, keyTranslated, key, values} = searchCriteria;
         const categoryName = this.getCategoryName(category);
         const label = keyTranslated ? this.translatePipe.transform(`COLLECT.SEARCH_CRITERIA_FILTER.${categoryName}.${key}`) : key;
         const tooltip = label;
@@ -310,7 +315,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
             label,
             tooltip,
             type: dataType,
-            value: value,
+            value,
             searchCriteria,
           };
         });
