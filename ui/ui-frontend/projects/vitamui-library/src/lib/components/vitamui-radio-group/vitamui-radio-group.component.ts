@@ -1,20 +1,9 @@
 /* tslint:disable:no-use-before-declare component-selector */
-import {
-  AfterContentInit,
-  Component,
-  ContentChildren,
-  forwardRef,
-  HostBinding,
-  Input,
-  OnDestroy,
-  OnInit,
-  QueryList,
-  Self
-} from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import {AfterContentInit, Component, ContentChildren, forwardRef, Input, OnInit, QueryList, Self} from '@angular/core';
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
 
-import { VitamUIRadioComponent } from '../vitamui-radio/vitamui-radio.component';
-import { VitamUIRadioGroupService } from './vitamui-radio-group.service';
+import {VitamUIRadioComponent} from '../vitamui-radio/vitamui-radio.component';
+import {VitamUIRadioGroupService} from './vitamui-radio-group.service';
 
 export const RADIO_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -31,18 +20,18 @@ export const RADIO_GROUP_VALUE_ACCESSOR: any = {
     VitamUIRadioGroupService
   ]
 })
-export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit, OnDestroy {
+export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
 
   constructor(@Self() private radioGroupService: VitamUIRadioGroupService) {
   }
 
   @ContentChildren(VitamUIRadioComponent) private radios: QueryList<VitamUIRadioComponent>;
 
-  @Input() label: string;
+  @Input()
+  label: string;
 
-  @Input() required: boolean;
-
-  @HostBinding('class.primary') @Input() primary = false;
+  @Input()
+  required: boolean;
 
   value: any;
 
@@ -54,7 +43,7 @@ export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit, OnD
   }
 
   ngOnInit(): void {
-    this.required = (this.required !== undefined);
+    this.required = (this.required === undefined) ? false : true;
     const subscription = this.radioGroupService.resetAll.subscribe((elem: VitamUIRadioComponent) => {
       this.radios.forEach((radioButton: VitamUIRadioComponent) => {
         radioButton.checked = false;
