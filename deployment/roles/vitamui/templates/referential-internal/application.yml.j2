@@ -70,6 +70,8 @@ clients:
       hostname-verification: false
 {% endif %}
 
+internal_ontology_file_path: {{ vitamui_folder_data }}/internal_ontology_fields.json
+
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}

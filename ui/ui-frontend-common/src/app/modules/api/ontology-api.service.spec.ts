@@ -27,15 +27,24 @@
  *
  */
 
-package fr.gouv.vitamui.commons.api.dtos;
+import { TestBed } from '@angular/core/testing';
 
-public enum OntologyType {
-    KEYWORD,
-    DATE,
-    LONG,
-    BOOLEAN,
-    DOUBLE,
-    TEXT,
-    GEO_POINT,
-    ENUM
-}
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BASE_URL } from '../injection-tokens';
+import { OntologyApiService } from './ontology-api.service';
+
+describe('OntologyApiService', () => {
+  let service: OntologyApiService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
+    });
+    service = TestBed.inject(OntologyApiService);
+  });
+
+  it('service should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

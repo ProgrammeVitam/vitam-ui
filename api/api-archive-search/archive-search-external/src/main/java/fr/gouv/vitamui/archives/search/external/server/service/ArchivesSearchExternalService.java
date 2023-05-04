@@ -33,7 +33,7 @@ import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -200,8 +200,7 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
                 .transferAcknowledgment(getInternalHttpContext(), originalFileName, atrInputStream);
     }
 
-    public List<OntologyDto> getExternalOntologiesList() {
+    public List<VitamUiOntologyDto> getExternalOntologiesList() {
         return archiveInternalRestClient.getExternalOntologiesList(getInternalHttpContext());
     }
-
 }

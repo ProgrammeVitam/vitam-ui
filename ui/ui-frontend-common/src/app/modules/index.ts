@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 export * from './account/index';
 export * from './active-tenant.guard';
 export * from './analytics-resolver.service';
@@ -100,6 +101,7 @@ export * from './logger/index';
 export * from './missing-translation-handler';
 export * from './models/index';
 export * from './module-import-guard';
+export * from './ontology/index';
 export * from './paginated-api.interface';
 export * from './pipes/index';
 export * from './rule/index';

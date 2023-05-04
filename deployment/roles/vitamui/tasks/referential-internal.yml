@@ -13,3 +13,5 @@
     - update_vitam_configuration
   notify:
     - restart service
+
+- include: copy_internal_ontology_fields.yml

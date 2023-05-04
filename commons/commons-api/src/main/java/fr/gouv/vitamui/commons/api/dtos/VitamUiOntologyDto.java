@@ -37,14 +37,22 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class OntologyDto {
+public class VitamUiOntologyDto {
+
     private String identifier;
+
     private String apiField;
+
     private String description;
+
     private OntologyType type;
+
     private String origin;
+
     private String creationDate;
+
     private String lastUpdate;
+
     private String shortName;
 
     private List<Integer> tenantIds;

@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -73,10 +74,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -190,5 +193,11 @@ public class OntologyInternalController {
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ontologyInternalService.importOntologies(vitamContext, fileName, file);
+    }
+
+    @GetMapping(CommonConstants.INTERNAL_ONTOLOGY_LIST)
+    public List<VitamUiOntologyDto> getInternalOntologyList() throws IOException {
+        LOGGER.debug("[INTERNAL] : Get all default internal ontology fields");
+        return ontologyInternalService.readInternalOntologyFromFile();
     }
 }

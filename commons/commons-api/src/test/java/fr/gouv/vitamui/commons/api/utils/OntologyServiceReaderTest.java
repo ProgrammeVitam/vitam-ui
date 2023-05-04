@@ -78,4 +78,25 @@ class OntologyServiceReaderTest {
         // Then
         assertThat(OntologyServiceReader.readExternalOntologiesFromFile(1, ontologyFilePath)).isEmpty();
     }
+
+    @Test
+    void testReadInternalOntologyFromFileWhenFileExist() throws IOException {
+        // Given
+        final String ontologyFilePath = "src/test/resources/ontologies/test_internal_ontology_fields.json";
+        // When
+
+        // Then
+        assertThat(OntologyServiceReader.readInternalOntologyFromFile(ontologyFilePath)).isNotNull();
+        assertThat(OntologyServiceReader.readInternalOntologyFromFile(ontologyFilePath)).hasSize(4);
+    }
+
+    @Test
+    void testReadInternalOntologyFromFileWithBadFilePath() throws IOException {
+        // Given
+        final String ontologyFilePath = "src/test/resources/test/ontologies/internal_ontology_fields.json";
+        // When
+
+        // Then
+        assertThat(OntologyServiceReader.readInternalOntologyFromFile(ontologyFilePath)).isEmpty();
+    }
 }

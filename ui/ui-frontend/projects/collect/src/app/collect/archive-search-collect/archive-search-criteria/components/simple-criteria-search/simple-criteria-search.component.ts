@@ -39,7 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, diff, Ontology } from 'ui-frontend-common';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, Ontology, OntologyService, diff } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
@@ -61,7 +61,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   otherCriteriaValueEnabled = false;
   otherCriteriaValueType = 'DATE';
   selectedValueOntolonogy: any;
-  ontologies: Ontology[];
+  ontologies: Ontology[] = [];
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
   previousSimpleCriteriaValue: {
@@ -99,10 +99,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     private archiveExchangeDataService: ArchiveSharedDataService,
     public dialog: MatDialog,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private ontologyService: OntologyService
   ) {
-    this.archiveCollectService.getOntologiesFromJson().subscribe((data: Ontology[]) => {
-      this.ontologies = data.filter((ontology) => ontology.ApiField !== undefined);
+    this.ontologyService.getInternalOntologyFieldsList().subscribe((data) => {
+      this.ontologies.push(...data);
       this.ontologies.sort((a: any, b: any) => {
         const shortNameA = a.Identifier;
         const shortNameB = b.Identifier;

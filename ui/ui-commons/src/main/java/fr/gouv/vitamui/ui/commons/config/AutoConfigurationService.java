@@ -39,6 +39,7 @@ package fr.gouv.vitamui.ui.commons.config;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
@@ -50,6 +51,7 @@ import fr.gouv.vitamui.ui.commons.service.CommonService;
 import fr.gouv.vitamui.ui.commons.service.ExternalParamProfileService;
 import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
+import fr.gouv.vitamui.ui.commons.service.OntologyCommonService;
 import fr.gouv.vitamui.ui.commons.service.RuleService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 import fr.gouv.vitamui.ui.commons.service.UnitService;
@@ -156,5 +158,12 @@ public class AutoConfigurationService {
     @ConditionalOnMissingBean
     public UnitService unitService(final UnitExternalRestClient unitRestClient) {
         return new UnitService(unitRestClient);
+    }
+
+    @Bean("OntologyCommonService")
+    @DependsOn(value = {"ontologyExternalRestClient"})
+    @ConditionalOnMissingBean
+    public OntologyCommonService ontologyCommonService( final OntologyExternalRestClient ontologyExternalRestClient) {
+        return new OntologyCommonService(ontologyExternalRestClient);
     }
 }

@@ -45,6 +45,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -75,6 +76,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -86,8 +88,13 @@ public class OntologyExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyExternalController.class);
 
-    @Autowired
+
     private OntologyExternalService ontologyExternalService;
+
+    @Autowired
+    public OntologyExternalController(OntologyExternalService ontologyExternalService) {
+        this.ontologyExternalService = ontologyExternalService;
+    }
 
     @GetMapping()
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
@@ -184,5 +191,12 @@ public class OntologyExternalController {
         SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug("Import ontology file {}", fileName);
         return ontologyExternalService.importOntologies(fileName, file);
+    }
+
+    @GetMapping(CommonConstants.INTERNAL_ONTOLOGY_LIST)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public List<VitamUiOntologyDto> getInternalOntologiesList() {
+        LOGGER.debug("[EXTERNAL] : Get default internal ontology fields list");
+        return ontologyExternalService.getInternalOntologyList();
     }
 }

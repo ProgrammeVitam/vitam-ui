@@ -40,6 +40,7 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
@@ -104,5 +105,13 @@ public class UICommonsAutoConfiguration {
     public UnitExternalRestClient unitExternalRestClient(
         final ReferentialExternalRestClientFactory referentialRestClientFactory) {
         return referentialRestClientFactory.getUnitExternalRestClient();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public OntologyExternalRestClient ontologyExternalRestClient(
+        final ReferentialExternalRestClientFactory referentialRestClientFactory) {
+        return referentialRestClientFactory.getOntologyRestClient();
     }
 }

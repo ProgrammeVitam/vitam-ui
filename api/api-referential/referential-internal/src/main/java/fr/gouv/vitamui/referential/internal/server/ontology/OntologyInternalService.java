@@ -52,19 +52,20 @@ import fr.gouv.vitam.common.model.administration.OntologyOrigin;
 import fr.gouv.vitam.common.model.administration.OntologyType;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyResponseDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
-import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatInternalService;
-
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -89,6 +90,9 @@ public class OntologyInternalService {
     private OntologyConverter converter;
 
     private LogbookService logbookService;
+
+    @Value("${internal_ontology_file_path}")
+    private String internalOntologieFilePath;
 
 
     @Autowired
@@ -276,5 +280,15 @@ public class OntologyInternalService {
             LOGGER.error("Unable to ontology file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import ontology file " + fileName + " : ", e);
         }
+    }
+
+    /**
+     * Read internal ontology fields list from a file
+     *
+     * @throws IOException : throw an exception while parsing ontology fields file
+     */
+    public List<VitamUiOntologyDto> readInternalOntologyFromFile() throws IOException {
+        LOGGER.debug("get default internal ontologie file from path : {} ", internalOntologieFilePath);
+        return OntologyServiceReader.readInternalOntologyFromFile(internalOntologieFilePath);
     }
 }

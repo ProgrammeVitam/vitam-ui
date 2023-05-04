@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -282,8 +282,8 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
             .transferAcknowledgment(context, fileName, inputStream);
     }
 
-    public List<OntologyDto> getExternalOntologiesList(ExternalHttpContext context) {
+    public List<VitamUiOntologyDto> getExternalOntologyFieldsList(ExternalHttpContext context) {
         LOGGER.debug("Get All External Ontologies");
-        return archiveSearchExternalRestClient.getExternalOntologiesList(context);
+        return archiveSearchExternalRestClient.getExternalOntologyFieldsList(context);
     }
 }

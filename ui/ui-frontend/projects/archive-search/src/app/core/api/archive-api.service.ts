@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ApiUnitObject, BaseHttpClient, BASE_URL, Ontology, PageRequest, PaginatedResponse, Unit } from 'ui-frontend-common';
+import { ApiUnitObject, BASE_URL, BaseHttpClient, Ontology, PageRequest, PaginatedResponse, Unit } from 'ui-frontend-common';
 import { ExportDIPCriteriaList } from '../../archive/models/dip-request-detail.interface';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
@@ -187,5 +187,9 @@ export class ArchiveApiService extends BaseHttpClient<any> {
 
   getExternalOntologiesList(): Observable<Ontology[]> {
     return this.http.get<Ontology[]>(`${this.apiUrl}/external-ontologies`);
+  }
+
+  getInternalOntologiesList(): Observable<Ontology[]> {
+    return this.http.get<Ontology[]>(`${this.apiUrl}/internal-ontologies`);
   }
 }

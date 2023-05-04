@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -265,9 +265,8 @@ public class ArchivesSearchExternalController {
 
     @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public List<OntologyDto> getExternalOntologiesList() {
+    public List<VitamUiOntologyDto> getExternalOntologiesList() {
         LOGGER.debug("[EXTERNAL] : Get External ontologies list");
         return archivesSearchExternalService.getExternalOntologiesList();
     }
-
 }

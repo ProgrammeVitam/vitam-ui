@@ -39,7 +39,7 @@ import fr.gouv.vitamui.collect.internal.server.service.TransactionArchiveUnitInt
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -148,7 +148,7 @@ public class TransactionArchiveUnitInternalController {
     }
 
     @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
-    public List<OntologyDto> getExternalOntologiesList() throws IOException {
+    public List<VitamUiOntologyDto> getExternalOntologiesList() throws IOException {
         LOGGER.debug("[INTERNAL] : Get All ontologies values for tenant {}",
             securityService.getTenantIdentifier());
         final Integer tenantId = securityService.getTenantIdentifier();

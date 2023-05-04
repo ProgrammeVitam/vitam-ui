@@ -28,5 +28,5 @@ server-identity:
 
 logbook.scheduling.sendEventToVitamTasks.enabled: false
 
-# ontologies file path
+# external ontologie file path
 ontologies_file_path: "src/test/resources/ontologies/external_ontology_fields.json"

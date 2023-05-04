@@ -33,7 +33,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
@@ -81,7 +81,7 @@ public class TransactionArchiveUnitExternalService extends
         return collectTransactionInternalRestClient.findObjectGroupById(objectId, getInternalHttpContext());
     }
 
-    public List<OntologyDto> getExternalOntologiesList() {
+    public List<VitamUiOntologyDto> getExternalOntologiesList() {
         return collectTransactionInternalRestClient.getExternalOntologiesList(getInternalHttpContext());
     }
 
