@@ -335,17 +335,16 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @PostMapping(RestApi.TRANSFER_ACKNOWLEDGMENT)
     public ResponseEntity<String> transferAcknowledgmentOperation(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final String tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestHeader(value = "fileName") final String fileName,
         final InputStream inputStream) throws InvalidParseOperationException, PreconditionFailedException {
 
         LOGGER.debug("[UI] : Transfer Acknowledgment Operation");
         ParameterChecker.checkParameter(
-            "The access Contract , the tenant Id and the fileName are mandatory parameters: ",
-            accessContractId, tenantId, fileName);
+            "The tenant Id and the fileName are mandatory parameters: ",
+            tenantId, fileName);
         SafeFileChecker.checkSafeFilePath(fileName);
         SanityChecker.isValidFileName(fileName);
-        SanityChecker.checkSecureParameter(tenantId, accessContractId);
+        SanityChecker.checkSecureParameter(tenantId);
         LOGGER.debug("Start uploading file ...{} ", fileName);
         ResponseEntity<String> response =
             archivesSearchService.transferAcknowledgment(buildUiHttpContext(), fileName, inputStream);
