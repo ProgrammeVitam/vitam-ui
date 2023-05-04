@@ -35,8 +35,8 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-export interface IEnvironment {
-    production: boolean;
-    apiServerUrl?: string;
-    standalone?: boolean;
+export interface Environment {
+  production: boolean;
+  standalone?: boolean;
+  apiServerUrl?: string;
 }

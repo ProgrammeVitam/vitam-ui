@@ -47,19 +47,17 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolve
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
+import static java.util.Collections.emptyMap;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 
 @Configuration
 public class PastisConfiguration {
-
     private ResourceLoader resourceLoader;
-
 
     @Value("${cors.allowed-origins}")
     private String origins;
@@ -69,18 +67,15 @@ public class PastisConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NotNull CorsRegistry registry) {
-                registry.addMapping("/**")
-                    .allowedOrigins(origins.split(","))
-                    .allowCredentials(true);
+                registry.addMapping("/**").allowedOrigins(origins.split(",")).allowCredentials(true);
             }
         };
     }
 
     @Bean
     public ErrorViewResolver customErrorViewResolver() {
-        final ModelAndView redirectToIndexHtml =
-            new ModelAndView("forward:/index.html", Collections.emptyMap(), HttpStatus.OK);
-        return (request, status, model) -> status == HttpStatus.NOT_FOUND ? redirectToIndexHtml : null;
+        final ModelAndView redirectToIndexHtml = new ModelAndView("forward:/index.html", emptyMap(), OK);
+        return (request, status, model) -> status == NOT_FOUND ? redirectToIndexHtml : null;
     }
 
     @Bean
@@ -95,12 +90,11 @@ public class PastisConfiguration {
 
     @Bean
     public PastisService pastisService() {
-        return new PastisService(this.resourceLoader, puaPastisValidator(),jsonFromPUA(), puaFromJSON());
+        return new PastisService(this.resourceLoader, puaPastisValidator(), jsonFromPUA(), puaFromJSON());
     }
 
     @Bean
     public PuaPastisValidator puaPastisValidator() {
         return new PuaPastisValidator();
     }
-
 }

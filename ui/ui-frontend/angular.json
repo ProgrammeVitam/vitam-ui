@@ -944,6 +944,32 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "standalone": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/pastis/src/environments/environment.ts",
+                  "with": "projects/pastis/src/environments/environment.standalone.ts"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/pastis/ngsw-config.json",
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": true,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "buildOptimizer": false,
+              "aot": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "17mb"
+                }
+              ]
             }
           }
         },
@@ -960,6 +986,11 @@
             },
             "production": {
               "browserTarget": "pastis:build:production"
+            },
+            "standalone": {
+              "browserTarget": "pastis:build:standalone",
+              "host": "localhost",
+              "port": 8097
             }
           }
         },

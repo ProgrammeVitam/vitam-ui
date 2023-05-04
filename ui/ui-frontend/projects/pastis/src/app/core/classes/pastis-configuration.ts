@@ -1,10 +1,9 @@
-import {Injectable} from '@angular/core';
-import {environment} from '../../../environments/environment';
-import {PastisApiService} from '../api/api.pastis.service';
+import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { PastisApiService } from '../api/api.pastis.service';
 
 @Injectable()
 export class PastisConfiguration {
-
   // routes pastis
   pastisEditPage: string;
   sedaUrl: string;
@@ -38,27 +37,29 @@ export class PastisConfiguration {
   updateArchivalProfileUnitById: string;
   importProfileInExistingNotice: string;
 
-
-
-  constructor(private pastisApi: PastisApiService) {
-  }
+  constructor(private pastisApi: PastisApiService) {}
 
   public initConfiguration(): Promise<any> {
     if (environment.apiServerUrl != undefined && environment.standalone) {
       return new Promise((r, e) => {
-        this.pastisApi.getLocally('./assets/config/config-standalone.json').subscribe((content: PastisConfiguration) => {
-          Object.assign(this, content);
-          r(this);
-        }, reason => e(reason));
+        this.pastisApi.getLocally('./assets/config/config-standalone.json').subscribe(
+          (content: PastisConfiguration) => {
+            Object.assign(this, content);
+            r(this);
+          },
+          (reason) => e(reason)
+        );
       });
     } else {
       return new Promise((r, e) => {
-        this.pastisApi.getLocally('./assets/config/config-vitam-ui.json').subscribe((content: PastisConfiguration) => {
-          Object.assign(this, content);
-          r(this);
-        }, reason => e(reason));
+        this.pastisApi.getLocally('./assets/config/config-vitam-ui.json').subscribe(
+          (content: PastisConfiguration) => {
+            Object.assign(this, content);
+            r(this);
+          },
+          (reason) => e(reason)
+        );
       });
     }
   }
-
 }

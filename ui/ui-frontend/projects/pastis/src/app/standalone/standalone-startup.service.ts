@@ -35,59 +35,52 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Inject, Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { ApplicationService } from './application.service';
-
-import { ApplicationApiService } from './api/application-api.service';
-import { SecurityApiService } from './api/security-api.service';
-import { ApplicationId } from './application-id.enum';
-import { AuthService } from './auth.service';
-import { WINDOW_LOCATION } from './injection-tokens';
-import { Logger } from './logger/logger';
-import { AppConfiguration, AttachmentType, AuthUser, Color } from './models';
-import {ThemeService} from './theme.service';
+import { Observable, Subject, of } from 'rxjs';
+// import { tap } from 'rxjs/operators';
+import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'ui-frontend-common';
+// import { SecurityApiService } from 'ui-frontend-common/app/modules/api/security-api.service';
+import { StandaloneThemeService } from './standalone-theme.service';
 
 const WARNING_DURATION = 2000;
 const CUSTOMER_TECHNICAL_REFERENT_KEY = 'technical-referent-email';
 const CUSTOMER_WEBSITE_URL_KEY = 'website-url';
 
+interface StandaloneConfiguration {
+  THEME_COLORS: { [key: string]: string };
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class StartupService {
-
-  private configurationData: AppConfiguration;
-
-  userRefresh = new Subject<any>();
+export class StandaloneStartupService {
+  private CURRENT_TENANT_IDENTIFIER: string;
+  private configurationData: StandaloneConfiguration;
 
   CURRENT_APP_ID: ApplicationId = ApplicationId.PORTAL_APP;
-
-  private CURRENT_TENANT_IDENTIFIER: string;
-
+  userRefresh = new Subject<any>();
 
   constructor(
     private logger: Logger,
     private authService: AuthService,
-    private securityApi: SecurityApiService,
-    private themeService: ThemeService,
+    // private securityApi: SecurityApiService,
+    private themeService: StandaloneThemeService,
     @Inject(WINDOW_LOCATION) private location: any
-  ) { }
+  ) {}
 
   load(): any {
     this.configurationData = null;
 
-    let appConf: AppConfiguration = {
+    let appConf: StandaloneConfiguration = {
       THEME_COLORS: {
-        "vitamui-background" : "#F5F7FC",
-        "vitamui-header-footer" : "#ffffff",
-        "vitamui-primary" : "#702382",
-        "vitamui-secondary" : "#2563A9",
-        "vitamui-tertiary" : "#C22A40"
-      }
+        'vitamui-background': '#F5F7FC',
+        'vitamui-header-footer': '#ffffff',
+        'vitamui-primary': '#702382',
+        'vitamui-secondary': '#2563A9',
+        'vitamui-tertiary': '#C22A40',
+      },
     };
     this.configurationData = appConf;
-    this.themeService.init(this.configurationData, this.configurationData.THEME_COLORS);
+    this.themeService.init(this.configurationData as AppConfiguration, this.configurationData.THEME_COLORS);
     return appConf;
   }
 
@@ -108,12 +101,13 @@ export class StartupService {
    * No catchError should be set here, the security api must be called and verified before anything else.
    */
   refreshUser(): Observable<AuthUser> {
-    return this.securityApi.getAuthenticated().pipe(
-      tap((data) => {
-        this.authService.user = data;
-        this.userRefresh.next(data);
-      })
-    );
+    return of(null);
+    // return this.securityApi.getAuthenticated().pipe(
+    //   tap((data) => {
+    //     this.authService.user = data;
+    //     this.userRefresh.next(data);
+    //   })
+    // );
   }
 
   configurationLoaded(): boolean {
@@ -133,32 +127,17 @@ export class StartupService {
   }
 
   getAppLogoURL(): string {
-    let trustedAppLogoUrl = null;
-    const base64Logo = this.getLogo();
-
-    if (base64Logo) {
-      trustedAppLogoUrl = base64Logo;
-    }
-
-    return trustedAppLogoUrl;
+    return this.getLogo() || null;
   }
 
   getCustomerLogoURL(): string {
-    let trustedInlineLogoUrl = null;
-
-    if (this.authService.user) {
-      const currentUser = this.authService.user;
-      if (currentUser.basicCustomer) {
-        trustedInlineLogoUrl = currentUser.basicCustomer.graphicIdentity.portalDataBase64;
-      }
-    }
-
-    return trustedInlineLogoUrl;
+    return this.authService?.user?.basicCustomer?.graphicIdentity?.portalDataBase64 || null;
   }
 
   getReferentialUrl(): string {
     return null;
   }
+
   getPortalUrl(): string {
     return null;
   }
@@ -168,12 +147,10 @@ export class StartupService {
   }
 
   getLogoutUrl(): string {
-
     return null;
   }
 
   getCasUrl(): string {
-
     return null;
   }
 
@@ -181,8 +158,7 @@ export class StartupService {
     return null;
   }
 
-  getConfigStringValue(key: string): string {
-
+  getConfigStringValue(_key: string): string {
     return null;
   }
 
@@ -195,30 +171,30 @@ export class StartupService {
    * @param url URL to be redirected to.
    */
   redirect(url?: string) {
-    setTimeout(() => this.location.href = url ? url : this.getPortalUrl(), WARNING_DURATION);
+    setTimeout(() => (this.location.href = url ? url : this.getPortalUrl()), WARNING_DURATION);
   }
 
   getPlatformName(): string {
-
     return null;
   }
 
-  public getCustomer(): string {
+  public getCustomer(): any {
     return null;
   }
 
   public getCustomerTechnicalReferentEmail(): string {
     const customer = this.getCustomer();
-    if (customer) {
-      return customer[CUSTOMER_TECHNICAL_REFERENT_KEY];
-    }
+
+    if (!customer) return null;
+
+    return customer[CUSTOMER_TECHNICAL_REFERENT_KEY];
   }
 
   public getCustomerWebsiteUrl(): string {
     const customer = this.getCustomer();
-    if (customer) {
-      return customer[CUSTOMER_WEBSITE_URL_KEY];
-    }
-  }
 
+    if (!customer) return null;
+
+    return customer[CUSTOMER_WEBSITE_URL_KEY];
+  }
 }

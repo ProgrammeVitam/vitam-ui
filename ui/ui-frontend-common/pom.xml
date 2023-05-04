@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>ui-frontend-common</artifactId>
@@ -16,7 +18,7 @@
 
   <properties>
     <skipAllFrontend>false</skipAllFrontend>
-		<skipAllFrontendTests>false</skipAllFrontendTests>
+    <skipAllFrontendTests>false</skipAllFrontendTests>
   </properties>
 
   <build>
@@ -25,9 +27,9 @@
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <configuration>
-            <workingDirectory>.</workingDirectory>
-            <installDirectory>.</installDirectory>
-            <skip>${skipAllFrontend}</skip>
+          <workingDirectory>.</workingDirectory>
+          <installDirectory>.</installDirectory>
+          <skip>${skipAllFrontend}</skip>
         </configuration>
         <executions>
           <execution>
@@ -87,77 +89,4 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>standalone</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>copy-vitamui-common-configuration-model</id>
-                <phase>initialize</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <overwrite>true</overwrite>
-                  <outputDirectory>src/app/modules/models/</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>../../api/api-pastis/pastis-standalone/src/main/resources/standalone/</directory>
-                      <includes>
-                        <include>app.configuration.interface.ts</include>
-                      </includes>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-              <execution>
-                <id>copy-vitamui-common-startup.service.ts</id>
-                <phase>initialize</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <overwrite>true</overwrite>
-                  <outputDirectory>src/app/modules/</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>../../api/api-pastis/pastis-standalone/src/main/resources/standalone/</directory>
-                      <includes>
-                        <include>startup.service.ts</include>
-                      </includes>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-              <execution>
-                <id>copy-vitamui-common-theme.service.ts</id>
-                <phase>initialize</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <overwrite>true</overwrite>
-                  <outputDirectory>src/app/modules/</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>../../api/api-pastis/pastis-standalone/src/main/resources/standalone/</directory>
-                      <includes>
-                        <include>theme.service.ts</include>
-                      </includes>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
 </project>

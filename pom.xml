@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.gouv.vitamui</groupId>
@@ -166,7 +166,8 @@
         <node.version>v14.15.1</node.version>
         <npm.version>7.17.0</npm.version>
 
-        <!--Plugins version -->
+        <!--Plugins
+        version -->
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.asciidoctor.plugin.version>2.0.0</maven.asciidoctor.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
@@ -194,7 +195,7 @@
         <maven.swagger2markup.plugin.version>1.3.3</maven.swagger2markup.plugin.version>
         <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
         <maven.assembly.version>3.2.0</maven.assembly.version>
-        <launch4j-maven-plugin.version>1.7.21</launch4j-maven-plugin.version>
+        <launch4j-maven-plugin.version>2.4.1</launch4j-maven-plugin.version>
         <opencsv.version>5.4</opencsv.version>
         <spring.data.mongo.version>3.3.5</spring.data.mongo.version>
         <podam.version>7.2.5.RELEASE</podam.version>
@@ -216,9 +217,11 @@
         <!-- Swagger doc generation -->
         <swagger.dir>.</swagger.dir>
         <swagger.skip>true</swagger.skip>
-        <!--we can choose to build angular project and embedded it in our jar or not-->
+        <!--we
+        can choose to build angular project and embedded it in our jar or not-->
         <skipAllFrontend>true</skipAllFrontend>
-        <!--we can choose to execute Karma tests or not-->
+        <!--we
+        can choose to execute Karma tests or not-->
         <skipAllFrontendTests>true</skipAllFrontendTests>
 
         <itCoverageAgent></itCoverageAgent>
@@ -1656,8 +1659,10 @@
                             <phase>process-sources</phase>
                             <configuration>
                                 <skip>${skipAllFrontend}</skip>
-                                <arguments>run build${angular.build.profile} -- --project=${angular.build.project}
-                                    --output-path=${project.basedir}/target/www --base-href=${angular.base.href}
+                                <arguments>run build${angular.build.profile} --
+                                    --project=${angular.build.project}
+                                    --output-path=${project.basedir}/target/www
+                                    --base-href=${angular.base.href}
                                     --deploy-url=${angular.base.href}
                                 </arguments>
                             </configuration>
@@ -1670,7 +1675,8 @@
                             </goals>
                             <configuration>
                                 <skip>${skipAllFrontendTests}</skip>
-                                <arguments>run test${angular.test.profile} -- --project=${angular.build.project}
+                                <arguments>run test${angular.test.profile} --
+                                    --project=${angular.build.project}
                                     ${angular.additional.test.informations}
                                 </arguments>
                             </configuration>
@@ -1940,7 +1946,8 @@
                                         <argument>VERSION=${project.version}</argument>
                                         <argument>JAR_FILE=${rpm.jar-file}</argument>
                                         <argument>USER=vitamui</argument>
-                                        <!-- If you want to changes default dependencies (only systemd),
+                                        <!-- If you want to changes default dependencies (only
+                                        systemd),
                                         define them as a comma separated list of packages -->
                                         <argument>DEPENDENCIES=systemd,java-11-openjdk</argument>
                                     </arguments>
@@ -1979,7 +1986,8 @@
                                         <argument>VERSION=${project.version}</argument>
                                         <argument>JAR_FILE=${rpm.jar-file}</argument>
                                         <argument>USER=vitamui</argument>
-                                        <!-- If you want to changes default dependencies (only systemd),
+                                        <!-- If you want to changes default dependencies (only
+                                        systemd),
                                         define them as a comma separated list of packages -->
                                         <argument>DEPENDENCIES=systemd,openjdk-11-jdk</argument>
                                     </arguments>
@@ -2021,7 +2029,8 @@
             </build>
         </profile>
 
-        <!-- This profile is used to define skipTests value for Karma when -DskipTests is used during maven process. -->
+        <!-- This profile is used to define skipTests value for Karma when -DskipTests is used
+        during maven process. -->
         <profile>
             <id>skipTestsRun</id>
             <activation>
@@ -2034,7 +2043,8 @@
             </properties>
         </profile>
 
-        <!-- This profile is used to define skipTests value for Karma when -DskipAllFrontend is used during maven process. -->
+        <!-- This profile is used to define skipTests value for Karma when -DskipAllFrontend is used
+        during maven process. -->
         <profile>
             <id>skipAllFrontendTestsRun</id>
             <activation>
@@ -2156,7 +2166,8 @@
             </build>
             <properties>
                 <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-                <sonar.coverage.exclusions>**/*Dto.java, **/domain/*.java, **/vitam/seda/*.java, **/*spec.ts, **/*.scss,
+                <sonar.coverage.exclusions>**/*Dto.java, **/domain/*.java, **/vitam/seda/*.java,
+                    **/*spec.ts, **/*.scss,
                     **/*.css
                 </sonar.coverage.exclusions>
                 <sonar.cpd.exclusions>**/*Dto.java, **/domain/*.java, **/*spec.ts</sonar.cpd.exclusions>
@@ -2171,10 +2182,10 @@
                 </sonar.dependencyCheck.xmlReportPath>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
-                <sonar.host.url/>
+                <sonar.host.url />
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
-                <sonar.login/>
+                <sonar.login />
                 <sonar.typescript.lcov.reportPaths>
                     ${main.basedir}/ui/ui-frontend/target/coverage/commons/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/flow/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/identity/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/portal/lcov.info
                 </sonar.typescript.lcov.reportPaths>
@@ -2262,7 +2273,8 @@
                             <sourceDirectory>${main.basedir}/tools/swagger/config/</sourceDirectory>
                             <sourceDocumentName>index.adoc</sourceDocumentName>
                             <backend>html5</backend>
-                            <outputDirectory>${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}
+                            <outputDirectory>
+                                ${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}
                             </outputDirectory>
                             <attributes>
                                 <toc>left</toc>

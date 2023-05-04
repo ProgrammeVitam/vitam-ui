@@ -39,11 +39,11 @@ knowledge of the CeCILL-C license and that you accept its terms.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import {IEnvironment} from './IEnvironment';
+import { Environment } from './environment.interface';
 
-export const environment: IEnvironment = {
+export const environment: Environment = {
   production: true,
-  standalone: false
+  standalone: false,
 };
 
 /*
