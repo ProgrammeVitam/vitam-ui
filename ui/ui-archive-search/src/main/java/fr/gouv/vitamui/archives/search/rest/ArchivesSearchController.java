@@ -177,10 +177,10 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
-                                                           @QueryParam("qualifier") String qualifier,
-                                                           @QueryParam("version") Integer version,
-                                                           @QueryParam("tenantId") Integer tenantId,
-                                                           @QueryParam("contractId") String contractId) throws PreconditionFailedException,
+        @QueryParam("qualifier") String qualifier,
+        @QueryParam("version") Integer version,
+        @QueryParam("tenantId") Integer tenantId,
+        @QueryParam("contractId") String contractId) throws PreconditionFailedException,
         InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier, The contractId and The tenantId are mandatory parameters: ",
             id, contractId, String.valueOf(tenantId));
@@ -318,7 +318,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @PutMapping(RestApi.ARCHIVE_UNIT_INFO + PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> updateUnitById(final @PathVariable("id") String id,
-                                                 @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
+        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         ParameterChecker
@@ -335,17 +335,16 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @PostMapping(RestApi.TRANSFER_ACKNOWLEDGMENT)
     public ResponseEntity<String> transferAcknowledgmentOperation(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final String tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestHeader(value = "fileName") final String fileName,
         final InputStream inputStream) throws InvalidParseOperationException, PreconditionFailedException {
 
         LOGGER.debug("[UI] : Transfer Acknowledgment Operation");
         ParameterChecker.checkParameter(
-            "The access Contract , the tenant Id and the fileName are mandatory parameters: ",
-            accessContractId, tenantId, fileName);
+            "the tenant Id and the fileName are mandatory parameters: ",
+            tenantId, fileName);
         SafeFileChecker.checkSafeFilePath(fileName);
         SanityChecker.isValidFileName(fileName);
-        SanityChecker.checkSecureParameter(tenantId, accessContractId);
+        SanityChecker.checkSecureParameter(tenantId);
         LOGGER.debug("Start uploading file ...{} ", fileName);
         ResponseEntity<String> response =
             archivesSearchService.transferAcknowledgment(buildUiHttpContext(), fileName, inputStream);
