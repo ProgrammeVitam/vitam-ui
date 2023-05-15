@@ -3260,18 +3260,13 @@
     "SERVER_ERROR": "Une erreur technique est survenue : erreur interne"
   },
 
-
-
-
-
-
-  "COLLECT":{
+  "COLLECT": {
     "UNIT_OBJECT_QUALIFIER_TYPE": {
       "BinaryMaster": "Original numérique",
       "Dissemination": "Copie de diffusion",
       "Thumbnail": "Vignette",
       "TextContent": "Contenu brut",
-      "PhysicalMaster": "Original papier"
+      "PhysicalMaster": "Archive physique"
     },
     "ARCHIVE_UNIT_RULES_DETAILS": {
       "RULES_FINAL_ACTION": {
@@ -3744,7 +3739,6 @@
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "Vous avez atteint le nombre de caractère maximal autorisé.",
       "OBJECT_TYPE": "recherche sauvegardée",
       "NO_VALUE_FOUND_TO_DISPLAY": "Aucune valeur à afficher"
-
     },
     "ARCHIVE_UNIT_PREVIEW": {
       "FIELDS": {
@@ -3842,14 +3836,13 @@
     "EDIT": "MODIFIER"
   },
 
-
-  "ARCHIVE_SEARCH":{
+  "ARCHIVE_SEARCH": {
     "UNIT_OBJECT_QUALIFIER_TYPE": {
       "BinaryMaster": "Original numérique",
       "Dissemination": "Copie de diffusion",
       "Thumbnail": "Vignette",
       "TextContent": "Contenu brut",
-      "PhysicalMaster": "Original papier"
+      "PhysicalMaster": "Archive physique"
     },
     "ARCHIVE_UNIT_RULES_DETAILS": {
       "RULES_FINAL_ACTION": {
@@ -4272,7 +4265,9 @@
         "CREATED_APPLICATION_DATE": "Date de création par l'application",
         "STOCKAGE": "STOCKAGE",
         "STOCKAGE_STRATEGY_ID": "Identifiant de la stratégie de stockage",
-        "COPY": "Copier"
+        "COPY": "Copier",
+        "PHYSICAL_ID": "Identifiant de l'objet physique",
+        "PhysicalDimensions": "CARACTÉRISTIQUES PHYSIQUES"
       },
       "TABS": {
         "INFORMATIONS": "Informations",
@@ -4365,7 +4360,96 @@
       "CLASSIFICATION": "Classification",
       "GEL": "Gel / Dégel"
     }
+  },
+  "SEDA": {
+    "MEASUREMENT_TYPE": {
+      "Width": "Largeur",
+      "Height": "Hauteur",
+      "Depth": "Profondeur",
+      "Shape": "Forme",
+      "Diameter": "Diamètre",
+      "Length": "Longueur",
+      "Thickness": "Epaisseur",
+      "Weight": "Poids",
+      "NumberOfPage": "Nombre de pages"
+    },
+    "MEASUREMENT_UNIT": {
+      "micrometre": {
+        "NAME": "micromètre",
+        "SYMBOL": "μm"
+      },
+      "4H": {
+        "NAME": "4H",
+        "SYMBOL": "4H"
+      },
+      "millimetre": {
+        "NAME": "millimètre",
+        "SYMBOL": "mm"
+      },
+      "MMT": {
+        "NAME": "millimètre",
+        "SYMBOL": "mm"
+      },
+      "centimetre": {
+        "NAME": "centimètre",
+        "SYMBOL": "cm"
+      },
+      "CMT": {
+        "NAME": "centimètre",
+        "SYMBOL": "cm"
+      },
+      "metre": {
+        "NAME": "mètre",
+        "SYMBOL": "m"
+      },
+      "inch": {
+        "NAME": "pouce",
+        "SYMBOL": "in"
+      },
+      "INH": {
+        "NAME": "pouce",
+        "SYMBOL": "in"
+      },
+      "foot": {
+        "NAME": "pied",
+        "SYMBOL": "ft"
+      },
+      "FOT": {
+        "NAME": "pied",
+        "SYMBOL": "ft"
+      },
+      "microgram": {
+        "NAME": "microgramme",
+        "SYMBOL": "μg"
+      },
+      "MC": {
+        "NAME": "microgramme",
+        "SYMBOL": "μm"
+      },
+      "milligram": {
+        "NAME": "milligramme",
+        "SYMBOL": "mm"
+      },
+      "MGM": {
+        "NAME": "milligramme",
+        "SYMBOL": "mm"
+      },
+      "gram": {
+        "NAME": "gramme",
+        "SYMBOL": "g"
+      },
+      "GRM": {
+        "NAME": "gramme",
+        "SYMBOL": "g"
+      },
+      "kilogram": {
+        "NAME": "kilogramme",
+        "SYMBOL": "kg"
+      },
+      "KGM": {
+        "NAME": "kilogramme",
+        "SYMBOL": "kg"
+      }
+    }
   }
-
-
 }

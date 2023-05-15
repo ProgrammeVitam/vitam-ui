@@ -1,0 +1,90 @@
+<div *ngIf="!archive" class="object-menu">
+  <div class="line split">
+    <div class="line open-close-icon">
+      <i class="vitamui-icon {{ archive.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
+    </div>
+    <div class="line shrink object-name">No archive to render</div>
+  </div>
+</div>
+
+<div *ngIf="!isPhysical" class="object-menu">
+  <div class="line split">
+    <div class="line open-close-icon">
+      <i class="vitamui-icon {{ archive.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
+    </div>
+    <div class="line shrink object-name">No physical archive</div>
+  </div>
+</div>
+
+<div *ngIf="isPhysical" class="object-menu" [ngClass]="{ opened: archive.opened }" (click)="toggleArchiveMetadataDisplay()">
+  <div class="line split">
+    <div class="line open-close-icon">
+      <i class="vitamui-icon {{ archive.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
+    </div>
+    <div class="line shrink object-name">
+      {{ ('ARCHIVE_SEARCH.UNIT_OBJECT_QUALIFIER_TYPE.' + archive.qualifier | translate) + ' (' + archive.version + ')' }}
+    </div>
+    <div *ngIf="archive.qualifier !== 'PhysicalMaster'" class="line object-size">
+      {{ archive.Size | bytes }}
+    </div>
+  </div>
+</div>
+
+<div class="object-details" *ngIf="isPhysical && archive.opened">
+  <div class="object-details-group IDS">
+    <div class="row no-title"></div>
+
+    <div class="row">
+      <div class="col">
+        <div class="read-only-field">
+          <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECT_ID' | translate }}</label>
+          <div>{{ archive['#id'] }}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="read-only-field">
+          <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.OPERATION_ID' | translate }}</label>
+          <div>{{ archive['#opi'] }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="read-only-field">
+          <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.USAGE' | translate }}</label>
+          <div>{{ 'ARCHIVE_SEARCH.UNIT_OBJECT_QUALIFIER_TYPE.' + archive.qualifier | translate }}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="read-only-field">
+          <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.USAGE_VERSION' | translate }}</label>
+          <div>{{ archive.version }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="read-only-field">
+          <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PHYSICAL_ID' | translate }}</label>
+          <div>{{ archive.PhysicalId }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-separator"></div>
+  </div>
+
+  <div class="object-details-group">
+    <div class="row title">{{ section.name | translate }}</div>
+    <div *ngFor="let row of section.rows" class="row">
+      <div *ngFor="let column of row" class="col">
+        <div class="read-only-field">
+          <label>{{ column.display.key | translate }}</label>
+          <div>{{ column.display.value }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

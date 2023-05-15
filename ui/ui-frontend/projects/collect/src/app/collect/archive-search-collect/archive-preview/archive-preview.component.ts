@@ -97,7 +97,7 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
 
   showNormalPanel() {
     this.updateStarted = false;
-    this.selectedTabChangeEvent({ index: 0, tab: null });
+    this.selectedTabChangeEvent({ index: this.selectedIndex, tab: null });
   }
 
   showExtendedPanel() {
