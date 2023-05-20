@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.common.security.SanityChecker;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -53,10 +52,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -82,15 +79,19 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
     }
 
     public PaginatedValuesDto<D> getAllPaginated(final URIBuilder builder, final C context, final Integer page,
-        final Integer size, final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
+        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
         final Optional<String> embedded) {
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size, criteria,
-                orderBy, direction, embedded);
-        return fillOutUriParametersAndReturnResponse(builder, page, size, criteria, orderBy, direction, embedded, context);
+        LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size,
+            criteria,
+            orderBy, direction, embedded);
+        return fillOutUriParametersAndReturnResponse(builder, page, size, criteria, orderBy, direction, embedded,
+            context);
     }
 
-    private PaginatedValuesDto<D> fillOutUriParametersAndReturnResponse(URIBuilder builder, Integer page, Integer size, Optional<String> criteria,
+    private PaginatedValuesDto<D> fillOutUriParametersAndReturnResponse(URIBuilder builder, Integer page, Integer size,
+        Optional<String> criteria,
         Optional<String> orderBy, Optional<DirectionDto> direction, Optional<String> embedded, C context) {
         builder.addParameter("page", page.toString());
         builder.addParameter("size", size.toString());
@@ -113,7 +114,8 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
             .debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size, criteria,
                 orderBy, direction, embedded);
         final URIBuilder builder = getUriBuilderFromUrl();
-        return fillOutUriParametersAndReturnResponse(builder, page, size, criteria, orderBy, direction, embedded, context);
+        return fillOutUriParametersAndReturnResponse(builder, page, size, criteria, orderBy, direction, embedded,
+            context);
     }
 
     public ResultsDto<D> getAllRequest(final C context, final RequestParamDto requestParam) {
@@ -127,47 +129,23 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
         requestParam.getDirection().ifPresent(o -> builder.addParameter("direction", o.toString()));
 
         requestParam.getGroups().ifPresent(group -> {
-            for (var field: group.getFields()) {
+            for (var field : group.getFields()) {
                 builder.addParameter("fields", field);
             }
             builder.addParameter("operator", group.getOperator().name());
         });
 
         final HttpEntity<D> request = new HttpEntity<>(buildHeaders(context));
-        final var response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, this.getResultDtoClass());
+        final var response =
+            restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, this.getResultDtoClass());
         checkResponse(response);
         return (ResultsDto<D>) response.getBody();
     }
 
     protected abstract ParameterizedTypeReference<PaginatedValuesDto<D>> getDtoPaginatedClass();
 
-    protected MultiValueMap<String, String> buildSearchHeaders(final ExternalHttpContext context) {
-        final MultiValueMap<String, String> headers = buildHeaders(context);
-        String accessContract = null;
-        if (context instanceof ExternalHttpContext) {
-            final ExternalHttpContext externalCallContext = context;
-            accessContract = externalCallContext.getAccessContract();
-        }
-        if (accessContract != null) {
-            headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContract));
-        }
-        return headers;
-    }
 
-    protected MultiValueMap<String, String> buildSearchHeaders(final InternalHttpContext context) {
-        final MultiValueMap<String, String> headers = buildHeaders(context);
-        String accessContract = null;
-        if (context instanceof InternalHttpContext) {
-            final InternalHttpContext externalCallContext = context;
-            accessContract = externalCallContext.getAccessContract();
-        }
-
-        if (accessContract != null) {
-            headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContract));
-        }
-        return headers;
-    }
-    protected ParameterizedTypeReference<ResultsDto<D>> getResultDtoClass(){
+    protected ParameterizedTypeReference<ResultsDto<D>> getResultDtoClass() {
         return ParameterizedTypeReferenceFactory.createFromInstance(ResultsDto.class, this);
     }
 

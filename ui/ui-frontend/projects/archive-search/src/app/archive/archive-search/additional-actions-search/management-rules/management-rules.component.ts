@@ -51,7 +51,7 @@ import {
   RuleActions,
   RuleActionsEnum,
   RuleCategoryAction,
-  RuleSearchCriteriaDto,
+  RuleSearchCriteriaDto
 } from '../../../models/ruleAction.interface';
 import { SearchCriteriaDto, SearchCriteriaEltDto } from '../../../models/search.criteria';
 
@@ -616,7 +616,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           ruleActions: allRuleActions,
         };
 
-        this.archiveService.updateUnitsRules(ruleSearchCriteriaDto, this.accessContract).subscribe(
+        this.archiveService.updateUnitsRules(ruleSearchCriteriaDto).subscribe(
           (response) => {
             const ruleActions: ActionsRules[] = [];
             this.managementRulesSharedDataService.emitRuleActions(ruleActions);

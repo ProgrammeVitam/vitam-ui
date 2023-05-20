@@ -25,7 +25,7 @@
  * accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -42,8 +42,7 @@ import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
   templateUrl: './filing-holding-scheme.component.html',
   styleUrls: [ './filing-holding-scheme.component.scss' ],
 })
-export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() accessContract: string;
+export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {  
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
   private subscriptions = new Subscription();
@@ -141,7 +140,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   initFilingHoldingSchemeTree() {
     this.loadingHolding = true;
     this.subscriptions.add(
-      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract).subscribe((nodes) => {
+      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier).subscribe((nodes) => {
         this.fullNodes = nodes;
         this.nestedDataSourceFull.data = nodes;
         this.nestedTreeControlFull.dataNodes = nodes;
@@ -191,7 +190,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
       size: 1,
     };
     this.subscriptions.add(
-      this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
+      this.archiveService.searchArchiveUnitsByCriteria(searchCriteria)
         .subscribe((pageResult: PagedResult) => {
           this.showArchiveUnitDetails.emit(pageResult.results[0]);
           this.loadingArchiveUnit[`${from}`] = false;

@@ -45,7 +45,7 @@ import {
   InjectorModule,
   LoggerModule,
   StartupService,
-  WINDOW_LOCATION,
+  WINDOW_LOCATION
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ArchiveService } from '../../../archive.service';
@@ -187,12 +187,6 @@ describe('ReclassificationComponent', () => {
   it('items Selected should be grather than 0 ', () => {
     expect(component.itemSelected).toBeGreaterThan(0);
     expect(component.itemSelected).toEqual(25);
-  });
-
-  it('Should have an accessContract ', () => {
-    expect(component.data.accessContract).toBeDefined();
-    expect(component.data.accessContract).not.toBeNull();
-    expect(component.data.accessContract).toEqual('ContratTNR');
   });
 
   it('Should have a tenant identifier ', () => {

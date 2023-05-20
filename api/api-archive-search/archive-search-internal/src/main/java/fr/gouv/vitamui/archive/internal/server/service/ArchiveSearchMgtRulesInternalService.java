@@ -64,7 +64,6 @@ public class ArchiveSearchMgtRulesInternalService {
     private final ObjectMapper objectMapper;
     private final ArchiveSearchInternalService archiveSearchInternalService;
     private final RuleOperationsConverter ruleOperationsConverter;
-    private final RulesUpdateCommonService rulesUpdateCommonService;
     private final AccessContractService accessContractService;
     private final UnitService unitService;
 
@@ -72,13 +71,11 @@ public class ArchiveSearchMgtRulesInternalService {
     public ArchiveSearchMgtRulesInternalService(
         final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
         final RuleOperationsConverter ruleOperationsConverter,
-        final RulesUpdateCommonService rulesUpdateCommonService,
         final AccessContractService accessContractService, final UnitService unitService,
         final ObjectMapper objectMapper) {
         this.archiveSearchInternalService = archiveSearchInternalService;
         this.objectMapper = objectMapper;
         this.ruleOperationsConverter = ruleOperationsConverter;
-        this.rulesUpdateCommonService = rulesUpdateCommonService;
         this.accessContractService = accessContractService;
         this.unitService = unitService;
     }
@@ -102,11 +99,11 @@ public class ArchiveSearchMgtRulesInternalService {
         JsonNode dslQuery =
             archiveSearchInternalService.mapRequestToDslQuery(ruleSearchCriteriaDto.getSearchCriteriaDto());
         ObjectNode dslRequest = (ObjectNode) dslQuery;
-        rulesUpdateCommonService
+        RulesUpdateCommonService
             .deleteAttributesFromObjectNode(dslRequest, ArchiveSearchInternalService.DSL_QUERY_PROJECTION,
                 ArchiveSearchInternalService.DSL_QUERY_FILTER, ArchiveSearchInternalService.DSL_QUERY_FACETS);
 
-        rulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
+        RulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         JsonNode updateQuery = objectMapper.convertValue(massUpdateUnitRuleRequest, JsonNode.class);
         LOGGER.debug("Add Rules to UA final updateQuery : {}", updateQuery);

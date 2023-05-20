@@ -102,8 +102,7 @@ describe('LeavesTreeComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LeavesTreeComponent);
-    component = fixture.componentInstance;
-    component.accessContract = 'accessContractForTest';
+    component = fixture.componentInstance;    
     component.loadingNodeUnit = true;
     nestedDataSource = new MatTreeNestedDataSource();
     nestedDataSource.data = [

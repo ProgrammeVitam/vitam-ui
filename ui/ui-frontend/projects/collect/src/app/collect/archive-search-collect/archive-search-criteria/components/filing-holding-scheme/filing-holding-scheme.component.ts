@@ -149,7 +149,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
       trackTotalHits: false,
       computeFacets: false,
     };
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId, this.accessContract)
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId)
       .subscribe((pagedResult: PagedResult) => {
         this.filterNodesToLeavesOnly(pagedResult.results);
       });

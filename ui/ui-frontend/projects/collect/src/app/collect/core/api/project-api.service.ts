@@ -81,8 +81,8 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   // Manage Object Groups
 
-  getDownloadObjectFromUnitUrl(unitId: string, objectId: string, accessContractId: string, tenantId: number): string {
-    return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}&tenantId=${tenantId}&contractId=${accessContractId}`;
+  getDownloadObjectFromUnitUrl(unitId: string, objectId: string, tenantId: number): string {
+    return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}&tenantId=${tenantId}`;
   }
 
   public deletebyId(projectId: string) {

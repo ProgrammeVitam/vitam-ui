@@ -44,8 +44,7 @@ import { FilingHoldingSchemeHandler } from '../filing-holding-scheme.handler';
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   readonly DEFAULT_UNIT_PAGE_SIZE = 10;
-
-  @Input() accessContract: string;
+  
   @Input() loadingNodeUnit: boolean;
   loadingNodesDetails: boolean;
   // Already a graph
@@ -231,7 +230,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private sendSearchArchiveUnitsByCriteria(searchCriteria: SearchCriteriaDto): Observable<PagedResult> {
-    return this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
+    return this.archiveService.searchArchiveUnitsByCriteria(searchCriteria)
       .pipe(first());
   }
 

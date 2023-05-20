@@ -501,7 +501,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     if (this.hasSearchCriterias()) {
       this.pendingGetFixedCount = true;
       this.submitedGetFixedCount = true;
-      this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract).subscribe(
+      this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).subscribe(
         (exactCountResults: number) => {
           if (exactCountResults !== -1) {
             this.totalResults = exactCountResults;
@@ -548,7 +548,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       computeFacets: true,
     };
 
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
       (pagedResult: PagedResult) => {
         this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
 
@@ -581,7 +581,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       computeFacets: includeFacets,
     };
     this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
       (pagedResult: PagedResult) => {
         if (includeFacets) {
           this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
@@ -793,7 +793,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
         const exactCountResults: number = await this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
           .toPromise();
         if (exactCountResults !== -1) {
           this.totalResults = exactCountResults;
@@ -844,7 +844,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         sortingCriteria,
         language: this.translateService.currentLang,
       };
-      this.archiveService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.accessContract);
+      this.archiveService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria);
     }
   }
 
@@ -992,7 +992,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         data: {
           itemSelected: this.itemSelected,
           reclassificationCriteria,
-          accessContract: this.accessContract,
           tenantIdentifier: this.tenantIdentifier,
           archiveUnitGuidSelected: this.archiveUnitGuidSelected,
           archiveUnitAllunitup: this.archiveUnitAllunitup,
@@ -1018,7 +1017,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
         const exactCountResults: number = await this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
           .toPromise();
         if (exactCountResults !== -1) {
           this.totalResults = exactCountResults;
@@ -1040,7 +1039,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     await this.prepareToLaunchVitamAction();
     this.computeInheritedRulesService.launchComputedInheritedRulesModal(
       this.listOfUACriteriaSearch,
-      this.accessContract,
       this.numberOfHoldingUnitTypeOnComputedRules,
       this.tenantIdentifier,
       this.currentPage,
@@ -1062,7 +1060,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.updateUnitManagementRuleService.updateManagementRuleWithThresholds(
       this.listOfUACriteriaSearch,
       this.criteriaSearchList,
-      this.accessContract,
       this.currentPage,
       this.tenantIdentifier,
       this.itemSelected,
@@ -1107,7 +1104,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
               .subscribe(() => {
                 this.archiveUnitEliminationService.launchEliminationAnalysisModal(
                   this.listOfUACriteriaSearch,
-                  this.accessContract,
                   this.selectedItemCount,
                   this.itemSelected,
                   this.tenantIdentifier,
@@ -1121,7 +1117,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
             this.archiveUnitEliminationService.launchEliminationAnalysisModal(
               this.listOfUACriteriaSearch,
-              this.accessContract,
               this.selectedItemCount,
               this.itemSelected,
               this.tenantIdentifier,
@@ -1145,7 +1140,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             .subscribe(() => {
               this.archiveUnitEliminationService.launchEliminationAnalysisModal(
                 this.listOfUACriteriaSearch,
-                this.accessContract,
                 this.selectedItemCount,
                 this.itemSelected,
                 this.tenantIdentifier,
@@ -1159,7 +1153,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
           this.archiveUnitEliminationService.launchEliminationAnalysisModal(
             this.listOfUACriteriaSearch,
-            this.accessContract,
             this.selectedItemCount,
             this.itemSelected,
             this.tenantIdentifier,
@@ -1230,7 +1223,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private launchEliminationModal() {
     this.archiveUnitEliminationService.launchEliminationModal(
       this.listOfUACriteriaSearch,
-      this.accessContract,
       this.tenantIdentifier,
       this.currentPage,
       this.confirmSecondActionBigNumberOfResultsActionDialog

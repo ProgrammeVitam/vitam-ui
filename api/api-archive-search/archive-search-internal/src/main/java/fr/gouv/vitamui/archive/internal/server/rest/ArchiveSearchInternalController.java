@@ -28,7 +28,6 @@ package fr.gouv.vitamui.archive.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchEliminationInternalService;
@@ -36,6 +35,7 @@ import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalServ
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchMgtRulesInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchUnitExportCsvInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ExportDipInternalService;
+import fr.gouv.vitamui.archive.internal.server.service.ExternalParametersService;
 import fr.gouv.vitamui.archive.internal.server.service.TransferVitamOperationsInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
@@ -91,10 +91,11 @@ public class ArchiveSearchInternalController {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchiveSearchInternalController.class);
 
+
     private static final String MANDATORY_PARAMETERS =
-        "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ";
-    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY =
-        "The identifier, the accessContract Id  are mandatory parameters: ";
+        "The Search Criteria is mandatory parameter: ";
+    private static final String IDENTIFIER_MANDATORY =
+        "The identifier are mandatory parameters: ";
 
     private final ArchiveSearchInternalService archiveInternalService;
     private final ArchiveSearchUnitExportCsvInternalService archiveSearchUnitExportCsvInternalService;
@@ -103,6 +104,7 @@ public class ArchiveSearchInternalController {
     private final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService;
     private final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService;
     private final InternalSecurityService securityService;
+    private final ExternalParametersService externalParametersService;
     private final ObjectMapper objectMapper;
 
 
@@ -114,7 +116,8 @@ public class ArchiveSearchInternalController {
         final ExportDipInternalService exportDipInternalService,
         TransferVitamOperationsInternalService transferVitamOperationsInternalService,
         final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService,
-        final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService) {
+        final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService,
+        final ExternalParametersService externalParametersService) {
         this.archiveInternalService = archiveInternalService;
         this.securityService = securityService;
         this.objectMapper = objectMapper;
@@ -123,83 +126,66 @@ public class ArchiveSearchInternalController {
         this.transferVitamOperationsInternalService = transferVitamOperationsInternalService;
         this.archiveSearchEliminationInternalService = archiveSearchEliminationInternalService;
         this.archiveSearchMgtRulesInternalService = archiveSearchMgtRulesInternalService;
+        this.externalParametersService = externalParametersService;
     }
 
     @PostMapping(RestApi.SEARCH_PATH)
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
-            .checkParameter(MANDATORY_PARAMETERS,
-                tenantId, accessContractId, searchQuery);
-        SanityChecker.checkSecureParameter(accessContractId);
-        LOGGER.debug("Calling service searchArchiveUnits for tenantId {}, accessContractId {} By Criteria {} ",
-            tenantId,
-            accessContractId, searchQuery);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return archiveInternalService.searchArchiveUnitsByCriteria(searchQuery, vitamContext);
+            .checkParameter(MANDATORY_PARAMETERS, searchQuery);
+        LOGGER.debug("Calling service searchArchiveUnits By Criteria {} ", searchQuery);
+        return archiveInternalService.searchArchiveUnitsByCriteria(searchQuery,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @GetMapping(RestApi.FILING_HOLDING_SCHEME_PATH)
-    public VitamUISearchResponseDto getFillingHoldingScheme(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
-        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+    public VitamUISearchResponseDto getFillingHoldingScheme()
+        throws VitamClientException, IOException, PreconditionFailedException {
         LOGGER.debug("Get filing plan");
-        ParameterChecker.checkParameter("The tenant Id, the accessContract Id  are mandatory parameters: ", tenantId,
-            accessContractId);
-        SanityChecker.checkSecureParameter(accessContractId);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return objectMapper.treeToValue(archiveInternalService.getFillingHoldingScheme(vitamContext),
+        return objectMapper.treeToValue(archiveInternalService.getFillingHoldingScheme(
+                externalParametersService.buildVitamContextFromExternalParam()),
             VitamUISearchResponseDto.class);
     }
 
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
-    public ResultsDto findUnitById(final @PathVariable("id") String id,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
+    public ResultsDto findUnitById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
 
-        ParameterChecker
-            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id, accessContractId);
-        SanityChecker.checkSecureParameter(id, accessContractId);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("UA Details  {}", id);
-        VitamContext vitamContext =
-            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        return archiveInternalService.findArchiveUnitById(id, vitamContext);
+        return archiveInternalService.findArchiveUnitById(id,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @GetMapping(RestApi.OBJECTGROUP + CommonConstants.PATH_ID)
-    public ResultsDto findObjectById(final @PathVariable("id") String id,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
+    public ResultsDto findObjectById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
         ParameterChecker
-            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id, accessContractId);
-        SanityChecker.checkSecureParameter(id, accessContractId);
+            .checkParameter(IDENTIFIER_MANDATORY, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get ObjectGroup By id : {}", id);
-        VitamContext vitamContext =
-            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        return archiveInternalService.findObjectById(id, vitamContext);
+        return archiveInternalService.findObjectById(id,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT +
         CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
-        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version)
+        throws InvalidParseOperationException, PreconditionFailedException {
 
         ParameterChecker
-            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id, accessContractId);
-        SanityChecker.checkSecureParameter(id, accessContractId, usage);
-        LOGGER.debug("Access Contract {} ", accessContractId);
+            .checkParameter(IDENTIFIER_MANDATORY, id);
+        SanityChecker.checkSecureParameter(id, usage);
         LOGGER.debug("Download Archive Unit Object with id {}", id);
-        final VitamContext vitamContext =
-            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+
         return Mono.<Resource>fromCallable(() -> {
-                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
+                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version,
+                    externalParametersService.buildVitamContextFromExternalParam());
                 return new InputStreamResource((InputStream) response.getEntity());
             }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
@@ -209,206 +195,143 @@ public class ArchiveSearchInternalController {
 
     @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-        SanityChecker.checkSecureParameter(accessContractId);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("Export to CSV file Archive Units by criteria {}", searchQuery);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        Resource exportedResult =
-            archiveSearchUnitExportCsvInternalService
-                .exportToCsvSearchArchiveUnitsByCriteria(searchQuery, vitamContext);
+        Resource exportedResult = archiveSearchUnitExportCsvInternalService
+            .exportToCsvSearchArchiveUnitsByCriteria(searchQuery,
+                externalParametersService.buildVitamContextFromExternalParam());
         return new ResponseEntity<>(exportedResult, HttpStatus.OK);
     }
 
     @PostMapping(RestApi.EXPORT_DIP)
-    public ResponseEntity<String> exportDIPByCriteria(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @RequestBody final ExportDipCriteriaDto exportDipCriteriaDto)
+    public ResponseEntity<String> exportDIPByCriteria(@RequestBody final ExportDipCriteriaDto exportDipCriteriaDto)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
 
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
-        ParameterChecker
-            .checkParameter(
-                MANDATORY_PARAMETERS,
-                tenantId, accessContractId, exportDipCriteriaDto);
-        SanityChecker.checkSecureParameter(accessContractId);
+        ParameterChecker.checkParameter(MANDATORY_PARAMETERS, exportDipCriteriaDto);
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
         LOGGER.debug("Export DIP  by criteria {}", exportDipCriteriaDto);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        String result = exportDipInternalService.requestToExportDIP(exportDipCriteriaDto, vitamContext);
+        String result = exportDipInternalService.requestToExportDIP(exportDipCriteriaDto,
+            externalParametersService.buildVitamContextFromExternalParam());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(RestApi.TRANSFER_REQUEST)
-    public ResponseEntity<String> transferRequest(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @RequestBody final TransferRequestDto transferRequestDto)
+    public ResponseEntity<String> transferRequest(@RequestBody final TransferRequestDto transferRequestDto)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(transferRequestDto);
-        ParameterChecker.checkParameter(
-            MANDATORY_PARAMETERS,
-            tenantId, accessContractId, transferRequestDto);
-        SanityChecker.checkSecureParameter(accessContractId);
+        ParameterChecker.checkParameter(MANDATORY_PARAMETERS, transferRequestDto);
         SanityChecker.sanitizeCriteria(transferRequestDto);
         LOGGER.debug("Transfer request {}", transferRequestDto);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        String result = transferVitamOperationsInternalService.transferRequest(transferRequestDto, vitamContext);
+
+        String result = transferVitamOperationsInternalService.transferRequest(transferRequestDto,
+            externalParametersService.buildVitamContextFromExternalParam());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(RestApi.ELIMINATION_ANALYSIS)
-    public JsonNode startEliminationAnalysis(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @RequestBody final SearchCriteriaDto searchQuery)
+    public JsonNode startEliminationAnalysis(@RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
 
         SanityChecker.sanitizeCriteria(searchQuery);
-        ParameterChecker
-            .checkParameter(
-                MANDATORY_PARAMETERS,
-                tenantId, accessContractId, searchQuery);
-        SanityChecker.checkSecureParameter(accessContractId);
+        ParameterChecker.checkParameter(MANDATORY_PARAMETERS, searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("Calling elimination analysis by criteria {} ", searchQuery);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return archiveSearchEliminationInternalService.startEliminationAnalysis(searchQuery, vitamContext);
+        return archiveSearchEliminationInternalService.startEliminationAnalysis(searchQuery,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @PostMapping(RestApi.ELIMINATION_ACTION)
-    public JsonNode startEliminationAction(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @RequestBody final SearchCriteriaDto searchQuery)
+    public JsonNode startEliminationAction(@RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
 
         SanityChecker.sanitizeCriteria(searchQuery);
-        ParameterChecker
-            .checkParameter(
-                MANDATORY_PARAMETERS,
-                tenantId, accessContractId, searchQuery);
-        SanityChecker.checkSecureParameter(accessContractId);
+        ParameterChecker.checkParameter(MANDATORY_PARAMETERS, searchQuery);
         LOGGER.debug("Calling elimination action by criteria {} ", searchQuery);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return archiveSearchEliminationInternalService.startEliminationAction(searchQuery, vitamContext);
+        return archiveSearchEliminationInternalService.startEliminationAction(searchQuery,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
     public ResponseEntity<String> updateArchiveUnitsRules(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final RuleSearchCriteriaDto ruleSearchCriteriaDto)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
-        ParameterChecker
-            .checkParameter(MANDATORY_PARAMETERS,
-                tenantId, accessContractId, ruleSearchCriteriaDto);
-        SanityChecker.checkSecureParameter(accessContractId);
+        ParameterChecker.checkParameter(MANDATORY_PARAMETERS, ruleSearchCriteriaDto);
         LOGGER.debug("Update Archive Units Rules by criteria {}", ruleSearchCriteriaDto);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         String result =
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(vitamContext, ruleSearchCriteriaDto);
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(
+                externalParametersService.buildVitamContextFromExternalParam(), ruleSearchCriteriaDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
     public ResponseEntity<String> computedInheritedRules(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final SearchCriteriaDto searchCriteriaDto)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(searchCriteriaDto);
-        ParameterChecker
-            .checkParameter(
-                MANDATORY_PARAMETERS,
-                tenantId, accessContractId, searchCriteriaDto);
-        SanityChecker.checkSecureParameter(accessContractId);
+        ParameterChecker.checkParameter(MANDATORY_PARAMETERS, searchCriteriaDto);
         LOGGER.debug("Computed Inherited Rules  by criteria {}", searchCriteriaDto);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        String result = archiveInternalService.computedInheritedRules(vitamContext, searchCriteriaDto);
+        String result = archiveInternalService.computedInheritedRules(
+            externalParametersService.buildVitamContextFromExternalParam(), searchCriteriaDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(RestApi.UNIT_WITH_INHERITED_RULES)
-    public ResultsDto selectUnitsWithInheritedRules(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @RequestBody final SearchCriteriaDto searchQuery)
+    public ResultsDto selectUnitsWithInheritedRules(@RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
-            .checkParameter(MANDATORY_PARAMETERS,
-                tenantId, accessContractId, searchQuery);
-        SanityChecker.checkSecureParameter(accessContractId);
-        LOGGER.debug(
-            "Calling service select Unit With Inherited Rules for tenantId {}, accessContractId {} By Criteria {} ",
-            tenantId,
-            accessContractId, searchQuery);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return archiveInternalService.selectUnitWithInheritedRules(searchQuery, vitamContext);
+            .checkParameter(MANDATORY_PARAMETERS, searchQuery);
+
+        LOGGER.debug("Calling service select Unit With Inherited Rules By Criteria {} ", searchQuery);
+        return archiveInternalService.selectUnitWithInheritedRules(searchQuery,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
     @PostMapping(RestApi.RECLASSIFICATION)
     public ResponseEntity<String> reclassification(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
 
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
-        ParameterChecker
-            .checkParameter(MANDATORY_PARAMETERS,
-                tenantId, accessContractId, reclassificationCriteriaDto);
-        SanityChecker.checkSecureParameter(accessContractId);
+        ParameterChecker.checkParameter(MANDATORY_PARAMETERS, reclassificationCriteriaDto);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        String result = archiveInternalService.reclassification(vitamContext, reclassificationCriteriaDto);
+        String result =
+            archiveInternalService.reclassification(externalParametersService.buildVitamContextFromExternalParam(),
+                reclassificationCriteriaDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     public String updateUnitById(final @PathVariable("id") String id,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker
-            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id, accessContractId);
+            .checkParameter(IDENTIFIER_MANDATORY, id);
         ParameterChecker
             .checkParameter("The request body is mandatory: ", unitDescriptiveMetadataDto);
-        SanityChecker.checkSecureParameter(accessContractId, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("update archiveUnit id  {}", id);
-        VitamContext vitamContext =
-            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        return archiveInternalService.updateUnitById(id, unitDescriptiveMetadataDto, vitamContext);
+
+        return archiveInternalService.updateUnitById(id, unitDescriptiveMetadataDto,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 
 
     @ApiOperation(value = "Upload an ATR for transfer acknowledgment operation", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public String transferAcknowledgment(
-        InputStream inputStream,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+    public String transferAcknowledgment(InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
-    )
-        throws PreconditionFailedException, InvalidParseOperationException,
-        VitamClientException {
+    ) throws PreconditionFailedException, VitamClientException {
 
         LOGGER.debug("[INTERNAL] : Transfer Acknowledgment Operation");
-        ParameterChecker.checkParameter("The access contract and the fileName are mandatory parameters: ",
-            accessContractId,
-            originalFileName);
+        ParameterChecker.checkParameter("The fileName is mandatory parameter: ", originalFileName);
         SanityChecker.isValidFileName(originalFileName);
-        SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Transfer Acknowledgment : upload  atr xml filename: {}", originalFileName);
-
-        VitamContext vitamContext =
-            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-
-        return transferVitamOperationsInternalService.transferAcknowledgmentService(inputStream, vitamContext);
+        return transferVitamOperationsInternalService.transferAcknowledgmentService(inputStream,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 }

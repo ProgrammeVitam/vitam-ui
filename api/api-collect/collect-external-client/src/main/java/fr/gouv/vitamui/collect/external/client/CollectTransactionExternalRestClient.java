@@ -89,7 +89,7 @@ public class CollectTransactionExternalRestClient
 
     public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String transactionId,
         SearchCriteriaDto searchQuery) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
             restTemplate.exchange(getUrl() + "/" + transactionId + ARCHIVE_UNITS, HttpMethod.POST, request,
@@ -107,7 +107,7 @@ public class CollectTransactionExternalRestClient
 
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(String transactionId, SearchCriteriaDto query,
         ExternalHttpContext context) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         return restTemplate.exchange(getUrl() + "/" + transactionId + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH,
             HttpMethod.POST, request, Resource.class);
@@ -149,14 +149,15 @@ public class CollectTransactionExternalRestClient
             UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         ResponseEntity<CollectTransactionDto> response =
-            restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.GET, request, CollectTransactionDto.class);
+            restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.GET, request,
+                CollectTransactionDto.class);
         return response.getBody();
     }
 
     public CollectTransactionDto updateTransaction(ExternalHttpContext context,
         CollectTransactionDto collectTransactionDto) {
         final HttpEntity<?> request = new HttpEntity<>(collectTransactionDto, buildHeaders(context));
-        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange( getUrl(), HttpMethod.PUT,
+        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(getUrl(), HttpMethod.PUT,
             request, CollectTransactionDto.class);
         checkResponse(response);
         return response.getBody();

@@ -130,10 +130,6 @@ describe('TransferAcknowledgmentComponent', () => {
     expect(response).toBeTruthy();
   });
 
-  it('Should have an accessContract ', () => {
-    expect(component.data.accessContract).not.toBeNull();
-  });
-
   it('Should return false when the file extension is not xml ', () => {
     // Given
     const fileName = 'SIP-recherche-perf.zip';

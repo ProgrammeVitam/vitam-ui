@@ -394,7 +394,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       computeFacets: includeFacets,
     };
     this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
-    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction.id, this.accessContract).subscribe(
+    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction.id).subscribe(
       (pagedResult: PagedResult) => {
         if (includeFacets) {
           this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
@@ -728,7 +728,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
     this.loadExactCount();
 
-    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction.id, this.accessContract).subscribe(
+    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction.id).subscribe(
       (pagedResult: PagedResult) => {
         this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
         this.pendingComputeFacets = false;
@@ -748,7 +748,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.pendingGetFixedCount = true;
       this.submitedGetFixedCount = true;
       this.archiveUnitCollectService
-        .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.transaction.id, this.accessContract)
+        .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.transaction.id)
         .subscribe(
           (exactCountResults: number) => {
             if (exactCountResults !== -1) {

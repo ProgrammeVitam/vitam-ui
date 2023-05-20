@@ -178,7 +178,6 @@
                 <div *ngFor="let item of rulesCatygoriesToShow">
                   <mat-tab label="{{ item.name }}">
                     <app-archive-unit-rules
-                      [accessContract]="accessContract"
                       [selectedItem]="selectedItem"
                       [ruleCategory]="item.id"
                       [hasExactCount]="hasExactCount"

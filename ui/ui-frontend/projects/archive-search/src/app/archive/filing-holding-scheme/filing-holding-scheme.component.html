@@ -1,6 +1,5 @@
 <div class="vitamui-sidepanel-header">
   <app-classification-tree
-    [accessContract]="accessContract"
     [hasMatchesInSearch]="hasMatchesInSearch"
     [loadingHolding]="loadingHolding"
     [nestedDataSourceFull]="nestedDataSourceFull"
@@ -18,7 +17,6 @@
 
 <div class="vitamui-sidepanel-header flex-column" *ngIf="hasMatchesInSearch">
   <app-leaves-tree
-    [accessContract]="accessContract"
     [nestedDataSourceLeaves]="nestedDataSourceLeaves"
     [searchRequestResultFacets]="requestResultFacets"
     [loadingNodeUnit]="loadingArchiveUnit.LEAVE"

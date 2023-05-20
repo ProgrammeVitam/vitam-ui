@@ -27,14 +27,12 @@
 
 package fr.gouv.vitamui.collect.external.client;
 
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
@@ -45,14 +43,12 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.TRANSACTIONS;
 import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_TRANSACTION_PATH;
@@ -87,25 +83,6 @@ public class CollectExternalRestClient
     @Override
     public String getPathUrl() {
         return RestApi.COLLECT_PROJECT_PATH;
-    }
-
-    private String getTransactionUrl() {
-        if (baseUrl != null) {
-            return baseUrl + RestApi.COLLECT_TRANSACTION_PATH;
-        } else {
-            return RestApi.COLLECT_TRANSACTION_PATH;
-        }
-    }
-
-    public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String projectId,
-        SearchCriteriaDto searchQuery) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
-        final ResponseEntity<ArchiveUnitsDto> response =
-            restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST, request,
-                ArchiveUnitsDto.class);
-        checkResponse(response);
-        return response.getBody();
     }
 
     public ResponseEntity<ResultsDto> findObjectById(String id, ExternalHttpContext context) {
