@@ -9,6 +9,9 @@
       owner: root
       group: root
       mode: 0644
+
+  - name: Update VITAM repositories for CentOS
+    shell: sed -i s/deb/rpm/g /etc/yum.repos.d/vitamui-repositories.repo
     notify:
       - purge yum cache
 
@@ -24,6 +27,9 @@
       owner: root
       group: root
       mode: 0644
+
+  - name: Update VITAM repositories for Debian
+    shell: sed -i s/rpm/deb/g /etc/apt/sources.list.d/vitamui-repositories.list
 
   - name: Update apt cache
     apt:

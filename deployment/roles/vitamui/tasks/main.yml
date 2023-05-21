@@ -156,7 +156,7 @@
     - vitamui_struct.secure | default(secure) | lower == 'true'
     - vitamui_certificate_type is defined
     - "vitamui_certificate_type|lower == '{{ item.name }}'"
-    - "{{ lookup('pipe', 'test -f {{ item.src }} || echo nofile') == \"\"}}"
+    #- "{{ lookup('pipe', 'test -f {{ item.src }} || echo nofile') == \"\"}}"
   with_items:
     # Copy the truststore for all vitamui components in order to communicate between them.
     - { name: server, src: "{{ inventory_dir }}/keystores/server/truststore_server.jks" }
