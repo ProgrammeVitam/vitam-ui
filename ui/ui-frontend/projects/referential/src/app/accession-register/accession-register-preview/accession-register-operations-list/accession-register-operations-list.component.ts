@@ -49,9 +49,9 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
 
   orderColumn: keyof RegisterValueEventModel = 'OpType'
   orderDirection = Direction.ASCENDANT;
-  availableOperationsType: Array<{ name: RegisterValueEventType, translation: string }>;
+  availableOperationsType: Array<{ name: RegisterValueEventType, translation: string }> = [];
   selectedFilters: Array<string>;
-  operationsProcessed: RegisterValueEventModel[];
+  operationsProcessed: RegisterValueEventModel[] = [];
 
   orderKeyOperationGots: keyof RegisterValueEventModel = 'Gots'
   orderKeyOperationUnits: keyof RegisterValueEventModel = 'Units'
