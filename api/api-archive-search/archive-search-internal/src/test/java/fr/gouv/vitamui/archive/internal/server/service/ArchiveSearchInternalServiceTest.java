@@ -56,7 +56,6 @@ import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
@@ -146,15 +145,13 @@ public class ArchiveSearchInternalServiceTest {
     @MockBean(name = "ruleOperationsConverter")
     private RuleOperationsConverter ruleOperationsConverter;
 
-    @InjectMocks
-    private RulesUpdateCommonService rulesUpdateCommonService;
-
     @MockBean(name = "accessContractService")
     private AccessContractService accessContractService;
 
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
     public final String UPDATE_RULES_ASYNC_RESPONSE = "data/update_rules_async_response.json";
-    public final String UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE = "data/update_unit_descriptive_metadata_response.json";
+    public final String UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE =
+        "data/update_unit_descriptive_metadata_response.json";
     public final String ELIMINATION_ANALYSIS_QUERY = "data/elimination/query.json";
     public final String ELIMINATION_ANALYSIS_FINAL_QUERY = "data/elimination/expected_query.json";
     public final String FILLING_HOLDING_SCHEME_EXPECTED_QUERY = "data/fillingholding/expected_query.json";
@@ -207,7 +204,7 @@ public class ArchiveSearchInternalServiceTest {
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
                 archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
                 exportDipV2Service, archivesSearchManagementRulesQueryBuilderService, eliminationService,
-                ruleOperationsConverter, rulesUpdateCommonService, accessContractService);
+                ruleOperationsConverter, accessContractService);
     }
 
     @Test
@@ -367,7 +364,8 @@ public class ArchiveSearchInternalServiceTest {
         reclassificationCriteriaDto.setSearchCriteriaDto(searchQuery);
 
         //When //Then
-        String expectingGuid = archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
+        String expectingGuid =
+            archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
         assertThatCode(() -> {
             archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
         }).doesNotThrowAnyException();
@@ -402,7 +400,7 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto(null, null, null, null, "01/01/2023",Arrays.asList("StartDate"));
+            buildUnitDescriptiveMetadataDto(null, null, null, null, "01/01/2023", Arrays.asList("StartDate"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -417,7 +415,8 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("some title", null, null, null, "01/01/2023",Arrays.asList("StartDate", "Description"));
+            buildUnitDescriptiveMetadataDto("some title", null, null, null, "01/01/2023",
+                Arrays.asList("StartDate", "Description"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -433,7 +432,8 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("some title", "some description", "Item", null, null,Arrays.asList("StartDate", "EndDate"));
+            buildUnitDescriptiveMetadataDto("some title", "some description", "Item", null, null,
+                Arrays.asList("StartDate", "EndDate"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -449,7 +449,8 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto(null, null, null, null, null,Arrays.asList("StartDate", "EndDate", "Description"));
+            buildUnitDescriptiveMetadataDto(null, null, null, null, null,
+                Arrays.asList("StartDate", "EndDate", "Description"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -465,7 +466,8 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("Title", null, "Item", null, null,Arrays.asList("StartDate", "EndDate", "Description"));
+            buildUnitDescriptiveMetadataDto("Title", null, "Item", null, null,
+                Arrays.asList("StartDate", "EndDate", "Description"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -482,7 +484,8 @@ public class ArchiveSearchInternalServiceTest {
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildFullUnitDescriptiveMetadataDto(
-                "french title", "english title", "french description", "english description",  "Item", null, null,Arrays.asList("StartDate", "EndDate"));
+                "french title", "english title", "french description", "english description", "Item", null, null,
+                Arrays.asList("StartDate", "EndDate"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -500,7 +503,8 @@ public class ArchiveSearchInternalServiceTest {
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildFullUnitDescriptiveMetadataDto(
-                null, "english title", "french description", null,  "Item", null, null,Arrays.asList("StartDate", "EndDate", "Title_.fr", "Description_.en"));
+                null, "english title", "french description", null, "Item", null, null,
+                Arrays.asList("StartDate", "EndDate", "Title_.fr", "Description_.en"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -511,7 +515,8 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     private UnitDescriptiveMetadataDto buildUnitDescriptiveMetadataDto
-        (String title, String description, String descriptionLevel, String startDate, String endDate, List<String> unsetAction) {
+        (String title, String description, String descriptionLevel, String startDate, String endDate,
+            List<String> unsetAction) {
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = new UnitDescriptiveMetadataDto();
         unitDescriptiveMetadataDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
         unitDescriptiveMetadataDto.setTitle(title);
@@ -524,7 +529,8 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     private UnitDescriptiveMetadataDto buildFullUnitDescriptiveMetadataDto
-        (String title_fr, String title_en, String description_fr,String description_en, String descriptionLevel, String startDate, String endDate, List<String> unsetAction) {
+        (String title_fr, String title_en, String description_fr, String description_en, String descriptionLevel,
+            String startDate, String endDate, List<String> unsetAction) {
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = new UnitDescriptiveMetadataDto();
         unitDescriptiveMetadataDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
         unitDescriptiveMetadataDto.setTitle_fr(title_fr);

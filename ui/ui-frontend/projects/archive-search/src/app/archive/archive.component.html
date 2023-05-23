@@ -1,6 +1,7 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
-    <app-filing-holding-scheme [accessContract]="accessContract"></app-filing-holding-scheme>
+  <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract"
+               vitamuiCommonResizeSidebar="left">
+    <app-filing-holding-scheme></app-filing-holding-scheme>
   </mat-sidenav>
 
   <mat-sidenav
@@ -15,7 +16,6 @@
       (previewClose)="closePanel()"
       (showExtendedLateralPanel)="showExtendedLateralPanel()"
       [archiveUnit]="openedItem"
-      [accessContract]="accessContract"
       (backToNormalLateralPanel)="backToNormalLateralPanel()"
       [accessContractAllowUpdating]="accessContractAllowUpdating"
 
@@ -44,7 +44,6 @@
       </div>
       <app-archive-search
         (archiveUnitClick)="showPreviewArchiveUnit($event)"
-        [accessContract]="accessContract"
         [accessContractAllowUpdating]="accessContractAllowUpdating"
         [accessContractUpdatingRestrictedDesc]="accessContractUpdatingRestrictedDesc"
       >

@@ -13,7 +13,6 @@
         (delete)="deleteForm(actionName.id, $event, action)"
         (confirmStep)="confirmStep(actionName.id)"
         (cancelStep)="cancelStep(actionName.id)"
-        [accessContract]="accessContract"
         [selectedItem]="selectedItem"
         [ruleCategory]="ruleCategory"
       ></app-add-management-rules>
@@ -45,7 +44,6 @@
     <div class="collapsible" [@collapse]="deleteRuleCollapsed" *ngFor="let actionName of getActions()">
       <app-delete-unit-rules
         *ngIf="actionName.actionType === action && action === 'DELETE_RULES'"
-        [accessContract]="accessContract"
         [selectedItem]="selectedItem"
         [ruleCategory]="ruleCategory"
         (delete)="deleteForm(actionName.id, $event, action)"
@@ -82,7 +80,6 @@
         (delete)="deleteForm(actionName.id, $event, action)"
         (confirmStep)="confirmStep(actionName.id)"
         (cancelStep)="cancelStep(actionName.id)"
-        [accessContract]="accessContract"
         [selectedItem]="selectedItem"
         [ruleCategory]="ruleCategory"
       ></app-update-unit-rules>

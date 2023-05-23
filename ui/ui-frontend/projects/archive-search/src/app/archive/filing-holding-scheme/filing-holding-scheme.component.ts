@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
-import { ArchiveService } from '../archive.service';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
-import { NodeData } from '../models/nodedata.interface';
-import { ResultFacet } from '../models/search.criteria';
+import {NestedTreeControl} from '@angular/cdk/tree';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {MatTreeNestedDataSource} from '@angular/material/tree';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {ArchiveSharedDataServiceService} from '../../core/archive-shared-data-service.service';
+import {ArchiveService} from '../archive.service';
+import {FilingHoldingSchemeNode} from '../models/node.interface';
+import {NodeData} from '../models/nodedata.interface';
+import {ResultFacet} from '../models/search.criteria';
 
 @Component({
   selector: 'app-filing-holding-scheme',
@@ -51,11 +51,9 @@ import { ResultFacet } from '../models/search.criteria';
   styleUrls: ['./filing-holding-scheme.component.scss']
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
-  @Input()
-  accessContract: string;
+
   tenantIdentifier: number;
   subscriptionNodesFull: Subscription;
-  subscriptionNodesFiltred: Subscription;
 
   subscriptionFacets: Subscription;
   nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode>;
@@ -122,6 +120,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
       }
     });
   }
+
   convertNodesToList(holdingSchemas: FilingHoldingSchemeNode[]): string[] {
     let nodeDataList: string[] = [];
     for (const node of holdingSchemas) {
@@ -180,7 +179,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     return nodesCheckedChilren;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.accessContract) {
@@ -191,7 +191,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
 
   initFilingHoldingSchemeTree() {
     this.loadingHolding = true;
-    this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract).subscribe((nodes) => {
+    this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier).subscribe((nodes) => {
       this.fullNodes = nodes;
       this.nestedDataSourceFull.data = nodes;
       this.nestedTreeControlFull.dataNodes = nodes;
@@ -250,27 +250,16 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   hasNestedChild = (_: number, node: any) => node.children && node.children.length;
 
   emitNode(node: FilingHoldingSchemeNode) {
-    this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
+    this.nodeData = {id: node.id, title: node.title, checked: node.checked, count: node.count};
     this.recursiveShowById(this.nestedDataSourceFull.data, node.checked, node.id);
     this.archiveSharedDataServiceService.emitNode(this.nodeData);
   }
 
-  onTouched = () => {};
+  onTouched = () => {
+  };
 
   showAllTreeNodes() {
     this.filtered = false;
-  }
-
-  recursiveShow(nodes: FilingHoldingSchemeNode[], show: boolean) {
-    if (nodes.length === 0) {
-      return;
-    }
-    for (const node of nodes) {
-      node.hidden = show;
-      this.recursiveShow(node.children, show);
-      this.linkOneToNotKeep = true;
-      this.linkTwoToNotKeep = false;
-    }
   }
 
   recursiveShowById(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {

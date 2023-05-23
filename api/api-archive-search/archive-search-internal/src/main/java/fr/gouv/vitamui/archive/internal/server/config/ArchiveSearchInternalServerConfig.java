@@ -29,7 +29,6 @@ package fr.gouv.vitamui.archive.internal.server.config;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
@@ -42,6 +41,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
+import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
@@ -111,11 +111,6 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
     }
 
     @Bean
-    public RulesUpdateCommonService rulesUpdateCommonService() {
-        return new RulesUpdateCommonService();
-    }
-
-    @Bean
     public SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService(
         final CustomSequenceRepository sequenceRepository,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
@@ -125,4 +120,9 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
             searchCriteriaHistoryConverter, internalSecurityService);
     }
 
+    @Bean
+    public ExternalParametersInternalRestClient externalParametersInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
+    }
 }

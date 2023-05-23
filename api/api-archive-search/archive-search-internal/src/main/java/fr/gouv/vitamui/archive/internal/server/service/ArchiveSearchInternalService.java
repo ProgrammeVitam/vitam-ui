@@ -171,7 +171,6 @@ public class ArchiveSearchInternalService {
     private final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
     private final ExportDipV2Service exportDipV2Service;
     private final RuleOperationsConverter ruleOperationsConverter;
-    private final RulesUpdateCommonService rulesUpdateCommonService;
     private final AccessContractService accessContractService;
 
 
@@ -184,7 +183,6 @@ public class ArchiveSearchInternalService {
         final ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService,
         final EliminationService eliminationService,
         final RuleOperationsConverter ruleOperationsConverter,
-        final RulesUpdateCommonService rulesUpdateCommonService,
         final AccessContractService accessContractService
 
     ) {
@@ -197,7 +195,6 @@ public class ArchiveSearchInternalService {
         this.exportDipV2Service = exportDipV2Service;
         this.eliminationService = eliminationService;
         this.ruleOperationsConverter = ruleOperationsConverter;
-        this.rulesUpdateCommonService = rulesUpdateCommonService;
         this.accessContractService = accessContractService;
     }
 
@@ -1261,10 +1258,10 @@ public class ArchiveSearchInternalService {
         MassUpdateUnitRuleRequest massUpdateUnitRuleRequest = new MassUpdateUnitRuleRequest();
         JsonNode dslQuery = mapRequestToDslQuery(ruleSearchCriteriaDto.getSearchCriteriaDto());
         ObjectNode dslRequest = (ObjectNode) dslQuery;
-        rulesUpdateCommonService
+        RulesUpdateCommonService
             .deleteAttributesFromObjectNode(dslRequest, DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS);
 
-        rulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
+        RulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
 
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         JsonNode updateQuery = objectMapper.convertValue(massUpdateUnitRuleRequest, JsonNode.class);
@@ -1278,7 +1275,7 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("Computed Inherited Rules by criteria {} ", searchCriteriaDto.toString());
         JsonNode jsonNode = mapRequestToDslQuery(searchCriteriaDto);
         ObjectNode dslRequest = (ObjectNode) jsonNode;
-        rulesUpdateCommonService
+        RulesUpdateCommonService
             .deleteAttributesFromObjectNode(dslRequest, DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS);
         LOGGER.debug("Computed Inherited Rules final dslQuery : {}", dslRequest);
         JsonNode response = computedInheritedRules(vitamContext, dslRequest);
@@ -1327,7 +1324,7 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("calling select Units With Inherited Rules by criteria {} ", searchQuery.toString());
         archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
         JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
-        rulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) dslQuery, DSL_QUERY_FACETS);
+        RulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) dslQuery, DSL_QUERY_FACETS);
         JsonNode vitamResponse = selectUnitWithInheritedRules(dslQuery, vitamContext);
         ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
         if (Objects.nonNull(archiveUnitsDto.getArchives()) &&
