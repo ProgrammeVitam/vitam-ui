@@ -27,7 +27,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -145,7 +145,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.uploadFiles$ = this.uploadService.getUploadingFiles();
     this.zippedFile$ = this.uploadService.getZipFile();
     this.ontologyService.getInternalOntologyFieldsList().subscribe((data) => {
-      this.ontologies.push(...data);
+      this.ontologies = data;
       this.ontologies.sort((a: any, b: any) => {
         const shortNameA = a.Identifier;
         const shortNameB = b.Identifier;
