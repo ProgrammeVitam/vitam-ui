@@ -125,7 +125,7 @@
     "node-sass": "^4.14.1",
     "popper.js": "^1.16.1",
     "protractor": "~7.0.0",
-    "puppeteer": "^19.2.2",
+    "puppeteer": "~19.6.3",
     "rxjs": "^6.5.5",
     "ts-node": "~7.0.1",
     "tsickle": "0.39.1",
@@ -137,7 +137,8 @@
     "utf-8-validate": "^5.0.2",
     "web-animations-js": "^2.3.2",
     "webpack-bundle-analyzer": "^3.8.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "@types/lodash": "4.14.191"
   },
   "resolutions": {
     "moment": "2.26.0"
