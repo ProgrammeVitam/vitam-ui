@@ -36,7 +36,7 @@ import {
   DescriptionLevel,
   FilingHoldingSchemeNode,
   VitamuiIcons,
-  VitamuiUnitTypes,
+  VitamuiUnitTypes
 } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
@@ -53,7 +53,6 @@ import { FilingHoldingSchemeHandler } from '../filing-holding-scheme.handler';
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   readonly DEFAULT_UNIT_PAGE_SIZE = 10;
 
-  @Input() accessContract: string;
   @Input() loadingNodeUnit: boolean;
   @Input() transactionId: string;
   loadingNodesDetails: boolean;
@@ -273,7 +272,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private sendSearchArchiveUnitsByCriteria(searchCriteria: SearchCriteriaDto): Observable<PagedResult> {
-    return this.archiveCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId, this.accessContract).pipe(first());
+    return this.archiveCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).pipe(first());
   }
 
   private refreshTreeNodes() {

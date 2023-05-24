@@ -328,8 +328,7 @@
         <h2>{{ 'COLLECT.MODAL.ARCHIVE_POSITION_SUB_TITLE' | translate }}</h2>
         <div class="main-content">
           <div class="form-group">
-            <vitamui-library-filing-plan
-              [accessContract]="accessContractSelect.value"
+            <vitamui-library-filing-plan              
               [formControl]="linkParentIdControl"
               [mode]="FilingPlanMode.SOLO"
               [tenantIdentifier]="tenantIdentifier">
@@ -436,8 +435,7 @@
                       <div class="col">
                         <label>{{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}</label>
                         <vitamui-library-filing-plan
-                          [formControl]="asFormControl(ruleParamForm.get('unitUp'))"
-                          [accessContract]="accessContractSelect.value"
+                          [formControl]="asFormControl(ruleParamForm.get('unitUp'))"                          
                           [mode]="FilingPlanMode.SOLO"
                           [tenantIdentifier]="tenantIdentifier">
                         </vitamui-library-filing-plan>
