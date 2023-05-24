@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -78,7 +79,7 @@ public class TransactionArchiveUnitInternalController {
     private final ExternalParametersService externalParametersService;
     private static final String MANDATORY_PARAMETERS =
         "The tenant Id, the SearchCriteria are mandatory parameters: ";
-    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY =
+    private static final String IDENTIFIER_MANDATORY =
         "The identifier is mandatory parameter: ";
 
     public TransactionArchiveUnitInternalController(InternalSecurityService securityService,
@@ -140,7 +141,7 @@ public class TransactionArchiveUnitInternalController {
     public ResultsDto findObjectGroupById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
         ParameterChecker
-            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id);
+            .checkParameter(IDENTIFIER_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("[INTERNAL] : Get ObjectGroup By id : {}", id);
         return transactionArchiveUnitInternalService.findObjectGroupById(id,
