@@ -399,7 +399,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     };
     this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
     this.archiveUnitCollectService
-      .searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null, this.accessContract)
+      .searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null)
       .subscribe(
         (pagedResult: PagedResult) => {
           if (includeFacets) {
