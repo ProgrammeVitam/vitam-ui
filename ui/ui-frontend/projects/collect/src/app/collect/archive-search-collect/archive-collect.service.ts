@@ -112,9 +112,8 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.projectsApiService.getLastTransactionByProjectId(projectId).pipe(map((result) => result));
   }
 
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, accessContract: string): Observable<PagedResult> {
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string): Observable<PagedResult> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
     if (!!transactionId) {
       return this.transactionApiService.searchArchiveUnitsByCriteria(criteriaDto, transactionId, headers).pipe(
         //   timeout(TIMEOUT_SEC),
@@ -132,14 +131,14 @@ export class ArchiveCollectService extends SearchService<any> {
     }
   }
 
-  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], transactionId: string, accessContract: string): Observable<number> {
+  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], transactionId: string): Observable<number> {
     const searchCriteria = {
       criteriaList: criteriaElts,
       pageNumber: 0,
       size: 1,
       trackTotalHits: true,
     };
-    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId, accessContract).pipe(
+    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId).pipe(
       map((pagedResult: PagedResult) => {
         return pagedResult.totalResults;
       }),
@@ -156,7 +155,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
 
@@ -175,13 +174,11 @@ export class ArchiveCollectService extends SearchService<any> {
   launchDownloadObjectFromUnit(
     unitId: string,
     objectId: string,
-    tenantIdentifier: number,
-    accessContract: string,
     qualifier?: string,
     version?: number
   ) {
     this.downloadFile(
-      this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, accessContract, tenantIdentifier, qualifier, version)
+      this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, qualifier, version)
     );
   }
 
@@ -208,9 +205,8 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.projectsApiService.getById(projectId);
   }
 
-  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string) {
+  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
 
     return this.transactionApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, projectId, headers).subscribe(
       (file) => {
@@ -236,10 +232,9 @@ export class ArchiveCollectService extends SearchService<any> {
     );
   }
 
-  public loadFilingHoldingSchemeTree(tenantIdentifier: string, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
+  public loadFilingHoldingSchemeTree(tenantIdentifier: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
-      'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId,
+      'X-Tenant-Id': '' + tenantIdentifier
     });
 
     return this.searchUnitApiService.getFilingPlan(headers).pipe(
@@ -252,15 +247,13 @@ export class ArchiveCollectService extends SearchService<any> {
     );
   }
 
-  getReferentialUnitDetails(unitId: string, accessContract: string): Observable<SearchResponse> {
+  getReferentialUnitDetails(unitId: string): Observable<SearchResponse> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.searchUnitApiService.getById(unitId, headers);
   }
 
-  getCollectUnitDetails(unitId: string, accessContract: string): Observable<Unit> {
+  getCollectUnitDetails(unitId: string): Observable<Unit> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.transactionApiService.getCollectUnitById(unitId, headers);
   }
 
@@ -314,10 +307,10 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.transactionApiService.getExternalOntologiesList();
   }
 
-  selectUnitWithInheritedRules(transactionId: string, criteriaDto: SearchCriteriaDto, accessContract: string): Observable<Unit> {    
+  selectUnitWithInheritedRules(transactionId: string, criteriaDto: SearchCriteriaDto): Observable<Unit> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-    return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);    
+
+    return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);
   }
 }
 

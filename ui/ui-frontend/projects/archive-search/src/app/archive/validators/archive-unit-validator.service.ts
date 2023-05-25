@@ -65,11 +65,11 @@ export class ArchiveUnitValidatorService {
     return true ? archiveUnitAllunitup.filter((p) => p === parentId).length > 0 : false;
   }
 
-  existArchiveUnit(criteriaDto: SearchCriteriaDto, accessContract: string): AsyncValidatorFn {
-    return this.unitExists('targetGuid', criteriaDto, accessContract);
+  existArchiveUnit(criteriaDto: SearchCriteriaDto): AsyncValidatorFn {
+    return this.unitExists('targetGuid', criteriaDto);
   }
 
-  private unitExists(existTag: string, criteriaDto: SearchCriteriaDto, accessContract: string) {
+  private unitExists(existTag: string, criteriaDto: SearchCriteriaDto) {
     return (control: AbstractControl) => {
       const auditExists: any = {};
       auditExists[existTag] = true;
@@ -85,7 +85,7 @@ export class ArchiveUnitValidatorService {
         switchMap(() =>
           control.value !== null
             ? this.archiveService
-                .searchArchiveUnitsByCriteria(criteria, accessContract)
+                .searchArchiveUnitsByCriteria(criteria)
                 .toPromise()
                 .then((data) => {
                   if (data.totalResults === 1) {

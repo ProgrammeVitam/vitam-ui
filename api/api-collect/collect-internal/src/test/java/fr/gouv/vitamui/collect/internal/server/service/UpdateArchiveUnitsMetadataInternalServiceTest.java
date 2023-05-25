@@ -77,8 +77,10 @@ class UpdateArchiveUnitsMetadataInternalServiceTest {
 
         //When
         // TODO : do not mix raw values and Matchers !
-        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any())).thenReturn(vitamResponse);
-        String response = transactionInternalService.updateArchiveUnitsFromFile(vitamContext, csvFileInputStream, transactionId);
+        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any()))
+            .thenReturn(vitamResponse);
+        String response =
+            transactionInternalService.updateArchiveUnitsFromFile(csvFileInputStream, transactionId, vitamContext);
 
         //Then
         assertThat(response).isEqualTo(vitamResponse);
@@ -95,10 +97,12 @@ class UpdateArchiveUnitsMetadataInternalServiceTest {
             .getResourceAsStream("data/updateCollectArchiveUnits/wrong_collect_metadata.csv");
 
         //When
-        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any())).thenReturn(vitamResponse);
+        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any()))
+            .thenReturn(vitamResponse);
 
         //Then
-        assertThatCode(() -> transactionInternalService.updateArchiveUnitsFromFile(vitamContext, csvFileInputStream, transactionId)).
+        assertThatCode(() -> transactionInternalService.updateArchiveUnitsFromFile(csvFileInputStream,
+            transactionId, vitamContext)).
             isInstanceOf(RequestTimeOutException.class);
 
     }

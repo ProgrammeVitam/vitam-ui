@@ -61,8 +61,6 @@ const CURRENT_PAGE = 0;
 export class ArchiveUnitRulesDetailsTabComponent {
   @Input()
   archiveUnit: Unit;
-  @Input()
-  accessContract: string;
   archiveUnitRules: Unit;
   listOfCriteriaSearch: SearchCriteriaEltDto[] = [];
   selectUnitWithInheritedRulesSubscription: Subscription;
@@ -99,7 +97,7 @@ export class ArchiveUnitRulesDetailsTabComponent {
     };
     if(archiveUnit['#opi']){
       this.selectUnitWithInheritedRulesSubscription = this.collectService
-        .selectUnitWithInheritedRules(archiveUnit['#opi'], inheritedRulesCriteriaSearch, this.accessContract)
+        .selectUnitWithInheritedRules(archiveUnit['#opi'], inheritedRulesCriteriaSearch)
         .subscribe((response) => {
           this.archiveUnitRules = response;
           this.listOfCriteriaSearch = [];

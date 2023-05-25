@@ -25,14 +25,14 @@
  * accept its terms.
  */
 
-import {HttpErrorResponse} from '@angular/common/http';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, merge, Subject, Subscription} from 'rxjs';
-import {debounceTime, map, mergeMap} from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, merge, Subject, Subscription } from 'rxjs';
+import { debounceTime, map, mergeMap } from 'rxjs/operators';
 import {
   AccessContract,
   CriteriaDataType,
@@ -45,7 +45,7 @@ import {
   SidenavPage,
   Transaction,
   TransactionStatus,
-  Unit,
+  Unit
 } from 'ui-frontend-common';
 import {
   ArchiveSearchResultFacets,
@@ -58,16 +58,16 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
+  SearchCriteriaTypeEnum
 } from '../core/models';
-import {ArchiveCollectService} from './archive-collect.service';
+import { ArchiveCollectService } from './archive-collect.service';
 import {
   SearchCriteriaSaverComponent
 } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
-import {ArchiveFacetsService} from './archive-search-criteria/services/archive-facets.service';
-import {ArchiveSearchHelperService} from './archive-search-criteria/services/archive-search-helper.service';
-import {ArchiveSharedDataService} from './archive-search-criteria/services/archive-shared-data.service';
-import {UpdateUnitsaMetadataComponent} from './update-units-metadata/update-units-metadata.component';
+import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
+import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
+import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
+import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -399,7 +399,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     };
     this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
     this.archiveUnitCollectService
-      .searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null, this.accessContract)
+      .searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null)
       .subscribe(
         (pagedResult: PagedResult) => {
           if (includeFacets) {
@@ -735,7 +735,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.loadExactCount();
 
     this.archiveUnitCollectService
-      .searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null, this.accessContract).subscribe(
+      .searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null).subscribe(
       (pagedResult: PagedResult) => {
         this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
         this.pendingComputeFacets = false;
@@ -755,7 +755,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.pendingGetFixedCount = true;
       this.submitedGetFixedCount = true;
       this.archiveUnitCollectService
-        .getTotalTrackHitsByCriteria(this.criteriaSearchList, !!this.transaction ? this.transaction.id : null, this.accessContract)
+        .getTotalTrackHitsByCriteria(this.criteriaSearchList, !!this.transaction ? this.transaction.id : null)
         .subscribe(
           (exactCountResults: number) => {
             if (exactCountResults !== -1) {
@@ -907,7 +907,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         sortingCriteria,
         language: this.translateService.currentLang,
       };
-      this.archiveUnitCollectService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.transaction.id, this.accessContract);
+      this.archiveUnitCollectService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.transaction.id);
     }
   }
 

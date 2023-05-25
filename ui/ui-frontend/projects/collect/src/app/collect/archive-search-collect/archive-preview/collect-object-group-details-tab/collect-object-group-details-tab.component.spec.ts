@@ -46,7 +46,7 @@ import {
   ObjectQualifierType,
   Unit,
   VersionWithQualifierDto,
-  WINDOW_LOCATION,
+  WINDOW_LOCATION
 } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
@@ -115,7 +115,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
     component.archiveUnit = archiveUnit;
-    component.accessContract = 'accessContractTest';
     component.versionsWithQualifiersOrdered = [];
     fixture.detectChanges();
   });
@@ -161,8 +160,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(archiveCollectServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
       'archiveUnitTestID',
       'objectId',
-      1,
-      'accessContractTest',
       ObjectQualifierType.BINARYMASTER,
       1
     );
@@ -206,7 +203,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#unitType': '',
       '#unitups': [],
       '#opi': '',
-      '#tenant': 1,
       DescriptionLevel: 'Item',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },

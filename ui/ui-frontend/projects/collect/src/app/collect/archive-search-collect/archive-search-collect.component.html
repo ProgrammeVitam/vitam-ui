@@ -1,7 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
     <app-filing-holding-scheme
-      [accessContract]="accessContract"
       [transactionId]="transaction?.id"
       (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"
     >
@@ -19,8 +18,7 @@
       *ngIf="openedItem"
       (previewClose)="closePanel()"
       (showExtendedLateralPanel)="showExtendedLateralPanel()"
-      [archiveUnit]="openedItem"
-      [accessContract]="accessContract"
+      [archiveUnit]="openedItem"      
       (backToNormalLateralPanel)="backToNormalLateralPanel()"
       [accessContractAllowUpdating]="accessContractAllowUpdating"
       [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"

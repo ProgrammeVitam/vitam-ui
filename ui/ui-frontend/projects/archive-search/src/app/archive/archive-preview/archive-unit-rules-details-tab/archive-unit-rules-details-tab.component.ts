@@ -97,7 +97,7 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, O
       language: this.translateService.currentLang,
     };
     this.selectUnitWithInheritedRulesSubscription = this.archiveSearchService
-      .selectUnitWithInheritedRules(inheritedRulesCriteriaSearch, this.accessContract)
+      .selectUnitWithInheritedRules(inheritedRulesCriteriaSearch)
       .subscribe((response) => {
         this.archiveUnitRules = response;
         this.listOfCriteriaSearch = [];

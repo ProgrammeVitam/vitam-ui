@@ -210,11 +210,11 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
 
         //When //Then
         String expectingGuid =
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1),
-                ruleSearchCriteriaDto);
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(
+                ruleSearchCriteriaDto, new VitamContext(1));
         assertThatCode(() -> {
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1),
-                ruleSearchCriteriaDto);
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(
+                ruleSearchCriteriaDto, new VitamContext(1));
         }).doesNotThrowAnyException();
 
         Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
@@ -280,7 +280,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
 
         //When //Then
         assertThatCode(() -> {
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto, new VitamContext(1));
         }).hasMessage("the access contract using to update unit rules has no writing permission to update units");
 
     }

@@ -51,14 +51,13 @@ public class RulesUpdateCommonServiceTest {
         "data/expected_search_UA_query_without_filter_and_projection.json";
     public final String EXPECTED_SEARCH_UA_QUERY_WITHOUT_FILTER =
         "data/expected_search_UA_query_without_filter.json";
-    private final RulesUpdateCommonService rulesUpdateCommonService = new RulesUpdateCommonService();
 
     @Test
     void search_query_without_filter_field() throws FileNotFoundException, InvalidParseOperationException {
         JsonNode search_query_json = JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_UA_QUERY));
         JsonNode expected_search_query_json = JsonHandler.getFromFile(PropertiesUtils
             .findFile(EXPECTED_SEARCH_UA_QUERY_WITHOUT_FILTER));
-        rulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) search_query_json, "$filter");
+        RulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) search_query_json, "$filter");
         assertThat(search_query_json).isEqualTo(expected_search_query_json);
     }
 
@@ -68,7 +67,7 @@ public class RulesUpdateCommonServiceTest {
         JsonNode search_query_json = JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_UA_QUERY));
         JsonNode expected_search_query_json = JsonHandler.getFromFile(PropertiesUtils
             .findFile(EXPECTED_SEARCH_UA_QUERY_WITHOUT_FILTER_AND_PROJECTION));
-        rulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) search_query_json, "$filter",
+        RulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) search_query_json, "$filter",
             "$projection");
         assertThat(search_query_json).isEqualTo(expected_search_query_json);
     }

@@ -44,14 +44,16 @@ import java.io.InputStream;
 
 @Service
 public class TransferVitamOperationsInternalService {
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransferVitamOperationsInternalService.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(TransferVitamOperationsInternalService.class);
     public static final String OPERATION_IDENTIFIER = "itemId";
     private final TransferAcknowledgmentService transferAcknowledgmentService;
     private final TransferRequestService transferRequestService;
     private final ArchiveSearchInternalService archiveSearchInternalService;
 
 
-    public TransferVitamOperationsInternalService(final TransferAcknowledgmentService transferAcknowledgmentService, final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
+    public TransferVitamOperationsInternalService(final TransferAcknowledgmentService transferAcknowledgmentService,
+        final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
         final TransferRequestService transferRequestService
     ) {
         this.transferAcknowledgmentService = transferAcknowledgmentService;
@@ -96,7 +98,8 @@ public class TransferVitamOperationsInternalService {
         return response.findValue(OPERATION_IDENTIFIER).textValue();
     }
 
-    public String transferAcknowledgmentService(InputStream atrInputStream, VitamContext vitamContext) throws VitamClientException {
+    public String transferAcknowledgmentService(InputStream atrInputStream, VitamContext vitamContext)
+        throws VitamClientException {
 
         LOGGER.debug("Transfer Acknowledgment Operation");
         JsonNode transferAcknowledgmentResponse =

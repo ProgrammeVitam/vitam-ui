@@ -35,7 +35,7 @@ import {
   DescriptionLevel,
   FilingHoldingSchemeNode,
   VitamuiIcons,
-  VitamuiUnitTypes,
+  VitamuiUnitTypes
 } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
@@ -233,7 +233,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private sendSearchArchiveUnitsByCriteria(searchCriteria: SearchCriteriaDto): Observable<PagedResult> {
-    return this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).pipe(first());
+    return this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).pipe(first());
   }
 
   private refreshTreeNodes() {

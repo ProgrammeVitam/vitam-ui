@@ -243,7 +243,7 @@ class TransactionInternalServiceTest {
             .thenReturn("BELIEVE ME, I AM 200");
         // WHEN
         String resultedOperation =
-            transactionInternalService.updateArchiveUnitsFromFile(vitamContext, csvContent, TRANSACTION_ID);
+            transactionInternalService.updateArchiveUnitsFromFile(csvContent, TRANSACTION_ID, vitamContext);
         // THEN
         assertNotNull(resultedOperation);
     }

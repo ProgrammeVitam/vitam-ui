@@ -64,11 +64,11 @@ public class SearchCriteriaHistoryInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
         SearchCriteriaHistoryInternalController.class);
-
     private SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService;
 
     @Autowired
-    public SearchCriteriaHistoryInternalController(final SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService) {
+    public SearchCriteriaHistoryInternalController(
+        final SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService) {
         this.searchCriteriaHistoryInternalService = searchCriteriaHistoryInternalService;
     }
 
@@ -88,8 +88,9 @@ public class SearchCriteriaHistoryInternalController {
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+    public void delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
         searchCriteriaHistoryInternalService.delete(id);
@@ -98,7 +99,7 @@ public class SearchCriteriaHistoryInternalController {
     @PutMapping(CommonConstants.PATH_ID)
     public SearchCriteriaHistoryDto update(final @RequestBody SearchCriteriaHistoryDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , dto);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", dto);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", dto.getId());
         return searchCriteriaHistoryInternalService.update(dto);

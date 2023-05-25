@@ -228,7 +228,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   applyTransferAcknowledgment() {
     this.isSubmitBtnDisabled = true;
     this.transferAcknowledgementSubscription = this.archiveSearchService
-      .transferAcknowledgment(this.tenantIdentifier, this.fileToUpload, this.fileName, this.accessContract)
+      .transferAcknowledgment(this.tenantIdentifier, this.fileToUpload, this.fileName)
       .subscribe(
         (operationId) => {
           this.dialogRef.close(true);
