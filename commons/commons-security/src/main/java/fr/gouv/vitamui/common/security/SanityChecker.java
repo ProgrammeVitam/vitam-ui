@@ -33,7 +33,11 @@ import fr.gouv.vitam.common.StringUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.logging.SysErrLogger;
-import fr.gouv.vitamui.commons.api.exception.*;
+import fr.gouv.vitamui.commons.api.exception.InvalidOperationException;
+import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
+import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeParameterException;
+import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.owasp.esapi.Validator;
 import org.owasp.esapi.errors.IntrusionException;
@@ -69,11 +73,8 @@ public class SanityChecker {
     public static final String HTTP_PARAMETER_VALUE = "HTTPParameterValue";
 
     private static final int REQUEST_LIMIT = 10000;
+    private static final String INVALID_IDENTIFIER_SANITIZE = "Invalid identifier";
 
-    /**
-     * max size of xml file
-     */
-    private static long limitFileSize = DEFAULT_LIMIT_FILE_SIZE;
     /**
      * max size of json
      */
@@ -91,9 +92,10 @@ public class SanityChecker {
     private static final Validator ESAPI = init();
     private static final List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST =
         List.of("$action", "$add", "$pull", "#unitups", "#allunitups", "#id", "$in", "$eq",
-            "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields", "authorizationRequestReplyIdentifier",
+            "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields",
+            "authorizationRequestReplyIdentifier",
             "$limit", "$orderby", "$eq", "$offset", "events.agIdExt.TransferringAgency",
-            "events.agIdExt.originatingAgency","events.evDetData.ArchivalAgreement", "events.evDetData.EvDetailReq" );
+            "events.agIdExt.originatingAgency", "events.evDetData.ArchivalAgreement", "events.evDetData.EvDetailReq");
 
     private SanityChecker() {
         // Empty constructor
@@ -115,7 +117,7 @@ public class SanityChecker {
      * @return true/false
      */
     public static void isValidFileName(String fileName) throws PreconditionFailedException {
-        if( StringUtils.HTML_PATTERN.matcher(fileName).find() || isStringInfected(fileName, HTTP_PARAMETER_VALUE) ) {
+        if (StringUtils.HTML_PATTERN.matcher(fileName).find() || isStringInfected(fileName, HTTP_PARAMETER_VALUE)) {
             throw new PreconditionFailedException("The fileName is not valid", "The fileName is not valid");
         }
     }
@@ -269,7 +271,7 @@ public class SanityChecker {
                 throw new ParseOperationException("Error with the parameter ");
             }
         } else {
-            throw new PreconditionFailedException("the parameter " + param +  " is not valid");
+            throw new PreconditionFailedException("the parameter " + param + " is not valid");
         }
     }
 
@@ -288,24 +290,12 @@ public class SanityChecker {
         checkHtmlPattern(param);
     }
 
-    /**
-     * CheckXMLSanityFileSize : check size of xml file
-     *
-     * @param xmlFile as File
-     * @throws IOException                    when read file exception
-     * @throws InvalidParseOperationException when Sanity Check is in error
-     */
-    protected static void checkXmlSanityFileSize(File xmlFile) throws InvalidParseOperationException {
-        if (xmlFile.length() > getLimitFileSize()) {
-            throw new InvalidParseOperationException("File size exceeds sanity check");
-        }
-    }
 
     /**
      * CheckXMLSanityTags : check invalid tag contains of a xml file
      *
      * @param xmlFile : XML file path as String
-     * @throws IOException                    when read file error
+     * @throws IOException when read file error
      * @throws InvalidParseOperationException when Sanity Check is in error
      */
     protected static void checkXmlSanityTags(File xmlFile) throws InvalidParseOperationException, IOException {
@@ -386,7 +376,7 @@ public class SanityChecker {
      */
     public static void checkHtmlPattern(String param) throws PreconditionFailedException {
         if (StringUtils.HTML_PATTERN.matcher(param).find()) {
-            throw new PreconditionFailedException("the parameter : " + param +  " is not valid");
+            throw new PreconditionFailedException("the parameter : " + param + " is not valid");
         }
     }
 
@@ -435,11 +425,10 @@ public class SanityChecker {
                     }
                 } else if (!value.isValueNode()) {
                     checkJsonSanity(value);
-                } else if(value.isTextual()) {
+                } else if (value.isTextual()) {
                     checkHtmlPattern(value.textValue());
                     checkSanityTags(value.textValue(), getLimitParamSize());
-                }
-                else {
+                } else {
                     validateJSONField(value);
                 }
             }
