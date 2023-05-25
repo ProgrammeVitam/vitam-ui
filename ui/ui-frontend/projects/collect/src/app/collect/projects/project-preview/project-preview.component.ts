@@ -6,10 +6,9 @@ import { ProjectsService } from '../projects.service';
 @Component({
   selector: 'app-project-preview',
   templateUrl: './project-preview.component.html',
-  styleUrls: ['./project-preview.component.scss']
+  styleUrls: ['./project-preview.component.scss'],
 })
 export class ProjectPreviewComponent implements OnInit {
-
   @Output()
   backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
   @Output()
@@ -26,17 +25,15 @@ export class ProjectPreviewComponent implements OnInit {
     this.selectedTabIndex = 0;
   }
   private _projectId: string;
- 
+
   updateStarted: false;
   isPanelextended = false;
   selectedTabIndex = 0;
   selectedProject = new Observable<Project>();
 
-  constructor(private projectService: ProjectsService) {
-  }
+  constructor(private projectService: ProjectsService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   emitClose() {
     this.isPanelextended = false;
@@ -54,5 +51,4 @@ export class ProjectPreviewComponent implements OnInit {
     this.isPanelextended = true;
     this.showExtendedLateralPanel.emit();
   }
-
 }

@@ -11,16 +11,13 @@ describe('ProjectPreviewComponent', () => {
   beforeEach(async () => {
     const projectServiceMock = {
       getBaseUrl: () => '/fake-api',
-      getProjectById: () => of({ selectedProject: ''})
+      getProjectById: () => of({ selectedProject: '' }),
     };
 
     await TestBed.configureTestingModule({
       declarations: [ProjectPreviewComponent],
-      imports: [
-      ],
-      providers: [
-        { provide: ProjectsService, useValue: projectServiceMock }
-      ],
+      imports: [],
+      providers: [{ provide: ProjectsService, useValue: projectServiceMock }],
     }).compileComponents();
   });
 
