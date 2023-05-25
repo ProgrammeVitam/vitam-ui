@@ -11,6 +11,6 @@ export interface RegisterValueEventModel {
 export enum RegisterValueEventType {
   INGEST = 'INGEST',
   PRESERVATION = 'PRESERVATION',
-  TRANSFERT = 'TRANSFERT',
+  TRANSFER_REPLY = 'TRANSFER_REPLY',
   ELIMINATION = 'ELIMINATION',
 }

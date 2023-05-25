@@ -177,7 +177,7 @@
         "TYPE": {
           "INGEST": "Entrée",
           "PRESERVATION": "Préservation",
-          "TRANSFERT": "Transfert",
+          "TRANSFER_REPLY": "Transfert",
           "ELIMINATION": "Elimination"
         }
       }

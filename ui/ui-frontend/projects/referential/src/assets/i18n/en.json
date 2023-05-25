@@ -176,7 +176,7 @@
         "TYPE": {
           "INGEST": "Ingest",
           "PRESERVATION": "Preservation",
-          "TRANSFERT": "Transfer",
+          "TRANSFER_REPLY": "Transfer",
           "ELIMINATION": "Elimination"
         }
       }
