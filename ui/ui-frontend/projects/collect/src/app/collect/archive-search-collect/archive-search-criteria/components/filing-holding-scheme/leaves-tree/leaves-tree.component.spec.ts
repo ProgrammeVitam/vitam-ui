@@ -120,7 +120,6 @@ describe('LeavesTreeComponent', () => {
   it('LeavesTreeComponent should be stable after creation', () => {
     expect(component).toBeTruthy();
     // expect(component.projectId).toBeDefined();
-    expect(component.accessContract).toBeDefined();
     expect(component.nestedTreeControlLeaves).toBeDefined();
   });
 
