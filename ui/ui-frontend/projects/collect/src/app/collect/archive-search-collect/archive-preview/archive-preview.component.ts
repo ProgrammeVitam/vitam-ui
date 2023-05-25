@@ -48,8 +48,7 @@ import { Unit, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
 export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   archiveUnit: Unit;
-  @Input()
-  accessContract: string;
+  
   @Output()
   backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
   @Output()

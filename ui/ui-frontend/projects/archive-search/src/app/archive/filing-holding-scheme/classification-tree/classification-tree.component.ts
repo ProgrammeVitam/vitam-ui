@@ -35,7 +35,7 @@ import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch, VitamuiIcons, V
   styleUrls: ['./classification-tree.component.scss'],
 })
 export class ClassificationTreeComponent {
-  @Input() accessContract: string;
+
   @Input() loadingHolding: boolean;
   @Input() nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
   @Input() nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode>;
