@@ -132,14 +132,15 @@
     "ngx-i18nsupport": "^0.17.1",
     "node-sass": "^4.14.1",
     "protractor": "~7.0.0",
-    "puppeteer": "^1.2.0",
+    "puppeteer": "~19.6.3",
     "ts-node": "~7.0.1",
     "tsickle": "~0.37.0",
     "tslint": "~6.1.0",
     "typescript": "~4.0.3",
     "url-loader": "^4.1.0",
     "utf-8-validate": "^5.0.2",
-    "webpack-bundle-analyzer": "^3.8.0"
+    "webpack-bundle-analyzer": "^3.8.0",
+    "@types/lodash": "4.14.191"
   },
   "resolutions": {
     "moment": "2.26.0"
