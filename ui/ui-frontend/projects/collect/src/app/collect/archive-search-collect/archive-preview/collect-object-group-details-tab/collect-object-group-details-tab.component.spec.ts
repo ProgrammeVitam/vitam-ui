@@ -160,7 +160,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(archiveCollectServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
       'archiveUnitTestID',
       'objectId',
-      1,
       ObjectQualifierType.BINARYMASTER,
       1
     );
@@ -204,7 +203,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#unitType': '',
       '#unitups': [],
       '#opi': '',
-      '#tenant': 1,
       DescriptionLevel: 'Item',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
