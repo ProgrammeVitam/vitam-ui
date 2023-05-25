@@ -34,10 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, Direction } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
@@ -50,6 +52,7 @@ import { SearchCriteriaSaverService } from './search-criteria-saver.service';
   selector: 'app-search-criteria-saver',
   templateUrl: './search-criteria-saver.component.html',
   styleUrls: ['./search-criteria-saver.component.css'],
+  providers: [TranslatePipe],
 })
 export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   searchCriteriaForm: FormGroup;
@@ -71,6 +74,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   saveSearchCriteriaHistorySubscription: Subscription;
   updateSearchCriteriaHistorySubscription: Subscription;
   maxlength = 150;
+  displaySearchCriterias: DisplaySearchCriteria[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -79,7 +83,9 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     private searchCriteriaSaverService: SearchCriteriaSaverService,
     private archiveExchangeDataService: ArchiveSharedDataService,
     private confirmDialogService: ConfirmDialogService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private datePipe: DatePipe,
+    private translatePipe: TranslatePipe
   ) {
     this.searchCriteriaForm = this.formBuilder.group({
       searchCriteriaForm: null,
@@ -90,6 +96,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     this.searchCriteriaHistory = data.searchCriteriaHistory;
     this.nbCriterias = data.nbCriterias;
     this.searchCriterias = data.originalSearchCriteria;
+    this.displaySearchCriterias = this.computeSearchCriterias(this.searchCriterias);
 
     this.subscriptionAllSearchCriteriaHistory = this.archiveExchangeDataService.getAllSearchCriteriaHistoryShared().subscribe((results) => {
       if (results) {
@@ -241,4 +248,110 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   getCategoryName(categoryEnum: SearchCriteriaTypeEnum): string {
     return SearchCriteriaTypeEnum[categoryEnum];
   }
+
+  /**
+   * Computes the display list of search criteria values according an initial search criteria map.
+   *
+   * @param searchCriteriaMap The search criteria map.
+   * @returns A list search criteria values of display.
+   */
+  private computeSearchCriterias(searchCriteriaMap: Map<string, SearchCriteria>): DisplaySearchCriteria[] {
+    if (!searchCriteriaMap) {
+      return [];
+    }
+    return [...searchCriteriaMap.values()]
+      .map((searchCriteria) => {
+        const { dataType, category, keyTranslated, key, values } = searchCriteria;
+        const categoryName = this.getCategoryName(category);
+        const label = keyTranslated ? this.translatePipe.transform(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${categoryName}.${key}`) : key;
+        const tooltip = label;
+
+        return values.map((searchCriteriaValue) => {
+          let value = null;
+
+          switch (dataType) {
+            case 'STRING':
+              const translationKeys = [
+                `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${categoryName}.${searchCriteriaValue.label}`,
+                `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${categoryName}.${searchCriteriaValue.value.value}`,
+                `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${categoryName}.${category}`,
+              ];
+              const translation = this.getFirstTranslated(translationKeys);
+              const hasLabel = !!searchCriteriaValue.label;
+
+              if (translation) {
+                value = translation;
+              } else if (hasLabel) {
+                value = searchCriteriaValue.label;
+              } else {
+                value = this.translatePipe.transform('ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NO_VALUE_FOUND_TO_DISPLAY');
+              }
+
+              break;
+            case 'DATE':
+              value = this.datePipe.transform(searchCriteriaValue.value.value, 'dd/MM/yyyy');
+              break;
+            case 'INTERVAL':
+              const beginDate = this.datePipe.transform(searchCriteriaValue.value.beginInterval, 'dd/MM/yyyy');
+              const endDate = this.datePipe.transform(searchCriteriaValue.value.endInterval, 'dd/MM/yyyy');
+              const between = this.translatePipe.transform('ARCHIVE_SEARCH.SEARCH_CRITERIA_BETWEEN');
+              const and = this.translatePipe.transform('ARCHIVE_SEARCH.SEARCH_CRITERIA_AND');
+              const greaterThanOrEqual = this.translatePipe.transform('ARCHIVE_SEARCH.SEARCH_CRITERIA_GTE');
+              const lesserThanOrEqual = this.translatePipe.transform('ARCHIVE_SEARCH.SEARCH_CRITERIA_LTE');
+
+              if (beginDate && endDate) value = `${between} ${beginDate} ${and} ${endDate}`;
+              else if (beginDate && !endDate) value = `${greaterThanOrEqual} ${beginDate}`;
+              else if (!beginDate && endDate) value = `${lesserThanOrEqual} ${endDate}`;
+              else throw new Error('Interval without beginDate and endDate');
+
+              break;
+            default:
+              throw new Error('Data type not supported');
+          }
+
+          return {
+            category: categoryName,
+            label,
+            tooltip,
+            type: dataType,
+            value,
+            searchCriteria,
+          };
+        });
+      })
+      .reduce((acc, cur: any | any[]) => {
+        if (Array.isArray(cur)) {
+          const array: any[] = cur as any[];
+
+          return [...acc, ...array];
+        }
+
+        return [...acc, cur];
+      }, []);
+  }
+
+  /**
+   * Try to translate a list of translation key.
+   *
+   * @param translationKeys A list of translation key.
+   * @returns The first successfully translated key.
+   */
+  private getFirstTranslated(translationKeys: string[]): string | null {
+    for (const translationKey of translationKeys) {
+      const translation = this.translatePipe.transform(translationKey);
+      const isTranslated = translation !== translationKey;
+
+      if (isTranslated) return translation;
+    }
+
+    return null;
+  }
+}
+
+interface DisplaySearchCriteria {
+  category: string;
+  label: string;
+  tooltip: string;
+  type: string;
+  value: string;
 }

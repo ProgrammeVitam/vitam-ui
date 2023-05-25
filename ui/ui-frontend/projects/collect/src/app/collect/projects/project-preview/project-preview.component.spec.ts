@@ -10,7 +10,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Project, ProjectStatus } from 'ui-frontend-common';
+import { PaginatedResponse, Project, ProjectStatus, Transaction, TransactionStatus } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectPreviewComponent } from './project-preview.component';
@@ -19,6 +19,27 @@ describe('ProjectPreviewComponent', () => {
   let component: ProjectPreviewComponent;
   let fixture: ComponentFixture<ProjectPreviewComponent>;
 
+  const transaction: Transaction = {
+    archivalAgencyIdentifier: 'archivalAgencyIdentifier',
+    archivalAgreement: 'archivalAgreement',
+    archiveProfile: 'archiveProfile',
+    comment: 'comment',
+    id: 'id',
+    legalStatus: 'legalStatus',
+    messageIdentifier: 'messageIdentifier',
+    originatingAgencyIdentifier: 'originatingAgencyIdentifier',
+    projectId: 'projectId',
+    status: TransactionStatus.OPEN,
+    submissionAgencyIdentifier: 'submissionAgencyIdentifier',
+    transferringAgencyIdentifier: 'transferringAgencyIdentifier',
+  }
+  const transactionPaginatedResponse: PaginatedResponse<Transaction> = {
+    pageNum: 0,
+    pageSize: 1,
+    totalElements: 1,
+    hasMore: false,
+    values: [transaction],
+  }
 
   const project: Project = {
     id: 'newId',
@@ -57,10 +78,9 @@ describe('ProjectPreviewComponent', () => {
 
 
     const projectApiServiceMock = {
-      getBaseUrl: () => '/fake-api',
-      getProjectById: () => of({selectedProject: ''})
+      getTransactionsByProjectId: () => of(transactionPaginatedResponse),
+      updateTransaction: () => of(transaction)
     };
-
 
     TestBed.configureTestingModule({
       declarations: [ProjectPreviewComponent],

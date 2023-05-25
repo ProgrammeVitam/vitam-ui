@@ -623,7 +623,8 @@
       "DELETED_WITH_SUCCESS_2": " is correctly deleted.",
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Character limit reached",
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
-      "OBJECT_TYPE": "Saved Criterias Searches"
+      "OBJECT_TYPE": "Saved Criterias Searches",
+      "NO_VALUE_FOUND_TO_DISPLAY": "No value to display"
     },
     "FILING_SCHEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "No trees or plans available for the access contract",
