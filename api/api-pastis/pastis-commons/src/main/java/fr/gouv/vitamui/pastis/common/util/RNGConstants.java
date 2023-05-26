@@ -82,7 +82,7 @@ public class RNGConstants {
     private static final Map<String, DataType> TypesMap = new HashMap<>();
 
     static {
-        TypesMap.put("CodeListVersions", DataType.TOKEN);
+        TypesMap.put("CodeListVersions", DataType.STRING);
         TypesMap.put("Comment", DataType.STRING);
         TypesMap.put("Date", DataType.TOKEN);
         TypesMap.put("MessageIdentifier", DataType.TOKEN);
