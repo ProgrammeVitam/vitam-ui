@@ -29,7 +29,17 @@
 </div>
 
 <div class="object-container" *ngFor="let versionWithQualifier of versionsWithQualifiersOrdered">
-  <div class="object-menu" [ngClass]="{ opened: versionWithQualifier.opened }" (click)="openClose(versionWithQualifier)">
+  <vitamui-common-physical-archive-viewer
+    *ngIf="versionWithQualifier.qualifier === 'PhysicalMaster'"
+    [archive]="versionWithQualifier"
+  ></vitamui-common-physical-archive-viewer>
+
+  <div
+    *ngIf="versionWithQualifier.qualifier !== 'PhysicalMaster'"
+    class="object-menu"
+    [ngClass]="{ opened: versionWithQualifier.opened }"
+    (click)="openClose(versionWithQualifier)"
+  >
     <div class="line split">
       <div class="line open-close-icon">
         <i class="vitamui-icon {{ versionWithQualifier.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
@@ -55,7 +65,7 @@
     </div>
   </div>
 
-  <div class="object-details" *ngIf="versionWithQualifier.opened">
+  <div class="object-details" *ngIf="versionWithQualifier.qualifier !== 'PhysicalMaster' && versionWithQualifier.opened">
     <div class="object-details-group IDS">
       <div class="row no-title"></div>
 

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -43,6 +43,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccountModule } from './account/account.module';
+import { ArchiveModule } from './archive/archive.module';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import { BlankComponent } from './components/blank/blank.component';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
@@ -87,6 +88,7 @@ import { VitamuiMultiInputsModule } from './components/vitamui-multi-inputs/vita
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
+import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
 import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
 import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
 import { DragAndDropModule } from './directives/drag-and-drop/drag-and-drop.module';
@@ -104,8 +106,6 @@ import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
-import {VitamuiTreeNodeModule} from "./components/vitamui-tree-node";
-
 
 export function startupServiceFactory(startupService: StartupService) {
   // leave it like this due to run packagr issue :
@@ -116,11 +116,7 @@ export function startupServiceFactory(startupService: StartupService) {
 }
 
 @NgModule({
-  declarations: [
-    BlankComponent,
-    ErrorDialogComponent,
-    VitamuiIntervalDatePickerComponent
-  ],
+  declarations: [BlankComponent, ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -182,6 +178,7 @@ export function startupServiceFactory(startupService: StartupService) {
     TranslateModule,
     ReactiveFormsModule,
     MatDatepickerModule,
+    ArchiveModule,
   ],
   entryComponents: [ErrorDialogComponent],
   exports: [
@@ -241,6 +238,7 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamuiIntervalDatePickerComponent,
     VitamuiMultiInputsModule,
     VitamuiTreeNodeModule,
+    ArchiveModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

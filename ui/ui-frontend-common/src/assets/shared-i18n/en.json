@@ -3214,7 +3214,6 @@
     "SERVER_ERROR": "A technical error has occurred: internal error"
   },
 
-
   "ARCHIVE_SEARCH": {
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
@@ -3280,7 +3279,9 @@
         "UAID": "Archive Technical ID",
         "URI": "URI",
         "USAGE": "Usage",
-        "USAGE_VERSION": "Usage version"
+        "USAGE_VERSION": "Usage version",
+        "PHYSICAL_ID": "Physical object identifier",
+        "PhysicalDimensions": "PHYSICAL CHARACTERISTICS"
       },
       "TABS": {
         "INFORMATIONS": "Informations",
@@ -3717,6 +3718,8 @@
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching an archive",
+    "NO_PHYSICAL_ARCHIVE_MSG":"No physical archive",
+    "NO_LITTERAL_FORMAT_MSG":"No litteral format",
     "UNIT_OBJECT_QUALIFIER_TYPE": {
       "BinaryMaster": "Binary master",
       "Dissemination": "Dissemination",
@@ -4287,8 +4290,96 @@
     "SUBGRP": "SubGrp",
     "SUBSERIES": "Subseries",
     "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives"
+  },
+  "SEDA": {
+    "MEASUREMENT_TYPE": {
+      "Width": "Width",
+      "Height": "Height",
+      "Depth": "Depth",
+      "Shape": "Shape",
+      "Diameter": "Diameter",
+      "Length": "Length",
+      "Thickness": "Thickness",
+      "Weight": "Weight",
+      "NumberOfPage": "Number of page"
+    },
+    "MEASUREMENT_UNIT": {
+      "micrometre": {
+        "NAME": "micrometer",
+        "SYMBOL": "μm"
+      },
+      "4H": {
+        "NAME": "4H",
+        "SYMBOL": "4H"
+      },
+      "millimetre": {
+        "NAME": "millimeter",
+        "SYMBOL": "mm"
+      },
+      "MMT": {
+        "NAME": "millimeter",
+        "SYMBOL": "mm"
+      },
+      "centimetre": {
+        "NAME": "centimeter",
+        "SYMBOL": "cm"
+      },
+      "CMT": {
+        "NAME": "centimeter",
+        "SYMBOL": "cm"
+      },
+      "metre": {
+        "NAME": "meter",
+        "SYMBOL": "m"
+      },
+      "inch": {
+        "NAME": "inch",
+        "SYMBOL": "in"
+      },
+      "INH": {
+        "NAME": "inch",
+        "SYMBOL": "in"
+      },
+      "foot": {
+        "NAME": "foot",
+        "SYMBOL": "ft"
+      },
+      "FOT": {
+        "NAME": "foot",
+        "SYMBOL": "ft"
+      },
+      "microgram": {
+        "NAME": "microgram",
+        "SYMBOL": "μg"
+      },
+      "MC": {
+        "NAME": "microgram",
+        "SYMBOL": "μm"
+      },
+      "milligram": {
+        "NAME": "milligram",
+        "SYMBOL": "mm"
+      },
+      "MGM": {
+        "NAME": "milligram",
+        "SYMBOL": "mm"
+      },
+      "gram": {
+        "NAME": "gram",
+        "SYMBOL": "g"
+      },
+      "GRM": {
+        "NAME": "gram",
+        "SYMBOL": "g"
+      },
+      "kilogram": {
+        "NAME": "kilogram",
+        "SYMBOL": "kg"
+      },
+      "KGM": {
+        "NAME": "kilogram",
+        "SYMBOL": "kg"
+      }
+    }
   }
-
-
-
 }

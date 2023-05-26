@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {MatTabChangeEvent} from '@angular/material/tabs';
-import {ActivatedRoute} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {Unit, VitamuiIcons,VitamuiUnitTypes} from 'ui-frontend-common';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { Unit, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-archive-preview',
@@ -47,7 +47,6 @@ import {Unit, VitamuiIcons,VitamuiUnitTypes} from 'ui-frontend-common';
   styleUrls: ['./archive-preview.component.scss'],
 })
 export class ArchivePreviewComponent implements OnInit, OnChanges {
-
   @Input() archiveUnit: Unit;
   @Input() accessContract: string;
   @Input() isPopup: boolean;
@@ -101,13 +100,12 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
 
   showNormalPanel() {
     this.updateStarted = false;
-    this.selectedTabChangeEvent({index: 0, tab: null})
+    this.selectedTabChangeEvent({ index: this.selectedIndex, tab: null });
   }
 
   showExtendedPanel() {
-    this.selectedTabChangeEvent({index: 1, tab: null})
+    this.selectedTabChangeEvent({ index: 1, tab: null });
   }
-
 
   updateMetadataDesc() {
     this.isPanelextended = true;
@@ -128,12 +126,18 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   }
 
   getArchiveUnitIcone(archiveUnit: Unit) {
-    return this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.HOLDING_UNIT
-      ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
-      : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.FILING_UNIT
-        ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
-        : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.INGEST && !archiveUnit['#object']
-          ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
-          : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
+    const archiveUnitType = this.getArchiveUnitType(archiveUnit);
+
+    if (archiveUnitType === VitamuiUnitTypes.HOLDING_UNIT) {
+      return VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_;
+    }
+    if (archiveUnitType === VitamuiUnitTypes.FILING_UNIT) {
+      return VitamuiIcons.VITAMUI_FILING_UNIT_ICON_;
+    }
+    if (archiveUnitType === VitamuiUnitTypes.INGEST && !archiveUnit['#object']) {
+      return VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_;
+    }
+
+    return VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
   }
 }

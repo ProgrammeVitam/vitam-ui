@@ -1,7 +1,7 @@
 <div class="object-details-group IDS" *ngIf="unitObject">
   <div class="row">
     <div class="col title">
-      {{ 'GROUPE D\'OBJETS TECHNIQUES' | translate }}
+      {{ "GROUPE D'OBJETS TECHNIQUES" | translate }}
     </div>
   </div>
 
@@ -26,39 +26,47 @@
       </div>
     </div>
   </div>
-
 </div>
 
+<div class="object-container" *ngFor="let versionWithQualifier of versionsWithQualifiersOrdered">
+  <vitamui-common-physical-archive-viewer
+    *ngIf="versionWithQualifier.qualifier === 'PhysicalMaster'"
+    [archive]="versionWithQualifier"
+  ></vitamui-common-physical-archive-viewer>
 
-<div class="object-container"
-     *ngFor="let versionWithQualifier of versionsWithQualifiersOrdered">
-
-  <div class="object-menu"
-       [ngClass]="{'opened':versionWithQualifier.opened}"
-       (click)="openClose(versionWithQualifier)">
+  <div
+    *ngIf="versionWithQualifier.qualifier !== 'PhysicalMaster'"
+    class="object-menu"
+    [ngClass]="{ opened: versionWithQualifier.opened }"
+    (click)="openClose(versionWithQualifier)"
+  >
     <div class="line split">
       <div class="line open-close-icon">
-        <i
-          class="vitamui-icon {{ versionWithQualifier.opened ? 'vitamui-icon-chevron-down':'vitamui-icon-chevron-right'}}"></i>
+        <i class="vitamui-icon {{ versionWithQualifier.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
       </div>
       <div class="line shrink object-name">
-        {{ ('ARCHIVE_SEARCH.UNIT_OBJECT_QUALIFIER_TYPE.' + versionWithQualifier.qualifier | translate) + ' (' + versionWithQualifier.version + ')' }}
+        {{
+          ('ARCHIVE_SEARCH.UNIT_OBJECT_QUALIFIER_TYPE.' + versionWithQualifier.qualifier | translate) +
+            ' (' +
+            versionWithQualifier.version +
+            ')'
+        }}
       </div>
-      <div class="line object-size">{{ versionWithQualifier.Size  | bytes }}</div>
+      <div class="line object-size">
+        {{ versionWithQualifier.Size | bytes }}
+      </div>
     </div>
     <div class="line split">
       <div class="line shrink object-type">
-        {{ versionWithQualifier.FormatIdentification.FormatLitteral }}
+        {{ versionWithQualifier?.FormatIdentification?.FormatLitteral || ({{ 'ARCHIVE_SEARCH.NO_LITTERAL_FORMAT_MSG' | translate}}) }}
       </div>
-      <button class="download-button"
-              (click)="onClickDownloadObject($event, versionWithQualifier)">
+      <button class="download-button" (click)="onClickDownloadObject($event, versionWithQualifier)">
         <i class="vitamui-icon vitamui-icon-telecharger"></i>
       </button>
     </div>
   </div>
 
-  <div class="object-details" *ngIf="versionWithQualifier.opened">
-
+  <div *ngIf="versionWithQualifier.qualifier !== 'PhysicalMaster' && versionWithQualifier.opened" class="object-details">
     <div class="object-details-group IDS">
       <div class="row no-title"></div>
 
@@ -66,13 +74,13 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECT_ID' | translate }}</label>
-            <div>{{ versionWithQualifier["#id"] }}</div>
+            <div>{{ versionWithQualifier['#id'] }}</div>
           </div>
         </div>
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.OPERATION_ID' | translate }}</label>
-            <div>{{ versionWithQualifier["#opi"] }}</div>
+            <div>{{ versionWithQualifier['#opi'] }}</div>
           </div>
         </div>
       </div>
@@ -95,7 +103,7 @@
       <div class="row-separator"></div>
     </div>
 
-    <div class="object-details-group FORMAT">
+    <div *ngIf="versionWithQualifier.FormatIdentification" class="object-details-group FORMAT">
       <div class="row title">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.FORMAT' | translate }}</div>
 
       <div class="row">
@@ -133,7 +141,7 @@
       <div class="row-separator"></div>
     </div>
 
-    <div class="object-details-group FILE">
+    <div *ngIf="versionWithQualifier.FileInfo" class="object-details-group FILE">
       <div class="row title">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.FILE' | translate }}</div>
 
       <div class="row">
@@ -161,14 +169,17 @@
         <div class="col">
           <div class="read-only-field">
             <label>
-              {{ ('ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.ALGORITHM' | translate) + versionWithQualifier.Algorithm}}
+              {{ ('ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.ALGORITHM' | translate) + versionWithQualifier.Algorithm }}
             </label>
             <div class="line">
               <div class="shrink">{{ versionWithQualifier.MessageDigest }}</div>
-              <div class="button-copy" (click)="copyToClipboard(versionWithQualifier.MessageDigest)"
-                   matTooltip="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.COPY' | translate }}"
-                   matTooltipClass="vitamui-tooltip"
-                   [matTooltipShowDelay]="300">
+              <div
+                class="button-copy"
+                (click)="copyToClipboard(versionWithQualifier.MessageDigest)"
+                matTooltip="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.COPY' | translate }}"
+                matTooltipClass="vitamui-tooltip"
+                [matTooltipShowDelay]="300"
+              >
                 <i class="vitamui-icon vitamui-icon-content-copy"></i>
               </div>
             </div>
@@ -193,8 +204,7 @@
         </div>
       </div>
 
-      <div class="row"
-           *ngIf="versionWithQualifier.FileInfo.CreatingOs && versionWithQualifier.FileInfo.CreatingApplicationVersion">
+      <div class="row" *ngIf="versionWithQualifier.FileInfo.CreatingOs && versionWithQualifier.FileInfo.CreatingApplicationVersion">
         <div class="col">
           <div class="read-only-field">
             <label *ngIf="versionWithQualifier.FileInfo.CreatingOs">
@@ -213,8 +223,7 @@
         </div>
       </div>
 
-      <div class="row"
-           *ngIf="versionWithQualifier.FileInfo.CreatingOsVersion && versionWithQualifier.FileInfo.DateCreatedByApplication">
+      <div class="row" *ngIf="versionWithQualifier.FileInfo.CreatingOsVersion && versionWithQualifier.FileInfo.DateCreatedByApplication">
         <div class="col">
           <div class="read-only-field">
             <label *ngIf="versionWithQualifier.FileInfo.CreatingOsVersion">
@@ -225,8 +234,7 @@
         </div>
         <div class="col">
           <div class="read-only-field">
-            <label
-              *ngIf="versionWithQualifier.FileInfo.DateCreatedByApplication">
+            <label *ngIf="versionWithQualifier.FileInfo.DateCreatedByApplication">
               {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATED_APPLICATION_DATE' | translate }}
             </label>
             <div>{{ versionWithQualifier.FileInfo.DateCreatedByApplication }}</div>
@@ -236,13 +244,13 @@
       <div class="row-separator"></div>
     </div>
 
-    <div class="object-details-group STOCKAGE">
+    <div *ngIf="versionWithQualifier['#storage']" class="object-details-group STOCKAGE">
       <div class="row title">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.STOCKAGE' | translate }}</div>
       <div class="row">
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.STOCKAGE_STRATEGY_ID' | translate }}</label>
-            <div>{{ versionWithQualifier["#storage"].strategyId }}</div>
+            <div>{{ versionWithQualifier['#storage'].strategyId }}</div>
           </div>
         </div>
       </div>
@@ -250,13 +258,10 @@
     </div>
 
     <div class="object-details-group download-object">
-      <button class="btn primary download-btn"
-              (click)="onClickDownloadObject($event, versionWithQualifier)">
+      <button class="btn primary download-btn" (click)="onClickDownloadObject($event, versionWithQualifier)">
         <i class="vitamui-icon vitamui-icon-telecharger"></i>
         <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
       </button>
     </div>
-
   </div>
-
 </div>
