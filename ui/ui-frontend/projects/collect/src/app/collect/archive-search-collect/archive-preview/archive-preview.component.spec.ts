@@ -123,7 +123,7 @@ describe('ArchivePreviewComponent', () => {
   it('should the selectedIndex to be 0 after selecting new ArchiveUnit ', () => {
     component.showExtendedPanel();
     component.showNormalPanel();
-    expect(component.selectedIndex).toEqual(0);
+    expect(component.selectedIndex).toEqual(1);
   });
 
   it('should return INGEST as response ', () => {

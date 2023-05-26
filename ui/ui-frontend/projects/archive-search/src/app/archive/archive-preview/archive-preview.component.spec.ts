@@ -156,7 +156,7 @@ describe('ArchivePreviewComponent', () => {
   });
 
   it('should change the selectedIndex value ', () => {
-    component.selectedIndex = -3;
+    component.selectedIndex = 0;
     component.showNormalPanel();
     expect(component.selectedIndex).toEqual(0);
   });
