@@ -35,18 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { cloneDeep } from 'lodash';
-import { merge, Subscription } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService } from 'ui-frontend-common';
-import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
-import { ArchiveService } from '../../../archive.service';
-import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
-import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
-import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {cloneDeep} from 'lodash';
+import {merge, Subscription} from 'rxjs';
+import {debounceTime, filter, map} from 'rxjs/operators';
+import {CriteriaDataType, CriteriaOperator, diff, Rule, RuleService} from 'ui-frontend-common';
+import {ManagementRulesSharedDataService} from '../../../../core/management-rules-shared-data.service';
+import {ArchiveService} from '../../../archive.service';
+import {ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction} from '../../../models/ruleAction.interface';
+import {SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum} from '../../../models/search.criteria';
+import {ManagementRulesValidatorService} from '../../../validators/management-rules-validator.service';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
@@ -62,8 +62,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
-  @Input()
-  accessContract: string;
+
   @Input()
   selectedItem: number;
   @Input()
@@ -99,7 +98,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   rule: Rule;
   selectedStartDate: any;
 
-  @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<AddManagementRulesComponent>;
+  @ViewChild('confirmDeleteAddRuleDialog', {static: true}) confirmDeleteAddRuleDialog: TemplateRef<AddManagementRulesComponent>;
 
   constructor(
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
@@ -122,9 +121,9 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
         [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
         [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
-      name: [{ value: null, disabled: true }, Validators.required],
+      name: [{value: null, disabled: true}, Validators.required],
       startDate: [null],
-      endDate: [{ value: null, disabled: true }],
+      endDate: [{value: null, disabled: true}],
     });
 
     merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
@@ -150,7 +149,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       if (formData.rule) {
         this.getRuleSuscription = this.ruleService.get(formData.rule.trim()).subscribe((ruleResponse) => {
           this.rule = ruleResponse;
-          this.ruleDetailsForm.patchValue({ name: ruleResponse.ruleValue });
+          this.ruleDetailsForm.patchValue({name: ruleResponse.ruleValue});
         });
         this.cancelStep.emit();
         this.isDisabled = false;
@@ -167,7 +166,8 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.getRuleSuscription?.unsubscribe();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   initDSLQuery() {
     this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
@@ -184,12 +184,12 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
-      values: [{ id: 'true', value: 'true' }],
+      values: [{id: 'true', value: 'true'}],
     };
 
     const criteriaWithId: SearchCriteriaEltDto = {
       criteria: APPRAISAL_RULE_IDENTIFIER,
-      values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
+      values: [{id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value}],
       category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
@@ -198,7 +198,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
-    this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
+    this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe((data) => {
       this.itemsWithSameRule = data.totalResults;
       this.itemsToUpdate = this.selectedItem - data.totalResults;
       this.isLoading = false;
@@ -211,7 +211,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     if (this.ruleDetailsForm.get('startDate').value) {
       const criteriaWithId: SearchCriteriaEltDto = {
         criteria: APPRAISAL_RULE_IDENTIFIER,
-        values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
+        values: [{id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value}],
         category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
         operator: CriteriaOperator.EQ,
         dataType: CriteriaDataType.STRING,
@@ -233,13 +233,13 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
         criteria: ORIGIN_HAS_AT_LEAST_ONE,
         dataType: CriteriaDataType.STRING,
         operator: CriteriaOperator.EQ,
-        values: [{ id: 'true', value: 'true' }],
+        values: [{id: 'true', value: 'true'}],
       };
       this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
       this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithDate);
       this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
-      this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
+      this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe((data) => {
         this.itemsWithSameRuleAndDate = data.totalResults;
         this.isWarningLoading = false;
       });
@@ -260,7 +260,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
 
   onDelete() {
     const dialogToOpen = this.confirmDeleteAddRuleDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
 
     this.showConfirmDeleteAddRuleSuscription = dialogRef
       .afterClosed()
@@ -298,7 +298,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
         '/' +
         new Date(startDateSelected).getFullYear().toString();
 
-      this.ruleDetailsForm.patchValue({ endDate });
+      this.ruleDetailsForm.patchValue({endDate});
     }
 
     this.isShowCheckButton = !this.isShowCheckButton;
@@ -342,7 +342,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
         ).ruleCategoryAction = this.ruleTypeDUA;
       }
     } else {
-      this.ruleTypeDUA = { finalAction: '', rules: [rule] };
+      this.ruleTypeDUA = {finalAction: '', rules: [rule]};
       const managementRule: ManagementRules = {
         category: this.ruleCategory,
         ruleCategoryAction: this.ruleTypeDUA,

@@ -46,11 +46,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.when;
@@ -86,12 +86,10 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     public void when_searchArchiveUnitsByCriteria_rest_template_ok_should_return_ok() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         SearchCriteriaDto query = new SearchCriteriaDto();
-        MultiValueMap<String, String> headers = archiveSearchExternalRestClient.buildSearchHeaders(context);
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ArchiveUnitsDto responseEntity = new ArchiveUnitsDto();
 
         when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.POST), eq(request), eq(ArchiveUnitsDto.class)))
+            .exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(ArchiveUnitsDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
 
         ArchiveUnitsDto response =
@@ -103,12 +101,10 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     @Test
     public void whenGetFilingHoldingSChemeRestTemplateOKThenShouldReturnOK() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        MultiValueMap<String, String> headers = archiveSearchExternalRestClient.buildSearchHeaders(context);
-        final HttpEntity<Void> request = new HttpEntity<>(headers);
         final VitamUISearchResponseDto responseEntity = new VitamUISearchResponseDto();
 
         when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.GET), eq(request), eq(VitamUISearchResponseDto.class)))
+            .exchange(anyString(), eq(HttpMethod.GET), any(HttpEntity.class), eq(VitamUISearchResponseDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
 
         VitamUISearchResponseDto response =
@@ -121,15 +117,13 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     @Test
     public void whenGetexportCsvArchiveUnitsByCriteria_Srvc_ok_ThenShouldReturnOK() throws IOException {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        MultiValueMap<String, String> headers = archiveSearchExternalRestClient.buildSearchHeaders(context);
         SearchCriteriaDto query = new SearchCriteriaDto();
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
 
         Resource resource = new ByteArrayResource(ArchiveSearchExternalRestClientTest.class.getClassLoader()
             .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
 
         when(restTemplate.exchange(anyString(), eq(HttpMethod.POST),
-            eq(request), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
+            any(HttpEntity.class), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
 
         ResponseEntity<Resource> response =
             archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, context);

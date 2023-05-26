@@ -35,19 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { cloneDeep } from 'lodash';
-import { of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
-import { ArchiveService } from '../archive.service';
-import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interface';
-import { SearchCriteriaDto } from '../models/search.criteria';
+import {Injectable} from '@angular/core';
+import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
+import {cloneDeep} from 'lodash';
+import {of, timer} from 'rxjs';
+import {map, switchMap, take} from 'rxjs/operators';
+import {ArchiveSharedDataServiceService} from '../../core/archive-shared-data-service.service';
+import {ArchiveService} from '../archive.service';
+import {ManagementRules, RuleCategoryAction} from '../models/ruleAction.interface';
+import {SearchCriteriaDto} from '../models/search.criteria';
 
 @Injectable()
 export class ArchiveUnitValidatorService {
-  constructor(private archiveService: ArchiveService, private shared: ArchiveSharedDataServiceService) {}
+  constructor(private archiveService: ArchiveService, private shared: ArchiveSharedDataServiceService) {
+  }
+
   debounceTime = 400;
   ruleActions: RuleCategoryAction;
   managementRules: ManagementRules[];
@@ -59,7 +61,7 @@ export class ArchiveUnitValidatorService {
           control.value !== codeToIgnore ? of(this.isAlreadyExistingParentValue(control.value, archiveUnitAllunitup)) : of(false)
         ),
         take(1),
-        map((exists: boolean) => (exists ? { alreadyExistParents: true } : null))
+        map((exists: boolean) => (exists ? {alreadyExistParents: true} : null))
       );
     };
   };
@@ -68,11 +70,11 @@ export class ArchiveUnitValidatorService {
     return true ? archiveUnitAllunitup.filter((p) => p === parentId).length > 0 : false;
   }
 
-  existArchiveUnit = (criteriaDto: SearchCriteriaDto, accessContract: string): AsyncValidatorFn => {
-    return this.unitExists('targetGuid', criteriaDto, accessContract);
+  existArchiveUnit = (criteriaDto: SearchCriteriaDto): AsyncValidatorFn => {
+    return this.unitExists('targetGuid', criteriaDto);
   };
 
-  private unitExists(existTag: string, criteriaDto: SearchCriteriaDto, accessContract: string) {
+  private unitExists(existTag: string, criteriaDto: SearchCriteriaDto) {
     return (control: AbstractControl) => {
       const auditExists: any = {};
       auditExists[existTag] = true;
@@ -88,17 +90,17 @@ export class ArchiveUnitValidatorService {
         switchMap(() =>
           control.value !== null
             ? this.archiveService
-                .searchArchiveUnitsByCriteria(criteria, accessContract)
-                .toPromise()
-                .then((data) => {
-                  if (data.totalResults === 1) {
-                    this.shared.emitArchiveUnitTitle(ArchiveService.fetchAuTitle(data.results[0]));
-                    return false;
-                  } else {
-                    this.shared.emitArchiveUnitTitle(null);
-                    return true;
-                  }
-                })
+              .searchArchiveUnitsByCriteria(criteria)
+              .toPromise()
+              .then((data) => {
+                if (data.totalResults === 1) {
+                  this.shared.emitArchiveUnitTitle(ArchiveService.fetchAuTitle(data.results[0]));
+                  return false;
+                } else {
+                  this.shared.emitArchiveUnitTitle(null);
+                  return true;
+                }
+              })
             : of(false)
         ),
         take(1),

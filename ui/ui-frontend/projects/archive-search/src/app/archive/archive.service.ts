@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable, LOCALE_ID} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Observable, of, throwError, TimeoutError} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
@@ -47,12 +47,12 @@ import {
   SearchService,
   SecurityService
 } from 'ui-frontend-common';
-import { ArchiveApiService } from '../core/api/archive-api.service';
-import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
-import { FilingHoldingSchemeNode } from './models/node.interface';
-import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
-import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
-import { SearchResponse } from './models/search-response.interface';
+import {ArchiveApiService} from '../core/api/archive-api.service';
+import {ExportDIPCriteriaList} from './models/dip-request-detail.interface';
+import {FilingHoldingSchemeNode} from './models/node.interface';
+import {ReclassificationCriteriaDto} from './models/reclassification-request.interface';
+import {RuleSearchCriteriaDto} from './models/ruleAction.interface';
+import {SearchResponse} from './models/search-response.interface';
 import {
   AppraisalRuleFacets,
   PagedResult,
@@ -63,9 +63,9 @@ import {
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum
 } from './models/search.criteria';
-import { Unit } from './models/unit.interface';
-import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
-import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
+import {Unit} from './models/unit.interface';
+import {UnitDescriptiveMetadataDto} from './models/unitDescriptiveMetadata.interface';
+import {VitamUISnackBarComponent} from './shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -92,10 +92,9 @@ export class ArchiveService extends SearchService<any> {
     return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
   }
 
-  public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
+  public loadFilingHoldingSchemeTree(tenantIdentifier: number): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
-      'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId,
+      'X-Tenant-Id': '' + tenantIdentifier
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -143,9 +142,9 @@ export class ArchiveService extends SearchService<any> {
     return data.sort(byTitle(this.locale));
   }
 
-  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, accessContract: string) {
+  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
 
     return this.archiveApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, headers).subscribe(
       (file) => {
@@ -171,9 +170,9 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, accessContract: string): Observable<PagedResult> {
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto): Observable<PagedResult> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
 
     return this.archiveApiService.searchArchiveUnitsByCriteria(criteriaDto, headers).pipe(
       //   timeout(TIMEOUT_SEC),
@@ -188,8 +187,8 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
-    this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
+  launchDownloadObjectFromUnit(id: string, tenantIdentifier: number) {
+    this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, tenantIdentifier));
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {
@@ -290,37 +289,37 @@ export class ArchiveService extends SearchService<any> {
     return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
   }
 
-  exportDIPService(exportDIPCriteriaList: ExportDIPCriteriaList, accessContract: string): Observable<string> {
+  exportDIPService(exportDIPCriteriaList: ExportDIPCriteriaList): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
     return this.archiveApiService.exportDipApiService(exportDIPCriteriaList, headers);
   }
 
-  startEliminationAnalysis(criteriaDto: SearchCriteriaDto, accessContract: string) {
+  startEliminationAnalysis(criteriaDto: SearchCriteriaDto) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
     return this.archiveApiService.startEliminationAnalysis(criteriaDto, headers);
   }
 
-  launchEliminationAction(criteriaDto: SearchCriteriaDto, accessContract: string) {
+  launchEliminationAction(criteriaDto: SearchCriteriaDto) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
     return this.archiveApiService.launchEliminationAction(criteriaDto, headers);
   }
 
-  updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto, accessContract: string): Observable<string> {
+  updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
     return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
   }
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
 
-  
+
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
@@ -344,7 +343,7 @@ export class ArchiveService extends SearchService<any> {
     location.href = url;
   }
 
-  buildArchiveUnitPath(archiveUnit: Unit, accessContract: string) {
+  buildArchiveUnitPath(archiveUnit: Unit) {
     const allunitups = archiveUnit['#allunitups'].map((unitUp) => ({id: unitUp, value: unitUp}));
 
     if (!allunitups || allunitups.length === 0) {
@@ -370,7 +369,7 @@ export class ArchiveService extends SearchService<any> {
       size: archiveUnit['#allunitups'].length,
     };
 
-    return this.searchArchiveUnitsByCriteria(searchCriteria, accessContract).pipe(
+    return this.searchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult: PagedResult) => {
         let resumePath = '';
         let fullPath = '';
@@ -400,20 +399,20 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  launchComputedInheritedRules(criteriaDto: SearchCriteriaDto, accessContract: string): Observable<string> {
+  launchComputedInheritedRules(criteriaDto: SearchCriteriaDto): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
     return this.archiveApiService.launchComputedInheritedRules(criteriaDto, headers);
   }
 
-  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], accessContract: string): Observable<number> {
+  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[]): Observable<number> {
     const searchCriteria = {
       criteriaList: criteriaElts,
       pageNumber: 0,
       size: 1,
       trackTotalHits: true,
     };
-    return this.searchArchiveUnitsByCriteria(searchCriteria, accessContract).pipe(
+    return this.searchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult: PagedResult) => {
         return pagedResult.totalResults;
       }),
@@ -423,21 +422,21 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, accessContract: string): Observable<Unit> {
+  selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto): Observable<Unit> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
     return this.archiveApiService.selectUnitWithInheritedRules(criteriaDto, headers);
   }
 
-  reclassification(criteriaDto: ReclassificationCriteriaDto, accessContract: string): Observable<string> {
+  reclassification(criteriaDto: ReclassificationCriteriaDto): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+
     return this.archiveApiService.reclassification(criteriaDto, headers);
   }
 
-  updateUnit(id: string, tenantIdentifier: number, accessContract: string, unitMDDDto: UnitDescriptiveMetadataDto): Observable<string> {
+  updateUnit(id: string, tenantIdentifier: number, unitMDDDto: UnitDescriptiveMetadataDto): Observable<string> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract).append('X-Tenant-Id', '' + tenantIdentifier);
+    headers = headers.append('X-Tenant-Id', '' + tenantIdentifier);
     return this.archiveApiService.updateUnit(id, unitMDDDto, headers);
   }
 

@@ -34,19 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
-import { ExportDIPCriteriaList } from '../../archive/models/dip-request-detail.interface';
-import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
-import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
-import { SearchCriteriaHistory } from '../../archive/models/search-criteria-history.interface';
-import { SearchResponse } from '../../archive/models/search-response.interface';
-import { SearchCriteriaDto } from '../../archive/models/search.criteria';
-import { Unit } from '../../archive/models/unit.interface';
-import { UnitDescriptiveMetadataDto } from '../../archive/models/unitDescriptiveMetadata.interface';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import {ExportDIPCriteriaList} from '../../archive/models/dip-request-detail.interface';
+import {ReclassificationCriteriaDto} from '../../archive/models/reclassification-request.interface';
+import {RuleSearchCriteriaDto} from '../../archive/models/ruleAction.interface';
+import {SearchCriteriaHistory} from '../../archive/models/search-criteria-history.interface';
+import {SearchResponse} from '../../archive/models/search-response.interface';
+import {SearchCriteriaDto} from '../../archive/models/search.criteria';
+import {Unit} from '../../archive/models/unit.interface';
+import {UnitDescriptiveMetadataDto} from '../../archive/models/unitDescriptiveMetadata.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -70,15 +70,15 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   getFilingHoldingScheme(headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', { headers });
+    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', {headers});
   }
 
   get(unitId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<any>(this.apiUrl + '/units/' + unitId, { headers });
+    return this.http.get<any>(this.apiUrl + '/units/' + unitId, {headers});
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/search`, criteriaDto, { headers });
+    return this.http.post<SearchResponse>(`${this.apiUrl}/search`, criteriaDto, {headers});
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Blob> {
@@ -88,12 +88,12 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     });
   }
 
-  getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number): string {
-    return `${this.apiUrl}/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  getDownloadObjectFromUnitUrl(unitId: string, tenantId: number): string {
+    return `${this.apiUrl}/downloadobjectfromunit/${unitId}?tenantId=${tenantId}`;
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers, responseType: 'text' });
+    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, {headers, responseType: 'text'});
   }
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
@@ -111,8 +111,9 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
     return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
   }
+
   getObjectById(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/object/${id}`, { headers, responseType: 'text' });
+    return this.http.get(`${this.apiUrl}/object/${id}`, {headers, responseType: 'text'});
   }
 
   exportDipApiService(exportDIPCriteriaList: ExportDIPCriteriaList, headers?: HttpHeaders): Observable<string> {
@@ -156,9 +157,13 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
-    return this.http.post<Unit>(`${this.apiUrl}/unit-with-inherited-rules`, criteriaDto, { headers });
+    return this.http.post<Unit>(`${this.apiUrl}/unit-with-inherited-rules`, criteriaDto, {headers});
   }
+
   updateUnit(id: string, unitMDDDto: UnitDescriptiveMetadataDto, headers?: HttpHeaders): Observable<string> {
-    return this.http.put<any>(this.apiUrl + '/archiveunit/' + id, unitMDDDto, { headers, responseType: 'text' as 'json' });
+    return this.http.put<any>(this.apiUrl + '/archiveunit/' + id, unitMDDDto, {
+      headers,
+      responseType: 'text' as 'json'
+    });
   }
 }
