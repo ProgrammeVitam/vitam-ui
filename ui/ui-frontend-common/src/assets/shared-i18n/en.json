@@ -3718,6 +3718,8 @@
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching an archive",
+    "NO_PHYSICAL_ARCHIVE_MSG":"No physical archive",
+    "NO_LITTERAL_FORMAT_MSG":"No litteral format",
     "UNIT_OBJECT_QUALIFIER_TYPE": {
       "BinaryMaster": "Binary master",
       "Dissemination": "Dissemination",

@@ -58,7 +58,7 @@
     </div>
     <div class="line split">
       <div class="line shrink object-type">
-        {{ versionWithQualifier?.FormatIdentification?.FormatLitteral || 'No litteral format' }}
+        {{ versionWithQualifier?.FormatIdentification?.FormatLitteral || ({{ 'ARCHIVE_SEARCH.NO_LITTERAL_FORMAT_MSG' | translate}}) }}
       </div>
       <button class="download-button" (click)="onClickDownloadObject($event, versionWithQualifier)">
         <i class="vitamui-icon vitamui-icon-telecharger"></i>

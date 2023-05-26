@@ -3916,6 +3916,8 @@
     "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
     "COMPUTE_RULES_FACETS": "Afficher les facettes",
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Supprimer les filtres de la règle",
+    "NO_PHYSICAL_ARCHIVE_MSG":"Pas d'archive physique",
+    "NO_LITTERAL_FORMAT_MSG":"Pas de format littéral",
     "SEARCH_CRITERIA_FILTER": {
       "DATES": "Dates",
       "UA_TYPE": "Type d'unités archivistiques",
