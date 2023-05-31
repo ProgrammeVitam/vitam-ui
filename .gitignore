@@ -242,10 +242,3 @@ api/api-iam/iam-internal/src/main/resources/dev/vitam/*
 # Mongo workspace entry-point #
 ##########################################
 tools/docker/mongo/mongo-entrypoint
-
-##########################################
-#  Angular Package-lock files ###########
-################################""
-
-ui/ui-frontend-common/package-lock.json
-ui/ui-frontend/package-lock.json
