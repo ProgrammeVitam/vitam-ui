@@ -84,12 +84,11 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   getDownloadObjectFromUnitUrl(
     unitId: string,
     objectId: string,
-    accessContractId: string,
     tenantId: number,
     qualifier?: string,
     version?: number
   ): string {
-    let url = `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}&tenantId=${tenantId}&contractId=${accessContractId}`;
+    let url = `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}&tenantId=${tenantId}`;
     if (qualifier && version) {
       url += `&qualifier=${qualifier}&version=${version}`;
     }

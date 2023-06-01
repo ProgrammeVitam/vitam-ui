@@ -53,8 +53,6 @@ import { ArchiveCollectService } from '../../archive-collect.service';
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   archiveUnit: Unit;
-  @Input()
-  accessContract: string;
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
 
   @Input()
@@ -402,8 +400,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit['#object'], this.archiveUnit['#tenant'],
-      this.accessContract);
+    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit['#object'], this.archiveUnit['#tenant']);
   }
 
   showArchiveUniteFullPath() {

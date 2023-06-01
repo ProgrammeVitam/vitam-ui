@@ -35,7 +35,7 @@ import {
   FormatIdentificationDto,
   qualifiersToVersionsWithQualifier,
   Unit,
-  VersionWithQualifierDto,
+  VersionWithQualifierDto
 } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
@@ -53,9 +53,7 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   ],
 })
 export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges {
-  @Input() archiveUnit: Unit;
-  @Input()
-  accessContract: string;
+  @Input() archiveUnit: Unit;  
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
 
@@ -83,7 +81,6 @@ export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges 
       this.archiveUnit['#id'],
       this.archiveUnit['#object'],
       this.archiveUnit['#tenant'],
-      this.accessContract,
       versionWithQualifier.qualifier,
       versionWithQualifier.version
     );

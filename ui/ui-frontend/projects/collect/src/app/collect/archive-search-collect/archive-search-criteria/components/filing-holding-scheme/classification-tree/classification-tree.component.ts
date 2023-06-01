@@ -36,7 +36,7 @@ import { Pair } from '../../../models/utils';
   styleUrls: ['./classification-tree.component.scss'],
 })
 export class ClassificationTreeComponent {
-  @Input() accessContract: string;
+  
   @Input() loadingHolding: boolean;
   @Input() nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
   @Input() nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode>;

@@ -62,8 +62,6 @@ const CURRENT_PAGE = 0;
 export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   archiveUnit: Unit;
-  @Input()
-  accessContract: string;
   archiveUnitRules: Unit;
   selectUnitWithInheritedRulesSubscription: Subscription;
 

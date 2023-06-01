@@ -42,7 +42,7 @@ import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
   styleUrls: ['./filing-holding-scheme.component.scss'],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() accessContract: string;
+  
   @Input() transactionId: string;
 
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
@@ -149,7 +149,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
       computeFacets: false,
     };
     this.archiveService
-      .searchArchiveUnitsByCriteria(searchCriteria, this.transactionId, this.accessContract)
+      .searchArchiveUnitsByCriteria(searchCriteria, this.transactionId)
       .subscribe((pagedResult: PagedResult) => {
         this.filterNodesToLeavesOnly(pagedResult.results);
       });
@@ -204,7 +204,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   initFilingHoldingSchemeTree() {
     this.loadingHolding = true;
     this.subscriptions.add(
-      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract).subscribe((nodes) => {
+      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier).subscribe((nodes) => {
         // Disable checkbox use to prevent add unit to search criteria
         this.disableCheckingUnitsRecursive(nodes);
         this.fullNodes = nodes;
@@ -244,12 +244,12 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.loadingArchiveUnit[from] = true;
     this.subscriptions.add(
       Boolean(archiveUniParams.value)
-        ? this.archiveService.getCollectUnitDetails(archiveUniParams.key.toString(), this.accessContract).subscribe((unit) => {
+        ? this.archiveService.getCollectUnitDetails(archiveUniParams.key.toString()).subscribe((unit) => {
             this.showArchiveUnitDetails.emit(unit);
             this.loadingArchiveUnit[`${from}`] = false;
           })
         : this.archiveService
-            .getReferentialUnitDetails(archiveUniParams.key.toString(), this.accessContract)
+            .getReferentialUnitDetails(archiveUniParams.key.toString())
             .subscribe((searchResponse) => {
               this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
               this.loadingArchiveUnit[`${from}`] = false;
