@@ -34,7 +34,6 @@
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate }}">
       <app-archive-unit-information-tab
         [archiveUnit]="archiveUnit"
-        [accessContract]="accessContract"
         [tenantIdentifier]="tenantIdentifier"
         [updateStarted]="updateStarted"
         (showNormalPanel)="showNormalPanel()"
@@ -44,7 +43,6 @@
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}" [disabled]="!isPanelextended">
       <app-archive-unit-rules-details-tab
         [archiveUnit]="archiveUnit"
-        [accessContract]="accessContract"
       ></app-archive-unit-rules-details-tab>
     </mat-tab>
 

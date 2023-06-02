@@ -63,7 +63,6 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   message: string;
   fileName: string;
   fileSizeString: string;
-  accessContract: string;
   tenantIdentifier: string;
   transfertDetailsCode: string;
 
@@ -81,7 +80,6 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     public logger: Logger,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      accessContract: string;
       tenantIdentifier: string;
     },
     private archiveSearchService: ArchiveService,
@@ -118,7 +116,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.accessContract = this.data.accessContract;
+
     this.tenantIdentifier = this.data.tenantIdentifier;
   }
 
@@ -228,7 +226,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   applyTransferAcknowledgment() {
     this.isSubmitBtnDisabled = true;
     this.transferAcknowledgementSubscription = this.archiveSearchService
-      .transferAcknowledgment(this.tenantIdentifier, this.fileToUpload, this.fileName, this.accessContract)
+      .transferAcknowledgment(this.tenantIdentifier, this.fileToUpload, this.fileName)
       .subscribe(
         (operationId) => {
           this.dialogRef.close(true);

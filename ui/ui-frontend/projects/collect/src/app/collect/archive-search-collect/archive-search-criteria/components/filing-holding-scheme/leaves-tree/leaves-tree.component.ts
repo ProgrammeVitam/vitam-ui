@@ -27,16 +27,16 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { DescriptionLevel } from 'projects/vitamui-library/src/lib/models/description-level.enum';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
-import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
 import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
-import { FilingHoldingSchemeHandler } from '../filing-holding-scheme.handler';
-import { ArchiveFacetsService } from '../../../services/archive-facets.service';
-import { DescriptionLevel } from 'projects/vitamui-library/src/lib/models/description-level.enum';
 import { Pair, VitamInternalFields } from '../../../models/utils';
+import { ArchiveFacetsService } from '../../../services/archive-facets.service';
+import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
+import { FilingHoldingSchemeHandler } from '../filing-holding-scheme.handler';
 
 @Component({
   selector: 'app-leaves-tree',
@@ -46,7 +46,6 @@ import { Pair, VitamInternalFields } from '../../../models/utils';
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   readonly DEFAULT_UNIT_PAGE_SIZE = 10;
 
-  @Input() accessContract: string;
   @Input() loadingNodeUnit: boolean;
   @Input() transactionId: string;
   loadingNodesDetails: boolean;
@@ -271,8 +270,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private sendSearchArchiveUnitsByCriteria(searchCriteria: SearchCriteriaDto): Observable<PagedResult> {
-    return this.archiveCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId,
-      this.accessContract)
+    return this.archiveCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId)
       .pipe(first());
   }
 

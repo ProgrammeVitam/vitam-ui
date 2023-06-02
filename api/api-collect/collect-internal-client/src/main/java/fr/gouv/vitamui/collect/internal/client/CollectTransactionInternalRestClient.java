@@ -133,7 +133,7 @@ public class CollectTransactionInternalRestClient
 
     public ArchiveUnitsDto searchCollectProjectArchiveUnits(InternalHttpContext context, String projectId,
         SearchCriteriaDto searchQuery) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
             restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST,
@@ -144,7 +144,7 @@ public class CollectTransactionInternalRestClient
 
     public Resource exportCsvArchiveUnitsByCriteria(String projectId, final SearchCriteriaDto query,
         final InternalHttpContext context) {
-        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ResponseEntity<Resource> response =
             restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
@@ -154,9 +154,11 @@ public class CollectTransactionInternalRestClient
 
     }
 
-    public CollectTransactionDto updateTransaction(final InternalHttpContext context, CollectTransactionDto transactionDto) {
+    public CollectTransactionDto updateTransaction(final InternalHttpContext context,
+        CollectTransactionDto transactionDto) {
         final HttpEntity<?> request = new HttpEntity<>(transactionDto, buildHeaders(context));
-        ResponseEntity<CollectTransactionDto> response =  restTemplate.exchange(getUrl(), HttpMethod.PUT, request, CollectTransactionDto.class);
+        ResponseEntity<CollectTransactionDto> response =
+            restTemplate.exchange(getUrl(), HttpMethod.PUT, request, CollectTransactionDto.class);
         return response.getBody();
     }
 

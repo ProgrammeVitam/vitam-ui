@@ -49,13 +49,12 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
-import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
@@ -98,9 +97,6 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
     @MockBean(name = "unitService")
     private UnitService unitService;
 
-    @MockBean(name = "rulesUpdateCommonService")
-    private RulesUpdateCommonService rulesUpdateCommonService;
-
     @InjectMocks
     private ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService;
 
@@ -117,7 +113,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         archiveSearchMgtRulesInternalService =
             new ArchiveSearchMgtRulesInternalService(archiveSearchInternalService,
                 ruleOperationsConverter,
-                rulesUpdateCommonService, accessContractService, unitService, objectMapper);
+                accessContractService, unitService, objectMapper);
     }
 
     @Test

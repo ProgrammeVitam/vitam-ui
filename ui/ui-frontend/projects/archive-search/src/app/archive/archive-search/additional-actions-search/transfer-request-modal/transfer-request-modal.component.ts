@@ -97,7 +97,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
       lifeCycleLogs: this.transferRequestFormGroup.get('lifeCycleLogs').value === this.translate.instant('ARCHIVE_SEARCH.DIP.INCLUDE'),
     };
 
-    this.archiveService.transferRequestService(transferRequestDto, this.data.accessContract).subscribe(
+    this.archiveService.transferRequestService(transferRequestDto).subscribe(
       (response) => {
         this.dialogRef.close(true);
         const serviceUrl =

@@ -47,7 +47,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -89,12 +88,10 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     public void when_searchArchiveUnitsByCriteria_rest_template_ok_should_return_ok() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         SearchCriteriaDto query = new SearchCriteriaDto();
-        MultiValueMap<String, String> headers = archiveSearchExternalRestClient.buildSearchHeaders(context);
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ArchiveUnitsDto responseEntity = new ArchiveUnitsDto();
 
         when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.POST), eq(request), eq(ArchiveUnitsDto.class)))
+            .exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(ArchiveUnitsDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
 
         ArchiveUnitsDto response =
@@ -106,12 +103,10 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     @Test
     public void whenGetFilingHoldingSChemeRestTemplateOKThenShouldReturnOK() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        MultiValueMap<String, String> headers = archiveSearchExternalRestClient.buildSearchHeaders(context);
-        final HttpEntity<Void> request = new HttpEntity<>(headers);
         final VitamUISearchResponseDto responseEntity = new VitamUISearchResponseDto();
 
         when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.GET), eq(request), eq(VitamUISearchResponseDto.class)))
+            .exchange(anyString(), eq(HttpMethod.GET), any(HttpEntity.class), eq(VitamUISearchResponseDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
 
         VitamUISearchResponseDto response =
@@ -124,16 +119,14 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     @Test
     public void whenGetexportCsvArchiveUnitsByCriteria_Srvc_ok_ThenShouldReturnOK() throws IOException {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        MultiValueMap<String, String> headers = archiveSearchExternalRestClient.buildSearchHeaders(context);
         SearchCriteriaDto query = new SearchCriteriaDto();
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
 
         Resource resource = new ByteArrayResource(
             Objects.requireNonNull(ArchiveSearchExternalRestClientTest.class.getClassLoader()
                 .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)).readAllBytes());
 
         when(restTemplate.exchange(anyString(), eq(HttpMethod.POST),
-            eq(request), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
+            any(HttpEntity.class), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
 
         ResponseEntity<Resource> response =
             archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, context);
@@ -144,10 +137,8 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     @Test
     public void transferRequest_should_return_OK() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        MultiValueMap<String, String> headers = archiveSearchExternalRestClient.buildSearchHeaders(context);
         TransferRequestDto transferRequestDto = new TransferRequestDto();
-        final HttpEntity<TransferRequestDto> request = new HttpEntity<>(transferRequestDto, headers);
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST), eq(request), any(Class.class)))
+        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), any(Class.class)))
             .thenReturn(new ResponseEntity<>("OK", HttpStatus.OK));
         // When
         ResponseEntity<String> response = archiveSearchExternalRestClient.transferRequest(transferRequestDto, context);

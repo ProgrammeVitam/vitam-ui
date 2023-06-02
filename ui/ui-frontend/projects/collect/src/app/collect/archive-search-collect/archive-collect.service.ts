@@ -103,9 +103,8 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.projectsApiService.getLastTransactionByProjectId(projectId).pipe(map((result) => result));
   }
 
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, accessContract: string): Observable<PagedResult> {
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string): Observable<PagedResult> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
 
     return this.transactionApiService.searchArchiveUnitsByCriteria(criteriaDto, transactionId, headers).pipe(
       //   timeout(TIMEOUT_SEC),
@@ -120,14 +119,14 @@ export class ArchiveCollectService extends SearchService<any> {
     );
   }
 
-  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], transactionId: string, accessContract: string): Observable<number> {
+  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], transactionId: string): Observable<number> {
     const searchCriteria = {
       criteriaList: criteriaElts,
       pageNumber: 0,
       size: 1,
       trackTotalHits: true,
     };
-    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId, accessContract).pipe(
+    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId).pipe(
       map((pagedResult: PagedResult) => {
         return pagedResult.totalResults;
       }),
@@ -160,8 +159,8 @@ export class ArchiveCollectService extends SearchService<any> {
     });
   }
 
-  launchDownloadObjectFromUnit(unitId: string, objectId: string, tenantIdentifier: number, accessContract: string) {
-    this.downloadFile(this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, accessContract, tenantIdentifier));
+  launchDownloadObjectFromUnit(unitId: string, objectId: string, tenantIdentifier: number) {
+    this.downloadFile(this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, tenantIdentifier));
   }
 
   downloadFile(url: string) {

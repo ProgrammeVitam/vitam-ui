@@ -41,7 +41,7 @@ import { ArchiveService } from '../../../archive.service';
 import {
   ReclassificationAction,
   ReclassificationCriteriaDto,
-  ReclassificationQueryActionType,
+  ReclassificationQueryActionType
 } from '../../../models/reclassification-request.interface';
 import { PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
 import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
@@ -64,7 +64,6 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
   itemSelected: number;
   actionChosen: string;
-  accessContract: string;
 
   totalChilds: number = null;
   hasParents = true;
@@ -98,7 +97,6 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
     public data: {
       itemSelected: number;
       reclassificationCriteria: SearchCriteriaDto;
-      accessContract: string;
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
       archiveUnitGuidSelected: string;
@@ -108,7 +106,6 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.itemSelected = this.data.itemSelected;
-    this.accessContract = this.data.accessContract;
     this.archiveUnitGuidSelected = this.data.archiveUnitGuidSelected;
     this.archiveUnitAllunitup = this.data.archiveUnitAllunitup;
 
@@ -123,7 +120,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         null,
         [
           this.archiveUnitValidator.alreadyExistParents(null, this.archiveUnitAllunitup),
-          this.archiveUnitValidator.existArchiveUnit(this.data.reclassificationCriteria, this.accessContract),
+          this.archiveUnitValidator.existArchiveUnit(this.data.reclassificationCriteria),
         ],
       ],
       targetAuTitle: [{ value: null, disabled: true }],
@@ -131,7 +128,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
     });
 
     if (this.archiveUnitAllunitup.length > 0) {
-      this.getArchiveUnitParents(this.archiveUnitAllunitup, this.accessContract);
+      this.getArchiveUnitParents(this.archiveUnitAllunitup);
     } else {
       this.hasParents = false;
       this.isDisabledButton = false;
@@ -166,7 +163,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       pageNumber: 0,
       size: 1,
     };
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
       (pagedResult: PagedResult) => {
         this.totalChilds = pagedResult.totalResults;
         this.pendingGetChilds = false;
@@ -196,7 +193,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         },
       ];
 
-      this.archiveService.getTotalTrackHitsByCriteria(criteriaSearchList, this.accessContract).subscribe(
+      this.archiveService.getTotalTrackHitsByCriteria(criteriaSearchList).subscribe(
         (exactCountResults: number) => {
           if (exactCountResults !== -1) {
             this.totalChilds = exactCountResults;
@@ -253,7 +250,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
     return this.form.get('allunitupsGuidsFormAttribute') as FormArray;
   }
 
-  getArchiveUnitParents(allunitupsIds: string[], accessContract: string) {
+  getArchiveUnitParents(allunitupsIds: string[]) {
     const allunitups = allunitupsIds.map((unitUp) => ({ id: unitUp, value: unitUp }));
     const criteriaSearchList = [
       {
@@ -270,7 +267,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       pageNumber: 0,
       size: allunitupsIds.length,
     };
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, accessContract).subscribe((pagedResult: PagedResult) => {
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe((pagedResult: PagedResult) => {
       if (pagedResult.results) {
         pagedResult.results.map((ua) => {
           const title = ArchiveService.fetchTitle(ua.Title, ua.Title_);
@@ -293,7 +290,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     const reclassificationQuery = this.getReclassificationQuery();
-    this.archiveService.reclassification(reclassificationQuery, this.data.accessContract).subscribe(
+    this.archiveService.reclassification(reclassificationQuery).subscribe(
       (response) => {
         this.dialogRef.close(true);
         const serviceUrl =

@@ -48,14 +48,20 @@ import java.util.Arrays;
 /**
  * Update Archive units Rules Common Service
  */
-public class RulesUpdateCommonService {
+public final class RulesUpdateCommonService {
 
-    public void deleteAttributesFromObjectNode(ObjectNode dslRequest, String ...attributes) {
+    private RulesUpdateCommonService() {
 
-        Arrays.stream(attributes).forEach(dslRequest::remove);
     }
 
-    public void setMassUpdateUnitRuleRequest(MassUpdateUnitRuleRequest massUpdateUnitRuleRequest, RuleActions ruleActions, ObjectNode dslRequest ) {
+    public static void deleteAttributesFromObjectNode(ObjectNode dslRequest, String... attributes) {
+        if (dslRequest != null && attributes.length > 0) {
+            Arrays.stream(attributes).forEach(dslRequest::remove);
+        }
+    }
+
+    public static void setMassUpdateUnitRuleRequest(MassUpdateUnitRuleRequest massUpdateUnitRuleRequest,
+        RuleActions ruleActions, ObjectNode dslRequest) {
         massUpdateUnitRuleRequest.setRuleActions(ruleActions);
         massUpdateUnitRuleRequest.setDslRequest(dslRequest);
 

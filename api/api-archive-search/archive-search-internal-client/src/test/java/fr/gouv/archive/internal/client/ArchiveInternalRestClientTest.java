@@ -37,6 +37,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -44,7 +45,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -80,13 +80,11 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
     public void when_searchArchiveUnitsByCriteria_rest_template_ok_should_return_ok() {
         InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
         SearchCriteriaDto query = new SearchCriteriaDto();
-        MultiValueMap<String, String> headers = archivesSearchExternalRestClient.buildSearchHeaders(context);
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ArchiveUnitsDto responseEntity = new ArchiveUnitsDto();
 
         when(restTemplate
             .exchange(anyString(),
-                eq(HttpMethod.POST), eq(request),
+                eq(HttpMethod.POST), Mockito.any(HttpEntity.class),
                 eq(ArchiveUnitsDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         ArchiveUnitsDto response =
@@ -97,12 +95,11 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
     @Test
     public void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() {
         InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
-        MultiValueMap<String, String> headers = archivesSearchExternalRestClient.buildSearchHeaders(context);
-        final HttpEntity<Void> request = new HttpEntity<>(headers);
         final VitamUISearchResponseDto responseEntity = new VitamUISearchResponseDto();
 
         when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.GET), eq(request), eq(VitamUISearchResponseDto.class)))
+            .exchange(anyString(), eq(HttpMethod.GET), Mockito.any(HttpEntity.class),
+                eq(VitamUISearchResponseDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         VitamUISearchResponseDto response =
             archivesSearchExternalRestClient.getFilingHoldingScheme(context);
@@ -112,15 +109,14 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
     @Test
     public void whenGetexportCsvArchiveUnitsByCriteria_Srvc_ok_ThenShouldReturnOK() throws IOException {
         InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
-        MultiValueMap<String, String> headers = archivesSearchExternalRestClient.buildSearchHeaders(context);
         SearchCriteriaDto query = new SearchCriteriaDto();
-        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
 
         Resource resource = new ByteArrayResource(ArchiveInternalRestClientTest.class.getClassLoader()
             .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
 
         when(restTemplate.exchange(anyString(), eq(HttpMethod.POST),
-            eq(request), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
+            Mockito.any(HttpEntity.class), eq(Resource.class))).thenReturn(
+            new ResponseEntity<>(resource, HttpStatus.OK));
 
         Resource response =
             archivesSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, context);

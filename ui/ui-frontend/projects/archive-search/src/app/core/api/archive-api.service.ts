@@ -89,8 +89,8 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     });
   }
 
-  getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number): string {
-    return `${this.apiUrl}/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  getDownloadObjectFromUnitUrl(unitId: string, tenantId: number): string {
+    return `${this.apiUrl}/downloadobjectfromunit/${unitId}?tenantId=${tenantId}`;
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders): Observable<any> {

@@ -50,8 +50,6 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
   @Input()
   ruleCategory: string;
   @Input()
-  accessContract: string;
-  @Input()
   hasExactCount: boolean;
   @Input()
   selectedItem: number;
@@ -160,7 +158,7 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
 
     if (this.hasExactCount) {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList, this.accessContract)
+        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .subscribe((resultsNumber) => {
           this.itemsCategoryToUnlock = resultsNumber.toString();
           this.itemsToNotUpdate = (this.selectedItem - resultsNumber).toString();
@@ -168,7 +166,7 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
         });
     } else {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
+        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
         .subscribe((data) => {
           this.itemsCategoryToUnlock = data.totalResults.toString();
           this.itemsToNotUpdate =
