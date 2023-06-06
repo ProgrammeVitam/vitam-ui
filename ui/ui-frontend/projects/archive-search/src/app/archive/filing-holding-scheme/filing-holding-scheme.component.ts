@@ -39,7 +39,7 @@ import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
-  styleUrls: [ './filing-holding-scheme.component.scss' ],
+  styleUrls: ['./filing-holding-scheme.component.scss'],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() accessContract: string;
@@ -58,10 +58,12 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   loadingHolding = true;
   node: string;
   nodeData: NodeData;
-  hasMatchesInSearch = false;
   fullNodes: FilingHoldingSchemeNode[] = [];
   showEveryNodes = true;
   requestResultFacets: ResultFacet[];
+  hasMatchesInSearch = false;
+  requestTotalResults: number;
+  requestResultsInFilingPlan: number;
   loadingArchiveUnit: { [key: string]: boolean } = {
     TREE: false,
     LEAVE: false,
@@ -78,9 +80,10 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   }
 
   ngOnInit(): void {
-    this.initialNodesState();
-    this.initialNodeCheckState();
-    this.initialNodeFacetState();
+    this.subscribeResetNodesOnFilingHoldingNodesChanges();
+    this.subscribeOnNodeSelectionToSetCheck();
+    this.subscribeOnFacetsChangesToResetCounts();
+    this.subscribeOnTotalResultsChange();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -94,7 +97,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.subscriptions.unsubscribe();
   }
 
-  private initialNodeCheckState(): void {
+  private subscribeOnNodeSelectionToSetCheck(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getNodesTarget().subscribe((nodeId) => {
         if (nodeId == null) {
@@ -107,13 +110,14 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     );
   }
 
-  private initialNodeFacetState(): void {
+  private subscribeOnFacetsChangesToResetCounts(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getFacets().subscribe((facets) => {
         if (facets && facets.length > 0) {
           this.requestResultFacets = facets;
           this.hasMatchesInSearch = true;
           FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceFull.data, facets);
+          this.requestResultsInFilingPlan = FilingHoldingSchemeHandler.getCountSum(this.nestedDataSourceFull.data);
         } else {
           this.hasMatchesInSearch = false;
           for (const node of this.nestedDataSourceFull.data) {
@@ -121,12 +125,23 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
             node.hidden = true;
           }
         }
-        this.filterNodesToLeavesOnly();
+        // fullNodes is a Graph .
+        // keeps last child with result only
+        this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(this.fullNodes);
+        this.showEveryNodes = false;
       })
     );
   }
 
-  private initialNodesState(): void {
+  private subscribeOnTotalResultsChange(): void {
+    this.subscriptions.add(
+      this.archiveSharedDataService.getTotalResults().subscribe((totalResults) => {
+        this.requestTotalResults = totalResults
+      })
+    );
+  }
+
+  private subscribeResetNodesOnFilingHoldingNodesChanges(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getFilingHoldingNodes().subscribe((nodes) => {
         if (nodes) {
@@ -150,14 +165,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     );
   }
 
-  filterNodesToLeavesOnly() {
-    // fullNodes is a Graph .
-    // keeps last child with result only
-    this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(this.fullNodes);
-    this.showEveryNodes = false;
-  }
-
-
   addToSearchCriteria(node: FilingHoldingSchemeNode) {
     this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
     FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
@@ -178,7 +185,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     const criteriaSearchList = [
       {
         criteria: '#id',
-        values: [ { id: archiveUnitId, value: archiveUnitId } ],
+        values: [{ id: archiveUnitId, value: archiveUnitId }],
         operator: CriteriaOperator.EQ,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
         dataType: CriteriaDataType.STRING,

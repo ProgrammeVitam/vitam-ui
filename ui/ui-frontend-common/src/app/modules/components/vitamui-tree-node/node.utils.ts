@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -24,9 +24,51 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+import { unitTypeToVitamuiIcon } from '../../models';
+import { VitamuiIcons } from '../../vitamui-icons.enum';
+import { FilingHoldingSchemeNode } from './node.interface';
 
-export enum VitamuiUnitTypes {
-  HOLDING_UNIT = 'HOLDING_UNIT',
-  FILING_UNIT = 'FILING_UNIT',
-  INGEST = 'INGEST',
+export function nodeToVitamuiIcon(node: FilingHoldingSchemeNode): VitamuiIcons {
+  return unitTypeToVitamuiIcon(node.unitType, node.hasObject);
+}
+
+export const nodeHasChildren = (node: FilingHoldingSchemeNode): boolean => {
+  return node.children && node.children.length > 0;
+};
+
+export const nodeHasMatch = (node: FilingHoldingSchemeNode): boolean => {
+  return node.count && node.count > 0;
+};
+
+export const copyNodeWithoutChildren = (node: FilingHoldingSchemeNode): FilingHoldingSchemeNode => {
+  return {
+    id: node.id,
+    title: node.title,
+    type: node.type,
+    label: node.label,
+    children: null,
+    vitamId: node.vitamId,
+    checked: node.checked,
+    count: node.count,
+
+    hasObject: node?.hasObject,
+    unitType: node?.unitType,
+
+    hidden: node.hidden,
+    isLoadingChildren: false,
+    canLoadMoreChildren: true,
+    canLoadMoreMatchingChildren: true,
+  };
+};
+
+export function recursiveCheck(nodes: FilingHoldingSchemeNode[], show: boolean) {
+  if (!nodes || nodes.length === 0) {
+    return;
+  }
+  for (const node of nodes) {
+    node.hidden = false;
+    node.checked = show;
+    node.count = null;
+    this.recursiveCheck(node.children, show);
+  }
 }

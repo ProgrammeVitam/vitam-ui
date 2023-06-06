@@ -39,6 +39,7 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class ArchiveSearchApplication implements CommandLineRunner {
+
     @Autowired
     private Environment env;
 

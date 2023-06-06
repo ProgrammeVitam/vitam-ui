@@ -302,8 +302,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
 
     this.criteriaSearchListToSave.forEach((criteriaSearch) => {
       if (criteriaSearch.criteria === ALL_ARCHIVE_UNIT_TYPES) {
-        criteriaSearch.values.forEach((unitType) => {
-          this.archiveUnitTypesCriteria.set(unitType.id, true);
+        criteriaSearch.values.forEach((criteriaValue) => {
+          this.archiveUnitTypesCriteria.set(criteriaValue.id, true);
         });
       }
       criteriaSearch.values.forEach((value) => {

@@ -37,19 +37,11 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, TimeoutError, of, throwError } from 'rxjs';
+import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContract,
-  AccessContractApiService,
-  ApiUnitObject,
-  CriteriaDataType,
-  CriteriaOperator,
-  FilingHoldingSchemeNode,
-  Ontology,
-  SearchService,
-  SecurityService,
-  Unit,
+  AccessContract, AccessContractApiService, ApiUnitObject, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, Ontology,
+  SearchService, SecurityService, Unit,
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
@@ -110,14 +102,15 @@ export class ArchiveService extends SearchService<any> {
       ) {
         const outNode: FilingHoldingSchemeNode = {
           id: unit['#id'],
+          vitamId: unit['#id'],
           title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
           type: unit.DescriptionLevel,
+          unitType: unit['#unitType'],
+          descriptionLevel: unit.DescriptionLevel,
           children: [],
-          vitamId: unit['#id'],
           checked: false,
           hidden: false,
-          hasObject: unit['#object'] ? true : false,
-          unitType: unit['#unitType'],
+          hasObject: !!unit['#object'],
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);
@@ -131,7 +124,7 @@ export class ArchiveService extends SearchService<any> {
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.archiveApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, headers).subscribe(
       (file) => {
@@ -158,7 +151,7 @@ export class ArchiveService extends SearchService<any> {
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto): Observable<PagedResult> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.archiveApiService.searchArchiveUnitsByCriteria(criteriaDto, headers).pipe(
       //   timeout(TIMEOUT_SEC),
@@ -209,35 +202,35 @@ export class ArchiveService extends SearchService<any> {
   }
 
   exportDIPService(exportDIPCriteriaList: ExportDIPCriteriaList): Observable<string> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.archiveApiService.exportDipApiService(exportDIPCriteriaList, headers);
   }
 
   transferRequestService(transferDipCriteriaDto: TransferRequestDto): Observable<string> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.archiveApiService.transferDipApiService(transferDipCriteriaDto, headers);
   }
 
   startEliminationAnalysis(criteriaDto: SearchCriteriaDto) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
     return this.archiveApiService.startEliminationAnalysis(criteriaDto, headers);
   }
 
   launchEliminationAction(criteriaDto: SearchCriteriaDto) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
     return this.archiveApiService.launchEliminationAction(criteriaDto, headers);
   }
 
   updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto): Observable<string> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
   }
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
@@ -322,7 +315,7 @@ export class ArchiveService extends SearchService<any> {
   }
 
   launchComputedInheritedRules(criteriaDto: SearchCriteriaDto): Observable<string> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.archiveApiService.launchComputedInheritedRules(criteriaDto, headers);
   }
@@ -345,13 +338,13 @@ export class ArchiveService extends SearchService<any> {
   }
 
   selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto): Observable<Unit> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.archiveApiService.selectUnitWithInheritedRules(criteriaDto, headers);
   }
 
   reclassification(criteriaDto: ReclassificationCriteriaDto): Observable<string> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.archiveApiService.reclassification(criteriaDto, headers);
   }

@@ -1,6 +1,5 @@
 <div class="vitamui-sidepanel-header">
   <app-classification-tree
-    [accessContract]="accessContract"
     [hasMatchesInSearch]="hasMatchesInSearch"
     [loadingHolding]="loadingHolding"
     [nestedDataSourceFull]="nestedDataSourceFull"
@@ -21,6 +20,8 @@
     [accessContract]="accessContract"
     [nestedDataSourceLeaves]="nestedDataSourceLeaves"
     [searchRequestResultFacets]="requestResultFacets"
+    [searchRequestTotalResults]="requestTotalResults"
+    [searchRequestResultsInFilingPlan]="requestResultsInFilingPlan"
     [loadingNodeUnit]="loadingArchiveUnit.LEAVE"
     (addToSearchCriteria)="addToSearchCriteria($event)"
     (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')">

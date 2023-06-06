@@ -24,41 +24,24 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {QualifierDto, VersionDto, VersionWithQualifierDto} from './unit-object-api.interface';
-import {ObjectQualifierTypeList} from './unit.enums';
+import { VitamuiIcons } from '../../vitamui-icons.enum';
+import { UnitTypes } from './unit.enums';
+import { Unit } from './unit.interface';
 
-export function qualifiersToVersionsWithQualifier(qualifiers: Array<QualifierDto>): Array<VersionWithQualifierDto> {
-  if (!qualifiers || qualifiers.length < 1) {
-    return [];
-  }
-  const versionsWithQualifiers = new Array<VersionWithQualifierDto>();
-  for (const qualifier of qualifiers) {
-    for (const version of qualifier.versions) {
-      versionsWithQualifiers.push(convertToVersionWithQualifier(qualifier, version));
-    }
-  }
-  versionsWithQualifiers.sort(byQualifierThenVersion);
-  return versionsWithQualifiers;
+export function unitToVitamuiIcon(unit: Unit): VitamuiIcons {
+  const hasObject = unit['#object'] && unit['#object'].length > 0;
+  return unitTypeToVitamuiIcon(unit['#unitType'], hasObject);
 }
 
-export function convertToVersionWithQualifier(qualifier: QualifierDto, version: VersionDto): VersionWithQualifierDto {
-  const versionWithQualifier: VersionWithQualifierDto = version as VersionWithQualifierDto;
-  versionWithQualifier.qualifier = qualifier.qualifier;
-  versionWithQualifier.version = parseDataObjectVersion(versionWithQualifier.DataObjectVersion);
-  return versionWithQualifier;
-}
-
-export const byQualifierThenVersion = (left: VersionWithQualifierDto, right: VersionWithQualifierDto) => {
-  if (left.qualifier === right.qualifier) {
-    return left.version - right.version;
+export function unitTypeToVitamuiIcon(unitType: string, hasObject: boolean): VitamuiIcons {
+  if (unitType === UnitTypes.HOLDING_UNIT) {
+    return VitamuiIcons.HOLDING_UNIT;
   }
-  return ObjectQualifierTypeList.indexOf(left.qualifier) - ObjectQualifierTypeList.indexOf(right.qualifier);
-};
-
-export function parseDataObjectVersion(dataObjectVersion: string): number {
-  if (!dataObjectVersion) {
-    return 0;
+  if (unitType === UnitTypes.FILING_UNIT) {
+    return VitamuiIcons.FILING_UNIT;
   }
-  const qualifierAndVersion: Array<string> = dataObjectVersion.split('_');
-  return +qualifierAndVersion[1];
+  if (unitType === UnitTypes.INGEST && hasObject) {
+    return VitamuiIcons.INGEST_WITH_OBJECT;
+  }
+  return VitamuiIcons.INGEST_WITHOUT_OBJECT;
 }

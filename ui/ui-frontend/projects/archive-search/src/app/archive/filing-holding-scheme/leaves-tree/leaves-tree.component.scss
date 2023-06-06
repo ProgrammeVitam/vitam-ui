@@ -115,18 +115,25 @@
 
 .badge {
   display: inline-block;
-  padding: 0.25em 1.5em;
+  padding: 0.25em 0;
   font-size: 100%;
   font-weight: 700;
   line-height: 1;
   position: absolute;
-  top: 14px;
+  top: 11px;
+  right: 2px;
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: 1.25rem;
-  right: 2px;
   width: 54px;
-  text-align: right;
+  text-align: center;
+}
+
+.badge-primary {
+  // Primary/Primary-500
+  color: #9C31B5;
+  // Primary/Primary-100
+  background-color: #E6C3EF;
 }
 
 .badge-secondary {

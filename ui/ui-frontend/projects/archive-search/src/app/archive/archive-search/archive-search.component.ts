@@ -27,24 +27,14 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  AfterContentChecked,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  TemplateRef,
+  AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, Subscription, merge } from 'rxjs';
+import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeNode, Logger, Unit, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
@@ -59,17 +49,8 @@ import { UpdateUnitManagementRuleService } from '../common-services/update-unit-
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
 import {
-  ArchiveSearchResultFacets,
-  CriteriaValue,
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaAddAction,
-  SearchCriteriaCategory,
-  SearchCriteriaEltDto,
-  SearchCriteriaMgtRuleEnum,
-  SearchCriteriaRemoveAction,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
+  ArchiveSearchResultFacets, CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaAddAction, SearchCriteriaCategory,
+  SearchCriteriaEltDto, SearchCriteriaMgtRuleEnum, SearchCriteriaRemoveAction, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum,
 } from '../models/search.criteria';
 import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
@@ -475,10 +456,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     return this.searchCriterias && this.searchCriterias.has('WAITING_RECALCULATE');
   }
 
-  findDefaultFacetTab(): number {
-    return this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
-  }
-
   submit() {
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
@@ -570,7 +547,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.pending = true;
 
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-    const searchCriteria = {
+    const searchCriterias = {
       criteriaList: this.criteriaSearchList,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
@@ -578,8 +555,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       trackTotalHits: false,
       computeFacets: includeFacets,
     };
-    this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
+    this.archiveExchangeDataService.emitSearchCriterias(searchCriterias);
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriterias).subscribe(
       (pagedResult: PagedResult) => {
         if (includeFacets) {
           this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
@@ -594,18 +571,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
           this.hasResults = true;
           this.totalResults = pagedResult.totalResults;
-        } else {
-          if (pagedResult.results) {
-            this.hasResults = true;
-            pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
-          }
+          this.archiveExchangeDataService.emitTotalResults(this.totalResults);
+        } else if (pagedResult.results) {
+          this.hasResults = true;
+          pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
         }
         this.pageNumbers = pagedResult.pageNumbers;
-        if (this.totalResults === this.DEFAULT_RESULT_THRESHOLD) {
-          this.waitingToGetFixedCount = true;
-        } else {
-          this.waitingToGetFixedCount = false;
-        }
+        this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
         if (this.isAllchecked) {
           this.itemSelected = this.totalResults - this.itemNotSelected;
         }
@@ -680,7 +652,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     });
   }
 
-  setFilingHoldingScheme() {
+  // TODO: it may add multiple subscription for each clear criteria
+  subscribeResetNodesOnFilingHoldingNodesChanges() {
     this.subscriptions.add(
       this.archiveExchangeDataService.getFilingHoldingNodes().subscribe((nodes) => {
         this.nodeArray = nodes;
@@ -688,13 +661,25 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     );
   }
 
+  recursiveCheck(nodes: FilingHoldingSchemeNode[], show: boolean) {
+    if (nodes.length === 0) {
+      return;
+    }
+    for (const node of nodes) {
+      node.hidden = false;
+      node.checked = show;
+      node.count = null;
+      this.recursiveCheck(node.children, show);
+    }
+  }
+
   checkAllNodes(show: boolean) {
-    this.archiveHelperService.recursiveCheck(this.nodeArray, show);
+    this.recursiveCheck(this.nodeArray, show);
   }
 
   public reMapSearchCriteriaFromSearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
-    this.setFilingHoldingScheme();
-    this.checkAllNodes(false);
+    this.subscribeResetNodesOnFilingHoldingNodesChanges();
+    this.recursiveCheck(this.nodeArray, false);
 
     storedSearchCriteriaHistory.searchCriteriaList.forEach((criteria: SearchCriteriaEltements) => {
       this.fillTreeNodeAsSearchCriteriaHistory(criteria);
@@ -866,9 +851,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.isIndeterminate = false;
     this.itemNotSelected = 0;
     this.canLoadMore = false;
-    this.setFilingHoldingScheme();
+    this.subscribeResetNodesOnFilingHoldingNodesChanges();
     this.archiveExchangeDataService.emitFilingHoldingNodes(this.nodeArray);
-    this.checkAllNodes(false);
+    this.recursiveCheck(this.nodeArray, false);
   }
 
   checkParentBoxChange(event: any) {

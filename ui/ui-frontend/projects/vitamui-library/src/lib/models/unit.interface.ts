@@ -1,3 +1,4 @@
+/** @deprecated: use ui-frontend-common */
 export interface Unit {
   '#id': string;
   '#unitups': string[];

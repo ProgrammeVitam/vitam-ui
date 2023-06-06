@@ -39,7 +39,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Unit, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
+import { Unit, unitToVitamuiIcon } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-archive-preview',
@@ -125,19 +125,7 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     }
   }
 
-  getArchiveUnitIcone(archiveUnit: Unit) {
-    const archiveUnitType = this.getArchiveUnitType(archiveUnit);
-
-    if (archiveUnitType === VitamuiUnitTypes.HOLDING_UNIT) {
-      return VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_;
-    }
-    if (archiveUnitType === VitamuiUnitTypes.FILING_UNIT) {
-      return VitamuiIcons.VITAMUI_FILING_UNIT_ICON_;
-    }
-    if (archiveUnitType === VitamuiUnitTypes.INGEST && !archiveUnit['#object']) {
-      return VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_;
-    }
-
-    return VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
+  getArchiveUnitIcon(unit: Unit) {
+    return unitToVitamuiIcon(unit);
   }
 }

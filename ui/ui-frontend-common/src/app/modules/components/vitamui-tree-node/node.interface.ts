@@ -35,66 +35,34 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Id} from '../../models';
+import { Id } from '../../models';
 
 export interface FilingHoldingSchemeNode extends Id {
   title: string;
-  type: string;
+  /** @deprecated: use unitType & descriptionLevel instead */
+  type?: string;
+  unitType?: string;
   descriptionLevel?: string;
   label?: string;
   children: FilingHoldingSchemeNode[];
   vitamId: string;
-  // DISPLAY
-  disabledChild?: boolean;
-  disabled?: boolean;
-  checked: boolean;
-  count?: number;
-  hidden?: boolean;
 
+  // DISPLAY
+  disabledChild?: boolean; // TODO: try to remove - used in VitamuiTreeNodeComponent to set indeterminate
+  disabled?: boolean; // used in VitamuiTreeNodeComponent to disable mat-icon-button & mat-checkbox
+  checked: boolean; // used in VitamuiTreeNodeComponent to set ngModel of mat-checkbox
+  count?: number;
+  hidden?: boolean; // TODO: try to remove - may be unused
   isLoadingChildren?: boolean;
+  toggled?: boolean;
+  // help to detect the unit type and the icon to show
+  hasObject?: boolean;
   // help to keep tracks on what has been loaded
   paginatedChildrenLoaded?: number;
   canLoadMoreChildren?: boolean;
-
   paginatedMatchingChildrenLoaded?: number;
   canLoadMoreMatchingChildren?: boolean;
-
-  toggled?: boolean;
-
-  // help to detect the unit type and the icon to show
-  hasObject?: boolean;
-  unitType?: string;
-  parents?: FilingHoldingSchemeNode[];
 }
-
-export const nodeHasChildren = (node: FilingHoldingSchemeNode): boolean => {
-  return node.children && node.children.length > 0;
-};
-
-export const nodeHasMatch = (node: FilingHoldingSchemeNode): boolean => {
-  return node.count && node.count > 0;
-};
-
-export const copyNodeWithoutChildren = (node: FilingHoldingSchemeNode): FilingHoldingSchemeNode => {
-  return {
-    id: node.id,
-    title: node.title,
-    type: node.type,
-    label: node.label,
-    children: null,
-    vitamId: node.vitamId,
-    checked: node.checked,
-    count: node.count,
-
-    hasObject: node?.hasObject,
-    unitType: node?.unitType,
-
-    hidden: node.hidden,
-    isLoadingChildren: false,
-    canLoadMoreChildren: true,
-    canLoadMoreMatchingChildren: true,
-  };
-};
 
 export class MatchingNodesNumbers {
   nodesAdded: number;

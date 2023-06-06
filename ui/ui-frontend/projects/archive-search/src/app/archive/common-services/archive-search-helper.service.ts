@@ -31,12 +31,7 @@ import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, FilingHoldingSche
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import {
-  CriteriaValue,
-  SearchCriteria,
-  SearchCriteriaEltDto,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
+  CriteriaValue, SearchCriteria, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue,
 } from '../models/search.criteria';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
@@ -469,18 +464,6 @@ export class ArchiveSearchHelperService {
         });
       }
     });
-  }
-
-  recursiveCheck(nodes: FilingHoldingSchemeNode[], show: boolean) {
-    if (nodes.length === 0) {
-      return;
-    }
-    for (const node of nodes) {
-      node.hidden = false;
-      node.checked = show;
-      node.count = null;
-      this.recursiveCheck(node.children, show);
-    }
   }
 
   fillNodeTitle(

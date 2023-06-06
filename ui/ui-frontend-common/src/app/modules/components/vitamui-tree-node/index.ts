@@ -35,5 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './node.interface';
+export * from './node.utils';
 export * from './vitamui-tree-node.component';
 export * from './vitamui-tree-node.module';

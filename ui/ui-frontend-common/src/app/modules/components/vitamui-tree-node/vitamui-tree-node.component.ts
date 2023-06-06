@@ -37,6 +37,7 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
   @Input() icon: string;
   @Input() expanded: boolean;
   @Input() disabled: boolean;
+  @Input() hasCheckBox = true;
   @Input() labelIsLinkedToCheckbox = false;
   @Output() nodeToggle = new EventEmitter<void>();
   @Output() checkboxClick = new EventEmitter<void>();

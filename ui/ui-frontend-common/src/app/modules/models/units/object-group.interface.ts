@@ -25,8 +25,9 @@
  * accept its terms.
  */
 
-import {ObjectQualifierType} from './unit.enums';
+import { ObjectQualifierType } from './unit.enums';
 
+// TODO: rename in ObjectGroup
 /** Object associated to a unit */
 export interface ApiUnitObject {
   '#id': string;

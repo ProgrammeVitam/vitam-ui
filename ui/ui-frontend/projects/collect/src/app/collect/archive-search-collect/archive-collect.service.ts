@@ -228,7 +228,7 @@ export class ArchiveCollectService extends SearchService<any> {
         return of({ $hits: null, $results: [] });
       }),
       map((response) => {
-        return this.buildNestedTreeLevels(response.$results);
+        return this.buildNestedTreeLevels(response.$results as Unit[]);
       })
     );
   }
@@ -252,7 +252,7 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.transactionApiService.getObjectGroupDetailsById(objectId, headers);
   }
 
-  private buildNestedTreeLevels(arr: any[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
+  private buildNestedTreeLevels(arr: Unit[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
     const out: FilingHoldingSchemeNode[] = [];
 
     arr.forEach((unit) => {
@@ -262,15 +262,15 @@ export class ArchiveCollectService extends SearchService<any> {
       ) {
         const outNode: FilingHoldingSchemeNode = {
           id: unit['#id'],
+          vitamId: unit['#id'],
           title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
           type: unit.DescriptionLevel,
+          unitType: unit['#unitType'],
+          descriptionLevel: unit.descriptionLevel,
           children: [],
-          parents: parentNode ? [parentNode] : [],
-          vitamId: unit['#id'],
           checked: false,
           hidden: false,
-          hasObject: unit['#object'] ? true : false,
-          unitType: unit['#unitType'],
+          hasObject: !!unit['#object'],
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);

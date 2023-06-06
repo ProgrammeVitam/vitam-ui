@@ -60,8 +60,7 @@ const CURRENT_PAGE = 0;
   ],
 })
 export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  archiveUnit: Unit;
+  @Input() archiveUnit: Unit;
   archiveUnitRules: Unit;
   selectUnitWithInheritedRulesSubscription: Subscription;
 
@@ -76,6 +75,7 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, O
   }
 
   ngOnInit(): void {}
+
   ngOnDestroy() {
     this.selectUnitWithInheritedRulesSubscription?.unsubscribe();
   }

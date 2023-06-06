@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -24,10 +24,41 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+import { QualifierDto, VersionDto, VersionWithQualifierDto } from './object-group.interface';
+import { ObjectQualifierTypeList } from './unit.enums';
 
-export enum VitamuiIcons {
-  HOLDING_UNIT = 'vitamui-icon-icone-arbre',
-  FILING_UNIT = 'vitamui-icon-plan-classement',
-  INGEST_WITHOUT_OBJECT = 'vitamui-icon-folder',
-  INGEST_WITH_OBJECT = 'vitamui-icon-file',
+export function qualifiersToVersionsWithQualifier(qualifiers: Array<QualifierDto>): Array<VersionWithQualifierDto> {
+  if (!qualifiers || qualifiers.length < 1) {
+    return [];
+  }
+  const versionsWithQualifiers = new Array<VersionWithQualifierDto>();
+  for (const qualifier of qualifiers) {
+    for (const version of qualifier.versions) {
+      versionsWithQualifiers.push(convertToVersionWithQualifier(qualifier, version));
+    }
+  }
+  versionsWithQualifiers.sort(byQualifierThenVersion);
+  return versionsWithQualifiers;
+}
+
+export function convertToVersionWithQualifier(qualifier: QualifierDto, version: VersionDto): VersionWithQualifierDto {
+  const versionWithQualifier: VersionWithQualifierDto = version as VersionWithQualifierDto;
+  versionWithQualifier.qualifier = qualifier.qualifier;
+  versionWithQualifier.version = parseDataObjectVersion(versionWithQualifier.DataObjectVersion);
+  return versionWithQualifier;
+}
+
+export const byQualifierThenVersion = (left: VersionWithQualifierDto, right: VersionWithQualifierDto) => {
+  if (left.qualifier === right.qualifier) {
+    return left.version - right.version;
+  }
+  return ObjectQualifierTypeList.indexOf(left.qualifier) - ObjectQualifierTypeList.indexOf(right.qualifier);
+};
+
+export function parseDataObjectVersion(dataObjectVersion: string): number {
+  if (!dataObjectVersion) {
+    return 0;
+  }
+  const qualifierAndVersion: Array<string> = dataObjectVersion.split('_');
+  return +qualifierAndVersion[1];
 }

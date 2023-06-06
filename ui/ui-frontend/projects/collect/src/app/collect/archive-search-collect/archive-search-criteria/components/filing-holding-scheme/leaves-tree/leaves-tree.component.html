@@ -12,7 +12,7 @@
       <div *ngIf="nodeHasResultOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node flex-row">
         <vitamui-tree-node
           [node]="node"
-          [icon]="getNodeUnitIcone(node)"
+          [icon]="getNodeUnitIcon(node)"
           (labelClick)="onLabelClick(node)"
           (checkboxClick)="addToSearchCriteriaList(node)"
           [expanded]="nestedTreeControlLeaves.isExpanded(node)"
@@ -46,7 +46,7 @@
           <vitamui-tree-node
             disabled
             [node]="node"
-            [icon]="getNodeUnitIcone(node)"
+            [icon]="getNodeUnitIcon(node)"
             (labelClick)="onLabelClick(node)"
             (checkboxClick)="addToSearchCriteriaList(node)"
             (nodeToggle)="nestedTreeControlLeaves.toggle(node)"
@@ -63,7 +63,7 @@
       <div *ngIf="nodeHasResultOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node">
         <vitamui-tree-node
           [node]="node"
-          [icon]="getNodeUnitIcone(node)"
+          [icon]="getNodeUnitIcon(node)"
           (labelClick)="onLabelClick(node)"
           (checkboxClick)="addToSearchCriteriaList(node)"
           [expanded]="nestedTreeControlLeaves.isExpanded(node)"

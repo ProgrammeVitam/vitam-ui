@@ -86,7 +86,7 @@ export class FilingHoldingSchemeHandler {
       if (!node.children || node.children.length < 1) {
         if (
           !attachmenUnitsFromCollect.some(
-            (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId == node.id
+            (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId === node.id
           )
         ) {
           continue;
@@ -129,7 +129,7 @@ export class FilingHoldingSchemeHandler {
   }
 
   public static unitHasDirectParent(unit: Unit, parentId: string): boolean {
-    return unit[VitamInternalFields.UNIT_UPS].findIndex((unitupId) => unitupId === parentId) !== -1;
+    return unit['#unitups'].findIndex((unitupId) => unitupId === parentId) !== -1;
   }
 
   public static foundChild(parentNode: FilingHoldingSchemeNode, childId: string): FilingHoldingSchemeNode {
@@ -225,7 +225,8 @@ export class FilingHoldingSchemeHandler {
     return {
       id: unit[VitamInternalFields.ID],
       title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
-      type: unit[VitamInternalFields.UNIT_TYPE],
+      type: unit['#unitType'],
+      unitType: unit['#unitType'],
       descriptionLevel: unit.DescriptionLevel,
       children: [],
       vitamId: unit[VitamInternalFields.ID],
@@ -233,8 +234,7 @@ export class FilingHoldingSchemeHandler {
       isLoadingChildren: false,
       canLoadMoreChildren: unit.DescriptionLevel !== DescriptionLevel.ITEM,
       count: 0,
-      hasObject: unit['#object'] ? true : false,
-      unitType: unit['#unitType'],
+      hasObject: !!unit['#object'],
     };
   }
 }

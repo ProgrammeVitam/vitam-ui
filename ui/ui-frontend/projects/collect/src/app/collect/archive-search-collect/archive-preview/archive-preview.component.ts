@@ -38,7 +38,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { TranslateService } from '@ngx-translate/core';
-import { Unit, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
+import { Unit, unitToVitamuiIcon } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-archive-preview',
@@ -48,7 +48,7 @@ import { Unit, VitamuiIcons, VitamuiUnitTypes } from 'ui-frontend-common';
 export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   archiveUnit: Unit;
-  
+
   @Output()
   backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
   @Output()
@@ -68,6 +68,7 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
+
   constructor(private translateService: TranslateService) {}
 
   ngOnInit() {}
@@ -115,19 +116,7 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     }
   }
 
-  getArchiveUnitType(archiveUnit: Unit) {
-    if (archiveUnit) {
-      return archiveUnit['#unitType'];
-    }
-  }
-
-  getArchiveUnitIcone(archiveUnit: Unit) {
-    return this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.HOLDING_UNIT
-      ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
-      : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.FILING_UNIT
-      ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
-      : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.INGEST && !archiveUnit['#object']
-      ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
-      : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
+  getArchiveUnitIcon(unit: Unit) {
+    return unitToVitamuiIcon(unit);
   }
 }
