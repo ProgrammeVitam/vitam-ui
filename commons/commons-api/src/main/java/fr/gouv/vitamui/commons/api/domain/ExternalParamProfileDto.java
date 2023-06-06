@@ -63,7 +63,7 @@ public class ExternalParamProfileDto extends IdDto {
     private String name;
 
     @NotNull
-    @Length(min = 2, max = 100)
+    @Length(min = 2, max = 250)
     private String description;
 
     @NotNull
