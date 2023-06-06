@@ -39,10 +39,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import {
+  ActionOnCriteria, CriteriaDataType, CriteriaOperator, CriteriaValue, diff, SearchCriteriaEltDto, SearchCriteriaTypeEnum
+} from 'ui-frontend-common';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
-import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
 
 const RULE_TYPE_SUFFIX = '_APPRAISAL_RULE';
@@ -503,15 +504,19 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
   get appraisalRuleIdentifier() {
     return this.appraisalRuleCriteriaForm.controls.appraisalRuleIdentifier;
   }
+
   get appraisalRuleTitle() {
     return this.appraisalRuleCriteriaForm.controls.appraisalRuleTitle;
   }
+
   get appraisalRuleStartDate() {
     return this.appraisalRuleCriteriaForm.controls.appraisalRuleStartDate;
   }
+
   get appraisalRuleEndDate() {
     return this.appraisalRuleCriteriaForm.controls.appraisalRuleEndDate;
   }
+
   get appraisalRuleEliminationIdentifier() {
     return this.appraisalRuleCriteriaForm.controls.appraisalRuleEliminationIdentifier;
   }

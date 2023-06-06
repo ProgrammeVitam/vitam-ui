@@ -30,10 +30,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, StartupService } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, StartupService } from 'ui-frontend-common';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
-import { SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../models/search.criteria';
 import { ArchiveSearchHelperService } from './archive-search-helper.service';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
@@ -51,7 +50,7 @@ export class ComputeInheritedRulesService {
   ) {}
 
   launchComputedInheritedRulesModal(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],    
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
     numberOfHoldingUnitTypeOnComputedRules: number,
     tenantIdentifier: number,
     currentPage: number,

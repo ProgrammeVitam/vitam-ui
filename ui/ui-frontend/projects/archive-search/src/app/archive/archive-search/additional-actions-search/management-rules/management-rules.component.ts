@@ -41,19 +41,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Logger, StartupService } from 'ui-frontend-common';
+import { Logger, SearchCriteriaDto, SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleTypeEnum } from '../../../models/rule-type-enum';
 import {
-  ActionsRules,
-  RuleActions,
-  RuleActionsEnum,
-  RuleCategoryAction,
-  RuleSearchCriteriaDto
+  ActionsRules, RuleActions, RuleActionsEnum, RuleCategoryAction, RuleSearchCriteriaDto
 } from '../../../models/ruleAction.interface';
-import { SearchCriteriaDto, SearchCriteriaEltDto } from '../../../models/search.criteria';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 @Component({
@@ -363,7 +358,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
             managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
       )?.ruleCategoryAction.preventInheritance;
-      
+
       const preventRulesIdToAdd: string[] = data.find(
         (managementRule) =>
           managementRule.category === RuleTypeEnum.REUSERULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
@@ -798,7 +793,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
             managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
       )?.ruleCategoryAction.preventInheritance;
-      
+
       const preventRulesIdToAdd: string[] = data.find(
         (managementRule) =>
           managementRule.category === RuleTypeEnum.STORAGERULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
@@ -808,7 +803,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         (managementRule) =>
           managementRule.category === RuleTypeEnum.STORAGERULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
       )?.ruleCategoryAction?.preventRulesIdToRemove;
-      
+
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
           (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES

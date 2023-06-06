@@ -28,13 +28,15 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeNode, StartupService, Unit } from 'ui-frontend-common';
+import {
+  CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, PagedResult, ResultFacet,
+  SearchCriteriaEltDto, SearchCriteriaTypeEnum, StartupService, Unit
+} from 'ui-frontend-common';
+import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { NodeData } from '../../models/nodedata.interface';
-import { PagedResult, ResultFacet, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { Pair, VitamInternalFields } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
-import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 
 @Component({
   selector: 'app-filing-holding-scheme',
@@ -44,6 +46,8 @@ import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() transactionId: string;
+  @Input() searchHasMatches = false;
+  @Input() searchRequestTotalResults: number;
 
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
@@ -59,9 +63,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   loadingHolding = true;
   node: string;
   nodeData: NodeData;
-  projectHasRattachmentUnit = false;
   fullNodes: FilingHoldingSchemeNode[] = [];
-  unitsResults: Unit[] = [];
   showEveryNodes = true;
   requestResultFacets: ResultFacet[];
   loadingArchiveUnit: { [key: string]: boolean } = {
@@ -79,20 +81,19 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
 
   ngOnInit(): void {
     this.initialNodesState();
-    this.initialNodeCheckState();
-    this.initialNodeFacetState();
+    this.subscribeOnNodeSelectionToSetCheck();
+    this.subscribeOnFacetsChanges();
+    this.initFilingHoldingSchemeTree();
   }
 
   ngOnChanges(_: SimpleChanges): void {
-    this.loadingHolding = true;
-    this.initFilingHoldingSchemeTree();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  private initialNodeCheckState(): void {
+  private subscribeOnNodeSelectionToSetCheck(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getNodesTarget().subscribe((nodeId) => {
         if (nodeId == null) {
@@ -105,7 +106,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     );
   }
 
-  private initialNodeFacetState(): void {
+  private subscribeOnFacetsChanges(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getFacets().subscribe((facets) => {
         if (facets && facets.length > 0) {
@@ -153,23 +154,22 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
       });
   }
 
-  private filterNodesToLeavesOnly(attachmenUnitsFromCollect: Unit[]) {
+  private filterNodesToLeavesOnly(units: Unit[]) {
     const list: any[] = [];
-    const unflattedNodes = FilingHoldingSchemeHandler.unflatAndFilterTreeNodes(this.fullNodes, attachmenUnitsFromCollect);
+    const unflattedNodes = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnlyAndCheckAttach(this.fullNodes, units);
     unflattedNodes.forEach((unitParent) => {
-      const collectAttachmentUnit = attachmenUnitsFromCollect.find(
-        (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId == unitParent.id
-      );
+      const collectAttachmentUnit = units.find((unit) => unit[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId === unitParent.id);
       if (collectAttachmentUnit) {
         const outNode: FilingHoldingSchemeNode = {
           id: collectAttachmentUnit[VitamInternalFields.ID],
+          vitamId: unitParent.id,
           title: unitParent.title,
           type: collectAttachmentUnit.DescriptionLevel,
+          unitType: unitParent?.unitType,
+          descriptionLevel: collectAttachmentUnit.DescriptionLevel,
           children: [],
-          vitamId: unitParent.id,
           checked: false,
           hidden: false,
-          unitType: unitParent?.unitType,
           hasObject: unitParent?.hasObject,
         };
         const unitsresults: Unit[] = [];
@@ -177,13 +177,22 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
         list.push(outNode);
       }
     });
+    let orphanNode;
+    if (!isEmpty(this.nestedDataSourceLeaves.data) && FilingHoldingSchemeHandler.isOrphansNode(this.nestedDataSourceLeaves.data[0])) {
+      orphanNode = this.nestedDataSourceLeaves.data[0];
+    }
     if (list.length > 0) {
-      this.projectHasRattachmentUnit = true;
       this.nestedDataSourceLeaves.data = list;
       this.showEveryNodes = true;
     } else {
       this.nestedDataSourceLeaves.data = [];
       this.showEveryNodes = false;
+    }
+    if (orphanNode) {
+      this.nestedDataSourceLeaves.data.unshift(orphanNode);
+      const tmp = this.nestedDataSourceLeaves.data;
+      this.nestedDataSourceLeaves.data = null;
+      this.nestedDataSourceLeaves.data = tmp;
     }
   }
 
@@ -201,17 +210,15 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
 
   initFilingHoldingSchemeTree() {
     this.loadingHolding = true;
-    this.subscriptions.add(
-      this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier).subscribe((nodes) => {
-        // Disable checkbox use to prevent add unit to search criteria
-        this.disableCheckingUnitsRecursive(nodes);
-        this.fullNodes = nodes;
-        this.nestedDataSourceFull.data = nodes;
-        this.nestedTreeControlFull.dataNodes = nodes;
-        this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
-        this.loadingHolding = false;
-      })
-    );
+    this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier).subscribe((nodes) => {
+      // Disable checkbox use to prevent add unit to search criteria
+      this.disableCheckingUnitsRecursive(nodes);
+      this.fullNodes = nodes;
+      this.nestedDataSourceFull.data = nodes;
+      this.nestedTreeControlFull.dataNodes = nodes;
+      this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
+      this.loadingHolding = false;
+    });
   }
 
   disableCheckingUnitsRecursive(nodes: FilingHoldingSchemeNode[]) {
@@ -235,23 +242,21 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
    * The param "archiveUniParams" is a Pair of a string that refers to AU ID and a boolean
    * that refers to the type of the AU wich is a collect unit or Vitam unit :
    * (auId : string, isCollectUnit : boolean)
-   * @param archiveUniParams
-   * @param from
    */
   fetchUaFromNodeAndShowDetails(archiveUniParams: Pair, from: string) {
     this.loadingArchiveUnit[from] = true;
     this.subscriptions.add(
       Boolean(archiveUniParams.value)
         ? this.archiveService.getCollectUnitDetails(archiveUniParams.key.toString()).subscribe((unit) => {
-            this.showArchiveUnitDetails.emit(unit);
+          this.showArchiveUnitDetails.emit(unit);
+          this.loadingArchiveUnit[`${from}`] = false;
+        })
+        : this.archiveService
+          .getReferentialUnitDetails(archiveUniParams.key.toString())
+          .subscribe((searchResponse) => {
+            this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
             this.loadingArchiveUnit[`${from}`] = false;
           })
-        : this.archiveService
-            .getReferentialUnitDetails(archiveUniParams.key.toString())
-            .subscribe((searchResponse) => {
-              this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
-              this.loadingArchiveUnit[`${from}`] = false;
-            })
     );
   }
 }

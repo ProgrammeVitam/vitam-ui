@@ -34,12 +34,10 @@ import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { DescriptionLevel, FilingHoldingSchemeNode, InjectorModule, LoggerModule, PagedResult, ResultFacet } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';
-import { PagedResult, ResultFacet } from '../../models/search.criteria';
-import { newTreeNode } from '../filing-holding-scheme.handler.spec';
 import { LeavesTreeComponent } from './leaves-tree.component';
 
 const translations: any = { TEST: 'Mock translate test' };
@@ -48,6 +46,28 @@ class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
     return of(translations);
   }
+}
+
+export function newNode(
+  currentId: string,
+  currentChildren: FilingHoldingSchemeNode[] = [],
+  currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
+  currentCount?: number
+): FilingHoldingSchemeNode {
+  return {
+    id: currentId,
+    title: currentId,
+    unitType: 'INGEST',
+    descriptionLevel: currentDescriptionLevel,
+    checked: false,
+    children: currentChildren,
+    vitamId: 'whatever',
+    count: currentCount,
+  };
+}
+
+export function newTreeNode(currentId: string, count: number, currentChildren: FilingHoldingSchemeNode[] = []): FilingHoldingSchemeNode {
+  return newNode(currentId, currentChildren, DescriptionLevel.RECORD_GRP, count);
 }
 
 describe('LeavesTreeComponent', () => {
@@ -72,7 +92,7 @@ describe('LeavesTreeComponent', () => {
     extractRulesFacetsResults: () => of(),
   };
   const archiveSharedDataServiceStub = {
-    getLastSearchCriteriaDtoSubject: () => of(),
+    getSearchCriterias: () => of(),
   };
 
   beforeEach(async () => {
@@ -207,24 +227,6 @@ describe('LeavesTreeComponent', () => {
     expect(response).toBeFalsy();
   });
 
-  it('should return true when the unit type is an Ingest', () => {
-    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
-      id: 'filingHoldingSchemaNodeId',
-      title: 'string',
-      type: 'INGEST',
-      label: 'string',
-      children: [],
-      count: 55,
-      vitamId: 'vitamId',
-      checked: true,
-      hidden: false,
-      isLoadingChildren: false,
-      paginatedChildrenLoaded: 5,
-    };
-    const response = component.nodeIsUAWithChildren(1, filingHoldingSchemaNode);
-    expect(response).toBeTruthy();
-  });
-
   it('showEveryNodes should be true', () => {
     component.showEveryNodes = false;
     component.switchViewAllNodes();
@@ -250,11 +252,11 @@ describe('LeavesTreeComponent', () => {
   });
 
   it('should return true when the unit type is an Ingest', () => {
-    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
+    const node: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      type: 'INGEST',
-      descriptionLevel: 'Item',
+      unitType: 'INGEST',
+      descriptionLevel: DescriptionLevel.ITEM,
       label: 'string',
       children: [],
       count: 55,
@@ -264,7 +266,7 @@ describe('LeavesTreeComponent', () => {
       isLoadingChildren: false,
       paginatedChildrenLoaded: 5,
     };
-    const response = component.nodeIsUAWithoutChildren(1, filingHoldingSchemaNode);
+    const response = component.nodeIsUAWithoutChildren(1, node);
     expect(response).toBeTruthy();
   });
 
@@ -272,7 +274,7 @@ describe('LeavesTreeComponent', () => {
     const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      type: 'INGEST',
+      unitType: 'INGEST',
       descriptionLevel: 'Item',
       label: 'string',
       children: [],
@@ -285,28 +287,6 @@ describe('LeavesTreeComponent', () => {
     };
     const response = component.canLoadMoreUAForNode(filingHoldingSchemaNode);
     expect(response).toBeFalsy();
-  });
-
-  it('should return INGEST as response ', () => {
-    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
-      id: 'filingHoldingSchemaNodeId',
-      title: 'string',
-      type: 'INGEST',
-      unitType: 'INGEST',
-      descriptionLevel: 'Item',
-      label: 'string',
-      children: [],
-      count: 55,
-      vitamId: 'vitamId',
-      checked: true,
-      hidden: false,
-      isLoadingChildren: true,
-      paginatedChildrenLoaded: 5,
-    };
-
-    const response = component.getNodeUnitType(filingHoldingSchemaNode);
-
-    expect(response).toEqual('INGEST');
   });
 
   it('should return vitamui-icon-folder as response ', () => {
@@ -326,7 +306,7 @@ describe('LeavesTreeComponent', () => {
       paginatedChildrenLoaded: 5,
     };
 
-    const response = component.getNodeUnitIcone(filingHoldingSchemaNode);
+    const response = component.getNodeUnitIcon(filingHoldingSchemaNode);
 
     expect(response).toEqual('vitamui-icon-folder');
   });
@@ -339,7 +319,7 @@ describe('LeavesTreeComponent', () => {
 
       // Then
       expect(elementTitle.length).toBe(1);
-      expect(elementTitle[0].textContent).toContain('ARCHIVE_SEARCH.FILING_SHCEMA.TREE_LEAVES_TITLE');
+      expect(elementTitle[0].textContent).toContain('ARCHIVE_SEARCH.FILING_SCHEMA.TREE_LEAVES_TITLE');
     });
   });
 });

@@ -25,23 +25,18 @@
  * accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { Observable, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import {
-  CriteriaDataType,
-  CriteriaOperator,
-  DescriptionLevel,
-  FilingHoldingSchemeNode,
-  VitamuiIcons,
-  VitamuiUnitTypes
+  DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, nodeToVitamuiIcon, PagedResult, ResultFacet, SearchCriteriaDto,
+  Unit
 } from 'ui-frontend-common';
+import { isEmpty } from 'underscore';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
-import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';
-import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
-import { FilingHoldingSchemeHandler } from '../filing-holding-scheme.handler';
+import { LeavesTreeService } from './leaves-tree.service';
 
 @Component({
   selector: 'app-leaves-tree',
@@ -49,7 +44,6 @@ import { FilingHoldingSchemeHandler } from '../filing-holding-scheme.handler';
   styleUrls: ['./leaves-tree.component.scss'],
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
-  readonly DEFAULT_UNIT_PAGE_SIZE = 10;
 
   @Input() accessContract: string;
   @Input() loadingNodeUnit: boolean;
@@ -57,10 +51,11 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   // Already a graph
   @Input() nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
   @Input() searchRequestResultFacets: ResultFacet[];
+  @Input() searchRequestTotalResults: number;
+  @Input() searchRequestResultsInFilingPlan: number;
 
   @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
   @Output() showNodeDetail: EventEmitter<string> = new EventEmitter();
-  @Output() switchView: EventEmitter<void> = new EventEmitter();
 
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
     (node) => node.children
@@ -70,24 +65,47 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   private subscriptions: Subscription = new Subscription();
 
   constructor(
-    private archiveService: ArchiveService,
+    private leavesTreeService: LeavesTreeService,
     private archiveSharedDataService: ArchiveSharedDataService,
-    private archiveFacetsService: ArchiveFacetsService
-  ) {}
+    private archiveFacetsService: ArchiveFacetsService,
+    private translateService: TranslateService,
+    @Inject(LOCALE_ID) private locale: string,
+  ) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nestedDataSourceLeaves || changes.searchRequestResultFacets) {
       this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
-      this.loadNodesDetailsFromFacetsIds(this.nestedDataSourceLeaves.data, this.searchRequestResultFacets);
+      this.loadNodesDetailsFromFacetsIdsAndAddThem(this.nestedDataSourceLeaves.data, this.searchRequestResultFacets);
+      this.addOrphansNode();
+    } else if (changes.searchRequestTotalResults || changes.searchRequestResultsInFilingPlan) {
+      this.addOrphansNode();
+    }
+  }
+
+  addOrphansNode() {
+    const unknonwFacets = FilingHoldingSchemeHandler.filterUnknownFacetsIds(this.nestedDataSourceLeaves.data,
+      this.searchRequestResultFacets);
+    if (unknonwFacets) {
+      this.leavesTreeService.loadNodesDetailsFromFacetsIds(unknonwFacets)
+        .subscribe((pageResult) => {
+          const nodes = FilingHoldingSchemeHandler.buildNestedTreeLevels(pageResult.results, this.locale);
+          FilingHoldingSchemeHandler.setCountRecursively(nodes, unknonwFacets);
+          FilingHoldingSchemeHandler.addToOrphansNode(nodes, this.nestedDataSourceLeaves.data,
+            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'));
+          this.refreshTreeNodes();
+          this.loadingNodesDetails = false;
+        });
+    }
+    const orphans = this.searchRequestTotalResults - this.searchRequestResultsInFilingPlan;
+    if (orphans > 0) {
+      FilingHoldingSchemeHandler.addOrphansNodeFromTree(this.nestedDataSourceLeaves.data,
+        this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'), orphans);
     }
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(
-      this.archiveSharedDataService.getLastSearchCriteriaDtoSubject().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
-        this.searchCriterias = searchCriteriaDto;
-      })
-    );
+    this.subscribeOnSearchCriteriasUpdate();
   }
 
   ngOnDestroy(): void {
@@ -96,49 +114,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   addToSearchCriteriaList(node: FilingHoldingSchemeNode) {
     this.addToSearchCriteria.emit(node);
-  }
-
-  private prepareSearch(parentNode: FilingHoldingSchemeNode, matchingSearch: boolean): boolean {
-    if (matchingSearch && !parentNode.canLoadMoreMatchingChildren) {
-      return false;
-    } else if (!matchingSearch && !parentNode.canLoadMoreChildren) {
-      return false;
-    }
-    parentNode.isLoadingChildren = true;
-    return true;
-  }
-
-  private loadNodesDetailsFromFacetsIds(parentNodes: FilingHoldingSchemeNode[], facets: ResultFacet[]) {
-    if (facets.length < 1) {
-      return;
-    }
-    this.loadingNodesDetails = true;
-    const searchCriteria: SearchCriteriaDto = {
-      pageNumber: 0,
-      size: facets.length,
-      criteriaList: [
-        {
-          criteria: '#id',
-          operator: CriteriaOperator.IN,
-          category: SearchCriteriaTypeEnum.FIELDS,
-          values: facets.map((facet) => {
-            return { id: facet.node, value: facet.node };
-          }),
-          dataType: CriteriaDataType.STRING,
-        },
-      ],
-      trackTotalHits: false,
-      computeFacets: false,
-    };
-    // Can be improve with a projection (only nodes fields are needed)
-    this.subscriptions.add(
-      this.sendSearchArchiveUnitsByCriteria(searchCriteria).subscribe((pageResult) => {
-        FilingHoldingSchemeHandler.addChildrenRecursively(parentNodes, pageResult.results, true);
-        FilingHoldingSchemeHandler.setCountRecursively(parentNodes, facets);
-        this.refreshTreeNodes();
-        this.loadingNodesDetails = false;
-      })
-    );
   }
 
   private compareAddedNodeWithKnownFacets(nodes: FilingHoldingSchemeNode[]) {
@@ -153,76 +128,57 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private searchUnderNode(parentNode: FilingHoldingSchemeNode) {
-    if (!this.prepareSearch(parentNode, false)) {
-      return;
-    }
-    const searchCriteria: SearchCriteriaDto = {
-      pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / this.DEFAULT_UNIT_PAGE_SIZE),
-      size: this.DEFAULT_UNIT_PAGE_SIZE,
-      criteriaList: [
-        {
-          criteria: '#unitups',
-          operator: CriteriaOperator.IN,
-          category: SearchCriteriaTypeEnum.FIELDS,
-          values: [{ id: parentNode.id, value: parentNode.id }],
-          dataType: CriteriaDataType.STRING,
-        },
-      ],
-      sortingCriteria: this.searchCriterias.sortingCriteria,
-      trackTotalHits: false,
-      computeFacets: false,
-    };
-    this.subscriptions.add(
-      this.sendSearchArchiveUnitsByCriteria(searchCriteria).subscribe((pageResult) => {
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addDirectChildrenOnly(parentNode, pageResult.results);
-        parentNode.paginatedChildrenLoaded += pageResult.results.length;
-        parentNode.canLoadMoreChildren = parentNode.children.length < pageResult.totalResults;
-        parentNode.isLoadingChildren = false;
+  private searchOrphans(parentNode: FilingHoldingSchemeNode) {
+    this.leavesTreeService.searchOrphans(parentNode, this.searchCriterias)
+      .subscribe((results: Unit[]) => {
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, results);
         this.compareAddedNodeWithKnownFacets(matchingNodesNumbers.nodesAddedList);
         this.refreshTreeNodes();
-      })
-    );
+      });
+  }
+
+  private searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
+    this.leavesTreeService.searchOrphansWithSearchCriterias(parentNode, this.searchCriterias)
+      .subscribe((pageResult) => {
+        FilingHoldingSchemeHandler.addOrphans(parentNode, pageResult.results, true);
+        this.refreshTreeNodes();
+      });
+  }
+
+  private searchUnderNode(parentNode: FilingHoldingSchemeNode) {
+    this.leavesTreeService.searchUnderNode(parentNode, this.searchCriterias)
+      .subscribe((pageResult) => {
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pageResult.results);
+        this.compareAddedNodeWithKnownFacets(matchingNodesNumbers.nodesAddedList);
+        this.refreshTreeNodes();
+      });
   }
 
   private searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
-    if (!this.prepareSearch(parentNode, true)) {
-      return;
-    }
-    const newCriteriaList = [...this.searchCriterias.criteriaList];
-    newCriteriaList.push({
-      criteria: '#allunitups',
-      operator: CriteriaOperator.EQ,
-      category: SearchCriteriaTypeEnum.FIELDS,
-      values: [{ id: parentNode.id, value: parentNode.id }],
-      dataType: CriteriaDataType.STRING,
-    });
-    const searchCriteria: SearchCriteriaDto = {
-      pageNumber: Math.floor(parentNode.paginatedMatchingChildrenLoaded / this.DEFAULT_UNIT_PAGE_SIZE),
-      size: this.DEFAULT_UNIT_PAGE_SIZE,
-      criteriaList: newCriteriaList,
-      sortingCriteria: this.searchCriterias.sortingCriteria,
-      trackTotalHits: false,
-      computeFacets: false,
-    };
-    this.sendSearchArchiveUnitsByCriteria(searchCriteria).subscribe((pageResult) => {
-      // warning: if returned order is random, direct children may be at the end of pagination and will not be returned on first call
-      // it may require a third call with criterias and only on direct childrens
-      const matchingNodesNumbers = FilingHoldingSchemeHandler.addDirectChildrenOnly(parentNode, pageResult.results, true);
-      const loadedNodes = matchingNodesNumbers.nodesAdded + matchingNodesNumbers.nodesUpdated;
-      parentNode.paginatedMatchingChildrenLoaded += loadedNodes;
-      parentNode.canLoadMoreMatchingChildren = loadedNodes >= this.DEFAULT_UNIT_PAGE_SIZE;
-      if (parentNode.paginatedMatchingChildrenLoaded >= pageResult.totalResults) {
-        parentNode.canLoadMoreMatchingChildren = false;
-      }
-      const newFacets: ResultFacet[] = this.getAndSaveNewFacets(pageResult);
-      this.loadNodesDetailsFromFacetsIds([parentNode], newFacets);
-      parentNode.isLoadingChildren = false;
-      this.refreshTreeNodes();
-    });
+    this.leavesTreeService.searchUnderNodeWithSearchCriterias(parentNode, this.searchCriterias)
+      .subscribe((pageResult) => {
+        FilingHoldingSchemeHandler.addChildren(parentNode, pageResult.results, true);
+        const newFacets: ResultFacet[] = this.extractAndAddNewFacets(pageResult);
+        this.loadNodesDetailsFromFacetsIdsAndAddThem([parentNode], newFacets);
+        this.refreshTreeNodes();
+      });
   }
 
-  private getAndSaveNewFacets(pageResult: PagedResult): ResultFacet[] {
+  private loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes: FilingHoldingSchemeNode[], facets: ResultFacet[]) {
+    if (isEmpty(facets)) {
+      return;
+    }
+    this.loadingNodesDetails = true;
+    this.leavesTreeService.loadNodesDetailsFromFacetsIds(facets)
+      .subscribe((pageResult) => {
+        FilingHoldingSchemeHandler.addChildrenRecursively(parentNodes, pageResult.results, true);
+        FilingHoldingSchemeHandler.setCountRecursively(parentNodes, facets);
+        this.refreshTreeNodes();
+        this.loadingNodesDetails = false;
+      });
+  }
+
+  private extractAndAddNewFacets(pageResult: PagedResult): ResultFacet[] {
     // Warning: count decrease on top nodes when search is made on a deeper nodes.
     const resultFacets: ResultFacet[] = this.archiveFacetsService.extractNodesFacetsResults(pageResult.facets);
     const newFacets: ResultFacet[] = FilingHoldingSchemeHandler.filterUnknownFacets(this.searchRequestResultFacets, resultFacets);
@@ -232,10 +188,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return newFacets;
   }
 
-  private sendSearchArchiveUnitsByCriteria(searchCriteria: SearchCriteriaDto): Observable<PagedResult> {
-    return this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).pipe(first());
-  }
-
   private refreshTreeNodes() {
     const data = this.nestedDataSourceLeaves.data;
     this.nestedDataSourceLeaves.data = null;
@@ -243,18 +195,19 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private firstToggle(node: FilingHoldingSchemeNode): boolean {
-    if (node.toggled) {
-      return false;
+    return this.leavesTreeService.firstToggle(node)
+  }
+
+  toggleOrphan(node: FilingHoldingSchemeNode) {
+    const isExpanded = this.nestedTreeControlLeaves.isExpanded(node);
+    this.nestedTreeControlLeaves.toggle(node);
+    if (isExpanded) {
+      return;
     }
-    node.toggled = true;
-    if (!node.children) {
-      node.children = [];
+    if (this.firstToggle(node)) {
+      this.searchOrphans(node);
+      this.searchOrphansWithSearchCriterias(node);
     }
-    node.paginatedMatchingChildrenLoaded = 0;
-    node.canLoadMoreMatchingChildren = true;
-    node.paginatedChildrenLoaded = 0;
-    node.canLoadMoreChildren = true;
-    return true;
   }
 
   toggleLeave(node: FilingHoldingSchemeNode) {
@@ -277,6 +230,14 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     this.searchUnderNodeWithSearchCriterias(node);
   }
 
+  toggleLoadMoreOrphans(node: FilingHoldingSchemeNode) {
+    if (!this.nestedTreeControlLeaves.isExpanded(node)) {
+      return;
+    }
+    this.searchOrphans(node);
+    this.searchOrphansWithSearchCriterias(node);
+  }
+
   canLoadMoreUAForNode(node: FilingHoldingSchemeNode): boolean {
     if (node.isLoadingChildren || node.canLoadMoreChildren === false) {
       return false;
@@ -288,11 +249,15 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   nodeIsUAWithChildren(_: number, node: FilingHoldingSchemeNode): boolean {
-    return node.type === 'INGEST' && node.descriptionLevel !== DescriptionLevel.ITEM;
+    return node.unitType === 'INGEST' && node.descriptionLevel !== DescriptionLevel.ITEM;
   }
 
   nodeIsUAWithoutChildren(_: number, node: FilingHoldingSchemeNode): boolean {
-    return node.type === 'INGEST' && node.descriptionLevel === DescriptionLevel.ITEM;
+    return node.unitType === 'INGEST' && node.descriptionLevel === DescriptionLevel.ITEM;
+  }
+
+  nodeIsOrphanNode(_: number, node: FilingHoldingSchemeNode): boolean {
+    return FilingHoldingSchemeHandler.isOrphansNode(node);
   }
 
   nodeHasPositiveCount(node: FilingHoldingSchemeNode): boolean {
@@ -311,19 +276,16 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     this.showEveryNodes = !this.showEveryNodes;
   }
 
-  getNodeUnitType(filingholdingscheme: FilingHoldingSchemeNode) {
-    if (filingholdingscheme && filingholdingscheme.unitType) {
-      return filingholdingscheme.unitType;
-    }
+  getNodeUnitIcon(filingholdingscheme: FilingHoldingSchemeNode) {
+    return nodeToVitamuiIcon(filingholdingscheme);
   }
 
-  getNodeUnitIcone(filingholdingscheme: FilingHoldingSchemeNode) {
-    return this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.HOLDING_UNIT
-      ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
-      : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.FILING_UNIT
-      ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
-      : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.INGEST && !filingholdingscheme?.hasObject
-      ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
-      : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
+  private subscribeOnSearchCriteriasUpdate() {
+    this.subscriptions.add(
+      this.archiveSharedDataService.getSearchCriterias().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
+        this.searchCriterias = searchCriteriaDto;
+      })
+    );
   }
+
 }

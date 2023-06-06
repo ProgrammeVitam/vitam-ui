@@ -38,18 +38,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
-  ConfirmDialogService,
-  CriteriaDataType,
-  CriteriaOperator,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  WINDOW_LOCATION,
+  BASE_URL, ConfirmDialogService, CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, SearchCriteriaDto,
+  SearchCriteriaTypeEnum, StartupService, WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ArchiveService } from '../../../archive.service';
-import { SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
 import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
 import { ReclassificationComponent } from './reclassification.component';
 

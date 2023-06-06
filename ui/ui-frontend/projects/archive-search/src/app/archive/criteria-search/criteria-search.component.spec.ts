@@ -35,9 +35,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaTypeEnum, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { SearchCriteriaTypeEnum } from '../models/search.criteria';
 import { CriteriaSearchComponent } from './criteria-search.component';
 
 describe('CriteriaSearchComponent', () => {

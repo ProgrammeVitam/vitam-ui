@@ -37,8 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction } from 'ui-frontend-common';
-import { SearchCriteriaHistory } from '../models';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, SearchCriteriaHistory, Transaction } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root',

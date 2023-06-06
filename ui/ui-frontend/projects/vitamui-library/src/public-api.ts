@@ -42,7 +42,6 @@ export * from './lib/models/ontology';
 export * from './lib/models/precise-date-query.interface';
 export * from './lib/models/search-criteria.interface';
 export * from './lib/models/search-query.interface';
-export * from './lib/models/search-response.interface';
 export * from './lib/models/unit.interface';
 export * from './lib/models/year-month-query.interface';
 /* SERVICES */

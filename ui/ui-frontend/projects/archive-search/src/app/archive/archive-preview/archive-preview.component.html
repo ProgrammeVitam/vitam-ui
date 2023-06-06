@@ -3,7 +3,7 @@
   [title]="
     (archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en) | truncate : 29
   "
-  [icon]="getArchiveUnitIcone(archiveUnit)"
+  [icon]="getArchiveUnitIcon(archiveUnit)"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en"
   [toolTipTitleDuration]="300"
@@ -46,8 +46,7 @@
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}">
       <app-archive-unit-rules-details-tab
-        [archiveUnit]="archiveUnit"
-        [accessContract]="accessContract">
+        [archiveUnit]="archiveUnit">
       </app-archive-unit-rules-details-tab>
     </mat-tab>
 

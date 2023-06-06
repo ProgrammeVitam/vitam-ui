@@ -34,12 +34,15 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
-import { SearchCriteriaDto, SearchCriteriaTypeEnum } from 'projects/archive-search/src/app/archive/models/search.criteria';
+import {
+  UpdateUnitManagementRuleService
+} from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  BASE_URL, CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, SearchCriteriaDto, SearchCriteriaTypeEnum, WINDOW_LOCATION
+} from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { UpdateUnitRulesComponent } from './update-unit-rules.component';

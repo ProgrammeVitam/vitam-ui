@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 export enum SearchCriteriaStatusEnum {
   NOT_INCLUDED = 'NOT_INCLUDED',
   INCLUDED = 'INCLUDED',
@@ -50,6 +51,16 @@ export enum SearchCriteriaTypeEnum {
   STORAGE_RULE = 'STORAGE_RULE',
   HOLD_RULE = 'HOLD_RULE',
   NODES = 'NODES',
+}
+
+export enum SearchCriteriaMgtRuleEnum {
+  APPRAISAL_RULE = 'APPRAISAL_RULE',
+  ACCESS_RULE = 'ACCESS_RULE',
+  CLASSIFICATION_RULE = 'CLASSIFICATION_RULE',
+  DISSEMINATION_RULE = 'DISSEMINATION_RULE',
+  REUSE_RULE = 'REUSE_RULE',
+  STORAGE_RULE = 'STORAGE_RULE',
+  HOLD_RULE = 'HOLD_RULE',
 }
 
 export interface SearchCriteriaValue {
@@ -95,6 +106,7 @@ export interface SearchCriteriaEltDto {
   values: CriteriaValue[];
   dataType: string;
 }
+
 export interface SearchCriteriaDto {
   criteriaList: SearchCriteriaEltDto[];
   pageNumber: number;
@@ -116,10 +128,12 @@ export interface ResultFacetList {
   name: string;
   buckets: ResultBucket[];
 }
+
 export interface ResultBucket {
   value: string;
   count: number;
 }
+
 export interface ResultFacet {
   node: string;
   count: number;
@@ -134,9 +148,11 @@ export interface SearchCriteriaCategory {
   name: string;
   index: number;
 }
+
 export interface CriteriaValue {
   id: string;
   value?: string;
+  label?: string;
   beginInterval?: string;
   endInterval?: string;
 }
@@ -145,6 +161,11 @@ export class ArchiveSearchResultFacets {
   nodesFacets?: ResultFacet[];
   appraisalRuleFacets?: RuleFacets;
   accessRuleFacets?: RuleFacets;
+  storageRuleFacets?: RuleFacets;
+  reuseRuleFacets?: RuleFacets;
+  disseminationRuleFacets?: RuleFacets;
+  holdRuleFacets?: RuleFacets;
+  classificationRuleFacets?: RuleFacets;
 }
 
 export class RuleFacets {
@@ -153,4 +174,5 @@ export class RuleFacets {
   rulesListFacets: ResultFacet[];
   finalActionsFacets?: ResultFacet[];
   noRulesFacets: ResultFacet[];
+  unexpiredRulesListFacets: ResultFacet[];
 }

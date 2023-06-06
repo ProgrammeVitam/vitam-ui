@@ -35,22 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Id } from 'ui-frontend-common';
-import { CriteriaValue } from './search.criteria';
+import { Unit } from '../units';
 
-export interface SearchCriteriaHistory extends Id {
-  name: string;
-  userId?: string;
-  savingDate: string;
-  searchCriteriaList: SearchCriteriaEltements[];
-}
-
-export interface SearchCriteriaEltements {
-  criteria: string;
-  operator: string;
-  keyTranslated: boolean;
-  valueTranslated: boolean;
-  values: CriteriaValue[];
-  category: string;
-  dataType: string;
+export interface SearchResponse<T = Unit> {
+  $hits: any;
+  $results: T[];
+  $facetResults?: any[];
 }

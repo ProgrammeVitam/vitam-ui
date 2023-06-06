@@ -54,8 +54,7 @@ export class TransactionsService extends SearchService<Transaction> {
     return this.project$;
   }
 
-  public search(pageRequest: PageRequest = null): Observable<Transaction[]> {
-    console.log(pageRequest);
+  public search(_: PageRequest = null): Observable<Transaction[]> {
     return this.transactions$;
   }
 

@@ -32,10 +32,9 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
-import { DescriptionLevel, FileType } from 'ui-frontend-common';
+import { DescriptionLevel, FileType, Unit } from 'ui-frontend-common';
 import { SearchUnitApiService } from '../../api/search-unit-api.service';
 import { Node } from '../../models/node.interface';
-import { Unit } from '../../models/unit.interface';
 import { getKeywordValue } from '../../utils/keyword.util';
 
 export enum ExpandLevel {

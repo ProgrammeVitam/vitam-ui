@@ -40,9 +40,9 @@ import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
+import { SearchCriteriaDto } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import { SearchCriteriaDto } from '../models/search.criteria';
 
 @Injectable()
 export class ArchiveUnitValidatorService {

@@ -119,4 +119,3 @@ export * from './vitamui-global-error-handler';
 export * from './vitamui-icons.enum';
 export * from './vitamui-roles.enum';
 export * from './vitamui-table/index';
-export * from './vitamui-unit-types.enum';

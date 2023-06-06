@@ -35,7 +35,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { RuleFacets } from '../../models/search.criteria';
+import { RuleFacets } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-archive-search-rules-facets',

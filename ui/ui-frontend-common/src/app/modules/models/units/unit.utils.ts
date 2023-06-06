@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -24,9 +24,24 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+import { VitamuiIcons } from '../../vitamui-icons.enum';
+import { UnitTypes } from './unit.enums';
+import { Unit } from './unit.interface';
 
-export enum VitamuiUnitTypes {
-  HOLDING_UNIT = 'HOLDING_UNIT',
-  FILING_UNIT = 'FILING_UNIT',
-  INGEST = 'INGEST',
+export function unitToVitamuiIcon(unit: Unit): VitamuiIcons {
+  const hasObject = unit['#object'] && unit['#object'].length > 0;
+  return unitTypeToVitamuiIcon(unit['#unitType'], hasObject);
+}
+
+export function unitTypeToVitamuiIcon(unitType: string, hasObject: boolean): VitamuiIcons {
+  if (unitType === UnitTypes.HOLDING_UNIT) {
+    return VitamuiIcons.HOLDING_UNIT;
+  }
+  if (unitType === UnitTypes.FILING_UNIT) {
+    return VitamuiIcons.FILING_UNIT;
+  }
+  if (unitType === UnitTypes.INGEST && hasObject) {
+    return VitamuiIcons.INGEST_WITH_OBJECT;
+  }
+  return VitamuiIcons.INGEST_WITHOUT_OBJECT;
 }

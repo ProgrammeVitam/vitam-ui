@@ -27,17 +27,13 @@
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
+import {
+  ActionOnCriteria, CriteriaDataType, CriteriaOperator, CriteriaValue, FilingHoldingSchemeNode, ORPHANS_NODE_ID, SearchCriteria,
+  SearchCriteriaEltDto,
+  SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue
+} from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import {
-  CriteriaValue,
-  SearchCriteria,
-  SearchCriteriaEltDto,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
-} from '../models/search.criteria';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
@@ -286,7 +282,7 @@ export class ArchiveSearchHelperService {
             searchCriterias.set(keyElt, val);
           }
           nbQueryCriteria--;
-          if (emit === true && key === 'NODE') {
+          if (emit === true && key === 'NODE' || key === ORPHANS_NODE_ID) {
             this.archiveExchangeDataService.emitNodeTarget(valueElt.value);
           }
 
@@ -469,18 +465,6 @@ export class ArchiveSearchHelperService {
         });
       }
     });
-  }
-
-  recursiveCheck(nodes: FilingHoldingSchemeNode[], show: boolean) {
-    if (nodes.length === 0) {
-      return;
-    }
-    for (const node of nodes) {
-      node.hidden = false;
-      node.checked = show;
-      node.count = null;
-      this.recursiveCheck(node.children, show);
-    }
   }
 
   fillNodeTitle(

@@ -37,9 +37,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Rule, RuleApiService } from 'ui-frontend-common';
+import { Rule, RuleApiService, SearchCriteriaDto, SearchCriteriaEltDto } from 'ui-frontend-common';
 import { ActionsRules, ManagementRules } from '../models/rule-action.interface';
-import { SearchCriteriaDto, SearchCriteriaEltDto } from '../models/search.criteria';
 
 @Injectable({
   providedIn: 'root',

@@ -33,11 +33,10 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, CriteriaDataType, CriteriaOperator, InjectorModule } from 'ui-frontend-common';
+import { BASE_URL, CriteriaDataType, CriteriaOperator, CriteriaValue, InjectorModule } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../archive.service';
-import { CriteriaValue } from '../../models/search.criteria';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search.component';
 
 describe('SimpleCriteriaSearchComponent', () => {

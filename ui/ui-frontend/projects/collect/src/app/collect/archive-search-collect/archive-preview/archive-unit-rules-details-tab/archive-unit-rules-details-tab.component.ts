@@ -39,8 +39,7 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, Unit } from 'ui-frontend-common';
-import { SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../../core/models';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 const PAGE_SIZE = 10;

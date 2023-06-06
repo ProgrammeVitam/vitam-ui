@@ -70,6 +70,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCate
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.NODES;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.REUSE_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.EQ;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.MISSING;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_DEPTH;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COUNT_BY_NODE;
@@ -1045,6 +1046,9 @@ public final class MetadataSearchCriteriaUtils {
                             searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList())));
                         break;
+                    case ArchiveSearchConsts.ORPHANS_NODE_CRITERIA:
+                        queryToFill.add(buildOrphansNodeQuery());
+                        break;
 
                     case ArchiveSearchConsts.DESCRIPTION_LEVEL_CRITERIA:
                         queryToFill.add(buildArchiveUnitDescriptionLevelQuery(
@@ -1182,6 +1186,11 @@ public final class MetadataSearchCriteriaUtils {
         return subQueryAnd;
     }
 
+    private static Query buildOrphansNodeQuery()
+        throws InvalidCreateOperationException {
+        return and().add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.UNIT_UPS, null, MISSING));
+    }
+
     private static Query buildArchiveUnitTypeQuery(final List<String> searchValues)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryAnd = and();
@@ -1275,8 +1284,10 @@ public final class MetadataSearchCriteriaUtils {
             SIMPLE_FIELDS_VALUES_MAPPING.get(searchCriteria.getCriteria()) :
             searchCriteria.getCriteria();
 
-        List<String> stringValues = searchCriteria.getValues().stream().map(CriteriaValue::getValue)
-            .collect(Collectors.toList());
+        List<String> stringValues =
+            searchCriteria.getValues().stream().filter(Objects::nonNull)
+                .map(CriteriaValue::getValue).filter(Objects::nonNull)
+                .collect(Collectors.toList());
         if (isADateToReplace(searchCriteria)) {
             String stringDate = searchCriteria.getValues().get(0).getValue();
             LocalDateTime date = LocalDateTime.parse(stringDate, ArchiveSearchConsts.ISO_FRENCH_FORMATER);

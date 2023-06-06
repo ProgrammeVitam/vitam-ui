@@ -25,9 +25,9 @@
  * accept its terms.
  */
 
-import {QualifierDto, VersionDto} from './unit-object-api.interface';
-import {qualifiersToVersionsWithQualifier} from './unit-object-helper';
-import {ObjectQualifierType} from './unit.enums';
+import { QualifierDto, VersionDto } from './object-group.interface';
+import { qualifiersToVersionsWithQualifier } from './object-group.utils';
+import { ObjectQualifierType } from './unit.enums';
 
 describe('unit-object-helper tests', () => {
 

@@ -36,9 +36,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchService } from 'ui-frontend-common';
+import { SearchCriteriaHistory, SearchService } from 'ui-frontend-common';
 import { ProjectsApiService } from '../../../core/api/project-api.service';
-import { SearchCriteriaHistory } from '../models/search-criteria-history.interface';
 
 @Injectable({
   providedIn: 'root'

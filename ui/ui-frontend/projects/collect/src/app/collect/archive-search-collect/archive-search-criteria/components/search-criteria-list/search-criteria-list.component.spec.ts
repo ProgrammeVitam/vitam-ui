@@ -43,9 +43,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import {
+  CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, SearchCriteriaEltements, SearchCriteriaHistory
+} from 'ui-frontend-common';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
-import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
 import { VitamInternalFields } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';

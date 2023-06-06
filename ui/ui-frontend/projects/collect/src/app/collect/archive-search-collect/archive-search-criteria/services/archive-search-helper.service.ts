@@ -36,16 +36,11 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode } from 'ui-frontend-common';
-import { VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar';
 import {
-  CriteriaValue,
-  SearchCriteria,
-  SearchCriteriaEltDto,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
-} from '../models/search.criteria';
+  ActionOnCriteria, CriteriaDataType, CriteriaOperator, CriteriaValue, FilingHoldingSchemeNode, ORPHANS_NODE_ID, SearchCriteria,
+  SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue
+} from 'ui-frontend-common';
+import { VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar';
 import { ArchiveSharedDataService } from './archive-shared-data.service';
 
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
@@ -70,119 +65,122 @@ export class ArchiveSearchHelperService {
     dataType: string,
     emit: boolean
   ) {
-    if (keyElt && valueElt) {
-      if (valueElt && valueElt.id === ORIGIN_WAITING_RECALCULATE) {
-        this.addCriteria(
-          searchCriterias,
-          searchCriteriaKeys,
-          nbQueryCriteria,
-          WAITING_RECALCULATE,
-          { id: WAITING_RECALCULATE, value: 'true' },
-          labelElt,
-          keyTranslated,
-          operator,
-          SearchCriteriaTypeEnum.FIELDS,
-          valueTranslated,
-          dataType,
-          emit
+    if (!keyElt) {
+      return;
+    }
+    if (valueElt && valueElt.id === ORIGIN_WAITING_RECALCULATE) {
+      this.addCriteria(
+        searchCriterias,
+        searchCriteriaKeys,
+        nbQueryCriteria,
+        WAITING_RECALCULATE,
+        { id: WAITING_RECALCULATE, value: 'true' },
+        labelElt,
+        keyTranslated,
+        operator,
+        SearchCriteriaTypeEnum.FIELDS,
+        valueTranslated,
+        dataType,
+        emit
+      );
+      if (category === SearchCriteriaTypeEnum.ACCESS_RULE) {
+        this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+      }
+      if (category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+        this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+      }
+      if (category === SearchCriteriaTypeEnum.STORAGE_RULE) {
+        this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+      }
+      if (category === SearchCriteriaTypeEnum.REUSE_RULE) {
+        this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+      }
+      if (category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
+        this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+      }
+      return;
+    }
+    if (!searchCriterias) {
+      return;
+    }
+    nbQueryCriteria++;
+    let criteria: SearchCriteria;
+    if (searchCriterias.has(keyElt)) {
+      criteria = searchCriterias.get(keyElt);
+      let values = criteria.values;
+      if (!values || values.length === 0) {
+        values = [];
+      }
+      if (valueElt) {
+        const filtredValues = values.filter((elt) =>
+          criteria.dataType === CriteriaDataType.STRING || criteria.dataType === CriteriaDataType.DATE
+            ? elt.value.value === valueElt?.value
+            : elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval
         );
-
-        if (category === SearchCriteriaTypeEnum.ACCESS_RULE) {
-          this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
-        }
-        if (category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-          this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
-        }
-        if (category === SearchCriteriaTypeEnum.STORAGE_RULE) {
-          this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
-        }
-        if (category === SearchCriteriaTypeEnum.REUSE_RULE) {
-          this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
-        }
-
-        if (category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
-          this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
-        }
-      } else if (searchCriterias) {
-        nbQueryCriteria++;
-        let criteria: SearchCriteria;
-        if (searchCriterias.has(keyElt)) {
-          criteria = searchCriterias.get(keyElt);
-          let values = criteria.values;
-          if (!values || values.length === 0) {
-            values = [];
-          }
-
-          const filtredValues = values.filter((elt) =>
-            criteria.dataType === CriteriaDataType.STRING || criteria.dataType === CriteriaDataType.DATE
-              ? elt.value.value === valueElt.value
-              : elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval
-          );
-          if (filtredValues.length === 0) {
-            values.push({
-              value: valueElt,
-              label: labelElt,
-              valueShown: true,
-              status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-              keyTranslated,
-              valueTranslated,
-            });
-            criteria.values = values;
-            searchCriterias.set(keyElt, criteria);
-          }
-        } else {
-          if (searchCriteriaKeys.indexOf(keyElt) === -1) {
-            if (category === SearchCriteriaTypeEnum.NODES) {
-              searchCriteriaKeys.unshift(keyElt);
-            } else {
-              searchCriteriaKeys.push(keyElt);
-            }
-          }
-          const values = [];
+        if (filtredValues.length === 0) {
           values.push({
             value: valueElt,
             label: labelElt,
-            id: valueElt.id,
             valueShown: true,
             status: SearchCriteriaStatusEnum.NOT_INCLUDED,
             keyTranslated,
             valueTranslated,
           });
-          const criteriaToAdd = {
-            key: keyElt,
-            values,
-            operator,
-            category,
-            keyTranslated,
-            valueTranslated,
-            dataType,
-          };
-          searchCriterias.set(keyElt, criteriaToAdd);
         }
-        if (emit === true && category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-          this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
-        }
-        if (emit === true && category === SearchCriteriaTypeEnum.ACCESS_RULE) {
-          this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
-        }
-        if (emit === true && category === SearchCriteriaTypeEnum.STORAGE_RULE) {
-          this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
-        }
-        if (emit === true && category === SearchCriteriaTypeEnum.REUSE_RULE) {
-          this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
-            keyElt,
-            valueElt,
-            action: ActionOnCriteria.ADD,
-          });
-        }
-        if (emit === true && category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
-          this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
-            keyElt,
-            valueElt,
-            action: ActionOnCriteria.ADD,
-          });
+        criteria.values = values;
+        searchCriterias.set(keyElt, criteria);
+      }
+    } else {
+      if (searchCriteriaKeys.indexOf(keyElt) === -1) {
+        if (category === SearchCriteriaTypeEnum.NODES) {
+          searchCriteriaKeys.unshift(keyElt);
+        } else {
+          searchCriteriaKeys.push(keyElt);
         }
       }
+      const values = [];
+      values.push({
+        value: valueElt,
+        label: labelElt,
+        id: valueElt?.id,
+        valueShown: true,
+        status: SearchCriteriaStatusEnum.NOT_INCLUDED,
+        keyTranslated,
+        valueTranslated,
+      });
+      const criteriaToAdd = {
+        key: keyElt,
+        values,
+        operator,
+        category,
+        keyTranslated,
+        valueTranslated,
+        dataType,
+      };
+      searchCriterias.set(keyElt, criteriaToAdd);
+    }
+    if (emit === true && category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+      this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+    }
+    if (emit === true && category === SearchCriteriaTypeEnum.ACCESS_RULE) {
+      this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+    }
+    if (emit === true && category === SearchCriteriaTypeEnum.STORAGE_RULE) {
+      this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+    }
+    if (emit === true && category === SearchCriteriaTypeEnum.REUSE_RULE) {
+      this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
+        keyElt,
+        valueElt,
+        action: ActionOnCriteria.ADD,
+      });
+    }
+    if (emit === true && category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
+      this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
+        keyElt,
+        valueElt,
+        action: ActionOnCriteria.ADD,
+      });
     }
   }
 
@@ -278,10 +276,12 @@ export class ArchiveSearchHelperService {
           nbQueryCriteria
         );
       }
-      searchCriterias.forEach((val, key) => {
+      searchCriterias.forEach((searchCriteria, key) => {
         if (key === keyElt) {
-          let values = val.values;
-          values = values.filter((item) => item.value.id !== valueElt.id);
+          let values = searchCriteria.values;
+          if (valueElt) {
+            values = values.filter((item) => item.value.id !== valueElt.id);
+          }
           if (values.length === 0) {
             searchCriteriaKeys.forEach((element, index) => {
               if (element === keyElt) {
@@ -290,50 +290,50 @@ export class ArchiveSearchHelperService {
             });
             searchCriterias.delete(keyElt);
           } else {
-            val.values = values;
-            searchCriterias.set(keyElt, val);
+            searchCriteria.values = values;
+            searchCriterias.set(keyElt, searchCriteria);
           }
           nbQueryCriteria--;
-          if (emit === true && key === 'NODE') {
+          if (emit === true && (key === 'NODE' || key === ORPHANS_NODE_ID)) {
             this.archiveExchangeDataService.emitNodeTarget(valueElt.value);
           }
 
-          if (emit === true && val.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+          if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
             this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
               action: ActionOnCriteria.REMOVE,
             });
           }
-          if (emit === true && val.category === SearchCriteriaTypeEnum.ACCESS_RULE) {
+          if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.ACCESS_RULE) {
             this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
               action: ActionOnCriteria.REMOVE,
             });
           }
-          if (emit === true && val.category === SearchCriteriaTypeEnum.STORAGE_RULE) {
+          if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.STORAGE_RULE) {
             this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
               action: ActionOnCriteria.REMOVE,
             });
           }
-          if (emit === true && val.category === SearchCriteriaTypeEnum.REUSE_RULE) {
+          if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.REUSE_RULE) {
             this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
               action: ActionOnCriteria.REMOVE,
             });
           }
-          if (emit === true && val.category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
+          if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
             this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
               action: ActionOnCriteria.REMOVE,
             });
           }
-          if (emit === true && val.category === SearchCriteriaTypeEnum.FIELDS && val.key === ALL_ARCHIVE_UNIT_TYPES) {
+          if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.FIELDS && searchCriteria.key === ALL_ARCHIVE_UNIT_TYPES) {
             this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
               keyElt,
               valueElt,
@@ -358,6 +358,7 @@ export class ArchiveSearchHelperService {
       });
     });
   }
+
   openSnackBarForWorkflow(snackBar: MatSnackBar, message: string, serviceUrl?: string) {
     snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
@@ -401,6 +402,7 @@ export class ArchiveSearchHelperService {
     }
     return defaultFacetTabIndex;
   }
+
   checkIfRulesFacetsCanBeComputed(searchCriterias: Map<string, SearchCriteria>): boolean {
     let hasMgtRuleCriteria = false;
     if (searchCriterias && searchCriterias.size > 0) {
@@ -448,7 +450,7 @@ export class ArchiveSearchHelperService {
         criteria.values.forEach((elt) => {
           strValues.push(elt.value);
         });
-        let replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
+        const replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
 
         criteriaSearchList.push({
           criteria: replacedCriteria,
@@ -527,9 +529,11 @@ export class ArchiveSearchHelperService {
   isAppraisalRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.APPRAISAL_RULE;
   }
+
   isAccessRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.ACCESS_RULE;
   }
+
   isStorageRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.STORAGE_RULE;
   }
@@ -537,15 +541,19 @@ export class ArchiveSearchHelperService {
   isClassificationRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.CLASSIFICATION_RULE;
   }
+
   isDisseminationRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.DISSEMINATION_RULE;
   }
+
   isReuseRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.REUSE_RULE;
   }
+
   isWaitingToRecalculateCriteria(criteriaKey: string): boolean {
     return criteriaKey === 'WAITING_RECALCULATE' || criteriaKey === 'ORIGIN_WAITING_RECALCULATE';
   }
+
   isEliminationTenchnicalIdCriteria(criteriaKey: string): boolean {
     return criteriaKey === 'ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE';
   }

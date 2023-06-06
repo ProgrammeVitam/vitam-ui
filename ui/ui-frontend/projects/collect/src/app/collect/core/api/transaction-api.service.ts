@@ -34,21 +34,12 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
-  ApiUnitObject,
-  BASE_URL,
-  BaseHttpClient,
-  Ontology,
-  PageRequest,
-  PaginatedResponse,
-  Transaction,
-  Unit
+  ApiUnitObject, BaseHttpClient, BASE_URL, Ontology, PageRequest, PaginatedResponse, SearchCriteriaDto, SearchResponse, Transaction, Unit
 } from 'ui-frontend-common';
-import {SearchResponse} from '../../archive-search-collect/archive-search-criteria/models/search-response.interface';
-import {SearchCriteriaDto} from '../../archive-search-collect/archive-search-criteria/models/search.criteria';
 
 @Injectable({
   providedIn: 'root',
@@ -102,11 +93,11 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
   // Manage Archive Units
 
   getCollectUnitById(unitId: string, headers?: HttpHeaders) {
-    return this.http.get<any>(this.apiUrl + '/archive-units/archiveunit/' + unitId, {headers});
+    return this.http.get<any>(this.apiUrl + '/archive-units/archiveunit/' + unitId, { headers });
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, tranasctionId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${tranasctionId}/search`, criteriaDto, {headers});
+    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${tranasctionId}/search`, criteriaDto, { headers });
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, tranasctionId: string, headers?: HttpHeaders): Observable<Blob> {
@@ -118,7 +109,7 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
 
   // Get the technical group object of a unit
   getObjectGroupDetailsById(objectId: string, headers?: HttpHeaders): Observable<ApiUnitObject> {
-    return this.http.get<ApiUnitObject>(this.apiUrl + '/objects/' + objectId, {headers, responseType: 'json'});
+    return this.http.get<ApiUnitObject>(this.apiUrl + '/objects/' + objectId, { headers, responseType: 'json' });
   }
 
   getExternalOntologiesList(): Observable<Ontology[]> {
@@ -126,6 +117,6 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
   }
 
   selectUnitWithInheritedRules(tranasctionId: string, criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
-    return this.http.post<Unit>(`${this.apiUrl}/${tranasctionId}/unit-with-inherited-rules`, criteriaDto, {headers});
+    return this.http.post<Unit>(`${this.apiUrl}/${tranasctionId}/unit-with-inherited-rules`, criteriaDto, { headers });
   }
 }
