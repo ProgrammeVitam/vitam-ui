@@ -373,7 +373,7 @@ public class TransactionArchiveUnitInternalService {
         SelectMultiQuery selectMultiQuery = createSelectMultiQuery(criteriaList);
 
         selectMultiQuery.setLimitFilter(0, 1);
-        selectMultiQuery.trackTotalHits(true);
+        selectMultiQuery.trackTotalHits(false);
 
         try {
             List<SearchCriteriaEltDto> rulesCriteriaList =
