@@ -83,11 +83,9 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.initialNodeFacetState();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.accessContract) {
-      this.loadingHolding = true;
-      this.initFilingHoldingSchemeTree();
-    }
+  ngOnChanges(_: SimpleChanges): void {
+    this.loadingHolding = true;
+    this.initFilingHoldingSchemeTree();
   }
 
   ngOnDestroy(): void {
