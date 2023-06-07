@@ -42,7 +42,7 @@ import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
   styleUrls: ['./filing-holding-scheme.component.scss'],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
-  
+
   @Input() transactionId: string;
 
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
@@ -83,11 +83,9 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.initialNodeFacetState();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.accessContract) {
-      this.loadingHolding = true;
-      this.initFilingHoldingSchemeTree();
-    }
+  ngOnChanges(_: SimpleChanges): void {
+    this.loadingHolding = true;
+    this.initFilingHoldingSchemeTree();
   }
 
   ngOnDestroy(): void {
