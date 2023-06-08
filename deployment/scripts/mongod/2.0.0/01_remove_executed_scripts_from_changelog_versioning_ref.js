@@ -20,7 +20,6 @@ const scriptsChecksums = [
   "7e949b694309670f1ba9d83bad2613cd113e8c1d", // 53_migration_role_update_desc_unit_metadata_script.js.j2
   "5e1e736286d7d44e000918cfda1aa7490be06bb7", // 54_update_archive_search_application_informations.js.j2
   "d7b4357b253f8489a66665020765bd14b34d77db", // 55_update_archive_search_proles_description.js.j2
-  "209e901b743b93f8237d09c6677625655d37f562"  // 035_TRV_remove_tenant_2_and_profiles_and_profiles_groups_linkend_to_ref.js
 ];
 
 db.changelog.deleteMany({ checksum: { $in: scriptsChecksums } });
