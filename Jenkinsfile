@@ -44,8 +44,6 @@ pipeline {
                     env.DO_TEST = 'true'
                     env.DO_BUILD = 'true'
                     env.DO_PUBLISH = 'true'
-                    env.DO_CHECKMARX = 'false'
-                    env.DO_CHECKMARX_SCA = 'true'
                 }
             }
         }
@@ -69,15 +67,11 @@ pipeline {
                         booleanParam(name: 'DO_TEST', defaultValue: false, description: 'Run Stage Check vulnerabilities and tests.'),
                         booleanParam(name: 'DO_BUILD', defaultValue: true, description: 'Run Stage Build sources & COTS.'),
                         booleanParam(name: 'DO_PUBLISH', defaultValue: true, description: 'Run Stage Publish to repository.'),
-                        booleanParam(name: 'DO_CHECKMARX', defaultValue: false, description: 'Run Stage Checkmarx analysis.'),
-                        booleanParam(name: 'DO_CHECKMARX_SCA', defaultValue: false, description: 'Run Stage Checkmarx SCA.')
                     ]
                     env.DO_MAJ_CONTEXT = INPUT_PARAMS.DO_MAJ_CONTEXT
                     env.DO_TEST = INPUT_PARAMS.DO_TEST
                     env.DO_BUILD = INPUT_PARAMS.DO_BUILD
                     env.DO_PUBLISH = INPUT_PARAMS.DO_PUBLISH
-                    env.DO_CHECKMARX = INPUT_PARAMS.DO_CHECKMARX
-                    env.DO_CHECKMARX_SCA = INPUT_PARAMS.DO_CHECKMARX_SCA
                 }
             }
         }
@@ -199,73 +193,6 @@ pipeline {
             steps {
                 sshagent (credentials: ['jenkins_sftp_to_repository']) {
                     sh 'vitam-build.git/push_symlink_repo.sh contrib $SERVICE_REPO_SSHURL'
-                }
-            }
-        }
-
-        stage("Checkmarx analysis") {
-            when {
-                environment(name: 'DO_CHECKMARX', value: 'true')
-            }
-            environment {
-                SERVICE_CHECKMARX_URL = credentials("service-checkmarx-url")
-            }
-            steps {
-                dir('vitam-build.git') {
-                    deleteDir()
-                }
-                sh 'mkdir -p target logs'
-                // KWA : Visibly, backslash escape hell. \\ => \ in groovy string.
-                sh '/opt/CxConsole/runCxConsole.sh scan --verbose -Log "${PWD}/logs/cxconsole.log" -CxServer "$SERVICE_CHECKMARX_URL" -CxUser "VITAM openLDAP\\\\$CI_USR" -CxPassword \\"$CI_PSW\\" -ProjectName "CxServer\\SP\\Vitam\\Users\\vitam-ui $GIT_BRANCH" -LocationType folder -locationPath "${PWD}/" -Preset "Default 2014" -LocationPathExclude "cots,deployment,deploymentByVitam,docs,integration-tests,tools,node,node_modules,dist,target" -LocationFilesExclude "*.rpm,*.pdf" -ForceScan -ReportPDF "${PWD}/target/checkmarx-report.pdf"'
-            }
-            post {
-                success {
-                    archiveArtifacts (
-                        artifacts: 'target/checkmarx-report.pdf',
-                        fingerprint: true
-                    )
-                }
-                failure {
-                    archiveArtifacts (
-                        artifacts: 'logs/cxconsole.log',
-                        fingerprint: true
-                    )
-                }
-            }
-        }
-        stage('Checkmarx SCA') {
-           when {
-                environment(name: 'DO_CHECKMARX_SCA', value: 'true')
-           }
-           environment {
-                SERVICE_CX_SCA_USER = credentials("service-cx-sca-user")
-                SERVICE_CX_SCA_PASSWORD = credentials("service-cx-sca-password")
-                SERVICE_CX_SCA_ACCOUNT = credentials("service-cx-sca-account")
-                SERVICE_CX_SCA_SERVER = credentials("service-cx-sca-server")
-                SERVICE_CX_SCA_AUTH_SERVER = credentials("service-cx-sca-auth-server")
-
-                http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
-                https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
-                CX_NAME="vitam-ui.${env.GIT_BRANCH}"
-           }
-           steps {
-                sh 'curl -O https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz'
-                sh 'tar -xzvf ScaResolver-linux64.tar.gz'
-                sh 'sudo ln -sf /usr/local/maven/bin/mvn /usr/local/bin/mvn'
-                sh './ScaResolver -n $CX_NAME -u $SERVICE_CX_SCA_USER -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui -p "$SERVICE_CX_SCA_PASSWORD" --report-type Risk --report-extension Pdf'
-           }
-           post {
-                success {
-                    archiveArtifacts (
-                        artifacts: "reports/$CX_NAME/*.pdf",
-                        fingerprint: true
-                    )
-                }
-                failure {
-                    archiveArtifacts (
-                        artifacts: "logs/$CX_NAME/*.log",
-                        fingerprint: true
-                    )
                 }
             }
         }
