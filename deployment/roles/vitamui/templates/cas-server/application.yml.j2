@@ -184,7 +184,7 @@ ip.header: X-Real-IP
 cas.authn.oauth.access-token.max-time-to-live-in-seconds: 28800
 
 cas.authn.oidc.core.issuer: ${cas.server.prefix}/oidc
-cas.authn.oidc.jwks.file-system.jwks-file: file:"{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/{{ vitamui_struct.vitamui_component }}/keystore.jwks"
+cas.authn.oidc.jwks.file-system.jwks-file: "file:{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/{{ vitamui_struct.vitamui_component }}/keystore.jwks"
 
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
