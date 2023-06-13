@@ -81,13 +81,13 @@ export class FilingPlanService {
     this.cache[accessContractId] = { value };
   }
 
-  public loadTree(tenantIdentifier: number, accessContractId: string, idPrefix: string): Observable<Node[]> {
-    let units$ = this.getCachedValue(accessContractId);
+  public loadTree(tenantIdentifier: number, idPrefix: string): Observable<Node[]> {
+    const tenantId = tenantIdentifier.toString();
+    let units$ = this.getCachedValue(tenantId);
     if (!units$) {
       this._pending++;
       const headers = new HttpHeaders({
-        'X-Tenant-Id': tenantIdentifier.toString(),
-        'X-Access-Contract-Id': accessContractId,
+        'X-Tenant-Id': tenantId,
       });
       units$ = this.searchUnitApi.getFilingPlan(headers).pipe(
         catchError(() => {
@@ -97,7 +97,7 @@ export class FilingPlanService {
         tap(() => this._pending--),
         shareReplay(1)
       );
-      this.setCachedValue(units$, accessContractId);
+      this.setCachedValue(units$, tenantId);
     }
     return units$.pipe(
       map((results) => {

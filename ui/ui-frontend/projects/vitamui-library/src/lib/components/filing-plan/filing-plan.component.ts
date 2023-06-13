@@ -23,6 +23,7 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
 export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
 
   @Input() tenantIdentifier: number;
+  /** @deprecated should be removed */
   @Input() accessContract: string;
   @Input() mode: FilingPlanMode;
   @Input() componentId: string = uuid();
@@ -51,7 +52,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
 
   initFiningTree() {
     this.filingPlanService
-      .loadTree(this.tenantIdentifier, this.accessContract, this.componentId)
+      .loadTree(this.tenantIdentifier, this.componentId)
       .subscribe(nodes => {
         this.nestedDataSource.data = nodes;
         this.nestedTreeControl.dataNodes = nodes;
@@ -60,7 +61,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.accessContract) {
+    if (changes.tenantIdentifier) {
       this.initFiningTree();
     }
   }
