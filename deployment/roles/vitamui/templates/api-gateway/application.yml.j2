@@ -1,0 +1,169 @@
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.{{ consul_domain }}
+      discovery:
+        preferIpAddress: true
+        tags: {{ consul_tags }}
+        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+
+server:
+  host: {{ vitamui.api_gateway.host }}
+  port: {{ vitamui.api_gateway.port_service }}
+
+{% if vitamui_struct.secure | default(secure) | lower =='true' %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_keystore }}
+    enabled-protocols: {{ssl_setting.enabled_protocols}}
+    ciphers: {{ssl_setting.ciphers}}
+  error:
+    path: /error
+
+{% endif %}
+  tomcat:
+    accesslog:
+        enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
+        directory: "{{ vitamui_folder_log }}"
+        prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+        file-date-format: ".yyyy-MM-dd"
+        suffix: ".log"
+
+management:
+  server:
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false
+
+server-identity:
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
+  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityServerId: 1
+
+
+
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml
+  level:
+    reactor:
+      netty: debug
+    org:
+      springframework:
+        cloud:
+          gateway: debug
+
+opentracing:
+  jaeger:
+    enabled: {{ opentracing.jaeger.enabled }}
+    logSpans: {{ opentracing.jaeger.log_spans }}
+    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    udp-sender:
+      host: {{ opentracing.jaeger.udp_sender.host }}
+      port: {{ opentracing.jaeger.udp_sender.port }}
+
+
+
+
+spring:
+  cloud:
+    consul:
+      enabled: false
+    gateway:
+      httpclient:
+        wiretap: true
+        ssl:
+          use-insecure-trust-manager: true
+          #trusted-x509-certificates:
+      httpserver:
+        wiretap: true
+      routes:
+        - id: iam-external-service
+          uri: {{ vitamui.iam_external.host }}:{{ vitamui.iam_external.port_service }}  # URL IAM EXTERNAL
+          predicates:
+            - >
+              Path=
+              /portal-api/security,
+              /portal-api/userinfos/me,
+              /portal-api/ui/applications/**,
+              /portal-api/users/analytics,
+              /portal-api/subrogations/me/surrogate,
+
+              /identity-api/security,
+              /identity-api/userinfos/**,
+              /identity-api/ui/applications/**,
+              /identity-api/subrogations/**,
+              /identity-api/customers/**,
+              /identity-api/tenants/**,
+              /identity-api/owners/**,
+              /identity-api/providers/**,
+              /identity-api/groups/**,
+              /identity-api/users/**,
+              /identity-api/profiles/**,
+              /identity-api/accesscontracts/**,
+              /identity-api/externalparamprofile/**,
+
+              /referential-api/security$,
+              /referential-api/security/**,
+              /referential-api/userinfos/**,
+              /referential-api/ui/applications/**,
+              /referential-api/users/analytics,
+              /referential-api/subrogations/**,
+              /referential-api/logbooks/operations/**,
+              /referential-api/tenants/**,
+              /referential-api/customers/**,
+              /referential-api/accesscontracts/**,
+              /referential-api/profiles/**,
+              /referential-api/externalparameters/**,
+
+          filters:
+            # Portal API
+            - RewritePath=/portal-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/portal-api/(?<segment>.*),/iam/v1/$\{segment}
+
+            # Identity API
+            - RewritePath=/identity-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/identity-api/logbooks(?<segment>.*),/v1/logbooks$\{segment},
+            - RewritePath=/identity-api/accesscontracts(?<segment>.*),/v1/accesscontracts$\{segment},
+            - RewritePath=/identity-api/(?<segment>.*),/iam/v1/$\{segment}
+
+            # Referential API
+            - RewritePath=/referential-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/referential-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
+            - RewritePath=/referential-api/logbooks/operations(?<segment>.*),/v1/logbooks/operations$\{segment},
+            - RewritePath=/referential-api/(?<segment>.*),/iam/v1/$\{segment}
+
+        - id: referential-external-service
+          uri: {{ vitamui.referential_external.host }}:{{ vitamui.referential_external.port_service }}  # URL REFERENTIAL EXTERNAL
+          predicates:
+            - >
+              Path=
+              /referential-api/accesscontract/**,
+              /referential-api/ingestcontract/**,
+              /referential-api/managementcontract/**,
+              /referential-api/agency/**,
+              /referential-api/fileformat/**,
+              /referential-api/fileFormat/**,
+              /referential-api/operation/**,
+              /referential-api/logbook-management-operation/**,
+              /referential-api/customers/**,
+              /referential-api/accession-register/**,
+              /referential-api/archival-profile/**,
+              /referential-api/security-profile/**,
+              /referential-api/context/**,
+              /referential-api/ontology/**,
+              /referential-api/profile/**,
+              /referential-api/search/**,
+              /referential-api/rules/**,
+              /referential-api/customers/**
+
+          filters:
+            - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
+            - RewritePath=/referential-api/fileFormat(?<segment>.*),/referential/v1/fileformats$\{segment}
+            - RewritePath=/referential-api/operation(?<segment>.*),/referential/v1/operations$\{segment}
+            - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
+            - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
+            - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
+

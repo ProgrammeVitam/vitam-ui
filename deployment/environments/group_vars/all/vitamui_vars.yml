@@ -53,6 +53,14 @@ vitamui_defaults:
 ################################################################################
 
 vitamui:
+
+  api_gateway:
+    host: "vitamui-api-gateway.service.{{ consul_domain }}"
+    vitamui_component: "api-gateway"
+    vitamui_component_type: "ui"
+    port_service: 8070
+    port_admin: 7070
+
   identity:
     host: "identity.service.{{ consul_domain }}"
     vitamui_component: "ui-identity"
