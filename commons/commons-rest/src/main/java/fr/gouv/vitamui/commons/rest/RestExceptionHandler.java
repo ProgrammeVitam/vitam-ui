@@ -86,7 +86,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order()
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 

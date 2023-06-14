@@ -36,13 +36,16 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../pipes/pipes.module';
+import { ArchiveUnitCountComponent } from './components/archive-unit-count/archive-unit-count.component';
 import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, PipesModule],
-  declarations: [PhysicalArchiveViewerComponent],
-  exports: [PhysicalArchiveViewerComponent],
+  imports: [CommonModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
+  declarations: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent],
+  exports: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent],
 })
 export class ArchiveModule {}

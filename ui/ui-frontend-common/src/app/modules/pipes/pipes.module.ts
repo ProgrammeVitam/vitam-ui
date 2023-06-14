@@ -40,18 +40,41 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BytesPipe } from './bytes.pipe';
+import { DateTimePipe } from './datetime.pipe';
 import { EmptyPipe } from './empty.pipe';
+import { FileSizePipe } from './filesize.pipe';
 import { HighlightPipe } from './highlight.pipe';
+import { PluralPipe } from './plural.pipe';
 import { SafeStylePipe } from './safe-style.pipe';
 import { StrongifyPipe } from './strongify.pipe';
 import { TruncatePipe } from './truncate.pipe';
 import { YesNoPipe } from './yes-no.pipe';
-import { DateTimePipe } from './datetime.pipe';
-import { FileSizePipe } from './filesize.pipe';
 
 @NgModule({
-  declarations: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe,FileSizePipe],
   imports: [CommonModule],
-  exports: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe,FileSizePipe],
+  declarations: [
+    BytesPipe,
+    HighlightPipe,
+    StrongifyPipe,
+    TruncatePipe,
+    SafeStylePipe,
+    EmptyPipe,
+    YesNoPipe,
+    DateTimePipe,
+    FileSizePipe,
+    PluralPipe,
+  ],
+  exports: [
+    BytesPipe,
+    HighlightPipe,
+    StrongifyPipe,
+    TruncatePipe,
+    SafeStylePipe,
+    EmptyPipe,
+    YesNoPipe,
+    DateTimePipe,
+    FileSizePipe,
+    PluralPipe,
+  ],
 })
 export class PipesModule {}

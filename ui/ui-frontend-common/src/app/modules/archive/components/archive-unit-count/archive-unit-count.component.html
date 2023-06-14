@@ -1,0 +1,17 @@
+<mat-spinner *ngIf="pending" diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
+<ng-container *ngIf="!pending">
+  <a
+    *ngIf="canLoadExactCount"
+    matTooltip="{{ 'ARCHIVE_SEARCH.RETRIVE_EXACT_COUNT' | translate }}"
+    matTooltipClass="vitamui-tooltip"
+    matTooltipShowDelay="300"
+    class="link-without-underline"
+    (click)="loadExactCount()"
+    >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ archiveUnitCount }}
+  </a>
+  <span *ngIf="!canLoadExactCount">{{ archiveUnitCount }}</span>
+  <span>
+    {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ selectedArchiveUnitCount }}
+    {{ 'ARCHIVE_SEARCH.ONE_SELECTED' | translate | plural : selectedArchiveUnitCount }}</span
+  >
+</ng-container>

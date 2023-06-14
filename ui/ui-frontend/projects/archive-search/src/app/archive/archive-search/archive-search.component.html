@@ -275,64 +275,15 @@
 <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submited">
   <div class="vitamui-table">
     <div class="vitamui-table-head">
-      <div class="col-8" *ngIf="waitingToGetFixedCount">
-        <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
-
-        <ng-container *ngIf="!pendingGetFixedCount && !pending">
-          <a
-            class="link-without-underline"
-            (click)="loadExactCount()"
-            matTooltip="{{ 'ARCHIVE_SEARCH.RETRIVE_EXACT_COUNT' | translate }}"
-            matTooltipClass="vitamui-tooltip"
-            [matTooltipShowDelay]="300"
-            >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ totalResults }}
-          </a>
-          <ng-container *ngIf="isAllchecked">
-            <span
-              >{{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ totalResults }}
-              {{ 'ARCHIVE_SEARCH.DIP.SELECTED' | translate }}</span
-            >
-          </ng-container>
-          <ng-container *ngIf="!isAllchecked">
-            <span
-              >{{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ itemSelected }}
-              {{
-                itemSelected === 1 || itemSelected === 0
-                  ? ('ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate)
-                  : ('ARCHIVE_SEARCH.DIP.SELECTED' | translate)
-              }}</span
-            >
-          </ng-container>
-        </ng-container>
-      </div>
-      <div class="col-8" *ngIf="!waitingToGetFixedCount">
-        <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
-
-        <ng-container *ngIf="totalResults > 1 && !pendingGetFixedCount && !pending">
-          <span
-            >{{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ itemSelected }}
-
-            {{
-              itemSelected === 1 || itemSelected === 0
-                ? ('ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate)
-                : ('ARCHIVE_SEARCH.DIP.SELECTED' | translate)
-            }}
-          </span>
-        </ng-container>
-        <ng-container *ngIf="totalResults === 1">
-          <span>
-            {{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULT' | translate }} / {{ itemSelected }}
-            {{ 'ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate }}
-          </span>
-        </ng-container>
-        <ng-container *ngIf="totalResults === 0">
-          <span>
-            {{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULT' | translate }} / {{ itemSelected }}
-            {{ 'ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate }}
-          </span>
-        </ng-container>
-      </div>
-
+      <vitamui-common-archive-unit-count
+        [searchService]="archiveService"
+        [searchCriterias]="criteriaSearchList"
+        [archiveUnitCount]="totalResults"
+        [selectedArchiveUnitCount]="itemSelected"
+        [threshold]="10000"
+        [(pending)]="pending"
+        class="col-8"
+      ></vitamui-common-archive-unit-count>
       <div class="col-3 area-download" [ngClass]="totalResults > 0 && itemSelected > 0 ? 'enabled-div' : 'disabled-div'">
         <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
       </div>
@@ -347,10 +298,14 @@
           <button
             mat-menu-item
             (click)="goToUpdateManagementRule()"
-            matTooltip="{{ (!accessContractAllowUpdating || accessContractUpdatingRestrictedDesc) ? hasAccessContractManagementPermissionsMessage : '' }}"
+            matTooltip="{{
+              !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc ? hasAccessContractManagementPermissionsMessage : ''
+            }}"
             matTooltipClass="vitamui-tooltip"
             [matTooltipShowDelay]="300"
-            [disabled]="!hasUpdateManagementRuleRole || itemSelected === 0 || !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc"
+            [disabled]="
+              !hasUpdateManagementRuleRole || itemSelected === 0 || !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc
+            "
           >
             {{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}
           </button>
@@ -486,14 +441,14 @@
             <ng-container *ngIf="archiveUnit?.Title; else subTitleFr">
               <p matTooltip="{{ archiveUnit?.Description }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                 <b> {{ archiveUnit?.Title }}</b> <br />
-                {{ archiveUnit?.Description | truncate: 100 }}
+                {{ archiveUnit?.Description | truncate : 100 }}
               </p>
             </ng-container>
             <ng-template #subTitleFr>
               <ng-container *ngIf="archiveUnit.Title_.fr; else subTitleEn">
                 <p matTooltip="{{ archiveUnit?.Description_?.fr }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                   <b>{{ archiveUnit.Title_.fr }} </b> <br />
-                  {{ archiveUnit?.Description_?.fr | truncate: 100 }}
+                  {{ archiveUnit?.Description_?.fr | truncate : 100 }}
                 </p>
               </ng-container>
             </ng-template>
@@ -501,16 +456,16 @@
               <ng-container *ngIf="archiveUnit.Title_.en">
                 <p matTooltip="{{ archiveUnit?.Description_?.en }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                   <b>{{ archiveUnit.Title_.en }} </b> <br />
-                  {{ archiveUnit?.Description_?.en | truncate: 100 }}
+                  {{ archiveUnit?.Description_?.en | truncate : 100 }}
                 </p>
               </ng-container>
             </ng-template>
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-            {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
+            {{ archiveUnit?.StartDate | dateTime : 'dd/MM/yyyy' }}
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-            {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
+            {{ archiveUnit?.EndDate | dateTime : 'dd/MM/yyyy' }}
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
             <p
@@ -543,7 +498,7 @@
     <div class="text-title" *ngIf="selectedItemCountKnown()">
       <span *ngIf="itemSelected > 1">
         {{
-          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT' | translate: { elementsSize: itemSelected }
+          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT' | translate : { elementsSize: itemSelected }
         }}</span
       >
       <span *ngIf="itemSelected === 1">
@@ -557,7 +512,7 @@
       <span *ngIf="itemSelected > 1">
         {{
           'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT'
-            | translate: { elementsSize: itemSelected }
+            | translate : { elementsSize: itemSelected }
         }}</span
       >
       <span *ngIf="itemSelected === 1">
@@ -700,7 +655,7 @@
       <span *ngIf="itemSelected > 1">
         {{
           'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE'
-            | translate: { elementsSize: itemSelected }
+            | translate : { elementsSize: itemSelected }
         }}</span
       >
     </div>

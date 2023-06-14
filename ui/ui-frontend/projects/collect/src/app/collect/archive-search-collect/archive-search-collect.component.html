@@ -1,9 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
-    <app-filing-holding-scheme
-      [transactionId]="transaction?.id"
-      (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"
-    >
+    <app-filing-holding-scheme [transactionId]="transaction?.id" (showArchiveUnitDetails)="showPreviewArchiveUnit($event)">
     </app-filing-holding-scheme>
   </mat-sidenav>
 
@@ -18,7 +15,7 @@
       *ngIf="openedItem"
       (previewClose)="closePanel()"
       (showExtendedLateralPanel)="showExtendedLateralPanel()"
-      [archiveUnit]="openedItem"      
+      [archiveUnit]="openedItem"
       (backToNormalLateralPanel)="backToNormalLateralPanel()"
       [accessContractAllowUpdating]="accessContractAllowUpdating"
       [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"
@@ -312,50 +309,14 @@
       <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()">
         <div class="vitamui-table">
           <div class="vitamui-table-head">
-            <div class="col-8" *ngIf="waitingToGetFixedCount">
-              <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"> </mat-spinner>
-              <ng-container *ngIf="!pendingGetFixedCount && !pending">
-                <a
-                  class="link-without-underline"
-                  (click)="loadExactCount()"
-                  matTooltip="{{ 'COLLECT.RETRIVE_EXACT_COUNT' | translate }}"
-                  matTooltipClass="vitamui-tooltip"
-                  [matTooltipShowDelay]="300"
-                >
-                  {{ 'COLLECT.MORE_THAN' | translate }} {{ totalResults }}
-                </a>
-                <ng-container *ngIf="isAllchecked">
-                  <span> {{ 'COLLECT.RESULTS' | translate }} / {{ 'COLLECT.MORE_THAN' | translate }} {{ totalResults }} </span>
-                </ng-container>
-                <ng-container *ngIf="!isAllchecked">
-                  <span> {{ 'COLLECT.RESULTS' | translate }} / {{ itemSelected }} </span>
-                </ng-container>
-              </ng-container>
-            </div>
-
-            <div class="col-8" *ngIf="!waitingToGetFixedCount">
-              <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"> </mat-spinner>
-
-              <ng-container *ngIf="totalResults > 1 && !pendingGetFixedCount && !pending">
-                <span
-                  >{{ totalResults }} {{ 'COLLECT.RESULTS' | translate }} / {{ itemSelected }}
-
-                  {{ itemSelected === 1 || itemSelected === 0 ? ('COLLECT.ONE_SELECTED' | translate) : ('COLLECT.SELECTED' | translate) }}
-                </span>
-              </ng-container>
-              <ng-container *ngIf="totalResults === 1">
-                <span>
-                  {{ totalResults }} {{ 'COLLECT.RESULT' | translate }} / {{ itemSelected }}
-                  {{ 'COLLECT.ONE_SELECTED' | translate }}
-                </span>
-              </ng-container>
-              <ng-container *ngIf="totalResults === 0">
-                <span>
-                  {{ totalResults }} {{ 'COLLECT.RESULT' | translate }} / {{ itemSelected }}
-                  {{ 'COLLECT.ONE_SELECTED' | translate }}
-                </span>
-              </ng-container>
-            </div>
+            <vitamui-common-archive-unit-count
+              [search]="search$"
+              [archiveUnitCount]="totalResults"
+              [selectedArchiveUnitCount]="itemSelected"
+              [threshold]="10000"
+              [(pending)]="pending"
+              class="col-8"
+            ></vitamui-common-archive-unit-count>
 
             <div class="col-1"></div>
 

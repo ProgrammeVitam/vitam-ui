@@ -38,23 +38,15 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { merge, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, merge } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import {
-  CriteriaDataType,
-  CriteriaOperator,
-  Direction,
-  FilingHoldingSchemeNode,
-  Logger,
-  Unit,
-  VitamuiRoles
-} from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeNode, Logger, Unit, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -77,7 +69,7 @@ import {
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaRemoveAction,
   SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum
+  SearchCriteriaTypeEnum,
 } from '../models/search.criteria';
 import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
@@ -89,7 +81,6 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
-
 
 @Component({
   selector: 'app-archive-search',
@@ -104,7 +95,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 100000;
 
   constructor(
-    private archiveService: ArchiveService,
+    public archiveService: ArchiveService,
     private archiveFacetsService: ArchiveFacetsService,
     private translateService: TranslateService,
     private route: ActivatedRoute,
@@ -367,23 +358,24 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.managementRulesSharedDataService.emitManagementRules([]);
   }
 
-
-  private addInitalCriteriaValues(){
-
-    this.archiveHelperService.addCriteria(    this.searchCriterias,
+  private addInitalCriteriaValues() {
+    this.archiveHelperService.addCriteria(
+      this.searchCriterias,
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
       { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
       this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
       true,
-      CriteriaOperator.EQ,SearchCriteriaTypeEnum.FIELDS,
+      CriteriaOperator.EQ,
+      SearchCriteriaTypeEnum.FIELDS,
       false,
       CriteriaDataType.STRING,
       false
     );
 
-    this.archiveHelperService.addCriteria(    this.searchCriterias,
+    this.archiveHelperService.addCriteria(
+      this.searchCriterias,
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
@@ -396,8 +388,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       CriteriaDataType.STRING,
       false
     );
-
-}
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.accessContract) {
@@ -795,13 +786,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       return;
     }
 
-    if(this.waitingToGetFixedCount){
+    if (this.waitingToGetFixedCount) {
       if (this.hasSearchCriterias()) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
-        const exactCountResults: number = await this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
-          .toPromise();
+        const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
         if (exactCountResults !== -1) {
           this.totalResults = exactCountResults;
           this.waitingToGetFixedCount = false;
@@ -1023,9 +1012,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       if (this.hasSearchCriterias()) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
-        const exactCountResults: number = await this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
-          .toPromise();
+        const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
         if (exactCountResults !== -1) {
           this.totalResults = exactCountResults;
           if (this.isAllchecked) {
@@ -1045,7 +1032,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   async launchComputedInheritedRulesModal() {
     await this.prepareToLaunchVitamAction();
     this.computeInheritedRulesService.launchComputedInheritedRulesModal(
-      this.listOfUACriteriaSearch,      
+      this.listOfUACriteriaSearch,
       this.numberOfHoldingUnitTypeOnComputedRules,
       this.tenantIdentifier,
       this.currentPage,
@@ -1110,7 +1097,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
               .pipe(filter((result) => !!result))
               .subscribe(() => {
                 this.archiveUnitEliminationService.launchEliminationAnalysisModal(
-                  this.listOfUACriteriaSearch,                  
+                  this.listOfUACriteriaSearch,
                   this.selectedItemCount,
                   this.itemSelected,
                   this.tenantIdentifier,
