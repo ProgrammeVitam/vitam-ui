@@ -9,7 +9,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>api-iam</artifactId>
-        <version>5.rc.4</version>
+        <version>5.rc.5-SNAPSHOT</version>
     </parent>
 
     <dependencies>
