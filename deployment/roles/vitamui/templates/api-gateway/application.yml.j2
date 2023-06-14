@@ -19,8 +19,6 @@ server:
     key-password: {{ password_keystore }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
-  error:
-    path: /error
 
 {% endif %}
   tomcat:
@@ -37,12 +35,8 @@ management:
     ssl:
       enabled: false
 
-server-identity:
-  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
-  identityRole: {{ vitamui_struct.vitamui_component }}
-  identityServerId: 1
-
-
+authn:
+  client-certificate-header-name: {{ vitamui_struct.client_certificate_header_name }}
 
 
 logging:
@@ -64,6 +58,29 @@ opentracing:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
 
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      httpclient:
+        wiretap: false
+        ssl:
+          use-insecure-trust-manager: true
+      httpserver:
+        wiretap: false
+
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+            - "https://{{ vitamui.api_gateway.host }}"
+            - "http://localhost"
+            allowedMethods: "*"
+            allowedHeaders: "*"
 
 
 
@@ -89,7 +106,7 @@ spring:
               /portal-api/userinfos/me,
               /portal-api/ui/applications/**,
               /portal-api/users/analytics,
-              /portal-api/subrogations/me/surrogate,
+              /portal-api/subrogations/**,
 
               /identity-api/security,
               /identity-api/userinfos/**,
@@ -166,4 +183,3 @@ spring:
             - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
             - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
-

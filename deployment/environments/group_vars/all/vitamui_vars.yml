@@ -60,6 +60,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8070
     port_admin: 7070
+    client_certificate_header_name: "x-ssl-cert"
 
   identity:
     host: "identity.service.{{ consul_domain }}"
