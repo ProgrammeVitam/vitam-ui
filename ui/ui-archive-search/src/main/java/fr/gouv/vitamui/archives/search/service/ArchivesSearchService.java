@@ -111,13 +111,16 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.getFilingHoldingScheme(context);
     }
 
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, ObjectData objectData,
-        ExternalHttpContext context) {
-        LOGGER.debug("Download the Archive Unit Object with id {}", id);
-
-        ResultsDto got = findObjectById(id, context).getBody();
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String unitId, String qualifier, Integer version,
+        ObjectData objectData, ExternalHttpContext context) {
+        LOGGER.debug("Download the Archive Unit Object with id {}", unitId);
+        ResultsDto got = findObjectById(unitId, context).getBody();
         setObjectData(Objects.requireNonNull(got), objectData);
-        return archiveSearchExternalWebClient.downloadObjectFromUnit(id,
+        if (isNotBlank(qualifier) && nonNull(version)) {
+            objectData.setQualifier(qualifier);
+            objectData.setVersion(version);
+        }
+        return archiveSearchExternalWebClient.downloadObjectFromUnit(unitId,
             objectData.getQualifier(),
             objectData.getVersion(),
             context);

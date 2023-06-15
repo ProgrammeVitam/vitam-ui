@@ -47,12 +47,12 @@ import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHIVE_UNIT;
@@ -78,21 +78,20 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Download Archive Unit Object")
-    @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE, params = {
+        "objectId", "tenantId"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadObjectFromUnit(
-        final @PathVariable("id") String unitId,
-        @QueryParam("objectId") String objectId,
-        @QueryParam("tenantId") Integer tenantId,
-        @QueryParam("contractId") String contractId) throws PreconditionFailedException,
+    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String unitId,
+        @RequestParam(name = "objectId") String objectId,
+        @RequestParam(name = "tenantId") Integer tenantId) throws PreconditionFailedException,
         InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier, The contractId and The tenantId are mandatory parameters: ",
-            unitId, objectId, contractId, String.valueOf(tenantId));
-        SanityChecker.checkSecureParameter(unitId, contractId, String.valueOf(tenantId));
+        ParameterChecker.checkParameter("The Identifier, and The tenantId are mandatory parameters: ",
+            unitId, objectId, String.valueOf(tenantId));
+        SanityChecker.checkSecureParameter(unitId, objectId);
         LOGGER.debug("Download the Archive Unit Object with Unit ID {}", unitId);
         final ObjectData objectData = new ObjectData();
         ResponseEntity<Resource> responseResource = projectObjectGroupService.downloadObjectFromUnit(unitId, objectId,
-            objectData, buildUiHttpContext(tenantId, contractId)).block();
+            objectData, buildUiHttpContext(tenantId)).block();
         List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
         String fileNameHeader = isNotEmpty(objectData.getFilename())
