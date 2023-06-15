@@ -14,6 +14,8 @@
 
 - import_playbook: vitamui_apps.yml
 
+- import_playbook: app_api_gateway.yml
+
 - import_playbook: app_archive_search.yml
 
 - import_playbook: app_ingest.yml
