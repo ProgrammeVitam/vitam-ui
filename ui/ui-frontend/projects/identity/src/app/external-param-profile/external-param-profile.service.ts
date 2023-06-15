@@ -86,8 +86,7 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
             icon: 'vitamui-icon-admin-key',
             translateParams: { name: response.name },
           });
-        },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
+        }
       )
     );
   }
