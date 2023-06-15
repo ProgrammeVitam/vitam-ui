@@ -113,3 +113,17 @@ opentracing:
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: gateway
+
+gateway:
+  enabled: true
+server:
+  ssl:
+    client-auth: want
+    client-certificate-header-name: x-ssl-cert
