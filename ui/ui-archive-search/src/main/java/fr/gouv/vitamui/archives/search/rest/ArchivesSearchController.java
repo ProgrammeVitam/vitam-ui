@@ -179,16 +179,15 @@ public class ArchivesSearchController extends AbstractUiRestController {
     public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
         @QueryParam("qualifier") String qualifier,
         @QueryParam("version") Integer version,
-        @QueryParam("tenantId") Integer tenantId,
-        @QueryParam("contractId") String contractId) throws PreconditionFailedException,
+        @QueryParam("tenantId") Integer tenantId) throws PreconditionFailedException,
         InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier, The contractId and The tenantId are mandatory parameters: ",
-            id, contractId, String.valueOf(tenantId));
-        SanityChecker.checkSecureParameter(id, contractId, String.valueOf(tenantId));
+        ParameterChecker.checkParameter("The Identifier and The tenantId are mandatory parameters: ",
+            id, String.valueOf(tenantId));
+        SanityChecker.checkSecureParameter(id, String.valueOf(tenantId));
         LOGGER.debug("Download the Archive Unit Object with ID {}", id);
         ObjectData objectData = new ObjectData();
         ResponseEntity<Resource> responseResource = archivesSearchService.downloadObjectFromUnit(id, qualifier, version,
-            objectData, buildUiHttpContext(tenantId, contractId)).block();
+            objectData, buildUiHttpContext(tenantId)).block();
         List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
         String fileNameHeader = isNotEmpty(objectData.getFilename())
