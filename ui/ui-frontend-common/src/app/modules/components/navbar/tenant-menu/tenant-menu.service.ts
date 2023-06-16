@@ -46,6 +46,7 @@ import { Tenant } from '../../../models';
 @Injectable({
   providedIn: 'root'
 })
+/** @deprecated: use tenant-selection.service */
 export class TenantMenuService {
 
   // tslint:disable-next-line:variable-name
@@ -73,7 +74,7 @@ export class TenantMenuService {
   }
 
   public setDefaultTenant(tenantIdentifier: number): Observable<User> {
-    return this.userApiService.analytics({lastTenantIdentifier: tenantIdentifier});
+    return this.userApiService.analytics({ lastTenantIdentifier: tenantIdentifier });
   }
 
   public sendSelectedTenant(tenantIdentifier: number): void {

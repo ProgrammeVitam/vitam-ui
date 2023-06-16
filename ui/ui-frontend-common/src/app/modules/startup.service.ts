@@ -49,6 +49,7 @@ import { AppConfiguration, AttachmentType, AuthUser, UserInfo } from './models';
 import { ThemeService } from './theme.service';
 
 const WARNING_DURATION = 2000;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -120,16 +121,24 @@ export class StartupService {
     });
   }
 
+  /**
+   * @deprecated: use tenant-selection.service
+   */
   setTenantIdentifier(tenantIdentifier?: string) {
-    this.CURRENT_TENANT_IDENTIFIER = tenantIdentifier;
+    if (tenantIdentifier) {
+      this.CURRENT_TENANT_IDENTIFIER = tenantIdentifier;
+    }
   }
 
+  /**
+   * return the tenant ID saved in CURRENT_TENANT_IDENTIFIER or the user's proof tenant.
+   * @deprecated: use tenant-selection.service
+   */
   getTenantIdentifier() {
     let tenantIdentifier = this.CURRENT_TENANT_IDENTIFIER;
     if (!tenantIdentifier && this.authService.user) {
       tenantIdentifier = this.authService.user.proofTenantIdentifier;
     }
-
     return tenantIdentifier;
   }
 
