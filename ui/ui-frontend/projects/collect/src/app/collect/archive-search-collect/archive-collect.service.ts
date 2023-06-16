@@ -109,7 +109,7 @@ export class ArchiveCollectService extends SearchService<any> {
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string): Observable<PagedResult> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');    
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
     if (!!transactionId) {
       return this.transactionApiService.searchArchiveUnitsByCriteria(criteriaDto, transactionId, headers).pipe(
         //   timeout(TIMEOUT_SEC),
@@ -151,7 +151,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
 
@@ -170,7 +170,7 @@ export class ArchiveCollectService extends SearchService<any> {
   launchDownloadObjectFromUnit(
     unitId: string,
     objectId: string,
-    tenantIdentifier: number,    
+    tenantIdentifier: number,
     qualifier?: string,
     version?: number
   ) {
@@ -204,7 +204,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.transactionApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, projectId, headers).subscribe(
       (file) => {
         const element = document.createElement('a');
@@ -246,13 +246,13 @@ export class ArchiveCollectService extends SearchService<any> {
 
   getReferentialUnitDetails(unitId: string): Observable<SearchResponse> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.searchUnitApiService.getById(unitId, headers);
   }
 
   getCollectUnitDetails(unitId: string): Observable<Unit> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.transactionApiService.getCollectUnitById(unitId, headers);
   }
 
@@ -308,7 +308,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
   selectUnitWithInheritedRules(transactionId: string, criteriaDto: SearchCriteriaDto): Observable<Unit> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    
+
     return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);
   }
 }
