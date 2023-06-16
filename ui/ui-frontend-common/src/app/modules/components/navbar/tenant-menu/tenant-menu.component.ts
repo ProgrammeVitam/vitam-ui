@@ -40,6 +40,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { ApplicationId } from '../../../application-id.enum';
+import { StartupService } from '../../../startup.service';
 import { CommonMenuComponent } from '../common-menu/common-menu.component';
 import { MenuType } from '../menu-type.enum';
 import { TenantMenuService } from './tenant-menu.service';
@@ -63,6 +64,7 @@ export class TenantMenuComponent implements OnInit, OnDestroy {
   private tenantSelection: Subscription;
 
   constructor(
+    private startupService: StartupService,
     public tenantMenuService: TenantMenuService,
     public dialog: MatDialog,
     private route: ActivatedRoute) { }
@@ -71,10 +73,14 @@ export class TenantMenuComponent implements OnInit, OnDestroy {
     this.tenantMenuService.appId = this.appId;
     this.route.paramMap.subscribe((params: any) => {
       this.tenantMenuService.activeTenantIdentifier = +params.get('tenantIdentifier');
+      console.log('TenantMenuComponent.route.subscribe activeTenantIdentifier = ' + this.tenantMenuService.activeTenantIdentifier);
     });
     this.tenantSelection = this.tenantMenuService.getSelectedTenant().subscribe((tenantIdentifier) => {
+      console.log('TenantMenuComponent.getSelectedTenant tenantIdentifier = ' + tenantIdentifier);
       if (tenantIdentifier !== this.tenantMenuService.activeTenantIdentifier) {
         this.tenantMenuService.activeTenantIdentifier = tenantIdentifier;
+        console.log('   startupService.setTenantIdentifier ' + tenantIdentifier);
+        this.startupService.setTenantIdentifier(tenantIdentifier.toString());
         this.emitTenantIdentifierChange(tenantIdentifier);
       }
     });

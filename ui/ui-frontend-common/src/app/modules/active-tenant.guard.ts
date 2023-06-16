@@ -44,7 +44,7 @@ import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Tenant } from './models';
-import { TenantsByApplication } from './models/user/tenants-by-application.interface';
+import { TenantsByApplication } from './models';
 import { StartupService } from './startup.service';
 
 @Injectable({
@@ -76,6 +76,7 @@ export class ActiveTenantGuard implements CanActivate, CanActivateChild {
       const result = tenantsByApp.tenants.find((tenant: Tenant) => tenant.identifier === +tenantIdentifier);
       if (result) {
         // set tenant Identifier whenever a tenant is selected
+        console.log('ActiveTenantGuard.checkTenants -> startupService.setTenantIdentifier ' + tenantIdentifier);
         this.startupService.setTenantIdentifier(tenantIdentifier);
         // emit tenant change event
         this.globalEventService.tenantEvent.next(tenantIdentifier);

@@ -49,6 +49,7 @@ import { AppConfiguration, AttachmentType, AuthUser, UserInfo } from './models';
 import { ThemeService } from './theme.service';
 
 const WARNING_DURATION = 2000;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -121,15 +122,24 @@ export class StartupService {
   }
 
   setTenantIdentifier(tenantIdentifier?: string) {
-    this.CURRENT_TENANT_IDENTIFIER = tenantIdentifier;
+    console.log('    StartupService.setTenantIdentifier : ' + tenantIdentifier);
+    if (tenantIdentifier) {
+      console.log('      setted');
+      this.CURRENT_TENANT_IDENTIFIER = tenantIdentifier;
+    } else {
+      console.log('      unchanged, actual = ' + this.CURRENT_TENANT_IDENTIFIER);
+    }
   }
 
   getTenantIdentifier() {
+    console.log('    StartupService.getTenantIdentifier');
     let tenantIdentifier = this.CURRENT_TENANT_IDENTIFIER;
     if (!tenantIdentifier && this.authService.user) {
+      console.log('      undefined -> return proofTenantIdentifier (but not saved)');
       tenantIdentifier = this.authService.user.proofTenantIdentifier;
+    } else {
+      console.log('      defined = ' + tenantIdentifier);
     }
-
     return tenantIdentifier;
   }
 

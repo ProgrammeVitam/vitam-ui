@@ -59,7 +59,7 @@ export class AppGuard implements CanActivate {
     private globalEventService: GlobalEventService,
     @Inject(WINDOW_LOCATION) private location: any,
     private translateService: TranslateService
-    ) {}
+  ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot
@@ -77,11 +77,12 @@ export class AppGuard implements CanActivate {
 
     this.startupService.CURRENT_APP_ID = appId;
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.translateService.onLangChange.subscribe((_: LangChangeEvent) => {
       this.titleService.setTitle(this.translateService.instant(APPLICATION_TRANSLATE_PATH + '.' + appId + '.NAME'));
     });
 
     // set user default tenant Identifier whenever we switch pages
+    console.log('AppGuard.canActivate -> startupService.setTenantIdentifier WITHOUT PARAMS');
     this.startupService.setTenantIdentifier();
     // emit page change event
     this.globalEventService.pageEvent.next(appId);
