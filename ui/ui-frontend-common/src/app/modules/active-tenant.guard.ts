@@ -38,13 +38,10 @@ import { Observable } from 'rxjs';
 
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
-
-import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
 import { WINDOW_LOCATION } from './injection-tokens';
-import { Tenant } from './models';
-import { TenantsByApplication } from './models';
+import { Tenant, TenantsByApplication } from './models';
 import { StartupService } from './startup.service';
 
 @Injectable({
@@ -54,7 +51,6 @@ export class ActiveTenantGuard implements CanActivate, CanActivateChild {
 
   constructor(
     private authService: AuthService,
-    private appService: ApplicationService,
     private startupService: StartupService,
     private globalEventService: GlobalEventService,
     private router: Router,
@@ -73,21 +69,18 @@ export class ActiveTenantGuard implements CanActivate, CanActivateChild {
     const tenantIdentifier = route.paramMap.get('tenantIdentifier');
     const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find((element) => element.name === route.data.appId);
     if (tenantsByApp) {
-      const result = tenantsByApp.tenants.find((tenant: Tenant) => tenant.identifier === +tenantIdentifier);
-      if (result) {
+      const tenantFound = tenantsByApp.tenants.find((tenant: Tenant) => tenant.identifier === +tenantIdentifier);
+      if (tenantFound) {
         // set tenant Identifier whenever a tenant is selected
         console.log('ActiveTenantGuard.checkTenants -> startupService.setTenantIdentifier ' + tenantIdentifier);
         this.startupService.setTenantIdentifier(tenantIdentifier);
         // emit tenant change event
         this.globalEventService.tenantEvent.next(tenantIdentifier);
-
         return true;
       }
     }
     // redirect user to the tenant selection page
-    const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
     this.router.navigate(route.pathFromRoot.map(r => r.url.toString()).concat(['tenant']));
-
     return false;
   }
 

@@ -43,9 +43,7 @@ import { ApplicationApiService } from './api/application-api.service';
 import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
-import { Application, ApplicationInfo } from './models/application/application.interface';
-import { Category } from './models/application/category.interface';
-import { Tenant } from './models/customer/tenant.interface';
+import { Application, ApplicationInfo, Category, Tenant } from './models';
 import { ApplicationAnalytics } from './models/user/application-analytics.interface';
 import { TenantSelectionService } from './tenant-selection.service';
 
@@ -61,6 +59,7 @@ export class ApplicationService {
   get applicationsAnalytics(): ApplicationAnalytics[] {
     return this._applicationsAnalytics;
   }
+
   set applicationsAnalytics(apps: ApplicationAnalytics[]) {
     this._applicationsAnalytics = apps;
   }
@@ -68,23 +67,24 @@ export class ApplicationService {
   get categories(): Category[] {
     return this._categories;
   }
+
   set categories(categories: Category[]) {
     this._categories = categories;
   }
-
+  // tslint:disable-next-line:variable-name
   private _categories: Category[];
-
+  // tslint:disable-next-line:variable-name
   private _applications: Application[];
-
+  // tslint:disable-next-line:variable-name
   private _applications$ = new BehaviorSubject<Application[]>(null);
-
+  // tslint:disable-next-line:variable-name
   private _applicationsAnalytics: ApplicationAnalytics[];
   private appMap$ = new BehaviorSubject(null);
 
   constructor(
     private applicationApi: ApplicationApiService,
     private authService: AuthService,
-    private tenantService: TenantSelectionService,
+    private tenantSelectionService: TenantSelectionService,
     private globalEventService: GlobalEventService
   ) {}
 
@@ -109,7 +109,7 @@ export class ApplicationService {
    * Get Applications list grouped by categories in a hashMap of the active tenant.
    */
   public getActiveTenantAppsMap(): Observable<Map<Category, Application[]>> {
-    return this.tenantService.getSelectedTenant$().pipe(
+    return this.tenantSelectionService.getSelectedTenant$().pipe(
       mergeMap((tenant: Tenant) => this.getTenantAppMap(tenant)),
       tap((appMap: Map<Category, Application[]>) => this.appMap$.next(appMap))
     );
@@ -148,7 +148,7 @@ export class ApplicationService {
   }
 
   public openApplication(app: Application, router: Router, uiUrl: string, tenantIdentifier?: number): void {
-    this.tenantService.saveTenantIdentifier(tenantIdentifier).subscribe((identifier: number) => {
+    this.tenantSelectionService.saveTenantIdentifier(tenantIdentifier).subscribe((identifier: number) => {
       if (router && app.serviceId.includes(uiUrl)) {
         if (app.hasTenantList) {
           router.navigate([app.url.replace(uiUrl, ''), 'tenant', identifier]);
@@ -168,7 +168,7 @@ export class ApplicationService {
 
   public getApplicationUrl(app: Application, tenantIdentifier?: number): string {
     if (!tenantIdentifier) {
-      tenantIdentifier = this.tenantService.getSelectedTenant().identifier;
+      tenantIdentifier = this.tenantSelectionService.getSelectedTenant().identifier;
     }
 
     if (app.hasTenantList) {

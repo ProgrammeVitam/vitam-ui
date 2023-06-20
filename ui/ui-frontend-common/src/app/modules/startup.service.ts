@@ -62,12 +62,12 @@ export class StartupService {
 
   constructor(
     private logger: Logger,
-    private authService: AuthService,
     private securityApi: SecurityApiService,
     private applicationApi: ApplicationApiService,
+    private authService: AuthService,
     private themeService: ThemeService,
-    private applicationService: ApplicationService,
     private userInfoApiService: BaseUserInfoApiService,
+    private applicationService: ApplicationService,
     @Inject(WINDOW_LOCATION) private location: any
   ) {}
 

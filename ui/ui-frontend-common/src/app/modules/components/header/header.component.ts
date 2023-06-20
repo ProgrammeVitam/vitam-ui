@@ -4,20 +4,19 @@ import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, ActivationStart, Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ApplicationId } from '../../application-id.enum';
 import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
 import { CustomerSelectionService } from '../../customer-selection.service';
 import { GlobalEventService } from '../../global-event.service';
-import { Application, AuthUser, ThemeDataType } from '../../models';
-import { Tenant } from '../../models/customer/tenant.interface';
+import { Application, AuthUser, Tenant, ThemeDataType } from '../../models';
 import { StartupService } from '../../startup.service';
+import { SubrogationService } from '../../subrogation/subrogation.service';
+import { TenantSelectionService, TENANT_SELECTION_URL_CONDITION } from '../../tenant-selection.service';
 import { ThemeService } from '../../theme.service';
-import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
-import { ApplicationId } from './../../application-id.enum';
-import { SubrogationService } from './../../subrogation/subrogation.service';
-import { TenantSelectionService, TENANT_SELECTION_URL_CONDITION } from './../../tenant-selection.service';
+import { MenuOption } from '../navbar';
 import { MenuOverlayService } from './menu/menu-overlay.service';
-import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
+import { SelectTenantDialogComponent } from './select-tenant-dialog';
 
 @Component({
   selector: 'vitamui-common-header',
@@ -80,10 +79,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (!value || this.tenants.filter((option) => option.value.identifier === value).length === 0) {
         this.matDialog.open(SelectTenantDialogComponent, dialogConfig)
           .beforeClosed().subscribe((selectedTenant: Tenant) => {
-            this.tenantService.saveTenantIdentifier(selectedTenant.identifier).toPromise().then(() => {
-              this.tenantService.setSelectedTenant(selectedTenant);
-            });
+          this.tenantService.saveTenantIdentifier(selectedTenant.identifier).toPromise().then(() => {
+            this.tenantService.setSelectedTenant(selectedTenant);
           });
+        });
       }
     });
 
@@ -169,6 +168,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * The subscription will stop when a tenant is set as active.
    */
   private initLastTenantIdentifier() {
+    console.log('HeaderComponent.initLastTenantIdentifier');
     this.tenantService.getLastTenantIdentifier$()
       .pipe(takeUntil(this.tenantService.getSelectedTenant$()), takeUntil(this.destroyer$))
       .subscribe((identifier: number) => {
@@ -176,7 +176,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (!this.selectedTenant && lastTenant) {
           this.tenantService.setSelectedTenant(lastTenant.value);
         }
-    });
+      });
   }
 
   private initCurrentAppTenants(appIdentifier: string): void {
@@ -216,6 +216,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private changeTenant(tenantIdentifier: number): void {
     this.router.navigate([this.route.firstChild.snapshot.routeConfig.path +
-      TENANT_SELECTION_URL_CONDITION, tenantIdentifier], { relativeTo: this.route });
+    TENANT_SELECTION_URL_CONDITION, tenantIdentifier], { relativeTo: this.route });
   }
 }

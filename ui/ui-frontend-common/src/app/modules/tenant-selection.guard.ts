@@ -34,61 +34,78 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
-import { TenantsByApplication } from './models/user/tenants-by-application.interface';
+import { Tenant, TenantsByApplication } from './models';
 import { TenantSelectionService, TENANT_SELECTION_URL_CONDITION } from './tenant-selection.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TenantSelectionGuard implements CanActivate, CanActivateChild {
+export class TenantSelectionGuard implements CanActivate, CanActivateChild, OnDestroy {
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private appService: ApplicationService,
     private router: Router,
-    private tenantService: TenantSelectionService,
+    private tenantSelectionService: TenantSelectionService,
     private translateService: TranslateService,
     @Inject(WINDOW_LOCATION) private location: any
   ) {}
 
+  subscription: Subscription;
+
   canActivate(route: ActivatedRouteSnapshot): boolean {
     if (route.params.tenantIdentifier) {
+      console.log('TenantSelectionGuard.canActivate - route contains tenant');
       return true;
-    } else if (this.tenantService.getSelectedTenant()) {
-      this.appService.getApplications$().subscribe((data) => {
-        const application = data.find((appFromService) => appFromService.identifier === route.data.appId);
-        this.location.href = application.url + TENANT_SELECTION_URL_CONDITION + this.tenantService.getSelectedTenant().identifier;
-      });
+    } else if (this.tenantSelectionService.getSelectedTenant()) {
+      console.log('TenantSelectionGuard.canActivate - no tenant in route but in service - subsribe to application changes');
+      this.setHrefWithTenantOnApplicationChange(route);
     }
-
     const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find(
       (applicationDetails) => applicationDetails.name === route.data.appId
     );
     if (tenantsByApp) {
-      const tenants = tenantsByApp.tenants;
+      const tenants: Tenant[] = tenantsByApp.tenants;
       if (tenants.length === 1) {
         // redirect user to the unique tenant page of the app
+        console.log('TenantSelectionGuard.canActivate - add tenant to url and navigate');
         this.router.navigate(
           route.pathFromRoot.map((activeRouter) => activeRouter.url.toString()).concat([tenants[0].identifier.toString()])
         );
+      } else {
+        console.log('TenantSelectionGuard.canActivate - more than one tenant for this app: no navigation');
       }
       return true;
     } else {
       this.snackBar.open(this.translateService.instant('SNACK_BAR.TENANT_NOT_FOUND') + route.data.appId + '.', null, {
         duration: 4000,
       });
+      return false;
     }
-    return false;
   }
 
   canActivateChild(route: ActivatedRouteSnapshot): boolean {
     return this.canActivate(route);
   }
+
+  private setHrefWithTenantOnApplicationChange(route: ActivatedRouteSnapshot) {
+    this.subscription = this.appService.getApplications$().subscribe((data) => {
+      const application = data.find((appFromService) => appFromService.identifier === route.data.appId);
+      console.log('TenantSelectionGuard.subscription - add tenant to HREF');
+      this.location.href = application.url + TENANT_SELECTION_URL_CONDITION + this.tenantSelectionService.getSelectedTenant().identifier;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
 }
