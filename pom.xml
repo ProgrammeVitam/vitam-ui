@@ -84,7 +84,7 @@
         <commons.text.version>1.10.0</commons.text.version>
         <cucumber.version>5.6.0</cucumber.version>
         <easymock.version>4.2</easymock.version>
-        <embedded.mongo.version>3.3.2</embedded.mongo.version>
+        <embedded.mongo.version>3.0.0</embedded.mongo.version>
         <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
         <font.awesome.version>5.11.2</font.awesome.version>
         <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
