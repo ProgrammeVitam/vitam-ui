@@ -7,17 +7,18 @@ print("START_21_create_profile_MANAGEMENT_CONTRACT_APP.js");
 var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
 db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
+
     db.profiles.insert({
-        "_id" : "system_management_contract",
+        "_id" : "PROFIL_" + tenant.identifier + "-MANAGEMENT_CONTRACT_APP-ADMIN",
         "identifier" : NumberInt(maxIdProfile++),
         "name" : "Contrats de gestion",
         "description" : "Application des contrats de gestion",
-        "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+        "tenantIdentifier": NumberInt(tenant.identifier),
         "applicationName" : "MANAGEMENT_CONTRACT_APP",
         "enabled" : true,
         "readonly" : true,
         "level" : "",
-        "customerId" : "system_customer",
+        "customerId" : tenant.customerId,
         "roles" : [
             {"name": "ROLE_GET_MANAGEMENT_CONTRACT"},
             {"name": "ROLE_CREATE_MANAGEMENT_CONTRACT"},
