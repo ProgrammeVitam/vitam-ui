@@ -114,9 +114,9 @@
     - restart service
 
 # Copy the trustore for all vitamui components in order to communicate between them.
-- name: "Copy {{ vitamui_certificate_type }} truststore"
+- name: "Copy server truststore"
   copy:
-    src: "{{ item.src }}"
+    src: "{{ inventory_dir }}/keystores/server/truststore_server.jks"
     dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks"
     owner: "{{ vitamui_defaults.users.vitamui }}"
     group: "{{ vitamui_defaults.users.group }}"
@@ -124,13 +124,26 @@
   when:
     - vitamui_struct.secure|lower == 'true'
     - vitamui_certificate_type is defined
-    - "vitamui_certificate_type|lower == '{{ item.name }}'"
-    - "{{ lookup('pipe', 'test -f {{ item.src }} || echo nofile') == \"\"}}"
-  with_items:
-    # Copy the truststore for all vitamui components in order to communicate between them.
-    - { name: server, src: "{{ inventory_dir }}/keystores/server/truststore_server.jks" }
-    # Copy the truststore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
-    - { name: external, src: "{{ inventory_dir }}/keystores/client-{{ vitamui_certificate_type }}/truststore_{{ vitamui_certificate_type }}.jks" }
+    - "vitamui_certificate_type|lower == 'server'"
+    - "{{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/truststore_server.jks || echo nofile') == \"\" }}"
+  tags:
+    - update_vitamui_certificates
+  notify:
+    - restart service
+
+# Copy the truststore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
+- name: "Copy external truststore"
+  copy:
+    src: "{{ inventory_dir }}/keystores/client-{{ vitamui_certificate_type }}/truststore_{{ vitamui_certificate_type }}.jks"
+    dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+  when:
+    - vitamui_struct.secure | default(secure) | lower == 'true'
+    - vitamui_certificate_type is defined
+    - "vitamui_certificate_type|lower == 'external'"
+    - "{{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-{{ vitamui_certificate_type }}/truststore_{{ vitamui_certificate_type }}.jks || echo nofile') == \"\" }}"
   tags:
     - update_vitamui_certificates
   notify:
