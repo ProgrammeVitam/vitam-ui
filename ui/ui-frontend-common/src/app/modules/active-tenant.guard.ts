@@ -79,6 +79,7 @@ export class ActiveTenantGuard implements CanActivate, CanActivateChild {
         return true;
       }
     }
+    console.log('ActiveTenantGuard.checkTenants -> tenant not found - navigate to /tenant');
     // redirect user to the tenant selection page
     this.router.navigate(route.pathFromRoot.map(r => r.url.toString()).concat(['tenant']));
     return false;

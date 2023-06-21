@@ -158,7 +158,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     const unflattedNodes = FilingHoldingSchemeHandler.unflatAndFilterTreeNodes(this.fullNodes, attachmenUnitsFromCollect);
     unflattedNodes.forEach((unitParent) => {
       const collectAttachmentUnit = attachmenUnitsFromCollect.find(
-        (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId === unitParent.id
+        (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId == unitParent.id
       );
       if (collectAttachmentUnit) {
         const outNode: FilingHoldingSchemeNode = {
@@ -235,21 +235,23 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
    * The param "archiveUniParams" is a Pair of a string that refers to AU ID and a boolean
    * that refers to the type of the AU wich is a collect unit or Vitam unit :
    * (auId : string, isCollectUnit : boolean)
+   * @param archiveUniParams
+   * @param from
    */
   fetchUaFromNodeAndShowDetails(archiveUniParams: Pair, from: string) {
     this.loadingArchiveUnit[from] = true;
     this.subscriptions.add(
       Boolean(archiveUniParams.value)
         ? this.archiveService.getCollectUnitDetails(archiveUniParams.key.toString()).subscribe((unit) => {
-          this.showArchiveUnitDetails.emit(unit);
-          this.loadingArchiveUnit[`${from}`] = false;
-        })
-        : this.archiveService
-          .getReferentialUnitDetails(archiveUniParams.key.toString())
-          .subscribe((searchResponse) => {
-            this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
+            this.showArchiveUnitDetails.emit(unit);
             this.loadingArchiveUnit[`${from}`] = false;
           })
+        : this.archiveService
+            .getReferentialUnitDetails(archiveUniParams.key.toString())
+            .subscribe((searchResponse) => {
+              this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
+              this.loadingArchiveUnit[`${from}`] = false;
+            })
     );
   }
 }

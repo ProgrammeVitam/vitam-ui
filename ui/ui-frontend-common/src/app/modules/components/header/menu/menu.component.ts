@@ -1,19 +1,11 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  HostListener,
-  OnDestroy,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren,
+  AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren,
 } from '@angular/core';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { opacityAnimation, slideAnimation } from '../../../animations';
 import { ApplicationService } from '../../../application.service';
@@ -56,6 +48,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('searchBar', { static: true }) searchBar: SearchBarComponent;
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
+  private subscriptions: Subscription = new Subscription();
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'ArrowRight') {
@@ -78,7 +72,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private dialogRef: MenuOverlayRef,
     private applicationService: ApplicationService,
     private cdrRef: ChangeDetectorRef,
-    private tenantService: TenantSelectionService,
+    private tenantSelectionService: TenantSelectionService,
     private translateService: TranslateService,
     private router: Router,
     private startupService: StartupService
@@ -89,13 +83,14 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       .backdropClick()
       .pipe(takeUntil(this.destroyer$))
       .subscribe(() => this.onClose());
-    this.tenants = this.tenantService.getTenants().map((tenant: Tenant) => {
+
+    this.tenants = this.tenantSelectionService.getTenants().map((tenant: Tenant) => {
       return { value: tenant, label: tenant.name };
     });
 
     // Display application list depending on the current active tenant.
     // If no active tenant is set, then use the last tenant identifier.
-    this.tenantService
+    this.tenantSelectionService
       .getSelectedTenant$()
       .pipe(take(1))
       .subscribe((tenant: Tenant) => {
@@ -103,7 +98,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
           this.selectedTenant = { value: tenant, label: tenant.name };
           this.updateApps(this.selectedTenant);
         } else {
-          this.tenantService
+          this.tenantSelectionService
             .getLastTenantIdentifier$()
             .pipe(takeUntil(this.destroyer$))
             .subscribe((identifier: number) => {
@@ -128,6 +123,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.subscriptions.unsubscribe();
     this.destroyer$.next();
     this.destroyer$.complete();
   }
@@ -188,7 +184,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.tabSelectedIndex = value.index; // when clicking
     }
     setTimeout(() => {
-      const firstElem = this.selectedList.find((_select, index) => index === this.tabSelectedIndex);
+      const firstElem = this.selectedList.find((_, index) => index === this.tabSelectedIndex);
       if (firstElem && firstElem.options && firstElem.options.first) {
         firstElem.options.first.focus();
       }
