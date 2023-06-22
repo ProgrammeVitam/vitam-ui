@@ -1,0 +1,13 @@
+.icon-information {
+    position: absolute;
+    float: right;
+    top: 3px;
+    right: -75px;
+    width: 30px;
+    height: 31px;
+    font-size: 26px;
+    font-weight: bold;
+}
+.vitamui-mat-select{
+    width: 70%;
+}

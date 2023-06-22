@@ -3,6 +3,7 @@
     "CANCEL": "Cancel",
     "SUBMIT": "Submit",
     "UPDATE": "Update",
+    "SAVE": "Save",
     "NEXT": "Next",
     "LANGUAGE": {
       "TITLE": "Language",
@@ -505,17 +506,20 @@
     "PROFILE": "Profile",
     "DESCRIPTION_ADMIN_PROFILE": "Description of the external settings profile",
     "CREATE_EXTERNAL_PARAM_PROFILE_POPUP": "Creation of external settings profile",
+    "CREATE_EXTERNAL_PARAM_PROFILE_POPUP_SUBTITLE": "Informations",
     "EXTERNAL_PARAM_PROFILE_NAME_POPUP": "Name of external settings profile",
     "SELECT_ACCESS_CONTRACT": "Select an access contract",
     "NOTIF_EXTERNAL_PARAM_PROFILE_CREATED": "External settings profile {{ name }} has been created",
     "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "External settings profile {{ name }} has been updated",
     "MAX_BULK_OPERATIONS_THRESHOLD_TITLE": "Max allowed threshold for bulk operations",
+    "MAX_BULK_OPERATIONS_THRESHOLD_TITLE_SIDE_PANEL": "Max authorized thresholds",
+    "MAX_BULK_OPERATIONS_THRESHOLD_HELPER": "Select a max threshold value authorized on mass proccessings for audits operations",
     "USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE": "Set plateform thresholds",
     "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{threshold}} archive units",
     "TABS": {
-      "INFORMATIONS":"Informations",
-      "THRESHOLDS":"Thresholds",
-      "HISTORY":"History"
+      "INFORMATIONS": "Informations",
+      "THRESHOLDS": "Thresholds",
+      "HISTORY": "History"
     }
   }
 }

@@ -41,6 +41,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
@@ -64,8 +65,10 @@ import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.service.OperationService;
+import fr.gouv.vitamui.referential.internal.server.service.ExternalParametersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -85,15 +88,17 @@ public class OperationInternalService {
     final private OperationService operationService;
 
     final private LogbookService logbookService;
+    final private ExternalParametersService externalParametersService;
 
     private ObjectMapper objectMapper;
 
     @Autowired
     OperationInternalService(OperationService operationService, LogbookService logbookService,
-        ObjectMapper objectMapper) {
+        ObjectMapper objectMapper, ExternalParametersService externalParametersService) {
         this.operationService = operationService;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
+        this.externalParametersService = externalParametersService;
     }
 
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer pageNumber, final Integer size,
@@ -141,9 +146,16 @@ public class OperationInternalService {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         try {
+            Optional<Long> thresholdOpt = externalParametersService.retrieveProfilThreshold();
+            if (thresholdOpt.isPresent()) {
+                ObjectNode dslQuery = (ObjectNode) auditOptions.getQuery();
+                dslQuery.put("$threshold", thresholdOpt.get());
+                auditOptions.setQuery((JsonNode) dslQuery);
+            }
+
             LOGGER.info("All Operations Audit EvIdAppSession : {} ", context.getApplicationSessionId());
             if ("AUDIT_FILE_CONSISTENCY".equals(auditOptions.getAuditActions())) {
-                operationService.lauchEvidenceAudit(context, auditOptions.getQuery());
+                    operationService.lauchEvidenceAudit(context, auditOptions.getQuery());
             } else if ("AUDIT_FILE_RECTIFICATION".equals(auditOptions.getAuditActions())) {
                 operationService.launchRectificationAudit(context, auditOptions.getAuditType());
             } else {

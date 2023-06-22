@@ -30,6 +30,8 @@ package fr.gouv.vitamui.referential.internal.server.service;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -37,12 +39,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * The service to retrieve profile thresholds.
  */
 @Service
 public class ExternalParametersService {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersService.class);
+    public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
@@ -50,26 +56,27 @@ public class ExternalParametersService {
 
     @Autowired
     public ExternalParametersService(final ExternalParametersInternalRestClient externalParametersInternalRestClient,
-        final InternalSecurityService securityService) {
+            final InternalSecurityService securityService) {
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
         this.securityService = securityService;
     }
 
     /**
-     * Service to return the access contract defined on profile using external parameters
+     * Service to return the access contract defined on profile using external
+     * parameters
      *
      * @return access contract throws IllegalArgumentException
      */
     public String retrieveAccessContractFromExternalParam() {
-        ExternalParametersDto myExternalParameter =
-            externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext());
+        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient
+                .getMyExternalParameters(securityService.getHttpContext());
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
 
         ParameterDto parameterAccessContract = myExternalParameter.getParameters().stream().filter(
                 parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))
-            .findFirst().orElse(null);
+                .findFirst().orElse(null);
         if (Objects.isNull(parameterAccessContract) || Objects.isNull(parameterAccessContract.getValue())) {
             throw new IllegalArgumentException("No access contract defined");
         }
@@ -85,5 +92,34 @@ public class ExternalParametersService {
         return new VitamContext(securityService.getTenantIdentifier()).setAccessContract(
                 retrieveAccessContractFromExternalParam())
             .setApplicationSessionId(securityService.getApplicationId());
+    }
+
+    /**
+     * Service to return the threshold defined on profil using external parameters
+     *
+     * @return Optional of threshold otherwise Optional.empty
+     */
+    public Optional<Long> retrieveProfilThreshold() {
+        Optional<Long> thresholdOpt = Optional.empty();
+        ExternalParametersDto myExternalParameter =
+            externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext());
+        if (CollectionUtils.isNotEmpty(myExternalParameter.getParameters())) {
+            ParameterDto parameterThreshold = myExternalParameter.getParameters().stream().filter(
+                    parameter -> PARAM_BULK_OPERATIONS_THRESHOLD_NAME
+                        .equals(parameter.getKey()))
+                .findFirst().orElse(null);
+            if (parameterThreshold != null && parameterThreshold.getValue() != null) {
+                try {
+                    Long thresholdValue = Long.valueOf(parameterThreshold.getValue());
+                    thresholdOpt = Optional.of(thresholdValue);
+                } catch (NumberFormatException nfe) {
+                    LOGGER.error(
+                        "external parameter of bulk threshold contains wrong integer value {}, it will not be used ",
+                        parameterThreshold.getValue());
+                    throw new IllegalArgumentException( "external parameter of bulk threshold contains wrong integer value " + parameterThreshold.getValue() + ", it will not be used ");
+                }
+            }
+        }
+        return thresholdOpt;
     }
 }

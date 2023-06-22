@@ -11,11 +11,10 @@ $footer-height: 100px !default;
 }
 
 .vitamui-modal .mat-dialog-container {
-
   @extend %mat-dialog-container;
 
   .header {
-    padding: 20px 60px 0 60px;
+    padding: 30px 60px 30px 60px;
   }
 
   .content {
@@ -62,7 +61,6 @@ $footer-height: 100px !default;
 }
 
 .vitamui-form-dual-panel .mat-dialog-container {
-
   @extend %mat-dialog-container;
 
   .vitamui-form-dual-panel-content {

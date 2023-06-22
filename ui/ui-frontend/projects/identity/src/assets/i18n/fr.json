@@ -2,6 +2,7 @@
   "COMMON": {
     "CANCEL": "Annuler",
     "SUBMIT": "Terminer",
+    "SAVE": "ENREGISTRER",
     "UPDATE": "Modifier",
     "APPLY_UPDATE": "Appliquer les modifications",
     "ID": "Identifiant",
@@ -503,18 +504,21 @@
     "NAME": "Nom",
     "PROFILE": "Profil",
     "DESCRIPTION_ADMIN_PROFILE": "Description du profil Paramétrages externes",
-    "CREATE_EXTERNAL_PARAM_PROFILE_POPUP": "Création d'un Profil Paramétrages Externes",
+    "CREATE_EXTERNAL_PARAM_PROFILE_POPUP": "Créer un profil de paramétrages externes",
+    "CREATE_EXTERNAL_PARAM_PROFILE_POPUP_SUBTITLE": "Informations",
     "EXTERNAL_PARAM_PROFILE_NAME_POPUP": "Nom du profil paramétrages externes",
     "SELECT_ACCESS_CONTRACT": "Sélectionner un contrat d'accès",
     "NOTIF_EXTERNAL_PARAM_PROFILE_CREATED": "Le profil paramétrage externe {{ name }} a bien été créé",
     "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "Le profil paramétrage externe {{ name }} a bien été modifié",
-    "MAX_BULK_OPERATIONS_THRESHOLD_TITLE": "Seuil maximal des opérations de masse autorisé",
-    "USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE": "Application des seuils de plateforme",
+    "MAX_BULK_OPERATIONS_THRESHOLD_TITLE": "Seuil maximal autorisé pour les traitements de masse et les audits",
+    "MAX_BULK_OPERATIONS_THRESHOLD_TITLE_SIDE_PANEL": "Seuil maximal autorisé",
+    "MAX_BULK_OPERATIONS_THRESHOLD_HELPER": "Sélectionner une valeur de seuil maximal autorisé sur les opérations de traitement de masse et sur les opérations d'audit",
+    "USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE": "Appliquer les seuils de plateforme",
     "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{threshold}} unités archivistiques",
     "TABS": {
-      "INFORMATIONS":"Informations",
-      "THRESHOLDS":"Seuils",
-      "HISTORY":"Historique"
+      "INFORMATIONS": "Informations",
+      "THRESHOLDS": "Seuils",
+      "HISTORY": "Historique"
     }
   }
 }

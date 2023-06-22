@@ -1,34 +1,46 @@
 <div>
   <form [formGroup]="form">
-    <vitamui-common-slide-toggle formControlName="usePlatformThreshold" >
+    <vitamui-common-slide-toggle formControlName="usePlatformThreshold">
       {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
     </vitamui-common-slide-toggle>
 
     <div class="row">
       <div class="col-12">
         <div *ngIf="!form.get('usePlatformThreshold').value">
-          <mat-form-field class="vitamui-mat-select"   required="required">
+          <mat-form-field class="vitamui-mat-select" required="required">
             <mat-select
               formControlName="bulkOperationsThreshold"
-              placeholder="{{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}"
+              placeholder="{{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE_SIDE_PANEL' | translate }}"
               required="required"
-              class="form-select  h-100 w-100 vitamui-mat-select"
+              class="form-select h-100 w-100 vitamui-mat-select"
             >
               <mat-option *ngFor="let thresholdValue of thresholdValues" [value]="thresholdValue">
-                {{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES' | translate: { threshold: thresholdValue | number } }}
+                {{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES' | translate : { threshold: thresholdValue | number } }}
               </mat-option>
             </mat-select>
             <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_up</i>
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
+            <i
+              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
+              [matTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
+              matTooltipClass="vitamui-tooltip"
+              [matTooltipShowDelay]="300"
+            ></i>
           </mat-form-field>
         </div>
       </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
-      <button type="submit" class="btn primary mr-4" (click)="submitModification()" [disabled]="!isUpdated || this.form.get('bulkOperationsThreshold').invalid ">
-        {{ 'COMMON.SUBMIT' | translate }}
+      <button
+        type="submit"
+        class="btn primary mr-4"
+        (click)="submitModification()"
+        [disabled]="!isUpdated || this.form.get('bulkOperationsThreshold').invalid"
+      >
+        {{ 'COMMON.SAVE' | translate }}
       </button>
     </div>
   </form>
