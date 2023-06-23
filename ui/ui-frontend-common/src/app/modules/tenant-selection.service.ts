@@ -66,7 +66,7 @@ export class TenantSelectionService {
   }
 
   public setLastTenantIdentifier(identifier: number): void {
-    console.log('TenantSelectionService.setLastTenantIdentifier: ' + identifier);
+    console.log('  TenantSelectionService.setLastTenantIdentifier: ' + identifier);
     this.lastTenantIdentifier = identifier;
     this.lastTenantIdentifier$.next(identifier);
   }
@@ -128,7 +128,6 @@ export class TenantSelectionService {
           identifier = this.lastTenantIdentifier;
         }
       }
-
       this.userApiService.analytics({ lastTenantIdentifier: identifier })
         .pipe(map((value) => value.analytics.lastTenantIdentifier)).subscribe((tenantIdentifier: number) => {
         this.setLastTenantIdentifier(tenantIdentifier);

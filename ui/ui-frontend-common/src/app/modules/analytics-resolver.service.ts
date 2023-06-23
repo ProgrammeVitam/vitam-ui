@@ -22,10 +22,12 @@ export class AnalyticsResolver implements Resolve<any> {
     this.tenantSelectionService.currentAppId$.next(nextApplicationId);
     if (nextApplicationId && nextApplicationId !== this.currentApplicationId) {
       // tag the application us the last used
+      console.log('AnalyticsResolver.resolve : post application id');
       this.userApiService.analytics({ applicationId: nextApplicationId }).pipe(take(1)).subscribe((userData: User) => {
         if (userData.analytics) {
           const analytics = userData.analytics;
           this.applicationService.applicationsAnalytics = analytics.applications;
+          console.log('AnalyticsResolver.resolve : analytics.lastTenantIdentifier = ' + analytics.lastTenantIdentifier);
           this.tenantSelectionService.setLastTenantIdentifier(analytics.lastTenantIdentifier);
         }
       });

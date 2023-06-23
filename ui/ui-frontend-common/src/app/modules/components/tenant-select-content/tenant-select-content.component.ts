@@ -36,8 +36,8 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TenantSelectionService } from '../../tenant-selection.service';
 import { MenuOption } from '../navbar';
-import { TenantMenuService } from '../navbar/tenant-menu/tenant-menu.service';
 
 @Component({
   selector: 'vitamui-common-tenant-select-content',
@@ -54,12 +54,11 @@ export class TenantSelectContentComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private tenantMenuService: TenantMenuService) { }
+    private tenantSelectionService: TenantSelectionService) { }
 
   selectTenantIdentifier(tenantIdentifier: number) {
-    if (this.isModalMenu) {
-      this.tenantMenuService.sendSelectedTenant(tenantIdentifier);
-    } else {
+    this.tenantSelectionService.saveTenantIdentifier(tenantIdentifier).toPromise();
+    if (!this.isModalMenu) {
       this.router.navigate(['./' + tenantIdentifier], { relativeTo: this.route });
     }
     this.tenantSelected.emit(tenantIdentifier);

@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private startupService: StartupService,
               private menuOverlayService: MenuOverlayService,
               private authService: AuthService,
-              private tenantService: TenantSelectionService,
+              private tenantSelectionService: TenantSelectionService,
               private customerSelectionService: CustomerSelectionService,
               private themeService: ThemeService,
               private matDialog: MatDialog,
@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.portalUrl = this.startupService.getPortalUrl();
-    this.tenants = this.tenantService.getTenants().map((tenant: Tenant) => {
+    this.tenants = this.tenantSelectionService.getTenants().map((tenant: Tenant) => {
       return { value: tenant, label: tenant.name };
     });
 
@@ -75,12 +75,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Open the select default tenant dialog if no default tenant identifier defined or if default value not in selected tenant list
     const dialogConfig = SelectTenantDialogComponent.SELECT_TENANT_DIALOG_CONFIG;
     dialogConfig.data = { tenants: this.tenants };
-    this.tenantService.getLastTenantIdentifier$().pipe(takeUntil(this.destroyer$)).subscribe((value: number) => {
+    this.tenantSelectionService.getLastTenantIdentifier$().pipe(takeUntil(this.destroyer$))
+      .subscribe((value: number) => {
       if (!value || this.tenants.filter((option) => option.value.identifier === value).length === 0) {
-        this.matDialog.open(SelectTenantDialogComponent, dialogConfig)
-          .beforeClosed().subscribe((selectedTenant: Tenant) => {
-          this.tenantService.saveTenantIdentifier(selectedTenant.identifier).toPromise().then(() => {
-            this.tenantService.setSelectedTenant(selectedTenant);
+        this.matDialog.open(SelectTenantDialogComponent, dialogConfig).beforeClosed()
+          .subscribe((selectedTenant: Tenant) => {
+          this.tenantSelectionService.saveTenantIdentifier(selectedTenant.identifier).toPromise().then(() => {
+            this.tenantSelectionService.setSelectedTenant(selectedTenant);
           });
         });
       }
@@ -88,7 +89,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.initTenantSelection();
 
-    this.tenantService.currentAppId$.pipe(takeUntil(this.destroyer$)).subscribe((appIdentifier: string) => {
+    this.tenantSelectionService.currentAppId$.pipe(takeUntil(this.destroyer$)).subscribe((appIdentifier: string) => {
       this.initCurrentAppTenants(appIdentifier);
       this.initCustomerSelection(appIdentifier);
     });
@@ -100,7 +101,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public updateTenant(tenant: MenuOption): void {
-    this.tenantService.setSelectedTenant(tenant.value);
+    this.tenantSelectionService.setSelectedTenant(tenant.value);
   }
 
   public updateCustomer(customer: MenuOption): void {
@@ -135,8 +136,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               const tenantIdentifier = +data.snapshot.params.tenantIdentifier;
 
               if (tenantIdentifier) {
-                this.tenantService.setSelectedTenantByIdentifier(tenantIdentifier);
-                this.tenantService.getSelectedTenant$().pipe(takeUntil(this.destroyer$)).subscribe((tenant: Tenant) => {
+                this.tenantSelectionService.setSelectedTenantByIdentifier(tenantIdentifier);
+                this.tenantSelectionService.getSelectedTenant$().pipe(takeUntil(this.destroyer$)).subscribe((tenant: Tenant) => {
                   if (tenant.identifier !== tenantIdentifier) {
                     this.changeTenant(tenant.identifier);
                   }
@@ -149,13 +150,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     // Subcribe to active tenant changes
-    this.tenantService.getSelectedTenant$().pipe(takeUntil(this.destroyer$)).subscribe((tenant: Tenant) => {
+    this.tenantSelectionService.getSelectedTenant$().pipe(takeUntil(this.destroyer$)).subscribe((tenant: Tenant) => {
       if (!this.selectedTenant) {
         this.selectedTenant = { value: tenant, label: tenant.name };
       } else {
         if (this.selectedTenant.value.identifier !== tenant.identifier) {
           this.selectedTenant = { value: tenant, label: tenant.name };
-          this.tenantService.saveSelectedTenant(tenant).toPromise();
+          this.tenantSelectionService.saveSelectedTenant(tenant).toPromise();
         }
       }
     });
@@ -169,12 +170,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   private initLastTenantIdentifier() {
     console.log('HeaderComponent.initLastTenantIdentifier');
-    this.tenantService.getLastTenantIdentifier$()
-      .pipe(takeUntil(this.tenantService.getSelectedTenant$()), takeUntil(this.destroyer$))
+    this.tenantSelectionService.getLastTenantIdentifier$()
+      .pipe(takeUntil(this.tenantSelectionService.getSelectedTenant$()), takeUntil(this.destroyer$))
       .subscribe((identifier: number) => {
         const lastTenant = this.tenants.find((option: MenuOption) => option.value.identifier === identifier);
         if (!this.selectedTenant && lastTenant) {
-          this.tenantService.setSelectedTenant(lastTenant.value);
+          this.tenantSelectionService.setSelectedTenant(lastTenant.value);
         }
       });
   }
