@@ -38,4 +38,25 @@ db.sequences.updateOne({
 	}
 });
 
+
+//============================ UPDATE ADMIN GROUPS =============================
+
+var profileMgtContractId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-MANAGEMENT_CONTRACT_APP-ADMIN";
+
+db.groups.updateOne({
+    "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
+}, {
+    $addToSet: {
+        "profileIds": profileMgtContractId
+    }
+});
+
+db.groups.updateOne({
+    "_id": "admin_group"
+}, {
+    $addToSet: {
+        "profileIds": profileMgtContractId
+    }
+});
+
 print("END_21_create_profile_MANAGEMENT_CONTRACT_APP.js");
