@@ -69,12 +69,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
@@ -174,20 +174,22 @@ public class ArchivesSearchController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Download Object from the Archive Unit ")
-    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE, params = {
+        "tenantId"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
-        @QueryParam("qualifier") String qualifier,
-        @QueryParam("version") Integer version,
-        @QueryParam("tenantId") Integer tenantId) throws PreconditionFailedException,
+    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String unitId,
+        @RequestParam(value = "qualifier", required = false) String qualifier,
+        @RequestParam(value = "version", required = false) Integer version,
+        @RequestParam("tenantId") Integer tenantId) throws PreconditionFailedException,
         InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier and The tenantId are mandatory parameters: ",
-            id, String.valueOf(tenantId));
-        SanityChecker.checkSecureParameter(id, String.valueOf(tenantId));
-        LOGGER.debug("Download the Archive Unit Object with ID {}", id);
+            unitId, String.valueOf(tenantId));
+        SanityChecker.checkSecureParameter(unitId, String.valueOf(tenantId));
+        LOGGER.debug("Download the Archive Unit Object with ID {}", unitId);
         ObjectData objectData = new ObjectData();
-        ResponseEntity<Resource> responseResource = archivesSearchService.downloadObjectFromUnit(id, qualifier, version,
-            objectData, buildUiHttpContext(tenantId)).block();
+        ResponseEntity<Resource> responseResource =
+            archivesSearchService.downloadObjectFromUnit(unitId, qualifier, version,
+                objectData, buildUiHttpContext(tenantId)).block();
         List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
         String fileNameHeader = isNotEmpty(objectData.getFilename())

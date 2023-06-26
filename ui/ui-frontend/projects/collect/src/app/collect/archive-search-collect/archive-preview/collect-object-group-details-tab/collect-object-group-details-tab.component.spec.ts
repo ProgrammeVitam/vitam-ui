@@ -26,15 +26,15 @@
  */
 
 import createSpyObj = jasmine.createSpyObj;
-import { Clipboard } from '@angular/cdk/clipboard';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { environment } from 'projects/collect/src/environments/environment';
-import { of } from 'rxjs';
+import {Clipboard} from '@angular/cdk/clipboard';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
+import {TranslateModule} from '@ngx-translate/core';
+import {environment} from 'projects/collect/src/environments/environment';
+import {of} from 'rxjs';
 import {
   ApiUnitObject,
   BASE_URL,
@@ -48,8 +48,8 @@ import {
   VersionWithQualifierDto,
   WINDOW_LOCATION
 } from 'ui-frontend-common';
-import { ArchiveCollectService } from '../../archive-collect.service';
-import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
+import {ArchiveCollectService} from '../../archive-collect.service';
+import {CollectObjectGroupDetailsTabComponent} from './collect-object-group-details-tab.component';
 
 describe('CollectObjectGroupDetailsTabComponent', () => {
   let component: CollectObjectGroupDetailsTabComponent;
@@ -91,11 +91,11 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       ],
       declarations: [CollectObjectGroupDetailsTabComponent],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment },
-        { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: ArchiveCollectService, useValue: archiveCollectServiceSpy },
-        { provide: Clipboard, useValue: clipboardSpy },
+        {provide: BASE_URL, useValue: '/fake-api'},
+        {provide: ENVIRONMENT, useValue: environment},
+        {provide: WINDOW_LOCATION, useValue: window.location},
+        {provide: ArchiveCollectService, useValue: archiveCollectServiceSpy},
+        {provide: Clipboard, useValue: clipboardSpy},
       ],
     }).compileComponents();
   });
@@ -111,8 +111,8 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+      Title_: {fr: 'Teste', en: 'Test'},
+      Description_: {fr: 'DescriptionFr', en: 'DescriptionEn'},
     };
     component.archiveUnit = archiveUnit;
     component.versionsWithQualifiersOrdered = [];
@@ -153,13 +153,15 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   it('onClickDownloadObject', () => {
     const event = {
-      stopPropagation: () => {},
+      stopPropagation: () => {
+      },
     } as Event;
     const preventDefaultSpy = spyOn(event, 'stopPropagation');
     component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
     expect(archiveCollectServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
       'archiveUnitTestID',
       'objectId',
+      1,
       ObjectQualifierType.BINARYMASTER,
       1
     );
@@ -203,9 +205,10 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#unitType': '',
       '#unitups': [],
       '#opi': '',
+      '#tenant': 1,
       DescriptionLevel: 'Item',
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+      Title_: {fr: 'Teste', en: 'Test'},
+      Description_: {fr: 'DescriptionFr', en: 'DescriptionEn'},
     };
 
     // When
@@ -226,8 +229,8 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#opi': '',
       '#tenant': 1,
       DescriptionLevel: 'RecordGrp',
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+      Title_: {fr: 'Teste', en: 'Test'},
+      Description_: {fr: 'DescriptionFr', en: 'DescriptionEn'},
     };
 
     // When
@@ -247,8 +250,8 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#opi': '',
       '#tenant': 1,
       DescriptionLevel: 'Item',
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+      Title_: {fr: 'Teste', en: 'Test'},
+      Description_: {fr: 'DescriptionFr', en: 'DescriptionEn'},
     };
 
     // When
@@ -348,14 +351,14 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
   });
 
   function newVersionWithQualifier(qualifier: ObjectQualifierType, version: number): VersionWithQualifierDto {
-    return { qualifier, version } as VersionWithQualifierDto;
+    return {qualifier, version} as VersionWithQualifierDto;
   }
 
   function newUnit(id: string, objectId: string): Unit {
-    return { '#id': id, '#object': objectId } as Unit;
+    return {'#id': id, '#object': objectId} as Unit;
   }
 
   function newApiUnitObject(): ApiUnitObject {
-    return { '#id': 'ApiUnitObjectID' } as ApiUnitObject;
+    return {'#id': 'ApiUnitObjectID'} as ApiUnitObject;
   }
 });
