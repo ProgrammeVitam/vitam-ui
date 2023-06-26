@@ -47,12 +47,10 @@ import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHIVE_UNIT;
@@ -63,8 +61,6 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 @Api(tags = "Collect")
 @RequestMapping("${ui-collect.prefix}/projects/object-groups")
 @RestController
-@Consumes("application/json")
-@Produces("application/json")
 public class ProjectObjectGroupController extends AbstractUiRestController {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectObjectGroupController.class);
@@ -78,14 +74,15 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Download Archive Unit Object")
-    @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE, params = {
+        "objectId", "tenantId"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadObjectFromUnit(
         final @PathVariable("id") String unitId,
-        @QueryParam("objectId") String objectId,
-        @QueryParam("tenantId") Integer tenantId,
-        @QueryParam("qualifier") String qualifier,
-        @QueryParam("version") Integer version) throws PreconditionFailedException,
+        @RequestParam(name = "objectId") String objectId,
+        @RequestParam(name = "tenantId") Integer tenantId,
+        @RequestParam(name = "qualifier", required = false) String qualifier,
+        @RequestParam(name = "version", required = false) Integer version) throws PreconditionFailedException,
         InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier, and The tenantId are mandatory parameters: ",
             unitId, objectId, String.valueOf(tenantId));
