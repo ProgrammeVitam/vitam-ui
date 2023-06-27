@@ -49,7 +49,7 @@ import { ENVIRONMENT, WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { StartupService } from './startup.service';
 
-import { VitamUISnackBarService } from './components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { VitamUISnackBarService } from './components/vitamui-snack-bar';
 import { SKIP_ERROR_NOTIFICATION } from './utils';
 
 import { VitamUITimeoutError } from './models/http-interceptor/vitamui-timeout-error';
@@ -70,6 +70,7 @@ const ERROR_NOTIFICATION_MESSAGE_BY_HTTP_STATUS: Map<number, string> = new Map([
   [412, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION'],
   [408, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_REQUEST_TIMEOUT'],
 ]);
+
 @Injectable()
 export class VitamUIHttpInterceptor implements HttpInterceptor {
   private errorDialog: MatDialogRef<ErrorDialogComponent>;
@@ -92,7 +93,8 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     this.initSnackBarService();
 
     let tenantIdentifier = request.headers.get('X-Tenant-Id');
-    if ((!tenantIdentifier || tenantIdentifier === undefined || tenantIdentifier === '') && this.authService.user) {
+    if ((!tenantIdentifier || tenantIdentifier === '') && this.authService.user) {
+      // TODO: change to tenant-selection.service
       tenantIdentifier = this.startupService.getTenantIdentifier();
     }
     let requestId = request.headers.get('X-Request-Id');
