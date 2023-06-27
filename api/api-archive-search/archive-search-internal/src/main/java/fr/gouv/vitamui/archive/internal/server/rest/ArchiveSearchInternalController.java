@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archive.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchEliminationInternalService;
@@ -48,8 +49,8 @@ import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -183,9 +184,11 @@ public class ArchiveSearchInternalController {
             .checkParameter(IDENTIFIER_MANDATORY, objectId);
         SanityChecker.checkSecureParameter(objectId, usage);
         LOGGER.debug("Download Archive Unit Object with id {}", objectId);
+        VitamContext vitamContext = new VitamContext(securityService.getTenantIdentifier()).setAccessContract(
+                externalParametersService.retrieveAccessContractFromExternalParam())
+            .setApplicationSessionId(securityService.getApplicationId());
         return Mono.<Resource>fromCallable(() -> {
-                Response response = archiveInternalService.downloadObjectFromUnit(objectId, usage, version,
-                    externalParametersService.buildVitamContextFromExternalParam());
+                Response response = archiveInternalService.downloadObjectFromUnit(objectId, usage, version, vitamContext);
                 return new InputStreamResource((InputStream) response.getEntity());
             }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity

@@ -29,6 +29,7 @@
 
 package fr.gouv.vitamui.collect.internal.server.rest;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
@@ -41,6 +42,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -69,12 +71,15 @@ public class ProjectObjectGroupInternalController {
         VitamUILoggerFactory.getInstance(ProjectObjectGroupInternalController.class);
     private final ProjectObjectGroupInternalService projectObjectGroupInternalService;
     private final ExternalParametersService externalParametersService;
+
+    private final InternalSecurityService securityService;
     private static final String IDENTIFIER_MANDATORY = "The identifier is mandatory parameter: ";
 
     public ProjectObjectGroupInternalController(ProjectObjectGroupInternalService projectObjectGroupInternalService,
-        final ExternalParametersService externalParametersService) {
+        final ExternalParametersService externalParametersService, InternalSecurityService securityService) {
         this.projectObjectGroupInternalService = projectObjectGroupInternalService;
         this.externalParametersService = externalParametersService;
+        this.securityService = securityService;
     }
 
     @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT +
@@ -82,14 +87,18 @@ public class ProjectObjectGroupInternalController {
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
         final @RequestParam("usage") String usage, final @RequestParam("version") Integer version
     ) throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker
             .checkParameter(IDENTIFIER_MANDATORY, id);
         SanityChecker.checkSecureParameter(id, usage);
         LOGGER.debug("Download Archive Unit Object with id {}", id);
+
+        VitamContext vitamContext = new VitamContext(securityService.getTenantIdentifier()).setAccessContract(
+                externalParametersService.retrieveAccessContractFromExternalParam())
+            .setApplicationSessionId(securityService.getApplicationId());
+
         return Mono.<Resource>fromCallable(() -> {
                 Response response = projectObjectGroupInternalService.downloadObjectFromUnit(id, usage, version,
-                    externalParametersService.buildVitamContextFromExternalParam());
+                    vitamContext);
                 return new InputStreamResource((InputStream) response.getEntity());
             }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
