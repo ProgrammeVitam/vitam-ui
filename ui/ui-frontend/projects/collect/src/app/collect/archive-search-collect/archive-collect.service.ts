@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable, LOCALE_ID} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {VitamUISnackBarComponent} from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
+import {SearchUnitApiService} from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
+import {Observable, of, throwError, TimeoutError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
@@ -51,9 +51,9 @@ import {
   Transaction,
   Unit
 } from 'ui-frontend-common';
-import { ProjectsApiService } from '../core/api/project-api.service';
-import { TransactionApiService } from '../core/api/transaction-api.service';
-import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
+import {ProjectsApiService} from '../core/api/project-api.service';
+import {TransactionApiService} from '../core/api/transaction-api.service';
+import {PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse} from '../core/models';
 
 @Injectable({
   providedIn: 'root',
@@ -174,11 +174,12 @@ export class ArchiveCollectService extends SearchService<any> {
   launchDownloadObjectFromUnit(
     unitId: string,
     objectId: string,
+    tenantId: number,
     qualifier?: string,
     version?: number
   ) {
     this.downloadFile(
-      this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, qualifier, version)
+      this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, tenantId, qualifier, version)
     );
   }
 

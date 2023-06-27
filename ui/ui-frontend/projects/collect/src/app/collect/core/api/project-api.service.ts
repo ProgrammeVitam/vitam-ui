@@ -34,11 +34,11 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, Transaction } from 'ui-frontend-common';
-import { SearchCriteriaHistory } from '../models';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, Project, Transaction} from 'ui-frontend-common';
+import {SearchCriteriaHistory} from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -83,11 +83,12 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   getDownloadObjectFromUnitUrl(
     unitId: string,
-    objectId: string,        
+    objectId: string,
+    tenantId: number,
     qualifier?: string,
     version?: number
   ): string {
-    let url = `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}`;
+    let url = `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}&tenantId=${tenantId}`;
     if (qualifier && version) {
       url += `&qualifier=${qualifier}&version=${version}`;
     }
@@ -129,7 +130,7 @@ export class ProjectsApiService extends BaseHttpClient<any> {
     headers?: HttpHeaders
   ): Observable<PaginatedResponse<Transaction>> {
     const params = pageRequest.httpParams;
-    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, { params, headers });
+    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, {params, headers});
   }
 
   validateTransaction(id: string) {
