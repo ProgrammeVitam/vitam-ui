@@ -29,6 +29,7 @@
 
 package fr.gouv.vitamui.collect.internal.server.rest;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
@@ -86,10 +87,10 @@ public class ProjectObjectGroupInternalController {
         ParameterChecker
             .checkParameter(IDENTIFIER_MANDATORY, id);
         SanityChecker.checkSecureParameter(id, usage);
+        VitamContext context = externalParametersService.buildVitamContextFromExternalParam();
         LOGGER.debug("Download Archive Unit Object with id {}", id);
         return Mono.<Resource>fromCallable(() -> {
-                Response response = projectObjectGroupInternalService.downloadObjectFromUnit(id, usage, version,
-                    externalParametersService.buildVitamContextFromExternalParam());
+                Response response = projectObjectGroupInternalService.downloadObjectFromUnit(id, usage, version, context);
                 return new InputStreamResource((InputStream) response.getEntity());
             }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
