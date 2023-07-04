@@ -9,7 +9,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>cots</artifactId>
-        <version>7.0-SNAPSHOT</version>
+        <version>7.0-java17-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -51,7 +51,7 @@
                                             If you want to changes default dependencies (only systemd), define them as a
                                              comma separated list of packages
                                          -->
-                                        <argument>DEPENDENCIES=systemd,openjdk-11-jdk</argument>
+                                        <argument>DEPENDENCIES=systemd,openjdk-17-jdk</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -93,7 +93,7 @@
                                             If you want to changes default dependencies (only systemd), define them as a
                                              comma separated list of packages
                                          -->
-                                        <argument>DEPENDENCIES=systemd,java-11-openjdk</argument>
+                                        <argument>DEPENDENCIES=systemd,java-17-openjdk</argument>
                                     </arguments>
                                 </configuration>
                             </execution>

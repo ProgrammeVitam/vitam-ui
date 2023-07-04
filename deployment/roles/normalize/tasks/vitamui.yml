@@ -28,7 +28,7 @@
 
 - name: "install openjdk from {{ ansible_distribution_release }}-backports only when Debian"
   apt:
-    name: openjdk-11-jre-headless
+    name: openjdk-17-jre-headless
     state: latest
     default_release: "{{ ansible_distribution_release }}-backports"
   register: result
@@ -41,7 +41,7 @@
 
 - name: "install openjdk only when Debian"
   apt:
-    name: openjdk-11-jre-headless
+    name: openjdk-17-jre-headless
     state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"

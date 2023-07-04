@@ -5,7 +5,7 @@
     <parent>
         <artifactId>api-pastis</artifactId>
         <groupId>fr.gouv.vitamui</groupId>
-        <version>7.0-SNAPSHOT</version>
+        <version>7.0-java17-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -233,8 +233,8 @@
                                 <configuration>
                                     <target>
                                         <get
-                                            src="https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip"
-                                            dest="${project.build.directory}/jdk11.zip"
+                                            src="https://download.oracle.com/java/17/archive/jdk-17.0.7_windows-x64_bin.zip"
+                                            dest="${project.build.directory}/jdk17.zip"
                                             verbose="false"
                                             usetimestamp="true"/>
                                     </target>

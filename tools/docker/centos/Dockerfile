@@ -6,8 +6,8 @@
 # Image name: vitamui/vitam
 #########################################################################################
 
-# Set the base image to Centos 7
-FROM centos:7.4.1708
+# Set the base image to Centos 8
+FROM centos:8.4.2105
 MAINTAINER vitamui
 
 # Make sure the package repository and packages are up to date.
@@ -31,7 +31,7 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == system
 ################################  Install build tools (rpm / maven / java)  ###############################
 
 RUN yum install -y \
-    	java-11-openjdk-devel \
+    	java-17-openjdk-devel \
     	rpm-build \
         rpmdevtools \
         initscripts.x86_64 \
@@ -43,10 +43,10 @@ RUN yum install -y \
 ENV JAVA_HOME /usr/lib/jvm/java
 
 # Install & configure maven
-RUN curl -k https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.3.9/apache-maven-3.3.9-bin.tar.gz --output /tmp/maven.tgz \
+RUN curl -k https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.7/apache-maven-3.8.7-bin.tar.gz --output /tmp/maven.tgz \
     && tar xvzf /tmp/maven.tgz --directory /opt \
     && rm -f /tmp/maven.tgz \
-    && ln -s /opt/apache-maven-3.3.9 /opt/maven \
+    && ln -s /opt/apache-maven-3.8.7 /opt/maven \
     && mkdir -p /devhome/.m2 \
     && chmod -R 777 /devhome
 
