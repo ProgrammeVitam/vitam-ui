@@ -52,6 +52,8 @@ import {
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
+  StartupService,
+  ThemeService,
   VitamUICommonModule,
   VitamuiMissingTranslationHandler,
   WINDOW_LOCATION,
@@ -60,6 +62,8 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PastisConfiguration } from './core/classes/pastis-configuration';
+import { StandaloneStartupService } from './standalone/standalone-startup.service';
+import { StandaloneThemeService } from './standalone/standalone-theme.service';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
@@ -68,7 +72,14 @@ export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpL
   ]);
 }
 
+export function PastisConfigurationFactory(appConfig: PastisConfiguration) {
+  return () => appConfig.initConfiguration();
+}
+
 registerLocaleData(localeFr, 'fr');
+
+const startupServiceClass = environment.standalone ? StandaloneStartupService : StartupService;
+const themeServiceClass = environment.standalone ? StandaloneThemeService : ThemeService;
 
 @NgModule({
   declarations: [AppComponent],
@@ -112,11 +123,9 @@ registerLocaleData(localeFr, 'fr');
       deps: [PastisConfiguration],
       multi: true,
     },
+    { provide: StartupService, useClass: startupServiceClass },
+    { provide: ThemeService, useClass: themeServiceClass },
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
-export function PastisConfigurationFactory(appConfig: PastisConfiguration) {
-  return () => appConfig.initConfiguration();
-}

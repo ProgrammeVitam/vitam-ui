@@ -1,6 +1,7 @@
-cd ../../../ui/
-mvn clean install -DskipTests --projects ui-frontend,ui-frontend-common -Pstandalone
-cd ../commons/
-mvn clean install -DskipTests
-cd ../api/
+#!/bin/sh
+
+cd ../../..
+mvn clean install -DskipTests -Pvitam
+
+cd ./api/api-pastis/pastis-standalone
 mvn clean install -DskipTests -Pstandalone

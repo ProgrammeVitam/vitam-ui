@@ -35,9 +35,9 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { IEnvironment } from './IEnvironment';
+import { Environment } from './environment.interface';
 
-export const environment: IEnvironment = {
+export const environment: Environment = {
   production: false,
   apiServerUrl: 'https://sandbox78.cines.fr:8051',
 };
