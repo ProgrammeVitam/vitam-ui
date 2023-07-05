@@ -342,10 +342,6 @@
     "PORTAL_APP": {
       "NAME": "Portal"
     },
-    "PASTIS_APP": {
-      "NAME": "Documentary Profiles",
-      "TOOLTIP": "Access, Create, Modify or Delete archiving profiles and archival unit profiles"
-    },
     "ARCHIVAL_PROFILE_APP": {
       "NAME": "Archival Profiles",
       "TOOLTIP": "Params Archival Profiles"
@@ -353,14 +349,6 @@
     "CUSTOMERS_APP": {
       "NAME": "Clients organizations settings",
       "TOOLTIP": "Set up a client organization, assign safes and configure user authentication security"
-    },
-    "USERS_APP": {
-      "NAME": "Users settings",
-      "TOOLTIP": "Create, modify or deactivate users. Assign rights to users"
-    },
-    "GROUPS_APP": {
-      "NAME": "Groups rights",
-      "TOOLTIP": "Configure groups of rights profiles, which will be assigned to users"
     },
     "PROFILES_APP": {
       "NAME": "Administrator’s rights",
@@ -477,50 +465,6 @@
     "INGEST_MANAGEMENT_APP": {
       "NAME": "Ingest management",
       "TOOLTIP": "Ingest management"
-    },
-    "RULES_APP": {
-      "NAME": "Management rules",
-      "TOOLTIP": "Management rules"
-    },
-    "FILE_FORMATS_APP": {
-      "NAME": "Files formats",
-      "TOOLTIP": "Files formats"
-    },
-    "HOLDING_FILLING_SCHEME_APP": {
-      "NAME": "Holding filling scheme",
-      "TOOLTIP": "Holding filling scheme"
-    },
-    "LOGBOOK_MANAGEMENT_OPERATION_APP": {
-      "NAME": "Logbook management operation",
-      "TOOLTIP": "Logbook management operation"
-    },
-    "EXTERNAL_PARAM_PROFILE_APP": {
-      "NAME": "External param profile APP",
-      "TOOLTIP": "External param profile APP"
-    },
-    "AGENCIES_APP": {
-      "NAME": "Agent services",
-      "TOOLTIP": "Declare the producer services and the authorized uploading services in the archiving system"
-    },
-    "CONTEXTS_APP": {
-      "NAME": "Application contexts",
-      "TOOLTIP": "Authenticate an application and assign rights to it"
-    },
-    "ONTOLOGY_APP": {
-      "NAME": "Ontology",
-      "TOOLTIP": "Configure the catalog of SEDA tags and VITAM fields authorized and indexed in the archiving system"
-    },
-    "SECURE_APP": {
-      "NAME": "Securing operation",
-      "TOOLTIP": "Securing operation"
-    },
-    "DSL_APP": {
-      "NAME": "DSL Query",
-      "TOOLTIP": "Find UAs from a Custom DSL Query"
-    },
-    "LOGBOOK_OPERATION_APP": {
-      "NAME": "Operations Log",
-      "TOOLTIP": "Consulting the logs of entry, base and elimination operations"
     },
     "ITEM_SUPERVISION_PROFILE_APP": {
       "NAME": "Rights in the \"Item supervision\" APP",

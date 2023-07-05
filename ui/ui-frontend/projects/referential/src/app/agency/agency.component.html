@@ -11,9 +11,11 @@
         <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
         </vitamui-common-navbar>
 
-        <h2 i18n="Search a agency, owner or tenant@@agencySearchHeader">
-          <img src="assets/mini-logo-vitam.png"> Paramétrer les <strong>Services Agents</strong>
-        </h2>
+        <div class="vitamui-heading">
+          <vitamui-common-title-breadcrumb>
+            {{ 'APPLICATION.AGENCIES_APP.TITLE' | translate }}
+          </vitamui-common-title-breadcrumb>
+        </div>
 
         <div class="controls">
 

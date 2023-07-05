@@ -91,7 +91,6 @@
     "INGEST_ERROR_DETAIL": "Details"
   },
   "FILLING_HOLDING_SCHEME": {
-    "TITLE": "Import or modify holding scheme",
     "IMPORT_FILLING": "New Filling Scheme",
     "IMPORT_HOLDING": "New Holding Scheme",
     "SEARCH": "Holding or Filling scheme node"

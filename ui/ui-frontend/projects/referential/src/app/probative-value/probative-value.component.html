@@ -9,7 +9,11 @@
       <div class="vitamui-container">
         <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"> </vitamui-common-navbar>
 
-        <h2><img src="assets/mini-logo-vitam.png" /> Rechercher mes <strong>Relevés de valeur probante</strong></h2>
+        <div class="vitamui-heading">
+          <vitamui-common-title-breadcrumb>
+            {{ 'APPLICATION.PROBATIVE_VALUE_APP.NAME' | translate }}
+          </vitamui-common-title-breadcrumb>
+        </div>
 
         <div class="controls">
           <div class="search-bar-filters">

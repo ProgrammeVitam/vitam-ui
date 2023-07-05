@@ -113,15 +113,16 @@
     },
     "USERS_APP": {
       "NAME": "Users settings",
-      "TOOLTIP": "Create, modify or deactivate users. Assign rights to users"
+      "TITLE": "User Management",
+      "TOOLTIP": "Consult, create and modify user accounts"
     },
     "GROUPS_APP": {
       "NAME": "Groups rights",
-      "TOOLTIP": "Configure groups of rights profiles, which will be assigned to users"
+      "TOOLTIP": "Set up user rights profile groups"
     },
     "PROFILES_APP": {
-      "NAME": "Administrator's rights",
-      "TOOLTIP": "Set up rights profiles for administrators in an organization"
+      "NAME": "APP User Profiles",
+      "TOOLTIP": "Configure the rights profiles of administrators managing user accounts"
     },
     "SUBROGATIONS_APP": {
       "NAME": "User support",
@@ -131,9 +132,17 @@
       "NAME": "My account",
       "TOOLTIP": "Find informations about my user"
     },
+    "INGEST_APP": {
+      "NAME": "Ingest contracts",
+      "TOOLTIP": "Consult, create and modify ingest contracts"
+    },
+    "ACCESS_APP": {
+      "NAME": "Access contracts",
+      "TOOLTIP": "Consult, create and modify access contracts"
+    },
     "HIERARCHY_PROFILE_APP": {
-      "NAME": "Duplicate rights profiles",
-      "TOOLTIP": "Duplicate an existing rights profile to limit its scope or manage privilege"
+      "NAME": "Profile hierarchy",
+      "TOOLTIP": "Set privilege levels of rights profiles for an organization"
     },
     "ARCHIVE_APP": {
       "NAME": "Archives research and consultation",
@@ -237,7 +246,8 @@
     },
     "RULES_APP": {
       "NAME": "Management rules",
-      "TOOLTIP": "Management rules",
+      "TITLE": "Management rules referencial",
+      "TOOLTIP": "Consult, create and modify business rules",
       "MESSAGES": {
         "RULE_CREATION_SUCCESS": "The Rule {{ name }} succussfully created.",
         "RULE_CREATION_FAILED": "The Rule {{ name }} didn't created.",
@@ -252,47 +262,57 @@
     },
     "FILE_FORMATS_APP": {
       "NAME": "Files formats",
-      "TOOLTIP": "Files formats"
+      "TITLE": "File format referencial",
+      "TOOLTIP": "Consult, create and edit file formats"
     },
     "HOLDING_FILLING_SCHEME_APP": {
       "NAME": "Holding filling scheme",
-      "TOOLTIP": "Holding filling scheme"
+      "TOOLTIP": "Import a positioning tree and/or a classification plan"
     },
     "LOGBOOK_MANAGEMENT_OPERATION_APP": {
       "NAME": "Logbook management operation",
-      "TOOLTIP": "Logbook management operation"
+      "TOOLTIP": "Manage operations in progress or in error"
     },
     "EXTERNAL_PARAM_PROFILE_APP": {
       "NAME": "External param profile APP",
-      "TOOLTIP": "External param profile APP"
+      "TOOLTIP": "Set up user rights profiles for applying external settings"
     },
     "AGENCIES_APP": {
       "NAME": "Agent services",
+      "TITLE": "Agent services referencial",
       "TOOLTIP": "Declare the producer services and the authorized uploading services in the archiving system"
     },
     "CONTEXTS_APP": {
       "NAME": "Application contexts",
-      "TOOLTIP": "Authenticate an application and assign rights to it"
+      "TOOLTIP": "View and manage application contexts"
     },
     "SECURITY_PROFILES_APP": {
       "NAME": "Security profiles",
-      "TOOLTIP": "Access, Create, Modify or Delete security profiles"
+      "TOOLTIP": "Consult and manage security profiles"
     },
     "ONTOLOGY_APP": {
       "NAME": "Ontology",
-      "TOOLTIP": "Configure the catalog of SEDA tags and VITAM fields authorized and indexed in the archiving system"
+      "TOOLTIP": "Consult and manage internal and external ontology vocabularies"
+    },
+    "AUDIT_APP": {
+      "NAME": "Audits",
+      "TOOLTIP": "Set up and launch audits"
     },
     "SECURE_APP": {
-      "NAME": "Securing operation",
-      "TOOLTIP": "Securing operation"
+      "NAME": "Securing operations",
+      "TOOLTIP": "Consult and verify security operations"
     },
     "DSL_APP": {
-      "NAME": "DSL Query",
-      "TOOLTIP": "Find UAs from a Custom DSL Query"
+      "NAME": "DSL Queries",
+      "TOOLTIP": "Search by DSL query"
+    },
+    "PROBATIVE_VALUE_APP": {
+      "NAME": "Statements of probative value",
+      "TOOLTIP": "Generate probative value statements"
     },
     "LOGBOOK_OPERATION_APP": {
-      "NAME": "Operations Log",
-      "TOOLTIP": "Consulting the logs of entry, base and elimination operations"
+      "NAME": "Operations log",
+      "TOOLTIP": "Consult the log of operations carried out in the system"
     },
     "ITEM_SUPERVISION_PROFILE_APP": {
       "NAME": "Rights in the \"Item supervision\" APP",
@@ -308,15 +328,16 @@
     },
     "MANAGEMENT_CONTRACT_APP": {
       "NAME": "Management contract",
-      "TOOLTIP": "Management contract application"
+      "TITLE": "Management contracts referencial",
+      "TOOLTIP": "Consult, create and modify management contracts"
     },
     "TRANSACTIONS_MONITORING": {
       "NAME": "Transactions monitoring",
       "TOOLTIP": "Transactions monitoring"
     },
     "PASTIS_APP": {
-      "NAME": "Documentary Profiles",
-      "TOOLTIP": "Access, Create, Edit, or Delete Archive Profiles and Unit Profiles"
+      "NAME": "Documentary profiles",
+      "TOOLTIP": "Access, create, edit, or delete archive profiles and unit profiles"
     }
   },
   "FOOTER": {

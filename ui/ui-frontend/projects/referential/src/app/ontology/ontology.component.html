@@ -8,11 +8,14 @@
 
     <div class="vitamui-header">
       <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
+        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true">
+        </vitamui-common-navbar>
 
-        <h2>
-          <img src="assets/mini-logo-vitam.png"> Paramétrer les <strong>Vocabulaires</strong>
-        </h2>
+        <div class="vitamui-heading">
+          <vitamui-common-title-breadcrumb>
+            {{ 'APPLICATION.ONTOLOGY_APP.NAME' | translate }}
+          </vitamui-common-title-breadcrumb>
+        </div>
 
         <div class="controls">
 

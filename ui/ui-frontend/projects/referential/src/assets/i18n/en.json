@@ -8,7 +8,6 @@
   },
   "CONTRACT_MANAGEMENT": {
     "CONTRACT_PAGE": {
-      "TITLE": "Management contracts",
       "CREATE_MANAGEMENT_CONTRACT": "Create management contract",
       "SEARCH_CRITERIA": "Search by identifier and contract name",
       "CONTRACTS_LIST": "List of management contracts"

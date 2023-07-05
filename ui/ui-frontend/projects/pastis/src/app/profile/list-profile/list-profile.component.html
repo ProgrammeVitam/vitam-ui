@@ -17,10 +17,9 @@
   <mat-sidenav-content vitamuiCommonInfiniteScroll>
 
     <div class="vitamui-heading">
-      <pastis-title-breadcrumb (selected)="navigate($event)" *ngIf="!isStandalone"
-                               [data]="breadcrumbDataTop"
-                               class="breadcrumbTop">
-      </pastis-title-breadcrumb>
+      <vitamui-common-title-breadcrumb *ngIf="!isStandalone">
+        {{ 'APPLICATION.PASTIS_APP.TITLE' | translate }}
+      </vitamui-common-title-breadcrumb>
 
       <vitamui-common-banner (search)="onSearchSubmit($event)"
                              [searchbarPlaceholder]="'PROFILE.LIST_PROFILE.SEARCH_PLACEHOLDER' | translate">

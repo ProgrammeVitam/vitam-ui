@@ -39,6 +39,7 @@
 import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
+//TODO: delete ?
 @Component({
   selector: 'pastis-title-breadcrumb',
   templateUrl: './pastis-title-breadcrumb.component.html',

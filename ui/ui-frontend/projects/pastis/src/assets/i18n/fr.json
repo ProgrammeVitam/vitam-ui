@@ -343,10 +343,6 @@
     "PORTAL_APP": {
       "NAME": "Portail"
     },
-    "PASTIS_APP": {
-      "NAME": "Profils Documentaires",
-      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique"
-    },
     "ARCHIVAL_PROFILE_APP": {
       "NAME": "Profils d'archives",
       "TOOLTIP": "Paramétrer les profils d'archivage"
@@ -354,14 +350,6 @@
     "CUSTOMERS_APP": {
       "NAME": "Organisations",
       "TOOLTIP": "Paramétrer les organisations (clients, ...) et les coffres des organisations"
-    },
-    "USERS_APP": {
-      "NAME": "Utilisateurs",
-      "TOOLTIP": "Créer, Modifier et Gérer les utilisateurs..."
-    },
-    "GROUPS_APP": {
-      "NAME": "Groupes de profils",
-      "TOOLTIP": "Paramétrer les groupes de profil de droits qui seront affectés aux utilisateurs"
     },
     "PROFILES_APP": {
       "NAME": "Profils APP Utilisateurs",
@@ -379,49 +367,9 @@
       "NAME": "Mon compte",
       "TOOLTIP": "Consulter mes informations, Choisir la langue de l'interface"
     },
-    "INGEST_APP": {
-      "NAME": "Contrats d'entrée",
-      "TOOLTIP": "Accéder, créer et modifier les contrats d'entrée"
-    },
     "ACCESS_APP": {
       "NAME": "Contrats d'accès",
       "TOOLTIP": "Accéder, créer et modifier les contrats d'accès"
-    },
-    "AGENCIES_APP": {
-      "NAME": "Services Agent",
-      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les services agents"
-    },
-    "CONTEXTS_APP": {
-      "NAME": "Contextes applicatifs",
-      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les contextes applicatifs"
-    },
-    "SECURITY_PROFILES_APP": {
-      "NAME": "Profils de sécurité",
-      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les profils de sécurité"
-    },
-    "ONTOLOGY_APP": {
-      "NAME": "Ontologie",
-      "TOOLTIP": "Accéder, Créer ou Supprimer les ontologies"
-    },
-    "AUDIT_APP": {
-      "NAME": "Audits",
-      "TOOLTIP": "Lancer des audits"
-    },
-    "SECURE_APP": {
-      "NAME": "Opération de sécurisations",
-      "TOOLTIP": "Opération de sécurisations"
-    },
-    "DSL_APP": {
-      "NAME": "Requêtes DSL",
-      "TOOLTIP": "Rechercher des UA à partir d'une requête DSL personnalisée"
-    },
-    "PROBATIVE_VALUE_APP": {
-      "NAME": "Relevé de valeur probante",
-      "TOOLTIP": "Exporter un relevé de valeur probante"
-    },
-    "LOGBOOK_OPERATION_APP": {
-      "NAME": "Journal des Opérations",
-      "TOOLTIP": "Consultation des journaux des opérations d'entrées, de bases, d'éliminations"
     },
     "API_SUPERVISION_APP": {
       "NAME": "Supervision des API",
@@ -522,30 +470,6 @@
     "ARCHIVE_SEARCH_MANAGEMENT_APP": {
       "NAME": "Recherche et consultation des archives",
       "TOOLTIP": "Rechercher et consulter les archives"
-    },
-    "INGEST_MANAGEMENT_APP": {
-      "NAME": "Dépôt et suivi des versements",
-      "TOOLTIP": "Consulter des versements ou créer un nouveau versement"
-    },
-    "RULES_APP": {
-      "NAME": "Règles de gestion",
-      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les règles de gestion"
-    },
-    "FILE_FORMATS_APP": {
-      "NAME": "Formats de fichiers",
-      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les formats de fichiers"
-    },
-    "HOLDING_FILLING_SCHEME_APP": {
-      "NAME": "Arbres et Plans",
-      "TOOLTIP": "Importer un arbre de positionnement ou un plan de classement"
-    },
-    "LOGBOOK_MANAGEMENT_OPERATION_APP": {
-      "NAME": "Gestion des Opérations",
-      "TOOLTIP": "Consulter et gérer l'ensemble des opérations qui sont en cours"
-    },
-    "EXTERNAL_PARAM_PROFILE_APP": {
-      "NAME": "Profil APP Paramétrages externes",
-      "TOOLTIP": "Paramétrer les profils de droits des utilisateurs pour l'application des paramètres externes"
     }
   },
   "FOOTER": {
