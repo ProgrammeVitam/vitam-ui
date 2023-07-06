@@ -1,19 +1,22 @@
 <div class="header">
   <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
+  <i (click)="onCancel()" class="vitamui-icon vitamui-icon-close icon-close"></i>
 </div>
-
 <form [formGroup]="externalParamProfileForm" (ngSubmit)="onSubmit()">
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content">
         <div class="vitamui-form">
-          <div class="text large bold">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
-
+          <div class="text large header-title">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
+          <div class="text large header-subtitle">
+            {{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP_SUBTITLE' | translate }}
+          </div>
           <div class="mb-2">
-            <vitamui-common-slide-toggle formControlName="enabled"
-              >{{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }} <span *ngIf="!externalParamProfileForm.get('enabled').value">in</span
-              >{{ 'COMMON.ACTIVE' | translate }}</vitamui-common-slide-toggle
-            >
+            <vitamui-common-slide-toggle formControlName="enabled">
+              {{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }}
+              <span *ngIf="!externalParamProfileForm.get('enabled').value">in</span>
+              {{ 'COMMON.ACTIVE' | translate }}
+            </vitamui-common-slide-toggle>
           </div>
 
           <vitamui-common-input
@@ -26,7 +29,8 @@
           >
             <vitamui-common-input-error
               *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.required"
-              >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
+              >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
+            >
 
             <vitamui-common-input-error
               *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.nameExists"
@@ -63,6 +67,7 @@
               </mat-option>
             </mat-select>
             <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_up</i>
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
           </mat-form-field>
@@ -79,7 +84,8 @@
     <cdk-step>
       <div class="content">
         <div class="vitamui-form">
-          <div class="text large bold">{{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}</div>
+          <div class="text large header-title">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
+          <div class="text large bold header-subtitle">{{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}</div>
 
           <div class="mb-2">
             <vitamui-common-slide-toggle formControlName="usePlatformThreshold">
@@ -97,12 +103,19 @@
               class="w-100"
             >
               <mat-option *ngFor="let thresholdValue of thresholdValues" [value]="thresholdValue">
-                {{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES' | translate: { threshold: thresholdValue | number } }}
+                {{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES' | translate : { threshold: thresholdValue | number } }}
               </mat-option>
             </mat-select>
             <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_up</i>
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
+            <i
+              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
+              [matTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
+              matTooltipClass="vitamui-tooltip"
+              [matTooltipShowDelay]="300"
+            ></i>
           </mat-form-field>
         </div>
         <div class="actions">
@@ -116,7 +129,7 @@
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
           <ng-container
-            ><span class="underline">{{ 'COMMON.BACK' | translate }}</span></ng-container
+            ><span>{{ 'COMMON.BACK' | translate }}</span></ng-container
           >
         </button>
       </div>
