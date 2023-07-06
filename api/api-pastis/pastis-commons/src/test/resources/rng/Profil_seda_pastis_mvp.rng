@@ -19,7 +19,7 @@
                 <rng:data type="token"/>
             </rng:element>
             <rng:element name="CodeListVersions">
-                <rng:data type="token"/>
+                <rng:data type="string"/>
             </rng:element>
             <rng:element name="DataObjectPackage">
                 <rng:optional>

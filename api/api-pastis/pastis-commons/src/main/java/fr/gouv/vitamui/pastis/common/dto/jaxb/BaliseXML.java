@@ -45,6 +45,7 @@ import fr.gouv.vitamui.pastis.common.util.RNGConstants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -55,7 +56,8 @@ import java.util.List;
 
 
 @XmlRootElement
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class BaliseXML {
 
@@ -115,7 +117,7 @@ public class BaliseXML {
         }
     }
 
-    private static void setValueAndDataRNG(ElementProperties node, boolean presenceChildrenNode){
+    private static void setValueAndDataRNG(ElementProperties node, boolean presenceChildrenNode) {
         // If the node has a value
         if (null != node.getValue() && !node.getValue().equals(UNDEFINED)) {
             valueRNG = new ValueXML();
@@ -132,14 +134,18 @@ public class BaliseXML {
         // When a value is declared in a profile element, the <rng:data> tag must be suppressed
         // to assure that the generated profile is successfully imported by VITAM
         if (null != node.getValueOrData() && !node.getValueOrData().equals(UNDEFINED) &&
-             node.getValueOrData().equals("data") && !node.getName().equals("CodeListVersions") && null == node.getValue()) {
+            node.getValueOrData().equals("data") && !node.getName().equals("CodeListVersions") &&
+            null == node.getValue()) {
             dataRNG = new DataXML();
         }
 
-        if ((node.getName() != null && ((node.getName().equals("CodeListVersions")&& presenceChildrenNode) || presenceChildrenNode) && null == node.getValue())
+        if ((node.getName() != null
+                && ((node.getName().equals("CodeListVersions") && presenceChildrenNode) || presenceChildrenNode)
+                && null == node.getValue())
             && (valueRNG == null && RNGConstants.getTypesMap().containsKey(node.getName()))) {
             dataRNG = new DataXML();
             dataRNG.setDataType(RNGConstants.getTypesMap().get(node.getName()).getLabel());
+
         }
 
         // Sets the type of data (if value or data)
@@ -153,11 +159,12 @@ public class BaliseXML {
         }
     }
 
-    private static void buildBaliseXmlTreeFin(ElementProperties node, int profondeur, BaliseXML parentNode){
+    private static void buildBaliseXmlTreeFin(ElementProperties node, int profondeur, BaliseXML parentNode) {
         BaliseXML currentXmlTag = null;
         // 1. Check if it is an element
         if (null != elementOrAttributeRNG) {
-            currentXmlTag = implementAndReturnCurrentXmlTag(parentNode, valueRNG, dataRNG, cardinalityRNG, elementOrAttributeRNG);
+            currentXmlTag =
+                implementAndReturnCurrentXmlTag(parentNode, valueRNG, dataRNG, cardinalityRNG, elementOrAttributeRNG);
         }
         if (null != currentXmlTag) {
             currentTagExist(parentNode, currentXmlTag);
@@ -169,7 +176,7 @@ public class BaliseXML {
         }
     }
 
-    private static void setDocumentationAnnotationElementAttribute(ElementProperties node){
+    private static void setDocumentationAnnotationElementAttribute(ElementProperties node) {
 
         setAnnotationDocumentationXML(node);
 
@@ -185,11 +192,11 @@ public class BaliseXML {
         }
 
         if (elementOrAttributeRNG != null) {
-            if(null != documentationXML){
+            if (null != documentationXML) {
                 elementOrAttributeRNG.getChildren().add(annotationXML);
                 annotationXML.setParent(elementOrAttributeRNG);
             }
-            if(annotationCommentXML != null){
+            if (annotationCommentXML != null) {
                 elementOrAttributeRNG.getChildren().add(annotationCommentXML);
                 annotationCommentXML.setParent(elementOrAttributeRNG);
             }
@@ -205,25 +212,28 @@ public class BaliseXML {
             annotationXML.setDocumentationXML(documentationXML);
         }
 
-        if(node.getName().equals("ArchiveUnit") && node.getEditName() != null){
+        if (node.getName().equals("ArchiveUnit") && node.getEditName() != null) {
             annotationCommentXML = new AnnotationXML();
             documentationCommentXML = new DocumentationXML();
             documentationCommentXML.setDocumentation(node.getEditName());
             annotationCommentXML.setDocumentationXML(documentationCommentXML);
-            if(node.getDocumentation() != null){
+            if (node.getDocumentation() != null) {
                 documentationXML.setDocumentation("Commentaire : " + node.getDocumentation());
                 annotationXML.setDocumentationXML(documentationXML);
             }
         }
     }
+
     /**
      * Set Cardinality to element or attribute Rng
+     *
      * @param node
      * @param cardinalityRNG
      * @param elementOrAttributeRNG
      * @return
      */
-    private static BaliseXML defineElementOrAttributeCardinality(ElementProperties node, BaliseXML cardinalityRNG, BaliseXML elementOrAttributeRNG) {
+    private static BaliseXML defineElementOrAttributeCardinality(ElementProperties node, BaliseXML cardinalityRNG,
+        BaliseXML elementOrAttributeRNG) {
         if (node.getCardinality().equals(RNGConstants.Cardinality.ZERO_OR_MORE.getLabel())) {
             cardinalityRNG = new ZeroOrMoreXML();
             if (elementOrAttributeRNG != null) {
@@ -245,6 +255,7 @@ public class BaliseXML {
 
     /**
      * if element exist, implement it and return
+     *
      * @param parentNode
      * @param valueRNG
      * @param dataRNG
@@ -252,7 +263,8 @@ public class BaliseXML {
      * @param elementOrAttributeRNG
      * @return
      */
-    private static BaliseXML implementAndReturnCurrentXmlTag(BaliseXML parentNode, ValueXML valueRNG, DataXML dataRNG, BaliseXML cardinalityRNG, BaliseXML elementOrAttributeRNG) {
+    private static BaliseXML implementAndReturnCurrentXmlTag(BaliseXML parentNode, ValueXML valueRNG, DataXML dataRNG,
+        BaliseXML cardinalityRNG, BaliseXML elementOrAttributeRNG) {
         BaliseXML currentXmlTag;
         LOGGER.debug(BaliseXML.class.getName(), "Parsing %s", elementOrAttributeRNG.getName());
         // 1.1 Check if the element has cardinality
@@ -271,6 +283,7 @@ public class BaliseXML {
 
     /**
      * Define valueRNG
+     *
      * @param valueRNG
      * @param elementOrAttributeRNG
      * @param currentXmlTag
@@ -283,7 +296,7 @@ public class BaliseXML {
                 valueRNG.setParent(currentXmlTag);
             }
             // If children is Element or Attribute, set  accordingly
-        } else if (currentXmlTag instanceof ElementXML|| currentXmlTag instanceof AttributeXML) {
+        } else if (currentXmlTag instanceof ElementXML || currentXmlTag instanceof AttributeXML) {
             currentXmlTag.setValueXML(valueRNG);
             valueRNG.setParent(currentXmlTag);
         } else {
@@ -295,6 +308,7 @@ public class BaliseXML {
 
     /**
      * Define DataRNG of current XML TAG
+     *
      * @param dataRNG
      * @param currentXmlTag
      */
@@ -313,12 +327,14 @@ public class BaliseXML {
 
     /**
      * Define current Xml Tag according to element cardinality
+     *
      * @param parentNode
      * @param cardinalityRNG
      * @param elementOrAttributeRNG
      * @return
      */
-    private static BaliseXML defineCurrentXmlTag(BaliseXML parentNode, BaliseXML cardinalityRNG, BaliseXML elementOrAttributeRNG) {
+    private static BaliseXML defineCurrentXmlTag(BaliseXML parentNode, BaliseXML cardinalityRNG,
+        BaliseXML elementOrAttributeRNG) {
         BaliseXML currentXmlTag;
         if (null != cardinalityRNG) {
             cardinalityRNG.getChildren().add(elementOrAttributeRNG);
@@ -341,11 +357,13 @@ public class BaliseXML {
 
     /**
      * If current xml tag not a GrammarXML Object
+     *
      * @param node
      * @param profondeur
      * @param currentXmlTag
      */
-    private static void currentTagNotInstanceOfGrammarXML(ElementProperties node, int profondeur, BaliseXML currentXmlTag) {
+    private static void currentTagNotInstanceOfGrammarXML(ElementProperties node, int profondeur,
+        BaliseXML currentXmlTag) {
         for (ElementProperties next : node.getChildren()) {
             if (currentXmlTag instanceof OptionalXML || currentXmlTag instanceof OneOrMoreXML
                 || currentXmlTag instanceof ZeroOrMoreXML) {
@@ -359,6 +377,7 @@ public class BaliseXML {
 
     /**
      * Implement current tag if exist
+     *
      * @param parentNode
      * @param currentXmlTag
      */
@@ -371,7 +390,8 @@ public class BaliseXML {
                 .findAny()
                 .orElse(null);
 
-            Boolean optionalHasAlreadyCurrentTag = optionalWithChildren != null && optionalWithChildren.children.contains(currentXmlTag);
+            Boolean optionalHasAlreadyCurrentTag =
+                optionalWithChildren != null && optionalWithChildren.children.contains(currentXmlTag);
 
             if (Boolean.FALSE.equals(optionalHasAlreadyCurrentTag)) {
                 currentXmlTag.setParent(parentNode);

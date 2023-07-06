@@ -70,7 +70,7 @@
       "cardinality": null,
       "groupOrChoice": null,
       "valueOrData": "data",
-      "dataType": "token",
+      "dataType": "string",
       "value": null,
       "documentation": null,
       "level": 1,

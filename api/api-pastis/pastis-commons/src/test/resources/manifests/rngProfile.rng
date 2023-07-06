@@ -18,7 +18,7 @@
                 <rng:value type="token">IN-UPPA-0</rng:value>
             </rng:element>
             <rng:element name="CodeListVersions">
-                <rng:data type="token"/>
+                <rng:data type="string"/>
             </rng:element>
             <rng:element name="DataObjectPackage">
                 <rng:oneOrMore>
