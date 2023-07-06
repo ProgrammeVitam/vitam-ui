@@ -3440,7 +3440,7 @@
     "MORE_THAN": "+ than ",
     "MORE_THAN_THRESHOLD": "+ than 10 000",
     "NO_MORE_RESULTS": "No more results",
-    "ONE_SELECTED": "sélectionné",
+    "ONE_SELECTED": "selected",
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criterias",
     "RESULT": "Result",
     "RESULTS": "Results",
@@ -3718,14 +3718,17 @@
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching an archive",
-    "NO_PHYSICAL_ARCHIVE_MSG":"No physical archive",
-    "NO_LITTERAL_FORMAT_MSG":"No litteral format",
+    "NO_PHYSICAL_ARCHIVE_MSG": "No physical archive",
+    "NO_LITTERAL_FORMAT_MSG": "No litteral format",
     "UNIT_OBJECT_QUALIFIER_TYPE": {
       "BinaryMaster": "Binary master",
       "Dissemination": "Dissemination",
       "PhysicalMaster": "Physical master",
       "TextContent": "Text content",
       "Thumbnail": "Thumbnail"
+    },
+    "EXPORT_CSV": {
+      "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
     }
   },
   "COLLECT": {

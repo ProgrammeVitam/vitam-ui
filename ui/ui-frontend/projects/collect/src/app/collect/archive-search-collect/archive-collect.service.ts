@@ -39,7 +39,7 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
+import { Observable, TimeoutError, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
@@ -49,7 +49,7 @@ import {
   Ontology,
   SearchService,
   Transaction,
-  Unit
+  Unit,
 } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
@@ -134,13 +134,10 @@ export class ArchiveCollectService extends SearchService<any> {
       size: 1,
       trackTotalHits: true,
     };
+
     return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId).pipe(
-      map((pagedResult: PagedResult) => {
-        return pagedResult.totalResults;
-      }),
-      catchError(() => {
-        return of(-1);
-      })
+      map((pagedResult: PagedResult) => pagedResult.totalResults),
+      catchError(() => of(-1))
     );
   }
 
@@ -167,16 +164,8 @@ export class ArchiveCollectService extends SearchService<any> {
     });
   }
 
-  launchDownloadObjectFromUnit(
-    unitId: string,
-    objectId: string,
-    tenantIdentifier: number,
-    qualifier?: string,
-    version?: number
-  ) {
-    this.downloadFile(
-      this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, tenantIdentifier, qualifier, version)
-    );
+  launchDownloadObjectFromUnit(unitId: string, objectId: string, tenantIdentifier: number, qualifier?: string, version?: number) {
+    this.downloadFile(this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, tenantIdentifier, qualifier, version));
   }
 
   downloadFile(url: string) {
@@ -231,7 +220,7 @@ export class ArchiveCollectService extends SearchService<any> {
 
   public loadFilingHoldingSchemeTree(tenantIdentifier: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
-      'X-Tenant-Id': '' + tenantIdentifier
+      'X-Tenant-Id': '' + tenantIdentifier,
     });
 
     return this.searchUnitApiService.getFilingPlan(headers).pipe(

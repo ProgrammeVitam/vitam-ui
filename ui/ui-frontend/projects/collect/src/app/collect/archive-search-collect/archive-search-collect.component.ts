@@ -31,8 +31,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, merge, Subject, Subscription } from 'rxjs';
-import { debounceTime, map, mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, Subscription, merge } from 'rxjs';
+import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 import {
   AccessContract,
   CriteriaDataType,
@@ -45,7 +45,7 @@ import {
   SidenavPage,
   Transaction,
   TransactionStatus,
-  Unit
+  Unit,
 } from 'ui-frontend-common';
 import {
   ArchiveSearchResultFacets,
@@ -58,12 +58,10 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum
+  SearchCriteriaTypeEnum,
 } from '../core/models';
 import { ArchiveCollectService } from './archive-collect.service';
-import {
-  SearchCriteriaSaverComponent
-} from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
+import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
@@ -155,6 +153,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   tenantIdentifier: string;
   projectName: string;
 
+  search$: Observable<number>;
+
   constructor(
     private route: ActivatedRoute,
     globalEventService: GlobalEventService,
@@ -197,7 +197,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             this.searchCriteriaKeys,
             this.nbQueryCriteria,
             'NODE',
-            {id: node.id, value: node.id},
+            { id: node.id, value: node.id },
             node.title,
             true,
             CriteriaOperator.EQ,
@@ -208,7 +208,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           );
         } else {
           node.count = null;
-          this.removeCriteria('NODE', {id: node.id, value: node.id}, false);
+          this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
         }
       })
     );
@@ -252,6 +252,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           return params.transactionId
             ? this.archiveUnitCollectService.getTransactionById(params.transactionId)
             : this.archiveUnitCollectService.getLastTransactionByProjectId(this.projectId);
+        }),
+        tap((transaction: Transaction) => {
+          this.search$ = this.archiveUnitCollectService.getTotalTrackHitsByCriteria(this.criteriaSearchList, transaction?.id || null);
         })
       )
       .subscribe((transaction) => {
@@ -267,10 +270,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       });
 
     this.projectName = this.route.snapshot.queryParamMap.get('projectName');
-    const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
-    this.searchCriteriaChangeSubscription = searchCriteriaChange.subscribe(() => {
-      this.submit();
-    });
+    this.searchCriteriaChangeSubscription = merge(this.orderChange, this.filterChange)
+      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS))
+      .subscribe(() => {
+        this.submit();
+      });
     this.archiveExchangeDataService.getToggle().subscribe((hidden) => {
       this.show = hidden;
     });
@@ -282,7 +286,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
-      {value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS},
+      { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
       this.translateService.instant('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
       true,
       CriteriaOperator.EQ,
@@ -297,7 +301,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
-      {value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS},
+      { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
       this.translateService.instant('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
       true,
       CriteriaOperator.EQ,
@@ -388,7 +392,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     }
     // Prepare criteria and store them to use for lateral panel
     this.pending = true;
-    const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: this.currentPage,
@@ -398,55 +402,53 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       computeFacets: includeFacets,
     };
     this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
-    this.archiveUnitCollectService
-      .searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null)
-      .subscribe(
-        (pagedResult: PagedResult) => {
-          if (includeFacets) {
-            this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
-            this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
-            this.pendingComputeFacets = false;
-            this.rulesFacetsComputed = true;
-          }
-          if (this.currentPage === 0) {
-            this.archiveUnits = pagedResult.results;
-            this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
-            this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null).subscribe(
+      (pagedResult: PagedResult) => {
+        if (includeFacets) {
+          this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
+          this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
+          this.pendingComputeFacets = false;
+          this.rulesFacetsComputed = true;
+        }
+        if (this.currentPage === 0) {
+          this.archiveUnits = pagedResult.results;
+          this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
+          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+          this.hasResults = true;
+          this.totalResults = pagedResult.totalResults;
+        } else {
+          if (pagedResult.results) {
             this.hasResults = true;
-            this.totalResults = pagedResult.totalResults;
-          } else {
-            if (pagedResult.results) {
-              this.hasResults = true;
-              pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
-            }
-          }
-          this.pageNumbers = pagedResult.pageNumbers;
-
-          this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
-
-          if (this.isAllchecked) {
-            this.itemSelected = this.totalResults - this.itemNotSelected;
-          }
-
-          this.canLoadMore = this.currentPage < this.pageNumbers - 1;
-          this.archiveHelperService.updateCriteriaStatus(
-            this.searchCriterias,
-            SearchCriteriaStatusEnum.IN_PROGRESS,
-            SearchCriteriaStatusEnum.INCLUDED
-          );
-          this.pending = false;
-          this.included = true;
-        },
-        (error: HttpErrorResponse) => {
-          this.logger.error('Error message :', error.message);
-          this.canLoadMore = false;
-          this.pending = false;
-          if (includeFacets) {
-            this.pendingComputeFacets = false;
-            this.archiveExchangeDataService.emitFacets([]);
+            pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
           }
         }
-      );
+        this.pageNumbers = pagedResult.pageNumbers;
+
+        this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
+
+        if (this.isAllchecked) {
+          this.itemSelected = this.totalResults - this.itemNotSelected;
+        }
+
+        this.canLoadMore = this.currentPage < this.pageNumbers - 1;
+        this.archiveHelperService.updateCriteriaStatus(
+          this.searchCriterias,
+          SearchCriteriaStatusEnum.IN_PROGRESS,
+          SearchCriteriaStatusEnum.INCLUDED
+        );
+        this.pending = false;
+        this.included = true;
+      },
+      (error: HttpErrorResponse) => {
+        this.logger.error('Error message :', error.message);
+        this.canLoadMore = false;
+        this.pending = false;
+        if (includeFacets) {
+          this.pendingComputeFacets = false;
+          this.archiveExchangeDataService.emitFacets([]);
+        }
+      }
+    );
   }
 
   // Manage lateral panels
@@ -490,7 +492,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     if (this.isAllchecked && !action) {
       this.listOfUACriteriaSearch = [];
       this.isIndeterminate = true;
-      this.listOfUAIdToExclude.push({value: id, id});
+      this.listOfUAIdToExclude.push({ value: id, id });
       this.listOfUAIdToInclude = [];
       if (this.itemSelected > 0) {
         this.itemSelected--;
@@ -504,7 +506,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         if (this.itemSelected === this.totalResults) {
           this.isIndeterminate = false;
         }
-        this.listOfUAIdToInclude.push({value: id, id});
+        this.listOfUAIdToInclude.push({ value: id, id });
         this.listOfUAIdToExclude.splice(0, this.listOfUAIdToExclude.length);
       } else {
         this.listOfUAIdToInclude = this.listOfUAIdToInclude.filter((element) => element.id !== id);
@@ -722,7 +724,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   private launchComputingManagementRulesFacets() {
     this.pendingComputeFacets = true;
-    const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: 0,
@@ -734,8 +736,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
     this.loadExactCount();
 
-    this.archiveUnitCollectService
-      .searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null).subscribe(
+    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null).subscribe(
       (pagedResult: PagedResult) => {
         this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
         this.pendingComputeFacets = false;
@@ -754,24 +755,22 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.pendingGetFixedCount = true;
       this.submitedGetFixedCount = true;
-      this.archiveUnitCollectService
-        .getTotalTrackHitsByCriteria(this.criteriaSearchList, !!this.transaction ? this.transaction.id : null)
-        .subscribe(
-          (exactCountResults: number) => {
-            if (exactCountResults !== -1) {
-              this.totalResults = exactCountResults;
-              if (this.isAllchecked) {
-                this.itemSelected = this.totalResults - this.itemNotSelected;
-              }
-              this.waitingToGetFixedCount = false;
+      this.archiveUnitCollectService.getTotalTrackHitsByCriteria(this.criteriaSearchList, this?.transaction?.id || null).subscribe(
+        (exactCountResults: number) => {
+          if (exactCountResults !== -1) {
+            this.totalResults = exactCountResults;
+            if (this.isAllchecked) {
+              this.itemSelected = this.totalResults - this.itemNotSelected;
             }
-            this.pendingGetFixedCount = false;
-          },
-          (error: HttpErrorResponse) => {
-            this.pendingGetFixedCount = false;
-            this.logger.error('Error message :', error.message);
+            this.waitingToGetFixedCount = false;
           }
-        );
+          this.pendingGetFixedCount = false;
+        },
+        (error: HttpErrorResponse) => {
+          this.pendingGetFixedCount = false;
+          this.logger.error('Error message :', error.message);
+        }
+      );
     }
   }
 
@@ -896,10 +895,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   // Export data to CSV
 
   exportArchiveUnitsToCsvFile() {
-
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
-      const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+      const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
       const searchCriteria = {
         criteriaList: this.listOfUACriteriaSearch,
         pageNumber: this.currentPage,
@@ -937,7 +935,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.archiveUnitCollectService.sendTransaction(this.transaction.id).subscribe(() => {
       this.isNotReady$.next(true);
       const message = this.translateService.instant('COLLECT.INGEST_TRANSACTION_LAUNCHED');
-      this.snackBar.open(message , null, {
+      this.snackBar.open(message, null, {
         panelClass: 'vitamui-snack-bar',
         duration: 10000,
       });
@@ -964,7 +962,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   updateUnitsMetadataDisabled(): boolean {
-    return (!this.transaction) || this.transaction.status !== TransactionStatus.OPEN;
+    return !this.transaction || this.transaction.status !== TransactionStatus.OPEN;
   }
 
   isArchiveUnitsEmpty(): boolean {

@@ -721,16 +721,16 @@ export class FileTreeComponent implements OnDestroy {
 
   /** Error handler */
   handleError(error: any) {
-    let errorMessage = '';
+    let vitamErrorDto = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
-      errorMessage = error.error.message;
+      vitamErrorDto = error.error.message;
     } else {
       // Get server-side error
-      errorMessage = `Error Code: ${error.status} Message: ${error.message}`;
+      vitamErrorDto = `Error Code: ${error.status} Message: ${error.message}`;
     }
-    window.alert(errorMessage);
-    return throwError(errorMessage);
+    window.alert(vitamErrorDto);
+    return throwError(vitamErrorDto);
   }
 
   showAllowedChidren(node: FileNode) {
