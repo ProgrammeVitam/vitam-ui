@@ -276,8 +276,7 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <vitamui-common-archive-unit-count
-        [searchService]="archiveService"
-        [searchCriterias]="criteriaSearchList"
+        [search]="search$"
         [archiveUnitCount]="totalResults"
         [selectedArchiveUnitCount]="itemSelected"
         [threshold]="10000"
