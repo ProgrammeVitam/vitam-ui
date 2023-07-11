@@ -136,8 +136,7 @@
         <spring.security.version>5.4.5</spring.security.version>
         <swagger.version>3.0.0</swagger.version>
         <trang.version>20181222</trang.version>
-        <!-- En attente d'une release contenant l'évolution US 8362 de VITAM -->
-        <vitam.version>5.rc.1</vitam.version>
+        <vitam.version>5.rc.5-SNAPSHOT</vitam.version>
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
         <xom.version>1.3.4</xom.version>
