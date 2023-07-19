@@ -7,11 +7,13 @@
     matTooltipShowDelay="300"
     class="link-without-underline"
     (click)="loadExactCount()"
-    >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ archiveUnitCount }}
+    >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ threshold }}
   </a>
   <span *ngIf="!canLoadExactCount">{{ archiveUnitCount }}</span>
   <span>
-    {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ selectedArchiveUnitCount }}
-    {{ 'ARCHIVE_SEARCH.ONE_SELECTED' | translate | plural : selectedArchiveUnitCount }}</span
-  >
+    {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} /
+    {{ (selectedOverThreshold && !exactCountLoaded ? 'ARCHIVE_SEARCH.MORE_THAN' : '') | translate }}
+    {{ (selectedOverThreshold && !exactCountLoaded ? threshold : selectedArchiveUnitCount) }}
+    {{ 'ARCHIVE_SEARCH.ONE_SELECTED' | translate | plural : selectedArchiveUnitCount }}
+  </span>
 </ng-container>

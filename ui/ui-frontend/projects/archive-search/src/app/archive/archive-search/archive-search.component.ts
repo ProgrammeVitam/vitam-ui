@@ -27,20 +27,47 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef,
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { merge, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, merge } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import {
-  ArchiveSearchResultFacets, CriteriaDataType, CriteriaOperator, CriteriaValue, Direction, FilingHoldingSchemeNode, Logger, ORPHANS_NODE_ID,
-  PagedResult, SearchCriteria, SearchCriteriaAddAction, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements,
-  SearchCriteriaHistory, SearchCriteriaMgtRuleEnum, SearchCriteriaRemoveAction, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, Unit,
-  VitamuiRoles
+  ArchiveSearchResultFacets,
+  CriteriaDataType,
+  CriteriaOperator,
+  CriteriaValue,
+  Direction,
+  FilingHoldingSchemeNode,
+  Logger,
+  ORPHANS_NODE_ID,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaAddAction,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaEltements,
+  SearchCriteriaHistory,
+  SearchCriteriaMgtRuleEnum,
+  SearchCriteriaRemoveAction,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+  Unit,
+  VitamuiRoles,
 } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -171,7 +198,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   orderBy = 'Title';
   isIndeterminate: boolean;
-  isAllchecked: boolean;
+  isAllChecked: boolean;
   hasResults = false;
 
   show = true;
@@ -501,7 +528,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         (exactCountResults: number) => {
           if (exactCountResults !== -1) {
             this.totalResults = exactCountResults;
-            if (this.isAllchecked) {
+            if (this.isAllChecked) {
               this.itemSelected = this.totalResults - this.itemNotSelected;
             }
             this.waitingToGetFixedCount = false;
@@ -521,7 +548,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.criteriaSearchList,
       this.listOfUAIdToInclude,
       this.listOfUAIdToExclude,
-      this.isAllchecked,
+      this.isAllChecked,
       this.isIndeterminate
     );
   }
@@ -599,7 +626,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         }
         this.pageNumbers = pagedResult.pageNumbers;
         this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
-        if (this.isAllchecked) {
+        if (this.isAllChecked) {
           this.itemSelected = this.totalResults - this.itemNotSelected;
         }
         this.canLoadMore = this.currentPage < this.pageNumbers - 1;
@@ -868,7 +895,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.pageNumbers = 0;
     this.totalResults = 0;
     this.itemSelected = 0;
-    this.isAllchecked = false;
+    this.isAllChecked = false;
     this.isIndeterminate = false;
     this.itemNotSelected = 0;
     this.canLoadMore = false;
@@ -878,14 +905,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   checkParentBoxChange(event: any) {
-    const action = event.target.checked;
-    if (action) {
-      this.itemSelected = this.totalResults;
-      this.isAllchecked = true;
-    } else {
-      this.isAllchecked = false;
+    const { checked } = event.target;
+
+    this.isAllChecked = checked;
+    this.itemSelected = checked ? this.totalResults : 0;
+    if (!checked) {
       this.isIndeterminate = false;
-      this.itemSelected = 0;
     }
     this.listOfUAIdToInclude = [];
     this.listOfUAIdToExclude = [];
@@ -895,7 +920,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   checkChildrenBoxChange(id: string, event: any) {
     const action = event.target.checked;
 
-    if (this.isAllchecked && !action) {
+    if (this.isAllChecked && !action) {
       this.listOfUACriteriaSearch = [];
       this.isIndeterminate = true;
       this.listOfUAIdToExclude.push({ value: id, id });
@@ -934,7 +959,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.itemSelected = 0;
     this.isIndeterminate = false;
     this.itemNotSelected = 0;
-    this.isAllchecked = false;
+    this.isAllChecked = false;
   }
 
   checkUserHasRole(role: VitamuiRoles, tenantIdentifier: number) {
@@ -978,7 +1003,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           .subscribe(() => {})
       );
     } else if (this.itemSelected === 1) {
-      this.archiveUnitGuidSelected = this.isAllchecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
+      this.archiveUnitGuidSelected = this.isAllChecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
       this.archiveUnitAllunitup = this.archiveUnits.find((archiveUnit) => archiveUnit['#id'] === this.archiveUnitGuidSelected)['#unitups'];
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
       const reclassificationCriteria = {
@@ -1010,7 +1035,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   selectedItemCountKnown(): boolean {
-    return !this.waitingToGetFixedCount || !this.isAllchecked;
+    return !this.waitingToGetFixedCount || !this.isAllChecked;
   }
 
   async prepareToLaunchVitamAction() {
@@ -1021,7 +1046,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
         if (exactCountResults !== -1) {
           this.totalResults = exactCountResults;
-          if (this.isAllchecked) {
+          if (this.isAllChecked) {
             this.itemSelected = this.totalResults - this.itemNotSelected;
           }
           this.waitingToGetFixedCount = false;
@@ -1294,7 +1319,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.tenantIdentifier,
       this.itemSelected,
       this.currentPage,
-      this.isAllchecked,
+      this.isAllChecked,
       this.confirmSecondActionBigNumberOfResultsActionDialog
     );
   }
@@ -1362,7 +1387,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.tenantIdentifier,
       this.itemSelected,
       this.currentPage,
-      this.isAllchecked,
+      this.isAllChecked,
       this.confirmSecondActionBigNumberOfResultsActionDialog
     );
   }

@@ -105,7 +105,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   itemSelected = 0;
   itemNotSelected = 0;
   isIndeterminate: boolean;
-  isAllchecked: boolean;
+  isAllChecked: boolean;
   waitingToGetFixedCount = false;
   totalResults = 0;
   orderBy = 'Title';
@@ -323,7 +323,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.itemSelected = 0;
     this.isIndeterminate = false;
     this.itemNotSelected = 0;
-    this.isAllchecked = false;
+    this.isAllChecked = false;
   }
 
   // Search Data
@@ -425,7 +425,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
           this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
 
-          if (this.isAllchecked) {
+          if (this.isAllChecked) {
             this.itemSelected = this.totalResults - this.itemNotSelected;
           }
 
@@ -471,14 +471,12 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   // Manage criteria filters methods
 
   checkParentBoxChange(event: any) {
-    const action = event.target.checked;
-    if (action) {
-      this.itemSelected = this.totalResults;
-      this.isAllchecked = true;
-    } else {
-      this.isAllchecked = false;
+    const { checked } = event.target;
+
+    this.isAllChecked = checked;
+    this.itemSelected = checked ? this.totalResults : 0;
+    if (!checked) {
       this.isIndeterminate = false;
-      this.itemSelected = 0;
     }
     this.listOfUAIdToInclude = [];
     this.listOfUAIdToExclude = [];
@@ -488,7 +486,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   checkChildrenBoxChange(id: string, event: any) {
     const action = event.target.checked;
 
-    if (this.isAllchecked && !action) {
+    if (this.isAllChecked && !action) {
       this.listOfUACriteriaSearch = [];
       this.isIndeterminate = true;
       this.listOfUAIdToExclude.push({ value: id, id });
@@ -570,7 +568,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.pageNumbers = 0;
     this.totalResults = 0;
     this.itemSelected = 0;
-    this.isAllchecked = false;
+    this.isAllChecked = false;
     this.isIndeterminate = false;
     this.itemNotSelected = 0;
     this.canLoadMore = false;
@@ -758,7 +756,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         (exactCountResults: number) => {
           if (exactCountResults !== -1) {
             this.totalResults = exactCountResults;
-            if (this.isAllchecked) {
+            if (this.isAllChecked) {
               this.itemSelected = this.totalResults - this.itemNotSelected;
             }
             this.waitingToGetFixedCount = false;
@@ -913,7 +911,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.criteriaSearchList,
       this.listOfUAIdToInclude,
       this.listOfUAIdToExclude,
-      this.isAllchecked,
+      this.isAllChecked,
       this.isIndeterminate
     );
   }

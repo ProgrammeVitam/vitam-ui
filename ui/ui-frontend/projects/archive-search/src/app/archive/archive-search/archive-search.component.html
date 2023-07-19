@@ -277,10 +277,11 @@
     <div class="vitamui-table-head">
       <vitamui-common-archive-unit-count
         [search]="search$"
-        [archiveUnitCount]="totalResults"
-        [selectedArchiveUnitCount]="itemSelected"
+        [(archiveUnitCount)]="totalResults"
+        [(selectedArchiveUnitCount)]="itemSelected"
         [threshold]="10000"
         [(pending)]="pending"
+        [allChecked]="isAllChecked"
         class="col-8"
       ></vitamui-common-archive-unit-count>
       <div class="col-3 area-download" [ngClass]="totalResults > 0 && itemSelected > 0 ? 'enabled-div' : 'disabled-div'">
@@ -342,7 +343,7 @@
         <input
           class="criteria-choice-input"
           type="checkbox"
-          [checked]="isAllchecked"
+          [checked]="isAllChecked"
           [indeterminate]="isIndeterminate"
           (change)="checkParentBoxChange($event)"
         />
@@ -413,7 +414,7 @@
               class="criteria-choice-input"
               type="checkbox"
               (click)="checkChildrenBoxChange(archiveUnit['#id'], $event)"
-              [checked]="isAllchecked"
+              [checked]="isAllChecked"
             />
           </div>
           <div class="col-1 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
