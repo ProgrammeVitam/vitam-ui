@@ -8,7 +8,6 @@
   },
   "CONTRACT_MANAGEMENT": {
     "CONTRACT_PAGE": {
-      "TITLE": "Contrats de gestion",
       "CREATE_MANAGEMENT_CONTRACT": "Créer un contrat de gestion",
       "SEARCH_CRITERIA": "Rechercher par identifiant et nom du contrat",
       "CONTRACTS_LIST": "Liste des contrats de gestion"

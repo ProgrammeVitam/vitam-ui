@@ -49,9 +49,6 @@
       }
     }
   },
-  "INGEST_PAGE": {
-    "TITLE": "Déposer et suivre des versements"
-  },
   "INGEST_TRACKING": {
     "SIP_NAME": "Nom du SIP",
     "STATUS": "Avancement",
@@ -91,7 +88,6 @@
     "INGEST_ERROR_DETAIL": "Détails"
   },
   "FILLING_HOLDING_SCHEME": {
-    "TITLE": "Importer ou modifier des arbres et plans",
     "IMPORT_FILLING": "Nouveau plan de classement",
     "IMPORT_HOLDING": "Nouvel arbre de positionnement",
     "SEARCH": "Position de l'arbre ou plan"

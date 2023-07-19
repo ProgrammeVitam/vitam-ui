@@ -9,9 +9,11 @@
       <div class="vitamui-container">
         <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
 
-        <h4 i18n="Search securityProfile@@securityProfileSearchHeader">
-          Paramétrer les <strong>Profils de Sécurité</strong>
-        </h4>
+        <div class="vitamui-heading">
+          <vitamui-common-title-breadcrumb>
+            {{ 'APPLICATION.SECURITY_PROFILES_APP.NAME' | translate }}
+          </vitamui-common-title-breadcrumb>
+        </div>
 
         <div class="controls">
 

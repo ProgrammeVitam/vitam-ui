@@ -265,7 +265,6 @@
   },
   "USER": {
     "HOME": {
-      "TITLE": "Administrer mes utilisateurs",
       "TITLE_PLACEHOLDER": "Nom, Prénom, Identifiant, Email",
       "ACTION_BUTTON": "Créer un utilisateur",
       "RESULTS_TABLE": {
@@ -359,7 +358,6 @@
   },
   "USER_PROFILE": {
     "HOME": {
-      "TITLE": "Paramétrer les droits des administrateurs",
       "TITLE_PLACEHOLDER": "Nom du profil administrateur, Identifiant",
       "ACTION_BUTTON": "Créer un Profil Administrateur",
       "RESULTS_TABLE": {
@@ -399,7 +397,6 @@
   },
   "GROUP": {
     "HOME": {
-      "TITLE": "Paramétrer les groupes de profils",
       "TITLE_PLACEHOLDER": "Nom du groupe, Identifiant, Description, Unité d'appartenance",
       "ACTION_BUTTON": "Créer un Groupe",
       "RESULTS_TABLE": {
@@ -456,7 +453,6 @@
   },
   "HIERARCHY": {
     "HOME": {
-      "TITLE": "Paramétrer les Profils de droits d'accès",
       "TITLE_PLACEHOLDER": "Nom du profil, Identifiant",
       "ACTION_BUTTON": "Dupliquer un Profil",
       "RESULTS_TABLE": {
@@ -494,7 +490,6 @@
   },
   "EXTERNAL_PARAM_PROFILE": {
     "CREATE_EXTERNAL_PARAM_PROFILE": "CREER UN PROFIL PARAMETRAGES EXTERNES",
-    "TITLE": "Paramétrer les profils de paramétrages externes",
     "INPUT_REQUIRED": "Champ requis",
     "NAME_ALREADY_USED": "Nom déjà utilisé",
     "SELECT_ACCESSCONTRACT": "Sélectionner un contrat d'accès",

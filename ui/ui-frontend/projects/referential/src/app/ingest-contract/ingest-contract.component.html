@@ -13,12 +13,14 @@
   <mat-sidenav-content>
     <div class="vitamui-header">
       <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)"
-                               [hideCustomerMenu]="true"></vitamui-common-navbar>
+        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
+        </vitamui-common-navbar>
 
-        <h2 i18n="Search an ingest contract, owner or tenant@@IngestContractSearchHeader">
-          <img src="assets/mini-logo-vitam.png"/> Paramétrer mes <strong>Contrats d’entrée</strong>
-        </h2>
+        <div class="vitamui-heading">
+          <vitamui-common-title-breadcrumb>
+            {{ 'APPLICATION.INGEST_APP.NAME' | translate }}
+          </vitamui-common-title-breadcrumb>
+        </div>
 
         <div class="controls">
           <vitamui-common-search-bar

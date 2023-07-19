@@ -266,7 +266,6 @@
   },
   "USER": {
     "HOME": {
-      "TITLE": "Administer my users",
       "TITLE_PLACEHOLDER": "Lastname, Firstname, Id, Email",
       "ACTION_BUTTON": "Create a user",
       "RESULTS_TABLE": {
@@ -360,7 +359,6 @@
   },
   "USER_PROFILE": {
     "HOME": {
-      "TITLE": "Set up administrator rights",
       "TITLE_PLACEHOLDER": "Administrator profile name, Id",
       "ACTION_BUTTON": "Create an Administrator profile",
       "RESULTS_TABLE": {
@@ -400,7 +398,6 @@
   },
   "GROUP": {
     "HOME": {
-      "TITLE": "Set up profile groups",
       "TITLE_PLACEHOLDER": "Group name, Id, Description, Membership unit",
       "ACTION_BUTTON": "Create a Group",
       "RESULTS_TABLE": {
@@ -457,7 +454,6 @@
   },
   "HIERARCHY": {
     "HOME": {
-      "TITLE": "Set up access rights profiles",
       "TITLE_PLACEHOLDER": "Profile name, Id",
       "ACTION_BUTTON": "Duplicate a profile",
       "RESULTS_TABLE": {
@@ -495,7 +491,6 @@
   },
   "EXTERNAL_PARAM_PROFILE": {
     "CREATE_EXTERNAL_PARAM_PROFILE": "CREATE AN EXTERNAL SETTINGS PROFILE",
-    "TITLE": "Configure external setting profiles",
     "INPUT_REQUIRED": "Required field",
     "NAME_ALREADY_USED": "Name already used",
     "SELECT_ACCESSCONTRACT": "Select an Access Contract",
