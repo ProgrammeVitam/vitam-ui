@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archive.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchEliminationInternalService;
@@ -182,10 +183,10 @@ public class ArchiveSearchInternalController {
             .checkParameter(IDENTIFIER_MANDATORY, id);
         SanityChecker.checkSecureParameter(id, usage);
         LOGGER.debug("Download Archive Unit Object with id {}", id);
+        VitamContext context = externalParametersService.buildVitamContextFromExternalParam();
 
         return Mono.<Resource>fromCallable(() -> {
-                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version,
-                    externalParametersService.buildVitamContextFromExternalParam());
+                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version,context);
                 return new InputStreamResource((InputStream) response.getEntity());
             }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity

@@ -229,7 +229,8 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
         CollectTransactionDto collectTransactionDto = factory.manufacturePojo(CollectTransactionDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         when(
-            restTemplate.exchange(URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + LAST_TRANSACTION_PATH),
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + LAST_TRANSACTION_PATH),
                 HttpMethod.GET,
                 new HttpEntity<>(params.getValue()), CollectTransactionDto.class))
             .thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));

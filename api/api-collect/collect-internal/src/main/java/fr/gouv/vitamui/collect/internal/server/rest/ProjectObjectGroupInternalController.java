@@ -29,6 +29,7 @@
 
 package fr.gouv.vitamui.collect.internal.server.rest;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
@@ -49,7 +50,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,7 +70,7 @@ public class ProjectObjectGroupInternalController {
         VitamUILoggerFactory.getInstance(ProjectObjectGroupInternalController.class);
     private final ProjectObjectGroupInternalService projectObjectGroupInternalService;
     private final ExternalParametersService externalParametersService;
-    private static final String IDENTIFIER_MANDATORY = "The identifier is a mandatory parameter: ";
+    private static final String IDENTIFIER_MANDATORY = "The identifier is mandatory parameter: ";
 
     public ProjectObjectGroupInternalController(ProjectObjectGroupInternalService projectObjectGroupInternalService,
         final ExternalParametersService externalParametersService) {
@@ -87,12 +87,10 @@ public class ProjectObjectGroupInternalController {
         ParameterChecker
             .checkParameter(IDENTIFIER_MANDATORY, id);
         SanityChecker.checkSecureParameter(id, usage);
+        VitamContext context = externalParametersService.buildVitamContextFromExternalParam();
         LOGGER.debug("Download Archive Unit Object with id {}", id);
-
         return Mono.<Resource>fromCallable(() -> {
-                Response response =
-                    projectObjectGroupInternalService.downloadObjectFromUnit(id, usage, version,
-                        externalParametersService.buildVitamContextFromExternalParam());
+                Response response = projectObjectGroupInternalService.downloadObjectFromUnit(id, usage, version, context);
                 return new InputStreamResource((InputStream) response.getEntity());
             }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
@@ -101,12 +99,11 @@ public class ProjectObjectGroupInternalController {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    public ResultsDto findObjectById(final @PathVariable("id") String id,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
+    public ResultsDto findObjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
         ParameterChecker
-            .checkParameter(IDENTIFIER_MANDATORY, id, accessContractId);
-        SanityChecker.checkSecureParameter(id, accessContractId);
+            .checkParameter(IDENTIFIER_MANDATORY, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get ObjectGroup By id : {}", id);
         return projectObjectGroupInternalService.findObjectById(id,
             externalParametersService.buildVitamContextFromExternalParam());
