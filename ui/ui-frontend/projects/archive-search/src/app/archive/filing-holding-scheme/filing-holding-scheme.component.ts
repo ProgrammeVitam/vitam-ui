@@ -122,7 +122,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
           this.hasMatchesInSearch = false;
           for (const node of this.nestedDataSourceFull.data) {
             node.count = 0;
-            node.hidden = true;
           }
         }
         // fullNodes is a Graph .

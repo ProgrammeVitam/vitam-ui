@@ -61,14 +61,12 @@ export class FilingHoldingSchemeHandler {
       for (const facet of facets) {
         if (node.id === facet.node) {
           node.count = facet.count;
-          node.hidden = false;
           nodesChecked++;
         }
       }
       if (node.children) {
         nodesChecked += FilingHoldingSchemeHandler.setCountRecursively(node.children, facets);
       }
-      node.hidden = nodesChecked === 0;
     }
     return nodesChecked;
   }

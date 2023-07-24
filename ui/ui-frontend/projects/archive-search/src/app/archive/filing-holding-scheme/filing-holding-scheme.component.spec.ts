@@ -94,31 +94,28 @@ describe('FilingHoldingSchemeComponent', () => {
       const rootNode: FilingHoldingSchemeNode = {
         id: 'rootId',
         title: 'RootTitle',
-        type: 'RecordGrp',
+        unitType: 'RecordGrp',
         children: [],
         vitamId: 'rootId',
         checked: false,
-        hidden: false,
       };
 
       const rootChildren: FilingHoldingSchemeNode[] = [
         {
           id: 'rootChild-1',
           title: 'RootChild 1',
-          type: 'RecordGrp',
+          unitType: 'RecordGrp',
           children: [],
           vitamId: 'rootChild-1',
           checked: false,
-          hidden: false,
         },
         {
           id: 'rootChild-2',
           title: 'RootChild 2',
-          type: 'RecordGrp',
+          unitType: 'RecordGrp',
           children: [],
           vitamId: 'rootChild-2',
           checked: false,
-          hidden: false,
         },
       ];
 
@@ -127,20 +124,18 @@ describe('FilingHoldingSchemeComponent', () => {
         {
           id: 'leaf-1',
           title: 'Leaf 1',
-          type: 'RecordGrp',
+          unitType: 'RecordGrp',
           children: [],
           vitamId: 'leaf-1',
           checked: false,
-          hidden: false,
         },
         {
           id: 'leaf-2',
           title: 'Leaf 2',
-          type: 'RecordGrp',
+          unitType: 'RecordGrp',
           children: [],
           vitamId: 'leaf-2',
           checked: false,
-          hidden: false,
         },
       ];
 

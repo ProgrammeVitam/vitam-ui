@@ -54,7 +54,6 @@ export const copyNodeWithoutChildren = (node: FilingHoldingSchemeNode): FilingHo
     hasObject: node?.hasObject,
     unitType: node?.unitType,
 
-    hidden: node.hidden,
     isLoadingChildren: false,
     canLoadMoreChildren: true,
     canLoadMoreMatchingChildren: true,
@@ -66,7 +65,6 @@ export function recursiveCheck(nodes: FilingHoldingSchemeNode[], show: boolean) 
     return;
   }
   for (const node of nodes) {
-    node.hidden = false;
     node.checked = show;
     node.count = null;
     this.recursiveCheck(node.children, show);

@@ -44,7 +44,7 @@ export function newNode(
   return {
     id: currentId,
     title: currentId,
-    type: 'INGEST',
+    unitType: 'INGEST',
     descriptionLevel: currentDescriptionLevel,
     checked: false,
     children: currentChildren,
@@ -127,7 +127,6 @@ describe('LeavesTreeComponent', () => {
     const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      type: 'INGEST',
       unitType: 'INGEST',
       descriptionLevel: 'Item',
       label: 'string',
@@ -135,7 +134,6 @@ describe('LeavesTreeComponent', () => {
       count: 55,
       vitamId: 'vitamId',
       checked: true,
-      hidden: false,
       isLoadingChildren: true,
       paginatedChildrenLoaded: 5,
     };

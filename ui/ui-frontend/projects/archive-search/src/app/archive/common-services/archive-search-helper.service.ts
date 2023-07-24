@@ -476,7 +476,6 @@ export class ArchiveSearchHelperService {
     nodeArray.forEach((node) => {
       if (node.id === nodeId) {
         node.checked = true;
-        node.hidden = false;
         this.addCriteria(
           searchCriterias,
           searchCriteriaKeys,

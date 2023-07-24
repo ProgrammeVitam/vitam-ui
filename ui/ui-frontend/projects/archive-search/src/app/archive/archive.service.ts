@@ -109,7 +109,6 @@ export class ArchiveService extends SearchService<any> {
           descriptionLevel: unit.DescriptionLevel,
           children: [],
           checked: false,
-          hidden: false,
           hasObject: !!unit['#object'],
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode);

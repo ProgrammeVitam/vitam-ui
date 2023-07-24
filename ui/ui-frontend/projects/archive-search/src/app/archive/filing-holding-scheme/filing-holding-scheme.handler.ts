@@ -56,7 +56,6 @@ export class FilingHoldingSchemeHandler {
     for (const facet of facets) {
       if (node.id === facet.node) {
         node.count = facet.count;
-        node.hidden = false;
         return 1;
       }
     }
@@ -309,7 +308,6 @@ export class FilingHoldingSchemeHandler {
           descriptionLevel: unit.DescriptionLevel,
           children: [],
           checked: false,
-          hidden: false,
           hasObject: !!unit['#object'],
         };
         units[i] = undefined;

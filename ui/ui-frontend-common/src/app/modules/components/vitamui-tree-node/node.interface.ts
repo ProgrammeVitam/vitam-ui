@@ -51,7 +51,6 @@ export interface FilingHoldingSchemeNode extends Id {
   disabled?: boolean; // used in VitamuiTreeNodeComponent to disable mat-icon-button & mat-checkbox
   checked: boolean; // used in VitamuiTreeNodeComponent to set ngModel of mat-checkbox
   count?: number;
-  hidden?: boolean; // TODO: try to remove - may be unused
   isLoadingChildren?: boolean;
   toggled?: boolean;
   // help to detect the unit type and the icon to show

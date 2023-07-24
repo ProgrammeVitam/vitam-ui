@@ -170,7 +170,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
           descriptionLevel: collectAttachmentUnit.DescriptionLevel,
           children: [],
           checked: false,
-          hidden: false,
           hasObject: unitParent?.hasObject,
         };
         const unitsresults: Unit[] = [];

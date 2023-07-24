@@ -79,7 +79,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
           node.toggled = undefined;
           node.children = [];
           node.count = 0;
-          node.hidden = true;
         });
         this.refreshTreeNodes();
         this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;

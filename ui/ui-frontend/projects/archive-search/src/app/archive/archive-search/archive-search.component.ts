@@ -666,7 +666,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       return;
     }
     for (const node of nodes) {
-      node.hidden = false;
       node.checked = show;
       node.count = null;
       this.recursiveCheck(node.children, show);

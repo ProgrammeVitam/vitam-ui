@@ -182,7 +182,6 @@ describe('LeavesTreeComponent', () => {
       count: 55,
       vitamId: 'vitamId',
       checked: true,
-      hidden: false,
       isLoadingChildren: false,
       paginatedChildrenLoaded: 5,
     };
@@ -217,13 +216,12 @@ describe('LeavesTreeComponent', () => {
     const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      type: 'HoldingSchema',
+      unitType: 'HoldingSchema',
       label: 'string',
       children: [],
       count: 55,
       vitamId: 'vitamId',
       checked: true,
-      hidden: false,
       isLoadingChildren: false,
       paginatedChildrenLoaded: 5,
     };
@@ -242,7 +240,6 @@ describe('LeavesTreeComponent', () => {
       count: 55,
       vitamId: 'vitamId',
       checked: true,
-      hidden: false,
       isLoadingChildren: false,
       paginatedChildrenLoaded: 5,
     };
@@ -261,7 +258,6 @@ describe('LeavesTreeComponent', () => {
       count: 55,
       vitamId: 'vitamId',
       checked: true,
-      hidden: false,
       isLoadingChildren: true,
       paginatedChildrenLoaded: 5,
     };
@@ -273,7 +269,6 @@ describe('LeavesTreeComponent', () => {
     const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      type: 'INGEST',
       unitType: 'INGEST',
       descriptionLevel: 'Item',
       label: 'string',
@@ -281,7 +276,6 @@ describe('LeavesTreeComponent', () => {
       count: 55,
       vitamId: 'vitamId',
       checked: true,
-      hidden: false,
       isLoadingChildren: true,
       paginatedChildrenLoaded: 5,
     };

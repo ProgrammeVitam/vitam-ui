@@ -27,6 +27,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { FilingHoldingSchemeNode } from './node.interface';
 import { VitamuiTreeNodeComponent } from './vitamui-tree-node.component';
 
 @Pipe({ name: 'truncate' })
@@ -40,15 +41,13 @@ describe('VitamuiTreeNodeComponent', () => {
   let component: VitamuiTreeNodeComponent;
   let fixture: ComponentFixture<VitamuiTreeNodeComponent>;
 
-  const node = {
+  const node: FilingHoldingSchemeNode = {
     id: 'id',
     title: 'label',
     type: 'RecordGroup',
     children: [],
     vitamId: 'vitamId',
-    parents: [],
     checked: true,
-    hidden: true,
     hasObject: false,
     unitType: 'INGEST',
   };
@@ -100,7 +99,7 @@ describe('VitamuiTreeNodeComponent', () => {
     expect(component.checkboxClick.emit).not.toHaveBeenCalled();
   });
 
-  it('should emit labelClick event and node should be checked when property labelIsLinkedToCheckbox is set to true and label is clicked', () => {
+  it('should emit labelClick and check node on label click when labelIsLinkedToCheckbox = true', () => {
     // Link label and checkbox
     component.labelIsLinkedToCheckbox = true;
     component.node.checked = false;
