@@ -40,7 +40,7 @@ describe('VitamuiTreeNodeComponent', () => {
   let component: VitamuiTreeNodeComponent;
   let fixture: ComponentFixture<VitamuiTreeNodeComponent>;
 
-  let node = {
+  const node = {
     id: 'id',
     title: 'label',
     type: 'RecordGroup',

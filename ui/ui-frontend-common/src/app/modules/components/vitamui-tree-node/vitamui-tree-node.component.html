@@ -13,7 +13,6 @@
 <mat-checkbox
   id="enable{{ node?.id }}"
   [(ngModel)]="node.checked"
-  [(indeterminate)]="node.disabledChild"
   [disabled]="node.disabled"
   (ngModelChange)="onCheckboxClick()"
   (click)="onCheckboxClick()"

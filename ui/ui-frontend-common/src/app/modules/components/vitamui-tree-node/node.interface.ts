@@ -48,7 +48,6 @@ export interface FilingHoldingSchemeNode extends Id {
   vitamId: string;
 
   // DISPLAY
-  disabledChild?: boolean; // TODO: try to remove - used in VitamuiTreeNodeComponent to set indeterminate
   disabled?: boolean; // used in VitamuiTreeNodeComponent to disable mat-icon-button & mat-checkbox
   checked: boolean; // used in VitamuiTreeNodeComponent to set ngModel of mat-checkbox
   count?: number;
