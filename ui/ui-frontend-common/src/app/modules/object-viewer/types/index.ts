@@ -34,20 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
-import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
-import { PipesModule } from '../pipes/pipes.module';
-import { ArchiveUnitCountComponent } from './components/archive-unit-count/archive-unit-count.component';
-import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
-import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
+export type DisplayObjectType = 'primitive' | 'list' | 'group';
 
-@NgModule({
-  imports: [CommonModule, ObjectViewerModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
-  declarations: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-  exports: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-})
-export class ArchiveModule {}
+export type ComponentType =
+  | 'textfield'
+  | 'textarea'
+  | 'select'
+  | 'select+textfield'
+  | 'select+textarea'
+  | 'datepicker'
+  | 'datetime'
+  | 'group';
+
+export type UiComponentDateFormatMapName = 'wanted' | 'pretty';
+
+export type SedaVersion = '2.1' | '2.2' | '2.3' | string;
+
+export type Cardinality = '0-1' | '1-1' | '0-N' | '1-N' | 'one' | 'many';
+
+export type LayoutSize = 'small' | 'medium' | 'large';

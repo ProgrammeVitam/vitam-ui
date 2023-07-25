@@ -51,7 +51,7 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
   @Input() selectedArchiveUnitCount = 0;
   @Input() pending!: boolean;
   @Input() threshold!: number;
-  @Input() allChecked: boolean = false;
+  @Input() allChecked = false;
   @Output() archiveUnitCountChange = new EventEmitter<number>();
   @Output() selectedArchiveUnitCountChange = new EventEmitter<number>();
   @Output() pendingChange = new EventEmitter<boolean>();

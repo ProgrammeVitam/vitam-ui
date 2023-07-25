@@ -34,20 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
-import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
-import { PipesModule } from '../pipes/pipes.module';
-import { ArchiveUnitCountComponent } from './components/archive-unit-count/archive-unit-count.component';
-import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
-import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
+import { Injectable } from '@angular/core';
+import { ComponentType } from '../types';
 
-@NgModule({
-  imports: [CommonModule, ObjectViewerModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
-  declarations: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-  exports: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-})
-export class ArchiveModule {}
+@Injectable()
+export class DateDisplayService {
+  private dateFormat = {
+    wanted: { datepicker: 'dd/MM/yyyy', datetime: 'dd/MM/yyyy hh:mm:ss' },
+    default: { datepicker: 'medium', datetime: 'medium' },
+  };
+
+  public getFormat(component: ComponentType, formatSet = 'default') {
+    return this.dateFormat[formatSet][component] || 'short';
+  }
+}

@@ -34,20 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
-import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
-import { PipesModule } from '../pipes/pipes.module';
-import { ArchiveUnitCountComponent } from './components/archive-unit-count/archive-unit-count.component';
-import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
-import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Logger } from '../logger/logger';
+import { DisplayObjectService, DisplayRule } from './models';
+import { PathStrategyDisplayObjectService } from './services/path-strategy-display-object.service';
 
-@NgModule({
-  imports: [CommonModule, ObjectViewerModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
-  declarations: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-  exports: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
+@Component({
+  selector: 'vitamui-common-object-viewer',
+  templateUrl: './object-viewer.component.html',
+  styleUrls: ['./object-viewer.component.scss'],
 })
-export class ArchiveModule {}
+export class ObjectViewerComponent implements OnInit, OnChanges {
+  @Input() data!: any;
+  @Input() template!: DisplayRule[];
+  @Input() mode = 'template-driven';
+
+  constructor(private logger: Logger, public displayObjectService: DisplayObjectService) {}
+
+  ngOnInit(): void {
+    this.displayObjectService.setMode(this.mode);
+    if (!this.data) {
+      this.logger.warn(this, 'No data provided at init');
+    }
+    if (!this.template) {
+      this.logger.warn(this, 'No template provided at init');
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { data, template, mode } = changes;
+
+    if (mode) {
+      this.displayObjectService.setMode(mode.currentValue);
+    }
+    if (data) {
+      this.displayObjectService.setData(data.currentValue);
+    }
+    if (template) {
+      this.displayObjectService.setTemplate(template.currentValue);
+    }
+  }
+}

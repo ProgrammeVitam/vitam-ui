@@ -34,20 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
-import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
-import { PipesModule } from '../pipes/pipes.module';
-import { ArchiveUnitCountComponent } from './components/archive-unit-count/archive-unit-count.component';
-import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
-import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { DisplayObject } from '../../models';
+import { FavoriteEntryService } from '../../services/favorite-entry.service';
+import { TypeService } from '../../services/type.service';
 
-@NgModule({
-  imports: [CommonModule, ObjectViewerModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
-  declarations: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-  exports: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
+@Component({
+  selector: 'vitamui-common-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss'],
 })
-export class ArchiveModule {}
+export class ListComponent implements OnInit, OnChanges {
+  @Input() displayObject: DisplayObject;
+
+  favoriteEntry: [key: string, value: any];
+  favoritePath: string;
+  isPrimitiveList: boolean;
+
+  constructor(private typeService: TypeService, private favoriteEntryService: FavoriteEntryService) {}
+
+  ngOnInit(): void {
+    this.favoriteEntryService.favoriteEntry(this.displayObject);
+    this.isPrimitiveList = this.typeService.isPrimitiveList(this.displayObject.value);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { displayObject } = changes;
+
+    if (displayObject) { this.ngOnInit(); }
+  }
+
+  toggle(): void {
+    this.displayObject.open = !this.displayObject.open;
+  }
+}

@@ -34,20 +34,79 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
-import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
-import { PipesModule } from '../pipes/pipes.module';
-import { ArchiveUnitCountComponent } from './components/archive-unit-count/archive-unit-count.component';
-import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
-import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
+import { Injectable } from '@angular/core';
+import { DisplayObjectType } from '../types';
 
-@NgModule({
-  imports: [CommonModule, ObjectViewerModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
-  declarations: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-  exports: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-})
-export class ArchiveModule {}
+@Injectable()
+export class TypeService {
+  public isPrimitive(value: any): boolean {
+    const type = typeof value;
+
+    switch (type) {
+      case 'string':
+      case 'number':
+      case 'undefined':
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  public isList(value: any): boolean {
+    return Array.isArray(value);
+  }
+
+  public isGroup(value: any): boolean {
+    return !this.isPrimitive(value) && !this.isList(value);
+  }
+
+  public isPrimitiveList(value: any): boolean {
+    return this.isList(value) && value.every((item: any) => this.isPrimitive(item));
+  }
+
+  public dataType(value: any): DisplayObjectType {
+    if (this.isPrimitive(value)) {
+      return 'primitive';
+    }
+    if (this.isList(value)) {
+      return 'list';
+    }
+    if (this.isGroup(value)) {
+      return 'group';
+    }
+
+    return null;
+  }
+
+  public isConsistent(value: any): boolean {
+    if (this.isPrimitive(value)) {
+      return Boolean(value) && value !== '';
+    }
+    if (this.isList(value)) {
+      return value.some((item: any) => this.isConsistent(item));
+    }
+    if (!value) {
+      return false;
+    }
+
+    return Object.values(value).some((v: any) => this.isConsistent(v));
+  }
+
+  public hasDefined(value: any): boolean {
+    if (value === null) {
+      return true;
+    }
+    if (this.isPrimitive(value)) {
+      return value !== undefined;
+    }
+    if (this.isList(value)) {
+      if (value.length) {
+        return value.some((item: any) => this.hasDefined(item));
+      }
+
+      return true;
+    }
+
+    return Object.values(value).some((item: any) => this.hasDefined(item));
+  }
+}

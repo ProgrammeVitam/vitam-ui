@@ -1,0 +1,30 @@
+<div *ngIf="displayObject.key" class="header mat-elevation-z1" [ngClass]="{ opened: displayObject.open }" (click)="toggle()">
+  <div class="v-row">
+    <div class="v-col">
+      <div class="v-row">
+        <div class="v-col align-items-center">
+          <i
+            class="vitamui-icon icon"
+            [ngClass]="{ 'vitamui-icon-chevron-down': displayObject.open, 'vitamui-icon-chevron-right': !displayObject.open }"
+          ></i>
+          <span class="object-name">{{ displayObject.path | translate }}</span>
+        </div>
+        <div *ngIf="favoriteEntry" class="v-col align-items-center favorite-entry">
+          {{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="content" [ngClass]="{ 'display-none': !displayObject.open }">
+  <div *ngFor="let column of rows" class="v-row">
+    <div *ngFor="let childDisplayObject of column" class="v-col">
+      <ng-container [ngSwitch]="childDisplayObject.type">
+        <vitamui-common-group *ngSwitchCase="'group'" [displayObject]="childDisplayObject"></vitamui-common-group>
+        <vitamui-common-list *ngSwitchCase="'list'" [displayObject]="childDisplayObject"></vitamui-common-list>
+        <vitamui-common-primitive *ngSwitchCase="'primitive'" [displayObject]="childDisplayObject"></vitamui-common-primitive>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="displayObject.value === null || displayObject.value === undefined">{{ displayObject.value | empty }}</div>
+</div>

@@ -39,15 +39,36 @@ import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
 import { PipesModule } from '../pipes/pipes.module';
-import { ArchiveUnitCountComponent } from './components/archive-unit-count/archive-unit-count.component';
-import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
-import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
+import { GroupComponent } from './components/group/group.component';
+import { ListComponent } from './components/list/list.component';
+import { PrimitiveComponent } from './components/primitive/primitive.component';
+import { DisplayObjectService } from './models';
+import { ObjectViewerComponent } from './object-viewer.component';
+import { ComponentMapperService } from './services/component-mapper.service';
+import { DataStructureService } from './services/data-structure.service';
+import { DateDisplayService } from './services/date-display.service';
+import { DisplayObjectHelperService } from './services/display-object-helper.service';
+import { DisplayRuleHelperService } from './services/display-rule-helper.service';
+import { FavoriteEntryService } from './services/favorite-entry.service';
+import { LayoutService } from './services/layout.service';
+import { PathStrategyDisplayObjectService } from './services/path-strategy-display-object.service';
+import { TypeService } from './services/type.service';
 
 @NgModule({
-  imports: [CommonModule, ObjectViewerModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
-  declarations: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-  exports: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
+  imports: [CommonModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
+  declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
+  providers: [
+    DateDisplayService,
+    DataStructureService,
+    TypeService,
+    DisplayObjectHelperService,
+    DisplayRuleHelperService,
+    ComponentMapperService,
+    LayoutService,
+    FavoriteEntryService,
+    { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
+  ],
+  exports: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
 })
-export class ArchiveModule {}
+export class ObjectViewerModule {}

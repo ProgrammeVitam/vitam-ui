@@ -65,6 +65,7 @@ describe('ArchiveUnitCountComponent', () => {
         PipesModule,
         MatTooltipModule,
         MatProgressSpinnerModule,
+        LoggerModule.forRoot(),
       ],
     }).compileComponents();
   });
