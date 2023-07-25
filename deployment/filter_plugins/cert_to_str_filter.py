@@ -15,8 +15,7 @@ def cert_to_str(certificate_content):
              f.write("".join([line for line in certificate_content.splitlines() if not cert_header_pattern.match(line)]))
          return "".join([line for line in certificate_content.splitlines() if not cert_header_pattern.match(line)])
     except Exception as e:
-        raise errors.AnsibleFilterError(
-            'certificate cannot be reduced to string ()'.str(e.message))
+        raise errors.AnsibleFilterError('certificate cannot be reduced to string ' + str(e))
 
 
 def normpath(*paths):
@@ -30,4 +29,3 @@ class FilterModule(object):
             'cert_to_str': cert_to_str,
             'normpath': normpath
         }
-
