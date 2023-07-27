@@ -25,7 +25,7 @@
  * accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -39,9 +39,9 @@ import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
-  styleUrls: [ './filing-holding-scheme.component.scss' ],
+  styleUrls: ['./filing-holding-scheme.component.scss'],
 })
-export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
+export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   @Input() accessContract: string;
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
@@ -81,13 +81,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.initialNodesState();
     this.initialNodeCheckState();
     this.initialNodeFacetState();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.accessContract) {
-      this.loadingHolding = true;
-      this.initFilingHoldingSchemeTree();
-    }
+    this.loadingHolding = true;
+    this.initFilingHoldingSchemeTree();
   }
 
   ngOnDestroy(): void {
@@ -178,7 +173,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     const criteriaSearchList = [
       {
         criteria: '#id',
-        values: [ { id: archiveUnitId, value: archiveUnitId } ],
+        values: [{ id: archiveUnitId, value: archiveUnitId }],
         operator: CriteriaOperator.EQ,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
         dataType: CriteriaDataType.STRING,
