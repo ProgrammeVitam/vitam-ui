@@ -34,23 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NestedTreeControl} from '@angular/cdk/tree';
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {MatTreeNestedDataSource} from '@angular/material/tree';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {ArchiveSharedDataServiceService} from '../../core/archive-shared-data-service.service';
-import {ArchiveService} from '../archive.service';
-import {FilingHoldingSchemeNode} from '../models/node.interface';
-import {NodeData} from '../models/nodedata.interface';
-import {ResultFacet} from '../models/search.criteria';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { Component, OnInit } from '@angular/core';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
+import { ArchiveService } from '../archive.service';
+import { FilingHoldingSchemeNode } from '../models/node.interface';
+import { NodeData } from '../models/nodedata.interface';
+import { ResultFacet } from '../models/search.criteria';
 
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
   styleUrls: ['./filing-holding-scheme.component.scss']
 })
-export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
+export class FilingHoldingSchemeComponent implements OnInit {
 
   tenantIdentifier: number;
   subscriptionNodesFull: Subscription;
@@ -122,7 +122,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   }
 
   convertNodesToList(holdingSchemas: FilingHoldingSchemeNode[]): string[] {
-    let nodeDataList: string[] = [];
+    const nodeDataList: string[] = [];
     for (const node of holdingSchemas) {
       if (node && node.id) {
         nodeDataList.push(node.id);
@@ -180,13 +180,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.accessContract) {
-      this.loadingHolding = true;
-      this.initFilingHoldingSchemeTree();
-    }
+    this.loadingHolding = true;
+    this.initFilingHoldingSchemeTree();
   }
 
   initFilingHoldingSchemeTree() {
@@ -205,7 +200,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   filterNodes() {
     this.filtredNodes = [];
     for (const node of this.fullNodes) {
-      let filtredNode = this.buildrecursiveTree(node);
+      const filtredNode = this.buildrecursiveTree(node);
       if (filtredNode !== null) {
         this.filtredNodes.push(filtredNode);
       }
@@ -217,9 +212,9 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   }
 
   buildrecursiveTree(node: FilingHoldingSchemeNode) {
-    if (node.count === 0) return null;
+    if (node.count === 0) { return null; }
     else {
-      let filtredNode: FilingHoldingSchemeNode = {
+      const filtredNode: FilingHoldingSchemeNode = {
         count: node.count,
         id: node.id,
         label: node.label,
@@ -231,10 +226,10 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
         checked: node.checked
       };
       if (node.children && node.children.length > 0) {
-        let filtredChildren = [];
+        const filtredChildren = [];
 
         for (const child of node.children) {
-          let childFiltred = this.buildrecursiveTree(child);
+          const childFiltred = this.buildrecursiveTree(child);
           if (childFiltred) {
             filtredChildren.push(childFiltred);
           }
@@ -250,13 +245,13 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   hasNestedChild = (_: number, node: any) => node.children && node.children.length;
 
   emitNode(node: FilingHoldingSchemeNode) {
-    this.nodeData = {id: node.id, title: node.title, checked: node.checked, count: node.count};
+    this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
     this.recursiveShowById(this.nestedDataSourceFull.data, node.checked, node.id);
     this.archiveSharedDataServiceService.emitNode(this.nodeData);
   }
 
   onTouched = () => {
-  };
+  }
 
   showAllTreeNodes() {
     this.filtered = false;
