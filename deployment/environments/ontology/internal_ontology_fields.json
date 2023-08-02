@@ -734,7 +734,6 @@
     "LastUpdate": "2022-09-30T12:52:53.118",
     "ShortName": "strategyId"
   },
-
   {
     "Identifier": "_id",
     "ApiField": "#id",
@@ -2256,7 +2255,6 @@
     "LastUpdate": "2020-11-02T14:21:30.440",
     "ShortName": "Identifiant AuthorizedAgent"
   },
-
   {
     "Identifier": "CustodialHistory.CustodialHistoryFile.DataObjectGroupReferenceId",
     "ApiField": "CustodialHistory.CustodialHistoryFile.DataObjectGroupReferenceId",
@@ -4548,5 +4546,41 @@
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
     "ShortName": "Archive Unit Identifier"
+  },
+  {
+    "Identifier": "PersistentIdentifier.PersistentIdentifierType",
+    "ApiField": "PersistentIdentifier.PersistentIdentifierType",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-02T12:25:58.047",
+    "LastUpdate": "2023-08-02T14:21:33.798",
+    "ShortName": "Persistent Identifier Type (ARK, POI, ...)"
+  },
+  {
+    "Identifier": "PersistentIdentifier.PersistentIdentifierOrigin",
+    "ApiField": "PersistentIdentifier.PersistentIdentifierOrigin",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-02T12:25:58.047",
+    "LastUpdate": "2023-08-02T14:21:33.798",
+    "ShortName": "Persistent Identifier Origin "
+  },
+  {
+    "Identifier": "PersistentIdentifier.PersistentIdentifierReference",
+    "ApiField": "PersistentIdentifier.PersistentIdentifierReference",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-02T12:25:58.047",
+    "LastUpdate": "2023-08-02T14:21:33.798",
+    "ShortName": "Persistent Identifier Reference "
+  },
+  {
+    "Identifier": "PersistentIdentifier.PersistentIdentifierContent",
+    "ApiField": "PersistentIdentifier.PersistentIdentifierContent",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-02T12:25:58.047",
+    "LastUpdate": "2023-08-02T14:21:33.798",
+    "ShortName": "Persistent Identifier Content "
   }
 ]
