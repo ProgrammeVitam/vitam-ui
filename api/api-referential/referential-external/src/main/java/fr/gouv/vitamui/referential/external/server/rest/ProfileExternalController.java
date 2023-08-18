@@ -218,7 +218,6 @@ public class ProfileExternalController {
     public ResponseEntity<Void> check(@RequestBody ProfileDto profileDto,
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ApiUtils.checkValidity(profileDto);
         SanityChecker.sanitizeCriteria(profileDto);
         final boolean exist = profileExternalService.check(profileDto);
         LOGGER.debug("check exist accessContract={}", profileDto);

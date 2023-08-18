@@ -47,6 +47,7 @@ import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { NoticeService } from '../../core/services/notice.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { PopupService } from '../../core/services/popup.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
@@ -67,6 +68,7 @@ export interface PastisDialogDataCreate {
   okLabel: string;
   cancelLabel: string;
   modeProfile?: string;
+  isSlaveMode?: boolean;
 }
 
 const POPUP_SAVE_PATH = 'PROFILE.POP_UP_SAVE';
@@ -91,7 +93,7 @@ function constantToTranslate(edit: boolean) {
 @Component({
   selector: 'pastis-user-action-save-profile',
   templateUrl: './save-profile.component.html',
-  styleUrls: [ './save-profile.component.scss' ]
+  styleUrls: ['./save-profile.component.scss']
 })
 export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   popupSaveCancelLabel: string;
@@ -118,11 +120,13 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   profile: Profile;
 
   profileDescription: ProfileDescription;
+  isSlaveMode: boolean;
   fileRng: File;
 
   @Output() close = new EventEmitter();
 
   constructor(private profileService: ProfileService,
+              private popupService: PopupService,
               private fileService: FileService,
               private startupService: StartupService,
               private snackBar: MatSnackBar,
@@ -153,6 +157,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     }
     this.subscriptions.add(
       this.dataGeneriquePopupService.currentDonnee.subscribe(donnees => this.donnees = donnees));
+    this.isSlaveMode = this.popupService.externalIdentifierEnabled
   }
 
   translatedOnChange(): void {
@@ -171,13 +176,12 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   saveProfileToFile() {
     // Retrieve the current file tree data as a JSON
     this.data = this.fileService.allData.getValue();
-    // console.log(nodesToString(this.data))
     if (this.isStandalone) {
       this.downloadProfiles(true);
       return;
     }
 
-    const donnees = [ 'Local', 'SAE', 'Où souhaitez-vous l\'enregistrer ?' ];
+    const donnees = ['Local', 'SAE', 'Où souhaitez-vous l\'enregistrer ?'];
     this.dataGeneriquePopupService.changeDonnees(donnees);
 
     const pastisDialogData = {} as PastisDialogData;
@@ -199,22 +203,20 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           return;
         }
         if (result.action === 'local') {
-          // console.log(' action = local')
           this.downloadProfiles(true);
-
         } else if (result.action === 'creation') {
-          // console.log(' action = creation')
           const modeProfile = this.profileService.profileMode;
-          const pastisDialogDataCreate = {} as PastisDialogDataCreate;
-          pastisDialogDataCreate.titleDialog = this.popupSaveCreateNoticeTitleDialog;
-          pastisDialogDataCreate.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
-          pastisDialogDataCreate.okLabel = this.popupSaveCreateNoticeOkLabel;
-          pastisDialogDataCreate.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
-          pastisDialogDataCreate.modeProfile = modeProfile;
+          const createNoticeData = {} as PastisDialogDataCreate;
+          createNoticeData.titleDialog = this.popupSaveCreateNoticeTitleDialog;
+          createNoticeData.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
+          createNoticeData.okLabel = this.popupSaveCreateNoticeOkLabel;
+          createNoticeData.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
+          createNoticeData.modeProfile = modeProfile;
+          createNoticeData.isSlaveMode = this.isSlaveMode;
           this.dialog.open(CreateNoticeComponent, {
               width: '800px',
               panelClass: 'pastis-popup-modal-box',
-              data: pastisDialogDataCreate
+              data: createNoticeData
             }
           ).afterClosed().subscribe((createNoticeComponentResult) => {
             this.toggleService.showPending();
@@ -259,7 +261,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                     }));
 
               } else if (createNoticeComponentResult.mode === 'PA') {
-                // console.log('  result.mode === \'PA\'')
                 const profile: Profile = this.noticeService.paNotice(retour, true);
                 if (!this.editProfile) {
                   // CREER NOTICE PUIS ASSIGNER LE PROFIL A LA NOTICE
@@ -280,7 +281,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
             }
           });
         } else if (result.action === 'rattachement') {
-          // console.log(' action = rattachement')
           const modeProfile = this.profileService.profileMode;
           const dataToSendToPopUp = {} as PastisDialogDataCreate;
           dataToSendToPopUp.titleDialog = this.popupSaveSelectNoticeTitleDialog;
@@ -311,7 +311,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                         this.subscriptions.add(
                           this.profileService.updateProfilePua(this.archivalProfileUnit).subscribe(() => {
                               this.toggleService.hidePending();
-                              // console.log('ok update')
                               this.success('La modification du profil a bien été effectué');
                             },
                             _ => {
@@ -360,7 +359,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
   savePA() {
     if (!this.editProfile) {
-      // console.log('  -> this.profileService.createProfilePa(this.profile)')
       this.profileService.createProfilePa(this.profile).subscribe((createdProfile) => {
         if (createdProfile) {
           // STEP 2 : ASSIGNER LE PROFIL A LA NOTICE
@@ -374,7 +372,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      // console.log('  -> this.profileService.updateProfilePa(this.profile)')
       this.profileService.updateProfilePa(this.profile).subscribe(() => {
         // STEP 2 : ASSIGNER LE PROFIL A LA NOTICE
         this.profileService.uploadFile(this.data, this.profileDescription, this.profileService.profileMode).subscribe(retrievedData => {
@@ -392,7 +389,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     this.notificationService.showSuccess(msg);
     // sleep 3 sec before return pastishome
     setTimeout(() => {
-      this.router.navigate([ 'pastis' ]);
+      this.router.navigate(['pastis']);
     }, 3000);
   }
 
@@ -415,7 +412,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
       typeFile = this.profileService.profileMode === 'PA' ? 'application/xml' : 'application/json';
       download = this.profileService.profileMode === 'PA' ? 'pastis_profile.rng' : 'pastis.json';
     }
-    const newBlob = new Blob([ dataFile ], { type: typeFile });
+    const newBlob = new Blob([dataFile], { type: typeFile });
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(newBlob);
       return;

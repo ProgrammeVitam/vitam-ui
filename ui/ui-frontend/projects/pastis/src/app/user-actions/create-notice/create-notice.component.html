@@ -8,7 +8,7 @@
 <form class="pastis-form" [formGroup]="form" (ngSubmit)="onSubmit()">
 
   <div class="row">
-    <div class="col-10 form-control">
+    <div class="col-10 form-control" *ngIf="externalIdentifierEnabled">
       <vitamui-common-input [disabled]="editNotice" (change)="checkIdentifier(modePUA)" [(ngModel)]="notice.identifier" class="col-9 px-0"
                             placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate }}" formControlName="identifier">
       </vitamui-common-input>
@@ -76,4 +76,3 @@
   </div>
 
 </form>
-
