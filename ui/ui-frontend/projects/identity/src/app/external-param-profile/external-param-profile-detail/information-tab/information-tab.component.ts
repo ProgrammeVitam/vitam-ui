@@ -45,7 +45,8 @@ import { ExternalParamProfileValidators } from '../../external-param-profile.val
 
 @Component({
   selector: 'app-information-tab',
-  templateUrl: './information-tab.component.html'
+  templateUrl: './information-tab.component.html',
+  styleUrls: ['./information-tab.component.scss'],
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   constructor(
@@ -53,6 +54,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     private externalParamProfileService: ExternalParamProfileService,
     private externalParamProfileValidators: ExternalParamProfileValidators
   ) {}
+
   form: FormGroup;
   permissionForm: FormGroup;
   groupsCount: boolean;

@@ -1,0 +1,56 @@
+.icon-information {
+  right: -75px;
+  width: 30px;
+  height: 31px;
+  font-size: 26px;
+  font-weight: bold;
+  color: var(--vitamui-secondary);
+}
+
+.select-threshold {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  i {
+    display: flex;
+    margin-left: 15px;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.header-title {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #757575;
+  margin: 0 0 5px 0;
+}
+
+.header-subtitle {
+  margin: 0 0 30px 0;
+}
+
+.vitamui-mat-select {
+  width: 70%;
+}
+
+.icon-close {
+  text-align: right;
+  float: right;
+  margin: 18px 0 0 0;
+}
+
+.icon-close:hover {
+  cursor: pointer;
+}
+
+vitamui-common-progress-bar {
+  display: inline-block;
+  width: 95%;
+}
