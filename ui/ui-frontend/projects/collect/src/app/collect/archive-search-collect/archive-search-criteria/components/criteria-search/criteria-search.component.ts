@@ -35,7 +35,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum }  from 'ui-frontend-common';
 
 @Component({
   selector: 'app-criteria-search',

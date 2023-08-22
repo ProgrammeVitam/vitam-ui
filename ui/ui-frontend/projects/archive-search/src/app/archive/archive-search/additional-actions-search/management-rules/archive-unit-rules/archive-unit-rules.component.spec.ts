@@ -34,12 +34,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaDto, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { UpdateUnitManagementRuleService } from '../../../../common-services/update-unit-management-rule.service';
 import { RuleTypeEnum } from '../../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../models/ruleAction.interface';
-import { SearchCriteriaDto } from '../../../../models/search.criteria';
 import { ArchiveUnitRulesComponent } from './archive-unit-rules.component';
 
 const translations: any = { TEST: 'Mock translate test' };

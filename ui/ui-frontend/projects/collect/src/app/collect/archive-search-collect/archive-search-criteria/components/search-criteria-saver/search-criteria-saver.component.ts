@@ -40,10 +40,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Direction } from 'ui-frontend-common';
+import { ConfirmDialogService, Direction, SearchCriteria, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'ui-frontend-common';
 import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar';
-import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
-import { SearchCriteria, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 

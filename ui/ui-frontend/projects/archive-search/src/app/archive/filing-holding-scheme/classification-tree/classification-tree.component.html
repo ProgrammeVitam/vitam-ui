@@ -1,7 +1,7 @@
 <div class="flex-row">
   <div class="tree-text">
     <div class="tree-title">
-      <span>{{ 'ARCHIVE_SEARCH.FILING_SHCEMA.TREE_TITLE' | translate }}</span>
+      <span>{{ 'ARCHIVE_SEARCH.FILING_SCHEMA.TREE_TITLE' | translate }}</span>
       <mat-spinner diameter="20" color="accent" *ngIf="loadingNodeUnit"></mat-spinner>
     </div>
   </div>
@@ -17,7 +17,7 @@
           <div class="tree-text">
             <vitamui-tree-node
               [node]="node"
-              [icon]="getNodeUnitIcone(node)"
+              [icon]="getNodeUnitIcon(node)"
               (nodeToggle)="nestedTreeControlFull.toggle(node)"
               (checkboxClick)="addToSearchCriteriaList(node)"
               (labelClick)="onShowNodeDetails(node.id)"
@@ -35,7 +35,7 @@
         <div *ngIf="nodeHasMatchsOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node">
           <vitamui-tree-node
             [node]="node"
-            [icon]="getNodeUnitIcone(node)"
+            [icon]="getNodeUnitIcon(node)"
             [expanded]="nestedTreeControlFull.isExpanded(node)"
             (nodeToggle)="nestedTreeControlFull.toggle(node)"
             (checkboxClick)="addToSearchCriteriaList(node)"
@@ -62,13 +62,13 @@
   </div>
 
   <div class="area-show-tree" *ngIf="nestedDataSourceFull.data.length <= 0">
-    {{ 'ARCHIVE_SEARCH.FILING_SHCEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate }}
+    {{ 'ARCHIVE_SEARCH.FILING_SCHEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate }}
   </div>
 
   <div class="tree-text">
     <a *ngIf="hasMatchesInSearch" class="tree-show-link" (click)="onViewSwitched()">
       {{
-        (this.showEveryNodes ? 'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_TREE_PARENT' : 'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE')
+        (this.showEveryNodes ? 'ARCHIVE_SEARCH.FILING_SCHEMA.SHOW_TREE_PARENT' : 'ARCHIVE_SEARCH.FILING_SCHEMA.SHOW_ENTIRE_TREE')
           | translate
       }}
     </a>

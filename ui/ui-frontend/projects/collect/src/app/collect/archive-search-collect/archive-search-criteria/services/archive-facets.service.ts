@@ -34,26 +34,20 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
+import { ArchiveSearchResultFacets, ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaMgtRuleEnum, } from 'ui-frontend-common';
 import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
-import {
-  ArchiveSearchResultFacets,
-  ResultFacet,
-  ResultFacetList,
-  RuleFacets,
-  SearchCriteriaMgtRuleEnum,
-} from './../models/search.criteria';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArchiveFacetsService {
-  RULES_COMPUTED_NUMBER_PREFIX: string = 'RULES_COMPUTED_NUMBER_';
-  FINAL_ACTION_COMPUTED_PREFIX: string = 'FINAL_ACTION_COMPUTED_';
-  EXPIRED_RULES_COMPUTED_PREFIX: string = 'EXPIRED_RULES_COMPUTED_';
-  UNEXPIRED_RULES_COMPUTED_PREFIX: string = 'UNEXPIRED_RULES_COMPUTED_';
-  COUNT_WITHOUT_RULES_PREFIX: string = 'COUNT_WITHOUT_RULES_';
-  COMPUTE_RULES_AU_NUMBER: string = 'COMPUTE_RULES_AU_NUMBER';
-  COUNT_BY_NODE: string = 'COUNT_BY_NODE';
+  RULES_COMPUTED_NUMBER_PREFIX = 'RULES_COMPUTED_NUMBER_';
+  FINAL_ACTION_COMPUTED_PREFIX = 'FINAL_ACTION_COMPUTED_';
+  EXPIRED_RULES_COMPUTED_PREFIX = 'EXPIRED_RULES_COMPUTED_';
+  UNEXPIRED_RULES_COMPUTED_PREFIX = 'UNEXPIRED_RULES_COMPUTED_';
+  COUNT_WITHOUT_RULES_PREFIX = 'COUNT_WITHOUT_RULES_';
+  COMPUTE_RULES_AU_NUMBER = 'COMPUTE_RULES_AU_NUMBER';
+  COUNT_BY_NODE = 'COUNT_BY_NODE';
 
   extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
     const nodesFacets: ResultFacet[] = [];
@@ -71,7 +65,7 @@ export class ArchiveFacetsService {
   }
 
   extractRulesFacetsResults(facetResults: ResultFacetList[]): ArchiveSearchResultFacets {
-    let archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
+    const archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
 
     if (facetResults) {
       archiveSearchResultFacets.appraisalRuleFacets = this.extractRulesFacetsResultsByCategory(
@@ -111,6 +105,7 @@ export class ArchiveFacetsService {
     }
     return archiveSearchResultFacets;
   }
+
   private extractRulesFacetsResultsByCategory(facetResults: ResultFacetList[], category: string): RuleFacets {
     const rulesFacets = new RuleFacets();
     if (facetResults && facetResults.length > 0) {

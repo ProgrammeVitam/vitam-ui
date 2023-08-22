@@ -3234,7 +3234,6 @@
     "HTTP_STATUS_CODE_EXPECTATION_FAILED": "The platform configuration does not allow you to perform this action, please contact your administrator.",
     "SERVER_ERROR": "A technical error has occurred: internal error"
   },
-
   "ARCHIVE_SEARCH": {
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
@@ -3448,13 +3447,14 @@
         "WITHOUT_RULES": "That without defined rules"
       }
     },
-    "FILING_SHCEMA": {
-      "LOAD_MORE_UNITS": "See more...",
+    "FILING_SCHEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "No trees or plans founds for the selected access contract",
       "SHOW_ENTIRE_TREE": "Show the entire tree",
       "SHOW_TREE_PARENT": "Show only result",
       "TREE_LEAVES_TITLE": "Attachment position(s)",
-      "TREE_TITLE": "Trees and plans"
+      "TREE_TITLE": "Trees and plans",
+      "LOAD_MORE_UNITS": "Load more results",
+      "ORPHANS_NODE": "Without attachment"
     },
     "HIDE_SEARCH_CRITERIA": "hide the search filters",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
@@ -3530,6 +3530,7 @@
       },
       "DUA_TITLE": "Administrative useful life",
       "FIELDS": {
+        "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
         "ARCHIVE_UNIT_HOLDING_UNIT": "Positioning tree",
@@ -3971,12 +3972,12 @@
       "WAITING_ACK": "Waiting Ack"
     },
     "FILING_SCHEMA": {
-      "LOAD_MORE_UNITS": "Load more results",
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "No trees or plans available for the access contract",
       "SHOW_ENTIRE_TREE": "Show the entire tree",
       "SHOW_TREE_PARENT": "Show only results",
       "TREE_LEAVES_TITLE": "Attachment position",
-      "TREE_TITLE": "Trees and plans"
+      "TREE_TITLE": "Trees and plans",
+      "LOAD_MORE_UNITS": "Load more results"
     },
     "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
@@ -4075,6 +4076,7 @@
       },
       "DUA_TITLE": "Administrative useful life",
       "FIELDS": {
+        "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
         "ARCHIVE_UNIT_HOLDING_UNIT": "Positioning tree",

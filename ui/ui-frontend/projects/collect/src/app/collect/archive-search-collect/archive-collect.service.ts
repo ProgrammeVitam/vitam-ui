@@ -39,21 +39,14 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
-import { Observable, TimeoutError, of, throwError } from 'rxjs';
+import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContract,
-  AccessContractApiService,
-  ApiUnitObject,
-  FilingHoldingSchemeNode,
-  Ontology,
-  SearchService,
-  Transaction,
-  Unit,
+  AccessContract, AccessContractApiService, ApiUnitObject, FilingHoldingSchemeNode, Ontology, PagedResult, SearchCriteriaDto,
+  SearchCriteriaEltDto, SearchResponse, SearchService, Transaction, Unit,
 } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
-import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../core/models';
 
 @Injectable({
   providedIn: 'root',
@@ -109,7 +102,7 @@ export class ArchiveCollectService extends SearchService<any> {
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string): Observable<PagedResult> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
     if (!!transactionId) {
       return this.transactionApiService.searchArchiveUnitsByCriteria(criteriaDto, transactionId, headers).pipe(
         //   timeout(TIMEOUT_SEC),
@@ -120,7 +113,9 @@ export class ArchiveCollectService extends SearchService<any> {
           // Return other errors
           return of({ $hits: null, $results: [] });
         }),
-        map((results) => ArchiveCollectService.buildPagedResults(results))
+        map((results) => {
+          return ArchiveCollectService.buildPagedResults(results)
+        })
       );
     } else {
       return of({ pageNumbers: 1, results: [], totalResults: 0 });
@@ -134,11 +129,11 @@ export class ArchiveCollectService extends SearchService<any> {
       size: 1,
       trackTotalHits: true,
     };
-
-    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId).pipe(
-      map((pagedResult: PagedResult) => pagedResult.totalResults),
-      catchError(() => of(-1))
-    );
+    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId)
+      .pipe(
+        map((pagedResult: PagedResult) => pagedResult.totalResults),
+        catchError(() => of(-1))
+      );
   }
 
   normalizeTitle(title: string): string {
@@ -147,7 +142,7 @@ export class ArchiveCollectService extends SearchService<any> {
   }
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
@@ -192,7 +187,7 @@ export class ArchiveCollectService extends SearchService<any> {
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.transactionApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, projectId, headers).subscribe(
       (file) => {
@@ -228,19 +223,19 @@ export class ArchiveCollectService extends SearchService<any> {
         return of({ $hits: null, $results: [] });
       }),
       map((response) => {
-        return this.buildNestedTreeLevels(response.$results);
+        return this.buildNestedTreeLevels(response.$results as Unit[]);
       })
     );
   }
 
   getReferentialUnitDetails(unitId: string): Observable<SearchResponse> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.searchUnitApiService.getById(unitId, headers);
   }
 
   getCollectUnitDetails(unitId: string): Observable<Unit> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.transactionApiService.getCollectUnitById(unitId, headers);
   }
@@ -252,7 +247,7 @@ export class ArchiveCollectService extends SearchService<any> {
     return this.transactionApiService.getObjectGroupDetailsById(objectId, headers);
   }
 
-  private buildNestedTreeLevels(arr: any[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
+  private buildNestedTreeLevels(arr: Unit[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
     const out: FilingHoldingSchemeNode[] = [];
 
     arr.forEach((unit) => {
@@ -262,15 +257,15 @@ export class ArchiveCollectService extends SearchService<any> {
       ) {
         const outNode: FilingHoldingSchemeNode = {
           id: unit['#id'],
+          vitamId: unit['#id'],
           title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
           type: unit.DescriptionLevel,
+          unitType: unit['#unitType'],
+          descriptionLevel: unit.descriptionLevel,
           children: [],
-          parents: parentNode ? [parentNode] : [],
-          vitamId: unit['#id'],
           checked: false,
           hidden: false,
-          hasObject: unit['#object'] ? true : false,
-          unitType: unit['#unitType'],
+          hasObject: !!unit['#object'],
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);
@@ -296,7 +291,7 @@ export class ArchiveCollectService extends SearchService<any> {
   }
 
   selectUnitWithInheritedRules(transactionId: string, criteriaDto: SearchCriteriaDto): Observable<Unit> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);
   }

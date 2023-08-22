@@ -4122,7 +4122,6 @@
     "HTTP_STATUS_CODE_EXPECTATION_FAILED": "La configuration de la plateforme ne vous permet pas d'executer cette action, merci de contacter votre administrateur.",
     "SERVER_ERROR": "Une erreur technique est survenue : erreur interne"
   },
-
   "COLLECT": {
     "UNIT_OBJECT_QUALIFIER_TYPE": {
       "BinaryMaster": "Original numérique",
@@ -4307,6 +4306,7 @@
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
       },
       "FIELDS": {
+        "ORPHANS_NODE": "Position",
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
         "NODE": "Position",
@@ -4561,7 +4561,7 @@
       }
     },
     "FILING_SCHEMA": {
-      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbre ou Plan trouvés avec le contrat choisi",
+      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun arbre ou plan trouvés avec le contrat choisi",
       "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
       "SHOW_TREE_PARENT": "Afficher seulement les résultats",
       "TREE_TITLE": "Arbres et plans",
@@ -4698,7 +4698,6 @@
     "SAVE": "ENREGISTRER",
     "EDIT": "MODIFIER"
   },
-
   "ARCHIVE_SEARCH": {
     "UNIT_OBJECT_QUALIFIER_TYPE": {
       "BinaryMaster": "Original numérique",
@@ -4886,6 +4885,7 @@
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
       },
       "FIELDS": {
+        "ORPHANS_NODE": "Position",
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
         "NODE": "Position",
@@ -5163,13 +5163,14 @@
         "TYPE": "Type"
       }
     },
-    "FILING_SHCEMA": {
-      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbre ou Plan trouvés avec le contrat choisi",
+    "FILING_SCHEMA": {
+      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun arbre ou plan trouvés avec le contrat choisi",
       "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
       "SHOW_TREE_PARENT": "Afficher seulement les résultats",
       "TREE_TITLE": "Arbres et plans",
       "TREE_LEAVES_TITLE": "Position(s) de rattachement",
-      "LOAD_MORE_UNITS": "Voir plus..."
+      "LOAD_MORE_UNITS": "Charger plus d'éléments",
+      "ORPHANS_NODE": "Sans rattachement"
     },
     "RETRIVE_EXACT_COUNT": "Afficher le nombre exact",
     "MORE_THAN": "+ de ",

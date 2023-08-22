@@ -1,6 +1,11 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
-    <app-filing-holding-scheme [transactionId]="transaction?.id" (showArchiveUnitDetails)="showPreviewArchiveUnit($event)">
+  <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract"
+               vitamuiCommonResizeSidebar="left">
+    <app-filing-holding-scheme [transactionId]="transaction?.id"
+                               (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"
+                               [searchHasMatches]="searchHasResults"
+                               [searchRequestTotalResults]="totalResults"
+    >
     </app-filing-holding-scheme>
   </mat-sidenav>
 
@@ -24,7 +29,8 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectName }} </vitamui-common-title-breadcrumb>
+      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }}
+        : {{ projectName }} </vitamui-common-title-breadcrumb>
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
       <div class="row row justify-content-around">
@@ -66,12 +72,13 @@
           >
             <button
               mat-menu-item
-              [disabled]="updateUnitsMetadataDisabled(projectDetails) || isArchiveUnitsEmpty()"
+              [disabled]="updateUnitsMetadataDisabled() || isArchiveUnitsEmpty()"
               (click)="openUpdateUnitsForm()"
             >
               {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate }}
             </button>
-            <button mat-menu-item (click)="validateTransaction()" [disabled]="isArchiveUnitsEmpty() || (isNotOpen$ | async)">
+            <button mat-menu-item (click)="validateTransaction()"
+                    [disabled]="isArchiveUnitsEmpty() || (isNotOpen$ | async)">
               {{ 'COLLECT.VALIDATE_ACTION' | translate }}
             </button>
             <button mat-menu-item (click)="sendTransaction()" [disabled]="isNotReady$ | async">
@@ -114,7 +121,8 @@
                 <i class="material-icons btn-add">add</i>
                 {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_MENU' | translate }}
               </button>
-              <app-search-criteria-list (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"> </app-search-criteria-list>
+              <app-search-criteria-list
+                (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"></app-search-criteria-list>
             </mat-menu>
             <div *ngIf="searchCriterias && searchCriterias.size > 0" class="d-flex justify-content-end div-btn-delete">
               <button class="mat-boutton">
@@ -155,14 +163,17 @@
         </app-archive-search-rules-facets>
       </div>
       <div class="row" *ngIf="!pending">
-        <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{ 'COLLECT.SHOW_SEARCH_CRITERIA' | translate }}</a>
-        <a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
+        <a class="hide-ink" *ngIf="!showCriteriaPanel"
+           (click)="showHidePanel(true)">{{ 'COLLECT.SHOW_SEARCH_CRITERIA' | translate }}</a>
+        <a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited"
+           (click)="showHideFacets(true)">{{
           'COLLECT.COMPUTE_RULES_FACETS' | translate
-        }}</a>
+          }}</a>
       </div>
 
       <div [hidden]="!showCriteriaPanel">
-        <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex" (selectedIndexChange)="selectedCategoryChange($event)">
+        <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex"
+                       (selectedIndexChange)="selectedCategoryChange($event)">
           <mat-tab label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.TITLE' | translate }}">
             <div class="card-criteria">
               <app-simple-criteria-search></app-simple-criteria-search>
@@ -183,9 +194,10 @@
                 <div class="row justify-content-end text-on-right-side">
                   <a class="hide-ink" (click)="removeCriteriaByCategory('STORAGE_RULE')">{{
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-                  }}</a>
+                    }}</a>
                 </div>
-                <app-storage-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-storage-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
                 </app-storage-rule-search>
               </div>
             </ng-container>
@@ -194,9 +206,10 @@
                 <div class="row justify-content-end text-on-right-side">
                   <a class="hide-ink" (click)="removeCriteriaByCategory('APPRAISAL_RULE')">{{
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-                  }}</a>
+                    }}</a>
                 </div>
-                <app-appraisal-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-appraisal-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
                 </app-appraisal-rule-search>
               </div>
             </ng-container>
@@ -205,9 +218,10 @@
                 <div class="row justify-content-end text-on-right-side">
                   <a class="hide-ink" (click)="removeCriteriaByCategory('ACCESS_RULE')">{{
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-                  }}</a>
+                    }}</a>
                 </div>
-                <app-access-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-access-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
                 </app-access-rule-search>
               </div>
             </ng-container>
@@ -216,9 +230,10 @@
                 <div class="row justify-content-end text-on-right-side">
                   <a class="hide-ink" (click)="removeCriteriaByCategory('REUSE_RULE')">{{
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-                  }}</a>
+                    }}</a>
                 </div>
-                <app-reuse-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-reuse-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
                 </app-reuse-rule-search>
               </div>
             </ng-container>
@@ -227,9 +242,10 @@
                 <div class="row justify-content-end text-on-right-side">
                   <a class="hide-ink" (click)="removeCriteriaByCategory('DISSEMINATION_RULE')">{{
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-                  }}</a>
+                    }}</a>
                 </div>
-                <app-dissemination-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-dissemination-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
                 </app-dissemination-rule-search>
               </div>
             </ng-container>
@@ -261,7 +277,8 @@
             >
               {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.APPRAISAL_RULE' | translate }}
             </button>
-            <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL') || true">
+            <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')"
+                    [disabled]="isCategoryAdded('GEL') || true">
               {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.GEL' | translate }}
             </button>
             <button
@@ -328,7 +345,8 @@
                   : 'disabled-div'
               "
             >
-              <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
+              <i (click)="exportArchiveUnitsToCsvFile()"
+                 class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
             </div>
           </div>
 
@@ -357,8 +375,8 @@
 
             <div class="col-4 d-flex align-items-center">
               <span
-                >{{ 'COLLECT.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{
-                  'COLLECT.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate
+              >{{ 'COLLECT.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br/>{{
+                'COLLECT.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate
                 }}</span
               >
 
@@ -438,23 +456,26 @@
                 </div>
                 <div class="col-4 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
                   <ng-container *ngIf="archiveUnit?.Title; else subTitleFr">
-                    <p matTooltip="{{ archiveUnit?.Description }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
-                      <b> {{ archiveUnit?.Title }}</b> <br />
+                    <p matTooltip="{{ archiveUnit?.Description }}" matTooltipClass="vitamui-tooltip"
+                       [matTooltipShowDelay]="300">
+                      <b> {{ archiveUnit?.Title }}</b> <br/>
                       {{ archiveUnit?.Description | truncate : 100 }}
                     </p>
                   </ng-container>
                   <ng-template #subTitleFr>
                     <ng-container *ngIf="archiveUnit.Title_.fr; else subTitleEn">
-                      <p matTooltip="{{ archiveUnit?.Description_?.fr }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
-                        <b>{{ archiveUnit.Title_.fr }} </b> <br />
+                      <p matTooltip="{{ archiveUnit?.Description_?.fr }}" matTooltipClass="vitamui-tooltip"
+                         [matTooltipShowDelay]="300">
+                        <b>{{ archiveUnit.Title_.fr }} </b> <br/>
                         {{ archiveUnit?.Description_?.fr | truncate : 100 }}
                       </p>
                     </ng-container>
                   </ng-template>
                   <ng-template #subTitleEn>
                     <ng-container *ngIf="archiveUnit.Title_.en">
-                      <p matTooltip="{{ archiveUnit?.Description_?.en }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
-                        <b>{{ archiveUnit.Title_.en }} </b> <br />
+                      <p matTooltip="{{ archiveUnit?.Description_?.en }}" matTooltipClass="vitamui-tooltip"
+                         [matTooltipShowDelay]="300">
+                        <b>{{ archiveUnit.Title_.en }} </b> <br/>
                         {{ archiveUnit?.Description_?.en | truncate : 100 }}
                       </p>
                     </ng-container>

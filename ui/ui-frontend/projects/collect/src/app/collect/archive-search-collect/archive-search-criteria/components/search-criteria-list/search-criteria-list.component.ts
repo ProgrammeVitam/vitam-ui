@@ -38,13 +38,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Direction } from 'ui-frontend-common';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
-import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
-import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
-import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
-import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
+import { Direction, SearchCriteriaHistory } from 'ui-frontend-common';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
+import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar';
+import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
+import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
 
 @Component({
   selector: 'app-search-criteria-list',

@@ -37,9 +37,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchService } from 'ui-frontend-common';
+import { SearchCriteriaHistory, SearchService } from 'ui-frontend-common';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
-import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
 
 @Injectable({
   providedIn: 'root'

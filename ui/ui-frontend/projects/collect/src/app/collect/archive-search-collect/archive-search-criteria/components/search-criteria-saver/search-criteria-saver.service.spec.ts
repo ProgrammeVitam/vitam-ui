@@ -37,9 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL } from 'ui-frontend-common';
-import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
-
+import { BASE_URL, SearchCriteriaHistory } from 'ui-frontend-common';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 
 describe('SearchCriteriaSaverService', () => {

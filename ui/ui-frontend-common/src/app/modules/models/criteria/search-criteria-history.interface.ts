@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Id } from 'ui-frontend-common';
-import { CriteriaValue } from './search.criteria';
+import { Id } from '../id.interface';
+import { CriteriaValue } from './search-criteria.interface';
 
 export interface SearchCriteriaHistory extends Id {
   name: string;

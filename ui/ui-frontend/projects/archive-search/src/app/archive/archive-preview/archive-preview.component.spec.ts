@@ -109,7 +109,7 @@ describe('ArchivePreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchivePreviewComponent);
     component = fixture.componentInstance;
-    const archiveUnit: Unit = {
+    component.archiveUnit = {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
@@ -119,7 +119,6 @@ describe('ArchivePreviewComponent', () => {
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
-    component.archiveUnit = archiveUnit;
     fixture.detectChanges();
   });
 
@@ -197,59 +196,10 @@ describe('ArchivePreviewComponent', () => {
     };
 
     // When
-    const response = component.getArchiveUnitIcone(archiveUnit);
+    const response = component.getArchiveUnitIcon(archiveUnit);
 
     // Then
     expect(response).toEqual(expectedResponse);
-  });
-
-  it('should return INGEST as response ', () => {
-    const archiveUnit: Unit = {
-      '#id': 'aeaqaaaaaehlvxukaazfaame7fyo5myaaaba',
-      Title: 'Porte de Bagnolet par producteur1',
-      DescriptionLevel: 'RecordGrp',
-      Description: 'Station Porte de Bagnolet ligne 3 Paris',
-      '#tenant': 1,
-      '#unitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
-      '#min': 1,
-      '#max': 2,
-      '#allunitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
-      '#unitType': 'INGEST',
-      '#operations': ['aeeaaaaaaghnanqdabliwame7fyokjqaaaaq'],
-      '#opi': 'aeeaaaaaaghnanqdabliwame7fyokjqaaaaq',
-      '#originating_agency': 'producteur1',
-      '#originating_agencies': ['producteur1'],
-      '#management': {
-        AppraisalRule: null,
-        HoldRule: null,
-        StorageRule: null,
-        ReuseRule: null,
-        ClassificationRule: null,
-        DisseminationRule: null,
-        AccessRule: null,
-        UpdateOperation: null,
-      },
-      StartDate: new Date('2016-06-03T15:28:00'),
-      EndDate: new Date('2016-06-03T15:28:00'),
-      Xtag: [],
-      Vtag: [],
-      '#storage': {
-        strategyId: 'default',
-      },
-      '#qualifiers': [],
-      OriginatingSystemId: ['OriginatingSystemId_00'],
-      PhysicalAgency: [],
-      PhysicalStatus: [],
-      PhysicalType: [],
-      Keyword: [],
-      '#approximate_creation_date': '2022-12-10T00:30:42.568',
-      '#approximate_update_date': '2022-12-10T00:30:42.568',
-      originating_agencyName: 'Service producteur1',
-    };
-
-    const response = component.getArchiveUnitType(archiveUnit);
-
-    expect(response).toEqual('INGEST');
   });
 
   describe('DOM', () => {

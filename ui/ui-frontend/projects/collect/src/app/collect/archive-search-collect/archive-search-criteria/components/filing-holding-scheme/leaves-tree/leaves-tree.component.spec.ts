@@ -28,9 +28,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { DescriptionLevel, FilingHoldingSchemeNode } from 'ui-frontend-common';
+import { DescriptionLevel, FilingHoldingSchemeNode, ResultFacet, SearchCriteriaDto } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
-import { ResultFacet, SearchCriteriaDto } from '../../../models/search.criteria';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
 import { LeavesTreeComponent } from './leaves-tree.component';
@@ -44,7 +43,7 @@ export function newNode(
   return {
     id: currentId,
     title: currentId,
-    type: 'INGEST',
+    unitType: 'INGEST',
     descriptionLevel: currentDescriptionLevel,
     checked: false,
     children: currentChildren,
@@ -119,37 +118,14 @@ describe('LeavesTreeComponent', () => {
 
   it('LeavesTreeComponent should be stable after creation', () => {
     expect(component).toBeTruthy();
-    // expect(component.projectId).toBeDefined();    
+    // expect(component.projectId).toBeDefined();
     expect(component.nestedTreeControlLeaves).toBeDefined();
-  });
-
-  it('should return INGEST as response ', () => {
-    const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
-      id: 'filingHoldingSchemaNodeId',
-      title: 'string',
-      type: 'INGEST',
-      unitType: 'INGEST',
-      descriptionLevel: 'Item',
-      label: 'string',
-      children: [],
-      count: 55,
-      vitamId: 'vitamId',
-      checked: true,
-      hidden: false,
-      isLoadingChildren: true,
-      paginatedChildrenLoaded: 5,
-    };
-
-    const response = component.getNodeUnitType(filingHoldingSchemaNode);
-
-    expect(response).toEqual('INGEST');
   });
 
   it('should return vitamui-icon-folder as response ', () => {
     const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      type: 'INGEST',
       unitType: 'INGEST',
       descriptionLevel: 'Item',
       label: 'string',
@@ -162,7 +138,7 @@ describe('LeavesTreeComponent', () => {
       paginatedChildrenLoaded: 5,
     };
 
-    const response = component.getNodeUnitIcone(filingHoldingSchemaNode);
+    const response = component.getNodeUnitIcon(filingHoldingSchemaNode);
 
     expect(response).toEqual('vitamui-icon-folder');
   });

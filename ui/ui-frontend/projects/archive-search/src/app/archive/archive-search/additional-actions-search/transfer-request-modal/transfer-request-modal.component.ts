@@ -29,9 +29,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Logger, StartupService } from 'ui-frontend-common';
+import { ConfirmDialogService, Logger, SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
 import { ArchiveService } from '../../../archive.service';
-import { SearchCriteriaEltDto } from '../../../models/search.criteria';
 import { TransferRequestDto, TransferRequestParameters } from '../../../models/transfer-request-detail.interface';
 
 @Component({

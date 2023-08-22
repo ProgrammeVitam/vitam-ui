@@ -1,5 +1,6 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -7,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -22,40 +23,53 @@
  *
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
+ *
  */
+import { VitamuiIcons } from '../../vitamui-icons.enum';
+import { unitTypeToVitamuiIcon } from '../index';
+import { FilingHoldingSchemeNode } from './node.interface';
 
-package fr.gouv.vitamui.archives.search;
+export function nodeToVitamuiIcon(node: FilingHoldingSchemeNode): VitamuiIcons {
+  return unitTypeToVitamuiIcon(node.unitType, node.hasObject);
+}
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.core.env.Environment;
+export const nodeHasChildren = (node: FilingHoldingSchemeNode): boolean => {
+  return node.children && node.children.length > 0;
+};
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class ArchiveSearchApplication implements CommandLineRunner {
+export const nodeHasMatch = (node: FilingHoldingSchemeNode): boolean => {
+  return node.count && node.count > 0;
+};
 
-    @Autowired
-    private Environment env;
+export const copyNodeWithoutChildren = (node: FilingHoldingSchemeNode): FilingHoldingSchemeNode => {
+  return {
+    id: node.id,
+    title: node.title,
+    type: node.type,
+    label: node.label,
+    children: null,
+    vitamId: node.vitamId,
+    checked: node.checked,
+    count: node.count,
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchApplication.class);
+    hasObject: node?.hasObject,
+    unitType: node?.unitType,
 
-    public static void main(final String[] args) {
-        SpringApplication app = new SpringApplicationBuilder(ArchiveSearchApplication.class)
-            .build();
-        app.run(args);
+    hidden: node.hidden,
+    isLoadingChildren: false,
+    canLoadMoreChildren: true,
+    canLoadMoreMatchingChildren: true,
+  };
+};
 
-    }
-
-    @Override
-    public void run(final String... args) throws Exception {
-        LOGGER.info("VITAMUI SpringBoot Application started:");
-        LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
-    }
-
+export function recursiveCheck(nodes: FilingHoldingSchemeNode[], show: boolean) {
+  if (!nodes || nodes.length === 0) {
+    return;
+  }
+  for (const node of nodes) {
+    node.hidden = false;
+    node.checked = show;
+    node.count = null;
+    this.recursiveCheck(node.children, show);
+  }
 }

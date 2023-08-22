@@ -2,8 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { BASE_URL } from 'ui-frontend-common';
-import { SearchResponse } from '../models/search-response.interface';
+import { BASE_URL, SearchResponse } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'

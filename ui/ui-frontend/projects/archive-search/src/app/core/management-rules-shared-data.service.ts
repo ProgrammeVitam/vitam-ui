@@ -37,8 +37,8 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { SearchCriteriaDto, SearchCriteriaEltDto } from 'ui-frontend-common';
 import { ActionsRules, ManagementRules } from '../archive/models/ruleAction.interface';
-import { SearchCriteriaDto, SearchCriteriaEltDto } from '../archive/models/search.criteria';
 
 @Injectable({
   providedIn: 'root',

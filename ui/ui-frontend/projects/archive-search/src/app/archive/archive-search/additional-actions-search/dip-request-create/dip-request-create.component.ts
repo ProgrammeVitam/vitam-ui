@@ -40,11 +40,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Logger, StartupService } from 'ui-frontend-common';
+import { ConfirmDialogService, Logger, SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
 import * as uuid from 'uuid';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPCriteriaList, ExportDIPRequestDetail } from '../../../models/dip-request-detail.interface';
-import { SearchCriteriaEltDto } from '../../../models/search.criteria';
 
 @Component({
   selector: 'app-dip-request-create',

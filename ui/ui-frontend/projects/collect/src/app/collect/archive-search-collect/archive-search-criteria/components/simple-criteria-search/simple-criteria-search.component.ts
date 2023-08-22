@@ -39,10 +39,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, Ontology, OntologyService, diff } from 'ui-frontend-common';
+import {
+  ActionOnCriteria, CriteriaDataType, CriteriaOperator, CriteriaValue, diff, Ontology, OntologyService, SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum
+} from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
-import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../services/management-rules-shared-data.service';
 
@@ -302,8 +304,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
 
     this.criteriaSearchListToSave.forEach((criteriaSearch) => {
       if (criteriaSearch.criteria === ALL_ARCHIVE_UNIT_TYPES) {
-        criteriaSearch.values.forEach((unitType) => {
-          this.archiveUnitTypesCriteria.set(unitType.id, true);
+        criteriaSearch.values.forEach((criteriaValue) => {
+          this.archiveUnitTypesCriteria.set(criteriaValue.id, true);
         });
       }
       criteriaSearch.values.forEach((value) => {

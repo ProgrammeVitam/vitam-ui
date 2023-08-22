@@ -36,9 +36,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ArchiveSharedDataService } from 'projects/archive-search/src/app/core/archive-shared-data.service';
 import { of } from 'rxjs';
-import { BASE_URL, CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  BASE_URL, CriteriaDataType, CriteriaOperator, CriteriaValue, InjectorModule, LoggerModule, WINDOW_LOCATION
+} from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { CriteriaValue } from '../../../models/search.criteria';
 import { RuleValidator } from '../../rule.validator';
 import { StorageRuleSearchComponent } from './storage-rule-search.component';
 

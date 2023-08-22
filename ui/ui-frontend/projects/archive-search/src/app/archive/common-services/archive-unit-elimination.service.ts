@@ -31,10 +31,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { StartupService } from 'ui-frontend-common';
+import { SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
-import { SearchCriteriaEltDto } from '../models/search.criteria';
 import { ArchiveSearchHelperService } from './archive-search-helper.service';
 
 const DEFAULT_RESULT_THRESHOLD = 10000;
@@ -53,7 +52,7 @@ export class ArchiveUnitEliminationService {
   }
 
   launchEliminationAnalysisModal(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],    
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
     selectedItemCountKnown: boolean,
     itemSelected: number,
     tenantIdentifier: number,
@@ -86,7 +85,7 @@ export class ArchiveUnitEliminationService {
   }
 
   private launchEliminationAnalysis(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],    
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
     tenantIdentifier: number,
     currentPage: number
   ) {

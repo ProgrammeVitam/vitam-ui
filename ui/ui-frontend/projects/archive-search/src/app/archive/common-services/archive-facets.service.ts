@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
+import { ArchiveSearchResultFacets, ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaMgtRuleEnum } from 'ui-frontend-common';
 import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
-import { ArchiveSearchResultFacets, ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaMgtRuleEnum } from '../models/search.criteria';
 
 @Injectable({
   providedIn: 'root',

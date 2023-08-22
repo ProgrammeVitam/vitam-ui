@@ -1,5 +1,5 @@
 <div class="vitamui-sidepanel-header">
-  <app-classification-tree    
+  <app-classification-tree
     [hasMatchesInSearch]="true"
     [loadingHolding]="loadingHolding"
     [nestedDataSourceFull]="nestedDataSourceFull"
@@ -12,13 +12,14 @@
   ></app-classification-tree>
 </div>
 
-<div *ngIf="projectHasRattachmentUnit" vitamuiVerticalResizeSidebar="top"></div>
+<div *ngIf="searchHasMatches" vitamuiVerticalResizeSidebar="top"></div>
 
-<div *ngIf="projectHasRattachmentUnit" class="vitamui-sidepanel-header flex-column">
+<div *ngIf="searchHasMatches" class="vitamui-sidepanel-header flex-column">
   <app-leaves-tree
     [transactionId]="transactionId"
     [nestedDataSourceLeaves]="nestedDataSourceLeaves"
     [searchRequestResultFacets]="requestResultFacets"
+    [searchRequestTotalResults]="searchRequestTotalResults"
     (addToSearchCriteria)="addToSearchCriteria($event)"
     (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')">
   </app-leaves-tree>

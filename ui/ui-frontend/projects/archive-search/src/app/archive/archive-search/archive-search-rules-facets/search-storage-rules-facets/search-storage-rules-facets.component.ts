@@ -38,11 +38,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Colors } from 'ui-frontend-common';
+import { Colors, RuleFacets } from 'ui-frontend-common';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
 import { ArchiveFacetsService } from '../../../common-services/archive-facets.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
-import { RuleFacets } from '../../../models/search.criteria';
 
 @Component({
   selector: 'app-search-storage-rules-facets',
@@ -199,7 +198,7 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
       this.storageRuleFacets.waitingToRecalculateRulesListFacets &&
       this.storageRuleFacets.waitingToRecalculateRulesListFacets.length > 0
     ) {
-      let facetComputedUnits = this.storageRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+      const facetComputedUnits = this.storageRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {

@@ -26,8 +26,8 @@
  */
 
 export enum VitamuiIcons {
-  VITAMUI_HOLDING_UNIT_ICON_ = 'vitamui-icon-icone-arbre',
-  VITAMUI_FILING_UNIT_ICON_ = 'vitamui-icon-plan-classement',
-  VITAMUI_INGEST_WITHOUT_OBJECT_ICON_ = 'vitamui-icon-folder',
-  VITAMUI_INGEST_WITH_OBJECT_ICON_ = 'vitamui-icon-file',
+  HOLDING_UNIT = 'vitamui-icon-icone-arbre',
+  FILING_UNIT = 'vitamui-icon-plan-classement',
+  INGEST_WITHOUT_OBJECT = 'vitamui-icon-folder',
+  INGEST_WITH_OBJECT = 'vitamui-icon-file',
 }

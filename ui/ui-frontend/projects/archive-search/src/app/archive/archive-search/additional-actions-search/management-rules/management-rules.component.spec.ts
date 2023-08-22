@@ -44,11 +44,10 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaDto, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../models/ruleAction.interface';
-import { SearchCriteriaDto } from '../../../models/search.criteria';
 import { ManagementRulesComponent } from './management-rules.component';
 
 const translations: any = { TEST: 'Mock translate test' };

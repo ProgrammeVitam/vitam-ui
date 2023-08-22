@@ -31,35 +31,15 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, Subject, Subscription, merge } from 'rxjs';
+import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 import {
-  AccessContract,
-  CriteriaDataType,
-  CriteriaOperator,
-  Direction,
-  ExternalParameters,
-  ExternalParametersService,
-  FilingHoldingSchemeNode,
-  GlobalEventService,
-  SidenavPage,
-  Transaction,
-  TransactionStatus,
-  Unit,
+  AccessContract, ArchiveSearchResultFacets, CriteriaDataType, CriteriaOperator, CriteriaValue, Direction, ExternalParameters,
+  ExternalParametersService, FilingHoldingSchemeNode, GlobalEventService, ORPHANS_NODE_ID, PagedResult, SearchCriteria,
+  SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements, SearchCriteriaHistory, SearchCriteriaMgtRuleEnum,
+  SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SidenavPage, Transaction, TransactionStatus, Unit,
 } from 'ui-frontend-common';
-import {
-  ArchiveSearchResultFacets,
-  CriteriaValue,
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaCategory,
-  SearchCriteriaEltDto,
-  SearchCriteriaEltements,
-  SearchCriteriaHistory,
-  SearchCriteriaMgtRuleEnum,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-} from '../core/models';
+import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
@@ -131,7 +111,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   orderBy = 'Title';
   direction = Direction.ASCENDANT;
   DEFAULT_RESULT_THRESHOLD = 10000;
-  hasResults = false;
+  searchHasResults = false;
   pageNumbers = 0;
   canLoadMore = false;
 
@@ -191,7 +171,31 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
     this.subscriptions.add(
       this.archiveExchangeDataService.getNodes().subscribe((node) => {
-        if (node.checked) {
+        if (!node.checked) {
+          node.count = null;
+          if (node.id === ORPHANS_NODE_ID) {
+            this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
+          } else {
+            this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
+          }
+          return;
+        }
+        if (node.id === ORPHANS_NODE_ID) {
+          this.archiveHelperService.addCriteria(
+            this.searchCriterias,
+            this.searchCriteriaKeys,
+            this.nbQueryCriteria,
+            ORPHANS_NODE_ID,
+            { id: ORPHANS_NODE_ID, value: ORPHANS_NODE_ID },
+            node.title,
+            true,
+            CriteriaOperator.MISSING,
+            SearchCriteriaTypeEnum.FIELDS,
+            false,
+            CriteriaDataType.STRING,
+            false
+          );
+        } else {
           this.archiveHelperService.addCriteria(
             this.searchCriterias,
             this.searchCriteriaKeys,
@@ -206,9 +210,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             CriteriaDataType.STRING,
             false
           );
-        } else {
-          node.count = null;
-          this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
         }
       })
     );
@@ -402,53 +403,51 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       computeFacets: includeFacets,
     };
     this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
-    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null).subscribe(
-      (pagedResult: PagedResult) => {
-        if (includeFacets) {
-          this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
-          this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
-          this.pendingComputeFacets = false;
-          this.rulesFacetsComputed = true;
-        }
-        if (this.currentPage === 0) {
-          this.archiveUnits = pagedResult.results;
-          this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
-          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
-          this.hasResults = true;
-          this.totalResults = pagedResult.totalResults;
-        } else {
-          if (pagedResult.results) {
-            this.hasResults = true;
+    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction ? this.transaction.id : null)
+      .subscribe(
+        (pagedResult: PagedResult) => {
+          if (includeFacets) {
+            this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
+            this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
+            this.pendingComputeFacets = false;
+            this.rulesFacetsComputed = true;
+          }
+          if (this.currentPage === 0) {
+            this.archiveUnits = pagedResult.results;
+            this.searchHasResults = !isEmpty(pagedResult.results);
+            this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
+            this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+            this.totalResults = pagedResult.totalResults;
+          } else if (pagedResult.results) {
             pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
           }
-        }
-        this.pageNumbers = pagedResult.pageNumbers;
+          this.pageNumbers = pagedResult.pageNumbers;
 
-        this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
+          this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
 
-        if (this.isAllchecked) {
-          this.itemSelected = this.totalResults - this.itemNotSelected;
-        }
+          if (this.isAllchecked) {
+            this.itemSelected = this.totalResults - this.itemNotSelected;
+          }
 
-        this.canLoadMore = this.currentPage < this.pageNumbers - 1;
-        this.archiveHelperService.updateCriteriaStatus(
-          this.searchCriterias,
-          SearchCriteriaStatusEnum.IN_PROGRESS,
-          SearchCriteriaStatusEnum.INCLUDED
-        );
-        this.pending = false;
-        this.included = true;
-      },
-      (error: HttpErrorResponse) => {
-        this.logger.error('Error message :', error.message);
-        this.canLoadMore = false;
-        this.pending = false;
-        if (includeFacets) {
-          this.pendingComputeFacets = false;
-          this.archiveExchangeDataService.emitFacets([]);
+          this.canLoadMore = this.currentPage < this.pageNumbers - 1;
+          this.archiveHelperService.updateCriteriaStatus(
+            this.searchCriterias,
+            SearchCriteriaStatusEnum.IN_PROGRESS,
+            SearchCriteriaStatusEnum.INCLUDED
+          );
+          this.pending = false;
+          this.included = true;
+        },
+        (error: HttpErrorResponse) => {
+          this.logger.error('Error message :', error.message);
+          this.canLoadMore = false;
+          this.pending = false;
+          if (includeFacets) {
+            this.pendingComputeFacets = false;
+            this.archiveExchangeDataService.emitFacets([]);
+          }
         }
-      }
-    );
+      );
   }
 
   // Manage lateral panels

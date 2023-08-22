@@ -51,7 +51,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, VitamuiRoles, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  BASE_URL, InjectorModule, LoggerModule, PagedResult, SearchCriteriaStatusEnum, VitamuiRoles, WINDOW_LOCATION
+} from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { ArchiveSearchHelperService } from '../common-services/archive-search-helper.service';
@@ -59,7 +61,6 @@ import { ArchiveUnitDipService } from '../common-services/archive-unit-dip.servi
 import { ArchiveUnitEliminationService } from '../common-services/archive-unit-elimination.service';
 import { ComputeInheritedRulesService } from '../common-services/compute-inherited-rules.service';
 import { UpdateUnitManagementRuleService } from '../common-services/update-unit-management-rule.service';
-import { PagedResult, SearchCriteriaStatusEnum } from '../models/search.criteria';
 import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { ArchiveSearchComponent } from './archive-search.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';

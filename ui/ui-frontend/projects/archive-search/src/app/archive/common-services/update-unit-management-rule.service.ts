@@ -31,11 +31,10 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
-import { SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../models/search.criteria';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 const PAGE_SIZE = 10;
@@ -57,7 +56,7 @@ export class UpdateUnitManagementRuleService {
 
   goToUpdateManagementRule(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    criteriaSearchList: SearchCriteriaEltDto[],    
+    criteriaSearchList: SearchCriteriaEltDto[],
     currentPage: number,
     tenantIdentifier: number,
     numberOfHoldingUnitType: number,
@@ -112,7 +111,7 @@ export class UpdateUnitManagementRuleService {
 
   private updateManagementRule(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    criteriaSearchList: SearchCriteriaEltDto[],    
+    criteriaSearchList: SearchCriteriaEltDto[],
     currentPage: number,
     tenantIdentifier: number,
     numberOfHoldingUnitType: number,

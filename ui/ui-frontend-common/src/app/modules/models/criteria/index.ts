@@ -34,23 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
-import { Id } from 'ui-frontend-common';
-import { CriteriaValue } from './search.criteria';
-
-export interface SearchCriteriaHistory extends Id {
-  name: string;
-  userId?: string;
-  savingDate: string;
-  searchCriteriaList: SearchCriteriaEltements[];
-}
-
-export interface SearchCriteriaEltements {
-  criteria: string;
-  operator: string;
-  keyTranslated: boolean;
-  valueTranslated: boolean;
-  values: CriteriaValue[];
-  category: string;
-  dataType: string;
-}
+export * from './criteria.enums';
+export * from './criteria.interface';
+export * from './criterion.interface';
+export * from './search-criteria-history.interface';
+export * from './search-criteria.interface';
+export * from './search-response.interface';

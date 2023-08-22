@@ -39,9 +39,8 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, Unit } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
-import { SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 
 const PAGE_SIZE = 10;
 const CURRENT_PAGE = 0;
@@ -60,8 +59,7 @@ const CURRENT_PAGE = 0;
   ],
 })
 export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  archiveUnit: Unit;
+  @Input() archiveUnit: Unit;
   archiveUnitRules: Unit;
   selectUnitWithInheritedRulesSubscription: Subscription;
 
@@ -76,6 +74,7 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, O
   }
 
   ngOnInit(): void {}
+
   ngOnDestroy() {
     this.selectUnitWithInheritedRulesSubscription?.unsubscribe();
   }

@@ -35,15 +35,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { intersection } from 'lodash';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, CriteriaDataType, CriteriaOperator, Logger, Option, StartupService } from 'ui-frontend-common';
+import {
+  ConfirmDialogService, CriteriaDataType, CriteriaOperator, Logger, Option, PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum,
+  StartupService
+} from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import {
-  ReclassificationAction,
-  ReclassificationCriteriaDto,
-  ReclassificationQueryActionType
+  ReclassificationAction, ReclassificationCriteriaDto, ReclassificationQueryActionType
 } from '../../../models/reclassification-request.interface';
-import { PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
 import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;

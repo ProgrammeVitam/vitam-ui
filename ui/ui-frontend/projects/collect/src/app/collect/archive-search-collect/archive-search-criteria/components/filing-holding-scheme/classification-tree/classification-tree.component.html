@@ -17,7 +17,7 @@
           <div class="tree-text">
             <vitamui-tree-node
               [node]="node"
-              [icon]="getNodeUnitIcone(node)"
+              [icon]="getNodeUnitIcon(node)"
               (nodeToggle)="nestedTreeControlFull.toggle(node)"
               (labelClick)="onShowNodeDetails(node.id)"
               disabled
@@ -34,7 +34,7 @@
         <div *ngIf="nodeHasMatchsOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node">
           <vitamui-tree-node
             [node]="node"
-            [icon]="getNodeUnitIcone(node)"
+            [icon]="getNodeUnitIcon(node)"
             [expanded]="nestedTreeControlFull.isExpanded(node)"
             (nodeToggle)="nestedTreeControlFull.toggle(node)"
             (labelClick)="onShowNodeDetails(node.id)"
