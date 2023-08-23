@@ -46,7 +46,7 @@ import { ExternalParamProfileValidators } from '../external-param-profile.valida
 @Component({
   selector: 'app-external-param-profile-create',
   templateUrl: './external-param-profile-create.component.html',
-  styleUrls: ['./external-param-profile-create.component.css'],
+  styleUrls: ['./external-param-profile-create.component.scss'],
 })
 export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   externalParamProfileForm: FormGroup;
