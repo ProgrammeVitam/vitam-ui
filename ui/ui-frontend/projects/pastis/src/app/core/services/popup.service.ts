@@ -37,6 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ApplicationService } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'
@@ -47,24 +48,36 @@ export class PopupService {
   popUpDataAfterOpen = new BehaviorSubject<any>(null);
   btnYesShoudBeDisabled = new BehaviorSubject<boolean>(false);
 
+  externalIdentifierEnabled: boolean;
 
-  constructor() { }
+  constructor(private applicationService: ApplicationService,) {
+    this.updateSlaveMode()
+  }
+
+  private updateSlaveMode() {
+    this.applicationService.isApplicationExternalIdentifierEnabled('PASTIS').subscribe((value) => {
+      this.externalIdentifierEnabled = value;
+    });
+  }
 
   getPopUpDataOnOpen() {
     return this.popUpDataAfterOpen.getValue();
   }
+
   getPopUpDataOnClose() {
     return this.popUpDataBeforeClose;
   }
+
   setPopUpDataOnOpen(incomingData: any) {
     this.popUpDataAfterOpen.next(incomingData);
   }
+
   setPopUpDataOnClose(incomingData: any) {
     this.popUpDataBeforeClose.next(incomingData);
   }
+
   disableYesButton(condition: boolean) {
     condition ? this.btnYesShoudBeDisabled.next(true) : this.btnYesShoudBeDisabled.next(false);
   }
-
 
 }

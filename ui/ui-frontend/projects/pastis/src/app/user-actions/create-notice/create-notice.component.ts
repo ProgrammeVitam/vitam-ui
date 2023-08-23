@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -30,14 +30,13 @@ function constantToTranslate() {
 @Component({
   selector: 'create-notice',
   templateUrl: './create-notice.component.html',
-  styleUrls: [ './create-notice.component.scss' ]
+  styleUrls: ['./create-notice.component.scss']
 })
 export class CreateNoticeComponent implements OnInit, OnDestroy {
   form: FormGroup;
   stepIndex = 0;
   btnIsDisabled: boolean;
   dialogData: PastisDialogData;
-  isDisabledButton = false;
   notice: Notice;
   // edit or new notice
   editNotice: boolean;
@@ -58,12 +57,13 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   isStandalone: boolean = environment.standalone;
 
   subscriptions = new Subscription();
+  externalIdentifierEnabled: boolean;
 
   constructor(public dialogRef: MatDialogRef<CreateNoticeComponent>,
               @Inject(MAT_DIALOG_DATA) public data: PastisDialogDataCreate,
               private formBuilder: FormBuilder,
               private translateService: TranslateService,
-              private popUpService: PopupService,
+              private popupService: PopupService,
               private fileService: FileService,
               private router: Router,
               private profileService: ProfileService) {
@@ -71,12 +71,11 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.externalIdentifierEnabled = this.popupService.externalIdentifierEnabled
     this.editNotice = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
     if (this.editNotice) {
       this.validate = true;
       // Subscribe observer to notice
-
       this.subscriptions.add(
         this.fileService.noticeEditable.subscribe((value: Notice) => {
           this.notice = value;
@@ -107,10 +106,10 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     }
     this.information = 'texte d\'information';
     this.form = this.formBuilder.group({
-      identifier: [ null, Validators.required ],
-      intitule: [ null, Validators.required ],
-      selectedStatus: [ null ],
-      description: [ null ],
+      identifier: [null, Validators.required],
+      intitule: [null, Validators.required],
+      selectedStatus: [null],
+      description: [null],
       autoriserPresenceMetadonnees: false
     });
 
@@ -125,7 +124,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     // set the inital state of the ok button to disabled
 
     this.subscriptions.add(
-      this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
+      this.popupService.btnYesShoudBeDisabled.subscribe(status => {
         this.btnIsDisabled = status;
       }));
   }
@@ -135,7 +134,6 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       this.translateService.onLangChange
         .subscribe((_: LangChangeEvent) => {
           constantToTranslate.call(this);
-          // console.log(event.lang);
         }));
   }
 
@@ -149,8 +147,8 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
 
 
   upateButtonStatusAndDataToSend() {
-    this.popUpService.setPopUpDataOnClose('test');
-    this.popUpService.disableYesButton(true);
+    this.popupService.setPopUpDataOnClose('test');
+    this.popupService.disableYesButton(true);
   }
 
 
@@ -164,7 +162,6 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   }
 
   checkIdentifier(modePUA: boolean) {
-
     if (this.notice.identifier.length < 1) {
       this.validate = false;
       return;
@@ -207,12 +204,12 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    if (!this.externalIdentifierEnabled) {
+      this.form.controls.identifier.setValue(this.form.controls.intitule.value);
+    }
     if (this.form.invalid) {
-      this.isDisabledButton = true;
       return;
     }
-    this.isDisabledButton = true;
-    // console.log(this.form.value);
     if (this.editNotice) {
       this.fileService.noticeEditable.next(this.notice);
       this.fileService.setNotice(true);
