@@ -48,6 +48,7 @@ import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';
 
+import { PopupService } from '../../core/services/popup.service';
 import { UserActionSaveProfileComponent } from './save-profile.component';
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
@@ -57,6 +58,10 @@ describe('UserActionOpenProfileComponent', () => {
   let component: UserActionSaveProfileComponent;
   let fixture: ComponentFixture<UserActionSaveProfileComponent>;
 
+  const popupServiceMock = {
+    externalIdentifierEnabled: true,
+    btnYesShoudBeDisabled: of(true)
+  };
   const startUpServiceMock = {
     getPortalUrl: () => '',
     setTenantIdentifier: () => {},
@@ -91,6 +96,7 @@ describe('UserActionOpenProfileComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: StartupService, useValue: startUpServiceMock },
+        { provide: PopupService, useValue: popupServiceMock },
       ],
     }).compileComponents();
   }));
