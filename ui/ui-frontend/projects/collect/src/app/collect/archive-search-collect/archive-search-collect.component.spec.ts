@@ -82,8 +82,8 @@ describe('ArchiveSearchCollectComponent', () => {
     projectId: 'ProjectId',
     comment: 'I am a comment',
     status: TransactionStatus.SENDING,
-    legalStatus:'A legal status',
-    acquisitionInformation: 'Protocol'
+    legalStatus: 'A legal status',
+    acquisitionInformation: 'Protocol',
   };
 
   beforeEach(async () => {
@@ -152,7 +152,7 @@ describe('ArchiveSearchCollectComponent', () => {
 
     // Then
     expect(component.isIndeterminate).toBeFalsy();
-    expect(component.isAllchecked).toBeFalsy();
+    expect(component.isAllChecked).toBeFalsy();
     expect(component.itemNotSelected).toBe(0);
   });
 
