@@ -25,26 +25,33 @@ vitamui-common-slide-toggle {
     width: 100% !important;
   }
 }
+
 .mat-tab-body-wrapper {
   flex-grow: 1;
 }
+
 .preview-tab-group {
   height: 100%;
 }
+
 .vitamui-mat-select {
   padding-bottom: 30px;
 }
+
 .btn.more-actions {
   background-color: transparent;
   color: var(--vitamui-secondary);
   border-color: var(--vitamui-secondary) !important;
+
   &:disabled {
     @include disabled(transparent, var(--vitamui-grey), transparent);
   }
 }
+
 .btn-container {
   display: flex;
 }
+
 .custom-flex-controls {
   .btn {
     background-color: transparent;
@@ -52,11 +59,13 @@ vitamui-common-slide-toggle {
     border-color: var(--vitamui-secondary) !important;
   }
 }
+
 .btn.cancel {
   background-color: transparent;
   color: var(--vitamui-grey-900);
   border: 1px solid transparent;
 }
+
 .vitamui-container {
   position: relative;
   max-width: 1280px;
@@ -67,11 +76,11 @@ vitamui-common-slide-toggle {
 .title-text {
   font-family: Mulish;
   font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 22px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
   letter-spacing: 0.1px;
-  color: #9c31b5;
+  color: var(--vitamui-primary);
 }
 
 .head-title {
@@ -126,6 +135,7 @@ vitamui-common-slide-toggle {
   outline-color: -webkit-focus-ring-color;
   outline-style: auto;
 }
+
 .sub-title-text {
   font-family: Mulish;
   font-style: normal;

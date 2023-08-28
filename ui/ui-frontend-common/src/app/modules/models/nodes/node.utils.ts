@@ -26,7 +26,7 @@
  *
  */
 import { VitamuiIcons } from '../../vitamui-icons.enum';
-import { unitTypeToVitamuiIcon } from '../index';
+import { unitTypeToVitamuiIcon } from '../units';
 import { FilingHoldingSchemeNode } from './node.interface';
 
 export function nodeToVitamuiIcon(node: FilingHoldingSchemeNode): VitamuiIcons {

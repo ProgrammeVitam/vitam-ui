@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import fr.gouv.vitam.common.model.administration.ActivationStatus;
+import fr.gouv.vitam.common.model.administration.SignaturePolicy;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -96,4 +97,6 @@ public class IngestContractDto extends IdDto implements Serializable {
     private String managementContractId;
 
     private boolean computeInheritedRulesAtIngest;
+
+    private SignaturePolicy signaturePolicy;
 }

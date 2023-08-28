@@ -1,14 +1,18 @@
-.actions {
-  margin-top: 20px;
-  display: flex;
-}
-
 .actions > button:not(:last-child) {
   margin-right: 20px;
 }
 
+.vitamui-icon-info {
+  margin-left: 10px;
+  width: 24px;
+  line-height: 22px;
+  font-size: 23px;
+  color: var(--vitamui-secondary);
+}
+
 .form-group {
   padding-bottom: 30px;
+  width: 100%;
 }
 
 .field-tooltip {
@@ -31,7 +35,6 @@ label {
   color: var(--vitamui-grey-900);
   font-size: 15px;
   line-height: normal;
-  margin-bottom: 10px;
   display: block;
 
   .required-marker {
@@ -57,10 +60,6 @@ button.primary {
   margin-right: 20px;
 }
 
-button.back {
-  margin-top: 60px;
-}
-
 button > small {
   display: block;
   font-size: 12px;
@@ -70,4 +69,84 @@ button > small {
 .hint {
   color: #a5a5a5;
   font-size: 15px;
+}
+
+.content {
+
+  h4 {
+    font-family: Mulish;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+    color: var(--vitamui-grey-600);
+    margin: 0;
+  }
+
+  h2 {
+    font-family: Mulish;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px; /* 140% */
+    margin: 0;
+    margin-bottom: 30px;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    margin-bottom: 15px;
+
+    .row {
+      margin: 0;
+    }
+  }
+
+  .actions {
+    display: flex;
+    margin-top: 25px !important;
+    flex-direction: column;
+    align-items: start;
+
+    .line {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 15px;
+    }
+
+    button {
+      margin-right: 20px;
+    }
+  }
+}
+
+.criteria-checkbox-choice {
+  display: flex;
+  margin-bottom: 10px;
+
+  label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  span {
+    font-family: Mulish;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0 10px;
+  }
+
+  input {
+    margin: 4px;
+    cursor: pointer;
+    accent-color: var(--vitamui-primary);
+    height: 20px;
+    width: 20px;
+    border-radius: 4px;
+    transition-duration: 0.3s;
+  }
 }
