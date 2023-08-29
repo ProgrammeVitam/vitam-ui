@@ -145,10 +145,9 @@ public class ArchiveSearchInternalController {
 
         ParameterChecker.checkParameter("The identifier is mandatory parameter: ", id);
         LOGGER.info("Download Archive Unit Object with id {}", id);
-
+        final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         return Mono.<Resource>fromCallable(() -> {
-                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version,
-                    externalParametersService.buildVitamContextFromExternalParam());
+                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
                 return new InputStreamResource((InputStream) response.getEntity());
             }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
