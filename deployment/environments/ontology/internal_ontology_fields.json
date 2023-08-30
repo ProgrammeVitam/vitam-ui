@@ -56,7 +56,7 @@
   {
     "Identifier": "Recipient.DeathPlace.City",
     "ApiField": "Recipient.DeathPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -891,15 +891,6 @@
     "ShortName": "Signature.Signer.Position"
   },
   {
-    "Identifier": "Signature.Signer.Nationality",
-    "ApiField": "Signature.Signer.Nationality",
-    "Type": "TEXT",
-    "Origin": "INTERNAL",
-    "CreationDate": "2020-11-02T12:25:58.047",
-    "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Signature.Signer.Nationality"
-  },
-  {
     "Identifier": "Signature.Signer.Gender",
     "ApiField": "Signature.Signer.Gender",
     "Type": "TEXT",
@@ -1651,7 +1642,7 @@
   {
     "Identifier": "Addressee.DeathPlace.Geogname",
     "ApiField": "Addressee.DeathPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -1977,8 +1968,8 @@
     "ShortName": "date de décès"
   },
   {
-    "Identifier": "Addressee.BirthPlace.Adress",
-    "ApiField": "Addressee.BirthPlace.Adress",
+    "Identifier": "Addressee.BirthPlace.Address",
+    "ApiField": "Addressee.BirthPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
@@ -1988,7 +1979,7 @@
   {
     "Identifier": "Addressee.BirthPlace.Region",
     "ApiField": "Addressee.BirthPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -1997,7 +1988,7 @@
   {
     "Identifier": "Addressee.BirthPlace.City",
     "ApiField": "Addressee.BirthPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2006,7 +1997,7 @@
   {
     "Identifier": "Addressee.BirthPlace.Geogname",
     "ApiField": "Addressee.BirthPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2024,7 +2015,7 @@
   {
     "Identifier": "Addressee.BirthPlace.Country",
     "ApiField": "Addressee.BirthPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2033,15 +2024,15 @@
   {
     "Identifier": "Addressee.DeathPlace.Country",
     "ApiField": "Addressee.DeathPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
     "ShortName": "Pays de décès"
   },
   {
-    "Identifier": "Addressee.DeathPlace.Adress",
-    "ApiField": "Addressee.DeathPlace.Adress",
+    "Identifier": "Addressee.DeathPlace.Address",
+    "ApiField": "Addressee.DeathPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
@@ -2051,7 +2042,7 @@
   {
     "Identifier": "Addressee.DeathPlace.City",
     "ApiField": "Addressee.DeathPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2087,7 +2078,7 @@
   {
     "Identifier": "Addressee.DeathPlace.Region",
     "ApiField": "Addressee.DeathPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2114,15 +2105,15 @@
   {
     "Identifier": "AuthorizedAgent.BirthPlace.Geogname",
     "ApiField": "AuthorizedAgent.BirthPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
     "ShortName": "Geogname de naissance"
   },
   {
-    "Identifier": "AuthorizedAgent.BirthPlace.Adress",
-    "ApiField": "AuthorizedAgent.BirthPlace.Adress",
+    "Identifier": "AuthorizedAgent.BirthPlace.Address",
+    "ApiField": "AuthorizedAgent.BirthPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
@@ -2132,7 +2123,7 @@
   {
     "Identifier": "AuthorizedAgent.BirthPlace.City",
     "ApiField": "AuthorizedAgent.BirthPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2141,7 +2132,7 @@
   {
     "Identifier": "AuthorizedAgent.BirthPlace.Country",
     "ApiField": "AuthorizedAgent.BirthPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2159,7 +2150,7 @@
   {
     "Identifier": "AuthorizedAgent.BirthPlace.Region",
     "ApiField": "AuthorizedAgent.BirthPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2177,7 +2168,7 @@
   {
     "Identifier": "AuthorizedAgent.DeathPlace.Geogname",
     "ApiField": "AuthorizedAgent.DeathPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2186,20 +2177,20 @@
   {
     "Identifier": "AuthorizedAgent.DeathPlace.City",
     "ApiField": "AuthorizedAgent.DeathPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
     "ShortName": "Ville DeathPlace AuthorizedAgent "
   },
   {
-    "Identifier": "AuthorizedAgent.DeathPlace.Adress",
-    "ApiField": "AuthorizedAgent.DeathPlace.Adress",
+    "Identifier": "AuthorizedAgent.DeathPlace.Address",
+    "ApiField": "AuthorizedAgent.DeathPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
-    "ShortName": "Adresse DeathPlace AuthorizedAgent "
+    "ShortName": "AuthorizedAgent.DeathPlace.Address"
   },
   {
     "Identifier": "AuthorizedAgent.DeathPlace.PostalCode",
@@ -2213,7 +2204,7 @@
   {
     "Identifier": "AuthorizedAgent.DeathPlace.Country",
     "ApiField": "AuthorizedAgent.DeathPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2222,7 +2213,7 @@
   {
     "Identifier": "AuthorizedAgent.DeathPlace.Region",
     "ApiField": "AuthorizedAgent.DeathPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2402,7 +2393,7 @@
   {
     "Identifier": "Recipient.BirthPlace.City",
     "ApiField": "Recipient.BirthPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2411,7 +2402,7 @@
   {
     "Identifier": "Recipient.BirthPlace.Region",
     "ApiField": "Recipient.BirthPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2420,7 +2411,7 @@
   {
     "Identifier": "Recipient.BirthPlace.Country",
     "ApiField": "Recipient.BirthPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2429,7 +2420,7 @@
   {
     "Identifier": "Recipient.BirthPlace.Geogname",
     "ApiField": "Recipient.BirthPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2445,8 +2436,8 @@
     "ShortName": "Code postal naissance"
   },
   {
-    "Identifier": "Recipient.BirthPlace.Adress",
-    "ApiField": "Recipient.BirthPlace.Adress",
+    "Identifier": "Recipient.BirthPlace.Address",
+    "ApiField": "Recipient.BirthPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
@@ -2456,15 +2447,15 @@
   {
     "Identifier": "Recipient.DeathPlace.Country",
     "ApiField": "Recipient.DeathPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
     "ShortName": "Pays décès"
   },
   {
-    "Identifier": "Recipient.DeathPlace.Adress",
-    "ApiField": "Recipient.DeathPlace.Adress",
+    "Identifier": "Recipient.DeathPlace.Address",
+    "ApiField": "Recipient.DeathPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
@@ -2474,7 +2465,7 @@
   {
     "Identifier": "Recipient.DeathPlace.Region",
     "ApiField": "Recipient.DeathPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2492,7 +2483,7 @@
   {
     "Identifier": "Recipient.DeathPlace.Geogname",
     "ApiField": "Recipient.DeathPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.042",
     "LastUpdate": "2020-11-02T14:21:29.887",
@@ -2668,15 +2659,6 @@
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:32.982",
     "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
-  },
-  {
-    "Identifier": "Signature.DateSignature",
-    "ApiField": "Signature.DateSignature",
-    "Type": "DATE",
-    "Origin": "INTERNAL",
-    "CreationDate": "2020-11-02T12:25:58.047",
-    "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Date de Signature"
   },
   {
     "Identifier": "SubmissionAgency.Identifier",
@@ -2912,25 +2894,25 @@
   {
     "Identifier": "Sender.BirthPlace.Geogname",
     "ApiField": "Sender.BirthPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
     "ShortName": "Sender.BirthPlace.Geogname"
   },
   {
-    "Identifier": "Sender.BirthPlace.Adress",
-    "ApiField": "Sender.BirthPlace.Adress",
+    "Identifier": "Sender.BirthPlace.Address",
+    "ApiField": "Sender.BirthPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Sender.BirthPlace.Adress"
+    "ShortName": "Sender.BirthPlace.Address"
   },
   {
     "Identifier": "Sender.BirthPlace.Country",
     "ApiField": "Sender.BirthPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -2939,7 +2921,7 @@
   {
     "Identifier": "Sender.BirthPlace.City",
     "ApiField": "Sender.BirthPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -2957,7 +2939,7 @@
   {
     "Identifier": "Sender.BirthPlace.Region",
     "ApiField": "Sender.BirthPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -2975,7 +2957,7 @@
   {
     "Identifier": "Sender.DeathPlace.City",
     "ApiField": "Sender.DeathPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -2984,7 +2966,7 @@
   {
     "Identifier": "Sender.DeathPlace.Region",
     "ApiField": "Sender.DeathPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -2993,7 +2975,7 @@
   {
     "Identifier": "Sender.DeathPlace.Geogname",
     "ApiField": "Sender.DeathPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3002,7 +2984,7 @@
   {
     "Identifier": "Sender.DeathPlace.Country",
     "ApiField": "Sender.DeathPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3018,13 +3000,13 @@
     "ShortName": "Sender.DeathPlace.PostalCode"
   },
   {
-    "Identifier": "Sender.DeathPlace.Adress",
-    "ApiField": "Sender.DeathPlace.Adress",
+    "Identifier": "Sender.DeathPlace.Address",
+    "ApiField": "Sender.DeathPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Sender.DeathPlace.Adress"
+    "ShortName": "Sender.DeathPlace.Address"
   },
   {
     "Identifier": "Sender.Function",
@@ -3065,7 +3047,7 @@
   {
     "Identifier": "Transmitter.BirthPlace.Region",
     "ApiField": "Transmitter.BirthPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3083,7 +3065,7 @@
   {
     "Identifier": "Transmitter.BirthPlace.Geogname",
     "ApiField": "Transmitter.BirthPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3092,20 +3074,20 @@
   {
     "Identifier": "Transmitter.BirthPlace.City",
     "ApiField": "Transmitter.BirthPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
     "ShortName": "Transmitter.BirthPlace.City"
   },
   {
-    "Identifier": "Transmitter.BirthPlace.Adress",
-    "ApiField": "Transmitter.BirthPlace.Adress",
+    "Identifier": "Transmitter.BirthPlace.Address",
+    "ApiField": "Transmitter.BirthPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Transmitter.BirthPlace.Adress"
+    "ShortName": "Transmitter.BirthPlace.Address"
   },
   {
     "Identifier": "Transmitter.DeathDate",
@@ -3119,7 +3101,7 @@
   {
     "Identifier": "Transmitter.DeathPlace.Region",
     "ApiField": "Transmitter.DeathPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3128,25 +3110,25 @@
   {
     "Identifier": "Transmitter.DeathPlace.Geogname",
     "ApiField": "Transmitter.DeathPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
     "ShortName": "Transmitter.DeathPlace.Geogname"
   },
   {
-    "Identifier": "Transmitter.DeathPlace.Adress",
-    "ApiField": "Transmitter.DeathPlace.Adress",
+    "Identifier": "Transmitter.DeathPlace.Address",
+    "ApiField": "Transmitter.DeathPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Transmitter.DeathPlace.Adress"
+    "ShortName": "Transmitter.DeathPlace.Address"
   },
   {
     "Identifier": "Transmitter.DeathPlace.Country",
     "ApiField": "Transmitter.DeathPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3297,13 +3279,13 @@
     "ShortName": "Writer.BirthDate"
   },
   {
-    "Identifier": "Writer.BirthPlace.Adress",
-    "ApiField": "Writer.BirthPlace.Adress",
+    "Identifier": "Writer.BirthPlace.Address",
+    "ApiField": "Writer.BirthPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Writer.BirthPlace.Adress"
+    "ShortName": "Writer.BirthPlace.Address"
   },
   {
     "Identifier": "Writer.BirthPlace.PostalCode",
@@ -3317,7 +3299,7 @@
   {
     "Identifier": "Writer.BirthPlace.Geogname",
     "ApiField": "Writer.BirthPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3326,7 +3308,7 @@
   {
     "Identifier": "Writer.BirthPlace.City",
     "ApiField": "Writer.BirthPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3335,7 +3317,7 @@
   {
     "Identifier": "Writer.BirthPlace.Region",
     "ApiField": "Writer.BirthPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3344,7 +3326,7 @@
   {
     "Identifier": "Writer.BirthPlace.Country",
     "ApiField": "Writer.BirthPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3362,7 +3344,7 @@
   {
     "Identifier": "Writer.DeathPlace.Country",
     "ApiField": "Writer.DeathPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3371,7 +3353,7 @@
   {
     "Identifier": "Writer.DeathPlace.City",
     "ApiField": "Writer.DeathPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3380,20 +3362,20 @@
   {
     "Identifier": "Writer.DeathPlace.Region",
     "ApiField": "Writer.DeathPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
     "ShortName": "Writer.DeathPlace.Region"
   },
   {
-    "Identifier": "Writer.DeathPlace.Adress",
-    "ApiField": "Writer.DeathPlace.Adress",
+    "Identifier": "Writer.DeathPlace.Address",
+    "ApiField": "Writer.DeathPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Writer.DeathPlace.Adress"
+    "ShortName": "Writer.DeathPlace.Address"
   },
   {
     "Identifier": "Writer.DeathPlace.PostalCode",
@@ -3407,7 +3389,7 @@
   {
     "Identifier": "Writer.DeathPlace.Geogname",
     "ApiField": "Writer.DeathPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3488,7 +3470,7 @@
   {
     "Identifier": "Signature.Signer.BirthPlace.Region",
     "ApiField": "Signature.Signer.BirthPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3497,7 +3479,7 @@
   {
     "Identifier": "Signature.Signer.BirthPlace.Geogname",
     "ApiField": "Signature.Signer.BirthPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3515,7 +3497,7 @@
   {
     "Identifier": "Signature.Signer.DeathPlace.Region",
     "ApiField": "Signature.Signer.DeathPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3524,7 +3506,7 @@
   {
     "Identifier": "Signature.Signer.DeathPlace.Country",
     "ApiField": "Signature.Signer.DeathPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3542,20 +3524,20 @@
   {
     "Identifier": "Signature.Signer.DeathPlace.Geogname",
     "ApiField": "Signature.Signer.DeathPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
     "ShortName": "Signature.Signer.DeathPlace.Geogname"
   },
   {
-    "Identifier": "Signature.Signer.DeathPlace.Adress",
-    "ApiField": "Signature.Signer.DeathPlace.Adress",
+    "Identifier": "Signature.Signer.DeathPlace.Address",
+    "ApiField": "Signature.Signer.DeathPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Signature.Signer.DeathPlace.Adress"
+    "ShortName": "Signature.Signer.DeathPlace.Address"
   },
   {
     "Identifier": "Signature.Signer.Function",
@@ -3605,29 +3587,29 @@
   {
     "Identifier": "Signature.Validator.BirthPlace.Country",
     "ApiField": "Signature.Validator.BirthPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Pays de la date de Signature"
+    "ShortName": "Signature.Validator.BirthPlace.Country"
   },
   {
     "Identifier": "Signature.Validator.BirthPlace.Region",
     "ApiField": "Signature.Validator.BirthPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Region de la date de Signature"
+    "ShortName": "Signature.Validator.BirthPlace.Region"
   },
   {
     "Identifier": "Signature.Validator.BirthPlace.City",
     "ApiField": "Signature.Validator.BirthPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Ville de la date de Signature"
+    "ShortName": "Signature.Validator.BirthPlace.City"
   },
   {
     "Identifier": "Signature.Validator.BirthPlace.PostalCode",
@@ -3636,21 +3618,21 @@
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Code postal de la date de Signature"
+    "ShortName": "Signature.Validator.BirthPlace.PostalCode"
   },
   {
-    "Identifier": "Signature.Validator.BirthPlace.Adress",
-    "ApiField": "Signature.Validator.BirthPlace.Adress",
+    "Identifier": "Signature.Validator.BirthPlace.Address",
+    "ApiField": "Signature.Validator.BirthPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Signature.Validator.BirthPlace.Adress"
+    "ShortName": "Signature.Validator.BirthPlace.Address"
   },
   {
     "Identifier": "Signature.Validator.BirthPlace.Geogname",
     "ApiField": "Signature.Validator.BirthPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3666,9 +3648,18 @@
     "ShortName": "Signature.Validator.DeathDate"
   },
   {
+    "Identifier": "Signature.Validator.DeathPlace.Address",
+    "ApiField": "Signature.Validator.DeathPlace.Address",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "Signature.Validator.DeathPlace.Address"
+  },
+  {
     "Identifier": "Signature.Validator.DeathPlace.Region",
     "ApiField": "Signature.Validator.DeathPlace.Region",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3677,7 +3668,7 @@
   {
     "Identifier": "Signature.Validator.DeathPlace.City",
     "ApiField": "Signature.Validator.DeathPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3686,7 +3677,7 @@
   {
     "Identifier": "Signature.Validator.DeathPlace.Geogname",
     "ApiField": "Signature.Validator.DeathPlace.Geogname",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -3704,7 +3695,7 @@
   {
     "Identifier": "Signature.Validator.DeathPlace.Country",
     "ApiField": "Signature.Validator.DeathPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -4224,18 +4215,18 @@
     "ShortName": "ClassificationRule ClassificationOwner"
   },
   {
-    "Identifier": "Signature.Signer.BirthPlace.Adress",
-    "ApiField": "Signature.Signer.BirthPlace.Adress",
+    "Identifier": "Signature.Signer.BirthPlace.Address",
+    "ApiField": "Signature.Signer.BirthPlace.Address",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
-    "ShortName": "Signature.Signer.BirthPlace.Adress"
+    "ShortName": "Signature.Signer.BirthPlace.Address"
   },
   {
     "Identifier": "Signature.Signer.BirthPlace.City",
     "ApiField": "Signature.Signer.BirthPlace.City",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -4451,7 +4442,7 @@
   {
     "Identifier": "Signature.Signer.BirthPlace.Country",
     "ApiField": "Signature.Signer.BirthPlace.Country",
-    "Type": "KEYWORD",
+    "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2020-11-02T12:25:58.047",
     "LastUpdate": "2020-11-02T14:21:33.798",
@@ -4582,5 +4573,563 @@
     "CreationDate": "2023-08-02T12:25:58.047",
     "LastUpdate": "2023-08-02T14:21:33.798",
     "ShortName": "Persistent Identifier Content "
+  },
+  {
+    "Identifier": "SigningInformation.SigningRole",
+    "ApiField": "SigningInformation.SigningRole",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.SigningRole"
+  },
+  {
+    "Identifier": "SigningInformation.DetachedSigningRole",
+    "ApiField": "SigningInformation.DetachedSigningRole",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.DetachedSigningRole"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.Activity",
+    "ApiField": "SigningInformation.Signature.Signer.Activity",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.Activity"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.BirthDate",
+    "ApiField": "SigningInformation.Signature.Signer.BirthDate",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.BirthDate"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.BirthName",
+    "ApiField": "SigningInformation.Signature.Signer.BirthName",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.BirthName"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.Address",
+    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.Address",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.Address"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.City",
+    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.City",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.City"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.Country",
+    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.Country",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.Country"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.Geogname",
+    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.Geogname",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.Geogname"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.PostalCode",
+    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.PostalCode",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.PostalCode"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.Region",
+    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.Region",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.Region"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.Corpname",
+    "ApiField": "SigningInformation.Signature.Signer.Corpname",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.Corpname"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.DeathDate",
+    "ApiField": "SigningInformation.Signature.Signer.DeathDate",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.DeathDate"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.Address",
+    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.Address",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.Address"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.City",
+    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.City",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.City"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.Country",
+    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.Country",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.Country"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.Geogname",
+    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.Geogname",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.Geogname"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.PostalCode",
+    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.PostalCode",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.PostalCode"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.Region",
+    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.Region",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.Region"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.FirstName",
+    "ApiField": "SigningInformation.Signature.Signer.FirstName",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.FirstName"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.FullName",
+    "ApiField": "SigningInformation.Signature.Signer.FullName",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.FullName"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.Function",
+    "ApiField": "SigningInformation.Signature.Signer.Function",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.Function"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.Gender",
+    "ApiField": "SigningInformation.Signature.Signer.Gender",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.Gender"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.GivenName",
+    "ApiField": "SigningInformation.Signature.Signer.GivenName",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.GivenName"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.Identifier",
+    "ApiField": "SigningInformation.Signature.Signer.Identifier",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.Identifier"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.Mandate",
+    "ApiField": "SigningInformation.Signature.Signer.Mandate",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.Mandate"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.Nationality",
+    "ApiField": "SigningInformation.Signature.Signer.Nationality",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.Nationality"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.Position",
+    "ApiField": "SigningInformation.Signature.Signer.Position",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.Position"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.Role",
+    "ApiField": "SigningInformation.Signature.Signer.Role",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.Role"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Signer.SigningTime",
+    "ApiField": "SigningInformation.Signature.Signer.SigningTime",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Signer.SigningTime"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.Activity",
+    "ApiField": "SigningInformation.Signature.Validator.Activity",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.Activity"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.BirthDate",
+    "ApiField": "SigningInformation.Signature.Validator.BirthDate",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.BirthDate"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.BirthName",
+    "ApiField": "SigningInformation.Signature.Validator.BirthName",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.BirthName"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.Address",
+    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.Address",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.Address"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.City",
+    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.City",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.City"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.Country",
+    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.Country",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.Country"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.Geogname",
+    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.Geogname",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.Geogname"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.PostalCode",
+    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.PostalCode",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.PostalCode"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.Region",
+    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.Region",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.Region"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.Corpname",
+    "ApiField": "SigningInformation.Signature.Validator.Corpname",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.Corpname"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.DeathDate",
+    "ApiField": "SigningInformation.Signature.Validator.DeathDate",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.DeathDate"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.Address",
+    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.Address",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.Address"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.City",
+    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.City",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.City"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.Country",
+    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.Country",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.Country"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.Geogname",
+    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.Geogname",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.Geogname"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.PostalCode",
+    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.PostalCode",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.PostalCode"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.Region",
+    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.Region",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.Region"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.FirstName",
+    "ApiField": "SigningInformation.Signature.Validator.FirstName",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.FirstName"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.FullName",
+    "ApiField": "SigningInformation.Signature.Validator.FullName",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.FullName"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.Function",
+    "ApiField": "SigningInformation.Signature.Validator.Function",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.Function"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.Gender",
+    "ApiField": "SigningInformation.Signature.Validator.Gender",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.Gender"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.GivenName",
+    "ApiField": "SigningInformation.Signature.Validator.GivenName",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.GivenName"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.Identifier",
+    "ApiField": "SigningInformation.Signature.Validator.Identifier",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.Identifier"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.Mandate",
+    "ApiField": "SigningInformation.Signature.Validator.Mandate",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.Mandate"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.Nationality",
+    "ApiField": "SigningInformation.Signature.Validator.Nationality",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.Nationality"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.Position",
+    "ApiField": "SigningInformation.Signature.Validator.Position",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.Position"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.Role",
+    "ApiField": "SigningInformation.Signature.Validator.Role",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.Role"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.Validator.ValidationTime",
+    "ApiField": "SigningInformation.Signature.Validator.ValidationTime",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.Validator.ValidationTime"
+  },
+  {
+    "Identifier": "SigningInformation.Signature.SigningType",
+    "ApiField": "SigningInformation.Signature.SigningType",
+    "Type": "KEYWORD",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.Signature.SigningType"
+  },
+  {
+    "Identifier": "SigningInformation.TimestampingInformation.TimeStamp",
+    "ApiField": "SigningInformation.TimestampingInformation.TimeStamp",
+    "Type": "DATE",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.TimestampingInformation.TimeStamp"
+  },
+  {
+    "Identifier": "SigningInformation.TimestampingInformation.AdditionalTimestampingInformation",
+    "ApiField": "SigningInformation.TimestampingInformation.AdditionalTimestampingInformation",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.TimestampingInformation.AdditionalTimestampingInformation"
+  },
+  {
+    "Identifier": "SigningInformation.AdditionalProof.AdditionalProofInformation",
+    "ApiField": "SigningInformation.AdditionalProof.AdditionalProofInformation",
+    "Type": "TEXT",
+    "Origin": "INTERNAL",
+    "CreationDate": "2023-08-18T12:25:58.047",
+    "LastUpdate": "2023-08-18T14:21:33.798",
+    "ShortName": "SigningInformation.AdditionalProof.AdditionalProofInformation"
   }
 ]
