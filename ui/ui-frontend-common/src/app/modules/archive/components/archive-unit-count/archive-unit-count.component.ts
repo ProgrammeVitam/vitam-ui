@@ -38,6 +38,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Logger } from '../../../logger/logger';
 
 @Component({
   selector: 'vitamui-common-archive-unit-count',
@@ -62,7 +63,7 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
 
   private subscriptions = new Subscription();
 
-  constructor() {}
+  constructor(private logger: Logger) {}
 
   ngOnInit(): void {}
 
@@ -111,6 +112,11 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
       updatePending(false);
     };
 
+    if (!this.search) {
+      this.logger.error(this, 'Cannot load exact count. No search observable provided');
+      return;
+    }
+
     updatePending(true);
     this.subscriptions.add(
       this.search.pipe(tap(notPending, notPending)).subscribe(
@@ -118,7 +124,7 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
           this.handleExactCount(exactCount);
         },
         (error: HttpErrorResponse) => {
-          console.error(error.message);
+          this.logger.error(this, error.message);
 
           this.handleExactCount(-1);
         }
