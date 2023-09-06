@@ -194,11 +194,13 @@
   <profiles>
     <profile>
       <id>standalone</id>
+
       <properties>
         <!-- On vient juste positionner la variable angular.build.profile dans le profile maven afin
         de lancer un build en mode standalone. -->
         <angular.build.profile>:pastis-standalone</angular.build.profile>
       </properties>
+
       <dependencies>
         <dependency>
           <groupId>fr.gouv.vitamui</groupId>
@@ -208,6 +210,7 @@
           <version>${project.version}</version>
         </dependency>
       </dependencies>
+
       <build>
         <resources>
           <resource>
@@ -349,6 +352,43 @@
           </plugin>
         </plugins>
       </build>
+
+      <distributionManagement>
+        <repository>
+          <id>releases</id>
+          <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+          <id>snapshots</id>
+          <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <site>
+          <id>${project.artifactId}-site</id>
+          <url>${project.baseUri}</url>
+        </site>
+      </distributionManagement>
+
+      <repositories>
+        <repository>
+          <id>vitam</id>
+          <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
+        </repository>
+      </repositories>
+
+      <!-- Maven plugins repositories -->
+      <pluginRepositories>
+        <pluginRepository>
+          <id>vitam</id>
+          <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+
     </profile>
   </profiles>
 </project>
