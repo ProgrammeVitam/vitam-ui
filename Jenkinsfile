@@ -121,6 +121,21 @@ pipeline {
             }
         }
 
+        stage('Build PASTIS standalone') {
+            environment {
+                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
+            }
+            when {
+                environment(name: 'DO_BUILD', value: 'true')
+            }
+            steps {
+                sh 'npmrc default'
+                sh '''
+                    $MVN_COMMAND deploy -Pstandalone -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl api/api-pastis/pastis-standalone
+                '''
+            }
+        }
+
         stage('Build COTS') {
             when {
                 environment(name: 'DO_BUILD', value: 'true')
