@@ -42,7 +42,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileFormat, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, ExternalParameters, ExternalParametersService, IngestContract, Option } from 'ui-frontend-common';
+import {
+  ConfirmDialogService, ExternalParameters, ExternalParametersService, IngestContract, Option, SignaturePolicy, SignedDocumentPolicyEnum
+} from 'ui-frontend-common';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';
@@ -57,6 +59,9 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./ingest-contract-create.component.scss'],
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
+
+  signedDocumentPolicyEnum = SignedDocumentPolicyEnum;
+
   form: FormGroup;
   stepIndex = 0;
   hasCustomGraphicIdentity = false;
@@ -71,7 +76,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 8;
+  stepCount = 9;
   private keyPressSubscription: Subscription;
 
   constructor(
@@ -129,6 +134,16 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       checkParentLink: ['AUTHORIZED', Validators.required],
       linkParentId: [null, Validators.required],
       checkParentId: [new Array<string>(), Validators.required],
+
+      /* <- step 6 -> */
+      signaturePolicy: this.formBuilder.group({
+        signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
+        needSignature: [false],
+        needTimestamp: [false],
+        needAdditionalProof: [false],
+      }),
+      signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
+      elementsToCheck: [new Array<string>()],
 
       /* default */
       masterMandatory: [true, Validators.required],
@@ -264,7 +279,18 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
+  selectedSignedDocumentPolicyInvalid(): boolean {
+    const signaturePolicy: SignaturePolicy = this.form.get('signaturePolicy').value
+    if (signaturePolicy.signedDocument === SignedDocumentPolicyEnum.ONLY) {
+      return !(signaturePolicy.needSignature || signaturePolicy.needTimestamp || signaturePolicy.needAdditionalProof);
+    }
+    if (signaturePolicy.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN) {
+      return signaturePolicy.needSignature || signaturePolicy.needTimestamp || signaturePolicy.needAdditionalProof;
+    }
+  }
+
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
+
 }

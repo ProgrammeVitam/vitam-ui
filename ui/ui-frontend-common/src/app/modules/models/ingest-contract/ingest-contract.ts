@@ -52,4 +52,18 @@ export interface IngestContract extends Id {
   archiveProfiles: Array<string>;
   managementContractId: string;
   computeInheritedRulesAtIngest: boolean;
+  signaturePolicy: SignaturePolicy;
+}
+
+export interface SignaturePolicy {
+  signedDocument: SignedDocumentPolicyEnum;
+  needSignature: boolean;
+  needTimestamp: boolean;
+  needAdditionalProof: boolean;
+}
+
+export enum SignedDocumentPolicyEnum {
+  ALLOWED = 'ALLOWED',
+  ONLY = 'ONLY',
+  FORBIDDEN = 'FORBIDDEN',
 }

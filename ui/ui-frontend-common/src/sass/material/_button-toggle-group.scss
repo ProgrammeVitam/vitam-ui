@@ -28,7 +28,7 @@
     &.disabled {
         border-color: var(--vitamui-grey);
     }
-    
+
 
     .mat-button-toggle-disabled {
         background-color: var(--vitamui-grey-300);
@@ -38,10 +38,9 @@
 }
 
 .mat-button-toggle-label-content {
-    
     font-size: 14px;
-    line-height: 36px!important;
-    padding: 0 14px!important;
+    line-height: 22px !important;
+    padding: 6px 30px !important;
 }
 .mat-button-toggle-button {
     padding: 1px 0 0 0;

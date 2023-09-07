@@ -4407,5 +4407,43 @@
         "SYMBOL": "kg"
       }
     }
+  },
+  "INGEST_CONTRACT": {
+    "SIGNED_DOCUMENT_TYPE": {
+      "ALLOWED": "Allowed",
+      "ONLY": "Mandatory",
+      "FORBIDDEN": "Forbidden"
+    },
+    "ELEMENT_TO_CHECK": {
+      "SIGNED_DOCUMENT": "Signed document",
+      "SIGNATURE": "Signature",
+      "TIMESTAMP": "Timestamp",
+      "ADDITIONAL_EVIDENCES": "Additional evidences"
+    },
+    "MODAL_CREATE": {
+      "TITLE": "Creation of an ingest contract",
+      "INFORMATIONS": {
+        "TITLE": "Informations"
+      },
+      "FILES_FORMAT": {
+        "TITLE": "Format des fichiers"
+      },
+      "OBJECTS": {
+        "TITLE": "Objets"
+      },
+      "INHERITANCE": {
+        "TITLE": "Héritage"
+      },
+      "ATTACHMENT_POSITION": {
+        "TITLE": "Position de rattachement"
+      },
+      "ATTACHMENT_CONTROLS": {
+        "TITLE": "Contrôle des rattachements"
+      },
+      "SIGNING_POLICY": {
+        "TITLE": "Ingest of signed documents",
+        "ELEMENTS_TO_CHECK": "Systematic verification of the presence of the following elements:"
+      }
+    }
   }
 }

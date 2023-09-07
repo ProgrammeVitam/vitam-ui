@@ -3960,7 +3960,6 @@
     "VERIFY_TIMESTAMP.VERIFY_TOKEN_TIMESTAMP": "Vérification de l'horodatage",
     "VERIFY_TIMESTAMP.WARNING": "Avertissement lors de la vérification de l'horodatage",
     "VERIFY_TIMESTAMP": "Vérification de l'horodatage",
-
     "ARCHIVE_TRANSFER_LABEL": "Transfert des unités archivistiques et des groupes d'objets",
     "CHECK_DATAOBJECTPACKAGE.TOO_MANY_VERSION_BY_USAGE.KO": "Le transfert de plusieurs versions d'un même usage dans un même versement est interdit",
     "CHECK_UNIT_SCHEMA.RULE_DATE_FORMAT.KO": "Échec du calcul des dates d'échéance : la date ne peut être gérée",
@@ -5318,6 +5317,44 @@
       "KGM": {
         "NAME": "kilogramme",
         "SYMBOL": "kg"
+      }
+    }
+  },
+  "INGEST_CONTRACT": {
+    "SIGNED_DOCUMENT_TYPE": {
+      "ALLOWED": "Autorisé",
+      "ONLY": "Obligatoire",
+      "FORBIDDEN": "Interdit"
+    },
+    "ELEMENT_TO_CHECK": {
+      "SIGNED_DOCUMENT": "Document signé",
+      "SIGNATURE": "Signature",
+      "TIMESTAMP": "Horodatage",
+      "ADDITIONAL_EVIDENCES": "Preuves complémentaires"
+    },
+    "MODAL_CREATE": {
+      "TITLE": "Création d'un contrat d'entrée",
+      "INFORMATIONS": {
+        "TITLE": "Informations"
+      },
+      "FILES_FORMAT": {
+        "TITLE": "Format des fichiers"
+      },
+      "OBJECTS": {
+        "TITLE": "Objets"
+      },
+      "INHERITANCE": {
+        "TITLE": "Héritage"
+      },
+      "ATTACHMENT_POSITION": {
+        "TITLE": "Position de rattachement"
+      },
+      "ATTACHMENT_CONTROLS": {
+        "TITLE": "Contrôle des rattachements"
+      },
+      "SIGNING_POLICY": {
+        "TITLE": "Versement de documents signés",
+        "ELEMENTS_TO_CHECK": "Vérification systématique de la présence des éléments suivants:"
       }
     }
   }

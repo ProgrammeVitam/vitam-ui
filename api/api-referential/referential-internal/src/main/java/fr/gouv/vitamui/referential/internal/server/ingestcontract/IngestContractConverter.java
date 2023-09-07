@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 
 public class IngestContractConverter {
 
-	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractConverter.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractConverter.class);
 
     public IngestContractModel convertDtoToVitam(final IngestContractDto dto) {
         final IngestContractModel ingestContract = VitamUIUtils.copyProperties(dto, new IngestContractModel());
@@ -65,6 +65,7 @@ public class IngestContractConverter {
         ingestContract.setActivationdate(dto.getActivationdate());
         ingestContract.setDeactivationdate(dto.getDeactivationdate());
         ingestContract.setComputeInheritedRulesAtIngest(dto.isComputeInheritedRulesAtIngest());
+        ingestContract.setSignaturePolicy(dto.getSignaturePolicy());
 
         return ingestContract;
     }
@@ -85,6 +86,7 @@ public class IngestContractConverter {
         dto.setLastupdate(ingestContract.getLastupdate());
         dto.setActivationdate(ingestContract.getActivationdate());
         dto.setDeactivationdate(ingestContract.getDeactivationdate());
+        dto.setSignaturePolicy(ingestContract.getSignaturePolicy());
 
         return dto;
     }
