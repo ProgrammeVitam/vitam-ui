@@ -102,7 +102,6 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public List<IdentityProviderDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
 
-        SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
         LOGGER.debug("Get all criteria={} embedded={}", criteria, embedded);
         return identityProviderCrudService.getAll(criteria, embedded);
@@ -131,7 +130,6 @@ public class IdentityProviderExternalController implements CrudController<Identi
     public IdentityProviderDto create(final @Valid @RequestBody IdentityProviderDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return identityProviderCrudService.create(dto);
     }
@@ -149,7 +147,6 @@ public class IdentityProviderExternalController implements CrudController<Identi
 
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
-        SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return identityProviderCrudService.patch(partialDto);
