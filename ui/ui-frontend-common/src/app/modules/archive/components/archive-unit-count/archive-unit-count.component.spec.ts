@@ -8,6 +8,7 @@ import { By } from '@angular/platform-browser';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { Observable, of, throwError } from 'rxjs';
+import { LoggerModule } from '../../../logger';
 import { VitamuiMissingTranslationHandler } from '../../../missing-translation-handler';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { ArchiveUnitCountComponent } from './archive-unit-count.component';
@@ -50,6 +51,7 @@ describe('ArchiveUnitCountComponent', () => {
       declarations: [ArchiveUnitCountComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
+        LoggerModule.forRoot(),
         HttpClientTestingModule,
         TranslateModule.forRoot({
           missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
