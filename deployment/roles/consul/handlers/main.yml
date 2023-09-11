@@ -1,11 +1,7 @@
 ---
 
-- name: restart consul
-  service:
+- name: "consul - restart service"
+  systemd:
     name: "{{ consul.service_name | default('vitam-consul') }}"
     state: restarted
-
-- name: reload consul
-  service:
-    name: "{{ consul.service_name | default('vitam-consul') }}"
-    state: reloaded
+    daemon_reload: yes
