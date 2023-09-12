@@ -26,7 +26,7 @@
  */
 
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -73,7 +73,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     private archiveSharedDataService: ArchiveSharedDataService,
     private archiveFacetsService: ArchiveFacetsService,
     private translateService: TranslateService,
-    @Inject(LOCALE_ID) private locale: string,
   ) {}
 
   ngOnInit(): void {
@@ -118,19 +117,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addOrphansNode() {
-    const unknonwFacets = FilingHoldingSchemeHandler.filterUnknownFacetsIds(this.nestedDataSourceLeaves.data,
-      this.searchRequestResultFacets);
-    if (!isEmpty(unknonwFacets)) {
-      this.leavesTreeService.loadNodesDetailsFromFacetsIds(unknonwFacets)
-        .subscribe((pageResult) => {
-          const nodes = FilingHoldingSchemeHandler.buildNestedTreeLevels(pageResult.results, this.locale);
-          FilingHoldingSchemeHandler.setCountRecursively(nodes, unknonwFacets);
-          FilingHoldingSchemeHandler.addToOrphansNode(nodes, this.nestedDataSourceLeaves.data,
-            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'));
-          this.refreshTreeNodes();
-          this.loadingNodesDetails = false;
-        });
-    }
     if (this.searchRequestTotalResults > 0 && isEmpty(this.nestedDataSourceLeaves.data)) {
       FilingHoldingSchemeHandler.addOrphansNodeFromTree(this.nestedDataSourceLeaves.data,
         this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'), this.searchRequestTotalResults);

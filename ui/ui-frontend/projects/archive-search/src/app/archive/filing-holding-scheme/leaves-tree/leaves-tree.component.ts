@@ -25,7 +25,7 @@
  * accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -69,7 +69,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     private archiveSharedDataService: ArchiveSharedDataService,
     private archiveFacetsService: ArchiveFacetsService,
     private translateService: TranslateService,
-    @Inject(LOCALE_ID) private locale: string,
   ) {
   }
 
@@ -84,19 +83,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addOrphansNode() {
-    const unknonwFacets = FilingHoldingSchemeHandler.filterUnknownFacetsIds(this.nestedDataSourceLeaves.data,
-      this.searchRequestResultFacets);
-    if (unknonwFacets) {
-      this.leavesTreeService.loadNodesDetailsFromFacetsIds(unknonwFacets)
-        .subscribe((pageResult) => {
-          const nodes = FilingHoldingSchemeHandler.buildNestedTreeLevels(pageResult.results, this.locale);
-          FilingHoldingSchemeHandler.setCountRecursively(nodes, unknonwFacets);
-          FilingHoldingSchemeHandler.addToOrphansNode(nodes, this.nestedDataSourceLeaves.data,
-            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'));
-          this.refreshTreeNodes();
-          this.loadingNodesDetails = false;
-        });
-    }
     const orphans = this.searchRequestTotalResults - this.searchRequestResultsInFilingPlan;
     if (orphans > 0) {
       FilingHoldingSchemeHandler.addOrphansNodeFromTree(this.nestedDataSourceLeaves.data,
@@ -140,7 +126,8 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   private searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
     this.leavesTreeService.searchOrphansWithSearchCriterias(parentNode, this.searchCriterias)
       .subscribe((pageResult) => {
-        FilingHoldingSchemeHandler.addOrphans(parentNode, pageResult.results, true);
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pageResult.results, true);
+        this.compareAddedNodeWithKnownFacets(matchingNodesNumbers.nodesAddedList);
         this.refreshTreeNodes();
       });
   }

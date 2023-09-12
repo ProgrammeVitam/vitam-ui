@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import {
-  CriteriaDataType, CriteriaOperator, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, PagedResult, ResultFacet, SearchCriteriaDto,
-  SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit
+  CriteriaDataType, CriteriaOperator, DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, PagedResult, ResultFacet,
+  SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit
 } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 
@@ -79,6 +79,17 @@ export class LeavesTreeService {
         operator: CriteriaOperator.MISSING,
         category: SearchCriteriaTypeEnum.FIELDS,
         values: [],
+        dataType: CriteriaDataType.STRING,
+      },
+      {
+        criteria: 'DescriptionLevel',
+        operator: CriteriaOperator.IN,
+        category: SearchCriteriaTypeEnum.FIELDS,
+        values: [
+          { id: DescriptionLevel.RECORD_GRP, value: DescriptionLevel.RECORD_GRP },
+          { id: DescriptionLevel.FILE, value: DescriptionLevel.FILE },
+          { id: DescriptionLevel.ITEM, value: DescriptionLevel.ITEM },
+        ],
         dataType: CriteriaDataType.STRING,
       },
     ];
