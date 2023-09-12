@@ -73,8 +73,6 @@ import java.util.Optional;
 
 /**
  * The controller to check existence, create, read, update and delete the identity providers.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_PROVIDERS_URL)
@@ -83,19 +81,22 @@ import java.util.Optional;
 @Api(tags = "identityproviders", value = "Identity Providers Management", description = "Identity Providers Management")
 public class IdentityProviderInternalController implements CrudController<IdentityProviderDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IdentityProviderInternalController.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(IdentityProviderInternalController.class);
 
     @Autowired
     private IdentityProviderInternalService internalIdentityProviderService;
 
     /**
      * Get All with criteria and embedded request.
+     *
      * @param criteria
      * @param embedded
      * @return
      */
     @GetMapping
-    public List<IdentityProviderDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
+    public List<IdentityProviderDto> getAll(final Optional<String> criteria,
+        @RequestParam final Optional<String> embedded) {
         LOGGER.debug("Get all criteria={}, embedded={}", criteria, embedded);
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
         return internalIdentityProviderService.getAll(criteria, embedded);
@@ -103,14 +104,17 @@ public class IdentityProviderInternalController implements CrudController<Identi
 
     /**
      * GetOne with criteria, item id and embedded request.
+     *
      * @param id
      * @param criteria
      * @param embedded
      * @return
      */
     @GetMapping(CommonConstants.PATH_ID)
-    public IdentityProviderDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria,
-            final @RequestParam Optional<String> embedded) throws InvalidParseOperationException, PreconditionFailedException {
+    public IdentityProviderDto getOne(final @PathVariable("id") String id,
+        final @RequestParam Optional<String> criteria,
+        final @RequestParam Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
 
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
@@ -137,7 +141,6 @@ public class IdentityProviderInternalController implements CrudController<Identi
     public IdentityProviderDto create(final @Valid @RequestBody IdentityProviderDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Create {}", dto);
-        SanityChecker.sanitizeCriteria(dto);
         return internalIdentityProviderService.create(dto);
     }
 
@@ -145,7 +148,8 @@ public class IdentityProviderInternalController implements CrudController<Identi
      * {@inheritDoc}
      */
     @Override
-    public IdentityProviderDto update(final @PathVariable("id") String id, final @Valid @RequestBody IdentityProviderDto dto) {
+    public IdentityProviderDto update(final @PathVariable("id") String id,
+        final @Valid @RequestBody IdentityProviderDto dto) {
         throw new UnsupportedOperationException("update not implemented");
     }
 
@@ -154,13 +158,15 @@ public class IdentityProviderInternalController implements CrudController<Identi
      */
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
-    public IdentityProviderDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+    public IdentityProviderDto patch(final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Patch {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update.");
         return internalIdentityProviderService.patch(partialDto);
     }
 }
