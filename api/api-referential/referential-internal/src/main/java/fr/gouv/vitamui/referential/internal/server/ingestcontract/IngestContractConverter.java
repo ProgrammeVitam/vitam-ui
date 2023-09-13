@@ -38,13 +38,16 @@ package fr.gouv.vitamui.referential.internal.server.ingestcontract;
 
 import fr.gouv.vitam.common.model.administration.IngestContractCheckState;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
+import fr.gouv.vitam.common.model.administration.SignaturePolicy;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
+import fr.gouv.vitamui.referential.common.dto.SignaturePolicyDto;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class IngestContractConverter {
@@ -65,7 +68,7 @@ public class IngestContractConverter {
         ingestContract.setActivationdate(dto.getActivationdate());
         ingestContract.setDeactivationdate(dto.getDeactivationdate());
         ingestContract.setComputeInheritedRulesAtIngest(dto.isComputeInheritedRulesAtIngest());
-        ingestContract.setSignaturePolicy(dto.getSignaturePolicy());
+        ingestContract.setSignaturePolicy(convertDtoToVitam(dto.getSignaturePolicy()));
 
         return ingestContract;
     }
@@ -86,9 +89,32 @@ public class IngestContractConverter {
         dto.setLastupdate(ingestContract.getLastupdate());
         dto.setActivationdate(ingestContract.getActivationdate());
         dto.setDeactivationdate(ingestContract.getDeactivationdate());
-        dto.setSignaturePolicy(ingestContract.getSignaturePolicy());
+        dto.setSignaturePolicy(convertVitamToDto(ingestContract.getSignaturePolicy()));
 
         return dto;
+    }
+
+    public SignaturePolicyDto convertVitamToDto(final SignaturePolicy vitam) {
+        if (Objects.isNull(vitam)) {
+            return null;
+        }
+        return new SignaturePolicyDto()
+            .setSignedDocument(vitam.getSignedDocument())
+            .setNeedSignature(vitam.isNeedSignature())
+            .setNeedTimestamp(vitam.isNeedTimestamp())
+            .setNeedAdditionalProof(vitam.isNeedAdditionalProof());
+    }
+
+    public SignaturePolicy convertDtoToVitam(final SignaturePolicyDto dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        SignaturePolicy signaturePolicy = new SignaturePolicy();
+        signaturePolicy.setSignedDocument(dto.getSignedDocument());
+        signaturePolicy.setNeedSignature(dto.isNeedSignature());
+        signaturePolicy.setNeedTimestamp(dto.isNeedTimestamp());
+        signaturePolicy.setNeedAdditionalProof(dto.isNeedAdditionalProof());
+        return signaturePolicy;
     }
 
     public List<IngestContractModel> convertDtosToVitams(final List<IngestContractDto> dtos) {
