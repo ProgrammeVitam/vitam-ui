@@ -5,6 +5,139 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
 
+    <!-- STEP 1 - Informations : ID, nom, description -->
+    <cdk-step>
+      <div class="content">
+        <h4>{{ 'INGEST_CONTRACT.MODAL_CREATE.TITLE' | translate }}</h4>
+        <h2>{{ 'INGEST_CONTRACT.MODAL_CREATE.INFORMATIONS.TITLE' | translate }}</h2>
+        <div class="main-content">
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <vitamui-common-slide-toggle [formControl]="statusControl">Contrat d'entrée actif
+                </vitamui-common-slide-toggle>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 form-control">
+                <vitamui-common-input formControlName="name" minlength="2" maxlength="100" required placeholder="Nom">
+                  <ng-container *ngIf="form.get('name')?.touched">
+                    <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">Champ requis
+                    </vitamui-common-input-error>
+                    <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">Nom déjà utilisé
+                    </vitamui-common-input-error>
+                  </ng-container>
+                </vitamui-common-input>
+              </div>
+
+              <div class="col-8 form-control" *ngIf="isSlaveMode">
+                <vitamui-common-input
+                  formControlName="identifier"
+                  minlength="2"
+                  maxlength="100"
+                  required
+                  placeholder="Identifiant"
+                  i18n-placeholder="Identifier@@ingectContractCreateIdentifierPlaceholder"
+                >
+                  <ng-container *ngIf="form.get('identifier')?.touched">
+                    <vitamui-common-input-error
+                      *ngIf="!!form.get('identifier')?.errors?.required"
+                      i18n="Required field error hint@@formErrorRequiredField"
+                    >Champ requis
+                    </vitamui-common-input-error>
+                    <vitamui-common-input-error
+                      *ngIf="!!form?.get('identifier')?.errors?.identifierExists"
+                      i18n="Name exists error hint@@formErrorIdentifierExists"
+                    >Identifiant déjà utilisé
+                    </vitamui-common-input-error>
+                  </ng-container>
+                </vitamui-common-input>
+              </div>
+
+              <div class="col-12 form-control">
+                <vitamui-common-textarea formControlName="description" placeholder="Description" [rows]="4"
+                                         required="required">
+                  <ng-container *ngIf="form.get('description')?.touched">
+                    <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
+                      {{ 'COMMON.REQUIRED' | translate }}
+                    </vitamui-common-input-error>
+                  </ng-container>
+                </vitamui-common-textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <div class="line">
+            <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">
+              {{ 'COMMON.NEXT' | translate }}
+            </button>
+            <button type="button" class="btn link" (click)="onCancel()">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </cdk-step>
+
+    <!-- STEP 2 - Informations : profiles d'archives, Contrat de gestion -->
+    <cdk-step>
+      <div class="content">
+        <h4>{{ 'INGEST_CONTRACT.MODAL_CREATE.TITLE' | translate }}</h4>
+        <h2>{{ 'INGEST_CONTRACT.MODAL_CREATE.INFORMATIONS.TITLE' | translate }}</h2>
+        <div class="main-content">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-6 form-control">
+                <mat-form-field class="vitamui-mat-select">
+                  <mat-select formControlName="archiveProfiles" placeholder="Profil d'archivage"
+                              panelclass="vitamui-mat-select" multiple>
+                    <mat-option *ngFor="let profiles of archiveProfiles"
+                                [value]="profiles.identifier">{{ profiles.name }} </mat-option>
+                  </mat-select>
+                  <div class="select-arrow">
+                    <i class="material-icons">keyboard_arrow_up</i>
+                    <i class="material-icons">keyboard_arrow_down</i>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 form-control">
+                <mat-form-field class="vitamui-mat-select">
+                  <mat-select formControlName="managementContractId" placeholder="Contrat de gestion"
+                              panelclass="vitamui-mat-select">
+                    <mat-option *ngFor="let managementContract of managementContracts"
+                                [value]="managementContract.identifier"
+                    >{{ managementContract.name }}
+                    </mat-option>
+                  </mat-select>
+                  <div class="select-arrow">
+                    <i class="material-icons">keyboard_arrow_up</i>
+                    <i class="material-icons">keyboard_arrow_down</i>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <div class="line">
+            <button type="button" class="btn primary" cdkStepperNext>
+              {{ 'COMMON.NEXT' | translate }}
+            </button>
+            <button type="button" class="btn link" (click)="onCancel()">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+          <button type="button" class="btn link back" cdkStepperPrevious>
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+          </button>
+        </div>
+      </div>
+    </cdk-step>
+
 
     <!-- STEP 3 - Format des fichiers : authorisés et identifiés -->
     <cdk-step>
@@ -218,24 +351,22 @@
           <div class="form-group">
             <div class="row">
               <div class="col">
-                <vitamui-radio-group formControlName="checkParentLink">
-                  <vitamui-radio matTooltipClass="vitamui-tooltip"
-                                 [matTooltip]="'Autorisé un bordereau à contenir des nœuds sans que cela soit obligatoire'"
-                                 label="Autorisé"
-                                 value="AUTHORIZED"
-                                 [checked]="true">
-                  </vitamui-radio>
-                  <vitamui-radio matTooltipClass="vitamui-tooltip"
-                                 [matTooltip]="'Rend obligatoire la présence d\'au moins un nœud'"
-                                 label="Obligatoire"
-                                 value="REQUIRED">
-                  </vitamui-radio>
-                  <vitamui-radio matTooltipClass="vitamui-tooltip"
-                                 [matTooltip]="'Interdit la présence de nœuds de rattachement dans le bordereau'"
-                                 label="Interdit"
-                                 value="UNAUTHORIZED">
-                  </vitamui-radio>
-                </vitamui-radio-group>
+                <mat-button-toggle-group formControlName="checkParentLink"
+                                         #group="matButtonToggleGroup"
+                                         class="vitamui-button-toggle-group">
+                  <mat-button-toggle value="AUTHORIZED"
+                                     [matTooltip]="'Autorisé un bordereau à contenir des nœuds sans que cela soit obligatoire'">
+                    {{ 'Autorisé' | translate }}
+                  </mat-button-toggle>
+                  <mat-button-toggle value="REQUIRED"
+                                     [matTooltip]="'Rend obligatoire la présence d\'au moins un nœud'">
+                    {{ 'Obligatoire' | translate }}
+                  </mat-button-toggle>
+                  <mat-button-toggle value="UNAUTHORIZED"
+                                     [matTooltip]="'Interdit la présence de nœuds de rattachement dans le bordereau'">
+                    {{ 'Interdit' | translate }}
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
               </div>
             </div>
           </div>
@@ -318,14 +449,6 @@
           </div>
           <div class="row">
             <div class="col">
-              <div class="criteria-checkbox-choice">
-                <label>
-                  <input type="checkbox"
-                         id="SIGNED_DOCUMENT"
-                  />
-                  <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNED_DOCUMENT' | translate }}</span>
-                </label>
-              </div>
               <div class="criteria-checkbox-choice">
                 <label>
                   <input type="checkbox"
