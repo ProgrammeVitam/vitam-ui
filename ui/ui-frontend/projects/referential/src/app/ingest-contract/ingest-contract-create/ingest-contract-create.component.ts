@@ -38,7 +38,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import '@angular/localize/init';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileFormat, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
@@ -51,8 +51,6 @@ import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
-
 @Component({
   selector: 'app-ingest-contract-create',
   templateUrl: './ingest-contract-create.component.html',
@@ -60,17 +58,17 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
-  signedDocumentPolicyEnum = SignedDocumentPolicyEnum;
+  protected readonly signedDocumentPolicyEnum = SignedDocumentPolicyEnum;
+  protected readonly FILLING_PLAN_MODE = FilingPlanMode;
+
+  @Input() tenantIdentifier: number;
+  @Input() isSlaveMode: boolean;
 
   form: FormGroup;
   stepIndex = 0;
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
-
-  @Input() tenantIdentifier: number;
-  @Input() isSlaveMode: boolean;
-  FILLING_PLAN_MODE = FilingPlanMode;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -135,14 +133,13 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       linkParentId: [null, Validators.required],
       checkParentId: [new Array<string>(), Validators.required],
 
-      /* <- step 6 -> */
+      /* <- step 9 -> */
       signaturePolicy: this.formBuilder.group({
         signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
-        needSignature: [false],
-        needTimestamp: [false],
-        needAdditionalProof: [false],
+        needSignature: [],
+        needTimestamp: [],
+        needAdditionalProof: [],
       }),
-      signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
       elementsToCheck: [new Array<string>()],
 
       /* default */
@@ -279,18 +276,33 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
+  get signaturePolicy(): FormGroup {
+    return this.form.controls.signaturePolicy as FormGroup;
+  }
+
   selectedSignedDocumentPolicyInvalid(): boolean {
-    const signaturePolicy: SignaturePolicy = this.form.get('signaturePolicy').value
-    if (signaturePolicy.signedDocument === SignedDocumentPolicyEnum.ONLY) {
-      return !(signaturePolicy.needSignature || signaturePolicy.needTimestamp || signaturePolicy.needAdditionalProof);
-    }
+    const signaturePolicy: SignaturePolicy = this.signaturePolicy.value;
     if (signaturePolicy.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN) {
       return signaturePolicy.needSignature || signaturePolicy.needTimestamp || signaturePolicy.needAdditionalProof;
     }
   }
 
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+  changeSignedDocumentPolicy(signedDocumentPolicyEnum: SignedDocumentPolicyEnum): void {
+    if (signedDocumentPolicyEnum === SignedDocumentPolicyEnum.FORBIDDEN) {
+      this.signaturePolicy.setValue({
+        signedDocument: SignedDocumentPolicyEnum.FORBIDDEN,
+        needSignature: null,
+        needTimestamp: null,
+        needAdditionalProof: null,
+      });
+    }
+  }
+
+  signedDocumentPolicyIsDisabled(): boolean {
+    if (this.signaturePolicy.value.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN) {
+      return true;
+    }
+    return null;
   }
 
 }
