@@ -1,24 +1,23 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
+import { DescriptionLevel } from '../description-level.enum';
 import {
-  CriteriaDataType, CriteriaOperator, DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, PagedResult, ResultFacet,
-  SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit
-} from 'ui-frontend-common';
-import { ArchiveCollectService } from '../../../../archive-collect.service';
+  CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum
+} from '../models';
+import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 
-const DEFAULT_UNIT_PAGE_SIZE = 10;
+export const DEFAULT_UNIT_PAGE_SIZE = 10;
 
 const ALLUNITSUPS = '#allunitups';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class LeavesTreeService {
+
+  constructor(private searchArchiveUnitsService: SearchArchiveUnitsInterface) {}
 
   private transactionId: string;
 
-  constructor(private archiveCollectService: ArchiveCollectService,) {}
+  // ########## BEFORE & AFTER ####################################################################################################
 
   public firstToggle(node: FilingHoldingSchemeNode): boolean {
     if (node.toggled) {
@@ -35,7 +34,7 @@ export class LeavesTreeService {
     return true;
   }
 
-  private prepareSearch(parentNode: FilingHoldingSchemeNode, matchingSearch: boolean): boolean {
+  public prepareSearch(parentNode: FilingHoldingSchemeNode, matchingSearch: boolean): boolean {
     if (matchingSearch && !parentNode.canLoadMoreMatchingChildren) {
       return false;
     } else if (!matchingSearch && !parentNode.canLoadMoreChildren) {
@@ -45,35 +44,22 @@ export class LeavesTreeService {
     return true;
   }
 
-  public finishSearch(parentNode: FilingHoldingSchemeNode, pageResult: PagedResult, matchingSearch: boolean): void {
+  public finishSearch(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult, matchingSearch: boolean): void {
     parentNode.isLoadingChildren = false;
     if (matchingSearch) {
-      parentNode.paginatedMatchingChildrenLoaded += pageResult.results.length;
-      parentNode.canLoadMoreMatchingChildren = parentNode.paginatedMatchingChildrenLoaded < pageResult.totalResults;
+      parentNode.paginatedMatchingChildrenLoaded += pagedResult.results.length;
+      parentNode.canLoadMoreMatchingChildren = parentNode.paginatedMatchingChildrenLoaded < pagedResult.totalResults;
     } else {
-      parentNode.paginatedChildrenLoaded += pageResult.results.length;
-      parentNode.canLoadMoreChildren = parentNode.paginatedChildrenLoaded < pageResult.totalResults;
+      parentNode.paginatedChildrenLoaded += pagedResult.results.length;
+      parentNode.canLoadMoreChildren = parentNode.paginatedChildrenLoaded < pagedResult.totalResults;
     }
   }
 
-  recalculateCount(nodes: FilingHoldingSchemeNode[]): void {
-    for (const node of nodes) {
-      FilingHoldingSchemeHandler.reCalculateCountRecursively(node);
-    }
-  }
+  // ########## API CALLS ####################################################################################################
 
-  hasCountAnomaly(parentNode: FilingHoldingSchemeNode): boolean {
-    const sum = FilingHoldingSchemeHandler.getCountSum(parentNode.children)
-    if (sum >= parentNode.count) {
-      parentNode.count = sum + 1;
-      return true;
-    }
-    return false;
-  }
-
-  searchOrphans(parentNode: FilingHoldingSchemeNode, searchCriterias: SearchCriteriaDto): Observable<Unit[]> {
+  searchOrphans(parentNode: FilingHoldingSchemeNode, searchCriterias: SearchCriteriaDto): Observable<PagedResult> {
     if (!this.prepareSearch(parentNode, false)) {
-      return;
+      return EMPTY;
     }
     const newCriteriaList: SearchCriteriaEltDto[] = [
       {
@@ -88,6 +74,7 @@ export class LeavesTreeService {
         operator: CriteriaOperator.IN,
         category: SearchCriteriaTypeEnum.FIELDS,
         values: [
+          { id: DescriptionLevel.RECORD_GRP, value: DescriptionLevel.RECORD_GRP },
           { id: DescriptionLevel.FILE, value: DescriptionLevel.FILE },
           { id: DescriptionLevel.ITEM, value: DescriptionLevel.ITEM },
         ],
@@ -103,15 +90,15 @@ export class LeavesTreeService {
       computeFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(map((pageResult) => {
-        this.finishSearch(parentNode, pageResult, false);
-        return pageResult.results;
+      .pipe(map(pagedResult => {
+        this.finishSearch(parentNode, pagedResult, false);
+        return pagedResult;
       }));
   }
 
   searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode, searchCriterias: SearchCriteriaDto): Observable<PagedResult> {
     if (!this.prepareSearch(parentNode, true)) {
-      return;
+      return EMPTY;
     }
     const newCriteriaList = [...searchCriterias.criteriaList];
     newCriteriaList.push({
@@ -130,15 +117,15 @@ export class LeavesTreeService {
       computeFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(map(pageResult => {
-        this.finishSearch(parentNode, pageResult, true);
-        return pageResult;
+      .pipe(map(pagedResult => {
+        this.finishSearch(parentNode, pagedResult, true);
+        return pagedResult;
       }));
   }
 
   searchUnderNode(parentNode: FilingHoldingSchemeNode, searchCriterias: SearchCriteriaDto): Observable<PagedResult> {
     if (!this.prepareSearch(parentNode, false)) {
-      return;
+      return EMPTY;
     }
     const searchCriteria: SearchCriteriaDto = {
       pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
@@ -157,15 +144,15 @@ export class LeavesTreeService {
       computeFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(map(pageResult => {
-        this.finishSearch(parentNode, pageResult, false);
-        return pageResult;
+      .pipe(map(pagedResult => {
+        this.finishSearch(parentNode, pagedResult, false);
+        return pagedResult;
       }));
   }
 
   searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode, searchCriterias: SearchCriteriaDto): Observable<PagedResult> {
     if (!this.prepareSearch(parentNode, true)) {
-      return;
+      return EMPTY;
     }
     const newCriteriaList = [...searchCriterias.criteriaList];
     newCriteriaList.push({
@@ -184,12 +171,11 @@ export class LeavesTreeService {
       computeFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(map(pageResult => {
-        this.finishSearch(parentNode, pageResult, true);
-        return pageResult;
+      .pipe(map(pagedResult => {
+        this.finishSearch(parentNode, pagedResult, true);
+        return pagedResult;
       }));
   }
-
 
   loadNodesDetailsFromFacetsIds(facets: ResultFacet[]): Observable<PagedResult> {
     const searchCriteria: SearchCriteriaDto = {
@@ -211,13 +197,16 @@ export class LeavesTreeService {
     };
     // Can be improve with a projection (only nodes fields are needed)
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe()
+      .pipe();
   }
+
+  // ########## IMPLEMENTATION ####################################################################################################
 
   sendSearchArchiveUnitsByCriteria(searchCriteria: SearchCriteriaDto): Observable<PagedResult> {
-    return this.archiveCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).pipe(first());
+    return this.searchArchiveUnitsService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).pipe(first());
   }
 
+  // Specific to collect
   setTransactionId(transactionId: string) {
     this.transactionId = transactionId;
   }

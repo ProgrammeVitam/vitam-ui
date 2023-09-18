@@ -41,8 +41,8 @@ import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract, AccessContractApiService, ApiUnitObject, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, Ontology,
-  PagedResult, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum, SearchResponse, SearchService,
-  SecurityService, Unit
+  PagedResult, SearchArchiveUnitsInterface, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum, SearchResponse,
+  SearchService, SecurityService, Unit
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
@@ -55,7 +55,7 @@ import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 @Injectable({
   providedIn: 'root',
 })
-export class ArchiveService extends SearchService<any> {
+export class ArchiveService extends SearchService<any> implements SearchArchiveUnitsInterface {
   constructor(
     private archiveApiService: ArchiveApiService,
     http: HttpClient,

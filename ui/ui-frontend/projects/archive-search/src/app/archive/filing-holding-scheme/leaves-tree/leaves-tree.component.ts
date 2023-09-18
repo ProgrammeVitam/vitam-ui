@@ -30,13 +30,13 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
-  DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, nodeToVitamuiIcon, PagedResult, ResultFacet, SearchCriteriaDto,
-  Unit
+  DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, LeavesTreeService, nodeToVitamuiIcon, PagedResult, ResultFacet,
+  SearchCriteriaDto
 } from 'ui-frontend-common';
 import { isEmpty } from 'underscore';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';
-import { LeavesTreeService } from './leaves-tree.service';
 
 @Component({
   selector: 'app-leaves-tree',
@@ -63,13 +63,15 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   showEveryNodes = false;
   private searchCriterias: SearchCriteriaDto;
   private subscriptions: Subscription = new Subscription();
+  private leavesTreeService: LeavesTreeService;
 
   constructor(
-    private leavesTreeService: LeavesTreeService,
     private archiveSharedDataService: ArchiveSharedDataService,
     private archiveFacetsService: ArchiveFacetsService,
     private translateService: TranslateService,
+    private archiveService: ArchiveService,
   ) {
+    this.leavesTreeService = new LeavesTreeService(this.archiveService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -116,8 +118,8 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   private searchOrphans(parentNode: FilingHoldingSchemeNode) {
     this.leavesTreeService.searchOrphans(parentNode, this.searchCriterias)
-      .subscribe((results: Unit[]) => {
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, results);
+      .subscribe((pagedResult: PagedResult) => {
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets(matchingNodesNumbers.nodesAddedList);
         this.refreshTreeNodes();
       });

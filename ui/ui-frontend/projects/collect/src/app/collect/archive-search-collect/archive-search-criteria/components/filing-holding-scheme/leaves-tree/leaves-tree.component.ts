@@ -31,14 +31,14 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
-  DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, nodeToVitamuiIcon, PagedResult, ResultFacet, SearchCriteriaDto,
-  Unit
+  DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, LeavesTreeService, nodeToVitamuiIcon, PagedResult, ResultFacet,
+  SearchCriteriaDto
 } from 'ui-frontend-common';
 import { isEmpty } from 'underscore';
+import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { Pair } from '../../../models/utils';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
-import { LeavesTreeService } from './leaves-tree.service';
 
 @Component({
   selector: 'app-leaves-tree',
@@ -67,13 +67,16 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   showFacetsCount = false;
   private searchCriterias: SearchCriteriaDto;
   private subscriptions: Subscription = new Subscription();
+  private leavesTreeService: LeavesTreeService;
 
   constructor(
-    private leavesTreeService: LeavesTreeService,
     private archiveSharedDataService: ArchiveSharedDataService,
     private archiveFacetsService: ArchiveFacetsService,
     private translateService: TranslateService,
-  ) {}
+    private archiveCollectService: ArchiveCollectService,
+  ) {
+    this.leavesTreeService = new LeavesTreeService(this.archiveCollectService);
+  }
 
   ngOnInit(): void {
     // Get last criteria
@@ -196,8 +199,8 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   private searchOrphans(parentNode: FilingHoldingSchemeNode) {
     this.leavesTreeService.searchOrphans(parentNode, this.searchCriterias)
-      .subscribe((results: Unit[]) => {
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, results);
+      .subscribe((pagedResult: PagedResult) => {
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets(matchingNodesNumbers.nodesAddedList);
         this.refreshTreeNodes();
       });
