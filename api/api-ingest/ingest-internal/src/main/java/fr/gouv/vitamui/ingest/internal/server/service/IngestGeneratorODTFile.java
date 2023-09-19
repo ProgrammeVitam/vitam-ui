@@ -94,7 +94,7 @@ public class IngestGeneratorODTFile {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestGeneratorODTFile.class);
     public static final String FIRST_TITLE = "Bordereau de versement d'archives";
     public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossier:";
-    private static final String NO_TEXT = "_ _ _ _" ;
+    private static final String NO_TEXT = "_ _ _ _";
     private static final String LOGO_PATH = "/logo_ministere.";
 
     @Value("${tmp_folder_path}")
@@ -110,14 +110,14 @@ public class IngestGeneratorODTFile {
         Table headerTable = document.addTable(1, 2);
         headerTable.getRowByIndex(0).setHeight(35, false);
         headerTable.getColumnByIndex(1).setWidth(35);
-        Font font = headerTable.getCellByPosition(0,0).getFont();
+        Font font = headerTable.getCellByPosition(0, 0).getFont();
         font.setSize(11);
-        headerTable.getCellByPosition(0,0).setFont(font);
-        headerTable.getCellByPosition(0,0).setBorders(StyleTypeDefinitions.CellBordersType.NONE, border);
-        headerTable.getCellByPosition(1,0).setBorders(StyleTypeDefinitions.CellBordersType.NONE, border);
+        headerTable.getCellByPosition(0, 0).setFont(font);
+        headerTable.getCellByPosition(0, 0).setBorders(StyleTypeDefinitions.CellBordersType.NONE, border);
+        headerTable.getCellByPosition(1, 0).setBorders(StyleTypeDefinitions.CellBordersType.NONE, border);
 
-        if(myCustomer != null) {
-            Cell cell = headerTable.getCellByPosition(0,0);
+        if (myCustomer != null) {
+            Cell cell = headerTable.getCellByPosition(0, 0);
             cell.addParagraph(myCustomer.getName());
             cell.addParagraph(myCustomer.getCompanyName());
             cell.addParagraph("");
@@ -127,7 +127,7 @@ public class IngestGeneratorODTFile {
             cell.addParagraph(myCustomer.getAddress().getCountry());
         }
 
-        if (myCustomer != null  && myCustomer.isHasCustomGraphicIdentity()
+        if (myCustomer != null && myCustomer.isHasCustomGraphicIdentity()
             && customerLogo != null) {
 
             byte[] customerLogoBytes = customerLogo.getInputStream().readAllBytes();
@@ -136,9 +136,9 @@ public class IngestGeneratorODTFile {
                 .getDecoder()
                 .decode(customerLogoBase64Image);
 
-            imgFile = tmpFolderPath + LOGO_PATH+ getExtensionByCustomerLogo(customerLogoBase64Image).toLowerCase();
+            imgFile = tmpFolderPath + LOGO_PATH + getExtensionByCustomerLogo(customerLogoBase64Image).toLowerCase();
             FileUtils.writeByteArrayToFile(new File(imgFile), customerLogoDecodedBytes);
-            headerTable.getCellByPosition(1,0).setImage(new URI(imgFile));
+            headerTable.getCellByPosition(1, 0).setImage(new URI(imgFile));
 
 
             FileUtils.forceDelete(new File(imgFile));
@@ -147,6 +147,7 @@ public class IngestGeneratorODTFile {
         addSpace(document);
 
     }
+
     public void generateFirstTitle(TextDocument document) {
         addSpace(document);
         generateTile(document, 22, FIRST_TITLE, StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
@@ -163,32 +164,31 @@ public class IngestGeneratorODTFile {
      * Le service producteur et le service versant
      *
      * */
-    public void generateServicesTable(TextDocument document, Document manifest)
-         {
+    public void generateServicesTable(TextDocument document, Document manifest) {
 
-            addSpace(document);
+        addSpace(document);
 
-            Table table = document.addTable(2, 2);
-            Cell cellOne = table.getColumnByIndex(0).getCellByIndex(0);
-            Cell cellTwo = table.getColumnByIndex(0).getCellByIndex(1);
-            cellOne.setStringValue("Service producteur :");
-            cellTwo.setStringValue("Service versant :");
-            table.getColumnByIndex(0).setWidth(50);
+        Table table = document.addTable(2, 2);
+        Cell cellOne = table.getColumnByIndex(0).getCellByIndex(0);
+        Cell cellTwo = table.getColumnByIndex(0).getCellByIndex(1);
+        cellOne.setStringValue("Service producteur :");
+        cellTwo.setStringValue("Service versant :");
+        table.getColumnByIndex(0).setWidth(50);
 
-            Font fontCellOne = cellOne.getFont();
-            fontCellOne.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
-            cellOne.setFont(fontCellOne);
+        Font fontCellOne = cellOne.getFont();
+        fontCellOne.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
+        cellOne.setFont(fontCellOne);
 
-            Font fontCellTwo = cellTwo.getFont();
-            fontCellTwo.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
-            cellTwo.setFont(fontCellTwo);
+        Font fontCellTwo = cellTwo.getFont();
+        fontCellTwo.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
+        cellTwo.setFont(fontCellTwo);
 
-            table.getColumnByIndex(1).getCellByIndex(0)
-                .setStringValue(getManifestPrincipalData(manifest,"OriginatingAgencyIdentifier"));
-            table.getColumnByIndex(1).getCellByIndex(1)
-                .setStringValue(getServiceVersant(manifest));
+        table.getColumnByIndex(1).getCellByIndex(0)
+            .setStringValue(getManifestPrincipalData(manifest, "OriginatingAgencyIdentifier"));
+        table.getColumnByIndex(1).getCellByIndex(1)
+            .setStringValue(getServiceVersant(manifest));
 
-            addSpace( document);
+        addSpace(document);
 
 
 
@@ -200,9 +200,10 @@ public class IngestGeneratorODTFile {
      * Numéro du versement, Présentation du contenu, Dates extrêmes et l'historique de conservation
      *
      * */
-    public void generateDepositDataTable(TextDocument document, Document manifest, List<ArchiveUnitDto> archiveUnitDtoList) {
+    public void generateDepositDataTable(TextDocument document, Document manifest,
+        List<ArchiveUnitDto> archiveUnitDtoList) {
 
-        addSpace( document);
+        addSpace(document);
         Table table = document.addTable(4, 2);
         table.getColumnByIndex(0).setWidth(50);
 
@@ -231,17 +232,19 @@ public class IngestGeneratorODTFile {
         tableCellFour.setFont(fontCellFour);
 
 
-        table.getColumnByIndex(1).getCellByIndex(0).setStringValue(getManifestPrincipalData(manifest,"MessageIdentifier"));
-        table.getColumnByIndex(1).getCellByIndex(1).setStringValue(getManifestPrincipalData(manifest,"Comment"));
-        if(!archiveUnitDtoList.isEmpty()) {
+        table.getColumnByIndex(1).getCellByIndex(0)
+            .setStringValue(getManifestPrincipalData(manifest, "MessageIdentifier"));
+
+        table.getColumnByIndex(1).getCellByIndex(1).setStringValue(getManifestPrincipalData(manifest, "Comment"));
+        if (!archiveUnitDtoList.isEmpty()) {
             table.getColumnByIndex(1).getCellByIndex(2).addParagraph(
                 "Date de début : " + getStartedDate(getArchiveUnitStartDatesList(archiveUnitDtoList)));
             table.getColumnByIndex(1).getCellByIndex(2).addParagraph(
                 "Date de fin : " + getEndDate(getArchiveUnitEndDatesList(archiveUnitDtoList)));
         }
-          table.getColumnByIndex(1).getCellByIndex(3).setStringValue(getCustodialHistory(manifest));
+        table.getColumnByIndex(1).getCellByIndex(3).setStringValue(getCustodialHistory(manifest));
 
-        addSpace( document);
+        addSpace(document);
 
     }
 
@@ -253,7 +256,7 @@ public class IngestGeneratorODTFile {
      * */
     public void generateOperationDataTable(TextDocument document, Document manifest, String id) {
 
-        addSpace( document);
+        addSpace(document);
         Table table = document.addTable(2, 2);
         table.getColumnByIndex(0).setWidth(50);
 
@@ -273,8 +276,8 @@ public class IngestGeneratorODTFile {
             .setStringValue(getBinaryFileNumber(manifest) + " fichiers");
         table.getColumnByIndex(1).getCellByIndex(1).setStringValue(id);
 
-        addSpace( document);
-        addSpace( document);
+        addSpace(document);
+        addSpace(document);
 
     }
 
@@ -286,7 +289,7 @@ public class IngestGeneratorODTFile {
      * */
     public void generateResponsibleSignatureTable(TextDocument document) {
 
-        addSpace( document);
+        addSpace(document);
         Border border = new Border(Color.WHITE, 1.0, StyleTypeDefinitions.SupportedLinearMeasure.PT);
 
         Table table = document.addTable(2, 2);
@@ -324,15 +327,15 @@ public class IngestGeneratorODTFile {
      * */
     public void generateArchiveUnitDetailsTable(TextDocument document, List<ArchiveUnitDto> archiveUnitDtoList) {
 
-        Table dynamicTable = document.addTable(1,4);
+        Table dynamicTable = document.addTable(1, 4);
 
-        dynamicTable.getCellByPosition(0,0).addParagraph("Identifiant SAE VAS").setHorizontalAlignment(
+        dynamicTable.getCellByPosition(0, 0).addParagraph("Identifiant SAE VAS").setHorizontalAlignment(
             StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
-        dynamicTable.getCellByPosition(1,0).addParagraph("Titre").setHorizontalAlignment(
+        dynamicTable.getCellByPosition(1, 0).addParagraph("Titre").setHorizontalAlignment(
             StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
-        dynamicTable.getCellByPosition(2,0).addParagraph("Date de début").setHorizontalAlignment(
+        dynamicTable.getCellByPosition(2, 0).addParagraph("Date de début").setHorizontalAlignment(
             StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
-        dynamicTable.getCellByPosition(3,0).addParagraph("Date de fin").setHorizontalAlignment(
+        dynamicTable.getCellByPosition(3, 0).addParagraph("Date de fin").setHorizontalAlignment(
             StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
 
         // the Width of each row is 170
@@ -378,10 +381,10 @@ public class IngestGeneratorODTFile {
         fontCellFour.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
         dynamicTable.getRowByIndex(0).getCellByIndex(3).setFont(fontCellFour);
 
-        dynamicTable.getCellByPosition(0,0).setCellBackgroundColor(Color.GRAY);
-        dynamicTable.getCellByPosition(1,0).setCellBackgroundColor(Color.GRAY);
-        dynamicTable.getCellByPosition(2,0).setCellBackgroundColor(Color.GRAY);
-        dynamicTable.getCellByPosition(3,0).setCellBackgroundColor(Color.GRAY);
+        dynamicTable.getCellByPosition(0, 0).setCellBackgroundColor(Color.GRAY);
+        dynamicTable.getCellByPosition(1, 0).setCellBackgroundColor(Color.GRAY);
+        dynamicTable.getCellByPosition(2, 0).setCellBackgroundColor(Color.GRAY);
+        dynamicTable.getCellByPosition(3, 0).setCellBackgroundColor(Color.GRAY);
 
 
     }
@@ -400,9 +403,9 @@ public class IngestGeneratorODTFile {
                 Element eElement = (Element) nNode;
                 if (map.get(((Element) eElement.getParentNode()).getAttribute("id")) != null) {
                     archiveUnitDto.setId(((Element) eElement.getParentNode()).getAttribute("id"));
-                    archiveUnitDto.setTitle(getData(eElement,"Title"));
-                    archiveUnitDto.setEndDate(getData(eElement,"EndDate"));
-                    archiveUnitDto.setStartDate(getData(eElement,"StartDate"));
+                    archiveUnitDto.setTitle(getData(eElement, "Title"));
+                    archiveUnitDto.setEndDate(getData(eElement, "EndDate"));
+                    archiveUnitDto.setStartDate(getData(eElement, "StartDate"));
                     archiveUnitDto.setSystemId(map.get(((Element) eElement.getParentNode()).getAttribute("id")));
                     archiveUnitDtoList.add(archiveUnitDto);
                 }
@@ -430,17 +433,17 @@ public class IngestGeneratorODTFile {
             return FileCopyUtils.copyToString(reader);
         } catch (IOException e) {
             LOGGER.error("Error while converting string to Resource Document {}", e.getMessage());
-            throw new UncheckedIOException("Error while converting string to Resource Document",e);
+            throw new UncheckedIOException("Error while converting string to Resource Document", e);
         }
     }
 
     private String getEndDate(List<String> listOfDate) {
 
-        if(!CollectionUtils.isEmpty(listOfDate)) {
+        if (!CollectionUtils.isEmpty(listOfDate)) {
             String lastEndDate = listOfDate.stream().map(
                     this::manageDateFormat)
                 .sorted().collect(Collectors.toList())
-                .get(listOfDate.size()-1);
+                .get(listOfDate.size() - 1);
 
             return transformDate(lastEndDate);
         }
@@ -467,13 +470,16 @@ public class IngestGeneratorODTFile {
 
     private String getServiceVersant(Document document) {
         return document.getElementsByTagName("SubmissionAgencyIdentifier").getLength() == 0 ?
-            getManifestPrincipalData(document,"OriginatingAgencyIdentifier") :
+            getManifestPrincipalData(document, "OriginatingAgencyIdentifier") :
             document.getElementsByTagName("SubmissionAgencyIdentifier").item(0).getTextContent();
     }
 
     private String getManifestPrincipalData(Document document, String tageName) {
         document.getDocumentElement().normalize();
-        return document.getElementsByTagName(tageName).item(0).getTextContent();
+        return (document.getElementsByTagName(tageName) != null &&
+            document.getElementsByTagName(tageName).getLength() > 0) ?
+            document.getElementsByTagName(tageName).item(0).getTextContent()
+            : NO_TEXT;
     }
 
     private String getCustodialHistory(Document document) {
@@ -487,40 +493,39 @@ public class IngestGeneratorODTFile {
     }
 
     private List<String> getArchiveUnitStartDatesList(List<ArchiveUnitDto> archiveUnitDtoList) {
-        return archiveUnitDtoList.stream().map(ArchiveUnitDto::getStartDate ).filter(startDate->
+        return archiveUnitDtoList.stream().map(ArchiveUnitDto::getStartDate).filter(startDate ->
             !startDate.equals(NO_TEXT)
         ).collect(Collectors.toList());
     }
 
     private List<String> getArchiveUnitEndDatesList(List<ArchiveUnitDto> archiveUnitDtoList) {
-        return archiveUnitDtoList.stream().map(ArchiveUnitDto::getEndDate ).filter(endDate->
+        return archiveUnitDtoList.stream().map(ArchiveUnitDto::getEndDate).filter(endDate ->
             !endDate.equals(NO_TEXT)
         ).collect(Collectors.toList());
     }
 
     private String transformDate(String date) {
-        if(!date.equals(NO_TEXT)){
+        if (!date.equals(NO_TEXT)) {
             LocalDate finalDate = LocalDate.parse(date);
             return finalDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        }
-        else {
+        } else {
             return date;
         }
     }
 
     private void addSpace(TextDocument document) {
-
         document.addParagraph("");
     }
 
     private String getExtensionByCustomerLogo(String customerLogoBase64Image) {
 
-       return Extension.findExtensionFromValue(Character
-           .toString(customerLogoBase64Image.charAt(0)))
-           .toString();
+        return Extension.findExtensionFromValue(Character
+                .toString(customerLogoBase64Image.charAt(0)))
+            .toString();
     }
 
-    private void generateTile(TextDocument document, int size, String tilte, StyleTypeDefinitions.HorizontalAlignmentType horizontalAlignmentType) {
+    private void generateTile(TextDocument document, int size, String tilte,
+        StyleTypeDefinitions.HorizontalAlignmentType horizontalAlignmentType) {
 
         Paragraph paragraph = document.addParagraph(tilte);
         paragraph.setHorizontalAlignment(horizontalAlignmentType);
@@ -533,10 +538,10 @@ public class IngestGeneratorODTFile {
 
     private String getStartedDate(List<String> listOfDate) {
 
-        if(!CollectionUtils.isEmpty(listOfDate)) {
-           String firstStartDate =  listOfDate.stream().map(
-                   this::manageDateFormat)
-               .sorted().findFirst().get();
+        if (!CollectionUtils.isEmpty(listOfDate)) {
+            String firstStartDate = listOfDate.stream().map(
+                    this::manageDateFormat)
+                .sorted().findFirst().get();
             return transformDate(firstStartDate);
         }
         return NO_TEXT;
