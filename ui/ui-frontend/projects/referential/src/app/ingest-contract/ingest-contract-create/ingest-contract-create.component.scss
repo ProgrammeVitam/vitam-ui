@@ -131,6 +131,25 @@ button > small {
     cursor: pointer;
     display: flex;
     align-items: center;
+
+    input {
+      margin: 4px;
+      cursor: pointer;
+      accent-color: var(--vitamui-primary);
+      height: 20px;
+      width: 20px;
+      border-radius: 4px;
+      transition-duration: 0.3s;
+    }
+
+    &.disabled {
+      cursor: default;
+
+      input:disabled {
+        cursor: default;
+        // background-color: var(--vitamui-grey-300); not working..
+      }
+    }
   }
 
   span {
@@ -138,15 +157,5 @@ button > small {
     font-size: 14px;
     font-weight: 400;
     padding: 0 10px;
-  }
-
-  input {
-    margin: 4px;
-    cursor: pointer;
-    accent-color: var(--vitamui-primary);
-    height: 20px;
-    width: 20px;
-    border-radius: 4px;
-    transition-duration: 0.3s;
   }
 }

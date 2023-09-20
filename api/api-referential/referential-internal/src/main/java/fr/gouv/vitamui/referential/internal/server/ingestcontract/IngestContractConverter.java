@@ -111,9 +111,9 @@ public class IngestContractConverter {
         }
         SignaturePolicy signaturePolicy = new SignaturePolicy();
         signaturePolicy.setSignedDocument(dto.getSignedDocument());
-        signaturePolicy.setNeedSignature(dto.isNeedSignature());
-        signaturePolicy.setNeedTimestamp(dto.isNeedTimestamp());
-        signaturePolicy.setNeedAdditionalProof(dto.isNeedAdditionalProof());
+        signaturePolicy.setNeedSignature(dto.getNeedSignature());
+        signaturePolicy.setNeedTimestamp(dto.getNeedTimestamp());
+        signaturePolicy.setNeedAdditionalProof(dto.getNeedAdditionalProof());
         return signaturePolicy;
     }
 
