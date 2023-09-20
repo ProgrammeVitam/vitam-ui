@@ -195,14 +195,14 @@ class PastisController {
         consumes = "multipart/form-data",
         produces = "application/json"
     )
-    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile multipartFile) throws NoSuchAlgorithmException, TechnicalException {
-        final String originalFileName = multipartFile.getOriginalFilename();
+    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file) throws NoSuchAlgorithmException, TechnicalException {
+        final String originalFileName = file.getOriginalFilename();
 
         if (isInvalidFilename(originalFileName)) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, ErrorMessage.INVALID_FILE_NAME.toString());
         }
 
-        final ProfileResponse profileResponse = profileService.loadProfileFromFile(multipartFile, originalFileName, IS_STANDALONE);
+        final ProfileResponse profileResponse = profileService.loadProfileFromFile(file, originalFileName, IS_STANDALONE);
 
         if (profileResponse == null) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, ErrorMessage.NO_PROFILE_RESPONSE.toString());
