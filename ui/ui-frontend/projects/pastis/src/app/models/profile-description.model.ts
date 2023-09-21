@@ -3,6 +3,7 @@ import {Profile} from './profile';
 
 export interface ProfileDescription extends Partial<Profile>, Partial<ArchivalProfileUnit> {
   type: string;
+  isEditable?:boolean;
 }
 
 export class ProfileDescriptionModel implements ProfileDescription {
