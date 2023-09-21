@@ -1,5 +1,5 @@
 .icon-information {
-  right: -75px;
+  margin-left: 15px;
   width: 30px;
   height: 31px;
   font-size: 26px;
@@ -11,13 +11,6 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-
-  i {
-    display: flex;
-    margin-left: 15px;
-    justify-content: center;
-    align-items: center;
-  }
 }
 
 .header-title {
