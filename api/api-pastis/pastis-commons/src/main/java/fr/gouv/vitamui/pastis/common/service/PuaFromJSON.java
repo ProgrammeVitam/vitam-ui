@@ -46,13 +46,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 public class PuaFromJSON {
-
     private static final String SCHEMA = "http://json-schema.org/draft-04/schema";
     private static final String TYPE = "object";
 
@@ -66,19 +64,18 @@ public class PuaFromJSON {
     public String getControlSchemaFromElementProperties(ElementProperties elementProperties) throws IOException {
         // We use a JSONObject instead of POJO, since Jackson and Gson will add unnecessary
         // backslashes during mapping string object values back to string
-
-        JSONObject controlSchema = puaPastisValidator.sortedJSON();
+        final JSONObject controlSchema = puaPastisValidator.sortedJSON();
         // 1. Add Schema
         controlSchema.put("$schema", SCHEMA);
         // 2. Add  type
         controlSchema.put("type", TYPE);
         // 3. Add additionProperties
-        controlSchema.put("additionalProperties", elementProperties.isAdditionalProperties());
+        controlSchema.put("additionalProperties", this.additionalProperties(elementProperties));
         // 4. Check if tree contains Management metadata
         addPatternPropertiesForManagement(elementProperties, controlSchema);
-        List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
-        List<String> rerquiredElements = puaPastisValidator.getHeadRequired(elementsForTree);
-        if (CollectionUtils.isNotEmpty(rerquiredElements)) {
+        final List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
+        final List<String> requiredElements = puaPastisValidator.getHeadRequired(elementsForTree);
+        if (CollectionUtils.isNotEmpty(requiredElements)) {
             controlSchema.put(PuaPastisValidator.REQUIRED, puaPastisValidator.getHeadRequired(elementsForTree));
         }
 
@@ -87,11 +84,11 @@ public class PuaFromJSON {
             controlSchema.put("definitions", definitionsFromBasePua);*/
         // 6. Add ArchiveUnitProfile and the rest of the tree
 
-        JSONArray allElements = puaPastisValidator.getJSONObjectFromAllTree(elementsForTree);
-        JSONObject sortedElements = getJSONObjectsFromJSonArray(allElements);
+        final JSONArray allElements = puaPastisValidator.getJSONObjectFromAllTree(elementsForTree);
+        final JSONObject sortedElements = getJSONObjectsFromJSonArray(allElements);
         controlSchema.put("properties", sortedElements);
         // 7. Remove excessive backslashes from mapping strings to objects and vice-versa
-        return controlSchema.toString().replaceAll("[\\\\]+", "");
+        return controlSchema.toString().replaceAll("\\\\+", "");
     }
 
     public String getDefinitions() {
@@ -100,9 +97,8 @@ public class PuaFromJSON {
 
     private JSONObject getJSONObjectsFromJSonArray(JSONArray array) {
         JSONObject sortedJSONObject = puaPastisValidator.sortedJSON();
-        Iterator<Object> iterator = array.iterator();
-        while (iterator.hasNext()) {
-            JSONObject jsonObject = (JSONObject) iterator.next();
+        for (Object o : array) {
+            JSONObject jsonObject = (JSONObject) o;
             for (String key : jsonObject.keySet()) {
                 sortedJSONObject.put(key, jsonObject.get(key));
             }
@@ -111,18 +107,33 @@ public class PuaFromJSON {
     }
 
     private void addPatternPropertiesForManagement(ElementProperties elementProperties, JSONObject controlSchema) {
-        ElementProperties managementElementProperties = puaPastisValidator
-            .getManagementElementProperties(elementProperties);
+        final ElementProperties managementElementProperties = elementProperties.find("Management");
+
         // set when it's null ?
         if (Objects.isNull(managementElementProperties) || !managementElementProperties.getChildren().isEmpty()) {
             return;
         }
-        controlSchema
-            .put("patternProperties", new JSONObject()
-                .put("#management", new JSONObject()
-                    .put("additionalProperties", managementElementProperties.isAdditionalProperties())));
 
+        final JSONObject management = new JSONObject().put("additionalProperties", this.additionalProperties(managementElementProperties));
+        final JSONObject patternProperties = new JSONObject().put("#management", management);
 
+        controlSchema.put("patternProperties", patternProperties);
     }
 
+    /**
+     * Compute a value for additionalProperties from an ElementProperties instance.
+     *
+     * @param elementProperties
+     * @return
+     */
+    private boolean additionalProperties(final ElementProperties elementProperties) {
+        if (elementProperties.getPuaData() == null) {
+            return false;
+        }
+        if (elementProperties.getPuaData().getAdditionalProperties() == null) {
+            return false;
+        }
+
+        return elementProperties.getPuaData().getAdditionalProperties() || elementProperties.isAdditionalProperties();
+    }
 }

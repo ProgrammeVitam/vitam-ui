@@ -46,7 +46,7 @@ import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
+import fr.gouv.vitamui.pastis.common.service.JsonFromPua;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.security.client.ContextRestClient;
@@ -123,8 +123,8 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public JsonFromPUA jsonFromPUA() {
-        return new JsonFromPUA();
+    public JsonFromPua jsonFromPUA() {
+        return new JsonFromPua();
     }
 
     @Bean

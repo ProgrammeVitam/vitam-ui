@@ -45,12 +45,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Data
 @NoArgsConstructor
 public class ElementProperties {
-
     private boolean additionalProperties;
     private String name;
     private String type;
@@ -61,23 +62,16 @@ public class ElementProperties {
     private String value;
     private String documentation;
     private String editName;
-
     @JsonIgnore
     private Object sedaData;
-
     private int level;
     private Long id;
     private Long parentId;
-
     @JsonIgnore
     private ElementProperties parent;
-
     private List<ElementProperties> choices = new ArrayList<>();
-
     private List<ElementProperties> children = new ArrayList<>();
-
     private PuaData puaData;
-
 
     public void setCardinality(String cardinality) {
         this.cardinality = (null != RNGConstants.getCardinalityMap().get(cardinality) ?
@@ -104,5 +98,58 @@ public class ElementProperties {
         return Stream.concat(
             Stream.of(this),
             children.stream().flatMap(ElementProperties::flattened));
+    }
+
+    /**
+     * Finds all elements by name in the tree.
+     *
+     * @param name The name of element to match.
+     * @return All matched elements for the name.
+     */
+    public List<ElementProperties> findAll(final String name, final Number depth) {
+        final List<ElementProperties> list = new ArrayList<>();
+
+        if (this.name.equals(name)) {
+            list.add(this);
+        }
+
+        if (depth == null) {
+            list.addAll(
+                this.children.stream()
+                    .flatMap(child -> child.findAll(name, null).stream())
+                    .collect(Collectors.toList())
+            );
+        } else if (depth.longValue() > 0L) {
+            list.addAll(
+                this.children.stream()
+                    .flatMap(child -> child.findAll(name, depth.longValue() - 1L).stream())
+                    .collect(Collectors.toList())
+            );
+        }
+
+        return list;
+    }
+
+    public List<ElementProperties> findAll(final String name) {
+        return this.findAll(name, null);
+    }
+
+    public ElementProperties find(final String name) {
+        final List<ElementProperties> list = this.findAll(name);
+
+        return list.stream().findFirst().orElse(null);
+    }
+
+    /**
+     * Apply a function to whole element tree.
+     *
+     * @param consumer A function to apply on element tree.
+     */
+    public void applyForAll(Consumer<ElementProperties> consumer) {
+        consumer.accept(this);
+        this.children.forEach(child -> {
+            consumer.accept(child);
+            child.applyForAll(consumer);
+        });
     }
 }

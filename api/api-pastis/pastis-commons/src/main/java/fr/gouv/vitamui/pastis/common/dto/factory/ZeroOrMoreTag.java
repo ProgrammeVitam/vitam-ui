@@ -42,4 +42,5 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:zeroOrMore")
 public class ZeroOrMoreTag extends CardinalityTag {
+
 }

@@ -1,4 +1,4 @@
-import {ProfileCommon} from './profile-common-models';
+import { ProfileCommon } from './profile-common-models';
 
 export interface Profile extends ProfileCommon {
   format: string;

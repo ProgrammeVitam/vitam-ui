@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -11,9 +11,9 @@ import { ProfileService } from '../../core/services/profile.service';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { Notice } from '../../models/notice.model';
 import { Profile } from '../../models/profile';
+import { ProfileMode } from '../../models/profile-response';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
-
 
 interface Status {
   value: string;
@@ -30,7 +30,7 @@ function constantToTranslate() {
 @Component({
   selector: 'create-notice',
   templateUrl: './create-notice.component.html',
-  styleUrls: ['./create-notice.component.scss']
+  styleUrls: ['./create-notice.component.scss'],
 })
 export class CreateNoticeComponent implements OnInit, OnDestroy {
   form: FormGroup;
@@ -59,19 +59,19 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription();
   externalIdentifierEnabled: boolean;
 
-  constructor(public dialogRef: MatDialogRef<CreateNoticeComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: PastisDialogDataCreate,
-              private formBuilder: FormBuilder,
-              private translateService: TranslateService,
-              private popupService: PopupService,
-              private fileService: FileService,
-              private router: Router,
-              private profileService: ProfileService) {
-
-  }
+  constructor(
+    public dialogRef: MatDialogRef<CreateNoticeComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: PastisDialogDataCreate,
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService,
+    private popupService: PopupService,
+    private fileService: FileService,
+    private router: Router,
+    private profileService: ProfileService
+  ) {}
 
   ngOnInit() {
-    this.externalIdentifierEnabled = this.popupService.externalIdentifierEnabled
+    this.externalIdentifierEnabled = this.popupService.externalIdentifierEnabled;
     this.editNotice = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
     if (this.editNotice) {
       this.validate = true;
@@ -79,13 +79,14 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.fileService.noticeEditable.subscribe((value: Notice) => {
           this.notice = value;
-        }));
+        })
+      );
     } else {
       this.notice = {
         description: '',
         name: '',
         status: 'ACTIVE',
-        identifier: ''
+        identifier: '',
       };
     }
 
@@ -98,43 +99,43 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     }
     this.arrayStatus = [
       { value: 'INACTIVE', viewValue: this.profilInactif },
-      { value: 'ACTIVE', viewValue: this.profilActif }
+      { value: 'ACTIVE', viewValue: this.profilActif },
     ];
     this.typeProfile = this.data.modeProfile;
-    if (this.typeProfile === 'PUA') {
+    if (this.typeProfile === ProfileMode.PUA) {
       this.modePUA = true;
     }
-    this.information = 'texte d\'information';
+    this.information = "texte d'information";
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       intitule: [null, Validators.required],
       selectedStatus: [null],
       description: [null],
-      autoriserPresenceMetadonnees: false
+      autoriserPresenceMetadonnees: false,
     });
-
 
     this.subscriptions.add(
       this.presenceNonDeclareMetadonneesPUAControl.valueChanges.subscribe((value) => {
         this.form.controls.autoriserPresenceMetadonnees.setValue(value);
-      }));
-
+      })
+    );
 
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
 
     this.subscriptions.add(
-      this.popupService.btnYesShoudBeDisabled.subscribe(status => {
+      this.popupService.btnYesShoudBeDisabled.subscribe((status) => {
         this.btnIsDisabled = status;
-      }));
+      })
+    );
   }
 
   translatedOnChange(): void {
     this.subscriptions.add(
-      this.translateService.onLangChange
-        .subscribe((_: LangChangeEvent) => {
-          constantToTranslate.call(this);
-        }));
+      this.translateService.onLangChange.subscribe((_: LangChangeEvent) => {
+        constantToTranslate.call(this);
+      })
+    );
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -145,17 +146,14 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-
   upateButtonStatusAndDataToSend() {
     this.popupService.setPopUpDataOnClose('test');
     this.popupService.disableYesButton(true);
   }
 
-
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -170,32 +168,30 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       const archivalProfileUnit = {} as ArchivalProfileUnit;
       archivalProfileUnit.identifier = this.notice.identifier;
       this.subscriptions.add(
-        this.profileService.checkPuaProfile(archivalProfileUnit).subscribe(
-          (response: boolean) => {
-            if (response) {
-              alert('Identifier already exists use another identifier');
-              this.validate = false;
-            } else {
-              this.validate = true;
-              this.checkIntitule();
-            }
+        this.profileService.checkPuaProfile(archivalProfileUnit).subscribe((response: boolean) => {
+          if (response) {
+            alert('Identifier already exists use another identifier');
+            this.validate = false;
+          } else {
+            this.validate = true;
+            this.checkIntitule();
           }
-        ));
+        })
+      );
     } else {
       const profile = {} as Profile;
       profile.identifier = this.notice.identifier;
       this.subscriptions.add(
-        this.profileService.checkPaProfile(profile).subscribe(
-          (response: boolean) => {
-            if (response) {
-              alert('Identifier already exists use another identifier');
-              this.validate = false;
-            } else {
-              this.validate = true;
-              this.checkIntitule();
-            }
+        this.profileService.checkPaProfile(profile).subscribe((response: boolean) => {
+          if (response) {
+            alert('Identifier already exists use another identifier');
+            this.validate = false;
+          } else {
+            this.validate = true;
+            this.checkIntitule();
           }
-        ));
+        })
+      );
     }
   }
 

@@ -43,7 +43,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:grammar")
 public class GrammarTag extends RngTag {
-
     @XmlAttribute(name = "datatypeLibrary")
     private String datatypeLibrary = "http://www.w3.org/2001/XMLSchema-datatypes";
 
@@ -55,6 +54,4 @@ public class GrammarTag extends RngTag {
 
     @XmlAttribute(name = "xmlns:xsd")
     private String xd = "http://www.w3.org/2001/XMLSchema";
-
-
 }

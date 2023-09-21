@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -17,17 +17,13 @@ describe('SaveProfileOptionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SaveProfileOptionsComponent ],
-      imports: [
-        RouterTestingModule,
-        TranslateModule.forRoot()
-      ],
+      declarations: [SaveProfileOptionsComponent],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: matDialogData }
-      ]
-    })
-    .compileComponents();
+        { provide: MAT_DIALOG_DATA, useValue: matDialogData },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

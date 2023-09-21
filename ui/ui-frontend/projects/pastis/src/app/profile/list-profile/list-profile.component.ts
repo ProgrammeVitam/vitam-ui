@@ -53,13 +53,11 @@ import { BreadcrumbDataTop } from '../../models/breadcrumb';
 import { MetadataHeaders } from '../../models/models';
 import { Profile } from '../../models/profile';
 import { ProfileDescription } from '../../models/profile-description.model';
-import { ProfileResponse } from '../../models/profile-response';
+import { ProfileMode, ProfileResponse } from '../../models/profile-response';
 import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { CreateProfileComponent } from '../create-profile/create-profile.component';
-import {
-  ProfileInformationTabComponent
-} from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
+import { ProfileInformationTabComponent } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -73,73 +71,44 @@ function constantToTranslate() {
 @Component({
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
-  styleUrls: [ './list-profile.component.scss' ],
+  styleUrls: ['./list-profile.component.scss'],
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
   @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;
-
-  @Input()
-  uploader: FileUploader = new FileUploader({ url: '' });
+  @Input() uploader: FileUploader = new FileUploader({ url: '' });
 
   retrievedProfiles: ProfileDescription[] = [];
-
   matDataSource: MatTableDataSource<ProfileDescription>;
-
   numPA: number;
-
   numPUA: number;
-
   totalProfileNum: number;
-
   hoveredElementId: number;
-
   buttonIsClicked: boolean;
-
   search: string;
-
   numProfilesFiltered: ProfileDescription[];
-
   profilModel: ProfileDescription;
-
   filterType: string;
-
   isStandalone: boolean = environment.standalone;
-
   direction = Direction.ASCENDANT;
-
   orderBy = 'identifier';
-
   sedaUrl: string =
     this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.sedaUrl;
-
   newProfileUrl: string = this.pastisConfig.pastisNewProfile;
-
   docPath = this.isStandalone
     ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf'
     : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
-
-  subscription1$: Subscription;
-  subscription2$: Subscription;
-  _uploadProfileSub: Subscription;
-  subscriptions: Subscription[] = [];
-
   donnees: string[];
-
   promise: Promise<any>;
-
   expanded: boolean;
-
   pending: boolean;
-
-  pendingSub: Subscription;
-
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
-
   popupCreationCancelLabel: string;
   popupCreationTitleDialog: string;
   popupCreationSubTitleDialog: string;
   popupCreationOkLabel: string;
   profilesChargees = false;
+
+  private subscriptions = new Subscription();
 
   constructor(
     private profileService: ProfileService,
@@ -149,16 +118,18 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     private startupService: StartupService,
     private pastisConfig: PastisConfiguration,
     private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
     private dataGeneriquePopupService: DataGeneriquePopupService,
     private translateService: TranslateService,
-    private toggleService: ToggleSidenavService
+    private toggleService: ToggleSidenavService,
+    public globalEventService: GlobalEventService
   ) {
     super(route, globalEventService);
     this.expanded = false;
-    this.pendingSub = this.toggleService.isPending.subscribe((status) => {
-      this.pending = status;
-    });
+    this.subscriptions.add(
+      this.toggleService.isPending.subscribe((status) => {
+        this.pending = status;
+      })
+    );
   }
 
   ngOnInit() {
@@ -171,7 +142,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       this.popupCreationSubTitleDialog = "Création d'un profil";
       this.popupCreationOkLabel = 'VALIDER';
     }
-    this.dataGeneriquePopupService.currentDonnee.subscribe((donnees) => (this.donnees = donnees));
+    this.subscriptions.add(this.dataGeneriquePopupService.currentDonnee.subscribe((donnees) => (this.donnees = donnees)));
     this.breadcrumbDataTop = [
       {
         label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL',
@@ -181,32 +152,32 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/' },
     ];
 
-    this.subscription1$ = this.refreshListProfiles();
-    this.subscriptions.push(this.subscription1$);
+    this.subscriptions.add(this.refreshListProfiles());
   }
 
   private refreshListProfiles() {
     this.toggleService.showPending();
     this.profileService.refreshListProfiles();
+
     return this.profileService.retrievedProfiles.subscribe((profileList: ProfileDescription[]) => {
       if (profileList) {
         this.retrievedProfiles = profileList;
-        // console.log('Profiles: ', this.retrievedProfiles);
         this.profilesChargees = true;
         this.toggleService.hidePending();
       }
       this.matDataSource = new MatTableDataSource<ProfileDescription>(this.retrievedProfiles);
-      this.numPA = this.retrievePAorPUA('PA', false);
-      this.numPUA = this.retrievePAorPUA('PUA', false);
+      this.numPA = this.retrievePAorPUA(ProfileMode.PA, false);
+      this.numPUA = this.retrievePAorPUA(ProfileMode.PUA, false);
       this.totalProfileNum = this.retrievedProfiles ? this.retrievedProfiles.length : 0;
     });
   }
 
   translatedOnChange(): void {
-    this.translateService.onLangChange.subscribe(() => {
-      constantToTranslate.call(this);
-      // console.log(event.lang);
-    });
+    this.subscriptions.add(
+      this.translateService.onLangChange.subscribe(() => {
+        constantToTranslate.call(this);
+      })
+    );
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -214,7 +185,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   retrievePAorPUA(term: string, filter: boolean): number {
-    const profiles: ProfileDescription[] = filter == false ? this.retrievedProfiles : this.numProfilesFiltered;
+    const profiles: ProfileDescription[] = filter === false ? this.retrievedProfiles : this.numProfilesFiltered;
     const profileNum = profiles.filter((p) => p.type === term).length;
     return profileNum ? profileNum : 0;
   }
@@ -223,12 +194,12 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     if (d.external) {
       window.location.assign(d.url);
     } else {
-      this.router.navigate([ d.url ], { skipLocationChange: false });
+      this.router.navigate([d.url], { skipLocationChange: false });
     }
   }
 
   editProfile(element: ProfileDescription) {
-    this.router.navigate([ this.pastisConfig.pastisEditPage, element.id ], {
+    this.router.navigate([this.pastisConfig.pastisEditPage, element.id], {
       state: element,
       relativeTo: this.route,
       skipLocationChange: false,
@@ -241,12 +212,13 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     if (fileToUpload) {
       const formData = new FormData();
       formData.append('file', fileToUpload, fileToUpload.name);
-      this._uploadProfileSub = this.profileService.uploadProfile(formData).subscribe((response: any) => {
-        if (response) {
-          this.router.navigate([ this.pastisConfig.pastisNewProfile ], { state: response, relativeTo: this.route });
-        }
-      });
-      this.subscriptions.push(this._uploadProfileSub);
+      this.subscriptions.add(
+        this.profileService.uploadProfile(formData).subscribe((response: any) => {
+          if (response) {
+            this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
+          }
+        })
+      );
     }
   }
 
@@ -263,21 +235,23 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       panelClass: 'pastis-popup-modal-box',
       data: dataToSendToPopUp,
     });
-    this.subscription2$ = dialogRef.afterClosed().subscribe((result) => {
-      if (result.success) {
-        // console.log(result.action + ' PA ou PUA ?');
-        if (result.action === 'PA' || result.action === 'PUA') {
-          this.profileService
-            .createProfile(this.pastisConfig.createProfileByTypeUrl, result.action)
-            .subscribe((response: ProfileResponse) => {
+    this.subscriptions.add(
+      dialogRef.afterClosed().subscribe((result) => {
+        const { success, action } = result || {};
+
+        if (!success) return;
+
+        if (action === ProfileMode.PA || action === ProfileMode.PUA) {
+          this.subscriptions.add(
+            this.profileService.createProfile(this.pastisConfig.createProfileByTypeUrl, action).subscribe((response: ProfileResponse) => {
               if (response) {
-                this.router.navigate([ this.pastisConfig.pastisNewProfile ], { state: response, relativeTo: this.route });
+                this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
               }
-            });
+            })
+          );
         }
-      }
-    });
-    this.subscriptions.push(this.subscription2$);
+      })
+    );
   }
 
   public onSearchSubmit(search: string): void {
@@ -285,14 +259,13 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       search = '';
     }
     this.search = search;
-    let profileDescriptions = this.retrievedProfiles.filter(
+    const profileDescriptions = this.retrievedProfiles.filter(
       (profile) =>
         profile.identifier.toLowerCase().indexOf(search.toLowerCase()) >= 0 || profile.name.toLowerCase().indexOf(search.toLowerCase()) >= 0
     );
-    // console.log(this.retrievedProfiles)
     this.totalProfileNum = profileDescriptions.length;
-    this.numPA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === 'PA').length;
-    this.numPUA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === 'PUA').length;
+    this.numPA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileMode.PA).length;
+    this.numPUA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileMode.PUA).length;
   }
 
   isRowHovered(elementId: number) {
@@ -311,19 +284,17 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   changeType(type: string) {
-    if (type != undefined) {
+    if (type !== undefined) {
       this.filterType = type;
     }
   }
 
   ngOnDestroy() {
     this.profileService.retrievedProfiles.next([]);
-    this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
-    if (this.pendingSub) this.pendingSub.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   showProfile(element: ProfileDescription) {
-    // console.log('showProfile')
     if (!this.isStandalone) {
       this.openPanel(element);
     }
@@ -333,22 +304,20 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     const fileToUpload: File = files[0];
     let profile: Profile;
     let archivalProfileUnit: ArchivalProfileUnit;
-    if (profileDescription.type === 'PA') {
+    if (profileDescription.type === ProfileMode.PA) {
       profile = this.noticeService.profileDescriptionToPaProfile(profileDescription);
       this.profileService.updateProfileFilePa(profile, fileToUpload).subscribe(() => {
         this.expanded = !this.expanded;
         this.refreshListProfiles();
       });
     }
-    if (profileDescription.type === 'PUA') {
+    if (profileDescription.type === ProfileMode.PUA) {
       if (fileToUpload) {
         let jsonObj: ProfileDescription;
         const fileReader = new FileReader();
         fileReader.readAsText(fileToUpload, 'UTF-8');
         fileReader.onload = () => {
-          // console.log(fileReader.result.toString());
           jsonObj = JSON.parse(fileReader.result.toString());
-          // console.log(jsonObj.controlSchema);
           profileDescription.controlSchema = jsonObj.controlSchema;
           archivalProfileUnit = this.noticeService.profileDescriptionToPuaProfile(profileDescription);
           this.profileService.updateProfilePua(archivalProfileUnit).subscribe(() => {
@@ -364,10 +333,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   changeExpand(element: ProfileDescription) {
-    if (element.type === 'PA' && !element.path && element.status === 'ACTIVE') {
+    if (element.type === ProfileMode.PA && !element.path && element.status === 'ACTIVE') {
       this.expanded = !this.expanded;
     }
-    if (element.type === 'PUA' && element.status === 'ACTIVE' && (element.controlSchema === '{}' || !element.controlSchema)) {
+    if (element.type === ProfileMode.PUA && element.status === 'ACTIVE' && (element.controlSchema === '{}' || !element.controlSchema)) {
       this.expanded = !this.expanded;
     }
   }

@@ -37,23 +37,22 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import sedaRulesFile from '../../../assets/seda.json';
 import { CardinalityConstants, FileNode } from '../../models/file-node';
 import { CardinalityValues } from '../../models/models';
-import { SedaData } from '../../models/seda-data';
+import { SedaBoolean, SedaCardinality, SedaData } from '../../models/seda-data';
+
+import sedaRulesFile from '../../../assets/seda.json';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SedaService {
+  public selectedSedaNode = new BehaviorSubject<SedaData>(null);
+  public selectedSedaNodeParent = new BehaviorSubject<SedaData>(null);
+  public sedaTabNodeRootToSearch = new BehaviorSubject<SedaData>(null);
+  public sedaRules: SedaData[] = sedaRulesFile as SedaData[];
 
-  selectedSedaNode = new BehaviorSubject<SedaData>(null);
-  selectedSedaNodeParent = new BehaviorSubject<SedaData>(null);
-  sedaTabNodeRootToSearch = new BehaviorSubject<SedaData>(null);
-  private sedaRulesTemp: any = sedaRulesFile;
-  public sedaRules: SedaData = this.sedaRulesTemp;
-
-  constructor() { }
+  constructor() {}
 
   getSedaNode(currentNode: SedaData, nameNode: string): SedaData {
     if (currentNode && nameNode) {
@@ -133,13 +132,14 @@ export class SedaService {
   // If an element have an 'n' cardinality (e.g. 0-N), the element will
   // aways be included in the list
   findSelectableElementList(sedaNode: SedaData, fileNode: FileNode): SedaData[] {
-    const fileNodesNames = fileNode.children.map(e => e.name);
-    const allowedSelectableList = sedaNode.Children.filter(x => (!fileNodesNames.includes(x.Name) &&
-      x.Cardinality !== CardinalityConstants.Obligatoire.valueOf())
-      ||
-      (fileNodesNames.includes(x.Name) &&
-        (x.Cardinality === CardinalityConstants['Zero or More'].valueOf() || x.Cardinality === CardinalityConstants["One Or More"].valueOf())
-      ));
+    const fileNodesNames = fileNode.children.map((e) => e.name);
+    const allowedSelectableList = sedaNode.Children.filter(
+      (x) =>
+        (!fileNodesNames.includes(x.Name) && x.Cardinality !== CardinalityConstants.Obligatoire.valueOf()) ||
+        (fileNodesNames.includes(x.Name) &&
+          (x.Cardinality === CardinalityConstants['Zero or More'].valueOf() ||
+            x.Cardinality === CardinalityConstants['One Or More'].valueOf()))
+    );
     return allowedSelectableList;
   }
 
@@ -147,7 +147,7 @@ export class SedaService {
     if (!clickedNode.cardinality) {
       return '1';
     } else {
-      return cardlinalityValues.find(c => c.value == clickedNode.cardinality).value;
+      return cardlinalityValues.find((c) => c.value === clickedNode.cardinality).value;
     }
   }
 
@@ -157,8 +157,36 @@ export class SedaService {
    */
   getAttributes(sedaNode: SedaData, collection: string): SedaData[] {
     // if (!sedaNode) return;
-    return sedaNode.Children.filter(children => children.Element == 'Attribute'
-      && sedaNode.Collection === collection);
+    return sedaNode.Children.filter((children) => children.Element === 'Attribute' && sedaNode.Collection === collection);
+  }
+
+  isMandatory(node: SedaData): boolean {
+    const isMandatory = [SedaCardinality.ONE, SedaCardinality.ONE_OR_MORE].some((cardinality) => node.Cardinality === cardinality);
+
+    return isMandatory;
+  }
+
+  isMultiple(node: SedaData): boolean {
+    const isMultiple = [SedaCardinality.ZERO_OR_MORE, SedaCardinality.ONE_OR_MORE].some((cardinality) => node.Cardinality === cardinality);
+
+    return isMultiple;
+  }
+
+  isDeletable(node: SedaData): boolean {
+    return !this.isMandatory(node);
+  }
+
+  isExtensible(node: SedaData): boolean {
+    let isExtensible = false;
+
+    // The SedaData interface expose Extensible as boolean but is string in the data node
+    if (typeof node.Extensible === 'string') {
+      isExtensible = (node.Extensible as string) === SedaBoolean.YES ? true : false;
+    } else if (typeof node.Extensible === 'boolean') {
+      isExtensible = node.Extensible;
+    }
+
+    return isExtensible;
   }
 
   isSedaNodeObligatory(nodeName: string, sedaParent: SedaData): boolean {
@@ -188,9 +216,11 @@ export class SedaService {
   }
 
   checkSedaElementType(nodeName: string, sedaNode: SedaData): string {
-    if (sedaNode.Name === nodeName) { return sedaNode.Element; }
+    if (sedaNode.Name === nodeName) {
+      return sedaNode.Element;
+    }
 
-    const node = sedaNode.Children.find(c => c.Name === nodeName);
+    const node = sedaNode.Children.find((c) => c.Name === nodeName);
     if (node) {
       return node.Element;
     }
@@ -200,8 +230,49 @@ export class SedaService {
     if (nodeName === sedaNode.Name) {
       return sedaNode;
     }
-    const childFound = sedaNode.Children.find(c => c.Name === nodeName);
+    const childFound = sedaNode.Children.find((c) => c.Name === nodeName);
     return childFound ? childFound : null;
+  }
+
+  /**
+   * Finds all seda nodes in the tree matching the provided name.
+   *
+   * @param name Seda node name to find
+   * @param node Start seda node
+   * @param depth Max search depth. Default to -1 to scan the whole tree
+   * @returns A list of matched nodes
+   */
+  findAllNodes(name: string, node: SedaData, depth = -1): SedaData[] {
+    if (depth === 0) {
+      if (node.Name === name) return [node];
+
+      return [];
+    } else if (depth > 0 || depth < 0) {
+      const nodes: SedaData[] = node.Children.map((child) => this.findAllNodes(name, child, depth - 1)).reduce(
+        (acc, cur) => [...acc, ...cur],
+        []
+      );
+
+      if (node.Name === name) return [...nodes, node];
+
+      return [...nodes];
+    }
+  }
+
+  /**
+   * Finds all seda nodes in the tree matching the provided name.
+   *
+   * @param name Seda node name to find
+   * @param node Start seda node
+   * @param depth Max search depth. Default to -1 to scan the whole tree
+   * @returns A single matched node or throws error otherwise
+   */
+  findNode(name: string, node: SedaData, depth = -1): SedaData {
+    const nodes = this.findAllNodes(name, node, depth);
+
+    if (nodes.length > 1) throw new Error(`The node name ${name} is not unique in the seda rule tree`);
+
+    return nodes[0];
   }
 
   setSedaTabNodeRoot(sedaNodeName: string): void {
@@ -217,9 +288,7 @@ export class SedaService {
     for (const fileChild of fileNode.children) {
       for (const sedaChild of sedaNode.Children) {
         if (fileChild.name === sedaChild.Name) {
-          fileChild.cardinality ?
-            cardinalities.push(fileChild.cardinality) :
-            cardinalities.push(sedaChild.Cardinality);
+          fileChild.cardinality ? cardinalities.push(fileChild.cardinality) : cardinalities.push(sedaChild.Cardinality);
         }
       }
     }

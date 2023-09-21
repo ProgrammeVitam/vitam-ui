@@ -43,7 +43,7 @@ import { SedaData } from './seda-data';
  */
 export enum TypeConstants {
   element = 'element',
-  attribute = 'attribute'
+  attribute = 'attribute',
 }
 
 /**
@@ -58,7 +58,6 @@ export enum CardinalityConstants {
   'Optional' = '0-1',
   'Obligatoire' = '1',
 }
-
 
 /**
  * Json node data with nested structure. Each node has a name and a value or a list of children
@@ -80,7 +79,7 @@ export enum DataTypeConstants {
   int = 'int',
   language = 'language',
   NCName = 'NCName',
-  undefined = 'undefined'
+  undefined = 'undefined',
 }
 
 /**
@@ -90,13 +89,13 @@ export enum ValueOrDataConstants {
   value = 'value',
   data = 'data',
   nsName = 'nsName',
-  undefined = 'undefined'
+  undefined = 'undefined',
 }
 
 export enum DateFormatType {
   dateType = 'DateType',
   date = 'date',
-  dateTime = "dateTime"
+  dateTime = 'dateTime',
 }
 
 export interface FileNode {
@@ -126,11 +125,18 @@ export function nodeToString(node: FileNode): string {
   if (!node) {
     return;
   }
-  return '{' +
-    '"name": "' + node.name + '",'
-    + '"cardinality": "' + node.cardinality + '",'
-    + '"children": ' + nodesToString(node.children)
-    + '}';
+  return (
+    '{' +
+    '"name": "' +
+    node.name +
+    '",' +
+    '"cardinality": "' +
+    node.cardinality +
+    '",' +
+    '"children": ' +
+    nodesToString(node.children) +
+    '}'
+  );
 }
 
 // for debug purpose
@@ -138,7 +144,7 @@ export function nodesToString(nodes: FileNode[]): string {
   if (!nodes || nodes.length < 1) {
     return '[]';
   }
-  return '[' + nodes.map(node => nodeToString(node)).join(',') + ']'
+  return '[' + nodes.map((node) => nodeToString(node)).join(',') + ']';
 }
 
 export interface FileNodeInsertParams {
@@ -156,5 +162,5 @@ export enum nodeNameToLabel {
   'ArchiveTransfer' = 'PROFILE.EDIT_PROFILE.ENTETE',
   'ManagementMetadata' = 'PROFILE.EDIT_PROFILE.REGLES',
   'DescriptiveMetadata' = 'PROFILE.EDIT_PROFILE.UNITES_ARCHIVES',
-  'DataObjectPackage' = 'PROFILE.EDIT_PROFILE.OBJETS'
+  'DataObjectPackage' = 'PROFILE.EDIT_PROFILE.OBJETS',
 }

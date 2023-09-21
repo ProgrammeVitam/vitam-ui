@@ -42,7 +42,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:grammar")
 public class GrammarXML extends BaliseXML {
-
     StartXML start;
 
     @XmlAttribute(name = "datatypeLibrary")
@@ -64,5 +63,4 @@ public class GrammarXML extends BaliseXML {
     public void setStart(StartXML start) {
         this.start = start;
     }
-
 }

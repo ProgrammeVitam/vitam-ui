@@ -52,7 +52,6 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PuaMetadataDetails {
-
     String type;
     String description;
     Integer minItems;
@@ -64,7 +63,6 @@ public class PuaMetadataDetails {
     @JsonProperty("enum")
     List<String> enums;
     String pattern;
-
 
     public String serialiseString() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

@@ -1,42 +1,39 @@
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ConfirmActionComponent } from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileNode } from '../../models/file-node';
 import { ProfileDescription } from '../../models/profile-description.model';
-import { ProfileResponse } from '../../models/profile-response';
+import { ProfileMode, ProfileResponse } from '../../models/profile-response';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 @Component({
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
-  styleUrls: [ './profile-preview.component.scss' ]
+  styleUrls: ['./profile-preview.component.scss'],
 })
-export class ProfilePreviewComponent implements AfterViewInit {
+export class ProfilePreviewComponent implements AfterViewInit, OnDestroy {
+  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  @Input() inputProfile: ProfileDescription;
 
-  @Output()
-  previewClose: EventEmitter<any> = new EventEmitter();
-  @Input()
-  inputProfile: ProfileDescription;
-
-  tabUpdated: boolean[] = [ false, false ];
-  isClicked = false;
-  isStandalone: boolean = environment.standalone;
-
-  fileNode: FileNode[] = [];
-
-  isPopup: boolean;
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
-
-  tabLinks: Array<ProfileInformationTabComponent> = [];
   @ViewChild('infoTab', { static: false }) infoTab: ProfileInformationTabComponent;
 
-  @HostListener('window:beforeunload', [ '$event' ])
+  tabUpdated: boolean[] = [false, false];
+  isClicked = false;
+  isStandalone: boolean = environment.standalone;
+  fileNode: FileNode[] = [];
+  isPopup: boolean;
+  tabLinks: Array<ProfileInformationTabComponent> = [];
+
+  private subscriptions = new Subscription();
+
+  @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       event.preventDefault();
@@ -45,9 +42,13 @@ export class ProfilePreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private router: Router,
-              private pastisConfig: PastisConfiguration, private profileService: ProfileService, private route: ActivatedRoute) {
-  }
+  constructor(
+    private matDialog: MatDialog,
+    private router: Router,
+    private pastisConfig: PastisConfiguration,
+    private profileService: ProfileService,
+    private route: ActivatedRoute
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -66,10 +67,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const submitProfileUpdate: Observable<ProfileDescription> = this.tabLinks[this.tabs.selectedIndex].updateProfile(this.inputProfile);
-
-      submitProfileUpdate.subscribe(() => {
-      });
+      this.subscriptions.add(this.tabLinks[this.tabs.selectedIndex].updateProfile(this.inputProfile).subscribe());
     } else {
       this.tabLinks[this.tabs.selectedIndex].resetForm(this.inputProfile);
     }
@@ -80,7 +78,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
       await this.checkBeforeExit();
     }
 
-    const args = [ tab, tabHeader, idx ];
+    const args = [tab, tabHeader, idx];
     return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
   }
 
@@ -98,8 +96,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   isProfilAttached() {
-    if (this.inputProfile.controlSchema && this.inputProfile.controlSchema.length != 2 || this.inputProfile.path) {
-      // console.log(this.inputProfile)
+    if ((this.inputProfile.controlSchema && this.inputProfile.controlSchema.length !== 2) || this.inputProfile.path) {
       return true;
     }
   }
@@ -109,32 +106,43 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   editProfile(inputProfile: ProfileDescription) {
-    this.router.navigate([ this.pastisConfig.pastisEditPage, inputProfile.id ],
-      { state: inputProfile, relativeTo: this.route, skipLocationChange: false });
+    this.router.navigate([this.pastisConfig.pastisEditPage, inputProfile.id], {
+      state: inputProfile,
+      relativeTo: this.route,
+      skipLocationChange: false,
+    });
   }
 
   downloadProfile(inputProfile: ProfileDescription) {
-    if (inputProfile.type === 'PA') {
-      this.profileService.downloadProfilePaVitam(inputProfile.identifier).subscribe(dataFile => {
-        if (dataFile) {
-          this.downloadFile(dataFile, inputProfile.type, inputProfile);
-        }
-      });
-    } else if (inputProfile.type === 'PUA') {
+    if (inputProfile.type === ProfileMode.PA) {
+      this.subscriptions.add(
+        this.profileService.downloadProfilePaVitam(inputProfile.identifier).subscribe((dataFile) => {
+          if (dataFile) {
+            this.downloadFile(dataFile, inputProfile.type, inputProfile);
+          }
+        })
+      );
+    } else if (inputProfile.type === ProfileMode.PUA) {
       // Send the retrieved JSON data to profile service
-      this.profileService.getProfile(inputProfile).subscribe(retrievedData => {
-        const profileResponse = retrievedData as ProfileResponse;
-        this.fileNode.push(profileResponse.profile);
-        this.profileService.uploadFile(this.fileNode, profileResponse.notice, inputProfile.type).subscribe(data => {
-          this.downloadFile(data, inputProfile.type, inputProfile);
-        });
-      });
+      this.subscriptions.add(
+        this.profileService.getProfile(inputProfile).subscribe((retrievedData) => {
+          const profileResponse = retrievedData as ProfileResponse;
+
+          this.fileNode.push(profileResponse.profile);
+
+          this.subscriptions.add(
+            this.profileService.uploadFile(this.fileNode, profileResponse.notice, inputProfile.type).subscribe((data) => {
+              this.downloadFile(data, inputProfile.type, inputProfile);
+            })
+          );
+        })
+      );
     }
   }
 
   downloadFile(dataFile: any, typeProfile: string, inputProfile?: ProfileDescription): void {
-    const typeFile = typeProfile === 'PA' ? 'application/xml' : 'application/json';
-    const newBlob = new Blob([ dataFile ], { type: typeFile });
+    const typeFile = typeProfile === ProfileMode.PA ? 'application/xml' : 'application/json';
+    const newBlob = new Blob([dataFile], { type: typeFile });
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(newBlob);
       return;
@@ -142,7 +150,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
     const data = window.URL.createObjectURL(newBlob);
     const link = document.createElement('a');
     link.href = data;
-    link.download = typeProfile === 'PA' ? inputProfile.path : 'pastis_' + inputProfile.identifier + '.json';
+    link.download = typeProfile === ProfileMode.PA ? inputProfile.path : 'pastis_' + inputProfile.identifier + '.json';
     // this is necessary as link.click() does not work on the latest firefox
     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
     setTimeout(() => {
@@ -150,5 +158,9 @@ export class ProfilePreviewComponent implements AfterViewInit {
       window.URL.revokeObjectURL(data);
       link.remove();
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

@@ -42,10 +42,9 @@ import { Subject } from 'rxjs';
 import { FileNode } from '../../../models/file-node';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FileTreeService {
-
   updateMedataTable: Subject<FileNode>;
   nestedDataSource: MatTreeNestedDataSource<FileNode>;
   nestedTreeControl: NestedTreeControl<FileNode>;
@@ -53,5 +52,4 @@ export class FileTreeService {
   constructor() {
     this.updateMedataTable = new Subject<FileNode>();
   }
-
 }

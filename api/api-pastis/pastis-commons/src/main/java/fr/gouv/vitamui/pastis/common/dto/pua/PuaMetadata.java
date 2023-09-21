@@ -44,7 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PuaMetadata extends JsonElement {
-
     private Map<String, PuaMetadataDetails> puaDetails = new HashMap<>();
 
     @Override

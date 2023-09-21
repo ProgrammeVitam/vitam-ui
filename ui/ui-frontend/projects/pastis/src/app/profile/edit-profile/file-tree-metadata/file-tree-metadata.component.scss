@@ -1,9 +1,9 @@
-@import "../../../../assets/css/mixins";
-@import "../../../../assets/css/layout";
-@import "../../../../assets/css/colors";
-@import "../../../../assets/css/font";
-@import "../../../../assets/css/buttons";
-@import "../../../../assets/css/input";
+@import '../../../../assets/css/mixins';
+@import '../../../../assets/css/layout';
+@import '../../../../assets/css/colors';
+@import '../../../../assets/css/font';
+@import '../../../../assets/css/buttons';
+@import '../../../../assets/css/input';
 @import '~ui-frontend-common/sass/mixins/elevation';
 @import '~ui-frontend-common/sass/material/menu';
 @import '~ui-frontend-common/sass/icons/vitamui-icons';
@@ -11,11 +11,10 @@
 @import '~ui-frontend-common/sass/editable-field';
 @import '../../../user-actions/add-metadata/add-metadata.component.scss';
 
-
-.pastis-container-selected-items{
+.pastis-container-selected-items {
   margin-left: 50px;
 }
-.pastis-container-button-submit-controls{
+.pastis-container-button-submit-controls {
   margin-left: 50px;
 }
 
@@ -32,7 +31,7 @@ td {
   width: 60%;
 }
 
-.mat-drawer-content{
+.mat-drawer-content {
   height: max-content !important;
 }
 
@@ -51,10 +50,9 @@ td {
   @extend .pastis-dropdown-text-button1-enabled;
 }
 
-
 /////////////################ Select trigger - Text + arrow
 .pastis-table-container .mat-select-arrow {
-  background: url(../../../../assets/svg/icons/drop-box-arrow-vitam.svg) no-repeat 100% 50% ;
+  background: url(../../../../assets/svg/icons/drop-box-arrow-vitam.svg) no-repeat 100% 50%;
   background-size: 24px 24px;
   border: none !important;
   -moz-appearance: none;
@@ -67,7 +65,7 @@ td {
 }
 
 .pastis-table-container {
-  margin-bottom: 60px ;
+  margin-bottom: 60px;
 }
 .pastis-table-container .mat-select-value-text {
   @extend .text-text-normal;
@@ -80,8 +78,7 @@ td {
 .pastis-table-container .mat-select-placeholder {
   //styleName: Text/Text-medium;
   @extend .text-text-medium;
-  color:#757575;
-
+  color: #757575;
 }
 
 // Overhide mat-select-panel default min-size : calc(100%) + 32px;
@@ -130,8 +127,8 @@ td {
 .value-text-area {
   padding: 10px 15px 10px 15px;
   width: 140px;
-  color:#212121;
-  height:50px;
+  color: #212121;
+  height: 50px;
   @extend .pastis-table-input-border;
   display: flex;
   align-items: center;
@@ -141,12 +138,15 @@ td {
   @extend .text-text-medium;
 }
 
-.pastis-table-input-border, .value-text-area, .comment-text-area, .select-border, .commentaire-pastis .vitamui-input:not(.disabled) {
+.pastis-table-input-border,
+.value-text-area,
+.comment-text-area,
+.select-border,
+.commentaire-pastis .vitamui-input:not(.disabled) {
   padding: 10px 15px 10px 15px;
 }
 
-
-.select-border{
+.select-border {
   @extend .pastis-table-input-border;
 }
 
@@ -158,12 +158,10 @@ td {
   width: 80%;
 }
 
-.valeur-fixe-pastis{
+.valeur-fixe-pastis {
   @extend .commentaire-pastis;
   width: 140px !important;
 }
-
-
 
 .commentaire-pastis {
   .editable-field {
@@ -175,7 +173,7 @@ td {
   }
 
   .vitamui-input:not(.disabled) {
-    @extend .select-border
+    @extend .select-border;
   }
 
   @extend .editable-field-content;
@@ -195,18 +193,14 @@ td {
   }
   @extend .editable-field-control;
   .editable-field-control > textarea {
-
     height: 20px !important;
-    border: none!important;
+    border: none !important;
 
     &:focus {
       outline: none;
     }
   }
-
-
 }
-
 
 .radio-group {
   display: flex;
@@ -220,20 +214,25 @@ td {
 
 table {
   width: 100%;
-  @include mat-table-columns((
-    valeurFixe:(width:140px!important),
-    cardinalite:(width:120px!important)
-  ));
+  @include mat-table-columns(
+    (
+      valeurFixe: (
+        width: 140px !important,
+      ),
+      cardinalite: (
+        width: 120px !important,
+      ),
+    )
+  );
 }
 
 .pastis-indication {
   font-size: 16px;
   font-family: 'Mulish', sans-serif;
-  color: #212121 ;
+  color: #212121;
   font-weight: 400;
   vertical-align: middle;
 }
-
 
 .pastis-btn-add-tag {
   width: 210px;
@@ -254,8 +253,6 @@ table {
   @extend .pastis-btn-primary-focus;
 }
 
-
-
 thead {
   border-radius: 5px !important;
 }
@@ -264,8 +261,6 @@ table {
   border-radius: 5px !important;
   border-spacing: 0 5px !important;
 }
-
-
 
 tr:hover .pastis-btn-appear {
   display: block;
@@ -290,7 +285,6 @@ tr:hover .pastis-btn-appear {
   height: 40px;
   border: 1px solid var(--vitamui-primary-700) !important;
 }
-
 
 .pastis-ico-menu-active {
   color: var(--vitamui-primary-500) !important;
@@ -322,8 +316,8 @@ tr:hover .pastis-btn-appear {
   margin-left: 74px;
   margin-right: 120px;
   height: fit-content;
-  background-color: #FAFAFA;
-  padding-bottom: 30px
+  background-color: #fafafa;
+  padding-bottom: 30px;
 }
 .pastis-metadata-option-container {
   @extend .pastis-panel-radius-10;
@@ -359,14 +353,12 @@ tr:hover .pastis-btn-appear {
   top: 5px;
 }
 
-
 .pastis-ico-arrow-back {
   @extend .pastis-white-highlight;
   cursor: pointer;
   font-size: 24px;
   margin-left: -5px;
 }
-
 
 // Right top panel : Buttons style definition //
 
@@ -377,7 +369,6 @@ tr:hover .pastis-btn-appear {
   margin-inline-end: 20px;
 }
 
-
 .pastis-ico-open {
   @extend .pastis-ico-svg;
   color: white;
@@ -387,7 +378,6 @@ tr:hover .pastis-btn-appear {
   vertical-align: middle;
   margin-right: 10px;
 }
-
 
 dp-date-picker {
   display: flex !important;
@@ -406,72 +396,67 @@ dp-day-calendar .dp-day-calendar-container {
   border: 1px solid blueviolet !important;
 }
 
-
 .pastis-metadata-table-col-large .mat-select,
-.pastis-metadata-table-col-large .mat-select:focus{
+.pastis-metadata-table-col-large .mat-select:focus {
   width: 80%;
 }
-
-
 
 .pastis-metadata-table-col-large textarea {
   height: 50px;
   text-indent: 10px;
-
 }
 
 .pastis-metadata-table-col-large textarea:focus {
   height: 200px;
-
 }
 
 .pastis-metadata-table-col-small .mat-select {
   max-width: 120px;
-  height:50px;
+  height: 50px;
   padding: 13px 15px 13px 15px;
 }
 
 .complex-element-no-child {
   text-align: left;
 }
-.mat-sidenav-content{
+.mat-sidenav-content {
   padding-bottom: 30px;
 }
 
-.pastis-menu-item-vitam{
+.pastis-menu-item-vitam {
   @extend .vitamui-menu-panel;
   .mat-menu-item:hover:not([disabled]),
   .mat-menu-item.cdk-program-focused:not([disabled]),
   .mat-menu-item.cdk-keyboard-focused:not([disabled]),
   .mat-menu-item-highlighted:not([disabled]) {
     color: white;
-    background-color: map-get($colors, 'ligthly-purple' ) !important;
+    background-color: map-get($colors, 'ligthly-purple') !important;
   }
 }
 
 button.delete {
-  border: 1px solid
+  border: 1px solid;
 }
 
-.pastis-vitamui-container-editable-commentaire{
+.pastis-vitamui-container-editable-commentaire {
   width: 203px;
-  height:50px;
+  height: 50px;
   position: relative;
 }
 
-.pastis-vitamui-container-editable-valeur-fixe{
+.pastis-vitamui-container-editable-valeur-fixe {
   width: 140px !important;
-  height:50px;
+  height: 50px;
   position: relative;
 }
 
 .mat-select-valeur-fixe {
-  @extend  .select-border;
+  @extend .select-border;
   width: 140px !important;
-  height:50px !important;
-  margin: 2px ;
+  height: 50px !important;
+  margin: 2px;
 }
-.vitamui-pastis-choice-language{
+.vitamui-pastis-choice-language {
   position: absolute;
   left: 15%;
   width: 250px;
@@ -480,14 +465,14 @@ button.delete {
   z-index: 999;
 }
 
-.allow_presence_text{
+.allow_presence_text {
   font-size: 11px !important;
   font-family: 'Mulish', sans-serif !important;
   color: #212121 !important;
   font-weight: 400;
 }
 
-.placement-tooltip{
+.placement-tooltip {
   position: absolute;
   left: 13em;
   top: 1em;
@@ -495,7 +480,7 @@ button.delete {
 .pastis-dialog-config-title {
   bottom: 10px;
   position: relative;
-  padding-top: 20px
+  padding-top: 20px;
 }
 
 .pastis-dialog-title {
@@ -513,7 +498,6 @@ button.delete {
   display: flex;
   align-items: center;
   color: var(--vitamui-grey-900);
-
 }
 
 .pastis-icon-primary {
@@ -521,3 +505,58 @@ button.delete {
   margin-left: 10px !important;
 }
 
+.pastis-uppercase {
+  text-transform: uppercase;
+}
+
+.pastis-divider {
+  border-top-color: #e0e0e0;
+}
+
+.pastis-icon-secondary {
+  color: #757575;
+}
+
+.pastis-icon {
+  margin-right: 16px;
+  vertical-align: middle;
+  font-size: 1.77em;
+}
+
+.pastis-font-size {
+  font-size: 1.5em;
+}
+
+.pastis-metadata-control--btn-wrapper {
+  position: relative;
+  right: 20px;
+}
+
+.pastis-metadata-control--btn {
+  background-color: transparent;
+  border-width: 0ch;
+}
+
+.pastis-inline-flex {
+  display: inline-flex;
+}
+
+.pastis-pa-12 {
+  padding: 12px;
+}
+
+/* to fix mat-checkbox text*/
+.mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+.pastis-checkbox-content {
+  display: flex;
+  margin-left: 1rem;
+
+  .pastis-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

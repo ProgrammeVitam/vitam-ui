@@ -26,7 +26,7 @@
  *
  */
 
-import {Id} from 'ui-frontend-common';
+import { Id } from 'ui-frontend-common';
 
 export interface ProfileCommon extends Id {
   identifier: string;

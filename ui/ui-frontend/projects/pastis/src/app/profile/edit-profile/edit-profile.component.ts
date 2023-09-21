@@ -37,13 +37,13 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { BehaviorSubject, Subscription} from 'rxjs';
-import {environment} from '../../../environments/environment';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { SedaService } from '../../core/services/seda.service';
@@ -65,23 +65,21 @@ export interface UploadedProfileResponse {
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss'],
 })
-
-export class EditProfileComponent implements OnDestroy {
-
+export class EditProfileComponent implements AfterViewInit, OnDestroy {
   nodeToSend: FileNode;
   sedaParentNode: SedaData;
   selectedIndex: number;
   activeTabIndex: number;
   dataChange = new BehaviorSubject<FileNode[]>([]);
   isStandalone: boolean = environment.standalone;
-  puaMode: boolean;
+  isArchiveProfileMode: boolean;
+  isArchiveUnitProfileMode: boolean;
 
   entete = 'Entête';
   regles = 'Règles';
-  unitesArchives = 'Unités d\'archives';
+  unitesArchives = "Unités d'archives";
   objets = 'Objets';
-  unitesArchivesPuaMode = 'Unité d\'archive';
-
+  unitesArchivesPuaMode = "Unité d'archive";
 
   profileTabChildrenToInclude: string[] = [];
   profileTabChildrenToExclude: string[] = [];
@@ -105,19 +103,25 @@ export class EditProfileComponent implements OnDestroy {
 
   profile: FileNode[];
 
-  @ViewChild(FileTreeComponent, {static: false}) fileTreeComponent: FileTreeComponent;
+  @ViewChild(FileTreeComponent, { static: false }) fileTreeComponent: FileTreeComponent;
 
   private _fileServiceCurrentTreeSubscription: Subscription;
 
-  constructor(private sedaService: SedaService, private fileService: FileService,
-              private sideNavService: ToggleSidenavService, public profileService: ProfileService,
-              private loaderService: NgxUiLoaderService, private fileTreeService: FileTreeService,
-              private translateService: TranslateService) {
+  constructor(
+    private sedaService: SedaService,
+    private fileService: FileService,
+    private sideNavService: ToggleSidenavService,
+    public profileService: ProfileService,
+    private loaderService: NgxUiLoaderService,
+    private fileTreeService: FileTreeService,
+    private translateService: TranslateService
+  ) {
     this.selectedIndex = 0;
+    this.isArchiveProfileMode = this.profileService.isArchiveProfileMode();
+    this.isArchiveUnitProfileMode = this.profileService.isArchiveUnitProfileMode();
   }
 
   initAll() {
-    this.puaMode = this.profileService.profileMode === 'PA' ? false : true;
     if (!this.isStandalone) {
       this.entete = 'PROFILE.EDIT_PROFILE.ENTETE';
       this.regles = 'PROFILE.EDIT_PROFILE.REGLES';
@@ -128,9 +132,9 @@ export class EditProfileComponent implements OnDestroy {
     this.tabLabels.push(this.entete, this.regles, this.unitesArchives, this.objets, this.unitesArchivesPuaMode);
 
     const collectionSeda: string[] = [];
-    collectionSeda.push('Entête', 'Règles', 'Unités d\'archives', 'Objets');
+    collectionSeda.push('Entête', 'Règles', "Unités d'archives", 'Objets');
     this.fileTreeService.nestedTreeControl = new NestedTreeControl<FileNode>(this.getChildren);
-    this.collectionNames = collectionSeda.map(name => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase());
+    this.collectionNames = collectionSeda.map((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase());
 
     this.rootNames.push('ArchiveTransfer', 'ManagementMetadata', 'DescriptiveMetadata', 'DataObjectPackage');
 
@@ -138,7 +142,14 @@ export class EditProfileComponent implements OnDestroy {
     this.profileTabChildrenToInclude.push();
     this.profileTabChildrenToExclude.push();
     this.headerTabChildrenToInclude.push();
-    this.headerTabChildrenToExclude.push('DataObjectPackage', 'DataObjectGroup', 'DescriptiveMetadata', 'ManagementMetadata', 'id', 'BinaryDataObject');
+    this.headerTabChildrenToExclude.push(
+      'DataObjectPackage',
+      'DataObjectGroup',
+      'DescriptiveMetadata',
+      'ManagementMetadata',
+      'id',
+      'BinaryDataObject'
+    );
     this.rulesTabChildrenToInclude.push();
     this.rulesTabChildrenToExclude.push();
     this.treeTabChildrenToInclude.push();
@@ -150,7 +161,8 @@ export class EditProfileComponent implements OnDestroy {
       [this.profileTabChildrenToInclude, this.profileTabChildrenToExclude],
       [this.rulesTabChildrenToInclude, this.rulesTabChildrenToExclude],
       [this.treeTabChildrenToInclude, this.treeTabChildrenToExclude],
-      [this.objectTabChildrenToInclude, this.objectTabChildrenToExclude]);
+      [this.objectTabChildrenToInclude, this.objectTabChildrenToExclude]
+    );
     this.initActiveTabAndProfileMode();
     this.setTabsAndMetadataRules(this.activeTabIndex);
 
@@ -161,7 +173,7 @@ export class EditProfileComponent implements OnDestroy {
   }
 
   ngAfterViewInit() {
-    this._fileServiceCurrentTreeSubscription = this.fileService.currentTree.subscribe(response => {
+    this._fileServiceCurrentTreeSubscription = this.fileService.currentTree.subscribe((response) => {
       this.initAll();
       if (response) {
         this.nodeToSend = response[0];
@@ -178,7 +190,6 @@ export class EditProfileComponent implements OnDestroy {
         }
       }
       this.loadProfileData(this.activeTabIndex);
-      console.log('Init file tree node on file tree : %o', this.dataChange.getValue());
     });
 
     this.sedaParentNode = this.sedaService.sedaRules[0];
@@ -188,9 +199,8 @@ export class EditProfileComponent implements OnDestroy {
     return this.translateService.instant(EDIT_PROFILE_TRANSLATE_PATH + nameOfFieldToTranslate);
   }
 
-
   initActiveTabAndProfileMode() {
-    this.profileService.profileMode === 'PA' ? this.activeTabIndex = 0 : this.activeTabIndex = 2;
+    this.profileService.isArchiveProfileMode() ? (this.activeTabIndex = 0) : (this.activeTabIndex = 2);
   }
 
   loadProfile(event: MatTabChangeEvent) {
@@ -199,9 +209,9 @@ export class EditProfileComponent implements OnDestroy {
   }
 
   setTabsAndMetadataRules(tabIndex: number) {
-    this.collectionName = this.profileService.profileMode === 'PA' ? this.collectionNames[tabIndex] : this.collectionNames[2];
-    this.rootTabMetadataName = this.profileService.profileMode === 'PA' ? this.rootNames[tabIndex] : this.rootNames[2];
-    this.elementRules = this.profileService.profileMode === 'PA' ? this.tabShowElementRules[tabIndex] : this.tabShowElementRules[2];
+    this.collectionName = this.profileService.isArchiveProfileMode() ? this.collectionNames[tabIndex] : this.collectionNames[2];
+    this.rootTabMetadataName = this.profileService.isArchiveProfileMode() ? this.rootNames[tabIndex] : this.rootNames[2];
+    this.elementRules = this.profileService.isArchiveProfileMode() ? this.tabShowElementRules[tabIndex] : this.tabShowElementRules[2];
   }
 
   loadProfileData(tabindex: number) {
@@ -225,11 +235,11 @@ export class EditProfileComponent implements OnDestroy {
 
   getFilteredData(rootTreeMetadataName: string): FileNode[] {
     if (this.nodeToSend) {
-      const nodeNameToFilter = this.profileService.profileMode === 'PA' ? rootTreeMetadataName : this.nodeToSend.name;
+      const nodeNameToFilter = this.profileService.isArchiveProfileMode() ? rootTreeMetadataName : this.nodeToSend.name;
       const currentNode = this.fileService.getFileNodeByName(this.fileService.allData.getValue()[0], nodeNameToFilter);
       const filteredData = [];
       filteredData.push(currentNode);
-      console.log('Filtered data : ', filteredData);
+
       return filteredData;
     }
   }
@@ -241,13 +251,12 @@ export class EditProfileComponent implements OnDestroy {
   }
 
   canShowOnPuaMode(tabIndex: number) {
-    return this.profileService.profileMode === 'PUA' ? (tabIndex === 3) : true;
+    return this.profileService.isArchiveUnitProfileMode() ? tabIndex === 3 : true;
   }
 
   ngOnDestroy() {
-    if (this._fileServiceCurrentTreeSubscription != null) {
+    if (this._fileServiceCurrentTreeSubscription !== null) {
       this._fileServiceCurrentTreeSubscription.unsubscribe();
     }
   }
-
 }

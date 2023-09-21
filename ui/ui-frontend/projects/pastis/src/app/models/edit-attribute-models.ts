@@ -40,13 +40,13 @@ knowledge of the CeCILL-C license and that you accept its terms.
  * Class that stores all the data needed to display and manage an attribute in the popup
  */
 export interface AttributeData {
-    nomDuChamp: string;
-    type: string;
-    valeurFixe: string;
-    selectedCardinality: string; // The selected cardinality for this attribute
-    cardinalities: string[]; // The list of all allowed cardinality for this attribute
-    commentaire: string;
-    selected: boolean; // Boolean that is linked to the checkbox, allowing to select this attribute
-    enumeration: string[];
-    id: number;
-  }
+  nomDuChamp: string;
+  type: string;
+  valeurFixe: string;
+  selectedCardinality: string; // The selected cardinality for this attribute
+  cardinalities: string[]; // The list of all allowed cardinality for this attribute
+  commentaire: string;
+  selected: boolean; // Boolean that is linked to the checkbox, allowing to select this attribute
+  enumeration: string[];
+  id: number;
+}

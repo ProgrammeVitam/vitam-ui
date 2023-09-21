@@ -37,6 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.dto;
 
+import fr.gouv.vitamui.pastis.common.model.MetadataDataType;
 import fr.gouv.vitamui.pastis.common.util.RNGConstants;
 import lombok.Data;
 import lombok.Getter;
@@ -76,8 +77,8 @@ public class ElementRNG {
     List<ElementRNG> children = new ArrayList<>();
 
     public static void setDataForParentElementOrAttribute(ElementProperties parentNode, ElementRNG node) {
-        if (null != parentNode.getType() && (RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType())
-            || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(parentNode.getType()))) {
+        if (null != parentNode.getType() && (MetadataDataType.ELEMENT.getLabel().equals(parentNode.getType())
+            || MetadataDataType.ATTRIBUTE.getLabel().equals(parentNode.getType()))) {
             parentNode.setValueOrData(node.getType());
             if (RNGConstants.getTypesMap().containsKey(parentNode.getName())) {
                 parentNode.setDataType(RNGConstants.getTypesMap().get(parentNode.getName()).getLabel());
@@ -90,7 +91,7 @@ public class ElementRNG {
 
     public static void setDocumentationForParentElement(ElementProperties parentNode, ElementRNG node) {
         if (null != parentNode.getType() &&
-            RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType())) {
+            MetadataDataType.ELEMENT.getLabel().equals(parentNode.getType())) {
             if(parentNode.getName() != null && parentNode.getName().equals("ArchiveUnit")
                 && node.getValue().contains("Commentaire : ")){
                 parentNode.setDocumentation(node.getValue().replace("Commentaire : ", ""));
@@ -117,8 +118,8 @@ public class ElementRNG {
         ElementProperties parentNode) {
         ElementProperties local = new ElementProperties();
         LOGGER.trace("Generating JSON element {}", node.getName());
-        if (null != node.getType() && RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(node.getType())
-            || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(node.getType())) {
+        if (null != node.getType() && MetadataDataType.ELEMENT.getLabel().equals(node.getType())
+            || MetadataDataType.ATTRIBUTE.getLabel().equals(node.getType())) {
 
             local.setCardinality(elementStatic.getCardinality());
             local.setGroupOrChoice(elementStatic.getGroupOrChoice());
@@ -159,8 +160,8 @@ public class ElementRNG {
 
     private static void buildTree(ElementRNG node, int profondeur, ElementProperties local){
         for (ElementRNG next : node.getChildren()) {
-            if (null != next.getType() && (RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(next.getType())
-                || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(next.getType()))) {
+            if (null != next.getType() && (MetadataDataType.ELEMENT.getLabel().equals(next.getType())
+                || MetadataDataType.ATTRIBUTE.getLabel().equals(next.getType()))) {
                 buildElementPropertiesTree(next, profondeur + 1, local);
             } else {
                 buildElementPropertiesTree(next, profondeur, local);

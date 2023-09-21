@@ -38,10 +38,11 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.dto.factory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -54,14 +55,12 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @Setter
 @Getter
 public class RngTag extends Tag {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(RngTag.class);
 
     String name;
     String dataType;
     String groupOrChoice;
     ValueTag valueTag;
-
 
     @XmlAttribute
     public String getName() {
@@ -77,8 +76,6 @@ public class RngTag extends Tag {
     public ValueTag getValueTag() {
         return valueTag;
     }
-
-
 }
 
 

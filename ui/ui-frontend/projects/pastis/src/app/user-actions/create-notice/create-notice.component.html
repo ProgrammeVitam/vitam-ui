@@ -1,60 +1,74 @@
 <!-- Pastis dialog title qnd subtitle-->
 <h2 class="pastis-dialog-config-title" matDialogTitle>
   <i (click)="onNoClick()" class="vitamui-icon vitamui-icon-close icon-close"></i>
-  <p class="pastis-dialog-subtitle"><b>{{data.subTitleDialog}}</b></p>
-  <P class="pastis-dialog-title">{{data.titleDialog}}</P>
+  <p class="pastis-dialog-subtitle">
+    <b>{{ data.subTitleDialog }}</b>
+  </p>
+  <P class="pastis-dialog-title">{{ data.titleDialog }}</P>
 </h2>
 
 <form class="pastis-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-
   <div class="row">
     <div class="col-10 form-control" *ngIf="externalIdentifierEnabled">
-      <vitamui-common-input [disabled]="editNotice" (change)="checkIdentifier(modePUA)" [(ngModel)]="notice.identifier" class="col-9 px-0"
-                            placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate }}" formControlName="identifier">
+      <vitamui-common-input
+        [disabled]="editNotice"
+        (change)="checkIdentifier(modePUA)"
+        [(ngModel)]="notice.identifier"
+        class="col-9 px-0"
+        placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate }}"
+        formControlName="identifier"
+      >
       </vitamui-common-input>
     </div>
   </div>
 
   <div class="row">
     <div class="col-10 form-control">
-      <vitamui-common-input [(ngModel)]="notice.name" (change)="checkIntitule()" class="col-9 px-0" formControlName="intitule"
-                            placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.INTITULE' | translate }} ">
+      <vitamui-common-input
+        [(ngModel)]="notice.name"
+        (change)="checkIntitule()"
+        class="col-9 px-0"
+        formControlName="intitule"
+        placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.INTITULE' | translate }} "
+      >
       </vitamui-common-input>
     </div>
   </div>
 
   <div class="row">
     <div class="col-10 form-control">
-      <vitamui-common-textarea [(ngModel)]="notice.description" formControlName="description" placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.DESCRIPTION' | translate }} " [rows]="4" style="width: 100%">
+      <vitamui-common-textarea
+        [(ngModel)]="notice.description"
+        formControlName="description"
+        placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.DESCRIPTION' | translate }} "
+        [rows]="4"
+        style="width: 100%"
+      >
       </vitamui-common-textarea>
     </div>
   </div>
 
   <div *ngIf="modePUA" class="row">
-    <div class=" col-10 form-control">
+    <div class="col-10 form-control">
       <div class="d-flex justify-content-between align-items-center py-1 px-2 mb-2">
         <vitamui-common-slide-toggle [formControl]="presenceNonDeclareMetadonneesPUAControl">
           {{ 'PROFILE.POP_UP_CREATION_NOTICE.AUTORISER_PRESENCE_METADONNEES' | translate }}
         </vitamui-common-slide-toggle>
         <div>
-          <i class="vitamui-icon vitamui-icon-info primary clickable"
-             [matTooltip]=information
-             matTooltipClass="vitamui-tooltip"></i>
+          <i class="vitamui-icon vitamui-icon-info primary clickable" [matTooltip]="information" matTooltipClass="vitamui-tooltip"></i>
         </div>
       </div>
     </div>
   </div>
 
-
   <div class="text-enregistrement">
     {{ 'PROFILE.POP_UP_CREATION_NOTICE.ENREGISTRER_ACTIF_INACTIF' | translate }}
-    </div>
+  </div>
 
   <mat-form-field class="vitamui-mat-select">
-    <mat-select
-                panelclass="vitamui-mat-select" [(ngModel)]="notice.status" formControlName="selectedStatus">
+    <mat-select panelclass="vitamui-mat-select" [(ngModel)]="notice.status" formControlName="selectedStatus">
       <mat-option *ngFor="let status of arrayStatus" [value]="status.value">
-        {{status.viewValue}}
+        {{ status.viewValue }}
       </mat-option>
     </mat-select>
     <div class="select-arrow">
@@ -63,16 +77,17 @@
     </div>
   </mat-form-field>
 
-
   <div class="btn-container">
     <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons">
-      <button type="submit" [disabled]="!validate"
-                            Class="pastis-btn-oui-dialog-confirm"
-                            [ngStyle]="{'background': validate ? '#9C31B5' : 'grey'}"
-               >{{data.okLabel}}
+      <button
+        type="submit"
+        [disabled]="!validate"
+        Class="pastis-btn-oui-dialog-confirm"
+        [ngStyle]="{ background: validate ? '#9C31B5' : 'grey' }"
+      >
+        {{ data.okLabel }}
       </button>
-      <button type="button" class="pastis-btn-non-dialog-confirm" (click)="onCancel()">{{data.cancelLabel}}</button>
+      <button type="button" class="pastis-btn-non-dialog-confirm" (click)="onCancel()">{{ data.cancelLabel }}</button>
     </mat-dialog-actions>
   </div>
-
 </form>

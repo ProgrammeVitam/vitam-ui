@@ -37,7 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.standalone.config;
 
-import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
+import fr.gouv.vitamui.pastis.common.service.JsonFromPua;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
@@ -79,8 +79,8 @@ public class PastisConfiguration {
     }
 
     @Bean
-    public JsonFromPUA jsonFromPUA() {
-        return new JsonFromPUA();
+    public JsonFromPua jsonFromPUA() {
+        return new JsonFromPua();
     }
 
     @Bean

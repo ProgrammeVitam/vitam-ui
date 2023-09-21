@@ -99,19 +99,9 @@ import { PastisRoutingModule } from './pastis-routing.module';
     MatIconModule,
     MatTabsModule,
   ],
-  providers: [
-    DatePipe,
-    TranslateService
-  ],
-  declarations: [
-    MainComponent,
-    UserActionRemoveMetadataComponent,
-    UserActionAddMetadataComponent,
-    SedaVisualizerComponent
-    
-  ],
-  exports: [
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  providers: [DatePipe, TranslateService],
+  declarations: [MainComponent, UserActionRemoveMetadataComponent, UserActionAddMetadataComponent, SedaVisualizerComponent],
+  exports: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PastisModule {}

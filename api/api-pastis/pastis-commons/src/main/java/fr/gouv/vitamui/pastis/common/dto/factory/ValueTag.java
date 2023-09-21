@@ -46,7 +46,6 @@ import javax.xml.bind.annotation.XmlValue;
 
 @Setter
 public class ValueTag {
-
     private String dataType;
     private String value;
 
@@ -66,5 +65,4 @@ public class ValueTag {
     public Tag getParent() {
         return parent;
     }
-
 }

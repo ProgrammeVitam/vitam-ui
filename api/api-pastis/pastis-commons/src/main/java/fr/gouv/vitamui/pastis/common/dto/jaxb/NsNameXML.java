@@ -46,7 +46,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "rng:nsName")
 @Setter
 public class NsNameXML extends BaliseXML {
-
     @XmlAttribute(name = "ns")
     String ns;
 }

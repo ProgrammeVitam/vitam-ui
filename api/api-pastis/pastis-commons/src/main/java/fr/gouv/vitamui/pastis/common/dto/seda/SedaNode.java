@@ -56,10 +56,15 @@ public class SedaNode {
     private String collection;
     private List<SedaNode> children;
 
-
     public Stream<SedaNode> flattened() {
-        return Stream.concat(
-            Stream.of(this),
-            children.stream().flatMap(SedaNode::flattened));
+        return Stream.concat(Stream.of(this), children.stream().flatMap(SedaNode::flattened));
+    }
+
+    public boolean isExtensible() {
+        return this.extensible.equals("yes");
+    }
+
+    public boolean isComplex() {
+        return this.element.equals("Complex");
     }
 }

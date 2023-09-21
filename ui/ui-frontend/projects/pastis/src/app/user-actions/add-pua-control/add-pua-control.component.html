@@ -1,11 +1,11 @@
 <div>
   <!-- The selected items -->
   <div *ngIf="addedItems?.length > 0" class="pastis-container-selected-items">
-    <div *ngFor="let item of addedItems;let i =index" style="display: inline-flex">
+    <div *ngFor="let item of addedItems; let i = index" style="display: inline-flex">
       <div class="selected-items-box">
-                <span style="padding: 12px;">
-                  <span class="item-text">{{item}}</span>
-                </span>
+        <span style="padding: 12px">
+          <span class="item-text">{{ item }}</span>
+        </span>
         <mat-divider class="selected-items-separator" vertical></mat-divider>
         <span (click)="onRemoveSelectedElement(item)" class="selected-items-close">&times;</span>
       </div>
@@ -14,30 +14,29 @@
 
   <!-- The list of items to be selected-->
   <mat-list *ngIf="allowedChildren?.length" class="list-box-head">
-        <span class="list-box-content-title">
-          <span [ngStyle]="{'margin-top': atLeastOneIsSelected ? '40px' : '0px'}"
-                class="paragraph-metadata-subtitle">Les contrôles à ajouter</span>
-          <i class="vitamui-icon vitamui-icon-chevron-down" style="margin-left: 20px; font-weight: bold;"></i>
-        </span>
+    <span class="list-box-content-title">
+      <span [ngStyle]="{ 'margin-top': atLeastOneIsSelected ? '40px' : '0px' }" class="paragraph-metadata-subtitle"
+        >Les contrôles à ajouter</span
+      >
+      <i class="vitamui-icon vitamui-icon-chevron-down" style="margin-left: 20px; font-weight: bold"></i>
+    </span>
     <i class="vita"></i>
     <mat-divider class="pastis-popup-separator"></mat-divider>
-    <mat-selection-list [disableRipple]="true"
-                        [ngModel]="addedItems" class="list-box">
-      <mat-list *ngFor="let element of allowedChildren"
-                class="list-item">
-                            <span class="list-box-content">
-                                <span
-                                  [matTooltipShowDelay]="0"
-                                  class="text medium"
-                                  matTooltip={{getDefinition(element)}}
-                                  matTooltipClass="pastis-tooltip-class"
-                                  placement="right">{{element}}</span>
-                            </span>
-        <span (click)="onAddSelectedElement(element)" class="ajouter">{{'USER_ACTION.ADD_METADATA.BOUTON_AJOUTER' | translate}}</span>
+    <mat-selection-list [disableRipple]="true" [ngModel]="addedItems" class="list-box">
+      <mat-list *ngFor="let element of allowedChildren" class="list-item">
+        <span class="list-box-content">
+          <span
+            [matTooltipShowDelay]="0"
+            class="text medium"
+            matTooltip="{{ getDefinition(element) }}"
+            matTooltipClass="pastis-tooltip-class"
+            placement="right"
+            >{{ element }}</span
+          >
+        </span>
+        <span (click)="onAddSelectedElement(element)" class="ajouter">{{ 'USER_ACTION.ADD_METADATA.BOUTON_AJOUTER' | translate }}</span>
         <mat-divider class="pastis-popup-separator"></mat-divider>
-
       </mat-list>
     </mat-selection-list>
   </mat-list>
-
 </div>

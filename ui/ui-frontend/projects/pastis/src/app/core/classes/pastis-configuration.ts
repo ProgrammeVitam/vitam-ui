@@ -22,7 +22,6 @@ export class PastisConfiguration {
   pastisApiPath: string;
   archivalProfileUnitApiPath: string;
   archiveProfileApiPath: string;
-
   downloadProfile: string;
   uploadProfileUrl: string;
   savePAasFileUrl: string;
@@ -40,7 +39,7 @@ export class PastisConfiguration {
   constructor(private pastisApi: PastisApiService) {}
 
   public initConfiguration(): Promise<any> {
-    if (environment.apiServerUrl != undefined && environment.standalone) {
+    if (environment.apiServerUrl !== undefined && environment.standalone) {
       return new Promise((r, e) => {
         this.pastisApi.getLocally('./assets/config/config-standalone.json').subscribe(
           (content: PastisConfiguration) => {

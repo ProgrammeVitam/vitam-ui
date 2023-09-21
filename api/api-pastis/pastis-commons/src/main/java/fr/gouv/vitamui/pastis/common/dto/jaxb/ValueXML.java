@@ -46,11 +46,8 @@ import javax.xml.bind.annotation.XmlValue;
 
 @Setter
 public class ValueXML {
-
     String value;
-
     String dataType;
-
     BaliseXML parent;
 
     @XmlValue
@@ -67,5 +64,4 @@ public class ValueXML {
     public String getDataType() {
         return dataType;
     }
-
 }

@@ -1,9 +1,13 @@
 <button (click)="fileInput.click()" class="pastis-btn-rounded-save">
   <mat-icon class="pastis-ico-open">folder_open</mat-icon>
-  <input #fileInput (change)="uploadAndReload($event)" [uploader]="uploader"
-         accept=".rng"
-         class="buttons" ng2FileSelect
-         style="display:none;"
-         type="file"/>
+  <input
+    #fileInput
+    (change)="uploadAndReload($event)"
+    [uploader]="uploader"
+    accept=".rng"
+    class="buttons"
+    ng2FileSelect
+    style="display: none"
+    type="file"
+  />
 </button>
-

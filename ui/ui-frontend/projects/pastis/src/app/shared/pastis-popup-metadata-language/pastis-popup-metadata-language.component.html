@@ -1,19 +1,22 @@
 <div class="pastis-vitamui-language-seda-container">
-  <div class="pastis-vitamui-language-seda-title">{{'SHARED.PASTIS_POP_UP_METADATA_LANGUAGE.SEDA_TITLE' | translate}}
-  </div>
+  <div class="pastis-vitamui-language-seda-title">{{ 'SHARED.PASTIS_POP_UP_METADATA_LANGUAGE.SEDA_TITLE' | translate }}</div>
   <div class="pastis-vitamui-language-seda-choice">
     <button
       (click)="changeLanguage(true)"
-      [ngClass]="{'pastis-vitamui-language-seda-button-selected':sedaLanguage, 'pastis-vitamui-language-seda-button': !sedaLanguage}">{{'SHARED.PASTIS_POP_UP_METADATA_LANGUAGE.SEDA' | translate}}
+      [ngClass]="{ 'pastis-vitamui-language-seda-button-selected': sedaLanguage, 'pastis-vitamui-language-seda-button': !sedaLanguage }"
+    >
+      {{ 'SHARED.PASTIS_POP_UP_METADATA_LANGUAGE.SEDA' | translate }}
     </button>
     <button
       (click)="changeLanguage(false)"
-      [ngClass]="{'pastis-vitamui-language-fr-button-selected':!sedaLanguage, 'pastis-vitamui-language-fr-button': sedaLanguage}">{{'SHARED.PASTIS_POP_UP_METADATA_LANGUAGE.FRANCAIS' | translate}}
+      [ngClass]="{ 'pastis-vitamui-language-fr-button-selected': !sedaLanguage, 'pastis-vitamui-language-fr-button': sedaLanguage }"
+    >
+      {{ 'SHARED.PASTIS_POP_UP_METADATA_LANGUAGE.FRANCAIS' | translate }}
     </button>
   </div>
   <button (click)="downloadDocumentation()" mat-menu-item>
     <i class="vitamui-icon vitamui-icon-download-basic"></i>
     &nbsp;&nbsp;&nbsp;
-    <span class="text normal">{{'SHARED.PASTIS_POP_UP_METADATA_LANGUAGE.MANUEL_UTILISATION' | translate}}</span>
+    <span class="text normal">{{ 'SHARED.PASTIS_POP_UP_METADATA_LANGUAGE.MANUEL_UTILISATION' | translate }}</span>
   </button>
 </div>

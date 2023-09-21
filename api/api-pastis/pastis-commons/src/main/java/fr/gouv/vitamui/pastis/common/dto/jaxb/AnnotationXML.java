@@ -45,12 +45,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "xsd:annotation")
 @Setter
 public class AnnotationXML extends BaliseXML {
-
     DocumentationXML documentationXML;
 
     @XmlElement(name = "xsd:documentation")
     public DocumentationXML getDocumentationXML() {
         return documentationXML;
     }
-
 }

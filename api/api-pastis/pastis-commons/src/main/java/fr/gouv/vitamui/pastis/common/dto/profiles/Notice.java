@@ -54,6 +54,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.springframework.core.io.Resource;
+
 import javax.annotation.CheckForNull;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,88 +68,87 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Notice extends IdDto {
+    @JsonProperty("identifier")
+    private String identifier;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("description")
+    private String description;
+    @JsonProperty("status")
+    private ArchiveUnitProfileStatus status;
+    @JsonProperty("creationDate")
+    private String creationDate;
+    @JsonProperty("lastUpdate")
+    private String lastUpdate;
+    @JsonProperty("activationDate")
+    private String activationDate;
+    @JsonProperty("deactivationDate")
+    private String deactivationDate;
+    @JsonProperty("controlSchema")
+    private String controlSchema;
+    @JsonProperty("tenant")
+    private Integer tenant;
+    @JsonProperty("version")
+    private Integer version;
+    @JsonProperty("fields")
+    private List<String> fields;
+    @JsonProperty("path")
+    private String path;
+    @JsonProperty("format")
+    private ProfileFormat format;
 
-	@JsonProperty("identifier")
-	private String identifier;
-	@JsonProperty("name")
-	private String name;
-	@JsonProperty("description")
-	private String description;
-	@JsonProperty("status")
-	private ArchiveUnitProfileStatus status;
-	@JsonProperty("creationDate")
-	private String creationDate;
-	@JsonProperty("lastUpdate")
-	private String lastUpdate;
-	@JsonProperty("activationDate")
-	private String activationDate;
-	@JsonProperty("deactivationDate")
-	private String deactivationDate;
-	@JsonProperty("controlSchema")
-	private String controlSchema;
-	@JsonProperty("tenant")
-	private Integer tenant;
-	@JsonProperty("version")
-	private Integer version;
-	@JsonProperty("fields")
-	private List<String> fields;
-	@JsonProperty("path")
-	private String path;
-	@JsonProperty("format")
-	private ProfileFormat format;
+    public Notice(Resource r) throws IOException {
+        if (r != null) {
+            String fileName = r.getFilename();
+            if (fileName != null) {
+                Long updateDate = r.lastModified();
+                long idExample = new SecureRandom().nextLong() / 1000;
+                this.setId(String.valueOf(Math.abs(idExample)));
+                String fileBaseName = getFileBaseName(fileName);
+                if (fileBaseName != null) {
+                    this.identifier = fileBaseName;
+                }
+                this.status = ArchiveUnitProfileStatus.ACTIVE;
+                this.lastUpdate = new Timestamp(updateDate).toString();
+                this.deactivationDate = new Timestamp(updateDate).toString();
+                this.activationDate = new Timestamp(updateDate).toString();
+                this.creationDate = new Timestamp(updateDate).toString();
+                this.tenant = 1;
+                this.version = 1;
+                this.name = fileBaseName;
+                if (getFileType(fileName).equals(ProfileType.PUA)) {
+                    InputStream inputStream = getClass().getClassLoader().getResourceAsStream("rng/" +
+                        fileName);
+                    if (inputStream != null) {
+                        JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStream));
+                        JSONObject profileJson = new JSONObject(tokener);
+                        this.controlSchema = profileJson.getString("controlSchema");
+                        this.fields = NoticeUtils.convert((JSONArray) profileJson.get("fields"));
+                        this.description = profileJson.getString("description");
+                    }
+                } else {
+                    this.path = fileName;
+                    this.format = ProfileFormat.RNG;
+                }
+            }
+        }
+    }
 
-	public Notice(Resource r) throws IOException {
-		if (r != null) {
-			String fileName = r.getFilename();
-			if(fileName != null ){
-				Long updateDate = r.lastModified();
-				long idExample = new SecureRandom().nextLong() / 1000;
-				this.setId(String.valueOf(Math.abs(idExample)));
-				String fileBaseName = getFileBaseName(fileName);
-				if(fileBaseName != null){
-					this.identifier = fileBaseName;
-				}
-				this.status = ArchiveUnitProfileStatus.ACTIVE;
-				this.lastUpdate = new Timestamp(updateDate).toString();
-				this.deactivationDate = new Timestamp(updateDate).toString();
-				this.activationDate = new Timestamp(updateDate).toString();
-				this.creationDate = new Timestamp(updateDate).toString();
-				this.tenant = 1;
-				this.version = 1;
-				this.name = fileBaseName;
-				if (getFileType(fileName).equals(ProfileType.PUA)) {
-					InputStream inputStream = getClass().getClassLoader().getResourceAsStream("rng/" +
-							fileName);
-					if (inputStream != null) {
-						JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStream));
-						JSONObject profileJson = new JSONObject(tokener);
-						this.controlSchema = profileJson.getString("controlSchema");
-						this.fields = NoticeUtils.convert((JSONArray) profileJson.get("fields"));
-						this.description = profileJson.getString("description");
-					}
-				} else {
-					this.path = fileName;
-					this.format = ProfileFormat.RNG;
-				}
-			}
-		}
-	}
+    @CheckForNull
+    private String getFileBaseName(String fileName) {
+        String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
+        return tokens[0];
+    }
 
-	@CheckForNull
-	private String getFileBaseName(String fileName) {
-		String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
-		return tokens[0];
-	}
-
-	public ProfileType getFileType(String fileName) {
-		String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
-		return tokens[1].equals("rng") ? ProfileType.PA : ProfileType.PUA;
-	}
+    public ProfileType getFileType(String fileName) {
+        String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
+        return tokens[1].equals("rng") ? ProfileType.PA : ProfileType.PUA;
+    }
 
 
-	public String serialiseString() throws JsonProcessingException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new AfterburnerModule());
-		return mapper.writeValueAsString(this);
-	}
+    public String serialiseString() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new AfterburnerModule());
+        return mapper.writeValueAsString(this);
+    }
 }

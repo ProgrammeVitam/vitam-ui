@@ -35,44 +35,32 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, Inject, OnInit } from '@angular/core';
-import {MatCheckboxChange} from '@angular/material/checkbox';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatTableDataSource} from '@angular/material/table';
-import {FileService} from 'projects/pastis/src/app/core/services/file.service';
-import {PopupService} from 'projects/pastis/src/app/core/services/popup.service';
-import {SedaService} from 'projects/pastis/src/app/core/services/seda.service';
-import {PastisDialogData} from 'projects/pastis/src/app/shared/pastis-dialog/classes/pastis-dialog-data';
-import {PastisPopupMetadataLanguageService} from 'projects/pastis/src/app/shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import {Subscription} from 'rxjs';
-import {AttributeData} from '../../../../models/edit-attribute-models';
-import {
-  CardinalityConstants,
-  DataTypeConstants,
-  FileNode,
-  TypeConstants,
-  ValueOrDataConstants
-} from '../../../../models/file-node';
-import {SedaData} from '../../../../models/seda-data';
-import {FileTreeMetadataService} from '../file-tree-metadata.service';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { FileService } from 'projects/pastis/src/app/core/services/file.service';
+import { PopupService } from 'projects/pastis/src/app/core/services/popup.service';
+import { SedaService } from 'projects/pastis/src/app/core/services/seda.service';
+import { PastisDialogData } from 'projects/pastis/src/app/shared/pastis-dialog/classes/pastis-dialog-data';
+import { PastisPopupMetadataLanguageService } from 'projects/pastis/src/app/shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { Subscription } from 'rxjs';
+import { AttributeData } from '../../../../models/edit-attribute-models';
+import { CardinalityConstants, DataTypeConstants, FileNode, TypeConstants, ValueOrDataConstants } from '../../../../models/file-node';
+import { SedaData } from '../../../../models/seda-data';
+import { FileTreeMetadataService } from '../file-tree-metadata.service';
 
 @Component({
   selector: 'pastis-edit-attributes',
   templateUrl: './attributes.component.html',
-  styleUrls: ['./attributes.component.scss']
+  styleUrls: ['./attributes.component.scss'],
 })
-export class AttributesPopupComponent implements OnInit {
-
+export class AttributesPopupComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['selected', 'nomDuChamp', 'valeurFixe', 'commentaire'];
-
   attributeCardinalities: string[];
-
   elementSedaCardinality: string;
-
   selectedValue: string[];
-
   parentFileNode: FileNode;
-
   selected = -1;
 
   // The datasource used by the DataTable in the popup
@@ -82,7 +70,6 @@ export class AttributesPopupComponent implements OnInit {
   sedaLanguage: boolean;
   sedaLanguageSub: Subscription;
 
-
   constructor(
     public dialogRef: MatDialogRef<AttributesPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogReceivedData: PastisDialogData,
@@ -91,20 +78,14 @@ export class AttributesPopupComponent implements OnInit {
     private fileTreeMetadataService: FileTreeMetadataService,
     private popUpService: PopupService,
     private sedaLanguageService: PastisPopupMetadataLanguageService
-  ) { }
+  ) {}
 
   ngOnInit() {
+    this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe((value: boolean) => {
+      this.sedaLanguage = value;
+    }, console.error);
 
-    this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
-      (value: boolean) => {
-        this.sedaLanguage = value;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
-    this.fileService.currentTree.subscribe( fileTree => {
+    this.fileService.currentTree.subscribe((fileTree) => {
       if (fileTree) {
         this.parentFileNode = fileTree[0];
       }
@@ -119,16 +100,16 @@ export class AttributesPopupComponent implements OnInit {
 
   // Checks if a file node has an atttribute child
   initAttributeCardinality() {
-    for (const index in this.matDataSource.data) {
+    this.matDataSource.data.forEach((item: AttributeData) => {
       const fileNode = this.dialogReceivedData.fileNode;
-      const att = this.matDataSource.data[index];
-      const attSedaData = fileNode.sedaData.Children.find((child: { Name: string; }) => child.Name === att.nomDuChamp);
+      const att = item;
+      const attSedaData = fileNode.sedaData.Children.find((child: { Name: string }) => child.Name === att.nomDuChamp);
       if (attSedaData.Cardinality === CardinalityConstants.Obligatoire) {
-        this.matDataSource.data[index].selected = true;
+        item.selected = true;
       } else {
-        this.matDataSource.data[index].selected = att.selected;
+        item.selected = att.selected;
       }
-    }
+    });
   }
 
   setElementComment(elementName: string, newComment: string) {
@@ -137,10 +118,9 @@ export class AttributesPopupComponent implements OnInit {
         this.matDataSource.data[idx].commentaire = newComment;
       }
     }
-    // console.log('ParentFileNode : ', this.parentFileNode);
     for (const node of this.parentFileNode.children) {
       if (node.name === elementName) {
-          node.documentation = newComment;
+        node.documentation = newComment;
       }
     }
   }
@@ -153,7 +133,7 @@ export class AttributesPopupComponent implements OnInit {
     }
     for (const node of this.parentFileNode.children) {
       if (node.name === elementName) {
-          node.value = newValue;
+        node.value = newValue;
       }
     }
   }
@@ -163,14 +143,16 @@ export class AttributesPopupComponent implements OnInit {
    * If all checkboxs are checked, then the "select all" checkbox is checked
    */
   isChecked(): boolean {
-    return this.matDataSource.data.filter(a => !a.selected).length == 0;
+    return this.matDataSource.data.filter((a) => !a.selected).length === 0;
   }
 
   isSedaObligatory(attribute: AttributeData): boolean {
     if (attribute) {
       const popUpData = this.popUpService.getPopUpDataOnOpen() as PastisDialogData;
       if (popUpData) {
-        const popSendSedaNodeFilted = popUpData.fileNode.sedaData.Children.find((child: { Name: string; }) => child.Name === attribute.nomDuChamp);
+        const popSendSedaNodeFilted = popUpData.fileNode.sedaData.Children.find(
+          (child: { Name: string }) => child.Name === attribute.nomDuChamp
+        );
         return popSendSedaNodeFilted.Cardinality.startsWith('1');
       }
     }
@@ -179,26 +161,24 @@ export class AttributesPopupComponent implements OnInit {
 
   /**
    * Function that checks/unchecks all attributes
-   * @param change
+   * @param toggleAllCheckChange change for all checked elements
    */
   toggleAllAttributes(toggleAllCheckChange: MatCheckboxChange): void {
     const istoggleAllChecked = toggleAllCheckChange.checked;
-    this.matDataSource.data.forEach(a => {
-      this.isSedaObligatory(a) ? a.selected = true : a.selected = istoggleAllChecked;
+    this.matDataSource.data.forEach((a) => {
+      this.isSedaObligatory(a) ? (a.selected = true) : (a.selected = istoggleAllChecked);
       a.selectedCardinality = '1';
-      }
-    );
+    });
   }
 
-    /**
+  /**
    * Function that checks/unchecks the attribute
-   * @param change
+   * @param change change for a checked element
    */
   toggleAttribute(change: MatCheckboxChange, elementName: string): void {
-    const element = this.matDataSource.data.find(a => a.nomDuChamp === elementName);
+    const element = this.matDataSource.data.find((a) => a.nomDuChamp === elementName);
     element.selected = change.checked;
   }
-
 
   /**
    * Returns the modified FileNode from the popup
@@ -214,13 +194,18 @@ export class AttributesPopupComponent implements OnInit {
 
     // Map all selected AttributeData to FileNode and add them as children of the fileNode
     this.matDataSource.data
-      .filter(attributeData => attributeData.selected)
-      .forEach(attributeData => {
+      .filter((attributeData) => attributeData.selected)
+      .forEach((attributeData) => {
         const attributeFileNode: FileNode = {} as FileNode;
         attributeFileNode.id = window.crypto.getRandomValues(new Uint32Array(10))[0];
         attributeFileNode.cardinality = attributeData.selectedCardinality;
         attributeFileNode.children = [];
-        attributeFileNode.dataType = DataTypeConstants[(fileNode.sedaData.Children.find(child => child.Name === attributeData.nomDuChamp).Type.toString()) as keyof typeof DataTypeConstants];
+        attributeFileNode.dataType =
+          DataTypeConstants[
+            fileNode.sedaData.Children.find(
+              (child) => child.Name === attributeData.nomDuChamp
+            ).Type.toString() as keyof typeof DataTypeConstants
+          ];
         attributeFileNode.documentation = attributeData.commentaire ? attributeData.commentaire : null;
         attributeFileNode.level = fileNode.level + 1;
         attributeFileNode.name = attributeData.nomDuChamp;
@@ -229,7 +214,7 @@ export class AttributesPopupComponent implements OnInit {
         attributeFileNode.value = attributeData.valeurFixe ? attributeData.valeurFixe : null;
         attributeFileNode.valueOrData = ValueOrDataConstants.value;
         // Add the attribute to the filenode
-    });
+      });
 
     return fileNode;
   }
@@ -246,15 +231,14 @@ export class AttributesPopupComponent implements OnInit {
     const attributeDataList: AttributeData[] = [];
     // Loop on all the attributes available for the node in the seda definition
     // Maps all the attributes node to AttributesData object
-    this.sedaService.getAttributes(sedaNode, sedaNode.Collection).forEach(sedaAttribute => {
-
+    this.sedaService.getAttributes(sedaNode, sedaNode.Collection).forEach((sedaAttribute) => {
       const attributeData: AttributeData = {} as AttributeData;
 
       attributeData.nomDuChamp = sedaAttribute.Name;
       attributeData.type = sedaAttribute.Element;
 
       // Check if the attribute is already added to the current node
-      const fileAttribute = fileNode.children.find(child => child.name === attributeData.nomDuChamp) as FileNode;
+      const fileAttribute = fileNode.children.find((child) => child.name === attributeData.nomDuChamp) as FileNode;
       // let mattAttFound = this.matDataSource.data.find(att=> att.nomDuChamp === fileAttribute.name);
       if (fileAttribute) {
         // If the attribute is present in the FileNode
@@ -267,16 +251,16 @@ export class AttributesPopupComponent implements OnInit {
         attributeData.selectedCardinality = fileAttribute.cardinality;
         attributeData.enumeration = sedaAttribute.Enumeration;
         attributeData.valeurFixe = fileAttribute.value;
-        } else {
-          // If the attribute is not present, we fill in defaults values
-          attributeData.valeurFixe = null;
-          attributeData.selected = false;
-          attributeData.commentaire = null;
-          attributeData.id = window.crypto.getRandomValues(new Uint32Array(10))[0];
-          attributeData.cardinalities = this.fileTreeMetadataService.allowedCardinality.get(sedaAttribute.Cardinality);
-          attributeData.selectedCardinality = null;
-          attributeData.enumeration = sedaAttribute.Enumeration;
-        }
+      } else {
+        // If the attribute is not present, we fill in defaults values
+        attributeData.valeurFixe = null;
+        attributeData.selected = false;
+        attributeData.commentaire = null;
+        attributeData.id = window.crypto.getRandomValues(new Uint32Array(10))[0];
+        attributeData.cardinalities = this.fileTreeMetadataService.allowedCardinality.get(sedaAttribute.Cardinality);
+        attributeData.selectedCardinality = null;
+        attributeData.enumeration = sedaAttribute.Enumeration;
+      }
       attributeDataList.push(attributeData);
     });
     // Create and return the datasource with the attribute's data
@@ -285,9 +269,9 @@ export class AttributesPopupComponent implements OnInit {
   }
 
   getAttributeInputType(element: AttributeData) {
-      if (element.enumeration.length > 0) {
-        return 'enumeration';
-      }
+    if (element.enumeration.length > 0) {
+      return 'enumeration';
+    }
   }
 
   getSedaDefinition(elementName: string) {
@@ -302,7 +286,6 @@ export class AttributesPopupComponent implements OnInit {
   }
 
   onResolveName(elementName: string): string {
-
     if (this.dialogReceivedData.fileNode.sedaData) {
       for (const node of this.dialogReceivedData.fileNode.sedaData.Children) {
         if (node.Name === elementName) {
@@ -320,9 +303,6 @@ export class AttributesPopupComponent implements OnInit {
     return '';
   }
   ngOnDestroy(): void {
-    if (this.sedaLanguageSub != null) {
-      this.sedaLanguageSub.unsubscribe();
-    }
+    if (this.sedaLanguageSub) this.sedaLanguageSub.unsubscribe();
   }
-
 }

@@ -1,37 +1,28 @@
 <div class="table-container">
-
   <table [dataSource]="matDataSource" mat-table>
-
     <!-- Selected Column -->
     <ng-container matColumnDef="selected">
       <th *matHeaderCellDef class="pastis-font-table-header col-selection" mat-header-cell>
-        <mat-checkbox
-          (change)="toggleAllAttributes($event)"
-          (click)="$event.stopPropagation()"
-          [checked]="isChecked()">
-        </mat-checkbox>
+        <mat-checkbox (change)="toggleAllAttributes($event)" (click)="$event.stopPropagation()" [checked]="isChecked()"> </mat-checkbox>
         <span class="info-bulle">&nbsp;</span>
-
       </th>
-      <td *matCellDef="let element;index as i;" class="pastis-metadata-table-col-large check-box" mat-cell>
+      <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-large check-box" mat-cell>
         <mat-checkbox
-          [(ngModel)]="element.selected "
-          [disabled]=isSedaObligatory(element)
-          [ngStyle]="{'mat-checkbox-checkmark-path': isSedaObligatory(element) ? 'grey' : ''}"></mat-checkbox>
+          [(ngModel)]="element.selected"
+          [disabled]="isSedaObligatory(element)"
+          [ngStyle]="{ 'mat-checkbox-checkmark-path': isSedaObligatory(element) ? 'grey' : '' }"
+        ></mat-checkbox>
       </td>
     </ng-container>
-
 
     <!-- Name Column -->
     <ng-container matColumnDef="nomDuChamp">
       <th *matHeaderCellDef class="pastis-font-table-header col-nom" mat-header-cell>
-        {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUTS.NOM_ATTRIBUT' | translate}}
+        {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUTS.NOM_ATTRIBUT' | translate }}
       </th>
       <td *matCellDef="let element" class="pastis-metadata-table-col-large" mat-cell>
-        <span [ngClass]=""
-              matTooltip="{{getSedaDefinition(element.nomDuChamp)}}"
-              matTooltipPosition="right">
-          {{onResolveName(element.nomDuChamp)}}
+        <span [ngClass]="" matTooltip="{{ getSedaDefinition(element.nomDuChamp) }}" matTooltipPosition="right">
+          {{ onResolveName(element.nomDuChamp) }}
         </span>
       </td>
     </ng-container>
@@ -39,24 +30,22 @@
     <!-- Value Column -->
     <ng-container matColumnDef="valeurFixe">
       <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
-        {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUTS.VALEUR_FIXE' | translate}}
+        {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUTS.VALEUR_FIXE' | translate }}
       </th>
-      <td *matCellDef="let element;index as i" class="pastis-metadata-table-col-medium" mat-cell>
+      <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-medium" mat-cell>
         <ng-container [ngSwitch]="getAttributeInputType(element)">
           <ng-container *ngSwitchDefault>
             <div class="pastis-vitamui-container-editable-valeur-fixe">
-              <vitamui-common-editable-textarea [(ngModel)]="element.valeurFixe" [maxlength]="120"
-                                                class="valeur-fixe-pastis">
+              <vitamui-common-editable-textarea [(ngModel)]="element.valeurFixe" [maxlength]="120" class="valeur-fixe-pastis">
               </vitamui-common-editable-textarea>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'enumeration'">
-            <mat-select [(ngModel)]="element.valeurFixe" class="mat-select-valeur-fixe"
-                        placeholder="Choisissez une valeur">
+            <mat-select [(ngModel)]="element.valeurFixe" class="mat-select-valeur-fixe" placeholder="Choisissez une valeur">
               <mat-option [value]=""></mat-option>
-              <mat-option *ngFor="let val of element.enumeration" [value]="val">{{val}}>
-                <mat-checkbox [checked]="selected === i"> {{val}}
-                </mat-checkbox>
+              <mat-option *ngFor="let val of element.enumeration" [value]="val"
+                >{{ val }}>
+                <mat-checkbox [checked]="selected === i"> {{ val }} </mat-checkbox>
               </mat-option>
             </mat-select>
           </ng-container>
@@ -68,21 +57,22 @@
     <!-- Commnent Column -->
     <ng-container matColumnDef="commentaire">
       <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
-        {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUTS.COMMENTAIRE' | translate}}
+        {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUTS.COMMENTAIRE' | translate }}
       </th>
-      <td *matCellDef="let element;index as i" class="pastis-metadata-table-col-large" mat-cell>
+      <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-large" mat-cell>
         <div class="pastis-vitamui-container-editable-commentaire">
-          <vitamui-common-editable-textarea (ngModelChange)="setElementComment(element.nomDuChamp,$event)" [maxlength]="120"
-                                            [ngModel]="element.commentaire"
-                                            class="commentaire-pastis">
+          <vitamui-common-editable-textarea
+            (ngModelChange)="setElementComment(element.nomDuChamp, $event)"
+            [maxlength]="120"
+            [ngModel]="element.commentaire"
+            class="commentaire-pastis"
+          >
           </vitamui-common-editable-textarea>
         </div>
-
       </td>
     </ng-container>
 
-
-    <tr *matHeaderRowDef="displayedColumns;sticky: true" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row style="background: white;"></tr>
+    <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns" mat-row style="background: white"></tr>
   </table>
 </div>

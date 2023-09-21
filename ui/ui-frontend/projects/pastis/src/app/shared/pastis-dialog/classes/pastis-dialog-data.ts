@@ -40,14 +40,14 @@ import { ComponentType } from '@angular/cdk/portal';
 import { FileNode } from '../../../models/file-node';
 
 export interface PastisDialogData {
-    width: string;
-    height: string;
-    titleDialog: string;
-    subTitleDialog: string;
-    okLabel: string;
-    cancelLabel: string;
-    fileNode: FileNode;
-    disableBtnOuiOnInit: boolean;
-    component: ComponentType<any>;
-    modeProfile ?: string;
-  }
+  width: string;
+  height: string;
+  titleDialog: string;
+  subTitleDialog: string;
+  okLabel: string;
+  cancelLabel: string;
+  fileNode: FileNode;
+  disableBtnOuiOnInit: boolean;
+  component: ComponentType<any>;
+  modeProfile?: string;
+}

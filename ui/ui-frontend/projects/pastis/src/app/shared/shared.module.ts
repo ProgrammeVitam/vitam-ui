@@ -43,7 +43,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { PastisMaterialModule} from '../material.module';
+import { PastisMaterialModule } from '../material.module';
 import { CenterMatmenuDirective } from '../profile/edit-profile/file-tree-metadata/center-matmenu.directive';
 import { ModifyTextButtonComponent } from './modify-text-button/modify-text-button.component';
 import { PastisBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-breadcrumb/pastis-breadcrumb.component';
@@ -64,30 +64,31 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
     PastisTitleBreadcrumbComponent,
     PastisGenericPopupComponent,
     PastisPopupOptionComponent,
-    ModifyTextButtonComponent
+    ModifyTextButtonComponent,
   ],
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     FormsModule,
     MatTooltipModule,
     PastisMaterialModule,
     MatSlideToggleModule,
     PortalModule,
     TranslateModule,
-    VitamUICommonModule
+    VitamUICommonModule,
   ],
   entryComponents: [PastisDialogConfirmComponent, PastisUnderConstructionComponent],
-    exports: [
-        PastisUnderConstructionComponent,
-        MatTooltipModule,
-        PastisMaterialModule,
-        PastisDialogConfirmComponent,
-        CenterMatmenuDirective,
-        PastisPopupMetadataLanguageComponent,
-        PastisBreadcrumbComponent,
-        PastisTitleBreadcrumbComponent,
-        PastisGenericPopupComponent,
-        PastisPopupOptionComponent,
-        ModifyTextButtonComponent
-    ],
+  exports: [
+    PastisUnderConstructionComponent,
+    MatTooltipModule,
+    PastisMaterialModule,
+    PastisDialogConfirmComponent,
+    CenterMatmenuDirective,
+    PastisPopupMetadataLanguageComponent,
+    PastisBreadcrumbComponent,
+    PastisTitleBreadcrumbComponent,
+    PastisGenericPopupComponent,
+    PastisPopupOptionComponent,
+    ModifyTextButtonComponent,
+  ],
 })
 export class SharedModule {}

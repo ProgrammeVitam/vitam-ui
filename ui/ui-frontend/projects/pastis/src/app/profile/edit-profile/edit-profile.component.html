@@ -5,80 +5,82 @@
 
   <div class="pastis-edit-profile-header-name">
     <p class="text large bold primary">
-      <ng-container>{{this.profileService.profileName}}</ng-container>
+      <ng-container>{{ this.profileService.profileName }}</ng-container>
     </p>
   </div>
-  <div *ngIf="this.profileService.profileId!==null" class="pastis-edit-profile-header-id">
-    <p class="text medium light">{{'PROFILE.EDIT_PROFILE.PROFILE_ID' | translate}} :
-      {{this.profileService.profileId}}</p>
+  <div *ngIf="this.profileService.profileId !== null" class="pastis-edit-profile-header-id">
+    <p class="text medium light">{{ 'PROFILE.EDIT_PROFILE.PROFILE_ID' | translate }} : {{ this.profileService.profileId }}</p>
   </div>
 </div>
 <div class="mat-table">
   <ng-container>
-    <mat-tab-group
-      (selectedTabChange)="loadProfile($event)"
-      [selectedIndex]="selectedIndex"
-      disableRipple="true"
-      fxFill>
-      <mat-tab *ngIf="canShowOnPuaMode(1)" label="{{tabLabels[0] | translate}}">
+    <mat-tab-group (selectedTabChange)="loadProfile($event)" [selectedIndex]="selectedIndex" disableRipple="true" fxFill>
+      <mat-tab *ngIf="isArchiveProfileMode" label="{{ tabLabels[0] | translate }}">
         <div class="pastis-tab-container">
           <ng-template matTabContent>
-            <pastis-file-tree *ngIf="fileService.currentTreeLoaded"
-                              [childrenListToExclude]="headerTabChildrenToExclude"
-                              [collectionName]="collectionNames[0]"
-                              [rootElementName]="rootNames[0]"
-                              [rootElementShowName]="collectionNames[0]"
-                              [activeTabIndex]="selectedIndex">
+            <pastis-file-tree
+              *ngIf="fileService.currentTreeLoaded"
+              [childrenListToExclude]="headerTabChildrenToExclude"
+              [collectionName]="collectionNames[0]"
+              [rootElementName]="rootNames[0]"
+              [rootElementShowName]="collectionNames[0]"
+              [activeTabIndex]="selectedIndex"
+            >
             </pastis-file-tree>
           </ng-template>
         </div>
       </mat-tab>
 
-      <mat-tab *ngIf="canShowOnPuaMode(2)" label="{{tabLabels[1] | translate}}">
+      <mat-tab *ngIf="isArchiveProfileMode" label="{{ tabLabels[1] | translate }}">
         <div class="pastis-tab-container">
           <ng-template matTabContent>
-            <pastis-file-tree *ngIf="fileService.currentTreeLoaded"
-                              [childrenListToExclude]="rulesTabChildrenToExclude"
-                              [childrenListToInclude]="rulesTabChildrenToInclude"
-                              [collectionName]="collectionNames[1]"
-                              [rootElementName]="rootNames[1]"
-                              [rootElementShowName]="collectionNames[1]"
-                              [activeTabIndex]="selectedIndex">
+            <pastis-file-tree
+              *ngIf="fileService.currentTreeLoaded"
+              [childrenListToExclude]="rulesTabChildrenToExclude"
+              [childrenListToInclude]="rulesTabChildrenToInclude"
+              [collectionName]="collectionNames[1]"
+              [rootElementName]="rootNames[1]"
+              [rootElementShowName]="collectionNames[1]"
+              [activeTabIndex]="selectedIndex"
+            >
             </pastis-file-tree>
           </ng-template>
         </div>
       </mat-tab>
 
-      <mat-tab *ngIf="canShowOnPuaMode(3)" label="{{(puaMode ? tabLabels[4] : tabLabels[2]) | translate}}">
+      <mat-tab label="{{ (isArchiveUnitProfileMode ? tabLabels[4] : tabLabels[2]) | translate }}">
         <div class="pastis-tab-container">
           <ng-template matTabContent>
-            <pastis-file-tree *ngIf="fileService.currentTreeLoaded"
-                              [childrenListToExclude]="treeTabChildrenToExclude"
-                              [childrenListToInclude]="treeTabChildrenToInclude"
-                              [collectionName]="collectionNames[2]"
-                              [rootElementName]="rootNames[2]"
-                              [rootElementShowName]="collectionNames[2]"
-                              [activeTabIndex]="selectedIndex">
+            <pastis-file-tree
+              *ngIf="fileService.currentTreeLoaded"
+              [childrenListToExclude]="treeTabChildrenToExclude"
+              [childrenListToInclude]="treeTabChildrenToInclude"
+              [collectionName]="collectionNames[2]"
+              [rootElementName]="rootNames[2]"
+              [rootElementShowName]="collectionNames[2]"
+              [activeTabIndex]="selectedIndex"
+            >
             </pastis-file-tree>
           </ng-template>
         </div>
       </mat-tab>
 
-      <mat-tab *ngIf="canShowOnPuaMode(4)" label="{{tabLabels[3] | translate}}">
+      <mat-tab *ngIf="isArchiveProfileMode" label="{{ tabLabels[3] | translate }}">
         <div class="pastis-tab-container">
           <ng-template matTabContent>
-            <pastis-file-tree *ngIf="fileService.currentTreeLoaded"
-                              [childrenListToExclude]="objectTabChildrenToExclude"
-                              [childrenListToInclude]="objectTabChildrenToInclude"
-                              [collectionName]="collectionNames[3]"
-                              [rootElementName]="rootNames[3]"
-                              [rootElementShowName]="collectionNames[3]"
-                              [activeTabIndex]="selectedIndex">
+            <pastis-file-tree
+              *ngIf="fileService.currentTreeLoaded"
+              [childrenListToExclude]="objectTabChildrenToExclude"
+              [childrenListToInclude]="objectTabChildrenToInclude"
+              [collectionName]="collectionNames[3]"
+              [rootElementName]="rootNames[3]"
+              [rootElementShowName]="collectionNames[3]"
+              [activeTabIndex]="selectedIndex"
+            >
             </pastis-file-tree>
           </ng-template>
         </div>
       </mat-tab>
     </mat-tab-group>
-
   </ng-container>
 </div>

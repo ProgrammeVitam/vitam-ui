@@ -39,7 +39,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.dto.factory;
 
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
-import fr.gouv.vitamui.pastis.common.util.RNGConstants;
+import fr.gouv.vitamui.pastis.common.model.Cardinality;
 
 public class CardinalityTagFactory implements AbstractTagFactory<CardinalityTag> {
 
@@ -47,15 +47,14 @@ public class CardinalityTagFactory implements AbstractTagFactory<CardinalityTag>
     public CardinalityTag createTag(ElementProperties node, Tag cardinalityTag, int level) {
         CardinalityTag cardinality = null;
 
-        if (node.getCardinality().equals(RNGConstants.Cardinality.ZERO_OR_MORE.getLabel())) {
+        if (node.getCardinality().equals(Cardinality.ZERO_OR_MORE.getValue())) {
             cardinality = new ZeroOrMoreTag();
-        } else if (node.getCardinality().equals(RNGConstants.Cardinality.ONE_OR_MORE.getLabel())) {
+        } else if (node.getCardinality().equals(Cardinality.ONE_OR_MORE.getValue())) {
             cardinality = new OneOrMoreTag();
-        } else if (node.getCardinality().equals(RNGConstants.Cardinality.OPTIONAL.getLabel())) {
+        } else if (node.getCardinality().equals(Cardinality.OPTIONAL.getValue())) {
             cardinality = new OptionalTag();
         }
         return cardinality;
     }
-
 
 }

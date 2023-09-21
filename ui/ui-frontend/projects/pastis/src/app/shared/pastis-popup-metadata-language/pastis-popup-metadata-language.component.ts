@@ -42,27 +42,22 @@ import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-lang
 @Component({
   selector: 'pastis-popup-metadata-language',
   templateUrl: './pastis-popup-metadata-language.component.html',
-  styleUrls: ['./pastis-popup-metadata-language.component.scss']
+  styleUrls: ['./pastis-popup-metadata-language.component.scss'],
 })
 export class PastisPopupMetadataLanguageComponent implements OnInit {
   sedaLanguage: boolean;
   @Input()
   docPath: string;
 
-  constructor(private metadataLanguageService: PastisPopupMetadataLanguageService) { }
+  constructor(private metadataLanguageService: PastisPopupMetadataLanguageService) {}
 
   ngOnInit(): void {
-    this.metadataLanguageService.sedaLanguage.subscribe(
-      (value: boolean) => {
-        this.sedaLanguage = value;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.metadataLanguageService.sedaLanguage.subscribe((value: boolean) => {
+      this.sedaLanguage = value;
+    }, console.error);
   }
   changeLanguage(sedaLanguage: boolean): void {
-    if (sedaLanguage != undefined) {
+    if (sedaLanguage !== undefined) {
       this.sedaLanguage = sedaLanguage;
       this.metadataLanguageService.sedaLanguage.next(this.sedaLanguage);
     }
@@ -70,5 +65,4 @@ export class PastisPopupMetadataLanguageComponent implements OnInit {
   downloadDocumentation() {
     window.open(this.docPath);
   }
-
 }

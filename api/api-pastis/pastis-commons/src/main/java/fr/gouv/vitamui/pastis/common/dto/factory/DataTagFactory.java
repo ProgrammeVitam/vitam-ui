@@ -44,7 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DataTagFactory implements AbstractTagFactory<Object> {
-
     @Override
     public Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag dataRNG, RngTag currentTag, int level) {
 

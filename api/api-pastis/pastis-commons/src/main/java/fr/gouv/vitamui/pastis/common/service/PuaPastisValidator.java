@@ -61,6 +61,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -76,72 +77,63 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 @Service
 public class PuaPastisValidator {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PuaPastisValidator.class);
     public static final String CARDINALITY_0_N = "0-N";
     public static final String CARDINALITY_1 = "1";
     public static final String CARDINALITY_0_1 = "0-1";
     public static final String CARDINALITY_1_N = "1-N";
-
-    private static JSONObject profileJsonExpected;
-
-    private static SedaNode archiveUnitSeda;
-
-    private static final String CONTROLSCHEMA = "controlSchema";
+    private static final String CONTROL_SCHEMA = "controlSchema";
     private static final String DEFINITIONS = "definitions";
     private static final String PROPERTIES = "properties";
-    private static final String MANAGEMENTCONTROL = "#management";
+    private static final String MANAGEMENT_CONTROL = "#management";
     private static final String MANAGEMENT = "Management";
     private static final String CONTENT = "Content";
-    private static final String COMPLEX = "Complex";
-    public static final String REQUIRED = "required";
     private static final String SCHEMA = "$schema";
     private static final String ITEMS = "items";
     private static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     private static final String TYPE = "type";
     private static final String OBJECT = "object";
     private static final String ID = "ID";
-
     private static final String STRING = "string";
+    private static final String STANDALONE_PUA_RESOURCE = "pua_validation/valid_pua.json";
+    private static final String ONLINE_PUA_RESOURCE = "pua_validation/valid_pua_vitam.json";
+    private static final String ARCHIVE_UNIT_SEDA_RESOURCE = "pua_validation/archiveUnitSeda.json";
 
+    private static JSONObject profileJsonExpected;
+    private static SedaNode archiveUnitSeda;
 
-    private JSONObject getProfileJsonExpected(boolean standalone) {
-        if (profileJsonExpected == null) {
-            InputStream inputStream;
-            if (standalone)
-                inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua.json");
+    public static final String REQUIRED = "required";
 
-            else {
-                inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua_vitam.json");
-            }
-            assert inputStream != null;
-            JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStream));
-            setProfileJsonExpected(new JSONObject(tokener));
+    private JSONObject getProfileJsonExpected(final boolean standalone) {
+        if (profileJsonExpected != null) {
+            return profileJsonExpected;
         }
+
+        final String puaValidationResource = standalone ? STANDALONE_PUA_RESOURCE : ONLINE_PUA_RESOURCE;
+        final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(puaValidationResource);
+
+        assert inputStream != null;
+
+        final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        final JSONTokener jsonTokener = new JSONTokener(inputStreamReader);
+
+        profileJsonExpected = new JSONObject(jsonTokener);
+
         return profileJsonExpected;
     }
 
-    private static void setProfileJsonExpected(JSONObject jsonObject) {
-        profileJsonExpected = jsonObject;
-    }
-
     private SedaNode getArchiveUnitSeda() throws IOException {
-        if (PuaPastisValidator.getArchiveUnitSedaMember() == null) {
-            InputStream inputStream =
-                getClass().getClassLoader().getResourceAsStream("pua_validation/archiveUnitSeda.json");
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-            PuaPastisValidator.setArchiveUnitSedaMember(objectMapper.readValue(inputStream, SedaNode.class));
+        if (Objects.nonNull(archiveUnitSeda)) {
+            return archiveUnitSeda;
         }
-        return PuaPastisValidator.getArchiveUnitSedaMember();
-    }
 
-    private static SedaNode getArchiveUnitSedaMember() {
+        final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(ARCHIVE_UNIT_SEDA_RESOURCE);
+
+        archiveUnitSeda = new ObjectMapper()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+            .readValue(inputStream, SedaNode.class);
+
         return archiveUnitSeda;
-    }
-
-    private static void setArchiveUnitSedaMember(SedaNode sedaNode) {
-        archiveUnitSeda = sedaNode;
     }
 
     /**
@@ -152,24 +144,22 @@ public class PuaPastisValidator {
      * @throws AssertionError
      */
     public void validatePUA(JSONObject pua, boolean standalone) throws AssertionError {
-        JSONObject profileJson = getProfileJsonExpected(standalone);
+        final JSONObject expectedJsonProfile = getProfileJsonExpected(standalone);
 
         // Compare list of field at the root level
         if (!standalone) {
-            Set<String> actualFieldList = new HashSet<>(pua.keySet());
-            if (!actualFieldList.contains("name") && !actualFieldList.contains(CONTROLSCHEMA)) {
+            final Set<String> actualFieldList = new HashSet<>(pua.keySet());
+
+            if (!actualFieldList.contains("name") && !actualFieldList.contains(CONTROL_SCHEMA)) {
                 throw new AssertionError("Notice not contains the expected keys 'name' and 'controlSchema'");
             }
         }
 
-
         // Next tests are controlling the ControlSchema
-        String controlSchemaString = pua.getString(CONTROLSCHEMA);
-        JSONObject controlSchemaActual = new JSONObject(controlSchemaString);
-        controlSchemaString = profileJson.getString(CONTROLSCHEMA);
-        JSONObject controlSchemaExpected = new JSONObject(controlSchemaString);
-        LOGGER.debug(" control schema actuelle {}", controlSchemaActual);
-        LOGGER.debug(" control schema Expected {}", controlSchemaExpected);
+        final JSONObject controlSchemaActual = new JSONObject(pua.getString(CONTROL_SCHEMA));
+        final JSONObject controlSchemaExpected = new JSONObject(expectedJsonProfile.getString(CONTROL_SCHEMA));
+        LOGGER.debug("Current control schema {}", controlSchemaActual);
+        LOGGER.debug("Expected control schema {}", controlSchemaExpected);
         if (standalone) {
             // Checking that additionalProperties is present and is boolean
             if (controlSchemaActual.has(ADDITIONAL_PROPERTIES) &&
@@ -179,10 +169,10 @@ public class PuaPastisValidator {
             // Checking that #management object is present and at the correct position
             if (controlSchemaActual.has("patternProperties")) {
                 JSONObject patternProperties = controlSchemaActual.getJSONObject("patternProperties");
-                if (patternProperties.has(MANAGEMENTCONTROL)) {
+                if (patternProperties.has(MANAGEMENT_CONTROL)) {
                     // Check that #management is not in both header and 'properties' object
                     JSONObject properties = controlSchemaActual.getJSONObject(PROPERTIES);
-                    if (properties.has(MANAGEMENTCONTROL)) {
+                    if (properties.has(MANAGEMENT_CONTROL)) {
                         throw new AssertionError(
                             "Can't have both '#management' key in header and in 'properties' object");
                     }
@@ -190,11 +180,11 @@ public class PuaPastisValidator {
             } else {
                 if (controlSchemaActual.has(PROPERTIES)) {
                     JSONObject properties = controlSchemaActual.getJSONObject(PROPERTIES);
-                    if (!properties.has(MANAGEMENTCONTROL)) {
+                    if (!properties.has(MANAGEMENT_CONTROL)) {
                         throw new AssertionError("Missing '#management' key in 'properties' object");
                     }
                 } else {
-                    throw new AssertionError("Missing 'properties' key in controlShema");
+                    throw new AssertionError("Missing 'properties' key in controlSchema");
                 }
 
                 // #HAVEFUN
@@ -207,28 +197,26 @@ public class PuaPastisValidator {
     }
 
     public JSONObject getDefinitionsFromExpectedProfile() {
-
-        JSONObject baseProfile = getProfileJsonExpected(true);
-        String controlSchema = baseProfile.get(CONTROLSCHEMA).toString();
+        final JSONObject baseProfile = getProfileJsonExpected(true);
+        final String controlSchema = baseProfile.get(CONTROL_SCHEMA).toString();
         LOGGER.debug(" control schema {}", controlSchema);
-        JSONObject controlSchemaAsJSON = new JSONObject(controlSchema);
+        final JSONObject controlSchemaAsJSON = new JSONObject(controlSchema);
 
         return controlSchemaAsJSON.getJSONObject(DEFINITIONS);
     }
 
     /**
-     * Finds the seda type of a element based on his name
+     * Finds the seda type of element based on his name
      *
      * @param elementName the name of the element to search on the archiveUnitSeda.json file
      * @param name
-     * @return the seda type of an element
+     * @return the seda type of element
      */
-    private String getPUAMetadataType(String elementName, String name, ElementProperties elementProperties)
-        throws IOException {
-        SedaNode sedaElement = getSedaMetadata(elementName, name);
+    private String getPUAMetadataType(final String elementName, final String name) throws IOException {
+        final SedaNode sedaElement = getSedaMetadata(elementName, name);
 
-        if(sedaElement != null) {
-            return resolvePuaType(sedaElement, elementProperties);
+        if (sedaElement != null) {
+            return resolvePuaType(sedaElement);
         }
         return elementName.equals("MessageDigest") ? STRING : "undefined";
     }
@@ -237,17 +225,15 @@ public class PuaPastisValidator {
      * Resolve the Pua element type based on VITAM given rules
      *
      * @param sedaElement the seda element type of the metadata
-     * @return The type of a pua element
+     * @return The type of pua element
      */
-    private String resolvePuaType(SedaNode sedaElement, ElementProperties element) {
-        String sedaType = sedaElement.getType();
-        String sedaElementType = sedaElement.getElement();
-        String sedaName = sedaElement.getName();
-        String sedaCardinality = sedaElement.getCardinality();
+    private String resolvePuaType(final SedaNode sedaElement) {
+        final String sedaType = sedaElement.getType();
+        final String sedaElementType = sedaElement.getElement();
+        final String sedaName = sedaElement.getName();
+        final String sedaCardinality = sedaElement.getCardinality();
 
-        if (sedaName.equals("Title")
-            || sedaName.equals("Description")
-            || sedaName.equals("algorithm")) {
+        if (sedaName.equals("Title") || sedaName.equals("Description") || sedaName.equals("algorithm")) {
             return STRING;
         }
 
@@ -257,11 +243,11 @@ public class PuaPastisValidator {
 
         if (sedaElementType.equals("Simple") && !sedaElement.getType().equals("boolean") &&
             !sedaElement.getType().equals("integer") &&
-            (sedaCardinality.equals(CARDINALITY_0_1) || sedaCardinality.equals("1"))) {
+            (sedaCardinality.equals(CARDINALITY_0_1) || sedaCardinality.equals(CARDINALITY_1))) {
             return STRING;
         }
-        if ((sedaElement.getElement().equals(COMPLEX) &&
-            (sedaCardinality.equals(CARDINALITY_0_1) || sedaCardinality.equals("1")))) {
+        if ((sedaElement.isComplex() &&
+            (sedaCardinality.equals(CARDINALITY_0_1) || sedaCardinality.equals(CARDINALITY_1)))) {
             return OBJECT;
         }
         if (sedaType.equals("boolean") &&
@@ -282,49 +268,18 @@ public class PuaPastisValidator {
     }
 
     /**
-     * Find and create a single JSONObject based on a given ElementProperties tree if it contains a Management metadata
-     *
-     * @param elementProperties an ElementProperties object containing Management as root element
-     * @return a JSONObject containing a PUA representation of a Management metadata
-     */
-    private JSONObject getJSONObjectFromMetadata(ElementProperties elementProperties) throws IOException {
-
-        JSONObject puaJSONObject = new JSONObject();
-        SedaNode sedaElement = getSedaMetadata(MANAGEMENT, null);
-
-        ElementProperties elementFound = elementProperties.flattened()
-            .filter(childName -> childName.getName().equals(MANAGEMENT) && childName.getType().equals("element"))
-            .findAny().orElse(null);
-
-        if (elementFound != null && sedaElement != null) {
-            PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
-            // get pua type
-            puaMetadataDetails.setType(resolvePuaType(sedaElement, elementProperties));
-            puaMetadataDetails.setDescription((elementFound.getDocumentation()));
-            // Create a Map<PuaElementName,PuaElementDetails>
-            Map<String, String> puaMap = new HashMap<>();
-            puaMap.put(MANAGEMENT, puaMetadataDetails.serialiseString());
-            puaJSONObject.put(PROPERTIES, puaMap);
-            return puaJSONObject;
-        }
-        return puaJSONObject;
-
-    }
-
-    /**
      * Recursively generates a tree of JSON objects based on a given ElementProperties object type
      *
      * @param elementsFromTree an ElementProperties List
      * @return a JSONArray representing all PUA elements of an ArchiveUnitProfile and its siblings
      */
     public JSONArray getJSONObjectFromAllTree(List<ElementProperties> elementsFromTree) {
-
-        JSONArray jsonArray = sortedJSONArray();
-        List<String> rulesToIgnore =
+        final JSONArray jsonArray = sortedJSONArray();
+        final List<String> rulesToIgnore =
             Arrays.asList("StorageRule", "AppraisalRule", "AccessRule", "DisseminationRule", "ReuseRule",
                 "ClassificationRule");
+        final List<String> managementMetadata = Arrays.asList("LogBook", "NeedAuthorization");
 
-        List<String> managementMetadata = Arrays.asList("LogBook", "NeedAuthorization");
         for (ElementProperties el : elementsFromTree) {
             setMetadataName(el);
             try {
@@ -355,16 +310,16 @@ public class PuaPastisValidator {
      * Recursively generates a tree of JSON objects starting from the Management metadata
      *
      * @param element an ElementProperties object
-     * @return a JSONArray representing all PUA elements of an Management metadata and its specific rules
+     * @return a JSONArray representing all PUA elements of a Management metadata and its specific rules
      */
     public JSONObject getJSONFromManagement(ElementProperties element) throws IOException {
-        List<String> rulesMetadata =
+        final List<String> rulesMetadata =
             Arrays.asList("StorageRule", "AppraisalRule", "AccessRule", "DisseminationRule", "ReuseRule",
                 "ClassificationRule");
-        List<String> childrenToEncapsulate = Arrays.asList("Rule", "StartDate");
-        List<String> rulesFound = new ArrayList<>();
+        final List<String> childrenToEncapsulate = Arrays.asList("Rule", "StartDate");
+        final List<String> rulesFound = new ArrayList<>();
+        final JSONObject pua = sortedJSON();
 
-        JSONObject pua = sortedJSON();
         if (Objects.nonNull(element.getPuaData()) && Objects.nonNull(element.getPuaData().getAdditionalProperties())) {
             pua.put(ADDITIONAL_PROPERTIES, element.getPuaData().getAdditionalProperties());
         }
@@ -372,12 +327,15 @@ public class PuaPastisValidator {
             return retrieveAccumulatedJsonManagementProperties(pua);
         }
 
-        // JSON Object representing all PUA elements of an Management metadata and its specific rules
-        retrieveAccumalatedJsonManagaementProperties(element, rulesMetadata, childrenToEncapsulate, rulesFound, pua);
-        List<String> requiredProperties = getRequiredProperties(element);
+        // JSON Object representing all PUA elements of a Management metadata and its specific rules
+        retrieveAccumulatedJsonManagementProperties(element, rulesMetadata, childrenToEncapsulate, rulesFound, pua);
+
+        final List<String> requiredProperties = getRequiredProperties(element);
+
         if (isNotEmpty(requiredProperties)) {
             pua.put(REQUIRED, requiredProperties);
         }
+
         return retrieveAccumulatedJsonManagementProperties(pua);
     }
 
@@ -385,7 +343,7 @@ public class PuaPastisValidator {
      * 1. Check special cases
      * 2. If special cases have children, encapsulate them into "Rules : { items : {childName : { ..."
      * 3. Once the children of special cases are processed, we put them into Rules -> items
-     * 4. Convert to jsonobject via map and update its property
+     * 4. Convert to json object via map and update its property
      * 5. Retrieve parent properties and add more elements to root element properties
      *
      * @param element
@@ -395,46 +353,48 @@ public class PuaPastisValidator {
      * @param pua
      * @throws IOException
      */
-    private void retrieveAccumalatedJsonManagaementProperties(ElementProperties element, List<String> rulesMetadata,
-        List<String> childrenToEncapsulate, List<String> rulesFound, JSONObject pua) throws IOException {
+    private void retrieveAccumulatedJsonManagementProperties(
+        final ElementProperties element,
+        final List<String> rulesMetadata,
+        final List<String> childrenToEncapsulate,
+        final List<String> rulesFound,
+        final JSONObject pua
+    ) throws IOException {
         for (ElementProperties childElement : element.getChildren()) {
-            JSONObject childrenOfRule = sortedJSON();
-            JSONObject grandChildrenOfRule = sortedJSON();
-            JSONObject propertiesRules = sortedJSON();
+            final JSONObject childrenOfRule = sortedJSON();
+            final JSONObject grandChildrenOfRule = sortedJSON();
+            final JSONObject propertiesRules = sortedJSON();
 
             // add endDate by default cardinality 0-1
-            PuaMetadataDetails endDateDetails = new PuaMetadataDetails();
+            final PuaMetadataDetails endDateDetails = new PuaMetadataDetails();
             endDateDetails.setType(STRING);
-            ObjectMapper mapper = new ObjectMapper();
+            final ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             grandChildrenOfRule.put("EndDate", new JSONObject(mapper.writeValueAsString(endDateDetails)));
 
-            PuaMetadataDetails ruleTypeMetadataDetails = new PuaMetadataDetails();
-
-            SedaNode sedaElement = getSedaMetadata(childElement.getName(), null);
+            final PuaMetadataDetails ruleTypeMetadataDetails = new PuaMetadataDetails();
+            final SedaNode sedaElement = getSedaMetadata(childElement.getName(), null);
 
             // 1. Check special cases
             if (checkSpecialCases(rulesMetadata, rulesFound, childElement, sedaElement)) {
-                JSONObject jsonObjectFromElement = getJSONObjectFromElement(childElement);
-                pua.accumulate(PROPERTIES, jsonObjectFromElement);
+                pua.accumulate(PROPERTIES, getJSONObjectFromElement(childElement));
                 continue;
             }
 
             getMetaDataFromSeda(childElement, ruleTypeMetadataDetails, sedaElement);
-            Map<String, PuaMetadataDetails> ruleTypeMetadataMap = new HashMap<>();
-            Map<String, PuaMetadataDetails> nonSpecialChildOfRule = new HashMap<>();
-
-            List<String> requiredNonSpecialChildren = new ArrayList<>();
-            List<String> requiredChildren = new ArrayList<>();
+            final Map<String, PuaMetadataDetails> ruleTypeMetadataMap = new HashMap<>();
+            final Map<String, PuaMetadataDetails> nonSpecialChildOfRule = new HashMap<>();
+            final List<String> requiredNonSpecialChildren = new ArrayList<>();
+            final List<String> requiredChildren = new ArrayList<>();
             // 2. If special cases have children, encapsulate them into "Rules : { items : {childName : { ..."
             if (!childElement.getChildren().isEmpty()) {
                 for (ElementProperties grandChild : childElement.getChildren()) {
-                    SedaNode node = getSedaMetadata(grandChild.getName(), childElement.getName());
+                    final SedaNode node = getSedaMetadata(grandChild.getName(), childElement.getName());
                     if (childrenToEncapsulate.contains(grandChild.getName())) {
                         childrenContainsGrandChildName(grandChildrenOfRule, ruleTypeMetadataDetails, requiredChildren,
                             grandChild, node);
                     } else {
-                        PuaMetadataDetails nonSpecialChildOfRuleDetails = new PuaMetadataDetails();
+                        final PuaMetadataDetails nonSpecialChildOfRuleDetails = new PuaMetadataDetails();
                         getMetaDataFromSeda(grandChild, nonSpecialChildOfRuleDetails, node);
                         nonSpecialChildOfRule.put(grandChild.getName(), nonSpecialChildOfRuleDetails);
                         //Required field
@@ -447,26 +407,32 @@ public class PuaPastisValidator {
             // 3. Once the children of special cases are processed, we put them into Rules -> items
             putChildrenIntoRules(childrenOfRule, grandChildrenOfRule, propertiesRules, requiredChildren);
 
-            // 4. Convert to jsonobject via map and update its property
-            ObjectMapper mapper2 = new ObjectMapper();
+            // 4. Convert to json object via map and update its property
+            final ObjectMapper mapper2 = new ObjectMapper();
             mapper2.registerModule(new AfterburnerModule());
-            JSONObject ruleTypeMetadata = new JSONObject(ruleTypeMetadataMap);
+            final JSONObject ruleTypeMetadata = new JSONObject(ruleTypeMetadataMap);
             ruleTypeMetadata.getJSONObject(childElement.getName()).put(PROPERTIES, propertiesRules);
             putRequiredNonSpecialChildren(childElement, requiredNonSpecialChildren, ruleTypeMetadata, requiredChildren);
             for (Map.Entry<String, PuaMetadataDetails> entry : nonSpecialChildOfRule.entrySet()) {
-                PuaMetadataDetails details = entry.getValue();
+                final PuaMetadataDetails details = entry.getValue();
+
                 if (entry.getKey().equals("PreventInheritance") || entry.getKey().equals("PreventRulesId")) {
-                    JSONObject inheritance = new JSONObject();
-                    PuaMetadataDetails preventRulesId = new PuaMetadataDetails();
+                    final JSONObject inheritance = new JSONObject();
+                    final PuaMetadataDetails preventRulesId = new PuaMetadataDetails();
+
                     if (entry.getKey().equals("PreventInheritance")) {
                         preventRulesId.setType("boolean");
                     } else {
                         preventRulesId.setType("array");
                     }
-                    Optional<ElementProperties> elOpt =
-                        childElement.getChildren().stream().filter(e -> e.getName().equals(entry.getKey())).findFirst();
+
+                    final Optional<ElementProperties> elOpt = childElement.getChildren().stream()
+                        .filter(e -> e.getName().equals(entry.getKey()))
+                        .findFirst();
+
                     if (elOpt.isPresent()) {
-                        ElementProperties el = elOpt.get();
+                        final ElementProperties el = elOpt.get();
+
                         preventRulesId.setDescription(el.getDocumentation());
                         if (el.getCardinality().equals(CARDINALITY_0_1)) {
                             getMinAndMAxItems(el, preventRulesId);
@@ -487,11 +453,11 @@ public class PuaPastisValidator {
                         new JSONObject().put(entry.getKey(), new JSONObject(details.serialiseString()))
                             .put(entry.getKey(), new JSONObject(preventRulesId.serialiseString())));
                     if (!childElement.getChildren().isEmpty()) {
-                        String cardinality =
+                        final String cardinality =
                             childElement.getChildren().stream().filter(e -> e.getName().equals("PreventInheritance"))
                                 .map(ElementProperties::getCardinality).collect(Collectors.joining());
                         if (cardinality.equals(CARDINALITY_1)) {
-                            inheritance.accumulate(REQUIRED, Arrays.asList(entry.getKey()));
+                            inheritance.accumulate(REQUIRED, Collections.singletonList(entry.getKey()));
                         }
                     }
                     ruleTypeMetadata.getJSONObject(childElement.getName()).getJSONObject(PROPERTIES)
@@ -518,19 +484,25 @@ public class PuaPastisValidator {
      * @param sedaElement
      * @return
      */
-    private boolean checkSpecialCases(List<String> rulesMetadata, List<String> rulesFound,
-        ElementProperties childElement, SedaNode sedaElement) {
+    private boolean checkSpecialCases(
+        final List<String> rulesMetadata,
+        final List<String> rulesFound,
+        final ElementProperties childElement,
+        final SedaNode sedaElement
+    ) {
         if (!rulesMetadata.contains(childElement.getName()) || sedaElement == null) {
             return true;
         }
 
-        if (childElement.getCardinality().equals(CARDINALITY_1) && sedaElement.getElement().equals(COMPLEX))
+        if (childElement.getCardinality().equals(CARDINALITY_1) && sedaElement.isComplex()) {
             rulesFound.add(childElement.getName());
+        }
+
         return false;
     }
 
     /**
-     * put Required Non Special Children
+     * put Required Non-Special Children
      *
      * @param childElement
      * @param requiredNonSpecialChildren
@@ -570,24 +542,24 @@ public class PuaPastisValidator {
     private void putChildrenIntoRules(JSONObject childrenOfRule, JSONObject grandChildrenOfRule,
         JSONObject propertiesRules, List<String> requiredChildren) {
         if (!grandChildrenOfRule.isEmpty()) {
-            JSONObject propretyOfItems = new JSONObject().put(TYPE, OBJECT);
-            propretyOfItems.put(ADDITIONAL_PROPERTIES, false);
-            propretyOfItems.put(PROPERTIES, grandChildrenOfRule);
+            JSONObject propertyOfItems = new JSONObject().put(TYPE, OBJECT);
+            propertyOfItems.put(ADDITIONAL_PROPERTIES, false);
+            propertyOfItems.put(PROPERTIES, grandChildrenOfRule);
             if (requiredChildren.isEmpty()) {
                 childrenOfRule.put("maxItems", 1);
             } else {
                 childrenOfRule.put("minItems", 1);
                 childrenOfRule.put("maxItems", 1);
-                propretyOfItems.put(REQUIRED, requiredChildren);
+                propertyOfItems.put(REQUIRED, requiredChildren);
             }
             childrenOfRule.put("type", "array");
-            childrenOfRule.put(ITEMS, propretyOfItems);
+            childrenOfRule.put(ITEMS, propertyOfItems);
             propertiesRules.put("Rules", childrenOfRule);
         }
     }
 
     /**
-     * If children contrain grand child name
+     * If children contain grand child name
      *
      * @param grandChildrenOfRule
      * @param ruleTypeMetadataDetails
@@ -596,16 +568,22 @@ public class PuaPastisValidator {
      * @param node
      * @throws JsonProcessingException
      */
-    private void childrenContainsGrandChildName(JSONObject grandChildrenOfRule,
-        PuaMetadataDetails ruleTypeMetadataDetails, List<String> requiredChildren, ElementProperties grandChild,
-        SedaNode node) throws JsonProcessingException {
-        PuaMetadataDetails childOfRuleDetails = new PuaMetadataDetails();
+    private void childrenContainsGrandChildName(
+        final JSONObject grandChildrenOfRule,
+        final PuaMetadataDetails ruleTypeMetadataDetails,
+        final List<String> requiredChildren,
+        final ElementProperties grandChild,
+        final SedaNode node
+    ) throws JsonProcessingException {
+        final PuaMetadataDetails childOfRuleDetails = new PuaMetadataDetails();
+
         getMetaDataFromSeda(grandChild, childOfRuleDetails, node);
-        if (grandChild.getCardinality().startsWith(CARDINALITY_1))
+        if (grandChild.getCardinality().startsWith(CARDINALITY_1)) {
             requiredChildren.add(grandChild.getName());
-        ObjectMapper mapper = new ObjectMapper();
+        }
+        final ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        JSONObject childProperties = new JSONObject(mapper.writeValueAsString(childOfRuleDetails));
+        final JSONObject childProperties = new JSONObject(mapper.writeValueAsString(childOfRuleDetails));
         grandChildrenOfRule.put(grandChild.getName(), childProperties);
         ruleTypeMetadataDetails.setProperties(grandChildrenOfRule);
     }
@@ -616,29 +594,34 @@ public class PuaPastisValidator {
      * @param pua is JSONObjet that contains Management section of PUA
      * Convert it into a JSONObject and put it into a #mangagement key
      */
-    public JSONObject retrieveAccumulatedJsonManagementProperties(JSONObject pua) {
+    public JSONObject retrieveAccumulatedJsonManagementProperties(final JSONObject pua) {
+        final JSONObject managementAsJSONObject = new JSONObject();
 
-        JSONObject managementAsJSONObject = new JSONObject();
         if (pua.keySet().contains(PROPERTIES)) {
-            JSONObject properties = pua;
             try {
-                JSONArray accumulatedProperties = pua.getJSONArray(PROPERTIES);
-                String propertiesAsString =
+                final JSONArray accumulatedProperties = pua.getJSONArray(PROPERTIES);
+                final String propertiesAsString =
                     accumulatedProperties.toString().substring(1, accumulatedProperties.toString().length() - 1)
                         .replaceAll("(},\\{)", ",");
-                properties = new JSONObject(propertiesAsString);
-                JSONObject propertiesRequiredJson = new JSONObject();
+                final JSONObject properties = new JSONObject(propertiesAsString);
+                final JSONObject propertiesRequiredJson = new JSONObject();
+
                 propertiesRequiredJson.put(PROPERTIES, properties);
-                if (pua.keySet().contains(REQUIRED))
+                if (pua.keySet().contains(REQUIRED)) {
                     propertiesRequiredJson.put(REQUIRED, pua.getJSONArray(REQUIRED));
-                managementAsJSONObject.put(MANAGEMENTCONTROL, propertiesRequiredJson);
+                }
+                if (pua.has(ADDITIONAL_PROPERTIES)) {
+                    propertiesRequiredJson.put(ADDITIONAL_PROPERTIES, pua.get(ADDITIONAL_PROPERTIES));
+                }
+                managementAsJSONObject.put(MANAGEMENT_CONTROL, propertiesRequiredJson);
             } catch (JSONException e) {
                 LOGGER.debug(e.getMessage());
-                managementAsJSONObject.put(MANAGEMENTCONTROL, pua);
+                managementAsJSONObject.put(MANAGEMENT_CONTROL, pua);
             }
         } else {
-            managementAsJSONObject.put(MANAGEMENTCONTROL, pua);
+            managementAsJSONObject.put(MANAGEMENT_CONTROL, pua);
         }
+
         return managementAsJSONObject;
     }
 
@@ -653,37 +636,14 @@ public class PuaPastisValidator {
         SedaNode sedaTree = getArchiveUnitSeda();
         SedaNode result;
         if (null != parentName) {
-            result =
-                sedaTree.flattened().filter(childName -> childName.getName().equals(parentName)).findAny().orElse(null)
-                    .getChildren().stream().filter(childName -> childName.getName().equals(elementName)).findAny()
-                    .orElse(null);
+            result = Objects.requireNonNull(
+                    sedaTree.flattened().filter(childName -> childName.getName().equals(parentName)).findAny().orElse(null))
+                .getChildren().stream().filter(childName -> childName.getName().equals(elementName)).findAny()
+                .orElse(null);
         } else {
             result = sedaTree.flattened().filter(e -> e.getName().equals(elementName)).findAny().orElse(null);
         }
         return result;
-    }
-
-    /**
-     * Order a JSONObject
-     *
-     * @return an ordered JSONObject
-     */
-    public JSONObject sortedJSON() {
-        JSONObject jsonObj = new JSONObject();
-        try {
-            Field changeMap = jsonObj.getClass().getDeclaredField("map");
-            changeMap.setAccessible(true);
-            changeMap.set(jsonObj, new LinkedHashMap<>());
-            changeMap.setAccessible(false);
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            LOGGER.debug(e.getMessage());
-        }
-        return jsonObj;
-    }
-
-    public ElementProperties getManagementElementProperties(ElementProperties elementProperties) {
-        return elementProperties.getChildren().get(0).getChildren().stream().filter(e -> MANAGEMENT.equals(e.getName()))
-            .findFirst().orElse(null);
     }
 
     /**
@@ -692,144 +652,156 @@ public class PuaPastisValidator {
      * @return a HashMap containing a tree of Pua metadata and its children
      */
     public JSONObject getJSONObjectFromElement(ElementProperties elementProperties) throws IOException {
-        SedaNode sedaElement = getSedaMetadata(elementProperties.getName(), null);
-        PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
+        final SedaNode sedaElement = getSedaMetadata(elementProperties.getName(), null);
+        final PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
+        final JSONObject json = new JSONObject();
+
         getMetaDataFromSeda(elementProperties, puaMetadataDetails, sedaElement);
+
         if (isNotEmpty(elementProperties.getChildren())) {
             List<String> requiredProperties = getRequiredProperties(elementProperties);
             if (isNotEmpty(requiredProperties)) {
                 puaMetadataDetails.setRequired(requiredProperties);
             }
         }
-        JSONObject json = new JSONObject();
-        json.put(elementProperties.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
-        if (!elementProperties.getChildren().isEmpty()) {
-            if (puaMetadataDetails.getType().equals("array")) {
-                JSONObject items = new JSONObject();
-                items.put("type", OBJECT);
-                items.put(ADDITIONAL_PROPERTIES, elementProperties.getPuaData().getAdditionalProperties());
-                if (null != json.getJSONObject(elementProperties.getName()).opt(REQUIRED)) {
-                    json.getJSONObject(elementProperties.getName()).remove(REQUIRED);
-                }
-                json.getJSONObject(elementProperties.getName()).put(ITEMS, items);
-                json.getJSONObject(elementProperties.getName()).remove(ADDITIONAL_PROPERTIES);
-                json.getJSONObject(elementProperties.getName()).getJSONObject(ITEMS).put(PROPERTIES, new JSONObject());
-                if (null != puaMetadataDetails.getRequired() && !puaMetadataDetails.getRequired().isEmpty()) {
-                    json.getJSONObject(elementProperties.getName()).getJSONObject(ITEMS)
-                        .put(REQUIRED, puaMetadataDetails.getRequired());
-                }
 
-                getJSONObjectFromElement(elementProperties,
-                    json.getJSONObject(elementProperties.getName()).getJSONObject(ITEMS).getJSONObject(PROPERTIES));
-            } else {
-                json.getJSONObject(elementProperties.getName()).put(PROPERTIES, new JSONObject());
-                getJSONObjectFromElement(elementProperties,
-                    json.getJSONObject(elementProperties.getName()).getJSONObject(PROPERTIES));
+        json.put(elementProperties.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
+
+        if (elementProperties.getChildren().isEmpty()) {
+            return json;
+        }
+
+        if (puaMetadataDetails.getType().equals("array")) {
+            final JSONObject items = new JSONObject();
+
+            items.put("type", OBJECT);
+            items.put(ADDITIONAL_PROPERTIES, elementProperties.getPuaData().getAdditionalProperties());
+
+            if (null != json.getJSONObject(elementProperties.getName()).opt(REQUIRED)) {
+                json.getJSONObject(elementProperties.getName()).remove(REQUIRED);
             }
 
+            json.getJSONObject(elementProperties.getName()).put(ITEMS, items);
+            json.getJSONObject(elementProperties.getName()).remove(ADDITIONAL_PROPERTIES);
+            json.getJSONObject(elementProperties.getName()).getJSONObject(ITEMS).put(PROPERTIES, new JSONObject());
+
+            if (null != puaMetadataDetails.getRequired() && !puaMetadataDetails.getRequired().isEmpty()) {
+                json.getJSONObject(elementProperties.getName()).getJSONObject(ITEMS)
+                    .put(REQUIRED, puaMetadataDetails.getRequired());
+            }
+
+            getJSONObjectFromElement(elementProperties,
+                json.getJSONObject(elementProperties.getName()).getJSONObject(ITEMS).getJSONObject(PROPERTIES));
+        } else {
+            json.getJSONObject(elementProperties.getName()).put(PROPERTIES, new JSONObject());
+            getJSONObjectFromElement(elementProperties,
+                json.getJSONObject(elementProperties.getName()).getJSONObject(PROPERTIES));
         }
+
         return json;
     }
 
     public void getJSONObjectFromElement(ElementProperties elementProperties, JSONObject json) throws IOException {
-        if (!elementProperties.getChildren().isEmpty()) {
-            for (ElementProperties el : elementProperties.getChildren()) {
+        if (elementProperties.getChildren().isEmpty()) {
+            return;
+        }
 
-                PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
-                puaMetadataDetails.setType(getPUAMetadataType(el.getName(), elementProperties.getName(), el));
-                puaMetadataDetails.setDescription(el.getDocumentation());
-                if (null != el.getPuaData() && null != el.getPuaData().getEnum()) {
-                    puaMetadataDetails.setEnums(el.getPuaData().getEnum());
+        for (ElementProperties el : elementProperties.getChildren()) {
+            final PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
+
+            puaMetadataDetails.setType(getPUAMetadataType(el.getName(), elementProperties.getName()));
+            puaMetadataDetails.setDescription(el.getDocumentation());
+            if (null != el.getPuaData() && null != el.getPuaData().getEnum()) {
+                puaMetadataDetails.setEnums(el.getPuaData().getEnum());
+            }
+            if (null != el.getPuaData() && null != el.getPuaData().getPattern()) {
+                puaMetadataDetails.setPattern(el.getPuaData().getPattern());
+            }
+            if (puaMetadataDetails.getType().equals("array")) {
+                getMinAndMAxItems(el, puaMetadataDetails);
+            }
+            setMetadataName(el);
+            if (isNotEmpty(el.getChildren())) {
+                final List<String> requiredProperties = getRequiredProperties(el);
+                if (isNotEmpty(requiredProperties)) {
+                    puaMetadataDetails.setRequired(requiredProperties);
                 }
-                if (null != el.getPuaData() && null != el.getPuaData().getPattern()) {
-                    puaMetadataDetails.setPattern(el.getPuaData().getPattern());
+            }
+            if (el.getName().equals("SignedObjectDigest")) {
+                setElementIfSignedObjectDigest(el);
+                final List<String> required = puaMetadataDetails.getRequired();
+                required.add("MessageDigest");
+                puaMetadataDetails.setRequired(required);
+            }
+            setChildName(json, el, puaMetadataDetails);
+            if (!el.getChildren().isEmpty()) {
+                if (null != el.getPuaData() && null != el.getPuaData().getAdditionalProperties()) {
+                    json.getJSONObject(el.getName())
+                        .put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
                 }
+
                 if (puaMetadataDetails.getType().equals("array")) {
-                    getMinAndMAxItems(el, puaMetadataDetails);
-                }
-                setMetadataName(el);
-                if (isNotEmpty(el.getChildren())) {
-                    List<String> requiredProperties = getRequiredProperties(el);
-                    if (isNotEmpty(requiredProperties)) {
-                        puaMetadataDetails.setRequired(requiredProperties);
-                    }
-                }
-
-                if (el.getName().equals("SignedObjectDigest")) {
-                    setElementIfSignedObjectDigest(el);
-                    List<String> required = puaMetadataDetails.getRequired();
-                    required.add("MessageDigest");
-                    puaMetadataDetails.setRequired(required);
-                }
-                setChildName(elementProperties, json, el, puaMetadataDetails);
-                if (!el.getChildren().isEmpty()) {
-                    if (null != el.getPuaData() && null != el.getPuaData().getAdditionalProperties()) {
-                        json.getJSONObject(el.getName())
-                            .put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
-                    }
-
-                    if (puaMetadataDetails.getType().equals("array")) {
-                        JSONObject items = new JSONObject();
-                        items.put("type", OBJECT);
-                        items.put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
-                        json.getJSONObject(el.getName()).remove(REQUIRED);
-                        json.getJSONObject(el.getName()).put(ITEMS, items);
-                        json.getJSONObject(el.getName()).remove(ADDITIONAL_PROPERTIES);
+                    final JSONObject items = new JSONObject();
+                    items.put("type", OBJECT);
+                    items.put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
+                    json.getJSONObject(el.getName()).remove(REQUIRED);
+                    json.getJSONObject(el.getName()).put(ITEMS, items);
+                    json.getJSONObject(el.getName()).remove(ADDITIONAL_PROPERTIES);
+                    json.getJSONObject(el.getName()).getJSONObject(ITEMS)
+                        .put(PROPERTIES, new JSONObject(new PuaData()));
+                    if (null != puaMetadataDetails.getRequired() && !puaMetadataDetails.getRequired().isEmpty()) {
                         json.getJSONObject(el.getName()).getJSONObject(ITEMS)
-                            .put(PROPERTIES, new JSONObject(new PuaData()));
-                        if (null != puaMetadataDetails.getRequired() && !puaMetadataDetails.getRequired().isEmpty()) {
-                            json.getJSONObject(el.getName()).getJSONObject(ITEMS)
-                                .put(REQUIRED, puaMetadataDetails.getRequired());
-                        }
-
-                        getJSONObjectFromElement(el,
-                            json.getJSONObject(el.getName()).getJSONObject(ITEMS).getJSONObject(PROPERTIES));
-                    } else {
-                        json.getJSONObject(el.getName()).put(PROPERTIES, new JSONObject());
-                        getJSONObjectFromElement(el, json.getJSONObject(el.getName()).getJSONObject(PROPERTIES));
+                            .put(REQUIRED, puaMetadataDetails.getRequired());
                     }
 
+                    getJSONObjectFromElement(el,
+                        json.getJSONObject(el.getName()).getJSONObject(ITEMS).getJSONObject(PROPERTIES));
                 } else {
-                    if (puaMetadataDetails.getType().equals("array")) {
-                        JSONObject items = new JSONObject();
-                        items.put("type", OBJECT);
-                        if (null != el.getPuaData() && null != el.getPuaData().getAdditionalProperties()) {
-                            items.put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
-                        }
-                        List<String> keyToDelete = new ArrayList<>();
-                        json.getJSONObject(el.getName()).keySet().forEach(key -> {
-                            if (!key.equals(TYPE)) {
-                                keyToDelete.add(key);
-                            }
-                        });
-                        keyToDelete.forEach(e -> json.getJSONObject(el.getName()).remove(e)
-                        );
-                        puaMetadataDetails.setType(STRING);
+                    json.getJSONObject(el.getName()).put(PROPERTIES, new JSONObject());
+                    getJSONObjectFromElement(el, json.getJSONObject(el.getName()).getJSONObject(PROPERTIES));
+                }
 
-                        json.getJSONObject(el.getName()).remove(ADDITIONAL_PROPERTIES);
-                        if (null != puaMetadataDetails.getMinItems()) {
-                            json.getJSONObject(el.getName()).put("minItems", puaMetadataDetails.getMinItems());
-                            puaMetadataDetails.setMinItems(null);
-                        }
-                        if (null != puaMetadataDetails.getMaxItems()) {
-                            json.getJSONObject(el.getName()).put("maxItems", puaMetadataDetails.getMaxItems());
-                            puaMetadataDetails.setMaxItems(null);
-                        }
-                        json.getJSONObject(el.getName())
-                            .put(ITEMS, new JSONObject(puaMetadataDetails.serialiseString()));
+            } else {
+                if (puaMetadataDetails.getType().equals("array")) {
+                    final JSONObject items = new JSONObject();
+                    items.put("type", OBJECT);
+                    if (null != el.getPuaData() && null != el.getPuaData().getAdditionalProperties()) {
+                        items.put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
                     }
+                    List<String> keyToDelete = new ArrayList<>();
+                    json.getJSONObject(el.getName()).keySet().forEach(key -> {
+                        if (!key.equals(TYPE)) {
+                            keyToDelete.add(key);
+                        }
+                    });
+                    keyToDelete.forEach(e -> json.getJSONObject(el.getName()).remove(e)
+                    );
+                    puaMetadataDetails.setType(STRING);
+
+                    json.getJSONObject(el.getName()).remove(ADDITIONAL_PROPERTIES);
+                    if (null != puaMetadataDetails.getMinItems()) {
+                        json.getJSONObject(el.getName()).put("minItems", puaMetadataDetails.getMinItems());
+                        puaMetadataDetails.setMinItems(null);
+                    }
+                    if (null != puaMetadataDetails.getMaxItems()) {
+                        json.getJSONObject(el.getName()).put("maxItems", puaMetadataDetails.getMaxItems());
+                        puaMetadataDetails.setMaxItems(null);
+                    }
+                    json.getJSONObject(el.getName())
+                        .put(ITEMS, new JSONObject(puaMetadataDetails.serialiseString()));
                 }
             }
         }
     }
 
     private void setElementIfSignedObjectDigest(ElementProperties el) {
-        List<ElementProperties> childrens = el.getChildren();
-        ElementProperties messageDigest = new ElementProperties();
+        final List<ElementProperties> children = el.getChildren();
+        final ElementProperties messageDigest = new ElementProperties();
+
         messageDigest.setName("MessageDigest");
         messageDigest.setCardinality(CARDINALITY_1);
-        childrens.add(messageDigest);
-        el.setChildren(childrens);
+        children.add(messageDigest);
+        el.setChildren(children);
     }
 
     private void setMetadataName(ElementProperties child) {
@@ -869,22 +841,22 @@ public class PuaPastisValidator {
         }
     }
 
-    private void setChildName(ElementProperties elementProperties, JSONObject json, ElementProperties el,
-        PuaMetadataDetails puaMetadataDetails) throws JsonProcessingException {
+    private void setChildName(JSONObject json, ElementProperties el, PuaMetadataDetails puaMetadataDetails)
+        throws JsonProcessingException {
         json.put(el.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
     }
 
     public List<String> getRequiredProperties(ElementProperties elementProperties) {
-        List<String> listRequired = new ArrayList<>();
+        final List<String> listRequired = new ArrayList<>();
         elementProperties.getChildren().forEach(child -> {
             try {
-                SedaNode sedaElement = getSedaMetadata(child.getName(), elementProperties.getName());
-                if ((child.getCardinality().equals(CARDINALITY_1_N) &&
-                    (sedaElement.getCardinality().equals(CARDINALITY_0_N) || sedaElement.getCardinality().equals(
-                        CARDINALITY_1_N))) ||
-                    (child.getCardinality().equals(CARDINALITY_1) &&
-                        !sedaElement.getCardinality().equals(CARDINALITY_1)) ||
-                    sedaElement.getCardinality().equals(CARDINALITY_1)) {
+                final SedaNode sedaElement = getSedaMetadata(child.getName(), elementProperties.getName());
+
+                if ((child.getCardinality().equals(CARDINALITY_1_N) && isMultiple(sedaElement))
+                    || (child.getCardinality().equals(CARDINALITY_1) &&
+                    !sedaElement.getCardinality().equals(CARDINALITY_1))
+                    || sedaElement.getCardinality().equals(CARDINALITY_1)
+                ) {
                     setMetadataName(child);
                     listRequired.add(child.getName());
                     child.setName(sedaElement.getName());
@@ -893,34 +865,68 @@ public class PuaPastisValidator {
                 LOGGER.debug(e.getMessage());
             }
         });
+
         return listRequired;
     }
 
+    public boolean isMultiple(SedaNode sedaNode) {
+        return sedaNode.getCardinality().equals(CARDINALITY_0_N)
+            || sedaNode.getCardinality().equals(CARDINALITY_1_N);
+    }
+
+    public boolean isMultiple(ElementProperties elementProperties) {
+        return elementProperties.getCardinality().equals(CARDINALITY_0_N)
+            || elementProperties.getCardinality().equals(CARDINALITY_1_N);
+    }
+
+    public boolean isRequired(SedaNode sedaNode) {
+        return sedaNode.getCardinality().equals(CARDINALITY_1)
+            || sedaNode.getCardinality().equals(CARDINALITY_1_N);
+    }
+
+    public boolean isRequired(ElementProperties elementProperties) {
+        return elementProperties.getCardinality().equals(CARDINALITY_1)
+            || elementProperties.getCardinality().equals(CARDINALITY_1_N);
+    }
+
     public List<ElementProperties> ignoreMetadata(ElementProperties elementProperties) {
-        List<String> metadataToIgnore = Arrays.asList("DescriptiveMetadata", "ArchiveUnit");
+        final List<String> metadataToIgnore = Arrays.asList("DescriptiveMetadata", "ArchiveUnit");
+
         return elementProperties.flattened()
             .filter(child -> !metadataToIgnore.contains(child.getName()) && child.getType().equals("element"))
             .collect(toList());
     }
 
-    public List<String> getHeadRequired(List<ElementProperties> elementsFromTree) {
-        List<String> list = new ArrayList<>();
-        elementsFromTree.forEach(element -> {
-            try {
-                SedaNode sedaElement = getSedaMetadata(element.getName(), null);
-                ElementProperties parent = getElementById(elementsFromTree, element.getParentId());
-                if ((parent != null &&
-                    (parent.getName().equals(CONTENT) || element.getName().equals("ArchiveUnitProfile"))) &&
-                    ((element.getCardinality().equals(CARDINALITY_1_N) &&
-                        sedaElement.getCardinality().equals(CARDINALITY_0_N)) ||
-                        (element.getCardinality().equals(CARDINALITY_1) && !sedaElement.getCardinality().equals(
-                            CARDINALITY_1)) ||
-                        sedaElement.getCardinality().equals(CARDINALITY_1)) ||
-                    (element.getName().equals(MANAGEMENT) && element.getCardinality().equals(CARDINALITY_1)) ||
-                    element.getName().equals("ArchiveUnitProfile") && element.getCardinality().equals(CARDINALITY_1)) {
+    public List<String> getHeadRequired(final List<ElementProperties> elementsFromTree) {
+        final List<String> list = new ArrayList<>();
 
+        for (final ElementProperties element : elementsFromTree) {
+            try {
+                final SedaNode sedaElement = getSedaMetadata(element.getName(), null);
+                final ElementProperties parent = getElementById(elementsFromTree, element.getParentId());
+                boolean isCardinalityValid = false;
+
+                if (parent != null &&
+                    (parent.getName().equals(CONTENT) || element.getName().equals("ArchiveUnitProfile"))) {
+                    if (element.getCardinality().equals(CARDINALITY_1_N) &&
+                        sedaElement.getCardinality().equals(CARDINALITY_0_N)) {
+                        isCardinalityValid = true;
+                    } else if (element.getCardinality().equals(CARDINALITY_1) &&
+                        !sedaElement.getCardinality().equals(CARDINALITY_1)) {
+                        isCardinalityValid = true;
+                    } else if (sedaElement.getCardinality().equals(CARDINALITY_1)) {
+                        isCardinalityValid = true;
+                    }
+                } else if (element.getName().equals(MANAGEMENT) && element.getCardinality().equals(CARDINALITY_1)) {
+                    isCardinalityValid = true;
+                } else if (element.getName().equals("ArchiveUnitProfile") &&
+                    element.getCardinality().equals(CARDINALITY_1)) {
+                    isCardinalityValid = true;
+                }
+
+                if (isCardinalityValid) {
                     if (element.getName().equals(MANAGEMENT) && !element.getChildren().isEmpty()) {
-                        list.add(MANAGEMENTCONTROL);
+                        list.add(MANAGEMENT_CONTROL);
                     } else {
                         list.add(element.getName());
                     }
@@ -928,39 +934,47 @@ public class PuaPastisValidator {
             } catch (IOException e) {
                 LOGGER.debug(e.getMessage());
             }
-        });
+        }
         return list;
     }
 
     public void getMetaDataFromSeda(ElementProperties el, PuaMetadataDetails puaMetadataDetails, SedaNode sedaElement) {
+        final String puaType = resolvePuaType(sedaElement);
+        final boolean hasAdditionalProperties = el.getPuaData() != null
+            && el.getPuaData().getAdditionalProperties() != null;
+        final boolean hasPattern = el.getPuaData() != null
+            && el.getPuaData().getPattern() != null;
+        final boolean hasEnum = el.getPuaData() != null
+            && el.getPuaData().getEnum() != null;
+
         // get pua type
-        puaMetadataDetails.setType(resolvePuaType(sedaElement, el));
+        puaMetadataDetails.setType(puaType);
         puaMetadataDetails.setDescription((el.getDocumentation()));
-        if (sedaElement.getElement().equals(COMPLEX) && el.getPuaData() != null &&
-            el.getPuaData().getAdditionalProperties() != null) {
+
+        // Only complex seda nodes seems extensible.
+        // We try to apply additionalProperties rules only on it.
+        if (hasAdditionalProperties && sedaElement.isComplex() && sedaElement.isExtensible()) {
             puaMetadataDetails.setAdditionalProperties(el.getPuaData().getAdditionalProperties());
+        } else {
+            // For other case, only seda rules should be applied.
+            puaMetadataDetails.setAdditionalProperties(sedaElement.isExtensible());
         }
+
         if (el.getCardinality() != null && puaMetadataDetails.getType().equals("array")) {
             getMinAndMAxItems(el, puaMetadataDetails);
+        }
 
-        }
-        if (!sedaElement.getElement().equals(COMPLEX) && el.getPuaData() != null &&
-            el.getPuaData().getPattern() != null) {
+        if (hasPattern) {
             puaMetadataDetails.setPattern(el.getPuaData().getPattern());
         }
-        if (el.getPuaData() != null && el.getPuaData().getPattern() != null) {
-            puaMetadataDetails.setPattern(el.getPuaData().getPattern());
-        }
-        if (el.getPuaData() != null && el.getPuaData().getEnum() != null) {
+
+        if (hasEnum) {
             puaMetadataDetails.setEnums(el.getPuaData().getEnum());
-        } else {
-            if (el.getValue() != null) {
-                ArrayList<String> list = new ArrayList<>();
-                list.add(el.getValue());
-                puaMetadataDetails.setEnums(list);
-            }
         }
 
+        if (el.getValue() != null) {
+            puaMetadataDetails.setEnums(Collections.singletonList(el.getValue()));
+        }
     }
 
     private void getMinAndMAxItems(ElementProperties el, PuaMetadataDetails puaMetadataDetails) {
@@ -986,13 +1000,36 @@ public class PuaPastisValidator {
     }
 
     public ElementProperties getElementById(List<ElementProperties> elementProperties, Long id) {
-
         for (ElementProperties el : elementProperties) {
-            Long elementId = el.getId();
-            if (elementId != null && elementId.equals(id))
+            final Long elementId = el.getId();
+
+            if (elementId != null && elementId.equals(id)) {
                 return el;
+            }
         }
+
         return null;
+    }
+
+    /**
+     * Order a JSONObject
+     *
+     * @return an ordered JSONObject
+     */
+    public JSONObject sortedJSON() {
+        final JSONObject jsonObj = new JSONObject();
+
+        try {
+            final Field changeMap = jsonObj.getClass().getDeclaredField("map");
+
+            changeMap.setAccessible(true);
+            changeMap.set(jsonObj, new LinkedHashMap<>());
+            changeMap.setAccessible(false);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            LOGGER.error(e.getMessage());
+        }
+
+        return jsonObj;
     }
 
     /**
@@ -1001,15 +1038,18 @@ public class PuaPastisValidator {
      * @return an ordered JSONArray
      */
     public JSONArray sortedJSONArray() {
-        JSONArray jsonArray = new JSONArray();
+        final JSONArray jsonArray = new JSONArray();
+
         try {
-            Field changeMap = jsonArray.getClass().getDeclaredField("map");
+            final Field changeMap = jsonArray.getClass().getDeclaredField("map");
+
             changeMap.setAccessible(true);
             changeMap.set(jsonArray, new LinkedHashMap<>());
             changeMap.setAccessible(false);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             LOGGER.debug(e.getMessage());
         }
+
         return jsonArray;
     }
 }

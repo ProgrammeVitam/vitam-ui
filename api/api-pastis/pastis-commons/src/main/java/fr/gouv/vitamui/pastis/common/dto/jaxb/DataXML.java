@@ -37,7 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.dto.jaxb;
 
-import fr.gouv.vitamui.pastis.common.util.RNGConstants;
+import fr.gouv.vitamui.pastis.common.model.DataType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -47,8 +47,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Data
 @NoArgsConstructor
 public class DataXML extends BaliseXML {
-
-    public DataXML(RNGConstants.DataType dataType, BaliseXML parent) {
+    public DataXML(DataType dataType, BaliseXML parent) {
         this.setDataType(dataType.getLabel());
         this.setParent(parent);
     }
