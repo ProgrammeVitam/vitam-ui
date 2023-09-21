@@ -318,7 +318,7 @@
               [formControl]="linkParentIdControl"
               [tenantIdentifier]="tenantIdentifier"
               [accessContract]="accessContractSelect.value"
-              [mode]="FILLING_PLAN_MODE.SOLO"
+              [mode]="FilingPlanMode.SOLO"
             ></vitamui-library-filing-plan>
           </div>
         </div>
@@ -402,7 +402,7 @@
               [formControl]="checkParentIdControl"
               [tenantIdentifier]="tenantIdentifier"
               [accessContract]="accessContractSelect.value"
-              [mode]="FILLING_PLAN_MODE.INCLUDE_ONLY"
+              [mode]="FilingPlanMode.INCLUDE_ONLY"
               [required]="checkParentIdControl.value === 'REQUIRED'"
             ></vitamui-library-filing-plan>
           </div>
@@ -433,17 +433,17 @@
           <div class="row">
             <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup"
                                      class="vitamui-button-toggle-group">
-              <mat-button-toggle value="{{ signedDocumentPolicyEnum.ALLOWED }}"
-                                 (click)="changeSignedDocumentPolicy(signedDocumentPolicyEnum.ALLOWED)">
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + signedDocumentPolicyEnum.ALLOWED  | translate }}
+              <mat-button-toggle value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
+                                 (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)">
+                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ALLOWED  | translate }}
               </mat-button-toggle>
-              <mat-button-toggle value="{{ signedDocumentPolicyEnum.ONLY }}"
-                                 (click)="changeSignedDocumentPolicy(signedDocumentPolicyEnum.ONLY)">
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + signedDocumentPolicyEnum.ONLY  | translate }}
+              <mat-button-toggle value="{{ SignedDocumentPolicyEnum.ONLY }}"
+                                 (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ONLY)">
+                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ONLY  | translate }}
               </mat-button-toggle>
-              <mat-button-toggle value="{{ signedDocumentPolicyEnum.FORBIDDEN }}"
-                                 (click)="changeSignedDocumentPolicy(signedDocumentPolicyEnum.FORBIDDEN)">
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + signedDocumentPolicyEnum.FORBIDDEN  | translate }}
+              <mat-button-toggle value="{{ SignedDocumentPolicyEnum.FORBIDDEN }}"
+                                 (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.FORBIDDEN)">
+                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.FORBIDDEN  | translate }}
               </mat-button-toggle>
             </mat-button-toggle-group>
           </div>

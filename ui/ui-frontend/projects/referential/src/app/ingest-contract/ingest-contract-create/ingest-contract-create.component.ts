@@ -38,7 +38,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import '@angular/localize/init';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileFormat, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
@@ -58,8 +58,8 @@ import { IngestContractCreateValidators } from './ingest-contract-create.validat
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
-  protected readonly signedDocumentPolicyEnum = SignedDocumentPolicyEnum;
-  protected readonly FILLING_PLAN_MODE = FilingPlanMode;
+  readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
+  readonly FilingPlanMode = FilingPlanMode;
 
   @Input() tenantIdentifier: number;
   @Input() isSlaveMode: boolean;
