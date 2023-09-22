@@ -56,7 +56,6 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
   @Output() selectedArchiveUnitCountChange = new EventEmitter<number>();
   @Output() pendingChange = new EventEmitter<boolean>();
 
-  archiveUnitCountOverThreshold = false;
   selectedOverThreshold = false;
   canLoadExactCount = false;
   exactCountLoaded = false;
@@ -68,9 +67,12 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { selectedArchiveUnitCount, archiveUnitCount, threshold } = changes;
+    const { selectedArchiveUnitCount, archiveUnitCount, threshold, search } = changes;
 
-    if (archiveUnitCount || selectedArchiveUnitCount || threshold) {
+    if (search) {
+      this.exactCountLoaded = false;
+    }
+    if (archiveUnitCount || selectedArchiveUnitCount || threshold || search) {
       this.update();
     }
   }
@@ -98,7 +100,6 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
   }
 
   private update(): void {
-    this.archiveUnitCountOverThreshold = this.archiveUnitCount > this.threshold;
     this.selectedOverThreshold = this.selectedArchiveUnitCount >= this.threshold;
     this.canLoadExactCount = !this.exactCountLoaded && this.archiveUnitCount >= this.threshold;
   }

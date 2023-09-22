@@ -186,4 +186,151 @@ describe('ArchiveUnitCountComponent', () => {
 
     expect(element).toBeTruthy('element <a> is not truthy');
   });
+
+  it('should allow exact count loading again when the search query has changed', async () => {
+    const fakeSearchService = {
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
+        console.log('getTotalTrackHitsByCriteria called');
+
+        return of(1000001);
+      },
+    };
+    const firstSearch = fakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
+
+    component.search = firstSearch;
+    component.archiveUnitCount = 10000;
+    component.threshold = 10000;
+    component.ngOnChanges({
+      archiveUnitCount: new SimpleChange(null, 10000, true),
+      threshold: new SimpleChange(null, 10000, true),
+    });
+
+    fixture.detectChanges();
+
+    expect(component.canLoadExactCount).toEqual(true);
+    expect(component.search).toBeTruthy();
+
+    const linkDebugElement = fixture.debugElement.query(By.css('a'));
+    const linkNativeElement = linkDebugElement.nativeElement;
+    const spy = spyOn(component, 'loadExactCount').and.callThrough();
+
+    linkNativeElement.click();
+
+    await fixture.whenStable();
+
+    expect(spy).toHaveBeenCalled();
+    expect(component.canLoadExactCount).toEqual(false);
+    expect(component.archiveUnitCount).toEqual(1000001);
+
+    fixture.detectChanges();
+
+    const element = fixture.debugElement.query(By.css('a'));
+
+    expect(element).toBeFalsy();
+
+    // Update component with a second search query
+
+    const otherFakeSearchService = {
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
+        console.log('getTotalTrackHitsByCriteria called');
+
+        return of(25000);
+      },
+    };
+    const secondSearch = otherFakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
+
+    component.search = secondSearch;
+    component.ngOnChanges({
+      search: new SimpleChange(firstSearch, secondSearch, false),
+    });
+
+    fixture.detectChanges();
+
+    const elementAfterSearchQueryUpdate = fixture.debugElement.query(By.css('a'));
+
+    expect(elementAfterSearchQueryUpdate).toBeTruthy();
+  });
+
+  it('should not allow exact count loading again when the search query has changed and exact count was reloaded', async () => {
+    const fakeSearchService = {
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
+        console.log('getTotalTrackHitsByCriteria called');
+
+        return of(1000001);
+      },
+    };
+    const firstSearch = fakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
+
+    component.search = firstSearch;
+    component.archiveUnitCount = 10000;
+    component.threshold = 10000;
+    component.ngOnChanges({
+      archiveUnitCount: new SimpleChange(null, 10000, true),
+      threshold: new SimpleChange(null, 10000, true),
+    });
+
+    fixture.detectChanges();
+
+    expect(component.canLoadExactCount).toEqual(true);
+    expect(component.search).toBeTruthy();
+
+    const linkDebugElement = fixture.debugElement.query(By.css('a'));
+    const linkNativeElement = linkDebugElement.nativeElement;
+    const spy = spyOn(component, 'loadExactCount').and.callThrough();
+
+    linkNativeElement.click();
+
+    await fixture.whenStable();
+
+    expect(spy).toHaveBeenCalled();
+    expect(component.canLoadExactCount).toEqual(false);
+    expect(component.archiveUnitCount).toEqual(1000001);
+
+    fixture.detectChanges();
+
+    const element = fixture.debugElement.query(By.css('a'));
+
+    expect(element).toBeFalsy();
+
+    // Update component with a second search query
+
+    const otherFakeSearchService = {
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
+        console.log('getTotalTrackHitsByCriteria called');
+
+        return of(25000);
+      },
+    };
+    const secondSearch = otherFakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
+
+    component.search = secondSearch;
+    component.ngOnChanges({
+      search: new SimpleChange(firstSearch, secondSearch, false),
+    });
+
+    fixture.detectChanges();
+
+    const elementAfterSearchQueryUpdate = fixture.debugElement.query(By.css('a'));
+
+    expect(elementAfterSearchQueryUpdate).toBeTruthy();
+
+    // Load a second time trackTotalHits
+
+    const secondLinkDebugElement = fixture.debugElement.query(By.css('a'));
+    const linsecondNativeElement = secondLinkDebugElement.nativeElement;
+
+    linsecondNativeElement.click();
+
+    await fixture.whenStable();
+
+    expect(spy).toHaveBeenCalled();
+    expect(component.canLoadExactCount).toEqual(false);
+    expect(component.archiveUnitCount).toEqual(25000);
+
+    fixture.detectChanges();
+
+    const elementAfterSecondLoadExactCount = fixture.debugElement.query(By.css('a'));
+
+    expect(elementAfterSecondLoadExactCount).toBeFalsy();
+  });
 });
