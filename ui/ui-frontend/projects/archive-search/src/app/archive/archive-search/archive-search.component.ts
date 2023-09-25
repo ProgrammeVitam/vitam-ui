@@ -1115,7 +1115,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         operation();
       }
     } else if (isGreaterThanDefaultBulkOperationThreshold) {
-      this.bulkOperationWarningWorkflow(operation);
+      this.bulkOperationErrorWorkflow();
     } else {
       operation();
     }
