@@ -278,21 +278,21 @@
       <vitamui-common-archive-unit-count
         [search]="search$"
         [(archiveUnitCount)]="totalResults"
-        [(selectedArchiveUnitCount)]="itemSelected"
+        [(selectedArchiveUnitCount)]="selectedItemCount"
         [threshold]="10000"
         [(pending)]="pending"
         [allChecked]="isAllChecked"
         class="col-8"
       ></vitamui-common-archive-unit-count>
-      <div class="col-3 area-download" [ngClass]="totalResults > 0 && itemSelected > 0 ? 'enabled-div' : 'disabled-div'">
+      <div class="col-3 area-download" [ngClass]="totalResults > 0 && selectedItemCount > 0 ? 'enabled-div' : 'disabled-div'">
         <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="startLaunchExportDipModal()" [disabled]="itemSelected === 0 || !hasDipExportRole">
+          <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-          <button mat-menu-item (click)="startLaunchTransferRequestModal()" [disabled]="itemSelected === 0 || !hasTransferRequestRole">
+          <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="selectedItemCount === 0 || !hasTransferRequestRole">
             {{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST' | translate }}
           </button>
           <button
@@ -304,7 +304,10 @@
             matTooltipClass="vitamui-tooltip"
             [matTooltipShowDelay]="300"
             [disabled]="
-              !hasUpdateManagementRuleRole || itemSelected === 0 || !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc
+              !hasUpdateManagementRuleRole ||
+              selectedItemCount === 0 ||
+              !accessContractAllowUpdating ||
+              accessContractUpdatingRestrictedDesc
             "
           >
             {{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}
@@ -312,26 +315,26 @@
           <button
             mat-menu-item
             (click)="launchEliminationAnalysisModal()"
-            [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
+            [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
           <button
             mat-menu-item
-            (click)="startLaunchEliminationModal()"
-            [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
+            (click)="launchEliminationModal()"
+            [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
           <button
             mat-menu-item
             (click)="launchComputedInheritedRulesModal()"
-            [disabled]="!hasComputedInheritedRulesRole || itemSelected === 0"
+            [disabled]="!hasComputedInheritedRulesRole || selectedItemCount === 0"
           >
             {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
           </button>
 
-          <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || itemSelected === 0">
+          <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || selectedItemCount === 0">
             {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
           </button>
         </vitamui-common-menu-button>
@@ -492,30 +495,31 @@
 <ng-template #confirmSecondActionBigNumberOfResultsActionDialog>
   <mat-dialog-content>
     <br />
-    <div class="text-title" *ngIf="!selectedItemCountKnown()">
+    <div class="text-title" *ngIf="!shouldReadSelectedItems()">
       {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT' | translate }}
     </div>
-    <div class="text-title" *ngIf="selectedItemCountKnown()">
-      <span *ngIf="itemSelected > 1">
+    <div class="text-title" *ngIf="shouldReadSelectedItems()">
+      <span *ngIf="selectedItemCount > 1">
         {{
-          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT' | translate : { elementsSize: itemSelected }
+          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT'
+            | translate : { elementsSize: selectedItemCount }
         }}</span
       >
-      <span *ngIf="itemSelected === 1">
+      <span *ngIf="selectedItemCount === 1">
         {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT_ONE' | translate }}</span
       >
     </div>
-    <div class="text large bold" *ngIf="!selectedItemCountKnown()">
+    <div class="text large bold" *ngIf="!shouldReadSelectedItems()">
       {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_WITHOUT_EXACT_COUNT' | translate }}
     </div>
-    <div class="text large bold" *ngIf="selectedItemCountKnown()">
-      <span *ngIf="itemSelected > 1">
+    <div class="text large bold" *ngIf="shouldReadSelectedItems()">
+      <span *ngIf="selectedItemCount > 1">
         {{
           'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT'
-            | translate : { elementsSize: itemSelected }
+            | translate : { elementsSize: selectedItemCount }
         }}</span
       >
-      <span *ngIf="itemSelected === 1">
+      <span *ngIf="selectedItemCount === 1">
         {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE' | translate }}</span
       >
     </div>
@@ -652,10 +656,10 @@
   <mat-dialog-content>
     <br />
     <div class="text large bold">
-      <span *ngIf="itemSelected > 1">
+      <span *ngIf="selectedItemCount > 1">
         {{
           'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE'
-            | translate : { elementsSize: itemSelected }
+            | translate : { elementsSize: selectedItemCount }
         }}</span
       >
     </div>
