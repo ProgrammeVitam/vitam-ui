@@ -27,6 +27,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { FilingHoldingSchemeNode, UnitType } from '../../models';
 import { VitamuiTreeNodeComponent } from './vitamui-tree-node.component';
 
 @Pipe({ name: 'truncate' })
@@ -40,17 +41,16 @@ describe('VitamuiTreeNodeComponent', () => {
   let component: VitamuiTreeNodeComponent;
   let fixture: ComponentFixture<VitamuiTreeNodeComponent>;
 
-  let node = {
+  const node: FilingHoldingSchemeNode = {
     id: 'id',
     title: 'label',
     type: 'RecordGroup',
     children: [],
     vitamId: 'vitamId',
-    parents: [],
     checked: true,
     hidden: true,
     hasObject: false,
-    unitType: 'INGEST',
+    unitType: UnitType.INGEST,
   };
 
   beforeEach(async () => {

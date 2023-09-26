@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 import { Node } from 'projects/vitamui-library/src/public-api';
-import { BASE_URL, DescriptionLevel, FileType } from 'ui-frontend-common';
+import { BASE_URL, DescriptionLevel, FileType, UnitType } from 'ui-frontend-common';
 import { FilingPlanService } from './filing-plan.service';
 
 describe('FilingPlanService', () => {
@@ -91,7 +91,7 @@ describe('FilingPlanService', () => {
           Title: 'label2',
           '#allunitups': [],
           '#unitups': null,
-          '#unitType': 'HOLDING_UNIT',
+          '#unitType': UnitType.HOLDING_UNIT,
           DescriptionLevel: DescriptionLevel.FILE,
         },
         {

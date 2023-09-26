@@ -26,14 +26,14 @@
  *
  */
 
-import { Id } from '../index';
+import { DescriptionLevel, Id, UnitType } from '../index';
 
 export interface FilingHoldingSchemeNode extends Id {
   title: string;
   /** @deprecated: use unitType & descriptionLevel instead */
   type?: string;
-  unitType?: string;
-  descriptionLevel?: string;
+  unitType?: UnitType;
+  descriptionLevel?: DescriptionLevel;
   label?: string;
   children: FilingHoldingSchemeNode[];
   vitamId: string;

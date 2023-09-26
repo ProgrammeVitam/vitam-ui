@@ -30,7 +30,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, StartupService } from 'ui-frontend-common';
+import {
+  CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, StartupService, UnitType
+} from 'ui-frontend-common';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
 import { ArchiveSearchHelperService } from './archive-search-helper.service';
@@ -59,7 +61,7 @@ export class ComputeInheritedRulesService {
   ) {
     listOfUACriteriaSearch.push({
       criteria: ARCHIVE_UNIT_HOLDING_UNIT,
-      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
+      values: [{ value: UnitType.HOLDING_UNIT, id: UnitType.HOLDING_UNIT }],
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
       dataType: CriteriaDataType.STRING,

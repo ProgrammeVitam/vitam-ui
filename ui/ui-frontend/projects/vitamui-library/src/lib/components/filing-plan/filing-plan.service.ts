@@ -32,7 +32,7 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
-import { DescriptionLevel, FileType, Unit } from 'ui-frontend-common';
+import { DescriptionLevel, FileType, Unit, UnitType } from 'ui-frontend-common';
 import { SearchUnitApiService } from '../../api/search-unit-api.service';
 import { Node } from '../../models/node.interface';
 import { getKeywordValue } from '../../utils/keyword.util';
@@ -109,10 +109,10 @@ export class FilingPlanService {
     return this.getFileType(unit['#unitType'], unit.DescriptionLevel);
   }
 
-  private getFileType(unitType: string, descriptionLevel: string) {
+  private getFileType(unitType: UnitType, descriptionLevel: DescriptionLevel) {
     // TODO file type for documents
     if (descriptionLevel === DescriptionLevel.FILE) {
-      if (unitType === 'HOLDING_UNIT') {
+      if (unitType === UnitType.HOLDING_UNIT) {
         return FileType.FOLDER_HOLDING;
       }
 

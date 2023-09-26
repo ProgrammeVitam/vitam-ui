@@ -25,11 +25,14 @@
  * accept its terms.
  *
  */
+import { DescriptionLevel } from './description-level.enum';
+import { UnitType } from './unit-type.enum';
+
 export interface Unit {
   '#id': string;
   '#unitups': string[];
   '#allunitups': string[];
-  '#unitType': string;
+  '#unitType': UnitType;
   '#object'?: string;
   '#opi': string;
   '#version'?: string;
@@ -41,7 +44,7 @@ export interface Unit {
   Title_?: any;
   Description?: string;
   Description_?: any;
-  DescriptionLevel?: string;
+  DescriptionLevel?: DescriptionLevel;
   CreatedDate?: Date;
   StartDate?: Date;
   EndDate?: Date;

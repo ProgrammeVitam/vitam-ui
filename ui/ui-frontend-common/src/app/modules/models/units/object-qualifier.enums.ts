@@ -34,9 +34,3 @@ export enum ObjectQualifierType {
 }
 
 export const ObjectQualifierTypeList: Array<string> = Object.values(ObjectQualifierType);
-
-export enum UnitTypes {
-  HOLDING_UNIT = 'HOLDING_UNIT',
-  FILING_UNIT = 'FILING_UNIT',
-  INGEST = 'INGEST',
-}

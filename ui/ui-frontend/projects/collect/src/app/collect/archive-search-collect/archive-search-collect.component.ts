@@ -37,7 +37,7 @@ import {
   AccessContract, ArchiveSearchResultFacets, CriteriaDataType, CriteriaOperator, CriteriaValue, Direction, ExternalParameters,
   ExternalParametersService, FilingHoldingSchemeNode, GlobalEventService, ORPHANS_NODE_ID, PagedResult, SearchCriteria,
   SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements, SearchCriteriaHistory, SearchCriteriaMgtRuleEnum,
-  SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SidenavPage, Transaction, TransactionStatus, Unit,
+  SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SidenavPage, Transaction, TransactionStatus, Unit, UnitType,
 } from 'ui-frontend-common';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from './archive-collect.service';
@@ -61,6 +61,9 @@ const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
   styleUrls: ['./archive-search-collect.component.scss'],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy {
+
+  readonly UnitType = UnitType;
+
   accessContract: string;
   accessContractSub: Subscription;
   accessContractSubscription: Subscription;

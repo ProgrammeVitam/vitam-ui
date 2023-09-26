@@ -24,9 +24,8 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { DescriptionLevel } from '../../description-level.enum';
 import { ResultFacet } from '../criteria';
-import { Unit } from '../units';
+import { DescriptionLevel, Unit, UnitType } from '../units';
 import { FilingHoldingSchemeHandler } from './filing-holding-scheme.handler';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';
 
@@ -39,7 +38,7 @@ export function newNode(
   return {
     id: currentId,
     title: currentId,
-    unitType: 'INGEST',
+    unitType: UnitType.INGEST,
     descriptionLevel: currentDescriptionLevel,
     checked: false,
     children: currentChildren,
@@ -58,7 +57,7 @@ export function newUnit(currentId: string, parentId?: string): Unit {
     '#unitups': [parentId],
     '#allunitups': [parentId],
     '#opi': 'whatever',
-    '#unitType': 'INGEST',
+    '#unitType': UnitType.INGEST,
     Title: 'whatever',
     DescriptionLevel: DescriptionLevel.ITEM,
   };
