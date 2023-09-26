@@ -98,6 +98,7 @@
     "ELIMINATION": {
       "ANALYSIS": "Launch elimination analysis",
       "ELIMINATION_LAUNCHED": "Your request for elimination has been taken into account",
+      "ELIMINATION_ANALYSIS_LAUNCHED": "Your request for elimination analysis has been taken into account",
       "THRESHOLD_EXCEEDED": "The elimination analysis cannot be started. Please restrict your selection to a maximum of 10,000 archival units.",
       "EXECUTION": "Delete archives",
       "TO_ELIMINATE": "Do you want to eliminate",
