@@ -11,6 +11,7 @@ import { NotificationService } from '../../core/services/notification.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileNode } from '../../models/file-node';
 import { Profile } from '../../models/profile';
+import { ProfileType } from '../../models/profile-type.enum';
 import { CreateNoticeChoiceComponent } from '../../profile/create-notice-choice/create-notice-choice.component';
 import { CreateNoticeComponent } from '../../user-actions/create-notice/create-notice.component';
 import { PastisDialogDataCreate } from '../../user-actions/save-profile/save-profile.component';
@@ -141,13 +142,13 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     );
     const subscription1 = createNoticeChoiceDialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
-        if (result.action === 'PA' || result.action === 'PUA') {
+        if (result.action === ProfileType.PA || result.action === ProfileType.PUA) {
           const createNoticeData = {} as PastisDialogDataCreate;
           createNoticeData.titleDialog = this.popupSaveCreateNoticeTitleDialog;
           createNoticeData.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
           createNoticeData.okLabel = this.popupSaveCreateNoticeOkLabel;
           createNoticeData.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
-          createNoticeData.modeProfile = result.action;
+          createNoticeData.profileMode = result.action;
           const createNoticeDialogRef = this.dialog.open(CreateNoticeComponent, {
               width: '800px',
               panelClass: 'pastis-popup-modal-box',
@@ -158,14 +159,14 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
             let retour;
             if (result.success) {
               retour = result.data;
-              if (result.mode === 'PUA') {
+              if (result.mode === ProfileType.PUA) {
                 const profileDescription = this.noticeService.puaNotice(retour);
                 this.profileService.createArchivalUnitProfile(profileDescription).subscribe(() => {
                   this.changeExpand();
                   this.notificationService.showSuccess('La création de notice a bien été effectué');
                   this.profileService.refreshListProfiles();
                 });
-              } else if (result.mode === 'PA') {
+              } else if (result.mode === ProfileType.PA) {
                 const profile: Profile = this.noticeService.paNotice(retour, true);
                 // STEP 1 : Create Notice
                 this.profileService.createProfilePa(profile).subscribe(() => {

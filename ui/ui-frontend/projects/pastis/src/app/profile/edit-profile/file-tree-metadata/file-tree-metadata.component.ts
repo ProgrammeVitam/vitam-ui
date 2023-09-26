@@ -43,17 +43,11 @@ import { SedaService } from '../../../core/services/seda.service';
 import { BreadcrumbDataMetadata, BreadcrumbDataTop } from '../../../models/breadcrumb';
 import { AttributeData } from '../../../models/edit-attribute-models';
 import {
-  CardinalityConstants,
-  DataTypeConstants,
-  DateFormatType,
-  FileNode,
-  FileNodeInsertAttributeParams,
-  FileNodeInsertParams,
-  nodeNameToLabel,
-  TypeConstants,
-  ValueOrDataConstants,
+  CardinalityConstants, DataTypeConstants, DateFormatType, FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams, nodeNameToLabel,
+  TypeConstants, ValueOrDataConstants,
 } from '../../../models/file-node';
 import { CardinalityValues, MetadataHeaders } from '../../../models/models';
+import { ProfileType } from '../../../models/profile-type.enum';
 import { PuaData } from '../../../models/pua-data';
 import { SedaData, SedaElementConstants } from '../../../models/seda-data';
 import { PastisDialogData } from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
@@ -305,7 +299,7 @@ export class FileTreeMetadataComponent {
     });
     // BreadCrump Top for navigation
     this.profileModeLabel =
-      this.profileService.profileMode === 'PUA'
+      this.profileService.profileMode === ProfileType.PUA
         ? 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA'
         : 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA';
     this.breadcrumbDataTop = [
@@ -611,7 +605,7 @@ export class FileTreeMetadataComponent {
       popData.okLabel = this.popupControlOkLabel;
       popData.cancelLabel = this.popupAnnuler;
 
-      const popUpAnswer = <string[]>await this.fileService.openPopup(popData);
+      const popUpAnswer = await this.fileService.openPopup(popData) as string[];
       console.log('The answer for arrays control was ', popUpAnswer);
       if (popUpAnswer) {
         this.arrayControl = popUpAnswer;
@@ -926,7 +920,7 @@ export class FileTreeMetadataComponent {
   }
 
   isElementEdit(node: MetadataHeaders): boolean {
-    if (this.profileService.profileMode === 'PUA') {
+    if (this.profileService.profileMode === ProfileType.PUA) {
       return false;
     }
     if (node.nomDuChampEdit) {

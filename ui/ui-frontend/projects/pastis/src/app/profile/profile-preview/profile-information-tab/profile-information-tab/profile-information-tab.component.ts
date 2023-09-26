@@ -8,6 +8,7 @@ import { ProfileService } from '../../../../core/services/profile.service';
 import { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
 import { Profile } from '../../../../models/profile';
 import { ProfileDescription } from '../../../../models/profile-description.model';
+import { ProfileType } from '../../../../models/profile-type.enum';
 
 @Component({
   selector: 'profile-information-tab',
@@ -30,10 +31,10 @@ export class ProfileInformationTabComponent {
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({emitEvent: false});
+      this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
-      this.form.enable({emitEvent: false});
-      this.form.get('identifier').disable({emitEvent: false});
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
@@ -70,8 +71,8 @@ export class ProfileInformationTabComponent {
   pending = false;
 
   updateProfile(inputProfile: ProfileDescription): Observable<ProfileDescription> {
-    const profileDescription = {...inputProfile, ...this.form.value};
-    if (inputProfile.type === 'PA') {
+    const profileDescription = { ...inputProfile, ...this.form.value };
+    if (inputProfile.type === ProfileType.PA) {
       return this.profileService.updateProfilePa(profileDescription as Profile).pipe(catchError(() => of(null)));
     } else {
       return this.profileService.updateProfilePua(profileDescription as ArchivalProfileUnit).pipe(catchError(() => of(null)));
@@ -117,7 +118,7 @@ export class ProfileInformationTabComponent {
   }
 
   resetForm(profileDescription: ProfileDescription) {
-    this.form.reset(profileDescription, {emitEvent: false});
+    this.form.reset(profileDescription, { emitEvent: false });
   }
 
   isProfilAttached(inputProfile: ProfileDescription): boolean {
