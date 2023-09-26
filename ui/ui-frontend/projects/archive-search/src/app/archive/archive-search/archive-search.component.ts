@@ -1110,7 +1110,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
         if (this.eliminationAnalysisResponse && this.eliminationAnalysisResponse[0].itemId) {
           const guid = this.eliminationAnalysisResponse[0].itemId;
-          const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
+          const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_ANALYSIS_LAUNCHED');
           const serviceUrl =
             this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
 
