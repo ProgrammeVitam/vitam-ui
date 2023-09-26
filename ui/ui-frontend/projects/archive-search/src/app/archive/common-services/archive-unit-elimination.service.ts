@@ -53,7 +53,7 @@ export class ArchiveUnitEliminationService {
   }
 
   launchEliminationAnalysisModal(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],    
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
     selectedItemCountKnown: boolean,
     itemSelected: number,
     tenantIdentifier: number,
@@ -86,7 +86,7 @@ export class ArchiveUnitEliminationService {
   }
 
   private launchEliminationAnalysis(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],    
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
     tenantIdentifier: number,
     currentPage: number
   ) {
@@ -101,7 +101,7 @@ export class ArchiveUnitEliminationService {
       const eliminationAnalysisResponse = data.$results;
       if (eliminationAnalysisResponse && eliminationAnalysisResponse[0].itemId) {
         const guid = eliminationAnalysisResponse[0].itemId;
-        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
+        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_ANALYSIS_LAUNCHED');
         const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + tenantIdentifier + '?guid=' + guid;
         this.archiveHelperService.openSnackBarForWorkflow(this.snackBar, message, serviceUrl);
       }
