@@ -42,16 +42,17 @@ import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { SedaService } from '../../core/services/seda.service';
+import { FileNode } from '../../models/file-node';
+import { ProfileType } from '../../models/profile-type.enum';
 import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import { FileNode } from "../../models/file-node";
 
 @Component({
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-metadata.component.html',
-  styleUrls: [ './add-metadata.component.scss' ]
+  styleUrls: ['./add-metadata.component.scss']
 })
 export class UserActionAddMetadataComponent implements OnInit {
 
@@ -95,10 +96,10 @@ export class UserActionAddMetadataComponent implements OnInit {
 
     this.sedaNodeFound = this.fileNode.sedaData;
 
-    if (this.profileService.profileMode === 'PA') {
+    if (this.profileService.profileMode === ProfileType.PA) {
       this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
         .filter(e => e.Element !== SedaElementConstants.attribute);
-    } else if (this.profileService.profileMode === 'PUA') {
+    } else if (this.profileService.profileMode === ProfileType.PUA) {
       if (this.fileNode.name === 'ArchiveUnit') {
         if (this.fileNode.children.map((nodeChildren: FileNode) => nodeChildren.name).includes('ArchiveUnitProfile')) {
           this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
@@ -122,7 +123,7 @@ export class UserActionAddMetadataComponent implements OnInit {
 
       }
       this.fileNode.children.forEach((child: FileNode) => {
-        if (child.cardinality.endsWith("1")) {
+        if (child.cardinality.endsWith('1')) {
           this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== child.name);
         }
       })
@@ -166,7 +167,7 @@ export class UserActionAddMetadataComponent implements OnInit {
   onAddSelectedElement(element: SedaData) {
     this.addedItems.push(element);
 
-    if (element.Cardinality.endsWith("1")) {
+    if (element.Cardinality.endsWith('1')) {
       this.allowedChildren = this.allowedChildren.filter(e => e != element);
     }
 

@@ -47,6 +47,7 @@ import { FileNode } from '../../models/file-node';
 import { Profile } from '../../models/profile';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
+import { ProfileType } from '../../models/profile-type.enum';
 import { PastisApiService } from '../api/api.pastis.service';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 import { ArchivalProfileUnitApiService } from './archival-profile-unit-api.service';
@@ -63,7 +64,7 @@ export class ProfileService implements OnDestroy {
   public direction: string;
   public criteria?: string;
 
-  public profileMode: string;
+  public profileMode: ProfileType;
   public profileName: string;
   public profileId: string;
   protected pageRequest: PageRequest;
@@ -124,9 +125,9 @@ export class ProfileService implements OnDestroy {
       if (profiles) {
         for (const profile of profiles) {
           if (profile.controlSchema) {
-            profile.type = 'PUA';
+            profile.type = ProfileType.PUA;
           } else {
-            profile.type = 'PA';
+            profile.type = ProfileType.PA;
           }
         }
         this.retrievedProfiles.next(profiles);
@@ -139,13 +140,13 @@ export class ProfileService implements OnDestroy {
     this.subscription3$ = this.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[]) => {
       if (profileListPUA) {
         profileListPUA.forEach((p) => {
-          p.type = 'PUA';
+          p.type = ProfileType.PUA;
           profiles.push(p);
         });
         this.subscription4$ = this.getAllProfilesPA().subscribe((profileListPA: ProfileDescription[]) => {
           if (profileListPA) {
             profileListPA.forEach((p) => {
-              p.type = 'PA';
+              p.type = ProfileType.PA;
               profiles.push(p);
             });
             this.retrievedProfiles.next(profiles);
@@ -176,10 +177,10 @@ export class ProfileService implements OnDestroy {
     };
     let profile: any = cloneDeep(file[0]);
 
-    const endPointUrl = profileType === 'PA' ? this.pastisConfig.savePAasFileUrl : this.pastisConfig.savePUAasFileUrl;
+    const endPointUrl = profileType === ProfileType.PA ? this.pastisConfig.savePAasFileUrl : this.pastisConfig.savePUAasFileUrl;
     this.fixCircularReference(profile);
 
-    if (profileType === 'PUA') {
+    if (profileType === ProfileType.PUA) {
       profile = { elementProperties: profile, notice };
     }
 
@@ -245,7 +246,7 @@ export class ProfileService implements OnDestroy {
 
     this.subscription2$ = this.getAllProfilesPAPaginated(pageRequest).subscribe((data: ProfileDescription[]) => {
       if (data) {
-        data.forEach(p => p.type = 'PA');
+        data.forEach(p => p.type = ProfileType.PA);
         data.forEach(p => tabVide.push(p));
         this.retrievedProfiles.next(data);
       }
@@ -254,7 +255,7 @@ export class ProfileService implements OnDestroy {
     this.subscription1$ = this.getAllProfilesPUAPaginated(pageRequest).subscribe((data: ProfileDescription[]) => {
       // @ts-ignore
       if (data) {
-        data.forEach(p => p.type = 'PUA');
+        data.forEach(p => p.type = ProfileType.PUA);
         this.retrievedProfiles.next(data);
       }
     });

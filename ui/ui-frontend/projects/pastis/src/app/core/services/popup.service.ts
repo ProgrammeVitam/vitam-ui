@@ -48,23 +48,26 @@ export class PopupService {
   btnYesShoudBeDisabled = new BehaviorSubject<boolean>(false);
 
 
-  constructor() { }
+  constructor() {}
 
   getPopUpDataOnOpen() {
     return this.popUpDataAfterOpen.getValue();
   }
+
   getPopUpDataOnClose() {
     return this.popUpDataBeforeClose;
   }
+
   setPopUpDataOnOpen(incomingData: any) {
     this.popUpDataAfterOpen.next(incomingData);
   }
+
   setPopUpDataOnClose(incomingData: any) {
     this.popUpDataBeforeClose.next(incomingData);
   }
+
   disableYesButton(condition: boolean) {
     condition ? this.btnYesShoudBeDisabled.next(true) : this.btnYesShoudBeDisabled.next(false);
   }
-
 
 }
