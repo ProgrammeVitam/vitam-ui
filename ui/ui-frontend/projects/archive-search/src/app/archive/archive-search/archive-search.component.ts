@@ -101,8 +101,92 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   DEFAULT_ELIMINATION_THRESHOLD = 10000;
   DEFAULT_TRANSFER_THRESHOLD = 100000;
   DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 100000;
+  DEFAULT_RESULT_THRESHOLD = 10000;
 
   search$: Observable<number>;
+
+  direction = Direction.ASCENDANT;
+  @Input() accessContract: string;
+  @Input() accessContractAllowUpdating: boolean;
+  @Input() accessContractUpdatingRestrictedDesc: boolean;
+  @Output() archiveUnitClick = new EventEmitter<any>();
+
+  tenantIdentifier: number;
+  searchCriterias: Map<string, SearchCriteria>;
+  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
+  private readonly orderChange = new Subject<string>();
+
+  orderBy = 'Title';
+  isIndeterminate: boolean;
+  isAllChecked: boolean;
+  hasResults = false;
+
+  show = true;
+  hasDipExportRole = false;
+  hasTransferRequestRole = false;
+  hasUpdateManagementRuleRole = false;
+  hasEliminationAnalysisOrActionRole = false;
+  hasComputedInheritedRulesRole = false;
+  hasReclassificationRole = false;
+  waitingToGetFixedCount = false;
+  showDuaEndDate = false;
+  pending = false;
+  pendingComputeFacets = false;
+  submited = false;
+  pendingGetFixedCount = false;
+  submitedGetFixedCount = false;
+  included = false;
+  canLoadMore = false;
+  showCriteriaPanel = true;
+  showSearchCriteriaPanel = false;
+  defaultFacetTabIndex = 1;
+  currentPage = 0;
+  pageNumbers = 0;
+  totalResults = 0;
+  selectedItemCount = 0;
+  itemNotSelected = 0;
+  numberOfHoldingUnitTypeOnComputedRules = 0;
+  additionalSearchCriteriaCategoryIndex = 0;
+  nbQueryCriteria = 0;
+
+  listOfUAIdToInclude: CriteriaValue[] = [];
+  listOfUAIdToExclude: CriteriaValue[] = [];
+  nodeArray: FilingHoldingSchemeNode[] = [];
+  archiveUnits: Unit[];
+  searchCriteriaHistory: SearchCriteriaHistory[] = [];
+  criteriaSearchList: SearchCriteriaEltDto[] = [];
+  listOfUACriteriaSearch: SearchCriteriaEltDto[] = [];
+  searchCriteriaKeys: string[];
+  additionalSearchCriteriaCategories: SearchCriteriaCategory[];
+
+  subscriptions: Subscription = new Subscription();
+  showConfirmBigNumberOfResultsSuscription: Subscription;
+  transferAcknowledgmentDialogSub: Subscription;
+  actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
+
+  rulesFacetsCanBeComputed = false;
+  rulesFacetsComputed = false;
+  showingFacets = false;
+
+  archiveUnitGuidSelected: string;
+  archiveUnitAllunitup: string[];
+  hasAccessContractManagementPermissionsMessage = '';
+  bulkOperationsThreshold = -1;
+  hasTransferAcknowledgmentRole = false;
+
+  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
+  confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
+  @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
+  updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+  @ViewChild('reclassificationAlerteMessageDialog', { static: true })
+  reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+  @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
+  launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+  archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
+  @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
+  confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchComponent>;
+  @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
+  actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
   constructor(
     public archiveService: ArchiveService,
@@ -185,99 +269,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
     this.archiveExchangeDataService.receiveAccessSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
   }
-
-  DEFAULT_RESULT_THRESHOLD = 10000;
-
-  direction = Direction.ASCENDANT;
-  @Input()
-  accessContract: string;
-  @Output() archiveUnitClick = new EventEmitter<any>();
-
-  tenantIdentifier: number;
-  searchCriterias: Map<string, SearchCriteria>;
-  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
-  private readonly orderChange = new Subject<string>();
-
-  orderBy = 'Title';
-  isIndeterminate: boolean;
-  isAllChecked: boolean;
-  hasResults = false;
-
-  show = true;
-  hasDipExportRole = false;
-  hasTransferRequestRole = false;
-  hasUpdateManagementRuleRole = false;
-  @Input()
-  accessContractAllowUpdating: boolean;
-  @Input()
-  accessContractUpdatingRestrictedDesc: boolean;
-  hasEliminationAnalysisOrActionRole = false;
-  hasComputedInheritedRulesRole = false;
-  hasReclassificationRole = false;
-  waitingToGetFixedCount = false;
-  showDuaEndDate = false;
-  pending = false;
-  pendingComputeFacets = false;
-  submited = false;
-  pendingGetFixedCount = false;
-  submitedGetFixedCount = false;
-  included = false;
-  canLoadMore = false;
-  showCriteriaPanel = true;
-  showSearchCriteriaPanel = false;
-  defaultFacetTabIndex = 1;
-  currentPage = 0;
-  pageNumbers = 0;
-  totalResults = 0;
-  itemSelected = 0;
-  itemNotSelected = 0;
-  numberOfHoldingUnitTypeOnComputedRules = 0;
-  additionalSearchCriteriaCategoryIndex = 0;
-  nbQueryCriteria = 0;
-
-  listOfUAIdToInclude: CriteriaValue[] = [];
-  listOfUAIdToExclude: CriteriaValue[] = [];
-  nodeArray: FilingHoldingSchemeNode[] = [];
-  archiveUnits: Unit[];
-  searchCriteriaHistory: SearchCriteriaHistory[] = [];
-  criteriaSearchList: SearchCriteriaEltDto[] = [];
-  listOfUACriteriaSearch: SearchCriteriaEltDto[] = [];
-  searchCriteriaKeys: string[];
-  additionalSearchCriteriaCategories: SearchCriteriaCategory[];
-
-  subscriptions: Subscription = new Subscription();
-  showConfirmBigNumberOfResultsSuscription: Subscription;
-  transferAcknowledgmentDialogSub: Subscription;
-  actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
-
-  rulesFacetsCanBeComputed = false;
-  rulesFacetsComputed = false;
-  showingFacets = false;
-  selectedItemCount: boolean;
-
-  archiveUnitGuidSelected: string;
-  archiveUnitAllunitup: string[];
-  hasAccessContractManagementPermissionsMessage = '';
-  bulkOperationsThreshold = -1;
-  hasTransferAcknowledgmentRole = false;
-  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
-  confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
-
-  @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
-  updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
-
-  @ViewChild('reclassificationAlerteMessageDialog', { static: true })
-  reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
-
-  @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
-  launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
-  archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
-
-  @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
-  confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchComponent>;
-
-  @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
-  actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
@@ -613,7 +604,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.pageNumbers = pagedResult.pageNumbers;
           this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
           if (this.isAllChecked) {
-            this.itemSelected = this.totalResults - this.itemNotSelected;
+            this.selectedItemCount = this.totalResults - this.itemNotSelected;
           }
           this.canLoadMore = this.currentPage < this.pageNumbers - 1;
           this.archiveHelperService.updateCriteriaStatus(
@@ -880,7 +871,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.nbQueryCriteria = 0;
     this.pageNumbers = 0;
     this.totalResults = 0;
-    this.itemSelected = 0;
+    this.selectedItemCount = 0;
     this.isAllChecked = false;
     this.isIndeterminate = false;
     this.itemNotSelected = 0;
@@ -894,7 +885,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     const { checked } = event.target;
 
     this.isAllChecked = checked;
-    this.itemSelected = checked ? this.totalResults : 0;
+    this.selectedItemCount = checked ? this.totalResults : 0;
     if (!checked) {
       this.isIndeterminate = false;
     }
@@ -911,24 +902,24 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.isIndeterminate = true;
       this.listOfUAIdToExclude.push({ value: id, id });
       this.listOfUAIdToInclude = [];
-      if (this.itemSelected > 0) {
-        this.itemSelected--;
+      if (this.selectedItemCount > 0) {
+        this.selectedItemCount--;
         this.itemNotSelected++;
       }
     } else {
       this.itemNotSelected = 0;
       if (action) {
         this.listOfUACriteriaSearch = [];
-        this.itemSelected++;
-        if (this.itemSelected === this.totalResults) {
+        this.selectedItemCount++;
+        if (this.selectedItemCount === this.totalResults) {
           this.isIndeterminate = false;
         }
         this.listOfUAIdToInclude.push({ value: id, id });
         this.listOfUAIdToExclude.splice(0, this.listOfUAIdToExclude.length);
       } else {
         this.listOfUAIdToInclude = this.listOfUAIdToInclude.filter((element) => element.id !== id);
-        if (this.itemSelected > 0) {
-          this.itemSelected--;
+        if (this.selectedItemCount > 0) {
+          this.selectedItemCount--;
         }
       }
     }
@@ -942,7 +933,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.currentPage = 0;
     this.archiveUnits = [];
     this.criteriaSearchList = [];
-    this.itemSelected = 0;
+    this.selectedItemCount = 0;
     this.isIndeterminate = false;
     this.itemNotSelected = 0;
     this.isAllChecked = false;
@@ -979,7 +970,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   launchReclassification() {
-    if (this.itemSelected > 1) {
+    if (this.selectedItemCount > 1) {
       const dialogToOpen = this.reclassificationAlerteMessageDialog;
       const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
       this.subscriptions.add(
@@ -988,7 +979,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           .pipe(filter((result) => !!result))
           .subscribe(() => {})
       );
-    } else if (this.itemSelected === 1) {
+    } else if (this.selectedItemCount === 1) {
       this.archiveUnitGuidSelected = this.isAllChecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
       this.archiveUnitAllunitup = this.archiveUnits.find((archiveUnit) => archiveUnit['#id'] === this.archiveUnitGuidSelected)['#unitups'];
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
@@ -1003,7 +994,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         panelClass: 'vitamui-modal',
         disableClose: false,
         data: {
-          itemSelected: this.itemSelected,
+          itemSelected: this.selectedItemCount,
           reclassificationCriteria,
           tenantIdentifier: this.tenantIdentifier,
           archiveUnitGuidSelected: this.archiveUnitGuidSelected,
@@ -1020,12 +1011,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     }
   }
 
-  selectedItemCountKnown(): boolean {
+  public shouldReadSelectedItemCount(): boolean {
     return !this.waitingToGetFixedCount || !this.isAllChecked;
   }
 
   async prepareToLaunchVitamAction() {
-    if (!this.selectedItemCountKnown()) {
+    if (!this.shouldReadSelectedItemCount()) {
       if (this.hasSearchCriterias()) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
@@ -1033,7 +1024,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         if (exactCountResults !== -1) {
           this.totalResults = exactCountResults;
           if (this.isAllChecked) {
-            this.itemSelected = this.totalResults - this.itemNotSelected;
+            this.selectedItemCount = this.totalResults - this.itemNotSelected;
           }
           this.waitingToGetFixedCount = false;
           this.managementRulesSharedDataService.emitHasExactCount(true);
@@ -1063,19 +1054,15 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.updateManagementRuleWithThresholds();
   }
 
-  private hasItemsSelected() {
-    return this.selectedItemCount && this.itemSelected > 0;
-  }
-
   private updateManagementRuleWithThresholds() {
     this.updateUnitManagementRuleService.updateManagementRuleWithThresholds(
       this.listOfUACriteriaSearch,
       this.criteriaSearchList,
       this.currentPage,
       this.tenantIdentifier,
-      this.itemSelected,
+      this.selectedItemCount,
       this.router,
-      this.itemSelected,
+      this.selectedItemCount,
       this.showConfirmBigNumberOfResultsSuscription,
       this.confirmSecondActionBigNumberOfResultsActionDialog,
       this.actionsWithThresholdReachedAlerteMessageDialogSubscription,
@@ -1086,295 +1073,114 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     );
   }
 
-  async launchEliminationAnalysisModal() {
-    await this.prepareToLaunchVitamAction();
-    this.selectedItemCount = this.selectedItemCountKnown();
-    if (this.hasItemsSelected()) {
-      // We know the count
-      if (this.bulkOperationsThreshold !== -1) {
-        // We defined a threshold
-        if (this.itemSelected > this.bulkOperationsThreshold) {
-          // error message prohibited
-          const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
-          this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
-            .afterClosed()
-            .pipe(filter((result) => !!result))
-            .subscribe(() => {});
-          this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
-        } else {
-          if (this.itemSelected > this.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD) {
-            // Warning and confirmation
+  private bulkOperationWarningWorkflow(operation: () => void): void {
+    const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+    const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+      panelClass: 'vitamui-dialog',
+    });
 
-            const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-            const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-              panelClass: 'vitamui-dialog',
-            });
-            dialogConfirmActionWithImportantAllowedCountRef
-              .afterClosed()
-              .pipe(filter((result) => !!result))
-              .subscribe(() => {
-                this.archiveUnitEliminationService.launchEliminationAnalysisModal(
-                  this.listOfUACriteriaSearch,
-                  this.selectedItemCount,
-                  this.itemSelected,
-                  this.tenantIdentifier,
-                  this.currentPage,
-                  this.confirmSecondActionBigNumberOfResultsActionDialog,
-                  this.showConfirmBigNumberOfResultsSuscription
-                );
-              });
-          } else {
-            // normal process
-
-            this.archiveUnitEliminationService.launchEliminationAnalysisModal(
-              this.listOfUACriteriaSearch,
-              this.selectedItemCount,
-              this.itemSelected,
-              this.tenantIdentifier,
-              this.currentPage,
-              this.confirmSecondActionBigNumberOfResultsActionDialog,
-              this.showConfirmBigNumberOfResultsSuscription
-            );
-          }
-        }
-      } else {
-        // no threshold defined
-        if (this.itemSelected > this.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD) {
-          // Warning and confirmation
-          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-            panelClass: 'vitamui-dialog',
-          });
-          dialogConfirmActionWithImportantAllowedCountRef
-            .afterClosed()
-            .pipe(filter((result) => !!result))
-            .subscribe(() => {
-              this.archiveUnitEliminationService.launchEliminationAnalysisModal(
-                this.listOfUACriteriaSearch,
-                this.selectedItemCount,
-                this.itemSelected,
-                this.tenantIdentifier,
-                this.currentPage,
-                this.confirmSecondActionBigNumberOfResultsActionDialog,
-                this.showConfirmBigNumberOfResultsSuscription
-              );
-            });
-        } else {
-          // normal process
-
-          this.archiveUnitEliminationService.launchEliminationAnalysisModal(
-            this.listOfUACriteriaSearch,
-            this.selectedItemCount,
-            this.itemSelected,
-            this.tenantIdentifier,
-            this.currentPage,
-            this.confirmSecondActionBigNumberOfResultsActionDialog,
-            this.showConfirmBigNumberOfResultsSuscription
-          );
-        }
-      }
-    }
+    dialogConfirmActionWithImportantAllowedCountRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(operation);
   }
 
-  async startLaunchEliminationModal() {
+  private bulkOperationErrorWorkflow(): void {
+    const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
+
+    this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {});
+    this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+  }
+
+  private async launchBulkOperationWorkflow(operation: () => void, defaultBulkOperationThreshold: number) {
     await this.prepareToLaunchVitamAction();
-    this.selectedItemCount = this.selectedItemCountKnown();
-    if (!this.hasItemsSelected()) {
+
+    if (!(this.shouldReadSelectedItemCount() && this.selectedItemCount > 0)) {
       return;
     }
-    // We know the count
-    if (this.bulkOperationsThreshold !== -1) {
-      // We defined a threshold
-      if (this.itemSelected > this.bulkOperationsThreshold) {
-        // error message prohibited
-        const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
-        this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
-          .afterClosed()
-          .pipe(filter((result) => !!result))
-          .subscribe(() => {});
-        this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
-      } else {
-        if (this.itemSelected > this.DEFAULT_ELIMINATION_THRESHOLD) {
-          // Warning and confirmation
 
-          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-            panelClass: 'vitamui-dialog',
-          });
-          dialogConfirmActionWithImportantAllowedCountRef
-            .afterClosed()
-            .pipe(filter((result) => !!result))
-            .subscribe(() => {
-              this.launchEliminationModal();
-            });
-        } else {
-          // normal process
-          this.launchEliminationModal();
-        }
-      }
-    } else {
-      // no threshold defined
-      if (this.itemSelected > this.DEFAULT_ELIMINATION_THRESHOLD) {
-        // Warning and confirmation
-        const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-        const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-          panelClass: 'vitamui-dialog',
-        });
-        dialogConfirmActionWithImportantAllowedCountRef
-          .afterClosed()
-          .pipe(filter((result) => !!result))
-          .subscribe(() => this.launchEliminationModal());
+    const hasBulkOperationThreshold = this.bulkOperationsThreshold !== -1;
+    const isGreaterThanBulkOperationThreshold = this.selectedItemCount > this.bulkOperationsThreshold;
+    const isGreaterThanDefaultBulkOperationThreshold = this.selectedItemCount > defaultBulkOperationThreshold;
+
+    if (hasBulkOperationThreshold) {
+      if (isGreaterThanBulkOperationThreshold) {
+        this.bulkOperationErrorWorkflow();
+      } else if (isGreaterThanDefaultBulkOperationThreshold) {
+        this.bulkOperationWarningWorkflow(operation);
       } else {
-        // normal process
-        this.launchEliminationModal();
+        operation();
       }
+    } else if (isGreaterThanDefaultBulkOperationThreshold) {
+      this.bulkOperationErrorWorkflow();
+    } else {
+      operation();
     }
   }
 
-  private launchEliminationModal() {
-    this.archiveUnitEliminationService.launchEliminationModal(
-      this.listOfUACriteriaSearch,
-      this.tenantIdentifier,
-      this.currentPage,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
+  async launchEliminationAnalysisModal(): Promise<void> {
+    this.launchBulkOperationWorkflow(
+      () =>
+        this.archiveUnitEliminationService.launchEliminationAnalysisModal(
+          this.listOfUACriteriaSearch,
+          this.shouldReadSelectedItemCount(),
+          this.selectedItemCount,
+          this.tenantIdentifier,
+          this.currentPage,
+          this.confirmSecondActionBigNumberOfResultsActionDialog,
+          this.showConfirmBigNumberOfResultsSuscription
+        ),
+      this.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD
     );
   }
 
-  async startLaunchExportDipModal() {
-    await this.prepareToLaunchVitamAction();
-    this.selectedItemCount = this.selectedItemCountKnown();
-    if (this.hasItemsSelected()) {
-      // We know the count
-      if (this.bulkOperationsThreshold !== -1) {
-        // We defined a threshold
-        if (this.itemSelected > this.bulkOperationsThreshold) {
-          // error message prohibited
-          const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
-          this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
-            .afterClosed()
-            .pipe(filter((result) => !!result))
-            .subscribe(() => {});
-          this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
-        } else {
-          if (this.itemSelected > this.DEFAULT_DIP_EXPORT_THRESHOLD) {
-            // Warning and confirmation
-
-            const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-            const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-              panelClass: 'vitamui-dialog',
-            });
-            dialogConfirmActionWithImportantAllowedCountRef
-              .afterClosed()
-              .pipe(filter((result) => !!result))
-              .subscribe(() => {
-                this.launchExportDipModal();
-              });
-          } else {
-            // normal process
-
-            this.launchExportDipModal();
-          }
-        }
-      } else {
-        // no threshold defined
-        if (this.itemSelected > this.DEFAULT_DIP_EXPORT_THRESHOLD) {
-          // Warning and confirmation
-          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-            panelClass: 'vitamui-dialog',
-          });
-          dialogConfirmActionWithImportantAllowedCountRef
-            .afterClosed()
-            .pipe(filter((result) => !!result))
-            .subscribe(() => {
-              this.launchExportDipModal();
-            });
-        } else {
-          // normal process
-          this.launchExportDipModal();
-        }
-      }
-    }
-  }
-
-  private launchExportDipModal() {
-    this.archiveUnitDipService.launchExportDipModal(
-      this.listOfUACriteriaSearch,
-      this.selectedItemCount,
-      this.accessContract,
-      this.tenantIdentifier,
-      this.itemSelected,
-      this.currentPage,
-      this.isAllChecked,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
+  async launchEliminationModal() {
+    this.launchBulkOperationWorkflow(
+      () =>
+        this.archiveUnitEliminationService.launchEliminationModal(
+          this.listOfUACriteriaSearch,
+          this.tenantIdentifier,
+          this.currentPage,
+          this.confirmSecondActionBigNumberOfResultsActionDialog
+        ),
+      this.DEFAULT_ELIMINATION_THRESHOLD
     );
   }
 
-  async startLaunchTransferRequestModal() {
-    await this.prepareToLaunchVitamAction();
-    this.selectedItemCount = this.selectedItemCountKnown();
-    if (!this.hasItemsSelected()) {
-      return;
-    }
-    // We know the count
-    if (this.bulkOperationsThreshold !== -1) {
-      // We defined a threshold
-      if (this.itemSelected > this.bulkOperationsThreshold) {
-        // error message prohibited
-        const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
-        this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
-          .afterClosed()
-          .pipe(filter((result) => !!result))
-          .subscribe(() => {});
-        this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
-      } else {
-        if (this.itemSelected > this.DEFAULT_TRANSFER_THRESHOLD) {
-          // Warning and confirmation
-
-          const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-          const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-            panelClass: 'vitamui-dialog',
-          });
-          dialogConfirmActionWithImportantAllowedCountRef
-            .afterClosed()
-            .pipe(filter((result) => !!result))
-            .subscribe(() => {
-              this.launchTransferRequestModal();
-            });
-        } else {
-          // normal process
-          this.launchTransferRequestModal();
-        }
-      }
-    } else {
-      // no threshold defined
-      if (this.itemSelected > this.DEFAULT_TRANSFER_THRESHOLD) {
-        // Warning and confirmation
-        const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-        const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-          panelClass: 'vitamui-dialog',
-        });
-        dialogConfirmActionWithImportantAllowedCountRef
-          .afterClosed()
-          .pipe(filter((result) => !!result))
-          .subscribe(() => this.launchTransferRequestModal());
-      } else {
-        // normal process
-        this.launchTransferRequestModal();
-      }
-    }
+  async launchExportDipModal() {
+    this.launchBulkOperationWorkflow(
+      () =>
+        this.archiveUnitDipService.launchExportDipModal(
+          this.listOfUACriteriaSearch,
+          this.shouldReadSelectedItemCount(),
+          this.accessContract,
+          this.tenantIdentifier,
+          this.selectedItemCount,
+          this.currentPage,
+          this.isAllChecked,
+          this.confirmSecondActionBigNumberOfResultsActionDialog
+        ),
+      this.DEFAULT_DIP_EXPORT_THRESHOLD
+    );
   }
 
-  private launchTransferRequestModal() {
-    this.archiveUnitDipService.launchTransferRequestModal(
-      this.listOfUACriteriaSearch,
-      this.selectedItemCount,
-      this.accessContract,
-      this.tenantIdentifier,
-      this.itemSelected,
-      this.currentPage,
-      this.isAllChecked,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
+  async launchTransferRequestModal() {
+    this.launchBulkOperationWorkflow(
+      () =>
+        this.archiveUnitDipService.launchTransferRequestModal(
+          this.listOfUACriteriaSearch,
+          this.shouldReadSelectedItemCount(),
+          this.accessContract,
+          this.tenantIdentifier,
+          this.selectedItemCount,
+          this.currentPage,
+          this.isAllChecked,
+          this.confirmSecondActionBigNumberOfResultsActionDialog
+        ),
+      this.DEFAULT_TRANSFER_THRESHOLD
     );
   }
 

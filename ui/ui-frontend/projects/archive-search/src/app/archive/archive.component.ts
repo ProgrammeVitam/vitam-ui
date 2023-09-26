@@ -41,7 +41,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEventService, Logger, SidenavPage, Unit } from 'ui-frontend-common';
+import {
+  AccessContract,
+  ExternalParameters,
+  ExternalParametersService,
+  GlobalEventService,
+  Logger,
+  SidenavPage,
+  Unit,
+} from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
@@ -109,6 +117,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   fetchUserExternalParameters() {
     this.accessContractSub = this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+
       if (accessConctractId && accessConctractId.length > 0) {
         this.accessContract = accessConctractId;
         this.foundAccessContract = true;
@@ -127,14 +136,11 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
           )
           .subscribe();
       }
-      const thresholdParams: any = parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD);
-      if (thresholdParams && thresholdParams.length > 0) {
-        this.bulkOperationsThreshold = Number(thresholdParams);
-        this.managementRulesSharedDataService.emitBulkOperationsThreshold(Number(thresholdParams));
-      } else {
-        this.bulkOperationsThreshold = -1;
-        this.managementRulesSharedDataService.emitBulkOperationsThreshold(-1);
-      }
+
+      const threshold = Number(parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD) || -1);
+
+      this.bulkOperationsThreshold = threshold;
+      this.managementRulesSharedDataService.emitBulkOperationsThreshold(threshold);
     });
   }
 
