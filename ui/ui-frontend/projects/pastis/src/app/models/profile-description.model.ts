@@ -16,6 +16,7 @@ export interface ProfileDescription extends Id {
     fields?: string[];
     path?: string;
     format?: string;
+    isEditable?:boolean;
 }
 
 export  class ProfileDescriptionModel implements ProfileDescription {

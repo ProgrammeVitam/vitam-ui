@@ -1,4 +1,4 @@
-<div  *ngIf="pending then loadingSpinner"></div>
+<div *ngIf="pending then loadingSpinner"></div>
 
 
 <ng-template #loadingSpinner>
@@ -33,11 +33,12 @@
           <i class="vitamui-icon vitamui-icon-deposit mr-3 "></i>
           <span style="align-items: center; margin:auto;">{{'PROFILE.LIST_PROFILE.IMPORTER_PROFIL' | translate}}</span>
 
-          <input #fileInput (change)="uploadProfile($event.target.files)" [uploader]="uploader" accept=".json, .rng" class="buttons"
+          <input #fileInput (change)="uploadProfile($event.target.files)" [uploader]="uploader" accept=".json, .rng"
+                 class="buttons"
                  ng2FileSelect style="display:none;" type="file"/>
         </button>
-        <pastis-popup-option  *ngIf="!isStandalone" [sedaUrl]="sedaUrl"
-                              [newProfileUrl]="newProfileUrl" ></pastis-popup-option>
+        <pastis-popup-option *ngIf="!isStandalone" [sedaUrl]="sedaUrl"
+                             [newProfileUrl]="newProfileUrl"></pastis-popup-option>
       </vitamui-common-banner>
 
     </div>
@@ -111,38 +112,43 @@
             <div *ngFor="let element of retrievedProfiles | filterByType:filterType | filterByStringName:search;"
                  class="vitamui-table-rows">
               <div class="vitamui-row d-flex align-items-center">
-                <div (click)="showProfile(element)" class="col-2 clickable" >
+                <div (click)="showProfile(element)" class="col-2 clickable">
                   {{element.type}}
                   <div *ngIf="!isStandalone">
                     <i *ngIf="element.status == 'ACTIVE'"
-                                     class="status-badge-green ml-3"></i>
-                  <i *ngIf="element.status == 'INACTIVE'" class="status-badge-red ml-3"></i>
+                       class="status-badge-green ml-3"></i>
+                    <i *ngIf="element.status == 'INACTIVE'" class="status-badge-red ml-3"></i>
                   </div>
                 </div>
-                <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word;">{{element.identifier}}</div>
-                <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word;">{{element.name}}</div>
-                <div (click)="showProfile(element)" class="col-2 mr-3 clickable">{{element.lastUpdate | date: 'medium':'UTC+4'}}</div>
+                <div (click)="showProfile(element)" class="col-3 clickable"
+                     style="word-wrap: break-word;">{{element.identifier}}</div>
+                <div (click)="showProfile(element)" class="col-3 clickable"
+                     style="word-wrap: break-word;">{{element.name}}</div>
+                <div (click)="showProfile(element)"
+                     class="col-2 mr-3 clickable">{{element.lastUpdate | date: 'medium':'UTC+4'}}</div>
                 <div class="col-2  actions">
                   <div>
                     <button (click)="editProfile(element)" class="btn btn-circle primary mr-3"
                             [disabled]="((!element.controlSchema || element.controlSchema === '{}') && element.type === 'PUA') || (!element.path && element.type === 'PA') || element.status === 'INACTIVE'">
                       <i [style.fontSize.px]="25" class="vitamui-icon vitamui-icon-edit"
-                        matTooltip="{{'PROFILE.LIST_PROFILE.MODIFIER_PROFIL_TOOLTIP' |
+                         matTooltip="{{'PROFILE.LIST_PROFILE.MODIFIER_PROFIL_TOOLTIP' |
                       translate}}"
                          matTooltipPosition="above" matTooltipClass="modifierToolTip"></i>
                     </button>
 
-                    <button (click)="changeExpand(element)" class="btn btn-circle outlin outline-primary mr-3" *ngIf="!isStandalone">
+                    <button (click)="changeExpand(element)" class="btn btn-circle outlin outline-primary mr-3"
+                            [disabled]="!element.isEditable" *ngIf="!isStandalone">
                       <i [style.fontSize.px]="25"
                          class="vitamui-icon vitamui-icon-more-horiz"></i>
                     </button>
-                    <div *ngIf="expanded" class="pastis-vitamui-option-container">
+                    <div *ngIf="expanded && element.isEditable" class="pastis-vitamui-option-container">
                       <button mat-menu-item (click)="fileInput.click()">
-                          <i class="vitamui-icon vitamui-icon-download"></i>
-                          &nbsp;&nbsp;&nbsp;
-                          <span class="text normal">{{'PROFILE.LIST_PROFILE.LOAD_PROFILE' | translate}}</span>
-                          <input #fileInput (change)="updateProfileNotice(element, $event.target.files)" [uploader]="uploader" accept=".json, .rng" class="buttons"
-                          ng2FileSelect style="display:none;" type="file"/>
+                        <i class="vitamui-icon vitamui-icon-download"></i>
+                        &nbsp;&nbsp;&nbsp;
+                        <span class="text normal">{{'PROFILE.LIST_PROFILE.LOAD_PROFILE' | translate}}</span>
+                        <input #fileInput (change)="updateProfileNotice(element, $event.target.files)"
+                               [uploader]="uploader" accept=".json, .rng" class="buttons"
+                               ng2FileSelect style="display:none;" type="file"/>
                       </button>
                     </div>
                   </div>
