@@ -46,7 +46,6 @@
         "CLASSIFICATIONREASSESSINGDATE": "Reassessment date",
         "NEEDREASSESSINGAUTHORIZATION": "Need for re-evaluation authorization"
       },
-
       "HOLD_RULE_PROPERTIES": {
         "HOLDREASON": "Motif de la règle de gel",
         "HOLDOWNER": "Propriétaire",
@@ -84,6 +83,7 @@
     "ELIMINATION": {
       "ANALYSIS": "Launch elimination analysis",
       "ELIMINATION_LAUNCHED": "Your request for elimination has been taken into account",
+      "ELIMINATION_ANALYSIS_LAUNCHED": "Your request for elimination analysis has been taken into account",
       "THRESHOLD_EXCEEDED": "The elimination analysis cannot be started. Please restrict your selection to a maximum of 10,000 archival units.",
       "EXECUTION": "Delete archives",
       "TO_ELIMINATE": "Do you want to eliminate",
@@ -198,7 +198,6 @@
         "DESCRIPTION_LEVEL": "Archive unit type",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE": "Elimination analysis operation Identifier",
-
         "ORIGIN": {
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Inherits at least one DUA rule",
           "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Has at least one DUA ruler",
@@ -233,7 +232,7 @@
         "SELECT_OTHER_FIELD": "Select another criteria",
         "SP_COMM": "Originating agency Comm",
         "SP_COMM_DT": "Originating agency Comm DT",
-        "TYPE" : "Type"
+        "TYPE": "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
@@ -395,7 +394,6 @@
       "UPDATE_CONFIRM_MESSAGE": "Warning, you are about to validate the rule changes on {{ua_selected}} archival units. Do you confirm this update? ",
       "EXIT_CONFIRM_MESSAGE": "Are you sure you want to quit updating business rules on {{ua_selected}} selected archival units?"
     },
-
     "CATEGORIES_NAME": {
       "STORAGE_RULE": "Current useful life (CUL)",
       "APPRAISAL_RULE": "Administrative useful life (AUL)",
@@ -405,7 +403,6 @@
       "REUSE_RULE": "Reuse",
       "CLASSIFICATION_RULE": "Classification"
     },
-
     "ALERTE_MESSAGES": {
       "BACK_TO_SELECTION": "Return to selection",
       "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",
