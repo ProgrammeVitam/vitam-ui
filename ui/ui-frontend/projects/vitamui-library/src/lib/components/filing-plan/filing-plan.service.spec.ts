@@ -2,7 +2,7 @@
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { Node } from 'projects/vitamui-library/src/public-api';
 import { BASE_URL, DescriptionLevel, FileType } from 'ui-frontend-common';
 import { FilingPlanService } from './filing-plan.service';
@@ -23,7 +23,7 @@ describe('FilingPlanService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it("should load a collection's tree", inject([FilingPlanService], (service: FilingPlanService) => {
+  it('should load a collection s tree', inject([FilingPlanService], (service: FilingPlanService) => {
     const rootNode: Node[] = [
       {
         id: 'prefix-2',
@@ -73,7 +73,7 @@ describe('FilingPlanService', () => {
     };
     children[1].children.push(subChild);
 
-    service.loadTree(42, 'test_contract_id', 'prefix').subscribe((tree) => {
+    service.loadTree(42, 'prefix').subscribe((tree) => {
       console.log('Result: ', tree);
       console.log('Expected: ', rootNode);
       expect(tree).toEqual(rootNode);
@@ -112,7 +112,7 @@ describe('FilingPlanService', () => {
   }));
 
   it('should return an empty tree if an error occurs', inject([FilingPlanService], (service: FilingPlanService) => {
-    service.loadTree(42, 'test_contract_id', '').subscribe((tree) => {
+    service.loadTree(42, '').subscribe((tree) => {
       expect(tree).toEqual([]);
     });
 
