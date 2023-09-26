@@ -12,8 +12,8 @@
   <span *ngIf="!canLoadExactCount">{{ archiveUnitCount }}</span>
   <span>
     {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} /
-    {{ (selectedOverThreshold && !exactCountLoaded ? 'ARCHIVE_SEARCH.MORE_THAN' : '') | translate }}
-    {{ (selectedOverThreshold && !exactCountLoaded ? threshold : selectedArchiveUnitCount) }}
+    {{ (displaySelectedArchiveUnitCount ? '' : 'ARCHIVE_SEARCH.MORE_THAN') | translate }}
+    {{ displaySelectedArchiveUnitCount ? selectedArchiveUnitCount : threshold }}
     {{ 'ARCHIVE_SEARCH.ONE_SELECTED' | translate | plural : selectedArchiveUnitCount }}
   </span>
 </ng-container>
