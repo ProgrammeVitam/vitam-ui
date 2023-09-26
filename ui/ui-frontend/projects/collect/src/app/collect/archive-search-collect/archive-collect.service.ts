@@ -42,8 +42,8 @@ import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/searc
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContract, AccessContractApiService, ApiUnitObject, FilingHoldingSchemeNode, Ontology, PagedResult, SearchCriteriaDto,
-  SearchCriteriaEltDto, SearchResponse, SearchService, Transaction, Unit,
+  AccessContract, AccessContractApiService, ApiUnitObject, FilingHoldingSchemeNode, Ontology, PagedResult, SearchArchiveUnitsInterface,
+  SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, SearchService, Transaction, Unit,
 } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
@@ -51,7 +51,7 @@ import { TransactionApiService } from '../core/api/transaction-api.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ArchiveCollectService extends SearchService<any> {
+export class ArchiveCollectService extends SearchService<any> implements SearchArchiveUnitsInterface {
   constructor(
     private projectsApiService: ProjectsApiService,
     private transactionApiService: TransactionApiService,

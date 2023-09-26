@@ -35,3 +35,5 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './profile.service';
+export * from './search-archive-units.interface';
+export * from './leaves-tree.service';

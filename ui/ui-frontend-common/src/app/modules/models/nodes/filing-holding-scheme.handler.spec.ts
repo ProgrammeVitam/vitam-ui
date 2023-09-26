@@ -39,7 +39,7 @@ export function newNode(
   return {
     id: currentId,
     title: currentId,
-    type: 'INGEST',
+    unitType: 'INGEST',
     descriptionLevel: currentDescriptionLevel,
     checked: false,
     children: currentChildren,

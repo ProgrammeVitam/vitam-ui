@@ -26,19 +26,19 @@
  */
 
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
-  DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, nodeToVitamuiIcon, PagedResult, ResultFacet, SearchCriteriaDto,
-  Unit
+  DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, LeavesTreeService, nodeToVitamuiIcon, PagedResult, ResultFacet,
+  SearchCriteriaDto
 } from 'ui-frontend-common';
 import { isEmpty } from 'underscore';
+import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { Pair } from '../../../models/utils';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
-import { LeavesTreeService } from './leaves-tree.service';
 
 @Component({
   selector: 'app-leaves-tree',
@@ -67,14 +67,16 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   showFacetsCount = false;
   private searchCriterias: SearchCriteriaDto;
   private subscriptions: Subscription = new Subscription();
+  private leavesTreeService: LeavesTreeService;
 
   constructor(
-    private leavesTreeService: LeavesTreeService,
     private archiveSharedDataService: ArchiveSharedDataService,
     private archiveFacetsService: ArchiveFacetsService,
     private translateService: TranslateService,
-    @Inject(LOCALE_ID) private locale: string,
-  ) {}
+    private archiveCollectService: ArchiveCollectService,
+  ) {
+    this.leavesTreeService = new LeavesTreeService(this.archiveCollectService);
+  }
 
   ngOnInit(): void {
     // Get last criteria
@@ -118,19 +120,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addOrphansNode() {
-    const unknonwFacets = FilingHoldingSchemeHandler.filterUnknownFacetsIds(this.nestedDataSourceLeaves.data,
-      this.searchRequestResultFacets);
-    if (!isEmpty(unknonwFacets)) {
-      this.leavesTreeService.loadNodesDetailsFromFacetsIds(unknonwFacets)
-        .subscribe((pageResult) => {
-          const nodes = FilingHoldingSchemeHandler.buildNestedTreeLevels(pageResult.results, this.locale);
-          FilingHoldingSchemeHandler.setCountRecursively(nodes, unknonwFacets);
-          FilingHoldingSchemeHandler.addToOrphansNode(nodes, this.nestedDataSourceLeaves.data,
-            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'));
-          this.refreshTreeNodes();
-          this.loadingNodesDetails = false;
-        });
-    }
     if (this.searchRequestTotalResults > 0 && isEmpty(this.nestedDataSourceLeaves.data)) {
       FilingHoldingSchemeHandler.addOrphansNodeFromTree(this.nestedDataSourceLeaves.data,
         this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'), this.searchRequestTotalResults);
@@ -210,8 +199,8 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   private searchOrphans(parentNode: FilingHoldingSchemeNode) {
     this.leavesTreeService.searchOrphans(parentNode, this.searchCriterias)
-      .subscribe((results: Unit[]) => {
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, results);
+      .subscribe((pagedResult: PagedResult) => {
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets(matchingNodesNumbers.nodesAddedList);
         this.refreshTreeNodes();
       });
