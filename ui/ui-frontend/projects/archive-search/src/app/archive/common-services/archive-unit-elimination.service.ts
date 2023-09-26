@@ -25,16 +25,16 @@
  * accept its terms.
  */
 
-import { Injectable, TemplateRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
-import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
-import { ArchiveService } from '../archive.service';
-import { ArchiveSearchHelperService } from './archive-search-helper.service';
+import {Injectable, TemplateRef} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {TranslateService} from '@ngx-translate/core';
+import {Subscription} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {SearchCriteriaEltDto, StartupService} from 'ui-frontend-common';
+import {ArchiveSearchComponent} from '../archive-search/archive-search.component';
+import {ArchiveService} from '../archive.service';
+import {ArchiveSearchHelperService} from './archive-search-helper.service';
 
 const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
@@ -67,7 +67,7 @@ export class ArchiveUnitEliminationService {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
       const showConfirmBigNumberOfResultsSuscription = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        { panelClass: 'vitamui-dialog' }
+        {panelClass: 'vitamui-dialog'}
       );
 
       showConfirmBigNumberOfResultsSuscription
@@ -100,7 +100,7 @@ export class ArchiveUnitEliminationService {
       const eliminationAnalysisResponse = data.$results;
       if (eliminationAnalysisResponse && eliminationAnalysisResponse[0].itemId) {
         const guid = eliminationAnalysisResponse[0].itemId;
-        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
+        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_ANALYSIS_LAUNCHED');
         const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + tenantIdentifier + '?guid=' + guid;
         this.archiveHelperService.openSnackBarForWorkflow(this.snackBar, message, serviceUrl);
       }
@@ -115,7 +115,7 @@ export class ArchiveUnitEliminationService {
   ) {
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
       confirmSecondActionBigNumberOfResultsActionDialog,
-      { panelClass: 'vitamui-dialog' }
+      {panelClass: 'vitamui-dialog'}
     );
     dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
       .afterClosed()
