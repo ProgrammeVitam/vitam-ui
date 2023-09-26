@@ -6,7 +6,7 @@
 
     <div class="row">
       <div class="col-12">
-        <div *ngIf="!form.get('usePlatformThreshold').value">
+        <div class="select-threshold" *ngIf="!form.get('usePlatformThreshold').value">
           <mat-form-field class="vitamui-mat-select" required="required">
             <mat-select
               formControlName="bulkOperationsThreshold"
@@ -22,17 +22,18 @@
               <i class="material-icons">keyboard_arrow_up</i>
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
-            <i
-              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
-              [matTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
-              matTooltipClass="vitamui-tooltip"
-              [matTooltipShowDelay]="300"
-            ></i>
           </mat-form-field>
+
+          <i class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
+             [matTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
+             matTooltipClass="vitamui-tooltip"
+             [matTooltipShowDelay]="300"
+          ></i>
+
         </div>
       </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
       <button
         type="submit"

@@ -1,13 +1,18 @@
 .icon-information {
-    position: absolute;
-    float: right;
-    top: 3px;
-    right: -75px;
+    margin-left: 15px;
     width: 30px;
     height: 31px;
     font-size: 26px;
     font-weight: bold;
+    color: var(--vitamui-secondary);
 }
-.vitamui-mat-select{
+
+.vitamui-mat-select {
     width: 70%;
+}
+
+.select-threshold {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
