@@ -35,7 +35,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, tap } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import {
   ArchiveSearchResultFacets, CriteriaDataType, CriteriaOperator, CriteriaValue, Direction, FilingHoldingSchemeNode, Logger, ORPHANS_NODE_ID,
   PagedResult, SearchCriteria, SearchCriteriaAddAction, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements,
@@ -481,6 +481,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
     if (this.hasSearchCriterias()) {
+      this.search$ = this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList);
       this.rulesFacetsComputed = false;
       this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
       this.callVitamApiService(this.rulesFacetsCanBeComputed);
@@ -551,11 +552,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveExchangeDataService.emitSearchCriterias(searchCriterias);
     this.archiveService
       .searchArchiveUnitsByCriteria(searchCriterias)
-      .pipe(
-        tap(() => {
-          this.search$ = this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList);
-        })
-      )
       .subscribe(
         (pagedResult: PagedResult) => {
           if (includeFacets) {
