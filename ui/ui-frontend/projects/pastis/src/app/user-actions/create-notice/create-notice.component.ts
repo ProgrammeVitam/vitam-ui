@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { ApplicationService } from 'ui-frontend-common';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
@@ -11,6 +12,7 @@ import { ProfileService } from '../../core/services/profile.service';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { Notice } from '../../models/notice.model';
 import { Profile } from '../../models/profile';
+import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
 
@@ -45,7 +47,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   okLabel: string;
   cancelLabel: string;
   arrayStatus: Status[];
-  typeProfile?: string;
+  typeProfile?: ProfileType;
   modePUA: boolean;
   information: string;
   presenceNonDeclareMetadonneesPUAControl = new FormControl(false);
@@ -66,12 +68,15 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
               private popupService: PopupService,
               private fileService: FileService,
               private router: Router,
-              private profileService: ProfileService) {
+              private profileService: ProfileService,
+              private applicationService: ApplicationService,) {
 
   }
 
   ngOnInit() {
-    this.externalIdentifierEnabled = this.popupService.externalIdentifierEnabled
+    this.applicationService.isApplicationExternalIdentifierEnabled('ARCHIVE_UNIT_PROFILE').subscribe((value) => {
+      this.externalIdentifierEnabled = value;
+    });
     this.editNotice = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
     if (this.editNotice) {
       this.validate = true;
@@ -100,8 +105,8 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       { value: 'INACTIVE', viewValue: this.profilInactif },
       { value: 'ACTIVE', viewValue: this.profilActif }
     ];
-    this.typeProfile = this.data.modeProfile;
-    if (this.typeProfile === 'PUA') {
+    this.typeProfile = this.data.profileMode;
+    if (this.typeProfile === ProfileType.PUA) {
       this.modePUA = true;
     }
     this.information = 'texte d\'information';

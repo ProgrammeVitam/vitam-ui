@@ -37,7 +37,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ApplicationService } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'
@@ -50,14 +49,7 @@ export class PopupService {
 
   externalIdentifierEnabled: boolean;
 
-  constructor(private applicationService: ApplicationService,) {
-    this.updateSlaveMode()
-  }
-
-  private updateSlaveMode() {
-    this.applicationService.isApplicationExternalIdentifierEnabled('PASTIS').subscribe((value) => {
-      this.externalIdentifierEnabled = value;
-    });
+  constructor() {
   }
 
   getPopUpDataOnOpen() {
