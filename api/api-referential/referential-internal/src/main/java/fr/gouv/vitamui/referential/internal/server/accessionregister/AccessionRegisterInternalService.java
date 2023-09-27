@@ -65,6 +65,7 @@ import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDt
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ExportAccessionRegisterResultParam;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -135,8 +136,9 @@ public class AccessionRegisterInternalService {
         //Constructing json query for Vitam
         LOGGER.debug("List of Accession Registers EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         JsonNode query;
+        AccessionRegisterSearchDto accessionRegisterSearchDto;
         try {
-            AccessionRegisterSearchDto accessionRegisterSearchDto = criteria.isPresent() ?
+            accessionRegisterSearchDto = criteria.isPresent() ?
                 objectMapper.readValue(criteria.get(), AccessionRegisterSearchDto.class) :
                 new AccessionRegisterSearchDto();
             query = AccessRegisterVitamQueryHelper.createQueryDSL(
@@ -159,19 +161,38 @@ public class AccessionRegisterInternalService {
             resultTotal = hits.getTotal();
         }
 
-        boolean hasMore = pageNumber * pageSize + resultSize < resultTotal;
+        boolean hasMoreData = pageNumber * pageSize + resultSize < resultTotal;
         List<AccessionRegisterDetailDto> valuesDto = AccessionRegisterConverter.toDetailsDtos(results.getResults());
         valuesDto.forEach(value -> {
             value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency()));
             value.setSubmissionAgencyLabel(agenciesMap.get(value.getSubmissionAgency()));
         });
+        AccessionRegisterStatsDto statsDto;
+        //Build statistics from paged data
+        if (hasMoreData || pageNumber > 0) {
+            //fetch stats from all records with limit 10000
+            statsDto = buildStatisticData(accessionRegisterSearchDto, vitamContext);
+        } else {
+            //extract stats from current results
+            statsDto = AccessRegisterStatsHelper.fetchStats(results.getResults());
+        }
+        return new PaginatedValuesDto<>(valuesDto, pageNumber, pageSize, resultTotal, hasMoreData,
+            Map.of("stats", statsDto));
+    }
 
-        //Build statistique datas
-        Map<String, Object> optionalValues = new HashMap<>();
-        AccessionRegisterStatsDto statsDto = AccessRegisterStatsHelper.fetchStats(results.getResults());
-        optionalValues.put("stats", statsDto);
-
-        return new PaginatedValuesDto<>(valuesDto, pageNumber, pageSize, resultTotal, hasMore, optionalValues);
+    @NotNull
+    private AccessionRegisterStatsDto buildStatisticData(AccessionRegisterSearchDto accessionRegisterSearchDto,
+        VitamContext vitamContext) {
+        try {
+            JsonNode bigStatisticQuery =
+                AccessRegisterVitamQueryHelper.createQueryDSL(accessionRegisterSearchDto, 0, 10000, null, null);
+            //fetching all 10000 elements as another query to compute statistics as quick solution
+            AccessionRegisterDetailResponseDto statisticResults =
+                fetchingAllPaginatedDataFromVitam(vitamContext, bigStatisticQuery);
+            return AccessRegisterStatsHelper.fetchStats(statisticResults.getResults());
+        } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
+            throw new InternalServerException("Can't create dsl query to get paginated accession registers", e);
+        }
     }
 
     /**
