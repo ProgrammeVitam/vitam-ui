@@ -34,21 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
-import {of} from 'rxjs';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {FileFormatService} from '../../../file-format/file-format.service';
-import {IngestContractService} from '../../ingest-contract.service';
-import {IngestContractFormatTabComponent} from './ingest-contract-format-tab.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { of } from 'rxjs';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { FileFormatService } from '../../../file-format/file-format.service';
+import { IngestContractService } from '../../ingest-contract.service';
+import { IngestContractFormatTabComponent } from './ingest-contract-format-tab.component';
+import { IngestContract } from "ui-frontend-common";
 
 
-describe('IngestContractFormatTabComponent',() => {
+describe('IngestContractFormatTabComponent', () => {
   let component: IngestContractFormatTabComponent;
   let fixture: ComponentFixture<IngestContractFormatTabComponent>;
 
-  const ingestContractValue={
+  const ingestContractValue: IngestContract = {
     tenant: 0,
     version: 1,
     description: 'desc',
@@ -71,20 +72,21 @@ describe('IngestContractFormatTabComponent',() => {
     formatType: [''],
     archiveProfiles: [''],
     managementContractId: 'MC-000001',
-    computeInheritedRulesAtIngest: true
+    computeInheritedRulesAtIngest: true,
+    signaturePolicy: undefined,
   };
 
   beforeEach(
     waitForAsync(() => {
-      const fileFormatServiceMock={
+      const fileFormatServiceMock = {
         getAllForTenant: () => of([]),
       };
       TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule,VitamUICommonTestModule],
+        imports: [ReactiveFormsModule, VitamUICommonTestModule],
         declarations: [IngestContractFormatTabComponent],
         providers: [
-          {provide: IngestContractService,useValue: {}},
-          {provide: FileFormatService,useValue: fileFormatServiceMock},
+          { provide: IngestContractService, useValue: {} },
+          { provide: FileFormatService, useValue: fileFormatServiceMock },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
@@ -92,13 +94,13 @@ describe('IngestContractFormatTabComponent',() => {
   );
 
   beforeEach(() => {
-    fixture=TestBed.createComponent(IngestContractFormatTabComponent);
-    component=fixture.componentInstance;
-    component.ingestContract=ingestContractValue;
+    fixture = TestBed.createComponent(IngestContractFormatTabComponent);
+    component = fixture.componentInstance;
+    component.ingestContract = ingestContractValue;
     fixture.detectChanges();
   });
 
-  it('should create',() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

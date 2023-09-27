@@ -42,7 +42,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, ENVIRONMENT,InjectorModule, LoggerModule, StartupService, Unit, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  BASE_URL, DescriptionLevel, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, Unit, UnitType, WINDOW_LOCATION
+} from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata.interface';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
@@ -126,7 +128,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
     const archiveUnit: Unit = {
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-      DescriptionLevel: 'RecordGrp',
+      DescriptionLevel: DescriptionLevel.RECORD_GRP,
       Title: 'Gambetta par producteur1',
       Description: 'Station Gambetta ligne 3 Paris',
       '#id': 'aeaqaaaaaehkfhaythjgjhfg545szniaaacq',
@@ -135,7 +137,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#min': 1,
       '#max': 1,
       '#allunitups': [],
-      '#unitType': 'INGEST',
+      '#unitType': UnitType.INGEST,
       '#operations': ['aeeaaaaaaghpgxejaaxyyamdrz6r6daaaaaq'],
       '#opi': 'aeeaaaaaaghpgxejaaxyyamdrz6r6daaaaaq',
       '#originating_agency': 'producteur1',
@@ -161,7 +163,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
@@ -187,7 +189,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
@@ -213,7 +215,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       Title_: { en: 'Test' },
@@ -238,7 +240,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       Title_: { en: 'Test' },
@@ -263,7 +265,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       Title: 'test tets',
@@ -296,7 +298,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       Description: 'test tets',
@@ -345,7 +347,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       Title: 'test tets',
@@ -366,7 +368,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       StartDate: new Date(),

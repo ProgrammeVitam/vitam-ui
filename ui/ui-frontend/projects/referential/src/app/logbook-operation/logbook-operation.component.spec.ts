@@ -41,6 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent, SearchBarModule } from 'ui-frontend-common';
 import { environment } from '../../environments/environment';
@@ -56,7 +57,14 @@ describe('LogbookOperationComponent', () => {
       const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
       matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
       TestBed.configureTestingModule({
-        imports: [MatMenuModule, ReactiveFormsModule, InjectorModule, LoggerModule.forRoot(), SearchBarModule],
+        imports: [
+          MatMenuModule,
+          ReactiveFormsModule,
+          InjectorModule,
+          TranslateModule.forRoot(),
+          LoggerModule.forRoot(),
+          SearchBarModule
+        ],
         declarations: [LogbookOperationComponent, SearchBarComponent],
         providers: [
           { provide: MatDialog, useValue: matDialogSpy },

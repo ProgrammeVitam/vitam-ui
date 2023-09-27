@@ -36,17 +36,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
-  ApiUnitObject,
-  BASE_URL,
-  ENVIRONMENT,
-  FileInfoDto,
-  FormatIdentificationDto,
-  InjectorModule,
-  LoggerModule,
-  ObjectQualifierType,
-  Unit,
-  VersionWithQualifierDto,
-  WINDOW_LOCATION
+  ApiUnitObject, BASE_URL, DescriptionLevel, ENVIRONMENT, FileInfoDto, FormatIdentificationDto, InjectorModule, LoggerModule,
+  ObjectQualifierType, Unit, UnitType, VersionWithQualifierDto, WINDOW_LOCATION
 } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
@@ -107,7 +98,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': 'objectId',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
@@ -201,11 +192,11 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': 'objectId',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: 'Item',
+      DescriptionLevel: DescriptionLevel.ITEM,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
@@ -223,11 +214,11 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': 'objectId',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: 'RecordGrp',
+      DescriptionLevel: DescriptionLevel.RECORD_GRP,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
@@ -244,11 +235,11 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     component.archiveUnit = {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: 'Item',
+      DescriptionLevel: DescriptionLevel.ITEM,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };

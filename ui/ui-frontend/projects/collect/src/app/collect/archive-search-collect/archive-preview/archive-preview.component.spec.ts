@@ -46,7 +46,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, Unit, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  BASE_URL, DescriptionLevel, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, Unit, UnitType, WINDOW_LOCATION
+} from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
@@ -101,7 +103,7 @@ describe('ArchivePreviewComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': null,
       '#unitups': [],
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
@@ -140,14 +142,14 @@ describe('ArchivePreviewComponent', () => {
     const archiveUnit: Unit = {
       '#id': 'aeaqaaaaaehlvxukaazfaame7fyo5myaaaba',
       Title: 'Porte de Bagnolet par producteur1',
-      DescriptionLevel: 'RecordGrp',
+      DescriptionLevel: DescriptionLevel.RECORD_GRP,
       Description: 'Station Porte de Bagnolet ligne 3 Paris',
       '#tenant': 1,
       '#unitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
       '#min': 1,
       '#max': 2,
       '#allunitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],
-      '#unitType': 'INGEST',
+      '#unitType': UnitType.INGEST,
       '#operations': ['aeeaaaaaaghnanqdabliwame7fyokjqaaaaq'],
       '#opi': 'aeeaaaaaaghnanqdabliwame7fyokjqaaaaq',
       '#originating_agency': 'producteur1',

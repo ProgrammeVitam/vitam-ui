@@ -44,13 +44,7 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import {
-  InheritedPropertyDto,
-  InjectorModule,
-  LoggerModule,
-  ManagementRule,
-  RuleCategoryVitamUiDto,
-  Unit,
-  UnitRuleDto,
+  InheritedPropertyDto, InjectorModule, LoggerModule, ManagementRule, RuleCategoryVitamUiDto, Unit, UnitRuleDto, UnitType,
   VitamuiMissingTranslationHandler,
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
@@ -96,7 +90,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     '#allunitups': [],
     '#id': 'id',
     '#object': '',
-    '#unitType': '',
+    '#unitType': UnitType.INGEST,
     '#unitups': [],
     '#opi': '',
     Title_: { fr: 'Teste', en: 'Test' },
@@ -244,19 +238,19 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       AccessRule: null,
       UpdateOperation: null,
     };
-    const archiveUnit: Unit = {
+    const archiveUnit2: Unit = {
       '#management': unitManagementRules,
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
     // When
-    component.archiveUnitRules = archiveUnit;
+    component.archiveUnitRules = archiveUnit2;
 
     // Then
     expect(component.getClassificationRulePropertyStatus(property)).toBeDefined();
