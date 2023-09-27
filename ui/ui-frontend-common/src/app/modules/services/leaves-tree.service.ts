@@ -1,9 +1,8 @@
 import { EMPTY, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { DescriptionLevel } from '../description-level.enum';
 import {
   CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaEltDto,
-  SearchCriteriaTypeEnum
+  SearchCriteriaTypeEnum, UnitType
 } from '../models';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 
@@ -70,13 +69,11 @@ export class LeavesTreeService {
         dataType: CriteriaDataType.STRING,
       },
       {
-        criteria: 'DescriptionLevel',
+        criteria: '#unitType',
         operator: CriteriaOperator.IN,
         category: SearchCriteriaTypeEnum.FIELDS,
         values: [
-          { id: DescriptionLevel.RECORD_GRP, value: DescriptionLevel.RECORD_GRP },
-          { id: DescriptionLevel.FILE, value: DescriptionLevel.FILE },
-          { id: DescriptionLevel.ITEM, value: DescriptionLevel.ITEM },
+          { id: UnitType.INGEST, value: UnitType.INGEST },
         ],
         dataType: CriteriaDataType.STRING,
       },

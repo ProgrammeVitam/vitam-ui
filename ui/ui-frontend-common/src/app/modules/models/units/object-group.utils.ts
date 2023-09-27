@@ -25,7 +25,7 @@
  * accept its terms.
  */
 import { QualifierDto, VersionDto, VersionWithQualifierDto } from './object-group.interface';
-import { ObjectQualifierTypeList } from './unit.enums';
+import { ObjectQualifierTypeList } from './object-qualifier.enums';
 
 export function qualifiersToVersionsWithQualifier(qualifiers: Array<QualifierDto>): Array<VersionWithQualifierDto> {
   if (!qualifiers || qualifiers.length < 1) {

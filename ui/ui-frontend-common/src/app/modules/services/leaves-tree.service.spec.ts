@@ -1,8 +1,7 @@
 import { of } from 'rxjs';
-import { DescriptionLevel } from '../description-level.enum';
 import {
-  CriteriaDataType, CriteriaOperator, CriteriaValue, FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto, SearchCriteriaEltDto,
-  SearchCriteriaSort, SearchCriteriaTypeEnum
+  CriteriaDataType, CriteriaOperator, CriteriaValue, DescriptionLevel, FilingHoldingSchemeNode, PagedResult, SearchCriteriaDto,
+  SearchCriteriaEltDto, SearchCriteriaSort, SearchCriteriaTypeEnum, UnitType
 } from '../models';
 import { newNode } from '../models/nodes/filing-holding-scheme.handler.spec';
 import { DEFAULT_UNIT_PAGE_SIZE, LeavesTreeService } from './leaves-tree.service';
@@ -17,7 +16,7 @@ export function newToggledNode(
   return {
     id: currentId,
     title: currentId,
-    unitType: 'INGEST',
+    unitType: UnitType.INGEST,
     descriptionLevel: DescriptionLevel.ITEM,
     checked: false,
     children: currentChildren,
@@ -331,13 +330,11 @@ describe('FilingHoldingSchemeNodeService', () => {
             dataType: CriteriaDataType.STRING,
           },
           {
-            criteria: 'DescriptionLevel',
+            criteria: '#unitType',
             operator: CriteriaOperator.IN,
             category: SearchCriteriaTypeEnum.FIELDS,
             values: [
-              { id: DescriptionLevel.RECORD_GRP, value: DescriptionLevel.RECORD_GRP },
-              { id: DescriptionLevel.FILE, value: DescriptionLevel.FILE },
-              { id: DescriptionLevel.ITEM, value: DescriptionLevel.ITEM },
+              { id: UnitType.INGEST, value: UnitType.INGEST },
             ],
             dataType: CriteriaDataType.STRING,
           },

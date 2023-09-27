@@ -27,7 +27,7 @@
 
 import { QualifierDto, VersionDto } from './object-group.interface';
 import { qualifiersToVersionsWithQualifier } from './object-group.utils';
-import { ObjectQualifierType } from './unit.enums';
+import { ObjectQualifierType } from './object-qualifier.enums';
 
 describe('unit-object-helper tests', () => {
 

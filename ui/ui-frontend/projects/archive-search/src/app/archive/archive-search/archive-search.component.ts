@@ -27,47 +27,20 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  AfterContentChecked,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  TemplateRef,
+  AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, Subscription, merge } from 'rxjs';
+import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
 import {
-  ArchiveSearchResultFacets,
-  CriteriaDataType,
-  CriteriaOperator,
-  CriteriaValue,
-  Direction,
-  FilingHoldingSchemeNode,
-  Logger,
-  ORPHANS_NODE_ID,
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaAddAction,
-  SearchCriteriaCategory,
-  SearchCriteriaEltDto,
-  SearchCriteriaEltements,
-  SearchCriteriaHistory,
-  SearchCriteriaMgtRuleEnum,
-  SearchCriteriaRemoveAction,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  Unit,
-  VitamuiRoles,
+  ArchiveSearchResultFacets, CriteriaDataType, CriteriaOperator, CriteriaValue, Direction, FilingHoldingSchemeNode, Logger, ORPHANS_NODE_ID,
+  PagedResult, SearchCriteria, SearchCriteriaAddAction, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements,
+  SearchCriteriaHistory, SearchCriteriaMgtRuleEnum, SearchCriteriaRemoveAction, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, Unit,
+  UnitType, VitamuiRoles,
 } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -96,6 +69,8 @@ const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
   styleUrls: ['./archive-search.component.scss'],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
+  readonly UnitType = UnitType;
+
   DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD = 100000;
   DEFAULT_DIP_EXPORT_THRESHOLD = 100000;
   DEFAULT_ELIMINATION_THRESHOLD = 10000;
@@ -523,7 +498,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     );
   }
 
-  getArchiveUnitType(archiveUnit: any) {
+  getArchiveUnitType(archiveUnit: Unit): UnitType {
     if (archiveUnit) {
       return archiveUnit['#unitType'];
     }

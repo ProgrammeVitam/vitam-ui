@@ -26,9 +26,8 @@
  *
  */
 import { isEmpty } from 'underscore';
-import { DescriptionLevel } from '../../description-level.enum';
 import { ResultFacet } from '../criteria';
-import { Unit } from '../units';
+import { DescriptionLevel, Unit } from '../units';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';
 import { copyNodeWithoutChildren } from './node.utils';
 

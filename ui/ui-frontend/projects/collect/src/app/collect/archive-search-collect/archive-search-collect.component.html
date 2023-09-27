@@ -437,7 +437,7 @@
                 </div>
                 <div class="col-1 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
                   <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
-                    <ng-container *ngSwitchCase="'INGEST'">
+                    <ng-container *ngSwitchCase="UnitType.INGEST">
                       <span class="table-filter-icon">
                         <ng-container *ngIf="!archiveUnit['#object']">
                           <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
@@ -447,10 +447,10 @@
                         </ng-container>
                       </span>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'HOLDING_UNIT'">
+                    <ng-container *ngSwitchCase="UnitType.HOLDING_UNIT">
                       <i class="vitamui-icon vitamui-icon-icone-arbre vitamui-row-icon status-badge"></i>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'FILING_UNIT'">
+                    <ng-container *ngSwitchCase="UnitType.FILING_UNIT">
                       <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge"></i>
                     </ng-container>
                   </span>

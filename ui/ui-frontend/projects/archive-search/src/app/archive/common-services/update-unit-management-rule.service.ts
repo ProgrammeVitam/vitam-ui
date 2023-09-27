@@ -31,7 +31,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, UnitType } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
@@ -122,7 +122,7 @@ export class UpdateUnitManagementRuleService {
   ) {
     listOfUACriteriaSearch.push({
       criteria: ARCHIVE_UNIT_HOLDING_UNIT,
-      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
+      values: [{ value: UnitType.HOLDING_UNIT, id: UnitType.HOLDING_UNIT }],
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
       dataType: CriteriaDataType.STRING,
