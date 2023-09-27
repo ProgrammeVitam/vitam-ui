@@ -35,12 +35,13 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @EnableMongoRepositories(
-	basePackageClasses =  {ExternalParametersRepository.class, CustomSequenceRepository.class, GroupRepository.class,
-        OwnerRepository.class, ProfileRepository.class, UserRepository.class, TenantRepository.class },
-	repositoryBaseClass = VitamUIRepositoryImpl.class)
+    basePackageClasses = {ExternalParametersRepository.class, CustomSequenceRepository.class, GroupRepository.class,
+        OwnerRepository.class, ProfileRepository.class, UserRepository.class, TenantRepository.class},
+    repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegrationTest {
 
-	private ExternalParametersInternalService service;
+    public static final String ANY_EXTERNAL_PARAM_ID = "ANY_EXTERNAL_PARAM_ID";
+    private ExternalParametersInternalService service;
 
     @MockBean
     private ExternalParametersRepository externalParametersRepository;
@@ -66,7 +67,7 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
     @Before
     public void setup() {
         service = new ExternalParametersInternalService(
-        		sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService,
+            sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService,
             iamLogbookService);
     }
 
@@ -74,10 +75,12 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
     public void testGetOne() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         user.getProfileGroup().getProfiles().get(0).setApplicationName(Application.EXTERNAL_PARAMS.toString());
+        user.getProfileGroup().getProfiles().get(0).setExternalParamId(ANY_EXTERNAL_PARAM_ID);
         ExternalParameters externalParameters = new ExternalParameters();
         externalParameters.setId(ID);
 
-    	when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(externalParameters));
+        when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.of(externalParameters));
         when(internalSecurityService.getUser()).thenReturn(user);
 
         ExternalParametersDto res = this.service.getMyExternalParameters();
