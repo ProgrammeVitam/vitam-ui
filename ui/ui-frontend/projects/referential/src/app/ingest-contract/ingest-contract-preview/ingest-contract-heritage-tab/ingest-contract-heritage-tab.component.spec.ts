@@ -70,6 +70,7 @@ describe('IngestContractHeritageTabComponent', () => {
     archiveProfiles: [],
     managementContractId: 'MC-000001',
     computeInheritedRulesAtIngest: false,
+    signaturePolicy: undefined,
   };
 
   beforeEach(waitForAsync(() => {

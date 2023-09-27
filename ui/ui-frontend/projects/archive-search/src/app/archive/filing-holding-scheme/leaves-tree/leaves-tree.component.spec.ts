@@ -34,7 +34,9 @@ import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { DescriptionLevel, FilingHoldingSchemeNode, InjectorModule, LoggerModule, PagedResult, ResultFacet } from 'ui-frontend-common';
+import {
+  DescriptionLevel, FilingHoldingSchemeNode, InjectorModule, LoggerModule, PagedResult, ResultFacet, UnitType
+} from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';
@@ -57,7 +59,7 @@ export function newNode(
   return {
     id: currentId,
     title: currentId,
-    unitType: 'INGEST',
+    unitType: UnitType.INGEST,
     descriptionLevel: currentDescriptionLevel,
     checked: false,
     children: currentChildren,
@@ -152,8 +154,8 @@ describe('LeavesTreeComponent', () => {
     const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      type: 'INGEST',
-      descriptionLevel: 'Item',
+      unitType: UnitType.INGEST,
+      descriptionLevel: DescriptionLevel.ITEM,
       label: 'string',
       children: [],
       count: 55,
@@ -174,6 +176,7 @@ describe('LeavesTreeComponent', () => {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
       type: 'HoldingSchema',
+      unitType: UnitType.HOLDING_UNIT,
       label: 'string',
       children: [],
       vitamId: 'string',
@@ -255,7 +258,7 @@ describe('LeavesTreeComponent', () => {
     const node: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      unitType: 'INGEST',
+      unitType: UnitType.INGEST,
       descriptionLevel: DescriptionLevel.ITEM,
       label: 'string',
       children: [],
@@ -274,8 +277,8 @@ describe('LeavesTreeComponent', () => {
     const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      unitType: 'INGEST',
-      descriptionLevel: 'Item',
+      unitType: UnitType.INGEST,
+      descriptionLevel: DescriptionLevel.ITEM,
       label: 'string',
       children: [],
       count: 55,
@@ -294,8 +297,8 @@ describe('LeavesTreeComponent', () => {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
       type: 'INGEST',
-      unitType: 'INGEST',
-      descriptionLevel: 'Item',
+      unitType: UnitType.INGEST,
+      descriptionLevel: DescriptionLevel.ITEM,
       label: 'string',
       children: [],
       count: 55,

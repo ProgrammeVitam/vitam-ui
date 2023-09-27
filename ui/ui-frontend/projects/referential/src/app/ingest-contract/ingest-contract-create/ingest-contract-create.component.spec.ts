@@ -38,6 +38,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { EMPTY, of } from 'rxjs';
@@ -84,7 +85,11 @@ describe('IngestContractCreateComponent', () => {
       };
 
       TestBed.configureTestingModule({
-        imports: [VitamUICommonTestModule, MatSnackBarModule],
+        imports: [
+          VitamUICommonTestModule,
+          MatSnackBarModule,
+          MatButtonToggleModule,
+        ],
         declarations: [IngestContractCreateComponent],
         providers: [
           FormBuilder,

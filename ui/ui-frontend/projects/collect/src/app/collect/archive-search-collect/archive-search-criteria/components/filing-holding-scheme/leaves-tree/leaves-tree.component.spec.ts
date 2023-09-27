@@ -28,7 +28,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { DescriptionLevel, FilingHoldingSchemeNode, ResultFacet, SearchCriteriaDto } from 'ui-frontend-common';
+import { DescriptionLevel, FilingHoldingSchemeNode, ResultFacet, SearchCriteriaDto, UnitType } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
@@ -43,7 +43,7 @@ export function newNode(
   return {
     id: currentId,
     title: currentId,
-    unitType: 'INGEST',
+    unitType: UnitType.INGEST,
     descriptionLevel: currentDescriptionLevel,
     checked: false,
     children: currentChildren,
@@ -126,8 +126,8 @@ describe('LeavesTreeComponent', () => {
     const filingHoldingSchemaNode: FilingHoldingSchemeNode = {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
-      unitType: 'INGEST',
-      descriptionLevel: 'Item',
+      unitType: UnitType.INGEST,
+      descriptionLevel: DescriptionLevel.ITEM,
       label: 'string',
       children: [],
       count: 55,

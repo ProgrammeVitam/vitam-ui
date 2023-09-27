@@ -30,7 +30,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ApiUnitObject, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
+import { ApiUnitObject, DescriptionLevel, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
 import createSpyObj = jasmine.createSpyObj;
@@ -61,7 +61,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': '',
-      '#unitType': '',
+      '#unitType': null,
       '#unitups': [],
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
@@ -89,7 +89,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
     expect(archiveServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
       'archiveUnitTestID',
-      1,      
+      1,
       ObjectQualifierType.BINARYMASTER,
       1
     );
@@ -110,11 +110,11 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': 'objectId',
-      '#unitType': '',
+      '#unitType': null,
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: 'Item',
+      DescriptionLevel: DescriptionLevel.ITEM,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
@@ -132,11 +132,11 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': 'objectId',
-      '#unitType': '',
+      '#unitType': null,
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: 'RecordGrp',
+      DescriptionLevel: DescriptionLevel.RECORD_GRP,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
@@ -153,11 +153,11 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     component.archiveUnit = {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
-      '#unitType': '',
+      '#unitType': null,
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: 'Item',
+      DescriptionLevel: DescriptionLevel.ITEM,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };

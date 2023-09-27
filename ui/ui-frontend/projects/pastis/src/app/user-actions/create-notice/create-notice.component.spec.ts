@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL } from 'ui-frontend-common';
+import { BASE_URL, WINDOW_LOCATION } from 'ui-frontend-common';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 
@@ -46,6 +46,7 @@ describe('CreateNoticeComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: matDialogData },
         { provide: PopupService, useValue: popupServiceMock },
+        { provide: WINDOW_LOCATION, useValue: window.location },
       ]
     })
       .compileComponents();

@@ -69,7 +69,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
-      '#unitType': '',
+      '#unitType': undefined,
       '#unitups': [],
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
