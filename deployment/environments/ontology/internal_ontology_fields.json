@@ -4593,517 +4593,517 @@
     "ShortName": "SigningInformation.DetachedSigningRole"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.Activity",
-    "ApiField": "SigningInformation.Signature.Signer.Activity",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.Activity",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.Activity",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.Activity"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.Activity"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.BirthDate",
-    "ApiField": "SigningInformation.Signature.Signer.BirthDate",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.BirthDate",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.BirthDate",
     "Type": "DATE",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.BirthDate"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.BirthDate"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.BirthName",
-    "ApiField": "SigningInformation.Signature.Signer.BirthName",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.BirthName",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.BirthName",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.BirthName"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.BirthName"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.Address",
-    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.Address",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.BirthPlace.Address",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.BirthPlace.Address",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.Address"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.BirthPlace.Address"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.City",
-    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.City",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.BirthPlace.City",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.BirthPlace.City",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.City"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.BirthPlace.City"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.Country",
-    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.Country",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.BirthPlace.Country",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.BirthPlace.Country",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.Country"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.BirthPlace.Country"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.Geogname",
-    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.Geogname",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.BirthPlace.Geogname",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.BirthPlace.Geogname",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.Geogname"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.BirthPlace.Geogname"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.PostalCode",
-    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.PostalCode",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.BirthPlace.PostalCode",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.BirthPlace.PostalCode",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.PostalCode"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.BirthPlace.PostalCode"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.BirthPlace.Region",
-    "ApiField": "SigningInformation.Signature.Signer.BirthPlace.Region",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.BirthPlace.Region",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.BirthPlace.Region",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.BirthPlace.Region"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.BirthPlace.Region"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.Corpname",
-    "ApiField": "SigningInformation.Signature.Signer.Corpname",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.Corpname",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.Corpname",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.Corpname"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.Corpname"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.DeathDate",
-    "ApiField": "SigningInformation.Signature.Signer.DeathDate",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.DeathDate",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.DeathDate",
     "Type": "DATE",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.DeathDate"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.DeathDate"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.Address",
-    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.Address",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.DeathPlace.Address",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.DeathPlace.Address",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.Address"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.DeathPlace.Address"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.City",
-    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.City",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.DeathPlace.City",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.DeathPlace.City",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.City"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.DeathPlace.City"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.Country",
-    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.Country",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.DeathPlace.Country",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.DeathPlace.Country",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.Country"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.DeathPlace.Country"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.Geogname",
-    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.Geogname",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.DeathPlace.Geogname",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.DeathPlace.Geogname",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.Geogname"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.DeathPlace.Geogname"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.PostalCode",
-    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.PostalCode",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.DeathPlace.PostalCode",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.DeathPlace.PostalCode",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.PostalCode"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.DeathPlace.PostalCode"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.DeathPlace.Region",
-    "ApiField": "SigningInformation.Signature.Signer.DeathPlace.Region",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.DeathPlace.Region",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.DeathPlace.Region",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.DeathPlace.Region"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.DeathPlace.Region"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.FirstName",
-    "ApiField": "SigningInformation.Signature.Signer.FirstName",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.FirstName",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.FirstName",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.FirstName"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.FirstName"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.FullName",
-    "ApiField": "SigningInformation.Signature.Signer.FullName",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.FullName",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.FullName",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.FullName"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.FullName"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.Function",
-    "ApiField": "SigningInformation.Signature.Signer.Function",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.Function",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.Function",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.Function"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.Function"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.Gender",
-    "ApiField": "SigningInformation.Signature.Signer.Gender",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.Gender",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.Gender",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.Gender"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.Gender"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.GivenName",
-    "ApiField": "SigningInformation.Signature.Signer.GivenName",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.GivenName",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.GivenName",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.GivenName"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.GivenName"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.Identifier",
-    "ApiField": "SigningInformation.Signature.Signer.Identifier",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.Identifier",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.Identifier",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.Identifier"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.Identifier"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.Mandate",
-    "ApiField": "SigningInformation.Signature.Signer.Mandate",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.Mandate",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.Mandate",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.Mandate"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.Mandate"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.Nationality",
-    "ApiField": "SigningInformation.Signature.Signer.Nationality",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.Nationality",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.Nationality",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.Nationality"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.Nationality"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.Position",
-    "ApiField": "SigningInformation.Signature.Signer.Position",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.Position",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.Position",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.Position"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.Position"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.Role",
-    "ApiField": "SigningInformation.Signature.Signer.Role",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.Role",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.Role",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.Role"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.Role"
   },
   {
-    "Identifier": "SigningInformation.Signature.Signer.SigningTime",
-    "ApiField": "SigningInformation.Signature.Signer.SigningTime",
+    "Identifier": "SigningInformation.SignatureDescription.Signer.SigningTime",
+    "ApiField": "SigningInformation.SignatureDescription.Signer.SigningTime",
     "Type": "DATE",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Signer.SigningTime"
+    "ShortName": "SigningInformation.SignatureDescription.Signer.SigningTime"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.Activity",
-    "ApiField": "SigningInformation.Signature.Validator.Activity",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.Activity",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.Activity",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.Activity"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.Activity"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.BirthDate",
-    "ApiField": "SigningInformation.Signature.Validator.BirthDate",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.BirthDate",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.BirthDate",
     "Type": "DATE",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.BirthDate"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.BirthDate"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.BirthName",
-    "ApiField": "SigningInformation.Signature.Validator.BirthName",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.BirthName",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.BirthName",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.BirthName"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.BirthName"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.Address",
-    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.Address",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.BirthPlace.Address",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.BirthPlace.Address",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.Address"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.BirthPlace.Address"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.City",
-    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.City",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.BirthPlace.City",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.BirthPlace.City",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.City"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.BirthPlace.City"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.Country",
-    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.Country",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.BirthPlace.Country",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.BirthPlace.Country",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.Country"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.BirthPlace.Country"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.Geogname",
-    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.Geogname",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.BirthPlace.Geogname",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.BirthPlace.Geogname",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.Geogname"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.BirthPlace.Geogname"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.PostalCode",
-    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.PostalCode",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.BirthPlace.PostalCode",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.BirthPlace.PostalCode",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.PostalCode"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.BirthPlace.PostalCode"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.BirthPlace.Region",
-    "ApiField": "SigningInformation.Signature.Validator.BirthPlace.Region",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.BirthPlace.Region",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.BirthPlace.Region",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.BirthPlace.Region"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.BirthPlace.Region"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.Corpname",
-    "ApiField": "SigningInformation.Signature.Validator.Corpname",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.Corpname",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.Corpname",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.Corpname"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.Corpname"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.DeathDate",
-    "ApiField": "SigningInformation.Signature.Validator.DeathDate",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.DeathDate",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.DeathDate",
     "Type": "DATE",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.DeathDate"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.DeathDate"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.Address",
-    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.Address",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.DeathPlace.Address",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.DeathPlace.Address",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.Address"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.DeathPlace.Address"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.City",
-    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.City",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.DeathPlace.City",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.DeathPlace.City",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.City"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.DeathPlace.City"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.Country",
-    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.Country",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.DeathPlace.Country",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.DeathPlace.Country",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.Country"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.DeathPlace.Country"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.Geogname",
-    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.Geogname",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.DeathPlace.Geogname",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.DeathPlace.Geogname",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.Geogname"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.DeathPlace.Geogname"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.PostalCode",
-    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.PostalCode",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.DeathPlace.PostalCode",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.DeathPlace.PostalCode",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.PostalCode"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.DeathPlace.PostalCode"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.DeathPlace.Region",
-    "ApiField": "SigningInformation.Signature.Validator.DeathPlace.Region",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.DeathPlace.Region",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.DeathPlace.Region",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.DeathPlace.Region"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.DeathPlace.Region"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.FirstName",
-    "ApiField": "SigningInformation.Signature.Validator.FirstName",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.FirstName",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.FirstName",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.FirstName"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.FirstName"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.FullName",
-    "ApiField": "SigningInformation.Signature.Validator.FullName",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.FullName",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.FullName",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.FullName"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.FullName"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.Function",
-    "ApiField": "SigningInformation.Signature.Validator.Function",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.Function",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.Function",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.Function"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.Function"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.Gender",
-    "ApiField": "SigningInformation.Signature.Validator.Gender",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.Gender",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.Gender",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.Gender"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.Gender"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.GivenName",
-    "ApiField": "SigningInformation.Signature.Validator.GivenName",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.GivenName",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.GivenName",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.GivenName"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.GivenName"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.Identifier",
-    "ApiField": "SigningInformation.Signature.Validator.Identifier",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.Identifier",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.Identifier",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.Identifier"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.Identifier"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.Mandate",
-    "ApiField": "SigningInformation.Signature.Validator.Mandate",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.Mandate",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.Mandate",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.Mandate"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.Mandate"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.Nationality",
-    "ApiField": "SigningInformation.Signature.Validator.Nationality",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.Nationality",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.Nationality",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.Nationality"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.Nationality"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.Position",
-    "ApiField": "SigningInformation.Signature.Validator.Position",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.Position",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.Position",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.Position"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.Position"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.Role",
-    "ApiField": "SigningInformation.Signature.Validator.Role",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.Role",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.Role",
     "Type": "TEXT",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.Role"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.Role"
   },
   {
-    "Identifier": "SigningInformation.Signature.Validator.ValidationTime",
-    "ApiField": "SigningInformation.Signature.Validator.ValidationTime",
+    "Identifier": "SigningInformation.SignatureDescription.Validator.ValidationTime",
+    "ApiField": "SigningInformation.SignatureDescription.Validator.ValidationTime",
     "Type": "DATE",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.Validator.ValidationTime"
+    "ShortName": "SigningInformation.SignatureDescription.Validator.ValidationTime"
   },
   {
-    "Identifier": "SigningInformation.Signature.SigningType",
-    "ApiField": "SigningInformation.Signature.SigningType",
+    "Identifier": "SigningInformation.SignatureDescription.SigningType",
+    "ApiField": "SigningInformation.SignatureDescription.SigningType",
     "Type": "KEYWORD",
     "Origin": "INTERNAL",
     "CreationDate": "2023-08-18T12:25:58.047",
     "LastUpdate": "2023-08-18T14:21:33.798",
-    "ShortName": "SigningInformation.Signature.SigningType"
+    "ShortName": "SigningInformation.SignatureDescription.SigningType"
   },
   {
     "Identifier": "SigningInformation.TimestampingInformation.TimeStamp",
