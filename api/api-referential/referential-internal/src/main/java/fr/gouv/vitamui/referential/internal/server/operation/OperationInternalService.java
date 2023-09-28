@@ -41,11 +41,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
+import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.AccessUnauthorizedException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -56,6 +58,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -68,7 +71,6 @@ import fr.gouv.vitamui.referential.common.service.OperationService;
 import fr.gouv.vitamui.referential.internal.server.service.ExternalParametersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -89,7 +91,8 @@ public class OperationInternalService {
 
     final private LogbookService logbookService;
     final private ExternalParametersService externalParametersService;
-
+    final private String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
+    final private String AUDIT_FILE_RECTIFICATION = "AUDIT_FILE_RECTIFICATION";
     private ObjectMapper objectMapper;
 
     @Autowired
@@ -144,26 +147,46 @@ public class OperationInternalService {
     public void runAudit(VitamContext context, AuditOptions auditOptions) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
         try {
             Optional<Long> thresholdOpt = externalParametersService.retrieveProfilThreshold();
-            if (thresholdOpt.isPresent()) {
-                ObjectNode dslQuery = (ObjectNode) auditOptions.getQuery();
-                dslQuery.put("$threshold", thresholdOpt.get());
-                auditOptions.setQuery((JsonNode) dslQuery);
-            }
-
             LOGGER.info("All Operations Audit EvIdAppSession : {} ", context.getApplicationSessionId());
-            if ("AUDIT_FILE_CONSISTENCY".equals(auditOptions.getAuditActions())) {
-                    operationService.lauchEvidenceAudit(context, auditOptions.getQuery());
-            } else if ("AUDIT_FILE_RECTIFICATION".equals(auditOptions.getAuditActions())) {
+            updateAuditDslQuery(auditOptions, thresholdOpt);
+            auditOptions.setAuditType("dsl");
+
+            if (AUDIT_FILE_CONSISTENCY.equals(auditOptions.getAuditActions())) {
+                operationService.lauchEvidenceAudit(context, auditOptions.getQuery());
+            } else if (AUDIT_FILE_RECTIFICATION.equals(auditOptions.getAuditActions())) {
                 operationService.launchRectificationAudit(context, auditOptions.getAuditType());
             } else {
-                auditOptions.setQuery(null);
                 operationService.runAudit(context, mapper.valueToTree(auditOptions));
             }
-        } catch (AccessExternalClientServerException | VitamClientException e) {
+        } catch (AccessExternalClientServerException | VitamClientException | BadRequestException e) {
             throw new InternalServerException("Unable to run audit", e);
+        }
+    }
+
+    public void updateAuditDslQuery(AuditOptions auditOptions, Optional<Long> thresholdOpt) {
+        SelectMultiQuery multiQuery = new SelectMultiQuery();
+        try {
+            if (!List.of("originatingagency", "tenant", "dsl").contains(auditOptions.getAuditType())
+                || null == thresholdOpt) {
+                throw new InvalidCreateOperationException("Invalid audit query");
+            }
+            if (("originatingagency").equals(auditOptions.getAuditType())) {
+                multiQuery.setQuery(QueryHelper.eq("#originating_agency", auditOptions.getObjectId()));
+                auditOptions.setQuery(multiQuery.getFinalSelect());
+            } else if (("tenant").equals(auditOptions.getAuditType())) {
+                multiQuery.setQuery(QueryHelper.eq("#tenant", auditOptions.getObjectId()));
+                auditOptions.setQuery(multiQuery.getFinalSelect());
+            }
+            if (thresholdOpt.isPresent()) {
+                ObjectNode previousDslQuery = (ObjectNode) auditOptions.getQuery();
+                previousDslQuery.put("$threshold", thresholdOpt.get());
+                auditOptions.setQuery(previousDslQuery);
+            }
+        } catch (InvalidCreateOperationException e) {
+            LOGGER.error(e.getMessage());
+            throw new BadRequestException(e.getMessage());
         }
     }
 
