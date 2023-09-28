@@ -74,9 +74,15 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.applicationService.isApplicationExternalIdentifierEnabled('ARCHIVE_UNIT_PROFILE').subscribe((value) => {
-      this.externalIdentifierEnabled = value;
-    });
+    this.typeProfile = this.data.profileMode;
+    if (this.typeProfile === ProfileType.PUA) {
+      this.modePUA = true;
+    }
+    this.applicationService
+      .isApplicationExternalIdentifierEnabled(this.typeProfile === ProfileType.PUA ? 'ARCHIVE_UNIT_PROFILE' : 'PROFILE')
+      .subscribe((value) => {
+        this.externalIdentifierEnabled = value;
+      });
     this.editNotice = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
     if (this.editNotice) {
       this.validate = true;
@@ -105,10 +111,6 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       { value: 'INACTIVE', viewValue: this.profilInactif },
       { value: 'ACTIVE', viewValue: this.profilActif }
     ];
-    this.typeProfile = this.data.profileMode;
-    if (this.typeProfile === ProfileType.PUA) {
-      this.modePUA = true;
-    }
     this.information = 'texte d\'information';
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
