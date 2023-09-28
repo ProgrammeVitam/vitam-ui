@@ -957,6 +957,7 @@ La liste de profils crées par défaut pour chaque tenant :
         Rôles:
             - ROLE_GET_AUDITS
             - ROLE_RUN_AUDITS
+            - ROLE_GET_OPERATIONS
 
     -   Nom: Profil pour la gestion des opérations de sécurisation
         Description: Gestion des opérations de sécurisation dans Vitam

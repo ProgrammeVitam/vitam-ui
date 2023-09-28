@@ -61,7 +61,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -88,11 +95,14 @@ public class OperationExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
-    @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-                                                         @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-                                                         @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    @GetMapping(params = {"page", "size"})
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
+            direction);
         return operationExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -108,11 +118,12 @@ public class OperationExternalController {
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/download/{type}")
-    public ResponseEntity<Resource> exportEventById(final @PathVariable("id") String id, final @PathVariable("type") ReportType type)
+    public ResponseEntity<Resource> exportEventById(final @PathVariable("id") String id,
+        final @PathVariable("type") ReportType type)
         throws InvalidParseOperationException, PreconditionFailedException {
 
         EnumUtils.checkValidEnum(ReportType.class, Optional.of(type.name()));
-        ParameterChecker.checkParameter("Event Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter("Event Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("export logbook for {} operation with id :{}", type, id);
         return operationExternalService.export(id, type);
@@ -121,9 +132,10 @@ public class OperationExternalController {
     @Secured(ServicesData.ROLE_RUN_AUDITS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public boolean create(final @Valid @RequestBody AuditOptions auditOptions) throws InvalidParseOperationException, PreconditionFailedException {
+    public boolean create(final @Valid @RequestBody AuditOptions auditOptions)
+        throws InvalidParseOperationException, PreconditionFailedException {
 
-        ParameterChecker.checkParameter("Audit Options is mandatory parameter : " , auditOptions);
+        ParameterChecker.checkParameter("Audit Options is mandatory parameter : ", auditOptions);
         SanityChecker.sanitizeCriteria(auditOptions);
         LOGGER.debug("Create {}", auditOptions);
         return operationExternalService.runAudit(auditOptions);
@@ -156,7 +168,7 @@ public class OperationExternalController {
     public ResponseEntity<Resource> exportProbativeValue(final @PathVariable("id") String operationId)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        ParameterChecker.checkParameter("Operation Identifier is mandatory : " , operationId);
+        ParameterChecker.checkParameter("Operation Identifier is mandatory : ", operationId);
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("export logbook for operation with id :{}", operationId);
         return operationExternalService.exportProbativeValue(operationId);
