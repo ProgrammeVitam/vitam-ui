@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
+import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
 
@@ -12,6 +13,7 @@ function constantToTranslate() {
   this.secondChoice = this.translated('.SECOND_CHOICE');
   this.title = this.translated('.TITLE');
 }
+
 @Component({
   selector: 'create-notice-choice',
   templateUrl: './create-notice-choice.component.html',
@@ -35,8 +37,8 @@ export class CreateNoticeChoiceComponent implements OnInit {
       constantToTranslate.call(this);
       this.translatedOnChange();
     } else if (this.isStandalone) {
-      this.firstChoice = 'PA'
-      this.secondChoice = 'PUA'
+      this.firstChoice = ProfileType.PA
+      this.secondChoice = ProfileType.PUA
       this.title = 'Choisir le type de notice à créer :'
     }
   }
@@ -63,14 +65,14 @@ export class CreateNoticeChoiceComponent implements OnInit {
 
   changeChoiceCreateProfile($event: string) {
     console.log($event)
-    this.noticePaChoice = $event == this.firstChoice;
+    this.noticePaChoice = $event === this.firstChoice;
   }
 
   onYesClick() {
     if (this.noticePaChoice) {
-      this.dialogRef.close({success: true, action: 'PA'});
+      this.dialogRef.close({ success: true, action: ProfileType.PA });
     } else if (!this.noticePaChoice) {
-      this.dialogRef.close({success: true, action: 'PUA'});
+      this.dialogRef.close({ success: true, action: ProfileType.PUA });
     }
   }
 

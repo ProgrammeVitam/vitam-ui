@@ -40,15 +40,16 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { BehaviorSubject, Subscription} from 'rxjs';
-import {environment} from '../../../environments/environment';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { SedaService } from '../../core/services/seda.service';
 import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
 import { FileNode } from '../../models/file-node';
+import { ProfileType } from '../../models/profile-type.enum';
 import { SedaData } from '../../models/seda-data';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FileTreeService } from './file-tree/file-tree.service';
@@ -105,7 +106,7 @@ export class EditProfileComponent implements OnDestroy {
 
   profile: FileNode[];
 
-  @ViewChild(FileTreeComponent, {static: false}) fileTreeComponent: FileTreeComponent;
+  @ViewChild(FileTreeComponent, { static: false }) fileTreeComponent: FileTreeComponent;
 
   private _fileServiceCurrentTreeSubscription: Subscription;
 
@@ -117,7 +118,7 @@ export class EditProfileComponent implements OnDestroy {
   }
 
   initAll() {
-    this.puaMode = this.profileService.profileMode === 'PA' ? false : true;
+    this.puaMode = this.profileService.profileMode !== ProfileType.PA;
     if (!this.isStandalone) {
       this.entete = 'PROFILE.EDIT_PROFILE.ENTETE';
       this.regles = 'PROFILE.EDIT_PROFILE.REGLES';
@@ -190,7 +191,7 @@ export class EditProfileComponent implements OnDestroy {
 
 
   initActiveTabAndProfileMode() {
-    this.profileService.profileMode === 'PA' ? this.activeTabIndex = 0 : this.activeTabIndex = 2;
+    this.profileService.profileMode === ProfileType.PA ? this.activeTabIndex = 0 : this.activeTabIndex = 2;
   }
 
   loadProfile(event: MatTabChangeEvent) {
@@ -199,9 +200,9 @@ export class EditProfileComponent implements OnDestroy {
   }
 
   setTabsAndMetadataRules(tabIndex: number) {
-    this.collectionName = this.profileService.profileMode === 'PA' ? this.collectionNames[tabIndex] : this.collectionNames[2];
-    this.rootTabMetadataName = this.profileService.profileMode === 'PA' ? this.rootNames[tabIndex] : this.rootNames[2];
-    this.elementRules = this.profileService.profileMode === 'PA' ? this.tabShowElementRules[tabIndex] : this.tabShowElementRules[2];
+    this.collectionName = this.profileService.profileMode === ProfileType.PA ? this.collectionNames[tabIndex] : this.collectionNames[2];
+    this.rootTabMetadataName = this.profileService.profileMode === ProfileType.PA ? this.rootNames[tabIndex] : this.rootNames[2];
+    this.elementRules = this.profileService.profileMode === ProfileType.PA ? this.tabShowElementRules[tabIndex] : this.tabShowElementRules[2];
   }
 
   loadProfileData(tabindex: number) {
@@ -225,7 +226,7 @@ export class EditProfileComponent implements OnDestroy {
 
   getFilteredData(rootTreeMetadataName: string): FileNode[] {
     if (this.nodeToSend) {
-      const nodeNameToFilter = this.profileService.profileMode === 'PA' ? rootTreeMetadataName : this.nodeToSend.name;
+      const nodeNameToFilter = this.profileService.profileMode === ProfileType.PA ? rootTreeMetadataName : this.nodeToSend.name;
       const currentNode = this.fileService.getFileNodeByName(this.fileService.allData.getValue()[0], nodeNameToFilter);
       const filteredData = [];
       filteredData.push(currentNode);
@@ -241,7 +242,7 @@ export class EditProfileComponent implements OnDestroy {
   }
 
   canShowOnPuaMode(tabIndex: number) {
-    return this.profileService.profileMode === 'PUA' ? (tabIndex === 3) : true;
+    return this.profileService.profileMode === ProfileType.PUA ? (tabIndex === 3) : true;
   }
 
   ngOnDestroy() {

@@ -1,5 +1,6 @@
-import {FileNode} from './file-node';
+import { FileNode } from './file-node';
 import { ProfileDescription } from './profile-description.model';
+import { ProfileType } from './profile-type.enum';
 
 
 export interface ProfileResponse {
@@ -7,5 +8,5 @@ export interface ProfileResponse {
   name: string;
   profile: FileNode;
   notice?: ProfileDescription;
-  type: string;
+  type: ProfileType;
 }

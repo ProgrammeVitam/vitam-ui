@@ -165,3 +165,12 @@ management.endpoints.web.exposure.include: "*"
 pua:
   definitions:
     file: pua_validation/ProfileJson
+
+# enable external ids for PUA (ARCHIVE_UNIT_PROFILE) and PA (PROFILE) on tenant 1
+# mode slave = vitam accepts ID
+# mode master = vitam sets ID
+list-enable-external-identifiers:
+  tenants:
+    1:
+      - ARCHIVE_UNIT_PROFILE
+      - PROFILE

@@ -1,9 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {ProfileService} from '../../core/services/profile.service';
-import {ProfileDescription} from '../../models/profile-description.model';
-import {PastisDialogDataCreate} from '../save-profile/save-profile.component';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { ProfileService } from '../../core/services/profile.service';
+import { ProfileDescription } from '../../models/profile-description.model';
+import { ProfileType } from '../../models/profile-type.enum';
+import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
 
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION_NOTICE.CHOICE';
@@ -36,11 +37,11 @@ export class SelectNoticeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.modeProfile === 'PUA') {
+    if (this.data.profileMode === ProfileType.PUA) {
       this.profilService.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[]) => {
         this.profiles = profileListPUA;
       })
-    } else if (this.data.modeProfile === 'PA') {
+    } else if (this.data.profileMode === ProfileType.PA) {
       this.profilService.getAllProfilesPA().subscribe((profileListPUA: ProfileDescription[]) => {
         this.profiles = profileListPUA;
       })
@@ -60,7 +61,7 @@ export class SelectNoticeComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dialogRef.close({success: true, action: 'none', data: this.selectedProfile, mode: this.data.modeProfile});
+    this.dialogRef.close({ success: true, action: 'none', data: this.selectedProfile, mode: this.data.profileMode });
   }
 
   onCancel() {
