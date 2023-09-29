@@ -102,6 +102,7 @@ import { SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-token
 import { LogbookModule } from './logbook/logbook.module';
 import { LoggerModule } from './logger/logger.module';
 import { PipesModule } from './pipes/pipes.module';
+import { SchemaModule } from './schema/schema.module';
 import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
@@ -179,6 +180,7 @@ export function startupServiceFactory(startupService: StartupService) {
     ReactiveFormsModule,
     MatDatepickerModule,
     ArchiveModule,
+    SchemaModule,
   ],
   entryComponents: [ErrorDialogComponent],
   exports: [
@@ -239,6 +241,7 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamuiMultiInputsModule,
     VitamuiTreeNodeModule,
     ArchiveModule,
+    SchemaModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

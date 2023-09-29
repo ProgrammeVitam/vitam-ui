@@ -187,6 +187,10 @@ public class InternalSecurityService {
         return getTenant(getTenantIdentifier());
     }
 
+    public VitamContext getVitamContext() {
+        return buildVitamContext(getTenantIdentifier());
+    }
+
     /**
      * Build Vitam Context using tenantIdentifier.
      * @param tenantId

@@ -357,4 +357,5 @@ public class CommonConstants {
     public static final String HISTORY = "history";
     public static final String EXTERNAL_ONTOLOGIES_LIST = "/external-ontologies";
     public static final String INTERNAL_ONTOLOGY_LIST = "/internal-ontologies";
+    public static final String SCHEMAS = "/schemas";
 }

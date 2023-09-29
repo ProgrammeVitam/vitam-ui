@@ -242,4 +242,9 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     public AccessionRegisterDetailInternalRestClient accessionRegisterDetailInternalRestClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
         return referentialInternalRestClientFactory.getAccessionRegisterDetailInternalRestClient();
     }
+
+    @Bean
+    public SchemaClient schemaClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
+        return referentialInternalRestClientFactory.getSchemaClient();
+    }
 }
