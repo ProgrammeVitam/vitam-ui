@@ -47,7 +47,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
-  BASE_URL, DescriptionLevel, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, Unit, UnitType, WINDOW_LOCATION
+  BASE_URL,
+  DescriptionLevel,
+  ENVIRONMENT,
+  InjectorModule,
+  LoggerModule,
+  StartupService,
+  Unit,
+  UnitType,
+  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveService } from '../archive.service';
@@ -205,13 +213,13 @@ describe('ArchivePreviewComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 3 mat-tab', () => {
+    it('should have 4 mat-tab', () => {
       // When
       const nativeElement = fixture.nativeElement;
       const matTabElements = nativeElement.querySelectorAll('mat-tab');
 
       // Then
-      expect(matTabElements.length).toEqual(3);
+      expect(matTabElements.length).toEqual(4);
     });
 
     it('should have 1 mat-tab-group', () => {

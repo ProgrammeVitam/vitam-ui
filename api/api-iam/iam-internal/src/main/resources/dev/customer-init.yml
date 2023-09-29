@@ -224,6 +224,7 @@ customer-init:
         - ROLE_TRANSFER_REQUEST
         - ROLE_GET_RULES
         - ROLE_TRANSFER_ACKNOWLEDGMENT
+        - ROLE_GET_SCHEMAS
 
     - name: Consultation
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
@@ -236,17 +237,17 @@ customer-init:
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
+        - ROLE_GET_SCHEMAS
 
     - name: Profil pour la gestion des pua/pa de pastis
       description: Gestion de Pastis dans Vitam
       app-name: PASTIS_APP
       level:
       roles:
-          - ROLE_GET_PASTIS
-          - ROLE_CREATE_PASTIS
-          - ROLE_UPDATE_PASTIS
-          - ROLE_DELETE_PASTIS
-
+        - ROLE_GET_PASTIS
+        - ROLE_CREATE_PASTIS
+        - ROLE_UPDATE_PASTIS
+        - ROLE_DELETE_PASTIS
 
     - name: Archiviste
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
@@ -261,6 +262,7 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_UPDATE_UNIT_DESC_METADATA
         - ROLE_GET_RULES
+        - ROLE_GET_SCHEMAS
 
     - name: Collecte
       description: Collecte de données, Application de préparation de versements
@@ -299,7 +301,6 @@ customer-init:
         - ROLE_CREATE_ARCHIVE_PROFILES
         - ROLE_IMPORT_ARCHIVE_PROFILES
         - ROLE_DELETE_ARCHIVE_PROFILES
-
 
   #- name: profileName
   #  description: desc

@@ -121,4 +121,8 @@ public class ReferentialInternalRestClientFactory extends BaseRestClientFactory 
     public AccessionRegisterDetailInternalRestClient getAccessionRegisterDetailInternalRestClient() {
         return new AccessionRegisterDetailInternalRestClient(getRestTemplate(), getBaseUrl());
     }
+
+    public SchemaClient getSchemaClient() {
+        return new SchemaClient(getRestTemplate(), getBaseUrl());
+    }
 }

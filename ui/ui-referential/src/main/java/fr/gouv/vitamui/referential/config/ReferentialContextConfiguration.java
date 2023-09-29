@@ -63,6 +63,7 @@ import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClient
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
 import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.RuleExternalWebClient;
+import fr.gouv.vitamui.referential.external.client.SchemaClient;
 import fr.gouv.vitamui.referential.external.client.SecurityProfileExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
@@ -212,4 +213,8 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
         return referentialExternalRestClientFactory.getOntologyRestClient();
     }
 
+    @Bean
+    public SchemaClient schemaClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+        return referentialExternalRestClientFactory.getSchemaClient();
+    }
 }

@@ -55,6 +55,7 @@ import {
   BASE_URL,
   InjectorModule,
   LoggerModule,
+  SchemaModule,
   SearchBarModule,
   SecurityService,
   WINDOW_LOCATION,
@@ -122,6 +123,7 @@ describe('ArchiveComponent', () => {
         SearchBarModule,
         TranslateModule.forRoot(),
         MatSnackBarModule,
+        SchemaModule,
       ],
       declarations: [ArchiveComponent],
       providers: [

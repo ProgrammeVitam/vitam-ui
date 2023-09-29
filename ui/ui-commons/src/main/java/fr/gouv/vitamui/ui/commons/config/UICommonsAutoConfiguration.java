@@ -43,6 +43,7 @@ import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.SchemaClient;
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -113,5 +114,12 @@ public class UICommonsAutoConfiguration {
     public OntologyExternalRestClient ontologyExternalRestClient(
         final ReferentialExternalRestClientFactory referentialRestClientFactory) {
         return referentialRestClientFactory.getOntologyRestClient();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public SchemaClient schemaClient(final ReferentialExternalRestClientFactory referentialRestClientFactory) {
+        return referentialRestClientFactory.getSchemaClient();
     }
 }

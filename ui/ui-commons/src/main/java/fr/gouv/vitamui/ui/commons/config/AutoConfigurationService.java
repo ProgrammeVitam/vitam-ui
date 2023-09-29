@@ -42,6 +42,7 @@ import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.SchemaClient;
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.service.AccessContractService;
@@ -53,6 +54,7 @@ import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.OntologyCommonService;
 import fr.gouv.vitamui.ui.commons.service.RuleService;
+import fr.gouv.vitamui.ui.commons.service.SchemaService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 import fr.gouv.vitamui.ui.commons.service.UnitService;
 import fr.gouv.vitamui.ui.commons.service.UserInfoService;
@@ -165,5 +167,12 @@ public class AutoConfigurationService {
     @ConditionalOnMissingBean
     public OntologyCommonService ontologyCommonService( final OntologyExternalRestClient ontologyExternalRestClient) {
         return new OntologyCommonService(ontologyExternalRestClient);
+    }
+
+    @Bean("schemaService")
+    @DependsOn(value = {"schemaClient"})
+    @ConditionalOnMissingBean
+    public SchemaService schemaService(final SchemaClient schemaClient) {
+        return new SchemaService(schemaClient);
     }
 }

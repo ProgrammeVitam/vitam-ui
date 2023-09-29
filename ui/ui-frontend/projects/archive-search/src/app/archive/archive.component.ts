@@ -43,10 +43,12 @@ import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   AccessContract,
+  Collection,
   ExternalParameters,
   ExternalParametersService,
   GlobalEventService,
   Logger,
+  SchemaService,
   SidenavPage,
   Unit,
 } from 'ui-frontend-common';
@@ -83,9 +85,11 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private snackBar: MatSnackBar,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private archiveService: ArchiveService,
-    private loggerService: Logger
+    private loggerService: Logger,
+    private schemaService: SchemaService
   ) {
     super(route, globalEventService);
+    this.schemaService.getSchema(Collection.ARCHIVE_UNIT);
   }
 
   ngOnInit() {

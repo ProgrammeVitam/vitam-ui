@@ -137,6 +137,7 @@ export * from './ontology/index';
 export * from './paginated-api.interface';
 export * from './pipes/index';
 export * from './rule/index';
+export * from './schema/index';
 export * from './security/security.service';
 export * from './services/index';
 export * from './sidenav-page.class';
