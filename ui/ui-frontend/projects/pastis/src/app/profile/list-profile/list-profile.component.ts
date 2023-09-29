@@ -60,6 +60,7 @@ import {CreateProfileComponent} from '../create-profile/create-profile.component
 import {
   ProfileInformationTabComponent
 } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
+import { ProfileType } from "../../models/profile-type.enum";
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -187,9 +188,9 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   private isEditable(profileDescription: ProfileDescription): boolean {
     return (
-      (profileDescription.type === 'PA' && !profileDescription.path
+      (profileDescription.type === ProfileType.PA && !profileDescription.path
         && profileDescription.status === 'ACTIVE') ||
-      (profileDescription.type === 'PUA' && profileDescription.status === 'ACTIVE'
+      (profileDescription.type === ProfileType.PUA && profileDescription.status === 'ACTIVE'
         && (!profileDescription.controlSchema || profileDescription.controlSchema === '{}'))
     )
   }
@@ -210,8 +211,8 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         this.toggleService.hidePending();
       }
       this.matDataSource = new MatTableDataSource<ProfileDescription>(this.retrievedProfiles);
-      this.numPA = this.retrievePAorPUA('PA', false);
-      this.numPUA = this.retrievePAorPUA('PUA', false);
+      this.numPA = this.retrievePAorPUA(ProfileType.PA, false);
+      this.numPUA = this.retrievePAorPUA(ProfileType.PUA, false);
       this.totalProfileNum = this.retrievedProfiles ? this.retrievedProfiles.length : 0;
     });
   }
@@ -280,7 +281,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     this.subscription2$ = dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         // console.log(result.action + ' PA ou PUA ?');
-        if (result.action === 'PA' || result.action === 'PUA') {
+        if (result.action === ProfileType.PA || result.action === ProfileType.PUA) {
           this.profileService
             .createProfile(this.pastisConfig.createProfileByTypeUrl, result.action)
             .subscribe((response: ProfileResponse) => {
@@ -305,8 +306,8 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     );
     // console.log(this.retrievedProfiles)
     this.totalProfileNum = profileDescriptions.length;
-    this.numPA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === 'PA').length;
-    this.numPUA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === 'PUA').length;
+    this.numPA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PA).length;
+    this.numPUA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PUA).length;
   }
 
   isRowHovered(elementId: number) {
@@ -347,14 +348,14 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     const fileToUpload: File = files[0];
     let profile: Profile;
     let archivalProfileUnit: ArchivalProfileUnit;
-    if (profileDescription.type === 'PA') {
+    if (profileDescription.type === ProfileType.PA) {
       profile = this.noticeService.profileDescriptionToPaProfile(profileDescription);
       this.profileService.updateProfileFilePa(profile, fileToUpload).subscribe(() => {
         this.expanded = !this.expanded;
         this.refreshListProfiles();
       });
     }
-    if (profileDescription.type === 'PUA') {
+    if (profileDescription.type === ProfileType.PUA) {
       if (fileToUpload) {
         let jsonObj: ProfileDescription;
         const fileReader = new FileReader();

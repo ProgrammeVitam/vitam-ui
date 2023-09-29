@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { ApplicationService } from 'ui-frontend-common';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
@@ -11,6 +12,7 @@ import { ProfileService } from '../../core/services/profile.service';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { Notice } from '../../models/notice.model';
 import { Profile } from '../../models/profile';
+import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
 
@@ -30,14 +32,13 @@ function constantToTranslate() {
 @Component({
   selector: 'create-notice',
   templateUrl: './create-notice.component.html',
-  styleUrls: [ './create-notice.component.scss' ]
+  styleUrls: ['./create-notice.component.scss']
 })
 export class CreateNoticeComponent implements OnInit, OnDestroy {
   form: FormGroup;
   stepIndex = 0;
   btnIsDisabled: boolean;
   dialogData: PastisDialogData;
-  isDisabledButton = false;
   notice: Notice;
   // edit or new notice
   editNotice: boolean;
@@ -46,11 +47,10 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   okLabel: string;
   cancelLabel: string;
   arrayStatus: Status[];
-  typeProfile?: string;
+  typeProfile?: ProfileType;
   modePUA: boolean;
   information: string;
   presenceNonDeclareMetadonneesPUAControl = new FormControl(false);
-  createNotice: boolean;
   profilActif: string;
   profilInactif: string;
   validate: boolean;
@@ -58,25 +58,34 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   isStandalone: boolean = environment.standalone;
 
   subscriptions = new Subscription();
+  externalIdentifierEnabled: boolean;
 
   constructor(public dialogRef: MatDialogRef<CreateNoticeComponent>,
               @Inject(MAT_DIALOG_DATA) public data: PastisDialogDataCreate,
               private formBuilder: FormBuilder,
               private translateService: TranslateService,
-              private popUpService: PopupService,
+              private popupService: PopupService,
               private fileService: FileService,
               private router: Router,
-              private profileService: ProfileService) {
+              private profileService: ProfileService,
+              private applicationService: ApplicationService,) {
 
   }
 
   ngOnInit() {
-
+    this.typeProfile = this.data.profileMode;
+    if (this.typeProfile === ProfileType.PUA) {
+      this.modePUA = true;
+    }
+    this.applicationService
+      .isApplicationExternalIdentifierEnabled(this.typeProfile === ProfileType.PUA ? 'ARCHIVE_UNIT_PROFILE' : 'PROFILE')
+      .subscribe((value) => {
+        this.externalIdentifierEnabled = value;
+      });
     this.editNotice = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
     if (this.editNotice) {
       this.validate = true;
       // Subscribe observer to notice
-
       this.subscriptions.add(
         this.fileService.noticeEditable.subscribe((value: Notice) => {
           this.notice = value;
@@ -101,16 +110,12 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       { value: 'INACTIVE', viewValue: this.profilInactif },
       { value: 'ACTIVE', viewValue: this.profilActif }
     ];
-    this.typeProfile = this.data.modeProfile;
-    if (this.typeProfile === 'PUA') {
-      this.modePUA = true;
-    }
     this.information = 'texte d\'information';
     this.form = this.formBuilder.group({
-      identifier: [ null, Validators.required ],
-      intitule: [ null, Validators.required ],
-      selectedStatus: [ null ],
-      description: [ null ],
+      identifier: [null, Validators.required],
+      intitule: [null, Validators.required],
+      selectedStatus: [null],
+      description: [null],
       autoriserPresenceMetadonnees: false
     });
 
@@ -125,7 +130,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     // set the inital state of the ok button to disabled
 
     this.subscriptions.add(
-      this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
+      this.popupService.btnYesShoudBeDisabled.subscribe(status => {
         this.btnIsDisabled = status;
       }));
   }
@@ -135,7 +140,6 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       this.translateService.onLangChange
         .subscribe((_: LangChangeEvent) => {
           constantToTranslate.call(this);
-          // console.log(event.lang);
         }));
   }
 
@@ -149,8 +153,8 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
 
 
   upateButtonStatusAndDataToSend() {
-    this.popUpService.setPopUpDataOnClose('test');
-    this.popUpService.disableYesButton(true);
+    this.popupService.setPopUpDataOnClose('test');
+    this.popupService.disableYesButton(true);
   }
 
 
@@ -164,7 +168,6 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   }
 
   checkIdentifier(modePUA: boolean) {
-
     if (this.notice.identifier.length < 1) {
       this.validate = false;
       return;
@@ -207,12 +210,12 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    if (!this.externalIdentifierEnabled) {
+      this.form.controls.identifier.setValue(this.form.controls.intitule.value);
+    }
     if (this.form.invalid) {
-      this.isDisabledButton = true;
       return;
     }
-    this.isDisabledButton = true;
-    // console.log(this.form.value);
     if (this.editNotice) {
       this.fileService.noticeEditable.next(this.notice);
       this.fileService.setNotice(true);

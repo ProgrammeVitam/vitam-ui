@@ -10,12 +10,13 @@ import { ProfileService } from '../../core/services/profile.service';
 import { FileNode } from '../../models/file-node';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
+import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 @Component({
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
-  styleUrls: [ './profile-preview.component.scss' ]
+  styleUrls: ['./profile-preview.component.scss']
 })
 export class ProfilePreviewComponent implements AfterViewInit {
 
@@ -24,7 +25,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   @Input()
   inputProfile: ProfileDescription;
 
-  tabUpdated: boolean[] = [ false, false ];
+  tabUpdated: boolean[] = [false, false];
   isClicked = false;
   isStandalone: boolean = environment.standalone;
 
@@ -36,7 +37,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   tabLinks: Array<ProfileInformationTabComponent> = [];
   @ViewChild('infoTab', { static: false }) infoTab: ProfileInformationTabComponent;
 
-  @HostListener('window:beforeunload', [ '$event' ])
+  @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       event.preventDefault();
@@ -80,7 +81,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
       await this.checkBeforeExit();
     }
 
-    const args = [ tab, tabHeader, idx ];
+    const args = [tab, tabHeader, idx];
     return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
   }
 
@@ -109,18 +110,18 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   editProfile(inputProfile: ProfileDescription) {
-    this.router.navigate([ this.pastisConfig.pastisEditPage, inputProfile.id ],
+    this.router.navigate([this.pastisConfig.pastisEditPage, inputProfile.id],
       { state: inputProfile, relativeTo: this.route, skipLocationChange: false });
   }
 
   downloadProfile(inputProfile: ProfileDescription) {
-    if (inputProfile.type === 'PA') {
+    if (inputProfile.type === ProfileType.PA) {
       this.profileService.downloadProfilePaVitam(inputProfile.identifier).subscribe(dataFile => {
         if (dataFile) {
           this.downloadFile(dataFile, inputProfile.type, inputProfile);
         }
       });
-    } else if (inputProfile.type === 'PUA') {
+    } else if (inputProfile.type === ProfileType.PUA) {
       // Send the retrieved JSON data to profile service
       this.profileService.getProfile(inputProfile).subscribe(retrievedData => {
         const profileResponse = retrievedData as ProfileResponse;
@@ -134,8 +135,8 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   downloadFile(dataFile: any, typeProfile: string, inputProfile?: ProfileDescription): void {
-    const typeFile = typeProfile === 'PA' ? 'application/xml' : 'application/json';
-    const newBlob = new Blob([ dataFile ], { type: typeFile });
+    const typeFile = typeProfile === ProfileType.PA ? 'application/xml' : 'application/json';
+    const newBlob = new Blob([dataFile], { type: typeFile });
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(newBlob);
       return;
@@ -143,7 +144,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
     const data = window.URL.createObjectURL(newBlob);
     const link = document.createElement('a');
     link.href = data;
-    link.download = typeProfile === 'PA' ? inputProfile.path : 'pastis_' + inputProfile.identifier + '.json';
+    link.download = typeProfile === ProfileType.PA ? inputProfile.path : 'pastis_' + inputProfile.identifier + '.json';
     // this is necessary as link.click() does not work on the latest firefox
     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
     setTimeout(() => {

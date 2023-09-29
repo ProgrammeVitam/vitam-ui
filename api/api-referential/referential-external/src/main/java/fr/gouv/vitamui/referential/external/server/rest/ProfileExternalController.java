@@ -211,7 +211,6 @@ public class ProfileExternalController {
     public ResponseEntity<Void> check(@RequestBody ProfileDto ProfileDto,
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
         LOGGER.debug("check exist accessContract={}", ProfileDto);
-        ApiUtils.checkValidity(ProfileDto);
         final boolean exist = profileExternalService.check(ProfileDto);
         return RestUtils.buildBooleanResponse(exist);
     }

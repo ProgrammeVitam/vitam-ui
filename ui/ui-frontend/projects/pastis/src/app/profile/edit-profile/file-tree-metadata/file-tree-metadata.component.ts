@@ -72,6 +72,7 @@ import { AttributesPopupComponent } from './attributes/attributes.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
 import { PuaData } from '../../../models/pua-data';
 import { FileTreeComponent } from '../file-tree/file-tree.component';
+import { ProfileType } from "../../../models/profile-type.enum";
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -97,7 +98,6 @@ function constantToTranslate() {
   // component style to apply to the select panel.
   encapsulation: ViewEncapsulation.None,
 })
-
 export class FileTreeMetadataComponent {
 
   rootAdditionalProperties: boolean;
@@ -299,7 +299,7 @@ export class FileTreeMetadataComponent {
       }
     });
     // BreadCrump Top for navigation
-    this.profileModeLabel = this.profileService.profileMode === 'PUA' ? 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA' : 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA';
+    this.profileModeLabel = this.profileService.profileMode === ProfileType.PUA ? 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA' : 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA';
     this.breadcrumbDataTop = [{
       label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL',
       url: this.startupService.getPortalUrl(),
@@ -907,7 +907,7 @@ export class FileTreeMetadataComponent {
   }
 
   isElementEdit(node: MetadataHeaders): boolean {
-    if (this.profileService.profileMode === 'PUA') {
+    if (this.profileService.profileMode === ProfileType.PUA) {
       return false;
     }
     if (node.nomDuChampEdit) {
