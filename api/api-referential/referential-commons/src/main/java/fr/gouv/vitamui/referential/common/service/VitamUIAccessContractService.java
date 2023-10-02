@@ -45,9 +45,11 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.referential.common.dto.AccessContractVitamDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class VitamUIAccessContractService  {
+public class VitamUIAccessContractService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractService.class);
 
@@ -58,11 +60,15 @@ public class VitamUIAccessContractService  {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public RequestResponse<?> patchAccessContract(final VitamContext vitamContext, final String id, JsonNode jsonNode)  throws InvalidParseOperationException, AccessExternalClientException {
+    public RequestResponse<AccessContractVitamDto> patchAccessContract(final VitamContext vitamContext, final String id,
+        JsonNode jsonNode)
+        throws InvalidParseOperationException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
-        LOGGER.info("Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        return adminExternalClient.updateAccessContract(vitamContext,id,jsonNode);
+        LOGGER.debug("Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        RequestResponse<AccessContractVitamDto> response =
+            adminExternalClient.updateAccessContract(vitamContext, id, jsonNode);
+        VitamRestUtils.checkResponse(response);
+        return response;
     }
-
 
 }
