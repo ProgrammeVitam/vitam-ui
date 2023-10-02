@@ -36,23 +36,12 @@
  */
 package fr.gouv.vitamui.referential.internal.server.accesscontract;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -76,6 +65,15 @@ import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AccessContractVitamDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AccessContractInternalService {
@@ -93,9 +91,11 @@ public class AccessContractInternalService {
     private LogbookService logbookService;
 
     @Autowired
-    public AccessContractInternalService(AccessContractService accessContractService, VitamUIAccessContractService vitamUIAccessContractService, ObjectMapper objectMapper, AccessContractConverter converter, LogbookService logbookService) {
+    public AccessContractInternalService(AccessContractService accessContractService,
+        VitamUIAccessContractService vitamUIAccessContractService, ObjectMapper objectMapper,
+        AccessContractConverter converter, LogbookService logbookService) {
         this.accessContractService = accessContractService;
-        this.vitamUIAccessContractService=vitamUIAccessContractService;
+        this.vitamUIAccessContractService = vitamUIAccessContractService;
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
@@ -104,17 +104,18 @@ public class AccessContractInternalService {
     public AccessContractDto getOne(VitamContext vitamContext, String identifier) {
         try {
 
-            LOGGER.info("Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(vitamContext, identifier);
+            LOGGER.debug("Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            RequestResponse<AccessContractModel> requestResponse =
+                accessContractService.findAccessContractById(vitamContext, identifier);
             final AccessContractResponseDto accessContractResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
+                .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
             if (accessContractResponseDto.getResults().size() == 0) {
                 return null;
             } else {
                 return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
-        	throw new InternalServerException("Unable to get Access Contrat", e);
+            throw new InternalServerException("Unable to get Access Contrat", e);
         }
     }
 
@@ -122,28 +123,29 @@ public class AccessContractInternalService {
         final RequestResponse<AccessContractModel> requestResponse;
         try {
 
-            LOGGER.info("List of Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("List of Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = accessContractService
-                    .findAccessContracts(vitamContext, new Select().getFinalSelect());
+                .findAccessContracts(vitamContext, new Select().getFinalSelect());
             final AccessContractResponseDto accessContractResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
+                .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
 
             return converter.convertVitamsToDtos(accessContractResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
-        	throw new InternalServerException("Unable to get Access Contrats", e);
+            throw new InternalServerException("Unable to get Access Contrats", e);
         }
     }
 
     public PaginatedValuesDto<AccessContractDto> getAllPaginated(final Integer pageNumber, final Integer size,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-            Optional<String> criteria) {
+        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
+        Optional<String> criteria) {
 
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query = null;
         try {
-            LOGGER.info("List of Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("List of Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
+                };
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
 
@@ -151,7 +153,7 @@ public class AccessContractInternalService {
             LOGGER.debug("jsonQuery: {}", query);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Can't create dsl query to get paginated access contracts", ioe);
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
 
@@ -165,7 +167,7 @@ public class AccessContractInternalService {
     public AccessContractResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<AccessContractModel> requestResponse;
         try {
-            LOGGER.info("List of Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("List of Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = accessContractService.findAccessContracts(vitamContext, query);
             return objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
 
@@ -176,8 +178,10 @@ public class AccessContractInternalService {
 
     public Boolean check(VitamContext vitamContext, AccessContractDto accessContractDto) {
         try {
-            LOGGER.info("Access Contract Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            Integer accessContractCheckedTenant = accessContractService.checkAbilityToCreateAccessContractInVitam(converter.convertDtosToVitams(Arrays.asList(accessContractDto)), vitamContext.getApplicationSessionId());
+            LOGGER.debug("Access Contract Check EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            Integer accessContractCheckedTenant = accessContractService.checkAbilityToCreateAccessContractInVitam(
+                converter.convertDtosToVitams(Arrays.asList(accessContractDto)),
+                vitamContext.getApplicationSessionId());
             return !vitamContext.getTenantId().equals(accessContractCheckedTenant);
         } catch (ConflictException e) {
             return true;
@@ -186,10 +190,11 @@ public class AccessContractInternalService {
 
     public AccessContractDto create(VitamContext vitamContext, AccessContractDto accessContractDto) {
         try {
-            LOGGER.info("Create Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            RequestResponse requestResponse = accessContractService.createAccessContracts(vitamContext, converter.convertDtosToVitams(Arrays.asList(accessContractDto)));
+            LOGGER.debug("Create Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            RequestResponse requestResponse = accessContractService.createAccessContracts(vitamContext,
+                converter.convertDtosToVitams(Arrays.asList(accessContractDto)));
             final AccessContractVitamDto accessContractVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AccessContractVitamDto.class);
+                .treeToValue(requestResponse.toJsonNode(), AccessContractVitamDto.class);
             return converter.convertVitamToDto(accessContractVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Can't create access contract", e);
@@ -202,6 +207,9 @@ public class AccessContractInternalService {
         ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
 
         // Transform Vitam-UI fields into Vitam fields
+        if (partialDto.get("name") != null) {
+            propertiesToUpdate.put("Name", (String) partialDto.get("name"));
+        }
         if (partialDto.get("everyOriginatingAgency") != null) {
             propertiesToUpdate.put("EveryOriginatingAgency", (boolean) partialDto.get("everyOriginatingAgency"));
         }
@@ -211,7 +219,7 @@ public class AccessContractInternalService {
         if (partialDto.get("writingPermission") != null) {
             propertiesToUpdate.put("WritingPermission", (boolean) partialDto.get("writingPermission"));
         }
-        if(partialDto.get("writingRestrictedDesc") != null) {
+        if (partialDto.get("writingRestrictedDesc") != null) {
             propertiesToUpdate.put("WritingRestrictedDesc", (boolean) partialDto.get("writingRestrictedDesc"));
         }
         if (partialDto.get("description") != null) {
@@ -238,7 +246,7 @@ public class AccessContractInternalService {
 
         if (partialDto.get("rootUnits") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for (String value: (List<String>) partialDto.get("rootUnits")) {
+            for (String value : (List<String>) partialDto.get("rootUnits")) {
                 array.add(value);
             }
             propertiesToUpdate.set("RootUnits", array);
@@ -246,7 +254,7 @@ public class AccessContractInternalService {
 
         if (partialDto.get("excludedRootUnits") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for (String value: (List<String>) partialDto.get("excludedRootUnits")) {
+            for (String value : (List<String>) partialDto.get("excludedRootUnits")) {
                 array.add(value);
             }
             propertiesToUpdate.set("ExcludedRootUnits", array);
@@ -254,7 +262,7 @@ public class AccessContractInternalService {
 
         if (partialDto.get("ruleCategoryToFilter") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for (String value: (List<String>) partialDto.get("ruleCategoryToFilter")) {
+            for (String value : (List<String>) partialDto.get("ruleCategoryToFilter")) {
                 array.add(value);
             }
             propertiesToUpdate.set("RuleCategoryToFilter", array);
@@ -262,7 +270,7 @@ public class AccessContractInternalService {
 
         if (partialDto.get("originatingAgencies") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for (String value: (List<String>) partialDto.get("originatingAgencies")) {
+            for (String value : (List<String>) partialDto.get("originatingAgencies")) {
                 array.add(value);
             }
             propertiesToUpdate.set("OriginatingAgencies", array);
@@ -271,7 +279,7 @@ public class AccessContractInternalService {
 
         if (partialDto.get("dataObjectVersion") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for (String value: (List<String>) partialDto.get("dataObjectVersion")) {
+            for (String value : (List<String>) partialDto.get("dataObjectVersion")) {
                 array.add(value);
             }
             propertiesToUpdate.set("DataObjectVersion", array);
@@ -280,7 +288,7 @@ public class AccessContractInternalService {
         return propertiesToUpdate;
     }
 
-    public AccessContractDto patch(VitamContext vitamContext,final Map<String, Object> partialDto) {
+    public AccessContractDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
         String id = (String) partialDto.get("identifier");
         if (id == null) {
             throw new BadRequestException("id must be one the the update criteria");
@@ -289,7 +297,7 @@ public class AccessContractInternalService {
         partialDto.remove("identifier");
 
         try {
-            LOGGER.info("Patch Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Patch Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
             // Manual setting instead of updateRequest.addActions( UpdateActionHelper.set(fieldsUpdated));
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
@@ -305,9 +313,9 @@ public class AccessContractInternalService {
 
             LOGGER.debug("Send AccessContract update request: {}", query);
 
-            RequestResponse requestResponse =  vitamUIAccessContractService.patchAccessContract(vitamContext, id, query);
+            RequestResponse requestResponse = vitamUIAccessContractService.patchAccessContract(vitamContext, id, query);
             final AccessContractVitamDto accessContractVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AccessContractVitamDto.class);
+                .treeToValue(requestResponse.toJsonNode(), AccessContractVitamDto.class);
             return converter.convertVitamToDto(accessContractVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | JsonProcessingException e) {
             throw new InternalServerException("Can't patch access contract", e);
@@ -315,12 +323,13 @@ public class AccessContractInternalService {
     }
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
-             LOGGER.debug("Find History Access Contract By ID {}, EvIdAppSession : {}", id,vitamContext.getApplicationSessionId());
+        LOGGER.debug("Find History Access Contract By ID {}, EvIdAppSession : {}", id,
+            vitamContext.getApplicationSessionId());
 
         try {
-            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
+            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
-        	throw new InternalServerException("Unable to fetch history", e);
+            throw new InternalServerException("Unable to fetch history", e);
         }
     }
 }
