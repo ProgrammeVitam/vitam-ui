@@ -27,7 +27,7 @@
  *
  */
 
-import { Id } from '../id.interface';
+import {Id} from '../id.interface';
 
 export interface IngestContract extends Id {
   tenant: number;
@@ -57,13 +57,13 @@ export interface IngestContract extends Id {
 
 export interface SignaturePolicy {
   signedDocument: SignedDocumentPolicyEnum;
-  needSignature: boolean;
-  needTimestamp: boolean;
-  needAdditionalProof: boolean;
+  declaredSignature: boolean;
+  declaredTimestamp: boolean;
+  declaredAdditionalProof: boolean;
 }
 
 export enum SignedDocumentPolicyEnum {
   ALLOWED = 'ALLOWED',
-  ONLY = 'ONLY',
+  MANDATORY = 'MANDATORY',
   FORBIDDEN = 'FORBIDDEN',
 }

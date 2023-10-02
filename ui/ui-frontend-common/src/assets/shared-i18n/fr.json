@@ -5323,7 +5323,7 @@
   "INGEST_CONTRACT": {
     "SIGNED_DOCUMENT_TYPE": {
       "ALLOWED": "Autorisé",
-      "ONLY": "Obligatoire",
+      "MANDATORY": "Obligatoire",
       "FORBIDDEN": "Interdit"
     },
     "ELEMENT_TO_CHECK": {

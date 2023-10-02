@@ -4411,7 +4411,7 @@
   "INGEST_CONTRACT": {
     "SIGNED_DOCUMENT_TYPE": {
       "ALLOWED": "Allowed",
-      "ONLY": "Mandatory",
+      "MANDATORY": "Mandatory",
       "FORBIDDEN": "Forbidden"
     },
     "ELEMENT_TO_CHECK": {

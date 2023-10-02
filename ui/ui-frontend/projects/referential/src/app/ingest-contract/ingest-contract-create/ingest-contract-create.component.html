@@ -437,9 +437,9 @@
                                  (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)">
                 {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ALLOWED  | translate }}
               </mat-button-toggle>
-              <mat-button-toggle value="{{ SignedDocumentPolicyEnum.ONLY }}"
-                                 (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ONLY)">
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ONLY  | translate }}
+              <mat-button-toggle value="{{ SignedDocumentPolicyEnum.MANDATORY }}"
+                                 (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.MANDATORY)">
+                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.MANDATORY  | translate }}
               </mat-button-toggle>
               <mat-button-toggle value="{{ SignedDocumentPolicyEnum.FORBIDDEN }}"
                                  (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.FORBIDDEN)">
@@ -455,8 +455,8 @@
               <div class="criteria-checkbox-choice">
                 <label [ngClass]="{'disabled': signedDocumentPolicyIsDisabled()}">
                   <input type="checkbox"
-                         id="needSignature"
-                         formControlName="needSignature"
+                         id="declaredSignature"
+                         formControlName="declaredSignature"
                          [attr.disabled]="signedDocumentPolicyIsDisabled()"
                   />
                   <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}</span>
@@ -466,7 +466,7 @@
                 <label [ngClass]="{'disabled': signedDocumentPolicyIsDisabled()}">
                   <input type="checkbox"
                          id="TIMESTAMP"
-                         formControlName="needTimestamp"
+                         formControlName="declaredTimestamp"
                          [attr.disabled]="signedDocumentPolicyIsDisabled()"
                   />
                   <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}</span>
@@ -476,7 +476,7 @@
                 <label [ngClass]="{'disabled': signedDocumentPolicyIsDisabled()}">
                   <input type="checkbox"
                          id="ADDITIONAL_EVIDENCES"
-                         formControlName="needAdditionalProof"
+                         formControlName="declaredAdditionalProof"
                          [attr.disabled]="signedDocumentPolicyIsDisabled()"
                   />
                   <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}</span>
