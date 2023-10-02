@@ -130,8 +130,8 @@ public class AccessContractExternalController {
         return accessContractExternalService.create(accessContractDto);
     }
 
-    @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_ACCESS_CONTRACTS)
+    @PatchMapping(CommonConstants.PATH_ID)
     public AccessContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException , PreconditionFailedException{
         SanityChecker.checkSecureParameter(id);
