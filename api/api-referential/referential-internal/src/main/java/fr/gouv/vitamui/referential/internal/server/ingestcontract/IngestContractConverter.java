@@ -100,9 +100,9 @@ public class IngestContractConverter {
         }
         return new SignaturePolicyDto()
             .setSignedDocument(vitam.getSignedDocument())
-            .setNeedSignature(vitam.isNeedSignature())
-            .setNeedTimestamp(vitam.isNeedTimestamp())
-            .setNeedAdditionalProof(vitam.isNeedAdditionalProof());
+            .setDeclaredSignature(vitam.isDeclaredSignature())
+            .setDeclaredTimestamp(vitam.isDeclaredTimestamp())
+            .setDeclaredAdditionalProof(vitam.isDeclaredAdditionalProof());
     }
 
     public SignaturePolicy convertDtoToVitam(final SignaturePolicyDto dto) {
@@ -111,9 +111,9 @@ public class IngestContractConverter {
         }
         SignaturePolicy signaturePolicy = new SignaturePolicy();
         signaturePolicy.setSignedDocument(dto.getSignedDocument());
-        signaturePolicy.setNeedSignature(dto.getNeedSignature());
-        signaturePolicy.setNeedTimestamp(dto.getNeedTimestamp());
-        signaturePolicy.setNeedAdditionalProof(dto.getNeedAdditionalProof());
+        signaturePolicy.setDeclaredSignature(dto.getDeclaredSignature());
+        signaturePolicy.setDeclaredTimestamp(dto.getDeclaredTimestamp());
+        signaturePolicy.setDeclaredAdditionalProof(dto.getDeclaredAdditionalProof());
         return signaturePolicy;
     }
 
