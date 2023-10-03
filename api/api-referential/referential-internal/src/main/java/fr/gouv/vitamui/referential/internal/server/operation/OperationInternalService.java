@@ -74,6 +74,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +94,10 @@ public class OperationInternalService {
     final private ExternalParametersService externalParametersService;
     final private String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
     final private String AUDIT_FILE_RECTIFICATION = "AUDIT_FILE_RECTIFICATION";
+
+    public static final String DSL_QUERY_PROJECTION = "$projection";
+    public static final String DSL_QUERY_FILTER = "$filter";
+    public static final String DSL_QUERY_FACETS = "$facets";
     private ObjectMapper objectMapper;
 
     @Autowired
@@ -184,6 +189,10 @@ public class OperationInternalService {
                 previousDslQuery.put("$threshold", thresholdOpt.get());
                 auditOptions.setQuery(previousDslQuery);
             }
+
+            Arrays.stream(new String[] {DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS})
+                .forEach(((ObjectNode) auditOptions.getQuery())::remove);
+
         } catch (InvalidCreateOperationException e) {
             LOGGER.error(e.getMessage());
             throw new BadRequestException(e.getMessage());
