@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.error.VitamError;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -94,18 +95,18 @@ public class VitamUIAccessContractServiceTest {
     }
 
     @Test
-    public void patchAccessContract_should_return_ok_when_vitamclient_400() throws InvalidParseOperationException, AccessExternalClientException {
+    public void patchAccessContract_should_return_400_when_vitamclient_400() throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
         expect(adminExternalClient.updateAccessContract(vitamSecurityProfile, id, jsonNode))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(400));
+            .andReturn(new VitamError("ERR_VITAM").setHttpCode(400).setMessage("DSL malformated"));
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             vitamUIAccessContractService.patchAccessContract(vitamSecurityProfile, id, jsonNode);
-        }).doesNotThrowAnyException();
+        }).hasMessageContaining("DSL malformated");
     }
 
     @Test
