@@ -136,7 +136,7 @@ export class AuditCreateComponent implements OnInit {
 
     this.subscriptions.add(
       this.form.controls.evidenceAudit.valueChanges
-        .subscribe((value) => this.form.controls.auditType.setValue(value)));
+        .subscribe((value) => this.form.controls.objectId.setValue(value)));
 
     this.subscriptions.add(
       this.allNodes.valueChanges

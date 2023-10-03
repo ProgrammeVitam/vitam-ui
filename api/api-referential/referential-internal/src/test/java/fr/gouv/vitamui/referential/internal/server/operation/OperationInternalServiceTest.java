@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonPointer;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -39,11 +40,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.easymock.EasyMock.mock;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 class OperationInternalServiceTest {
 
@@ -64,6 +68,9 @@ class OperationInternalServiceTest {
     private LogbookService logbookService;
     @Mock
     private ExternalParametersService externalParametersService;
+    public static final String DSL_QUERY_PROJECTION = "$projection";
+    public static final String DSL_QUERY_FILTER = "$filter";
+    public static final String DSL_QUERY_FACETS = "$facets";
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -75,11 +82,26 @@ class OperationInternalServiceTest {
         operationInternalService = new OperationInternalService(operationService,logbookService,objectMapper,externalParametersService);
         auditOptions = new AuditOptions();
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+
     }
     @Test
-    void updateAuditDslQuery_should_handle_dsl_types() {
+    void updateAuditDslQuery_should_handle_dsl_types() throws JsonProcessingException {
         //AuditType ko
         auditOptions.setAuditType("fakeAuditType");
+
+        String jsonDslQuery ="{\n" +
+            "\t\t\"$roots\": [],\n" +
+            "\t\t\"$query\": [{\n" +
+            "\t\t\t\"$eq\": {\n" +
+            "\t\t\t\t\"#tenant\": \"1\"\n" +
+            "\t\t\t}\n" +
+            "\t\t}],\n" +
+            "\t\t\"$filter\": {},\n" +
+            "\t\t\"$projection\": {},\n" +
+            "\t\t\"$facets\": []\n" +
+            "\t}";
+        JsonNode dslQuery = objectMapper.readTree(jsonDslQuery);
+        auditOptions.setQuery(dslQuery);
         //set unexpected threshold
         assertThatCode(() -> {
             operationInternalService.updateAuditDslQuery(auditOptions, Optional.empty());
@@ -87,7 +109,6 @@ class OperationInternalServiceTest {
 
         //set right AuditType ok
         auditOptions.setAuditType("dsl");
-
         //load query
         assertThatCode(() -> {
             operationInternalService.updateAuditDslQuery(auditOptions, null);
@@ -97,5 +118,18 @@ class OperationInternalServiceTest {
         assertThatCode(() -> {
             operationInternalService.updateAuditDslQuery(auditOptions, Optional.empty());
         }).doesNotThrowAnyException();
+
+        //check quditType after updateAuditDslQuery
+        assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
+        assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_FILTER));
+        assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_FACETS));
+        assertFalse(containsAttribute(auditOptions.getQuery(), "$roots"));
+    }
+
+    public boolean containsAttribute(JsonNode query, String attr){
+        if (query.findValue(attr) == null)
+            return true;
+        else
+            return false;
     }
 }
