@@ -59,6 +59,7 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
   selectedOverThreshold = false;
   canLoadExactCount = false;
   exactCountLoaded = false;
+  displaySelectedArchiveUnitCount = true;
 
   private subscriptions = new Subscription();
 
@@ -102,6 +103,7 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
   private update(): void {
     this.selectedOverThreshold = this.selectedArchiveUnitCount >= this.threshold;
     this.canLoadExactCount = !this.exactCountLoaded && this.archiveUnitCount >= this.threshold;
+    this.displaySelectedArchiveUnitCount = this.shouldDisplaySelectedArchiveUnitCount();
   }
 
   loadExactCount() {
@@ -131,5 +133,13 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
         }
       )
     );
+  }
+
+  private shouldDisplaySelectedArchiveUnitCount(): boolean {
+    const isInclusiveMode = !this.allChecked;
+    const extactCountIsKnown = this.exactCountLoaded;
+    const knownCountUnderThreshold = this.archiveUnitCount < this.threshold;
+
+    return isInclusiveMode || extactCountIsKnown || knownCountUnderThreshold;
   }
 }
