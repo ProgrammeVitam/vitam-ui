@@ -89,6 +89,7 @@ customer-init:
       roles:
         - ROLE_GET_AUDITS
         - ROLE_RUN_AUDITS
+        - ROLE_GET_OPERATIONS
 
     - name: Profil pour la gestion des opérations de sécurisation
       description: Gestion des opérations de sécurisation dans Vitam

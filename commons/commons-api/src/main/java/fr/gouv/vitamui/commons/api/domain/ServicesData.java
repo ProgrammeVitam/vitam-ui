@@ -254,9 +254,9 @@ public class ServicesData {
 
     public static final String ROLE_CREATE_PASTIS = CREATE_ROLE_PREFIX + SERVICE_PASTIS;
 
-    public static final String ROLE_UPDATE_PASTIS =  UPDATE_ROLE_PREFIX + SERVICE_PASTIS;
+    public static final String ROLE_UPDATE_PASTIS = UPDATE_ROLE_PREFIX + SERVICE_PASTIS;
 
-    public static final String ROLE_DELETE_PASTIS =  DELETE_ROLE_PREFIX + SERVICE_PASTIS;
+    public static final String ROLE_DELETE_PASTIS = DELETE_ROLE_PREFIX + SERVICE_PASTIS;
 
     //------------------------------------ INGEST CONTRACT -----------------------------------------
 
@@ -366,6 +366,8 @@ public class ServicesData {
 
     public static final String SERVICE_AUDITS = "AUDITS";
 
+    public static final String ROLE_GET_AUDITS = ROLE_PREFIX + "GET_" + SERVICE_AUDITS;
+
     public static final String ROLE_RUN_AUDITS = ROLE_PREFIX + "RUN_" + SERVICE_AUDITS;
 
     //------------------------------------- PROBATIVE_VALUE --------------------------------------------
@@ -383,9 +385,9 @@ public class ServicesData {
 
     public static final String ROLE_UPDATE_ARCHIVE_PROFILES = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
 
-    public static final String ROLE_CREATE_ARCHIVE_PROFILES =  UPDATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+    public static final String ROLE_CREATE_ARCHIVE_PROFILES = UPDATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
 
-    public static final String ROLE_IMPORT_ARCHIVE_PROFILES =  DELETE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+    public static final String ROLE_IMPORT_ARCHIVE_PROFILES = DELETE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
 
     //------------------------------------ ARCHIVE PROFILES UNIT -----------------------------------
 
@@ -395,9 +397,9 @@ public class ServicesData {
 
     public static final String ROLE_UPDATE_ARCHIVE_PROFILES_UNIT = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
 
-    public static final String ROLE_CREATE_ARCHIVE_PROFILES_UNIT =  UPDATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+    public static final String ROLE_CREATE_ARCHIVE_PROFILES_UNIT = UPDATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
 
-    public static final String ROLE_IMPORT_ARCHIVE_PROFILES_UNIT =  DELETE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+    public static final String ROLE_IMPORT_ARCHIVE_PROFILES_UNIT = DELETE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
 
 
     //------------------------------------ INGESTS -----------------------------------------
@@ -592,6 +594,7 @@ public class ServicesData {
         ROLE_CREATE_ONTOLOGIES,
         ROLE_DELETE_ONTOLOGIES,
 
+        ROLE_GET_AUDITS,
         ROLE_RUN_AUDITS,
         ROLE_GET_OPERATIONS,
         ROLE_RUN_PROBATIVE_VALUE,
@@ -766,6 +769,7 @@ public class ServicesData {
         ROLE_CREATE_ONTOLOGIES,
         ROLE_DELETE_ONTOLOGIES,
 
+        ROLE_GET_AUDITS,
         ROLE_RUN_AUDITS,
         ROLE_RUN_PROBATIVE_VALUE,
 
