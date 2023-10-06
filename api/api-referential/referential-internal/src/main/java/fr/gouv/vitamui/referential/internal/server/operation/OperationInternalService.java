@@ -94,11 +94,13 @@ public class OperationInternalService {
     final private ExternalParametersService externalParametersService;
     final private String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
     final private String AUDIT_FILE_RECTIFICATION = "AUDIT_FILE_RECTIFICATION";
-
+    final private String AUDIT_FILE_INTEGRITY = "AUDIT_FILE_INTEGRITY";
+    final private String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
+    final private List<String> AUDITS_WITHOUT_PROJECTION = List.of(AUDIT_FILE_INTEGRITY,AUDIT_FILE_EXISTING);
     public static final String DSL_QUERY_PROJECTION = "$projection";
     public static final String DSL_QUERY_FILTER = "$filter";
     public static final String DSL_QUERY_FACETS = "$facets";
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     OperationInternalService(OperationService operationService, LogbookService logbookService,
@@ -192,7 +194,11 @@ public class OperationInternalService {
 
             Arrays.stream(new String[] {DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS})
                 .forEach(((ObjectNode) auditOptions.getQuery())::remove);
-
+            if ( !AUDITS_WITHOUT_PROJECTION.contains(auditOptions.getAuditActions())){
+                ObjectNode dslQueryProjection = (ObjectNode) auditOptions.getQuery();
+                dslQueryProjection.put(DSL_QUERY_PROJECTION, "{}");
+                auditOptions.setQuery(dslQueryProjection);
+            }
         } catch (InvalidCreateOperationException e) {
             LOGGER.error(e.getMessage());
             throw new BadRequestException(e.getMessage());
