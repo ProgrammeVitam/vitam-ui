@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.iam.security.config;
 
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -48,14 +51,8 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * The security configuration.
- *
- *
  */
 @Getter
 @Setter
@@ -67,8 +64,9 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
 
     protected Environment env;
 
-    public AbstractApiWebSecurityConfig(final AuthenticationProvider apiAuthenticationProvider, final RestExceptionHandler restExceptionHandler,
-            final Environment env) {
+    public AbstractApiWebSecurityConfig(final AuthenticationProvider apiAuthenticationProvider,
+        final RestExceptionHandler restExceptionHandler,
+        final Environment env) {
         super();
         this.apiAuthenticationProvider = apiAuthenticationProvider;
         this.restExceptionHandler = restExceptionHandler;
@@ -86,12 +84,16 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
             .authorizeRequests()
             .antMatchers(getAuthList()).permitAll()
             .anyRequest().authenticated()
-        .and()
+            .and()
             .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-        .and()
+            .and()
             .exceptionHandling()
             .authenticationEntryPoint(getUnauthorizedHandler())
-        .and()
+            .and()
+            .headers(configurer -> {
+                configurer.frameOptions().disable();
+                configurer.addHeaderWriter(new SameSiteHeaderWriter());
+            })
             .csrf().disable()
             .addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class)
             .sessionManagement()
@@ -110,7 +112,8 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
             "/favicon.ico",
             "/actuator/**",
             "*/users/me",
-            "/swagger-resources/**", "/swagger.json", "/**/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"
+            "/swagger-resources/**", "/swagger.json", "/**/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs",
+            "/webjars/**"
         };
     }
 
@@ -119,5 +122,6 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
         return new ApiAuthenticationEntryPoint(restExceptionHandler);
     }
 
-    protected abstract AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter() throws Exception;
+    protected abstract AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter()
+        throws Exception;
 }
