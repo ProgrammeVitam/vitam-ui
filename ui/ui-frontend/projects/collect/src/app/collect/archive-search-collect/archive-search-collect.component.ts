@@ -32,7 +32,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subject, Subscription, merge } from 'rxjs';
-import { debounceTime, map, mergeMap } from 'rxjs/operators';
+import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 import {
   AccessContract,
   ArchiveSearchResultFacets,
@@ -248,7 +248,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.accessContractSub?.unsubscribe();
     this.accessContractSubscription?.unsubscribe();
     this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
@@ -261,50 +261,58 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.uaMetadataUpdateDialogSub?.unsubscribe();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
     this.searchCriteriaKeys = [];
     this.searchCriterias = new Map();
     this.initializeSelectionParams();
-    this.addInitalCriteriaValues();
+    this.addInitialCriteriaValues();
     this.transactionSubscription = this.route.params
       .pipe(
-        mergeMap((params) => {
+        tap((params) => {
           this.projectId = params.projectId;
           this.tenantIdentifier = params.tenantIdentifier;
-          return params.transactionId
-            ? this.archiveUnitCollectService.getTransactionById(params.transactionId)
-            : this.archiveUnitCollectService.getLastTransactionByProjectId(this.projectId);
+        }),
+        mergeMap((params) => {
+          const { projectId, transactionId } = params;
+
+          if (transactionId) {
+            return this.archiveUnitCollectService.getTransactionById(transactionId);
+          }
+
+          return this.archiveUnitCollectService.getLastTransactionByProjectId(projectId);
+        }),
+        tap((transaction) => {
+          this.transaction = transaction;
         })
       )
       .subscribe((transaction) => {
-        this.transaction = transaction;
+        const { status } = transaction;
+
         this.fetchUserAccessContractFromExternalParameters();
-        if (!!this.transaction) {
-          this.isNotOpen$.next(this.transaction.status !== TransactionStatus.OPEN);
-          this.isNotReady$.next(this.transaction.status !== TransactionStatus.READY);
-        } else {
-          this.isNotOpen$.next(true);
-          this.isNotReady$.next(true);
-        }
+
+        this.isNotOpen$.next(status !== TransactionStatus.OPEN || true);
+        this.isNotReady$.next(status !== TransactionStatus.READY || true);
+
+        this.submit();
       });
-
     this.projectName = this.route.snapshot.queryParamMap.get('projectName');
-
-    const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
-
-    searchCriteriaChange.subscribe(() => {
-      this.submit();
-    });
-    this.archiveExchangeDataService.getToggle().subscribe((hidden) => {
-      this.show = hidden;
-    });
-
-    this.submit();
+    this.subscriptions.add(
+      merge(this.orderChange, this.filterChange)
+        .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS))
+        .subscribe(() => {
+          this.submit();
+        })
+    );
+    this.subscriptions.add(
+      this.archiveExchangeDataService.getToggle().subscribe((hidden) => {
+        this.show = hidden;
+      })
+    );
   }
 
-  private addInitalCriteriaValues() {
+  private addInitialCriteriaValues() {
     this.archiveHelperService.addCriteria(
       this.searchCriterias,
       this.searchCriteriaKeys,
