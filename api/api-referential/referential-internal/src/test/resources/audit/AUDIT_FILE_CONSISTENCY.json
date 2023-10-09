@@ -1,1 +1,10 @@
-{}
+{
+  "$query": [{
+    "$or": [{
+      "$exists": "#id"
+    }]
+  }],
+  "$filter": {},
+  "$projection": {},
+  "$threshold": 10
+}

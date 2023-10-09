@@ -28,6 +28,7 @@ import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessRegis
 import fr.gouv.vitamui.referential.internal.server.service.ExternalParametersService;
 import org.json.JSONException;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -71,6 +72,10 @@ class OperationInternalServiceTest {
     public static final String DSL_QUERY_PROJECTION = "$projection";
     public static final String DSL_QUERY_FILTER = "$filter";
     public static final String DSL_QUERY_FACETS = "$facets";
+    final private String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
+    final private String AUDIT_FILE_RECTIFICATION = "AUDIT_FILE_RECTIFICATION";
+    final private String AUDIT_FILE_INTEGRITY = "AUDIT_FILE_INTEGRITY";
+    final private String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -82,24 +87,12 @@ class OperationInternalServiceTest {
         operationInternalService = new OperationInternalService(operationService,logbookService,objectMapper,externalParametersService);
         auditOptions = new AuditOptions();
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-
     }
     @Test
-    void updateAuditDslQuery_should_handle_dsl_types() throws JsonProcessingException {
+    void updateAuditDslQuery_should_handle_dsl_types() throws JsonProcessingException, FileNotFoundException {
         //AuditType ko
         auditOptions.setAuditType("fakeAuditType");
-
-        String jsonDslQuery ="{\n" +
-            "\t\t\"$roots\": [],\n" +
-            "\t\t\"$query\": [{\n" +
-            "\t\t\t\"$eq\": {\n" +
-            "\t\t\t\t\"#tenant\": \"1\"\n" +
-            "\t\t\t}\n" +
-            "\t\t}],\n" +
-            "\t\t\"$filter\": {},\n" +
-            "\t\t\"$projection\": {},\n" +
-            "\t\t\"$facets\": []\n" +
-            "\t}";
+        String jsonDslQuery = PropertiesUtils.getResourceAsString("audit/AUDIT_FILE_CONSISTENCY.json").trim();
         JsonNode dslQuery = objectMapper.readTree(jsonDslQuery);
         auditOptions.setQuery(dslQuery);
         //set unexpected threshold
@@ -109,6 +102,7 @@ class OperationInternalServiceTest {
 
         //set right AuditType ok
         auditOptions.setAuditType("dsl");
+        auditOptions.setAuditActions(AUDIT_FILE_CONSISTENCY);
         //load query
         assertThatCode(() -> {
             operationInternalService.updateAuditDslQuery(auditOptions, null);
@@ -119,17 +113,34 @@ class OperationInternalServiceTest {
             operationInternalService.updateAuditDslQuery(auditOptions, Optional.empty());
         }).doesNotThrowAnyException();
 
-        //check quditType after updateAuditDslQuery
-        assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
-        assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_FILTER));
-        assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_FACETS));
-        assertFalse(containsAttribute(auditOptions.getQuery(), "$roots"));
+
     }
+    @Test
+    void updateAuditDslQuery_should_handle_dsl_attributes() throws JsonProcessingException, FileNotFoundException {
+
+        //check that dsl shoud not include projection
+        String jsonWrongDslQuery = PropertiesUtils.getResourceAsString("audit/AUDIT_FILE_EXISTING.json").trim();
+        JsonNode wrongDslQuery = objectMapper.readTree(jsonWrongDslQuery);
+        auditOptions.setQuery(wrongDslQuery);
+        auditOptions.setAuditType("dsl");
+        auditOptions.setAuditActions(AUDIT_FILE_EXISTING); // or AUDIT_FILE_INTEGRITY
+        operationInternalService.updateAuditDslQuery(auditOptions, Optional.of(10L));
+        assertFalse(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
+        //check that dsl shoud include projection
+        String jsonDslQuery = PropertiesUtils.getResourceAsString("audit/AUDIT_FILE_CONSISTENCY.json").trim();
+        JsonNode dslQuery = objectMapper.readTree(jsonDslQuery);
+        auditOptions.setQuery(dslQuery);
+        auditOptions.setAuditActions(AUDIT_FILE_CONSISTENCY); // or AUDIT_FILE_RECTIFICATION
+        operationInternalService.updateAuditDslQuery(auditOptions, Optional.of(10L));
+        assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
+    }
+
+
 
     public boolean containsAttribute(JsonNode query, String attr){
         if (query.findValue(attr) == null)
-            return true;
-        else
             return false;
+        else
+            return true;
     }
 }

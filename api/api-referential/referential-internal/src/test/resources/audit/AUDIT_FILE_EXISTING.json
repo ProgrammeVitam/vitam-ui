@@ -1,1 +1,10 @@
-{}
+{
+  "$roots": [],
+  "$query": [{
+    "$eq": {
+      "#originating_agency": "producteur1"
+    }
+  }],
+  "$filter": {},
+  "$facets": []
+}
