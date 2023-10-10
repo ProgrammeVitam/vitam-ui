@@ -111,11 +111,11 @@ public class Utils {
 
     public Cookie buildIdpCookie(final String value, final TicketGrantingCookieProperties tgc) {
         final Cookie cookie = new Cookie(CommonConstants.IDP_PARAMETER, value);
+        cookie.setHttpOnly(tgc.isHttpOnly());
         cookie.setPath(tgc.getPath());
         cookie.setDomain(tgc.getDomain());
         cookie.setMaxAge(BROWSER_SESSION_LIFETIME);
         cookie.setSecure(tgc.isSecure());
-        cookie.setHttpOnly(tgc.isHttpOnly());
         return cookie;
     }
 

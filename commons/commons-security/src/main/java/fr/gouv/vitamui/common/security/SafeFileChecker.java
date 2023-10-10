@@ -91,7 +91,7 @@ public class SafeFileChecker {
     }
 
     private static void checkNullParameter(String path) {
-        if (path == null || path.length() == 0) {
+        if (path == null || path.isEmpty()) {
             throw new InvalidFileSanitizeException("Null or empty path submitted");
         }
     }

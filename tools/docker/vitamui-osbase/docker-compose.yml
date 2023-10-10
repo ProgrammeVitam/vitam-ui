@@ -18,12 +18,8 @@ services:
         ipv4_address: 172.16.239.2
     ports:
       - "2218:2218"
-    privileged: true
     dns:
       - 8.8.8.8
-    volumes:
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
     command: ["/usr/sbin/init"]
 
 networks:

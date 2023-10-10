@@ -62,6 +62,7 @@ public final class CookieClearingLogoutHandler implements LogoutHandler {
     public void logout(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) {
         for (final String cookieName : cookiesToClear) {
             final Cookie cookie = new Cookie(cookieName, null);
+            cookie.setHttpOnly(true);
             String path = "/";
             if (StringUtils.isNotEmpty(cookiePath)) {
                 path = cookiePath;
