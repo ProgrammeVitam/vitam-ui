@@ -37,11 +37,22 @@
 package fr.gouv.vitamui.referential.internal.server.operation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+import com.fasterxml.jackson.databind.node.JsonNodeCreator;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.JsonObject;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
@@ -196,10 +207,16 @@ public class OperationInternalService {
                 .forEach(((ObjectNode) auditOptions.getQuery())::remove);
             if ( !AUDITS_WITHOUT_PROJECTION.contains(auditOptions.getAuditActions())){
                 ObjectNode dslQueryProjection = (ObjectNode) auditOptions.getQuery();
-                dslQueryProjection.put(DSL_QUERY_PROJECTION, "{}");
+                dslQueryProjection.put(DSL_QUERY_PROJECTION, objectMapper.readTree("{}") );
                 auditOptions.setQuery(dslQueryProjection);
             }
         } catch (InvalidCreateOperationException e) {
+            LOGGER.error(e.getMessage());
+            throw new BadRequestException(e.getMessage());
+        } catch (JsonMappingException e) {
+            LOGGER.error(e.getMessage());
+            throw new BadRequestException(e.getMessage());
+        } catch (JsonProcessingException e) {
             LOGGER.error(e.getMessage());
             throw new BadRequestException(e.getMessage());
         }
