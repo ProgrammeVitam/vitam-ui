@@ -1,33 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -52,6 +24,7 @@ import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
+import fr.gouv.vitamui.iam.internal.server.idp.converter.IdentityProviderConverter;
 import fr.gouv.vitamui.iam.internal.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
 import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
@@ -66,6 +39,33 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @Import({TestMongoConfig.class})
@@ -139,7 +139,8 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
     @Mock
     private ExternalParametersInternalService externalParametersInternalService;
 
-
+    @Mock
+    private IdentityProviderConverter idpConverter;
 
     @Before
     public void setup() {
@@ -147,7 +148,8 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
 
         service = new CustomerInternalService(sequenceGeneratorService, customerRepository, internalOwnerService,
             userInternalService, internalSecurityService,
-            addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
+            addressService, initCustomerService, iamLogbookService, customerConverter, logbookService,
+            internalIdentityProviderService, idpConverter);
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
         Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class)))
