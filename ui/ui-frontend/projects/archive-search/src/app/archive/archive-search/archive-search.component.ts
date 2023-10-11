@@ -1046,30 +1046,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     );
   }
 
-  async goToUpdateManagementRule() {
-    await this.prepareToLaunchVitamAction();
-    this.updateManagementRuleWithThresholds();
-  }
-
-  private updateManagementRuleWithThresholds() {
-    this.updateUnitManagementRuleService.updateManagementRuleWithThresholds(
-      this.listOfUACriteriaSearch,
-      this.criteriaSearchList,
-      this.currentPage,
-      this.tenantIdentifier,
-      this.selectedItemCount,
-      this.router,
-      this.selectedItemCount,
-      this.showConfirmBigNumberOfResultsSuscription,
-      this.confirmSecondActionBigNumberOfResultsActionDialog,
-      this.actionsWithThresholdReachedAlerteMessageDialogSubscription,
-      this.actionsWithThresholdReachedAlerteMessageDialog,
-      this.confirmImportantAllowedBulkOperationsDialog,
-      this.confirmSecondActionBigNumberOfResultsActionDialog,
-      this.bulkOperationsThreshold
-    );
-  }
-
   private bulkOperationWarningWorkflow(operation: () => void): void {
     const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
     const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
@@ -1178,6 +1154,25 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.confirmSecondActionBigNumberOfResultsActionDialog
         ),
       this.DEFAULT_TRANSFER_THRESHOLD
+    );
+  }
+
+  async launchUpdateManagementRuleModal() {
+    this.launchBulkOperationWorkflow(
+      () =>
+        this.updateUnitManagementRuleService.goToUpdateManagementRule(
+          this.listOfUACriteriaSearch,
+          this.criteriaSearchList,
+          this.currentPage,
+          this.tenantIdentifier,
+          this.selectedItemCount,
+          this.router,
+          this.selectedItemCount,
+          this.actionsWithThresholdReachedAlerteMessageDialogSubscription,
+          this.actionsWithThresholdReachedAlerteMessageDialog,
+          this.confirmSecondActionBigNumberOfResultsActionDialog
+        ),
+      this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD
     );
   }
 
