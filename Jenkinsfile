@@ -116,11 +116,8 @@ pipeline {
             steps {
                 sh 'npmrc default'
                 sh '''
-                    npm install --prefix ui/ui-frontend-common
+                    npm install --legacy-peer-deps --prefix ui/ui-frontend-common
                     '''
-                 sh '''
-                        npm run --prefix ui/ui-frontend publish:all
-                  '''
             }
         }
 
