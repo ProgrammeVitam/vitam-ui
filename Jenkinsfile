@@ -80,7 +80,8 @@ pipeline {
                 sh 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash - '
                 sh '''
                     export NVM_DIR="$HOME/.nvm"
-                    sudo $NVM_DIR/nvm.sh
+                    sudo chmod +x $NVM_DIR/nvm.sh
+                    sudo ./$NVM_DIR/nvm.sh
                     nvm ls-remote
                 '''
                 sh ' nvm ls-remote  '
