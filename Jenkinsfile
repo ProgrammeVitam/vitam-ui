@@ -87,8 +87,8 @@ pipeline {
                 sh '''
                     "$NVM_DIR/nvm.sh"
                  '''
-                sh
-                '''
+
+
                 sh ' nvm ls-remote  '
                 sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems'
 
