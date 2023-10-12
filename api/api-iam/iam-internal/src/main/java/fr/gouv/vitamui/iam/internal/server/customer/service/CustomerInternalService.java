@@ -94,6 +94,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -334,12 +335,10 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     for (IdentityProviderDto providerDto : providers) {
                         Set<String> patterns = new HashSet<>(providerDto.getPatterns());
                         emailDomains.stream().forEach(domain -> patterns.add(".*@" + domain));
-                        providerDto.setPatterns(new ArrayList<>(patterns));
-                        if (null == providerDto.getTechnicalName()) {
-                            providerDto.setTechnicalName(
-                                idpConverter.buildTechnicalName("default") + providerDto.getIdentifier());
-                        }
-                        internalIdentityProviderService.update(providerDto);
+                        Map<String, Object> providerUpdating = new HashMap<>();
+                        providerUpdating.put("patterns", new ArrayList<>(patterns));
+                        providerUpdating.put("id", providerDto.getId());
+                        internalIdentityProviderService.patch(providerUpdating);
                     }
                     break;
                 case "defaultEmailDomain":
