@@ -81,8 +81,10 @@ pipeline {
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm  '
                 sh 'sudo apt install curl '
-                sh 'curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash '
+                sh 'curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | sh '
                 sh ' source ~/.bashrc   '
+                sh ' source ~/.nvm/nvm.sh  '
+                sh ' nvm install 14.15.1   '
             }
         }
 
