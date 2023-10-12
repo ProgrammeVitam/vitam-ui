@@ -75,14 +75,14 @@ pipeline {
             }
             steps {
                 sh 'sudo apt remove -y nodejs'
-                sh 'sudo apt install -y npm node-npmrc build-essential make ruby ruby-dev rubygems'
+                sh 'sudo apt install curl wget tar'
+                sh 'wget -qO- https://deb.nodesource.com/setup_16.x | sudo -E bash - '
+                sh ' sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems '
                 sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
                 sh 'node -v;npm -v'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm  '
-                sh 'sudo apt install curl wget tar'
-                sh 'wget -qO- https://deb.nodesource.com/setup_16.x | sudo -E bash - '
-                sh ' sudo apt install nodejs '
+
                 sh ' node -v '
                 sh ' source ~/.bashrc   '
                 sh ' source ~/.bashrc   '
