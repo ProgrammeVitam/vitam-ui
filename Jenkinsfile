@@ -81,9 +81,6 @@ pipeline {
                 sh '''
                     export NVM_DIR="$HOME/.nvm"
                 '''
-                 sh '''
-                     bash nvm ls-remote
-                 '''
                 sh '''
                     "$NVM_DIR/nvm.sh"
                  '''
