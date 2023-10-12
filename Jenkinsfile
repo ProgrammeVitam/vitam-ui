@@ -80,12 +80,9 @@ pipeline {
                 sh 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash - '
                 sh '''
                     export NVM_DIR="$HOME/.nvm"
+                    $NVM_DIR/nvm.sh
+                    nvm ls-remote
                 '''
-                sh '''
-                    "$NVM_DIR/nvm.sh"
-                 '''
-
-
                 sh ' nvm ls-remote  '
                 sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems'
 
