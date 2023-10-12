@@ -118,6 +118,21 @@ pipeline {
                 sh '''
                     $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'
                 '''
+                 sh '''
+                    npm install --prefix ui/ui-frontend-common
+                    npm run --prefix ui/ui-frontend-common build:prod
+                    npm run --prefix ui/ui-frontend-common test:conf-ci
+                    npm run --prefix ui/ui-frontend-common packagr:tar
+                    cd ./ui/ui-frontend-common && ./install_local.sh
+
+                    npm install --prefix ui/ui-frontend --legacy-peer-deps
+                    npm run --prefix ui/ui-frontend build:vitamui-library
+                    npm run copy-scss:vitamui-library --prefix ui/ui-frontend
+
+                    '''
+                 sh '''
+                        npm run --prefix ui/ui-frontend publish:all
+                  '''
             }
         }
 
