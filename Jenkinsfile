@@ -82,8 +82,8 @@ pipeline {
                 sh 'sudo gem install fpm  '
                 sh 'sudo apt install curl wget tar'
                 sh 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash '
-                sh ' sudo source ~/.bashrc   '
-                sh ' sudo source /home/jenkins/.bashrc  '
+                sh ' source ~/.bashrc   '
+                sh ' source /home/jenkins/.bashrc  '
                 sh ' nvm ls-remote  '
 
             }
