@@ -106,7 +106,7 @@ pipeline {
             }
         }
 
-        stage('Build sources') {
+        stage('Build UIs') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
             }
@@ -116,9 +116,6 @@ pipeline {
             steps {
                 sh 'npmrc default'
                 sh '''
-                    $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'
-                '''
-                 sh '''
                     npm install --prefix ui/ui-frontend-common
                     npm run --prefix ui/ui-frontend-common build:prod
                     npm run --prefix ui/ui-frontend-common test:conf-ci
@@ -133,6 +130,21 @@ pipeline {
                  sh '''
                         npm run --prefix ui/ui-frontend publish:all
                   '''
+            }
+        }
+
+        stage('Build sources') {
+            environment {
+                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
+            }
+            when {
+                environment(name: 'DO_BUILD', value: 'true')
+            }
+            steps {
+                sh 'npmrc default'
+                sh '''
+                    $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'
+                '''
             }
         }
 
