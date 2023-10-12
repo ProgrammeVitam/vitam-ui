@@ -84,6 +84,7 @@ pipeline {
                 sh 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash '
                 sh ' source ~/.bashrc   '
                 sh ' source ~/.nvm/nvm.sh  '
+                sh ' source /home/jenkins/.bashrc  '
                 sh ' nvm install 14.15.1   '
             }
         }
