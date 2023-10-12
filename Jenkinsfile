@@ -81,7 +81,7 @@ pipeline {
                 sh '''
                     export NVM_DIR="$HOME/.nvm"
                     sudo chmod +x $NVM_DIR/nvm.sh
-                    sudo ./$NVM_DIR/nvm.sh
+                    sudo sh $NVM_DIR/nvm.sh
                     nvm ls-remote
                 '''
                 sh ' nvm ls-remote  '
