@@ -86,13 +86,13 @@ pipeline {
                 [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 
                 '''
-
+                sh ' nvm ls-remote  '
                 sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems'
 
                 sh 'node -v;npm -v'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm  '
-                sh ' nvm ls-remote  '
+
                 sh ' /home/jenkins/.nvm/nvm.sh install 14.15.1   '
             }
         }
