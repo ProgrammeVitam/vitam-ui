@@ -75,17 +75,25 @@ pipeline {
             }
             steps {
                 sh 'sudo apt remove -y nodejs'
-                sh 'sudo apt install -y node-npmrc build-essential make ruby ruby-dev rubygems'
                 sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
-                sh 'sudo timedatectl set-timezone Europe/Paris'
-                sh 'sudo gem install fpm  '
                 sh 'sudo apt install curl wget tar'
                 sh 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash '
-                sh ' source ~/.bashrc   '
-                sh ' sudo source /home/jenkins/.bashrc  '
-                sh ' nvm ls-remote  '
-                sh ' node -v;npm -v'
+                sh '''
+                export NVM_DIR="$HOME/.nvm"
 
+                [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+                [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+                '''
+
+                sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems'
+
+                sh 'node -v;npm -v'
+                sh 'sudo timedatectl set-timezone Europe/Paris'
+                sh 'sudo gem install fpm  '
+                sh ' nvm ls-remote  '
+                sh ' /home/jenkins/.nvm/nvm.sh install 14.15.1   '
             }
         }
 
