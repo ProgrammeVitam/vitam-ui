@@ -80,6 +80,9 @@ pipeline {
                 sh 'node -v;npm -v'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm  '
+                sh 'sudo apt install curl '
+                sh 'curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash '
+                sh ' source ~/.bashrc   '
             }
         }
 
@@ -94,7 +97,7 @@ pipeline {
             steps {
                 sh 'node -v'
                 sh 'npmrc default'
-
+                sh 'nvm install 14.15.1 '
                 sh '''
                     $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'
                 '''
@@ -115,6 +118,7 @@ pipeline {
             }
             steps {
                 sh 'npmrc default'
+                 sh 'nvm use v14.15.1 '
                 sh '''
                     npm install --legacy-peer-deps --prefix ui/ui-frontend-common
                     '''
