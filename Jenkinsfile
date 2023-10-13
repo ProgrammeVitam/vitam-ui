@@ -75,23 +75,11 @@ pipeline {
             }
             steps {
                 sh 'sudo apt remove -y nodejs'
+                sh 'sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems'
                 sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
-                sh 'sudo apt install curl wget tar'
-                sh 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash - '
-                sh '''
-                    export NVM_DIR="$HOME/.nvm"
-                    source ~/.bashrc
-
-                    nvm ls-remote
-                '''
-                sh ' nvm ls-remote  '
-                sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems'
-
                 sh 'node -v;npm -v'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm  '
-
-                sh ' /home/jenkins/.nvm/nvm.sh install 14.15.1   '
             }
         }
 
@@ -106,7 +94,7 @@ pipeline {
             steps {
                 sh 'node -v'
                 sh 'npmrc default'
-                sh 'nvm install 14.15.1 '
+
                 sh '''
                     $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'
                 '''
@@ -134,12 +122,12 @@ pipeline {
             }
         }
 
-        stage('Build sources') {
+        stage('Publish') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
             }
             when {
-                environment(name: 'DO_BUILD', value: 'true')
+                environment(name: 'DO_PUBLISH', value: 'true')
             }
             steps {
                 sh 'npmrc default'
