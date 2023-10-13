@@ -33,8 +33,6 @@ pipeline {
             agent none
             steps {
                 script {
-
-                sh 'sudo apt remove -y nodejs-legacy '
                     env.DO_MAJ_CONTEXT = 'true'
                     env.DO_TEST = 'true'
                     env.DO_BUILD = 'true'
@@ -76,6 +74,7 @@ pipeline {
                 environment(name: 'DO_MAJ_CONTEXT', value: 'true')
             }
             steps {
+                sh 'sudo apt remove -y nodejs-legacy '
                 sh 'sudo apt remove -y nodejs'
                 sh 'sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems'
                 sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
