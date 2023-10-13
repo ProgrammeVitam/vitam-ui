@@ -33,6 +33,8 @@ pipeline {
             agent none
             steps {
                 script {
+
+                sh 'sudo apt remove -y nodejs-legacy '
                     env.DO_MAJ_CONTEXT = 'true'
                     env.DO_TEST = 'true'
                     env.DO_BUILD = 'true'
