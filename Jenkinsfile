@@ -122,7 +122,7 @@ pipeline {
             }
         }
 
-        stage('Publish') {
+        stage('Publish On Nexus') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
             }
