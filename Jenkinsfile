@@ -74,7 +74,8 @@ pipeline {
                 environment(name: 'DO_MAJ_CONTEXT', value: 'true')
             }
             steps {
-                sh 'sudo apt install -y npm node-npmrc build-essential make ruby ruby-dev rubygems'
+                sh 'sudo apt remove -y nodejs'
+                sh 'sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems'
                 sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
                 sh 'node -v;npm -v'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
