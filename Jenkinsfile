@@ -168,30 +168,6 @@ pipeline {
                 )
             }
         }
-/*
-        stage('Check vulnerabilities and tests') {
-            when {
-                environment(name: 'DO_TEST', value: 'true')
-            }
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
-                NODE_OPTIONS="--max_old_space_size=12288"
-            }
-            steps {
-                sh 'node -v'
-                sh 'npmrc default'
-
-                sh '''
-                    $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'
-                '''
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-            }
-        }
-*/
         stage('Build sources') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
