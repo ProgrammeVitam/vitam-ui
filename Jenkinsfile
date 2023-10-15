@@ -82,7 +82,93 @@ pipeline {
                 sh 'sudo gem install fpm  '
             }
         }
+        stage('Build common.') {
+             when {
+                environment(name: 'DO_BUILD', value: 'true')
+            }
+            environment {
+                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
+                JAVA_TOOL_OPTIONS=""
+            }
+            steps {
+                parallel(
+                    'Common': {
+                         sh ''' $MVN_COMMAND clean install -f commons/pom.xml '''
+                    }
+                )
+            }
+        }
+        stage('Build APIs.') {
+             when {
+                environment(name: 'DO_BUILD', value: 'true')
+            }
+            environment {
+                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
+                JAVA_TOOL_OPTIONS=""
+            }
+            steps {
+                parallel(
+                    'Common': {
+                    sh '''
+                        $MVN_COMMAND clean clean install -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express,!ui,!ui/ui-portal,!ui/ui-identity,!ui/ui-frontend,!ui/ui-frontend-common,!ui/ui-ingest,!ui/ui-archive-search ,!ui/ui-referential ' $JAVA_TOOL_OPTIONS
+                    '''
 
+                    }
+                )
+            }
+        }
+        stage('Build UI common.') {
+             when {
+                environment(name: 'DO_BUILD', value: 'true')
+            }
+            environment {
+                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
+                JAVA_TOOL_OPTIONS=""
+            }
+            steps {
+                parallel(
+                    'UI Common': {
+                         sh ''' $MVN_COMMAND clean install  -Pvitam -f ui/ui-frontend-common/pom.xml  '''
+                    }
+                )
+            }
+        }
+
+        stage('Uis') {
+            when {
+                environment(name: 'DO_TEST', value: 'true')
+            }
+            environment {
+                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
+                JAVA_TOOL_OPTIONS=""
+            }
+            steps {
+                parallel(
+                    'Front portal': {
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-portal/pom.xml '''
+                    },
+                    'Front identity': {
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-identity/pom.xml '''
+                    },
+                    'Front ingest': {
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-ingest/pom.xml '''
+                    },
+                    'Front archive-search': {
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-archive-search/pom.xml '''
+                    },
+                    'Front referential': {
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-referential/pom.xml '''
+                    },
+                    'Front collect': {
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-collect/pom.xml '''
+                    },
+                    'Front pastis': {
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-pastis/pom.xml '''
+                    }
+                )
+            }
+        }
+/*
         stage('Check vulnerabilities and tests') {
             when {
                 environment(name: 'DO_TEST', value: 'true')
@@ -105,29 +191,13 @@ pipeline {
                 }
             }
         }
-
-        stage('Build UIs') {
+*/
+        stage('Build sources') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
             }
             when {
                 environment(name: 'DO_BUILD', value: 'true')
-            }
-            steps {
-                sh 'npmrc default'
-                 sh 'nvm use v14.15.1 '
-                sh '''
-                    npm install --legacy-peer-deps --prefix ui/ui-frontend-common
-                    '''
-            }
-        }
-
-        stage('Publish On Nexus') {
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
-            }
-            when {
-                environment(name: 'DO_PUBLISH', value: 'true')
             }
             steps {
                 sh 'npmrc default'
