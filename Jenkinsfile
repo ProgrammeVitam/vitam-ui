@@ -143,26 +143,8 @@ pipeline {
             }
             steps {
                 parallel(
-                    'Front portal': {
-                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-portal/pom.xml '''
-                    },
-                    'Front identity': {
-                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-identity/pom.xml '''
-                    },
-                    'Front ingest': {
-                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-ingest/pom.xml '''
-                    },
-                    'Front archive-search': {
-                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-archive-search/pom.xml '''
-                    },
-                    'Front referential': {
-                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-referential/pom.xml '''
-                    },
-                    'Front collect': {
-                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-collect/pom.xml '''
-                    },
-                    'Front pastis': {
-                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/ui-pastis/pom.xml '''
+                    'ui-Front end ': {
+                        sh ''' $MVN_COMMAND clean install -Pvitam -f ui/pom.xml '''
                     }
                 )
             }
