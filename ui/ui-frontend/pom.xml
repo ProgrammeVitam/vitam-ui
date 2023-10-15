@@ -118,19 +118,19 @@
               <arguments>run test:conf-ci</arguments>
             </configuration>
           </execution>
-
-          <execution>
-            <id>npm publish:all</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <skip>${skipAllFrontend}</skip>
-              <!-- npm install - specifying ui-frontend-common ignore integrity hash -->
-              <arguments>publish:all</arguments>
-            </configuration>
-          </execution>
+          <!--
+                    <execution>
+                      <id>npm publish:all</id>
+                      <phase>generate-resources</phase>
+                      <goals>
+                        <goal>npm</goal>
+                      </goals>
+                      <configuration>
+                        <skip>${skipAllFrontend}</skip>
+                        <arguments>publish:all</arguments>
+                      </configuration>
+                    </execution>
+                    -->
         </executions>
       </plugin>
       <plugin>
