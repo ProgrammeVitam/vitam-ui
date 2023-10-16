@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import { Id } from '../id.interface';
+import {Id} from '../id.interface';
 
 export interface ManagementContract extends Id {
   tenant: number;
@@ -40,7 +40,30 @@ export interface ManagementContract extends Id {
   deactivationDate: string;
   storage: StorageStrategy;
   versionRetentionPolicy: VersionRetentionPolicy;
+  persistentIdentifierPolicyList?: PersistentIdentifierPolicy[];
 }
+
+
+export interface PersistentIdentifierPolicy {
+
+  persistentIdentifierPolicyType: PersistentIdentifierPolicyTypeEnum;
+  persistentIdentifierUnit: boolean;
+  persistentIdentifierAuthority: string;
+  persistentIdentifierUsages: PersistentIdentifierUsage[];
+
+}
+
+export interface PersistentIdentifierUsage {
+  DataObjectVersionType: string;
+  initialVersion: string;
+  usageName: string;
+}
+
+
+export enum PersistentIdentifierPolicyTypeEnum {
+  ARK = 'ARK'
+}
+
 
 export interface StorageStrategy {
   unitStrategy: string;

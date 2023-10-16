@@ -23,45 +23,35 @@
  *
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
+ *
+ *
  */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import { VitamUICommonModule } from 'ui-frontend-common';
+package fr.gouv.vitamui.commons.api.domain;
 
-import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { ManagementContractCreateComponent } from './management-contract-create.component';
-import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatRadioModule} from "@angular/material/radio";
 
-@NgModule({
-  declarations: [ManagementContractCreateComponent],
-  entryComponents: [ManagementContractCreateComponent],
-    imports: [
-        CommonModule,
-        SharedModule,
-        MatButtonToggleModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatProgressBarModule,
-        MatSelectModule,
-        MatSnackBarModule,
-        MatTooltipModule,
-        ReactiveFormsModule,
-        VitamUICommonModule,
-        VitamUILibraryModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        FormsModule,
-    ],
-})
-export class ManagementContractCreateModule {}
+import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitamui.commons.api.enums.IntermediaryVersionEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
+
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class PersistentIdentifierUsageMgtContractDto implements Serializable {
+
+
+    private String usageName;
+
+    private boolean initialVersion;
+
+    private IntermediaryVersionEnum intermediaryVersion;
+}
