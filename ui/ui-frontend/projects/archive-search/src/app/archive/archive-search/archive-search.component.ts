@@ -27,48 +27,20 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  AfterContentChecked,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  TemplateRef,
+  AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, Subscription, merge } from 'rxjs';
+import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import {
-  ArchiveSearchResultFacets,
-  CriteriaDataType,
-  CriteriaOperator,
-  CriteriaValue,
-  Direction,
-  FilingHoldingSchemeNode,
-  Logger,
-  ORPHANS_NODE_ID,
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaAddAction,
-  SearchCriteriaCategory,
-  SearchCriteriaEltDto,
-  SearchCriteriaEltements,
-  SearchCriteriaHistory,
-  SearchCriteriaMgtRuleEnum,
-  SearchCriteriaRemoveAction,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  Unit,
-  UnitType,
-  VitamuiRoles,
+  ArchiveSearchResultFacets, CriteriaDataType, CriteriaOperator, CriteriaValue, Direction, FilingHoldingSchemeNode, Logger, ORPHANS_NODE_ID,
+  PagedResult, SearchCriteria, SearchCriteriaAddAction, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements,
+  SearchCriteriaHistory, SearchCriteriaMgtRuleEnum, SearchCriteriaRemoveAction, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, Unit,
+  UnitType, VitamuiRoles,
 } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -196,7 +168,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private archiveFacetsService: ArchiveFacetsService,
     private translateService: TranslateService,
     private route: ActivatedRoute,
-    private archiveExchangeDataService: ArchiveSharedDataService,
+    private archiveSharedDataService: ArchiveSharedDataService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
     private router: Router,
@@ -216,7 +188,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     );
 
     this.subscriptions.add(
-      this.archiveExchangeDataService.getNodes().subscribe((node) => {
+      this.archiveSharedDataService.getNodes().subscribe((node) => {
         if (!node.checked) {
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
@@ -261,16 +233,16 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     );
 
     this.subscriptions.add(
-      this.archiveExchangeDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria))
+      this.archiveSharedDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria))
     );
 
-    this.archiveExchangeDataService
+    this.archiveSharedDataService
       .receiveRemoveFromChildSearchCriteriaSubject()
       .subscribe((criteria) => this.searchCriteriaRemoveAction(criteria));
 
-    this.archiveExchangeDataService.receiveAppraisalSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
+    this.archiveSharedDataService.receiveAppraisalSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
 
-    this.archiveExchangeDataService.receiveAccessSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
+    this.archiveSharedDataService.receiveAccessSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
   }
 
   selectedCategoryChange(selectedCategoryIndex: number) {
@@ -309,7 +281,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   addCriteriaCategory(categoryName: string) {
-    this.archiveExchangeDataService.emitRuleCategory(categoryName);
+    this.archiveSharedDataService.emitRuleCategory(categoryName);
     const indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
     if (indexOfCategory === -1) {
       this.additionalSearchCriteriaCategories.push({
@@ -324,7 +296,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   sendRuleCategorySelected(categoryName: string) {
-    this.archiveExchangeDataService.emitRuleCategory(categoryName);
+    this.archiveSharedDataService.emitRuleCategory(categoryName);
   }
 
   isCategoryAdded(categoryName: string): boolean {
@@ -418,7 +390,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.accessContract) {
       this.show = true;
-      this.archiveExchangeDataService.emitToggle(this.show);
+      this.archiveSharedDataService.emitToggle(this.show);
     }
   }
 
@@ -459,7 +431,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.showCriteriaPanel = true;
       this.showSearchCriteriaPanel = false;
       this.archiveUnits = [];
-      this.archiveExchangeDataService.emitNodeTarget(null);
+      this.archiveSharedDataService.emitNodeTarget(null);
     }
   }
 
@@ -577,7 +549,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       trackTotalHits: false,
       computeFacets: includeFacets,
     };
-    this.archiveExchangeDataService.emitSearchCriterias(searchCriterias);
+    this.archiveSharedDataService.emitSearchCriterias(searchCriterias);
     this.archiveService.searchArchiveUnitsByCriteria(searchCriterias).subscribe(
       (pagedResult: PagedResult) => {
         if (includeFacets) {
@@ -590,10 +562,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         if (this.currentPage === 0) {
           this.archiveUnits = pagedResult.results;
           this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
-          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+          this.archiveSharedDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
           this.hasResults = true;
           this.totalResults = pagedResult.totalResults;
-          this.archiveExchangeDataService.emitTotalResults(this.totalResults);
+          this.archiveSharedDataService.emitTotalResults(this.totalResults);
         } else if (pagedResult.results) {
           this.hasResults = true;
           pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
@@ -617,7 +589,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.pending = false;
         if (includeFacets) {
           this.pendingComputeFacets = false;
-          this.archiveExchangeDataService.emitFacets([]);
+          this.archiveSharedDataService.emitFacets([]);
         }
         this.logger.error('Error message :', error.message);
 
@@ -628,6 +600,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         );
       }
     );
+  }
+
+  onArchiveUnitCountChange(event: number) {
+    this.totalResults = event;
+    this.archiveSharedDataService.emitTotalResults(event);
   }
 
   mapSearchCriteriaHistory() {
@@ -664,7 +641,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     dialogConfig.data = {
       searchCriteriaHistory: searchCriteriaHistory$,
       originalSearchCriteria: this.searchCriterias,
-      nbCriterias: this.archiveExchangeDataService.nbFilters(searchCriteriaHistory$),
+      nbCriterias: this.archiveSharedDataService.nbFilters(searchCriteriaHistory$),
     };
 
     const dialogRef = this.dialog.open(SearchCriteriaSaverComponent, dialogConfig);
@@ -677,7 +654,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   // TODO: it may add multiple subscription for each clear criteria
   subscribeResetNodesOnFilingHoldingNodesChanges() {
     this.subscriptions.add(
-      this.archiveExchangeDataService.getFilingHoldingNodes().subscribe((nodes) => {
+      this.archiveSharedDataService.getFilingHoldingNodes().subscribe((nodes) => {
         this.nodeArray = nodes;
       })
     );
@@ -764,7 +741,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         );
       });
       this.nodeArray = null;
-      this.archiveExchangeDataService.emitToggle(true);
+      this.archiveSharedDataService.emitToggle(true);
     }
   }
 
@@ -826,7 +803,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   hiddenTreeBlock(hidden: boolean): void {
     this.show = !hidden;
-    this.archiveExchangeDataService.emitToggle(this.show);
+    this.archiveSharedDataService.emitToggle(this.show);
   }
 
   ngOnDestroy() {
@@ -874,7 +851,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.itemNotSelected = 0;
     this.canLoadMore = false;
     this.subscribeResetNodesOnFilingHoldingNodesChanges();
-    this.archiveExchangeDataService.emitFilingHoldingNodes(this.nodeArray);
+    this.archiveSharedDataService.emitFilingHoldingNodes(this.nodeArray);
     this.recursiveCheck(this.nodeArray, false);
   }
 

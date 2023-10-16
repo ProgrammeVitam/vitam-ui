@@ -65,7 +65,7 @@ describe('LeavesTreeComponent', () => {
   let archiveServiceStub: Partial<ArchiveCollectService>;
   let archiveFacetsServicStube: Partial<ArchiveFacetsService>;
   const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>('ArchiveSharedDataService', [
-    'getLastSearchCriteriaDtoSubject',
+    'getSearchCriterias',
   ]);
   const searchCriteria: SearchCriteriaDto = {
     pageNumber: 0,
@@ -80,7 +80,7 @@ describe('LeavesTreeComponent', () => {
     archiveServiceStub = {};
     archiveFacetsServicStube = {};
 
-    archiveSharedDataServiceStub.getLastSearchCriteriaDtoSubject.and.returnValue(of(searchCriteria));
+    archiveSharedDataServiceStub.getSearchCriterias.and.returnValue(of(searchCriteria));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],

@@ -41,6 +41,7 @@ import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
 @Injectable({
   providedIn: 'root',
 })
+// TODO: put in FacetsUtils
 export class ArchiveFacetsService {
   RULES_COMPUTED_NUMBER_PREFIX = 'RULES_COMPUTED_NUMBER_';
   FINAL_ACTION_COMPUTED_PREFIX = 'FINAL_ACTION_COMPUTED_';
