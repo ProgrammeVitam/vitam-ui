@@ -57,6 +57,10 @@ server-identity:
   identityRole: {{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
+{% if vitamui.api_gateway.enabled | default(true) is sameas true %}
+gateway:
+  enabled: true
+{% endif %}
 
 ui-identity:
   platform-name: "{{ vitamui_platform_informations.platform_name }}"

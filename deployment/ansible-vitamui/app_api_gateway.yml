@@ -13,3 +13,54 @@
     password_truststore: "{{ truststores_server }}"
     vitam_cert: "{{ vitam_certs.vitamui }}"
     consul_tags: "api-gateway, api, internal"
+
+- hosts: ui_*
+  tasks:
+    - include_role:
+        name: assets_copy
+      vars:
+        asset_path: "{{ root_path }}/data/{{ frontend_app.name }}/package/assets"
+        asset_favicon_path: "{{ root_path }}/data/{{ frontend_app.name }}/package"
+        asset_user: "{{ frontend_user | default('nginx') }}"
+        asset_group: "{{ frontend_group | default('nginx') }}"
+      with_items:
+        - "{{frontend.apps}}"
+      loop_control:
+        loop_var: frontend_app
+      when: gateway.enabled | default(False)
+
+- hosts: hosts_ui_portal
+  roles:
+    - role: nginx-webapp
+      vars:
+        frontend_role_goal: "install"
+        frontend_application_version: "{{ app_version }}"
+        frontend_application_name: "{{ hostvars[inventory_hostname]['ui_portal']['frontend_name'] }}"
+      when: gateway.enabled | default(False)
+
+- hosts: hosts_ui_identity
+  roles:
+    - role: nginx-webapp
+      vars:
+        frontend_role_goal: "install"
+        frontend_application_version: "{{ app_version }}"
+        frontend_application_name: "{{ hostvars[inventory_hostname]['ui_identity']['frontend_name'] }}"
+      when: gateway.enabled | default(False)
+
+- hosts: hosts_ui_identity_admin
+  roles:
+    - role: nginx-webapp
+      vars:
+        frontend_role_goal: "install"
+        frontend_application_version: "{{ app_version }}"
+        frontend_application_name: "{{ hostvars[inventory_hostname]['ui_identity_admin']['frontend_name'] }}"
+      when: gateway.enabled | default(False)
+
+- hosts: hosts_ui_referential
+  roles:
+    - role: nginx-webapp
+      vars:
+        frontend_role_goal: "install"
+        frontend_application_version: "{{ app_version }}"
+        frontend_application_name: "{{ hostvars[inventory_hostname]['ui_referential']['frontend_name'] }}"
+      when: gateway.enabled | default(False)
