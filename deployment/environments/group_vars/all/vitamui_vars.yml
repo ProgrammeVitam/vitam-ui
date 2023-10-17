@@ -52,6 +52,8 @@ vitamui_defaults:
 
 ################################################################################
 
+gateway.enabled: true
+
 vitamui:
   api_gateway:
     host: "api-gateway.service.{{ consul_domain }}"
@@ -59,6 +61,7 @@ vitamui:
     vitamui_component_type: "internal"
     port_service: 8090
     port_admin: 7090
+    enabled: true
 
   identity:
     host: "identity.service.{{ consul_domain }}"
