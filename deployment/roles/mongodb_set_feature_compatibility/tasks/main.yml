@@ -9,5 +9,5 @@
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
 
 - name: "Set_feature_compatibility to {{ mongo_version }}"
-  shell: "mongo {{ ip_service }}:{{ mongo_port }}/admin -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet < {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/script/mongod/set_feature_compatibility.js"
+  command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet --file {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/script/mongod/set_feature_compatibility.js"
   no_log: "{{ hide_passwords_during_deploy }}"

@@ -1,37 +1,25 @@
 ---
 
-- name: Check if authent is enabled
-  command: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'"
+- name: Set mongo connection & credentials
+  set_fact:
+    mongo_connection: "--host {{ ip_service }} --port {{ mongodb.mongod_port }} --quiet"
+    mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }}"
+  no_log: "{{ hide_passwords_during_deploy }}"
+  tags: update_mongodb_configuration
+
+# Detect if authentication is enabled
+- name: Verify if authent is enabled
+  command: "mongosh {{ mongo_connection }} {{ mongo_credentials }} --eval 'db.help();'"
   register: mongo_authent_enabled
   failed_when: false
   no_log: "{{ hide_passwords_during_deploy }}"
-  tags:
-    - update_mongodb_configuration
+  tags: update_mongodb_configuration
 
-# Set mongo_no_auth facts
-
-- name: Set default mongo facts
+- name: Disable mongo credentials as authent is not enabled
   set_fact:
     mongo_credentials: ""
-    mongo_no_auth: false
-  tags:
-    - update_mongodb_configuration
-
-- name: Set mongo_no_auth fact to true
-  set_fact:
-    mongo_no_auth: true
-  when: "mongo_authent_enabled.rc != 0"
-  tags:
-    - update_mongodb_configuration
-
-# When authentication is required, we set mongodb admin credentials
-- name: Set mongodb authentication credentials
-  set_fact:
-    mongo_credentials: " -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet"
-  when: "mongo_authent_enabled.rc == 0"
-  no_log: "{{ hide_passwords_during_deploy }}"
-  tags:
-    - update_mongodb_configuration
+  when: mongo_authent_enabled.rc != 0
+  tags: update_mongodb_configuration
 
 # Activate security on mongo instances
 - name: Activate security on mongod instances
@@ -43,8 +31,7 @@
         authorization: enabled
         clusterAuthMode: keyFile
         keyFile: "{{ mongod_config_path }}/keyfile"
-  tags:
-    - update_mongodb_configuration
+  tags: update_mongodb_configuration
 
 # Restart the mongo instances (to enable auth)
 - name: "restart {{ mongodb.service_name | default('vitamui-mongod') }} service"
@@ -54,14 +41,12 @@
     state: restarted
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hosts_vitamui_mongod'] }}"
-  tags:
-    - update_mongodb_configuration
+  tags: update_mongodb_configuration
 
-# Make sure the service is open (mongos listening on 27017)
+# Make sure the service is open (mongod listening on 27017)
 - name: "Wait for the service port {{ mongodb.mongod_port }} to be open"
   wait_for:
     host: "{{ ip_service }}"
     port: "{{ mongodb.mongod_port }}"
     timeout: "{{ vitamui_defaults.services.start_timeout }}"
-  tags:
-    - update_mongodb_configuration
+  tags: update_mongodb_configuration

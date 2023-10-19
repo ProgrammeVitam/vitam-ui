@@ -1,7 +1,7 @@
 ---
 
 - name: Check if authent is enabled
-  command: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'"
+  command: "mongosh {{ ip_service }}:{{ mongodb.mongod_port }}/admin -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'"
   register: mongo_authent_enabled
   failed_when: false
   no_log: "{{ hide_passwords_during_deploy }}"
@@ -27,7 +27,7 @@
 # When authentication is required, we set mongodb admin credentials
 - name: Set mongodb authentication credentials
   set_fact:
-    mongo_credentials: " -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet"
+    mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }}"
   when: "mongo_authent_enabled.rc == 0"
   no_log: "{{ hide_passwords_during_deploy }}"
 

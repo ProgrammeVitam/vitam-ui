@@ -9,44 +9,51 @@
 
 function checkExistingReplicaSet() {
 
-    var rsStatus = rs.status();
-
-    if(!rsStatus.ok) {
-
-        if(rsStatus.codeName === "NotYetInitialized") {
+    try {
+        var rsStatus = rs.status();
+        print("INFO : Exiting mongod replica set found");
+    } catch (error) {
+        if (error.message && error.message.includes("no replset config has been received")) {
             print("INFO : No mongod replica set found");
             return false;
         }
 
-        printjson(rsStatus);
-        throw "ERROR : Cannot check mongod replica set status";
+        print("ERROR : Cannot check mongod replica set status");
+        throw error;
     }
-
-    print("INFO : Exiting mongod replica set found");
 
     return true;
 }
 
 function checkExistingReplicaSetMembers() {
+    try {
+        var rsConfig = rs.config();
 
-    var rsConfig = rs.config();
+        let targetMembers = buildTargetReplicaSetMemberConfiguration();
+        let rsConfigMembers = rsConfig.members;
 
-    let targetMembers = buildTargetReplicaSetMemberConfiguration();
-    let rsConfigMembers = rsConfig.members;
-
-    for (const targetMember of targetMembers) {
-        let rsConfigMember = rsConfigMembers.find(member => member.host === targetMember.host);
-        if(rsConfigMember) {
-            print("INFO : host " + targetMember.host + " found in mongod replica set");
-        } else {
-            printjson(rsConfig);
-            throw "ERROR : Host " + targetMember.host + " not found in mongod replica set";
+        for (const targetMember of targetMembers) {
+            let rsConfigMember = rsConfigMembers.find(member => member.host === targetMember.host);
+            if (rsConfigMember) {
+                print("INFO : host " + targetMember.host + " found in mongod replica set");
+            } else {
+                printjson(rsConfig);
+                throw "ERROR : Host " + targetMember.host + " not found in mongod replica set";
+            }
         }
-    }
 
-    if(targetMembers.length != rsConfigMembers.length) {
-        printjson(rsConfig);
-        throw "ERROR : Found unexpected / unknown mongod ReplicaSet members";
+        if (targetMembers.length != rsConfigMembers.length) {
+            printjson(rsConfig);
+            throw "ERROR : Found unexpected / unknown mongod ReplicaSet members";
+        }
+    } catch (error) {
+        if (error.message && error.message.includes("no replset config has been received")) {
+            print("INFO : No mongod replica set configuration found");
+            return false;
+        }
+
+        print("ERROR : Cannot check mongod replica set members");
+        throw error;
     }
 }
 

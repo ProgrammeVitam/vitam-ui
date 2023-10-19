@@ -124,7 +124,7 @@ The underneath SMS provider is Twilio.
 ## Connect to the Mongo shell (if needed)
 
 ```shell
-mongo --port 27018 -u "mongod_dbuser_cas" -p "mongod_dbpwd_cas" --authenticationDatabase "cas"
+mongosh --port 27018 -u "mongod_dbuser_cas" -p "mongod_dbpwd_cas" --authenticationDatabase "cas"
 ```
 
 
