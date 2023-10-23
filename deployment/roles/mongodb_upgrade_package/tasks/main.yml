@@ -1,7 +1,13 @@
 ---
 
-# Upgrade mongo packages
-- name: Update mongosh and tools packages
+- name: Remove deprecated mongodb packages
+  package:
+    name:
+      - mongodb-org-tools
+      - mongodb-org-database-tools-extra
+    state: absent
+
+- name: Update common mongodb packages
   package:
     name:
       - mongodb-mongosh
