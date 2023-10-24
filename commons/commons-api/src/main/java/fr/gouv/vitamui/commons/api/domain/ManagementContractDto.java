@@ -35,6 +35,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -67,5 +68,7 @@ public class ManagementContractDto extends IdDto implements Serializable {
     private StorageManagementContractDto storage;
 
     private VersionRetentionPolicyMgtContractDto versionRetentionPolicy;
+
+    private List<PersistentIdentifierPolicyMgtContractDto> persistentIdentifierPolicyList;
 
 }

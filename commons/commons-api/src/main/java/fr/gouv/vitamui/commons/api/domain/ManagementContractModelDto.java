@@ -33,6 +33,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,6 +43,8 @@ public class ManagementContractModelDto implements Serializable {
     private StorageDetailDto storage;
 
     private VersionRetentionPolicyDto versionRetentionPolicy;
+
+    private List<PersistentIdentifierPolicyDto> persistentIdentifierPolicyList;
 
     private String id;
 
@@ -197,4 +200,15 @@ public class ManagementContractModelDto implements Serializable {
         return deactivationDate;
     }
 
+
+    @JsonProperty("PersistentIdentifierPolicy")
+    public void setPersistentIdentifierPolicyList(
+        List<PersistentIdentifierPolicyDto> persistentIdentifierPolicyList) {
+        this.persistentIdentifierPolicyList = persistentIdentifierPolicyList;
+    }
+
+    @JsonProperty("PersistentIdentifierPolicy")
+    public List<PersistentIdentifierPolicyDto> getPersistentIdentifierPolicyList() {
+        return persistentIdentifierPolicyList;
+    }
 }

@@ -25,14 +25,20 @@
  * accept its terms.
  */
 
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Logger, ManagementContract, StorageStrategy } from 'ui-frontend-common';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {Subscription} from 'rxjs';
+import {
+  ConfirmDialogService,
+  Logger,
+  ManagementContract, Option,
+  PersistentIdentifierPolicyTypeEnum,
+  StorageStrategy
+} from 'ui-frontend-common';
 import * as uuid from 'uuid';
-import { ManagementContractService } from '../management-contract.service';
-import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
+import {ManagementContractService} from '../management-contract.service';
+import {ManagementContractCreateValidators} from '../validators/management-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -42,16 +48,6 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./management-contract-create.component.scss'],
 })
 export class ManagementContractCreateComponent implements OnInit, OnDestroy {
-  form: FormGroup;
-  stepIndex = 0;
-  stepCount = 2;
-
-  isDisabledButton = false;
-  isSlaveMode: boolean;
-
-  keyPressSubscription: Subscription;
-  apiSubscriptions: Subscription;
-  statusControlValueChangesSubscribe: Subscription;
 
   constructor(
     public dialogRef: MatDialogRef<ManagementContractCreateComponent>,
@@ -61,9 +57,40 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     private managementContractService: ManagementContractService,
     private managementContractCreateValidators: ManagementContractCreateValidators,
     private logger: Logger
-  ) {}
+  ) {
+  }
+
+  get stepProgress() {
+    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+  }
+
+  form: FormGroup;
+  stepIndex = 0;
+  stepCount = 3;
+
+  isDisabledButton = false;
+  isSlaveMode: boolean;
+
+  keyPressSubscription: Subscription;
+  apiSubscriptions: Subscription;
+  statusControlValueChangesSubscribe: Subscription;
+
+  persistentIdentifierPolicyTypes = Object.values(PersistentIdentifierPolicyTypeEnum);
+
+  gotOpened = false;
+  deleteDisabled = true;
 
   statusControl = new FormControl(false);
+  technicalObjectActivated = false;
+
+  usages: Option[] = [
+    {key: 'BinaryMaster', label: 'Original numérique', info: ''},
+    {key: 'Dissemination', label: 'Diffusion', info: ''},
+    {key: 'Thumbnail', label: 'Vignette', info: ''},
+    {key: 'TextContent', label: 'Contenu brut', info: ''},
+    {key: 'PhysicalMaster', label: 'Original papier', info: ''},
+  ];
+
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -78,6 +105,13 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
         objectGroupStrategy: ['default', Validators.required],
         objectStrategy: ['default', Validators.required],
       }),
+      // step 3
+      persistentIdentifierPolicy: this.formBuilder.group({
+        persistentIdentifierPolicyType: [null, Validators.required],
+        persistentIdentifierUnit: [false],
+        persistentIdentifierAuthority: ['', [Validators.required, Validators.pattern('^[0-9]{5,9}$')]],
+        persistentIdentifierUsages: this.formBuilder.array([this.createUsageFormGroup()])
+      })
     });
 
     this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value: boolean) => {
@@ -85,6 +119,10 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+  }
+
+  persistentIdentifierUsagesControls() {
+    return (this.form.get('persistentIdentifierPolicy.persistentIdentifierUsages') as FormArray).controls;
   }
 
   ngOnDestroy() {
@@ -103,7 +141,10 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.isDisabledButton = true;
-    const managementContract = this.form.value as ManagementContract;
+    const managementContractFrom = this.form.value;
+    managementContractFrom.persistentIdentifierPolicyList = [managementContractFrom.persistentIdentifierPolicy];
+
+    const managementContract = managementContractFrom as ManagementContract;
     managementContract.status === 'ACTIVE'
       ? (managementContract.activationDate = new Date().toISOString())
       : (managementContract.deactivationDate = new Date().toISOString());
@@ -118,20 +159,17 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       };
       managementContract.storage = storage;
     }
+
     this.apiSubscriptions = this.managementContractService.create(managementContract).subscribe(
       () => {
         this.isDisabledButton = false;
-        this.dialogRef.close({ success: true, action: 'none' });
+        this.dialogRef.close({success: true, action: 'none'});
       },
       (error: any) => {
-        this.dialogRef.close({ success: false, action: 'none' });
+        this.dialogRef.close({success: false, action: 'none'});
         this.logger.error(error);
       }
     );
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 
   firstStepInvalid(): boolean {
@@ -168,4 +206,67 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       this.form.controls.storage.get('objectStrategy').pending
     );
   }
+
+
+  thirdStepValid(): boolean {
+    const persistentIdentifierPolicy = this.form.get('persistentIdentifierPolicy');
+
+    if (!persistentIdentifierPolicy) {
+      return false;
+    }
+
+    const persistentIdentifierPolicyType = persistentIdentifierPolicy.get('persistentIdentifierPolicyType');
+    const persistentIdentifierUnit = persistentIdentifierPolicy.get('persistentIdentifierUnit');
+    const persistentIdentifierAuthority = persistentIdentifierPolicy.get('persistentIdentifierAuthority');
+    const persistentIdentifierUsages = persistentIdentifierPolicy.get('persistentIdentifierUsages') as FormArray;
+
+    // Vérifier si tous les champs requis sont remplis
+    if (
+      !persistentIdentifierPolicyType ||
+      !persistentIdentifierUnit ||
+      !persistentIdentifierAuthority ||
+      (!persistentIdentifierUsages && this.technicalObjectActivated)
+    ) {
+      return false;
+    }
+
+    // Vérifier si le formulaire est valide
+    return (
+      persistentIdentifierPolicyType.valid &&
+      persistentIdentifierUnit.valid &&
+      persistentIdentifierAuthority.valid &&
+      (!this.technicalObjectActivated || persistentIdentifierUsages.valid)
+    );
+  }
+
+
+  openClose() {
+    this.gotOpened = !this.gotOpened;
+  }
+
+  addUsage() {
+    const usages = this.form.get('persistentIdentifierPolicy.persistentIdentifierUsages') as FormArray;
+    usages.push(this.createUsageFormGroup());
+    this.deleteDisabled = false;
+  }
+
+  createUsageFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      usageName: [null, Validators.required],
+      initialVersion: [false, Validators.required],
+      intermediaryVersion: ['ALL', Validators.required]
+    });
+  }
+
+  deleteUsage(index: number) {
+    const persistentIdentifierUsagesArray = this.form.get('persistentIdentifierPolicy.persistentIdentifierUsages') as FormArray;
+
+    if (persistentIdentifierUsagesArray && persistentIdentifierUsagesArray.length > 1) {
+      persistentIdentifierUsagesArray.removeAt(index);
+      if (persistentIdentifierUsagesArray.length === 1) {
+        this.deleteDisabled = true;
+      }
+    }
+  }
+
 }

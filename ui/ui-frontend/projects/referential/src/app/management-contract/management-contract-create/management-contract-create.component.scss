@@ -12,3 +12,55 @@ h5 {
   line-height: 46px;
   margin-top: 10px;
 }
+
+
+.form-persistent-identifier {
+  .object-menu {
+
+    padding: 0 5px;
+    border-radius: 5px;
+
+    background-color: var(--vitamui-background);
+
+    cursor: pointer;
+
+    color: var(--vitamui-primary) !important;
+
+    &.opened {
+      border-left: 5px solid var(--vitamui-primary);
+    }
+
+    .mat-checkbox {
+
+      .span {
+        color: var(--vitamui-primary) !important;
+        background-color: #00B1D5;
+      }
+    }
+
+  }
+
+  .object-details {
+    padding: 15px 15px;
+    margin-top: 5px;
+    background-color: var(--vitamui-background);
+    font-size: 14px;
+
+    .vitamui-mat-select.mat-form-field{
+      width: 299px;
+    }
+
+    .delete-button {
+      border: 1px solid var(--vitamui-primary);
+      border-radius: 50%;
+      background-color: #FFFFFF;
+      width: 30px;
+      height: 30px;
+      font-size: medium;
+      color: var(--vitamui-primary);
+      cursor: pointer;
+
+    }
+  }
+
+}
