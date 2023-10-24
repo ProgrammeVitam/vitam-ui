@@ -10,7 +10,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>api-parent</artifactId>
-        <version>7.0.0</version>
+        <version>7.0.1-SNAPSHOT</version>
     </parent>
 
     <modules>
