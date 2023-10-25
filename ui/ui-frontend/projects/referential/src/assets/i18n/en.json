@@ -23,7 +23,7 @@
       "IDENTIFIER_ALREADY_EXIST": "Identifier already in use",
       "DESCRIPTION": "Description",
       "PARAMETRAGE_IDENTIFICATION_PERENNE": "Permanent identification configuration",
-      "PARAMETRAGE_IDENTIFICATION_TOOLTIP": "Permanent identification configuration",
+      "PARAMETRAGE_IDENTIFICATION_PERENNE_TOOLTIP": "Permanent identification configuration",
       "STORAGE_POLICIES": "Storage policies settings",
       "STORAGE_POLICIES_TOOLTIP": "It is recommended, in a management contract, to declare the same policies for metadata of archival units and metadata of groups of technical objects.",
       "UNIT_STRATEGY": "For metadata describing units of record (and their lifecycle log)",
