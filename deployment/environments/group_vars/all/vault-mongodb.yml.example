@@ -49,3 +49,8 @@ mongodb:
         user: api-archive-search
         password: changeit_archivesearch
         roles: '[{ role: "readWrite", db: "archivesearch" }]'
+    collectDeposit:
+        db: collectDeposit
+        user: api-collect-deposit
+        password: changeit_collectDeposit
+        roles: '[{ role: "readWrite", db: "collectDeposit" }]'

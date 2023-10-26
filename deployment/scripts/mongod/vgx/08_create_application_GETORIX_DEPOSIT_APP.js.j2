@@ -1,0 +1,31 @@
+db = db.getSiblingDB('iam')
+
+print("START 08_create_application_GETORIX_DEPOSIT_APP.js");
+
+// -------- CREATE NEW VITAMUI APPLICATION : GETORIX DEPOSIT -----
+
+db.applications.insert({
+    "identifier" : "GETORIX_DEPOSIT_APP",
+{% if vitamui.collect.base_url is defined %}
+    "url": "{{ vitamui.collect.base_url }}/getorix-deposit",
+{% else %}
+    "url": "{{ url_prefix }}/collect/getorix-deposit",
+{% endif %}
+{% if vitamui.collect.base_url is defined %}
+	"serviceId": "^{{ vitamui.collect.base_url }}/.*",
+{% else %}
+	"serviceId": "^{{ url_prefix }}/collect/.*",
+{% endif %}
+    "icon" : "vitamui-icon vitamui-icon-archive-ingest",
+    "name" : "VersementGetorix",
+    "category" : "ingest_and_consultation",
+    "position" : NumberInt(35),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Application  des versementgetorix",
+    "target" : "_self"
+});
+
+
+print("END 08_create_application_GETORIX_DEPOSIT_APP.js");
