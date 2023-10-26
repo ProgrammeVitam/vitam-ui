@@ -1,0 +1,22 @@
+db = db.getSiblingDB('security')
+
+print("START 09_add_role_for_GETORIX_DEPOSIT_APP.js");
+
+// -------- ADD GETORIX DEPOSIT APPLICATION ROLES TO UI COLLECT CONTEXT -----
+
+db.contexts.updateOne( {
+	"_id": "ui_collect_context"
+}, {
+    $addToSet: {
+        "roleNames":  {
+            $each: [
+            	"ROLE_GET_GETORIX_DEPOSIT",
+            	"ROLE_CREATE_GETORIX_DEPOSIT",
+            	"ROLE_UPDATE_GETORIX_DEPOSIT",
+            	"ROLE_DELETE_GETORIX_DEPOSIT"
+        	]
+        }
+    }
+});
+
+print("END 09_add_role_for_GETORIX_DEPOSIT_APP.js");

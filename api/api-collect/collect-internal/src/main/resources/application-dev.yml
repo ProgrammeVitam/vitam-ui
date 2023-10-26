@@ -15,7 +15,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_archivesearch@localhost:27018/archivesearch?connectTimeoutMS=2000
+      uri: mongodb://mongod_dbuser_collectDeposit:mongod_dbpwd_collectDeposit@localhost:27018/collectDeposit?connectTimeoutMS=2000
 
 multipart:
   enabled: true
