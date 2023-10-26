@@ -159,7 +159,6 @@
                             placeholder="Type d'identifiant'"
                             panelclass="vitamui-mat-select"
                             required="required"
-                            i18n-placeholder="Identifier@@ruleCreateRuleTypePlaceholder"
                 >
 
                   <mat-option *ngFor="let persistentIdentifierPolicyType of persistentIdentifierPolicyTypes"
@@ -257,7 +256,7 @@
                   <div>
                     <mat-radio-group aria-label="Version ultérieures" formControlName="intermediaryVersion">
                       <mat-radio-button class="mr-2"
-                                        value="ALL">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.LATER_VERSIONS' | translate }}</mat-radio-button>
+                                        value="ALL">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.ALL' | translate }}</mat-radio-button>
                       <mat-radio-button class="mr-2"
                                         value="LAST">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.LAST' | translate }}</mat-radio-button>
                       <mat-radio-button class="mr-2"

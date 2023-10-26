@@ -23,7 +23,7 @@
       "IDENTIFIER_ALREADY_EXIST": "Identifiant déjà utilisé",
       "DESCRIPTION": "Description",
       "PARAMETRAGE_IDENTIFICATION_PERENNE": "Paramétrage de l'identification pérenne",
-      "PARAMETRAGE_IDENTIFICATION_TOOLTIP": "Paramétrage de l'identification pérenne",
+      "PARAMETRAGE_IDENTIFICATION_PERENNE_TOOLTIP": "Paramétrage de l'identification pérenne",
       "STORAGE_POLICIES": "Paramétrage des stratégies de stockage",
       "STORAGE_POLICIES_TOOLTIP": "Il est recommandé, dans un contrat de gestion, de déclarer les même stratégies pour les métadonnées des unités archivistiques et des métadonnées des groupes d’objets techniques.",
       "UNIT_STRATEGY": "Pour les métadonnées décrivant des unités d’archives (et leur journal du cycle de vie)",
