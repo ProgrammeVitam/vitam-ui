@@ -1,0 +1,7 @@
+db = db.getSiblingDB('{{ mongodb.archivesearch.db }}')
+
+print("START 06_delete_searchCriteriaHistoriesCollect_collection_from_archivesearchDB.js");
+
+db.searchCriteriaHistoriesCollect.drop();
+
+print("END 06_delete_searchCriteriaHistoriesCollect_collection_from_archivesearchDB.js");

@@ -1,4 +1,109 @@
 {
+  "GETORIX_DEPOSIT" : {
+    "APP_BREADCRUMB" :"Préparation des versementGetorix",
+    "CREATE_DEPOSIT" : "Commencer le dépot",
+    "GUIDE" : "Guidez-moi",
+    "ARCHIVE_SPACE" :"Mon espace d’archivage",
+    "DEPOSIT_QUESTION" : "Vous avez rendu le rapport et souhaitez passer aux dépôt de vos archives ? Par ici :",
+    "STEPS_TO_FOLLOW" : "Les étapes à suivre",
+    "GUIDE_TO_SHOW" :"Consultez notre guide pour vous accompagner pas à pas dans le versement de vos archives",
+    "CREATION_PROCESS": {
+      "REQUIRED" : "Champs obligatoire",
+      "MIN_LENGTH" :"Il faut au moins 2 caractères",
+      "MIN_LENGTH_MIN" :"Il faut au moins 2 caractères",
+      "WRONG_FORMAT_NUM" :"Format incorrect (seuls les caractères numériques sont acceptés)",
+      "WRONG_FORMAT_ALPHA_NUM" :"Format incorrect (seuls les caractères alphanumériques sont acceptés)",
+      "DIALOG_ACTION" : {
+        "TITLE" :"Quitter le versement",
+        "DESCRIPTION" :"Souhaitez-vous enregistrer les informations saisies avant de quitter le versement ?",
+        "CANCEL" :"Annuler",
+        "EXIT_WITH_SAVE" :"Enregistrer et quitter",
+        "EXIT_WITHOUT_SAVE":"Quitter sans enregistrer"
+      },
+      "VALIDATE" :"Valider",
+      "NEW_DEPOSIT":"Nouveau versement",
+      "BACK":"RETOUR",
+      "CLICK_HERE" :"cliquez-ici",
+      "DEPOSIT_PART_ONE" :"Vous vous apprêtez à renseigner les informations relatives à votre fouille.",
+      "DEPOSIT_PART_TWO":"Ces informations nous permettront de comprendre le site, ainsi que votre raisonnement scientifique.",
+      "DOWNLOAD_LIST" : "Pour télécharger la liste des questions ci-dessous,",
+      "ESTIMATED_TIME" :"Temps estimé : xx minutes",
+      "START" :"Commencer",
+      "SAVE_EXIT" :"ENREGISTRER ET QUITTER",
+      "MANDATORY_FIELDS_MESSAGE" : "Les champs marqués du symbole * sont obligatoires",
+      "INCOMPLETED_DATA" :"Saisie incomplète",
+      "INPUT_WITH_ERRORS" :"champ(s) en erreur :",
+      "VERSATILE_SERVICE_MESSAGE" :"Le service versant des archives est différent du service titulaire",
+      "ADD_OFFICER" :"Ajouter un responsable",
+      "DELETE_OFFICER":"Supprimer le deuxieme responsable",
+      "OPERATION_NAME_MESSAGE" :"Reprendre celui présent sur le rapport de fouille.",
+      "PERSCRIPTION_NUMBER_MESSAGE" :"Si vous avez plusieurs arrêtés, notez tous les numéros.",
+      "OPERATION_TYPE" : {
+        "OTHER" :"Autre",
+        "SEARCH" :"fouille",
+        "DIAGNOSTIC" :"Diagnostic"
+      },
+      "OPERATION_NUMBER_MESSAGE" : {
+        "FIRST" :"Le numéro national est généré par l’outil de gestion des opérations du Ministère de la Culture. Il figure sur l’arrêté de nomination du responsable d’opération. Ce numéro est composé du numéro de la région et d’un numéro d’ordre à quatre chiffres : 05_6124 ou 6124.",
+        "SECOND" :"Si vous n’avez pas ces numéros, passez à l’étape suivante."
+      },
+      "PARTICULARITIES_MESSAGE" : {
+        "FIRST" :"Existe-t-il des informations que nous devons connaître pour bien comprendre le contenu que vous versez ? Toute information que vous jugez utile de partager. Imaginez que vous décrivez la fouille en quelques mots à quelqu’un.",
+        "SECOND" :"Exemple : Terrain découpé en 2 parties. La 1ère partie a été fouillée en 2018."
+      },
+      "DOCUMENT_DATES_MESSAGE" : {
+        "FIRST" :"Il s’agit de fournir les années au cours desquelles les documents ont été produits. Cela va des premiers documents de préparation de la fouille à la dernière étude livrée (même après la livraison du rapport).",
+        "SECOND" :"Cela nous permettra d'avoir une connaissance précise des fonds d'archives."
+      },
+      "ARCHIVE_STATUS_MESSAGE": {
+        "FIRST" :" Il s’agit des conditions de stockage préalable des documents ainsi que de tous les évènements qui ont eu lieu et qui ont eu des effets sur les documents.",
+        "SECOND" :"exemple : déménagement, ajouts successifs, perte de documents ou dégradations…",
+        "THIRD" :"A remplir si vous avez l’information."
+      },
+      "FURNITURE_QUESTION" :"Le mobilier a-t-il déjà versé ?",
+      "YES" :"Oui",
+      "NO":"Non"
+    },
+    "INPUT_NAMES":{
+      "ORGANISATION_NAME" :"Nom de l'organisme titulaire de l'opération",
+      "VERSATILE_SERVICE" : "Nom de l'organisme versant les archives",
+      "OFFICER_FIRST_NAME" :"Prénom du résponsable scientifique de l opération (ou RO)",
+      "OFFICER_LAST_NAME" :"Nom du résponsable scientifique de l opération (ou RO)",
+      "OPRATION_NAME" : "Nom de l'opération",
+      "OPERATION_TYPE":"Type de l'opération",
+      "INTERN_ADMINISTRATOR_NUMBER":"Numéro administratif interne",
+      "NATIONAL_NUMBER":"Numéro national",
+      "PERSCRIPTION_NUMBER":"Numéro d'arrêté de prescription",
+      "DEPARTEMENT" : "Département",
+      "INSEE_NUMBER":"Numéro INSEE",
+      "COMMUNE" : "Commune",
+      "OPERATION_START_DATE":"Date de début des fouilles sur site",
+      "OPERATION_END_DATE":"Date de fin des fouilles sur site",
+      "DOCUMENT_START_DATE" :"Date du premier document produit",
+      "DOCUMENT_END_DATE" :"Date du dernier document produit",
+      "ARCHIVE_VOLUME" :"Nombre de boites d'archives ou de carton à dessins",
+      "COMMENT" :"Commentaire",
+      "LAST_SAVE_CONDITION" :"Historique de conservation du fonds (anciennes conditions de stockage)",
+      "MATERIAL_STATUS" :"État matériel et dégats connus",
+      "PLACE_NAME" :"Lieu-dit"
+      
+
+    },
+    "OPERATION_CATEGORY" : {
+      "AGENCY_DETAILS" :"Organisme titulaire",
+      "SCIENTIFIC_OFFICER" :"Responsable scientifique",
+      "OPERATION_TYPE_NAME" : "Nom et type d'opération",
+      "OPERATION_NUMBER" :"Numéro d'opération",
+      "PERSCRIPTION_NUMBER" :"Numéro d'arrêté de prescription",
+      "LOCALISATION" :"Localisation de l'opération",
+      "PARTICULARITIES":"Particularités de l'opération",
+      "DATES":"Dates de l'opération",
+      "DOCUMENT_DATES" :"Dates des documents",
+      "ARCHIVE_STATUS" :"Etat des archives papiers",
+      "VOLUME_DETAILS":"Volumétrie des archives",
+      "FURNITURE" :"Mobiler"
+    }
+  },
   "COLLECT": {
     "UPDATE_UNITS_METADATA": {
       "ACTION_UPDATE": "Mettre à jour les metadonnées",
