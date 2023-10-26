@@ -48,6 +48,8 @@ public final class CommonsMongoDbCollection {
 
     public static final String OPERATIONS = "operations";
 
+    public static final String GETORIX_DEPOSIT = "getorixDeposists";
+
     /**
      * Default constructor.
      */
