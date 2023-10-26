@@ -1,0 +1,13 @@
+db = db.getSiblingDB('archivesearch')
+
+print("START 05_copy_searchCriteriaHistoriesCollect_collection_to_collectDB.js");
+
+db.searchCriteriaHistoriesCollect.find()
+    .forEach(
+       function(criteriaSave) {
+          db.getSiblingDB('collectDeposit')
+             ['searchCriteriaHistoriesCollect'].insert(criteriaSave);
+});
+
+print("END 05_copy_searchCriteriaHistoriesCollect_collection_to_collectDB.js");
+

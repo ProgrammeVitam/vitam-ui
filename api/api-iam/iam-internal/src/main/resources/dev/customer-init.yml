@@ -302,6 +302,16 @@ customer-init:
         - ROLE_IMPORT_ARCHIVE_PROFILES
         - ROLE_DELETE_ARCHIVE_PROFILES
 
+    - name: Profil pour les VERSEMENTS GETORIX
+      description: Versements Getorix
+      app-name: GETORIX_DEPOSIT_APP
+      level:
+      roles:
+        - ROLE_GET_GETORIX_DEPOSIT
+        - ROLE_CREATE_GETORIX_DEPOSIT
+        - ROLE_UPDATE_GETORIX_DEPOSIT
+        - ROLE_DELETE_GETORIX_DEPOSIT
+
   #- name: profileName
   #  description: desc
   #  level: 1
