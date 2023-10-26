@@ -1,0 +1,26 @@
+db = db.getSiblingDB('{{ mongodb.collectDeposit.db }}')
+
+print("START 02_create_collectDeposit_user.js");
+
+// Create collectDeposit user
+
+if (! db.getUser("{{ mongodb.collectDeposit.user }}")) {
+    db.createUser(
+        {
+            user: "{{ mongodb.collectDeposit.user }}",
+            pwd: "{{ mongodb.collectDeposit.password }}",
+            roles: {{ mongodb.collectDeposit.roles }}
+        }
+    )
+}
+else {
+    db.updateUser(
+        "{{ mongodb.collectDeposit.user }}",
+        {
+            pwd: "{{ mongodb.collectDeposit.password }}",
+            roles: {{ mongodb.collectDeposit.roles }}
+        }
+    )
+}
+
+print("END 02_create_collectDeposit_user.js");

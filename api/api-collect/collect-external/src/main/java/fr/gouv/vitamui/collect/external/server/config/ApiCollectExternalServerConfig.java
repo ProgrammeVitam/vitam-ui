@@ -34,6 +34,8 @@ import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClientFactory;
 import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClientFactory;
 import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.GetorixDepositInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.GetorixDepositInternalRestClientFactory;
 import fr.gouv.vitamui.collect.internal.client.SearchCriteriaHistoryInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.UpdateUnitsMetadataInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.UpdateUnitsMetadataInternalRestClientFactory;
@@ -170,5 +172,25 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
         final UpdateUnitsMetadataInternalRestClientFactory factory) {
         return factory.getUpdateUnitsMetadataInternalRestClient();
     }
+
+    /*
+     *Getorix
+     *
+     */
+
+    @Bean
+    public GetorixDepositInternalRestClientFactory getorixDepositInternalRestClientFactory(
+        final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+        return new GetorixDepositInternalRestClientFactory(apiCollectExternalApplicationProperties.getCollectInternalClient(),
+            restTemplateBuilder);
+    }
+
+    @Bean
+    public GetorixDepositInternalRestClient getorixDepositInternalRestClient(
+        final GetorixDepositInternalRestClientFactory getorixDepositInternalRestClientFactory) {
+        return getorixDepositInternalRestClientFactory.getGetorixDepositInternalRestClient();
+    }
+
 
 }

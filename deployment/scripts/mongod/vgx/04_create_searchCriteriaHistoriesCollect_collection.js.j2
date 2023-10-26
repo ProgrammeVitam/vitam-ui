@@ -1,0 +1,8 @@
+db = db.getSiblingDB('{{ mongodb.collectDeposit.db }}')
+
+print("START 04_create_searchCriteriaHistoriesCollect_collection.js");
+
+db.searchCriteriaHistoriesCollect.remove({});
+db.createCollection('searchCriteriaHistoriesCollect', {autoIndexId: true});
+
+print("END 04_create_searchCriteriaHistoriesCollect_collection.js");

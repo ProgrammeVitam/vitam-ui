@@ -356,6 +356,11 @@
       "NAME": "Profils documentaires",
       "TITLE": "Référentiel des profils documentaires",
       "TOOLTIP": "Consulter, créer et modifier des profils d'archivage et/ou des profils d'unité archivistique"
+    },
+    "GETORIX_DEPOSIT_APP": {
+      "NAME": "Versementgetorix",
+      "TITLE": "Versementgetorix",
+      "TOOLTIP": "Application des versementgetorix"
     }
   },
   "FOOTER": {

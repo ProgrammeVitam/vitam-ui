@@ -19,6 +19,10 @@ const routes: Routes = [
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ACCOUNTS_APP' },
   },
+
+  // =====================================================
+  //                      Collect
+  // =====================================================
   {
     path: 'collect',
     loadChildren: () => import('./collect/collect.module').then((m) => m.CollectModule),
@@ -26,6 +30,19 @@ const routes: Routes = [
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'COLLECT_APP' },
   },
+
+  // =====================================================
+  //                      Getorix Deposit
+  // =====================================================
+
+  {
+    path: 'getorix-deposit',
+    loadChildren: () => import('./getorix-deposit/getorix-deposit.module').then((module) => module.GetorixDepositModule),
+    canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
+    data: { appId: 'GETORIX_DEPOSIT_APP' },
+  },
+
   { path: '**', redirectTo: '' },
 ];
 
