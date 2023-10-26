@@ -1,0 +1,819 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+  <mat-sidenav-content>
+    <br />
+    <div class="vitamui-content">
+      <div *ngIf="!showForm" class="row">
+        <div class="col-3">
+          <div class="text-return">
+            <i class="vitamui-icon vitamui-icon-chevron-left" [ngStyle]="{ position: 'fixed' }"></i>
+            <span class="return clickable" (click)="returnToMainPage()"> {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.BACK' | translate }}</span>
+          </div>
+        </div>
+        <div class="col-9">
+          <div class="title">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.NEW_DEPOSIT' | translate }}</div>
+          <div class="description">
+            <p>
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DEPOSIT_PART_ONE' | translate }}
+            </p>
+            <p>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DEPOSIT_PART_TWO' | translate }}</p>
+          </div>
+
+          <div class="description">
+            <p>
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DOWNLOAD_LIST' | translate }}
+              <span class="link clickable"> {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.CLICK_HERE' | translate }}</span>
+            </p>
+          </div>
+
+          <div class="time-estimation">
+            <p>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.ESTIMATED_TIME' | translate }}</p>
+          </div>
+
+          <button class="btn primary" (click)="startDepositCreation()">
+            <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.START' | translate }} </span>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="showForm" class="row">
+        <!-- sur 3 col-->
+        <div class="col-4">
+          <div [ngStyle]="{ position: 'fixed' }">
+            <div class="text-return-creation">
+              <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+              <span class="return clickable" (click)="returnToGetorixInitialPage()">
+                {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SAVE_EXIT' | translate }}
+              </span>
+            </div>
+
+            <div [ngStyle]="{ 'padding-top': '40px', width: '400px' }">
+              <div *ngFor="let element of operationCategoryList">
+                <div
+                  (click)="scrollToElement(element.target)"
+                  class="category-list clickable"
+                  [ngClass]="element.isSelected ? 'category-list-clicked' : 'no-backgound'"
+                >
+                  <span> {{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.' + element.operationCategory | translate }}</span>
+                  <i class="material-icons error-icon" *ngIf="element.isError">cancel </i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- sur 6 col-->
+        <div id="page-top" class="col-6">
+          <form [formGroup]="getorixDepositform">
+            <div class="content vitamui-form">
+              <div *ngIf="showInputErrorFrame" class="error-message-background">
+                <div class="row">
+                  <div class="col-1"></div>
+                  <div class="col-1">
+                    <i class="material-icons error-icon" [ngStyle]="{ 'font-size': '70px' }">cancel </i>
+                  </div>
+                  <div class="col-10">
+                    <p class="incompleted-message">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.INCOMPLETED_DATA' | translate }}</p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-1"></div>
+                  <div class="col-1">
+                    <span class="error-vertical-line"></span>
+                  </div>
+
+                  <div class="col-10">
+                    <p class="error-first-message">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.INPUT_WITH_ERRORS' | translate }}</p>
+                    <ng-container *ngFor="let formError of depositFormError">
+                      <p class="input-error-message clickable" *ngIf="!formError.isValid" (click)="scrollToElement(formError.target)">
+                        {{ 'GETORIX_DEPOSIT.INPUT_NAMES.' + formError?.message | translate }}
+                      </p></ng-container
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-title">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.MANDATORY_FIELDS_MESSAGE' | translate }}</div>
+
+              <!--Organisme titulaire-->
+              <div id="agencyDetails" class="form-title" (mousemove)="onMouseMove('agencyDetails')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.AGENCY_DETAILS' | translate }}</p>
+
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="originatingAgency"
+                  minlength="2"
+                  required
+                  placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.ORGANISATION_NAME' | translate }}"
+                >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('originatingAgency')?.hasError('required')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('originatingAgency')?.hasError('minlength')"
+                    >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.MIN_LENGTH' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('originatingAgency')?.hasError('pattern')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                  >
+                </vitamui-common-input>
+
+                <div class="col-12 px-0" [ngStyle]="{ 'padding-bottom': '30px' }">
+                  <mat-checkbox
+                    (change)="checkVersatileServiceBoxChange()"
+                    matTooltip="{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VERSATILE_SERVICE_MESSAGE' | translate }}"
+                    matTooltipClass="vitamui-tooltip"
+                    [matTooltipShowDelay]="300"
+                  >
+                    <label class="node-label"> {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VERSATILE_SERVICE_MESSAGE' | translate }} </label>
+                  </mat-checkbox>
+                </div>
+
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="versatileService"
+                  minlength="2"
+                  required
+                  [disabled]="versatileServiceDisabled"
+                  placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.VERSATILE_SERVICE' | translate }}"
+                >
+                  <vitamui-common-input-error
+                    *ngIf="
+                      !versatileServiceDisabled && showInputErrorFrame && getorixDepositform?.get('versatileService')?.hasError('required')
+                    "
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}
+                  </vitamui-common-input-error>
+                  <vitamui-common-input-error
+                    *ngIf="
+                      !versatileServiceDisabled && showInputErrorFrame && getorixDepositform?.get('versatileService')?.hasError('pattern')
+                    "
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="
+                      !versatileServiceDisabled && showInputErrorFrame && getorixDepositform?.get('versatileService')?.hasError('minlength')
+                    "
+                    >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.MIN_LENGTH' | translate }}
+                  </vitamui-common-input-error>
+                </vitamui-common-input>
+              </div>
+
+              <!-- Responsable scientifique -->
+              <div id="scientificOfficer" class="form-title" (mousemove)="onMouseMove('scientificOfficer')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.SCIENTIFIC_OFFICER' | translate }}</p>
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="firstScientificOfficerLastName"
+                  minlength="1"
+                  required
+                  placeholder="  {{ 'GETORIX_DEPOSIT.INPUT_NAMES.OFFICER_LAST_NAME' | translate }}"
+                >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('firstScientificOfficerLastName')?.hasError('required')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('firstScientificOfficerLastName')?.hasError('pattern')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                  >
+                </vitamui-common-input>
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="firstScientificOfficerFirstName"
+                  minlength="1"
+                  required
+                  placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.OFFICER_FIRST_NAME' | translate }}"
+                >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('firstScientificOfficerFirstName')?.hasError('required')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('firstScientificOfficerFirstName')?.hasError('pattern')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                  >
+                </vitamui-common-input>
+
+                <div *ngIf="showOfficerAction">
+                  <button type="button" class="btn link" (click)="addNewScientificOfficer()" [ngStyle]="{ 'text-decoration': 'auto' }">
+                    <i class="vitamui-icon vitamui-icon-plus"></i>
+                    <span> {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.ADD_OFFICER' | translate }}</span>
+                  </button>
+                </div>
+                <ng-container *ngIf="showSecondScientifOfficer">
+                  <div>
+                    <button
+                      type="button"
+                      class="btn link"
+                      (click)="deleteSecondScientificOfficer()"
+                      [ngStyle]="{ 'text-decoration': 'auto' }"
+                    >
+                      <i class="vitamui-icon vitamui-icon-plus"></i>
+                      <span> {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DELETE_OFFICER' | translate }}</span>
+                    </button>
+                  </div>
+                  <vitamui-common-input
+                    class="col-12 px-0"
+                    formControlName="secondScientificOfficerLastName"
+                    minlength="1"
+                    placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.OFFICER_LAST_NAME' | translate }}"
+                  >
+                    <vitamui-common-input-error
+                      *ngIf="showInputErrorFrame && getorixDepositform?.get('secondScientificOfficerLastName')?.hasError('required')"
+                    >
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                    >
+                  </vitamui-common-input>
+
+                  <vitamui-common-input
+                    class="col-12 px-0"
+                    formControlName="secondScientificOfficerFirstName"
+                    minlength="1"
+                    placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.OFFICER_FIRST_NAME' | translate }}"
+                  >
+                    <vitamui-common-input-error
+                      *ngIf="showInputErrorFrame && getorixDepositform?.get('secondScientificOfficerFirstName')?.hasError('required')"
+                    >
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                    >
+                  </vitamui-common-input>
+                </ng-container>
+              </div>
+
+              <!-- Nom et type d'opération -->
+              <div id="operaionNameAndType" class="form-title" (mousemove)="onMouseMove('operaionNameAndType')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.OPERATION_TYPE_NAME' | translate }}</p>
+
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="operationName"
+                  minlength="3"
+                  required
+                  placeholder=" {{ 'GETORIX_DEPOSIT.INPUT_NAMES.OPRATION_NAME' | translate }}"
+                >
+                  <vitamui-common-input-error *ngIf="showInputErrorFrame && getorixDepositform?.get('operationName')?.hasError('required')">
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('operationName')?.hasError('minlength')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.MIN_LENGTH_MIN' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error *ngIf="showInputErrorFrame && getorixDepositform?.get('operationName')?.hasError('pattern')">
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                  >
+                </vitamui-common-input>
+
+                <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
+                  <div class="guide-design">
+                    <div class="row">
+                      <div class="col-1">
+                        <span class="vertical-line"></span>
+                      </div>
+                      <div class="col-11">
+                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_NAME_MESSAGE' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <p [ngStyle]="{ 'font-size': '16px' }">{{ 'GETORIX_DEPOSIT.INPUT_NAMES.OPERATION_TYPE' | translate }}</p>
+
+                <div class="radio-group">
+                  <div class="radio-btn-list">
+                    <mat-radio-button class="radio-button" (change)="checkOperationType($event)" [value]="'DIAGNOSIS'">
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_TYPE.DIAGNOSTIC' | translate }}
+                    </mat-radio-button>
+                  </div>
+
+                  <div class="radio-btn-list">
+                    <mat-radio-button class="radio-button" (change)="checkOperationType($event)" [value]="'SEARCH'">
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_TYPE.SEARCH' | translate }}
+                    </mat-radio-button>
+                  </div>
+                  <div class="radio-btn-list">
+                    <mat-radio-button class="radio-button" (change)="checkOperationType($event)" [value]="'OTHER'">
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_TYPE.OTHER' | translate }}
+                    </mat-radio-button>
+                  </div>
+                </div>
+
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="operationType"
+                  minlength="3"
+                  required
+                  [disabled]="operationTypeDisabled"
+                  placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.OPERATION_TYPE' | translate }}"
+                >
+                  <vitamui-common-input-error
+                    *ngIf="!operationTypeDisabled && showInputErrorFrame && getorixDepositform?.get('operationType')?.hasError('required')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="!operationTypeDisabled && showInputErrorFrame && getorixDepositform?.get('operationType')?.hasError('minlength')"
+                    >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.MIN_LENGTH_MIN' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="!operationTypeDisabled && showInputErrorFrame && getorixDepositform?.get('operationType')?.hasError('pattern')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                  >
+                </vitamui-common-input>
+              </div>
+
+              <!-- Numéro d'opération -->
+              <div id="operationNumber" class="form-title" (mousemove)="onMouseMove('operationNumber')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.OPERATION_NUMBER' | translate }}</p>
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="internalAdministratorNumber"
+                  minlength="1"
+                  required
+                  placeholder="  {{ 'GETORIX_DEPOSIT.INPUT_NAMES.INTERN_ADMINISTRATOR_NUMBER' | translate }}"
+                >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('internalAdministratorNumber')?.hasError('required')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('internalAdministratorNumber')?.hasError('pattern')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                  >
+                </vitamui-common-input>
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="nationalNumber"
+                  minlength="1"
+                  required
+                  placeholder="  {{ 'GETORIX_DEPOSIT.INPUT_NAMES.NATIONAL_NUMBER' | translate }}"
+                >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('nationalNumber')?.hasError('required')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('nationalNumber')?.hasError('pattern')"
+                    >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                  >
+                </vitamui-common-input>
+
+                <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
+                  <div class="guide-design" [ngStyle]="{ height: '200px' }">
+                    <div class="row">
+                      <div class="col-1">
+                        <span class="vertical-line" [ngStyle]="{ height: '200px' }"></span>
+                      </div>
+                      <div class="col-11">
+                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_NUMBER_MESSAGE.FIRST' | translate }}
+                          <p [ngStyle]="{ 'margin-top': '0px' }">
+                            {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_NUMBER_MESSAGE.SECOND' | translate }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Numéro d'arrêté de prescription -->
+              <div id="prescriptionOrderNumber" class="form-title" (mousemove)="onMouseMove('prescriptionOrderNumber')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.PERSCRIPTION_NUMBER' | translate }}</p>
+
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="prescriptionOrderNumber"
+                  minlength="1"
+                  required
+                  placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.PERSCRIPTION_NUMBER' | translate }}"
+                >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('prescriptionOrderNumber')?.hasError('required')"
+                  >
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error
+                    *ngIf="showInputErrorFrame && getorixDepositform?.get('prescriptionOrderNumber')?.hasError('pattern')"
+                    >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_NUM' | translate }}</vitamui-common-input-error
+                  >
+                </vitamui-common-input>
+
+                <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
+                  <div class="guide-design">
+                    <div class="row">
+                      <div class="col-1">
+                        <span class="vertical-line"></span>
+                      </div>
+                      <div class="col-11">
+                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.PERSCRIPTION_NUMBER_MESSAGE' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Localisation de l'opération -->
+              <div id="operationLocalisation" class="form-title" (mousemove)="onMouseMove('operationLocalisation')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.LOCALISATION' | translate }}</p>
+                <ng-container formGroupName="archaeologistGetorixAddress">
+                  <vitamui-common-input
+                    class="col-12 px-0"
+                    formControlName="department"
+                    minlength="2"
+                    required
+                    placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.DEPARTEMENT' | translate }}"
+                  >
+                    <vitamui-common-input-error
+                      *ngIf="showInputErrorFrame && getorixDepositform?.get('archaeologistGetorixAddress.department')?.hasError('required')"
+                    >
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                    >
+                    <vitamui-common-input-error
+                      *ngIf="
+                        showInputErrorFrame && getorixDepositform?.get('archaeologistGetorixAddress.department')?.hasError('minlength')
+                      "
+                      >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.MIN_LENGTH' | translate }}</vitamui-common-input-error
+                    >
+                    <vitamui-common-input-error
+                      *ngIf="showInputErrorFrame && getorixDepositform?.get('archaeologistGetorixAddress.department')?.hasError('pattern')"
+                    >
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                    >
+                  </vitamui-common-input>
+
+                  <vitamui-common-input
+                    class="col-12 px-0"
+                    formControlName="commune"
+                    minlength="1"
+                    required
+                    placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.COMMUNE' | translate }}"
+                  >
+                    <vitamui-common-input-error
+                      *ngIf="showInputErrorFrame && getorixDepositform?.get('archaeologistGetorixAddress.commune')?.hasError('required')"
+                    >
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                    >
+                    <vitamui-common-input-error
+                      *ngIf="showInputErrorFrame && getorixDepositform?.get('archaeologistGetorixAddress.commune')?.hasError('pattern')"
+                    >
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                    >
+                  </vitamui-common-input>
+
+                  <vitamui-common-input
+                    class="col-12 px-0"
+                    formControlName="placeName"
+                    minlength="2"
+                    placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.PLACE_NAME' | translate }}"
+                  >
+                  </vitamui-common-input>
+
+                  <vitamui-common-input
+                    class="col-12 px-0"
+                    formControlName="inseeNumber"
+                    minlength="1"
+                    required
+                    placeholder="  {{ 'GETORIX_DEPOSIT.INPUT_NAMES.INSEE_NUMBER' | translate }}"
+                  >
+                    <vitamui-common-input-error
+                      *ngIf="
+                        showInputErrorFrame && getorixDepositform?.get('archaeologistGetorixAddress.inseeNumber')?.hasError('required')
+                      "
+                    >
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                    >
+                    <vitamui-common-input-error
+                      *ngIf="showInputErrorFrame && getorixDepositform?.get('archaeologistGetorixAddress.inseeNumber')?.hasError('pattern')"
+                    >
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
+                    >
+                  </vitamui-common-input>
+                </ng-container>
+              </div>
+              <!-- Particularités de l'opération -->
+              <div id="operationParticularities" class="form-title" (mousemove)="onMouseMove('operationParticularities')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.PARTICULARITIES' | translate }}</p>
+
+                <vitamui-common-textarea
+                  class="col-12 px-0"
+                  formControlName="operationParticularities"
+                  placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.COMMENT' | translate }}"
+                >
+                </vitamui-common-textarea>
+
+                <div class="col-12 px-0">
+                  <div class="guide-design" [ngStyle]="{ height: '200px' }">
+                    <div class="row">
+                      <div class="col-1">
+                        <span class="vertical-line" [ngStyle]="{ height: '200px' }"></span>
+                      </div>
+                      <div class="col-11">
+                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.PARTICULARITIES_MESSAGE.FIRST' | translate }}
+
+                          <p [ngStyle]="{ 'margin-top': '0px' }">
+                            {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.PARTICULARITIES_MESSAGE.SECOND' | translate }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dates de l'opération -->
+              <div id="operationDates" class="form-title" (mousemove)="onMouseMove('operationDates')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.DATES' | translate }}</p>
+                <div class="col-12 px-0">
+                  <div class="vitamui-input" (click)="pickerSatrDate.open()">
+                    <span
+                      *ngIf="!getorixDepositform.get('operationStartDate').value; else showOperationStartDate"
+                      (click)="pickerSatrDate.open()"
+                      class="search-date-label"
+                    >
+                      {{ 'GETORIX_DEPOSIT.INPUT_NAMES.OPERATION_START_DATE' | translate }}</span
+                    >
+
+                    <ng-template #showOperationStartDate
+                      ><span (click)="pickerSatrDate.open()" [ngStyle]="{ 'font-size': '16px' }"
+                        >{{ getorixDepositform.get('operationStartDate').value | dateTime : 'MM/yyyy' }}
+                      </span>
+                    </ng-template>
+                    <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="operationStartDate" />
+                    <mat-datepicker
+                      #pickerSatrDate
+                      panelClass="custom-header"
+                      startView="multi-year"
+                      (monthSelected)="setOperationStartDateMonthAndYear($event, pickerSatrDate)"
+                    >
+                    </mat-datepicker>
+
+                    <div class="calendar-btn">
+                      <i class="vitamui-icon vitamui-icon-calendar"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <br />
+
+                <div class="col-12 px-0">
+                  <div class="vitamui-input" (click)="pickerEndDate.open()">
+                    <span
+                      *ngIf="!getorixDepositform.get('operationEndDate').value; else showOperationEndDate"
+                      (click)="pickerEndDate.open()"
+                      class="search-date-label"
+                    >
+                      {{ 'GETORIX_DEPOSIT.INPUT_NAMES.OPERATION_END_DATE' | translate }}</span
+                    >
+
+                    <ng-template #showOperationEndDate
+                      ><span (click)="pickerEndDate.open()" [ngStyle]="{ 'font-size': '16px' }"
+                        >{{ getorixDepositform.get('operationEndDate').value | dateTime : 'MM/yyyy' }}
+                      </span>
+                    </ng-template>
+                    <input class="hidden" size="0" [matDatepicker]="pickerEndDate" formControlName="operationEndDate" />
+                    <mat-datepicker
+                      #pickerEndDate
+                      panelClass="custom-header"
+                      startView="multi-year"
+                      (monthSelected)="setOperationEndDateMonthAndYear($event, pickerEndDate)"
+                    ></mat-datepicker>
+
+                    <div class="calendar-btn">
+                      <i class="vitamui-icon vitamui-icon-calendar"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dates des documents -->
+              <div id="documentDates" class="form-title" (mousemove)="onMouseMove('documentDates')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.DOCUMENT_DATES' | translate }}</p>
+
+                <div class="col-12 px-0">
+                  <div class="vitamui-input" (click)="documentPickerSatrtDate.open()">
+                    <span
+                      *ngIf="!getorixDepositform.get('documentStartDate').value; else showDocumentStartDate"
+                      (click)="documentPickerSatrtDate.open()"
+                      class="search-date-label"
+                    >
+                      {{ 'GETORIX_DEPOSIT.INPUT_NAMES.DOCUMENT_START_DATE' | translate }}</span
+                    >
+
+                    <ng-template #showDocumentStartDate
+                      ><span (click)="documentPickerSatrtDate.open()" [ngStyle]="{ 'font-size': '16px' }"
+                        >{{ getorixDepositform.get('documentStartDate').value | dateTime : 'yyyy' }}
+                      </span>
+                    </ng-template>
+                    <input class="hidden" size="0" [matDatepicker]="documentPickerSatrtDate" formControlName="documentStartDate" />
+                    <mat-datepicker
+                      #documentPickerSatrtDate
+                      panelClass="custom-header"
+                      startView="multi-year"
+                      (yearSelected)="setDocumentStartDateYear($event, documentPickerSatrtDate)"
+                    ></mat-datepicker>
+
+                    <div class="calendar-btn">
+                      <i class="vitamui-icon vitamui-icon-calendar"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <br />
+
+                <div class="col-12 px-0">
+                  <div class="vitamui-input" (click)="documentPickerEndDate.open()">
+                    <span
+                      *ngIf="!getorixDepositform.get('documentEndDate').value; else showDocumentEndDate"
+                      (click)="documentPickerEndDate.open()"
+                      class="search-date-label"
+                    >
+                      {{ 'GETORIX_DEPOSIT.INPUT_NAMES.DOCUMENT_END_DATE' | translate }}</span
+                    >
+
+                    <ng-template #showDocumentEndDate
+                      ><span (click)="documentPickerEndDate.open()" [ngStyle]="{ 'font-size': '16px' }"
+                        >{{ getorixDepositform.get('documentEndDate').value | dateTime : 'yyyy' }}
+                      </span>
+                    </ng-template>
+                    <input class="hidden" size="0" [matDatepicker]="documentPickerEndDate" formControlName="documentEndDate" />
+                    <mat-datepicker
+                      #documentPickerEndDate
+                      panelClass="custom-header"
+                      startView="multi-year"
+                      (yearSelected)="setDocumentEndDateYear($event, documentPickerEndDate)"
+                    ></mat-datepicker>
+
+                    <div class="calendar-btn">
+                      <i class="vitamui-icon vitamui-icon-calendar"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 px-0">
+                  <div class="guide-design" [ngStyle]="{ height: '160px' }">
+                    <div class="row">
+                      <div class="col-1">
+                        <span class="vertical-line" [ngStyle]="{ height: '160px' }"></span>
+                      </div>
+                      <div class="col-11">
+                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DOCUMENT_DATES_MESSAGE.FIRST' | translate }}
+                          <p [ngStyle]="{ 'margin-top': '0px' }">
+                            {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DOCUMENT_DATES_MESSAGE.SECOND' | translate }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Etat des archives papiers -->
+              <div id="archiveStatus" class="form-title" (mousemove)="onMouseMove('archiveStatus')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.ARCHIVE_STATUS' | translate }}</p>
+
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="saveLastCondition"
+                  placeholder=" {{ 'GETORIX_DEPOSIT.INPUT_NAMES.LAST_SAVE_CONDITION' | translate }}"
+                >
+                </vitamui-common-input>
+
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="materialStatus"
+                  placeholder=" {{ 'GETORIX_DEPOSIT.INPUT_NAMES.MATERIAL_STATUS' | translate }}"
+                >
+                </vitamui-common-input>
+
+                <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
+                  <div class="guide-design" [ngStyle]="{ height: '165px' }">
+                    <div class="row">
+                      <div class="col-1">
+                        <span class="vertical-line" [ngStyle]="{ height: '165px' }"></span>
+                      </div>
+                      <div class="col-11">
+                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                          <p [ngStyle]="{ 'margin-bottom': '0px' }">
+                            {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.ARCHIVE_STATUS_MESSAGE.THIRD' | translate }}
+                          </p>
+
+                          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.ARCHIVE_STATUS_MESSAGE.FIRST' | translate }}
+
+                          <p [ngStyle]="{ 'margin-top': '0px' }">
+                            {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.ARCHIVE_STATUS_MESSAGE.SECOND' | translate }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Volumétrie des archives -->
+              <div id="volumeDetails" class="form-title" (mousemove)="onMouseMove('volumeDetails')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.VOLUME_DETAILS' | translate }}</p>
+
+                <vitamui-common-input
+                  class="col-12 px-0"
+                  formControlName="archiveVolume"
+                  minlength="1"
+                  required
+                  placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.ARCHIVE_VOLUME' | translate }} "
+                >
+                  <vitamui-common-input-error *ngIf="showInputErrorFrame && getorixDepositform?.get('archiveVolume')?.hasError('required')">
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
+                  >
+                  <vitamui-common-input-error *ngIf="showInputErrorFrame && getorixDepositform?.get('archiveVolume')?.hasError('pattern')">
+                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_NUM' | translate }}</vitamui-common-input-error
+                  >
+                </vitamui-common-input>
+              </div>
+
+              <!-- Mobiler -->
+              <div id="furniture" class="form-title" (mousemove)="onMouseMove('furniture')">
+                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.FURNITURE' | translate }}</p>
+
+                <p [ngStyle]="{ 'font-size': '16px' }">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.FURNITURE_QUESTION' | translate }}</p>
+
+                <div class="radio-group">
+                  <div class="radio-btn-list">
+                    <mat-radio-button class="radio-button" (change)="checkFurniture($event)" [value]="'YES'">
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.YES' | translate }}
+                    </mat-radio-button>
+                  </div>
+
+                  <div class="radio-btn-list">
+                    <mat-radio-button class="radio-button" (change)="checkFurniture($event)" [value]="'No'">
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.NO' | translate }}
+                    </mat-radio-button>
+                  </div>
+                </div>
+
+                <vitamui-common-textarea
+                  class="col-12 px-0"
+                  formControlName="furnitureComment"
+                  placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.COMMENT' | translate }}"
+                >
+                </vitamui-common-textarea>
+              </div>
+            </div>
+          </form>
+          <br />
+          <br />
+          <button class="btn primary" (click)="validateCreation()">
+            <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VALIDATE' | translate }}</span>
+          </button>
+        </div>
+        <!-- sur 3 col-->
+        <div class="col-1"></div>
+        <div class="col-1">
+          <div [ngStyle]="{ position: 'fixed' }">
+            <button class="btn primary" (click)="validateCreation()">
+              <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VALIDATE' | translate }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<ng-template #confirmLeaveGetorixDepisitCreationDialog>
+  <mat-dialog-content>
+    <div class="pop-title">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DIALOG_ACTION.TITLE' | translate }}</div>
+    <br />
+    <div class="question-design">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DIALOG_ACTION.DESCRIPTION' | translate }}</div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DIALOG_ACTION.EXIT_WITH_SAVE' | translate }}
+    </button>
+    <button (click)="exitWithoutSave()" class="btn second-confirm">
+      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DIALOG_ACTION.EXIT_WITHOUT_SAVE' | translate }}
+    </button>
+
+    <button mat-flat-button matDialogClose class="btn" [ngStyle]="{ 'font-weight': 'bold', size: '14px' }">
+      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DIALOG_ACTION.CANCEL' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
