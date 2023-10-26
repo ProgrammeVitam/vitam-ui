@@ -1,0 +1,8 @@
+db = db.getSiblingDB('{{ mongodb.collectDeposit.db }}')
+
+print("START 03_create_getorix_deposists_collection.js");
+
+db.getorixDeposists.remove({});
+db.createCollection('getorixDeposists', {autoIndexId: true});
+
+print("END 03_create_getorix_deposists_collection.js");

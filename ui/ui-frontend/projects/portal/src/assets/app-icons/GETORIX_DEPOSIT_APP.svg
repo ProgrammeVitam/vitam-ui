@@ -1,0 +1,984 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1"
+     xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.getorix_deposit_app_0{fill-rule:evenodd;clip-rule:evenodd;}
+	.getorix_deposit_app_1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.getorix_deposit_app_2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.getorix_deposit_app_3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.getorix_deposit_app_4{fill:#BCB9BA;}
+	.getorix_deposit_app_5{fill:#BBB9BA;}
+	.getorix_deposit_app_6{fill:#BBB8B9;}
+	.getorix_deposit_app_7{fill:#BAB8B9;}
+	.getorix_deposit_app_8{fill:#B9B7B8;}
+	.getorix_deposit_app_9{fill:#B9B7B7;}
+	.getorix_deposit_app_10{fill:#B8B6B7;}
+	.getorix_deposit_app_11{fill:#B8B5B6;}
+	.getorix_deposit_app_12{fill:#B7B5B6;}
+	.getorix_deposit_app_13{fill:#B7B4B5;}
+	.getorix_deposit_app_14{fill:#B6B4B5;}
+	.getorix_deposit_app_15{fill:#B6B3B4;}
+	.getorix_deposit_app_16{fill:#B5B3B4;}
+	.getorix_deposit_app_17{fill:#B4B2B3;}
+	.getorix_deposit_app_18{fill:#B3B1B2;}
+	.getorix_deposit_app_19{fill:#B3B1B1;}
+	.getorix_deposit_app_20{fill:#B2B0B1;}
+	.getorix_deposit_app_21{fill:#B2AFB0;}
+	.getorix_deposit_app_22{fill:#B1AFB0;}
+	.getorix_deposit_app_23{fill:#B1AEAF;}
+	.getorix_deposit_app_24{fill:#B0AEAF;}
+	.getorix_deposit_app_25{fill:#AFADAE;}
+	.getorix_deposit_app_26{fill:#AEACAD;}
+	.getorix_deposit_app_27{fill:#ADABAC;}
+	.getorix_deposit_app_28{fill:#ADABAB;}
+	.getorix_deposit_app_29{fill:#ACAAAB;}
+	.getorix_deposit_app_30{fill:#ACAAAA;}
+	.getorix_deposit_app_31{fill:#ABA9AA;}
+	.getorix_deposit_app_32{fill:#AAA8A9;}
+	.getorix_deposit_app_33{fill:#A9A7A8;}
+	.getorix_deposit_app_34{fill:#A8A6A7;}
+	.getorix_deposit_app_35{fill:#A7A5A6;}
+	.getorix_deposit_app_36{fill:#A7A5A5;}
+	.getorix_deposit_app_37{fill:#A6A4A5;}
+	.getorix_deposit_app_38{fill:#A5A4A4;}
+	.getorix_deposit_app_39{fill:#A5A3A4;}
+	.getorix_deposit_app_40{fill:#A4A2A3;}
+	.getorix_deposit_app_41{fill:#A3A1A2;}
+	.getorix_deposit_app_42{fill:#A2A0A1;}
+	.getorix_deposit_app_43{fill:#A19FA0;}
+	.getorix_deposit_app_44{fill:#A09F9F;}
+	.getorix_deposit_app_45{fill:#A09E9F;}
+	.getorix_deposit_app_46{fill:#9F9E9E;}
+	.getorix_deposit_app_47{fill:#9F9D9E;}
+	.getorix_deposit_app_48{fill:#9E9D9D;}
+	.getorix_deposit_app_49{fill:#9E9C9D;}
+	.getorix_deposit_app_50{fill:#9D9B9C;}
+	.getorix_deposit_app_51{fill:#9C9A9B;}
+	.getorix_deposit_app_52{fill:#9B9A9B;}
+	.getorix_deposit_app_53{fill:#9B999A;}
+	.getorix_deposit_app_54{fill:#9A9999;}
+	.getorix_deposit_app_55{fill:#9A9899;}
+	.getorix_deposit_app_56{fill:#999898;}
+	.getorix_deposit_app_57{fill:#999798;}
+	.getorix_deposit_app_58{fill:#989797;}
+	.getorix_deposit_app_59{fill:#989697;}
+	.getorix_deposit_app_60{fill:#979596;}
+	.getorix_deposit_app_61{fill:#969596;}
+	.getorix_deposit_app_62{fill:#969495;}
+	.getorix_deposit_app_63{fill:#959495;}
+	.getorix_deposit_app_64{fill:#959394;}
+	.getorix_deposit_app_65{fill:#949393;}
+	.getorix_deposit_app_66{fill:#949293;}
+	.getorix_deposit_app_67{fill:#939292;}
+	.getorix_deposit_app_68{fill:#939192;}
+	.getorix_deposit_app_69{fill:#929191;}
+	.getorix_deposit_app_70{fill:#919091;}
+	.getorix_deposit_app_71{fill:#919090;}
+	.getorix_deposit_app_72{fill:#908F90;}
+	.getorix_deposit_app_73{fill:#908E8F;}
+	.getorix_deposit_app_74{fill:#8F8E8F;}
+	.getorix_deposit_app_75{fill:#8F8D8E;}
+	.getorix_deposit_app_76{fill:#8E8D8D;}
+	.getorix_deposit_app_77{fill:#8E8C8D;}
+	.getorix_deposit_app_78{fill:#8D8C8C;}
+	.getorix_deposit_app_79{fill:#8C8B8C;}
+	.getorix_deposit_app_80{fill:#8C8B8B;}
+	.getorix_deposit_app_81{fill:#8B8A8B;}
+	.getorix_deposit_app_82{fill:#8B8A8A;}
+	.getorix_deposit_app_83{fill:#8A898A;}
+	.getorix_deposit_app_84{fill:#8A8889;}
+	.getorix_deposit_app_85{fill:#898888;}
+	.getorix_deposit_app_86{fill:#898788;}
+	.getorix_deposit_app_87{fill:#888787;}
+	.getorix_deposit_app_88{fill:#878687;}
+	.getorix_deposit_app_89{fill:#878686;}
+	.getorix_deposit_app_90{fill:#868586;}
+	.getorix_deposit_app_91{fill:#868585;}
+	.getorix_deposit_app_92{fill:#858485;}
+	.getorix_deposit_app_93{fill:#858484;}
+	.getorix_deposit_app_94{fill:#848384;}
+	.getorix_deposit_app_95{fill:#848383;}
+	.getorix_deposit_app_96{fill:#838282;}
+	.getorix_deposit_app_97{fill:#828182;}
+	.getorix_deposit_app_98{fill:#828181;}
+	.getorix_deposit_app_99{fill:#818081;}
+	.getorix_deposit_app_100{fill:#818080;}
+	.getorix_deposit_app_101{fill:#807F80;}
+	.getorix_deposit_app_102{fill:#807F7F;}
+	.getorix_deposit_app_103{fill:#7F7E7F;}
+	.getorix_deposit_app_104{fill:#7F7E7E;}
+	.getorix_deposit_app_105{fill:#7E7D7E;}
+	.getorix_deposit_app_106{fill:#7D7D7D;}
+	.getorix_deposit_app_107{fill:#7D7C7C;}
+	.getorix_deposit_app_108{fill:#7C7B7C;}
+	.getorix_deposit_app_109{fill:#7C7B7B;}
+	.getorix_deposit_app_110{fill:#7B7A7B;}
+	.getorix_deposit_app_111{fill:#7B7A7A;}
+	.getorix_deposit_app_112{fill:#7A797A;}
+	.getorix_deposit_app_113{fill:#7A7979;}
+	.getorix_deposit_app_114{fill:#797879;}
+	.getorix_deposit_app_115{fill:#787878;}
+	.getorix_deposit_app_116{fill:#787778;}
+	.getorix_deposit_app_117{fill:#777777;}
+	.getorix_deposit_app_118{fill:#777676;}
+	.getorix_deposit_app_119{fill:#767676;}
+	.getorix_deposit_app_120{fill:#767575;}
+	.getorix_deposit_app_121{fill:#757475;}
+	.getorix_deposit_app_122{fill:#757474;}
+	.getorix_deposit_app_123{fill:#747374;}
+	.getorix_deposit_app_124{fill:#737373;}
+	.getorix_deposit_app_125{fill:#737273;}
+	.getorix_deposit_app_126{fill:#727272;}
+	.getorix_deposit_app_127{fill:#727172;}
+	.getorix_deposit_app_128{fill:#717171;}
+	.getorix_deposit_app_129{fill:#717070;}
+	.getorix_deposit_app_130{fill:#707070;}
+	.getorix_deposit_app_131{fill:#706F6F;}
+	.getorix_deposit_app_132{fill:#6F6E6F;}
+	.getorix_deposit_app_133{fill:#6E6E6E;}
+	.getorix_deposit_app_134{fill:#6E6D6E;}
+	.getorix_deposit_app_135{fill:#6D6D6D;}
+	.getorix_deposit_app_136{fill:#6D6C6D;}
+	.getorix_deposit_app_137{fill:#6C6C6C;}
+	.getorix_deposit_app_138{fill:#6C6B6C;}
+	.getorix_deposit_app_139{fill:#6B6B6B;}
+	.getorix_deposit_app_140{fill:#6B6A6A;}
+	.getorix_deposit_app_141{fill:#6A6A6A;}
+	.getorix_deposit_app_142{fill:#696969;}
+	.getorix_deposit_app_143{fill:#686868;}
+	.getorix_deposit_app_144{fill:#686768;}
+	.getorix_deposit_app_145{fill:#676767;}
+	.getorix_deposit_app_146{fill:#676667;}
+	.getorix_deposit_app_147{fill:#666666;}
+	.getorix_deposit_app_148{fill:#666566;}
+	.getorix_deposit_app_149{fill:#656565;}
+	.getorix_deposit_app_150{fill:#646464;}
+	.getorix_deposit_app_151{fill:#636363;}
+	.getorix_deposit_app_152{fill:#626262;}
+	.getorix_deposit_app_153{fill:#626162;}
+	.getorix_deposit_app_154{fill:#616161;}
+	.getorix_deposit_app_155{fill:#616061;}
+	.getorix_deposit_app_156{fill:#606060;}
+	.getorix_deposit_app_157{fill:#5F5F60;}
+	.getorix_deposit_app_158{fill:#5F5F5F;}
+	.getorix_deposit_app_159{fill:#5E5E5E;}
+	.getorix_deposit_app_160{fill:#5D5D5D;}
+	.getorix_deposit_app_161{fill:#5C5C5C;}
+	.getorix_deposit_app_162{fill:#5B5B5B;}
+	.getorix_deposit_app_163{fill:#5A5A5B;}
+	.getorix_deposit_app_164{fill:#5A5A5A;}
+	.getorix_deposit_app_165{fill:#59595A;}
+	.getorix_deposit_app_166{fill:#595959;}
+	.getorix_deposit_app_167{fill:#585858;}
+	.getorix_deposit_app_168{fill:#575757;}
+	.getorix_deposit_app_169{fill:#565656;}
+	.getorix_deposit_app_170{fill:#555656;}
+	.getorix_deposit_app_171{fill:#555555;}
+	.getorix_deposit_app_172{fill:#545455;}
+	.getorix_deposit_app_173{fill:#545454;}
+	.getorix_deposit_app_174{fill:#535353;}
+	.getorix_deposit_app_175{fill:#525252;}
+	.getorix_deposit_app_176{fill:#515151;}
+	.getorix_deposit_app_177{fill:#505151;}
+	.getorix_deposit_app_178{fill:#505050;}
+	.getorix_deposit_app_179{fill:#4F5050;}
+	.getorix_deposit_app_180{fill:#4F4F4F;}
+	.getorix_deposit_app_181{fill:#4E4F4F;}
+	.getorix_deposit_app_182{fill:#4E4E4E;}
+	.getorix_deposit_app_183{fill:#4D4D4D;}
+	.getorix_deposit_app_184{fill:#4C4C4C;}
+	.getorix_deposit_app_185{fill:url(#SVGID_00000067205653980114462980000008451274337974173591_);}
+	.getorix_deposit_app_186{fill:url(#SVGID_00000030465078484544466630000018261268783569031839_);}
+	.getorix_deposit_app_187{fill:var(--vitamui-primary);}
+	.getorix_deposit_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000069366016825998517200000015780510570795363999_);}
+	.getorix_deposit_app_189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000147187288007287467420000003112046911640629682_);}
+	.getorix_deposit_app_190{fill:url(#SVGID_00000180343978265058350090000016590741226253347456_);}
+	.getorix_deposit_app_191{fill:url(#SVGID_00000122707335820969651430000004887299278582077837_);}
+	.getorix_deposit_app_192{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000018229129015103542240000005887181333715517572_);}
+	.getorix_deposit_app_193{fill:var(--vitamui-primary-50);}
+	.getorix_deposit_app_194{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000095311690802688645970000005035988695099996309_);}
+	.getorix_deposit_app_195{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000023990587501973679430000002051291859424117667_);}
+	.getorix_deposit_app_196{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000110429709109720829850000017454035159424591007_);}
+	.getorix_deposit_app_197{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000043457624716470389070000005217563150433455015_);}
+	.getorix_deposit_app_198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000101084257876369229310000000621672306937742268_);}
+	.getorix_deposit_app_199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000119104147535759973370000007473663186572579462_);}
+	.getorix_deposit_app_200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000052094574215264810470000005348497803923617440_);}
+	.getorix_deposit_app_201{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000064335216733588708420000012022319162428510368_);}
+	.getorix_deposit_app_202{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000056418873061609364730000016847436236260004764_);}
+	.getorix_deposit_app_203{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000137830605359466157890000012289179177098853032_);}
+	.getorix_deposit_app_204{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000085238449012836885410000017414202732483591088_);}
+	.getorix_deposit_app_205{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000099646307125862227250000000468649448617889709_);}
+	.getorix_deposit_app_206{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000145764096445981084010000007578160038597805997_);}
+	.getorix_deposit_app_207{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000176756119148795176560000004792378156879583650_);}
+	.getorix_deposit_app_208{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000004544617908117454740000017922542623237812135_);}
+	.getorix_deposit_app_209{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000099634683156547269620000007518322547919804822_);}
+	.getorix_deposit_app_210{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000175319320771803188770000001162670583699801995_);}
+	.getorix_deposit_app_211{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000013163619477287945390000011434047094381836200_);}
+	.getorix_deposit_app_212{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000022561254156851633960000015154010415900352179_);}
+	.getorix_deposit_app_213{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000042719418262538345660000017892979372120514488_);}
+	.getorix_deposit_app_214{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000065793769083676890400000009615851418631925645_);}
+	.getorix_deposit_app_215{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000013907782140788144390000012881711331115248046_);}
+	.getorix_deposit_app_216{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000119112441620775570050000018183561648392504450_);}
+	.getorix_deposit_app_217{fill:url(#SVGID_00000134222535637867667200000009470688729818705322_);}
+	.getorix_deposit_app_218{fill:url(#SVGID_00000127035569431449357810000016628316260834189750_);}
+	.getorix_deposit_app_219{fill:url(#SVGID_00000168083037725446351160000011902615797657294503_);}
+	.getorix_deposit_app_220{fill:url(#SVGID_00000005246213057593526010000008562040807843862463_);}
+	.getorix_deposit_app_221{fill:#FFFFFF;}
+	.getorix_deposit_app_222{fill-rule:evenodd;clip-rule:evenodd;fill:#2A2C2B;}
+	.getorix_deposit_app_223{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000110438168733059718270000010085969265312627608_);}
+	.getorix_deposit_app_224{fill-rule:evenodd;clip-rule:evenodd;fill:#4C4C4C;}
+	.getorix_deposit_app_225{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000073690984029119550240000001814329525937453246_);}
+	.getorix_deposit_app_226{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000121989201830744217340000012001218803452770751_);}
+	.getorix_deposit_app_227{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000080897066187707881480000003231763516402806442_);}
+	.getorix_deposit_app_228{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000041979665356053981420000013202175512473382579_);}
+	.getorix_deposit_app_229{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000092435407701666636230000004592507967176154526_);}
+	.getorix_deposit_app_230{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000099627246757607371600000013575698717325535877_);}
+	.getorix_deposit_app_231{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000016774869751230965010000014269894204676821636_);}
+	.getorix_deposit_app_232{fill:#F5F5F5;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="123.3" width="165.1" x="17.4" y="19.4"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<path class="getorix_deposit_app_0" d="M100,141.4c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2C17.3,149.9,54.3,141.4,100,141.4
+			z"/>
+		<path class="getorix_deposit_app_1" d="M100,141.8c43.6,0,78.9,8.4,78.9,18.8s-35.3,18.8-78.9,18.8S21,170.9,21,160.6C21,150.1,56.4,141.8,100,141.8
+			z"/>
+		<path class="getorix_deposit_app_2" d="M100,139.6c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8S21,168.7,21,158.4
+			C21,147.9,56.4,139.6,100,139.6z"/>
+		<path class="getorix_deposit_app_1" d="M100,138.4c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8S21,167.5,21,157.2
+			C21,146.7,56.4,138.4,100,138.4z"/>
+		<path class="getorix_deposit_app_3" d="M99.8,138.4c22.9,0,43.4,2.3,57.8,6c-30.2-1.8-112.6,2.6-132.9,18.5c-2.5-1.8-3.8-3.8-3.8-5.7
+			C20.9,146.7,56.4,138.4,99.8,138.4z"/>
+		<path class="getorix_deposit_app_2" d="M21,157.1c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C21,157.7,21,157.4,21,157.1z"/>
+	</g>
+</g>
+<g>
+	<ellipse class="getorix_deposit_app_4" cx="112.7" cy="156.6" rx="58.4" ry="9.9"/>
+	<ellipse class="getorix_deposit_app_5" cx="112.7" cy="156.6" rx="58.3" ry="9.8"/>
+	<ellipse class="getorix_deposit_app_6" cx="112.7" cy="156.6" rx="58.2" ry="9.8"/>
+	<ellipse class="getorix_deposit_app_7" cx="112.7" cy="156.6" rx="58.1" ry="9.8"/>
+	<ellipse class="getorix_deposit_app_8" cx="112.7" cy="156.6" rx="58" ry="9.7"/>
+	<ellipse class="getorix_deposit_app_9" cx="112.7" cy="156.6" rx="57.9" ry="9.7"/>
+	<ellipse class="getorix_deposit_app_10" cx="112.7" cy="156.6" rx="57.8" ry="9.7"/>
+	<ellipse class="getorix_deposit_app_11" cx="112.7" cy="156.6" rx="57.7" ry="9.6"/>
+	<ellipse class="getorix_deposit_app_12" cx="112.7" cy="156.6" rx="57.6" ry="9.6"/>
+	<ellipse class="getorix_deposit_app_13" cx="112.7" cy="156.6" rx="57.5" ry="9.6"/>
+	<ellipse class="getorix_deposit_app_14" cx="112.7" cy="156.6" rx="57.4" ry="9.5"/>
+	<ellipse class="getorix_deposit_app_15" cx="112.7" cy="156.6" rx="57.3" ry="9.5"/>
+	<ellipse class="getorix_deposit_app_16" cx="112.7" cy="156.5" rx="57.2" ry="9.5"/>
+	<ellipse class="getorix_deposit_app_17" cx="112.7" cy="156.5" rx="57" ry="9.4"/>
+	<ellipse class="getorix_deposit_app_17" cx="112.7" cy="156.5" rx="56.9" ry="9.4"/>
+	<ellipse class="getorix_deposit_app_18" cx="112.7" cy="156.5" rx="56.8" ry="9.4"/>
+	<ellipse class="getorix_deposit_app_19" cx="112.7" cy="156.5" rx="56.7" ry="9.3"/>
+	<ellipse class="getorix_deposit_app_20" cx="112.7" cy="156.5" rx="56.6" ry="9.3"/>
+	<ellipse class="getorix_deposit_app_21" cx="112.7" cy="156.5" rx="56.5" ry="9.3"/>
+	<ellipse class="getorix_deposit_app_22" cx="112.7" cy="156.5" rx="56.4" ry="9.3"/>
+	<ellipse class="getorix_deposit_app_23" cx="112.7" cy="156.5" rx="56.3" ry="9.2"/>
+	<ellipse class="getorix_deposit_app_24" cx="112.7" cy="156.5" rx="56.2" ry="9.2"/>
+	<ellipse class="getorix_deposit_app_25" cx="112.7" cy="156.5" rx="56.1" ry="9.2"/>
+	<ellipse class="getorix_deposit_app_25" cx="112.7" cy="156.5" rx="56" ry="9.1"/>
+	<ellipse class="getorix_deposit_app_26" cx="112.7" cy="156.5" rx="55.9" ry="9.1"/>
+	<ellipse class="getorix_deposit_app_26" cx="112.7" cy="156.5" rx="55.8" ry="9.1"/>
+	<ellipse class="getorix_deposit_app_27" cx="112.7" cy="156.5" rx="55.7" ry="9"/>
+	<ellipse class="getorix_deposit_app_28" cx="112.7" cy="156.5" rx="55.6" ry="9"/>
+	<ellipse class="getorix_deposit_app_29" cx="112.7" cy="156.5" rx="55.5" ry="9"/>
+	<ellipse class="getorix_deposit_app_30" cx="112.7" cy="156.5" rx="55.4" ry="8.9"/>
+	<ellipse class="getorix_deposit_app_31" cx="112.7" cy="156.5" rx="55.3" ry="8.9"/>
+	<ellipse class="getorix_deposit_app_32" cx="112.7" cy="156.5" rx="55.2" ry="8.9"/>
+	<ellipse class="getorix_deposit_app_32" cx="112.7" cy="156.5" rx="55.1" ry="8.8"/>
+	<ellipse class="getorix_deposit_app_33" cx="112.7" cy="156.5" rx="55" ry="8.8"/>
+	<ellipse class="getorix_deposit_app_33" cx="112.7" cy="156.4" rx="54.9" ry="8.8"/>
+	<ellipse class="getorix_deposit_app_34" cx="112.7" cy="156.4" rx="54.8" ry="8.7"/>
+	<ellipse class="getorix_deposit_app_34" cx="112.7" cy="156.4" rx="54.7" ry="8.7"/>
+	<ellipse class="getorix_deposit_app_35" cx="112.7" cy="156.4" rx="54.6" ry="8.7"/>
+	<ellipse class="getorix_deposit_app_36" cx="112.7" cy="156.4" rx="54.5" ry="8.6"/>
+	<ellipse class="getorix_deposit_app_37" cx="112.7" cy="156.4" rx="54.4" ry="8.6"/>
+	<ellipse class="getorix_deposit_app_38" cx="112.7" cy="156.4" rx="54.3" ry="8.6"/>
+	<ellipse class="getorix_deposit_app_39" cx="112.7" cy="156.4" rx="54.2" ry="8.5"/>
+	<ellipse class="getorix_deposit_app_40" cx="112.7" cy="156.4" rx="54.1" ry="8.5"/>
+	<ellipse class="getorix_deposit_app_40" cx="112.7" cy="156.4" rx="54" ry="8.5"/>
+	<ellipse class="getorix_deposit_app_41" cx="112.7" cy="156.4" rx="53.9" ry="8.5"/>
+	<ellipse class="getorix_deposit_app_41" cx="112.7" cy="156.4" rx="53.7" ry="8.4"/>
+	<ellipse class="getorix_deposit_app_42" cx="112.7" cy="156.4" rx="53.6" ry="8.4"/>
+	<ellipse class="getorix_deposit_app_42" cx="112.7" cy="156.4" rx="53.5" ry="8.4"/>
+	<ellipse class="getorix_deposit_app_43" cx="112.7" cy="156.4" rx="53.4" ry="8.3"/>
+	<ellipse class="getorix_deposit_app_44" cx="112.7" cy="156.4" rx="53.3" ry="8.3"/>
+	<ellipse class="getorix_deposit_app_45" cx="112.7" cy="156.4" rx="53.2" ry="8.3"/>
+	<ellipse class="getorix_deposit_app_46" cx="112.7" cy="156.4" rx="53.1" ry="8.2"/>
+	<ellipse class="getorix_deposit_app_47" cx="112.7" cy="156.4" rx="53" ry="8.2"/>
+	<ellipse class="getorix_deposit_app_48" cx="112.7" cy="156.4" rx="52.9" ry="8.2"/>
+	<ellipse class="getorix_deposit_app_49" cx="112.7" cy="156.4" rx="52.8" ry="8.1"/>
+	<ellipse class="getorix_deposit_app_50" cx="112.7" cy="156.4" rx="52.7" ry="8.1"/>
+	<ellipse class="getorix_deposit_app_50" cx="112.7" cy="156.3" rx="52.6" ry="8.1"/>
+	<ellipse class="getorix_deposit_app_51" cx="112.7" cy="156.3" rx="52.5" ry="8"/>
+	<ellipse class="getorix_deposit_app_52" cx="112.7" cy="156.3" rx="52.4" ry="8"/>
+	<ellipse class="getorix_deposit_app_53" cx="112.6" cy="156.3" rx="52.3" ry="8"/>
+	<ellipse class="getorix_deposit_app_54" cx="112.6" cy="156.3" rx="52.2" ry="7.9"/>
+	<ellipse class="getorix_deposit_app_55" cx="112.6" cy="156.3" rx="52.1" ry="7.9"/>
+	<ellipse class="getorix_deposit_app_56" cx="112.6" cy="156.3" rx="52" ry="7.9"/>
+	<ellipse class="getorix_deposit_app_57" cx="112.6" cy="156.3" rx="51.9" ry="7.8"/>
+	<ellipse class="getorix_deposit_app_58" cx="112.6" cy="156.3" rx="51.8" ry="7.8"/>
+	<ellipse class="getorix_deposit_app_59" cx="112.6" cy="156.3" rx="51.7" ry="7.8"/>
+	<ellipse class="getorix_deposit_app_60" cx="112.6" cy="156.3" rx="51.6" ry="7.7"/>
+	<ellipse class="getorix_deposit_app_61" cx="112.6" cy="156.3" rx="51.5" ry="7.7"/>
+	<ellipse class="getorix_deposit_app_62" cx="112.6" cy="156.3" rx="51.4" ry="7.7"/>
+	<ellipse class="getorix_deposit_app_63" cx="112.6" cy="156.3" rx="51.3" ry="7.6"/>
+	<ellipse class="getorix_deposit_app_64" cx="112.6" cy="156.3" rx="51.2" ry="7.6"/>
+	<ellipse class="getorix_deposit_app_65" cx="112.6" cy="156.3" rx="51.1" ry="7.6"/>
+	<ellipse class="getorix_deposit_app_66" cx="112.6" cy="156.3" rx="51" ry="7.6"/>
+	<ellipse class="getorix_deposit_app_67" cx="112.6" cy="156.3" rx="50.9" ry="7.5"/>
+	<ellipse class="getorix_deposit_app_68" cx="112.6" cy="156.3" rx="50.8" ry="7.5"/>
+	<ellipse class="getorix_deposit_app_69" cx="112.6" cy="156.3" rx="50.7" ry="7.5"/>
+	<ellipse class="getorix_deposit_app_70" cx="112.6" cy="156.3" rx="50.6" ry="7.4"/>
+	<ellipse class="getorix_deposit_app_71" cx="112.6" cy="156.3" rx="50.4" ry="7.4"/>
+	<ellipse class="getorix_deposit_app_72" cx="112.6" cy="156.2" rx="50.3" ry="7.4"/>
+	<ellipse class="getorix_deposit_app_73" cx="112.6" cy="156.2" rx="50.2" ry="7.3"/>
+	<ellipse class="getorix_deposit_app_74" cx="112.6" cy="156.2" rx="50.1" ry="7.3"/>
+	<ellipse class="getorix_deposit_app_75" cx="112.6" cy="156.2" rx="50" ry="7.3"/>
+	<ellipse class="getorix_deposit_app_76" cx="112.6" cy="156.2" rx="49.9" ry="7.2"/>
+	<ellipse class="getorix_deposit_app_77" cx="112.6" cy="156.2" rx="49.8" ry="7.2"/>
+	<ellipse class="getorix_deposit_app_78" cx="112.6" cy="156.2" rx="49.7" ry="7.2"/>
+	<ellipse class="getorix_deposit_app_79" cx="112.6" cy="156.2" rx="49.6" ry="7.1"/>
+	<ellipse class="getorix_deposit_app_80" cx="112.6" cy="156.2" rx="49.5" ry="7.1"/>
+	<ellipse class="getorix_deposit_app_81" cx="112.6" cy="156.2" rx="49.4" ry="7.1"/>
+	<ellipse class="getorix_deposit_app_82" cx="112.6" cy="156.2" rx="49.3" ry="7"/>
+	<ellipse class="getorix_deposit_app_83" cx="112.6" cy="156.2" rx="49.2" ry="7"/>
+	<ellipse class="getorix_deposit_app_84" cx="112.6" cy="156.2" rx="49.1" ry="7"/>
+	<ellipse class="getorix_deposit_app_85" cx="112.6" cy="156.2" rx="49" ry="6.9"/>
+	<ellipse class="getorix_deposit_app_86" cx="112.6" cy="156.2" rx="48.9" ry="6.9"/>
+	<ellipse class="getorix_deposit_app_87" cx="112.6" cy="156.2" rx="48.8" ry="6.9"/>
+	<ellipse class="getorix_deposit_app_88" cx="112.6" cy="156.2" rx="48.7" ry="6.8"/>
+	<ellipse class="getorix_deposit_app_89" cx="112.6" cy="156.2" rx="48.6" ry="6.8"/>
+	<ellipse class="getorix_deposit_app_90" cx="112.6" cy="156.2" rx="48.5" ry="6.8"/>
+	<ellipse class="getorix_deposit_app_91" cx="112.6" cy="156.2" rx="48.4" ry="6.8"/>
+	<ellipse class="getorix_deposit_app_92" cx="112.6" cy="156.2" rx="48.3" ry="6.7"/>
+	<ellipse class="getorix_deposit_app_93" cx="112.6" cy="156.2" rx="48.2" ry="6.7"/>
+	<ellipse class="getorix_deposit_app_94" cx="112.6" cy="156.1" rx="48.1" ry="6.7"/>
+	<ellipse class="getorix_deposit_app_95" cx="112.6" cy="156.1" rx="48" ry="6.6"/>
+	<ellipse class="getorix_deposit_app_96" cx="112.6" cy="156.1" rx="47.9" ry="6.6"/>
+	<ellipse class="getorix_deposit_app_97" cx="112.6" cy="156.1" rx="47.8" ry="6.6"/>
+	<ellipse class="getorix_deposit_app_98" cx="112.6" cy="156.1" rx="47.7" ry="6.5"/>
+	<ellipse class="getorix_deposit_app_99" cx="112.6" cy="156.1" rx="47.6" ry="6.5"/>
+	<ellipse class="getorix_deposit_app_100" cx="112.6" cy="156.1" rx="47.5" ry="6.5"/>
+	<ellipse class="getorix_deposit_app_101" cx="112.6" cy="156.1" rx="47.4" ry="6.4"/>
+	<ellipse class="getorix_deposit_app_102" cx="112.6" cy="156.1" rx="47.3" ry="6.4"/>
+	<ellipse class="getorix_deposit_app_103" cx="112.6" cy="156.1" rx="47.1" ry="6.4"/>
+	<ellipse class="getorix_deposit_app_104" cx="112.6" cy="156.1" rx="47" ry="6.3"/>
+	<ellipse class="getorix_deposit_app_105" cx="112.6" cy="156.1" rx="46.9" ry="6.3"/>
+	<ellipse class="getorix_deposit_app_106" cx="112.6" cy="156.1" rx="46.8" ry="6.3"/>
+	<ellipse class="getorix_deposit_app_107" cx="112.6" cy="156.1" rx="46.7" ry="6.2"/>
+	<ellipse class="getorix_deposit_app_108" cx="112.6" cy="156.1" rx="46.6" ry="6.2"/>
+	<ellipse class="getorix_deposit_app_109" cx="112.6" cy="156.1" rx="46.5" ry="6.2"/>
+	<ellipse class="getorix_deposit_app_110" cx="112.6" cy="156.1" rx="46.4" ry="6.1"/>
+	<ellipse class="getorix_deposit_app_111" cx="112.6" cy="156.1" rx="46.3" ry="6.1"/>
+	<ellipse class="getorix_deposit_app_112" cx="112.6" cy="156.1" rx="46.2" ry="6.1"/>
+	<ellipse class="getorix_deposit_app_113" cx="112.6" cy="156.1" rx="46.1" ry="6"/>
+	<ellipse class="getorix_deposit_app_114" cx="112.6" cy="156.1" rx="46" ry="6"/>
+	<ellipse class="getorix_deposit_app_115" cx="112.6" cy="156.1" rx="45.9" ry="6"/>
+	<ellipse class="getorix_deposit_app_116" cx="112.6" cy="156" rx="45.8" ry="5.9"/>
+	<ellipse class="getorix_deposit_app_117" cx="112.5" cy="156" rx="45.7" ry="5.9"/>
+	<ellipse class="getorix_deposit_app_118" cx="112.5" cy="156" rx="45.6" ry="5.9"/>
+	<ellipse class="getorix_deposit_app_119" cx="112.5" cy="156" rx="45.5" ry="5.9"/>
+	<ellipse class="getorix_deposit_app_120" cx="112.5" cy="156" rx="45.4" ry="5.8"/>
+	<ellipse class="getorix_deposit_app_121" cx="112.5" cy="156" rx="45.3" ry="5.8"/>
+	<ellipse class="getorix_deposit_app_122" cx="112.5" cy="156" rx="45.2" ry="5.8"/>
+	<ellipse class="getorix_deposit_app_123" cx="112.5" cy="156" rx="45.1" ry="5.7"/>
+	<ellipse class="getorix_deposit_app_124" cx="112.5" cy="156" rx="45" ry="5.7"/>
+	<ellipse class="getorix_deposit_app_125" cx="112.5" cy="156" rx="44.9" ry="5.7"/>
+	<ellipse class="getorix_deposit_app_126" cx="112.5" cy="156" rx="44.8" ry="5.6"/>
+	<ellipse class="getorix_deposit_app_127" cx="112.5" cy="156" rx="44.7" ry="5.6"/>
+	<ellipse class="getorix_deposit_app_128" cx="112.5" cy="156" rx="44.6" ry="5.6"/>
+	<ellipse class="getorix_deposit_app_129" cx="112.5" cy="156" rx="44.5" ry="5.5"/>
+	<ellipse class="getorix_deposit_app_130" cx="112.5" cy="156" rx="44.4" ry="5.5"/>
+	<ellipse class="getorix_deposit_app_131" cx="112.5" cy="156" rx="44.3" ry="5.5"/>
+	<ellipse class="getorix_deposit_app_132" cx="112.5" cy="156" rx="44.2" ry="5.4"/>
+	<ellipse class="getorix_deposit_app_133" cx="112.5" cy="156" rx="44.1" ry="5.4"/>
+	<ellipse class="getorix_deposit_app_134" cx="112.5" cy="156" rx="44" ry="5.4"/>
+	<ellipse class="getorix_deposit_app_135" cx="112.5" cy="156" rx="43.8" ry="5.3"/>
+	<ellipse class="getorix_deposit_app_136" cx="112.5" cy="156" rx="43.7" ry="5.3"/>
+	<ellipse class="getorix_deposit_app_137" cx="112.5" cy="156" rx="43.6" ry="5.3"/>
+	<ellipse class="getorix_deposit_app_138" cx="112.5" cy="155.9" rx="43.5" ry="5.2"/>
+	<ellipse class="getorix_deposit_app_139" cx="112.5" cy="155.9" rx="43.4" ry="5.2"/>
+	<ellipse class="getorix_deposit_app_140" cx="112.5" cy="155.9" rx="43.3" ry="5.2"/>
+	<ellipse class="getorix_deposit_app_141" cx="112.5" cy="155.9" rx="43.2" ry="5.1"/>
+	<ellipse class="getorix_deposit_app_142" cx="112.5" cy="155.9" rx="43.1" ry="5.1"/>
+	<ellipse class="getorix_deposit_app_142" cx="112.5" cy="155.9" rx="43" ry="5.1"/>
+	<ellipse class="getorix_deposit_app_143" cx="112.5" cy="155.9" rx="42.9" ry="5.1"/>
+	<ellipse class="getorix_deposit_app_144" cx="112.5" cy="155.9" rx="42.8" ry="5"/>
+	<ellipse class="getorix_deposit_app_145" cx="112.5" cy="155.9" rx="42.7" ry="5"/>
+	<ellipse class="getorix_deposit_app_146" cx="112.5" cy="155.9" rx="42.6" ry="5"/>
+	<ellipse class="getorix_deposit_app_147" cx="112.5" cy="155.9" rx="42.5" ry="4.9"/>
+	<ellipse class="getorix_deposit_app_148" cx="112.5" cy="155.9" rx="42.4" ry="4.9"/>
+	<ellipse class="getorix_deposit_app_149" cx="112.5" cy="155.9" rx="42.3" ry="4.9"/>
+	<ellipse class="getorix_deposit_app_150" cx="112.5" cy="155.9" rx="42.2" ry="4.8"/>
+	<ellipse class="getorix_deposit_app_150" cx="112.5" cy="155.9" rx="42.1" ry="4.8"/>
+	<ellipse class="getorix_deposit_app_151" cx="112.5" cy="155.9" rx="42" ry="4.8"/>
+	<ellipse class="getorix_deposit_app_151" cx="112.5" cy="155.9" rx="41.9" ry="4.7"/>
+	<ellipse class="getorix_deposit_app_152" cx="112.5" cy="155.9" rx="41.8" ry="4.7"/>
+	<ellipse class="getorix_deposit_app_153" cx="112.5" cy="155.9" rx="41.7" ry="4.7"/>
+	<ellipse class="getorix_deposit_app_154" cx="112.5" cy="155.9" rx="41.6" ry="4.6"/>
+	<ellipse class="getorix_deposit_app_155" cx="112.5" cy="155.9" rx="41.5" ry="4.6"/>
+	<ellipse class="getorix_deposit_app_156" cx="112.5" cy="155.9" rx="41.4" ry="4.6"/>
+	<ellipse class="getorix_deposit_app_157" cx="112.5" cy="155.8" rx="41.3" ry="4.5"/>
+	<ellipse class="getorix_deposit_app_158" cx="112.5" cy="155.8" rx="41.2" ry="4.5"/>
+	<ellipse class="getorix_deposit_app_159" cx="112.5" cy="155.8" rx="41.1" ry="4.5"/>
+	<ellipse class="getorix_deposit_app_159" cx="112.5" cy="155.8" rx="41" ry="4.4"/>
+	<ellipse class="getorix_deposit_app_160" cx="112.5" cy="155.8" rx="40.9" ry="4.4"/>
+	<ellipse class="getorix_deposit_app_160" cx="112.5" cy="155.8" rx="40.8" ry="4.4"/>
+	<ellipse class="getorix_deposit_app_161" cx="112.5" cy="155.8" rx="40.7" ry="4.3"/>
+	<ellipse class="getorix_deposit_app_161" cx="112.5" cy="155.8" rx="40.5" ry="4.3"/>
+	<ellipse class="getorix_deposit_app_162" cx="112.5" cy="155.8" rx="40.4" ry="4.3"/>
+	<ellipse class="getorix_deposit_app_163" cx="112.5" cy="155.8" rx="40.3" ry="4.3"/>
+	<ellipse class="getorix_deposit_app_164" cx="112.5" cy="155.8" rx="40.2" ry="4.2"/>
+	<ellipse class="getorix_deposit_app_165" cx="112.5" cy="155.8" rx="40.1" ry="4.2"/>
+	<ellipse class="getorix_deposit_app_166" cx="112.5" cy="155.8" rx="40" ry="4.2"/>
+	<ellipse class="getorix_deposit_app_167" cx="112.5" cy="155.8" rx="39.9" ry="4.1"/>
+	<ellipse class="getorix_deposit_app_167" cx="112.5" cy="155.8" rx="39.8" ry="4.1"/>
+	<ellipse class="getorix_deposit_app_168" cx="112.5" cy="155.8" rx="39.7" ry="4.1"/>
+	<ellipse class="getorix_deposit_app_168" cx="112.5" cy="155.8" rx="39.6" ry="4"/>
+	<ellipse class="getorix_deposit_app_169" cx="112.5" cy="155.8" rx="39.5" ry="4"/>
+	<ellipse class="getorix_deposit_app_170" cx="112.5" cy="155.8" rx="39.4" ry="4"/>
+	<ellipse class="getorix_deposit_app_171" cx="112.5" cy="155.8" rx="39.3" ry="3.9"/>
+	<ellipse class="getorix_deposit_app_172" cx="112.5" cy="155.8" rx="39.2" ry="3.9"/>
+	<ellipse class="getorix_deposit_app_173" cx="112.5" cy="155.8" rx="39.1" ry="3.9"/>
+	<ellipse class="getorix_deposit_app_174" cx="112.4" cy="155.7" rx="39" ry="3.8"/>
+	<ellipse class="getorix_deposit_app_174" cx="112.4" cy="155.7" rx="38.9" ry="3.8"/>
+	<ellipse class="getorix_deposit_app_175" cx="112.4" cy="155.7" rx="38.8" ry="3.8"/>
+	<ellipse class="getorix_deposit_app_175" cx="112.4" cy="155.7" rx="38.7" ry="3.7"/>
+	<ellipse class="getorix_deposit_app_176" cx="112.4" cy="155.7" rx="38.6" ry="3.7"/>
+	<ellipse class="getorix_deposit_app_177" cx="112.4" cy="155.7" rx="38.5" ry="3.7"/>
+	<ellipse class="getorix_deposit_app_178" cx="112.4" cy="155.7" rx="38.4" ry="3.6"/>
+	<ellipse class="getorix_deposit_app_179" cx="112.4" cy="155.7" rx="38.3" ry="3.6"/>
+	<ellipse class="getorix_deposit_app_180" cx="112.4" cy="155.7" rx="38.2" ry="3.6"/>
+	<ellipse class="getorix_deposit_app_181" cx="112.4" cy="155.7" rx="38.1" ry="3.5"/>
+	<ellipse class="getorix_deposit_app_182" cx="112.4" cy="155.7" rx="38" ry="3.5"/>
+	<ellipse class="getorix_deposit_app_183" cx="112.4" cy="155.7" rx="37.9" ry="3.5"/>
+	<ellipse class="getorix_deposit_app_183" cx="112.4" cy="155.7" rx="37.8" ry="3.4"/>
+	<ellipse class="getorix_deposit_app_184" cx="112.4" cy="155.7" rx="37.7" ry="3.4"/>
+</g>
+<g>
+	<g>
+		<g>
+
+				<ellipse transform="matrix(4.254305e-02 -0.9991 0.9991 4.254305e-02 -65.6216 253.0851)" class="getorix_deposit_app_184" cx="99.2" cy="160.8" rx="2.1" ry="27.4"/>
+		</g>
+		<g>
+			<g>
+				<g>
+
+						<linearGradient id="SVGID_getorix_deposit_APP_01" gradientUnits="userSpaceOnUse" x1="98.7501" y1="120.5915" x2="151.7715" y2="89.826">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+						<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+					</linearGradient>
+					<path style="fill:url(#SVGID_getorix_deposit_APP_01);" d="M121.3,160.8l-32.1-4
+						c-3.7-0.4-6.5-3.9-6.5-8V79.5c0-3.8,2.4-7.2,5.7-8.1l33-10.1c5.8-0.6,10,4.1,10,8.8v82.2c0,4.5-2.7,7.4-7,8.4
+						C123.9,160.8,121.7,160.8,121.3,160.8z"/>
+
+						<linearGradient id="SVGID_getorix_deposit_APP_02" gradientUnits="userSpaceOnUse" x1="156.9268" y1="170.3319" x2="95.4408" y2="97.7227">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+						<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+					</linearGradient>
+					<path style="fill:url(#SVGID_getorix_deposit_APP_02);" d="M121.4,160.7l-34.3-3.9
+						c-3.7-0.4-6.5-3.9-6.5-8.1V78.9c0-3.9,2.4-7.2,5.7-8.1l34.3-9.3c4.6-1.2,9,2.7,9,8v82.8C129.6,157.3,125.8,161.2,121.4,160.7z"
+						/>
+					<path class="getorix_deposit_app_187" d="M129.6,69.5v79.7C129.6,149.3,127.2,116.4,129.6,69.5z"/>
+				</g>
+				<g>
+
+						<linearGradient id="SVGID_getorix_deposit_APP_03" gradientUnits="userSpaceOnUse" x1="476.8703" y1="30.6995" x2="569.6364" y2="126.535" gradientTransform="matrix(-1 0 0 1 661.9603 0)">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+						<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+
+						<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_03);" points="
+						127.4,161.5 127.6,58.3 78.1,69.9 78.1,154.1 					"/>
+					<polygon class="getorix_deposit_app_3" points="128.1,161.2 127.4,161.5 127.6,58.3 128,58.7 					"/>
+				</g>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_04" gradientUnits="userSpaceOnUse" x1="512.3708" y1="64.2916" x2="607.0347" y2="162.0878" gradientTransform="matrix(-1 0 0 1 661.9603 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_04);" points="
+					124.8,162.6 125,57.3 74.5,69.1 74.5,155 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_05" gradientUnits="userSpaceOnUse" x1="84.9243" y1="121.6324" x2="143.8125" y2="87.4628">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+					<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+				</linearGradient>
+				<path style="fill:url(#SVGID_getorix_deposit_APP_05);" d="M110.7,164l-37.9-5.1
+					c-4.3-0.5-7.6-4.2-7.6-8.6V77.7c0-4,2.7-7.5,6.6-8.4l38.9-10.6c7-0.6,11.9,4.3,11.9,9.4v87.3c0,4.7-3.3,7.8-8.3,8.7
+					C113.9,164,111.2,164,110.7,164z"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_06" gradientUnits="userSpaceOnUse" x1="74.9071" y1="174.9824" x2="110.7732" y2="49.9359">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+					<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+					<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+					<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+					<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+					<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+					<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+					<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+					<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+					<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+					<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+				<path style="fill:url(#SVGID_getorix_deposit_APP_06);" d="M110.9,163.9l-40.4-5.1
+					c-4.4-0.6-7.6-4.3-7.6-8.6V77.1c0-4,2.8-7.5,6.7-8.5l40.4-9.7c5.5-1.3,10.8,2.8,10.8,8.5v87.9
+					C120.7,160.5,116.1,164.6,110.9,163.9z"/>
+				<path class="getorix_deposit_app_0" d="M62.8,78.3l22.6-4.4c1.7-0.4,3.4,1,3.4,2.8V86c0,1.4-1,2.6-2.4,2.8l-23.5,2.9L62.8,78.3z"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_07" gradientUnits="userSpaceOnUse" x1="64.2591" y1="71.5958" x2="85.9868" y2="94.0425">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_07);" d="
+					M85.4,87.9l-21.9,3c-1.3,0.2-2.5-0.9-2.5-2.2v-9.1c0-1.1,0.7-2,1.8-2.2l21.7-4.5c1.8-0.4,3.4,1,3.4,2.8v9.3
+					C87.8,86.5,86.8,87.7,85.4,87.9z"/>
+				<path class="getorix_deposit_app_193" d="M120.7,67.4V152C120.7,152,117.7,117.1,120.7,67.4z"/>
+				<polygon class="getorix_deposit_app_3" points="125.5,162.3 124.8,162.6 125,57.3 125.4,57.7 				"/>
+				<g>
+					<path class="getorix_deposit_app_184" d="M65.2,81l0-1.5l5.9-1.1l0,1.5l-4,5.5l4.1-0.6l0,1.5L65,87.2l0-1.5l3.9-5.4L65.2,81z"/>
+					<path class="getorix_deposit_app_184" d="M72.8,78.1l1.8-0.3l0,8l-1.8,0.3L72.8,78.1z"/>
+					<path class="getorix_deposit_app_184" d="M80.5,76.6c0.9-0.2,1.7,0,2.3,0.4c0.6,0.4,0.9,1,0.9,1.8c0,0.8-0.3,1.5-0.9,2.2c-0.6,0.6-1.4,1-2.3,1.2
+						l-1.8,0.3l0,2.7l-1.9,0.3l0-8.1L80.5,76.6z M78.7,78.6l0,2.3l1.8-0.3c0.4-0.1,0.7-0.2,1-0.5c0.3-0.3,0.4-0.6,0.4-0.9
+						c0-0.3-0.1-0.6-0.4-0.8c-0.3-0.2-0.6-0.2-1-0.2L78.7,78.6z"/>
+				</g>
+			</g>
+			<g>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_08" gradientUnits="userSpaceOnUse" x1="69.4795" y1="78.1737" x2="138.0168" y2="148.9787">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_08);" points="
+					104,163.1 99.3,162.4 99.3,61.5 104,60.4 				"/>
+				<polygon points="100.8,162.6 96.4,162 96.4,62.2 100.8,61.1 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_09" gradientUnits="userSpaceOnUse" x1="96.6662" y1="63.6781" x2="102.275" y2="69.4724">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_09);" points="
+					97.9,70 100.7,69.4 100.7,62.8 97.9,63.5 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_10" gradientUnits="userSpaceOnUse" x1="96.637" y1="72.7893" x2="102.3072" y2="78.6471">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_10);" points="
+					97.9,79.1 100.7,78.6 100.7,72 97.9,72.6 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_11" gradientUnits="userSpaceOnUse" x1="96.6078" y1="81.9005" x2="102.3394" y2="87.8217">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_11);" points="
+					97.9,88.2 100.7,87.8 100.7,81.2 97.9,81.6 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_12" gradientUnits="userSpaceOnUse" x1="96.5786" y1="91.0117" x2="102.3716" y2="96.9964">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_12);" points="
+					97.9,97.3 100.7,97 100.7,90.4 97.9,90.7 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_13" gradientUnits="userSpaceOnUse" x1="96.5494" y1="100.1229" x2="102.4039" y2="106.1711">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_13);" points="
+					97.9,106.4 100.7,106.2 100.7,99.6 97.9,99.8 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_14" gradientUnits="userSpaceOnUse" x1="96.5202" y1="109.2341" x2="102.4361" y2="115.3457">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_14);" points="
+					97.9,115.5 100.7,115.4 100.7,108.7 97.9,108.9 				"/>
+				<polygon points="101.7,162.7 106.3,163.4 106.3,59.8 101.7,60.9 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_15" gradientUnits="userSpaceOnUse" x1="502.4276" y1="62.3512" x2="508.9651" y2="69.1049" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_15);" points="
+					104.7,68.6 101.8,69.2 101.8,62.6 104.7,61.9 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_16" gradientUnits="userSpaceOnUse" x1="502.4577" y1="71.6565" x2="508.9319" y2="78.3449" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_16);" points="
+					104.7,77.9 101.8,78.4 101.8,71.8 104.7,71.2 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_17" gradientUnits="userSpaceOnUse" x1="502.4877" y1="80.9618" x2="508.8987" y2="87.5849" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_17);" points="
+					104.7,87.3 101.8,87.7 101.8,81 104.7,80.5 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_18" gradientUnits="userSpaceOnUse" x1="502.5178" y1="90.2671" x2="508.8656" y2="96.825" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_18);" points="
+					104.7,96.6 101.8,96.9 101.8,90.2 104.7,89.8 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_19" gradientUnits="userSpaceOnUse" x1="502.5479" y1="99.5724" x2="508.8324" y2="106.065" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_19);" points="
+					104.7,105.9 101.8,106.1 101.8,99.5 104.7,99.2 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_20" gradientUnits="userSpaceOnUse" x1="502.5779" y1="108.8778" x2="508.7993" y2="115.305" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_20);" points="
+					104.7,115.2 101.8,115.3 101.8,108.7 104.7,108.5 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_21" gradientUnits="userSpaceOnUse" x1="96.4908" y1="118.3997" x2="102.4685" y2="124.5751">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_21);" points="
+					97.9,124.6 100.7,124.6 100.7,118 97.9,118.1 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_22" gradientUnits="userSpaceOnUse" x1="96.4616" y1="127.5109" x2="102.5007" y2="133.7498">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_22);" points="
+					97.9,133.7 100.7,133.8 100.7,127.2 97.9,127.2 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_23" gradientUnits="userSpaceOnUse" x1="96.4324" y1="136.6221" x2="102.5329" y2="142.9245">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_23);" points="
+					97.9,142.8 100.7,143 100.7,136.4 97.9,136.3 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_24" gradientUnits="userSpaceOnUse" x1="96.4032" y1="145.7333" x2="102.5651" y2="152.0991">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_24);" points="
+					97.9,151.9 100.7,152.2 100.7,145.6 97.9,145.4 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_25" gradientUnits="userSpaceOnUse" x1="96.374" y1="154.8445" x2="102.5973" y2="161.2738">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_25);" points="
+					97.9,161 100.7,161.4 100.7,154.7 97.9,154.5 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_26" gradientUnits="userSpaceOnUse" x1="502.6082" y1="118.2386" x2="508.7659" y2="124.6002" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_26);" points="
+					104.7,124.6 101.8,124.6 101.8,118 104.7,117.9 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_27" gradientUnits="userSpaceOnUse" x1="502.6382" y1="127.544" x2="508.7328" y2="133.8402" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_27);" points="
+					104.7,133.9 101.8,133.8 101.8,127.2 104.7,127.2 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_28" gradientUnits="userSpaceOnUse" x1="502.6683" y1="136.8493" x2="508.6996" y2="143.0802" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_28);" points="
+					104.7,143.3 101.8,143.1 101.8,136.4 104.7,136.5 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_29" gradientUnits="userSpaceOnUse" x1="502.6983" y1="146.1546" x2="508.6665" y2="152.3202" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_29);" points="
+					104.7,152.6 101.8,152.3 101.8,145.6 104.7,145.8 				"/>
+
+					<linearGradient id="SVGID_getorix_deposit_APP_30" gradientUnits="userSpaceOnUse" x1="502.7284" y1="155.4599" x2="508.6333" y2="161.5602" gradientTransform="matrix(-1 0 0 1 608.7714 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_30);" points="
+					104.7,161.9 101.8,161.5 101.8,154.9 104.7,155.2 				"/>
+			</g>
+		</g>
+	</g>
+
+		<linearGradient id="SVGID_getorix_deposit_APP_31" gradientUnits="userSpaceOnUse" x1="110.2789" y1="119.2413" x2="26.9161" y2="139.4009">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+		<stop  offset="6.233966e-02" style="stop-color:var(--vitamui-primary-800)"/>
+		<stop  offset="0.262" style="stop-color:var(--vitamui-primary-700)"/>
+		<stop  offset="0.4592" style="stop-color:var(--vitamui-primary-600)"/>
+		<stop  offset="0.6508" style="stop-color:var(--vitamui-primary-600)"/>
+		<stop  offset="0.834" style="stop-color:var(--vitamui-primary)"/>
+		<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+	</linearGradient>
+	<path style="fill:url(#SVGID_getorix_deposit_APP_31);" d="M90.8,111.7l-13.3,29.2l-2-1.8l-8.8,0
+		C66.6,139.1,70,108.6,90.8,111.7z"/>
+	<g>
+
+			<linearGradient id="SVGID_getorix_deposit_APP_32" gradientUnits="userSpaceOnUse" x1="214.565" y1="254.1094" x2="246.1792" y2="198.03" gradientTransform="matrix(-0.3345 -0.9424 -0.9424 0.3345 369.9661 263.1055)">
+			<stop  offset="0" style="stop-color:#BCB9BA"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path style="fill:url(#SVGID_getorix_deposit_APP_32);" d="M90.6,108.1c-0.8-0.2-1.7-0.3-2.5-0.2
+			l-12.5,0.9c-7.9,1.2-18.8,13.4-22.1,29c-0.1,0-0.1,0-0.2,0c-0.1,0-0.3-0.1-0.4-0.1c-0.1,0-0.2,0-0.2,0c-0.2,0-0.3-0.1-0.5-0.1
+			c0,0-0.1,0-0.1,0c-0.2,0-0.4-0.1-0.6-0.1c-0.1,0-0.1,0-0.2,0c-0.1,0-0.3-0.1-0.4-0.1c-0.1,0-0.1,0-0.2,0c-0.2,0-0.4-0.1-0.5-0.1
+			c0,0,0,0,0,0c-0.2-0.1-0.4-0.1-0.6-0.2c-0.1,0-0.1,0-0.1,0c-0.1,0-0.3-0.1-0.4-0.1c-0.1,0-0.1,0-0.1-0.1c-0.2-0.1-0.3-0.1-0.5-0.2
+			c2.4,13.3,4.1,18.4,9.9,30.9l2.9-0.8c0,0,5.3-10.5,16.3-25.5l-2-1.7l-0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0
+			c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.2,0c0,0,0,0,0,0c-0.5,0-1.3,0-2.3,0c0,0,0,0,0,0c-0.1,0-0.3,0-0.4,0
+			c0,0-0.1,0-0.1,0c-0.1,0-0.3,0-0.4,0c0,0-0.1,0-0.1,0c-0.1,0-0.3,0-0.4,0c0,0-0.1,0-0.1,0c-0.2,0-0.3,0-0.5,0
+			c0.1-0.4,0.2-0.7,0.3-1.1c0.1-0.3,0.1-0.5,0.2-0.8c0-0.1,0-0.2,0.1-0.3c0.1-0.3,0.2-0.6,0.3-0.9c0.1-0.3,0.1-0.5,0.2-0.8
+			c0,0,0,0,0-0.1c0.1-0.4,0.2-0.7,0.3-1.1c0.1-0.3,0.2-0.5,0.2-0.7c0.1-0.4,0.2-0.7,0.3-1.1c0-0.1,0.1-0.2,0.1-0.3
+			c0-0.1,0.1-0.2,0.1-0.4c0.3-0.8,0.5-1.5,0.8-2.3c0-0.1,0.1-0.2,0.1-0.4c0-0.1,0.1-0.1,0.1-0.2c0.1-0.3,0.3-0.7,0.4-1
+			c0.1-0.2,0.2-0.4,0.3-0.6c0.1-0.3,0.3-0.7,0.4-1c0.1-0.2,0.2-0.4,0.3-0.6c0.1-0.3,0.3-0.7,0.5-1c0.1-0.1,0.1-0.3,0.2-0.4
+			c0.3-0.7,0.7-1.3,1-2c0.1-0.1,0.1-0.2,0.2-0.3c0.2-0.3,0.3-0.6,0.5-0.9c0.1-0.1,0.2-0.3,0.3-0.4c0.2-0.3,0.3-0.5,0.5-0.8
+			c0.1-0.1,0.2-0.3,0.3-0.4c0.2-0.3,0.4-0.5,0.5-0.8c0.1-0.1,0.1-0.2,0.2-0.3c0.4-0.6,0.8-1.1,1.3-1.6c1-1.2,2-2.2,3.1-3l0,0
+			c2.4-1.8,4.9-2.5,7.3-2l0.1-3.5L90.6,108.1z M69.2,139.1C69.2,139.1,69.2,139.1,69.2,139.1c0.2,0,0.5,0,0.8,0c-0.1,0-0.1,0-0.2,0
+			C69.7,139.1,69.4,139.1,69.2,139.1z"/>
+
+			<linearGradient id="SVGID_getorix_deposit_APP_33" gradientUnits="userSpaceOnUse" x1="211.1996" y1="243.8538" x2="231.9991" y2="228.1314" gradientTransform="matrix(-0.3345 -0.9424 -0.9424 0.3345 369.9661 263.1055)">
+			<stop  offset="0" style="stop-color:#9B9A9B"/>
+			<stop  offset="1" style="stop-color:#E5E4E4"/>
+		</linearGradient>
+		<path style="fill:url(#SVGID_getorix_deposit_APP_33);" d="M68.4,139.1c0,0,0.8,0,2,0
+			c1.9-7.9,4.5-14.6,7.6-19.4c1.7-2.6,3.5-4.7,5.4-6.1c0,0-5.8,1.1-7.6,4.1C72.7,123.1,70.1,130.3,68.4,139.1z"/>
+
+			<linearGradient id="SVGID_getorix_deposit_APP_34" gradientUnits="userSpaceOnUse" x1="186.6452" y1="261.743" x2="263.5733" y2="210.2731" gradientTransform="matrix(-0.3345 -0.9424 -0.9424 0.3345 369.9661 263.1055)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path style="fill:url(#SVGID_getorix_deposit_APP_34);" d="M75.4,139.1c0,0-2,0.1-5,0l0,0
+			c0,0,0,0,0,0c-0.4,0-0.8,0-1.2,0c0,0,0,0,0,0c-0.5,0-0.8,0-0.8,0c5.2-22,12.4-27.1,15.3-29.5c0.9-0.7,3.6-1.6,3.6-1.6l-9.2,0.6
+			c-8.6,7.2-22,24.5-19.9,58.7C58.2,167.3,63.9,155.6,75.4,139.1z"/>
+		<path class="getorix_deposit_app_221" d="M69,136.5c3.1-12,7.7-21.5,12.9-25.8c0,0,0,0,0,0c1.8-1.5,3.6-2.4,5.4-2.7C80.2,110,73,120.7,69,136.5
+			L69,136.5z"/>
+	</g>
+</g>
+<g>
+	<g>
+		<path class="getorix_deposit_app_222" d="M133.1,124.9h4.6v-2.4c1.2-0.2,2.4-0.3,3.4-0.6l0.9,2.3l4.4-1.6l-0.9-2.3c1.1-0.5,2-1.1,3-1.7l1.5,1.8
+			l3.5-3l-1.5-1.8c0.9-0.9,1.6-1.7,2.3-2.7l2,1.2l2.4-4.1l-2-1.2c0.4-1.1,0.9-2.1,1.2-3.3l2.4,0.4l0.9-4.6l-2.4-0.4
+			c0.1-0.5,0.1-1.1,0.1-1.7c0-0.5-0.1-1.2-0.1-1.7l2.4-0.4l-0.9-4.6l-2.4,0.4c-0.3-1.2-0.8-2.3-1.2-3.3l2-1.2l-2.4-4.1l-2,1.2
+			c-0.8-1-1.4-1.8-2.3-2.7l1.5-1.8l-3.5-3l-1.5,1.8c-1-0.6-1.9-1.2-3-1.7l0.9-2.3l-4.4-1.6l-0.9,2.3c-1.1-0.3-2.3-0.5-3.4-0.6v-2.4
+			h-4.6v2.4c-1.2,0.2-2.4,0.3-3.4,0.6l-0.9-2.3l-4.4,1.6l0.9,2.3c-1.1,0.4-2,1.1-3,1.7l-1.5-1.8l-3.5,3l1.5,1.8
+			c-0.9,0.9-1.6,1.7-2.3,2.7l-2-1.2l-2.4,4.1l2,1.2c-0.4,1.1-0.9,2.1-1.2,3.3l-2.4-0.4l-0.9,4.6l2.4,0.4c-0.1,0.5-0.1,1.1-0.1,1.7
+			c0,0.5,0.1,1.2,0.1,1.7l-2.4,0.4l0.9,4.6l2.4-0.4c0.3,1.2,0.8,2.3,1.2,3.3l-2,1.2l2.4,4.1l2-1.2c0.8,1,1.4,1.8,2.3,2.7l-1.5,1.8
+			l3.5,3l1.5-1.8c1,0.6,1.9,1.2,3,1.7l-0.9,2.3l4.4,1.6l0.9-2.3c1.1,0.3,2.3,0.5,3.4,0.6V124.9L133.1,124.9z"/>
+	</g>
+	<g>
+		<g>
+			<polyline class="getorix_deposit_app_0" points="114.3,111.2 116.5,110 116.5,113 114.3,114.2 114.3,111.2 			"/>
+		</g>
+		<g>
+			<polyline points="120.8,117.5 122.3,115.7 122.3,118.6 120.8,120.5 120.8,117.5 			"/>
+		</g>
+		<g>
+			<polygon points="128.8,124.2 129.7,122 129.7,119 128.8,121.3 			"/>
+		</g>
+		<g>
+			<polygon class="getorix_deposit_app_0" points="141.1,122 142,124.2 142,121.3 141.1,119 			"/>
+		</g>
+		<g>
+			<polyline class="getorix_deposit_app_0" points="148.5,115.7 148.5,118.6 150,120.5 150,117.5 148.5,115.7 			"/>
+		</g>
+		<g>
+			<polyline class="getorix_deposit_app_0" points="154.3,110 154.3,113 156.4,114.2 156.4,111.2 154.3,110 			"/>
+		</g>
+		<g>
+			<polyline class="getorix_deposit_app_0" points="157.8,102.7 157.8,105.7 160.2,106 160.2,103.1 157.8,102.7 			"/>
+		</g>
+		<g>
+			<polygon class="getorix_deposit_app_0" points="158.7,94.6 158.7,97.6 160.9,97.1 160.9,94.3 			"/>
+		</g>
+		<g>
+			<polygon class="getorix_deposit_app_0" points="156.7,86.7 157.6,89.2 158.7,88.6 158.7,85.6 			"/>
+		</g>
+		<g>
+			<polygon class="getorix_deposit_app_0" points="152.1,80.1 153.4,81.5 153.7,81.3 153.7,78.3 			"/>
+		</g>
+		<g>
+			<polygon class="getorix_deposit_app_0" points="112.1,94.6 112.1,97.6 109.7,97.1 109.7,94.3 			"/>
+		</g>
+		<g>
+			<polygon class="getorix_deposit_app_0" points="112.1,88.6 113.1,89.2 114.1,86.7 112.1,85.6 			"/>
+		</g>
+		<g>
+			<polygon class="getorix_deposit_app_0" points="118.7,80.1 117.3,81.5 117.1,81.3 117.1,78.3 			"/>
+		</g>
+		<g>
+			<polyline class="getorix_deposit_app_0" points="110.6,103.1 110.6,106 112.9,105.7 112.9,102.7 110.6,103.1 			"/>
+		</g>
+		<g>
+			<polygon class="getorix_deposit_app_0" points="125.3,75.3 124.6,75.7 124.4,73.1 			"/>
+		</g>
+		<g>
+			<polygon class="getorix_deposit_app_0" points="146.2,75.6 145.5,75.3 146.4,73.1 			"/>
+		</g>
+	</g>
+	<g>
+
+			<linearGradient id="SVGID_getorix_deposit_APP_35" gradientUnits="userSpaceOnUse" x1="7454.4712" y1="10588.3018" x2="7482.9673" y2="10630.1875" gradientTransform="matrix(1 0 0 1 -7331.8125 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_35);" d="
+			M133.1,122.2h4.6v-2.4c1.2-0.2,2.4-0.3,3.4-0.6l0.9,2.3l4.4-1.6l-0.9-2.3c1.1-0.5,2-1.1,3-1.7l1.5,1.8l3.5-3l-1.5-1.8
+			c0.9-0.9,1.6-1.7,2.3-2.7l2,1.2l2.4-4.1l-2-1.2c0.4-1.1,0.9-2.1,1.2-3.3l2.4,0.4l0.9-4.6l-2.4-0.4c0.1-0.5,0.1-1.1,0.1-1.7
+			c0-0.5-0.1-1.2-0.1-1.7l2.4-0.4l-0.9-4.6l-2.4,0.4c-0.3-1.2-0.8-2.3-1.2-3.3l2-1.2l-2.4-4.1l-2,1.2c-0.8-1-1.4-1.8-2.3-2.7
+			l1.5-1.8l-3.5-3l-1.5,1.8c-1-0.6-1.9-1.2-3-1.7l0.9-2.3l-4.4-1.6l-0.9,2.3c-1.1-0.3-2.3-0.5-3.4-0.6v-2.4h-4.6v2.1
+			c-1.2,0.2-2.4,0.3-3.4,0.6l-0.9-2.3l-4.4,1.6l0.9,2.3c-1.1,0.4-2,1.1-3,1.7l-1.5-1.8l-3.5,3l1.5,1.8c-0.9,0.9-1.6,1.7-2.3,2.7
+			l-2-1.2l-2.4,4.1l2,1.2c-0.4,1.1-0.9,2.1-1.2,3.3l-2.4-0.4l-0.9,4.6l2.4,0.4c-0.1,0.5-0.1,1.1-0.1,1.7c0,0.5,0.1,1.2,0.1,1.7
+			l-2.4,0.4l0.9,4.6l2.4-0.4c0.3,1.2,0.8,2.3,1.2,3.3l-2,1.2l2.4,4.1l2-1.2c0.8,1,1.4,1.8,2.3,2.7l-1.5,1.8l3.5,3l1.5-1.8
+			c1,0.6,1.9,1.2,3,1.7l-0.9,2.3l4.4,1.6l0.9-2.3c1.1,0.3,2.3,0.5,3.4,0.6v2.4"/>
+	</g>
+	<ellipse class="getorix_deposit_app_222" cx="135.3" cy="96.6" rx="21" ry="20.3"/>
+	<path class="getorix_deposit_app_224" d="M117.2,96.5c0,9.6,8.1,17.5,18.1,17.5c10,0,18.1-7.8,18.1-17.5s-8-17.5-18.1-17.5
+		C125.4,79,117.2,87,117.2,96.5z"/>
+
+		<linearGradient id="SVGID_getorix_deposit_APP_36" gradientUnits="userSpaceOnUse" x1="7461.8379" y1="10595.7979" x2="7472.5459" y2="10618.8525" gradientTransform="matrix(1 0 0 1 -7331.8125 -10510.6143)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+		<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+		<stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+	<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_36);" d="
+		M135.3,80.9c9,0,16.3,7.1,16.3,15.8s-7.3,15.8-16.3,15.8S119,105.3,119,96.6S126.3,80.9,135.3,80.9z"/>
+
+		<linearGradient id="SVGID_getorix_deposit_APP_37" gradientUnits="userSpaceOnUse" x1="7462.5117" y1="10597.0186" x2="7472.0386" y2="10617.5283" gradientTransform="matrix(1 0 0 1 -7331.8125 -10510.6143)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+		<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+		<stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+	<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_37);" d="
+		M135.4,82.6c8,0,14.6,6.3,14.6,14s-6.5,14-14.6,14s-14.6-6.3-14.6-14S127.4,82.6,135.4,82.6z"/>
+
+		<linearGradient id="SVGID_getorix_deposit_APP_38" gradientUnits="userSpaceOnUse" x1="7463.106" y1="10598.2744" x2="7471.4507" y2="10616.2402" gradientTransform="matrix(1 0 0 1 -7331.8125 -10510.6143)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+		<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+		<stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+	<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_38);" d="
+		M135.4,84.3c7.1,0,12.8,5.5,12.8,12.3c0,6.9-5.7,12.3-12.8,12.3c-7.1,0-12.8-5.6-12.8-12.3C122.7,89.9,128.4,84.3,135.4,84.3z"/>
+
+		<linearGradient id="SVGID_getorix_deposit_APP_39" gradientUnits="userSpaceOnUse" x1="7463.5708" y1="10599.5918" x2="7470.7349" y2="10615.0156" gradientTransform="matrix(1 0 0 1 -7331.8125 -10510.6143)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+		<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+		<stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+	<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_39);" d="
+		M135.3,86.2c6,0,10.9,4.7,10.9,10.5s-4.9,10.5-10.9,10.5c-6,0-10.9-4.8-10.9-10.6C124.4,90.8,129.3,86,135.3,86.2z"/>
+
+		<linearGradient id="SVGID_getorix_deposit_APP_40" gradientUnits="userSpaceOnUse" x1="7464.1812" y1="10600.8428" x2="7470.1636" y2="10613.7227" gradientTransform="matrix(1 0 0 1 -7331.8125 -10510.6143)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+		<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+		<stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+	<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_40);" d="
+		M135.3,87.8c5,0,9.1,4,9.1,8.8c0,4.8-4.1,8.8-9.1,8.8s-9.1-4-9.1-8.8C126.2,91.7,130.3,87.8,135.3,87.8z"/>
+
+		<linearGradient id="SVGID_getorix_deposit_APP_41" gradientUnits="userSpaceOnUse" x1="7464.7661" y1="10602.1025" x2="7469.5669" y2="10612.4385" gradientTransform="matrix(1 0 0 1 -7331.8125 -10510.6143)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+		<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+		<stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+	<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_41);" d="
+		M135.3,89.5c4,0,7.3,3.2,7.3,7.1c0,3.9-3.2,7.1-7.3,7.1c-4,0-7.3-3.2-7.3-7.1C128,92.6,131.4,89.5,135.3,89.5z"/>
+	<path class="getorix_deposit_app_222" d="M135.3,90.8c3.2,0,5.8,2.6,5.8,5.6c0,3.1-2.7,5.6-5.8,5.6s-5.7-2.6-5.7-5.6
+		C129.7,93.3,132.2,90.8,135.3,90.8z"/>
+	<path class="getorix_deposit_app_224" d="M135.4,91.2c3.1,0,5.6,2.4,5.6,5.4c0,3-2.5,5.4-5.6,5.4c-3.1,0-5.6-2.5-5.6-5.4
+		C129.9,93.6,132.3,91.2,135.4,91.2z"/>
+
+		<linearGradient id="SVGID_getorix_deposit_APP_42" gradientUnits="userSpaceOnUse" x1="7466.0254" y1="10604.583" x2="7468.4639" y2="10609.832" gradientTransform="matrix(1 0 0 1 -7331.8125 -10510.6143)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+		<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+		<stop  offset="1" style="stop-color:#F5F5F5"/>
+	</linearGradient>
+	<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_getorix_deposit_APP_42);" d="
+		M135.4,93.1c2,0,3.8,1.6,3.8,3.5c0,1.9-1.7,3.5-3.8,3.5c-2,0-3.8-1.6-3.8-3.5C131.7,94.6,133.4,93.1,135.4,93.1z"/>
+	<path class="getorix_deposit_app_224" d="M133.4,96.6c0,1,0.9,1.8,1.9,1.8s1.9-0.9,1.9-1.8c0-1-0.9-1.8-1.9-1.8C134.4,94.8,133.5,95.5,133.4,96.6z"/>
+	<g>
+		<g>
+			<g>
+				<path id="SVGID_getorix_deposit_APP_43" class="getorix_deposit_app_232" d="M133.1,124.9v-3h4.6v3H133.1L133.1,124.9z M128.8,124.2l-4.4-1.6v-3l4.4,1.6V124.2
+					L128.8,124.2z M142,124.2v-3l4.4-1.6v3L142,124.2L142,124.2z M120.8,120.5l-3.5-3v-3l3.5,3V120.5L120.8,120.5z M150,120.5v-3
+					l3.5-3v3L150,120.5L150,120.5z M114.3,114.2l-2.4-4.1v-3l2.4,4.1V114.2L114.3,114.2z M156.4,114.2v-3l2.4-4.1v3L156.4,114.2
+					L156.4,114.2z M110.6,106l-0.9-4.6v-3l0.9,4.6V106L110.6,106z M160.2,106v-3l0.9-4.6v3L160.2,106"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>
