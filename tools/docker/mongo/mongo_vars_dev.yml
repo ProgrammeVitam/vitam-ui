@@ -56,6 +56,11 @@ mongodb:
     user: "mongod_dbuser_archivesearch"
     password: "mongod_dbpwd_archivesearch"
     roles: '[{ role: "readWrite", db: "archivesearch" }]'
+  collectDeposit:
+    db: collectDeposit
+    user: "mongod_dbuser_collectDeposit"
+    password: "mongod_dbpwd_collectDeposit"
+    roles: '[{ role: "readWrite", db: "collectDeposit" }]'
 
 mongod_replicaset_name: "rs0"
 

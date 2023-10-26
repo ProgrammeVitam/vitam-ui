@@ -34,11 +34,25 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  GETORIX_DEPOSIT_APP: string = 'getorix-deposit';
+  isGetorixApp: boolean;
+
+  constructor(private activatedRoute: Router) {
+    this.activatedRoute.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isGetorixApp = (<NavigationEnd>event).url.includes(this.GETORIX_DEPOSIT_APP);
+      }
+    });
+  }
+
+  ngOnInit() {}
+}

@@ -35,6 +35,8 @@ import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClien
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClientFactory;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClientFactory;
+import fr.gouv.vitamui.collect.external.client.GetorixDepositExternalRestClient;
+import fr.gouv.vitamui.collect.external.client.GetorixDepositExternalRestClientFactory;
 import fr.gouv.vitamui.collect.external.client.SearchCriteriaHistoryExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.SearchCriteriaHistoryExternalRestClientCollectFactory;
 import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClient;
@@ -152,5 +154,23 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     public UpdateUnitsMetadataExternalRestClient updateUnitsMetadataExternalRestClient(
         final UpdateUnitsMetadataExternalRestClientFactory updateUnitsMetadataExternalRestClientFactory) {
         return updateUnitsMetadataExternalRestClientFactory.getUpdateUnitsMetadataExternalRestClient();
+    }
+    /*
+     * Getorix
+     */
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public GetorixDepositExternalRestClientFactory getorixDepositExternalRestClientFactory(
+        final CollectApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
+        return new GetorixDepositExternalRestClientFactory(uiProperties.getCollectExternalClient(),
+            restTemplateBuilder);
+    }
+
+    @Bean
+    public GetorixDepositExternalRestClient getorixDepositExternalRestClient(
+        GetorixDepositExternalRestClientFactory factory) {
+        return factory.getGetorixDepositExternalRestClient();
     }
 }

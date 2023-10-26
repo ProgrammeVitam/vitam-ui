@@ -338,6 +338,11 @@
     "PASTIS_APP": {
       "NAME": "Documentary profiles",
       "TOOLTIP": "Access, create, edit, or delete archive profiles and unit profiles"
+    },
+    "GETORIX_DEPOSIT_APP": {
+      "NAME": "Getorix Deposits",
+      "TITLE": "Getorix Deposits",
+      "TOOLTIP": "Getorix Deposits Application"
     }
   },
   "FOOTER": {

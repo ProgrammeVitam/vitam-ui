@@ -26,6 +26,7 @@
  */
 package fr.gouv.vitamui.collect.internal.server.config;
 
+import fr.gouv.vitamui.collect.internal.server.service.converters.GetorixDepositConverter;
 import fr.gouv.vitamui.collect.internal.server.service.converters.SearchCriteriaHistoryConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,4 +40,8 @@ public class ConverterConfig {
         return new SearchCriteriaHistoryConverter();
     }
 
+    @Bean
+    public GetorixDepositConverter getorixDepositConverter() {
+        return new GetorixDepositConverter();
+    }
 }

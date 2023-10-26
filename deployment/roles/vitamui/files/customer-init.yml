@@ -288,6 +288,15 @@ customer-init:
         - ROLE_UPDATE_MANAGEMENT_CONTRACT
         - ROLE_DELETE_MANAGEMENT_CONTRACT
 
+    - name: Profil pour les VERSEMENTS GETORIX
+      description: Versements Getorix
+      app-name: GETORIX_DEPOSIT_APP
+      level:
+      roles:
+        - ROLE_GET_GETORIX_DEPOSIT
+        - ROLE_CREATE_GETORIX_DEPOSIT
+        - ROLE_UPDATE_GETORIX_DEPOSIT
+        - ROLE_DELETE_GETORIX_DEPOSIT
 
   # Other Default profiles for admin group
   admin-profiles:

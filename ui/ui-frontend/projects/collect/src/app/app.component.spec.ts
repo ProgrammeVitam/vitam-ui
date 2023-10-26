@@ -65,6 +65,9 @@ describe('AppComponent', () => {
           provide: Router,
           useValue: {
             navigate: () => {},
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'GETORIX_DEPOSIT_APP' }),
+            events: of({}),
           },
         },
       ],

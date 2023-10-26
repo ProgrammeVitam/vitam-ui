@@ -510,6 +510,17 @@ public class ServicesData {
 
 
 
+    //------------------------------------ GETORIX DEPOSIT -------------------------------------------
+    public static final String SERVICE_GETORIX_DEPOSIT = "GETORIX_DEPOSIT";
+
+    public static final String ROLE_GET_GETORIX_DEPOSIT = GET_ROLE_PREFIX + SERVICE_GETORIX_DEPOSIT;
+
+    public static final String ROLE_CREATE_GETORIX_DEPOSIT = CREATE_ROLE_PREFIX + SERVICE_GETORIX_DEPOSIT;
+
+    public static final String ROLE_DELETE_GETORIX_DEPOSIT = DELETE_ROLE_PREFIX + SERVICE_GETORIX_DEPOSIT;
+
+    public static final String ROLE_UPDATE_GETORIX_DEPOSIT = UPDATE_ROLE_PREFIX + SERVICE_GETORIX_DEPOSIT;
+
     //@formatter:off
 
     //------------------------------ PROVISIONING USERS ------------------------------------------------
@@ -829,6 +840,11 @@ public class ServicesData {
         ROLE_CREATE_MANAGEMENT_CONTRACT,
         ROLE_DELETE_MANAGEMENT_CONTRACT,
         ROLE_UPDATE_MANAGEMENT_CONTRACT,
+
+        ROLE_GET_GETORIX_DEPOSIT,
+        ROLE_CREATE_GETORIX_DEPOSIT,
+        ROLE_DELETE_GETORIX_DEPOSIT,
+        ROLE_UPDATE_GETORIX_DEPOSIT,
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
         ROLE_RECLASSIFICATION,
