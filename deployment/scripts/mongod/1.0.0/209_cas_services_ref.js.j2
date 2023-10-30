@@ -2,7 +2,7 @@ db = db.getSiblingDB('cas')
 
 print("START 209_cas_services_ref.js");
 
-db.services.insert({
+db.services.insertOne({
 	"_id" : NumberInt(4),
 	"_class": "org.apereo.cas.services.RegexRegisteredService",
 {% if vitamui.referential.base_url is defined %}

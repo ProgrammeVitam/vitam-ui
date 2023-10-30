@@ -4,7 +4,7 @@ print("START 316_application_ref.js");
 
 // -------- VITAM ADMINISTRATION -----
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "EXTERNAL_PARAM_PROFILE_APP",
 {% if vitamui.identity.base_url is defined %}
     "url": "{{ vitamui.identity.base_url }}/externalparamprofile",

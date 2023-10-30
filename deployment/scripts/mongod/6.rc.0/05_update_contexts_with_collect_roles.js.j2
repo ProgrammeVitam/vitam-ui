@@ -2,7 +2,7 @@ db = db.getSiblingDB('security')
 
 print("START 6.rc.0/05_update_contexts_with_collect_roles.js");
 
-db.contexts.insert({
+db.contexts.insertOne({
     "_id" : "ui_collect_context",
     "name": "Contexte UI Collect",
     "fullAccess" : true,

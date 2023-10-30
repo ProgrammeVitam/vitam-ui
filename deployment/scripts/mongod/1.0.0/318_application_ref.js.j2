@@ -4,7 +4,7 @@ print("START 318_application_ref.js");
 
 // -------- VITAM ADMINISTRATION -----
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "ACCESSION_REGISTER_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/accession-register",

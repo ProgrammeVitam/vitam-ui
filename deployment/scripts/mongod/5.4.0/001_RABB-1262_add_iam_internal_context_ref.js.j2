@@ -3,7 +3,7 @@ print("START 001_RABB-1262_add_iam_internal_context_ref.js");
 db = db.getSiblingDB('security')
 
 // Add context
-db.contexts.insert({
+db.contexts.insertOne({
     "_id" : "iam_internal_context",
     "name": "Context Iam Internal",
     "fullAccess" : true,

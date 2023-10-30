@@ -133,7 +133,7 @@ mongosh --port 27018 -u "mongod_dbuser_cas" -p "mongod_dbpwd_cas" --authenticati
 The OAuth server support is enabled in the CAS server. To support the resource owner password grant type, an appropriate service must be declared:
 
 ```json
-db.services.insert({
+db.services.insertOne({
   "_id" : NumberInt(61),
   "_class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
   "clientId": "testclientid",
@@ -151,7 +151,7 @@ db.services.insert({
 or with a JSON response:
 
 ```json
-db.services.insert({
+db.services.insertOne({
   "_id" : NumberInt(61),
   "_class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
   "clientId": "testclientid",

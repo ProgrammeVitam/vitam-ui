@@ -4,7 +4,7 @@ print("START 212_application_ref.js");
 
 // -------- VITAM ADMINISTRATION -----
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "INGEST_MANAGEMENT_APP",
 {% if vitamui.ingest.base_url is defined %}
     "url": "{{ vitamui.ingest.base_url }}/ingest",
@@ -22,7 +22,7 @@ db.applications.insert({
     "target": "_self"
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_ingest_profile",
   "identifier" : NumberInt(22),
   "name": "Ingest Profile",

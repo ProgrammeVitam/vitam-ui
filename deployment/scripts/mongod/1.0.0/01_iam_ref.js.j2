@@ -16,7 +16,7 @@ db.createCollection('operations');
 
 // ========================================= CUSTOMERS =========================================
 
-db.customers.insert({
+db.customers.insertOne({
   "_id": "system_customer",
   "code": "000000",
   "identifier" : NumberInt(1),
@@ -48,7 +48,7 @@ db.customers.insert({
 
 // ========================================= OWNERS =========================================
 
-db.owners.insert({
+db.owners.insertOne({
   "_id": "system_owner",
   "identifier" : NumberInt(1),
   "enabled": true,
@@ -65,7 +65,7 @@ db.owners.insert({
   }
 });
 
-db.owners.insert({
+db.owners.insertOne({
   "_id": "system_owner_cas",
   "identifier" : NumberInt(2),
   "enabled": true,
@@ -84,7 +84,7 @@ db.owners.insert({
 
 // ========================================= PROVIDERS =========================================
 
-db.providers.insert({
+db.providers.insertOne({
   "_id": "system_idp",
   "identifier" : NumberInt(1),
   "code": "000002",
@@ -105,43 +105,43 @@ db.providers.insert({
 
 // ========================================= SEQUENCES =========================================
 
-db.sequences.insert({
+db.sequences.insertOne({
   "_id": "tenant_identifier",
   "name": "tenantIdentifier",
   "sequence": NumberInt({{ vitamui_platform_informations.first_customer_tenant }})
 });
 
-db.sequences.insert({
+db.sequences.insertOne({
   "_id": "user_identifier",
   "name": "userIdentifier",
   "sequence": NumberInt(100)
 });
 
-db.sequences.insert({
+db.sequences.insertOne({
   "_id": "profile_identifier",
   "name": "profileIdentifier",
   "sequence": NumberInt(200)
 });
 
-db.sequences.insert({
+db.sequences.insertOne({
   "_id": "group_identifier",
   "name": "groupIdentifier",
   "sequence": NumberInt(100)
 });
 
-db.sequences.insert({
+db.sequences.insertOne({
   "_id": "provider_identifier",
   "name": "providerIdentifier",
   "sequence": NumberInt(50)
 });
 
-db.sequences.insert({
+db.sequences.insertOne({
   "_id": "customer_identifier",
   "name": "customerIdentifier",
   "sequence": NumberInt(10)
 });
 
-db.sequences.insert({
+db.sequences.insertOne({
   "_id": "owner_identifier",
   "name": "ownerIdentifier",
   "sequence": NumberInt(50)
@@ -149,7 +149,7 @@ db.sequences.insert({
 
 // ========================================= TENANTS =========================================
 
-db.tenants.insert({
+db.tenants.insertOne({
   "_id": "system_tenant",
   "name": "Tenant système",
   "proof": true,
@@ -164,7 +164,7 @@ db.tenants.insert({
   "accessContractLogbookIdentifier" : "AC-000002"
 });
 
-db.tenants.insert({
+db.tenants.insertOne({
   "_id": "cas_tenant",
   "name": "Tenant CAS",
   "enabled": true,
@@ -179,7 +179,7 @@ db.tenants.insert({
 // ----------------------------------------- LEVEL "0" -----------------------------------------
 
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_user_profile",
   "identifier" : NumberInt(1),
   "name": "User Profile",
@@ -217,7 +217,7 @@ db.profiles.insert({
   ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_group_profile",
   "identifier" : NumberInt(2),
   "name": "Group Profile",
@@ -249,7 +249,7 @@ db.profiles.insert({
   ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_profile_profile",
   "identifier" : NumberInt(3),
   "name": "Profile System",
@@ -278,7 +278,7 @@ db.profiles.insert({
   ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_customer_profile",
   "identifier" : NumberInt(4),
   "name": "Customer Profile",
@@ -355,7 +355,7 @@ db.profiles.insert({
   ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_surrogate_profile",
   "identifier" : NumberInt(5),
   "name": "Surrogate Profile",
@@ -388,7 +388,7 @@ db.profiles.insert({
 });
 
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_account_profile",
   "identifier" : NumberInt(13),
   "name": "Account Profile",
@@ -406,7 +406,7 @@ db.profiles.insert({
   ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_hierarchy_profile",
   "identifier" : NumberInt(17),
   "name": "Hierarchy profile",
@@ -435,7 +435,7 @@ db.profiles.insert({
 
 // ----------------------------------------- LEVEL "CAS" -----------------------------------------
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "cas_profile",
   "identifier" : NumberInt(25),
   "name": "Cas Profile",
@@ -479,7 +479,7 @@ db.profiles.insert({
   ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "cas_system_profile",
   "identifier" : NumberInt(26),
   "name": "Cas System Profile",
@@ -497,7 +497,7 @@ db.profiles.insert({
 
 // ----------------------------------------- LEVEL "SUPPORT" -----------------------------------------
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_account_profile_support",
   "identifier" : NumberInt(28),
   "name": "Account Profile Support",
@@ -515,7 +515,7 @@ db.profiles.insert({
   ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_surrogate_profile_support",
   "identifier" : NumberInt(32),
   "name": "Surrogate Profile Support",
@@ -551,7 +551,7 @@ db.profiles.insert({
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
 
-db.groups.insert({
+db.groups.insertOne({
   "_id": "admin_group",
   "identifier" : NumberInt(1),
   "name": "Groupe de l'administrateur VitamUI",
@@ -569,7 +569,7 @@ db.groups.insert({
   "customerId": "system_customer"
 });
 
-db.groups.insert({
+db.groups.insertOne({
   "_id": "super_admin_group",
   "identifier" : NumberInt(2),
   "name": "Groupe de l'adminstrateur de l'instance",
@@ -587,7 +587,7 @@ db.groups.insert({
 
 // ----------------------------------------- LEVEL "SUPPORT" -----------------------------------------
 
-db.groups.insert({
+db.groups.insertOne({
   "_id": "support_group",
   "identifier" : NumberInt(4),
   "name": "Groupe de l'utilisateur support",
@@ -604,7 +604,7 @@ db.groups.insert({
 
 // ----------------------------------------- LEVEL "CAS" -----------------------------------------
 
-db.groups.insert({
+db.groups.insertOne({
   "_id": "cas_group",
   "identifier" : NumberInt(5),
   "name": "Groupe d'accès à IAM",
@@ -623,7 +623,7 @@ db.groups.insert({
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
 
-db.users.insert({
+db.users.insertOne({
   "_id": "admin_user",
   "level": "",
   "enabled": true,
@@ -648,7 +648,7 @@ db.users.insert({
   "passwordExpirationDate": "2050-01-09T00:00:00.000+01:00"
 });
 
-db.users.insert({
+db.users.insertOne({
   "_id": "superadmin_user",
   "level": "",
   "enabled": true,
@@ -675,7 +675,7 @@ db.users.insert({
 
 // ----------------------------------------- LEVEL "SUPPORT" -----------------------------------------
 
-db.users.insert({
+db.users.insertOne({
   "_id": "support_user",
   "level": "SUPPORT",
   "enabled": true,
@@ -702,7 +702,7 @@ db.users.insert({
 
 // ----------------------------------------- LEVEL "CAS" -----------------------------------------
 
-db.users.insert({
+db.users.insertOne({
   "_id": "casuser",
   "level": "",
   "enabled": true,
@@ -729,7 +729,7 @@ db.users.insert({
 
 // ========================================= TOKENS =========================================
 
-db.tokens.insert({
+db.tokens.insertOne({
   "_id": "tokcas_ie6UZsEcHIWrfv2x",
   "updatedDate": "May 15, 2008 6:30:58 PM",
   "refId": "casuser"

@@ -13,7 +13,7 @@ db.certificates.remove(
     {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )
-db.certificates.insert({
+db.certificates.insertOne({
     "_id": "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}",
     "contextId": "{{ contextId }}",
     "subjectDN": "subjectDN",

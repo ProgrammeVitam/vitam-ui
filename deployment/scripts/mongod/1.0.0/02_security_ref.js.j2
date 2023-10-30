@@ -5,7 +5,7 @@ print("START 02_security_ref.js");
 db.contexts.remove({});
 db.createCollection('events');
 
-db.contexts.insert({
+db.contexts.insertOne({
   "_id": "cas_context",
   "name": "Contexte CAS",
   "fullAccess": false,
@@ -13,7 +13,7 @@ db.contexts.insert({
   "roleNames": ["ROLE_CAS_LOGIN", "ROLE_CAS_CHANGE_PASSWORD", "ROLE_CAS_USERS", "ROLE_CAS_SUBROGATIONS", "ROLE_CAS_LOGOUT", "ROLE_GET_PROVIDERS", "ROLE_GET_USERS"]
 });
 
-db.contexts.insert({
+db.contexts.insertOne({
   "_id" : "ui_portal_context",
   "name": "Contexte UI Portal",
   "fullAccess" : true,
@@ -21,7 +21,7 @@ db.contexts.insert({
   "roleNames" : []
 });
 
-db.contexts.insert({
+db.contexts.insertOne({
     "_id" : "ui_identity_context",
     "name": "Contexte UI Identity",
     "fullAccess" : true,
@@ -34,7 +34,7 @@ db.contexts.insert({
     ]
 });
 
-db.contexts.insert({
+db.contexts.insertOne({
     "_id" : "ui_admin_identity_context",
     "name": "Contexte UI Identity",
     "fullAccess" : true,

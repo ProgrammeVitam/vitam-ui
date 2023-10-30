@@ -4,7 +4,7 @@ print("START 221_pastis_application_ref.js");
 
 // -------- VITAM ADMINISTRATION -----
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "PASTIS_APP",
 {% if vitamui.pastis.base_url is defined %}
     "url": "{{ vitamui.pastis.base_url }}/pastis",

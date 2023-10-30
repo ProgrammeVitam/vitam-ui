@@ -2,7 +2,7 @@ db = db.getSiblingDB('cas')
 
 print("START 213_cas_services_ref.js");
 
-var nbInsert = db.services.insert({
+var nbInsert = db.services.insertOne({
    "_id" : NumberInt(5),
    "_class": "org.apereo.cas.services.RegexRegisteredService",
 {% if vitamui.ingest.base_url is defined %}

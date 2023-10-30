@@ -60,7 +60,7 @@ db.sequences.updateOne({
 	}
 });
 
-db.owners.insert({
+db.owners.insertOne({
 	"_id": "5c7927537884583d1ebb6e66aaacceedbb0541fb97538964f8fc26f58085b92b",
 	"identifier": "51",
 	"name": "VitamUI",
@@ -76,7 +76,7 @@ db.owners.insert({
 
 db.tenants.update({"identifier": 1},{"$set" : {"itemIngestContractIdentifier" : "IC-000005"}});
 
-db.tenants.insert({
+db.tenants.insertOne({
 	"_id": "5c7927537884583d1ebb6e682b0f33f74d9c4483b7b3b12c8a075dc2e21fa771",
 	"enabled": true,
 	"proof": false,
@@ -91,7 +91,7 @@ db.tenants.insert({
 	"_class": "tenants"
 });
 
-db.owners.insert({
+db.owners.insertOne({
 	"_id": "system_owner_externe",
 	"identifier" : NumberInt(5),
 	"enabled": true,
@@ -108,7 +108,7 @@ db.owners.insert({
 	}
 });
 
-db.tenants.insert({
+db.tenants.insertOne({
 	"_id": "tenant_20",
 	"name": "Tenant Externe",
 	"proof" : false,
@@ -126,7 +126,7 @@ db.tenants.insert({
 
 //----------------------------------------- PROFILES TENANT 9 ------------------------------------
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id": "5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c",
 	"identifier": "214",
 	"name": "Hierarchy Profiles 9",
@@ -170,7 +170,7 @@ db.groups.updateOne( {
 
 // ========================================= GROUPS =========================================
 
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363",
 	"identifier": "101",
 	"name": "Groupe acces complet",
@@ -206,7 +206,7 @@ db.groups.insert({
 	"_class": "groups"
 });
 
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5caf30f57884585a1dcedc36759ce99393a94722aa3698482ec8fa95a12732d4",
 	"identifier": "133",
 	"name": "Groupe acces complet EMO",
@@ -228,7 +228,7 @@ db.groups.insert({
 	"_class": "groups"
 });
 
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5c79026f7884583d1ebb6e5f3c1910a7420244e7ac4638c42383831b2c64ed46",
 	"identifier": "102",
 	"name": "Groupe de l'utilisateur Démo",
@@ -251,7 +251,7 @@ db.groups.insert({
 
 // ========================================= USERS =========================================
 
-db.users.insert(
+db.users.insertOne(
 {
 	"_id": "5c7902ee7884583d1ebb6e6063569f12508f46e293f99e31a96c6b4449a7574f",
 	"email": "demo@{{ vitamui_platform_informations.default_email_domain }}",

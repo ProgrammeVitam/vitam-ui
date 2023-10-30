@@ -22,7 +22,7 @@ db.profiles.update( {
 
 var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "auto_system_rules",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Auto Rules Profile",

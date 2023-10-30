@@ -3,7 +3,7 @@ db = db.getSiblingDB('{{ mongodb.cas.db }}')
 print("START cas_services_ref.js");
 
 // Added a Z in the Name to ensure the regex is used last because CAS order them by 'Name' field
-db.services.insert({
+db.services.insertOne({
 	"_id": NumberInt(1),
 	"_class": "org.apereo.cas.services.RegexRegisteredService",
 	"serviceId": "^{{ vitamui.portal.base_url|default(url_prefix) }}/.*",
@@ -15,7 +15,7 @@ db.services.insert({
 	}
 });
 
-db.services.insert({
+db.services.insertOne({
 	"_id" : NumberInt(2),
 	"_class": "org.apereo.cas.services.RegexRegisteredService",
 {% if vitamui.identity.base_url is defined %}
@@ -35,7 +35,7 @@ db.services.insert({
 	}
 });
 
-db.services.insert({
+db.services.insertOne({
 	"_id" : NumberInt(3),
 	"_class": "org.apereo.cas.services.RegexRegisteredService",
 {% if vitamui.identity_admin.base_url is defined %}

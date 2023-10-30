@@ -5,7 +5,7 @@ print("START 216_application_archive_search_ref.js");
 
 // ========================================= partie archive search ============================================
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_archive_search_profile",
   "identifier" : NumberInt(23),
   "name": "Archive Search Profile",
@@ -34,7 +34,7 @@ db.profiles.insert({
 
 // -------- VITAM ADMINISTRATION  -----
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "ARCHIVE_SEARCH_MANAGEMENT_APP",
 {% if vitamui.archive_search.base_url is defined %}
     "url": "{{ vitamui.archive_search.base_url }}/archive-search",

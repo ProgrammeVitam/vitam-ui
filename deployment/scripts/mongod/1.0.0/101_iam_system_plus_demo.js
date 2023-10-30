@@ -3,7 +3,7 @@ db = db.getSiblingDB('iam')
 print("START 101_iam_system_plus_demo.js");
 
 // ========================================= GROUPS =========================================
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5c7e4edf7884583d1ebb6f891c55c325bb7a4a768d18a01cb68b9530e65d07c0",
 	"identifier": "114",
 	"name": "Groupe Groupe de profils",
@@ -18,7 +18,7 @@ db.groups.insert({
 	"_class": "groups"
 });
 
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5c7e4ef07884583d1ebb6f8bc378561a559341bc83936231b69696eca8a51192",
 	"identifier": "115",
 	"name": "Groupe Hierarchisation",
@@ -34,7 +34,7 @@ db.groups.insert({
 	"_class": "groups"
 });
 
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5c7e4f517884583d1ebb6f9195ce6dee372d4da4b7b26274268df1296e29e787",
 	"identifier": "118",
 	"name": "Groupe Mon compte",
@@ -49,7 +49,7 @@ db.groups.insert({
 	"_class": "groups"
 });
 
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5c7e4f617884583d1ebb6f9373fb764c414941ec9d4a7f93d9a83e244d1400e9",
 	"identifier": "119",
 	"name": "Groupe Organisations",
@@ -64,7 +64,7 @@ db.groups.insert({
 	"_class": "groups"
 });
 
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5c7e4f987884583d1ebb6f97fdb1292186984af49662d4d235bd6f8ddfdae99c",
 	"identifier": "121",
 	"name": "Groupe Profils user",
@@ -79,7 +79,7 @@ db.groups.insert({
 	"_class": "groups"
 });
 
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5c7e4fba7884583d1ebb6f9b68989a2357ab44f2bfa8f53b40e829a303a3ef86",
 	"identifier": "123",
 	"name": "Groupe Subrogation",
@@ -95,7 +95,7 @@ db.groups.insert({
 });
 
 
-db.groups.insert({
+db.groups.insertOne({
 	"_id": "5c7e4ff77884583d1ebb6fa1b6f6542a91fd44a29b0afcec6ca062b02f664677",
 	"identifier": "126",
 	"name": "Groupe Utilisateur",
@@ -113,7 +113,7 @@ db.groups.insert({
 
 // ========================================= USERS =========================================
 
-db.users.insert(
+db.users.insertOne(
 {
 	"_id": "5c7e50e47884583d1ebb6fb63e29ffa861654af3b758f05902471f810cb2263d",
 	"email": "demohierarchisation@{{ vitamui_platform_informations.default_email_domain }}",
@@ -134,7 +134,7 @@ db.users.insert(
 	"customerId": "system_customer",
 	"_class": "users"
 });
-db.users.insert(
+db.users.insertOne(
 {
 	"_id": "5c7e512b7884583d1ebb6fbcf7d480e06d3748a3b36cc55ad9b2d0e242e673fe",
 	"email": "demomoncompte@{{ vitamui_platform_informations.default_email_domain }}",
@@ -155,7 +155,7 @@ db.users.insert(
 	"customerId": "system_customer",
 	"_class": "users"
 });
-db.users.insert(
+db.users.insertOne(
 {
 	"_id": "5c7e513d7884583d1ebb6fbe48233e218ee64c79bb76a688fba02877c588618c",
 	"email": "demoorganisations@{{ vitamui_platform_informations.default_email_domain }}",
@@ -176,7 +176,7 @@ db.users.insert(
 	"customerId": "system_customer",
 	"_class": "users"
 });
-db.users.insert(
+db.users.insertOne(
 {
 	"_id": "5c7e515e7884583d1ebb6fc29a46e429db5f47d0b9ae210ce2d710b3675c2cec",
 	"email": "demoprofilsusers@{{ vitamui_platform_informations.default_email_domain }}",
@@ -197,7 +197,7 @@ db.users.insert(
 	"customerId": "system_customer",
 	"_class": "users"
 });
-db.users.insert(
+db.users.insertOne(
 {
 	"_id": "5c7e51a27884583d1ebb6fca0a6d9782f103447bbfe799d10fc615c73520b7d8",
 	"email": "demosubrogation@{{ vitamui_platform_informations.default_email_domain }}",
@@ -218,7 +218,7 @@ db.users.insert(
 	"customerId": "system_customer",
 	"_class": "users"
 });
-db.users.insert(
+db.users.insertOne(
 {
 	"_id": "5c7e51b77884583d1ebb6fccb8dfe9dbca1f40e0aa9d3ee8c46e6a834fc56067",
 	"email": "demoutilisateurs@{{ vitamui_platform_informations.default_email_domain }}",

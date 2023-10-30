@@ -3,7 +3,7 @@ db = db.getSiblingDB('cas')
 
 print("START 218_cas_services_archive_search_ref.js");
 
-var nbInsert = db.services.insert({
+var nbInsert = db.services.insertOne({
    "_id" : NumberInt(6),
    "_class": "org.apereo.cas.services.RegexRegisteredService",
 {% if vitamui.archive_search.base_url is defined %}

@@ -4,7 +4,7 @@ print("START_08_logbook_operation_management_application.js");
 
 // -------- LOGBOOK_MANAGEMENT_OPERATION APPLICATION -----
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "LOGBOOK_MANAGEMENT_OPERATION_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/logbook-management-operation",
@@ -31,7 +31,7 @@ db.applications.insert({
 // Get sequence for profiles
 var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
-db.profiles.insert({
+db.profiles.insertOne({
     "_id": "system_logbook_management_operation",
     "identifier" : NumberInt(maxIdProfile++),
     "name": "Gestion des Logbook Opérations",

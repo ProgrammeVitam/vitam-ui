@@ -8,7 +8,7 @@ print("START 307_iam_ref.js");
 
 var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_rules",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Rules Profile",
