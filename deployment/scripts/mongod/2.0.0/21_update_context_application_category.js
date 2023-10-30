@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("Start 08_update_context_application_category.js");
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "CONTEXTS_APP",
     "category": "referential",
 }, {

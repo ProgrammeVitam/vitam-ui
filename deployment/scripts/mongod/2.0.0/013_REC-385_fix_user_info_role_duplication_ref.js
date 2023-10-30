@@ -11,7 +11,7 @@ db.profiles.find({ applicationName: "USERS_APP" }).forEach((profile) => {
 
   // Update only roles whith duplication
   if (distinct_roles.length !== profile.roles.length) {
-    db.profiles.update(
+    db.profiles.updateOne(
       { _id: profile._id },
       { $set: { roles: distinct_roles } }
     );

@@ -20,7 +20,7 @@ db.profiles.updateOne({
 });
 
 // ---- DELETE EXISTING ROLES ROLE_EXPORT_DIP AND ROLE_ELIMINATION TO BE CONFORM WITH CONSULTATION PROFILE FOR EXISTING USERS
-db.profiles.update({
+db.profiles.updateOne({
     "_id": "system_archive_search_profile"
   }, {
     $pull: {
@@ -30,7 +30,7 @@ db.profiles.update({
     }
   });
 
-db.profiles.update({
+db.profiles.updateOne({
     "_id": "system_archive_search_profile"
   }, {
     $pull: {

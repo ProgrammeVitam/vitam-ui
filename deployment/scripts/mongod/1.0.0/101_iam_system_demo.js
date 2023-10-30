@@ -74,7 +74,7 @@ db.owners.insertOne({
 	"_class": "owners"
 });
 
-db.tenants.update({"identifier": 1},{"$set" : {"itemIngestContractIdentifier" : "IC-000005"}});
+db.tenants.updateOne({"identifier": 1},{"$set" : {"itemIngestContractIdentifier" : "IC-000005"}});
 
 db.tenants.insertOne({
 	"_id": "5c7927537884583d1ebb6e682b0f33f74d9c4483b7b3b12c8a075dc2e21fa771",

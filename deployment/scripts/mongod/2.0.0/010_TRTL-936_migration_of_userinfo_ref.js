@@ -19,14 +19,14 @@ db.users.find({"userInfoId" : {$exists : false}}).forEach(user => {
         "_class": "userInfos"
     });
 
-    db.users.update(
+    db.users.updateOne(
         {_id: user._id},
         {
             "$set": {"userInfoId": userInfoId},
         }
     );
 
-    db.users.update(
+    db.users.updateOne(
         {_id: user._id},
         {
             $unset: {"language": ""},

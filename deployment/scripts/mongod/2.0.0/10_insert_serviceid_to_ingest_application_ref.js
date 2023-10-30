@@ -7,7 +7,7 @@ db.applications.updateMany(
    { $unset: { serviceId2: "" } }
 );
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "INGEST_MANAGEMENT_APP"
 }, {
     $set: {

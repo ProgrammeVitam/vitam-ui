@@ -19,7 +19,7 @@ db.profiles.updateOne({
    }
 });
 
-db.profiles.update({
+db.profiles.updateOne({
    "_id":"system_archive_search_profile"
 },
 {
@@ -91,7 +91,7 @@ db.profiles.insertOne({
 
 // -------- ARCHIVE_SEARCH PROFILE WITHOUT RULES MANAGEMENT AND WITHOUT DIP EXPORT-----
 
-db.profiles.update({
+db.profiles.updateOne({
    "_id":"system_archive_search_profile_without_rules"
 },
 {

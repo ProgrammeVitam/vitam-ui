@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("START 05_TRTL-859_update_account_app_category.js");
 
-db.applications.update({
+db.applications.updateOne({
   "identifier" : "ACCOUNTS_APP",
   "category": "ingest_and_consultation"
 }, {

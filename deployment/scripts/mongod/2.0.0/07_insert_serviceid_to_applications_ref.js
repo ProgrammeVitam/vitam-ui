@@ -4,7 +4,7 @@ print("Start 07_insert_serviceid_to_applications_ref.js");
 
 // =============== INGEST ==========
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "INGEST_MANAGEMENT_APP"
 }, {
     $set: {
@@ -17,7 +17,7 @@ db.applications.update({
     }
 );
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "HOLDING_FILLING_SCHEME_APP",
 }, {
     $set: {
@@ -32,7 +32,7 @@ db.applications.update({
 
 // =============== ARCHIVE-SEARCH ==========
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "ARCHIVE_SEARCH_MANAGEMENT_APP"
 }, {
     $set: {
@@ -47,7 +47,7 @@ db.applications.update({
 
 // =============== IDENTITY ==========
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "ACCOUNTS_APP",
 }, {
     $set: {
@@ -56,7 +56,7 @@ db.applications.update({
     }
 );
 
-db.applications.update({
+db.applications.updateOne({
         "identifier" : "HIERARCHY_PROFILE_APP",
 }, {
     $set: {
@@ -70,7 +70,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
         "identifier" : "SUBROGATIONS_APP",
 }, {
     $set: {
@@ -83,7 +83,7 @@ db.applications.update({
     }
 );
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "PROFILES_APP",
 }, {
     $set: {
@@ -97,7 +97,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "GROUPS_APP",
 }, {
     $set: {
@@ -111,7 +111,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "USERS_APP",
 }, {
     $set: {
@@ -125,7 +125,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "CUSTOMERS_APP",
 }, {
     $set: {
@@ -141,7 +141,7 @@ db.applications.update({
 
 // =============== REFERENTIAL ==========
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "LOGBOOK_OPERATION_APP",
 }, {
     $set: {
@@ -154,7 +154,7 @@ db.applications.update({
     }
 );
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "PROBATIVE_VALUE_APP",
 }, {
     $set: {
@@ -168,7 +168,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "DSL_APP",
 }, {
     $set: {
@@ -182,7 +182,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "SECURE_APP",
 }, {
     $set: {
@@ -196,7 +196,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "AUDIT_APP",
 }, {
     $set: {
@@ -210,7 +210,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "ONTOLOGY_APP",
 }, {
     $set: {
@@ -224,7 +224,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "SECURITY_PROFILES_APP",
 }, {
     $set: {
@@ -238,7 +238,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "CONTEXTS_APP",
 }, {
     $set: {
@@ -252,7 +252,7 @@ db.applications.update({
 );
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "FILE_FORMATS_APP",
 }, {
     $set: {
@@ -265,7 +265,7 @@ db.applications.update({
     }
 );
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "AGENCIES_APP",
 }, {
     $set: {
@@ -278,7 +278,7 @@ db.applications.update({
     }
 );
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "ACCESS_APP",
 }, {
     $set: {
@@ -291,7 +291,7 @@ db.applications.update({
     }
 );
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "INGEST_APP",
 }, {
     $set: {
@@ -304,7 +304,7 @@ db.applications.update({
     }
 );
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "RULES_APP",
 }, {
     $set: {

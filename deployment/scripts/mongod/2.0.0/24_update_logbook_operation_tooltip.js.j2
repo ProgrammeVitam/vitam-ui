@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("START_24_update_logbook_operation_tooltip.js");
 
-db.applications.update({
+db.applications.updateOne({
       "identifier" : "LOGBOOK_MANAGEMENT_OPERATION_APP"},
 {
      $set : {

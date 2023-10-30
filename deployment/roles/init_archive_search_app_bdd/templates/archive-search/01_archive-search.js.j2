@@ -10,7 +10,7 @@ db = db.getSiblingDB('{{ mongodb.iam.db }}')
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_archive_search_profile" },
     {
         "$set" : {
@@ -69,7 +69,7 @@ db.groups.updateOne(
 // ====================================== APPLICATIONS ======================================
 
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "ARCHIVE_SEARCH_MANAGEMENT_APP" },
     {
         "$set" : {
@@ -103,7 +103,7 @@ db = db.getSiblingDB('{{ mongodb.security.db }}')
 
 print("INFO 01_archive_search.js : START security update");
 
-db.contexts.update(
+db.contexts.updateOne(
     { "_id" : "ui_archive_search_context" },
     {
         "$set" : {
@@ -148,7 +148,7 @@ print("INFO 01_archive_search.js : START cas database update");
 db = db.getSiblingDB('{{ mongodb.cas.db }}')
 
 
-db.services.update(
+db.services.updateOne(
     { "_id" :  NumberInt(4) },
     {
         "$set" : {

@@ -10,7 +10,7 @@ db = db.getSiblingDB('{{ mongodb.iam.db }}')
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_access_contract" },
     {
         "$set" : {
@@ -36,7 +36,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_ingest_contract" },
     {
         "$set" : {
@@ -64,7 +64,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_ontology" },
     {
         "$set" : {
@@ -91,7 +91,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_agencies" },
     {
         "$set" : {
@@ -120,7 +120,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_file_format" },
     {
         "$set" : {
@@ -148,7 +148,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_context" },
     {
         "$set" : {
@@ -174,7 +174,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_security_profile" },
     {
         "$set" : {
@@ -201,7 +201,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_audit" },
     {
         "$set" : {
@@ -226,7 +226,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_secure" },
     {
         "$set" : {
@@ -250,7 +250,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_dsl" },
     {
         "$set" : {
@@ -272,7 +272,7 @@ db.profiles.update(
     { "upsert":true }
 );
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_probative_value" },
     {
         "$set" : {
@@ -448,7 +448,7 @@ db.groups.updateOne(
 // ====================================== APPLICATIONS ======================================
 
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "AUDIT_APP" },
     {
         "$set" : {
@@ -474,7 +474,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "SECURE_APP" },
     {
         "$set" : {
@@ -500,7 +500,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "INGEST_APP" },
     {
         "$set" : {
@@ -526,7 +526,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "ACCESS_APP" },
     {
         "$set" : {
@@ -552,7 +552,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "AGENCIES_APP" },
     {
         "$set" : {
@@ -578,7 +578,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "FILE_FORMATS_APP" },
     {
         "$set" : {
@@ -604,7 +604,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "CONTEXTS_APP" },
     {
         "$set" : {
@@ -630,7 +630,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "SECURITY_PROFILES_APP" },
     {
         "$set" : {
@@ -656,7 +656,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "ONTOLOGY_APP" },
     {
         "$set" : {
@@ -682,7 +682,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "DSL_APP" },
     {
         "$set" : {
@@ -708,7 +708,7 @@ db.applications.update(
     { "upsert":true }
 );
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "PROBATIVE_VALUE_APP" },
     {
         "$set" : {
@@ -745,7 +745,7 @@ db = db.getSiblingDB('{{ mongodb.security.db }}')
 
 print("INFO 01_referential.js : START security update");
 
-db.contexts.update(
+db.contexts.updateOne(
     { "_id" : "ui_referential_context" },
     {
         "$set" : {
@@ -797,7 +797,7 @@ print("INFO 01_referential.js : START cas database update");
 db = db.getSiblingDB('{{ mongodb.cas.db }}')
 
 
-db.services.update(
+db.services.updateOne(
     { "_id" :  NumberInt(4) },
     {
         "$set" : {

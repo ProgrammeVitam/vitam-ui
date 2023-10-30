@@ -12,7 +12,7 @@ var maxIdentifier = db.getCollection('sequences').findOne({'_id': 'user_infos_id
 
 db.userInfos.find({identifier: {$eq: null}}).forEach(userInfos => {
 
-    var result = db.userInfos.update(
+    var result = db.userInfos.updateOne(
         {_id: userInfos._id},
         {
             "$set": {"identifier": NumberInt(maxIdentifier+1)},

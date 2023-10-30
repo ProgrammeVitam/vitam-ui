@@ -5,33 +5,33 @@ print("START 311_iam_ref.js");
 // ========================================= PROFILES =========================================
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
-db.profiles.update(
+db.profiles.updateOne(
 {"_id" : "system_context"},
-{$set: {"roles" : [ 
+{$set: {"roles" : [
 	{
     	"name" : "ROLE_GET_CONTEXTS"
-    }, 
+    },
     {
     	"name" : "ROLE_CREATE_CONTEXTS"
-   	}, 
+   	},
     {
     	"name" : "ROLE_UPDATE_CONTEXTS"
-    }, 
+    },
     {
     	"name" : "ROLE_GET_CUSTOMERS"
-    }, 
+    },
     {
     	"name" : "ROLE_GET_TENANTS"
-   	}, 
+   	},
     {
     	"name" : "ROLE_GET_ALL_TENANTS"
   	}
 ]}
 });
 
-db.profiles.update(
+db.profiles.updateOne(
 {"_id" : "system_agencies"},
-{$set: {"roles" : [ 
+{$set: {"roles" : [
     {
         "name": "ROLE_GET_AGENCIES"
     },
@@ -53,9 +53,9 @@ db.profiles.update(
 ]}
 });
 
-db.profiles.update(
+db.profiles.updateOne(
 {"_id" : "system_file_format"},
-{$set: {"roles" : [ 
+{$set: {"roles" : [
     {
         "name": "ROLE_GET_FILE_FORMATS"
     },
@@ -75,9 +75,9 @@ db.profiles.update(
 });
 
 
-db.profiles.update(
+db.profiles.updateOne(
 {"_id" : "system_ontology"},
-{$set: {"roles" : [ 
+{$set: {"roles" : [
     {
         "name": "ROLE_GET_ONTOLOGIES"
     },

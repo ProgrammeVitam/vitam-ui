@@ -4,7 +4,7 @@ print("START 25_update_iam_rules.js");
 
 // ========================================= PROFILES =========================================
 
-db.profiles.update( {
+db.profiles.updateOne( {
 	"_id": "system_rules"
 }, {
     $addToSet: {
