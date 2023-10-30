@@ -51,12 +51,11 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
   @Input() selectedArchiveUnitCount = 0;
   @Input() pending!: boolean;
   @Input() threshold!: number;
-  @Input() allChecked: boolean = false;
+  @Input() allChecked = false;
   @Output() archiveUnitCountChange = new EventEmitter<number>();
   @Output() selectedArchiveUnitCountChange = new EventEmitter<number>();
   @Output() pendingChange = new EventEmitter<boolean>();
 
-  selectedOverThreshold = false;
   canLoadExactCount = false;
   exactCountLoaded = false;
   displaySelectedArchiveUnitCount = true;
@@ -101,7 +100,6 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
   }
 
   private update(): void {
-    this.selectedOverThreshold = this.selectedArchiveUnitCount >= this.threshold;
     this.canLoadExactCount = !this.exactCountLoaded && this.archiveUnitCount >= this.threshold;
     this.displaySelectedArchiveUnitCount = this.shouldDisplaySelectedArchiveUnitCount();
   }
@@ -128,7 +126,6 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
         },
         (error: HttpErrorResponse) => {
           this.logger.error(this, error.message);
-
           this.handleExactCount(-1);
         }
       )
@@ -139,7 +136,6 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
     const isInclusiveMode = !this.allChecked;
     const extactCountIsKnown = this.exactCountLoaded;
     const knownCountUnderThreshold = this.archiveUnitCount < this.threshold;
-
     return isInclusiveMode || extactCountIsKnown || knownCountUnderThreshold;
   }
 }

@@ -40,9 +40,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContract, AccessContractApiService, ApiUnitObject, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, Ontology,
-  PagedResult, SearchArchiveUnitsInterface, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum, SearchResponse,
-  SearchService, SecurityService, Unit
+  AccessContract, AccessContractApiService, ApiUnitObject, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeHandler,
+  FilingHoldingSchemeNode, Ontology, PagedResult, SearchArchiveUnitsInterface, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum, SearchResponse, SearchService, SecurityService, Unit
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
@@ -99,18 +99,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
         (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId) ||
         (!parentNode && (!unit['#unitups'] || !unit['#unitups'].length || !idExists(arr, unit['#unitups'][0])))
       ) {
-        const outNode: FilingHoldingSchemeNode = {
-          id: unit['#id'],
-          vitamId: unit['#id'],
-          title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
-          type: unit.DescriptionLevel,
-          unitType: unit['#unitType'],
-          descriptionLevel: unit.DescriptionLevel,
-          children: [],
-          checked: false,
-          hidden: false,
-          hasObject: !!unit['#object'],
-        };
+        const outNode: FilingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);
       }

@@ -277,7 +277,8 @@
     <div class="vitamui-table-head">
       <vitamui-common-archive-unit-count
         [search]="search$"
-        [(archiveUnitCount)]="totalResults"
+        [archiveUnitCount]="totalResults"
+        (archiveUnitCountChange)="onArchiveUnitCountChange($event)"
         [(selectedArchiveUnitCount)]="selectedItemCount"
         [threshold]="10000"
         [(pending)]="pending"
