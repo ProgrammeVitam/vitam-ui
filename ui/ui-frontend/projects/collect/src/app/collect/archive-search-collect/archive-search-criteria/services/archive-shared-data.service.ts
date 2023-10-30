@@ -49,11 +49,12 @@ export class ArchiveSharedDataService {
   private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
   private targetNode = new BehaviorSubject<string>('');
   private facetsSubject = new BehaviorSubject<ResultFacet[]>([]);
+  private totalResultsSubject = new BehaviorSubject<number>(null);
   private toggleSubject = new BehaviorSubject<boolean>(true);
   private toggleReverseSubject = new BehaviorSubject<boolean>(true);
   private archiveUnitTpPreviewSubject = new BehaviorSubject<Unit>(null);
   private toggleArchiveUnitSubject = new BehaviorSubject<boolean>(true);
-  private lastSearchCriteriaDtoSubject = new BehaviorSubject<SearchCriteriaDto>(null);
+  private lastSearchCriterias = new BehaviorSubject<SearchCriteriaDto>(null);
   private storedSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory>(null);
   private allSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory[]>([]);
 
@@ -150,6 +151,14 @@ export class ArchiveSharedDataService {
     return this.facetsSubject.asObservable();
   }
 
+  emitTotalResults(result: number) {
+    this.totalResultsSubject.next(result);
+  }
+
+  getTotalResults(): Observable<number> {
+    return this.totalResultsSubject.asObservable();
+  }
+
   emitToggle(show: boolean) {
     this.toggleSubject.next(show);
   }
@@ -160,10 +169,6 @@ export class ArchiveSharedDataService {
 
   emitSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory) {
     this.storedSearchCriteriaHistorySubject.next(searchCriteriaHistory);
-  }
-
-  emitLastSearchCriteriaDtoSubject(searchCriteriaDto: SearchCriteriaDto): void {
-    this.lastSearchCriteriaDtoSubject.next(searchCriteriaDto);
   }
 
   emitArchiveUnitTitle(auTitle: string) {
@@ -186,8 +191,12 @@ export class ArchiveSharedDataService {
     return this.storedSearchCriteriaHistorySubject.asObservable();
   }
 
-  getLastSearchCriteriaDtoSubject(): Observable<SearchCriteriaDto> {
-    return this.lastSearchCriteriaDtoSubject.asObservable();
+  emitSearchCriterias(searchCriteriaDto: SearchCriteriaDto): void {
+    this.lastSearchCriterias.next(searchCriteriaDto);
+  }
+
+  getSearchCriterias(): Observable<SearchCriteriaDto> {
+    return this.lastSearchCriterias.asObservable();
   }
 
   emitAllSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory[]) {

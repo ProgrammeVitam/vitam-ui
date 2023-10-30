@@ -28,6 +28,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
   CriteriaDataType, CriteriaOperator, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, PagedResult, ResultFacet, SearchCriteriaDto,
@@ -63,14 +64,15 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   showEveryNodes = true;
   requestResultFacets: ResultFacet[];
   hasMatchesInSearch = false;
-  requestTotalResults: number;
   requestResultsInFilingPlan: number;
+  requestTotalResults: number;
   loadingArchiveUnit: { [key: string]: boolean } = {
     TREE: false,
     LEAVE: false,
   };
 
   constructor(
+    private translateService: TranslateService,
     private archiveService: ArchiveService,
     private route: ActivatedRoute,
     private archiveSharedDataService: ArchiveSharedDataService
@@ -81,12 +83,12 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.subscribeOnTotalResultsChange();
     this.subscribeResetNodesOnFilingHoldingNodesChanges();
     this.subscribeOnNodeSelectionToSetCheck();
     this.subscribeOnFacetsChangesToResetCounts();
-    this.subscribeOnTotalResultsChange();
     this.loadingHolding = true;
-    this.initFilingHoldingSchemeTree();
+    this.loadFilingHoldingSchemeTree();
   }
 
   ngOnDestroy(): void {
@@ -109,13 +111,12 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private subscribeOnFacetsChangesToResetCounts(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getFacets().subscribe((facets) => {
-        if (facets && facets.length > 0) {
+        this.hasMatchesInSearch = facets && facets.length > 0;
+        if (this.hasMatchesInSearch) {
           this.requestResultFacets = facets;
-          this.hasMatchesInSearch = true;
           FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceFull.data, facets);
           this.requestResultsInFilingPlan = FilingHoldingSchemeHandler.getCountSum(this.nestedDataSourceFull.data);
         } else {
-          this.hasMatchesInSearch = false;
           for (const node of this.nestedDataSourceFull.data) {
             node.count = 0;
             node.hidden = true;
@@ -124,17 +125,27 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
         // fullNodes is a Graph .
         // keeps last child with result only
         this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(this.fullNodes);
+        this.addOrRemoveOrphansNode();
         this.showEveryNodes = false;
       })
     );
   }
 
-  private subscribeOnTotalResultsChange(): void {
-    this.subscriptions.add(
-      this.archiveSharedDataService.getTotalResults().subscribe((totalResults) => {
-        this.requestTotalResults = totalResults
-      })
-    );
+  private refreshTreeNodes() {
+    const data = this.nestedDataSourceLeaves.data;
+    this.nestedDataSourceLeaves.data = null;
+    this.nestedDataSourceLeaves.data = data;
+  }
+
+  addOrRemoveOrphansNode() {
+    const orphans = this.requestTotalResults - this.requestResultsInFilingPlan;
+    if (orphans > 0) {
+      FilingHoldingSchemeHandler.addOrphansNodeFromTree(this.nestedDataSourceLeaves.data,
+        this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'), orphans);
+    } else {
+      FilingHoldingSchemeHandler.removeOrphansNodeFromTree(this.nestedDataSourceLeaves.data);
+    }
+    this.refreshTreeNodes();
   }
 
   private subscribeResetNodesOnFilingHoldingNodesChanges(): void {
@@ -148,7 +159,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     );
   }
 
-  initFilingHoldingSchemeTree() {
+  loadFilingHoldingSchemeTree() {
     this.loadingHolding = true;
     this.subscriptions.add(
       this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier).subscribe((nodes) => {
@@ -198,6 +209,15 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
           this.showArchiveUnitDetails.emit(pageResult.results[0]);
           this.loadingArchiveUnit[`${from}`] = false;
         })
+    );
+  }
+
+  private subscribeOnTotalResultsChange(): void {
+    this.subscriptions.add(
+      this.archiveSharedDataService.getTotalResults().subscribe((totalResults) => {
+        this.requestTotalResults = totalResults;
+        this.addOrRemoveOrphansNode();
+      })
     );
   }
 }

@@ -42,8 +42,8 @@ import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/searc
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContract, AccessContractApiService, ApiUnitObject, FilingHoldingSchemeNode, Ontology, PagedResult, SearchArchiveUnitsInterface,
-  SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, SearchService, Transaction, Unit,
+  AccessContract, AccessContractApiService, ApiUnitObject, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, Ontology, PagedResult,
+  SearchArchiveUnitsInterface, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, SearchService, Transaction, Unit,
 } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
@@ -255,23 +255,11 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
         (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId) ||
         (!parentNode && (!unit['#unitups'] || !unit['#unitups'].length || !idExists(arr, unit['#unitups'][0])))
       ) {
-        const outNode: FilingHoldingSchemeNode = {
-          id: unit['#id'],
-          vitamId: unit['#id'],
-          title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
-          type: unit.DescriptionLevel,
-          unitType: unit['#unitType'],
-          descriptionLevel: unit.descriptionLevel,
-          children: [],
-          checked: false,
-          hidden: false,
-          hasObject: !!unit['#object'],
-        };
+        const outNode: FilingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);
       }
     });
-
     return this.sortByTitle(out);
   }
 

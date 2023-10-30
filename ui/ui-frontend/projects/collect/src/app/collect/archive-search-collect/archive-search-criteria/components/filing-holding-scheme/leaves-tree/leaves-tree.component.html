@@ -22,7 +22,7 @@
           (nodeToggle)="toggleLeave(node)"
         >
         </vitamui-tree-node>
-        <span *ngIf="nodeHasPositiveCount(node) && showFacetsCount" class="badge badge-secondary pad">
+        <span *ngIf="nodeHasPositiveCount(node)" class="badge badge-secondary pad">
           {{ node.count | number : '1.0' }}
         </span>
       </div>
@@ -56,19 +56,19 @@
           >
           </vitamui-tree-node>
         </div>
-        <span *ngIf="nodeHasPositiveCount(node) && showFacetsCount" class="badge badge-secondary pad">
+        <span *ngIf="nodeHasPositiveCount(node)" class="badge badge-secondary pad">
           {{ node.count | number : '1.0' }}
         </span>
       </div>
     </mat-tree-node>
 
-    <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeIsOrphanNode">
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeIsOrphansNode">
       <div *ngIf="nodeHasResultOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node flex-row">
         <vitamui-tree-node
           [node]="node"
           (checkboxClick)="addToSearchCriteriaList(node)"
           [expanded]="nestedTreeControlLeaves.isExpanded(node)"
-          (nodeToggle)="toggleOrphan(node)"
+          (nodeToggle)="toggleOrphansNode(node)"
         >
         </vitamui-tree-node>
         <span *ngIf="nodeHasPositiveCount(node)" class="badge badge-primary pad">
@@ -101,7 +101,7 @@
           (nodeToggle)="toggleLeave(node)"
         >
         </vitamui-tree-node>
-        <span *ngIf="nodeHasPositiveCount(node) && showFacetsCount" class="badge badge-secondary pad">
+        <span *ngIf="nodeHasPositiveCount(node)" class="badge badge-secondary pad">
           {{ node.count | number : '1.0' }}
         </span>
       </div>
