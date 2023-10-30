@@ -123,7 +123,7 @@ db.contexts.updateOne(
 
 
 {% macro insertCertififcate(pemFile, contextId) -%}
-db.certificates.remove(
+db.certificates.deleteOne(
     {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )

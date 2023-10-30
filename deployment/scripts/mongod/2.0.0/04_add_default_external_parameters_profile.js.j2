@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("START 04_add_default_external_parameters_profile.js.j2");
 
-db.externalParameters.remove({});
+db.externalParameters.deleteMany({});
 db.createCollection('externalParameters', { autoIndexId: true });
 
 var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;

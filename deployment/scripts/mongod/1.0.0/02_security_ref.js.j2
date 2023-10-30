@@ -2,7 +2,7 @@ db = db.getSiblingDB('security')
 
 print("START 02_security_ref.js");
 
-db.contexts.remove({});
+db.contexts.deleteMany({});
 db.createCollection('events');
 
 db.contexts.insertOne({

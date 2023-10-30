@@ -2,15 +2,15 @@ db = db.getSiblingDB('iam')
 
 print("START 01_iam_ref.js");
 
-db.users.remove({});
-db.groups.remove({});
-db.profiles.remove({});
-db.tenants.remove({});
-db.providers.remove({});
-db.owners.remove({});
-db.customers.remove({});
-db.sequences.remove({});
-db.tokens.remove({});
+db.users.deleteMany({});
+db.groups.deleteMany({});
+db.profiles.deleteMany({});
+db.tenants.deleteMany({});
+db.providers.deleteMany({});
+db.owners.deleteMany({});
+db.customers.deleteMany({});
+db.sequences.deleteMany({});
+db.tokens.deleteMany({});
 db.createCollection('events');
 db.createCollection('operations');
 

@@ -3,7 +3,7 @@ db = db.getSiblingDB('{{ mongodb.security.db }}')
 print("START security.populate_certificates_ref.js");
 
 {% macro insertCertificate(pemFile, contextId, host) -%}
-db.certificates.remove(
+db.certificates.deleteOne(
     {"_id" : "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )
