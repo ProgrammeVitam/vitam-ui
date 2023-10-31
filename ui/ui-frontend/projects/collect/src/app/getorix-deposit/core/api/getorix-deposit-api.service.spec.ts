@@ -49,4 +49,10 @@ describe('GetorixDepositApiService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should return the correct value of the base_url', () => {
+    const base_url = '/fake-api';
+    expect(service.getBaseUrl()).not.toBeNull();
+    expect(service.getBaseUrl()).toEqual(base_url);
+  });
 });
