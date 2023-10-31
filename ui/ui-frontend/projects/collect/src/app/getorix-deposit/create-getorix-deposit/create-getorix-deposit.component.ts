@@ -319,7 +319,7 @@ export class CreateGetorixDepositComponent implements OnInit, OnDestroy {
     this.showForm = true;
   }
 
-  private checkInputValidation(formControlAttribut: string) {
+  checkInputValidation(formControlAttribut: string) {
     if (this.getorixDepositform.get(formControlAttribut).invalid || this.getorixDepositform.get(formControlAttribut).pending) {
       this.depositFormError.find((deposit) => deposit.inputName == formControlAttribut).isValid = false;
       this.operationCategoryList.find(
