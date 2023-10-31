@@ -27,13 +27,16 @@
 
 import { TestBed } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Type } from '@angular/core';
 import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { environment } from '../../environments/environment';
+import { DepositStatus, GetorixDeposit } from './core/model/getorix-deposit.interface';
 import { GetorixDepositService } from './getorix-deposit.service';
 
 describe('GetorixDepositService', () => {
   let service: GetorixDepositService;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -43,10 +46,42 @@ describe('GetorixDepositService', () => {
         { provide: ENVIRONMENT, useValue: environment },
       ],
     });
+
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+
     service = TestBed.inject(GetorixDepositService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should call /fake-api/getorix-deposit with POST method', () => {
+    const expectedDeposit = {
+      originatingAgency: 'originatingAgency',
+      versatileService: 'versatileService',
+      firstScientificOfficerFirstName: 'first Name',
+      furniture: true,
+      depositStatus: DepositStatus.DRAFT,
+      tenantIdentifier: 13,
+      userId: 'userId',
+      projectId: 'projectId',
+      transactionId: 'transactionId',
+    } as GetorixDeposit;
+
+    const getorixDeposit = {
+      originatingAgency: 'originatingAgency',
+      versatileService: 'versatileService',
+      firstScientificOfficerFirstName: 'first Name',
+      furniture: true,
+      depositStatus: DepositStatus.DRAFT,
+      tenantIdentifier: 13,
+      userId: 'userId',
+    } as GetorixDeposit;
+
+    service.createGetorixDeposit(getorixDeposit).subscribe((deposit) => expect(deposit).toEqual(expectedDeposit), fail);
+    const req = httpTestingController.expectOne('/fake-api/getorix-deposit');
+    expect(req.request.method).toEqual('POST');
+    req.flush(expectedDeposit);
   });
 });
