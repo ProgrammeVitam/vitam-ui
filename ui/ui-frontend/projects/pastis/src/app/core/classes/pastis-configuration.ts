@@ -40,7 +40,7 @@ export class PastisConfiguration {
   constructor(private pastisApi: PastisApiService) {}
 
   public initConfiguration(): Promise<any> {
-    if (environment.apiServerUrl != undefined && environment.standalone) {
+    if (environment.apiServerUrl !== undefined && environment.standalone) {
       return new Promise((r, e) => {
         this.pastisApi.getLocally('./assets/config/config-standalone.json').subscribe(
           (content: PastisConfiguration) => {

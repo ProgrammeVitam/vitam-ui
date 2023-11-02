@@ -10,7 +10,7 @@
         <h5 i18n="Create accessContract title@@accessContractCreateTitle2">Informations</h5>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle [formControl]="statusControl">Contrat d'accès actif</vitamui-common-slide-toggle>
+          <vitamui-common-slide-toggle formControlName="status">Contrat d'accès actif</vitamui-common-slide-toggle>
         </div>
 
         <div class="d-flex">
@@ -61,8 +61,8 @@
         </vitamui-common-textarea>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle [formControl]="accessLogControl" checked="form.controls.accessLog.value === 'ACTIVE'">
-            Journalisation des accès <span *ngIf="!form.controls.accessLog.value">in</span>actif
+          <vitamui-common-slide-toggle formControlName="accessLog">
+            Journalisation des accès
           </vitamui-common-slide-toggle>
           <i class="material-icons" matTooltip="Droit d'enregistrer les accès sur les objets" matTooltipClass="vitamui-tooltip">info</i>
         </div>

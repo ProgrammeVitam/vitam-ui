@@ -84,6 +84,12 @@ public class IdentityProviderBuilder {
 
     private final AuthnRequestBindingEnum authnRequestBinding;
 
+    private final Integer maximumAuthenticationLifetime;
+
+    private final boolean wantsAssertionsSigned;
+
+    private final boolean authnRequestSigned;
+
     private final boolean autoProvisioningEnabled;
 
     // OIDC provider data
@@ -107,10 +113,10 @@ public class IdentityProviderBuilder {
 
     private String protocoleType;
     public IdentityProviderBuilder(final String name, final String technicalName, final Boolean enabled,
-            final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
-            final String privateKeyPassword, final Resource idpMetadata, final String customerId,
-            final boolean readonly, final String mailAttribute, final String identifierAttribute, final AuthnRequestBindingEnum authnRequestBinding, final boolean autoProvisioningEnabled,
-                                   String clientId,String clientSecret,String discoveryUrl,String scope,String preferredJwsAlgorithm, Map<String, String> customParams, Boolean useState,Boolean useNonce, Boolean usePkce, String protocoleType) {
+                                   final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
+                                   final String privateKeyPassword, final Resource idpMetadata, final String customerId,
+                                   final boolean readonly, final String mailAttribute, final String identifierAttribute, final Integer maximumAuthenticationLifetime, final AuthnRequestBindingEnum authnRequestBinding, final boolean wantsAssertionsSigned, final boolean authnRequestSigned, final boolean autoProvisioningEnabled,
+                                   String clientId, String clientSecret, String discoveryUrl, String scope, String preferredJwsAlgorithm, Map<String, String> customParams, Boolean useState, Boolean useNonce, Boolean usePkce, String protocoleType) {
         this.name = name;
         this.technicalName = technicalName;
         this.enabled = enabled;
@@ -124,7 +130,10 @@ public class IdentityProviderBuilder {
         this.readonly = readonly;
         this.mailAttribute = mailAttribute;
         this.identifierAttribute = identifierAttribute;
+        this.maximumAuthenticationLifetime = maximumAuthenticationLifetime;
         this.authnRequestBinding =  authnRequestBinding;
+        this.wantsAssertionsSigned = wantsAssertionsSigned;
+        this.authnRequestSigned = authnRequestSigned;
         this.autoProvisioningEnabled = autoProvisioningEnabled;
         this.clientId=clientId;
         this.clientSecret=clientSecret;
@@ -148,7 +157,10 @@ public class IdentityProviderBuilder {
         idp.setReadonly(readonly);
         idp.setMailAttribute(mailAttribute);
         idp.setIdentifierAttribute(identifierAttribute);
+        idp.setMaximumAuthenticationLifetime(maximumAuthenticationLifetime);
         idp.setAuthnRequestBinding(authnRequestBinding);
+        idp.setWantsAssertionsSigned(wantsAssertionsSigned);
+        idp.setAuthnRequestSigned(authnRequestSigned);
         idp.setClientId(clientId);
         idp.setClientSecret(clientSecret);
         idp.setDiscoveryUrl(discoveryUrl);

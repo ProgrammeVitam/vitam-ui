@@ -6,11 +6,11 @@
           <span class="editable-field-text-content">{{control?.value?.name}}</span>
           <div class="editable-field-control">
             <div class="vitamui-input-file">
-              <label for="vitamui-input-file">
+              <label [for]="customId">
                 <span class="text primary underline">{{'SHARED.EDITABLE_FIELD.UPLOAD_FILE' | translate}}</span>
                 <div class="vitamui-input-file-filename">{{file?.name}}</div>
               </label>
-              <input id="vitamui-input-file" type="file" [accept]="accept" (change)="setFile($event.target.files)" #fileInput>
+              <input [id]="customId" type="file" [accept]="accept" (change)="setFile($event.target.files)" #fileInput>
             </div>
           </div>
       </div>

@@ -8,7 +8,8 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the customized {@link GeneralTerminateSessionAction}.
@@ -28,8 +29,8 @@ public final class GeneralTerminateSessionActionTest {
 
         final LogoutManager logoutManager = mock(LogoutManager.class);
 
-        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(null, null,
-            null, logoutManager, null, null, null, servicesManager, new CasConfigurationProperties(), null);
+        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(null, null, null, null,
+            logoutManager, null, null, null, null, servicesManager, new CasConfigurationProperties(), null, null, null);
 
         action.performGeneralLogout("tgtId");
     }

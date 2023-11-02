@@ -1,0 +1,129 @@
+server:
+  port: 8070
+  ssl:
+    key-store: src/main/resources/dev/keystore_api-gateway.jks
+    key-store-password: changeme
+    key-password: changeme
+    client-auth: need
+    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store-password: changeme
+  max-http-header-size: 16KB
+
+spring:
+  cloud:
+    consul:
+      enabled: false
+    gateway:
+      httpclient:
+        wiretap: true
+        ssl:
+          use-insecure-trust-manager: true
+          #trusted-x509-certificates:
+      httpserver:
+        wiretap: true
+      routes:
+        - id: iam-external-service
+          uri: https://localhost:8083  # URL IAM EXTERNAL
+          predicates:
+            - >
+              Path=
+              /portal-api/security,
+              /portal-api/userinfos/me,
+              /portal-api/ui/applications/**,
+              /portal-api/users/analytics,
+              /portal-api/subrogations/me/surrogate,
+
+              /identity-api/security,
+              /identity-api/userinfos/**,
+              /identity-api/ui/applications/**,
+              /identity-api/subrogations/**,
+              /identity-api/customers/**,
+              /identity-api/tenants/**,
+              /identity-api/owners/**,
+              /identity-api/providers/**,
+              /identity-api/groups/**,
+              /identity-api/users/**,
+              /identity-api/profiles/**,
+              /identity-api/accesscontracts/**,
+              /identity-api/externalparamprofile/**,
+
+              /referential-api/security$,
+              /referential-api/security/**,
+              /referential-api/userinfos/**,
+              /referential-api/ui/applications/**,
+              /referential-api/users/analytics,
+              /referential-api/subrogations/**,
+              /referential-api/logbooks/operations/**,
+              /referential-api/tenants/**,
+              /referential-api/customers/**,
+              /referential-api/accesscontracts/**,
+              /referential-api/profiles/**,
+              /referential-api/externalparameters/**,
+
+          filters:
+            # Portal IAM API
+            - RewritePath=/portal-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/portal-api/(?<segment>.*),/iam/v1/$\{segment}
+
+            # Identity IAM API
+            - RewritePath=/identity-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/identity-api/logbooks(?<segment>.*),/v1/logbooks$\{segment},
+            - RewritePath=/identity-api/accesscontracts(?<segment>.*),/v1/accesscontracts$\{segment},
+            - RewritePath=/identity-api/(?<segment>.*),/iam/v1/$\{segment}
+
+            # Referential IAM API
+            - RewritePath=/referential-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/referential-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
+            - RewritePath=/referential-api/logbooks/operations(?<segment>.*),/v1/logbooks/operations$\{segment},
+            - RewritePath=/referential-api/(?<segment>.*),/iam/v1/$\{segment}
+
+        - id: referential-external-service
+          uri: https://localhost:8087  # URL REFERENTIAL EXTERNAL
+          predicates:
+            - >
+              Path=
+              /referential-api/accesscontract/**,
+              /referential-api/ingestcontract/**,
+              /referential-api/managementcontract/**,
+              /referential-api/agency/**,
+              /referential-api/fileformat/**,
+              /referential-api/fileFormat/**,
+              /referential-api/operation/**,
+              /referential-api/logbook-management-operation/**,
+              /referential-api/customers/**,
+              /referential-api/accession-register/**,
+              /referential-api/archival-profile/**,
+              /referential-api/security-profile/**,
+              /referential-api/context/**,
+              /referential-api/ontology/**,
+              /referential-api/profile/**,
+              /referential-api/search/**,
+              /referential-api/rules/**,
+              /referential-api/customers/**
+
+          filters:
+            - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
+            - RewritePath=/referential-api/fileFormat(?<segment>.*),/referential/v1/fileformats$\{segment}
+            - RewritePath=/referential-api/operation(?<segment>.*),/referential/v1/operations$\{segment}
+            - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
+            - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
+            - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
+
+logging:
+  level:
+    reactor:
+      netty: debug
+    org:
+      springframework:
+        cloud:
+          gateway: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  server:
+    port: 7070
+    ssl:
+      enabled: false

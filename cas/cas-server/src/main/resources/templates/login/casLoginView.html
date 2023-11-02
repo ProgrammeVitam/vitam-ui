@@ -123,7 +123,13 @@
         </script>
     </div>
 </div>
-<script>
+<script th:inline="javascript" th:if="${!#strings.isEmpty(providedUsername)}">
+        var providedUsername = /*[[${providedUsername}]]*/ "";
+        $(document).ready(function() {
+            $('#username').val(providedUsername);
+        });
+    </script>
+    <script>
     $('#fm1').submit(function () {
         $(this).find('#username').each(function () {
             $(this).val($.trim($(this).val()));

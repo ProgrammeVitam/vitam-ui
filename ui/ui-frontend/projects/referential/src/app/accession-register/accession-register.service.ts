@@ -147,9 +147,11 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   getStats(): Observable<FacetDetails[]> {
     return this.optionalValues.asObservable().pipe(
       map((m: any) => {
+        // tslint:disable-next-line:no-string-literal
         if (m === undefined || m['stats'] === undefined) {
           return [];
         }
+        // tslint:disable-next-line:no-string-literal
         const accessionRegisterStats: AccessionRegisterStats = m['stats'] as AccessionRegisterStats;
         return this.fetchFacetDetails(accessionRegisterStats);
       })

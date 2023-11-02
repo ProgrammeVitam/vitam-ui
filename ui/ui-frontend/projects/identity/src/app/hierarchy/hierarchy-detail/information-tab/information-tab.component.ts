@@ -49,17 +49,16 @@ const DEBOUNCE_TIME = 400;
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
-  styleUrls: ['./information-tab.component.scss']
+  styleUrls: ['./information-tab.component.scss'],
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
-
   form: FormGroup;
   userLevel: string;
   previousValue: {
-    name: string,
-    level: string,
-    description: string,
-    enabled: boolean,
+    name: string;
+    level: string;
+    description: string;
+    enabled: boolean;
   };
 
   @Input() profile: Profile;
@@ -77,30 +76,28 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     this.userLevel = this.authService.user.level;
     this.form = this.formBuilder.group({
       name: [null, Validators.required],
-      identifier: [{value: null, disabled : true}, Validators.required],
+      identifier: [{ value: null, disabled: true }, Validators.required],
       description: [null, Validators.required],
       level: [null, buildValidators(this.authService.user)],
-      enabled: null
+      enabled: null,
     });
 
     this.updateSub = merge(this.form.valueChanges, this.form.statusChanges)
-    .pipe(
-      debounceTime(DEBOUNCE_TIME),
-      map(() => diff(this.form.value, this.previousValue)),
-      filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.profile.id , customerId: this.profile.customerId,
-                                 tenantIdentifier: this.profile.tenantIdentifier},
-                               formData)),
-      switchMap((formData) => {
-        return this.hierarchyService.patch(formData).pipe(catchError(() => of(null)));
-      })
-    )
-    .subscribe((profile) => this.resetForm(this.form, profile, this.readOnly)
-    );
+      .pipe(
+        debounceTime(DEBOUNCE_TIME),
+        map(() => diff(this.form.value, this.previousValue)),
+        filter((formData) => !isEmpty(formData)),
+        map((formData) =>
+          extend({ id: this.profile.id, customerId: this.profile.customerId, tenantIdentifier: this.profile.tenantIdentifier }, formData)
+        ),
+        switchMap((formData) => {
+          return this.hierarchyService.patch(formData).pipe(catchError(() => of(null)));
+        })
+      )
+      .subscribe((profile) => this.resetForm(this.form, profile, this.readOnly));
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.updateSub.unsubscribe();
@@ -109,8 +106,8 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('profile') || changes.hasOwnProperty('readOnly')) {
       if (this.profile) {
-       this.resetForm(this.form, this.profile, this.readOnly);
-       this.previousValue = this.form.value;
+        this.resetForm(this.form, this.profile, this.readOnly);
+        this.previousValue = this.form.value;
       }
     }
   }
@@ -123,7 +120,12 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private initFormValidators(form: FormGroup, profile: Profile) {
-    form.get('name').setAsyncValidators(this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name));
+    form
+      .get('name')
+      .setAsyncValidators(
+        this.profileValidators.
+      nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name)
+      );
   }
 
   private initFormActivationState(form: FormGroup, profile: Profile, readOnly: boolean) {
@@ -135,11 +137,10 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
     form.enable({ emitEvent: false });
 
-    form.get('identifier').disable({emitEvent : false});
+    form.get('identifier').disable({ emitEvent: false });
     if (profile.groupsCount && profile.groupsCount > 0) {
-      form.get('enabled').disable({emitEvent : false});
-      form.get('level').disable({emitEvent : false});
+      form.get('enabled').disable({ emitEvent: false });
+      form.get('level').disable({ emitEvent: false });
     }
   }
-
 }

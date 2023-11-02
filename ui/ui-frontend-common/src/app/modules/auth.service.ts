@@ -34,18 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter, skipWhile, switchMap, take } from 'rxjs/operators';
 import { ApplicationId } from './application-id.enum';
-import { WINDOW_LOCATION } from './injection-tokens';
-import { AuthUser, Tenant, User, UserInfo } from './models';
-
+import { AuthenticatorService } from './authentication/services/authenticator.service';
+import { AuthUser, Tenant, UserInfo } from './models';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthService {
-
+export class AuthService implements OnDestroy {
   get userInfo(): UserInfo {
     return this._userInfo;
   }
@@ -69,48 +67,58 @@ export class AuthService {
   public logoutRedirectUiUrl: string;
   public user$ = new BehaviorSubject<AuthUser>(null);
 
+  private authenticatorService: AuthenticatorService;
+
   // tslint:disable-next-line:variable-name
   private _user: AuthUser;
   // tslint:disable-next-line:variable-name
   private _userInfo: UserInfo;
   private userInfo$ = new BehaviorSubject<UserInfo>(null);
 
-  constructor(@Inject(WINDOW_LOCATION) private location: any) { }
+  private gatewayEnabled = false;
 
-  public getUser$(): Observable<AuthUser> {
-    return this.user$.pipe(filter((user: AuthUser) => !!user), take(1));
+  private isAuthenticatorConfigReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  constructor() {}
+
+  ngOnDestroy(): void {
+    this.isAuthenticatorConfigReady$.complete();
   }
 
-  logout() {
+  public configure(gatewayEnabled: boolean, authenticatorService: AuthenticatorService) {
+    this.gatewayEnabled = gatewayEnabled;
+    this.authenticatorService = authenticatorService;
+    this.isAuthenticatorConfigReady$.next(true);
+  }
+
+  public login(): Observable<boolean> {
+    return this.isAuthenticatorConfigReady$.pipe(
+      skipWhile((ready) => !ready),
+      switchMap(() => this.authenticatorService.login())
+    );
+  }
+
+  public logout(): void {
     this.user = null;
-    this.location.href = this.logoutUrl;
+    this.authenticatorService.logout();
   }
 
-  logoutForSubrogation(superUser: string, surrogate: string) {
+  public logoutForSubrogation(superUser: string, surrogate: string) {
     const email = surrogate + ',' + superUser;
     this.logoutAndRedirectToUiForUser(email);
   }
 
-  logoutAndRedirectToUI() {
+  public logoutAndRedirectToUiForUser(email: string) {
     this.user = null;
-    this.location.href = this.logoutRedirectUiUrl;
+    this.authenticatorService.initSubrogationFlow(email);
   }
 
-  logoutAndRedirectToUiForUser(email: string) {
+  public redirectToLoginPage(): void {
     this.user = null;
-    this.location.href = this.logoutRedirectUiUrl + '?cas_username=' + email;
+    this.authenticatorService.redirectToLoginPage();
   }
 
-  logoutWithEmailWithOutRedirectToUi(email: string) {
-    this.user = null;
-    let casLogoutUrl = this.logoutUrl;
-    if (casLogoutUrl && casLogoutUrl.endsWith('/')) {
-      casLogoutUrl = casLogoutUrl.substr(0, casLogoutUrl.lastIndexOf('/') - 1);
-    }
-    this.location.href = casLogoutUrl + '?cas_username=' + email;
-  }
-
-  getAnyTenantIdentifier(): string {
+  public getAnyTenantIdentifier(): string {
     // retrieve any tenantIdentifier fro a profile
     let tenantIdentifier = null;
     if (this._user) {
@@ -120,7 +128,7 @@ export class AuthService {
     return tenantIdentifier;
   }
 
-  getTenantByIdentifier(identifier: number): Tenant {
+  public getTenantByIdentifier(identifier: number): Tenant {
     let tenant;
     if (this._user) {
       const tenants = this._user.tenantsByApp.reduce((acc, x) => acc.concat(x.tenants), []);
@@ -130,7 +138,7 @@ export class AuthService {
     return tenant;
   }
 
-  getTenantByAppAndIdentifier(appId: ApplicationId, tenantIdentifier: number): Tenant {
+  public getTenantByAppAndIdentifier(appId: ApplicationId, tenantIdentifier: number): Tenant {
     if (!this._user) {
       console.error(`AuthService Error: user is null`);
 
@@ -151,7 +159,17 @@ export class AuthService {
     return tenant;
   }
 
+  public getUser$(): Observable<AuthUser> {
+    return this.user$.pipe(
+      filter((user: AuthUser) => !!user),
+      take(1)
+    );
+  }
+
   public getUserInfo$(): Observable<UserInfo> {
-    return this.userInfo$.pipe(filter((userInfo: UserInfo) => !!userInfo), take(1));
+    return this.userInfo$.pipe(
+      filter((userInfo: UserInfo) => !!userInfo),
+      take(1)
+    );
   }
 }

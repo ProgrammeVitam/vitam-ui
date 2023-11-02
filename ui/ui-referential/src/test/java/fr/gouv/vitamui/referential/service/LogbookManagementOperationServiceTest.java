@@ -30,6 +30,7 @@ package fr.gouv.vitamui.referential.service;
 import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.referential.common.dto.ProcessDetailDto;
+import fr.gouv.vitamui.referential.common.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.referential.external.client.LogbookManagementOperationExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.junit.Before;
@@ -66,7 +67,7 @@ public class LogbookManagementOperationServiceTest {
     public void list_operations_details_should_call_appropriate_rest_client_once() {
         // Given
         Mockito.when(client.searchOperationsDetails(isNull(), any(ProcessQuery.class)))
-            .thenReturn(new ResponseEntity<>(new ProcessDetailDto(), HttpStatus.OK));
+            .thenReturn(new ResponseEntity<>(new VitamUIProcessDetailResponseDto(), HttpStatus.OK));
 
         // When
         service.searchOperationsDetails(null, new ProcessQuery());

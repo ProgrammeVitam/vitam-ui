@@ -43,6 +43,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 
@@ -95,20 +96,10 @@ public class ExternalAuthentificationService {
     }
 
     /**
-     * This method is called before authentification by the Authentication Provider
+     * This method is called before authentication by the Authentication Provider
      */
     public AuthUserDto getUserFromHttpContext(final ExternalHttpContext httpContext) {
-        final String userToken = httpContext.getUserToken();
-        if (userToken == null) {
-            throw new BadCredentialsException("User token not found: " + userToken);
-        }
-
-        final InternalHttpContext internalHttpContext = InternalHttpContext.buildFromExternalHttpContext(httpContext, null, null);
-        final AuthUserDto userDto = userInternalRestClient.getMe(internalHttpContext);
-        if (userDto == null) {
-            throw new NotFoundException("User not found for token: " + userToken);
-        }
-
+        final AuthUserDto userDto = getAuthenticatedUser(httpContext);
 
         final Integer tenantIdentifier = httpContext.getTenantIdentifier();
         final List<Integer> userTenants = userDto.getProfileGroup().getProfiles().stream().filter(ProfileDto::isEnabled).map(ProfileDto::getTenantIdentifier)
@@ -116,6 +107,20 @@ public class ExternalAuthentificationService {
         if (!userTenants.contains(tenantIdentifier)) {
             LOGGER.debug("Tenant id [{}] not in user tenants [{}]", tenantIdentifier, userTenants);
             throw new BadCredentialsException("This tenant: " + httpContext.getTenantIdentifier() + " is not allowed for this user: " + userDto.getId());
+        }
+        return userDto;
+    }
+
+    public AuthUserDto getAuthenticatedUser(ExternalHttpContext httpContext) {
+        final String userToken = httpContext.getUserToken();
+        if (StringUtils.isBlank(userToken)) {
+            throw new BadCredentialsException("User token is empty");
+        }
+
+        final InternalHttpContext internalHttpContext = InternalHttpContext.buildFromExternalHttpContext(httpContext, null, null);
+        final AuthUserDto userDto = userInternalRestClient.getMe(internalHttpContext);
+        if (userDto == null) {
+            throw new NotFoundException("User not found for token: " + userToken);
         }
         return userDto;
     }

@@ -57,6 +57,8 @@ public class BasicCustomerDto extends IdDto {
 
     private String name;
 
+    private String code;
+
     private String companyName;
 
     private GraphicIdentityDto graphicIdentity;

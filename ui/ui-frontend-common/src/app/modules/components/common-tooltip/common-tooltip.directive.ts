@@ -36,7 +36,6 @@
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import {
-  ConnectedPosition,
   Overlay,
   OverlayPositionBuilder,
   OverlayRef,
@@ -53,7 +52,34 @@ import {
 } from '@angular/core';
 import { CommonTooltipComponent } from './common-tooltip.component';
 import { TooltipPosition } from './TooltipPosition.enum';
-import { TooltipType } from './TooltipType.enum';
+
+const VITAMUI_TOOL_TIP_POSITIONS = {
+  TOP: {
+    originX: 'start',
+    originY: 'top',
+    overlayX: 'start',
+    overlayY: 'bottom',
+  },
+  BOTTOM: {
+    originX: 'start',
+    originY: 'bottom',
+    overlayX: 'start',
+    overlayY: 'top',
+  },
+  LEFT: {
+    originX: 'start',
+    originY: 'center',
+    overlayX: 'end',
+    overlayY: 'center',
+  },
+  RIGHT: {
+    originX: 'end',
+    originY: 'center',
+    overlayX: 'start',
+    overlayY: 'center',
+  }
+};
+
 
 @Directive({
   selector: '[vitamuiCommonToolTip]',
@@ -63,7 +89,11 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   @Input() outline = false;
   @Input('vitamuiCommonToolTipPosition') position: string = TooltipPosition.BOTTOM;
   @Input() vitamuiCommonToolTipClass: string;
-  @Input() type = 'BOTTOM';
+  @Input() vitamuiCommonToolTipShowDelay = 0;
+
+  showTimeoutId: ReturnType<typeof setTimeout>;
+  hideTimeoutId: ReturnType<typeof setTimeout>;
+
 
  /** Disables the display of the tooltip. */
   @Input('vitamuiCommonToolTipDisabled')
@@ -88,12 +118,13 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-      const position = this.buildPosition(this.type);
+    if (TooltipPosition[this.position]) {
+      const position = VITAMUI_TOOL_TIP_POSITIONS[this.position];
       const positionStrategy = this.overlayPositionBuilder
           .flexibleConnectedTo(this.elementRef)
           .withPositions([position]);
-
       this.overlayRef = this.overlay.create({ positionStrategy });
+    }
   }
 
   ngOnDestroy() {
@@ -102,59 +133,33 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
 
   @HostListener('mouseenter')
   show() {
-    if (this.disabled) {
-      return;
-    }
-    const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
-    if (this.overlayRef) {
-      const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(
-        tooltipPortal
-      );
-      tooltipRef.instance.text = this.text;
-      tooltipRef.instance.position = this.position;
-      tooltipRef.instance.outline = this.outline;
-      tooltipRef.instance.className = this.type;
-    }
+    clearTimeout(this.hideTimeoutId);
+
+    this.showTimeoutId = setTimeout(() => {
+      if (this.disabled || !this.text){
+        return;
+      }
+      const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
+      if (this.overlayRef) {
+        const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(
+          tooltipPortal
+        );
+        tooltipRef.instance.text = this.text;
+        tooltipRef.instance.position = this.position;
+        tooltipRef.instance.outline = this.outline;
+        tooltipRef.instance.className = this.vitamuiCommonToolTipClass;
+      }
+    }, this.vitamuiCommonToolTipShowDelay);
   }
 
   @HostListener('mouseout')
+  @HostListener('mousedown')
   hide() {
-     this.overlayRef?.detach();
-     this.overlayRef.detach();
+    clearTimeout(this.showTimeoutId);
+
+    this.hideTimeoutId = setTimeout(() => {
+      this.overlayRef?.detach();
+    }, this.vitamuiCommonToolTipShowDelay);
   }
 
-  private buildPosition(type: string): ConnectedPosition {
-    switch (type) {
-      case TooltipType.TOP: {
-        return {
-          originX: 'start',
-          originY: 'top',
-          overlayX: 'start',
-          overlayY: 'bottom',
-        };
-      }
-      case TooltipType.BOTTOM:
-        return {
-          originX: 'start',
-          originY: 'bottom',
-          overlayX: 'start',
-          overlayY: 'top',
-        };
-      case TooltipType.LEFT:
-        return {
-          originX: 'start',
-          originY: 'center',
-          overlayX: 'end',
-          overlayY: 'center',
-        };
-
-      case TooltipType.RIGHT:
-        return {
-          originX: 'end',
-          originY: 'center',
-          overlayX: 'start',
-          overlayY: 'center',
-        };
-    }
-  }
 }

@@ -61,16 +61,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -79,7 +70,6 @@ import javax.ws.rs.Produces;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Api(tags = "providers")
@@ -126,22 +116,40 @@ public class ProviderController extends AbstractUiRestController {
     /**
      * Retrieve an identity provider metadata.
      * The tenant identifier is provided as a query param instead of a header because the link to retrieve the file must be self sufficient.
-     * @param tenantId
      * @param id
      * @return
      */
     @ApiOperation(value = "Get metadata provider")
     @GetMapping("/{id}/idpMetadata")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> getIdpMetadataProviderByProviderId(@RequestParam(required = true) final Integer tenantId, final @PathVariable String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Resource> getIdpMetadataProviderByProviderId(final @PathVariable String id)
+        throws PreconditionFailedException {
         LOGGER.debug("Get keystore provider ={}");
-        ParameterChecker.checkParameter("Parameters are mandatory : ", tenantId, id);
-        SanityChecker.checkSecureParameter(String.valueOf(tenantId), id);
-        final IdentityProviderDto dto = service.getOne(buildUiHttpContext(tenantId), id, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA));
+        ParameterChecker.checkParameter("Parameter is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        final IdentityProviderDto dto = service.getOne(buildUiHttpContext(), id, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA));
         final HttpHeaders headers = new HttpHeaders();
         final ByteArrayResource resource = new ByteArrayResource(dto.getIdpMetadata().getBytes());
         headers.add("Content-Disposition", "attachment; filename=" + "idpmetadata.xml");
+        return ResponseEntity.ok().headers(headers).contentLength(resource.contentLength()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
+    }
+
+    /**
+     * Retrieve an identity provider spMetadata.
+     * The tenant identifier is provided as a query param instead of a header because the link to retrieve the file must be self sufficient.
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "Get spMetadata provider")
+    @GetMapping("/{id}/spMetadata")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Resource> getSpMetadataProviderByProviderId(final @PathVariable String id) {
+        LOGGER.debug("Get SpMetadata provider ={}");
+        ParameterChecker.checkParameter("Parameter is mandatory : ", id);
+        final IdentityProviderDto dto = service.getOne(buildUiHttpContext(), id, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.SPMETADATA));
+        final HttpHeaders headers = new HttpHeaders();
+        final ByteArrayResource resource = new ByteArrayResource(dto.getSpMetadata().getBytes());
+        headers.add("Content-Disposition", "attachment; filename=" + "spmetadata.xml");
         return ResponseEntity.ok().headers(headers).contentLength(resource.contentLength()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
     }
 
@@ -152,11 +160,6 @@ public class ProviderController extends AbstractUiRestController {
     public IdentityProviderDto create(@RequestPart final String provider, @RequestPart(value = "keystore",required = false) final MultipartFile keystore,
             @RequestPart(value = "idpMetadata",required = false) final MultipartFile idpMetadata) throws Exception {
         LOGGER.debug("Create provider: {}", provider);
-
-        if(Objects.nonNull(keystore) && Objects.nonNull(idpMetadata)) {
-            SanityChecker.isValidFileName(keystore.getOriginalFilename());
-            SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
-        }
         return service.create(buildUiHttpContext(), keystore, idpMetadata, provider);
     }
 

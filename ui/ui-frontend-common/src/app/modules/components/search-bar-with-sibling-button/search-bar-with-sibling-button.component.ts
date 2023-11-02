@@ -37,6 +37,7 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'search-bar-with-sibling-button',
   templateUrl: './search-bar-with-sibling-button.component.html',
 })

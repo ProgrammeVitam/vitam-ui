@@ -60,42 +60,40 @@ import java.util.Collections;
 import java.util.Optional;
 
 /**
- * A REST client to check existence, read, created, update and delete an object with identifier.
+ * A REST client to check existence, read, created, update and delete an object
+ * with identifier.
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C extends AbstractHttpContext>
-    extends BaseCrudRestClient<D, C> {
+        extends BaseCrudRestClient<D, C> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(BasePaginatingAndSortingRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory
+            .getInstance(BasePaginatingAndSortingRestClient.class);
 
-    public BasePaginatingAndSortingRestClient(final RestTemplate restTemplate, final String baseUrl) {
+    protected BasePaginatingAndSortingRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
     public PaginatedValuesDto<D> getAllPaginated(final C context, final Integer page, final Integer size,
-        final Optional<String> criteria,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
         SanityChecker.sanitizeCriteria(criteria);
         return getAllPaginated(context, page, size, criteria, orderBy, direction, Optional.empty());
     }
 
     public PaginatedValuesDto<D> getAllPaginated(final URIBuilder builder, final C context, final Integer page,
-        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-        final Optional<DirectionDto> direction,
-        final Optional<String> embedded) {
+            final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
+            final Optional<DirectionDto> direction, final Optional<String> embedded) {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size,
-            criteria,
-            orderBy, direction, embedded);
+            criteria, orderBy, direction, embedded);
         return fillOutUriParametersAndReturnResponse(builder, page, size, criteria, orderBy, direction, embedded,
-            context);
+                context);
     }
 
     private PaginatedValuesDto<D> fillOutUriParametersAndReturnResponse(URIBuilder builder, Integer page, Integer size,
-        Optional<String> criteria,
-        Optional<String> orderBy, Optional<DirectionDto> direction, Optional<String> embedded, C context) {
+            Optional<String> criteria, Optional<String> orderBy, Optional<DirectionDto> direction,
+            Optional<String> embedded, C context) {
         builder.addParameter("page", page.toString());
         builder.addParameter("size", size.toString());
         criteria.ifPresent(o -> builder.addParameter("criteria", o));
@@ -104,21 +102,20 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
         embedded.ifPresent(o -> builder.addParameter("embedded", o));
 
         final HttpEntity<D> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<PaginatedValuesDto<D>> response =
-            restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, getDtoPaginatedClass());
+        final ResponseEntity<PaginatedValuesDto<D>> response = restTemplate.exchange(buildUriBuilder(builder),
+                HttpMethod.GET, request, getDtoPaginatedClass());
         checkResponse(response);
         return response.getBody();
     }
 
     public PaginatedValuesDto<D> getAllPaginated(final C context, final Integer page, final Integer size,
-        final Optional<String> criteria,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, final Optional<String> embedded) {
-        LOGGER
-            .debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size, criteria,
-                orderBy, direction, embedded);
+            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
+            final Optional<String> embedded) {
+        LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size,
+                criteria, orderBy, direction, embedded);
         final URIBuilder builder = getUriBuilderFromUrl();
         return fillOutUriParametersAndReturnResponse(builder, page, size, criteria, orderBy, direction, embedded,
-            context);
+                context);
     }
 
     public ResultsDto<D> getAllRequest(final C context, final RequestParamDto requestParam) {
@@ -127,22 +124,43 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
         final URIBuilder builder = getUriBuilderFromUrl();
         builder.addParameter("page", requestParam.getPage().toString());
         builder.addParameter("size", requestParam.getSize().toString());
-        requestParam.getCriteria().ifPresent(o -> builder.addParameter("criteria", o));
-        requestParam.getOrderBy().ifPresent(o -> builder.addParameter("orderBy", o));
-        requestParam.getDirection().ifPresent(o -> builder.addParameter("direction", o.toString()));
+        if (requestParam.getCriteria() != null) {
+            builder.addParameter("criteria", requestParam.getCriteria());
+        }
+        if (requestParam.getOrderBy() != null) {
+            builder.addParameter("orderBy", requestParam.getOrderBy());
+        }
+        if (requestParam.getDirection() != null) {
+            builder.addParameter("direction", requestParam.getDirection().toString());
+        }
+        if (requestParam.getEmbedded() != null) {
+            builder.addParameter("embedded", requestParam.getEmbedded());
+        }
+        ;
 
-        requestParam.getGroups().ifPresent(group -> {
-            for (var field : group.getFields()) {
+        if (requestParam.getExcludeFields() != null) {
+            for (var excludeField : requestParam.getExcludeFields()) {
+                builder.addParameter("excludeFields", excludeField);
+            }
+        }
+
+        if (requestParam.getGroups() != null && requestParam.getGroups().getFields() != null) {
+            for (var field : requestParam.getGroups().getFields()) {
                 builder.addParameter("fields", field);
             }
-            builder.addParameter("operator", group.getOperator().name());
-        });
+            builder.addParameter("operator", requestParam.getGroups().getOperator().name());
+
+            if (requestParam.getGroups().getFieldOperator() != null) {
+                builder.addParameter("fieldOperator", requestParam.getGroups().getFieldOperator());
+            }
+        }
 
         final HttpEntity<D> request = new HttpEntity<>(buildHeaders(context));
         final var response =
-            restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, this.getResultDtoClass());
+            restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request,
+                this.getResultDtoClass());
         checkResponse(response);
-        return (ResultsDto<D>) response.getBody();
+        return response.getBody();
     }
 
     protected abstract ParameterizedTypeReference<PaginatedValuesDto<D>> getDtoPaginatedClass();

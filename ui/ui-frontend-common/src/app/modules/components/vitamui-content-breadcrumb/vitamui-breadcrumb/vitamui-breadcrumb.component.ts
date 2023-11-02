@@ -54,7 +54,7 @@ export class VitamuiBreadcrumbComponent implements OnInit {
   public data: BreadCrumbData[];
 
   @Output()
-  public selected = new EventEmitter<string>();
+  public selected = new EventEmitter<BreadCrumbData>();
 
   constructor(private route: ActivatedRoute, private applicationService: ApplicationService) { }
 
@@ -74,7 +74,7 @@ export class VitamuiBreadcrumbComponent implements OnInit {
 
   public onClick(d: BreadCrumbData, emit: boolean): void {
     if (emit) {
-      this.selected.emit(d.identifier);
+      this.selected.emit(d);
     }
   }
 }

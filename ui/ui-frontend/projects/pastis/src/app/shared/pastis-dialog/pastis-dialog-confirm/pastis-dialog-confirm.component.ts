@@ -1,3 +1,4 @@
+import { OnDestroy } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -46,11 +47,12 @@ import { PastisDialogData } from '../classes/pastis-dialog-data';
 const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-pastis-dialog-confirm',
   templateUrl: './pastis-dialog-confirm.component.html',
   styleUrls: [ './pastis-dialog-confirm.component.scss' ]
 })
-export class PastisDialogConfirmComponent implements OnInit {
+export class PastisDialogConfirmComponent implements OnInit, OnDestroy {
 
   portal: ComponentPortal<any>;
 

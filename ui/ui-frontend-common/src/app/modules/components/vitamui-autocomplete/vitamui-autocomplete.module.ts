@@ -42,8 +42,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { MatInputModule } from '@angular/material/input';
 import { AutocompletePositionDirectiveModule } from '../../directives/autocomplete-position/autocomplete-position.directive.module';
+import { EllipsisDirectiveModule } from '../../directives/ellipsis/ellipsis.directive.module';
+import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
 import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -52,6 +53,8 @@ import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
     MatTooltipModule,
     MatInputModule,
     AutocompletePositionDirectiveModule,
+    CommonTooltipModule,
+    EllipsisDirectiveModule
   ],
   declarations: [VitamUIAutocompleteComponent],
   exports: [VitamUIAutocompleteComponent],

@@ -43,6 +43,7 @@ import { EMPTY } from 'rxjs';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { SubrogationApiService } from '../../api/subrogation-api.service';
+import { VitamUISnackBarService } from '../../components/vitamui-snack-bar';
 import { BASE_URL, WINDOW_LOCATION } from '../../injection-tokens';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar.component';
 
@@ -65,6 +66,7 @@ describe('SubrogationSnackBarComponent', () => {
         { provide: Router, useValue: { navigate: () => {},  navigateByUrl: () => {}, url : 'subrogations/customers/customerId' } },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: SubrogationApiService, useValue: {} },
+        { provide: VitamUISnackBarService, useValue: {} },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
       ]
     })

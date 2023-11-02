@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {
   Event,
   LogbookApiService,
@@ -44,6 +44,7 @@ import {
   SearchService,
   VitamUISnackBarService
 } from 'ui-frontend-common';
+import {DownloadUtils} from 'ui-frontend-common';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
 const DOWNLOAD_TYPE_DIP = 'dip';
@@ -126,6 +127,7 @@ export class LogbookDownloadService extends SearchService<Event> {
         if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT') {
           return DOWNLOAD_TYPE_BATCH_REPORT;
         }
+      // tslint:disable-next-line:no-switch-case-fall-through
       case 'DATA_MIGRATION':
         return DOWNLOAD_TYPE_REPORT;
       case 'TRANSFER_REPLY':
@@ -151,6 +153,7 @@ export class LogbookDownloadService extends SearchService<Event> {
           case 'HOLDINGSCHEME':
             return DOWNLOAD_TYPE_OBJECT;
         }
+      // tslint:disable-next-line:no-switch-case-fall-through
       case 'INTERNAL_OPERATING_OP':
         if (eventType === 'INGEST_CLEANUP') {
           return DOWNLOAD_TYPE_BATCH_REPORT;
@@ -161,28 +164,29 @@ export class LogbookDownloadService extends SearchService<Event> {
     }
   }
 
-  launchDownloadReport(event: Event, tenantIdentifier: number, accessContractId: string) {
+  launchDownloadReport(event: Event, accessContractId: string) {
     if (this.isOperationInProgress(event)) {
       return;
     }
 
     const id = event.id;
 
-    var eventTypeProc = event.typeProc.toUpperCase();
-    var eventType = event.type.toUpperCase();
-    var downloadType = this.getDownloadType(eventTypeProc, eventType);
+    const eventTypeProc = event.typeProc.toUpperCase();
+    const eventType = event.type.toUpperCase();
+    const downloadType = this.getDownloadType(eventTypeProc, eventType);
     if (downloadType) {
-      let downloadUrl = this.logbookApiService.getDownloadReportUrl(id, downloadType, accessContractId, tenantIdentifier);
-      window.addEventListener('focus', window_focus, false);
-
-      function window_focus() {
-        window.removeEventListener('focus', window_focus, false);
-        URL.revokeObjectURL(downloadUrl);
-      }
-
-      location.href = downloadUrl;
+      const downloadUrl = this.logbookApiService.getDownloadReportUrl(id, downloadType);
+      this.getFileByUrl(downloadUrl, accessContractId).subscribe((response: any) =>
+        DownloadUtils.loadFromBlob(response, response.body.type));
     } else {
       this.snackBarService.open({ message: 'SNACKBAR.DOWNLOAD_NOT_ALLOWED' });
     }
+  }
+
+  private getFileByUrl(url: string, accessContractId: string): Observable<HttpResponse<Blob>>{
+    const headers = new HttpHeaders({
+      'X-Access-Contract-Id':  accessContractId,
+    });
+    return this.http.get(url, { headers, observe: 'response' ,responseType: 'blob' });
   }
 }

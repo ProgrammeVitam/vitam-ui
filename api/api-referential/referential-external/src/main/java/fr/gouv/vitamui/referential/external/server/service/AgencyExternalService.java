@@ -36,26 +36,17 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
@@ -63,6 +54,13 @@ import fr.gouv.vitamui.referential.internal.client.AgencyInternalRestClient;
 import fr.gouv.vitamui.referential.internal.client.AgencyInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.*;
 
 @Getter
 @Setter
@@ -70,7 +68,7 @@ import lombok.Setter;
 public class AgencyExternalService extends AbstractResourceClientService<AgencyDto, AgencyDto> {
 
     private AgencyInternalRestClient agencyInternalRestClient;
-    
+
     private AgencyInternalWebClient agencyInternalWebClient;
 
     @Autowired
@@ -117,8 +115,13 @@ public class AgencyExternalService extends AbstractResourceClientService<AgencyD
     }
 
     @Override
-    public JsonNode findHistoryById(final String id) {
-        return getClient().findHistoryById(getInternalHttpContext(), id);
+    public LogbookOperationsResponseDto findHistoryById(final String id) {
+        final JsonNode body = getClient().findHistoryById(getInternalHttpContext(), id);
+        try {
+            return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
+        } catch (final JsonProcessingException e) {
+            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
+        }
     }
 
     public boolean check(AgencyDto accessContractDto) {
@@ -132,7 +135,7 @@ public class AgencyExternalService extends AbstractResourceClientService<AgencyD
     public ResponseEntity<Resource> export() {
         return agencyInternalRestClient.export(getInternalHttpContext());
     }
-    
+
     public JsonNode importAgencies(String fileName, MultipartFile file) {
         return agencyInternalWebClient.importAgencies(getInternalHttpContext(), fileName, file);
     }

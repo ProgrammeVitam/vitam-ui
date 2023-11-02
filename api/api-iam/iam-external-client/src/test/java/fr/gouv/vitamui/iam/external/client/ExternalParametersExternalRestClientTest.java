@@ -36,15 +36,13 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +51,11 @@ import org.springframework.web.client.RestTemplate;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalParametersExternalRestClientTest extends AbstractServerIdentityBuilder {
@@ -71,21 +74,20 @@ public class ExternalParametersExternalRestClientTest extends AbstractServerIden
     public void getMyExternalParameters(){
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         String url = "http://localhost:8083/iam/v1/externalparameters/me";
-        
-        final ExternalParametersDto mock = new ExternalParametersDto();
-        mock.setIdentifier("identifier");
-        mock.setName("name");
-        
+
+        final Map<String, String> mock = new HashMap<>();
+        mock.put("identifier","name");
+
         Mockito.when(restTemplate.exchange(
         	Mockito.eq(url),
-        	Mockito.eq(HttpMethod.GET), 
-        	Mockito.any(), 
-        	Mockito.eq(ExternalParametersDto.class)))
-        .thenReturn(new ResponseEntity<ExternalParametersDto>(mock, HttpStatus.OK));
-        
-        ExternalParametersDto test = externalParametersExternalRestClient.getMyExternalParameters(context);
-        assertNotNull(test); 
-        assertEquals(test.getIdentifier(), mock.getIdentifier());
-        assertEquals(test.getName(), mock.getName());
+        	Mockito.eq(HttpMethod.GET),
+        	Mockito.any(),
+            Mockito.eq(new ParameterizedTypeReference<Map<String, String>>() {
+            })))
+        .thenReturn(new ResponseEntity<>(mock, HttpStatus.OK));
+
+        Map<String, String> test = externalParametersExternalRestClient.getMyExternalParameters(context);
+        assertNotNull(test);
+        assertEquals(test,mock);
     }
 }

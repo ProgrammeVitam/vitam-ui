@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.external.client;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -62,23 +63,24 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 public class ExternalParametersExternalRestClient extends BasePaginatingAndSortingRestClient<ExternalParametersDto, ExternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersExternalRestClient.class);
-    
+
     public ExternalParametersExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
-    
+
     /**
      * Retrieve the external parameters associated to the authenticated user.
      * @param context
      * @return the external parameters
      */
-    public ExternalParametersDto getMyExternalParameters(final ExternalHttpContext context) {
+    public Map<String, String> getMyExternalParameters(final ExternalHttpContext context) {
         LOGGER.debug("getMyExternalParameters");
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
 
-        final ResponseEntity<ExternalParametersDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, ExternalParametersDto.class);
+        final ResponseEntity<Map<String, String>> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, new ParameterizedTypeReference<>() {
+        });
         checkResponse(response);
         return response.getBody();
     }

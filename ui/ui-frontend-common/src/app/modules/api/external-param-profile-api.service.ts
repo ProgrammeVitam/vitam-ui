@@ -34,23 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {BaseHttpClient} from '../base-http-client';
-import {BASE_URL} from '../injection-tokens';
-import {ExternalParamProfile} from '../models';
-import {PageRequest, PaginatedResponse} from '../vitamui-table';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BaseHttpClient } from '../base-http-client';
+import { BASE_URL } from '../injection-tokens';
+import { ExternalParamProfile } from '../models';
+import { PageRequest, PaginatedResponse } from '../vitamui-table';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ExternalParamProfileApiService extends BaseHttpClient<ExternalParamProfile> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/externalparamprofile');
   }
 
-  getAllPaginated(pageRequest: PageRequest,embedded?: string,headers?: HttpHeaders): Observable<PaginatedResponse<ExternalParamProfile>> {
+  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<ExternalParamProfile>> {
     return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
@@ -58,7 +58,7 @@ export class ExternalParamProfileApiService extends BaseHttpClient<ExternalParam
     return super.create(externalParamProfile, headers);
   }
 
-  patch(data: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<ExternalParamProfile> {
+  patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<ExternalParamProfile> {
     return super.getHttp().patch<any>(super.getApiUrl() + '/me', data, { headers });
   }
 

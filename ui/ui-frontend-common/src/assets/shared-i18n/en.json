@@ -91,7 +91,7 @@
           "IMPOSSIBLE_SUBROGATION": "Subragation for this user is temporarily impossible",
           "DENIED_SUBROGATION": "Your subrogation request has been refused",
           "CANCEL_SUBROGATION": "Your subragation request has been canceled",
-          "ACTIVE_SUBROGATION": "You already have a subrogation in progress with the user",
+          "ACTIVE_SUBROGATION": "You already have a subrogation in progress with the user : {{ email }}",
           "WAITING_ACCEPTATION": "Waiting for user approval",
           "ACCEPT_SUBROGATION": "In order to help you the support has for the next 30 minutes the same rights as you",
           "ASK_SUBROGATION": "You ask a user to subrogate"
@@ -220,6 +220,10 @@
       "NAME": "Physical archives center",
       "TOOLTIP": "Configure archive centers, sites, buildings and rooms. Monitor occupancy rates"
     },
+    "ARCHIVE_ROOM_PROFILE_APP": {
+      "NAME": "Rights in the \"Physical archives center\" APP",
+      "TOOLTIP": "Set up access profiles for the \"Physical archives center\" APP"
+    },
     "BARCODES_APP": {
       "NAME": "Barcode",
       "TOOLTIP": "Reserve physical archive identifiers and print barcode labels"
@@ -331,6 +335,10 @@
       "TITLE": "Management contracts referencial",
       "TOOLTIP": "Consult, create and modify management contracts"
     },
+    "ARCHIVAL_PROFILE_APP": {
+      "NAME": "Archival profiles and Archival Units",
+      "TOOLTIP": "View and import archival profiles and archival units"
+    },
     "TRANSACTIONS_MONITORING": {
       "NAME": "Transactions monitoring",
       "TOOLTIP": "Transactions monitoring"
@@ -369,7 +377,8 @@
     "ingest_and_consultation": "Ingest & consultation",
     "supervision_and_audits": "Supervision & Audits",
     "security_and_application_rights": "Security & application rights",
-    "organization_and_user_rights": "Organization & user rights"
+    "organization_and_user_rights": "Organization & user rights",
+    "USER_ALERTS": "My actions"
   },
   "MENU_APPLICATION_TILE": {
     "ENTER_APPLICATION": "Enter to launch the application"
@@ -422,15 +431,15 @@
     "CANCELLED": "Download cancelled",
     "CANCEL_ACTION": "Cancel download",
     "CONFIRM_CANCEL_ACTION": "Are you sure you want to cancel the file download?",
-    "FILE_COMPRESSION": {
-      "SINGULAR": "File compression : 1 element",
-      "PLURAL": "File compression : {{ count }} elements"
+    "FILE_PREPARATION": {
+      "SINGULAR": "Preparing download : 1 element",
+      "PLURAL": "Preparing download : {{ count }} elements"
     },
-    "FILE_COMPRESSION_TOTAL": {
+    "FILE_PREPARATION_TOTAL": {
       "SINGULAR": "on {{ total }} (1 element not downloaded)",
       "PLURAL": "on {{ total }} ({{ count }} elements not downloaded)"
     },
-    "FILE_GENERATION": "File generation"
+    "FILE_TRANSFER": "Transferring file"
   },
   "EDITABLE_SELECT": {
     "CONFIM_UPDATE": "Are you sure you want to make this change?"
@@ -445,6 +454,47 @@
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Default)"
+  },
+  "USER_ALERTS_CARD": {
+    "APPLICATION": "Application",
+    "DETAIL": "Details",
+    "OPEN": "Perform the task"
+  },
+  "USER_ALERTS": {
+    "KEYS": {
+      "ACCESS_ITEM": "Communication",
+      "DISPOSAL_ITEM": "Disposal",
+      "REMOVAL_ITEM": "Removal",
+      "STORAGE_ITEM": "Storage",
+      "INDEX_ITEM": "Indexing",
+      "TRANSFER_ITEM": "Transfer"
+    },
+    "ACTIONS": {
+      "INDEX_ITEM_PREPARATION": "adding documents",
+      "INDEXING_DOCUMENTS": "indexing",
+      "PHYSICAL_SIGNIFICATIVE_INDEXATION": "indexing",
+      "DOCUMENTS_SIGNIFICATIVE_INDEXATION": "indexation",
+      "PHYSICAL_BANALISE_INDEXATION": "indexation",
+      "DOCUMENTS_BANALISE_INDEXATION": "indexation",
+      "PROCESS_TRANSFER_REQUEST": "acceptance of the request",
+      "RECEIPT_CONFIRMATION": "receipt confirmation",
+      "STORAGE_ASSIGNMENT": "assignment",
+      "REMOVAL_ASSIGNMENT": "assignment",
+      "VALIDATION": "validation",
+      "ITEM_SIGNATURE": "signature",
+      "DISPOSAL": "disposal",
+      "ITEM_CONSOLIDATION": "archive validation",
+      "DOCUMENTS_IMPORT": "import of documents",
+      "CONTROL": "control",
+      "ASSIGNMENT": "assignment",
+      "PHYSICAL_DOCUMENTS_INDEXATION": "indexing",
+      "DISPOSAL_CONFIRMATION": "consolidated archives validation",
+      "TRANSFER_REQUEST_VALIDATION": "acceptance of the request"
+    },
+    "STATUS": {
+      "BLOCKED": "to do"
+    },
+    "SEE_MORE": "See more"
   },
   "SNACKBAR": {
     "UPDATED_ACCOUNT": "Information has been updated",
@@ -476,7 +526,6 @@
     "STP_COMPUTE_INHERITED_RULES_FINALIZATION.STARTED": "Process for finalizing the calculation of the applicable management rules",
     "STP_COMPUTE_INHERITED_RULES_FINALIZATION": "Finalization of the calculation of the applicable management rules",
     "CHECK_OBJECT_SIZE": "File size check",
-    "OBJ_STORAGE": "Writing objects and groups of objects to the storage offer",
     "AUDIT": "Audit",
     "STP_DELETE_MASTERDATA_CONTEXT.WARNING": "Warning during the process of deleting application contexts",
     "STP_CORRECTIVE_AUDIT.KO": "Failed to correct the signatures of each corrupt archival unit or object or group of objects",
@@ -1480,6 +1529,7 @@
     "LFC.PRESERVATION_BINARY_HASH.INVALID.KO": "Failed to verify file hash",
     "LFC.PRESERVATION_SIEGFRIED_IDENTIFICATION.FILE_FORMAT.PUID_NOT_FOUND.KO": "Object format identifier (PUID) missing in the formats repository",
     "STP_MIGRATION_OBJECT_GROUPS": "Preparation process for the migration of groups of objects",
+    "OBJ_STORAGE": "Write objects and groups of objects to the storage offer",
     "OBJ_STORAGE.OK": "Successful writing of objects and groups of objects to storage offers",
     "OP_SECURISATION_STORAGE.KO": "Failed to save logs on storage offers",
     "STP_PRESERVATION_ACTION.WARNING": "Warning during the process of launching the griffin",
@@ -2998,6 +3048,8 @@
     "LFC.CHECK_ARCHIVE_UNIT_PROFILE.INVALID_AU_PROFILE.KO": "Failed to verify compliance with archival unit profiles: archival unit profile not compliant",
     "LFC.CHECK_OBJECT_SIZE.CHECK_SIZE": "Checking the size of a binary file",
     "LFC.CHECK_OBJECT_SIZE": "Checking File Size",
+    "CHECK_OBJECT_SIZE.CHECK_SIZE": "Checking the size of a binary file",
+    "CHECK_OBJECT_SIZE.KO": "The size of the binary object is not correct or the size field is not filled",
     "STP_RECLASSIFICATION_FINALIZATION.KO": "Failed to finalize the modification of the archival unit tree",
     "STP_CHECK_AND_COMPUTE.STARTED.FATAL": "Technical error when starting the process of preparing the list of archival units to update and modification authorizations",
     "STORAGE_BACKUP.KO": "Failed to save the write logs",
@@ -3058,9 +3110,6 @@
     "EXT_VITAMUI_CREATE_TENANT": "Creation of the owner's safe",
     "EXT_VITAMUI_UPDATE_TENANT": "Modification of the owner's safe",
     "EXT_VITAMUI_CREATE_USER": "User creation",
-    "EXT_VITAMUI_UPDATE_USER": "User modification",
-    "EXT_VITAMUI_CREATE_USER_INFO": "User info creation",
-    "EXT_VITAMUI_UPDATE_USER_INFO": "User info modification",
     "EXT_VITAMUI_CREATE_EXTERNAL_PARAM_PROFILE": "External setting profile creation",
     "EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE": "External setting profile update",
     "EXT_VITAMUI_CREATE_EXTERNAL_PARAM": "External setting creation",
@@ -3223,7 +3272,72 @@
     "LFC.CHECK_OBJECT_GROUP_SCHEMA.OK": "Success of the overall verification of the object groups",
     "LFC.CHECK_OBJECT_GROUP_SCHEMA.KO": "Failure of the global check of the object groups",
     "LFC.CHECK_OBJECT_GROUP_SCHEMA.WARNING": "Warning during the global check of the object group",
-    "LFC.CHECK_OBJECT_GROUP_SCHEMA.FATAL": "Technical error during the global check of the object groups"
+    "LFC.CHECK_OBJECT_GROUP_SCHEMA.FATAL": "Technical error during the global check of the object groups",
+    "EXT_VITAMUI_UPDATE_USER": "User modification",
+    "EXT_VITAMUI_CREATE_USER_INFO": "User info creation",
+    "EXT_VITAMUI_UPDATE_USER_INFO": "User info modification",
+    "MASS_UPDATE_CHECK": "Checking permissions and settings",
+    "MASS_UPDATE_CHECK.STARTED": "Begin verification of rights and settings",
+    "MASS_UPDATE_CHECK.OK": "Successful verification of rights and parameters",
+    "MASS_UPDATE_CHECK.KO": "Failed to verify permissions and settings",
+    "MASS_UPDATE_CHECK.FATAL": "Technical error while verifying permissions and settings",
+    "MASS_UPDATE_CHECK.WARNING": "Warning when checking permissions and settings",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.STARTED.OK": "Successfully started the process of preparing the calculation of the applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.OK": "Successful process of preparing calculation of applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.KO": "Process to prepare calculation of applicable business rules failed",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.WARNING": "Warning during the process of preparing the calculation of the applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.FATAL": "Technical error during the process of preparing the calculation of the applicable business rules",
+    "COMPUTE_INHERITED_RULES_PREPARATION.STARTED": "Beginning of the preparation of the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES_PREPARATION.OK": "Successful preparation of the calculation of the applicable business rules",
+    "COMPUTE_INHERITED_RULES_PREPARATION.KO": "Failed to prepare calculation of applicable business rules",
+    "COMPUTE_INHERITED_RULES_PREPARATION.FATAL": "Technical error while preparing the calculation of the applicable business rules",
+    "COMPUTE_INHERITED_RULES_PREPARATION.WARNING": "Warning while preparing to calculate applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES.STARTED.OK": "Successfully started the applicable business rule calculation process",
+    "STP_COMPUTE_INHERITED_RULES.OK": "Compute applicable business rules calculation process successful",
+    "STP_COMPUTE_INHERITED_RULES.KO": "Failed to calculate applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES.WARNING": "Warning while calculating applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES.FATAL": "Technical error during the process of calculating the applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.STARTED.OK": "Successfully started the process of finalizing the calculation of the applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.OK": "The process of finalizing the calculation of applicable business rules was successful",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.KO": "Failed to finalize calculation of applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.WARNING": "Warning during the process of finalizing the calculation of the applicable management rules",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.FATAL": "Technical error during the process of finalizing the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.STARTED": "Start of the finalization of the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.OK": "Successful finalization of the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.KO": "Failed to finalize calculation of applicable business rules",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.WARNING": "Warning of the finalization of the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES_FINALIZATION.FATAL": "Technical error in finalizing calculation of applicable management rules",
+    "STP_COMPUTE_INHERITED_RULES_DELETE": "Process to delete applicable business rules calculation",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.STARTED": "Starting the process of deleting the calculation of the applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.STARTED.OK": "Successfully started the process of deleting the calculation of the applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.OK": "Successful process of deleting calculation of applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.KO": "Process to delete applicable business rules calculation failed",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.WARNING": "Warning during process of deleting calculation of applicable business rules",
+    "STP_COMPUTE_INHERITED_RULES_DELETE.FATAL": "Technical error during the process of deleting the calculation of the applicable business rules",
+    "COMPUTE_INHERITED_RULES.STARTED": "Beginning of the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES.STARTED.OK": "Successfully started calculating applicable business rules",
+    "COMPUTE_INHERITED_RULES.OK": "Successful calculation of applicable business rules",
+    "COMPUTE_INHERITED_RULES.KO": "Failed to calculate applicable business rules",
+    "COMPUTE_INHERITED_RULES.WARNING": "Warning while calculating applicable business rules",
+    "COMPUTE_INHERITED_RULES.FATAL": "Technical error while calculating the applicable management rules",
+    "COMPUTE_INHERITED_RULES_DELETE": "Deletion of the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES_DELETE.STARTED": "Begin deletion of the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES_DELETE.STARTED.OK": "Successful start of deleting calculation of applicable management rules",
+    "COMPUTE_INHERITED_RULES_DELETE.OK": "Successfully deleted calculation of applicable business rules",
+    "COMPUTE_INHERITED_RULES_DELETE.KO": "Failed to delete calculation of applicable business rules",
+    "COMPUTE_INHERITED_RULES_DELETE.WARNING": "Warning when deleting calculation of applicable management rules",
+    "COMPUTE_INHERITED_RULES_DELETE.FATAL": "Technical error while deleting the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.STARTED": "Inheriting archival unit identification started",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.OK": "Inheriting archival unit identification successful",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.KO": "Error identifying inherited archival units",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.FATAL": "Technical error while identifying inherited archival units",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER.WARNING": "Warning when identifying inherited archival units",
+    "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.OK": "Successful check of the processing limitation thresholds of the archival units",
+    "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.KO": "Failed to check the processing throttling thresholds of archival units",
+    "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.FATAL": "Technical error while checking processing limitation thresholds of archival units",
+    "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.WARNING": "Warning when checking processing throttling thresholds of archival units"
+
+
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",

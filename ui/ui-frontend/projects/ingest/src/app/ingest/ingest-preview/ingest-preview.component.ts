@@ -69,7 +69,8 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.ingestService.logbookOperationsReloaded.subscribe(logbookOperations =>
+    this.ingestService.logbookOperationsReloaded
+    .subscribe(logbookOperations =>
       this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations));
   }
 

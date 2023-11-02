@@ -39,9 +39,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {of} from 'rxjs';
+import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
 import {AuditService} from '../audit.service';
 import {AuditPreviewComponent} from './audit-preview.component';
-import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
 
 @Pipe({name: 'truncate'})
 class MockTruncatePipe implements PipeTransform {

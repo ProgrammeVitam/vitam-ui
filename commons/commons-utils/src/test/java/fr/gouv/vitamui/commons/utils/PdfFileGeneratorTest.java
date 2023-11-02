@@ -6,10 +6,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.opensagres.xdocreport.document.images.ClassPathImageProvider;
+import fr.opensagres.xdocreport.document.images.FileImageProvider;
+import fr.opensagres.xdocreport.document.images.IImageProvider;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
@@ -76,6 +80,35 @@ public class PdfFileGeneratorTest {
             Assert.assertEquals("value1", results[0].trim());
             Assert.assertEquals("value2", results[1].trim());
             Assert.assertEquals("value3", results[2].trim());
+        }
+    }
+
+
+    @Test
+    public void testCreatePdfWithMetadataAndHtml() throws Exception {
+        // The template contains "${data},${dynamic.field},${imageField},${htmlField}"
+        try (final InputStream templateInput = new FileInputStream(new File(TEST_DIRECTORY + "template-metadata-html.odt"));
+             final FileOutputStream pdfOutput = new FileOutputStream(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))) {
+            final Map<String, Object> dataMap = new HashMap<>();
+            final String[] dynamicFields = {"dynamic.field"};
+            final String[] imageFields = {"imageField"};
+            final String[] htmlFields = {"htmlField"};
+            dataMap.put("data", "data");
+            dataMap.put("dynamic.field", "dynamic field");
+            dataMap.put("imageField", new FileImageProvider(Paths.get(TEST_DIRECTORY, "image.png").toFile()));
+
+            dataMap.put("htmlField",  "<span><i>html</i> field</span>" );
+
+            PdfFileGenerator.createPdfWithMetadataAndHtml(templateInput, pdfOutput, dataMap, dynamicFields, imageFields,htmlFields);
+        }
+
+        try (final PDDocument document = PDDocument.load(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))) {
+            final String content = new PDFTextStripper().getText(document);
+            final String[] results = content.split(",");
+            Assert.assertEquals("data", results[0].trim());
+            Assert.assertEquals("dynamic field", results[1].trim());
+            Assert.assertEquals("", results[2].trim());
+            Assert.assertEquals("html field", results[3].trim());
         }
     }
 

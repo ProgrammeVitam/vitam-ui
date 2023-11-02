@@ -36,8 +36,9 @@
  */
 
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import {
   AdminUserProfile,
   ApplicationId,
@@ -106,7 +107,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(public contextService: ContextService, private authService: AuthService) {
+  constructor(public contextService: ContextService, private authService: AuthService, private route: ActivatedRoute) {
     super(contextService);
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
@@ -116,11 +117,22 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   }
 
   ngOnInit() {
+    const tenantChange = this.route.paramMap.pipe(
+      filter((paramMap) => !!paramMap.get('tenantIdentifier')),
+      map((paramMap) => +paramMap.get('tenantIdentifier')),
+      distinctUntilChanged(),
+      tap((tenantIdentifier) => {
+        this.contextService.setTenantId(tenantIdentifier);
+      })
+    );
+
     this.contextService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe((data: Context[]) => {
       this.dataSource = data;
     });
 
-    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
+      debounceTime(FILTER_DEBOUNCE_TIME_MS)
+    );
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildContextCriteriaFromSearch();

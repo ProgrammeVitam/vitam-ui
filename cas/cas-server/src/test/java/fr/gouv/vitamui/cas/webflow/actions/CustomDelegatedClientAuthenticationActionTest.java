@@ -8,8 +8,11 @@ import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.val;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
+import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
+import org.apereo.cas.pac4j.client.DelegatedClientNameExtractor;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
+import org.apereo.cas.web.flow.DelegatedClientAuthenticationWebflowManager;
 import org.apereo.cas.web.flow.DelegatedClientIdentityProviderConfigurationProducer;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +25,9 @@ import java.io.FileNotFoundException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -48,7 +54,9 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
 
         val configContext = mock(DelegatedClientAuthenticationConfigurationContext.class);
         when(configContext.getDelegatedClientIdentityProvidersProducer()).thenReturn(mock(DelegatedClientIdentityProviderConfigurationProducer.class));
-        action = new CustomDelegatedClientAuthenticationAction(configContext, mock(IdentityProviderHelper.class),
+        when(configContext.getDelegatedClientNameExtractor()).thenReturn(mock(DelegatedClientNameExtractor.class));
+        action = new CustomDelegatedClientAuthenticationAction(configContext, mock(DelegatedClientAuthenticationWebflowManager.class),
+            mock(DelegatedClientAuthenticationFailureEvaluator.class), mock(IdentityProviderHelper.class),
             mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), "", ",");
     }
 

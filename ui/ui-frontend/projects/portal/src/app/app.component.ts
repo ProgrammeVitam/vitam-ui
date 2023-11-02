@@ -45,12 +45,15 @@ import { Logger, StartupService } from 'ui-frontend-common';
 export class AppComponent implements OnInit {
   title = 'Portal App';
 
+  hasLangSelection: boolean;
+
   constructor(
     private startupService: StartupService,
     private logger: Logger
   ) {}
 
   ngOnInit() {
+    this.hasLangSelection = true;
 
     // If there is no startup data received (maybe an error!)
     // navigate to error route
@@ -58,7 +61,10 @@ export class AppComponent implements OnInit {
     if (!this.startupService.configurationLoaded()) {
       this.logger.log(this, 'startup data does not exists');
       // navigate(['error'], { replaceUrl: true });
+      return;
     }
 
+    const uiConfig: any = this.startupService.getConfigStringValue('UI');
+    this.hasLangSelection = uiConfig?.hasLangSelection ?? true
   }
 }

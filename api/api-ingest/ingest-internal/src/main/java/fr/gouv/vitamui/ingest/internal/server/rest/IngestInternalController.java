@@ -133,7 +133,7 @@ public class IngestInternalController {
         } catch (IOException | URISyntaxException | IngestFileGenerationException e) {
             LOGGER.error("Error with generating Report : {} ", e.getMessage());
             throw new IngestFileGenerationException("Unable to generate the ingest report " + e);
-        } catch (PreconditionFailedException | InvalidParseOperationException exception ) {
+        } catch (PreconditionFailedException exception ) {
             LOGGER.error("The id parameter is not valid" , exception.getMessage());
             throw new PreconditionFailedException("The id parameter is not valid" ,exception.getMessage());
         }

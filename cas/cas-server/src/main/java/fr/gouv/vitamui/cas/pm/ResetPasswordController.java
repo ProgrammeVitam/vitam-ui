@@ -36,22 +36,23 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import java.io.Serializable;
-import java.util.Locale;
-
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.pm.PasswordManagementQuery;
 import org.apereo.cas.pm.PasswordManagementService;
-import org.apereo.cas.pm.web.flow.PasswordManagementWebflowUtils;
+import org.apereo.cas.pm.PasswordResetUrlBuilder;
 import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
-import org.apereo.cas.util.CollectionUtils;
-import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,11 +60,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 /**
  * Rest controller for CAS extra features.
@@ -73,6 +71,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/extras")
 @RequiredArgsConstructor
+@Slf4j
 public class ResetPasswordController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ResetPasswordController.class);
@@ -91,6 +90,12 @@ public class ResetPasswordController {
 
     private final DefaultTransientSessionTicketFactory pmTicketFactory;
 
+    private final PasswordResetUrlBuilder passwordResetUrlBuilder;
+
+    private final IdentityProviderHelper identityProviderHelper;
+
+    private final ProvidersService providersService;
+
     @Value("${theme.vitamui-platform-name:VITAM-UI}")
     private String vitamuiPlatformName;
 
@@ -101,48 +106,43 @@ public class ResetPasswordController {
                                  @RequestParam(value = "language", defaultValue = "en") final String language,
                                  final HttpServletRequest request) {
 
+        if (!communicationsManager.isMailSenderDefined()) {
+            LOGGER.warn("CAS is unable to send password-reset emails given no settings are defined to account for email servers");
+            return false;
+        }
+
         if (StringUtils.isBlank(username)) {
             LOGGER.warn("No username is provided");
             return false;
         }
 
-        if (!communicationsManager.isMailSenderDefined()) {
-            LOGGER.warn("CAS is unable to send password-reset emails given no settings are defined to account for email servers");
-            return false;
-        }
         val usernameLower = username.toLowerCase().trim();
         val query = PasswordManagementQuery.builder().username(usernameLower).build();
         val email = passwordManagementService.findEmail(query);
         if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided");
             return false;
+        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), email)) {
+            LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", email);
+            return false;
         }
 
         final Locale locale = new Locale(language);
-        final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : casProperties.getAuthn().getPm().getReset().getExpirationMinutes();
+        val duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
+        final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : duration.toMinutes();
         request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, expMinutes);
-        final String url = buildPasswordResetUrl(usernameLower, casProperties);
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url, vitamuiPlatformName, locale);
+        try {
+            val url = passwordResetUrlBuilder.build(usernameLower).toString();
+            final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url, vitamuiPlatformName, locale);
 
-        LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
-            email, messageToSend.getSubject(), expMinutes);
+            LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
+                email, messageToSend.getSubject(), expMinutes);
 
-        return sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText());
-    }
-
-    protected String buildPasswordResetUrl(final String username, final CasConfigurationProperties casProperties) {
-        val query = PasswordManagementQuery.builder().username(username).build();
-        val token = passwordManagementService.createToken(query);
-
-        val properties = CollectionUtils.<String, Serializable>wrap(PasswordManagementWebflowUtils.FLOWSCOPE_PARAMETER_NAME_TOKEN, token);
-        val ticket = pmTicketFactory.create((Service) null, properties);
-        this.ticketRegistry.addTicket(ticket);
-
-        val resetUrl = new StringBuilder(casProperties.getServer().getPrefix())
-            .append('/').append(CasWebflowConfigurer.FLOW_ID_LOGIN).append('?')
-            .append(PasswordManagementWebflowUtils.REQUEST_PARAMETER_NAME_PASSWORD_RESET_TOKEN).append('=').append(ticket.getId());
-
-        return resetUrl.toString();
+            return sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText());
+        } catch (final Exception e) {
+            LOGGER.error("Cannot reset password", e);
+            return false;
+        }
     }
 
     protected boolean sendPasswordResetEmailToAccount(final String to, final String subject, final String msg) {

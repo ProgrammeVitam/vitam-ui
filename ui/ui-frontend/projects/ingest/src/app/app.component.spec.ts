@@ -37,7 +37,7 @@
 /* tslint:disable:component-selector max-classes-per-file */
 
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { waitForAsync, TestBed  } from '@angular/core/testing';
+import { TestBed, waitForAsync  } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';

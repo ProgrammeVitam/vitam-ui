@@ -34,12 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AccessContract, ApiEvent, Event, LogbookApiService } from 'ui-frontend-common';
-import { AccessContractService } from '../../../access-contract/access-contract.service';
-import { SecurisationService } from '../../securisation.service';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ApiEvent, Event, ExternalParametersService, ExternalParameters, LogbookApiService} from 'ui-frontend-common';
+import {SecurisationService} from '../../securisation.service';
 
 @Component({
   selector: 'app-securisation-check-tab',
@@ -53,22 +50,19 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   events: Event[] = [];
   display = false;
 
-  accessContracts: AccessContract[];
   accessContractId: string;
 
   constructor(
-    private securisationService: SecurisationService,
-    private accessContractService: AccessContractService,
-    private route: ActivatedRoute
-  ) {}
+    private readonly securingService: SecurisationService,
+    private readonly externalParameterService: ExternalParametersService){
+     }
+
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
-        this.accessContractService.getAllForTenant(params.tenantIdentifier).subscribe((value) => {
-          this.accessContracts = value;
-        });
-      }
+    this.externalParameterService.getUserExternalParameters()
+    .subscribe(parameters => {
+      const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+      this.accessContractId = accessContractId;
     });
   }
 
@@ -79,14 +73,13 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
     }
   }
 
-  updateAccessContractId(event: any) {
-    this.accessContractId = event.value;
-  }
-
   checkTraceability() {
-    this.securisationService.checkTraceabilityOperation(this.id, this.accessContractId).subscribe((response: { $results: ApiEvent[] }) => {
-      this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
-      this.display = true;
-    });
+    if(this.accessContractId){
+      this.securingService.checkTraceabilityOperation(this.id, this.accessContractId)
+      .subscribe((response: { $results: ApiEvent[]; }) => {
+        this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
+        this.display = true;
+      });
+    }
   }
 }

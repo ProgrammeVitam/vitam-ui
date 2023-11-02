@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
+import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -101,11 +102,13 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
         String surrogate = null;
         String ip = null;
         if (requestContext != null) {
-            val flow = requestContext.getFlowScope();
-            if (flow != null) {
-                val credential = flow.get("credential");
+            val flowScope = requestContext.getFlowScope();
+            if (flowScope != null) {
+                val credential = flowScope.get("credential");
                 if (credential instanceof SurrogateUsernamePasswordCredential) {
                     surrogate = ((SurrogateUsernamePasswordCredential) credential).getSurrogateUsername();
+                } else {
+                    flowScope.put(Constants.PROVIDED_USERNAME, transformedCredential.getUsername());
                 }
             }
             val externalContext = requestContext.getExternalContext();

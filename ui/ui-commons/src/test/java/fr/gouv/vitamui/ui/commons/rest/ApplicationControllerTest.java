@@ -53,7 +53,7 @@ public class ApplicationControllerTest extends UIControllerTest<ApplicationDto> 
 
     @Test
     public void testGetApplications() throws Exception {
-        super.performGet("", ImmutableMap.of("filterApp", true));
+        super.performGet("/filtered", ImmutableMap.of("filterApp", true));
     }
 
     @Test

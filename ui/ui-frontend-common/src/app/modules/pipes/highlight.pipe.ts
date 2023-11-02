@@ -23,14 +23,13 @@ export class  HighlightPipe implements PipeTransform {
       const matchedStringIndex = regex.lastIndex - args.length;
       // tslint:disable-next-line: max-line-length
       const coloredString = `<span style='color: var(--${ThemeColorType.VITAMUI_PRIMARY});font-weight: bold;'>${value.substring(matchedStringIndex, regex.lastIndex)}</span>`;
-      result = result.concat(searchInWithoutAccent.substring(startIndex, matchedStringIndex), coloredString);
+      result = result.concat(value.toString().substring(startIndex, matchedStringIndex), coloredString);
       startIndex = regex.lastIndex;
     }
 
     if (startIndex > 0) {
       result = result.concat(value.substr(startIndex));
     }
-
     return this.sanitizer.bypassSecurityTrustHtml(result);
   }
 

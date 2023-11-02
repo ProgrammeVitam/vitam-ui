@@ -65,7 +65,6 @@ export class CustomerSelectService {
           this.customers = results;
           return (results || []).map((c: { id: string, code: string, name: string  }) => {
             const label = c.code + ' - ' + c.name;
-
             return { value: c.id, label };
           });
         })

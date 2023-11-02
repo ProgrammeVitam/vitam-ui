@@ -30,24 +30,25 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'fileSize',
 })
 export class FileSizePipe implements PipeTransform {
-  fileSizeUnit: number = 1024;
+  fileSizeUnit = 1024;
 
   constructor() {}
 
   transform(value: any, decimals?: number): any {
-      return this.getFileSizeUnit(value,decimals );
+      return this.getFileSizeUnit(value, decimals );
   }
 
 
   getFileSizeUnit(fileSize: number, decimals = 2) {
 
-    if (!+fileSize) return '0 Bytes'
+    if (!+fileSize) {
+    return '0 Bytes';
+    }
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    const i = Math.floor(Math.log(fileSize) / Math.log(this.fileSizeUnit));
 
-    const i = Math.floor(Math.log(fileSize) / Math.log(this.fileSizeUnit))
-
-    return `${parseFloat((fileSize / Math.pow(this.fileSizeUnit, i)).toFixed(dm))} ${sizes[i]}`
+    return `${parseFloat((fileSize / Math.pow(this.fileSizeUnit, i)).toFixed(dm))} ${sizes[i]}`;
   }
 }

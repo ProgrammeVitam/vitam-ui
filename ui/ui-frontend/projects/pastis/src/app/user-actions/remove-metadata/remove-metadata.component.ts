@@ -41,6 +41,7 @@ import { PopupService } from '../../core/services/popup.service';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-remove-metadata',
   templateUrl: './remove-metadata.component.html',
   styleUrls: ['./remove-metadata.component.scss']

@@ -38,13 +38,13 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {merge, Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
-import {IngestService} from '../ingest.service';
 import {
   IngestStatus,
   ingestStatus,
   ingestStatusVisualColor,
   LogbookOperation
-} from "../../models/logbook-event.interface";
+} from '../../models/logbook-event.interface';
+import {IngestService} from '../ingest.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 

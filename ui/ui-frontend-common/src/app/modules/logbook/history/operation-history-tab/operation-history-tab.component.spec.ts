@@ -53,7 +53,7 @@ const logbookEvent: Event = {
   dateTime: new Date(),
   outcome: 'OK',
   outDetail: 'STORAGE_SECURISATION_TIMESTAMP.OK',
-  outMessage: "Succès de la création du tampon d'horodatage de l'ensemble des journaux d'écriture",
+  outMessage: 'Succès de la création du tampon d\'horodatage de l\'ensemble des journaux d\'écriture',
   data: null,
   parsedData: {},
   objectId: 'eventId',
@@ -93,31 +93,31 @@ describe('OperationHistoryTabComponent', () => {
   });
 
   it('Component should return true when all conditions are respected', () => {
-    //Given
+    // Given
     const event = logbookEvent;
 
-    //When
+    // When
     component.identifier = 'eventId';
 
-    //Then
+    // Then
     expect(component.filterByIdentifier(event)).toBeDefined();
     expect(component.filterByIdentifier(event)).toBeTruthy();
   });
 
   it('Component should return fakse when all conditions are not respected', () => {
-    //Given
+    // Given
     const event = logbookEvent;
 
-    //When
+    // When
     component.identifier = 'identifier';
 
-    //Then
+    // Then
     expect(component.filterByIdentifier(event)).toBeDefined();
     expect(component.filterByIdentifier(event)).toBeFalsy();
   });
 
   it('Component should return false when objectId is null', () => {
-    //Given
+    // Given
     const event: Event = {
       id: 'eventObjectId',
       idRequest: 'aeeaaaaaaghkyonpaa3fsamcys3raeiaaaaq',
@@ -127,7 +127,7 @@ describe('OperationHistoryTabComponent', () => {
       dateTime: new Date(),
       outcome: 'OK',
       outDetail: 'STP_SANITY_CHECK_SIP.STARTED.OK',
-      outMessage: "Succès du début du processus des contrôles préalables à l'entrée",
+      outMessage: 'Succès du début du processus des contrôles préalables à l\'entrée',
       data: null,
       parsedData: {},
       objectId: null,
@@ -139,10 +139,10 @@ describe('OperationHistoryTabComponent', () => {
       obIdReq: null,
     };
 
-    //When
+    // When
     component.identifier = 'identifier';
 
-    //Then
+    // Then
     expect(component.filterByIdentifier(event)).toBeDefined();
     expect(component.filterByIdentifier(event)).toBeFalsy();
   });

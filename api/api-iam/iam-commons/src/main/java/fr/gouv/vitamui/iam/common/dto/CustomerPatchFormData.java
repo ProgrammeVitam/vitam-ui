@@ -44,6 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 import java.util.Optional;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Getter
 @Setter
@@ -53,8 +54,11 @@ public class CustomerPatchFormData {
     @NotNull
     private Map<String, Object> partialCustomerDto;
 
+    @JsonIgnore
     private Optional<MultipartFile> header;
+    @JsonIgnore
     private Optional<MultipartFile> footer;
+    @JsonIgnore
     private Optional<MultipartFile> portal;
 
     /**

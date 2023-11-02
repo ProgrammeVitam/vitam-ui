@@ -112,6 +112,15 @@ public final class RestUtils {
 
     /**
      * Check criteria
+     * @param criteria
+     */
+    public static void checkCriteria(final Optional<String> criteria) {
+        SanityChecker.sanitizeCriteria(criteria);
+        criteria.ifPresent(c -> CriteriaUtils.checkFormat(c));
+    }
+
+    /**
+     * Check criteria
      * @param criteriaDto criteria query DTO
      */
     public static void checkCriteriaDto(final Optional<QueryDto> criteriaDto) {

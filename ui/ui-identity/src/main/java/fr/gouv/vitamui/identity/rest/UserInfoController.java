@@ -125,8 +125,7 @@ public class UserInfoController extends AbstractUiRestController {
 
     @ApiOperation(value = "get history by user info id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
-        throws InvalidParseOperationException {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The id is mandatory parameter :", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for user info with id :{}", id);

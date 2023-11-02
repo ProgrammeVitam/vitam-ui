@@ -39,8 +39,7 @@ import {
   Ontology,
   OntologyService,
   Project,
-  ProjectStatus,
-  Transaction,
+  ProjectStatus, Transaction,
   TransactionStatus,
 } from 'ui-frontend-common';
 

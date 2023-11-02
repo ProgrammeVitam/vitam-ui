@@ -44,6 +44,8 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -51,6 +53,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,6 +71,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -77,6 +81,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * Controller for logbooks.
@@ -94,22 +99,27 @@ public class LogbookInternalController {
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
 
+    private final TenantInternalService tenantInternalService;
+
     @Autowired
     public LogbookInternalController(final LogbookService logbookService,
-        final InternalSecurityService securityService) {
+        final InternalSecurityService securityService, final TenantInternalService tenantInternalService) {
         this.logbookService = logbookService;
         this.securityService = securityService;
+        this.tenantInternalService = tenantInternalService;
     }
+
 
     @ApiOperation(value = "Get log book operation by json select")
     @Secured({ServicesData.ROLE_LOGBOOKS})
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsResponseDto findOperations(
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestBody final JsonNode select) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+            @RequestBody final JsonNode select, @RequestParam(required = false) final Integer vitamTenantIdentifier) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeJson(select);
         SanityChecker.sanitizeCriteria(select);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId);
+
+        final VitamContext vitamContext = getRequestedVitamContext(tenantId, vitamTenantIdentifier);
         return VitamRestUtils.responseMapping(logbookService.selectOperations(select, vitamContext).toJsonNode(),
             LogbookOperationsResponseDto.class);
     }
@@ -235,4 +245,15 @@ public class LogbookInternalController {
         return vitamContext;
     }
 
+    private VitamContext getRequestedVitamContext(final Integer headerTenantIdentifier,final Integer requestedVitamTenantIdentifier) {
+        if (Objects.nonNull(requestedVitamTenantIdentifier)) {
+            TenantDto requestedTenant = tenantInternalService.findByIdentifier(requestedVitamTenantIdentifier);
+            if (Objects.isNull(requestedTenant)) {
+                throw new BadRequestException(String.format("Tenant not found with identifier : '%d'", requestedVitamTenantIdentifier));
+            }
+            return securityService.buildVitamContext(requestedVitamTenantIdentifier);
+        } else {
+            return securityService.buildVitamContext(headerTenantIdentifier);
+        }
+    }
 }

@@ -56,7 +56,7 @@ Run `./install_local.sh` to install the local package to ui-frontend.
 
 Test your new version in all the apps and check that everything is okay. Make changes to the applications if necessary.
 
-Use the right npmrc for common publication.
+Use the right npmrc for common publication to publish in npm-private-release.
 
 Run `npm run publish-dist` to publish on the nexus repository.
 
@@ -64,7 +64,9 @@ Commit the changes to the `ui-frontend-common` folder only then tag that commit 
 
 Run `./install_from_repo.sh <version>` to install your freshly published version from the nexus on the 4 apps.
 
-Make another commit with the changes made to the apps as well as the incremented version number in the `package.json`.
+Make another commit with the changes made to the apps as well as the incremented version number in the `package.json`. 
+
+Delete the older version of ui-frontend-common tgz that is no longer used and add the new generated one.
 
 Push your commits and your tag.
 

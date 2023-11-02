@@ -1,9 +1,13 @@
 <div class="vitamui-snack-bar-container">
-  <div  class="vitamui-snack-bar-content">
+  <div class="vitamui-snack-bar-content">
     <i *ngIf="data?.icon" class="vitamui-icon {{ data.icon }}"></i>
-    <span [innerHTML]="data.message"></span>
+    <div class="d-flex align-items-center" [class.clickable]="data.callBack">
+      <div [innerHTML]="data.message"></div>
+      <div *ngIf="html && data.callBack" class="ml-2" (click)="callBack()" [innerHTML]="html"></div>
+    </div>
   </div>
-  <button class="close-btn" (click)="close()">
+
+  <button (click)="close()" class="close-btn">
     <i class="material-icons">clear</i>
   </button>
 </div>

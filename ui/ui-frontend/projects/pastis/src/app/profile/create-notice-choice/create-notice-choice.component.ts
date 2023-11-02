@@ -15,6 +15,7 @@ function constantToTranslate() {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'create-notice-choice',
   templateUrl: './create-notice-choice.component.html',
   styleUrls: ['./create-notice-choice.component.scss']

@@ -48,6 +48,8 @@ ui-identity:
     admin-identity: "${ui.url}"
     identity: "${ui.url}"
 
+max-street-length: 250
+
 ui-prefix: identity-api
 
 address:

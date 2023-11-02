@@ -48,19 +48,20 @@ export class DownloadSnackBarComponent implements OnInit {
 
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<DownloadSnackBarComponent>;
 
+  progressionValue: number;
   isCompressed = false;
   count: number;
   total: number;
   notDownloadable: number;
 
   public downloadCountMap: { [k: string]: string } = {
-    '=1': 'DOWNLOAD.FILE_COMPRESSION.SINGULAR',
-    other: 'DOWNLOAD.FILE_COMPRESSION.PLURAL',
+    '=1': 'DOWNLOAD.FILE_PREPARATION.SINGULAR',
+    other: 'DOWNLOAD.FILE_PREPARATION.PLURAL',
   };
 
   public downloadCountOverTotalMap: { [k: string]: string } = {
-    '=1': 'DOWNLOAD.FILE_COMPRESSION_TOTAL.SINGULAR',
-    other: 'DOWNLOAD.FILE_COMPRESSION_TOTAL.PLURAL',
+    '=1': 'DOWNLOAD.FILE_PREPARATION_TOTAL.SINGULAR',
+    other: 'DOWNLOAD.FILE_PREPARATION_TOTAL.PLURAL',
   };
 
   // tslint:disable-next-line:variable-name
@@ -89,4 +90,7 @@ export class DownloadSnackBarComponent implements OnInit {
     return this._cancel.asObservable();
   }
 
+  get progressionInPercentage(): number {
+    return this.progressionValue * 100;
+  }
 }

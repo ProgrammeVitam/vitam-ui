@@ -1,0 +1,17 @@
+<div class="content clickable" [matMenuTriggerFor]="alertsMenu">
+  <i class="vitamui-icon vitamui-icon-notifications"></i>
+  <i class="text caption bold notification-counter">{{userAlerts.count}}</i>
+</div>
+
+<mat-menu #alertsMenu="matMenu">
+  <ng-container *ngFor="let alert of userAlerts.alerts">
+    <button class="alert" mat-menu-item title="{{ alert.label }}">
+      <div class="text normal" (click)="openAlert.emit(alert)">{{ alert.label }}</div>
+      <i class="text normal light vitamui-icon vitamui-icon-close" (click)="closeAlert.emit(alert)"></i>
+    </button>
+  </ng-container>
+
+  <button class="alert" mat-menu-item (click)="seeMoreAlerts.emit()" *ngIf="hasMoreAlerts">
+    <div class="text normal primary">{{'USER_ALERTS.SEE_MORE' | translate}}</div>
+  </button>
+</mat-menu>

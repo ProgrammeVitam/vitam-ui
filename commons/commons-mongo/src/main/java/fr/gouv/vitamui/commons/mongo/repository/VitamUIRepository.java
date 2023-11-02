@@ -87,7 +87,7 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
      * @return
      */
     PaginatedValuesDto<T> getPaginatedValues(final Integer page, final Integer size, final Optional<Query> query, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction);
+                                             final Optional<DirectionDto> direction);
 
     /**
      * Retrieve paginated values for nested arrays.

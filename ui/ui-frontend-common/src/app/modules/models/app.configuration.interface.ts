@@ -1,3 +1,4 @@
+import { Category } from './application/category.interface';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -49,7 +50,12 @@ export interface AppConfiguration {
   FOOTER_LOGO: string;
   USER_LOGO: string;
   LOGO: string;
-  [key: string]: string;
+  [key: string]: any;
   PLATFORM_NAME: string;
   CUSTOMER: string;
+  GATEWAY_ENABLED: boolean;
+  ALLOWED_URLS: string[];
+  OIDC_CONFIG: any;
+  CATEGORY_CONFIGURATION: Category[];
+  UI: any;
 }

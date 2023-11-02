@@ -38,13 +38,12 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { VitamUISnackBarService } from '../../modules/components/vitamui-snack-bar';
 import { RuleApiService } from '../api/rule-api.service';
-import { VitamUISnackBarService } from '../components/vitamui-snack-bar';
 import { Rule } from '../models';
 import { SearchService } from '../vitamui-table';
 
 const keySnackbar = 'APPLICATION.RULES_APP.MESSAGES.';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -84,11 +83,8 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.createRule(rule, this.headers).pipe(
       tap(
         (success) => {
-          this.snackBarService.open({
-              message: keySnackbar + (success ? 'RULE_CREATION_SUCCESS' : 'RULE_CREATION_FAILED'),
-              translateParams: { name: rule.ruleId }
-            }
-          );
+          const message = keySnackbar + (success ? 'RULE_CREATION_SUCCESS' : 'RULE_CREATION_FAILED');
+          this.snackBarService.open({ message, translateParams: { name: rule.ruleId } });
         },
         (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
@@ -99,10 +95,8 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.patchRule(data).pipe(
       tap(
         (success) => {
-          this.snackBarService.open({
-            message: keySnackbar + (success ? 'RULE_UPDATE_SUCCESS' : 'RULE_UPDATE_FAILED'),
-            translateParams: { name: data.id }
-          });
+          const message = keySnackbar + (success ? 'RULE_UPDATE_SUCCESS' : 'RULE_UPDATE_FAILED');
+          this.snackBarService.open({ message, translateParams: { name: data.id } });
         },
         (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )
@@ -113,11 +107,8 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.deleteRule(rule.ruleId).pipe(
       tap(
         (success) => {
-          this.snackBarService.open(
-            {
-              message: keySnackbar + (success ? 'RULE_DELETION_SUCCESS' : 'RULE_DELETION_FAILED'),
-              translateParams: { name: rule.ruleId }
-            });
+          const message = keySnackbar + (success ? 'RULE_DELETION_SUCCESS' : 'RULE_DELETION_FAILED');
+          this.snackBarService.open({ message, translateParams: { name: rule.ruleId } });
         },
         (error) => this.snackBarService.open({ message: error.error.message, translate: false })
       )

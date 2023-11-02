@@ -79,13 +79,11 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -432,7 +430,6 @@ public class InitCustomerService {
             });
         }
 
-
         final List<Profile> tenantProfiles =
             internalTenantService.getDefaultProfiles(proofTenant.getCustomerId(), proofTenant.getIdentifier());
 
@@ -444,13 +441,13 @@ public class InitCustomerService {
     }
 
     private Group createAdminGroup(final CustomerDto customerDto, final List<Profile> profiles) {
-        final Group group = EntityFactory.buildGroup(getAdminClientRootName(customerDto),
-            generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
-            ApiIamInternalConstants.ADMIN_CLIENT_ROOT,
-            true,
-            ApiIamInternalConstants.ADMIN_LEVEL,
-            profiles,
-            customerDto.getId());
+        // Cannot affect to a group 2 profiles on the same application name for the same tenant
+        // So take the first found by applicationName/Tenant pair
+        final List<Profile> filteredProfiles = new ArrayList<>(profiles.stream().collect(
+            Collectors.groupingBy(profile -> Pair.of(profile.getApplicationName(), profile.getTenantIdentifier()),
+                Collectors.collectingAndThen(Collectors.toList(), values -> values.get(0)))).values());
+        final Group group = EntityFactory.buildGroup(getAdminClientRootName(customerDto), generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
+            ApiIamInternalConstants.ADMIN_CLIENT_ROOT, true, ApiIamInternalConstants.ADMIN_LEVEL, filteredProfiles, customerDto.getId());
         return saveGroup(group);
     }
 

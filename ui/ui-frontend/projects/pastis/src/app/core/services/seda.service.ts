@@ -138,7 +138,8 @@ export class SedaService {
       x.Cardinality !== CardinalityConstants.Obligatoire.valueOf())
       ||
       (fileNodesNames.includes(x.Name) &&
-        (x.Cardinality === CardinalityConstants['Zero or More'].valueOf() || x.Cardinality === CardinalityConstants["One Or More"].valueOf())
+        (x.Cardinality === CardinalityConstants['Zero or More'].valueOf()
+         || x.Cardinality === CardinalityConstants['One Or More'].valueOf())
       ));
     return allowedSelectableList;
   }
@@ -147,7 +148,7 @@ export class SedaService {
     if (!clickedNode.cardinality) {
       return '1';
     } else {
-      return cardlinalityValues.find(c => c.value == clickedNode.cardinality).value;
+      return cardlinalityValues.find(c => c.value === clickedNode.cardinality).value;
     }
   }
 
@@ -157,7 +158,7 @@ export class SedaService {
    */
   getAttributes(sedaNode: SedaData, collection: string): SedaData[] {
     // if (!sedaNode) return;
-    return sedaNode.Children.filter(children => children.Element == 'Attribute'
+    return sedaNode.Children.filter(children => children.Element === 'Attribute'
       && sedaNode.Collection === collection);
   }
 

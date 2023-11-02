@@ -29,6 +29,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FacetDetails } from '../../models/operation/facet-details.interface';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'app-vitamui-facet',
   templateUrl: './vitamui-facet.component.html',
   styleUrls: ['./vitamui-facet.component.scss'],

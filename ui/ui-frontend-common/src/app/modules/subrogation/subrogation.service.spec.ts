@@ -40,8 +40,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { VitamUICommonTestModule } from '../../../../testing/src';
 import { environment } from './../../../environments/environment';
-import { ENVIRONMENT } from './../injection-tokens';
-import { SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './../injection-tokens';
+import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './../injection-tokens';
 
 import { AuthService } from '../auth.service';
 import { BASE_URL } from '../injection-tokens';
@@ -54,26 +53,20 @@ import { TranslateService } from '@ngx-translate/core';
 import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
 
 describe('SubrogationService', () => {
-
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        MatSnackBarModule,
-        LoggerModule.forRoot(),
-        VitamUICommonTestModule
-      ],
+      imports: [HttpClientTestingModule, MatSnackBarModule, LoggerModule.forRoot(), VitamUICommonTestModule],
       providers: [
         SubrogationService,
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: Router, useValue: { navigate: () => {},  navigateByUrl: () => {}, url : 'subrogations/customers/customerId' } },
+        { provide: Router, useValue: { navigate: () => {}, navigateByUrl: () => {}, url: 'subrogations/customers/customerId' } },
         { provide: BASE_URL, useValue: 'fake-api' },
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
         { provide: AuthService, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } }
-      ]
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+      ],
     });
   });
 

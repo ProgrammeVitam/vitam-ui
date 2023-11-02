@@ -27,6 +27,7 @@
  *
  */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { OnDestroy, OnInit } from '@angular/core';
 import { Component, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -58,6 +59,7 @@ import { FileTreeService } from '../file-tree/file-tree.service';
 import { AttributesPopupComponent } from './attributes/attributes.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
 
+
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
 const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
 const PA_MANDATORY_ENUM_FIELDS = [
@@ -83,6 +85,7 @@ function constantToTranslate() {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-file-tree-metadata',
   templateUrl: './file-tree-metadata.component.html',
   styleUrls: ['./file-tree-metadata.component.scss'],
@@ -90,7 +93,7 @@ function constantToTranslate() {
   // component style to apply to the select panel.
   encapsulation: ViewEncapsulation.None,
 })
-export class FileTreeMetadataComponent {
+export class FileTreeMetadataComponent implements OnInit, OnDestroy{
   rootAdditionalProperties: boolean;
   valueOrData = Object.values(ValueOrDataConstants);
   dataType = Object.values(DataTypeConstants);
@@ -443,7 +446,7 @@ export class FileTreeMetadataComponent {
     if (!clickedNode.cardinality) {
       return '1';
     } else {
-      return this.cardinalityValues.find((c) => c.value == clickedNode.cardinality).value;
+      return this.cardinalityValues.find((c) => c.value === clickedNode.cardinality).value;
     }
   }
 
@@ -500,6 +503,7 @@ export class FileTreeMetadataComponent {
 
   onAddNode() {
     if (this.clickedNode.name === 'DescriptiveMetadata') {
+      // tslint:disable-next-line:prefer-const
       let elements: SedaData[];
       elements.push({
         Name: 'ArchiveUnit',
@@ -799,7 +803,7 @@ export class FileTreeMetadataComponent {
     const node = this.fileService.getFileNodeByName(this.clickedNode, name);
     return (
       (node.parent.children.filter((child) => child.name === name).length > 1 &&
-        this.sedaService.isSedaNodeObligatory(name, this.selectedSedaNode)) ||
+     this.sedaService.isSedaNodeObligatory(name, this.selectedSedaNode))||
       !this.sedaService.isSedaNodeObligatory(name, this.selectedSedaNode)
     );
   }
@@ -980,6 +984,7 @@ export class FileTreeMetadataComponent {
 
     if (this.editedEnumControl.includes(element)) {
       indexOfElement = this.editedEnumControl.indexOf(element);
+      // tslint:disable-next-line:no-unused-expression
       this.editedEnumControl.splice(indexOfElement, 1)[0];
     }
     if (this.enumsControlSeleted.length === 0) {

@@ -36,21 +36,18 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.converter.Converter;
-import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.domain.GroupDto;
-import fr.gouv.vitamui.commons.api.domain.ProfileDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.domain.TenantDto;
-import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -83,6 +80,7 @@ import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.domain.AlertAnalytics;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
@@ -117,8 +115,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
-import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
 /**
  * The service to read, create, update and delete the users.
@@ -589,6 +586,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     if(user.getStatus() == UserStatusEnum.ENABLED) {
                         user.setDisablingDate(null);
                         user.setRemovingDate(null);
+                        user.setNbFailedAttempts(0);
                     }
 
                     break;
@@ -796,6 +794,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         basicCustomerDto.setId(customer.getId());
         basicCustomerDto.setIdentifier(customer.getIdentifier());
         basicCustomerDto.setName(customer.getName());
+        basicCustomerDto.setCode(customer.getCode());
         basicCustomerDto.setCompanyName(customer.getCompanyName());
         basicCustomerDto.setPortalMessages(customer.getPortalMessages());
         basicCustomerDto.setPortalTitles(customer.getPortalTitles());
@@ -928,16 +927,31 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     public UserDto patchAnalytics(final Map<String, Object> partialDto) {
         checkAnalyticsAllowedFields(partialDto);
 
-        AuthUserDto loggedUser = getMe();
-        User user = getUserById(loggedUser.getId());
+        String userId;
+
+        if (partialDto.containsKey(USER_ID_ATTRIBUTE)) {
+            userId = partialDto.get(USER_ID_ATTRIBUTE).toString();
+        } else {
+            AuthUserDto loggedUser = getMe();
+            userId = loggedUser.getId();
+        }
+
+        User user = getUserById(userId);
 
         partialDto.forEach((key, value) -> {
             switch (key) {
+                case USER_ID_ATTRIBUTE:
+                    break;
                 case APPLICATION_ID:
                     patchApplicationAnalytics(user, CastUtils.toString(value));
                     break;
                 case "lastTenantIdentifier":
                     patchLastTenantIdentifier(user, CastUtils.toInteger(value));
+                    break;
+                case "alerts":
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    final List<AlertAnalytics> alertAnalytics = objectMapper.convertValue(CastUtils.toList(value), new TypeReference<>() {});
+                    patchAlertsAnalytics(user, alertAnalytics);
                     break;
             }
         });
@@ -951,7 +965,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private void checkAnalyticsAllowedFields(final Map<String, Object> partialDto) {
-        Set<String> analyticsPatchAllowedFields = Set.of(APPLICATION_ID, "lastTenantIdentifier");
+        Set<String> analyticsPatchAllowedFields = Set.of(APPLICATION_ID, "lastTenantIdentifier", "alerts", USER_ID_ATTRIBUTE);
 
         if (MapUtils.isEmpty(partialDto)) {
             throw new IllegalArgumentException("Unable to patch user analytics : payload is empty");
@@ -973,6 +987,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         user.getAnalytics().setLastTenantIdentifier(tenantIdentifier);
     }
 
+    private void patchAlertsAnalytics(final User user, List<AlertAnalytics> alerts) {
+        user.getAnalytics().setAlerts(alerts);
+    }
+
     private void checkApplicationAccessPermission(String applicationId) {
         List<ApplicationDto> loggedUserApplications = applicationInternalService.getAll(Optional.empty(), Optional.empty());
         boolean userHasPermission = loggedUserApplications.stream().anyMatch(application -> Objects.equals(application.getIdentifier(), applicationId));
@@ -980,7 +998,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             throw new IllegalArgumentException(String.format("User has no permission to access to the application : %s", applicationId));
         }
     }
-
 
     @Override
     protected Document groupFields(final Optional<String> criteriaJsonString, final String... fields) {

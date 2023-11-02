@@ -36,29 +36,34 @@
  */
 package fr.gouv.vitamui.iam.security.filter;
 
-import java.security.cert.X509Certificate;
-
-import javax.servlet.http.HttpServletRequest;
-
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.x509.X509AuthenticationFilter;
 
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * The authentication filter based on the request headers.
- *
- *
  */
 public class ExternalRequestHeadersAuthenticationFilter extends X509AuthenticationFilter {
 
+    private final List<X509CertificateExtractor> x509CertificateExtractors;
+
+    private final List<TokenExtractor> tokenExtractors;
+
     /**
-     * RequestHeadersAuthenticationFilter.
+     *
      * @param authenticationManager
+     * @param x509CertificateExtractors
+     * @param tokenExtractors
      */
-    public ExternalRequestHeadersAuthenticationFilter(final AuthenticationManager authenticationManager) {
+    public ExternalRequestHeadersAuthenticationFilter(final AuthenticationManager authenticationManager, final List<X509CertificateExtractor> x509CertificateExtractors, List<TokenExtractor> tokenExtractors) {
         super();
         setAuthenticationManager(authenticationManager);
+        this.x509CertificateExtractors = x509CertificateExtractors;
+        this.tokenExtractors = tokenExtractors;
     }
 
     /**
@@ -66,35 +71,28 @@ public class ExternalRequestHeadersAuthenticationFilter extends X509Authenticati
      */
     @Override
     protected Object getPreAuthenticatedPrincipal(final HttpServletRequest request) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("request: " + request.getRequestURI() + " - " + request.getQueryString());
-        }
-        return ExternalHttpContext.buildFromExternalRequest(request);
+        logger.debug("request: " + request.getRequestURI() + " - " + request.getQueryString());
+        return ExternalHttpContext.buildFromExternalRequest(request, extractToken(request));
+    }
+
+    private String extractToken(HttpServletRequest request) {
+        return tokenExtractors.stream()
+            .map(tokenExtractor -> tokenExtractor.extract(request))
+            .filter(Objects::nonNull)
+            .findFirst()
+            .orElse(null);
     }
 
     /**
-     * Return as credentials the the certficate extracted from the request
+     * Return as credentials the certificate extracted from the request
      */
     @Override
     protected Object getPreAuthenticatedCredentials(final HttpServletRequest request) {
-        return extractRequestClientCertificate(request);
-    }
-
-    private X509Certificate extractRequestClientCertificate(final HttpServletRequest request) {
-        X509Certificate cert = null;
-        final X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
-
-        if (certs != null && certs.length > 0) {
-            cert = certs[0];
-            if (logger.isDebugEnabled()) {
-                logger.debug("X.509 client authentication certificate:" + cert.getSubjectX500Principal());
-            }
-
-        }
-        else if (logger.isDebugEnabled()) {
-            logger.debug("No client certificate found in request.");
-        }
-
-        return cert;
+        // This is a temporary patch to allow both mTLS authentication behind gateway or full mTLS during migration
+        return x509CertificateExtractors.stream()
+            .map(x509CertificateExtractor -> x509CertificateExtractor.extract(request))
+            .filter(Objects::nonNull)
+            .findFirst()
+            .orElse(null);
     }
 }

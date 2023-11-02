@@ -37,6 +37,7 @@ import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.internal.server.token.domain.Token;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.domain.AlertAnalytics;
 import fr.gouv.vitamui.iam.internal.server.user.domain.ApplicationAnalytics;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
@@ -239,7 +240,7 @@ public final class UserInternalServiceTest {
         final PaginatedValuesDto<UserDto> subrogateUsers =
                 internalUserService.getAllPaginated(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty());
         assertThat(subrogateUsers.getValues()).isNotEmpty();
-        assertThat(subrogateUsers.getValues().size()).isEqualTo(1);
+        assertThat(subrogateUsers.getValues()).hasSize(1);
     }
 
     @Test
@@ -266,12 +267,16 @@ public final class UserInternalServiceTest {
         Mockito.when(internalSecurityService.getUser()).thenReturn(user);
 
         final RequestParamGroupDto groups = new RequestParamGroupDto(Arrays.asList("type"), AggregationRequestOperator.COUNT);
-        final RequestParamDto requestParamDto =
-                new RequestParamDto(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty(), Optional.of(groups));
+        final RequestParamDto requestParamDto = RequestParamDto.builder()
+            .page(0)
+            .size(20)
+            .criteria(criteriaWrapper.toJson())
+            .groups(groups)
+            .build();
         final ResultsDto<UserDto> subrogateUsers = internalUserService.getAllRequest(requestParamDto);
         assertThat(subrogateUsers.getValues()).hasSize(1);
         assertThat(subrogateUsers.getGroups()).hasSize(1);
-        assertThat(subrogateUsers.getGroups().containsKey("type")).isEqualTo(true);
+        assertThat(subrogateUsers.getGroups().containsKey("type")).isTrue();
         assertThat(((List) subrogateUsers.getGroups().get("type")).get(0)).isEqualTo("DISTINCT");
     }
 
@@ -332,7 +337,7 @@ public final class UserInternalServiceTest {
 
         criteriaList = new ArrayList<>();
         internalUserService.addDataAccessRestrictions(criteriaList);
-        assertThat(criteriaList.size()).isEqualTo(0);
+        assertThat(criteriaList.size()).isZero();
     }
 
     @Test
@@ -352,7 +357,7 @@ public final class UserInternalServiceTest {
 
         criteriaList = new ArrayList<>();
         internalUserService.addDataAccessRestrictions(criteriaList);
-        assertThat(criteriaList.size()).isEqualTo(0);
+        assertThat(criteriaList.size()).isZero();
     }
 
     @Test
@@ -524,7 +529,7 @@ public final class UserInternalServiceTest {
         final AggregationResults<Document> value = new AggregationResults<>(mappedResults, rawResults);
         when(userRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(value);
         final List<String> levels = internalUserService.getLevels(criteria);
-        assertThat(levels.size()).isEqualTo(0);
+        assertThat(levels.size()).isZero();
     }
 
     @Test
@@ -927,6 +932,52 @@ public final class UserInternalServiceTest {
         assertThat(applications).hasSize(1);
         assertThat(applications.get(0).getApplicationId()).isEqualTo(applicationId);
         assertThat(applications.get(0).getAccessCounter()).isEqualTo(1);
+    }
+
+    private AlertAnalytics buildAlert(final String mockedData){
+        var alert = new AlertAnalytics();
+        alert.setType(mockedData);
+        alert.setAction(mockedData);
+        alert.setApplicationId(mockedData);
+        alert.setStatus(mockedData);
+        alert.setCreationDate(mockedData);
+        alert.setId(mockedData);
+        alert.setIdentifier(mockedData);
+        alert.setKey(mockedData);
+        return alert;
+    }
+
+    @Test
+    public void patchAlertAnalyticsOk() {
+        // Given
+        internalUserService = spy(internalUserService);
+        final var firstAlert= buildAlert("firstAlert");
+        final var secondAlert= buildAlert("secondAlert");
+        final AuthUserDto authUserDto = IamServerUtilsTest.buildAuthUserDto();
+        final User user = IamServerUtilsTest.buildUser(authUserDto.getId(), "", "");
+        final var listAlerts= new ArrayList<AlertAnalytics>();
+
+        listAlerts.add(firstAlert);
+        listAlerts.add(secondAlert);
+
+        when(internalUserService.getMe()).thenReturn(authUserDto);
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        assertThat(user.getAnalytics().getApplications()).isNullOrEmpty();
+
+        // When
+        internalUserService.patchAnalytics(Map.of("alerts", listAlerts));
+
+        // Then
+        verify(userRepository).findById(user.getId());
+        verifyNoMoreInteractions(applicationInternalService);
+
+        final ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(captor.capture());
+        assertThat(captor.getValue()).isEqualToIgnoringGivenFields(user);
+        final List<AlertAnalytics> applications = captor.getValue().getAnalytics().getAlerts();
+        assertThat(applications).hasSize(2);
+        assertThat(applications.get(0).getApplicationId()).isEqualTo("firstAlert");
+        assertThat(applications.get(1).getApplicationId()).isEqualTo("secondAlert");
     }
 
 }

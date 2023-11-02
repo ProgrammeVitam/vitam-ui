@@ -38,12 +38,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { isEqual, isObject, mapObject, omit } from 'underscore';
 
 import { AuthnRequestBindingEnum, IdentityProvider, newFile, VitamUISnackBarService } from 'ui-frontend-common';
+import { extend, isEmpty, isEqual, isObject, mapObject, omit } from 'underscore';
 import { IdentityProviderService } from '../identity-provider.service';
-
-import { extend, isEmpty } from 'underscore';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
 
 const UPDATE_DEBOUNCE_TIME = 200;
@@ -157,8 +155,8 @@ export class IdentityProviderDetailsComponent implements OnInit {
   }
   ngOnInit() {}
 
-  initializeCommonControls() {
-    return this.formBuilder.group({
+  initializeCommonControls(): FormGroup {
+    const commonFormGroup = this.formBuilder.group({
       protocoleType: [],
       identifier: [{ value: null, disabled: true }, Validators.required],
       enabled: [true, Validators.required],
@@ -169,10 +167,20 @@ export class IdentityProviderDetailsComponent implements OnInit {
       identifierAttribute: [null],
       autoProvisioningEnabled: [false, Validators.required],
     });
+
+    commonFormGroup.get('protocoleType').valueChanges.subscribe((newProtocol: ProtocoleType) => {
+      if (newProtocol === this.previousValue.protocoleType) {
+        this.manageForm(this.previousValue);
+      }
+    });
+    return commonFormGroup;
   }
-  initializeSamlControls() {
+  initializeSamlControls(): FormGroup {
     return this.formBuilder.group({
       authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
+      maximumAuthenticationLifetime: [null],
+      wantsAssertionsSigned: [this.identityProvider ? this.identityProvider.wantsAssertionsSigned : null, Validators.required],
+      authnRequestSigned: [this.identityProvider ? this.identityProvider.authnRequestSigned : null, Validators.required],
     });
   }
 
@@ -242,6 +250,9 @@ export class IdentityProviderDetailsComponent implements OnInit {
             idpMetadata: null,
             keystoreBase64: null,
             keystorePassword: null,
+            maximumAuthenticationLifetime: null,
+            wantsAssertionsSigned: null,
+            authnRequestSigned: null,
           };
           break;
       }
@@ -270,6 +281,12 @@ export class IdentityProviderDetailsComponent implements OnInit {
         if (!formValue.authnRequestBinding) {
           formValue.authnRequestBinding = AuthnRequestBindingEnum.POST;
         }
+        if (formValue.authnRequestSigned == null) {
+          formValue.authnRequestSigned = this.identityProvider.authnRequestSigned;
+        }
+        if (formValue.wantsAssertionsSigned == null) {
+          formValue.wantsAssertionsSigned = this.identityProvider.wantsAssertionsSigned;
+        }
         break;
       case ProtocoleType.OIDC:
         this.form = this.formBuilder.group({
@@ -277,7 +294,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
           ...this.specificOidcControls.controls,
         });
         // set default value if it is not defined
-        if (formValue.useState == undefined || formValue.useState == null) {
+        if (formValue.useState === undefined || formValue.useState === null) {
           formValue.useState = true;
           formValue.useNonce = true;
           formValue.usePkce = false;

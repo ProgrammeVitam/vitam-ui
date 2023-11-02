@@ -36,14 +36,26 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
+import fr.gouv.vitamui.cas.pm.PmMessageToSend;
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.audit.AuditActionResolvers;
 import org.apereo.cas.audit.AuditResourceResolvers;
 import org.apereo.cas.audit.AuditableActions;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
+import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.notifications.mail.EmailCommunicationResult;
+import org.apereo.cas.pm.PasswordManagementQuery;
 import org.apereo.cas.pm.PasswordManagementService;
+import org.apereo.cas.pm.PasswordResetUrlBuilder;
 import org.apereo.cas.pm.web.flow.actions.SendPasswordResetInstructionsAction;
 import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
@@ -55,14 +67,7 @@ import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import fr.gouv.vitamui.cas.pm.PmMessageToSend;
-import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
+import java.net.URL;
 
 /**
  * Send reset password emails with i18n messages.
@@ -88,12 +93,14 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
                                                    final PasswordManagementService passwordManagementService,
                                                    final TicketRegistry ticketRegistry,
                                                    final TicketFactory ticketFactory,
+                                                   final PrincipalResolver principalResolver,
+                                                   final PasswordResetUrlBuilder passwordResetUrlBuilder,
                                                    final HierarchicalMessageSource messageSource,
                                                    final ProvidersService providersService,
                                                    final IdentityProviderHelper identityProviderHelper,
                                                    final Utils utils,
                                                    final String vitamuiPlatformName) {
-        super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory, null);
+        super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory, principalResolver, passwordResetUrlBuilder);
         this.messageSource = messageSource;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
@@ -106,25 +113,13 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         actionResolverName = AuditActionResolvers.REQUEST_CHANGE_PASSWORD_ACTION_RESOLVER,
         resourceResolverName = AuditResourceResolvers.REQUEST_CHANGE_PASSWORD_RESOURCE_RESOLVER)
     @Override
-    protected Event doExecute(final RequestContext requestContext) {
+    protected Event doExecute(final RequestContext requestContext) throws Exception {
         if (!communicationsManager.isMailSenderDefined() && !communicationsManager.isSmsSenderDefined()) {
             return getErrorEvent("contact.failed", "Unable to send email as no mail sender is defined", requestContext);
         }
 
-        // CUSTO: try to get the username from the credentials also (after a password expiration)
-        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
-        request.removeAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE);
-        String username = request.getParameter("username");
-        if (StringUtils.isBlank(username)) {
-            final MutableAttributeMap<Object> flowScope = requestContext.getFlowScope();
-            final Object credential = flowScope.get("credential");
-            if (credential instanceof UsernamePasswordCredential) {
-                final UsernamePasswordCredential usernamePasswordCredential = (UsernamePasswordCredential) credential;
-                username = usernamePasswordCredential.getUsername();
-            }
-        }
         val query = buildPasswordManagementQuery(requestContext);
-        if (StringUtils.isBlank(username)) {
+        if (StringUtils.isBlank(query.getUsername())) {
             return getErrorEvent("username.required", "No username is provided", requestContext);
         }
 
@@ -139,14 +134,14 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         }
 
         val service = WebUtils.getService(requestContext);
-        val url = buildPasswordResetUrl(query.getUsername(), passwordManagementService, casProperties, service);
-        if (StringUtils.isNotBlank(url)) {
+        val url = buildPasswordResetUrl(query.getUsername(), service);
+        if (url != null) {
             val pm = casProperties.getAuthn().getPm();
-            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
-                url, pm.getReset().getExpirationMinutes());
+            val duration = Beans.newDuration(pm.getReset().getExpiration());
+            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)", url, duration);
             // CUSTO: only send email (and not SMS)
             val sendEmail = sendPasswordResetEmailToAccount(query.getUsername(), email, url, requestContext);
-            if (sendEmail) {
+            if (sendEmail.isSuccess()) {
                 return success(url);
             }
         } else {
@@ -157,12 +152,38 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
     }
 
     @Override
-    protected boolean sendPasswordResetEmailToAccount(final String username, final String to, final String url,
-                                                      final RequestContext requestContext) {
+    protected PasswordManagementQuery buildPasswordManagementQuery(final RequestContext requestContext) {
+        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        // CUSTO: try to get the username from the credentials also (after a password expiration)
+        String username = request.getParameter(REQUEST_PARAMETER_USERNAME);
+        if (StringUtils.isBlank(username)) {
+            final MutableAttributeMap<Object> flowScope = requestContext.getFlowScope();
+            final Object credential = flowScope.get("credential");
+            if (credential instanceof UsernamePasswordCredential) {
+                final UsernamePasswordCredential usernamePasswordCredential = (UsernamePasswordCredential) credential;
+                username = usernamePasswordCredential.getUsername();
+            }
+        }
+        //
+
+        val builder = PasswordManagementQuery.builder();
+        if (StringUtils.isBlank(username)) {
+            LOGGER.warn("No username parameter is provided");
+        }
+        return builder.username(username).build();
+    }
+
+    @Override
+    protected EmailCommunicationResult sendPasswordResetEmailToAccount(
+        final String username,
+        final String to,
+        final URL url,
+        final RequestContext requestContext) {
+        val duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
+
         final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "",
-            String.valueOf(casProperties.getAuthn().getPm().getReset().getExpirationMinutes()), url, vitamuiPlatformName,
-            LocaleContextHolder.getLocale());
-        return utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(), messageToSend.getSubject(), to, null,
-                null);
+            String.valueOf(duration.toMinutes()), url.toString(), vitamuiPlatformName, LocaleContextHolder.getLocale());
+        return EmailCommunicationResult.builder().success(utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
+                    messageToSend.getSubject(), to, null, null)).build();
     }
 }

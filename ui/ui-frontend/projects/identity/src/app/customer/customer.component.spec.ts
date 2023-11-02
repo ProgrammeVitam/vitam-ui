@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
@@ -57,17 +56,19 @@ let component: CustomerComponent;
 let fixture: ComponentFixture<CustomerComponent>;
 
 class Page {
-
-  get customerList() { return fixture.nativeElement.querySelector('app-customer-list'); }
-  get createCustomer() { return fixture.nativeElement.querySelector('.vitamui-heading button:first-child'); }
-
+  get customerList() {
+    return fixture.nativeElement.querySelector('app-customer-list');
+  }
+  get createCustomer() {
+    return fixture.nativeElement.querySelector('.vitamui-heading button:first-child');
+  }
 }
 
 let page: Page;
 
 @Component({ selector: 'app-customer-list', template: '' })
 class CustomerListStubComponent {
-  search() { }
+  search() {}
 }
 
 @Component({ selector: 'app-customer-preview', template: '' })
@@ -86,38 +87,26 @@ class OwnerPreviewStubComponent {
 
 describe('CustomerComponent', () => {
   const customerServiceSpy = {
-    getGdprReadOnlySettingStatus: () => of(true)
+    getGdprReadOnlySettingStatus: () => of(true),
   };
 
+  beforeEach(
+    waitForAsync(() => {
+      const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+      matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  beforeEach(waitForAsync(() => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
-
-    TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
-        MatSidenavModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        InjectorModule,
-        LoggerModule.forRoot()
-      ],
-      declarations: [
-        CustomerComponent,
-        CustomerListStubComponent,
-        CustomerPreviewStubComponent,
-        OwnerPreviewStubComponent,
-      ],
-      providers: [
-        { provide: CustomerService, useValue: customerServiceSpy },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: ActivatedRoute, useValue: { data: EMPTY } },
-        { provide: ENVIRONMENT, useValue: environment }
-      ]
+      TestBed.configureTestingModule({
+        imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+        declarations: [CustomerComponent, CustomerListStubComponent, CustomerPreviewStubComponent, OwnerPreviewStubComponent],
+        providers: [
+          { provide: CustomerService, useValue: customerServiceSpy },
+          { provide: MatDialog, useValue: matDialogSpy },
+          { provide: ActivatedRoute, useValue: { data: EMPTY } },
+          { provide: ENVIRONMENT, useValue: environment },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerComponent);
@@ -141,7 +130,10 @@ describe('CustomerComponent', () => {
   it('should open a modal with CustomerCreateComponent', () => {
     const matDialogSpy = TestBed.get(MatDialog);
     page.createCustomer.click();
-    expect(matDialogSpy.open).toHaveBeenCalledWith(CustomerCreateComponent, { data: { gdprReadOnlySettingStatus: true }, panelClass: 'vitamui-modal', disableClose: true });
+    expect(matDialogSpy.open).toHaveBeenCalledWith(CustomerCreateComponent, {
+      data: { gdprReadOnlySettingStatus: true },
+      panelClass: 'vitamui-modal',
+      disableClose: true,
+    });
   });
-
 });

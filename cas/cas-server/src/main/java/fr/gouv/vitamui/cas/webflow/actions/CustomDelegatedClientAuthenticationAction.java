@@ -43,19 +43,21 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
+import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
-import org.apereo.cas.web.flow.DelegatedClientAuthenticationAction;
+import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
+import org.apereo.cas.web.flow.DelegatedClientAuthenticationWebflowManager;
+import org.apereo.cas.web.flow.actions.DelegatedClientAuthenticationAction;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.io.IOException;
-
-import lombok.val;
 
 /**
  * Custom authentication delegation:
@@ -81,14 +83,16 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private final String surrogationSeparator;
 
-    public CustomDelegatedClientAuthenticationAction(final DelegatedClientAuthenticationConfigurationContext context,
+    public CustomDelegatedClientAuthenticationAction(final DelegatedClientAuthenticationConfigurationContext configContext,
+                                                     final DelegatedClientAuthenticationWebflowManager delegatedClientAuthenticationWebflowManager,
+                                                     final DelegatedClientAuthenticationFailureEvaluator failureEvaluator,
                                                      final IdentityProviderHelper identityProviderHelper,
                                                      final ProvidersService providersService,
                                                      final Utils utils,
                                                      final TicketRegistry ticketRegistry,
                                                      final String vitamuiPortalUrl,
                                                      final String surrogationSeparator) {
-        super(context);
+        super(configContext, delegatedClientAuthenticationWebflowManager, failureEvaluator);
         this.identityProviderHelper = identityProviderHelper;
         this.providersService = providersService;
         this.utils = utils;
@@ -111,7 +115,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         }
 
         val event = super.doExecute(context);
-        if ("error".equals(event.getId())) {
+        if (CasWebflowConstants.TRANSITION_ID_GENERATE.equals(event.getId())) {
 
             // extract and parse the request username if provided
             String username = context.getRequestParameters().get(Constants.USERNAME);
@@ -124,6 +128,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 }
 
                 WebUtils.putCredential(context, new UsernamePasswordCredential(username, null));
+                flowScope.put(Constants.PROVIDED_USERNAME, username);
 
                 if (username.contains(surrogationSeparator)) {
                     final String[] parts = username.split("\\" + surrogationSeparator);

@@ -115,9 +115,6 @@ export class FileService implements OnDestroy {
    *
    * Les nodes correspondant aux ArchivesUnit
    * se réfèrent à la définition SEDA de l'ArchiveUnit mère (ils sont récursifs...)
-   * @param parent
-   * @param nodes
-   * @param sedaData
    */
   linkFileNodeToSedaData(parent: FileNode, nodes: FileNode[], sedaData: SedaData[]) {
     if (!sedaData) {
@@ -171,12 +168,11 @@ export class FileService implements OnDestroy {
 
   /**
    * Update the children of a node, based on given list of nodes
-   * @param parentNode
-   * @param newChildrenNodes
    */
   updateNodeChildren(parentNode: FileNode, newChildrenNodes: FileNode[]) {
+    // tslint:disable-next-line:forin
     for (const idx in parentNode.children) {
-      const childFromNewChildren = newChildrenNodes.find(newChild => newChild.id == parentNode.children[idx].id);
+      const childFromNewChildren = newChildrenNodes.find(newChild => newChild.id === parentNode.children[idx].id);
       if (childFromNewChildren) {
         parentNode.children[idx] = childFromNewChildren;
       }
@@ -213,7 +209,7 @@ export class FileService implements OnDestroy {
     }
   }
 
-  findChildById(nodeId: Number, node: FileNode): FileNode {
+  findChildById(nodeId: number, node: FileNode): FileNode {
     if (nodeId === node.id) {
       return node;
     }
@@ -245,8 +241,8 @@ export class FileService implements OnDestroy {
    * @param fileNode The concerned node
    * @param attributeName The name of the attribute we want to get
    */
-  getAttributeByName(fileNode: FileNode, attributeName: String): FileNode {
-    return fileNode.children.find(c => c.name == attributeName);
+  getAttributeByName(fileNode: FileNode, attributeName: string): FileNode {
+    return fileNode.children.find(c => c.name === attributeName);
   }
 
   /**
@@ -345,8 +341,9 @@ export class FileService implements OnDestroy {
   getFileNodeLocally(currentNode: FileNode, nameNode: string): FileNode {
     // console.log("Node on this.findSedaNode : %o", currentNode)
     if (currentNode) {
-      let i: number, currentChild: FileNode;
-      if (nameNode == currentNode.name) {
+      let i: number;
+      let currentChild: FileNode;
+      if (nameNode === currentNode.name) {
         return currentNode;
       } else {
         // Use a for loop instead of forEach to avoid nested functions
@@ -421,6 +418,7 @@ export class FileService implements OnDestroy {
     // console.error("notice profile :" + JSON.stringify(noticeProfile))
     // set notice editable from notice profile
     if (!inverse) {
+      // tslint:disable-next-line:no-shadowed-variable
       const notice: Notice = {
         identifier: noticeProfile.identifier,
         status: noticeProfile.status,

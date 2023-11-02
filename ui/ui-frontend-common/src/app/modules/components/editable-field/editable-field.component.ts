@@ -42,8 +42,10 @@ import { AsyncValidatorFn, ControlValueAccessor, FormControl, ValidatorFn } from
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
 
 @Directive({
+  // tslint:disable-next-line: directive-selector
   selector: 'editable-field-component'
 })
+// tslint:disable-next-line: directive-class-suffix
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
 
   @Input() label: string;

@@ -77,7 +77,7 @@ public class VersionsDto {
     private MetadataModel metadata;
 
     @JsonProperty("Size")
-    private Integer size;
+    private Long size;
 
     @JsonProperty("Uri")
     private String uri;

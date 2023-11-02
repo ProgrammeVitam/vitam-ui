@@ -37,9 +37,7 @@
 package fr.gouv.vitamui.ui.commons.service;
 
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 
@@ -57,6 +55,17 @@ public abstract class AbstractPaginateService<T extends IdDto> extends AbstractC
             final Optional<DirectionDto> direction, final Optional<String> embedded, final ExternalHttpContext context) {
         size = beforePaginate(page, size);
         return getClient().getAllPaginated(context, page, size, criteria, orderBy, direction, embedded);
+    }
+
+    /**
+     * Applies aggregation operation to a list of fields
+     *
+     * @param context ExternalHttpContext
+     * @param requestParamDto All aggregation query information, page size, criteria, excludeFields, fields and operation
+     */
+    public ResultsDto<T> getAllRequest(final ExternalHttpContext context, final RequestParamDto requestParamDto) {
+        requestParamDto.setSize(beforePaginate(requestParamDto.getPage(), requestParamDto.getSize()));
+        return getClient().getAllRequest(context, requestParamDto);
     }
 
     /**

@@ -39,22 +39,23 @@ import {FormBuilder} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
-
-import {IngestComponent} from './ingest.component';
-import {InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
 import {ActivatedRoute} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
 import {of} from 'rxjs';
-import {environment} from '../../environments/environment';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {IngestService} from './ingest.service';
+import {IngestComponent} from './ingest.component';
+
 import {Component, NO_ERRORS_SCHEMA} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatDialog} from '@angular/material/dialog';
-import {IngestListComponent} from './ingest-list/ingest-list.component';
+import {InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {environment} from '../../environments/environment';
+import {IngestType} from '../core/common/ingest-type.enum';
 import {UploadService} from '../core/common/upload.service';
-import {IngestType} from "../core/common/ingest-type.enum";
+import {IngestListComponent} from './ingest-list/ingest-list.component';
+import {IngestService} from './ingest.service';
+
 
 @Component({selector: 'app-ingest-list', template: ''})
 export class IngestListStubComponent {

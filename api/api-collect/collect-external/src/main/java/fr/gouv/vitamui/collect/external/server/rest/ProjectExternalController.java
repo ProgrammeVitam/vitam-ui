@@ -93,14 +93,9 @@ public class ProjectExternalController {
         @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         direction.ifPresent(directionDto -> {
-            try {
-                SanityChecker.sanitizeCriteria(directionDto);
-            } catch (InvalidParseOperationException exception) {
-                LOGGER.error("Exception error : {}", exception.getMessage());
-                throw new PreconditionFailedException("Exception error", exception);
-            }
+            SanityChecker.sanitizeCriteria(directionDto);
         });
         if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());

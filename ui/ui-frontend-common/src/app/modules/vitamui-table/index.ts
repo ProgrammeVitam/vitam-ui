@@ -39,5 +39,7 @@ export * from './direction.enum';
 export * from './infinite-scroll-table';
 export * from './operators.enum';
 export * from './page-request.model';
+export * from './request-param.model';
 export * from './paginated-response.interface';
 export * from './search.service';
+export * from './aggregation-operation-type';

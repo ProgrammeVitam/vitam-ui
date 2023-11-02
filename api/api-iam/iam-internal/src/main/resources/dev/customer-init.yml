@@ -1,5 +1,6 @@
 # This configuration file indicates profiles , profiles groups and users automatically create when a new customer or customer tenant is created.
 # Put as many as you want following the template given
+# Warning : it is necessary to sort the profiles with the most rights first to avoid an admin ending up with restricted rights
 customer-init:
   # Default profiles for each customer created
   profiles:
@@ -76,6 +77,8 @@ customer-init:
   #   level: 1
   #   email-prefix: a@mail.com
   # Default profiles for each tenant created
+  # If you add multiple profiles on the same app, put first in this list the admin profile.
+  # Only the first profile by app will be added to the admin's group
   tenant-profiles:
     - name: Profil pour la gestion des contrats d'accès
       description: Gestion des contrats d'accès dans Vitam
@@ -202,6 +205,25 @@ customer-init:
         - ROLE_UPDATE_PROFILES
         - ROLE_LOGBOOKS
 
+    - name: Archiviste administrateur
+      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, requête et aquittement de transfert, export DIP et opérations d'élimination
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_SEARCH_WITH_RULES
+        - ROLE_EXPORT_DIP
+        - ROLE_ELIMINATION
+        - ROLE_UPDATE_MANAGEMENT_RULES
+        - ROLE_COMPUTED_INHERITED_RULES
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_RECLASSIFICATION
+        - ROLE_UPDATE_UNIT_DESC_METADATA
+        - ROLE_TRANSFER_REQUEST
+        - ROLE_GET_RULES
+        - ROLE_TRANSFER_ACKNOWLEDGMENT
 
     - name: Consultation
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
@@ -239,26 +261,6 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_UPDATE_UNIT_DESC_METADATA
         - ROLE_GET_RULES
-
-    - name: Archiviste administrateur
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, requête et aquittement de transfert, export DIP et opérations d'élimination
-      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
-      level:
-      roles:
-        - ROLE_CREATE_ARCHIVE_SEARCH
-        - ROLE_GET_ARCHIVE_SEARCH
-        - ROLE_GET_ALL_ARCHIVE_SEARCH
-        - ROLE_SEARCH_WITH_RULES
-        - ROLE_EXPORT_DIP
-        - ROLE_ELIMINATION
-        - ROLE_UPDATE_MANAGEMENT_RULES
-        - ROLE_COMPUTED_INHERITED_RULES
-        - ROLE_GET_ACCESS_CONTRACTS
-        - ROLE_RECLASSIFICATION
-        - ROLE_UPDATE_UNIT_DESC_METADATA
-        - ROLE_TRANSFER_REQUEST
-        - ROLE_GET_RULES
-        - ROLE_TRANSFER_ACKNOWLEDGMENT
 
     - name: Collecte
       description: Collecte de données, Application de préparation de versements

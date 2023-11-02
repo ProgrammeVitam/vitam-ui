@@ -51,5 +51,9 @@ public enum CriterionOperator {
     BETWEEN,
     STARTWITH,
     ELEMMATCH,
-    ISNULL
+    ISNULL,
+    COUNT,
+    ISNOTNULL,
+    ISEQUALTOPROPERTY,
+    NAMEDEXPRESSION
 }

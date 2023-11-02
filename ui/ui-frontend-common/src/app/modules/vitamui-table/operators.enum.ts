@@ -49,5 +49,9 @@ export enum Operators {
   notin = 'NOTIN',
   elemMatch = 'ELEMMATCH',
   isNull = 'ISNULL',
-  startWith = 'STARTWITH'
+  startWith = 'STARTWITH',
+  count = 'COUNT',
+  isNotNull = 'ISNOTNULL',
+  isEqualToProperty = 'ISEQUALTOPROPERTY',
+  namedExpression = 'NAMEDEXPRESSION'
 }

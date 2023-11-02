@@ -111,7 +111,7 @@ public interface BaseReadService<D extends IdDto, E extends BaseIdDocument> {
      * @return the resultsDto.
      */
     default ResultsDto<D> getAllRequest(final RequestParamDto requestParam) {
-        return new ResultsDto<D>(getAllPaginated(requestParam.getPage(), requestParam.getSize(), requestParam.getCriteria(), requestParam.getOrderBy(),
-                requestParam.getDirection()));
+        return new ResultsDto<>(getAllPaginated(requestParam.getPage(), requestParam.getSize(), Optional.ofNullable(requestParam.getCriteria()), Optional.ofNullable(requestParam.getOrderBy()),
+                Optional.ofNullable(requestParam.getDirection())));
     }
 }

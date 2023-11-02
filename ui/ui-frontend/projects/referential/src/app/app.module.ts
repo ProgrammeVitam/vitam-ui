@@ -46,7 +46,13 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { BytesPipe, VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  AuthenticationModule,
+  BytesPipe,
+  VitamUICommonModule,
+  VitamuiMissingTranslationHandler,
+  WINDOW_LOCATION,
+} from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -65,6 +71,7 @@ registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AuthenticationModule.forRoot(),
     CoreModule,
     BrowserAnimationsModule,
     BrowserModule,
@@ -90,7 +97,7 @@ registerLocaleData(localeFr, 'fr');
     { provide: WINDOW_LOCATION, useValue: window.location },
     { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
     BytesPipe,
-    DatePipe
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })

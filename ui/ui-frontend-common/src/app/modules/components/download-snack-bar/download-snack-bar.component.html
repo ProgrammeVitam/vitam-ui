@@ -9,11 +9,16 @@
       </ng-container>
     </div>
     <div *ngIf="!isCompressed" class="download-label">
-      {{'DOWNLOAD.FILE_GENERATION' | translate}}
+      {{'DOWNLOAD.FILE_TRANSFER' | translate}} : {{progressionValue | percent}}  
     </div>
-    <div class="download-progress-bar-container">
-      <mat-progress-bar class="download-progress-bar" mode="indeterminate"></mat-progress-bar>
+    <div *ngIf="progressionValue; else interdeterminateProgress" class="download-progress-bar-container">
+      <mat-progress-bar class="download-progress-bar" mode="determinate" [value]="progressionInPercentage"></mat-progress-bar>
     </div>
+    <ng-template #interdeterminateProgress>
+      <div class="download-progress-bar-container">
+        <mat-progress-bar class="download-progress-bar" mode="indeterminate"></mat-progress-bar>
+      </div>
+    </ng-template>
     <button class="cancel-link" (click)="confirmClose()">{{'DOWNLOAD.CANCEL_ACTION' | translate}}</button>
   </div>
 

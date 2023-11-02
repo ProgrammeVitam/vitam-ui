@@ -38,9 +38,11 @@ package fr.gouv.vitamui.cas.x509;
 
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
+import org.cryptacular.x509.GeneralNameType;
 
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -59,11 +61,17 @@ public class CertificateParser {
             value = cert.getSubjectDN().getName();
         } else if (X509CertificateAttributes.SUBJECT_ALTERNATE_NAME.name().equalsIgnoreCase(name)) {
             val altNames = cert.getSubjectAlternativeNames();
+            final StringBuilder subjectAltNamesBuilder = new StringBuilder();
             if (altNames != null && altNames.size() > 0) {
-                val altName = altNames.iterator().next();
-                if (altName != null && altName.size() == 2) {
-                    value = (String) altName.get(1);
+                for (final var attribute : altNames) {
+                    if (Objects.nonNull(attribute) && attribute.size() == 2) {
+                        final int attributeKey = (int) attribute.get(0);
+                        final String attributeName = GeneralNameType.fromTagNumber(attributeKey).name();
+                        final var attributeValue = attribute.get(1);
+                        subjectAltNamesBuilder.append(attributeName).append("=").append(attributeValue).append(", ");
+                    }
                 }
+                value = subjectAltNamesBuilder.length() > 0 ? subjectAltNamesBuilder.substring(0, subjectAltNamesBuilder.length() - 2) : "";
             }
         }
         if (value == null) {

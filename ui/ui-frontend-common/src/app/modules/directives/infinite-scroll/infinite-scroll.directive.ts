@@ -62,7 +62,7 @@ export class InfiniteScrollDirective implements OnInit, OnDestroy {
   ngOnInit() {
     const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
     const windowElement = document.getElementsByTagName('div');
-    const scrollElement = sideNavElement?.length > 0 ? sideNavElement[0] : windowElement[0];
+    const scrollElement = sideNavElement?.length > 0 ? sideNavElement[sideNavElement?.length - 1 ] : windowElement[0];
 
     this.scrollElement = this.getScrollElement();
     if (this.scrollElement) {

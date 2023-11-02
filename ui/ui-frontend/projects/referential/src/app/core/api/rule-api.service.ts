@@ -47,7 +47,8 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 /**
- * @deprecated This class is deprecated since 5.0.2, and it will be removed in the next minor version, use RuleApiService of ui-frontend-commons instead!
+ * @deprecated This class is deprecated since 5.0.2, and it will be
+ * removed in the next minor version, use RuleApiService of ui-frontend-commons instead!
  */
 export class RuleApiService extends BaseHttpClient<Rule> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {

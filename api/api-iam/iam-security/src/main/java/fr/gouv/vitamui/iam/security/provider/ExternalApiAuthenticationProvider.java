@@ -67,11 +67,11 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
 
     /**
      * ExternalApiAuthenticationProvider
-     * @param externalAuthentificationService
+     * @param externalAuthenticationService
      */
     @Autowired
-    public ExternalApiAuthenticationProvider(final ExternalAuthentificationService externalAuthentificationService) {
-        extAuthService = externalAuthentificationService;
+    public ExternalApiAuthenticationProvider(final ExternalAuthentificationService externalAuthenticationService) {
+        extAuthService = externalAuthenticationService;
     }
 
     /**
@@ -92,7 +92,7 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
             if (httpContext != null && certificate != null) {
                 try {
                     final ContextDto context = extAuthService.getContextFromHttpContext(httpContext, certificate);
-                    final AuthUserDto userDto = extAuthService.getUserFromHttpContext(httpContext);
+                    final AuthUserDto userDto = getAuthenticateUser(httpContext);
                     final Integer tenantIdentifier = httpContext.getTenantIdentifier();
                     final List<String> intersectionRoles = extAuthService.getRoles(context, userDto, tenantIdentifier);
 
@@ -110,6 +110,16 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
         throw new BadCredentialsException("Unable to authenticate REST call");
     }
 
+    private AuthUserDto getAuthenticateUser(ExternalHttpContext httpContext) {
+        final AuthUserDto userDto;
+        if (supportsCrossTenants(httpContext)) {
+            userDto = extAuthService.getAuthenticatedUser(httpContext);
+        } else {
+            userDto = extAuthService.getUserFromHttpContext(httpContext);
+        }
+        return userDto;
+    }
+
     /**
      *
      * {@inheritDoc}
@@ -117,6 +127,10 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
     @Override
     public boolean supports(final Class<?> authentication) {
         return authentication.equals(PreAuthenticatedAuthenticationToken.class);
+    }
+
+    public boolean supportsCrossTenants(ExternalHttpContext context) {
+        return false;
     }
 
 }

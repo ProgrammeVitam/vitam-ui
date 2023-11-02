@@ -41,10 +41,21 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
+import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.x509.CertificateParser;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
 import org.apereo.cas.authentication.AuthenticationHandler;
@@ -52,18 +63,19 @@ import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.SurrogatePrincipal;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
-import org.apereo.cas.authentication.principal.ClientCredential;
-import org.apereo.cas.authentication.principal.NullPrincipal;
-import org.apereo.cas.authentication.principal.Principal;
-import org.apereo.cas.authentication.principal.PrincipalFactory;
-import org.apereo.cas.authentication.principal.PrincipalResolver;
+import org.apereo.cas.authentication.principal.*;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
-import org.pac4j.core.context.JEEContext;
+
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Value;
+import org.pac4j.jee.context.JEEContext;
 import org.springframework.webflow.execution.RequestContextHolder;
+
+import java.security.cert.CertificateParsingException;
+import java.util.*;
+import java.util.regex.Pattern;
 
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
@@ -114,6 +126,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     @Override
     public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal, final Optional<AuthenticationHandler> handler) {
+
+        // OAuth 2 authorization code flow (client credentials authentication)
+        if (optPrincipal.isEmpty()) {
+            return NullPrincipal.getInstance();
+        }
 
         val principal = optPrincipal.get();
         val principalId = principal.getId();

@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
@@ -45,7 +46,6 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
 import { InformationTabComponent } from './information-tab.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 let expectedCustomer: Customer = {
   id: '11',

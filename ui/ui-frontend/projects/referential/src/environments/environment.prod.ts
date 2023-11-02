@@ -35,5 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export const environment = {
-  production: true
+  production: true,
+  configUrls: ['./assets/config.json'],
 };

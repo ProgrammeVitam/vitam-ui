@@ -51,9 +51,9 @@ import {of} from 'rxjs';
 import {InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 import {environment} from '../../environments/environment';
+import {IngestType} from '../core/common/ingest-type.enum';
 import {IngestService} from '../ingest/ingest.service';
 import {HoldingFillingSchemeComponent} from './holding-filling-scheme.component';
-import {IngestType} from "../core/common/ingest-type.enum";
 
 @Component({selector: 'app-ingest-list', template: ''})
 class IngestListStubComponent {

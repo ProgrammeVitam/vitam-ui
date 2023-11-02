@@ -26,23 +26,23 @@
                     </vitamui-common-search-bar>
 
                     <div class="actions">
-                        <button class="btn secondary" (click)="openCreateRuleDialog()" [disabled]="!(checkCreateRole | async)">
+                        <button class="btn secondary" (click)="openCreateRuleDialog()" [disabled]="(checkCreateRole | async)!== true">
                             <i class="vitamui-icon vitamui-icon-rules btn-create"></i> <span
                                 i18n="Create a business rule button label@@RulesListCreateButton">Créer une règle de
                                 gestion</span>
                         </button>
 
-                        <button class="btn more-actions" [matMenuTriggerFor]="moreMenu" [disabled]="!((checkExportRole | async) || (checkImportRole | async))" >
+                        <button class="btn more-actions" [matMenuTriggerFor]="moreMenu" [disabled]="!((checkExportRole | async) === true || (checkImportRole | async))" >
                             <i class="material-icons">more_horiz</i> <span
                                 i18n="More actions button label@@customerListMoreActionsButton">Autres actions</span>
                         </button>
                         <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu"
                             xPosition="before">
                             <button mat-menu-item i18n="Import@@RuleImportButton"
-                                (click)="openRuleImportDialog()"  [disabled]="!(checkImportRole | async)">Importer</button>
+                                (click)="openRuleImportDialog()"  [disabled]="(checkImportRole | async)!== true">Importer</button>
 
                             <button mat-menu-item i18n="Export@@RuleExportButton"
-                                (click)="exportRules()" [disabled]="!(checkExportRole | async)" >Exporter</button>
+                                (click)="exportRules()" [disabled]="(checkExportRole | async)!== true" >Exporter</button>
                         </mat-menu>
                     </div>
 

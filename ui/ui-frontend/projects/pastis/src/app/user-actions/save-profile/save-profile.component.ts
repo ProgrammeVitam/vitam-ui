@@ -92,6 +92,7 @@ function constantToTranslate(edit: boolean) {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-save-profile',
   templateUrl: './save-profile.component.html',
   styleUrls: ['./save-profile.component.scss']
@@ -124,6 +125,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   isSlaveMode: boolean;
   fileRng: File;
 
+  // tslint:disable-next-line:no-output-native
   @Output() close = new EventEmitter();
 
   constructor(private profileService: ProfileService,
@@ -289,11 +291,12 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           dataToSendToPopUp.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
           dataToSendToPopUp.profileMode = this.profileService.profileMode;
           const selectNoticeDialog = this.dialog.open(SelectNoticeComponent, {
-              width: '800px',
-              panelClass: 'pastis-popup-modal-box',
-              data: dataToSendToPopUp
-            }
-          );
+            width: '800px',
+            panelClass: 'pastis-popup-modal-box',
+            data: dataToSendToPopUp
+          }
+        );
+        // tslint:disable-next-line:no-shadowed-variable
           this.subscriptions.add(
             selectNoticeDialog.afterClosed().subscribe((selectNoticeResult) => {
               this.toggleService.showPending();
@@ -304,6 +307,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
                   this.subscriptions.add(
                     this.profileService.uploadFile(this.data, profileDescription, selectNoticeResult.mode).subscribe(retrievedData => {
+                // tslint:disable-next-line:no-shadowed-variable
                       retrievedData.text().then(result => {
                         const jsonObject = JSON.parse(result);
                         this.archivalProfileUnit = jsonObject as unknown as ArchivalProfileUnit;

@@ -124,7 +124,7 @@ public class FileFormatInternalController {
         LOGGER.debug("getByIdOrHistory ");
         String requestURL = request.getRequestURL().toString();
         String path = StringUtils.substringAfter(requestURL,RestApi.FILE_FORMATS_URL + "/");
-        if (StringUtils.endsWith("/history", path)) {
+        if (StringUtils.endsWith( path, "/history")) {
             return findHistoryById(StringUtils.substringBefore(path,"/history"));
         } else {
             return getOne(StringUtils.removeEndIgnoreCase(path,"/"));

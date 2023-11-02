@@ -41,6 +41,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import fr.gouv.vitamui.commons.vitam.api.dto.ReportSummaryDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -49,22 +50,21 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ProbativeReportDto {
-	
+
 	@JsonProperty("operationSummary")
 	private OperationSummaryDto operationSummary;
-	
+
 	@JsonProperty("reportSummary")
 	private ReportSummaryDto reportSummary;
-	
+
 	@JsonProperty("context")
 	private ContextDto context;
-	
+
 	@JsonProperty("reportEntries")
 	private List<ReportEntryDto> reportEntries;
-	
+
 	@JsonProperty("reportVersion")
 	@JsonAlias("ReportVersion")
 	private Integer reportVersion;
-	
-	
+
 }

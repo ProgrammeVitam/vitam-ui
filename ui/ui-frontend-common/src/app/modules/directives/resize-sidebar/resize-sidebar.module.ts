@@ -37,7 +37,7 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {ResizeSidebarDirective} from './resize-sidebar.directive';
-import {ResizeVerticalDirective} from "./resize-vertical.directive";
+import {ResizeVerticalDirective} from './resize-vertical.directive';
 
 @NgModule({
   imports: [

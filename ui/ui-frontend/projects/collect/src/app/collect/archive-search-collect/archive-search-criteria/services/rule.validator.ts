@@ -45,7 +45,8 @@ export class  RuleValidator {
   private debounceTime = 400;
   ruleCategorySelected: string;
 
-  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private archiveSharedDataService: ArchiveSharedDataService) { }
+  constructor(private managementRulesSharedDataService:
+    ManagementRulesSharedDataService, private archiveSharedDataService: ArchiveSharedDataService) { }
 
   uniqueRuleId(ruleIdToIgnore?: string): AsyncValidatorFn {
     return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);

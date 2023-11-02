@@ -114,6 +114,9 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       keystorePassword: [null, Validators.required],
       authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
+      maximumAuthenticationLifetime: [null, Validators.pattern('^[0-9]*$')],
+      wantsAssertionsSigned: [true],
+      authnRequestSigned: [true]
     });
   }
 
@@ -156,14 +159,13 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    var idp;
+    let idp;
     if (!this.form.valid) {
       return;
     }
     idp = this.form.value;
     idp.keystore = this.keystore;
     idp.idpMetadata = this.idpMetadata;
-
     idp.internal = false;
     this.identityProviderService.create(idp).subscribe(
       (newIdp: IdentityProvider) => this.dialogRef.close(newIdp),

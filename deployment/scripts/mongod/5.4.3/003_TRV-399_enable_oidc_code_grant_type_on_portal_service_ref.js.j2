@@ -1,0 +1,29 @@
+{% if gateway.enabled | default(False) %}
+
+db = db.getSiblingDB("cas");
+
+print("START 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
+
+var serviceWithMaxId = db.services.find({}).sort({ _id: -1 }).limit(1)[0];
+var maxId = serviceWithMaxId ? serviceWithMaxId._id : 0;
+
+db.services.insertOne({
+  _id: NumberInt(++maxId),
+  _class: "org.apereo.cas.services.OidcRegisteredService",
+  clientId: "{{ vitamui.portal.clientId }}",
+  serviceId: "{{ vitamui.portal.serviceId }}",
+  name: "{{ vitamui.portal.name }}",
+  bypassApprovalPrompt: true,
+  supportedGrantTypes: ["authorization_code"],
+  supportedResponseTypes: ["code", "token"],
+  attributeReleasePolicy: {
+    _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+    allowedAttributes: ["authtoken"],
+  },
+  evaluationOrder: 10000,
+  jsonFormat: true,
+});
+
+print("END 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
+
+{% endif %}

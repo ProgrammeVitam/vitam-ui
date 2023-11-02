@@ -63,6 +63,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -125,12 +126,12 @@ public class LogbookExternalController {
     @ApiOperation(value = "Get logbook operations by json select")
     @Secured({ServicesData.ROLE_LOGBOOKS})
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
-    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select)
+    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select, @RequestParam(required = false) Integer vitamTenantIdentifier)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeJson(select);
         SanityChecker.sanitizeCriteria(select);
         LOGGER.debug("Get logbook operations by json select");
-        return logbookExternalService.findOperations(select);
+        return logbookExternalService.findOperations(select, vitamTenantIdentifier);
     }
 
     @ApiOperation(value = "Download the manifest for a given operation")

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -67,6 +67,9 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
         mailAttribute: identityProvider.mailAttribute,
         identifierAttribute: identityProvider.identifierAttribute,
         authnRequestBinding: identityProvider.authnRequestBinding,
+        authnRequestSigned: identityProvider.authnRequestSigned,
+        wantsAssertionsSigned: identityProvider.wantsAssertionsSigned,
+        maximumAuthenticationLifetime: identityProvider.maximumAuthenticationLifetime,
         autoProvisioningEnabled: identityProvider.autoProvisioningEnabled,
         clientId: identityProvider.clientId,
         clientSecret: identityProvider.clientSecret,
@@ -97,6 +100,15 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
     return this.http.patch<IdentityProvider>(this.apiUrl + '/' + identityProviderId + '/idpMetadata', formData, { headers });
   }
 
+  patchProviderSpMetadata(identityProviderId: string, spMetadata: File, headers?: HttpHeaders): Observable<IdentityProvider> {
+    const formData = new FormData();
+
+    formData.append('spMetadata', spMetadata, spMetadata.name);
+    formData.append('provider', JSON.stringify({ id: identityProviderId }));
+
+    return this.http.patch<IdentityProvider>(this.apiUrl + '/' + identityProviderId + '/spMetadata', formData, { headers });
+  }
+
   patchProviderKeystore(
     identityProviderId: string,
     keystore: File,
@@ -115,7 +127,15 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
     return this.http.get<IdentityProvider[]>(this.apiUrl, { params, headers });
   }
 
-  buildMetadataUrl(identityProviderId: string, tenantIdentifier: string): string {
-    return this.apiUrl + `/${identityProviderId}/idpMetadata?tenantId=${tenantIdentifier}`;
+  getFileByUrl(url: string): Observable<HttpResponse<Blob>>{
+    return this.http.get(url, {observe: 'response' ,responseType: 'blob'});
+  }
+
+  buildMetadataUrl(identityProviderId: string): string {
+    return this.apiUrl + `/${identityProviderId}/idpMetadata`;
+  }
+
+  buildSpMetadataUrl(identityProviderId: string): string {
+    return this.apiUrl + `/${identityProviderId}/spMetadata`;
   }
 }

@@ -21,6 +21,7 @@
         <module>api-archive-search</module>
         <module>api-pastis</module>
         <module>api-collect</module>
+        <module>api-gateway</module>
     </modules>
 
 </project>

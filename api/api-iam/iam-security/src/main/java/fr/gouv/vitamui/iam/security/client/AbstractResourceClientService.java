@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.security.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
@@ -49,24 +50,23 @@ import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
 import fr.gouv.vitamui.commons.api.domain.RequestParamGroupDto;
 import fr.gouv.vitamui.commons.api.domain.ResultsDto;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -93,7 +93,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     protected static final String CRITERIA_VERSION_V2 = "v2";
 
 
-    public AbstractResourceClientService(final ExternalSecurityService externalSecurityService) {
+    protected AbstractResourceClientService(final ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
     }
 
@@ -125,7 +125,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         ParameterChecker.checkPagination(size, page);
         final PaginatedValuesDto<I> result = getClient().getAllPaginated(getInternalHttpContext(), page, size,
             checkAuthorization(criteria), orderBy, direction);
-        return new PaginatedValuesDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
+        return new PaginatedValuesDto<>(result.getValues().stream().map(this::converterToExternalDto)
             .collect(Collectors.toList()), result.getPageNum(), result.getPageSize(), result.isHasMore());
     }
 
@@ -135,15 +135,15 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         ParameterChecker.checkPagination(size, page);
         final PaginatedValuesDto<I> result = getClient().getAllPaginated(getInternalHttpContext(), page, size,
             checkAuthorization(criteria), orderBy, direction, embedded);
-        return new PaginatedValuesDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
+        return new PaginatedValuesDto<>(result.getValues().stream().map(this::converterToExternalDto)
             .collect(Collectors.toList()), result.getPageNum(), result.getPageSize(), result.isHasMore());
     }
 
     protected ResultsDto<E> getAllRequest(final RequestParamDto requestParamDto) {
         ParameterChecker.checkPagination(requestParamDto.getSize(), requestParamDto.getPage());
-        requestParamDto.setCriteria(checkRequestAuthorization(requestParamDto));
+        requestParamDto.setCriteria(checkRequestAuthorization(requestParamDto).orElseGet(null));
         final ResultsDto<I> result = getClient().getAllRequest(getInternalHttpContext(), requestParamDto);
-        return new ResultsDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
+        return new ResultsDto<>(result.getValues().stream().map(this::converterToExternalDto)
             .collect(Collectors.toList()), result);
     }
 
@@ -173,13 +173,17 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      * @return
      * @throws InvalidFormatException
      */
-    protected Optional<String> checkRequestAuthorization(RequestParamDto requestParamDto)
-        throws InvalidFormatException {
-        if (requestParamDto.getGroups().isPresent()) {
-            RequestParamGroupDto requestParamGroupDto = requestParamDto.getGroups().get();
-            for (String field : requestParamGroupDto.getFields()) {
-                if (!getAllowedAggregationKeys().contains(field))
-                    throw new ForbiddenException(String.format("Not allowed to get aggregation %s values", field));
+    protected Optional<String> checkRequestAuthorization(RequestParamDto requestParamDto) throws InvalidFormatException {
+        if (requestParamDto.getGroups() != null && requestParamDto.getGroups().getFields() != null) {
+            for (String aggregateField: requestParamDto.getGroups().getFields()) {
+                if (!getAllowedAggregationKeys().contains(aggregateField))
+                    throw new ForbiddenException(String.format("Not allowed to get aggregation %s values", aggregateField));
+            }
+        }
+        if (requestParamDto.getExcludeFields() != null) {
+            for(String excludeField: requestParamDto.getExcludeFields()){
+                if(!getAllowedExcludeKeys().contains(excludeField))
+                    throw new ForbiddenException(String.format("Not allowed to exclude the field %s", excludeField));
             }
         }
         return addAccessRestriction(QueryDto.fromJson(requestParamDto.getCriteria())).toOptionalJson();
@@ -234,9 +238,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     private void checkContainsAuthorizedKeys(final QueryDto query) {
         query.keyFilter(getAllowedKeys());
         if (query.getSubQueries() != null) {
-            query.getSubQueries().forEach((q) -> {
-                checkContainsAuthorizedKeys(q);
-            });
+            query.getSubQueries().forEach(this::checkContainsAuthorizedKeys);
         }
 
     }
@@ -350,6 +352,17 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         return Collections.emptyList();
     }
 
+
+    /**
+     * The Collection contains keys allowed for excluded fields.
+     * By default the collection is null and all keys are authorized
+     * Function as a whitelist
+     * @return
+     */
+    protected Collection<String> getAllowedExcludeKeys() {
+        return Collections.emptyList();
+    }
+
     protected Criterion getCustomerRestriction() {
         return new Criterion(CUSTOMER_ID_KEY, externalSecurityService.getCustomerId(), CriterionOperator.EQUALS);
     }
@@ -366,12 +379,12 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     protected List<E> getAll(final Optional<String> criteria) {
         return getClient().getAll(getInternalHttpContext(), checkAuthorization(criteria)).stream()
-            .map(element -> converterToExternalDto(element)).collect(Collectors.toList());
+            .map(this::converterToExternalDto).collect(Collectors.toList());
     }
 
     protected List<E> getAll(final Optional<String> criteria, final Optional<String> embedded) {
         return getClient().getAll(getInternalHttpContext(), checkAuthorization(criteria), embedded).stream()
-            .map(element -> converterToExternalDto(element)).collect(Collectors.toList());
+            .map(this::converterToExternalDto).collect(Collectors.toList());
     }
 
     protected boolean checkExists(final String criteria) {
@@ -400,8 +413,13 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         Assert.isTrue(externalSecurityService.isLevelAllowed(level), message);
     }
 
-    protected JsonNode findHistoryById(final String id) {
-        return getClient().findHistoryById(getInternalHttpContext(), id);
+    protected LogbookOperationsResponseDto findHistoryById(final String id) {
+        final JsonNode body = getClient().findHistoryById(getInternalHttpContext(), id);
+        try {
+            return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
+        } catch (final JsonProcessingException e) {
+            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
+        }
     }
 
     @SuppressWarnings("unchecked")

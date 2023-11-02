@@ -39,7 +39,7 @@ public final class SpMetadataGeneratorTest {
     public void testRealProvider() throws Exception {
         final IdentityProviderDto provider = new IdentityProviderBuilder("google", "idp0", true, false, null,
                 new ClassPathResource("test-idp/sp-test-keystore.jks"), "password", "password", new ClassPathResource("test-idp/idp-test-metadata.xml"),
-                "clientId", false, "mailAttribute", "identifierAttribute", AuthnRequestBindingEnum.POST, false, null, null,
+                "clientId", false, "mailAttribute", "identifierAttribute", 1000, AuthnRequestBindingEnum.POST, true, true, false, null, null,
             null,null,null,null,null,null,null,null).build();
         final SpMetadataGenerator generator = new SpMetadataGenerator();
         generator.setPac4jClientBuilder(builder);
@@ -50,5 +50,5 @@ public final class SpMetadataGeneratorTest {
         assertTrue(metadata.contains(
                 "<md:KeyDescriptor use=\"signing\"><ds:KeyInfo xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\"><ds:X509Data><ds:X509Certificate>MIIDdzCCAl+gAwIBAgIESvhWIzANBgkqhkiG9w0BAQsFADBsMRAwDgYDVQQGEwdVbmtub3duMRAw"));
     }
-   
+
 }

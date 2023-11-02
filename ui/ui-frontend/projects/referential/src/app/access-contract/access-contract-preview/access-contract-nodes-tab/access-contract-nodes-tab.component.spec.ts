@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
+import {SearchUnitApiService, Status} from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
 import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
@@ -66,7 +66,7 @@ describe('AccessContractNodesTabComponent', () => {
     deactivationDate: '01-01-20',
     writingPermission: true,
     writingRestrictedDesc: true,
-    accessLog: '',
+    accessLog: Status.INACTIVE,
     ruleFilter: true,
     ruleCategoryToFilter: ['rule'],
     rootUnits: [''],

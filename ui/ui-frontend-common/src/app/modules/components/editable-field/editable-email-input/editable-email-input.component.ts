@@ -45,18 +45,16 @@ import { EditableFieldComponent } from '../editable-field.component';
 export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableEmailInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-editable-email-input',
   templateUrl: './editable-email-input.component.html',
   styleUrls: ['./editable-email-input.component.scss'],
-  providers: [EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR]
+  providers: [EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR],
 })
-
 export class EditableEmailInputComponent extends EditableFieldComponent {
-
   @ViewChild('select') select: MatSelect;
 
   constructor(formBuilder: FormBuilder, elementRef: ElementRef) {
@@ -64,15 +62,14 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
 
     this.formEmail = formBuilder.group({
       emailFirstPart: null,
-      domain: [null]
+      domain: [null],
     });
 
     this.formEmail.valueChanges.subscribe((emailData) => {
       this.control.setValue(emailData.emailFirstPart + '@' + emailData.domain);
       this.control.markAsDirty();
     });
-
-   }
+  }
 
   formEmail: FormGroup;
 
@@ -89,8 +86,11 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
   }
 
   onClick(target: HTMLElement) {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
+
     const selectOverlayRef = this.select.overlayDir.overlayRef;
     if (
       this.isInside(target, this.elementRef.nativeElement) ||
@@ -102,5 +102,4 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
     }
     this.cancel();
   }
-
 }

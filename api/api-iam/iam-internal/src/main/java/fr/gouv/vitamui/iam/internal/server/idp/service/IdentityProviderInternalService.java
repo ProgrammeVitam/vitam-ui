@@ -285,6 +285,10 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                     entity.setIdpMetadata(CastUtils.toString(entry.getValue()));
                     generateMetadata = true;
                     break;
+                case "spMetadata" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.SP_METADATA_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
+                    entity.setSpMetadata(CastUtils.toString(entry.getValue()));
+                    break;
                 case "maximumAuthenticationLifetime" :
                     final Integer maximumAuthenticationLifeTime = CastUtils.toInteger(entry.getValue());
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.MAXIMUM_AUTHENTICATION_LIFE_TIME, entity.getMaximumAuthenticationLifetime(),
@@ -337,6 +341,16 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                 case "protocoleType":
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.PROTOCOLE_TYPE, entity.getProtocoleType(), entry.getValue()));
                     entity.setProtocoleType(CastUtils.toString(entry.getValue()));
+                    break;
+                case "authnRequestSigned":
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.AUTHN_REQUEST_SIGNED, entity.getAuthnRequestSigned(), entry.getValue()));
+                    entity.setAuthnRequestSigned(CastUtils.toBoolean(entry.getValue()));
+                    generateMetadata = true;
+                    break;
+                case "wantsAssertionsSigned":
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.WANTS_ASSERTIONS_SIGNED, entity.getWantsAssertionsSigned(), entry.getValue()));
+                    entity.setWantsAssertionsSigned(CastUtils.toBoolean(entry.getValue()));
+                    generateMetadata = true;
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch provider " + entity.getId() + ": key " + entry.getKey() + " is not allowed");
@@ -459,10 +473,15 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
     private String generateMetaData(final IdentityProvider provider) {
         final IdentityProviderDto dto = new IdentityProviderDto();
         dto.setName(provider.getName());
+        dto.setIdentifier(provider.getIdentifier());
         dto.setKeystoreBase64(provider.getKeystoreBase64());
         dto.setPrivateKeyPassword(provider.getPrivateKeyPassword());
         dto.setKeystorePassword(provider.getKeystorePassword());
         dto.setIdpMetadata(provider.getIdpMetadata());
+        dto.setTechnicalName(provider.getTechnicalName());
+        dto.setWantsAssertionsSigned(provider.getWantsAssertionsSigned());
+        dto.setAuthnRequestSigned(provider.getAuthnRequestSigned());
+        dto.setMaximumAuthenticationLifetime(provider.getMaximumAuthenticationLifetime());
         return spMetadataGenerator.generate(dto);
     }
 

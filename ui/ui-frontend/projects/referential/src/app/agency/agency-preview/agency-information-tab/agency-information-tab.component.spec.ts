@@ -38,11 +38,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { SecurityService } from 'ui-frontend-common';
 import { AgencyService } from '../../agency.service';
 import { AgencyInformationTabComponent } from './agency-information-tab.component';
-import { SecurityService } from 'ui-frontend-common';
-import { ActivatedRoute } from '@angular/router';
 
 describe('AgencyInformationTabComponent', () => {
   let component: AgencyInformationTabComponent;

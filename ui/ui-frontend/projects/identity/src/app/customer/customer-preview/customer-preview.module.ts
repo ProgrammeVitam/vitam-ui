@@ -48,8 +48,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
+import { CustomParamsModule } from '../../shared/custom-params/custom-params.module';
 import { SharedModule } from '../../shared/shared.module';
-import {CustomerColorsInputModule} from '../customer-create/customer-colors-input/customer-colors-input.module';
+import { CustomerColorsInputModule } from '../customer-create/customer-colors-input/customer-colors-input.module';
 import { CustomerPreviewComponent } from './customer-preview.component';
 import { GraphicIdentityTabComponent } from './graphic-identity-tab/graphic-identity-tab.component';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-tab/graphic-identity-update/graphic-identity-update.component';
@@ -66,7 +67,6 @@ import { IdentityProviderCreateComponent } from './sso-tab/identity-provider-cre
 import { IdentityProviderDetailsComponent } from './sso-tab/identity-provider-details/identity-provider-details.component';
 import { IdentityProviderService } from './sso-tab/identity-provider.service';
 import { SsoTabComponent } from './sso-tab/sso-tab.component';
-import { CustomParamsModule } from '../../shared/custom-params/custom-params.module';
 
 @NgModule({
   imports: [
@@ -84,7 +84,7 @@ import { CustomParamsModule } from '../../shared/custom-params/custom-params.mod
     MatTooltipModule,
     MatProgressSpinnerModule,
     VitamUICommonModule,
-    CustomParamsModule
+    CustomParamsModule,
   ],
   declarations: [
     CustomerPreviewComponent,
@@ -99,10 +99,10 @@ import { CustomParamsModule } from '../../shared/custom-params/custom-params.mod
     HomepageMessageTabComponent,
     HomepageMessageUpdateComponent,
     HomepageMessageComponent,
-    HomepageMessageTranslationComponent
+    HomepageMessageTranslationComponent,
   ],
-  exports: [ CustomerPreviewComponent, GraphicIdentityComponent, HomepageMessageComponent, HomepageMessageTranslationComponent],
+  exports: [CustomerPreviewComponent, GraphicIdentityComponent, HomepageMessageComponent, HomepageMessageTranslationComponent],
   entryComponents: [IdentityProviderCreateComponent, GraphicIdentityUpdateComponent, HomepageMessageUpdateComponent],
-  providers: [IdentityProviderService]
+  providers: [IdentityProviderService],
 })
-export class CustomerPreviewModule { }
+export class CustomerPreviewModule {}

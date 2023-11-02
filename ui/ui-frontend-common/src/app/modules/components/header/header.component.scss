@@ -37,14 +37,16 @@ vitamui-common-item-select {
   @include elevation-0;
 }
 
-vitamui-common-select-language, .select-tenant {
+vitamui-common-user-alerts-menu, vitamui-common-select-language, .selection {
   height: $header-height;
 }
 
-.select-tenant {
-  width: 18%;
-  min-width: 200px;
+vitamui-common-user-alerts-menu, .selection {
   border-left: 1px solid var(--vitamui-grey-200);
+}
+
+.user-alerts {
+  width: 7%;
 }
 
 .username {

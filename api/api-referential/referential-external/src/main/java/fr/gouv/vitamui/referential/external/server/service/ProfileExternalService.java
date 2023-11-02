@@ -36,12 +36,17 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
@@ -125,9 +130,14 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
     }
 
     @Override
-    public JsonNode findHistoryById(final String id) {
-        return getClient().findHistoryById(getInternalHttpContext(), id);
-    }
+    public LogbookOperationsResponseDto findHistoryById(final String id) {
+        final JsonNode body = getClient().findHistoryById(getInternalHttpContext(), id);
+        try {
+            return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
+        } catch (final JsonProcessingException e) {
+            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
+        }
+      }
 
     public boolean check(ProfileDto accessContractDto) {
         return profileInternalRestClient.check(getInternalHttpContext(), accessContractDto);

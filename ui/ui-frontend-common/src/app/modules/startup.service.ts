@@ -35,14 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Inject, Injectable } from '@angular/core';
-import { Observable, Subject, zip } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
 import { BaseUserInfoApiService } from './api/base-user-info-api.service';
 import { SecurityApiService } from './api/security-api.service';
 import { ApplicationId } from './application-id.enum';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
+import { ConfigService } from './config.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { AppConfiguration, AttachmentType, AuthUser, UserInfo } from './models';
@@ -61,6 +62,7 @@ export class StartupService {
   private CURRENT_TENANT_IDENTIFIER: string;
 
   constructor(
+    private configService: ConfigService,
     private logger: Logger,
     private authService: AuthService,
     private securityApi: SecurityApiService,
@@ -71,30 +73,46 @@ export class StartupService {
     @Inject(WINDOW_LOCATION) private location: any
   ) {}
 
-  load(): Promise<any> {
-    return new Promise((resolve) => {
-      const confSource = this.applicationApi.getConfiguration().pipe(
-        tap((data) => {
-          this.configurationData = data;
-          this.authService.loginUrl = this.configurationData.CAS_URL;
-          this.authService.logoutUrl = this.configurationData.CAS_LOGOUT_URL;
-          this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
-        })
-      );
+  load(): Observable<AuthUser> {
+    this.configurationData = this.configService.config;
+    this.authService.loginUrl = this.configurationData.CAS_URL;
+    this.authService.logoutUrl = this.configurationData.CAS_LOGOUT_URL;
+    this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
 
-      const authSource = this.refreshUser().pipe(
-        tap(() =>
-          this.userInfoApiService
-            .getMyUserInfo()
-            .pipe(
-              tap((userInfo: UserInfo) => (this.authService.userInfo = userInfo)),
-              take(1)
-            )
-            .subscribe()
-        ),
-        tap(() => this.applicationService.list().pipe(take(1)).subscribe()),
-        tap(() => {
-          this.applicationApi
+    return this.refreshUser().pipe(
+      tap((_) => {
+        this.userInfoApiService
+          .getMyUserInfo()
+          .pipe(
+            tap((userInfo: UserInfo) => (this.authService.userInfo = userInfo)),
+            take(1)
+          )
+          .subscribe();
+      }),
+      tap((_) => {
+        this.applicationService.list().pipe(take(1)).subscribe();
+      }),
+      switchMap((_) => {
+        let logosObservable: Observable<any>;
+        if (this.configurationData.GATEWAY_ENABLED) {
+          logosObservable = combineLatest([
+            this.applicationApi.getLocalAsset(this.configurationData.HEADER_LOGO),
+            this.applicationApi.getLocalAsset(this.configurationData.FOOTER_LOGO),
+            this.applicationApi.getLocalAsset(this.configurationData.PORTAL_LOGO),
+            this.applicationApi.getLocalAsset(this.configurationData.USER_LOGO),
+          ]).pipe(
+            tap(([header, footer, portal, user]) => {
+              // We change the LOGO variables to put base64 image instead of .png reference for the themeService.init()
+              this.configurationData.HEADER_LOGO = header;
+              this.configurationData.FOOTER_LOGO = footer;
+              this.configurationData.PORTAL_LOGO = portal;
+              this.configurationData.LOGO = portal;
+              this.configurationData.USER_LOGO = user;
+            }),
+            take(1)
+          );
+        } else {
+          logosObservable = this.applicationApi
             .getAsset([AttachmentType.Header, AttachmentType.Footer, AttachmentType.User, AttachmentType.Portal])
             .pipe(
               tap((data) => {
@@ -103,22 +121,18 @@ export class StartupService {
                 this.configurationData.PORTAL_LOGO = data[AttachmentType.Portal];
                 this.configurationData.USER_LOGO = data[AttachmentType.User];
                 this.configurationData.LOGO = data[AttachmentType.Portal];
-
-                const graphicIdentity = this.authService.user.basicCustomer.graphicIdentity;
-                const customerColorMap = graphicIdentity.hasCustomGraphicIdentity ? graphicIdentity.themeColors : null;
-                this.themeService.init(this.configurationData, customerColorMap);
               }),
               take(1)
-            )
-            .subscribe();
-        }),
-        take(1)
-      );
-
-      zip(confSource, authSource).subscribe(() => {
-        resolve();
-      });
-    });
+            );
+        }
+        return logosObservable;
+      }),
+      tap((_) => {
+        const graphicIdentity = this.authService.user.basicCustomer.graphicIdentity;
+        const customerColorMap = graphicIdentity.hasCustomGraphicIdentity ? graphicIdentity.themeColors : null;
+        this.themeService.init(this.configurationData, customerColorMap);
+      })
+    );
   }
 
   /**
@@ -282,6 +296,14 @@ export class StartupService {
     return +this.getConfigStringValue(key);
   }
 
+  getConfigObjectValue(key: string): any {
+    if (this.configurationLoaded() && this.configurationData.hasOwnProperty(key)) {
+      return this.configurationData[key];
+    }
+
+    return null;
+  }
+
   /**
    * Navigate to given url or to the portal otherwise.
    * @param url URL to be redirected to.
@@ -303,5 +325,4 @@ export class StartupService {
       return this.configurationData.CUSTOMER;
     }
   }
-
 }

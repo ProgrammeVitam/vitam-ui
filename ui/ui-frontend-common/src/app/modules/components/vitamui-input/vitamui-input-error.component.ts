@@ -42,17 +42,12 @@ import { slideDownAnimation } from '../../animations/vitamui-common-animations';
   selector: 'vitamui-common-input-error',
   template: `<ng-content></ng-content>`,
   styleUrls: ['./vitamui-input-error.component.scss'],
-  animations: [
-    slideDownAnimation,
-  ]
+  animations: [slideDownAnimation],
 })
 export class VitamUIInputErrorComponent implements OnInit {
-
   @HostBinding('@slideDownAnimation') slideDownAnimation = true;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

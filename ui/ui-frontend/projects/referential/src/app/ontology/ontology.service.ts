@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {SearchService, VitamUISnackBarService} from 'ui-frontend-common';
 
-import { Ontology } from 'projects/vitamui-library/src/public-api';
-import { OntologyApiService } from '../core/api/ontology-api.service';
+import {Ontology} from 'projects/vitamui-library/src/public-api';
+import {OntologyApiService} from '../core/api/ontology-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -78,9 +78,12 @@ export class OntologyService extends SearchService<Ontology> {
     return this.ontologyApiService.create(ontology, this.headers)
       .pipe(
         tap(
-          (_: Ontology) => {
+          (response: Ontology) => {
             this.snackBarService.open({
               message: 'SNACKBAR.ONTOLOGY_CREATED',
+              translateParams:{
+                name: response.identifier,
+              },
               icon: 'vitamui-icon-ontologie'
             });
           },
@@ -96,9 +99,12 @@ export class OntologyService extends SearchService<Ontology> {
       .pipe(
         tap((response) => this.updated.next(response)),
         tap(
-          () => {
+          (response) => {
             this.snackBarService.open({
               message: 'SNACKBAR.ONTOLOGY_UPDATED',
+              translateParams:{
+                name: response.identifier,
+              },
               icon: 'vitamui-icon-ontologie'
             });
           },
@@ -114,6 +120,9 @@ export class OntologyService extends SearchService<Ontology> {
       tap(() => {
           this.snackBarService.open({
             message: 'SNACKBAR.ONTOLOGY_DELETED',
+            translateParams:{
+              name: ontology.identifier,
+            },
             icon: 'vitamui-icon-ontologie'
           });
         },

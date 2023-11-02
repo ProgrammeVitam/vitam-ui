@@ -30,6 +30,8 @@ customer-init:
   #   email-prefix: email.local-part
 
   # Default profiles for each tenant created
+  # If you add multiple profiles on the same app, put first in this list the admin profile.
+  # Only the first profile by app will be added to the admin's group
   tenant-profiles:
     - name: Profil pour la gestion des contrats d'accès
       description: Gestion des contrats d'accès dans Vitam
@@ -40,6 +42,8 @@ customer-init:
         - ROLE_CREATE_ACCESS_CONTRACTS
         - ROLE_UPDATE_ACCESS_CONTRACTS
         - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_GET_UNITS
+        - ROLE_GET_EXTERNAL_PARAMS
 
     - name: Profil pour la gestion des contrats d'entrée
       description: Gestion des contrats d'entrée dans Vitam
@@ -52,6 +56,10 @@ customer-init:
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_MANAGEMENT_CONTRACTS
         - ROLE_GET_ARCHIVE_PROFILES
+        - ROLE_GET_FILE_FORMATS
+        - ROLE_GET_UNITS
+        - ROLE_GET_EXTERNAL_PARAMS
+
 
     - name: Profil consultation des contrats d'entrée
       description: Profil pour la consultation des contrats d'entrée dans Vitam sans mises à jour des contrats
@@ -186,6 +194,26 @@ customer-init:
         - ROLE_UPDATE_PROFILES
         - ROLE_LOGBOOKS
 
+    - name: Archiviste administrateur
+      description: Profil pour la recherche et consultation des archives dans Vitam avec mise à jour des règles, export DIP, opérations d'élimination, reclassement, demande de transfert et acquittement de transfert
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_SEARCH_WITH_RULES
+        - ROLE_EXPORT_DIP
+        - ROLE_ELIMINATION
+        - ROLE_UPDATE_MANAGEMENT_RULES
+        - ROLE_COMPUTED_INHERITED_RULES
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_RECLASSIFICATION
+        - ROLE_UPDATE_UNIT_DESC_METADATA
+        - ROLE_TRANSFER_REQUEST
+        - ROLE_TRANSFER_ACKNOWLEDGMENT
+        - ROLE_GET_RULES
+
     - name: Consultation
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
@@ -209,26 +237,6 @@ customer-init:
         - ROLE_EXPORT_DIP
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
-        - ROLE_GET_RULES
-
-    - name: Archiviste administrateur
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mise à jour des règles, export DIP, opérations d'élimination, reclassement, demande de transfert et acquittement de transfert
-      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
-      level:
-      roles:
-        - ROLE_CREATE_ARCHIVE_SEARCH
-        - ROLE_GET_ARCHIVE_SEARCH
-        - ROLE_GET_ALL_ARCHIVE_SEARCH
-        - ROLE_SEARCH_WITH_RULES
-        - ROLE_EXPORT_DIP
-        - ROLE_ELIMINATION
-        - ROLE_UPDATE_MANAGEMENT_RULES
-        - ROLE_COMPUTED_INHERITED_RULES
-        - ROLE_GET_ACCESS_CONTRACTS
-        - ROLE_RECLASSIFICATION
-        - ROLE_UPDATE_UNIT_DESC_METADATA
-        - ROLE_TRANSFER_REQUEST
-        - ROLE_TRANSFER_ACKNOWLEDGMENT
         - ROLE_GET_RULES
 
     - name: Registre des fonds

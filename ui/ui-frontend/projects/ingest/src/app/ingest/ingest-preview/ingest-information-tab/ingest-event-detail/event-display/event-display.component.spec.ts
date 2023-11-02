@@ -36,9 +36,9 @@
  */
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
-import {EventDisplayComponent} from './event-display.component';
-import { IngestService } from '../../../../ingest.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { IngestService } from '../../../../ingest.service';
+import {EventDisplayComponent} from './event-display.component';
 
 describe('EventDisplayComponent', () => {
   let component: EventDisplayComponent;

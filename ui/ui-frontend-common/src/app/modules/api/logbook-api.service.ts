@@ -150,8 +150,15 @@ export class LogbookApiService implements PaginatedApi<Event> {
     );
   }
 
-  findOperationsBySelectQuery(selectQuery: VitamSelectQuery, headers?: HttpHeaders): Observable<{ $results: Event[] }> {
-    return this.http.post<{ $results: ApiEvent[] }>(this.apiUrl + '/operations', selectQuery, { headers }).pipe(
+  findOperationsBySelectQuery(selectQuery: VitamSelectQuery, vitamTenantIdentifier?: number,
+                              headers?: HttpHeaders): Observable<{ $results: Event[] }> {
+    let params = new HttpParams();
+
+    if (vitamTenantIdentifier) {
+      params = params.append('vitamTenantIdentifier', vitamTenantIdentifier.toString());
+    }
+
+    return this.http.post<{ $results: ApiEvent[] }>(this.apiUrl + '/operations', selectQuery, {headers, params}).pipe(
       map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) }))
     );
   }
@@ -172,8 +179,8 @@ export class LogbookApiService implements PaginatedApi<Event> {
     });
   }
 
-  getDownloadReportUrl(id: string, downloadType: string, accessContractId: string, tenantId: number): string {
-    return `${this.apiUrl}/operations/${id}/download/${downloadType}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  getDownloadReportUrl(id: string, downloadType: string): string {
+    return `${this.apiUrl}/operations/${id}/download/${downloadType}`;
   }
 
 

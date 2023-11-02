@@ -42,13 +42,13 @@ public class ApplicationControllerTest extends UIControllerTest<ApplicationDto> 
     private static final String PREFIX = "/ui/applications";
 
     @Test
-    public void testGetApplications() throws Exception {
-        super.testGetAllEntity();
+    public void testGetApplications() {
+        final ResultActions result = performGet("/filtered");
     }
 
     @Test
-    public void testfindApplicationsByNames() throws Exception {
-        final ResultActions result = performGet(StringUtils.EMPTY, ImmutableMap.of("term", "ab", "lang", "ENGLISH"));
+    public void testfindApplicationsByNames() {
+        final ResultActions result = performGet("/filtered", ImmutableMap.of("term", "ab", "lang", "ENGLISH"));
     }
 
     @Override
@@ -63,8 +63,7 @@ public class ApplicationControllerTest extends UIControllerTest<ApplicationDto> 
 
     @Override
     protected ApplicationDto buildDto() {
-        final ApplicationDto application = new ApplicationDto();
-        return application;
+        return new ApplicationDto();
     }
 
     @Override

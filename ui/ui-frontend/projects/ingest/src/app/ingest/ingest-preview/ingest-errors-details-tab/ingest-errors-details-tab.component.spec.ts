@@ -1,10 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IngestService } from '../../ingest.service';
 import { EventDisplayHelperService } from '../event-display-helper.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab.component';
 
 describe('IngestErrorsDetailsTabComponent', () => {
   let component: IngestErrorsDetailsTabComponent;
@@ -20,8 +19,6 @@ describe('IngestErrorsDetailsTabComponent', () => {
         { provide: EventDisplayHelperService, useValue: {} }
       ],
       schemas: [NO_ERRORS_SCHEMA]
-
-      
     })
     .compileComponents();
   });

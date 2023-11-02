@@ -110,7 +110,7 @@ No more than 1 login per 3 seconds is accepted.
 
 A specific only SMS MFA provider has been developed in the `mfa` package. It is globally applied with a bypass based on the IAM web service.
 
-The underneath SMS provider is Twilio.
+The underneath SMS provider is smsmode.
 
 
 # Database

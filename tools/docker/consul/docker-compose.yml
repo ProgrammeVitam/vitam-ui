@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  consul-server:
+    image: consul
+    network_mode: host
+    ports:
+      - "8500:8500"

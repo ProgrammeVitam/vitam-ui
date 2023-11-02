@@ -39,7 +39,7 @@ import { SafeResourceUrl, Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Application, ApplicationService, Category, UserInfo } from 'ui-frontend-common';
+import { AlertAnalytics, Application, ApplicationService, Category, UserAlertsService, UserInfo } from 'ui-frontend-common';
 import {
   ApplicationId,
   AuthService,
@@ -52,6 +52,8 @@ import {
   ThemeDataType,
   ThemeService
 } from 'ui-frontend-common';
+import { ContentTypeEnum } from '../components/content-list/content.enum';
+import { Content } from '../components/content-list/content.interface';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
@@ -62,11 +64,12 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 })
 export class PortalComponent implements OnInit, OnDestroy {
 
-  public applications: Map<Category, Application[]>;
+  public content: Map<Category, Content> = new Map();
   public welcomeTitle: string;
   public welcomeMessage: string;
   public portalLogoUrl: SafeResourceUrl;
   public loading = true;
+  public showAlerts = false;
 
   private destroyer$ = new Subject();
 
@@ -78,20 +81,21 @@ export class PortalComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private langagueService: LanguageService,
     private titleService: Title,
-    private globalEventService: GlobalEventService
+    private globalEventService: GlobalEventService,
+    private userAlertsService: UserAlertsService
   ) { }
 
   ngOnInit() {
     this.applicationService.getActiveTenantAppsMap().pipe(takeUntil(this.destroyer$)).subscribe((appMap) => {
-      this.applications = appMap;
+      this.content = this.convertAppMapToContentMap(appMap);
       this.loading = false;
     });
 
-    this.themeService.getData$(this.authService.user, ThemeDataType.PORTAL_LOGO).subscribe((portalLogoUrl: SafeResourceUrl) => {
-        this.portalLogoUrl = portalLogoUrl;
-    });
+    this.themeService.getData$(this.authService.user, ThemeDataType.PORTAL_LOGO)
+      .subscribe((portalLogoUrl: SafeResourceUrl) => this.portalLogoUrl = portalLogoUrl);
 
     this.authService.getUserInfo$().subscribe((userInfo: UserInfo) => this.initPortalTitleAndMessage(userInfo.language as FullLangString));
+
     this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe((event: LangChangeEvent) => {
       this.initPortalTitleAndMessage(this.langagueService.getFullLangString(event.lang as MinLangString));
     });
@@ -103,6 +107,51 @@ export class PortalComponent implements OnInit, OnDestroy {
     this.destroyer$.next();
     this.destroyer$.complete();
   }
+
+  public openAlert(alert: AlertAnalytics): void {
+    this.userAlertsService.openAlert(alert).subscribe();
+  }
+
+  public removeAlert(alert: AlertAnalytics): void {
+    this.userAlertsService.removeUserAlertById(alert.id).subscribe();
+  }
+
+  private convertAppMapToContentMap(appMap: Map<Category, Application[]>): Map<Category, Content> {
+    const contentMap: Map<Category, Content> = new Map();
+
+    // Set applications
+    for (const [category, apps] of appMap.entries()) {
+      const content: Content = { type: ContentTypeEnum.APPLICATION, data: apps };
+      contentMap.set(category, content);
+    }
+
+    // // Set alerts
+    // this.userAlertsService.getUserAlerts$().pipe(takeUntil(this.destroyer$)).subscribe((alerts: AlertAnalytics[]) => {
+    //   const existingAlertContent = this.retreiveAlertContent();
+    //
+    //   if (existingAlertContent) {
+    //     existingAlertContent.data = alerts;
+    //   } else {
+    //     const content: Content = { type: ContentTypeEnum.ALERT, data: alerts };
+    //     const category: Category = { displayTitle: true, identifier: 'USER_ALERTS', title: 'USER_ALERTS', order: 9999 };
+    //     contentMap.set(category, content);
+    //   }
+    // })
+
+    return contentMap;
+  }
+
+  // private retreiveAlertContent(): Content {
+  //   let alertContent;
+  //
+  //   this.content.forEach((content: Content) => {
+  //     if (content.type === ContentTypeEnum.ALERT) {
+  //       alertContent = content;
+  //     }
+  //   });
+  //
+  //   return alertContent;
+  // }
 
   private initPortalTitleAndMessage(lang: FullLangString): void {
     const translatedAppName = this.translateService.instant(APPLICATION_TRANSLATE_PATH + '.' + ApplicationId.PORTAL_APP + '.NAME');

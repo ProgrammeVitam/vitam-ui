@@ -20,10 +20,7 @@ module.exports = {
     "vitamui-secondary": "#2563A9",
     "vitamui-tertiary": "#C22A40",
     "vitamui-background": "#F5F7FC",
-    "vitamui-header-footer": "#ffffff",
-    "vitamui-primary": "#702382",
-    "vitamui-secondary": "#2563A9",
-    "vitamui-tertiary": "#C22A40",
+    "vitamui-header-footer": "#ffffff"
   },
   UI_URL: "https://dev.vitamui.com:8848",
   VERSION_RELEASE: "2.0",

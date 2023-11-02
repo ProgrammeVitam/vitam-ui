@@ -37,19 +37,16 @@
 package fr.gouv.vitamui.referential.internal.server.probativevalue;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
+import fr.gouv.vitamui.commons.utils.SecurePathUtils;
+import fr.gouv.vitamui.commons.utils.SecureZipUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +66,6 @@ import fr.gouv.vitam.common.model.objectgroup.VersionsModel;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.utils.ZipUtils;
 import fr.gouv.vitamui.commons.utils.PdfFileGenerator;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
@@ -166,18 +162,17 @@ public class ProbativeValueInternalService {
 
 	private void generateZip(final String operationId, final String workspaceOperationPath,
 			final OutputStream outputStream) {
-		final Map<String, InputStream> streams = new HashMap<>();
-		File jsonFile = new File(workspaceOperationPath.toString() + "/" + operationId + ".json");
-		File pdfFile = new File(workspaceOperationPath.toString() + "/" + operationId + ".pdf");
-		try {
-			streams.put(operationId + ".json", new FileInputStream(jsonFile));
-			streams.put(operationId + ".pdf", new FileInputStream(pdfFile));
-		} catch (FileNotFoundException e) {
-			LOGGER.error("Unable to generate ZIP", e.getMessage());
-			throw new InternalServerException(String.format("Unable to generate ZIP: %s", e.getMessage()), e);
-		}
-		ZipUtils.generate(streams, outputStream);
+        try {
+            final List<Path> filesPaths = new ArrayList<>();
 
+            filesPaths.add(Paths.get(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".json")));
+            filesPaths.add(Paths.get(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".pdf")));
+
+            SecureZipUtils.zipFiles(filesPaths, outputStream);
+        } catch (Exception e) {
+            LOGGER.error("Unable to generate ZIP", e.getMessage());
+            throw new InternalServerException(String.format("Unable to generate ZIP: %s", e.getMessage()), e);
+        }
 	}
 
 	private void reportEntriesConsolidation(VitamContext vitamContext, ProbativeReportDto report)

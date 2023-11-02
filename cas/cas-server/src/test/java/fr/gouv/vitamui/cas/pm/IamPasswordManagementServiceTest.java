@@ -57,7 +57,9 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
+import org.apereo.cas.authentication.CredentialMetaData;
 import org.apereo.cas.authentication.DefaultAuthentication;
+import org.apereo.cas.authentication.MessageDescriptor;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
@@ -75,14 +77,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
+import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -91,9 +89,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 /**
@@ -126,7 +122,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     private PasswordManagementProperties passwordManagementProperties;
 
-    @Value("${cas.authn.pm.core.policy-pattern}")
+    @Value("${cas.authn.pm.core.password-policy-pattern}")
     private String policyPattern;
 
     private PasswordConfiguration passwordConfiguration;
@@ -146,7 +142,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         identityProviderDto = new IdentityProviderDto();
         identityProviderDto.setInternal(true);
         passwordManagementProperties = new PasswordManagementProperties();
-        passwordManagementProperties.getCore().setPolicyPattern(encode(policyPattern));
+        passwordManagementProperties.getCore().setPasswordPolicyPattern(encode(policyPattern));
         passwordConfiguration = new PasswordConfiguration();
         passwordConfiguration.setCheckOccurrence(true);
         passwordConfiguration.setOccurrencesCharsNumber(4);
@@ -163,9 +159,11 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         flowParameters.put("authentication", new DefaultAuthentication(
             ZonedDateTime.now(),
             principal,
+            new ArrayList<MessageDescriptor>(),
+            new ArrayList<CredentialMetaData>(),
             authAttributes,
             successes,
-            new ArrayList<>()
+            new HashMap<String, Throwable>()
         ));
     }
 

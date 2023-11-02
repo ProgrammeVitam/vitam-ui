@@ -36,10 +36,10 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.internal.client.ExternalParamProfileInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
@@ -98,7 +98,7 @@ public class ExternalParamProfileExternalService extends AbstractResourceClientS
     }
 
     @Override
-    public JsonNode findHistoryById(final String id) {
+    public LogbookOperationsResponseDto findHistoryById(final String id) {
         this.profileExternalService.checkLogbookRight(id);
         return super.findHistoryById(id);
     }

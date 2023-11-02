@@ -38,14 +38,13 @@ package fr.gouv.vitamui.commons.rest.client;
 
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.utils.ParameterizedTypeReferenceFactory;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.EqualsAndHashCode;
@@ -97,6 +96,56 @@ public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpCo
 
     }
 
+    public ResultsDto<D> getAllRequest(final C context, final RequestParamDto requestParam) {
+        LOGGER.debug("search {}", requestParam);
+
+        final URIBuilder builder = getUriBuilderFromUrl();
+        builder.addParameter("page", requestParam.getPage().toString());
+        builder.addParameter("size", requestParam.getSize().toString());
+        if (requestParam.getCriteria() != null) {
+            builder.addParameter(CRITERIA_QUERY_PARAM, requestParam.getCriteria());
+        }
+        if (requestParam.getOrderBy() != null) {
+            builder.addParameter("orderBy", requestParam.getOrderBy());
+        }
+        if (requestParam.getDirection() != null) {
+            builder.addParameter("direction", requestParam.getDirection().toString());
+        }
+        if (requestParam.getEmbedded() != null) {
+            builder.addParameter(EMBEDDED_QUERY_PARAM, requestParam.getEmbedded());
+        }
+
+        if (requestParam.getExcludeFields() != null) {
+            for (var excludeField : requestParam.getExcludeFields()) {
+                builder.addParameter("excludeFields", excludeField);
+            }
+        }
+
+        if (requestParam.getGroups() != null
+            && requestParam.getGroups().getFields() != null) {
+            for (var field : requestParam.getGroups().getFields()) {
+                builder.addParameter("fields", field);
+            }
+            builder.addParameter("operator", requestParam.getGroups().getOperator().name());
+            
+            if (requestParam.getGroups().getFieldOperator() != null) {
+                builder.addParameter("fieldOperator", requestParam.getGroups().getFieldOperator());
+            }
+        }
+
+        return webClient.get()
+            .uri(buildUriBuilder(builder))
+            .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
+            .retrieve()
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .bodyToMono(getResultsDtoClass())
+            .block();
+    }
+
     protected abstract ParameterizedTypeReference<PaginatedValuesDto<D>> getDtoPaginatedClass();
+
+    protected ParameterizedTypeReference<ResultsDto<D>> getResultsDtoClass(){
+        return ParameterizedTypeReferenceFactory.createFromInstance(ResultsDto.class, this);
+    }
 
 }

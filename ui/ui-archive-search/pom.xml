@@ -8,12 +8,9 @@
         <version>7.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>ui-archive-search</artifactId>
     <packaging>jar</packaging>
     <name>VITAMUI UI Archive Search</name>
-
-
     <properties>
         <angular.base.href>/archive-search/</angular.base.href>
         <angular.build.project>archive-search</angular.build.project>
@@ -27,9 +24,7 @@
         <skipAllFrontend>false</skipAllFrontend>
         <skipAllFrontendTests>false</skipAllFrontendTests>
     </properties>
-
     <dependencies>
-
         <!--VITAMUI -->
         <dependency>
             <groupId>fr.gouv.vitamui.ui</groupId>
@@ -58,13 +53,10 @@
             <type>pom</type>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
         </dependency>
-
-
         <!-- SPRING BOOT -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -96,7 +88,6 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <!-- Documentation -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -106,7 +97,6 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
-
         <!-- UTILS -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -117,12 +107,10 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.owasp.antisamy</groupId>
             <artifactId>antisamy</artifactId>
         </dependency>
-
         <!--TEST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -152,7 +140,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <resources>
             <resource>
@@ -203,5 +190,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

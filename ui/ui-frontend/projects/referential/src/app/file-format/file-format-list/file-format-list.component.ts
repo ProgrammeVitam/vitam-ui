@@ -46,7 +46,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
+import {FileFormat, FILE_FORMAT_EXTERNAL_PREFIX} from 'projects/vitamui-library/src/lib/models/file-format';
 import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
 import { merge, Subject } from 'rxjs';
 import {debounceTime, filter} from 'rxjs/operators';
@@ -182,6 +182,9 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     ).subscribe(() => {
       this.snackBarService.open({
         message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETING',
+        translateParams:{
+          param1: fileFormat.puid,
+        },
         duration: 5000,
         icon: 'vitamui-icon-admin-key'
       });

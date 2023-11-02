@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.external.server.config;
 
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractInternalRestClient;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalRestClient;
@@ -64,7 +65,6 @@ import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -75,8 +75,10 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Set;
+
 @Configuration
-@Import({RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
+@Import({RestExceptionHandler.class, SwaggerConfiguration.class})
 public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -121,7 +123,13 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     @Bean
     public ExternalApiAuthenticationProvider apiAuthenticationProvider(
         final ExternalAuthentificationService externalAuthentificationService) {
-        return new ExternalApiAuthenticationProvider(externalAuthentificationService);
+        return new ExternalApiAuthenticationProvider(externalAuthentificationService) {
+            private final Set<String> CROSS_TENANTS_ACCESS_URI = Set.of("/iam/v1/security");
+            @Override
+            public boolean supportsCrossTenants(ExternalHttpContext context) {
+                return CROSS_TENANTS_ACCESS_URI.contains(context.getRequestUri());
+            }
+        };
     }
 
     @Bean

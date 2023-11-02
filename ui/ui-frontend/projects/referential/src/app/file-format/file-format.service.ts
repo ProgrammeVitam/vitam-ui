@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {FileFormat, FILE_FORMAT_EXTERNAL_PREFIX} from 'projects/vitamui-library/src/lib/models/file-format';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {SearchService, VitamUISnackBarService} from 'ui-frontend-common';
 
-import { FileFormatApiService } from '../core/api/file-format-api.service';
+import {FileFormatApiService} from '../core/api/file-format-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -85,9 +85,12 @@ export class FileFormatService extends SearchService<FileFormat> {
     return this.fileFormatApiService.create(agency, this.headers)
       .pipe(
         tap(
-          (_: FileFormat) => {
+          (response: FileFormat) => {
             this.snackBarService.open({
               message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED',
+              translateParams:{
+                name: response.puid,
+              },
               icon: 'vitamui-icon-admin-key'
             });
           },
@@ -103,9 +106,12 @@ export class FileFormatService extends SearchService<FileFormat> {
       .pipe(
         tap((response) => this.updated.next(response)),
         tap(
-          (_) => {
+          (response) => {
             this.snackBarService.open({
               message: 'SNACKBAR.FILE_FORMAT_CONTRACT_UPDATED',
+              translateParams:{
+                name: response.puid,
+              },
               icon: 'vitamui-icon-admin-key'
             });
           },
@@ -121,6 +127,9 @@ export class FileFormatService extends SearchService<FileFormat> {
       tap(() => {
           this.snackBarService.open({
             message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETED',
+            translateParams:{
+              name: fileFormat.puid,
+            },
             icon: 'vitamui-icon-admin-key'
           });
         },

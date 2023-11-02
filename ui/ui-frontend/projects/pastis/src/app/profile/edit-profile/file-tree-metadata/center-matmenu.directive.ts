@@ -3,6 +3,7 @@ import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/co
 import {MatMenuPanel, MatMenuTrigger} from '@angular/material/menu';
 
 @Directive({
+  // tslint:disable-next-line:directive-selector
   selector: '[center-mat-menu]'
 })
 export class CenterMatmenuDirective {
@@ -45,8 +46,11 @@ export class CenterMatmenuDirective {
   }
 
   private _setVariables() {
+    // tslint:disable-next-line:no-string-literal
     const config = this.menuTrigger['_getOverlayConfig']();
+    // tslint:disable-next-line:no-string-literal
     this.menuTrigger['_overlayRef'] = this.menuTrigger['_overlay'].create(config);
+       // tslint:disable-next-line:no-string-literal
     this.overlayRef = this.menuTrigger['_overlayRef'];
     this.overlayConf = this.overlayRef.getConfig();
     this.overlayRef.keydownEvents().subscribe();
@@ -63,7 +67,8 @@ export class CenterMatmenuDirective {
 
   private _overrideMatMenu() {
     console.log(this.overlayConf)
-    let strat = this.overlayConf.positionStrategy as FlexibleConnectedPositionStrategy;
+    const strat = this.overlayConf.positionStrategy as FlexibleConnectedPositionStrategy;
+       // tslint:disable-next-line:no-string-literal
     this.menuTrigger['_setPosition'](strat);
     strat.positionChanges.subscribe(() => {
       this._setButtonVars();
@@ -71,13 +76,15 @@ export class CenterMatmenuDirective {
     });
     this.overlayConf.hasBackdrop = this.menu.hasBackdrop == null ?
       !this.menuTrigger.triggersSubmenu() : this.menu.hasBackdrop;
-    this.overlayRef.attach(this.menuTrigger['_getPortal']());
+       // tslint:disable-next-line:no-string-literal
+      this.overlayRef.attach(this.menuTrigger['_getPortal']());
 
     if (this.menu.lazyContent) {
       this.menu.lazyContent.attach();
     }
 
     // @ts-ignore
+       // tslint:disable-next-line:no-string-literal
     this.menuTrigger['_closeSubscription'] = this.menuTrigger['_menuClosingActions']().subscribe(() => {
       this.menuTrigger.closeMenu();
       setTimeout(() => {
@@ -85,6 +92,7 @@ export class CenterMatmenuDirective {
       }, 75);
 
     });
+       // tslint:disable-next-line:no-string-literal
     this.menuTrigger['_initMenu']();
   }
 
@@ -106,6 +114,7 @@ export class CenterMatmenuDirective {
 
   private _openMenu() {
     // @ts-ignore
+       // tslint:disable-next-line:no-string-literal
     this.menuTrigger.menu['_startAnimation']();
   }
 }

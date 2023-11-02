@@ -43,6 +43,7 @@ export const RULE_TYPES: Option[] = [
   { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
   { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
   { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
+  { key: 'HoldRule', label: 'Gel / dégel', info: '' },
 ];
 
 export const NULL_TYPE: Option[] = [{ key: null, label: 'Tous', info: '' }];

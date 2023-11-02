@@ -147,6 +147,7 @@ let expectedAdminUserProfile: AdminUserProfile = {
   }]
 };
 
+// tslint:disable-next-line:directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;

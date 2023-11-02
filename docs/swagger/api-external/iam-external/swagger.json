@@ -3068,7 +3068,50 @@
         }
       }
     },
-
+    "/userinfos/{id}/history": {
+      "get": {
+        "tags": [
+          "UserInfos"
+        ],
+        "summary": "Récupération de l'historique des informations d'un utilisateur",
+        "operationId": "findHistorOfUserInfo",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-tenant-id"
+          },
+          {
+            "$ref": "#/parameters/x-user-token"
+          },
+          {
+            "$ref": "#/parameters/x-application-id"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant technique des informations d'un utilisateur",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historique des informations d'un utilisateur",
+            "schema": {
+              "$ref": "#/definitions/JsonNode"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
     "/users/check": {
       "head": {
         "tags": [

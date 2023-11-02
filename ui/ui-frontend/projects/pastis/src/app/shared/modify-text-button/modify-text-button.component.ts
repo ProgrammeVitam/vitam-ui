@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FileNode } from '../../models/file-node';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'modify-text-button',
   templateUrl: './modify-text-button.component.html',
   styleUrls: ['./modify-text-button.component.css']

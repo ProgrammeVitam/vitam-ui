@@ -43,6 +43,7 @@ import { Context, diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
+import {RULE_TYPES} from "../../../rule/rules.constants";
 
 @Component({
   selector: 'app-context-information-tab',
@@ -63,15 +64,7 @@ export class ContextInformationTabComponent {
   // tslint:disable-next-line:variable-name
   private _context: Context;
 
-  // FIXME: Get list from common var ?
-  rules: Option[] = [
-    { key: 'StorageRule', label: "Durée d'utilité courante", info: '' },
-    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
-    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
-    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AdministrationRule', label: "Durée d'utilité administrative", info: '' },
-    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' },
-  ];
+  rules: Option[] = RULE_TYPES;
 
   previousValue = (): Context => {
     return this._context;

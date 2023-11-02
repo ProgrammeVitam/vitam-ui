@@ -99,6 +99,8 @@ public class AccessionRegisterExternalController {
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        SanityChecker.sanitizeCriteria(criteria);
+        orderBy.ifPresent(SanityChecker::checkSecureParameter);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
             page, size, criteria, orderBy, direction);
         return accessionRegisterDetailExternalService.getAllPaginated(page, size, criteria, orderBy, direction);

@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.arpl0{fill-rule:evenodd;clip-rule:evenodd;}
+	.arpl1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.arpl2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.arpl3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.arpl4{fill:#BCB9BA;}
+	.arpl5{fill:#BBB9BA;}
+	.arpl6{fill:#BBB8B9;}
+	.arpl7{fill:#BAB8B9;}
+	.arpl8{fill:#B9B7B8;}
+	.arpl9{fill:#B9B7B7;}
+	.arpl10{fill:#B8B6B7;}
+	.arpl11{fill:#B8B5B6;}
+	.arpl12{fill:#B7B5B6;}
+	.arpl13{fill:#B7B4B5;}
+	.arpl14{fill:#B6B4B5;}
+	.arpl15{fill:#B6B3B4;}
+	.arpl16{fill:#B5B3B4;}
+	.arpl17{fill:#B4B2B3;}
+	.arpl18{fill:#B3B1B2;}
+	.arpl19{fill:#B3B1B1;}
+	.arpl20{fill:#B2B0B1;}
+	.arpl21{fill:#B2AFB0;}
+	.arpl22{fill:#B1AFB0;}
+	.arpl23{fill:#B1AEAF;}
+	.arpl24{fill:#B0AEAF;}
+	.arpl25{fill:#AFADAE;}
+	.arpl26{fill:#AEACAD;}
+	.arpl27{fill:#ADABAC;}
+	.arpl28{fill:#ADABAB;}
+	.arpl29{fill:#ACAAAB;}
+	.arpl30{fill:#ACAAAA;}
+	.arpl31{fill:#ABA9AA;}
+	.arpl32{fill:#AAA8A9;}
+	.arpl33{fill:#A9A7A8;}
+	.arpl34{fill:#A8A6A7;}
+	.arpl35{fill:#A7A5A6;}
+	.arpl36{fill:#A7A5A5;}
+	.arpl37{fill:#A6A4A5;}
+	.arpl38{fill:#A5A4A4;}
+	.arpl39{fill:#A5A3A4;}
+	.arpl40{fill:#A4A2A3;}
+	.arpl41{fill:#A3A1A2;}
+	.arpl42{fill:#A2A0A1;}
+	.arpl43{fill:#A19FA0;}
+	.arpl44{fill:#A09F9F;}
+	.arpl45{fill:#A09E9F;}
+	.arpl46{fill:#9F9E9E;}
+	.arpl47{fill:#9F9D9E;}
+	.arpl48{fill:#9E9D9D;}
+	.arpl49{fill:#9E9C9D;}
+	.arpl50{fill:#9D9B9C;}
+	.arpl51{fill:#9C9A9B;}
+	.arpl52{fill:#9B9A9B;}
+	.arpl53{fill:#9B999A;}
+	.arpl54{fill:#9A9999;}
+	.arpl55{fill:#9A9899;}
+	.arpl56{fill:#999898;}
+	.arpl57{fill:#999798;}
+	.arpl58{fill:#989797;}
+	.arpl59{fill:#989697;}
+	.arpl60{fill:#979596;}
+	.arpl61{fill:#969596;}
+	.arpl62{fill:#969495;}
+	.arpl63{fill:#959495;}
+	.arpl64{fill:#959394;}
+	.arpl65{fill:#949393;}
+	.arpl66{fill:#949293;}
+	.arpl67{fill:#939292;}
+	.arpl68{fill:#939192;}
+	.arpl69{fill:#929191;}
+	.arpl70{fill:#919091;}
+	.arpl71{fill:#919090;}
+	.arpl72{fill:#908F90;}
+	.arpl73{fill:#908E8F;}
+	.arpl74{fill:#8F8E8F;}
+	.arpl75{fill:#8F8D8E;}
+	.arpl76{fill:#8E8D8D;}
+	.arpl77{fill:#8E8C8D;}
+	.arpl78{fill:#8D8C8C;}
+	.arpl79{fill:#8C8B8C;}
+	.arpl80{fill:#8C8B8B;}
+	.arpl81{fill:#8B8A8B;}
+	.arpl82{fill:#8B8A8A;}
+	.arpl83{fill:#8A898A;}
+	.arpl84{fill:#8A8889;}
+	.arpl85{fill:#898888;}
+	.arpl86{fill:#898788;}
+	.arpl87{fill:#888787;}
+	.arpl88{fill:#878687;}
+	.arpl89{fill:#878686;}
+	.arpl90{fill:#868586;}
+	.arpl91{fill:#868585;}
+	.arpl92{fill:#858485;}
+	.arpl93{fill:#858484;}
+	.arpl94{fill:#848384;}
+	.arpl95{fill:#848383;}
+	.arpl96{fill:#838282;}
+	.arpl97{fill:#828182;}
+	.arpl98{fill:#828181;}
+	.arpl99{fill:#818081;}
+	.arpl100{fill:#818080;}
+	.arpl101{fill:#807F80;}
+	.arpl102{fill:#807F7F;}
+	.arpl103{fill:#7F7E7F;}
+	.arpl104{fill:#7F7E7E;}
+	.arpl105{fill:#7E7D7E;}
+	.arpl106{fill:#7D7D7D;}
+	.arpl107{fill:#7D7C7C;}
+	.arpl108{fill:#7C7B7C;}
+	.arpl109{fill:#7C7B7B;}
+	.arpl110{fill:#7B7A7B;}
+	.arpl111{fill:#7B7A7A;}
+	.arpl112{fill:#7A797A;}
+	.arpl113{fill:#7A7979;}
+	.arpl114{fill:#797879;}
+	.arpl115{fill:#787878;}
+	.arpl116{fill:#787778;}
+	.arpl117{fill:#777777;}
+	.arpl118{fill:#777676;}
+	.arpl119{fill:#767676;}
+	.arpl120{fill:#767575;}
+	.arpl121{fill:#757475;}
+	.arpl122{fill:#757474;}
+	.arpl123{fill:#747374;}
+	.arpl124{fill:#737373;}
+	.arpl125{fill:#737273;}
+	.arpl126{fill:#727272;}
+	.arpl127{fill:#727172;}
+	.arpl128{fill:#717171;}
+	.arpl129{fill:#717070;}
+	.arpl130{fill:#707070;}
+	.arpl131{fill:#706F6F;}
+	.arpl132{fill:#6F6E6F;}
+	.arpl133{fill:#6E6E6E;}
+	.arpl134{fill:#6E6D6E;}
+	.arpl135{fill:#6D6D6D;}
+	.arpl136{fill:#6D6C6D;}
+	.arpl137{fill:#6C6C6C;}
+	.arpl138{fill:#6C6B6C;}
+	.arpl139{fill:#6B6B6B;}
+	.arpl140{fill:#6B6A6A;}
+	.arpl141{fill:#6A6A6A;}
+	.arpl142{fill:#696969;}
+	.arpl143{fill:#686868;}
+	.arpl144{fill:#686768;}
+	.arpl145{fill:#676767;}
+	.arpl146{fill:#676667;}
+	.arpl147{fill:#666666;}
+	.arpl148{fill:#666566;}
+	.arpl149{fill:#656565;}
+	.arpl150{fill:#646464;}
+	.arpl151{fill:#636363;}
+	.arpl152{fill:#626262;}
+	.arpl153{fill:#626162;}
+	.arpl154{fill:#616161;}
+	.arpl155{fill:#616061;}
+	.arpl156{fill:#606060;}
+	.arpl157{fill:#5F5F60;}
+	.arpl158{fill:#5F5F5F;}
+	.arpl159{fill:#5E5E5E;}
+	.arpl160{fill:#5D5D5D;}
+	.arpl161{fill:#5C5C5C;}
+	.arpl162{fill:#5B5B5B;}
+	.arpl163{fill:#5A5A5B;}
+	.arpl164{fill:#5A5A5A;}
+	.arpl165{fill:#59595A;}
+	.arpl166{fill:#595959;}
+	.arpl167{fill:#585858;}
+	.arpl168{fill:#575757;}
+	.arpl169{fill:#565656;}
+	.arpl170{fill:#555656;}
+	.arpl171{fill:#555555;}
+	.arpl172{fill:#545455;}
+	.arpl173{fill:#545454;}
+	.arpl174{fill:#535353;}
+	.arpl175{fill:#525252;}
+	.arpl176{fill:#515151;}
+	.arpl177{fill:#505151;}
+	.arpl178{fill:#505050;}
+	.arpl179{fill:#4F5050;}
+	.arpl180{fill:#4F4F4F;}
+	.arpl181{fill:#4E4F4F;}
+	.arpl182{fill:#4E4E4E;}
+	.arpl183{fill:#4D4D4D;}
+	.arpl184{fill:#4C4C4C;}
+	.arpl185{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-300);}
+	.arpl186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_1_);}
+	.arpl187{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000020370961828647893380000016923860307928810126_);}
+	.arpl188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000143601077735732459610000004862595003735829924_);}
+	.arpl189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000026160265623122888870000001802037375349797819_);}
+	.arpl190{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000119113033167640056910000011760339116958138780_);}
+	.arpl191{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000127021177330763655400000000926419167981702019_);}
+	.arpl192{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000156563207100159552410000010400049916065164460_);}
+	.arpl193{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000182524605456189325970000001093287617627224243_);}
+	.arpl194{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000062886618023412627360000001652783703335103111_);}
+	.arpl195{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000003087244222163095760000012603425020882960790_);}
+	.arpl196{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000056406739825768463530000013994019507223782330_);}
+	.arpl197{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000155834672915263164250000016888270854844303256_);}
+	.arpl198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000114036797725410381660000014667247218320292257_);}
+	.arpl199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000125593697343661897520000010066704807963754679_);}
+	.arpl200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000061443395669792343500000001191572342465700541_);}
+	.arpl201{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000101820159957447625460000001930043453573793965_);}
+	.arpl202{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000011009822846952482150000000471617628161073823_);}
+	.arpl203{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000182513177950172080510000015985106504515809708_);}
+	.arpl204{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000090276118624895148730000004457998327839830442_);}
+	.arpl205{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000116198696990673930710000010029274332527925929_);}
+	.arpl206{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000116213490705672485170000015114390319199686807_);}
+	.arpl207{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000026866528871955439860000015051008471499405981_);}
+	.arpl208{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000119827274481316431180000013804652057178222484_);}
+	.arpl209{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000168838546120464684520000012284688118806901423_);}
+	.arpl210{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000045619632837805164200000014176166345836514466_);}
+	.arpl211{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000178191840787428566400000002545790998943447196_);}
+	.arpl212{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000047781088873265030200000012769579733069338500_);}
+	.arpl213{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000013153895545978321480000016706884702210283161_);}
+	.arpl214{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.arpl215{fill:#FFFFFF;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="117.8" width="165.1" x="17.3" y="19.1"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<path class="arpl0" d="M99.8,141.7c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2
+			C17.1,150.2,54.2,141.7,99.8,141.7z"/>
+		<path class="arpl1" d="M99.8,142.1c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,150.4,56.2,142.1,99.8,142.1z"/>
+		<path class="arpl2" d="M99.8,139.9c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,148.2,56.2,139.9,99.8,139.9z"/>
+		<path class="arpl1" d="M99.8,138.7c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,147,56.2,138.7,99.8,138.7z"/>
+		<path class="arpl3" d="M99.7,138.7c22.9,0,43.4,2.3,57.8,6c-30.2-1.8-112.6,2.6-132.9,18.5c-2.5-1.8-3.8-3.8-3.8-5.7
+			C20.8,147,56.2,138.7,99.7,138.7z"/>
+		<path class="arpl2" d="M20.9,157.4c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C20.9,158,20.9,157.7,20.9,157.4z"/>
+	</g>
+</g>
+<g>
+	<ellipse class="arpl4" cx="100.3" cy="158.8" rx="58.4" ry="10.6"/>
+	<ellipse class="arpl5" cx="100.3" cy="158.8" rx="58.3" ry="10.6"/>
+	<ellipse class="arpl6" cx="100.3" cy="158.8" rx="58.2" ry="10.5"/>
+	<ellipse class="arpl7" cx="100.3" cy="158.8" rx="58.1" ry="10.5"/>
+	<ellipse class="arpl8" cx="100.3" cy="158.8" rx="58" ry="10.5"/>
+	<ellipse class="arpl9" cx="100.3" cy="158.7" rx="57.9" ry="10.4"/>
+	<ellipse class="arpl10" cx="100.3" cy="158.7" rx="57.8" ry="10.4"/>
+	<ellipse class="arpl11" cx="100.3" cy="158.7" rx="57.7" ry="10.4"/>
+	<ellipse class="arpl12" cx="100.3" cy="158.7" rx="57.6" ry="10.3"/>
+	<ellipse class="arpl13" cx="100.3" cy="158.7" rx="57.5" ry="10.3"/>
+	<ellipse class="arpl14" cx="100.3" cy="158.7" rx="57.4" ry="10.3"/>
+	<ellipse class="arpl15" cx="100.3" cy="158.7" rx="57.3" ry="10.2"/>
+	<ellipse class="arpl16" cx="100.3" cy="158.7" rx="57.2" ry="10.2"/>
+	<ellipse class="arpl17" cx="100.3" cy="158.7" rx="57" ry="10.2"/>
+	<ellipse class="arpl17" cx="100.3" cy="158.7" rx="56.9" ry="10.1"/>
+	<ellipse class="arpl18" cx="100.3" cy="158.7" rx="56.8" ry="10.1"/>
+	<ellipse class="arpl19" cx="100.3" cy="158.7" rx="56.7" ry="10.1"/>
+	<ellipse class="arpl20" cx="100.3" cy="158.7" rx="56.6" ry="10"/>
+	<ellipse class="arpl21" cx="100.3" cy="158.7" rx="56.5" ry="10"/>
+	<ellipse class="arpl22" cx="100.3" cy="158.7" rx="56.4" ry="10"/>
+	<ellipse class="arpl23" cx="100.3" cy="158.7" rx="56.3" ry="9.9"/>
+	<ellipse class="arpl24" cx="100.3" cy="158.7" rx="56.2" ry="9.9"/>
+	<ellipse class="arpl25" cx="100.3" cy="158.7" rx="56.1" ry="9.9"/>
+	<ellipse class="arpl25" cx="100.3" cy="158.7" rx="56" ry="9.8"/>
+	<ellipse class="arpl26" cx="100.2" cy="158.7" rx="55.9" ry="9.8"/>
+	<ellipse class="arpl26" cx="100.2" cy="158.7" rx="55.8" ry="9.7"/>
+	<ellipse class="arpl27" cx="100.2" cy="158.6" rx="55.7" ry="9.7"/>
+	<ellipse class="arpl28" cx="100.2" cy="158.6" rx="55.6" ry="9.7"/>
+	<ellipse class="arpl29" cx="100.2" cy="158.6" rx="55.5" ry="9.6"/>
+	<ellipse class="arpl30" cx="100.2" cy="158.6" rx="55.4" ry="9.6"/>
+	<ellipse class="arpl31" cx="100.2" cy="158.6" rx="55.3" ry="9.6"/>
+	<ellipse class="arpl32" cx="100.2" cy="158.6" rx="55.2" ry="9.5"/>
+	<ellipse class="arpl32" cx="100.2" cy="158.6" rx="55.1" ry="9.5"/>
+	<ellipse class="arpl33" cx="100.2" cy="158.6" rx="55" ry="9.5"/>
+	<ellipse class="arpl33" cx="100.2" cy="158.6" rx="54.9" ry="9.4"/>
+	<ellipse class="arpl34" cx="100.2" cy="158.6" rx="54.8" ry="9.4"/>
+	<ellipse class="arpl34" cx="100.2" cy="158.6" rx="54.7" ry="9.4"/>
+	<ellipse class="arpl35" cx="100.2" cy="158.6" rx="54.6" ry="9.3"/>
+	<ellipse class="arpl36" cx="100.2" cy="158.6" rx="54.5" ry="9.3"/>
+	<ellipse class="arpl37" cx="100.2" cy="158.6" rx="54.4" ry="9.3"/>
+	<ellipse class="arpl38" cx="100.2" cy="158.6" rx="54.3" ry="9.2"/>
+	<ellipse class="arpl39" cx="100.2" cy="158.6" rx="54.2" ry="9.2"/>
+	<ellipse class="arpl40" cx="100.2" cy="158.6" rx="54.1" ry="9.2"/>
+	<ellipse class="arpl40" cx="100.2" cy="158.6" rx="54" ry="9.1"/>
+	<ellipse class="arpl41" cx="100.2" cy="158.6" rx="53.9" ry="9.1"/>
+	<ellipse class="arpl41" cx="100.2" cy="158.6" rx="53.7" ry="9.1"/>
+	<ellipse class="arpl42" cx="100.2" cy="158.5" rx="53.6" ry="9"/>
+	<ellipse class="arpl42" cx="100.2" cy="158.5" rx="53.5" ry="9"/>
+	<ellipse class="arpl43" cx="100.2" cy="158.5" rx="53.4" ry="9"/>
+	<ellipse class="arpl44" cx="100.2" cy="158.5" rx="53.3" ry="8.9"/>
+	<ellipse class="arpl45" cx="100.2" cy="158.5" rx="53.2" ry="8.9"/>
+	<ellipse class="arpl46" cx="100.2" cy="158.5" rx="53.1" ry="8.9"/>
+	<ellipse class="arpl47" cx="100.2" cy="158.5" rx="53" ry="8.8"/>
+	<ellipse class="arpl48" cx="100.2" cy="158.5" rx="52.9" ry="8.8"/>
+	<ellipse class="arpl49" cx="100.2" cy="158.5" rx="52.8" ry="8.7"/>
+	<ellipse class="arpl50" cx="100.2" cy="158.5" rx="52.7" ry="8.7"/>
+	<ellipse class="arpl50" cx="100.2" cy="158.5" rx="52.6" ry="8.7"/>
+	<ellipse class="arpl51" cx="100.2" cy="158.5" rx="52.5" ry="8.6"/>
+	<ellipse class="arpl52" cx="100.2" cy="158.5" rx="52.4" ry="8.6"/>
+	<ellipse class="arpl53" cx="100.2" cy="158.5" rx="52.3" ry="8.6"/>
+	<ellipse class="arpl54" cx="100.2" cy="158.5" rx="52.2" ry="8.5"/>
+	<ellipse class="arpl55" cx="100.2" cy="158.5" rx="52.1" ry="8.5"/>
+	<ellipse class="arpl56" cx="100.2" cy="158.5" rx="52" ry="8.5"/>
+	<ellipse class="arpl57" cx="100.2" cy="158.5" rx="51.9" ry="8.4"/>
+	<ellipse class="arpl58" cx="100.2" cy="158.5" rx="51.8" ry="8.4"/>
+	<ellipse class="arpl59" cx="100.2" cy="158.5" rx="51.7" ry="8.4"/>
+	<ellipse class="arpl60" cx="100.2" cy="158.5" rx="51.6" ry="8.3"/>
+	<ellipse class="arpl61" cx="100.2" cy="158.4" rx="51.5" ry="8.3"/>
+	<ellipse class="arpl62" cx="100.2" cy="158.4" rx="51.4" ry="8.3"/>
+	<ellipse class="arpl63" cx="100.2" cy="158.4" rx="51.3" ry="8.2"/>
+	<ellipse class="arpl64" cx="100.2" cy="158.4" rx="51.2" ry="8.2"/>
+	<ellipse class="arpl65" cx="100.2" cy="158.4" rx="51.1" ry="8.2"/>
+	<ellipse class="arpl66" cx="100.2" cy="158.4" rx="51" ry="8.1"/>
+	<ellipse class="arpl67" cx="100.2" cy="158.4" rx="50.9" ry="8.1"/>
+	<ellipse class="arpl68" cx="100.2" cy="158.4" rx="50.8" ry="8.1"/>
+	<ellipse class="arpl69" cx="100.2" cy="158.4" rx="50.7" ry="8"/>
+	<ellipse class="arpl70" cx="100.2" cy="158.4" rx="50.6" ry="8"/>
+	<ellipse class="arpl71" cx="100.2" cy="158.4" rx="50.4" ry="8"/>
+	<ellipse class="arpl72" cx="100.2" cy="158.4" rx="50.3" ry="7.9"/>
+	<ellipse class="arpl73" cx="100.2" cy="158.4" rx="50.2" ry="7.9"/>
+	<ellipse class="arpl74" cx="100.2" cy="158.4" rx="50.1" ry="7.9"/>
+	<ellipse class="arpl75" cx="100.2" cy="158.4" rx="50" ry="7.8"/>
+	<ellipse class="arpl76" cx="100.2" cy="158.4" rx="49.9" ry="7.8"/>
+	<ellipse class="arpl77" cx="100.2" cy="158.4" rx="49.8" ry="7.7"/>
+	<ellipse class="arpl78" cx="100.2" cy="158.4" rx="49.7" ry="7.7"/>
+	<ellipse class="arpl79" cx="100.2" cy="158.4" rx="49.6" ry="7.7"/>
+	<ellipse class="arpl80" cx="100.2" cy="158.4" rx="49.5" ry="7.6"/>
+	<ellipse class="arpl81" cx="100.2" cy="158.3" rx="49.4" ry="7.6"/>
+	<ellipse class="arpl82" cx="100.1" cy="158.3" rx="49.3" ry="7.6"/>
+	<ellipse class="arpl83" cx="100.1" cy="158.3" rx="49.2" ry="7.5"/>
+	<ellipse class="arpl84" cx="100.1" cy="158.3" rx="49.1" ry="7.5"/>
+	<ellipse class="arpl85" cx="100.1" cy="158.3" rx="49" ry="7.5"/>
+	<ellipse class="arpl86" cx="100.1" cy="158.3" rx="48.9" ry="7.4"/>
+	<ellipse class="arpl87" cx="100.1" cy="158.3" rx="48.8" ry="7.4"/>
+	<ellipse class="arpl88" cx="100.1" cy="158.3" rx="48.7" ry="7.4"/>
+	<ellipse class="arpl89" cx="100.1" cy="158.3" rx="48.6" ry="7.3"/>
+	<ellipse class="arpl90" cx="100.1" cy="158.3" rx="48.5" ry="7.3"/>
+	<ellipse class="arpl91" cx="100.1" cy="158.3" rx="48.4" ry="7.3"/>
+	<ellipse class="arpl92" cx="100.1" cy="158.3" rx="48.3" ry="7.2"/>
+	<ellipse class="arpl93" cx="100.1" cy="158.3" rx="48.2" ry="7.2"/>
+	<ellipse class="arpl94" cx="100.1" cy="158.3" rx="48.1" ry="7.2"/>
+	<ellipse class="arpl95" cx="100.1" cy="158.3" rx="48" ry="7.1"/>
+	<ellipse class="arpl96" cx="100.1" cy="158.3" rx="47.9" ry="7.1"/>
+	<ellipse class="arpl97" cx="100.1" cy="158.3" rx="47.8" ry="7.1"/>
+	<ellipse class="arpl98" cx="100.1" cy="158.3" rx="47.7" ry="7"/>
+	<ellipse class="arpl99" cx="100.1" cy="158.3" rx="47.6" ry="7"/>
+	<ellipse class="arpl100" cx="100.1" cy="158.3" rx="47.5" ry="7"/>
+	<ellipse class="arpl101" cx="100.1" cy="158.3" rx="47.4" ry="6.9"/>
+	<ellipse class="arpl102" cx="100.1" cy="158.2" rx="47.3" ry="6.9"/>
+	<ellipse class="arpl103" cx="100.1" cy="158.2" rx="47.1" ry="6.9"/>
+	<ellipse class="arpl104" cx="100.1" cy="158.2" rx="47" ry="6.8"/>
+	<ellipse class="arpl105" cx="100.1" cy="158.2" rx="46.9" ry="6.8"/>
+	<ellipse class="arpl106" cx="100.1" cy="158.2" rx="46.8" ry="6.7"/>
+	<ellipse class="arpl107" cx="100.1" cy="158.2" rx="46.7" ry="6.7"/>
+	<ellipse class="arpl108" cx="100.1" cy="158.2" rx="46.6" ry="6.7"/>
+	<ellipse class="arpl109" cx="100.1" cy="158.2" rx="46.5" ry="6.6"/>
+	<ellipse class="arpl110" cx="100.1" cy="158.2" rx="46.4" ry="6.6"/>
+	<ellipse class="arpl111" cx="100.1" cy="158.2" rx="46.3" ry="6.6"/>
+	<ellipse class="arpl112" cx="100.1" cy="158.2" rx="46.2" ry="6.5"/>
+	<ellipse class="arpl113" cx="100.1" cy="158.2" rx="46.1" ry="6.5"/>
+	<ellipse class="arpl114" cx="100.1" cy="158.2" rx="46" ry="6.5"/>
+	<ellipse class="arpl115" cx="100.1" cy="158.2" rx="45.9" ry="6.4"/>
+	<ellipse class="arpl116" cx="100.1" cy="158.2" rx="45.8" ry="6.4"/>
+	<ellipse class="arpl117" cx="100.1" cy="158.2" rx="45.7" ry="6.4"/>
+	<ellipse class="arpl118" cx="100.1" cy="158.2" rx="45.6" ry="6.3"/>
+	<ellipse class="arpl119" cx="100.1" cy="158.2" rx="45.5" ry="6.3"/>
+	<ellipse class="arpl120" cx="100.1" cy="158.2" rx="45.4" ry="6.3"/>
+	<ellipse class="arpl121" cx="100.1" cy="158.2" rx="45.3" ry="6.2"/>
+	<ellipse class="arpl122" cx="100.1" cy="158.1" rx="45.2" ry="6.2"/>
+	<ellipse class="arpl123" cx="100.1" cy="158.1" rx="45.1" ry="6.2"/>
+	<ellipse class="arpl124" cx="100.1" cy="158.1" rx="45" ry="6.1"/>
+	<ellipse class="arpl125" cx="100.1" cy="158.1" rx="44.9" ry="6.1"/>
+	<ellipse class="arpl126" cx="100.1" cy="158.1" rx="44.8" ry="6.1"/>
+	<ellipse class="arpl127" cx="100.1" cy="158.1" rx="44.7" ry="6"/>
+	<ellipse class="arpl128" cx="100.1" cy="158.1" rx="44.6" ry="6"/>
+	<ellipse class="arpl129" cx="100.1" cy="158.1" rx="44.5" ry="6"/>
+	<ellipse class="arpl130" cx="100.1" cy="158.1" rx="44.4" ry="5.9"/>
+	<ellipse class="arpl131" cx="100.1" cy="158.1" rx="44.3" ry="5.9"/>
+	<ellipse class="arpl132" cx="100.1" cy="158.1" rx="44.2" ry="5.8"/>
+	<ellipse class="arpl133" cx="100.1" cy="158.1" rx="44.1" ry="5.8"/>
+	<ellipse class="arpl134" cx="100.1" cy="158.1" rx="44" ry="5.8"/>
+	<ellipse class="arpl135" cx="100.1" cy="158.1" rx="43.8" ry="5.7"/>
+	<ellipse class="arpl136" cx="100.1" cy="158.1" rx="43.7" ry="5.7"/>
+	<ellipse class="arpl137" cx="100.1" cy="158.1" rx="43.6" ry="5.7"/>
+	<ellipse class="arpl138" cx="100.1" cy="158.1" rx="43.5" ry="5.6"/>
+	<ellipse class="arpl139" cx="100.1" cy="158.1" rx="43.4" ry="5.6"/>
+	<ellipse class="arpl140" cx="100.1" cy="158.1" rx="43.3" ry="5.6"/>
+	<ellipse class="arpl141" cx="100.1" cy="158.1" rx="43.2" ry="5.5"/>
+	<ellipse class="arpl142" cx="100.1" cy="158.1" rx="43.1" ry="5.5"/>
+	<ellipse class="arpl142" cx="100.1" cy="158" rx="43" ry="5.5"/>
+	<ellipse class="arpl143" cx="100.1" cy="158" rx="42.9" ry="5.4"/>
+	<ellipse class="arpl144" cx="100.1" cy="158" rx="42.8" ry="5.4"/>
+	<ellipse class="arpl145" cx="100.1" cy="158" rx="42.7" ry="5.4"/>
+	<ellipse class="arpl146" cx="100" cy="158" rx="42.6" ry="5.3"/>
+	<ellipse class="arpl147" cx="100" cy="158" rx="42.5" ry="5.3"/>
+	<ellipse class="arpl148" cx="100" cy="158" rx="42.4" ry="5.3"/>
+	<ellipse class="arpl149" cx="100" cy="158" rx="42.3" ry="5.2"/>
+	<ellipse class="arpl150" cx="100" cy="158" rx="42.2" ry="5.2"/>
+	<ellipse class="arpl150" cx="100" cy="158" rx="42.1" ry="5.2"/>
+	<ellipse class="arpl151" cx="100" cy="158" rx="42" ry="5.1"/>
+	<ellipse class="arpl151" cx="100" cy="158" rx="41.9" ry="5.1"/>
+	<ellipse class="arpl152" cx="100" cy="158" rx="41.8" ry="5.1"/>
+	<ellipse class="arpl153" cx="100" cy="158" rx="41.7" ry="5"/>
+	<ellipse class="arpl154" cx="100" cy="158" rx="41.6" ry="5"/>
+	<ellipse class="arpl155" cx="100" cy="158" rx="41.5" ry="5"/>
+	<ellipse class="arpl156" cx="100" cy="158" rx="41.4" ry="4.9"/>
+	<ellipse class="arpl157" cx="100" cy="158" rx="41.3" ry="4.9"/>
+	<ellipse class="arpl158" cx="100" cy="158" rx="41.2" ry="4.8"/>
+	<ellipse class="arpl159" cx="100" cy="158" rx="41.1" ry="4.8"/>
+	<ellipse class="arpl159" cx="100" cy="157.9" rx="41" ry="4.8"/>
+	<ellipse class="arpl160" cx="100" cy="157.9" rx="40.9" ry="4.7"/>
+	<ellipse class="arpl160" cx="100" cy="157.9" rx="40.8" ry="4.7"/>
+	<ellipse class="arpl161" cx="100" cy="157.9" rx="40.7" ry="4.7"/>
+	<ellipse class="arpl161" cx="100" cy="157.9" rx="40.5" ry="4.6"/>
+	<ellipse class="arpl162" cx="100" cy="157.9" rx="40.4" ry="4.6"/>
+	<ellipse class="arpl163" cx="100" cy="157.9" rx="40.3" ry="4.6"/>
+	<ellipse class="arpl164" cx="100" cy="157.9" rx="40.2" ry="4.5"/>
+	<ellipse class="arpl165" cx="100" cy="157.9" rx="40.1" ry="4.5"/>
+	<ellipse class="arpl166" cx="100" cy="157.9" rx="40" ry="4.5"/>
+	<ellipse class="arpl167" cx="100" cy="157.9" rx="39.9" ry="4.4"/>
+	<ellipse class="arpl167" cx="100" cy="157.9" rx="39.8" ry="4.4"/>
+	<ellipse class="arpl168" cx="100" cy="157.9" rx="39.7" ry="4.4"/>
+	<ellipse class="arpl168" cx="100" cy="157.9" rx="39.6" ry="4.3"/>
+	<ellipse class="arpl169" cx="100" cy="157.9" rx="39.5" ry="4.3"/>
+	<ellipse class="arpl170" cx="100" cy="157.9" rx="39.4" ry="4.3"/>
+	<ellipse class="arpl171" cx="100" cy="157.9" rx="39.3" ry="4.2"/>
+	<ellipse class="arpl172" cx="100" cy="157.9" rx="39.2" ry="4.2"/>
+	<ellipse class="arpl173" cx="100" cy="157.9" rx="39.1" ry="4.2"/>
+	<ellipse class="arpl174" cx="100" cy="157.9" rx="39" ry="4.1"/>
+	<ellipse class="arpl174" cx="100" cy="157.8" rx="38.9" ry="4.1"/>
+	<ellipse class="arpl175" cx="100" cy="157.8" rx="38.8" ry="4.1"/>
+	<ellipse class="arpl175" cx="100" cy="157.8" rx="38.7" ry="4"/>
+	<ellipse class="arpl176" cx="100" cy="157.8" rx="38.6" ry="4"/>
+	<ellipse class="arpl177" cx="100" cy="157.8" rx="38.5" ry="4"/>
+	<ellipse class="arpl178" cx="100" cy="157.8" rx="38.4" ry="3.9"/>
+	<ellipse class="arpl179" cx="100" cy="157.8" rx="38.3" ry="3.9"/>
+	<ellipse class="arpl180" cx="100" cy="157.8" rx="38.2" ry="3.8"/>
+	<ellipse class="arpl181" cx="100" cy="157.8" rx="38.1" ry="3.8"/>
+	<ellipse class="arpl182" cx="100" cy="157.8" rx="38" ry="3.8"/>
+	<ellipse class="arpl183" cx="100" cy="157.8" rx="37.9" ry="3.7"/>
+	<ellipse class="arpl183" cx="100" cy="157.8" rx="37.8" ry="3.7"/>
+	<ellipse class="arpl184" cx="100" cy="157.8" rx="37.7" ry="3.7"/>
+</g>
+<g>
+	<path class="arpl185" d="M57.4,63.4l1,0.1l1-0.1C59.4,63.4,58.5,63.3,57.4,63.4z"/>
+	<g>
+		
+			<linearGradient id="ARCH_ID_1_" gradientUnits="userSpaceOnUse" x1="6003.5117" y1="109.0833" x2="6000.4531" y2="73.2044" gradientTransform="matrix(-1 0 0 1 6103.7666 0)">
+			<stop  offset="0" style="stop-color:#130005"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-300)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+		</linearGradient>
+		<polygon class="arpl186" points="141.4,162.8 141.7,67.8 59.4,63.1 58.4,63.3 141.3,67.9 140.9,163 		"/>
+		
+			<linearGradient id="ARCH_ID_00000163043633161811822030000014364462247132339591_" gradientUnits="userSpaceOnUse" x1="5584.9121" y1="-200.9721" x2="5683.0884" y2="-99.5475" gradientTransform="matrix(-1.0991 6.937514e-02 -1.195069e-03 1 6306.5405 -141.8854)">
+			<stop  offset="0" style="stop-color:#130005"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-300)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000163043633161811822030000014364462247132339591_);" points="
+			141,163.1 141.3,67.9 58.9,63.2 59.8,153.4 		"/>
+	</g>
+	<g>
+		
+			<linearGradient id="ARCH_ID_00000047744371634037777720000008180405930868400569_" gradientUnits="userSpaceOnUse" x1="5494.8911" y1="-102.5269" x2="5593.3521" y2="-0.8078" gradientTransform="matrix(-1.0702 4.431804e-02 -1.197360e-03 1 6045.7871 -94.4147)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000047744371634037777720000008180405930868400569_);" points="
+			138.8,164.3 139,69.3 58.3,63.5 59.8,153.5 		"/>
+		
+			<linearGradient id="ARCH_ID_00000158012949981319533300000010284505236491056309_" gradientUnits="userSpaceOnUse" x1="5554.9258" y1="-67.6945" x2="5562.5967" y2="34.9353" gradientTransform="matrix(-1.0702 4.431804e-02 -1.197360e-03 1 6045.7871 -94.4147)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000158012949981319533300000010284505236491056309_);" points="
+			139.2,164.2 139.5,69.2 59.3,63.4 58.3,63.5 139,69.3 138.7,164.3 		"/>
+		
+			<linearGradient id="ARCH_ID_00000161628972813951770260000003178473990586924942_" gradientUnits="userSpaceOnUse" x1="5574.7783" y1="-52.983" x2="5673.3721" y2="48.8729" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000161628972813951770260000003178473990586924942_);" points="
+			136.9,164.9 137.1,70.1 58.3,63.5 59.8,153.5 		"/>
+		
+			<linearGradient id="ARCH_ID_00000140730553240732171480000003167750203850072246_" gradientUnits="userSpaceOnUse" x1="5634.8726" y1="-17.9509" x2="5642.5044" y2="84.1517" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000140730553240732171480000003167750203850072246_);" points="
+			137.3,164.8 137.6,70 59.2,63.4 58.3,63.5 137.1,70.1 136.8,164.9 		"/>
+		
+			<linearGradient id="ARCH_ID_00000071550808627016003100000003590316276405191831_" gradientUnits="userSpaceOnUse" x1="5656.5068" y1="-2.2833" x2="5755.2285" y2="99.7049" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000071550808627016003100000003590316276405191831_);" points="
+			135.1,165.5 135.2,70.8 58.3,63.5 59.8,153.5 		"/>
+		
+			<linearGradient id="ARCH_ID_00000051355614771047585780000004141691302276789932_" gradientUnits="userSpaceOnUse" x1="5716.6592" y1="32.9434" x2="5724.252" y2="134.5306" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000051355614771047585780000004141691302276789932_);" points="
+			135.5,165.4 135.7,70.7 59.2,63.4 58.3,63.5 135.2,70.9 135,165.5 		"/>
+		
+			<linearGradient id="ARCH_ID_00000052818364678760237090000004459812737015616646_" gradientUnits="userSpaceOnUse" x1="5741.5229" y1="52.3096" x2="5840.373" y2="154.4308" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000052818364678760237090000004459812737015616646_);" points="
+			133.4,166.1 133.4,71.6 58.3,63.5 59.9,153.5 		"/>
+		
+			<linearGradient id="ARCH_ID_00000117673515555786165380000004930066101667553465_" gradientUnits="userSpaceOnUse" x1="5799.6421" y1="85.5669" x2="5807.1973" y2="186.6541" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000117673515555786165380000004930066101667553465_);" points="
+			133.8,166 133.8,71.5 59.1,63.4 58.3,63.5 133.4,71.6 133.3,166.1 		"/>
+	</g>
+	<g>
+		
+			<linearGradient id="ARCH_ID_00000006674042580800449560000002447943561954238102_" gradientUnits="userSpaceOnUse" x1="5482.7051" y1="156.9799" x2="5577.7925" y2="255.2138" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000006674042580800449560000002447943561954238102_);" points="
+			131.7,166.7 131.7,72.2 57.4,63.6 59.8,153.8 		"/>
+		
+			<linearGradient id="ARCH_ID_00000113322556090077501020000015299593078462375599_" gradientUnits="userSpaceOnUse" x1="5540.6924" y1="190.0637" x2="5548.2524" y2="291.2122" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000113322556090077501020000015299593078462375599_);" points="
+			132.1,166.6 132.2,72.1 58.3,63.5 57.4,63.6 131.7,72.3 131.6,166.7 		"/>
+		
+			<linearGradient id="ARCH_ID_00000087412726101792644580000013102315343033935279_" gradientUnits="userSpaceOnUse" x1="5562.2246" y1="206.3894" x2="5657.3579" y2="304.6703" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000087412726101792644580000013102315343033935279_);" points="
+			130,167.2 130,73 57.4,63.6 59.8,153.8 		"/>
+		
+			<linearGradient id="ARCH_ID_00000071521258235501663900000006034479029242469032_" gradientUnits="userSpaceOnUse" x1="5620.2168" y1="239.5845" x2="5627.7461" y2="340.3255" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000071521258235501663900000006034479029242469032_);" points="
+			130.4,167.1 130.4,72.9 58.2,63.5 57.4,63.6 130,73 129.9,167.2 		"/>
+		
+			<linearGradient id="ARCH_ID_00000019666914523191947040000007926467364576610966_" gradientUnits="userSpaceOnUse" x1="5643.5752" y1="256.946" x2="5738.7515" y2="355.2713" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000019666914523191947040000007926467364576610966_);" points="
+			128.3,167.8 128.3,73.7 57.4,63.6 59.8,153.8 		"/>
+		
+			<linearGradient id="ARCH_ID_00000103235004344238058260000018126925268225021833_" gradientUnits="userSpaceOnUse" x1="5701.5708" y1="290.2494" x2="5709.0703" y2="390.5905" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000103235004344238058260000018126925268225021833_);" points="
+			128.7,167.7 128.7,73.6 58.2,63.5 57.4,63.6 128.3,73.7 128.3,167.8 		"/>
+		
+			<linearGradient id="ARCH_ID_00000105403848377781945680000003710848231117157553_" gradientUnits="userSpaceOnUse" x1="5725.0044" y1="307.7438" x2="5820.23" y2="406.1202" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000105403848377781945680000003710848231117157553_);" points="
+			126.8,168.4 126.6,74.4 57.4,63.6 59.8,153.9 		"/>
+		
+			<linearGradient id="ARCH_ID_00000125588729851111369910000006305836808490209683_" gradientUnits="userSpaceOnUse" x1="5784.4365" y1="342.6339" x2="5791.9067" y2="442.584" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000125588729851111369910000006305836808490209683_);" points="
+			127.2,168.3 127,74.3 58.2,63.6 57.4,63.6 126.6,74.4 126.8,168.3 		"/>
+	</g>
+	<g>
+		
+			<linearGradient id="ARCH_ID_00000138575112603901959940000004723561744249925512_" gradientUnits="userSpaceOnUse" x1="5489.3916" y1="161.5574" x2="5579.4595" y2="254.6052" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000138575112603901959940000004723561744249925512_);" points="
+			125.1,168.9 125,74.8 56.6,63.7 59,154.1 		"/>
+		
+			<linearGradient id="ARCH_ID_00000150083540900053782490000009238297030463096976_" gradientUnits="userSpaceOnUse" x1="5544.082" y1="190.506" x2="5551.8457" y2="294.3774" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000150083540900053782490000009238297030463096976_);" points="
+			125.5,168.9 125.4,74.7 57.4,63.6 56.6,63.7 125,74.8 125,168.9 		"/>
+		
+			<linearGradient id="ARCH_ID_00000105417712112563022490000013980367827910634395_" gradientUnits="userSpaceOnUse" x1="5568.9189" y1="210.9883" x2="5659.0303" y2="304.0816" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000105417712112563022490000013980367827910634395_);" points="
+			123.5,169.4 123.4,75.5 56.6,63.7 59,154.1 		"/>
+		
+			<linearGradient id="ARCH_ID_00000077326578407640859400000000985888937250723002_" gradientUnits="userSpaceOnUse" x1="5623.6143" y1="240.0427" x2="5631.3491" y2="343.5314" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000077326578407640859400000000985888937250723002_);" points="
+			123.9,169.4 123.8,75.4 57.4,63.6 56.6,63.7 123.4,75.5 123.5,169.4 		"/>
+		
+			<linearGradient id="ARCH_ID_00000055664646479678357520000011190359950798788019_" gradientUnits="userSpaceOnUse" x1="5650.2773" y1="261.5662" x2="5740.4307" y2="354.7023" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000055664646479678357520000011190359950798788019_);" points="
+			122,169.9 121.8,76.1 56.6,63.7 59,154.1 		"/>
+		
+			<linearGradient id="ARCH_ID_00000051362090754837191240000011437439756661301143_" gradientUnits="userSpaceOnUse" x1="5704.9771" y1="290.7236" x2="5712.6841" y2="393.8367" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000051362090754837191240000011437439756661301143_);" points="
+			122.4,169.9 122.2,76 57.4,63.7 56.6,63.7 121.8,76.1 122,169.9 		"/>
+		
+			<linearGradient id="ARCH_ID_00000099656020707059573570000017793699957199402389_" gradientUnits="userSpaceOnUse" x1="5745.999" y1="327.141" x2="5836.2031" y2="420.3299" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000099656020707059573570000017793699957199402389_);" points="
+			120.6,170.5 120.3,76.8 56.6,63.7 59.1,154.1 		"/>
+		
+			<linearGradient id="ARCH_ID_00000047770632585890987730000008435507670272287166_" gradientUnits="userSpaceOnUse" x1="5787.854" y1="343.1233" x2="5795.5337" y2="445.876" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000047770632585890987730000008435507670272287166_);" points="
+			121,170.4 120.6,76.7 57.3,63.7 56.6,63.7 120.3,76.8 120.6,170.5 		"/>
+	</g>
+	<g>
+		
+			<linearGradient id="ARCH_ID_00000117657107239444006160000013479848537600119963_" gradientUnits="userSpaceOnUse" x1="-1859.5729" y1="248.2332" x2="-1704.2657" y2="58.3261" gradientTransform="matrix(1 0 0 1 1840.2769 0)">
+			<stop  offset="0" style="stop-color:#130005"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-300)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000117657107239444006160000013479848537600119963_);" points="
+			118.5,172.5 118.8,76.9 55.7,63.7 55.6,154.2 		"/>
+		
+			<linearGradient id="ARCH_ID_00000099647694368341415320000017246190004927409082_" gradientUnits="userSpaceOnUse" x1="7521.4185" y1="1076.5621" x2="7518.3604" y2="1040.6877" gradientTransform="matrix(-0.7615 -0.1554 -2.949967e-04 1.0065 5815.6733 197.2003)">
+			<stop  offset="0" style="stop-color:#130005"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-300)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+		</linearGradient>
+		
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCH_ID_00000099647694368341415320000017246190004927409082_);" points="
+			118.9,172.4 119.2,76.8 56.5,63.7 55.7,63.7 118.8,76.9 118.5,172.5 		"/>
+	</g>
+	<path class="arpl185" d="M59.4,63.1l1,0.1l-3.8,0.7l-0.9-0.2l0.1,0C55.8,63.7,56.6,63.1,59.4,63.1z"/>
+	<polygon class="arpl214" points="57.1,63.8 60.1,63.3 60.1,63.4 57.8,64 	"/>
+</g>
+<g>
+	<path d="M89.5,84.4c1,0.2,1.8,0.7,2.4,1.6c0.6,0.9,0.9,1.9,0.9,3.1c0,1.2-0.3,2.1-0.9,2.7c-0.6,0.6-1.4,0.8-2.4,0.6l-1.6-0.3v3.4
+		L85.6,95V83.6L89.5,84.4z M87.9,86.8v2.5l1.4,0.3c0.3,0.1,0.5,0,0.7-0.2c0.2-0.2,0.3-0.5,0.3-0.8c0-0.3-0.1-0.6-0.3-0.9
+		c-0.2-0.3-0.4-0.5-0.7-0.5L87.9,86.8z"/>
+	<path d="M95.8,94.8l-0.6,2.4l-2.6-0.6l3.4-10.9l2.7,0.6l3.5,12.5l-2.7-0.6l-0.7-2.7L95.8,94.8z M97.2,89.2l-0.8,3.2l1.7,0.4
+		L97.2,89.2z"/>
+	<path d="M89.5,100c1,0.2,1.8,0.8,2.4,1.7c0.6,0.9,0.9,2,0.9,3.1c0,1.2-0.3,2.1-0.9,2.7c-0.6,0.6-1.4,0.8-2.4,0.6l-1.6-0.4v3.4
+		l-2.4-0.6V99.1L89.5,100z M87.9,102.4v2.5l1.4,0.4c0.3,0.1,0.5,0,0.7-0.2c0.2-0.2,0.3-0.5,0.3-0.8c0-0.3-0.1-0.6-0.3-0.9
+		c-0.2-0.3-0.4-0.5-0.7-0.5L87.9,102.4z"/>
+	<path d="M99.5,111c0.3-0.4,0.5-0.9,0.5-1.5v-6.9l2.5,0.6v6.9c0,1.5-0.4,2.6-1.2,3.4c-0.8,0.8-1.8,1-3,0.7c-1.2-0.3-2.2-1.1-3-2.3
+		c-0.8-1.2-1.2-2.5-1.2-4v-6.8l2.4,0.6v6.8c0,0.7,0.2,1.3,0.5,1.8c0.3,0.5,0.7,0.9,1.2,1C98.8,111.5,99.2,111.3,99.5,111z"/>
+	<path d="M106.4,113.4l-0.7,2.4l-2.7-0.7l3.5-11l2.8,0.7l3.6,13l-2.8-0.7l-0.7-2.8L106.4,113.4z M108,107.7l-0.9,3.3l1.8,0.4
+		L108,107.7z"/>
+</g>
+<g>
+	<path class="arpl215" d="M88.8,83.7c1,0.2,1.8,0.7,2.4,1.6c0.6,0.9,0.9,1.9,0.9,3.1c0,1.2-0.3,2.1-0.9,2.7c-0.6,0.6-1.4,0.8-2.4,0.6
+		l-1.6-0.3v3.4l-2.4-0.5V82.9L88.8,83.7z M87.2,86.1v2.5l1.4,0.3c0.3,0.1,0.5,0,0.7-0.2c0.2-0.2,0.3-0.5,0.3-0.8
+		c0-0.3-0.1-0.6-0.3-0.9c-0.2-0.3-0.4-0.5-0.7-0.5L87.2,86.1z"/>
+	<path class="arpl215" d="M95,94.1l-0.6,2.4l-2.6-0.6L95.2,85l2.7,0.6l3.5,12.5l-2.7-0.6L98,94.8L95,94.1z M96.5,88.5l-0.8,3.2
+		l1.7,0.4L96.5,88.5z"/>
+	<path class="arpl215" d="M88.8,99.3c1,0.2,1.8,0.8,2.4,1.7c0.6,0.9,0.9,2,0.9,3.1c0,1.2-0.3,2.1-0.9,2.7c-0.6,0.6-1.4,0.8-2.4,0.6
+		l-1.6-0.4v3.4l-2.4-0.6V98.4L88.8,99.3z M87.2,101.7v2.5l1.4,0.4c0.3,0.1,0.5,0,0.7-0.2c0.2-0.2,0.3-0.5,0.3-0.8
+		c0-0.3-0.1-0.6-0.3-0.9c-0.2-0.3-0.4-0.5-0.7-0.5L87.2,101.7z"/>
+	<path class="arpl215" d="M98.8,110.3c0.3-0.4,0.5-0.9,0.5-1.5v-6.9l2.5,0.6v6.9c0,1.5-0.4,2.6-1.2,3.4c-0.8,0.8-1.8,1-3,0.7
+		c-1.2-0.3-2.2-1.1-3-2.3c-0.8-1.2-1.2-2.5-1.2-4v-6.8l2.4,0.6v6.8c0,0.7,0.2,1.3,0.5,1.8c0.3,0.5,0.7,0.9,1.2,1
+		C98.1,110.7,98.5,110.6,98.8,110.3z"/>
+	<path class="arpl215" d="M105.7,112.7l-0.7,2.4l-2.7-0.7l3.5-11l2.8,0.7l3.6,13l-2.8-0.7l-0.7-2.8L105.7,112.7z M107.3,107l-0.9,3.3
+		l1.8,0.4L107.3,107z"/>
+</g>
+</svg>

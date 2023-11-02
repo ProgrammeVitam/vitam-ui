@@ -1,0 +1,46 @@
+<mat-tab-group #matTabGroup [(selectedIndex)]="tabIndex">
+  <div *ngFor="let category of content | keyvalue">
+    <mat-tab label="{{ 'MENU.' + category.key.identifier | translate }}">
+      <ng-template matTabContent>
+        <div class="row category">
+          <ng-container
+            *ngIf="category.value.type === CONTENT_TYPE.APPLICATION"
+            [ngTemplateOutlet]="apps"
+            [ngTemplateOutletContext]="{ values: category.value.data }"
+          ></ng-container>
+
+<!--          <ng-container-->
+<!--            *ngIf="category.value.type === CONTENT_TYPE.ALERT"-->
+<!--            [ngTemplateOutlet]="alerts"-->
+<!--            [ngTemplateOutletContext]="{ values: category.value.data }"-->
+<!--          ></ng-container>-->
+        </div>
+      </ng-template>
+    </mat-tab>
+  </div>
+</mat-tab-group>
+
+<ng-template #apps let-values="values">
+  <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let value of values">
+    <vitamui-common-application-card [application]="value">
+      <svg-icon src="{{ value.identifier }}" [svgStyle]="{ 'width.%': 60 }"></svg-icon>
+    </vitamui-common-application-card>
+  </div>
+</ng-template>
+
+<!--<ng-template #alerts let-values="values">-->
+<!--  <ng-container *ngIf="!values.length">{{ "CONTENT_LIST.NO_USER_ALERTS" | translate}}</ng-container>-->
+<!--  <ng-container *ngIf="values.length">-->
+<!--    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" *ngFor="let value of values">-->
+<!--      <vitamui-common-user-alerts-card-->
+<!--        [applicationName]="getAppName(value.applicationId) | async"-->
+<!--        [details]="getDetails(value) | async"-->
+<!--        [date]="getDate(value) | date: 'dd/MM/yyyy'"-->
+<!--        [time]="getDate(value) | date: 'HH:mm'"-->
+<!--        (openAlert)="openAlert.emit(value)"-->
+<!--        (removeAlert)="removeAlert.emit(value)"-->
+<!--      >-->
+<!--      </vitamui-common-user-alerts-card>-->
+<!--    </div>-->
+<!--  </ng-container>-->
+<!--</ng-template>-->

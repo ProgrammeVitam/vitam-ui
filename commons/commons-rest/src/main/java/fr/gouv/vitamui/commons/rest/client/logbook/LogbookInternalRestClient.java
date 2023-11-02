@@ -39,7 +39,10 @@ package fr.gouv.vitamui.commons.rest.client.logbook;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -55,6 +58,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -140,12 +144,17 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
      * @param select
      * @return
      */
-    public JsonNode findOperations(final C context, final JsonNode select) {
+    public JsonNode findOperations(final C context, final JsonNode select, final Integer vitamTenantIdentifier) {
         final MultiValueMap<String, String> headers = buildRequestHeaders(context);
         final HttpEntity<JsonNode> request = new HttpEntity<>(select, headers);
 
+        final URIBuilder builder = getUriBuilderFromPath(CommonConstants.LOGBOOK_OPERATIONS_PATH);
+        if (Objects.nonNull(vitamTenantIdentifier)) {
+            builder.addParameter("vitamTenantIdentifier", vitamTenantIdentifier.toString());
+        }
+
         final ResponseEntity<JsonNode> response =
-                restTemplate.exchange(getUrl() + CommonConstants.LOGBOOK_OPERATIONS_PATH + "/", HttpMethod.POST, request, JsonNode.class);
+                restTemplate.exchange(buildUriBuilder(builder), HttpMethod.POST, request, JsonNode.class);
         checkResponse(response);
         return response.getBody();
     }

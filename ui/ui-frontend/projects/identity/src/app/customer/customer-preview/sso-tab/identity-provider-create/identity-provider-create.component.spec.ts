@@ -141,7 +141,10 @@ describe('IdentityProviderCreateComponent', () => {
         identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
         autoProvisioningEnabled: true,
-        protocoleType: "SAML"
+        protocoleType: 'SAML',
+        maximumAuthenticationLifetime: 0,
+        wantsAssertionsSigned: true,
+        authnRequestSigned: true
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -182,7 +185,10 @@ describe('IdentityProviderCreateComponent', () => {
         identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
         autoProvisioningEnabled: true,
-        protocoleType:'SAML'
+        protocoleType:'SAML',
+        maximumAuthenticationLifetime: 0,
+        wantsAssertionsSigned: true,
+        authnRequestSigned: true
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -236,7 +242,10 @@ describe('IdentityProviderCreateComponent', () => {
         identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
         autoProvisioningEnabled: true,
-        protocoleType: "SAML",
+        protocoleType: 'SAML',
+        maximumAuthenticationLifetime: 0,
+        wantsAssertionsSigned: true,
+        authnRequestSigned: true
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;

@@ -48,19 +48,18 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.support.WebUtils;
-import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.jee.context.JEEContext;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.io.IOException;
 import java.util.Optional;
-
-import lombok.val;
 
 /**
  * This class can dispatch the user:
@@ -106,7 +105,7 @@ public class DispatcherAction extends AbstractAction {
                 surrogate = StringUtils.substringBefore(username, surrogationSeparator).trim();
             }
         }
-        LOGGER.debug("Dispatching user: {} / surrogate: {}", dispatchedUser, surrogate);
+        LOGGER.debug("Dispatched user: {} / surrogate: {}", dispatchedUser, surrogate);
 
         // if the user is disabled, send him to a specific page (ignore not found users: it will fail when checking login/password)
         try {

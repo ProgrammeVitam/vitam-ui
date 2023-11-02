@@ -37,11 +37,11 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
-import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import { PopupService } from '../../core/services/popup.service';
-import { environment } from 'projects/pastis/src/environments/environment';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { environment } from 'projects/pastis/src/environments/environment';
+import { PopupService } from '../../core/services/popup.service';
+import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 
 
 const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
@@ -57,6 +57,7 @@ function constantToTranslate() {
 
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-pua-control.component.html',
   styleUrls: ['./add-pua-control.component.scss']

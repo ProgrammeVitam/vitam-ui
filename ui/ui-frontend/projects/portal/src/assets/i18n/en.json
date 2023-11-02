@@ -1,11 +1,5 @@
 {
-	"APPLICATION-LIST": {
-		"settings": "Settings",
-		"administrators": "Management",
-		"users": "User",
-		"referential": "Referential",
-		"opaudit": "Audits & operations",
-		"techadmin": "Technical administration",
-		"lastusedapps": "Lastly used"
+	"CONTENT-LIST": {
+		"NO_USER_ALERTS": "No alert to display"
 	}
 }

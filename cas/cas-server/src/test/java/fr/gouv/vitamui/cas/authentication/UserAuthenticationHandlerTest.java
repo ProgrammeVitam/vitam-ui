@@ -1,22 +1,14 @@
 package fr.gouv.vitamui.cas.authentication;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.security.GeneralSecurityException;
-import java.time.OffsetDateTime;
-
-import javax.security.auth.login.AccountException;
-import javax.security.auth.login.AccountLockedException;
-import javax.security.auth.login.AccountNotFoundException;
-import javax.security.auth.login.CredentialException;
-
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.Credential;
@@ -26,17 +18,23 @@ import org.apereo.cas.authentication.exceptions.AccountPasswordMustChangeExcepti
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
 import org.junit.Before;
 import org.junit.Test;
-
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
-import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.security.auth.login.AccountException;
+import javax.security.auth.login.AccountLockedException;
+import javax.security.auth.login.AccountNotFoundException;
+import javax.security.auth.login.CredentialException;
+import java.security.GeneralSecurityException;
+import java.time.OffsetDateTime;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link UserAuthenticationHandler}.
@@ -71,7 +69,7 @@ public final class UserAuthenticationHandlerTest {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
                 .thenReturn(basicUser(UserStatusEnum.ENABLED));
 
-        val result = handler.authenticate(credential);
+        val result = handler.authenticate(credential, null);
         assertEquals(USERNAME, result.getPrincipal().getId());
     }
 
@@ -81,7 +79,7 @@ public final class UserAuthenticationHandlerTest {
                 .thenReturn(basicUser(UserStatusEnum.ENABLED));
 
         credential = new UsernamePasswordCredential(" " +USERNAME + "  ", PASSWORD);
-        val result = handler.authenticate(credential);
+        val result = handler.authenticate(credential, null);
         assertEquals(USERNAME, result.getPrincipal().getId());
     }
 
@@ -89,7 +87,7 @@ public final class UserAuthenticationHandlerTest {
     public void testNoUser() throws GeneralSecurityException, PreventedException {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null))).thenReturn(null);
 
-        handler.authenticate(credential);
+        handler.authenticate(credential, null);
     }
 
     @Test(expected = AccountException.class)
@@ -97,7 +95,7 @@ public final class UserAuthenticationHandlerTest {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
                 .thenReturn(basicUser(UserStatusEnum.DISABLED));
 
-        handler.authenticate(credential);
+        handler.authenticate(credential, null);
     }
 
     @Test(expected = AccountException.class)
@@ -105,7 +103,7 @@ public final class UserAuthenticationHandlerTest {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
                 .thenReturn(basicUser(UserStatusEnum.BLOCKED));
 
-        handler.authenticate(credential);
+        handler.authenticate(credential, null);
     }
 
     @Test(expected = AccountPasswordMustChangeException.class)
@@ -115,7 +113,7 @@ public final class UserAuthenticationHandlerTest {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
             .thenReturn(user);
 
-        handler.authenticate(credential);
+        handler.authenticate(credential, null);
     }
 
     @Test(expected = CredentialException.class)
@@ -123,7 +121,7 @@ public final class UserAuthenticationHandlerTest {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
                 .thenThrow(new InvalidAuthenticationException(""));
 
-        handler.authenticate(credential);
+        handler.authenticate(credential, null);
     }
 
     @Test(expected = AccountLockedException.class)
@@ -131,7 +129,7 @@ public final class UserAuthenticationHandlerTest {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
                 .thenThrow(new TooManyRequestsException(""));
 
-        handler.authenticate(credential);
+        handler.authenticate(credential, null);
     }
 
     @Test(expected = PreventedException.class)
@@ -139,7 +137,7 @@ public final class UserAuthenticationHandlerTest {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
                 .thenThrow(new BadRequestException(""));
 
-        handler.authenticate(credential);
+        handler.authenticate(credential, null);
     }
 
     private UserDto basicUser(final UserStatusEnum status) {

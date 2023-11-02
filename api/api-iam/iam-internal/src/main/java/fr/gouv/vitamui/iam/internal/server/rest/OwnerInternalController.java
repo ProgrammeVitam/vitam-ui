@@ -151,9 +151,8 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
         return internalOwnerService.patch(partialDto);
     }
 
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for owner with id :{}", id);

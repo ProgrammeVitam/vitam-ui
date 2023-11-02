@@ -313,19 +313,19 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   private formDescriptionHasChanged() {
     const formVal = this.form.get('description').value;
     const previousVal = this.previousValue.description;
-    if ((formVal == undefined || formVal == '') && (previousVal == undefined || previousVal == '')) {
+    if ((formVal === undefined || formVal === '') && (previousVal === undefined || previousVal === '')) {
       return false;
     }
-    return formVal != previousVal;
+    return formVal !== previousVal;
   }
 
   private formHasChanges() {
     return (
-      this.form.get('title').value != this.previousValue.title ||
+      this.form.get('title').value !== this.previousValue.title ||
       this.formDescriptionHasChanged() ||
-      this.form.get('descriptionLevel').value != this.previousValue.descriptionLevel ||
-      this.getStartDate(this.form.get('startDate').value) != this.getStartDate(this.previousValue.startDate) ||
-      this.getStartDate(this.form.get('endDate').value) != this.getStartDate(this.previousValue.endDate)
+      this.form.get('descriptionLevel').value !== this.previousValue.descriptionLevel ||
+      this.getStartDate(this.form.get('startDate').value) !== this.getStartDate(this.previousValue.startDate) ||
+      this.getStartDate(this.form.get('endDate').value) !== this.getStartDate(this.previousValue.endDate)
     );
   }
 
@@ -349,15 +349,15 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
         let startDate = null;
         let endDate = null;
         if (
-          dif.startDate != undefined &&
-          dif.startDate != null &&
+          dif.startDate !== undefined &&
+          dif.startDate !== null &&
           this.getStartDate(this.form.get('startDate').value) !== this.getStartDate(this.previousValue.startDate)
         ) {
           startDate = this.getStartDate(this.form.get('startDate').value);
         }
         if (
-          dif.endDate != undefined &&
-          dif.endDate != null &&
+          dif.endDate !== undefined &&
+          dif.endDate !== null &&
           this.getStartDate(this.form.get('endDate').value) !== this.getStartDate(this.previousValue.endDate)
         ) {
           endDate = this.getStartDate(this.form.get('endDate').value);

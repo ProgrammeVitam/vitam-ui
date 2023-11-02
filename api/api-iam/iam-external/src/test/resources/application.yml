@@ -30,3 +30,12 @@ server-identity:
 
 swagger:
   layer: api-external
+
+
+cas:
+  internal-url: https://dev.vitamui.com:8080/cas
+  external-url: https://dev.vitamui.com:8080/cas
+  callback-url: identity-api/callback
+  ssl:
+    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store-password: changeme

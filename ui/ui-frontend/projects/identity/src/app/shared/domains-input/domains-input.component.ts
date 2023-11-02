@@ -42,6 +42,7 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from
 
 import { CustomerCreateValidators } from '../../customer/customer-create/customer-create.validators';
 
+/*eslint no-use-before-define: "error"*/
 export const DOMAINS_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DomainsInputComponent),

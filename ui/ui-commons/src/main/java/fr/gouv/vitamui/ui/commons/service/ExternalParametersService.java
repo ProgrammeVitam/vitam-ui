@@ -71,14 +71,7 @@ public class ExternalParametersService {
 	 */
     public Map<String, String> getMyExternalParameters(ExternalHttpContext context) {
         LOGGER.debug("Get external parameters for the authenticated user");
-
-        final ExternalParametersDto userParameters = client.getMyExternalParameters(context);
-        if(userParameters != null && userParameters.getParameters() != null) {
-        	return userParameters.getParameters().stream()
-        		.collect(Collectors.toMap(ParameterDto::getKey, ParameterDto::getValue));
-        }
-
-        return null;
+        return client.getMyExternalParameters(context);
     }
 
 }

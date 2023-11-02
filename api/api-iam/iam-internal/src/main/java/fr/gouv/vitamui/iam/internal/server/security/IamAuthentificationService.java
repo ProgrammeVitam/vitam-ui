@@ -103,9 +103,11 @@ public class IamAuthentificationService {
         final Token token = tokenRepository.findById(userToken).orElseThrow(() -> new BadCredentialsException("No user found for usertoken: " + userToken));
 
         if (!token.isSurrogation()) {
-            final LocalDate date = convertToLocalDate(token.getUpdatedDate());
-            if (date.isAfter(LocalDate.of(2018, 10, 1))) {
-                token.setUpdatedDate(DateUtils.addMinutes(token.getUpdatedDate(), tokenAdditionalTtl));
+            Date currentTokenExpirationDate = token.getUpdatedDate();
+            Date newTokenExpirationDate = DateUtils.addMinutes(new Date(), tokenAdditionalTtl);
+            final LocalDate currentTokenExpirationLocalDate = convertToLocalDate(currentTokenExpirationDate);
+            if (currentTokenExpirationLocalDate.isAfter(LocalDate.of(2018, 10, 1)) && currentTokenExpirationDate.before(newTokenExpirationDate)) {
+                token.setUpdatedDate(newTokenExpirationDate);
                 tokenRepository.save(token);
             }
         }

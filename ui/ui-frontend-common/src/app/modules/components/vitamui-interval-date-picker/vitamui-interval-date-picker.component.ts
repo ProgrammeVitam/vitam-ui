@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'vitamui-interval-date-picker',
   templateUrl: './vitamui-interval-date-picker.component.html',
   styleUrls: ['./vitamui-interval-date-picker.component.scss']

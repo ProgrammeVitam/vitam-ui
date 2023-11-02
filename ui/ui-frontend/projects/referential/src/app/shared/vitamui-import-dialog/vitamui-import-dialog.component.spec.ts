@@ -39,20 +39,20 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 // tslint:disable-next-line: max-line-length
 
+import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
 import { MatOptionModule } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BASE_URL, LoggerModule } from 'ui-frontend-common';
-import { VitamUIImportDialogComponent } from './vitamui-import-dialog.component';
-import { WINDOW_LOCATION } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
+import { BASE_URL, LoggerModule } from 'ui-frontend-common';
+import { WINDOW_LOCATION } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUIImportDialogComponent } from './vitamui-import-dialog.component';
 
 describe('VitamUIImportDialogComponent', () => {
   let component: VitamUIImportDialogComponent;

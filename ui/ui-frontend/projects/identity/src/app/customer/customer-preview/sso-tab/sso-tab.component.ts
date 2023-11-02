@@ -34,14 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {Subscription} from 'rxjs';
 
-import { Customer, IdentityProvider } from 'ui-frontend-common';
-import { IdentityProviderCreateComponent } from './identity-provider-create/identity-provider-create.component';
-import { IdentityProviderService } from './identity-provider.service';
+import {Customer, DownloadUtils, IdentityProvider} from 'ui-frontend-common';
+import {IdentityProviderCreateComponent} from './identity-provider-create/identity-provider-create.component';
+import {IdentityProviderService} from './identity-provider.service';
+import {ProviderApiService} from './provider-api.service';
 
 @Component({
   selector: 'app-sso-tab',
@@ -102,7 +103,8 @@ export class SsoTabComponent implements OnDestroy, OnInit {
 
   private updatedProviderSub: Subscription;
 
-  constructor(public dialog: MatDialog, private identityProviderService: IdentityProviderService) { }
+  constructor(public dialog: MatDialog, private identityProviderService: IdentityProviderService,
+              private providerApi: ProviderApiService) { }
 
   ngOnInit() {
     this.updatedProviderSub = this.identityProviderService.updated.subscribe((updatedProvider: IdentityProvider) => {
@@ -141,6 +143,12 @@ export class SsoTabComponent implements OnDestroy, OnInit {
 
   get domainsAvailable(): boolean {
     return this.domains.filter((domain) => !domain.disabled).length > 0;
+  }
+
+  downloadFile(isInternalProvider: boolean, url: string): void {
+    if(!isInternalProvider){
+      this.providerApi.getFileByUrl(url).subscribe((response: any) => DownloadUtils.loadFromBlob(response, response.body.type));
+    }
   }
 
   private refreshAvailableDomains() {

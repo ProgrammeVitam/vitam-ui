@@ -21,9 +21,9 @@ server_ui_identity_admin_key: changeme
 server_ui_referential_key: changeme
 server_ui_ingest_key: changeme
 server_ui_archive_search_key: changeme
-server_reverse_key: changeme
+server_api_gateway_key: changeme
+server_collect_internal_key: changeme
+server_collect_external_key: changeme
 server_ui_pastis_key: changeme
 server_reverse_key: changeme
 server_ui_collect_key: changeme
-server_collect_internal_key: changeme
-server_collect_external_key: changeme

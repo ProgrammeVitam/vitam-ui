@@ -188,6 +188,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.tabSelectedIndex = value.index; // when clicking
     }
     setTimeout(() => {
+      // tslint:disable-next-line: variable-name
       const firstElem = this.selectedList.find((_select, index) => index === this.tabSelectedIndex);
       if (firstElem && firstElem.options && firstElem.options.first) {
         firstElem.options.first.focus();
@@ -198,7 +199,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public updateApps(tenant: MenuOption): void {
     if (tenant) {
       this.selectedTenant = tenant;
-      this.applicationService.getTenantAppMap(tenant.value).subscribe((map: Map<Category, Application[]>) => (this.appMap = map));
+      this.applicationService.getTenantAppMap(tenant.value).subscribe((map: Map<Category, Application[]>) => this.appMap = map);
     }
   }
 

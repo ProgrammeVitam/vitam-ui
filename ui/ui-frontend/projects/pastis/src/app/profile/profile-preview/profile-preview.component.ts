@@ -14,6 +14,7 @@ import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
   styleUrls: ['./profile-preview.component.scss']
@@ -99,7 +100,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   isProfilAttached() {
-    if (this.inputProfile.controlSchema && this.inputProfile.controlSchema.length != 2 || this.inputProfile.path) {
+    if (this.inputProfile.controlSchema && this.inputProfile.controlSchema.length !== 2 || this.inputProfile.path) {
       // console.log(this.inputProfile)
       return true;
     }

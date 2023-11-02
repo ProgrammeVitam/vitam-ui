@@ -64,7 +64,7 @@ export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionR
   exportAccessionRegisterCsv(criteria: any, headers?: HttpHeaders): Observable<Blob> {
     return this.http.post(`${this.apiUrl}/export-csv`, criteria, {
       responseType: 'blob',
-      headers: headers
+      headers
     });
   }
 }

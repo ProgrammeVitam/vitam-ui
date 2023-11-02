@@ -85,7 +85,7 @@ public abstract class AbstractUiRestController {
         throw new UnAuthorizedException("User is not connected");
     }
 
-    protected ExternalHttpContext buildUiHttpContext() throws InvalidParseOperationException,
+    protected ExternalHttpContext buildUiHttpContext() throws
         PreconditionFailedException {
         final AuthUserDto principal = getAuthenticatedUser();
         final HttpServletRequest request = getCurrentHttpRequest();
@@ -93,7 +93,7 @@ public abstract class AbstractUiRestController {
     }
 
     protected ExternalHttpContext buildUiHttpContext(final Integer tenantIdentifier)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         final AuthUserDto principal = getAuthenticatedUser();
         final HttpServletRequest request = getCurrentHttpRequest();
         return ExternalHttpContext.buildFromUiRequest(request, principal, tenantIdentifier, null);

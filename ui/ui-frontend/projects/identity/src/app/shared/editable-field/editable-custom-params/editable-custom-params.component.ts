@@ -1,7 +1,7 @@
-import { Component, forwardRef, ElementRef, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { EditableFieldComponent } from 'ui-frontend-common';
-
+/*eslint no-use-before-define: "error"*/
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableCustomParamsComponent),
@@ -9,6 +9,7 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'editable-custom-params',
   templateUrl: './editable-custom-params.component.html',
   providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],
@@ -39,7 +40,7 @@ export class EditableCustomParamsComponent extends EditableFieldComponent implem
   ngOnInit(): void {}
 
   getList(obj: any) {
-    let map = new Map<string, string>();
+    const map = new Map<string, string>();
     if (!!obj) {
       Object.entries(obj).forEach((array: [string, string]) => {
         map.set(array[0], array[1]);

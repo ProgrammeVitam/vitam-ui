@@ -1,3 +1,4 @@
+import { OnInit } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -89,11 +90,12 @@ function constantToTranslate() {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-file-tree',
   templateUrl: './file-tree.component.html',
   styleUrls: ['./file-tree.component.scss'],
 })
-export class FileTreeComponent implements OnDestroy {
+export class FileTreeComponent implements OnInit, OnDestroy {
   constructor(
     private fileService: FileService,
     private loggingService: NotificationService,
@@ -171,7 +173,7 @@ export class FileTreeComponent implements OnDestroy {
   popupDuplicateDeleteTypeTextF: string;
   text: string;
 
-  nonEditFileNode: boolean = false;
+  nonEditFileNode = false;
 
   private _fileServiceTabChildrenRulesChange: Subscription;
   private _fileServiceCollectionName: Subscription;
@@ -192,22 +194,22 @@ export class FileTreeComponent implements OnDestroy {
       this.notificationAddmetadonneeSOne = 'La métadonnée';
       this.notificationAddmetadonneeSTwo = ' a été ajoutée';
       this.notificationAjoutMetadonneeFileTree = 'La métadonnée ArchiveUnit a été ajoutée';
-      this.popupRemoveSedaElementAttribut = "L'attribut";
+      this.popupRemoveSedaElementAttribut = 'L\'attribut';
       this.popupRemoveSedaElementMetadonnee = 'La métadonnée ';
       this.popupRemoveTitre = 'Voulez-vous supprimer';
-      this.popupRemoveSousTitreAttribut = "Suppression d'un attribut";
-      this.popupRemoveSousTitreMetadonnee = "Suppression d'une métadonnée";
+      this.popupRemoveSousTitreAttribut = 'Suppression d\'un attribut';
+      this.popupRemoveSousTitreMetadonnee = 'Suppression d\'une métadonnée';
       this.popupRemoveDeleteTypeTextM = 'supprimé ';
       this.popupRemoveDeleteTypeTextF = 'supprimée ';
       this.popupAddCancelLabel = 'Annuler';
       this.popupAddTitleDialog = 'Veuillez sélectionner une ou plusieurs métadonnées';
       this.popupAddSubTitleDialog = 'Ajouter des métadonnées à';
       this.popupAddOkLabel = 'Ajouter les métadonnées';
-      this.popupDuplicateSedaElementAttribut = "L'attribut";
+      this.popupDuplicateSedaElementAttribut = 'L\'attribut';
       this.popupDuplicateSedaElementMetadonnee = ' la métadonnée ';
       this.popupDuplicateTitre = 'Voulez-vous dupliquer';
-      this.popupDuplicateSousTitreAttribut = "Duplication d'un attribut";
-      this.popupDuplicateSousTitreMetadonnee = "Duplication d'une métadonnée";
+      this.popupDuplicateSousTitreAttribut = 'Duplication d\'un attribut';
+      this.popupDuplicateSousTitreMetadonnee = 'Duplication d\'une métadonnée';
       this.popupDuplicateDeleteTypeTextM = 'dupliqué ';
       this.popupDuplicateDeleteTypeTextF = 'dupliquée ';
       this.popupDuplicateTitreTwo = 'son contenu et son paramétrage (cardinalités et commentaire)';
@@ -263,6 +265,7 @@ export class FileTreeComponent implements OnDestroy {
   async addNewItem(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     dataToSendToPopUp.titleDialog = this.popupAddTitleDialog;
+    // tslint:disable-next-line:no-unused-expression
     (dataToSendToPopUp.subTitleDialog = `${this.popupAddSubTitleDialog} ${node.name}`), node.name;
     dataToSendToPopUp.fileNode = node;
     dataToSendToPopUp.width = '800px';
@@ -540,7 +543,8 @@ export class FileTreeComponent implements OnDestroy {
   async remove(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     const nodeType =
-      node.sedaData.Element == SedaElementConstants.attribute ? this.popupRemoveSedaElementAttribut : this.popupRemoveSedaElementMetadonnee;
+      node.sedaData.Element === SedaElementConstants.attribute
+       ? this.popupRemoveSedaElementAttribut : this.popupRemoveSedaElementMetadonnee;
     dataToSendToPopUp.titleDialog = this.popupRemoveTitre + ' ' + nodeType + ' "' + this.onResolveName(node) + '" ?';
     dataToSendToPopUp.subTitleDialog =
       node.sedaData.Element === SedaElementConstants.attribute ? this.popupRemoveSousTitreAttribut : this.popupRemoveSousTitreMetadonnee;
@@ -558,19 +562,16 @@ export class FileTreeComponent implements OnDestroy {
     }
   }
 
-  /**
-   * Duplicate an item tree
-   * @param node
-   */
+
   async duplicate(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     const nodeType =
-      node.sedaData.Element == SedaElementConstants.attribute
+      node.sedaData.Element === SedaElementConstants.attribute
         ? this.popupDuplicateSedaElementAttribut
         : this.popupDuplicateSedaElementMetadonnee;
     dataToSendToPopUp.titleDialog = this.popupDuplicateTitre + ' ' + nodeType + ' "' + node.name + ' ' + this.popupDuplicateTitreTwo;
     dataToSendToPopUp.subTitleDialog =
-      node.sedaData.Element == SedaElementConstants.attribute
+      node.sedaData.Element === SedaElementConstants.attribute
         ? this.popupDuplicateSousTitreAttribut
         : this.popupDuplicateSousTitreMetadonnee;
     dataToSendToPopUp.fileNode = node;
@@ -579,7 +580,7 @@ export class FileTreeComponent implements OnDestroy {
     const elementToDuplicate = (await this.fileService.openPopup(dataToSendToPopUp)) as string;
     if (elementToDuplicate) {
       const duplicateTypeText =
-        node.sedaData.Element == SedaElementConstants.attribute ? this.popupDuplicateDeleteTypeTextM : this.popupDuplicateDeleteTypeTextF;
+        node.sedaData.Element === SedaElementConstants.attribute ? this.popupDuplicateDeleteTypeTextM : this.popupDuplicateDeleteTypeTextF;
       const addedItems: string[] = [];
       addedItems.push(elementToDuplicate);
       this.insertItem(node.parent, addedItems, node, true);
@@ -707,14 +708,17 @@ export class FileTreeComponent implements OnDestroy {
   calculateNodePosition(node: FileNode): string {
     // Root node name
     if (node.name === this.rootElementName) {
+      // tslint:disable-next-line:no-construct
       return new Number(28).toString();
     }
     // Root children with children
     if (node.children.length && node.name !== this.rootElementName) {
+      // tslint:disable-next-line:no-construct
       return new Number(this.findParentLevel(node) * 40 - 16).toString();
     }
     // Root children without children-
     if (!node.children.length && node.name !== this.rootElementName) {
+      // tslint:disable-next-line:no-construct
       return new Number(this.findParentLevel(node) * 40 - 13).toString();
     }
   }
@@ -740,7 +744,7 @@ export class FileTreeComponent implements OnDestroy {
   }
 
   addArchiveUnit(node: FileNode) {
-    if (node.name == 'DescriptiveMetadata' || node.name == 'ArchiveUnit') {
+    if (node.name === 'DescriptiveMetadata' || node.name === 'ArchiveUnit') {
       console.log('Clicked seda node : ', node.sedaData);
       this.insertItem(node, ['ArchiveUnit']);
       // Refresh the metadata tree and the metadatatable
@@ -754,7 +758,7 @@ export class FileTreeComponent implements OnDestroy {
       if (node.name === 'ManagementMetadata') {
         console.log(this);
       }
-      if (this.selectedItemList.id == node.id) {
+      if (this.selectedItemList.id === node.id) {
         return true;
       }
     }
@@ -762,7 +766,7 @@ export class FileTreeComponent implements OnDestroy {
   }
   expendChildren(node: FileNode) {
     if (this.fileTreeService.nestedTreeControl.isExpanded(node)) {
-      this.viewChild = this.viewChild.filter((e) => e.id != node.id);
+      this.viewChild = this.viewChild.filter((e) => e.id !== node.id);
       this.filterExpandedChildren(node, true);
       document.getElementById('child' + node.id).click();
       this.updateMedataTable(node);
@@ -776,15 +780,17 @@ export class FileTreeComponent implements OnDestroy {
   filterExpandedChildren(node: FileNode, isExpanded: boolean) {
     if (this.viewChild && this.viewChild.length > 0) {
       this.viewChild.forEach((e: FileNode) => {
-        const abstractFunctionCondition: Function = (isExpanded: boolean): boolean => {
+        // tslint:disable-next-line:no-shadowed-variable
+        const abstractFunctionCondition = (isExpanded: boolean): boolean => {
           return isExpanded
-            ? e.id != node.id && e.level >= node.level
-            : e.id != node.id && (e.level === node.level || (e.level > node.level && e.parentId != node.parentId));
+            ? e.id !== node.id && e.level >= node.level
+            : e.id !== node.id && (e.level === node.level || (e.level > node.level && e.parentId !== node.parentId));
         };
         if (abstractFunctionCondition(isExpanded)) {
           if (this.fileTreeService.nestedTreeControl.isExpanded(e)) {
             document.getElementById('child' + e.id).click();
           }
+          // tslint:disable-next-line:no-shadowed-variable
           this.viewChild = isExpanded ? this.viewChild.filter((e) => e.id === node.id) : this.viewChild.filter((e) => e.id !== node.id);
         }
       });

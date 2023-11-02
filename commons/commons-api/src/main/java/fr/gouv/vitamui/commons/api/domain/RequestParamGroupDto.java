@@ -5,28 +5,35 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * Request Param Group Dto.
  */
 @Getter
 @Setter
-@EqualsAndHashCode
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class RequestParamGroupDto implements Serializable {
 
+    /**
+     * aggregation fields list
+     */
     @NotNull
+    @NonNull
     private List<String> fields;
 
+    /**
+     * aggregation operator
+     */
     @NotNull
+    @NonNull
     private AggregationRequestOperator operator;
+
+    /**
+     * field on which we want the operator
+     */
+    private String fieldOperator;
 
 }

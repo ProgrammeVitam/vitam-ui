@@ -49,7 +49,7 @@ export class PastisApiService {
   baseUrl: string;
 
   constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    if (environment.apiServerUrl != undefined && environment.standalone) {
+    if (environment.apiServerUrl !== undefined && environment.standalone) {
       this.baseUrl = environment.apiServerUrl;
     } else {
       this.baseUrl = baseUrl;

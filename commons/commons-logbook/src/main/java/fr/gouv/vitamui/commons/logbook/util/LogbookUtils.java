@@ -43,6 +43,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -57,6 +58,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  *
@@ -108,20 +110,12 @@ public class LogbookUtils {
     }
 
     /**
-     * Extract the last event of a logbook operation response
+     * Extract the last event of a logbook operation
      *
-     * @param response Logbook operation response
+     * @param logbookOperation Logbook operation
      * @return the last event
      */
-    public static LogbookEventDto getLastEvent(final RequestResponse<LogbookOperation> response) throws JsonProcessingException {
-        final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper.treeToValue(response.toJsonNode(), LogbookOperationsResponseDto.class);
-        final LogbookOperationDto logbookOperation = logbookOperationsResponseDto.getResults()
-            .stream()
-            .findFirst()
-            .orElseThrow(() -> new ApplicationServerException(
-                String.format("No logbook returned in the following response : %s",
-                    response)));
-
+    public static LogbookEventDto getLastEvent(final LogbookOperationDto logbookOperation) {
         // Initialized with the first element by default
         LogbookEventDto lastLogbookEvent = logbookOperation;
         if (logbookOperation.getEvents() != null && !logbookOperation.getEvents()
@@ -131,6 +125,27 @@ public class LogbookUtils {
                     .size() - 1);
         }
         return lastLogbookEvent;
+    }
+
+    /**
+     * Get the status of a Vitam logbook operation
+     *
+     * @return the status of the last operation's event if the operation is completed, or STARTED if the operation is still running
+     */
+    public static StatusCode getLogbookOperationStatus(final RequestResponse<LogbookOperation> response) throws JsonProcessingException {
+        final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper.treeToValue(response.toJsonNode(), LogbookOperationsResponseDto.class);
+        final LogbookOperationDto logbookOperation = logbookOperationsResponseDto.getResults()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new ApplicationServerException(
+                        String.format("No logbook returned in the following response : %s", response)));
+
+        LogbookEventDto lastEvent = getLastEvent(logbookOperation);
+        if (Objects.nonNull(lastEvent) && Objects.nonNull(lastEvent.getEvType()) && lastEvent.getEvType().equals(logbookOperation.getEvType())) {
+            return StatusCode.valueOf(lastEvent.getOutcome());
+        } else {
+            return StatusCode.STARTED;
+        }
     }
 
     public static String getValue(final Object value) {

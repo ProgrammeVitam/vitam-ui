@@ -117,6 +117,12 @@ public class Pac4jClientBuilder {
                         saml2Config.setAuthnRequestBindingType(SAMLConstants.SAML2_POST_BINDING_URI);
                     }
 
+                    final Boolean authnRequestSigned = provider.getAuthnRequestSigned();
+                    saml2Config.setAuthnRequestSigned(authnRequestSigned != null ? authnRequestSigned : true);
+
+                    final Boolean wantsAssertionsSigned = provider.getWantsAssertionsSigned();
+                    saml2Config.setWantsAssertionsSigned(wantsAssertionsSigned != null ? wantsAssertionsSigned: true);
+
                     final SAML2Client saml2Client = new SAML2Client(saml2Config);
                     setCallbackUrl(saml2Client, technicalName);
 
@@ -158,15 +164,15 @@ public class Pac4jClientBuilder {
                 }
             }
         } catch (final TechnicalException e) {
-            final String message = e.getMessage();
+            final String message = e.getMessage() + " with provider identifier: " + provider.getIdentifier();
             if (message.contains("Error loading keystore")) {
-                throw new InvalidFormatException(e.getMessage(), ErrorsConstants.ERRORS_VALID_KEYSPWD);
+                throw new InvalidFormatException(message, ErrorsConstants.ERRORS_VALID_KEYSPWD);
             } else if (message.contains("Can't obtain SP private key")) {
-                throw new InvalidFormatException(e.getMessage(), ErrorsConstants.ERRORS_VALID_PRIVATE_KEYSPWD);
+                throw new InvalidFormatException(message, ErrorsConstants.ERRORS_VALID_PRIVATE_KEYSPWD);
             } else if (message.equals("Error parsing idp Metadata")) {
-                throw new InvalidFormatException(e.getMessage(), ErrorsConstants.ERRORS_VALID_IDP_METADATA);
+                throw new InvalidFormatException(message, ErrorsConstants.ERRORS_VALID_IDP_METADATA);
             }
-            LOGGER.error("Cannot build pac4j client", e);
+            LOGGER.error("Cannot build pac4j client with provider identifier: " + provider.getIdentifier(), e);
         }
         return Optional.empty();
     }

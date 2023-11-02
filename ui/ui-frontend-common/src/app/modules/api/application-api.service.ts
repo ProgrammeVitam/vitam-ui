@@ -37,6 +37,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { BASE_URL } from '../injection-tokens';
 import { AppConfiguration, ApplicationInfo, AttachmentType } from '../models';
@@ -53,7 +54,7 @@ export class ApplicationApiService {
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<ApplicationInfo> {
-    return this.http.get<ApplicationInfo>(this.apiUrl, { params, headers });
+    return this.http.get<ApplicationInfo>(`${this.apiUrl}/filtered`, { params, headers });
   }
 
   isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
@@ -68,4 +69,21 @@ export class ApplicationApiService {
     return this.http.get<AppConfiguration>(`${this.apiUrl}/asset?assets=${assets}`);
   }
 
+  getLocalAsset(fileName: string): Observable<string> {
+    return this.http.get(`assets/${fileName}`, { responseType: 'blob' }).pipe(
+      switchMap((blob: Blob) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        return new Observable<string>((observer) => {
+          reader.onloadend = () => {
+            observer.next(reader.result as string);
+            observer.complete();
+          };
+        });
+      }),
+      map((dataUrl: string) => {
+        return dataUrl.split(',')[1];
+      })
+    );
+  }
 }

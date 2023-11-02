@@ -1,4 +1,8 @@
-<div class="vitamui-autocomplete" [class.disabled]="control.disabled" [class.label-up]="labelUp">
+<div class="vitamui-autocomplete" [class.disabled]="control.disabled" [class.label-up]="labelUp"
+  vitamuiCommonToolTipClass="text-pre-line"
+  vitamuiCommonToolTip="{{ this.autocompleteLabel }}"
+  vitamuiCommonToolTipPosition="BOTTOM"
+  vitamuiCommonToolTipShowDelay="300">
   <label class="input-label">
     {{placeholder}}
     <span *ngIf="required" class="required-marker">*</span>
@@ -20,9 +24,12 @@
 </div>
 
 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn(options)" autoActiveFirstOption (optionSelected)="selectionChange($event)" class="vitamui-autocomplete-panel">
-  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.key">
-    <span class="vitamui-option-label">{{ option.label }}</span> <i class="material-icons" *ngIf="option.info" [matTooltip]="option.info" matTooltipClass="vitamui-tooltip">info_outline</i>
-  </mat-option>
+  <ng-container *ngFor="let option of filteredOptions | async">
+      <mat-option [value]="option.key">
+        <span vitamuiCommonEllipsis [isToolTipOnMouseEnter]="true">{{ option.label }}</span>
+        <i class="material-icons" *ngIf="option.info" [matTooltip]="option.info" matTooltipClass="vitamui-tooltip">info_outline</i>
+      </mat-option>
+  </ng-container>
 </mat-autocomplete>
 
 <div class="vitamui-input-errors">
