@@ -77,9 +77,8 @@ public class ApplicationController extends AbstractUiRestController {
      * @return Map
      */
     @ApiOperation(value = "Return config about applications and categories")
-    @RequestMapping(method = RequestMethod.GET)
-    public Map<String, Object> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    @GetMapping("/filtered")
+    public Map<String, Object> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp) throws InvalidParseOperationException {
         LOGGER.debug("getApplications");
         return service.getApplications(buildUiHttpContext(), filterApp);
     }

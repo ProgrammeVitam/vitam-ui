@@ -55,6 +55,7 @@ export const EDITABLE_FILE_VALUE_ACCESSOR: any = {
 export class EditableFileComponent extends EditableFieldComponent {
 
   @Input() accept: string;
+  @Input() customId = 'vitamui-input-file';
   file: File;
 
   @ViewChild('fileInput') fileInput: ElementRef;

@@ -91,7 +91,7 @@
           "IMPOSSIBLE_SUBROGATION": "La subrogation pour cet utilisateur est momentanément impossible",
           "DENIED_SUBROGATION": "Votre demande de subrogation a été refusée",
           "CANCEL_SUBROGATION": "Votre demande de subrogation a bien été annulée",
-          "ACTIVE_SUBROGATION": "Vous avez déjà une subrogation en cours avec l'utilisateur",
+          "ACTIVE_SUBROGATION": "Vous avez déjà une subrogation en cours avec l'utilisateur : {{ email }}",
           "WAITING_ACCEPTATION": "Attente de l'acceptation de l'utilisateur",
           "ACCEPT_SUBROGATION": "Afin de vous aider le support dispose pour les prochaines 30 minutes des mêmes droits que vous",
           "ASK_SUBROGATION": "Vous avez demandé à subroger l'utilisateur"
@@ -257,6 +257,10 @@
       "NAME": "Salles d'archives",
       "TOOLTIP": "Gestion des archives physiques"
     },
+    "ARCHIVE_ROOM_PROFILE_APP": {
+      "NAME": "Profils APP Salle d'archives",
+      "TOOLTIP": "Paramétrer des profils d’accès pour l’APP Salle d’archives"
+    },
     "BARCODES_APP": {
       "NAME": "Etiquettes",
       "TOOLTIP": "Gestion des etiquettes"
@@ -275,7 +279,7 @@
     },
     "ITEM_SUPERVISION_PROFILE_APP": {
       "NAME": "Profils APP Supervision des bordereaux",
-      "TOOLTIP": "Paramétrer des profils de supervision pour l’APP de supervision des bordereaux"
+      "TOOLTIP": "Paramétrer des profils de supervision pour l'APP de supervision des bordereaux"
     },
     "ARCHIVE_SEARCH_MANAGEMENT_APP": {
       "NAME": "Recherche, consultation et gestion des archives",
@@ -338,6 +342,10 @@
       "NAME": "Suivi des versements",
       "TOOLTIP": "Suivi des versements"
     },
+    "ARCHIVAL_PROFILE_APP": {
+      "NAME": "Profils d'archivage et d'unités archivistiques",
+      "TOOLTIP": "Visualiser et importer des profils d'archivage et d'unités archivistiques"
+    },
     "MANAGEMENT_CONTRACT_APP": {
       "NAME": "Contrats de gestion",
       "TITLE": "Référentiel des contrats de gestion",
@@ -378,7 +386,8 @@
     "ingest_and_consultation": "Versement & consultation",
     "supervision_and_audits": "Supervision & Audits",
     "security_and_application_rights": "Sécurité & droits applicatifs",
-    "organization_and_user_rights": "Organisation & droits utilisateurs"
+    "organization_and_user_rights": "Organisation & droits utilisateurs",
+    "USER_ALERTS": "Mes actions"
   },
   "MENU_APPLICATION_TILE": {
     "ENTER_APPLICATION": "Entrée pour lancer l'application"
@@ -431,15 +440,15 @@
     "CANCELLED": "Téléchargement annulé",
     "CANCEL_ACTION": "Annuler le téléchargement",
     "CONFIRM_CANCEL_ACTION": "Êtes-vous sûr de vouloir annuler le téléchargement du fichier ?",
-    "FILE_COMPRESSION": {
-      "SINGULAR": "Compression du fichier : 1 élément",
-      "PLURAL": "Compression du fichier : {{ count }} éléments"
+    "FILE_PREPARATION": {
+      "SINGULAR": "Préparation du téléchargement : 1 élément",
+      "PLURAL": "Préparation du téléchargement : {{ count }} éléments"
     },
-    "FILE_COMPRESSION_TOTAL": {
+    "FILE_PREPARATION_TOTAL": {
       "SINGULAR": "sur {{ total }} (1 élément non téléchargeable)",
       "PLURAL": "sur {{ total }} ({{ count }} éléments non téléchargeables)"
     },
-    "FILE_GENERATION": "Génération du fichier"
+    "FILE_TRANSFER": "Transfert en cours"
   },
   "EDITABLE_SELECT": {
     "CONFIM_UPDATE": "Êtes-vous sûr de vouloir effectuer cette modification ?"
@@ -454,6 +463,47 @@
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Défaut)"
+  },
+  "USER_ALERTS_CARD": {
+    "APPLICATION": "Application",
+    "DETAIL": "Détails",
+    "OPEN": "Réaliser la tâche"
+  },
+  "USER_ALERTS": {
+    "KEYS": {
+      "ACCESS_ITEM": "Communication",
+      "DISPOSAL_ITEM": "Elimination",
+      "REMOVAL_ITEM": "Enlèvement",
+      "STORAGE_ITEM": "Entreposage",
+      "INDEX_ITEM": "Indexation",
+      "TRANSFER_ITEM": "Transfert"
+    },
+    "ACTIONS": {
+      "INDEX_ITEM_PREPARATION": "ajout des documents",
+      "DOCUMENTS_INDEXATION": "indexation",
+      "PHYSICAL_SIGNIFICATIVE_INDEXATION": "indexation",
+      "DOCUMENTS_SIGNIFICATIVE_INDEXATION": "indexation",
+      "PHYSICAL_BANALISE_INDEXATION": "indexation",
+      "DOCUMENTS_BANALISE_INDEXATION": "indexation",
+      "PROCESS_TRANSFER_REQUEST": "acceptation de la demande",
+      "RECEIPT_CONFIRMATION": "confirmation de la réception",
+      "STORAGE_AFFECTATION": "affectation",
+      "REMOVAL_AFFECTATION": "affectation",
+      "VALIDATION": "validation",
+      "ITEM_SIGNATURE": "signature",
+      "DISPOSAL": "élimination",
+      "ITEM_CONSOLIDATION": "validation des archives",
+      "DOCUMENTS_IMPORT": "import des documents",
+      "CONTROL": "contrôle",
+      "AFFECTATION": "affectation",
+      "TRANSFER_REQUEST_VALIDATION": "acceptation de la demande",
+      "DISPOSAL_CONFIRMATION": "validation des archives consolidées",
+      "PHYSICAL_DOCUMENTS_INDEXATION": "indexation"
+    },
+    "STATUS": {
+      "BLOCKED": "à faire"
+    },
+    "SEE_MORE": "Voir plus"
   },
   "SNACKBAR": {
     "UPDATED_ACCOUNT": "Les informations ont été mises à jour",
@@ -519,7 +569,6 @@
     "AUDIT_CHECK_OBJECT.STARTED.OK": "Succès du début de l'audit de la vérification des objets",
     "AUDIT_CHECK_OBJECT.STARTED": "Début de l'audit de la vérification des objets",
     "AUDIT_CHECK_OBJECT.WARNING": "Avertissement lors de l'audit de la vérification des objets",
-    "AUDIT_CHECK_OBJECT": "Audit de la vérification des objets",
     "BACKUP_AGENCIES.FATAL": "Erreur technique lors du processus de sauvegarde du référentiel des services agents",
     "BACKUP_AGENCIES.KO": "Échec du processus de sauvegarde du référentiel des services agents",
     "BACKUP_AGENCIES.OK": "Succès du processus de sauvegarde du référentiel des services agents",
@@ -549,7 +598,6 @@
     "BACKUP_PROFILE": "Processus de sauvegarde des profils d'archivage",
     "BUILD_OG_LFC_TRACEABILITY.FATAL": "Erreur technique lors de la sécurisation des journaux du cycle de vie des groupes d'objets",
     "BUILD_OG_LFC_TRACEABILITY.KO": "Échec de la sécurisation des journaux du cycle de vie des groupes d'objets",
-    "BUILD_OG_LFC_TRACEABILITY.OK": "Succès de la sécurisation des journaux du cycle de vie des groupes d'objets",
     "BUILD_OG_LFC_TRACEABILITY.STARTED.OK": "Succès du début de la sécurisation des journaux du cycle de vie des groupes d'objets",
     "BUILD_OG_LFC_TRACEABILITY.STARTED": "Début de la sécurisation des journaux du cycle de vie des groupes d'objets",
     "BUILD_OG_LFC_TRACEABILITY.WARNING": "Avertissement lors de la sécurisation des journaux du cycle de vie des groupes d'objets",

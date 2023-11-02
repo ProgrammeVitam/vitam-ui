@@ -801,7 +801,7 @@ db.services.updateOne(
     { "_id" :  NumberInt(4) },
     {
         "$set" : {
-            "_class": "org.apereo.cas.services.RegexRegisteredService",
+            "_class": "org.apereo.cas.services.CasRegisteredService",
 {% if vitamui.referential.base_url is defined %}
         	"serviceId": "^{{ vitamui.referential.base_url }}/.*",
 {% else %}

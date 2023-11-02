@@ -108,15 +108,16 @@ cas.ticket.tst.time-to-kill-in-seconds: 86400
 cas.authn.pm.core.enabled: true
 
 {% if vitamui_password_configurations.anssiPolicyPattern is defined and vitamui_password_configurations.password.profile == "anssi"  %}
-cas.authn.pm.core.policy-pattern: '{{ vitamui_password_configurations.anssiPolicyPattern | replace("'","''") }}'
+cas.authn.pm.core.password-policy-pattern: '{{ vitamui_password_configurations.anssiPolicyPattern | replace("'","''") }}'
 {% else %}
-cas.authn.pm.core.policy-pattern: '{{ vitamui_password_configurations.customPolicyPattern | replace("'","''") }}'
+cas.authn.pm.core.password-policy-pattern: '{{ vitamui_password_configurations.customPolicyPattern | replace("'","''") }}'
 {% endif %}
 
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
 cas.authn.pm.reset.mail.from: {{ smtp.cas.sender }}
-cas.authn.pm.reset.expiration-minutes: {{ smtp.cas.expiration }}
+cas.authn.pm.reset.expiration: PT{{ smtp.cas.expiration }}M
+cas.authn.pm.reset.number-of-uses: 2
 cas.authn.pm.reset.mail.attribute-name: email
 cas.authn.pm.reset.security-questions-enabled: false
 cas.authn.pm.reset.include-server-ip-address: false
@@ -164,8 +165,7 @@ management.metrics.export.prometheus.enabled: true
 
 {% if sms.enabled|lower == "true" %}
 # for SMS:
-cas.sms-provider.twilio.account-id: {{ sms.account }}
-cas.sms-provider.twilio.token: {{ sms.token }}
+cas.sms-provider.sms-mode.access-token: {{ sms.token }}
 mfa.sms.sender: "{{ sms.sender }}"
 {% endif %}
 
@@ -183,6 +183,8 @@ ip.header: X-Real-IP
 # the old api.token.ttl property
 cas.authn.oauth.access-token.max-time-to-live-in-seconds: 28800
 
+cas.authn.oidc.core.issuer: ${cas.server.prefix}/oidc
+cas.authn.oidc.jwks.file-system.jwks-file: "file:{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/{{ vitamui_struct.vitamui_component }}/keystore.jwks"
 
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}

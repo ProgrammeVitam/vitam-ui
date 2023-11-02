@@ -3,6 +3,7 @@ import { DataGeneriquePopupService } from '../data-generique-popup.service';
 import { PastisPopupSelectionService } from './pastis-popup-selection.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-generic-popup',
   templateUrl: './pastis-generic-popup.component.html',
   styleUrls: [ './pastis-generic-popup.component.scss' ]
@@ -30,16 +31,16 @@ export class PastisGenericPopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataGeneriquePopupService.currentDonnee.subscribe(donnees => this.donnees = donnees);
-    if (this.firstChoice == null && this.firstChoice == '') {
+    if (this.firstChoice == null && this.firstChoice === '') {
       this.firstChoice = this.donnees[0];
     }
-    if (typeof (this.firstChoice) == 'undefined' && this.firstChoice == null) {
+    if (typeof (this.firstChoice) === 'undefined' && this.firstChoice == null) {
       this.firstChoice = this.donnees[0];
     }
-    if (typeof (this.secondChoice) == 'undefined' && this.secondChoice == null) {
+    if (typeof (this.secondChoice) === 'undefined' && this.secondChoice == null) {
       this.secondChoice = this.donnees[1];
     }
-    if (typeof (this.title) == 'undefined' && this.title == null) {
+    if (typeof (this.title) === 'undefined' && this.title == null) {
       this.title = this.donnees[2];
     }
     this.status = true;
@@ -47,8 +48,8 @@ export class PastisGenericPopupComponent implements OnInit {
   }
 
   changeStatus(value: string): void {
-    if ((this.status && value != this.firstChoice)
-      || (!this.status && value != this.secondChoice)) {
+    if ((this.status && value !== this.firstChoice)
+      || (!this.status && value !== this.secondChoice)) {
       this.status = !this.status;
       this.pastisPopupSelectionService.value = value;
     }

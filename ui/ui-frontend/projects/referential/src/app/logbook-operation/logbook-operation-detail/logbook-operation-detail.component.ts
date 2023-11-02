@@ -127,7 +127,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
       this.accessContractId = accessContratId;
       this.hasAccessContractId = true;
     } else {
-      this.snackBar.open($localize`:contrat d'accès non défini: Aucun contrat d'accès n'est associé à l'utiisateur`, null, {
+      this.snackBar.open($localize`:contrat d'accès non défini: Aucun contrat d'accès n'est associé à l'utilisateur`, null, {
         panelClass: 'vitamui-snack-bar',
         duration: 10000,
       });
@@ -146,7 +146,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     if (this.doesNotHaveTenant()) {
       return;
     }
-    this.logbookDownloadService.launchDownloadReport(this.event, this.tenantIdentifier, this.accessContractId);
+    this.logbookDownloadService.launchDownloadReport(this.event, this.accessContractId);
   }
 
   private updateDownloadButton() {

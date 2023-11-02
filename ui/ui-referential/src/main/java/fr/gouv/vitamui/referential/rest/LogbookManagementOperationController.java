@@ -75,9 +75,9 @@ public class LogbookManagementOperationController extends AbstractUiRestControll
         SanityChecker.sanitizeCriteria(processQuery);
         LOGGER.debug("Get the operations details with criteria = {}", processQuery);
         VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
-        ResponseEntity<ProcessDetailDto> processDetailResponse = logbookManagementOperationService.searchOperationsDetails(buildUiHttpContext(), processQuery);
+        ResponseEntity<VitamUIProcessDetailResponseDto> processDetailResponse = logbookManagementOperationService.searchOperationsDetails(buildUiHttpContext(), processQuery);
         if (processDetailResponse != null) {
-            operationResponseDto = processDetailResponse.getBody().getOperations();
+            operationResponseDto = processDetailResponse.getBody();
         }
         return operationResponseDto;
     }
@@ -92,7 +92,7 @@ public class LogbookManagementOperationController extends AbstractUiRestControll
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("Cancel the operation id= {}", operationId);
         return logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId) != null
-            ? logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId).getBody().getOperations()
+            ? logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId).getBody()
             : null;
 
     }
@@ -107,7 +107,7 @@ public class LogbookManagementOperationController extends AbstractUiRestControll
         SanityChecker.checkSecureParameter(operationId, actionId);
         LOGGER.debug("Update Operation Id={} with ActionId = {}", operationId, actionId);
         return logbookManagementOperationService.updateOperationActionProcess(buildUiHttpContext(), actionId, operationId) != null
-            ? logbookManagementOperationService.updateOperationActionProcess(buildUiHttpContext(), actionId, operationId).getBody().getOperations() :
+            ? logbookManagementOperationService.updateOperationActionProcess(buildUiHttpContext(), actionId, operationId).getBody() :
             null;
 
     }

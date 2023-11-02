@@ -39,11 +39,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 
-import {SecurisationService} from '../securisation.service';
-import {SecurisationPreviewComponent} from './securisation-preview.component';
-import { ExternalParametersService } from 'ui-frontend-common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ExternalParametersService } from 'ui-frontend-common';
+import {SecurisationService} from '../securisation.service';
+import {SecurisationPreviewComponent} from './securisation-preview.component';
 
 
 @Pipe({name: 'truncate'})

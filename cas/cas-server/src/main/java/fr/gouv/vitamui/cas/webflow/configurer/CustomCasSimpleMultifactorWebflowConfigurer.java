@@ -56,14 +56,17 @@ import java.util.Optional;
  */
 public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMultifactorWebflowConfigurer {
 
+    /**
+     * Webflow event id.
+     */
     public static final String MFA_SIMPLE_EVENT_ID = "mfa-simple";
 
     public CustomCasSimpleMultifactorWebflowConfigurer(final FlowBuilderServices flowBuilderServices,
-                                                       final FlowDefinitionRegistry loginFlowDefinitionRegistry,
-                                                       final FlowDefinitionRegistry flowDefinitionRegistry,
-                                                       final ConfigurableApplicationContext applicationContext,
-                                                       final CasConfigurationProperties casProperties,
-                                                       final List<CasMultifactorWebflowCustomizer> mfaFlowCustomizers) {
+                                                 final FlowDefinitionRegistry loginFlowDefinitionRegistry,
+                                                 final FlowDefinitionRegistry flowDefinitionRegistry,
+                                                 final ConfigurableApplicationContext applicationContext,
+                                                 final CasConfigurationProperties casProperties,
+                                                 final List<CasMultifactorWebflowCustomizer> mfaFlowCustomizers) {
         super(flowBuilderServices, loginFlowDefinitionRegistry, applicationContext,
             casProperties, Optional.of(flowDefinitionRegistry), mfaFlowCustomizers);
     }
@@ -77,13 +80,13 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
 
             val initLoginFormState = createActionState(flow, CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM,
                 createEvaluateAction(CasWebflowConstants.ACTION_ID_INIT_LOGIN_ACTION));
-            createTransitionForState(initLoginFormState, CasWebflowConstants.TRANSITION_ID_SUCCESS, "sendSimpleToken");
+            createTransitionForState(initLoginFormState, CasWebflowConstants.TRANSITION_ID_SUCCESS,
+                CasWebflowConstants.STATE_ID_SIMPLE_MFA_SEND_TOKEN);
             setStartState(flow, initLoginFormState);
             createEndState(flow, CasWebflowConstants.STATE_ID_SUCCESS);
             createEndState(flow, CasWebflowConstants.STATE_ID_UNAVAILABLE);
 
-            val sendSimpleToken = createActionState(flow, "sendSimpleToken",
-                createEvaluateAction("mfaSimpleMultifactorSendTokenAction"));
+            val sendSimpleToken = createActionState(flow, CasWebflowConstants.STATE_ID_SIMPLE_MFA_SEND_TOKEN, CasWebflowConstants.ACTION_ID_MFA_SIMPLE_SEND_TOKEN);
             createTransitionForState(sendSimpleToken, CasWebflowConstants.TRANSITION_ID_ERROR, CasWebflowConstants.STATE_ID_UNAVAILABLE);
             createTransitionForState(sendSimpleToken, CasWebflowConstants.TRANSITION_ID_SUCCESS, CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM);
             // CUSTO:
@@ -102,7 +105,9 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             // CUSTO: instead of CasWebflowConstants.STATE_ID_REAL_SUBMIT, send to intermediateSubmit
             createTransitionForState(viewLoginFormState, CasWebflowConstants.TRANSITION_ID_SUBMIT,
                 "intermediateSubmit", Map.of("bind", Boolean.TRUE, "validate", Boolean.TRUE));
-            createTransitionForState(viewLoginFormState, CasWebflowConstants.TRANSITION_ID_RESEND, "sendSimpleToken",
+
+            createTransitionForState(viewLoginFormState, CasWebflowConstants.TRANSITION_ID_RESEND,
+                CasWebflowConstants.STATE_ID_SIMPLE_MFA_SEND_TOKEN,
                 Map.of("bind", Boolean.FALSE, "validate", Boolean.FALSE));
 
             // CUSTO:
@@ -110,7 +115,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             createTransitionForState(intermediateSubmit, CasWebflowConstants.TRANSITION_ID_SUCCESS, CasWebflowConstants.STATE_ID_REAL_SUBMIT);
             createTransitionForState(intermediateSubmit, CasWebflowConstants.TRANSITION_ID_ERROR, "codeExpired");
             val codeExpired = createViewState(flow, "codeExpired", "casSmsCodeExpiredView");
-            createTransitionForState(codeExpired, "resend", CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
+            createTransitionForState(codeExpired, CasWebflowConstants.TRANSITION_ID_RESEND, CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
             //
 
             val realSubmitState = createActionState(flow, CasWebflowConstants.STATE_ID_REAL_SUBMIT,

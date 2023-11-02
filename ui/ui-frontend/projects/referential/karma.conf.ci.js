@@ -1,14 +1,14 @@
-var baseConfig = require('../../karma.conf.ci.js');
+const baseConfig = require('../../karma.conf.ci.js');
 
 module.exports = function(config){
     // Load base config
-    baseConfig(config);
+      baseConfig(config);
 
-    // Override base config dir
-    config.set({
-        coverageIstanbulReporter: {
-            dir: 'target/coverage/referential',
-            fixWebpackSourcePaths: true
-        }
+      // Override base config dir
+        config.set({
+              coverageIstanbulReporter: {
+              dir: 'target/coverage/referential',
+                fixWebpackSourcePaths: true
+          }
     });
 };

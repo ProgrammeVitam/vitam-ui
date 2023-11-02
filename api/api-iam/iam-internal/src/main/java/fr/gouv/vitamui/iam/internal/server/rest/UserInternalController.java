@@ -189,10 +189,8 @@ public class UserInternalController implements CrudController<UserDto> {
         return internalUserService.patch(partialDto);
     }
 
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for users with id :{}", id);

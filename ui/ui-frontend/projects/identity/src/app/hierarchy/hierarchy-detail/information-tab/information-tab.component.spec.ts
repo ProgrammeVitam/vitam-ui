@@ -38,7 +38,8 @@
 
 import { Component, Directive, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
+import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR,
+  ReactiveFormsModule, Validator } from '@angular/forms';
 import { of, Subject } from 'rxjs';
 
 import { AuthService, Profile } from 'ui-frontend-common';
@@ -48,6 +49,7 @@ import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
 import { InformationTabComponent } from './information-tab.component';
 
+// tslint:disable-next-line:directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;

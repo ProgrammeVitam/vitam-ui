@@ -67,7 +67,7 @@ export class FileFormatInformationTabComponent {
   private _fileFormat: FileFormat;
 
   previousValue = (): FileFormat => {
-    var cleanedFileFortmat = this._fileFormat;
+    const cleanedFileFortmat = this._fileFormat;
     if (!cleanedFileFortmat.mimeType) {
       cleanedFileFortmat.mimeType = null;
     }

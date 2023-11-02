@@ -35,17 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import {
-  AccessContract,
-  collapseAnimation,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  rotateAnimation,
-} from 'ui-frontend-common';
+import {  merge, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { AccessContract,collapseAnimation, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, rotateAnimation ,} from 'ui-frontend-common';
+
 import { AccessContractService } from '../access-contract.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -80,6 +73,8 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 
+  private readonly destroyer$ = new Subject();
+
   constructor(public accessContractService: AccessContractService) {
     super(accessContractService);
   }
@@ -101,6 +96,18 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
 
       this.search(pageRequest);
+    });
+    this.replaceUpdatedAccessContract();
+  }
+
+  private replaceUpdatedAccessContract() {
+    this.accessContractService.updated.pipe(takeUntil(this.destroyer$)).subscribe({
+      next: (updatedAccessContract: AccessContract) => {
+        const index = this.dataSource.findIndex((item: AccessContract) => item.id === updatedAccessContract.id);
+        if (index !== -1) {
+          this.dataSource[index] = updatedAccessContract;
+        }
+      },
     });
   }
 
@@ -133,5 +140,7 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
 
   ngOnDestroy() {
     this.updatedData.unsubscribe();
+    this.destroyer$.next();
+    this.destroyer$.complete();
   }
 }

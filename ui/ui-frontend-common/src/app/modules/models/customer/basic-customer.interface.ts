@@ -41,6 +41,7 @@ export interface BasicCustomer {
     id: string;
     identifier: string;
     name: string;
+    code: string;
     companyName: string;
     portalTitles: {[language: string]: string};
     portalMessages: {[language: string]: string};

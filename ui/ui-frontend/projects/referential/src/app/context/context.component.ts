@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { ApplicationService, Context, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { ApplicationService, Context,GlobalEventService, SidenavPage } from 'ui-frontend-common';
+
 import { ContextCreateComponent } from './context-create/context-create.component';
 import { ContextListComponent } from './context-list/context-list.component';
 
@@ -50,12 +51,14 @@ import { ContextListComponent } from './context-list/context-list.component';
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
   search = '';
   isSlaveMode: boolean;
+  tenantIdentifier: string;
 
   @ViewChild(ContextListComponent, { static: true }) contextListComponent: ContextListComponent;
 
   constructor(
     public dialog: MatDialog,
-    route: ActivatedRoute,
+    public route: ActivatedRoute,
+    private router: Router,
     globalEventService: GlobalEventService,
     private applicationService: ApplicationService
   ) {
@@ -94,6 +97,13 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
 
   ngOnInit() {
     this.updateSlaveMode();
+    this.route.params.subscribe((params) => {
+      this.tenantIdentifier = params.tenantIdentifier;
+    });
+  }
+
+  changeTenant(tenantIdentifier: number) {
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
   showContext(item: Context) {

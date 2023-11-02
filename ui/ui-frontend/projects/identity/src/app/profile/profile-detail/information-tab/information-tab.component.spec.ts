@@ -46,6 +46,7 @@ import { ProfileService } from '../../profile.service';
 import { ProfileValidators } from '../../profile.validators';
 import { InformationTabComponent } from './information-tab.component';
 
+// tslint:disable-next-line:directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;

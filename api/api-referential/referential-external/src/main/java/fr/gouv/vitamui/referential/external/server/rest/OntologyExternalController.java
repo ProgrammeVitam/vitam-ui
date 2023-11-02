@@ -50,6 +50,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.OntologyExternalService;
@@ -109,6 +110,7 @@ public class OntologyExternalController {
     public PaginatedValuesDto<OntologyDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
             @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        orderBy.ifPresent(SanityChecker::checkSecureParameter);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
         return ontologyExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
@@ -137,7 +139,9 @@ public class OntologyExternalController {
     @Secured(ServicesData.ROLE_UPDATE_AGENCIES)
     public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException {
-
+        LOGGER.debug("Patch {} with {}", id, partialDto);
+        SanityChecker.sanitizeCriteria(partialDto);
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
@@ -155,9 +159,10 @@ public class OntologyExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)  throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for ontology with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for ontology with id :{}", id);
@@ -176,21 +181,19 @@ public class OntologyExternalController {
 
     /***
      * Import ontology from a json file
-     * @param fileName the file name
      * @param file the agency csv file to import
      * @return the vitam response
      */
     @Secured(ServicesData.ROLE_IMPORT_ONTOLOGIES)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+    public JsonNode importFileFormats(@RequestParam("file") MultipartFile file) {
         if(file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
             SanityChecker.isValidFileName(file.getOriginalFilename());
         }
-        SanityChecker.isValidFileName(fileName);
-        SafeFileChecker.checkSafeFilePath(fileName);
-        LOGGER.debug("Import ontology file {}", fileName);
-        return ontologyExternalService.importOntologies(fileName, file);
+
+        LOGGER.debug("Import ontology file {}", file.getOriginalFilename());
+        return ontologyExternalService.importOntologies(file.getOriginalFilename(), file);
     }
 
     @GetMapping(CommonConstants.INTERNAL_ONTOLOGY_LIST)

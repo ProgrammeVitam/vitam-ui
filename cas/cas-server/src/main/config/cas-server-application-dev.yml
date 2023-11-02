@@ -9,17 +9,30 @@ spring:
 
 server:
   ssl:
+    #client-auth: want
     key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_cas-server.jks
     key-store-password: changeme
     key-password: changeme
     enabled-protocols: TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
-
+    #trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    #trust-store-password: changeme
   host: dev.vitamui.com
   port: 8080
   servlet:
     context-path: /cas
 
+# Authent with x509 certificate :
+#cas.authn.x509.sslHeaderName: x-ssl-cert
+#vitamui.authn.x509.enabled: true
+#vitamui.authn.x509.mandatory: false
+#vitamui.authn.x509.emailAttribute: 'SUBJECT_ALTERNATE_NAME'
+#vitamui.authn.x509.emailAttributeParsing: '.*RFC822Name=(.*)'
+#vitamui.authn.x509.emailAttributeExpansion:
+#vitamui.authn.x509.identifierAttribute: 'subject_dn'
+#vitamui.authn.x509.identifierAttributeParsing: '.*, OID.2.16.840.1.113730.3.1.3=(.*), C=.*'
+#vitamui.authn.x509.identifierAttributeExpansion:
+#vitamui.authn.x509.defaultDomain: 'domain.com'
 
 management:
   server:
@@ -57,6 +70,14 @@ cas.tgc.secure: true
 cas.tgc.crypto.enabled: false
 cas.webflow.crypto.enabled: true
 cas.authn.pm.reset.crypto.enabled: true
+cas.webflow.crypto.signing.key: =oebPIRe18A0cAeBdZCHkVlLPa_Kbthxo70iRpAhbk84dQGQj_8AOEMvEg3y7GAKYxtpF5nn6nx7vj5iU-eHStg
+cas.webflow.crypto.encryption.key: 3FzNquczUjhmeJyqu251Ow
+cas.authn.pm.reset.crypto.encryption.key: w7ZxSCZsGix3Xl6pFg-1viJIeFIWdrwEjxUvDyyVCM8
+cas.authn.pm.reset.crypto.signing.key: TIUaCcEAjUW_HV-1hJRrcVobZ3CCEwJC8u60vPH2nspslA3TkRFjAsceEUugp9mb6rGQiFj1IY2HJuf3FmXM5w
+cas.authn.oauth.crypto.encryption.key: 0mfCTGphgW6sLEG2xsmnb-dzQZ-9wQfjOWDrXdUg4lg
+cas.authn.oauth.crypto.signing.key: kSs5OT5bTV6E9Ba0biGZ3taVlmlBFmoMyvG4JB0pSiZJml3CqyfHlexueJAv2BT4YG9gQ1IP_hvu1leejdFzng
+cas.authn.oauth.access-token.crypto.encryption.key: RGAYHpTTKJ-YMbh7Yrt3Xd6VQH_myXYISwThfo-9OKI
+cas.authn.oauth.access-token.crypto.signing.key: j8AZtUo6i4BI2n3bu2Elr9d3aIOL35vec0AjUBubP6rgj5arKWB9lRcWq9bjxGIwoAbFv-1MRmiScXlIIX0BGg
 
 cas.server.prefix: https://dev.vitamui.com:8080/cas
 login.url: ${cas.server.prefix}/login
@@ -73,7 +94,7 @@ cas.service-registry.mongo.collection: services
 
 
 cas.authn.surrogate.separator: ","
-cas.authn.surrogate.sms.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
+cas.authn.surrogate.mail.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnEmail
 
 
 # 24 hours cache for login delegation
@@ -82,12 +103,13 @@ cas.ticket.tst.time-to-kill-in-seconds: 86400
 
 
 cas.authn.pm.core.enabled: true
-cas.authn.pm.core.policy-pattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
+cas.authn.pm.core.password-policy-pattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
 cas.authn.pm.reset.mail.from: serveur-cas@noreply.com
 # 1 Day : 24 * 60 Minutes to reset password
-cas.authn.pm.reset.expiration-minutes: 1440
+cas.authn.pm.reset.expiration: PT1440M
+cas.authn.pm.reset.number-of-uses: 2
 cas.authn.pm.reset.mail.attribute-name: email
 cas.authn.pm.reset.security-questions-enabled: false
 cas.authn.pm.reset.include-server-ip-address: false
@@ -95,10 +117,10 @@ cas.authn.pm.core.auto-login: true
 
 
 cas.authn.mfa.simple.sms.from: 'changeme'
-cas.authn.mfa.simple.sms.text: 'Code : %s'
+cas.authn.mfa.simple.sms.text: 'Code : ${tokenWithoutPrefix}'
 cas.authn.mfa.simple.sms.attribute-name: mobile
-cas.authn.mfa.simple.time-to-kill-in-seconds: 3600
-cas.authn.mfa.simple.token-length: 4
+cas.authn.mfa.simple.token.core.time-to-kill-in-seconds: 3600
+cas.authn.mfa.simple.token.core.token-length: 4
 cas.authn.mfa.triggers.principal.global-principal-attribute-name-triggers: computedOtp
 cas.authn.mfa.triggers.principal.global-principal-attribute-value-regex: 'true'
 cas.authn.mfa.simple.mail.text: xxx
@@ -129,8 +151,8 @@ cas.monitor.endpoints.endpoint.defaults.access[0]: PERMIT
 
 
 # for SMS:
-cas.sms-provider.twilio.account-id: changeme
-cas.sms-provider.twilio.token: changeme
+cas.sms-provider.sms-mode.url: https://rest.smsmode.com/sms/v1/messages
+cas.sms-provider.sms-mode.access-token: changeme
 
 
 vitamui.portal.url: https://dev.vitamui.com:4200/
@@ -146,6 +168,10 @@ ip.header: X-Real-IP
 # the old api.token.ttl property
 cas.authn.oauth.access-token.max-time-to-live-in-seconds: 28800
 
+cas.authn.oidc.core.issuer: ${cas.server.prefix}/oidc
+
+
+cas.authn.oidc.jwks.file-system.jwks-file: file:./src/main/config/keystore.jwks
 
 server-identity:
   identityName: CAS
@@ -246,3 +272,13 @@ password:
               - Mindestens ${password.length} Zeichen
               - Klein- und Großbuchstaben
               - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: gateway
+
+cas.http-web-request.cors.allow-credentials: true
+cas.http-web-request.cors.allow-origins: [ "https://dev.vitamui.com:4200", "https://dev.vitamui.com:4201", "https://dev.vitamui.com:4202", 'https://localhost:4202', 'https://localhost:4203', 'https://localhost:4204', 'https://localhost:4205', 'http://localhost']

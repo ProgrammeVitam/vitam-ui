@@ -37,8 +37,10 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.referential.common.dto.ProcessDetailDto;
+import fr.gouv.vitamui.referential.common.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.LogbookManagementOperationExternalService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,35 +59,47 @@ public class LogbookManagementOperationExternalController {
 
     @PostMapping(RestApi.OPERATIONS_PATH)
     @Secured(ServicesData.ROLE_GET_ALL_LOGBOOK_OPERATION)
-    public ProcessDetailDto searchOperationsDetails(@RequestBody final ProcessQuery processQuery)
+    public VitamUIProcessDetailResponseDto searchOperationsDetails(@RequestBody final ProcessQuery processQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(processQuery);
         LOGGER.debug("All Operations details by Criteria={}", processQuery);
-        return logbookManagementOperationExternalService.searchOperationsDetails(processQuery);
+        VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
+        ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.searchOperationsDetails(processQuery);
+        if (processDetailDto != null) {
+            operationResponseDto = processDetailDto.getOperations();
+        }
+        return operationResponseDto;
     }
 
 
     @PostMapping(RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
-    public ProcessDetailDto cancelOperationProcessExecution(final @PathVariable("id") String operationId)
+    public VitamUIProcessDetailResponseDto cancelOperationProcessExecution(final @PathVariable("id") String operationId)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker
-            .checkParameter("The operation Id  is a mandatory paramater", operationId);
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("Cancel the operation with id={}", operationId);
-        return logbookManagementOperationExternalService.cancelOperationProcessExecution(operationId);
+        ParameterChecker.checkParameter("operationId is mandatory : ", operationId);
+        VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
+        ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.cancelOperationProcessExecution(operationId);
+        if (processDetailDto != null) {
+            operationResponseDto = processDetailDto.getOperations();
+        }
+        return operationResponseDto;
     }
 
     @PostMapping(RestApi.UPDATE_OPERATION_PATH+ CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
-    public ProcessDetailDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId)
+    public VitamUIProcessDetailResponseDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker
-            .checkParameter("operationId and actionId are mandatories : ", operationId, actionId);
-        SanityChecker.checkSecureParameter(actionId, operationId);
+        SanityChecker.checkSecureParameter(operationId, actionId);
         LOGGER.debug("Update the operation id={} with actionId={}", operationId, actionId);
 
-        return logbookManagementOperationExternalService.updateOperationActionProcess(actionId, operationId);
+        VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
+        ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.updateOperationActionProcess(actionId, operationId);
+        if (processDetailDto != null) {
+            operationResponseDto = processDetailDto.getOperations();
+        }
+        return operationResponseDto;
     }
 
 

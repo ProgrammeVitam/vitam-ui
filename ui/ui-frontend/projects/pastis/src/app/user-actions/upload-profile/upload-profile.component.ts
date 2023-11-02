@@ -42,6 +42,7 @@ import { ProfileService } from '../../core/services/profile.service';
 
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-upload',
   templateUrl: './upload-profile.component.html',
   styleUrls: ['./upload-profile.component.scss']
@@ -49,7 +50,7 @@ import { ProfileService } from '../../core/services/profile.service';
 export class UserActionUploadProfileComponent implements OnInit {
 
   @Input()
-  uploader: FileUploader = new FileUploader({url: ""});
+  uploader: FileUploader = new FileUploader({url: ''});
   fileToUpload: File = null;
 
   constructor(private profileService: ProfileService, private fileService: FileService) { }

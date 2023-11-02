@@ -113,6 +113,9 @@ public class IdentityProviderDto extends CustomerIdDto {
 
     private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;
 
+    private Boolean wantsAssertionsSigned;
+
+    private Boolean authnRequestSigned;
 
     // OIDC provider data
     private String clientId;

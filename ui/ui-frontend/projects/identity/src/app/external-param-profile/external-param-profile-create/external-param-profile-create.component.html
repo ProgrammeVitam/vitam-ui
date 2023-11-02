@@ -1,60 +1,54 @@
 <div class="header">
   <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
-  <i (click)="onCancel()" class="vitamui-icon vitamui-icon-close icon-close"></i>
 </div>
+
 <form [formGroup]="externalParamProfileForm" (ngSubmit)="onSubmit()">
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content">
         <div class="vitamui-form">
           <div
-            class="text large header-title">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
+            class="text large bold header-title">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
           <div class="text large bold header-subtitle">
             {{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP_SUBTITLE' | translate }}
           </div>
 
           <div class="mb-2">
-            <vitamui-common-slide-toggle formControlName="enabled">
-              {{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }}
-              <span *ngIf="!externalParamProfileForm.get('enabled').value">in</span>
-              {{ 'COMMON.ACTIVE' | translate }}
-            </vitamui-common-slide-toggle>
+            <vitamui-common-slide-toggle formControlName="enabled"
+              >{{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }} <span *ngIf="!externalParamProfileForm.get('enabled').value">in</span
+              >{{ 'COMMON.ACTIVE' | translate }}</vitamui-common-slide-toggle
+            >
           </div>
 
-          <vitamui-common-input
-            class="col-9 px-0"
-            formControlName="name"
-            minlength="2"
-            maxlength="100"
-            required
-            placeholder="{{ 'EXTERNAL_PARAM_PROFILE.EXTERNAL_PARAM_PROFILE_NAME_POPUP' | translate }}"
-          >
-            <vitamui-common-input-error
-              *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.required"
-            >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
-            >
+    <vitamui-common-input
+      class="col-9 px-0"
+      formControlName="name"
+      minlength="2"
+      maxlength="100"
+      required
+      placeholder="{{ 'EXTERNAL_PARAM_PROFILE.EXTERNAL_PARAM_PROFILE_NAME_POPUP' | translate }}"
+    >
+      <vitamui-common-input-error
+        *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.required"
+        >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
+      <vitamui-common-input-error
+        *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.nameExists"
+        >{{ 'COMMON.ERROR.NAME_ALREADY_EXISTS' | translate }}</vitamui-common-input-error
+      >
+    </vitamui-common-input>
 
-            <vitamui-common-input-error
-              *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.nameExists"
-            >{{ 'COMMON.ERROR.NAME_ALREADY_EXISTS' | translate }}</vitamui-common-input-error
-            >
-          </vitamui-common-input>
-
-          <vitamui-common-input
-            class="col-9 px-0"
-            formControlName="description"
-            minlength="2"
-            maxlength="250"
-            required
-            placeholder="{{ 'EXTERNAL_PARAM_PROFILE.DESCRIPTION_ADMIN_PROFILE' | translate }}"
-          >
-            <vitamui-common-input-error
-              *ngIf="
-                externalParamProfileForm?.get('description')?.touched && !!externalParamProfileForm?.get('description')?.errors?.required
-              "
-            >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
-            >
-          </vitamui-common-input>
+    <vitamui-common-input
+      class="col-9 px-0"
+      formControlName="description"
+      minlength="2"
+      maxlength="250"
+      required
+      placeholder="{{ 'EXTERNAL_PARAM_PROFILE.DESCRIPTION_ADMIN_PROFILE' | translate }}"
+    >
+      <vitamui-common-input-error
+        *ngIf="externalParamProfileForm?.get('description')?.touched && !!externalParamProfileForm?.get('description')?.errors?.required"
+        >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
+    </vitamui-common-input>
 
           <mat-form-field class="vitamui-mat-select">
             <mat-select
@@ -70,7 +64,6 @@
               </mat-option>
             </mat-select>
             <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_up</i>
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
           </mat-form-field>
@@ -88,10 +81,7 @@
     <cdk-step>
       <div class="content">
         <div class="vitamui-form">
-          <div
-            class="text large header-title">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
-          <div
-            class="text large bold header-subtitle">{{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}</div>
+          <div class="text large bold">{{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}</div>
 
           <div class="mb-2">
             <vitamui-common-slide-toggle formControlName="usePlatformThreshold">
@@ -101,20 +91,19 @@
 
           <div class="select-threshold" *ngIf="!externalParamProfileForm.get('usePlatformThreshold').value">
             <mat-form-field class="vitamui-mat-select">
-              <mat-select
-                formControlName="bulkOperationsThreshold"
-                placeholder="{{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}"
-                required="required"
-                panelclass="vitamui-mat-select"
-                [(value)]="selectedThreshold"
-                class="w-100"
-              >
-                <mat-option *ngFor="let thresholdValue of thresholdValues" [value]="thresholdValue">
-                  {{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES' | translate : { threshold: thresholdValue | number } }}
-                </mat-option>
-              </mat-select>
-              <div class="select-arrow">
-                <i class="material-icons">keyboard_arrow_up</i>
+            <mat-select
+              formControlName="bulkOperationsThreshold"
+              placeholder="{{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}"
+              required="required"
+              panelclass="vitamui-mat-select"
+              [(value)]="selectedThreshold"
+              class="w-100"
+            >
+              <mat-option *ngFor="let thresholdValue of thresholdValues" [value]="thresholdValue">
+                {{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES' | translate: { threshold: thresholdValue | number } }}
+              </mat-option>
+            </mat-select>
+            <div class="select-arrow">
                 <i class="material-icons">keyboard_arrow_down</i>
               </div>
             </mat-form-field>
@@ -138,7 +127,7 @@
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
           <ng-container
-          ><span>{{ 'COMMON.BACK' | translate }}</span></ng-container
+            ><span class="underline">{{ 'COMMON.BACK' | translate }}</span></ng-container
           >
         </button>
       </div>

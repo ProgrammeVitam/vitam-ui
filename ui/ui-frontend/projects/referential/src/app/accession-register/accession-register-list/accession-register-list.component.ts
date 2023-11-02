@@ -46,6 +46,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     this.accessionRegistersService.notifySearchChange(searchText);
   }
 
+  // tslint:disable-next-line:no-input-rename
   @Input('accessContract')
   accessContract: string;
   direction = Direction.DESCENDANT;

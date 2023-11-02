@@ -37,7 +37,7 @@
  *
  */
 
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BytesPipe } from './bytes.pipe';
 import { DateTimePipe } from './datetime.pipe';
@@ -76,5 +76,6 @@ import { YesNoPipe } from './yes-no.pipe';
     FileSizePipe,
     PluralPipe,
   ],
+  providers: [DatePipe]
 })
 export class PipesModule {}

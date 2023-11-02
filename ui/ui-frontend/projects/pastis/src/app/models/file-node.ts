@@ -96,7 +96,7 @@ export enum ValueOrDataConstants {
 export enum DateFormatType {
   dateType = 'DateType',
   date = 'date',
-  dateTime = "dateTime"
+  dateTime = 'dateTime'
 }
 
 export interface FileNode {

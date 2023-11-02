@@ -96,8 +96,7 @@ public class ArchivesSearchExternalController {
 
     @PostMapping(RestApi.SEARCH_PATH)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ArchiveUnitsDto searchArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ArchiveUnitsDto searchArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query) {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling search archive Units By Criteria {} ", query);

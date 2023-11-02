@@ -1,0 +1,169 @@
+server:
+  port: {{ vitamui_struct.server_port | default('8090') }}
+{% if vitamui_struct.secure | default(secure) | lower == "true" %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_keystore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+    trust-store-password: {{ password_truststore }}
+    client-auth: need
+{% endif %}
+  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
+  tomcat:
+    accesslog:
+      enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
+      directory: "{{ vitamui_folder_log }}"
+      prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+      file-date-format: ".yyyy-MM-dd"
+      suffix: ".log"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  server:
+    port: {{ vitamui_struct.port_admin | default('7090') }}
+    ssl:
+      enabled: false
+
+authn:
+  client-certificate-header-name: x-ssl-cert
+
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      httpclient:
+        wiretap: false
+        ssl:
+          use-insecure-trust-manager: true
+      httpserver:
+        wiretap: false
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+            - "https://{{ vitam_reverse_external_dns }}"
+            - "http://localhost"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      routes:
+        - id: iam-external-service
+          uri: {{ 'https' if vitamui.iam_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.iam_external.host }}:{{ vitamui.iam_external.port_service }}
+          predicates:
+            - >
+              Path=
+              /portal-api/security,
+              /portal-api/userinfos/me,
+              /portal-api/ui/applications/**,
+              /portal-api/users/analytics,
+              /portal-api/subrogations/**,
+
+              /identity-api/security,
+              /identity-api/userinfos/**,
+              /identity-api/ui/applications/**,
+              /identity-api/subrogations/**,
+              /identity-api/customers/**,
+              /identity-api/tenants/**,
+              /identity-api/owners/**,
+              /identity-api/providers/**,
+              /identity-api/groups/**,
+              /identity-api/users/**,
+              /identity-api/profiles/**,
+              /identity-api/accesscontracts/**,
+              /identity-api/externalparamprofile/**,
+
+              /referential-api/security$,
+              /referential-api/security/**,
+              /referential-api/userinfos/**,
+              /referential-api/ui/applications/**,
+              /referential-api/users/analytics,
+              /referential-api/subrogations/**,
+              /referential-api/logbooks/operations/**,
+              /referential-api/tenants/**,
+              /referential-api/customers/**,
+              /referential-api/accesscontracts/**,
+              /referential-api/profiles/**,
+              /referential-api/externalparameters/**,
+
+              /archive-api/ui/**,
+              /archive-api/security,
+              /archive-api/userinfos/me,
+              /archive-api/users/**,
+              /archive-api/profiles/**,
+              /archive-api/customers/**,
+              /archive-api/tenants/**,
+              /archive-api/logbooks/**,
+              /archive-api/subrogations/**,
+              /archive-api/owners/**,
+
+              /reporting-api/security,
+              /reporting-api/ui/**,
+              /reporting-api/userinfos/me,
+              /reporting-api/users/analytics,
+              /reporting-api/subrogations/**,
+
+          filters:
+            # Portal IAM API
+            - RewritePath=/portal-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/portal-api/(?<segment>.*),/iam/v1/$\{segment}
+
+            # Identity IAM API
+            - RewritePath=/identity-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/identity-api/logbooks(?<segment>.*),/v1/logbooks$\{segment},
+            - RewritePath=/identity-api/accesscontracts(?<segment>.*),/v1/accesscontracts$\{segment},
+            - RewritePath=/identity-api/(?<segment>.*),/iam/v1/$\{segment}
+
+            # Referential IAM API
+            - RewritePath=/referential-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/referential-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
+            - RewritePath=/referential-api/logbooks/operations(?<segment>.*),/v1/logbooks/operations$\{segment},
+            - RewritePath=/referential-api/(?<segment>.*),/iam/v1/$\{segment}
+
+            # Archive IAM API
+            - RewritePath=/archive-api/ui(?<segment>.*),/iam/v1$\{segment}
+            - RewritePath=/archive-api/logbooks(?<segment>.*),/v1/logbooks/$\{segment}
+            - RewritePath=/archive-api/(?<segment>.*),/iam/v1/$\{segment}
+
+        - id: referential-external-service
+          uri: {{ 'https' if vitamui.referential_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.referential_external.host }}:{{ vitamui.referential_external.port_service }}
+          predicates:
+            - >
+              Path=
+              /referential-api/accesscontract/**,
+              /referential-api/ingestcontract/**,
+              /referential-api/managementcontract/**,
+              /referential-api/agency/**,
+              /referential-api/fileformat/**,
+              /referential-api/fileFormat/**,
+              /referential-api/operation/**,
+              /referential-api/logbook-management-operation/**,
+              /referential-api/customers/**,
+              /referential-api/accession-register/**,
+              /referential-api/archival-profile/**,
+              /referential-api/security-profile/**,
+              /referential-api/context/**,
+              /referential-api/ontology/**,
+              /referential-api/profile/**,
+              /referential-api/search/**,
+              /referential-api/rules/**,
+              /referential-api/customers/**
+
+          filters:
+            - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
+            - RewritePath=/referential-api/fileFormat(?<segment>.*),/referential/v1/fileformats$\{segment}
+            - RewritePath=/referential-api/operation(?<segment>.*),/referential/v1/operations$\{segment}
+            - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
+            - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
+            - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
+
+    discovery:
+      enabled: false
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml

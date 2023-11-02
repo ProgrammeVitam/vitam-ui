@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.commons.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -58,6 +59,8 @@ public class JsonUtils {
 
     private static final ObjectMapper mapperDontFailOnUnknowProperties;
 
+    private static final ObjectMapper mapperWithNonNullFields;
+
     static {
         mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -67,6 +70,11 @@ public class JsonUtils {
         mapperDontFailOnUnknowProperties.registerModule(new JavaTimeModule());
         mapperDontFailOnUnknowProperties.registerModule(new Jdk8Module());
         mapperDontFailOnUnknowProperties.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        mapperWithNonNullFields = new ObjectMapper();
+        mapperWithNonNullFields.registerModule(new JavaTimeModule());
+        mapperWithNonNullFields.registerModule(new Jdk8Module());
+        mapperWithNonNullFields.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     /**
@@ -84,13 +92,21 @@ public class JsonUtils {
      * @param fromValue
      * @param clazz
      * @return
-     * @throws JsonParseException
-     * @throws JsonMappingException
-     * @throws IOException
      */
-    public static <T> T convertValue(final Object fromValue, final Class<T> clazz) throws JsonParseException, JsonMappingException, IOException {
+    public static <T> T convertValue(final Object fromValue, final Class<T> clazz) {
         return mapper.convertValue(fromValue, clazz);
     }
+
+    /**
+     * Convert value Object to specified Type with ignoring null fields.
+     * @param fromValue
+     * @param clazz
+     * @return
+     */
+    public static <T> T convertValueWithNonNullFields(final Object fromValue, final Class<T> clazz) {
+        return mapperWithNonNullFields.convertValue(fromValue, clazz);
+    }
+
 
     /**
      * Convert value Object to specified Type.

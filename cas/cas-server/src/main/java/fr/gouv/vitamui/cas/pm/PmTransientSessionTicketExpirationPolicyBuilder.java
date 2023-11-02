@@ -40,6 +40,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.ticket.ExpirationPolicy;
 import org.apereo.cas.ticket.expiration.HardTimeoutExpirationPolicy;
 import org.apereo.cas.ticket.expiration.builder.TransientSessionTicketExpirationPolicyBuilder;
@@ -71,6 +72,7 @@ public class PmTransientSessionTicketExpirationPolicyBuilder extends TransientSe
                 LOGGER.error("Cannot get expiration in minutes", e);
             }
         }
-        return new HardTimeoutExpirationPolicy(casProperties.getAuthn().getPm().getReset().getExpirationMinutes() * 60);
+        val duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
+        return new HardTimeoutExpirationPolicy(duration.toSeconds());
     }
 }

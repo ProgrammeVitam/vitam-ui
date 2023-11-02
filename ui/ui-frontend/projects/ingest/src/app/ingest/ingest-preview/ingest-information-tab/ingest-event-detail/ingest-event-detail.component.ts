@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {EventDisplayHelperService} from '../../event-display-helper.service';
-import {Event} from '../../event';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {LogbookOperation} from "../../../../models/logbook-event.interface";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {LogbookOperation} from '../../../../models/logbook-event.interface';
+import {Event} from '../../event';
+import {EventDisplayHelperService} from '../../event-display-helper.service';
 
 @Component({
   selector: 'app-ingest-event-detail',

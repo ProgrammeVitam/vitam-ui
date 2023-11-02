@@ -56,7 +56,6 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import io.swagger.annotations.Api;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.engine.query.ParameterRecognitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -195,8 +194,7 @@ public class CasInternalController {
 
     @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
     public UserDto getUser(@RequestParam final String email, @RequestParam final String idp, @RequestParam(required = false) final String userIdentifier,
-            @RequestParam(required = false) final String embedded) throws InvalidParseOperationException,
-        ParameterRecognitionException {
+            @RequestParam(required = false) final String embedded) throws InvalidParseOperationException {
         SanityChecker.checkSecureParameter(idp, email);
         if(userIdentifier!= null) {
             SanityChecker.checkSecureParameter(userIdentifier);

@@ -28,6 +28,8 @@ function generateCerts {
     generateHostCertAndStorePassphrase          ingest-internal     hosts_vitamui_ingest_internal
     generateHostCertAndStorePassphrase          archive-search-internal     hosts_vitamui_archive_search_internal
     generateHostCertAndStorePassphrase          collect-internal     hosts_vitamui_collect_internal
+    generateHostCertAndStorePassphrase          api-gateway         hosts_vitamui_api_gateway
+
     #Zone externe
     generateHostCertAndStorePassphrase          iam-external        hosts_vitamui_iam_external
     generateHostCertAndStorePassphrase          referential-external        hosts_vitamui_referential_external

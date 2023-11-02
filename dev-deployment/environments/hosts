@@ -1,0 +1,128 @@
+#
+# Host file for vitamui deployement
+#
+
+# VITAMUI Hosts
+localhost           ansible_host=127.0.0.1      ip_service=127.0.0.1        ip_admin=127.0.0.1      ansible_connection=local    ansible_become=false
+
+########################################################
+# COTS
+[hosts_vitamui_consul_server]
+localhost   vitamui_site_name=dev   consul_domain=consul
+# ZONE APP
+
+[zone_vitamui_app:children]
+hosts_vitamui_iam_internal
+hosts_vitamui_iam_external
+hosts_vitamui_security_internal
+hosts_vitamui_referential_internal
+hosts_vitamui_referential_external
+hosts_vitamui_ingest_internal
+hosts_vitamui_ingest_external
+hosts_vitamui_archive_search_internal
+hosts_vitamui_archive_search_external
+hosts_vitamui_collect_internal
+hosts_vitamui_collect_external
+hosts_vitamui_pastis_external
+hosts_vitamui_api_gateway
+
+[hosts_vitamui_iam_internal]
+localhost
+
+[hosts_vitamui_iam_external]
+localhost
+
+[hosts_vitamui_security_internal]
+localhost
+
+[hosts_vitamui_referential_internal]
+localhost
+
+[hosts_vitamui_referential_external]
+localhost
+
+[hosts_vitamui_ingest_internal]
+localhost
+
+[hosts_vitamui_ingest_external]
+localhost
+
+[hosts_vitamui_archive_search_internal]
+localhost
+
+[hosts_vitamui_archive_search_external]
+localhost
+
+[hosts_vitamui_collect_internal]
+localhost
+
+[hosts_vitamui_collect_external]
+localhost
+
+[hosts_vitamui_pastis_external]
+localhost
+
+[hosts_vitamui_api_gateway]
+localhost
+
+########################################################
+# ZONE UI
+########################################################
+
+[zone_vitamui_ui:children]
+hosts_ui_identity
+hosts_ui_portal
+hosts_ui_referential
+hosts_ui_ingest
+hosts_ui_archive_search
+hosts_ui_pastis
+hosts_ui_collect
+
+[hosts_ui_identity]
+# We deploy only ui_identity_admin on dev - same certificat is used for these apps.
+
+[hosts_ui_portal]
+localhost
+
+[hosts_ui_referential]
+localhost
+
+[hosts_ui_ingest]
+localhost
+
+[hosts_ui_archive_search]
+localhost
+
+[hosts_ui_pastis]
+localhost
+
+[hosts_ui_collect]
+localhost
+
+########################################################
+# ZONE ADMIN
+########################################################
+
+[zone_vitamui_admin:children]
+hosts_ui_identity_admin
+
+[hosts_ui_identity_admin]
+localhost
+
+########################################################
+# ZONE CAS
+########################################################
+
+[zone_vitamui_cas:children]
+hosts_cas_server    
+
+[hosts_cas_server]
+localhost   vitamui_site_name=dev   consul_domain=consul
+
+########################################################
+# REVERSE
+########################################################
+[hosts_vitamui_reverseproxy]
+localhost
+
+

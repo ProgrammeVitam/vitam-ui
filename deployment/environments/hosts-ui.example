@@ -88,6 +88,7 @@ hosts_cas_server
 # ZONE APP
 ################################################################################
 [zone_vitamui_app:children]
+hosts_vitamui_api_gateway
 hosts_vitamui_iam_external
 hosts_vitamui_iam_internal
 hosts_vitamui_ingest_external
@@ -100,6 +101,9 @@ hosts_vitamui_referential_external
 hosts_vitamui_referential_internal
 hosts_vitamui_security_internal
 hosts_vitamui_pastis_external
+
+[hosts_vitamui_api_gateway]
+# EDIT: Mandatory
 
 [hosts_vitamui_iam_external]
 # EDIT: Mandatory

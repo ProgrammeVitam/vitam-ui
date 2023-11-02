@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.apereo.cas.authentication.principal.Principal;
-import org.apereo.cas.authentication.principal.Service;
-import org.apereo.cas.authentication.surrogate.BaseSurrogateAuthenticationService;
-import org.apereo.cas.services.ServicesManager;
-
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -51,6 +43,13 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
+import org.apereo.cas.authentication.principal.Principal;
+import org.apereo.cas.authentication.principal.Service;
+import org.apereo.cas.authentication.surrogate.BaseSurrogateAuthenticationService;
+import org.apereo.cas.services.ServicesManager;
+
+import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Specific surrogate service based on the IAM API.
@@ -73,7 +72,7 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
     }
 
     @Override
-    public boolean canAuthenticateAsInternal(String surrogate, Principal principal, Optional<Service> service) {
+    public boolean canImpersonateInternal(final String surrogate, final Principal principal, final Optional<Service> service) {
         val id = principal.getId();
         boolean canAuthenticate = false;
         try {
@@ -90,7 +89,12 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
     }
 
     @Override
-    public List<String> getEligibleAccountsForSurrogateToProxy(final String username) {
+    public boolean isWildcardedAccount(final String surrogate, final Principal principal) {
+        return false;
+    }
+
+    @Override
+    public Collection<String> getImpersonationAccounts(String username) {
         throw new UnsupportedOperationException("Not allowed to choose the surrogate");
     }
 }

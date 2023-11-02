@@ -24,10 +24,10 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'ui-frontend-common';
+import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/animations';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {Direction, RegisterValueEventModel, RegisterValueEventType} from 'ui-frontend-common';
 
 @Component({
   selector: 'app-accession-register-operations-list',
@@ -53,6 +53,7 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
   selectedFilters: Array<string>;
   operationsProcessed: RegisterValueEventModel[] = [];
 
+  orderKeyOperationType: keyof RegisterValueEventModel = 'OpType'
   orderKeyOperationGots: keyof RegisterValueEventModel = 'Gots'
   orderKeyOperationUnits: keyof RegisterValueEventModel = 'Units'
   orderKeyOperationObjects: keyof RegisterValueEventModel = 'Objects'

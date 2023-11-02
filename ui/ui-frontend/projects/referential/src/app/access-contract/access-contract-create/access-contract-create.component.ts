@@ -35,16 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import '@angular/localize/init';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FilingPlanMode } from 'projects/vitamui-library/src/public-api';
+import { FilingPlanMode, Status } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
 import { AccessContract, ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
 import { AgencyService } from '../../agency/agency.service';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
+import { RULE_TYPES } from '../../rule/rules.constants';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -86,8 +87,6 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar
   ) {}
 
-  statusControl = new FormControl(false);
-  accessLogControl = new FormControl(true);
   allNodes = new FormControl(false);
   ruleFilter = new FormControl(false);
   selectNodesControl = new FormControl({ included: [], excluded: [] });
@@ -97,15 +96,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   isDisabledButton = false;
 
-  // FIXME: Get list from common var ?
-  rules: Option[] = [
-    { key: 'StorageRule', label: "Durée d'utilité courante", info: '' },
-    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
-    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
-    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AccessRule', label: 'Délai de communicabilité', info: '' },
-    { key: 'AppraisalRule', label: "Durée d'utilité administrative", info: '' },
-  ];
+  rules: Option[] = RULE_TYPES;
 
   // FIXME: Get list from common var ?
   usages: Option[] = [
@@ -123,7 +114,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
         this.accessContractSelect.setValue(accessContratId);
       } else {
         this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
+          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
           null,
           {
             panelClass: 'vitamui-snack-bar',
@@ -139,10 +130,10 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueIdentifier()],
-      status: ['INACTIVE'],
+      status: [false],
       name: [null, [Validators.required], this.accessContractCreateValidators.uniqueName()],
       description: [null],
-      accessLog: ['ACTIVE'],
+      accessLog: [false],
       ruleCategoryToFilter: [new Array<string>(), Validators.required],
       /* <- step 2 -> */
       everyOriginatingAgency: [true],
@@ -155,14 +146,6 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       /* <- step 4 -> */
       rootUnits: [[], Validators.required],
       excludedRootUnits: [[]],
-    });
-
-    this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
-    });
-
-    this.accessLogControl.valueChanges.subscribe((value) => {
-      this.form.controls.accessLog.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
     });
 
     this.selectNodesControl.valueChanges.subscribe((value: { included: string[]; excluded: string[] }) => {
@@ -197,7 +180,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       return;
     }
     this.isDisabledButton = true;
-    const accessContract = this.form.value as AccessContract;
+    const accessContract: AccessContract = this.mapToAccessContract(this.form);
     accessContract.status === 'ACTIVE'
       ? (accessContract.activationDate = new Date().toISOString())
       : (accessContract.deactivationDate = new Date().toISOString());
@@ -248,5 +231,21 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+  }
+
+  private mapToAccessContract(form: FormGroup): AccessContract {
+    return {
+      ...form.value,
+      status: this.mapStatus(this.getControl(form, 'status').value),
+      accessLog: this.mapStatus(this.getControl(form, 'accessLog').value),
+    } as AccessContract;
+  }
+
+  private getControl(form: FormGroup, name: string): AbstractControl {
+    return form.get(name);
+  }
+
+  private mapStatus(value: boolean): Status {
+    return value ? Status.ACTIVE : Status.INACTIVE;
   }
 }

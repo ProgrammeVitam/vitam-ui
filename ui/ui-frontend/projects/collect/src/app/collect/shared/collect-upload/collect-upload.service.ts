@@ -24,12 +24,12 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { CollectUploadFile, CollectZippedUploadFile } from './collect-upload-file';
-import * as JSZip from 'jszip';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import * as JSZip from 'jszip';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { CollectUploadFile, CollectZippedUploadFile } from './collect-upload-file';
 
 @Injectable({
   providedIn: 'root',
@@ -51,6 +51,7 @@ export class CollectUploadService {
 
   private static uploadFilesInfo(files: any) {
     let size = 0;
+    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < files.length; i++) {
       size += files[i].size;
     }
@@ -119,7 +120,7 @@ export class CollectUploadService {
     headers = headers.set('ngsw-bypass', 'true');
 
     const options = {
-      headers: headers,
+      headers,
       responseType: 'text' as 'text',
       reportProgress: true,
     };
@@ -140,7 +141,7 @@ export class CollectUploadService {
       });
   }
   reinitializeZip() {
-    for (let file of this.filesToUpload) {
+    for (const file of this.filesToUpload) {
       this.zipFile.remove(file.name);
     }
     this.filesToUpload = [];
@@ -152,8 +153,9 @@ export class CollectUploadService {
       return;
     }
     this.uploadInfo(CollectUploadService.uploadFilesInfo(files));
+    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < files.length; i++) {
-      let item = files[i];
+      const item = files[i];
       this.zipFile.file(item.webkitRelativePath, item);
     }
   }
@@ -187,8 +189,9 @@ export class CollectUploadService {
   }
 
   private async buildAsyncZip(files: any) {
+    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < files.length; i++) {
-      let item = files[i].webkitGetAsEntry();
+      const item = files[i].webkitGetAsEntry();
       if (item) {
         await this.parse(this.zipFile, item);
       }
@@ -198,8 +201,9 @@ export class CollectUploadService {
   private async dragAndDropUploadFilesInfo(files: any) {
     const name = CollectUploadService.dragAndDropUploadFilesDirectoryName(files);
     let size = 0;
+    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < files.length; i++) {
-      let item = files[i].webkitGetAsEntry();
+      const item = files[i].webkitGetAsEntry();
       if (item) {
         size += await this.calcDragAndDropUploadFilesSize(item);
       }
@@ -211,7 +215,7 @@ export class CollectUploadService {
     if (item.isDirectory) {
       let size = 0;
       const dirEntries: any[] = await this.parseDirectoryEntry(item);
-      for (let entry of dirEntries) {
+      for (const entry of dirEntries) {
         size += await this.calcDragAndDropUploadFilesSize(entry);
       }
       return size;
@@ -227,8 +231,8 @@ export class CollectUploadService {
       if(dirEntries.length === 0){
         zip.folder(item.fullPath.substring(1));
       }
-      for (let entry of dirEntries) {
-        await this.parse(zip, entry); 
+      for (const entry of dirEntries) {
+        await this.parse(zip, entry);
       }
     } else {
       const f = await this.parseFileEntry(item);

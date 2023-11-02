@@ -60,6 +60,10 @@
     {
       "name": "Tenants",
       "description": "Ensemble des APIs permettant la gestion des tenants (création, modification, récupération et vérification de l'existence)"
+    },
+    {
+      "name": "Informations utilisateur",
+      "description": "Ensemble des APIs permettant la gestion des autres informations utilisateur (création, modification et récupération)"
     }
   ],
   "produces": [
@@ -3295,6 +3299,200 @@
           }
         }
       }
+    },
+    "/userinfos": {
+      "get": {
+        "tags": [
+          "Informations utilisateur"
+        ],
+        "summary": "Récupération paginée des informations utilisateur",
+        "operationId": "getAllPaginatedUserInfos",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-tenant-id"
+          },
+          {
+            "$ref": "#/parameters/x-user-token"
+          },
+          {
+            "$ref": "#/parameters/x-application-id"
+          },
+          {
+            "$ref": "#/parameters/criteria"
+          },
+          {
+            "$ref": "#/parameters/orderBy"
+          },
+          {
+            "$ref": "#/parameters/direction"
+          },
+          {
+            "$ref": "#/parameters/page"
+          },
+          {
+            "$ref": "#/parameters/size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedValuesDto«UserInfoDto»"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Informations utilisateur"
+        ],
+        "summary": "Création des informations d'un utilisateur",
+        "operationId": "createUsingPOST_9",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-tenant-id"
+          },
+          {
+            "$ref": "#/parameters/x-user-token"
+          },
+          {
+            "$ref": "#/parameters/x-application-id"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "Informations utilisateur à créer",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UserInfoDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Les informations utilisateur ont été créés avec succès",
+            "schema": {
+              "$ref": "#/definitions/UserInfoDto"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/userinfos/{id}": {
+      "get": {
+        "tags": [
+          "Informations utilisateur"
+        ],
+        "summary": "Récupération des informations d'un utilisateur",
+        "operationId": "getOneUsingGET_8",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-tenant-id"
+          },
+          {
+            "$ref": "#/parameters/x-user-token"
+          },
+          {
+            "$ref": "#/parameters/x-application-id"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant technique de l'utilisateur",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Les infos de l'utilisateur trouvées",
+            "schema": {
+              "$ref": "#/definitions/UserInfoDto"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Informations utilisateur"
+        ],
+        "summary": "Modification partielle des informations d'un utilisateur",
+        "operationId": "patchUsingPATCH_7",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-tenant-id"
+          },
+          {
+            "$ref": "#/parameters/x-user-token"
+          },
+          {
+            "$ref": "#/parameters/x-application-id"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant technique des infos de l'utilisateur",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "partialDto",
+            "description": "Contient les champs à modifier ainsi que leurs nouvelles valeurs",
+            "required": false,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "les informations de l'utilisateur modifiées",
+            "schema": {
+              "$ref": "#/definitions/UserInfoDto"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
     }
   },
   "responses": {
@@ -4278,15 +4476,6 @@
           "example": "1",
           "description": "Identifiant métier"
         },
-        "language": {
-          "type": "string",
-          "enum": [
-            "FR",
-            "DE",
-            "EN"
-          ],
-          "description": "Langue"
-        },
         "lastConnection": {
           "type": "string",
           "format": "date-time",
@@ -4363,6 +4552,19 @@
           "type": "string",
           "example": "002",
           "description": "Code du centre"
+        },
+        "address": {
+          "$ref": "#/definitions/AddressDto"
+        },    
+        "internalCode": {
+          "type": "string",
+          "example": "003",
+          "description": "Code interne"
+        },
+        "userInfoId": {
+          "type": "string",
+          "example": "1",
+          "description": "Id de l'objet userInfo associé à l'utilisateur"
         }
       },
       "required": [
@@ -4370,10 +4572,60 @@
         "lastname",
         "firstname",
         "groupId",
-        "language",
         "email"
       ],
       "title": "UserDto"
+    },
+    "UserInfoDto" : {
+      "type": "object",
+      "required": [ "language" ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "1",
+          "description": "Identifiant technique",
+          "readOnly": true
+        },
+        "language": {
+          "type": "string",
+          "enum": [
+            "FR",
+            "DE",
+            "EN"
+          ],
+          "description": "Langue"
+        }
+      }
+    },
+    "PaginatedValuesDto«UserInfoDto»": {
+      "type": "object",
+      "properties": {
+        "hasMore": {
+          "type": "boolean",
+          "example": true,
+          "description": "Présence de résultats supplémentaires"
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32",
+          "example": 0,
+          "description": "Numéro de la page"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "example": 20,
+          "description": "Taille de la page"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserInfoDto"
+          },
+          "description": "Résultats"
+        }
+      },
+      "title": "PaginatedValuesDto«UserInfoDto»"
     }
   }
 }

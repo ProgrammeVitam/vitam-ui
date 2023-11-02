@@ -39,18 +39,17 @@ package fr.gouv.vitamui.cas.authentication;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import lombok.val;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.*;
 import org.apereo.cas.authentication.principal.ClientCredential;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.web.support.WebUtils;
-import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.jee.context.JEEContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.webflow.execution.RequestContextHolder;
-
-import lombok.val;
 
 import java.util.Collections;
 

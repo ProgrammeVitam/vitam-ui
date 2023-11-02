@@ -42,17 +42,13 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -62,7 +58,6 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderBuilder;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import fr.gouv.vitamui.identity.domain.dto.ProviderPatchType;
@@ -152,6 +147,15 @@ public class ProviderService extends AbstractCrudService<IdentityProviderDto> {
         }
     }
 
+    private String getSpMetadata(final MultipartFile spMetadata) {
+        try (final InputStream isSpMeta = spMetadata.getInputStream()) {
+            return IOUtils.toString(isSpMeta);
+        }
+        catch (final IOException e) {
+            throw new InvalidFormatException("SpMetadata is unreadable", e);
+        }
+    }
+
     private String getKeystoreBase64(final MultipartFile keystoreFile) {
         try (final InputStream isKeystore = keystoreFile.getInputStream()) {
             final byte[] keystore = IOUtils.toByteArray(isKeystore);
@@ -205,14 +209,7 @@ public class ProviderService extends AbstractCrudService<IdentityProviderDto> {
         return apiDto.stream().map(dto -> convertDtoFromApi(dto)).collect(Collectors.toList());
     }
 
-    public IdentityProviderDto create(final ExternalHttpContext c, final MultipartFile keystore, final MultipartFile idpMetadata, final String provider)
-            throws Exception {
-        IdentityProviderDto dto = new ObjectMapper().readValue(provider, IdentityProviderDto.class);
-        final IdentityProviderBuilder builder = new IdentityProviderBuilder(dto.getName(), dto.getTechnicalName(), dto.getEnabled(), dto.getInternal(),
-                dto.getPatterns(), Objects.nonNull(keystore)?new ByteArrayResource(keystore.getBytes()):null, dto.getKeystorePassword(), dto.getPrivateKeyPassword(),
-            Objects.nonNull(idpMetadata)?new ByteArrayResource(idpMetadata.getBytes()):null, dto.getCustomerId(), dto.isReadonly(), dto.getMailAttribute(), dto.getIdentifierAttribute(), dto.getAuthnRequestBinding(), dto.isAutoProvisioningEnabled(),dto.getClientId(),
-            dto.getClientSecret(),dto.getDiscoveryUrl(), dto.getScope(),dto.getPreferredJwsAlgorithm(),dto.getCustomParams(),dto.getUseState(),dto.getUseNonce(),dto.getUsePkce(), dto.getProtocoleType());
-        dto = builder.build();
-        return getClient().create(c, dto);
+    public IdentityProviderDto create(final ExternalHttpContext c, final MultipartFile keystore, final MultipartFile idpMetadata, final String provider) {
+        return getClient().create(c, keystore, idpMetadata, provider);
     }
 }

@@ -224,6 +224,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
             siteCode,
             internalCode,
           })
+          // tslint:disable-next-line:no-shadowed-variable
           .subscribe((user) => {
             this.user = user;
             this.emitClose();

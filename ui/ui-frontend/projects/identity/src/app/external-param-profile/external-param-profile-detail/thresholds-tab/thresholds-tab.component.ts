@@ -73,7 +73,7 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
     this.isUpdated = false;
 
     this.updateFormSub = this.form.valueChanges.subscribe(() => {
-      let updatedModel: any = diff(this.form.value, this.previousValue);
+      const updatedModel: any = diff(this.form.value, this.previousValue);
       this.isUpdated = !isEmpty(updatedModel);
     });
   }

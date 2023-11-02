@@ -21,8 +21,8 @@
         <form method="post" id="loginForm" th:object="${credential}">
             <div class="formfields flex-align-center marging-top-form">
                 <div class="textfield">
-                    <input type="text" autofocus class="required" id="token" name="token" size="4" tabindex="1"
-                       autocomplete="off" maxlength="4" />
+                    <input type="text" autofocus class="required" id="token" name="token" th:size="${@environment.getProperty('cas.authn.mfa.simple.token.core.token-length')}" tabindex="1"
+                       autocomplete="off" th:maxlength="${@environment.getProperty('cas.authn.mfa.simple.token.core.token-length')}"/>
                     <div class="error" th:if="${#fields.hasErrors('*')}">
                         <div>
                             <img class="picto-attention" th:src="@{/images/picto-attention.svg}">
@@ -36,7 +36,7 @@
                     <a class="submittoken" th:text="#{screen.mfa.sms.login.ok}" href="javascript:void(0)" onclick="$('#loginForm').submit();"/>
                 </div>
                 <div class="countdown">
-                    <span th:text="#{screen.mfa.sms.login.countdown}"/>
+                    <span th:text="#{screen.mfa.sms.login.countdown(${@environment.getProperty('cas.authn.mfa.simple.token.core.time-to-kill-in-seconds')})}"/>
                 </div>
             </div>
             <div>

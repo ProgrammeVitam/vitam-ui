@@ -48,6 +48,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.AccessContractExternalService;
@@ -91,9 +92,7 @@ public class AccessContractExternalController {
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
             @RequestParam(required = false) final Optional<DirectionDto> direction)
         throws InvalidParseOperationException , PreconditionFailedException {
-        if(orderBy.isPresent()) {
-            SanityChecker.checkSecureParameter(orderBy.get());
-        }
+        orderBy.ifPresent(SanityChecker::checkSecureParameter);
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
         return accessContractExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
@@ -142,9 +141,8 @@ public class AccessContractExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException , PreconditionFailedException{
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return accessContractExternalService.findHistoryById(id);

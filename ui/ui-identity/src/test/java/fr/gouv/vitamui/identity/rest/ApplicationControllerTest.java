@@ -31,14 +31,13 @@ public class ApplicationControllerTest extends UiIdentityRestControllerTest<Appl
     private static final String PREFIX = "/ui/applications";
 
     @Test
-    public void testGetApplications() throws Exception {
-        super.testGetAllEntity();
+    public void testGetApplications() {
+        performGet("/filtered");
     }
 
     @Test
-    public void testfindApplicationsByNames() throws Exception {
-        LOGGER.debug("testfindApplicationsByName");
-        performGet(StringUtils.EMPTY, ImmutableMap.of("term", "ab", "lang", "ENGLISH"));
+    public void testfindApplicationsByNames() {
+        performGet("/filtered", ImmutableMap.of("term", "ab", "lang", "ENGLISH"));
     }
 
     @Override

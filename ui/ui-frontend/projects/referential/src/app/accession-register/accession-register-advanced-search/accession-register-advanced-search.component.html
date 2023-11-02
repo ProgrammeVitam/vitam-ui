@@ -16,7 +16,7 @@
               id="originating-agencies"
               formControlName="originatingAgencies"
               [searchActivated]="globalSearchButtonEvent$|async"
-              [reset]="!(isAdvancedFormChanged$|async)"
+              [reset]="(isAdvancedFormChanged$|async) !== true"
               label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ORIGINATING_AGENCY_LABEL' | translate }}"
             ></vitamui-multi-inputs>
           </div>
@@ -28,7 +28,7 @@
               id="archival-agreement"
               formControlName="archivalAgreements"
               [searchActivated]="globalSearchButtonEvent$|async"
-              [reset]="!(isAdvancedFormChanged$|async)"
+              [reset]="(isAdvancedFormChanged$|async) !== true"
               label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ARCHIVAL_AGREEMENT_LABEL' | translate }}"
             ></vitamui-multi-inputs>
           </div>
@@ -42,7 +42,7 @@
               id="archival-profil"
               formControlName="archivalProfiles"
               [searchActivated]="globalSearchButtonEvent$|async"
-              [reset]="!(isAdvancedFormChanged$|async)"
+              [reset]="(isAdvancedFormChanged$|async) !==true"
               label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ARCHIVAL_PROFILE_LABEL' | translate }}"
             ></vitamui-multi-inputs>
           </div>

@@ -48,6 +48,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
 import { ToastrModule } from 'ngx-toastr';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import {
+  AuthenticationModule,
   BASE_URL,
   ENVIRONMENT,
   InjectorModule,
@@ -84,6 +85,7 @@ const themeServiceClass = environment.standalone ? StandaloneThemeService : Them
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AuthenticationModule.forRoot(),
     InjectorModule,
     LoggerModule.forRoot(),
     BrowserAnimationsModule,
