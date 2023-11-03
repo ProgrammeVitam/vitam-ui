@@ -85,10 +85,10 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   openCreateAgencyDialog() {
     const dialogRef = this.dialog.open(AgencyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.success) {
+      if (result?.success) {
         this.refreshList();
       }
-      if (result.action === 'restart') {
+      if (result?.action === 'restart') {
         this.openCreateAgencyDialog();
       }
     });

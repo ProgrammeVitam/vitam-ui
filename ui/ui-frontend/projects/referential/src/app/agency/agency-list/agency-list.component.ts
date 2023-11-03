@@ -137,7 +137,6 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildAgencyCriteriaFromSearch();
-      console.log('query: ', query);
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
