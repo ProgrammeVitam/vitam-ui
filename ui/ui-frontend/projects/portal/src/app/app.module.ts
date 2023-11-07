@@ -60,6 +60,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApplicationSvgLoader } from './application-svg-loader';
+import { GetorixResolverService } from './getorix-resolver.service';
 import { PortalModule } from './portal';
 
 registerLocaleData(localeFr, 'fr');
@@ -108,6 +109,7 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
     BrowserTransferStateModule,
   ],
   providers: [
+    GetorixResolverService,
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: BASE_URL, useValue: '/portal-api' },
