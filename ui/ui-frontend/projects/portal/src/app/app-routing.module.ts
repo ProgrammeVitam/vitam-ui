@@ -38,6 +38,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { AccountComponent, AnalyticsResolver, AppGuard, ApplicationId, AuthGuard } from 'ui-frontend-common';
+import { GetorixResolverService } from './getorix-resolver.service';
 import { PortalComponent } from './portal';
 
 const routes: Routes = [
@@ -45,7 +46,7 @@ const routes: Routes = [
     path: '',
     component: PortalComponent,
     canActivate: [AuthGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
+    resolve: { userAnalytics: AnalyticsResolver, getorixResolver: GetorixResolverService },
     data: { appId: ApplicationId.PORTAL_APP },
   },
   {
