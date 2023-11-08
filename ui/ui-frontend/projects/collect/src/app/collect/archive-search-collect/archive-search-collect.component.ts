@@ -31,34 +31,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, Subject, Subscription, merge } from 'rxjs';
+import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 import {
-  AccessContract,
-  ArchiveSearchResultFacets,
-  CriteriaDataType,
-  CriteriaOperator,
-  CriteriaValue,
-  Direction,
-  ExternalParameters,
-  ExternalParametersService,
-  FilingHoldingSchemeNode,
-  GlobalEventService,
-  ORPHANS_NODE_ID,
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaCategory,
-  SearchCriteriaEltDto,
-  SearchCriteriaEltements,
-  SearchCriteriaHistory,
-  SearchCriteriaMgtRuleEnum,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  SidenavPage,
-  Transaction,
-  TransactionStatus,
-  Unit,
-  UnitType,
+  AccessContract, ArchiveSearchResultFacets, CriteriaDataType, CriteriaOperator, CriteriaValue, Direction, ExternalParameters,
+  ExternalParametersService, FilingHoldingSchemeNode, GlobalEventService, ORPHANS_NODE_ID, PagedResult, SearchCriteria,
+  SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements, SearchCriteriaHistory, SearchCriteriaMgtRuleEnum,
+  SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SidenavPage, Transaction, TransactionStatus, Unit, UnitType,
 } from 'ui-frontend-common';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from './archive-collect.service';
@@ -434,7 +413,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       trackTotalHits: false,
       computeFacets: includeFacets,
     };
-    this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
+    this.archiveExchangeDataService.emitSearchCriterias(searchCriteria);
     this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null).subscribe(
       (pagedResult: PagedResult) => {
         if (includeFacets) {
@@ -447,19 +426,17 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.archiveUnits = pagedResult.results;
           this.searchHasResults = !isEmpty(pagedResult.results);
           this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
-          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
           this.totalResults = pagedResult.totalResults;
+          this.archiveExchangeDataService.emitTotalResults(this.totalResults)
+          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
         } else if (pagedResult.results) {
           pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
         }
         this.pageNumbers = pagedResult.pageNumbers;
-
         this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
-
         if (this.isAllChecked) {
           this.itemSelected = this.totalResults - this.itemNotSelected;
         }
-
         this.canLoadMore = this.currentPage < this.pageNumbers - 1;
         this.archiveHelperService.updateCriteriaStatus(
           this.searchCriterias,
@@ -479,6 +456,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }
       }
     );
+  }
+
+  onArchiveUnitCountChange(event: number) {
+    this.totalResults = event;
+    this.archiveExchangeDataService.emitTotalResults(event);
   }
 
   // Manage lateral panels

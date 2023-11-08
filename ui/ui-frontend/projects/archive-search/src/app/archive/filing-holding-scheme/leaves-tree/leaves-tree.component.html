@@ -2,7 +2,7 @@
   <div class="tree-text">
     <div class="tree-title">
       <span>{{ 'ARCHIVE_SEARCH.FILING_SCHEMA.TREE_LEAVES_TITLE' | translate }}</span>
-      <mat-spinner diameter="20" color="accent" *ngIf="loadingNodeUnit || loadingNodesDetails"></mat-spinner>
+      <mat-spinner diameter="20" color="accent" *ngIf="loadingNodeUnit || leavesTreeService.loadingNodesDetails"></mat-spinner>
     </div>
   </div>
 </div>
@@ -60,13 +60,13 @@
       </div>
     </mat-tree-node>
 
-    <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeIsOrphanNode">
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeIsOrphansNode">
       <div *ngIf="nodeHasResultOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node flex-row">
         <vitamui-tree-node
           [node]="node"
           (checkboxClick)="addToSearchCriteriaList(node)"
           [expanded]="nestedTreeControlLeaves.isExpanded(node)"
-          (nodeToggle)="toggleOrphan(node)"
+          (nodeToggle)="toggleOrphansNode(node)"
         >
         </vitamui-tree-node>
         <span *ngIf="nodeHasPositiveCount(node)" class="badge badge-primary pad">

@@ -59,12 +59,14 @@ export class MatchingNodesNumbers {
   nodesAdded: number;
   nodesAddedList: FilingHoldingSchemeNode[];
   nodesUpdated: number;
+  nodesUpdatedList: FilingHoldingSchemeNode[];
   nodesFoundButUnchanged: number;
 
   constructor() {
     this.nodesAdded = 0;
     this.nodesAddedList = [];
     this.nodesUpdated = 0;
+    this.nodesUpdatedList = [];
     this.nodesFoundButUnchanged = 0;
   }
 
@@ -73,8 +75,9 @@ export class MatchingNodesNumbers {
     this.nodesAddedList.push(node);
   }
 
-  incrementUpdated() {
+  updatedNode(node: FilingHoldingSchemeNode) {
     this.nodesUpdated += 1;
+    this.nodesUpdatedList.push(node);
   }
 
   incrementFoundButUnchanged() {

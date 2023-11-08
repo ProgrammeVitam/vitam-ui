@@ -24,20 +24,21 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
-import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ArchiveApiService } from '../../core/api/archive-api.service';
-import { ActivatedRoute } from '@angular/router';
-import { environment } from '../../../environments/environment.prod';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ArchiveService } from '../archive.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { environment } from '../../../environments/environment.prod';
+import { ArchiveApiService } from '../../core/api/archive-api.service';
+import { ArchiveService } from '../archive.service';
+import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
 
 describe('FilingHoldingSchemeComponent', () => {
   let component: FilingHoldingSchemeComponent;
@@ -61,6 +62,7 @@ describe('FilingHoldingSchemeComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        TranslateModule.forRoot(),
         RouterTestingModule,
       ],
       declarations: [FilingHoldingSchemeComponent],

@@ -27,6 +27,7 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
   CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, PagedResult, ResultFacet,
@@ -35,7 +36,7 @@ import {
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { NodeData } from '../../models/nodedata.interface';
-import { Pair, VitamInternalFields } from '../../models/utils';
+import { Pair } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 
 @Component({
@@ -59,6 +60,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   );
   nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
   nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
+  attachmentUnits: Unit[];
+  attachmentNodes: FilingHoldingSchemeNode[] = [];
   disabled: boolean;
   loadingHolding = true;
   node: string;
@@ -70,8 +73,11 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     TREE: false,
     LEAVE: false,
   };
+  private filingPlanLoaded = false;
+  private attachmentUnitsLoaded = false;
 
   constructor(
+    private translateService: TranslateService,
     private archiveService: ArchiveCollectService,
     private startupService: StartupService,
     private archiveSharedDataService: ArchiveSharedDataService
@@ -80,10 +86,12 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   }
 
   ngOnInit(): void {
-    this.initialNodesState();
+    this.nestedDataSourceLeaves.data = [];
+    this.subscribeOnTotalResultsChange();
     this.subscribeOnNodeSelectionToSetCheck();
     this.subscribeOnFacetsChanges();
-    this.initFilingHoldingSchemeTree();
+    this.loadFilingHoldingSchemeTree();
+    this.loadAttachementUnits();
   }
 
   ngOnChanges(_: SimpleChanges): void {
@@ -109,15 +117,15 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   private subscribeOnFacetsChanges(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getFacets().subscribe((facets) => {
-        if (facets && facets.length > 0) {
-          this.requestResultFacets = facets;
-          // Re-init attachment units to render children by criteria
-          this.nestedDataSourceLeaves.data.forEach((node) => {
-            node.toggled = undefined;
-            node.children = [];
-          });
-        } else {
-          this.requestResultFacets = [];
+        this.requestResultFacets = facets;
+        if (!this.filingPlanLoaded || !this.attachmentUnitsLoaded) {
+          return;
+        }
+        // Re-init attachment units to render children by criteria
+        this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
+        if (this.searchRequestTotalResults > 0 && isEmpty(this.attachmentNodes)) {
+          FilingHoldingSchemeHandler.addOrphansNodeFromTree(this.nestedDataSourceLeaves.data,
+            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'), this.searchRequestTotalResults);
         }
       })
     );
@@ -130,7 +138,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.archiveSharedDataService.emitNode(this.nodeData);
   }
 
-  initialRattachementUnitIdsState() {
+  loadAttachementUnits() {
     const sortingCriteria = { criteria: 'Title', sorting: Direction.ASCENDANT };
     const criteriaWithId: SearchCriteriaEltDto = {
       criteria: '#management.UpdateOperation.SystemId',
@@ -150,82 +158,49 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.archiveService
       .searchArchiveUnitsByCriteria(searchCriteria, this.transactionId)
       .subscribe((pagedResult: PagedResult) => {
-        this.filterNodesToLeavesOnly(pagedResult.results);
+        this.attachmentUnits = pagedResult.results;
+        this.attachmentUnitsLoaded = true;
+        this.setAttachmentNodes();
       });
   }
 
-  private filterNodesToLeavesOnly(units: Unit[]) {
-    const list: any[] = [];
-    const unflattedNodes = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnlyAndCheckAttach(this.fullNodes, units);
-    unflattedNodes.forEach((unitParent) => {
-      const collectAttachmentUnit = units.find((unit) => unit[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId === unitParent.id);
-      if (collectAttachmentUnit) {
-        const outNode: FilingHoldingSchemeNode = {
-          id: collectAttachmentUnit[VitamInternalFields.ID],
-          vitamId: unitParent.id,
-          title: unitParent.title,
-          type: collectAttachmentUnit.DescriptionLevel,
-          unitType: unitParent?.unitType,
-          descriptionLevel: collectAttachmentUnit.DescriptionLevel,
-          children: [],
-          checked: false,
-          hidden: false,
-          hasObject: unitParent?.hasObject,
-        };
-        const unitsresults: Unit[] = [];
-        FilingHoldingSchemeHandler.addChildrenRecursively(Array.of(outNode), unitsresults);
-        list.push(outNode);
-      }
-    });
-    let orphanNode;
-    if (!isEmpty(this.nestedDataSourceLeaves.data) && FilingHoldingSchemeHandler.isOrphansNode(this.nestedDataSourceLeaves.data[0])) {
-      orphanNode = this.nestedDataSourceLeaves.data[0];
+  private setAttachmentNodes() {
+    if (isEmpty(this.fullNodes) || isEmpty(this.attachmentUnits)) {
+      return;
     }
-    if (list.length > 0) {
-      this.nestedDataSourceLeaves.data = list;
-      this.showEveryNodes = true;
-    } else {
-      this.nestedDataSourceLeaves.data = [];
-      this.showEveryNodes = false;
-    }
-    if (orphanNode) {
-      this.nestedDataSourceLeaves.data.unshift(orphanNode);
-      const tmp = this.nestedDataSourceLeaves.data;
-      this.nestedDataSourceLeaves.data = null;
-      this.nestedDataSourceLeaves.data = tmp;
+    this.attachmentNodes = [];
+    for (const unit of this.attachmentUnits) {
+      const treeNode = FilingHoldingSchemeHandler.foundNode(this.fullNodes, unit['#management'].UpdateOperation.SystemId);
+      const node = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+      node.vitamId = treeNode.id;
+      node.title = treeNode.title;
+      node.unitType = treeNode.unitType;
+      node.hasObject = treeNode.hasObject;
+      this.attachmentNodes.push(node);
     }
   }
 
-  private initialNodesState(): void {
-    this.subscriptions.add(
-      this.archiveSharedDataService.getFilingHoldingNodes().subscribe((nodes) => {
-        if (nodes) {
-          this.fullNodes = nodes;
-          this.switchViewAllNodes();
-          this.initialRattachementUnitIdsState();
-        }
-      })
-    );
-  }
-
-  initFilingHoldingSchemeTree() {
+  loadFilingHoldingSchemeTree() {
     this.loadingHolding = true;
     this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier).subscribe((nodes) => {
       // Disable checkbox use to prevent add unit to search criteria
-      this.disableCheckingUnitsRecursive(nodes);
+      this.disableNodesRecursive(nodes);
       this.fullNodes = nodes;
+      this.filingPlanLoaded = true;
       this.nestedDataSourceFull.data = nodes;
       this.nestedTreeControlFull.dataNodes = nodes;
       this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
+      this.switchViewAllNodes();
+      this.setAttachmentNodes();
       this.loadingHolding = false;
     });
   }
 
-  disableCheckingUnitsRecursive(nodes: FilingHoldingSchemeNode[]) {
-    nodes.forEach((unitNode) => {
-      unitNode.disabled = true;
-      if (unitNode.children) {
-        this.disableCheckingUnitsRecursive(unitNode.children);
+  disableNodesRecursive(nodes: FilingHoldingSchemeNode[]) {
+    nodes.forEach((node) => {
+      node.disabled = true;
+      if (node.children) {
+        this.disableNodesRecursive(node.children);
       }
     });
   }
@@ -257,6 +232,17 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
             this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
             this.loadingArchiveUnit[`${from}`] = false;
           })
+    );
+  }
+
+  private subscribeOnTotalResultsChange(): void {
+    this.subscriptions.add(
+      this.archiveSharedDataService.getTotalResults().subscribe((totalResults) => {
+        this.searchRequestTotalResults = totalResults;
+        if (this.nestedDataSourceLeaves.data.length === 1 && this.nestedDataSourceLeaves.data[0].count + 1 !== totalResults) {
+          this.nestedDataSourceLeaves.data[0].count = totalResults;
+        }
+      })
     );
   }
 }
