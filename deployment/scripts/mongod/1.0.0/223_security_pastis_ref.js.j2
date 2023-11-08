@@ -2,7 +2,7 @@ db = db.getSiblingDB('security')
 
 print("START 223_security_pastis_ref.js");
 
-db.contexts.insert({
+db.contexts.insertOne({
     "_id" : "ui_pastis_context",
     "name": "Contexte UI Pastis",
     "fullAccess" : true,

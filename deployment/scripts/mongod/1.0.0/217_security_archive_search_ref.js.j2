@@ -2,7 +2,7 @@ db = db.getSiblingDB('security')
 
 print("START 217_security_archive_search_ref.js");
 
-db.contexts.insert({
+db.contexts.insertOne({
     "_id" : "ui_archive_search_context",
     "name": "Contexte UI Archive Search",
     "fullAccess" : true,

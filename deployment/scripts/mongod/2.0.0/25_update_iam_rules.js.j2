@@ -4,7 +4,7 @@ print("START 25_update_iam_rules.js");
 
 // ========================================= PROFILES =========================================
 
-db.profiles.update( {
+db.profiles.updateOne( {
 	"_id": "system_rules"
 }, {
     $addToSet: {
@@ -22,7 +22,7 @@ db.profiles.update( {
 
 var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "auto_system_rules",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Auto Rules Profile",

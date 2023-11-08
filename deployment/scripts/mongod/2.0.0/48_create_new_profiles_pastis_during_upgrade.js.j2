@@ -10,7 +10,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 
     //= CREATE NEW PROFILES FOR PASTIS_APP DURING UPGRADE =//
 
-    db.profiles.insert({
+    db.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-PASTIS_APP-DEFAULT",
     	"identifier" : NumberInt(maxIdProfile++),
     	"name" : "Pastis Profile",

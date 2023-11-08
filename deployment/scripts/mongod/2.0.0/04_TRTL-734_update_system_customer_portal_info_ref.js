@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("START 04_TRTL-734_update_system_customer_portal_info_ref.js");
 
-db.customers.update({
+db.customers.updateOne({
   "_id": "system_customer",
 }, {
   $set: {

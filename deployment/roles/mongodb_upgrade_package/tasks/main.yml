@@ -3,6 +3,7 @@
 - name: Remove deprecated mongodb packages
   package:
     name:
+      - mongodb-org-shell
       - mongodb-org-tools
       - mongodb-org-database-tools-extra
     state: absent

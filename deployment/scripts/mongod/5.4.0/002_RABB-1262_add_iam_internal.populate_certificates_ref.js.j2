@@ -3,11 +3,11 @@ print("START 002_RABB-1262_add_iam_internal.populate_certificates_ref.js");
 db = db.getSiblingDB('security')
 
 {% macro insertCertificate(pemFile, contextId, host) -%}
-db.certificates.remove(
+db.certificates.deleteOne(
     {"_id" : "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )
-db.certificates.insert({
+db.certificates.insertOne({
     "_id": "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}",
     "contextId": "{{ contextId }}",
     "subjectDN": "subjectDN",

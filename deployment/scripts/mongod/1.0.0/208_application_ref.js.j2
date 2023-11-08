@@ -4,7 +4,7 @@ print("START 208_application_ref.js");
 
 // -------- VITAM ADMINISTRATION -----
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "INGEST_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/ingest-contract",
@@ -22,7 +22,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "ACCESS_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/access-contract",
@@ -40,7 +40,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "AGENCIES_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/agency",
@@ -58,7 +58,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "FILE_FORMATS_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/file-format",
@@ -76,7 +76,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "CONTEXTS_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/context",
@@ -94,7 +94,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "SECURITY_PROFILES_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/security-profile",
@@ -112,7 +112,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "ONTOLOGY_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/ontology",
@@ -130,7 +130,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "AUDIT_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/audit",
@@ -148,7 +148,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "SECURE_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/securisation",
@@ -166,7 +166,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "DSL_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/dsl",
@@ -184,7 +184,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "PROBATIVE_VALUE_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/probative-value",
@@ -202,7 +202,7 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "LOGBOOK_OPERATION_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/logbook-operation",
@@ -220,7 +220,7 @@ db.applications.insert({
     "target": "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "HOLDING_FILLING_SCHEME_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.ingest.base_url }}/holding-filling-scheme",

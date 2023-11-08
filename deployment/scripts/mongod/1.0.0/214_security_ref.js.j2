@@ -2,7 +2,7 @@ db = db.getSiblingDB('security')
 
 print("START 214_security_ref.js");
 
-db.contexts.insert({
+db.contexts.insertOne({
     "_id" : "ui_ingest_context",
     "name": "Contexte UI Ingest",
     "fullAccess" : true,

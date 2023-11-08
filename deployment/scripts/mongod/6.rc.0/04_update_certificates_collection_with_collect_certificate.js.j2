@@ -4,15 +4,15 @@ print("START 6.rc.0/04_update_certificates_collection_with_collect_certificate.j
 
 {% macro insertCertificate(pemFile, contextId, host) -%}
 
-db.certificates.remove(
+db.certificates.deleteOne(
     {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )
-db.certificates.remove(
+db.certificates.deleteOne(
     {"_id" : "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )
-db.certificates.insert({
+db.certificates.insertOne({
     "_id": "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}",
     "contextId": "{{ contextId }}",
     "subjectDN": "subjectDN",

@@ -13,20 +13,20 @@ db.users.find({"userInfoId" : {$exists : false}}).forEach(user => {
 
     var userInfoId = new ObjectId().valueOf() + new ObjectId().valueOf();
 
-    db.userInfos.insert({
+    db.userInfos.insertOne({
         "_id": userInfoId,
         "language": language,
         "_class": "userInfos"
     });
 
-    db.users.update(
+    db.users.updateOne(
         {_id: user._id},
         {
             "$set": {"userInfoId": userInfoId},
         }
     );
 
-    db.users.update(
+    db.users.updateOne(
         {_id: user._id},
         {
             $unset: {"language": ""},

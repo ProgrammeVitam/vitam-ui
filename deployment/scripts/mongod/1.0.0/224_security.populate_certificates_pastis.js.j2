@@ -3,15 +3,15 @@ db = db.getSiblingDB('{{ mongodb.security.db }}')
 print("START 224_security.populate_certificates_pastis.js.j2");
 
 {% macro insertCertificate(pemFile, contextId, host) -%}
-db.certificates.remove(
+db.certificates.deleteOne(
     {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )
-db.certificates.remove(
+db.certificates.deleteOne(
     {"_id" : "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )
-db.certificates.insert({
+db.certificates.insertOne({
     "_id": "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}",
     "contextId": "{{ contextId }}",
     "subjectDN": "subjectDN",

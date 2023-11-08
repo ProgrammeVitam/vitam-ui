@@ -43,7 +43,7 @@ db.groups.aggregate([
 });
 
 //======== DELETE OLD PROFILES FOR APP ARCHIVE_SEARCH_MANAGEMENT_APP ========//
-db.profiles.remove(
+db.profiles.deleteMany(
     {
         $and: [
             { "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP" },

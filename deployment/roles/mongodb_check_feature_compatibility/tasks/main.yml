@@ -1,5 +1,15 @@
 ---
 
+- name: Ensure mongosh package is present
+  package:
+    name:
+      - mongodb-mongosh
+    state: present
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+
 - name: Copy check_compatibility_version database script
   template:
     src: check_compatibility_version.js.j2
@@ -9,7 +19,7 @@
     mode: "{{ vitamui_defaults.folder.conf_permission }}"
 
 - name: "Check compatibility version with mongo {{ mongo_compatibility_list }}"
-  shell: "mongo {{ ip_service }}:{{ mongo_port }}/admin -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet < {{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}/check_compatibility_version.js"
+  command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet --file {{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}/check_compatibility_version.js"
   no_log: "{{ hide_passwords_during_deploy }}"
   ignore_errors: true # To properly catch output on the next task
   register: output_compatibility_version

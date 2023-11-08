@@ -4,7 +4,7 @@ print("START 6.rc.0/02_add_collect_module_application.js");
 
 //============================ CREATE COLLECT APP ==============================
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "COLLECT_APP",
 {% if vitamui.collect.base_url is defined %}
     "url": "{{ vitamui.collect.base_url }}/collect",
@@ -30,7 +30,7 @@ var lastIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_iden
 
 db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 
-    db.profiles.insert({
+    db.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-COLLECT_APP-ARCHIVISTE",
         "identifier": NumberInt(lastIdProfile++),
         "name": "Collect Profile",

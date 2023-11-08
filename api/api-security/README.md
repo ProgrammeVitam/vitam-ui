@@ -25,5 +25,5 @@ mvn spring-boot:run
 ## Connect to the Mongo shell (if needed)
 
 ```shell
-mongo --port 27018 -u "mongod_dbuser_security" -p "mongod_dbpwd_security" --authenticationDatabase "security"
+mongosh --port 27018 -u "mongod_dbuser_security" -p "mongod_dbpwd_security" --authenticationDatabase "security"
 ```

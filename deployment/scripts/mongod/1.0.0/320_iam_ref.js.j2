@@ -6,7 +6,7 @@ print("START 320_iam_ref.js");
 
 var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_accession_register",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Accession register Profile",

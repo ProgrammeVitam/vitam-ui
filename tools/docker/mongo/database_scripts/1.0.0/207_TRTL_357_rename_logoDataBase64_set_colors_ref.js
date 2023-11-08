@@ -15,7 +15,7 @@ db.customers.find(
     }
 ).forEach(function (customer) {
     if (customer.graphicIdentity && customer.graphicIdentity.themeColors && customer.graphicIdentity.themeColors['vitamui-primary']) {
-        db.customers.update(
+        db.customers.updateOne(
             { _id: customer._id },
             {
               $set: {

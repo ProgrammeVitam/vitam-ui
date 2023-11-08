@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("START_24_update_hasTenantList_application_COLLECT_APP.js");
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "COLLECT_APP"
 }, {
     $set: {

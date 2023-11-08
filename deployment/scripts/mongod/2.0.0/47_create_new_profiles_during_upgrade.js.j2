@@ -11,7 +11,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
     //= CREATE NEW PROFILES FOR ARCHIVE_SEARCH_MANAGEMENT_APP DURING UPGRADE =//
 
     // ARCHIVE_SEARCH_MANAGEMENT_APP : CONSULTATION
-    db.profiles.insert({
+    db.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-ARCHIVE_SEARCH_MANAGEMENT_APP-CONSULTATION",
         "identifier": NumberInt(maxIdProfile++),
         "name": "Consultation",
@@ -39,7 +39,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
     });
 
     // ARCHIVE_SEARCH_MANAGEMENT_APP : ARCHIVISTE
-    db.profiles.insert({
+    db.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-ARCHIVE_SEARCH_MANAGEMENT_APP-ARCHIVISTE",
         "identifier": NumberInt(maxIdProfile++),
         "name": "Archiviste",
@@ -70,7 +70,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
     });
 
     // ARCHIVE_SEARCH_MANAGEMENT_APP : ARCHIVISTE ADMINISTRATEUR
-    db.profiles.insert({
+    db.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-ARCHIVE_SEARCH_MANAGEMENT_APP-ADMIN",
         "identifier": NumberInt(maxIdProfile++),
         "name": "Archiviste administrateur",
@@ -106,7 +106,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
     //=============== ADD PROFILES FOR NEW APPS DURING UPGRADE ===============//
 
     // ACCESSION_REGISTER_APP
-    db.profiles.insert({
+    db.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-ACCESSION_REGISTER_APP-DEFAULT",
         "identifier": NumberInt(maxIdProfile++),
         "name": "Profil complet du registre des fonds",
@@ -125,7 +125,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
     });
 
     // LOGBOOK_MANAGEMENT_OPERATION_APP
-    db.profiles.insert({
+    db.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-LOGBOOK_MANAGEMENT_OPERATION_APP-DEFAULT",
         "identifier": NumberInt(maxIdProfile++),
         "name": "Profil complet de gestion des opérations",
@@ -150,7 +150,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
     });
 
     // EXTERNAL_PARAM_PROFILE_APP
-    db.profiles.insert({
+    db.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-EXTERNAL_PARAM_PROFILE_APP-DEFAULT",
         "identifier": NumberInt(maxIdProfile++),
         "name": "Profil complet de gestion des profils paramétrage externe",

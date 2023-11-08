@@ -1,8 +1,8 @@
 db = db.getSiblingDB('{{ mongodb.iam.db }}')
 
-db.applications.remove({});
+db.applications.deleteMany({});
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "CUSTOMERS_APP",
 {% if vitamui.identity_admin.base_url is defined %}
 	"url": "{{ vitamui.identity_admin.base_url }}/customer",
@@ -20,7 +20,7 @@ db.applications.insert({
     "target": "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "USERS_APP",
 {% if vitamui.identity.base_url is defined %}
 	"url": "{{ vitamui.identity.base_url }}/user",
@@ -38,7 +38,7 @@ db.applications.insert({
     "target": "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "GROUPS_APP",
 {% if vitamui.identity.base_url is defined %}
 	"url": "{{ vitamui.identity.base_url }}/group",
@@ -56,7 +56,7 @@ db.applications.insert({
     "target": "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "PROFILES_APP",
 {% if vitamui.identity.base_url is defined %}
 	"url": "{{ vitamui.identity.base_url }}/profile",
@@ -74,7 +74,7 @@ db.applications.insert({
     "target": "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "SUBROGATIONS_APP",
 {% if vitamui.identity_admin.base_url is defined %}
 	"url": "{{ vitamui.identity_admin.base_url }}/subrogation",
@@ -92,7 +92,7 @@ db.applications.insert({
     "target": "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "HIERARCHY_PROFILE_APP",
 {% if vitamui.identity.base_url is defined %}
     "url": "{{ vitamui.identity.base_url }}/profile-hierarchy",
@@ -110,7 +110,7 @@ db.applications.insert({
     "target": "_self"
 });
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "ACCOUNTS_APP",
     "url": "{{ vitamui.portal.base_url|default(url_prefix) }}/account",
     "icon": "vitamui-icon vitamui-icon-user",

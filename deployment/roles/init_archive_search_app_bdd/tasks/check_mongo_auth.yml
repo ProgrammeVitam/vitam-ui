@@ -1,7 +1,7 @@
 ---
 
 - name: Check if authent is enabled
-  command: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'"
+  command: "mongosh {{ ip_service }}:{{ mongodb.mongod_port }}/admin -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'"
   register: mongo_authent_enabled
   failed_when: false
   no_log: "{{ hide_passwords_during_deploy }}"

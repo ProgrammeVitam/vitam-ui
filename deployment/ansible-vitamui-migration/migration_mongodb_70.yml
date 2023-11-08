@@ -1,0 +1,72 @@
+---
+
+# Mongodb migration from 6.0 to 7.0
+###################################
+
+# Confirm launching this playbook
+- hosts: localhost
+  any_errors_fatal: yes
+  gather_facts: no
+  vars_prompt:
+    name: "confirmation"
+    prompt: "This playbook will migrate your mongo clusters from 6.0 to 7.0.\n\nAre you sure you want to run this playbook ?\nAnswer with 'YES'"
+    default: "NO"
+    private: no
+  tasks:
+    - name: Check Confirmation
+      fail: msg="Playbook run confirmation failed"
+      when: confirmation|upper != "YES"
+
+################################################################################
+# Starting mongo-vitamui migration
+################################################################################
+
+# Checks feature compatibility version & state
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - mongodb_check_feature_compatibility
+    - mongodb_check_replica_state
+  vars:
+    mongo_compatibility_list: ['6.0', '7.0']
+
+################################################################################
+## Upgrade replica set (mongod)
+
+# set_members_groups for mongod
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - mongodb_set_members_groups
+
+# upgrade secondaries mongod
+- hosts: hosts_vitamui_mongod
+  roles:
+    - mongodb_upgrade_package
+  vars:
+    mongo_version: 7.0.2
+    mongo_primary: false
+  serial: 1
+
+# upgrade primary mongod
+- hosts: hosts_vitamui_mongod
+  roles:
+    - mongodb_upgrade_package
+  vars:
+    mongo_version: 7.0.2
+    mongo_primary: true
+  serial: 1
+
+################################################################################
+
+# set_featurecompatibility
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - mongodb_set_feature_compatibility
+  vars:
+    mongo_version: 7.0
+
+################################################################################
+# End of mongo-vitamui migration
+################################################################################

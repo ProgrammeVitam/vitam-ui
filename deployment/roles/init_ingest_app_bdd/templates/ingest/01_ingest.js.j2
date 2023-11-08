@@ -10,7 +10,7 @@ db = db.getSiblingDB('{{ mongodb.iam.db }}')
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
 
-db.profiles.update(
+db.profiles.updateOne(
     { "_id" : "system_ingest_profile" },
     {
         "$set" : {
@@ -70,7 +70,7 @@ db.groups.updateOne(
 // ====================================== APPLICATIONS ======================================
 
 
-db.applications.update(
+db.applications.updateOne(
     { "identifier" : "INGEST_MANAGEMENT_APP" },
     {
         "$set" : {
@@ -104,7 +104,7 @@ db = db.getSiblingDB('{{ mongodb.security.db }}')
 
 print("INFO 01_ingest.js : START security update");
 
-db.contexts.update(
+db.contexts.updateOne(
     { "_id" : "ui_ingest_context" },
     {
         "$set" : {
@@ -124,11 +124,11 @@ db.contexts.update(
 
 
 {% macro insertCertififcate(pemFile, contextId) -%}
-db.certificates.remove(
+db.certificates.deleteOne(
     {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )
-db.certificates.insert({
+db.certificates.insertOne({
     "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
     "contextId": "{{ contextId }}",
     "subjectDN": "subjectDN",
@@ -149,7 +149,7 @@ print("INFO 01_ingest.js : START cas database update");
 db = db.getSiblingDB('{{ mongodb.cas.db }}')
 
 
-db.services.update(
+db.services.updateOne(
     { "_id" :  NumberInt(4) },
     {
         "$set" : {

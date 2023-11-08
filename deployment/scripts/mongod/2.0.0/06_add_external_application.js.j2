@@ -4,7 +4,7 @@ print("START 06_add_external_application.js.j2");
 
 // -------- VITAM ADMINISTRATION add EXTERNAL_PARAMS fictif application without category -----
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "EXTERNAL_PARAMS",
     "url": "{{ vitamui.portal.base_url|default(url_prefix) }}",
     "icon": "vitamui-icon vitamui-icon-user",

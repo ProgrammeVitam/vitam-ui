@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("Start 03_update_application_for_new_portal_ref.js");
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "INGEST_MANAGEMENT_APP",
     "category": "ingests"
 }, {
@@ -11,7 +11,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "INGEST_MANAGEMENT_APP",
     "hasTenantList": false,
 }, {
@@ -20,7 +20,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "AGENCIES_APP",
     "hasTenantList": false,
 }, {
@@ -29,7 +29,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "SECURE_APP",
     "hasTenantList": false,
 }, {
@@ -39,7 +39,7 @@ db.applications.update({
 });
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "DSL_APP",
     "hasTenantList": false,
 }, {
@@ -48,7 +48,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "LOGBOOK_OPERATION_APP",
     "hasTenantList": false,
 }, {

@@ -11,7 +11,7 @@ db.customers.find(
     var dict = {};
     dict[customer.language] = customer.graphicIdentity.portalTitle;
 
-    db.customers.update(
+    db.customers.updateOne(
       { _id: customer._id },
       { $set: { "graphicIdentity.portalTitle": dict } }
     );
@@ -20,7 +20,7 @@ db.customers.find(
     var dict = {};
     dict[customer.language] = customer.graphicIdentity.portalMessage;
 
-    db.customers.update(
+    db.customers.updateOne(
       { _id: customer._id },
       { $set: { "graphicIdentity.portalMessage": dict } }
     );

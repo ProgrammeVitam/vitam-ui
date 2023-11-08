@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("START 04_add_default_external_parameters_profile.js.j2");
 
-db.externalParameters.remove({});
+db.externalParameters.deleteMany({});
 db.createCollection('externalParameters', { autoIndexId: true });
 
 var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
@@ -13,7 +13,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
     // EXTERNAL_PARAMS
     var externalParamId = "DEFAULT_EXT_PARAM_" + tenant.identifier;
 
-    db.externalParameters.insert({
+    db.externalParameters.insertOne({
         "_id": externalParamId,
         "identifier": externalParamId,
         "name": "Liste des paramétrages externes du tenant " + tenant.identifier,
@@ -25,7 +25,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
         ]
     });
 
-    db.profiles.insert({
+    db.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-EXTERNAL_PARAMS-DEFAULT",
         "identifier": NumberInt(maxIdProfile++),
         "name": "Profil pour la gestion des paramétrages externes du tenant " + tenant.identifier,

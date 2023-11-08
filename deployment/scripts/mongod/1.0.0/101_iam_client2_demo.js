@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("START 101_iam_client2_demo.js");
 
-db.customers.insert({
+db.customers.insertOne({
 	"_id": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"identifier": "12",
 	"code": "659845",
@@ -31,7 +31,7 @@ db.customers.insert({
 	"_class": "customers"
 });
 
-db.owners.insert({
+db.owners.insertOne({
 	"_id": "5c7928337884583d1ebb6ebb5be6372ef9394a8691874ef993e013ab5da0e42f",
 	"identifier": "55",
 	"name": "Client 2",
@@ -45,7 +45,7 @@ db.owners.insert({
 	"_class": "owners"
 });
 
-db.owners.insert({
+db.owners.insertOne({
 	"_id": "5c7928597884583d1ebb6ed24e893dcfc5cc4d0a9a69f63dbfa2a7ebd08f6ed8",
 	"identifier": "56",
 	"name": "Propriétaire 1",
@@ -59,7 +59,7 @@ db.owners.insert({
 	"_class": "owners"
 });
 
-db.tenants.insert({
+db.tenants.insertOne({
 	"_id": "5c7928337884583d1ebb6ebe056678aa36364074b97135c2b372270949f60e1a",
 	"enabled": true,
 	"proof": true,
@@ -75,7 +75,7 @@ db.tenants.insert({
 	"_class": "tenants"
 });
 
-db.tenants.insert({
+db.tenants.insertOne({
 	"_id": "5c7928597884583d1ebb6ed48b92969264764e55a61db10314aa8633cd0c6fc4",
 	"enabled": true,
 	"proof": false,
@@ -90,7 +90,7 @@ db.tenants.insert({
 	"_class": "tenants"
 });
 
-db.providers.insert({
+db.providers.insertOne({
 	"_id": "5c7928337884583d1ebb6ebd3b672beb39d04beda4c55d70d5352184d926ed31",
 	"identifier": "52",
 	"name": "default",
@@ -104,7 +104,7 @@ db.providers.insert({
 	"_class": "providers"
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id": "5c7928337884583d1ebb6ebf1843c77a02554d35b902ced3aa65c0aa58899b72",
 	"identifier": "263",
 	"name": "USERS 105",
@@ -143,7 +143,7 @@ db.profiles.insert({
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id": "5c7928337884583d1ebb6ec030ebc4100c8646208c3014c96e4f74e6c2432352",
 	"identifier": "264",
 	"name": "GROUPS 105",
@@ -176,7 +176,7 @@ db.profiles.insert({
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
-db.profiles.insert(
+db.profiles.insertOne(
 {
 	"_id": "5c7928337884583d1ebb6ec1eeb9cd5cb44b4110a512abde58fd04307a395f14",
 	"identifier": "265",
@@ -207,7 +207,7 @@ db.profiles.insert(
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
-db.profiles.insert(
+db.profiles.insertOne(
 {
 	"_id": "5c7928337884583d1ebb6ec33fdeff1270174f37bb32afa3c2ca36f41c304120",
 	"identifier": "267",
@@ -226,7 +226,7 @@ db.profiles.insert(
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
-db.profiles.insert(
+db.profiles.insertOne(
 {
 	"_id": "5c7928337884583d1ebb6eca27b70a0b0e7f4d6ea8723fa5c577804f6da5da3d",
 	"identifier": "274",
@@ -254,7 +254,7 @@ db.profiles.insert(
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
-db.profiles.insert(
+db.profiles.insertOne(
 {
 	"_id": "5c79285a7884583d1ebb6ee28433459e0e414e3983bc96f8d5604f52adf34266",
 	"identifier": "290",
@@ -284,7 +284,7 @@ db.profiles.insert(
 });
 
 
-db.groups.insert(
+db.groups.insertOne(
 {
 	"_id" : "5c7928337884583d1ebb6ecbee8ed316ea5546bf92500eb136afa905d237233b",
 	"identifier" : "275",
@@ -305,7 +305,7 @@ db.groups.insert(
 	"_class": "groups"
 });
 
-db.users.insert({
+db.users.insertOne({
     "_id" : "5c7928337884583d1ebb6ecc1e146e10286647b9a195349483f8f09b1628721c",
     "email" : "admin@client2.fr",
     "firstname" : "Admin",

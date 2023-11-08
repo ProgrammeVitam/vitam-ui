@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 
 print("Start 06_TRTL_449_update_application_categories_ref.js");
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "ACCOUNTS_APP",
     "category": "users",
 }, {
@@ -11,7 +11,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "PROFILES_APP",
     "category": "settings",
 }, {
@@ -20,7 +20,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "USERS_APP",
     "category": "administrators",
 }, {
@@ -29,7 +29,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "GROUPS_APP",
     "category": "settings",
 }, {
@@ -38,7 +38,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "CUSTOMERS_APP",
     "category": "settings",
 }, {
@@ -47,7 +47,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "SUBROGATIONS_APP",
     "category": "administrators",
 }, {
@@ -57,7 +57,7 @@ db.applications.update({
 });
 
 
-db.applications.update({
+db.applications.updateOne({
     "identifier" : "HIERARCHY_PROFILE_APP",
     "category": "settings",
 }, {
@@ -66,7 +66,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier": "INGEST_APP",
     "category": "referential",
 }, {
@@ -75,7 +75,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier": "ACCESS_APP",
     "category": "referential",
 }, {
@@ -84,7 +84,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier": "SECURITY_PROFILES_APP",
     "category": "referential",
 }, {
@@ -93,7 +93,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier": "AUDIT_APP",
     "category": "opaudit",
 }, {
@@ -102,7 +102,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier": "PROBATIVE_VALUE_APP",
     "category": "opaudit",
 }, {
@@ -111,7 +111,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier": "SECURE_APP",
     "category": "opaudit",
 }, {
@@ -120,7 +120,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier": "LOGBOOK_OPERATION_APP",
     "category": "referential",
 }, {
@@ -129,7 +129,7 @@ db.applications.update({
     },
 });
 
-db.applications.update({
+db.applications.updateOne({
     "identifier": "DSL_APP",
     "category": "techadmin",
 }, {

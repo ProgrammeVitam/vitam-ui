@@ -3,7 +3,6 @@
 - name: Install common mongodb packages
   package:
     name:
-      - mongodb-org-shell
       - mongodb-mongosh
       - mongodb-database-tools
     state: present

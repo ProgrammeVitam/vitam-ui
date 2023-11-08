@@ -7,7 +7,7 @@ print("START 207_iam_ref.js");
 // ----------------------------------------- LEVEL "0" -----------------------------------------
 
 var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_access_contract",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Access Profile",
@@ -31,7 +31,7 @@ db.profiles.insert({
 	 ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_ingest_contract",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Ingest Profile",
@@ -58,7 +58,7 @@ db.profiles.insert({
 	 ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_ontology",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Ontology Profile",
@@ -82,7 +82,7 @@ db.profiles.insert({
 	 ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_agencies",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Agencies Profile",
@@ -112,7 +112,7 @@ db.profiles.insert({
 	 ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_file_format",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "File Formats Profile",
@@ -142,7 +142,7 @@ db.profiles.insert({
 	 ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_context",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Context Profile",
@@ -166,7 +166,7 @@ db.profiles.insert({
 	 ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_security_profile",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Security Profiles Profile",
@@ -193,7 +193,7 @@ db.profiles.insert({
 	 ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_audit",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Audit Profile",
@@ -214,7 +214,7 @@ db.profiles.insert({
 	 ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_secure",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Secure Profile",
@@ -232,7 +232,7 @@ db.profiles.insert({
 	]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_dsl",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Requêtes DSL",
@@ -250,7 +250,7 @@ db.profiles.insert({
 	]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
 	"_id" : "system_probative_value",
 	"identifier" : NumberInt(maxIdProfile++),
 	"name" : "Probative Value Profile",
@@ -271,7 +271,7 @@ db.profiles.insert({
 	 ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_logbook_operation",
   "identifier" : NumberInt(maxIdProfile++),
   "name": "Journal des Opérations",
@@ -289,7 +289,7 @@ db.profiles.insert({
    ]
 });
 
-db.profiles.insert({
+db.profiles.insertOne({
   "_id": "system_holding_filling_scheme_profile",
   "identifier" : NumberInt(maxIdProfile++),
   "name": "Arbres et Plans",

@@ -19,7 +19,7 @@ db.profiles.updateOne({
    }
 });
 
-db.profiles.update({
+db.profiles.updateOne({
    "_id":"system_archive_search_profile"
 },
 {
@@ -32,7 +32,7 @@ db.profiles.update({
 
 // -------- ARCHIVE_SEARCH PROFILE WITH RULES MANAGEMENT AND WITHOUT DIP EXPORT -----
 
-db.profiles.insert({
+db.profiles.insertOne({
    "_id":"system_archive_search_profile_with_rules_without_export",
    "identifier":NumberInt(27),
    "name":"Profil pour la recherche et consultation des archives avec mises à jour des règles et sans export DIP",
@@ -62,7 +62,7 @@ db.profiles.insert({
 
 // -------- ARCHIVE_SEARCH PROFILE WITH DIP EXPORT AND WITHOUT RULES MANAGEMENT -----
 
-db.profiles.insert({
+db.profiles.insertOne({
    "_id":"system_archive_search_profile_without_rules_with_export",
    "identifier":NumberInt(29),
    "name":"Profil pour la recherche et consultation des archives avec export DIP et sans mises à jour des règles",
@@ -91,7 +91,7 @@ db.profiles.insert({
 
 // -------- ARCHIVE_SEARCH PROFILE WITHOUT RULES MANAGEMENT AND WITHOUT DIP EXPORT-----
 
-db.profiles.update({
+db.profiles.updateOne({
    "_id":"system_archive_search_profile_without_rules"
 },
 {

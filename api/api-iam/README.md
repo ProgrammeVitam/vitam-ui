@@ -32,7 +32,7 @@ En développement, définir également la propriété `config.dir` qui doit poin
 ## Connect to the Mongo shell (if needed)
 
 ```shell
-mongo --port 27018 -u "mongod_dbuser_iam" -p "mongod_dbpwd_iam" --authenticationDatabase "iam"
+mongosh --port 27018 -u "mongod_dbuser_iam" -p "mongod_dbpwd_iam" --authenticationDatabase "iam"
 ```
 
 
