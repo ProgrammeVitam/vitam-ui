@@ -11,7 +11,15 @@ function checkExistingReplicaSet() {
 
     try {
         var rsStatus = rs.status();
+
+        if (!rsStatus.ok) {
+            printjson(rsStatus);
+            throw "ERROR : Cannot check mongod replica set status";
+        }
+
         print("INFO : Exiting mongod replica set found");
+        return true;
+
     } catch (error) {
         if (error.message && error.message.includes("no replset config has been received")) {
             print("INFO : No mongod replica set found");
@@ -21,8 +29,6 @@ function checkExistingReplicaSet() {
         print("ERROR : Cannot check mongod replica set status");
         throw error;
     }
-
-    return true;
 }
 
 function checkExistingReplicaSetMembers() {
@@ -42,16 +48,11 @@ function checkExistingReplicaSetMembers() {
             }
         }
 
-        if (targetMembers.length != rsConfigMembers.length) {
+        if (targetMembers.length !== rsConfigMembers.length) {
             printjson(rsConfig);
             throw "ERROR : Found unexpected / unknown mongod ReplicaSet members";
         }
     } catch (error) {
-        if (error.message && error.message.includes("no replset config has been received")) {
-            print("INFO : No mongod replica set configuration found");
-            return false;
-        }
-
         print("ERROR : Cannot check mongod replica set members");
         throw error;
     }
@@ -61,7 +62,7 @@ function buildTargetReplicaSetMemberConfiguration() {
     var idCpt = 0;
     let members = [ { _id: idCpt++, host: "{{ ip_service }}:{{ mongodb.mongod_port }}" } ];
 {% for host in groups['hosts_vitamui_mongod'] %}
-    {% if hostvars[host]['mongo_rs_bootstrap'] is not defined or hostvars[host]['mongo_rs_bootstrap']|lower != "true" %}
+    {% if hostvars[host]['mongo_rs_bootstrap'] is not defined or hostvars[host]['mongo_rs_bootstrap'] | lower != "true" %}
     members.push({
         _id: idCpt++,
         host: "{{ hostvars[host]['ip_service'] }}:{{ mongodb.mongod_port }}"
@@ -82,7 +83,7 @@ function initReplicaSetPrimary() {
         }
     )
 
-    if(!rsInit.ok) {
+    if (!rsInit.ok) {
         printjson(rsInit);
         throw "ERROR : Cannot initialize mongod replica set";
     }
@@ -95,12 +96,12 @@ function waitForReplicaSetPrimaryElection() {
 
         status = rs.status();
 
-        if(!status.ok) {
+        if (!status.ok) {
             printjson(status);
             throw "ERROR : Cannot get mongod replica set status";
         }
 
-        if(status.myState === 1) {
+        if (status.myState === 1) {
             print("OK : mongod replica set elected primary node");
             return;
         }
@@ -120,12 +121,12 @@ function waitForWritablePrimary() {
 
         instanceStatus = db.hello();
 
-        if(!instanceStatus.ok) {
+        if (!instanceStatus.ok) {
             printjson(instanceStatus);
             throw "ERROR : Cannot get db instance status";
         }
 
-        if(instanceStatus.isWritablePrimary) {
+        if (instanceStatus.isWritablePrimary) {
             print("OK : Primary node is writable");
             return;
         }
@@ -138,7 +139,7 @@ function waitForWritablePrimary() {
     throw "ERROR : Timeout - NO PRIMARY NODE FOUND";
 }
 
-if(checkExistingReplicaSet()) {
+if (checkExistingReplicaSet()) {
     checkExistingReplicaSetMembers();
     print("INFO : mongod replica set already configured.");
 } else {
