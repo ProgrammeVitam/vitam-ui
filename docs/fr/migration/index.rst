@@ -14,4 +14,4 @@ Documentation de montée de version Vitam-UI
    upgrade_v5rc.md
    upgrade_v5.md
    upgrade_v6rc.md
-
+   upgrade_v6.md

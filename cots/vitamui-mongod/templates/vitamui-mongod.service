@@ -1,22 +1,30 @@
 [Unit]
-Description=High-performance, schema-free document-oriented database
-After=network.target
-After=syslog.target
+Description=MongoDB (mongod) Database Service
+Documentation=https://docs.mongodb.org/manual
+After=network-online.target
+Wants=network-online.target
 
 [Service]
-Type=simple
-Environment="LC_ALL=C"
-ExecStart=/usr/bin/mongod  -f /vitamui/conf/__NAME__/mongod.conf run
-Restart=always
 User=__USER__
 Group=__GROUP__
-# ulimits
+ExecStart=/usr/bin/mongod -f /vitamui/conf/__NAME__/mongod.conf
+# file size
 LimitFSIZE=infinity
+# cpu time
 LimitCPU=infinity
+# virtual memory size
 LimitAS=infinity
+# open files
 LimitNOFILE=64000
-LimitRSS=infinity
+# processes/threads
 LimitNPROC=64000
+# locked memory
+LimitMEMLOCK=infinity
+# total threads (user+kernel)
+TasksMax=infinity
+TasksAccounting=false
+# Recommended limits for mongod as specified in
+# https://docs.mongodb.com/manual/reference/ulimit/#recommended-ulimit-settings
 
 [Install]
 WantedBy=multi-user.target
