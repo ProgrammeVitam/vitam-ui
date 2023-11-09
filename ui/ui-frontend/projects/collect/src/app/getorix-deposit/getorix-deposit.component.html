@@ -1,8 +1,5 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav-content>
-    <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>{{ 'GETORIX_DEPOSIT.APP_BREADCRUMB' | translate }}</vitamui-common-title-breadcrumb>
-    </div>
     <div class="vitamui-content">
       <div></div>
       <div class="mt-3">
@@ -16,21 +13,17 @@
         <button class="btn primary" (click)="startDepositCreation()">
           <span>{{ 'GETORIX_DEPOSIT.CREATE_DEPOSIT' | translate }}</span>
         </button>
-        <div class="row guide-design">
-          <div class="row">
-            <div class="col-1">
-              <span class="vertical-line"></span>
-            </div>
-            <div class="col-11">
-              <div class="steps">{{ 'GETORIX_DEPOSIT.STEPS_TO_FOLLOW' | translate }}</div>
-              <div class="subTitle-design">
-                {{ 'GETORIX_DEPOSIT.GUIDE_TO_SHOW' | translate }}
-              </div>
-              <br />
-              <button class="btn second-confirm" (click)="showGuide()">
-                <span>{{ 'GETORIX_DEPOSIT.GUIDE' | translate }}</span>
-              </button>
-            </div>
+        <div class="guide-design">
+          <span class="vertical-line"></span>
+          <div class="steps">{{ 'GETORIX_DEPOSIT.STEPS_TO_FOLLOW' | translate }}</div>
+          <div class="subTitle-design more-css" [ngStyle]="{ 'padding-top': '10px', 'padding-bottom': '20px' }">
+            <span>{{ 'GETORIX_DEPOSIT.GUIDE_TO_SHOW' | translate }}</span>
+            <div></div>
+
+            <br />
+            <button class="btn second-confirm" (click)="showGuide()">
+              <span>{{ 'GETORIX_DEPOSIT.GUIDE' | translate }}</span>
+            </button>
           </div>
         </div>
       </div>
