@@ -36,7 +36,7 @@ export interface GetorixDeposit {
   operationType: string;
   internalAdministratorNumber: string;
   nationalNumber: string;
-  prescriptionOrderNumber: number;
+  prescriptionOrderNumber: string;
   archaeologistGetorixAddress: ArchaeologistGetorixAddress;
   operationStartDate: Date;
   operationEndDate: Date;

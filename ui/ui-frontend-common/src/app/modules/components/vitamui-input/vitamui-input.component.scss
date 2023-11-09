@@ -5,17 +5,21 @@ $input-small-height: 34px;
 $anim-timing: 150ms ease-out;
 
 :host {
-    display: inline-block;
+  display: inline-block;
 
-    &.ng-invalid:not(.ng-untouched) .vitamui-input {
-        border: 1px solid $red;
-    }
+  &.ng-invalid:not(.ng-untouched) .vitamui-input {
+    border: 1px solid $red;
+  }
 
-    &.ng-pending .vitamui-input mat-spinner {
-            display: block;
-    }
+  &.ng-pending .vitamui-input mat-spinner {
+    display: block;
+  }
+
+  &.ng-valid .vitamui-input {
+    border: 1px solid var(--vitamui-primary);
+  }
 }
 
 .vitamui-input-errors {
-    min-height: 23px;
+  min-height: 23px;
 }
