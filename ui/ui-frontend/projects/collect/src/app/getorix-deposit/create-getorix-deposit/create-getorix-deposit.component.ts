@@ -44,7 +44,7 @@ import { GetorixDepositService } from '../getorix-deposit.service';
   styleUrls: ['./create-getorix-deposit.component.scss'],
 })
 export class CreateGetorixDepositComponent implements OnInit, OnDestroy {
-  ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]*$/;
+  ALPHA_NUMERIC_REGEX = /^[a-zA-ZÀ-ÖØ-öø-ÿ\d\-_\s]+$/i;
   NUMERIC_REGEX = /^[0-9]*$/;
 
   showConfirmLeaveGetorixDepisitCreationSuscription: Subscription = new Subscription();
@@ -304,6 +304,8 @@ export class CreateGetorixDepositComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.scrollToTop();
+    this.scrollToElement('page-top-top');
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
@@ -316,6 +318,7 @@ export class CreateGetorixDepositComponent implements OnInit, OnDestroy {
   }
 
   startDepositCreation() {
+    this.scrollToTop();
     this.showForm = true;
   }
 
@@ -353,7 +356,8 @@ export class CreateGetorixDepositComponent implements OnInit, OnDestroy {
     this.showInputErrorFrame = this.depositFormError.filter((element) => element.isValid == false).length > 0;
 
     if (this.showInputErrorFrame) {
-      this.scrollToElement('page-top');
+      this.scrollToTop();
+      this.scrollToElement('page-top-top');
     } else {
       let getorixDeposit: GetorixDeposit = this.getorixDepositform.getRawValue();
       getorixDeposit.tenantIdentifier = +this.tenantIdentifier;
@@ -367,11 +371,11 @@ export class CreateGetorixDepositComponent implements OnInit, OnDestroy {
           this.getorixDepositform.reset();
           this.depositFormError.map((deposit) => (deposit.isValid = false));
           this.showInputErrorFrame = false;
-
           this.formChanged = false;
           this.showSecondScientifOfficer = false;
           this.detectChanges();
-          this.scrollToElement('page-top');
+          this.scrollToTop();
+          this.scrollToElement('page-top-top');
         });
     }
   }
@@ -435,7 +439,7 @@ export class CreateGetorixDepositComponent implements OnInit, OnDestroy {
   scrollToElement(htmlElementId: string) {
     this.operationCategoryList.map((element) => (element.isSelected = false));
     const element = document.getElementById(htmlElementId);
-    element.scrollIntoView();
+    element.scrollIntoView({ behavior: 'auto', block: 'center' });
     if (this.operationCategoryList.find((category) => category.target == htmlElementId)) {
       this.operationCategoryList.find((category) => category.target == htmlElementId).isSelected = true;
     }
@@ -521,6 +525,14 @@ export class CreateGetorixDepositComponent implements OnInit, OnDestroy {
     });
   }
 
+  private scrollToTop() {
+    const c = document.documentElement.scrollTop || document.body.scrollTop;
+    if (c > 0) {
+      window.requestAnimationFrame(this.scrollToTop);
+      window.scrollTo(0, c - c / 8);
+    }
+  }
+
   private initExportForm() {
     this.getorixDepositform = this.formBuilder.group({
       originatingAgency: ['', [Validators.required, Validators.minLength(2), Validators.pattern(this.ALPHA_NUMERIC_REGEX)]],
@@ -533,7 +545,7 @@ export class CreateGetorixDepositComponent implements OnInit, OnDestroy {
       operationType: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.ALPHA_NUMERIC_REGEX)]],
       internalAdministratorNumber: ['', [Validators.required, Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
       nationalNumber: ['', [Validators.required, Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
-      prescriptionOrderNumber: ['', [Validators.required, Validators.pattern(this.NUMERIC_REGEX), Validators.minLength(1)]],
+      prescriptionOrderNumber: ['', [Validators.required, Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
       operationParticularities: [''],
       operationStartDate: ['', Validators.required],
       operationEndDate: ['', Validators.required],

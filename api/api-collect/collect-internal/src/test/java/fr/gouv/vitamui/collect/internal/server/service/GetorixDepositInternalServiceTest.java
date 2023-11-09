@@ -212,7 +212,7 @@ class GetorixDepositInternalServiceTest {
         getorixDepositModel.setFurniture(true);
         getorixDepositModel.setTenantIdentifier(15);
         getorixDepositModel.setArchiveVolume(1975);
-        getorixDepositModel.setPrescriptionOrderNumber(56);
+        getorixDepositModel.setPrescriptionOrderNumber("56");
         getorixDepositModel.setOriginatingAgency("originatingAgencyIdentifier");
         getorixDepositModel.setVersatileService("TransferringAgencyIdentifier");
         getorixDepositModel.setProjectId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaabq");

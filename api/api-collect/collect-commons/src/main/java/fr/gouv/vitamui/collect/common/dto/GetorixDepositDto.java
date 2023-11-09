@@ -79,7 +79,7 @@ public class GetorixDepositDto extends IdDto {
     @Length(max = 250)
     private String nationalNumber;
 
-    private Integer prescriptionOrderNumber;
+    private String prescriptionOrderNumber;
 
     private ArchaeologistGetorixAddressDto archaeologistGetorixAddress;
 
