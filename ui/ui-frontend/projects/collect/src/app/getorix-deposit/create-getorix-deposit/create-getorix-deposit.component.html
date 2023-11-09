@@ -1,21 +1,21 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav-content>
-    <br />
+    <div id="page-top-top" [ngStyle]="{ 'padding-bottom': '40px' }"></div>
     <div class="vitamui-content">
       <div *ngIf="!showForm" class="row">
         <div class="col-3">
           <div class="text-return">
-            <i class="vitamui-icon vitamui-icon-chevron-left" [ngStyle]="{ position: 'fixed' }"></i>
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
             <span class="return clickable" (click)="returnToMainPage()"> {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.BACK' | translate }}</span>
           </div>
         </div>
         <div class="col-9">
           <div class="title">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.NEW_DEPOSIT' | translate }}</div>
-          <div class="description">
+          <div class="description" [ngStyle]="{ 'padding-top': '20px' }">
             <p>
               {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DEPOSIT_PART_ONE' | translate }}
             </p>
-            <p>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DEPOSIT_PART_TWO' | translate }}</p>
+            <p [ngStyle]="{ 'margin-top': '-15px' }">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DEPOSIT_PART_TWO' | translate }}</p>
           </div>
 
           <div class="description">
@@ -37,44 +37,53 @@
       <div *ngIf="showForm" class="row">
         <!-- sur 3 col-->
         <div class="col-4">
-          <div [ngStyle]="{ position: 'fixed' }">
-            <div class="text-return-creation">
-              <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-              <span class="return clickable" (click)="returnToGetorixInitialPage()">
-                {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SAVE_EXIT' | translate }}
-              </span>
-            </div>
+          <div [ngStyle]="{ position: 'sticky', top: '100px' }">
+            <ng-container>
+              <div class="text-return-creation">
+                <i class="vitamui-icon vitamui-icon-chevron-left"></i>
 
-            <div [ngStyle]="{ 'padding-top': '40px', width: '400px' }">
-              <div *ngFor="let element of operationCategoryList">
-                <div
-                  (click)="scrollToElement(element.target)"
-                  class="category-list clickable"
-                  [ngClass]="element.isSelected ? 'category-list-clicked' : 'no-backgound'"
-                >
-                  <span> {{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.' + element.operationCategory | translate }}</span>
-                  <i class="material-icons error-icon" *ngIf="element.isError">cancel </i>
-                </div>
+                <span class="return clickable" (click)="returnToGetorixInitialPage()">
+                  {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SAVE_EXIT' | translate }}
+                </span>
               </div>
-            </div>
+
+              <div [ngStyle]="{ 'padding-top': '20px' }">
+                <ng-container *ngFor="let element of operationCategoryList">
+                  <div class="row">
+                    <div
+                      (click)="scrollToElement(element.target)"
+                      class="col-11 category-list clickable"
+                      [ngClass]="element.isSelected ? 'category-list-clicked' : 'no-backgound'"
+                    >
+                      <span> {{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.' + element.operationCategory | translate }}</span>
+                    </div>
+                    <div class="col-1" [ngClass]="element.isSelected ? 'small-error-icon-clicked' : 'no-backgound'">
+                      <i class="material-icons small-error-icon" *ngIf="element.isError">cancel </i>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
           </div>
+
+          <div></div>
         </div>
         <!-- sur 6 col-->
-        <div id="page-top" class="col-6">
+        <div id="page-top" class="col-6" [ngStyle]="{ 'padding-top': '45px' }">
           <form [formGroup]="getorixDepositform">
             <div class="content vitamui-form">
               <div *ngIf="showInputErrorFrame" class="error-message-background">
-                <div class="row">
+                <div class="row" [ngStyle]="{ 'padding-top': '20px' }">
                   <div class="col-1"></div>
                   <div class="col-1">
-                    <i class="material-icons error-icon" [ngStyle]="{ 'font-size': '70px' }">cancel </i>
+                    <i class="material-icons error-icon" [ngStyle]="{ 'font-size': '50px', position: 'absolute', right: '0' }">cancel </i>
                   </div>
                   <div class="col-10">
                     <p class="incompleted-message">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.INCOMPLETED_DATA' | translate }}</p>
                   </div>
                 </div>
 
-                <div class="row">
+                <div class="row" [ngStyle]="{ 'margin-top': '-15px' }">
                   <div class="col-1"></div>
                   <div class="col-1">
                     <span class="error-vertical-line"></span>
@@ -87,6 +96,7 @@
                         {{ 'GETORIX_DEPOSIT.INPUT_NAMES.' + formError?.message | translate }}
                       </p></ng-container
                     >
+                    <div [ngStyle]="{ 'padding-bottom': '20px' }"></div>
                   </div>
                 </div>
               </div>
@@ -95,7 +105,7 @@
 
               <!--Organisme titulaire-->
               <div id="agencyDetails" class="form-title" (mousemove)="onMouseMove('agencyDetails')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.AGENCY_DETAILS' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.AGENCY_DETAILS' | translate }}</p>
 
                 <vitamui-common-input
                   class="col-12 px-0"
@@ -164,7 +174,7 @@
 
               <!-- Responsable scientifique -->
               <div id="scientificOfficer" class="form-title" (mousemove)="onMouseMove('scientificOfficer')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.SCIENTIFIC_OFFICER' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.SCIENTIFIC_OFFICER' | translate }}</p>
                 <vitamui-common-input
                   class="col-12 px-0"
                   formControlName="firstScientificOfficerLastName"
@@ -250,7 +260,7 @@
 
               <!-- Nom et type d'opération -->
               <div id="operaionNameAndType" class="form-title" (mousemove)="onMouseMove('operaionNameAndType')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.OPERATION_TYPE_NAME' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.OPERATION_TYPE_NAME' | translate }}</p>
 
                 <vitamui-common-input
                   class="col-12 px-0"
@@ -335,7 +345,7 @@
 
               <!-- Numéro d'opération -->
               <div id="operationNumber" class="form-title" (mousemove)="onMouseMove('operationNumber')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.OPERATION_NUMBER' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.OPERATION_NUMBER' | translate }}</p>
                 <vitamui-common-input
                   class="col-12 px-0"
                   formControlName="internalAdministratorNumber"
@@ -373,10 +383,10 @@
                 </vitamui-common-input>
 
                 <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
-                  <div class="guide-design" [ngStyle]="{ height: '200px' }">
+                  <div class="guide-design">
                     <div class="row">
                       <div class="col-1">
-                        <span class="vertical-line" [ngStyle]="{ height: '200px' }"></span>
+                        <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
                         <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
@@ -393,7 +403,7 @@
 
               <!-- Numéro d'arrêté de prescription -->
               <div id="prescriptionOrderNumber" class="form-title" (mousemove)="onMouseMove('prescriptionOrderNumber')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.PERSCRIPTION_NUMBER' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.PERSCRIPTION_NUMBER' | translate }}</p>
 
                 <vitamui-common-input
                   class="col-12 px-0"
@@ -431,7 +441,7 @@
 
               <!-- Localisation de l'opération -->
               <div id="operationLocalisation" class="form-title" (mousemove)="onMouseMove('operationLocalisation')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.LOCALISATION' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.LOCALISATION' | translate }}</p>
                 <ng-container formGroupName="archaeologistGetorixAddress">
                   <vitamui-common-input
                     class="col-12 px-0"
@@ -509,7 +519,7 @@
               </div>
               <!-- Particularités de l'opération -->
               <div id="operationParticularities" class="form-title" (mousemove)="onMouseMove('operationParticularities')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.PARTICULARITIES' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.PARTICULARITIES' | translate }}</p>
 
                 <vitamui-common-textarea
                   class="col-12 px-0"
@@ -519,10 +529,10 @@
                 </vitamui-common-textarea>
 
                 <div class="col-12 px-0">
-                  <div class="guide-design" [ngStyle]="{ height: '200px' }">
+                  <div class="guide-design">
                     <div class="row">
                       <div class="col-1">
-                        <span class="vertical-line" [ngStyle]="{ height: '200px' }"></span>
+                        <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
                         <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
@@ -540,7 +550,7 @@
 
               <!-- Dates de l'opération -->
               <div id="operationDates" class="form-title" (mousemove)="onMouseMove('operationDates')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.DATES' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.DATES' | translate }}</p>
                 <div class="col-12 px-0">
                   <div class="vitamui-input" (click)="pickerSatrDate.open()">
                     <span
@@ -605,7 +615,7 @@
 
               <!-- Dates des documents -->
               <div id="documentDates" class="form-title" (mousemove)="onMouseMove('documentDates')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.DOCUMENT_DATES' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.DOCUMENT_DATES' | translate }}</p>
 
                 <div class="col-12 px-0">
                   <div class="vitamui-input" (click)="documentPickerSatrtDate.open()">
@@ -668,10 +678,10 @@
                 </div>
 
                 <div class="col-12 px-0">
-                  <div class="guide-design" [ngStyle]="{ height: '160px' }">
+                  <div class="guide-design">
                     <div class="row">
                       <div class="col-1">
-                        <span class="vertical-line" [ngStyle]="{ height: '160px' }"></span>
+                        <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
                         <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
@@ -688,7 +698,7 @@
 
               <!-- Etat des archives papiers -->
               <div id="archiveStatus" class="form-title" (mousemove)="onMouseMove('archiveStatus')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.ARCHIVE_STATUS' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.ARCHIVE_STATUS' | translate }}</p>
 
                 <vitamui-common-input
                   class="col-12 px-0"
@@ -705,10 +715,10 @@
                 </vitamui-common-input>
 
                 <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
-                  <div class="guide-design" [ngStyle]="{ height: '165px' }">
+                  <div class="guide-design">
                     <div class="row">
                       <div class="col-1">
-                        <span class="vertical-line" [ngStyle]="{ height: '165px' }"></span>
+                        <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
                         <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
@@ -730,7 +740,7 @@
 
               <!-- Volumétrie des archives -->
               <div id="volumeDetails" class="form-title" (mousemove)="onMouseMove('volumeDetails')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.VOLUME_DETAILS' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.VOLUME_DETAILS' | translate }}</p>
 
                 <vitamui-common-input
                   class="col-12 px-0"
@@ -750,7 +760,7 @@
 
               <!-- Mobiler -->
               <div id="furniture" class="form-title" (mousemove)="onMouseMove('furniture')">
-                <p>{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.FURNITURE' | translate }}</p>
+                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.FURNITURE' | translate }}</p>
 
                 <p [ngStyle]="{ 'font-size': '16px' }">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.FURNITURE_QUESTION' | translate }}</p>
 
@@ -786,7 +796,7 @@
         <!-- sur 3 col-->
         <div class="col-1"></div>
         <div class="col-1">
-          <div [ngStyle]="{ position: 'fixed' }">
+          <div [ngStyle]="{ position: 'fixed', 'padding-top': '20px' }">
             <button class="btn primary" (click)="validateCreation()">
               <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VALIDATE' | translate }}</span>
             </button>

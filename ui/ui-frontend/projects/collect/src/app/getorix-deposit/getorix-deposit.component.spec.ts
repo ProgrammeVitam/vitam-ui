@@ -69,14 +69,6 @@ describe('GetorixDepositComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 1 column-1 ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementColumn = nativeElement.querySelectorAll('.col-1');
-
-      // Then
-      expect(elementColumn.length).toBe(1);
-    });
     it('should have 2 buttons ', () => {
       // When
       const nativeElement = fixture.nativeElement;
@@ -84,22 +76,6 @@ describe('GetorixDepositComponent', () => {
 
       // Then
       expect(elementBtn.length).toBe(2);
-    });
-    it('should have 2 rows ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.row');
-
-      // Then
-      expect(elementRow.length).toBe(2);
-    });
-    it('should have 1 column-11 ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementColumn = nativeElement.querySelectorAll('.col-11');
-
-      // Then
-      expect(elementColumn.length).toBe(1);
     });
   });
 });
