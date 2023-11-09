@@ -41,7 +41,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,13 +54,13 @@ public class OntologyServiceReader {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-     public static List<VitamUiOntologyDto> readExternalOntologiesFromFile(Integer tenantId, String ontologiesFilePath)
+    public static List<VitamUiOntologyDto> readExternalOntologiesFromFile(Integer tenantId, String ontologiesFilePath)
         throws IOException {
 
-        List<VitamUiOntologyDto> ontologyDtoList = new ArrayList<>();
+        List<VitamUiOntologyDto> ontologyDtoList;
         LOGGER.debug("Read ontologies list from file {} for tenant {}", ontologiesFilePath, tenantId);
 
-        File file = new File( ontologiesFilePath);
+        File file = new File(ontologiesFilePath);
 
         StringBuilder resultStringBuilder = new StringBuilder();
         try (BufferedReader bufferedReader
@@ -71,18 +70,19 @@ public class OntologyServiceReader {
                 resultStringBuilder.append(line).append("\n");
             }
         } catch (FileNotFoundException notFoundException) {
-            LOGGER.error("Can not find the ontologies list file {} ", notFoundException);
+            LOGGER.info("No external ontologies file provided ");
             return Collections.emptyList();
         }
         try {
             ontologyDtoList = objectMapper.readValue(resultStringBuilder.toString(), new TypeReference<>() {
             });
         } catch (JsonProcessingException exception) {
-            LOGGER.error("Can not parse the ontologies file{}", exception);
+            LOGGER.error("Can not parse the ontologies file {}", ontologiesFilePath);
             return Collections.emptyList();
         }
 
-        return ontologyDtoList.stream().filter(ontologyDto -> ontologyDto.getTenantIds().contains(DEFAULT_TENANT_IDENTIFIER) ||
+        return ontologyDtoList.stream()
+            .filter(ontologyDto -> ontologyDto.getTenantIds().contains(DEFAULT_TENANT_IDENTIFIER) ||
                 ontologyDto.getTenantIds().contains(tenantId))
             .collect(Collectors.toList());
     }
@@ -94,7 +94,7 @@ public class OntologyServiceReader {
         List<VitamUiOntologyDto> internalOntologyDtoList;
         LOGGER.debug("Read internal ontology fields list from file : {} ", internalOntologyFilePath);
 
-        File file = new File( internalOntologyFilePath);
+        File file = new File(internalOntologyFilePath);
 
         StringBuilder resultStringBuilder = new StringBuilder();
         try (BufferedReader bufferedReader
