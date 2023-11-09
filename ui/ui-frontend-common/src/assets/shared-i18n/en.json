@@ -351,7 +351,7 @@
     "GETORIX_DEPOSIT_APP": {
       "NAME": "Getorix Deposits",
       "TITLE": "Getorix Deposits",
-      "TOOLTIP": "Getorix Deposits Application"
+      "TOOLTIP": "Deposit of excavation archives"
     }
   },
   "FOOTER": {

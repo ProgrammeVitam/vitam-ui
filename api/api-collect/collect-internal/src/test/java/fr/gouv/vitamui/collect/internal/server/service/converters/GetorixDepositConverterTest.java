@@ -82,7 +82,7 @@ class GetorixDepositConverterTest {
         getorixDepositDto.setFurniture(true);
         getorixDepositDto.setTenantIdentifier(15);
         getorixDepositDto.setArchiveVolume(1975);
-        getorixDepositDto.setPrescriptionOrderNumber(56);
+        getorixDepositDto.setPrescriptionOrderNumber("56");
         getorixDepositDto.setOriginatingAgency("originatingAgencyIdentifier");
         getorixDepositDto.setVersatileService("TransferringAgencyIdentifier");
         getorixDepositDto.setProjectId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaabq");
@@ -112,7 +112,7 @@ class GetorixDepositConverterTest {
         getorixDepositModel.setFurniture(true);
         getorixDepositModel.setTenantIdentifier(15);
         getorixDepositModel.setArchiveVolume(1975);
-        getorixDepositModel.setPrescriptionOrderNumber(56);
+        getorixDepositModel.setPrescriptionOrderNumber("56");
         getorixDepositModel.setOriginatingAgency("originatingAgencyIdentifier");
         getorixDepositModel.setVersatileService("TransferringAgencyIdentifier");
         getorixDepositModel.setProjectId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaabq");

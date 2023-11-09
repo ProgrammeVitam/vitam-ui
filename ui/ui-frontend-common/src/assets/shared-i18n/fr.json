@@ -360,7 +360,7 @@
     "GETORIX_DEPOSIT_APP": {
       "NAME": "Versementgetorix",
       "TITLE": "Versementgetorix",
-      "TOOLTIP": "Application des versementgetorix"
+      "TOOLTIP": "Dépôt des archives de fouille"
     }
   },
   "FOOTER": {
