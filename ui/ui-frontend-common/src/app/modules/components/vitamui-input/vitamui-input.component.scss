@@ -14,6 +14,10 @@ $anim-timing: 150ms ease-out;
   &.ng-pending .vitamui-input mat-spinner {
     display: block;
   }
+
+  &.ng-valid .vitamui-input {
+    border: 1px solid var(--vitamui-primary);
+  }
 }
 
 .vitamui-input-errors {

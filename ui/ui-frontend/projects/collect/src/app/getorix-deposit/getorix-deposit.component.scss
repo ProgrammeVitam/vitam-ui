@@ -1,56 +1,67 @@
 .title-design {
-  //styleName: Headlines/Headline-3;
   font-family: Mulish;
   font-size: 42px;
   font-weight: 800;
   line-height: 56px;
   letter-spacing: -0.5px;
   text-align: left;
+  padding-top: 44px;
 }
 
 .subTitle-design {
-  //styleName: Text/Text-large;
   font-family: Mulish;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 28px;
   letter-spacing: 0px;
   text-align: left;
+  padding-top: 44px;
+  padding-bottom: 30px;
 }
 
 .guide-design {
   width: 100%;
-  height: 197px;
+  height: 200px;
   top: 426px;
   left: 120px;
   border-radius: 5px;
   gap: 10px;
-  background: #e8edff;
+  background: #f7ebfa;
   box-shadow: 0px 1px 4px 0px #2121210d;
   box-shadow: 0px 0px 2px 0px #21212133;
   padding-left: 20px;
-  margin-top: 30px;
+  margin-top: 60.5px;
 }
 .steps {
   font-family: Mulish;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 800;
   line-height: 56px;
   letter-spacing: -0.5px;
   text-align: left;
+  position: absolute;
+  top: 370px;
+  padding-left: 40px;
 }
 .vertical-line {
-  border-left: 10px solid;
-  color: var(--vitamui-primary);
+  border-left: 4px solid;
   display: block;
-  height: 100%;
+  height: 200px;
   margin: 0 -20px;
   border-radius: 5px;
+  //color: var(--primary-primary-300, #c672d9);
+  color: var(--vitamui-primary);
 }
 
 .second-confirm {
-  color: var(--primary-primary-500, #9c31b5);
-  background-color: white;
-  border-color: var(--primary-primary-500, #9c31b5);
-  margin-right: 30px;
+  //color: var(--primary-primary-500, #9c31b5);
+  color: var(--vitamui-primary);
+  background-color: #f7ebfa;
+  // border-color: var(--primary-primary-500, #9c31b5);
+  border-color: var(--vitamui-primary);
+}
+.more-css {
+  position: absolute;
+  top: 420px;
+  padding-left: 40px;
 }
