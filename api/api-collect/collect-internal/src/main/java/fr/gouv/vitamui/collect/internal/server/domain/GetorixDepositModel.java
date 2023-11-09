@@ -86,7 +86,7 @@ public class GetorixDepositModel extends IdDocument {
     @NotNull
     private String nationalNumber;
 
-    private Integer prescriptionOrderNumber;
+    private String prescriptionOrderNumber;
 
     @NotNull
     private ArchaeologistGetorixAddressDto archaeologistGetorixAddress;
