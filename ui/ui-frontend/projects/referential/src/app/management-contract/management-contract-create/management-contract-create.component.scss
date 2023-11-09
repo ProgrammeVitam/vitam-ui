@@ -1,16 +1,18 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 h4 {
-  font-size: 19px;
+  font-size: 16px;
   line-height: 26px;
-  margin-top: 7px;
-  margin-bottom: 7px;
+  color: var(--vitamui-grey-600);
 }
 
 h5 {
-  font-size: 23px;
+  font-size: 22px;
   line-height: 46px;
-  margin-top: 10px;
+}
+
+.btn {
+  min-width: 152.22px;
 }
 
 
@@ -19,6 +21,8 @@ h5 {
 
     padding: 0 5px;
     border-radius: 5px;
+    margin-left: 0;
+    margin-right: 0;
 
     background-color: var(--vitamui-background);
 
@@ -40,14 +44,18 @@ h5 {
 
   }
 
+
+
   .object-details {
     padding: 15px 15px;
     margin-top: 5px;
     background-color: var(--vitamui-background);
     font-size: 14px;
 
-    .vitamui-mat-select.mat-form-field{
-      width: 299px;
+
+    .vitamui-mat-select.mat-form-field {
+
+      font-size: 14px;
     }
 
     .delete-button {
@@ -60,6 +68,10 @@ h5 {
       color: var(--vitamui-primary);
       cursor: pointer;
 
+    }
+
+    label {
+      color: var(--vitamui-primary);
     }
   }
 
