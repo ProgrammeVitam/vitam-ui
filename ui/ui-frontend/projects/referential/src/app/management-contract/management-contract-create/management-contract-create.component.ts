@@ -80,12 +80,12 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   gotOpened = false;
   deleteDisabled = true;
 
-  statusControl = new FormControl(false);
+  statusControl = new FormControl(true);
   technicalObjectActivated = false;
 
   usages: Option[] = [
     {key: 'BinaryMaster', label: 'Original numérique', info: ''},
-    {key: 'Dissemination', label: 'Diffusion', info: ''},
+    {key: 'Dissemination', label: 'Copie de diffusion', info: ''},
     {key: 'Thumbnail', label: 'Vignette', info: ''},
     {key: 'TextContent', label: 'Contenu brut', info: ''},
     {key: 'PhysicalMaster', label: 'Original papier', info: ''},
@@ -98,7 +98,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       identifier: [null, Validators.required, this.managementContractCreateValidators.uniqueIdentifier()],
       status: ['INACTIVE'],
       name: [null, [Validators.required], this.managementContractCreateValidators.uniqueName()],
-      description: [null, Validators.required],
+      description: [null],
       // Step 2
       storage: this.formBuilder.group({
         unitStrategy: ['default', Validators.required],
@@ -109,6 +109,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       persistentIdentifierPolicy: this.formBuilder.group({
         persistentIdentifierPolicyType: [null, Validators.required],
         persistentIdentifierUnit: [false],
+        persistentIdentifierObject: [false],
         persistentIdentifierAuthority: ['', [Validators.required, Validators.pattern('^[0-9]{5,9}$')]],
         persistentIdentifierUsages: this.formBuilder.array([this.createUsageFormGroup()])
       })
@@ -140,9 +141,20 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    if (!this.thirdStepValid() || this.isDisabledButton) {
+      return;
+    }
     this.isDisabledButton = true;
     const managementContractFrom = this.form.value;
+    const persistentIdentifierPolicy = this.form.get('persistentIdentifierPolicy');
+    const persistentIdentifierObject = persistentIdentifierPolicy.get('persistentIdentifierObject');
+
+    if (!persistentIdentifierObject.value) {
+      managementContractFrom.persistentIdentifierPolicy.persistentIdentifierUsages = [];
+    }
+    delete managementContractFrom.persistentIdentifierPolicy.persistentIdentifierObject;
     managementContractFrom.persistentIdentifierPolicyList = [managementContractFrom.persistentIdentifierPolicy];
+
 
     const managementContract = managementContractFrom as ManagementContract;
     managementContract.status === 'ACTIVE'
@@ -215,8 +227,10 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       return false;
     }
 
+
     const persistentIdentifierPolicyType = persistentIdentifierPolicy.get('persistentIdentifierPolicyType');
     const persistentIdentifierUnit = persistentIdentifierPolicy.get('persistentIdentifierUnit');
+    const persistentIdentifierObject = persistentIdentifierPolicy.get('persistentIdentifierObject');
     const persistentIdentifierAuthority = persistentIdentifierPolicy.get('persistentIdentifierAuthority');
     const persistentIdentifierUsages = persistentIdentifierPolicy.get('persistentIdentifierUsages') as FormArray;
 
@@ -225,7 +239,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       !persistentIdentifierPolicyType ||
       !persistentIdentifierUnit ||
       !persistentIdentifierAuthority ||
-      (!persistentIdentifierUsages && this.technicalObjectActivated)
+      (!persistentIdentifierUsages && persistentIdentifierObject.value)
     ) {
       return false;
     }
@@ -235,7 +249,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       persistentIdentifierPolicyType.valid &&
       persistentIdentifierUnit.valid &&
       persistentIdentifierAuthority.valid &&
-      (!this.technicalObjectActivated || persistentIdentifierUsages.valid)
+      (!persistentIdentifierObject.value || persistentIdentifierUsages.valid)
     );
   }
 
@@ -253,7 +267,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   createUsageFormGroup(): FormGroup {
     return this.formBuilder.group({
       usageName: [null, Validators.required],
-      initialVersion: [false, Validators.required],
+      initialVersion: ['true', Validators.required],
       intermediaryVersion: ['ALL', Validators.required]
     });
   }
@@ -263,9 +277,9 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
 
     if (persistentIdentifierUsagesArray && persistentIdentifierUsagesArray.length > 1) {
       persistentIdentifierUsagesArray.removeAt(index);
-      if (persistentIdentifierUsagesArray.length === 1) {
-        this.deleteDisabled = true;
-      }
+    } else {
+      const firstElement = persistentIdentifierUsagesArray.at(0);
+      firstElement.reset();
     }
   }
 
