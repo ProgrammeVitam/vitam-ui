@@ -101,7 +101,6 @@
     "@types/lodash-es": "^4.17.3",
     "@types/lodash": "4.14.186",
     "@types/node": "^12.11.1",
-    "@types/underscore": "^1.10.0",
     "angular-oauth2-oidc": "^10.0.3",
     "bootstrap": "^4.5.0",
     "bufferutil": "^4.0.1",
