@@ -37,19 +37,24 @@
     - dhparam.pem.j2
   notify: reload nginx
 
-- name: 'Tasks > reverse > configure_nginx.yml | Copy frontend certificates'
-  copy:
-    src: "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/{{ item }}.*"
-    dest: "{{ nginx_ssl_conf }}"
-    owner: "{{ reverse_user }}"
-    group: "{{ reverse_group }}"
-    mode: '0640'
-  with_items:
-    - ui-admin-identity
-    - ui-identity
-    - ui-portal
-    #- ui-referential
-  notify: reload nginx
+# - name: 'Tasks > reverse > configure_nginx.yml | Copy frontend certificates'
+#   copy:
+#     src: "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/{{ item }}"
+#     dest: "{{ nginx_ssl_conf }}"
+#     owner: "{{ reverse_user }}"
+#     group: "{{ reverse_group }}"
+#     mode: '0640'
+#   with_items:
+#     - ui-identity-admin.crt
+#     - ui-identity-admin.key
+#     - ui-identity.crt
+#     - ui-identity.key
+#     - ui-portal.crt
+#     - ui-portal.key
+#     - ui-referential.crt
+#     - ui-referential.key
+#   notify: reload nginx
+#   become: true
 
 
 - name: 'Tasks > reverse > configure_nginx.yml | Copy common configuration (file proxy_params)'

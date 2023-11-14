@@ -15,6 +15,13 @@
     consul_tags: "api-gateway, api, internal"
 
 - hosts: hosts_ui_portal
+  gather_facts: no
+  any_errors_fatal: true
+  tasks:
+      - debug:
+          var: "{{ gateway.enabled }}"
+
+- hosts: hosts_ui_portal
   tasks:
     - include_role:
         name: assets_copy
@@ -59,20 +66,20 @@
         loop_var: frontend_app
       when: gateway.enabled | default(False)
 
-- hosts: hosts_ui_referential
-  tasks:
-    - include_role:
-        name: assets_copy
-      vars:
-        asset_path: "{{ root_path }}/data/{{ frontend_app.name }}/package/assets"
-        asset_favicon_path: "{{ root_path }}/data/{{ frontend_app.name }}/package"
-        asset_user: "{{ frontend_user | default('nginx') }}"
-        asset_group: "{{ frontend_group | default('nginx') }}"
-      with_items:
-        - "{{frontend.apps}}"
-      loop_control:
-        loop_var: frontend_app
-      when: gateway.enabled | default(False)
+# - hosts: hosts_ui_referential
+#   tasks:
+#     - include_role:
+#         name: assets_copy
+#       vars:
+#         asset_path: "{{ root_path }}/data/{{ frontend_app.name }}/package/assets"
+#         asset_favicon_path: "{{ root_path }}/data/{{ frontend_app.name }}/package"
+#         asset_user: "{{ frontend_user | default('nginx') }}"
+#         asset_group: "{{ frontend_group | default('nginx') }}"
+#       with_items:
+#         - "{{frontend.apps}}"
+#       loop_control:
+#         loop_var: frontend_app
+#       when: gateway.enabled | default(False)
 
 - hosts: hosts_ui_portal
   roles:
@@ -101,11 +108,11 @@
         frontend_application_name: "{{ hostvars[inventory_hostname]['ui_identity_admin']['frontend_name'] }}"
       when: gateway.enabled | default(False)
 
-- hosts: hosts_ui_referential
-  roles:
-    - role: nginx-webapp
-      vars:
-        frontend_role_goal: "install"
-        frontend_application_version: "{{ app_version }}"
-        frontend_application_name: "{{ hostvars[inventory_hostname]['ui_referential']['frontend_name'] }}"
-      when: gateway.enabled | default(False)
+# - hosts: hosts_ui_referential
+#   roles:
+#     - role: nginx-webapp
+#       vars:
+#         frontend_role_goal: "install"
+#         frontend_application_version: "{{ app_version }}"
+#         frontend_application_name: "{{ hostvars[inventory_hostname]['ui_referential']['frontend_name'] }}"
+#       when: gateway.enabled | default(False)
