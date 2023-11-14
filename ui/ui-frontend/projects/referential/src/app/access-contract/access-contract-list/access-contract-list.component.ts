@@ -35,16 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
-  AccessContract,
-  collapseAnimation,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  rotateAnimation,
+  AccessContract, collapseAnimation, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, rotateAnimation,
 } from 'ui-frontend-common';
 import { AccessContractService } from '../access-contract.service';
 
@@ -66,6 +60,7 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
 
   // tslint:disable-next-line:variable-name
   private _searchText: string;
+  private subscription: Subscription;
 
   @Output()
   accessContractClick = new EventEmitter<AccessContract>();
@@ -102,6 +97,8 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
 
       this.search(pageRequest);
     });
+
+    this.subscribeOnAccessContractPatchOperation();
   }
 
   buildAccessContractCriteriaFromSearch() {
@@ -116,6 +113,15 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
     }
 
     return criteria;
+  }
+
+  subscribeOnAccessContractPatchOperation() {
+    this.subscription = this.accessContractService.updated.subscribe((accessContract: AccessContract) => {
+      const index = this.dataSource.findIndex((ac: AccessContract) => ac.identifier === accessContract.identifier);
+      if (index > -1) {
+        this.dataSource[index] = accessContract;
+      }
+    });
   }
 
   searchAccessContractOrdered() {
@@ -133,5 +139,6 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
 
   ngOnDestroy() {
     this.updatedData.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }
