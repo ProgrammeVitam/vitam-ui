@@ -3,7 +3,6 @@ spring:
   cloud:
     consul:
       enabled: true
-      host: consul.service.consul
       discovery:
         preferIpAddress: true
         tags: {{ consul_tags }}
