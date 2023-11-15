@@ -54,13 +54,13 @@ import {NgxUiLoaderModule} from 'ngx-ui-loader';
 import {VitamUICommonModule} from 'ui-frontend-common';
 import {PastisMaterialModule} from '../material.module';
 import {UserActionsModule} from '../user-actions/user-actions.module';
+import {CreateNoticeChoiceComponent} from './create-notice-choice/create-notice-choice.component';
 import {CreateProfileComponent} from './create-profile/create-profile.component';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {ListProfileComponent} from './list-profile/list-profile.component';
-import {ProfilePreviewModule} from './profile-preview/profile-preview.module';
 import {FilterByStringNamePipe} from './list-profile/pipes/filterByStringName.pipe';
 import {FilterByTypePipe} from './list-profile/pipes/filterByType.pipe';
-import {CreateNoticeChoiceComponent} from "./create-notice-choice/create-notice-choice.component";
+import {ProfilePreviewModule} from './profile-preview/profile-preview.module';
 
 
 @NgModule({
@@ -81,9 +81,11 @@ import {CreateNoticeChoiceComponent} from "./create-notice-choice/create-notice-
     NgxUiLoaderModule,
     ProfilePreviewModule
   ],
-  exports: [CreateNoticeChoiceComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
+  exports: [CreateNoticeChoiceComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent,
+     FilterByStringNamePipe, FilterByTypePipe],
   providers: [],
-  declarations: [CreateNoticeChoiceComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
+  declarations: [CreateNoticeChoiceComponent, CreateProfileComponent, EditProfileComponent,
+     ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
 
 })
 export class ProfileModule {

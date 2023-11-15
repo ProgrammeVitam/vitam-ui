@@ -46,18 +46,14 @@ import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.ApplicationExternalService;
+import fr.gouv.vitamui.iam.external.server.service.ApplicationService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -70,20 +66,24 @@ import java.util.Optional;
  *
  *
  */
-@RestController
-@RequestMapping(RestApi.V1_APPLICATIONS_URL)
 @Getter
 @Setter
-@Api(tags = "applications", value = "Applications Management", description = "Applications Management")
+@RestController
+@RequestMapping(RestApi.V1_APPLICATIONS_URL)
+@Api(tags = "applications", value = "Applications Management")
 public class ApplicationExternalController implements CrudController<ApplicationDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationExternalController.class);
 
     private final ApplicationExternalService applicationExternalService;
 
+    private final ApplicationService applicationService;
+
     @Autowired
-    public ApplicationExternalController(final ApplicationExternalService applicationExternalService) {
+    public ApplicationExternalController(final ApplicationExternalService applicationExternalService,
+                                         final ApplicationService applicationService) {
         this.applicationExternalService = applicationExternalService;
+        this.applicationService = applicationService;
     }
 
     @GetMapping
@@ -92,7 +92,23 @@ public class ApplicationExternalController implements CrudController<Application
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
+        EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return applicationExternalService.getAll(criteria, embedded);
+    }
+
+    @GetMapping("/filtered")
+    @ApiOperation(value = "Return config about applications and categories")
+    public Map<String, Object> getApplicationsFromUi(@RequestParam(defaultValue = "true") final boolean filterApp) {
+        LOGGER.debug("getApplications");
+        return applicationService.getApplications(filterApp);
+    }
+
+    @GetMapping(path = "/{identifier:.+}/externalid")
+    @ApiOperation(value = "Check if an application can have an external identifier")
+    public Boolean isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String identifier) {
+        SanityChecker.checkSecureParameter(identifier);
+        LOGGER.debug("isApplicationExternalIdentifierEnabled");
+        return applicationService.isApplicationExternalIdentifierEnabled(identifier);
     }
 
     @Override
@@ -115,4 +131,5 @@ public class ApplicationExternalController implements CrudController<Application
     public ApplicationDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         throw new UnsupportedOperationException("patch not implemented");
     }
+
 }

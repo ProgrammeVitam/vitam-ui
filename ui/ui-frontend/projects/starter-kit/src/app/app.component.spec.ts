@@ -1,9 +1,3 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
-import { waitForAsync } from '@angular/core/testing';
-import { TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -41,13 +35,17 @@ import { Router } from '@angular/router';
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:component-selector max-classes-per-file */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Component } from '@angular/core';
+import { waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { BASE_URL } from 'ui-frontend-common';
+import { AuthService, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { environment } from './../environments/environment.prod';
-
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthService, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
 @Component({ selector: 'router-outlet', template: '' })
@@ -81,7 +79,6 @@ describe('AppComponent', () => {
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => { } } },
-        { provide: ENVIRONMENT, useValue: environment },
         { provide: BASE_URL, useValue: '/fake-api' },
       ]
     }).compileComponents();

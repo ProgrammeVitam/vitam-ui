@@ -37,7 +37,6 @@
 /* tslint:disable: max-classes-per-file directive-selector */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
-import { CountryService } from 'ui-frontend-common';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -48,6 +47,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
+import { CountryService } from 'ui-frontend-common';
 import { BASE_URL, ConfirmDialogService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CustomerService } from '../../core/customer.service';

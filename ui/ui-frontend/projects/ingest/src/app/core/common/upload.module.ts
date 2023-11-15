@@ -45,9 +45,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { SharedModule } from '../../shared/shared.module';
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';
-import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [

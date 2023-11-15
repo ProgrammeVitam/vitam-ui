@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { LoggerModule } from 'ui-frontend-common';
-import { UploadTrackingComponent } from './upload-tracking.component';
-import { UploadService } from '../../core/common/upload.service';
-import { IngestList } from '../../core/common/ingest-list';
-import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { LoggerModule } from 'ui-frontend-common';
+import { IngestList } from '../../core/common/ingest-list';
+import { UploadService } from '../../core/common/upload.service';
+import { UploadTrackingComponent } from './upload-tracking.component';
 
 describe('UploadTrackingComponent', () => {
   let component: UploadTrackingComponent;

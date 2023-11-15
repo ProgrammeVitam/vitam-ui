@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Event} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Event } from 'projects/vitamui-library/src/public-api';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import {
   AccessionRegisterSummary,
   DEFAULT_PAGE_SIZE,
@@ -49,9 +49,8 @@ import {
   VitamUISnackBarService,
 } from 'ui-frontend-common';
 
-import {AccessionRegisterSummaryApiService} from '../core/api/accession-register-summary-api.service';
-import {OperationApiService} from '../core/api/operation-api.service';
-import {AuditOptions} from '../models/audit.interface';
+import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';
+import { OperationApiService } from '../core/api/operation-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -67,7 +66,7 @@ export class AuditService extends SearchService<Event> {
     super(http, operationApiService, 'ALL');
   }
 
-  create(audit: AuditOptions, headers: HttpHeaders) {
+  create(audit: any, headers: HttpHeaders) {
     for (const header in this.headers) {
       if (this.headers.hasOwnProperty(header)) {
         headers.set(header, this.headers.get(header));
@@ -79,6 +78,9 @@ export class AuditService extends SearchService<Event> {
           console.log('Audit: ', audit);
           this.snackBarService.open({
             message: 'SNACKBAR.AUDIT_RUN',
+            translateParams: {
+              id: audit.identifier,
+            },
             icon: 'vitamui-icon-audit',
           });
         },

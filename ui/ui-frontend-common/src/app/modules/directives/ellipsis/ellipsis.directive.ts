@@ -34,13 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Directive, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonEllipsis]',
 })
 export class EllipsisDirective implements OnInit, AfterViewInit {
+
+  @Input() isToolTipOnMouseEnter = false;
   domElement: any;
+
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {
     this.domElement = this.elementRef.nativeElement;
     this.renderer.addClass(this.elementRef.nativeElement, 'text-ellipsis');
@@ -54,10 +57,17 @@ export class EllipsisDirective implements OnInit, AfterViewInit {
     this.setToolTip();
   }
 
-  @HostListener('window:resize', ['$event.target'])
+  @HostListener('window:resize')
   setToolTip() {
     (this.domElement.offsetWidth < this.domElement.scrollWidth) ?
-      this.renderer.setAttribute(this.domElement, 'title', this.domElement.textContent) :
-      this.renderer.removeAttribute(this.domElement, 'title');
+    this.renderer.setAttribute(this.domElement, 'title', this.domElement.textContent) :
+    this.renderer.removeAttribute(this.domElement, 'title');
+  }
+
+  @HostListener('mouseenter')
+  setToolTipOnMouseEnter() {
+    if (this.isToolTipOnMouseEnter) {
+      this.setToolTip();
+    }
   }
 }

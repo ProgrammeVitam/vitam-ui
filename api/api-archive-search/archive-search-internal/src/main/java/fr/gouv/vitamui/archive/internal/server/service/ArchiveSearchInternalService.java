@@ -120,9 +120,9 @@ public class ArchiveSearchInternalService {
 
     @Autowired
     public ArchiveSearchInternalService(final ObjectMapper objectMapper, final UnitService unitService,
-        final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
-        final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
-        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
+                                        final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
+                                        final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
+                                        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
@@ -131,7 +131,7 @@ public class ArchiveSearchInternalService {
     }
 
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
-        final VitamContext vitamContext)
+                                                        final VitamContext vitamContext)
         throws VitamClientException, IOException {
         try {
             LOGGER.debug("calling find archive units by criteria {} ", searchQuery.toString());
@@ -151,7 +151,7 @@ public class ArchiveSearchInternalService {
     }
 
     private void fillManagementRulesFacets(SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto,
-        boolean trackTotalHits, VitamContext vitamContext)
+                                           boolean trackTotalHits, VitamContext vitamContext)
         throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
         try {
             archiveUnitsDto.getArchives().getFacetResults()
@@ -221,7 +221,7 @@ public class ArchiveSearchInternalService {
     }
 
     public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
-        VitamContext vitamContext) throws VitamClientException {
+                                 VitamContext vitamContext) throws VitamClientException {
 
         if (unitDescriptiveMetadataDto == null) {
             LOGGER.error("Error update unit criteria");
@@ -406,7 +406,7 @@ public class ArchiveSearchInternalService {
     }
 
     public ResultsDto selectUnitWithInheritedRules(final SearchCriteriaDto searchQuery,
-        final VitamContext vitamContext)
+                                                   final VitamContext vitamContext)
         throws VitamClientException, IOException {
         ResultsDto response = new ResultsDto();
         LOGGER.debug("calling select Units With Inherited Rules by criteria {} ", searchQuery.toString());
@@ -423,7 +423,7 @@ public class ArchiveSearchInternalService {
     }
 
     public String reclassification(
-        final ReclassificationCriteriaDto reclassificationCriteriaDto, final VitamContext vitamContext)
+                                   final ReclassificationCriteriaDto reclassificationCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
         if (reclassificationCriteriaDto == null) {
             throw new BadRequestException("Error reclassification criteria");

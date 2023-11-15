@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {ComponentFixture, TestBed } from "@angular/core/testing";
-import {Component} from "@angular/core";
-import {By} from "@angular/platform-browser";
-import {ResizeVerticalDirective} from "./resize-vertical.directive";
+import {Component} from '@angular/core';
+import {ComponentFixture, TestBed } from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
+import {ResizeVerticalDirective} from './resize-vertical.directive';
 
 @Component({
   template: `

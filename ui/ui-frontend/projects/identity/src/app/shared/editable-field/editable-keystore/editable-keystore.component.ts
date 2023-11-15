@@ -41,7 +41,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import {
   IdentityProviderService
 } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
-
+/*eslint no-use-before-define: "error"*/
 @Component({
   selector: 'app-editable-keystore',
   templateUrl: './editable-keystore.component.html',

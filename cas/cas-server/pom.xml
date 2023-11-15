@@ -11,6 +11,20 @@
     <name>VITAMUI CAS Server</name>
 
     <properties>
+        <assertj-core.version>3.11.1</assertj-core.version>
+        <jackson.version>2.13.4</jackson.version>
+        <lombok.version>1.18.24</lombok.version>
+        <micrometer.version>1.9.3</micrometer.version>
+        <mockito.version>3.12.1</mockito.version>
+        <spring.boot.version>2.7.3</spring.boot.version>
+        <spring.cloud.consul.version>3.1.1</spring.cloud.consul.version>
+        <spring.security.version>5.7.3</spring.security.version>
+        <spring.test.version>5.3.22</spring.test.version>
+        <spring.version>5.3.22</spring.version>
+        <swagger.version>2.2.2</swagger.version>
+        <mongo.version>4.7.1</mongo.version>
+        <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
+        <thymeleaf-spring5.version>3.0.15.RELEASE</thymeleaf-spring5.version>
 
         <rpm.skip>false</rpm.skip>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
@@ -46,19 +60,28 @@
         </dependency>
 
         <!-- Consul -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <version>${spring.cloud.consul.version}</version>
             <scope>runtime</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+                    <groupId>org.springframework.cloud</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-commons</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-context</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-commons</artifactId>
+            <version>${spring.cloud.consul.version}</version>
+		</dependency>
+         <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-context</artifactId>
+            <version>${spring.cloud.consul.version}</version>
+		</dependency>
 
         <!-- CAS server -->
         <dependency>
@@ -88,6 +111,7 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
+            <version>${mongo.version}</version>
         </dependency>
 
         <!-- authentication delegation -->
@@ -144,6 +168,11 @@
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-javaee</artifactId>
+            <version>${pac4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
             <artifactId>pac4j-http</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
@@ -170,6 +199,7 @@
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>spring-webmvc-pac4j</artifactId>
+            <version>${spring-webmvc-pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
@@ -191,6 +221,11 @@
             <artifactId>cas-server-support-hazelcast-ticket-registry</artifactId>
             <version>${cas.version}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
 
         <!-- X509 authentication -->
         <dependency>
@@ -201,6 +236,11 @@
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-x509-core</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-core-webflow-api</artifactId>
             <version>${cas.version}</version>
         </dependency>
 
@@ -271,7 +311,7 @@
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-sms-twilio</artifactId>
+            <artifactId>cas-server-support-sms-smsmode</artifactId>
             <version>${cas.version}</version>
         </dependency>
         <dependency>
@@ -279,11 +319,23 @@
             <artifactId>cas-server-core-authentication-mfa-api</artifactId>
             <version>${cas.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-bucket4j-core</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
 
         <!-- throttling -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-throttle</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+
+        <!-- logout -->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-actions-core</artifactId>
             <version>${cas.version}</version>
         </dependency>
 
@@ -325,11 +377,6 @@
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-core-webflow-api</artifactId>
-            <version>${cas.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-saml-core</artifactId>
             <version>${cas.version}</version>
         </dependency>
@@ -340,6 +387,7 @@
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>jakarta.mail</artifactId>
+            <version>1.6.5</version>
         </dependency>
 
         <!-- OAuth support -->
@@ -379,6 +427,35 @@
             <version>${cas.version}</version>
         </dependency>
 
+        <!-- OIDC support -->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-oidc</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-oidc-core-api</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-oidc-core</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+
+        <!-- CORS -->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-webapp-config</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-core-services</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+
         <!-- metrics -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
@@ -388,6 +465,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${micrometer.version}</version>
         </dependency>
 
         <!-- logs -->
@@ -418,6 +496,7 @@
         <dependency>
             <groupId>org.gandon.tomcat</groupId>
             <artifactId>juli-to-slf4j</artifactId>
+            <version>1.1.1</version>
         </dependency>
 
         <!-- UTIL -->
@@ -428,18 +507,22 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring5</artifactId>
+            <version>${thymeleaf-spring5.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery-ui</artifactId>
+            <version>1.12.1</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
+            <version>5.11.2</version>
         </dependency>
 
         <!-- TEST -->
@@ -456,11 +539,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
+            <version>${spring.test.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -552,11 +637,15 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
-                    <arguments>
-                        <argument>
-                            --spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml
-                        </argument>
-                    </arguments>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.apereo.cas</groupId>
+                            <artifactId>cas-server-webapp-tomcat</artifactId>
+                        </exclude>
+                    </excludes>
+					<arguments>
+						<argument>--spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml</argument>
+					</arguments>
                 </configuration>
                 <executions>
                     <execution>
@@ -582,7 +671,7 @@
                 <configuration>
                     <inputPath>${project.basedir}/src/main/config/sass</inputPath>
                     <outputPath>${project.basedir}/src/main/resources/static/css</outputPath>
-                    <generateSourceMap>true</generateSourceMap>
+                    <generateSourceMap>false</generateSourceMap>
                     <outputStyle/>
                 </configuration>
             </plugin>

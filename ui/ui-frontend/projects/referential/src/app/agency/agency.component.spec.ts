@@ -44,10 +44,10 @@ import { InjectorModule, LoggerModule, SecurityService } from 'ui-frontend-commo
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
 import { AgencyService } from './agency.service';
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 
 
 @Component({ selector: 'app-agency-preview', template: '' })

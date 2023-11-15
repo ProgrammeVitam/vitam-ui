@@ -36,12 +36,27 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.referential.common.dto.RuleDto;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -49,11 +64,22 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.RuleExternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -165,8 +191,8 @@ public class RuleExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
 
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);

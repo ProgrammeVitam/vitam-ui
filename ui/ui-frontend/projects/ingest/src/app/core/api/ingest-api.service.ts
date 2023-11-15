@@ -1,8 +1,8 @@
-import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'

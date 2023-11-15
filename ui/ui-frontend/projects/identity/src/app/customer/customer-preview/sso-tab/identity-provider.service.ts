@@ -36,7 +36,7 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Criterion, IdentityProvider, Operators, SearchQuery, StartupService, VitamUISnackBarService } from 'ui-frontend-common';
+import { Criterion, IdentityProvider, Operators, SearchQuery, VitamUISnackBarService } from 'ui-frontend-common';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -50,14 +50,14 @@ export class IdentityProviderService {
 
   constructor(
     private providerApi: ProviderApiService,
-    private snackBarService: VitamUISnackBarService,
-    private startupService: StartupService
+    private snackBarService: VitamUISnackBarService
     ) { }
 
   create(idp: IdentityProvider): Observable<IdentityProvider> {
     return this.providerApi.create(idp)
       .pipe(
         map((newIDP: IdentityProvider) => this.addMetadataUrl(newIDP)),
+        map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
         tap(
           (newIDP: IdentityProvider) => {
             this.snackBarService.open({
@@ -78,6 +78,7 @@ export class IdentityProviderService {
     return this.providerApi.patch(idp)
       .pipe(
         map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
+        map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
         tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
         tap(
           (updatedIdp: IdentityProvider) => {
@@ -99,6 +100,7 @@ export class IdentityProviderService {
     return this.providerApi.patchProviderIdpMetadata(id, idpMetadata)
       .pipe(
         map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
+        map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
         tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
         tap(
           (updatedIdp: IdentityProvider) => {
@@ -137,6 +139,27 @@ export class IdentityProviderService {
       );
   }
 
+  updateSpMetadataFile(id: string, spMetadata: File): Observable<IdentityProvider> {
+    return this.providerApi.patchProviderSpMetadata(id, spMetadata)
+      .pipe(
+        map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
+        tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
+        tap(
+          (updatedIdp: IdentityProvider) => {
+            this.snackBarService.open({
+              message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+              translateParams:{
+                param1: updatedIdp.name,
+              }
+            });
+          },
+          (error) => {
+            this.snackBarService.open({ message: error.error.message, translate: false });
+          }
+        )
+      );
+  }
+
   getAll(customerId?: string): Observable<IdentityProvider[]> {
     const criterionArray: Criterion[] = [];
     if (customerId) {
@@ -151,6 +174,9 @@ export class IdentityProviderService {
       .pipe(
         map((identityProviders) => {
           return identityProviders.map((identityProvider) => this.addMetadataUrl(identityProvider));
+        }),
+        map((identityProviders) => {
+          return identityProviders.map((identityProvider) => this.addSpMetadataUrl(identityProvider));
         })
       );
   }
@@ -165,8 +191,12 @@ export class IdentityProviderService {
   }
 
   private addMetadataUrl(identityProvider: IdentityProvider): IdentityProvider {
-    identityProvider.idpMetadataUrl = this.providerApi.buildMetadataUrl(identityProvider.id, this.startupService.getTenantIdentifier());
+    identityProvider.idpMetadataUrl = this.providerApi.buildMetadataUrl(identityProvider.id);
+    return identityProvider;
+  }
 
+  private addSpMetadataUrl(identityProvider: IdentityProvider): IdentityProvider {
+    identityProvider.spMetadataUrl = this.providerApi.buildSpMetadataUrl(identityProvider.id);
     return identityProvider;
   }
 

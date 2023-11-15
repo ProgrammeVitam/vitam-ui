@@ -122,7 +122,6 @@
       "PASSWORDS_DURATION": "Durée de révocation des mot de passe",
       "PASSWORD_DURATION_1": "Durée de révocation du mot de passe",
       "PASSWORD_DURATION_2": "(depuis le dernier changement)",
-      "VALIDATIONS_TOOLTIP": "Afin de pouvoir activer la validation en deux étapes vous devez au préalable renseigner le numéro de mobile",
       "VALIDATIONS": "Validation en deux étapes",
       "DOMAINS": "Domaines",
       "CODE_ALREADY_EXIST": "Code déjà existant",
@@ -159,6 +158,7 @@
       "STATUS_INACTIVE": "Inactif",
       "PATTERNS": "Patterns",
       "METADATA": "Metadata CAS",
+      "SP_METADATA": "Sp Metadata",
       "RETURN": "Retourner à la liste des IDP",
       "ACTIVE_SWITCH": "IDP Actif",
       "IDP_NAME": "Nom de l'IDP",
@@ -184,7 +184,10 @@
         "SUBTITLE_SAML": "Paramètres spécificiques SAML",
         "SUBTITLE_OIDC": "Paramètres spécificiques OIDC"
       },
-      "AUTO_PROVISIONING": "Mise à jour automatique des utilisateurs"
+      "AUTO_PROVISIONING": "Mise à jour automatique des utilisateurs",
+      "MAXIMUM_AUTHENTICATION_LIFETIME" : "Temps maximum de connexion (secondes)",
+      "WANTS_ASSERTION_SIGNED": "Assertions signées",
+      "AUTHN_REQUEST_SIGNED": "Requête d'authentification signée"
     },
     "GRAPHIC_IDENTITY": {
       "TOGGLE_TITLE": "Identité graphique personnalisée",
@@ -310,6 +313,7 @@
       "TYPE": "Type",
       "ALLOW_SUBROGATION": "Compte subrogeable par le support",
       "VALIDATIONS": "Validation en deux étapes",
+      "VALIDATIONS_TOOLTIP": "Afin de pouvoir activer la validation en deux étapes vous devez au préalable renseigner le numéro de mobile",
       "MODAL": {
         "INFORMATIONS_STEP": {
           "TITLE": "Informations",
@@ -352,8 +356,8 @@
     "OTHER_ACTION": {
       "ACTIVATE": "Activer",
       "DESACTIVATE": "Désactiver",
-      "DESACTIVATE_MESSAGE": "Êtes vous sur de vouloir désactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?",
-      "REACTIVATE_MESSAGE": "Êtes vous sur de vouloir réactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?"
+      "DESACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir désactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?",
+      "REACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir réactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?"
     }
   },
   "USER_PROFILE": {

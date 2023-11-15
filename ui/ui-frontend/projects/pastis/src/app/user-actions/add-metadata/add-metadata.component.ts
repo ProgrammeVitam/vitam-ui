@@ -1,3 +1,4 @@
+import { OnDestroy } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -50,11 +51,12 @@ import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-metadata.component.html',
   styleUrls: ['./add-metadata.component.scss']
 })
-export class UserActionAddMetadataComponent implements OnInit {
+export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
 
   btnIsDisabled: boolean;
 
@@ -168,7 +170,7 @@ export class UserActionAddMetadataComponent implements OnInit {
     this.addedItems.push(element);
 
     if (element.Cardinality.endsWith('1')) {
-      this.allowedChildren = this.allowedChildren.filter(e => e != element);
+      this.allowedChildren = this.allowedChildren.filter(e => e !== element);
     }
 
     if (this.fileNode.sedaData.Children.filter((e: SedaData) => e.Name.endsWith('Rule')).length > 0) {

@@ -164,7 +164,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
         this.accessContractSelect.setValue(accessContratId);
       } else {
         this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
+          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
           null,
           {
             panelClass: 'vitamui-snack-bar',

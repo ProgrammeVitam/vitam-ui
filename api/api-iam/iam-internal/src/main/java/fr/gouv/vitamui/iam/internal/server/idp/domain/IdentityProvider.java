@@ -115,6 +115,10 @@ public class IdentityProvider extends CustomerIdDocument {
 
     private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;
 
+    private Boolean wantsAssertionsSigned;
+
+    private Boolean authnRequestSigned;
+
 
     // OIDC provider data
     private String clientId;

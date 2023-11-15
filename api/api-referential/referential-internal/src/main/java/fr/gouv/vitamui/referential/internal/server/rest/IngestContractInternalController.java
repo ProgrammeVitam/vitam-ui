@@ -150,7 +150,7 @@ public class IngestContractInternalController {
         return ingestContractInternalService.patch(vitamContext, partialDto);
     }
 
-    @GetMapping("/{id}/history")
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());

@@ -39,7 +39,7 @@ import { Component, ElementRef, EventEmitter, forwardRef, Input, Output } from '
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent } from 'ui-frontend-common';
-
+/*eslint no-use-before-define: "error"*/
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableDomainInputComponent),

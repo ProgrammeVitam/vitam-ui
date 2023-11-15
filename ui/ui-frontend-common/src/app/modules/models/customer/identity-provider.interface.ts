@@ -49,21 +49,25 @@ export interface IdentityProvider extends Id {
   patterns: string[];
   enabled: boolean;
   idpMetadataUrl?: string;
+  spMetadataUrl?: string;
   readonly: boolean;
   mailAttribute?: string;
   identifierAttribute?: string;
   authnRequestBinding: AuthnRequestBindingEnum;
+  maximumAuthenticationLifetime: number;
+  wantsAssertionsSigned: boolean;
+  authnRequestSigned: boolean;
   autoProvisioningEnabled: boolean;
-  clientId?:string;
-  clientSecret?:string;
-  discoveryUrl?:string;
-  scope?:string;
-  preferredJwsAlgorithm?:string;
-  customParams?:Map<string,string>;
-  useState?:boolean;
-  useNonce?:boolean;
-  usePkce?:boolean;
-  protocoleType?:string;
+  clientId?: string;
+  clientSecret?: string;
+  discoveryUrl?: string;
+  scope?: string;
+  preferredJwsAlgorithm?: string;
+  customParams?: Map<string, string>;
+  useState?: boolean;
+  useNonce?: boolean;
+  usePkce?: boolean;
+  protocoleType?: string;
 }
 
 /**

@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 

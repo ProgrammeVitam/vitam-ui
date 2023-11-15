@@ -36,10 +36,10 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { forwardRef, Input } from '@angular/core';
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ENVIRONMENT } from 'ui-frontend-common';
 import { BASE_URL, Customer, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';

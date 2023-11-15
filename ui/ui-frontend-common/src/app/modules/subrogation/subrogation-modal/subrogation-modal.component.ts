@@ -50,11 +50,10 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./subrogation-modal.component.scss'],
 })
 export class SubrogationModalComponent implements OnInit {
-
   public stepIndex = 0;
   public stepCount = 2;
   public domains: string[];
-  public user: { email: string, firstname: string, lastname: string };
+  public user: { email: string; firstname: string; lastname: string };
   public form: FormGroup;
   public pending: boolean;
 
@@ -70,9 +69,8 @@ export class SubrogationModalComponent implements OnInit {
   ) {
     this.form = this.builder.group({
       emailFirstPart: [null, Validators.required],
-      domain: null
+      domain: null,
     });
-
   }
 
   ngOnInit() {
@@ -114,10 +112,11 @@ export class SubrogationModalComponent implements OnInit {
           this.dialogRef.close();
           this.snackBarService.open({
             message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ACTIVE_SUBROGATION',
-            icon: 'vitamui-icon-link banner-icon'
+            icon: 'vitamui-icon-link banner-icon',
+            translateParams: { email: response.surrogate },
+            translate: true,
           });
         }
-
       } else {
         this.createSubrogation(surrogateEmail);
       }
@@ -152,14 +151,15 @@ export class SubrogationModalComponent implements OnInit {
       },
       () => {
         this.handleSubrogationError();
-      });
+      }
+    );
   }
 
   handleSubrogationError() {
     this.dialogRef.close();
     this.snackBarService.open({
       message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.IMPOSSIBLE_SUBROGATION',
-      icon: 'vitamui-icon-link banner-icon'
+      icon: 'vitamui-icon-link banner-icon',
     });
   }
 
@@ -177,5 +177,4 @@ export class SubrogationModalComponent implements OnInit {
       this.dialogRef.close();
     });
   }
-
 }

@@ -43,6 +43,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
+import fr.gouv.vitam.common.error.VitamError;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -75,13 +76,11 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.easymock.EasyMock.*;
 
 @RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
-@PrepareForTest({ ServerIdentityConfiguration.class })
+@PrepareForTest({ServerIdentityConfiguration.class})
 public class AccessContractInternalServiceTest {
 
     private AccessContractService accessContractService;
     private VitamUIAccessContractService vitamUIAccessContractService;
-    private ObjectMapper objectMapper;
-    private AccessContractConverter converter;
     private LogbookService logbookService;
     private AccessContractInternalService accessContractInternalService;
 
@@ -89,9 +88,9 @@ public class AccessContractInternalServiceTest {
     public void setUp() {
         accessContractService = mock(AccessContractService.class);
         vitamUIAccessContractService = mock(VitamUIAccessContractService.class);
-        objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        converter = new AccessContractConverter();
+        AccessContractConverter converter = new AccessContractConverter();
         logbookService = mock(LogbookService.class);
         accessContractInternalService = new AccessContractInternalService(accessContractService, vitamUIAccessContractService, objectMapper, converter, logbookService);
 
@@ -229,7 +228,7 @@ public class AccessContractInternalServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_ok(){
+    public void check_should_return_ok_when_vitamclient_ok() {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
@@ -245,7 +244,7 @@ public class AccessContractInternalServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_throws_ConflictException(){
+    public void check_should_return_ok_when_vitamclient_throws_ConflictException() {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
@@ -341,34 +340,36 @@ public class AccessContractInternalServiceTest {
     }
 
     @Test
-    public void patch_should_return_ok_when_vitamclient_ok() throws InvalidParseOperationException, AccessExternalClientException {
+    public void patch_should_return_ok_when_vitamclient_ok() throws InvalidParseOperationException, AccessExternalClientException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
-        String id = "0";
-        Map<String, Object> partialDto = new HashMap<>();
-        partialDto.put("identifier", "value");
-        ObjectNode query = JsonHandler.createObjectNode();
 
-        expect(vitamUIAccessContractService.patchAccessContract(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(vitamUIAccessContractService.patchAccessContract(anyObject(), anyObject(), anyObject()))
+            .andReturn(new RequestResponseOK<>());
         EasyMock.replay(vitamUIAccessContractService);
 
+        expect(accessContractService.findAccessContractById(anyObject(), anyObject()))
+            .andReturn(new RequestResponseOK<>());
+        EasyMock.replay(accessContractService);
+
+        Map<String, Object> partialDto = new HashMap<>(Map.of("identifier", "value"));
         assertThatCode(() -> {
             accessContractInternalService.patch(vitamContext, partialDto);
         }).doesNotThrowAnyException();
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_400() throws InvalidParseOperationException, AccessExternalClientException {
+    public void patch_should_throw_InternalServerException_when_vitamclient_400() throws InvalidParseOperationException, AccessExternalClientException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
-        String id = "0";
-        Map<String, Object> partialDto = new HashMap<>();
-        partialDto.put("identifier", "value");
-        ObjectNode query = JsonHandler.createObjectNode();
 
-        expect(vitamUIAccessContractService.patchAccessContract(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(vitamUIAccessContractService.patchAccessContract(anyObject(), anyObject(), anyObject()))
+            .andReturn(new VitamError<>("BAD_REQUEST"));
         EasyMock.replay(vitamUIAccessContractService);
 
+        expect(accessContractService.findAccessContractById(anyObject(), anyObject()))
+            .andReturn(new RequestResponseOK<>());
+        EasyMock.replay(accessContractService);
+
+        Map<String, Object> partialDto = new HashMap<>(Map.of("identifier", "value"));
         assertThatCode(() -> {
             accessContractInternalService.patch(vitamContext, partialDto);
         }).doesNotThrowAnyException();
@@ -394,10 +395,8 @@ public class AccessContractInternalServiceTest {
     @Test
     public void patch_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
-        String id = "identifier";
         Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("identifier", "identifier");
-        ObjectNode query = JsonHandler.createObjectNode();
 
         expect(vitamUIAccessContractService.patchAccessContract(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class)))
             .andThrow(new AccessExternalClientException("Exception thrown by vitam"));
@@ -413,7 +412,7 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class),isA(VitamContext.class)))
+        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class)))
             .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
         EasyMock.replay(logbookService);
 
@@ -427,7 +426,7 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class),isA(VitamContext.class)))
+        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class)))
             .andThrow(new BadRequestException("Exception thrown by Vitam"));
         EasyMock.replay(logbookService);
 
@@ -438,11 +437,11 @@ public class AccessContractInternalServiceTest {
 
 
     @Test
-    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws  VitamClientException {
+    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class),isA(VitamContext.class)))
+        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class)))
             .andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(logbookService);
 

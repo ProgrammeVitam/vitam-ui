@@ -38,12 +38,12 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {MatMenuModule} from '@angular/material/menu';
 
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {IngestService} from '../../../ingest.service';
-import {IngestEventDetailComponent} from './ingest-event-detail.component';
-import {EventDisplayHelperService} from '../../event-display-helper.service';
-import {Event} from '../../event';
-import {of} from 'rxjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {of} from 'rxjs';
+import {IngestService} from '../../../ingest.service';
+import {Event} from '../../event';
+import {EventDisplayHelperService} from '../../event-display-helper.service';
+import {IngestEventDetailComponent} from './ingest-event-detail.component';
 
 describe('IngestEventDetailComponent', () => {
   let component: IngestEventDetailComponent;

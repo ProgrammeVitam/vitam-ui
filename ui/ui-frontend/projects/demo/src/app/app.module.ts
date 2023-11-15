@@ -43,7 +43,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
-import { AccountComponent, AppGuard, BASE_URL, ENVIRONMENT, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AccountComponent, AppGuard, AuthenticationModule, BASE_URL, ENVIRONMENT, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppGuardDemoComponent } from './demo/app-guard-demo/app-guard-demo.component';
@@ -63,6 +63,7 @@ import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.
     AppComponent,
   ],
   imports: [
+    AuthenticationModule.forRoot(),
     BrowserAnimationsModule,
     BrowserModule,
     MatSidenavModule,

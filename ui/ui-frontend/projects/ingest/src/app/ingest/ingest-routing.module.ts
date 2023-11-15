@@ -37,8 +37,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
 import { IngestComponent } from './ingest.component';
-import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
 
 const routes: Route[] = [
   {

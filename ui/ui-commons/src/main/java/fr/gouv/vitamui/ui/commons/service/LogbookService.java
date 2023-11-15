@@ -126,8 +126,8 @@ public class LogbookService {
      * @param id
      * @return
      */
-    public LogbookOperationsResponseDto findOperations(final ExternalHttpContext context, final JsonNode select) {
-        return responseMapping(getLogbookRestClient().findOperations(context, select), LogbookOperationsResponseDto.class);
+    public LogbookOperationsResponseDto findOperations(final ExternalHttpContext context, final JsonNode select, final Integer vitamTenantIdentifier) {
+        return responseMapping(getLogbookRestClient().findOperations(context, select, vitamTenantIdentifier), LogbookOperationsResponseDto.class);
     }
 
     /**

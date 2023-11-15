@@ -40,8 +40,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.logbook.LogbookLifecycle;
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.NoRightsException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
@@ -62,6 +64,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * The service to interact with logbooks.
@@ -88,6 +92,20 @@ public class LogbookExternalService extends AbstractInternalClientService {
             return JsonUtils.treeToValue(json, clazz, false);
         } catch (final JsonProcessingException e) {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
+        }
+    }
+
+
+    protected void checkAccessRights(final Integer requestedTenantIdentifier) {
+        final boolean allAccess = externalSecurityService.canAccessToAllTenants();
+        if (!allAccess) {
+            final Integer tenantIdentifier = externalSecurityService.getTenantIdentifier();
+            if (tenantIdentifier == null) {
+                throw new ApplicationServerException("Unable to retrieve the tenant linked to the current user.");
+            }
+            if (!tenantIdentifier.equals(requestedTenantIdentifier) && !externalSecurityService.canAccessAllCustomersTenants()) {
+                throw new NoRightsException("You can't access the operations on the following tenant : " + requestedTenantIdentifier);
+            }
         }
     }
 
@@ -131,9 +149,12 @@ public class LogbookExternalService extends AbstractInternalClientService {
      * @return
      * @throws VitamClientException
      */
-    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) throws PreconditionFailedException {
+    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select, final Integer vitamTenantIdentifier) throws PreconditionFailedException {
         SanityChecker.sanitizeJson(select);
-        return responseMapping(logbookRestClient.findOperations(getInternalHttpContext(), select),
+        if (Objects.nonNull(vitamTenantIdentifier)) {
+            checkAccessRights(vitamTenantIdentifier);
+        }
+        return responseMapping(logbookRestClient.findOperations(getInternalHttpContext(), select, vitamTenantIdentifier),
             LogbookOperationsResponseDto.class);
     }
 

@@ -79,7 +79,7 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
 
   collections: Option[] = [
     { key: 'Unit', label: 'Unité Archivistique', info: '' },
-    { key: 'ObjectGroup', label: "Groupe d'objet", info: '' },
+    { key: 'ObjectGroup', label: 'Groupe d\'objet', info: '' },
   ];
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;

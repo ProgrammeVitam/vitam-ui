@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -46,9 +46,9 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.scss']
+  styleUrls: ['./customer.component.scss'],
 })
-export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> {
+export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
 
   public customers: Customer[];
   public previewType: 'CUSTOMER' | 'OWNER' | 'TENANT';
@@ -57,26 +57,29 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> {
 
   @ViewChild(CustomerListComponent, { static: true }) customerListComponent: CustomerListComponent;
 
-  constructor(private dialog: MatDialog, public route: ActivatedRoute, public globalEventService: GlobalEventService, public customerService: CustomerService) {
+  constructor(private dialog: MatDialog, public route: ActivatedRoute, public globalEventService: GlobalEventService,
+    public customerService: CustomerService) {
     super(route, globalEventService);
   }
 
   ngOnInit() {
-    this.customerService.getGdprReadOnlySettingStatus().subscribe(settingStatus => {
+    this.customerService.getGdprReadOnlySettingStatus().subscribe((settingStatus) => {
       this.gdprReadOnlySettingStatus = settingStatus;
     });
-   }
+  }
 
   openCreateCustomerDialog() {
-    const dialogRef = this.dialog.open(CustomerCreateComponent,
-       {
-        data: {
-           gdprReadOnlySettingStatus: this.gdprReadOnlySettingStatus
-        },
-        panelClass: 'vitamui-modal',
-        disableClose: true });
+    const dialogRef = this.dialog.open(CustomerCreateComponent, {
+      data: {
+        gdprReadOnlySettingStatus: this.gdprReadOnlySettingStatus,
+      },
+      panelClass: 'vitamui-modal',
+      disableClose: true,
+    });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) { this.refreshList(); }
+      if (result) {
+        this.refreshList();
+      }
     });
   }
 
@@ -97,7 +100,9 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> {
   }
 
   private refreshList() {
-    if (!this.customerListComponent) { return; }
+    if (!this.customerListComponent) {
+      return;
+    }
     this.customerListComponent.searchCustomersOrderedByCode();
   }
 }

@@ -34,12 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { Agency, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
-import { AgencyApiService } from '../core/api/agency-api.service';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {Agency,SearchService, VitamUISnackBarService} from 'ui-frontend-common';
+
+
+import {AgencyApiService} from '../core/api/agency-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -76,9 +78,12 @@ export class AgencyService extends SearchService<Agency> {
   create(agency: Agency) {
     return this.agencyApiService.create(agency, this.headers).pipe(
       tap(
-        () => {
+        (response: Agency) => {
           this.snackBarService.open({
             message: 'SNACKBAR.AGENCY_CONTRACT_CREATED',
+              translateParams:{
+                name: response.identifier,
+              },
             icon: 'vitamui-icon-admin-key',
           });
         },
@@ -93,9 +98,12 @@ export class AgencyService extends SearchService<Agency> {
     return this.agencyApiService.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
-        () => {
+        (response) => {
           this.snackBarService.open({
             message: 'SNACKBAR.AGENCY_CONTRACT_UPDATED',
+              translateParams:{
+                name: response.identifier,
+              },
             icon: 'vitamui-icon-admin-key',
           });
         },
@@ -113,11 +121,17 @@ export class AgencyService extends SearchService<Agency> {
           if (response === false) {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_DELETE_ERROR',
+              translateParams:{
+                name: agency.id,
+              },
               icon: 'vitamui-icon-admin-key',
             });
           } else {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_DELETED',
+              translateParams:{
+                name: agency.identifier,
+              },
               icon: 'vitamui-icon-admin-key',
             });
           }

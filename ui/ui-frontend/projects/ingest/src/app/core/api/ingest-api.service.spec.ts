@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { IngestApiService } from './ingest-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { InjectorModule, LoggerModule, BASE_URL, ENVIRONMENT } from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { environment } from '../../../environments/environment.prod';
+import { IngestApiService } from './ingest-api.service';
 
 describe('IngestApiService', () => {
   beforeEach(() => TestBed.configureTestingModule({

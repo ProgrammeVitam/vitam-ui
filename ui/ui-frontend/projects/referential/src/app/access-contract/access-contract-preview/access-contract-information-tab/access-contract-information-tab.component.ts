@@ -43,6 +43,8 @@ import { AccessContract, diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
 import { AccessContractService } from '../../access-contract.service';
+import {RULE_TYPES} from "../../../rule/rules.constants";
+
 
 @Component({
   selector: 'app-access-contract-information-tab',
@@ -127,15 +129,7 @@ export class AccessContractInformationTabComponent {
   // tslint:disable-next-line:variable-name
   private _accessContract: AccessContract;
 
-  // FIXME: Get list from common var ?
-  rules: Option[] = [
-    { key: 'StorageRule', label: "Durée d'utilité courante", info: '' },
-    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
-    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
-    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AccessRule', label: 'Délai de communicabilité', info: '' },
-    { key: 'AppraisalRule', label: "Durée d'utilité administrative", info: '' },
-  ];
+  rules: Option[] = RULE_TYPES;
   previousValue = (): AccessContract => {
     return this._accessContract;
   };

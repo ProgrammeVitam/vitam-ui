@@ -9,7 +9,7 @@ module.exports = function (config) {
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('puppeteer'),
-      require('karma-jasmine-html-reporter'),
+      require('karma-spec-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
@@ -24,10 +24,21 @@ module.exports = function (config) {
     angularCli: {
       environment: 'dev'
     },
-    reporters: ['progress', 'kjhtml', 'coverage-istanbul'],
+    reporters : ['spec', 'coverage-istanbul'],
+    specReporter: {
+      maxLogLines: 5,             // limit number of lines logged per test
+      suppressSummary: false,      // do not print summary
+      suppressErrorSummary: false, // do not print error summary
+      suppressFailed: false,      // do not print information about failed tests
+      suppressPassed: false,      // do not print information about passed tests
+      suppressSkipped: true,      // do not print information about skipped tests
+      showBrowser: false,        // print the browser for each spec
+      showSpecTiming: true,      // print the time elapsed for each spec
+      failFast: false,           // test would finish with error when a first
+    },
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DISABLE,
     autoWatch: true,
     browsers: ['Chrome'],
     singleRun: false

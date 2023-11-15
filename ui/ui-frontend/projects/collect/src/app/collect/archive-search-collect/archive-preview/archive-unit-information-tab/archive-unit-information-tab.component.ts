@@ -222,7 +222,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       this.hasEnTitle = !this.hasFrTitle;
     }
 
-    if (archiveUnit.Description == undefined) {
+    if (archiveUnit.Description === undefined) {
       this.hasNoDescription = true;
     }
 
@@ -296,19 +296,19 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   private formDescriptionHasChanged() {
     const formVal = this.form.get('description').value;
     const previousVal = this.previousValue.description;
-    if ((formVal == undefined || formVal == '') && (previousVal == undefined || previousVal == '')) {
+    if ((formVal === undefined || formVal === '') && (previousVal === undefined || previousVal === '')) {
       return false;
     }
-    return formVal != previousVal;
+    return formVal !== previousVal;
   }
 
   private formHasChanges() {
     return (
-      this.form.get('title').value != this.previousValue.title ||
+      this.form.get('title').value !== this.previousValue.title ||
       this.formDescriptionHasChanged() ||
-      this.form.get('descriptionLevel').value != this.previousValue.descriptionLevel ||
-      this.getStartDate(this.form.get('startDate').value) != this.getStartDate(this.previousValue.startDate) ||
-      this.getStartDate(this.form.get('endDate').value) != this.getStartDate(this.previousValue.endDate)
+      this.form.get('descriptionLevel').value !== this.previousValue.descriptionLevel ||
+      this.getStartDate(this.form.get('startDate').value) !== this.getStartDate(this.previousValue.startDate) ||
+      this.getStartDate(this.form.get('endDate').value) !== this.getStartDate(this.previousValue.endDate)
     );
   }
 

@@ -39,3 +39,4 @@ export * from './user-info.interface';
 export * from './auth-user.interface';
 export * from './user-profile-group-info.interface';
 export * from './tenants-by-application.interface';
+export * from './user-alerts.interface';

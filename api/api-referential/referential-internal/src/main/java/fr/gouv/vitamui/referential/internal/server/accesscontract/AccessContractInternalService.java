@@ -305,11 +305,10 @@ public class AccessContractInternalService {
             ArrayNode actions = JsonHandler.createArrayNode().add(action);
             ObjectNode query = JsonHandler.createObjectNode().set("$action", actions);
             LOGGER.debug("Send AccessContract update request: {}", query);
-            RequestResponse<AccessContractVitamDto> requestResponse = vitamUIAccessContractService.patchAccessContract(vitamContext, id, query);
-            final AccessContractVitamDto accessContractVitamDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AccessContractVitamDto.class);
-            return converter.convertVitamToDto(accessContractVitamDto);
-        } catch (InvalidParseOperationException | AccessExternalClientException | JsonProcessingException e) {
+
+            vitamUIAccessContractService.patchAccessContract(vitamContext, id, query);
+            return getOne(vitamContext, id);
+        } catch (InvalidParseOperationException | AccessExternalClientException e) {
             throw new InternalServerException("Can't patch access contract", e);
         }
     }

@@ -35,6 +35,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.ProcessDetailDto;
+import fr.gouv.vitamui.referential.common.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -70,24 +71,24 @@ public class LogbookManagementOperationExternalRestClient extends BasePaginating
         };
     }
 
-    public ResponseEntity<ProcessDetailDto> searchOperationsDetails(ExternalHttpContext context, ProcessQuery processQuery) {
+    public ResponseEntity<VitamUIProcessDetailResponseDto> searchOperationsDetails(ExternalHttpContext context, ProcessQuery processQuery) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.OPERATIONS_PATH );
         final HttpEntity<AuditOptions> request = new HttpEntity(processQuery, buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.POST, request, ProcessDetailDto.class);
+        return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.POST, request, VitamUIProcessDetailResponseDto.class);
 
     }
 
-    public ResponseEntity<ProcessDetailDto> cancelOperationProcessExecution(ExternalHttpContext context, String id) {
+    public ResponseEntity<VitamUIProcessDetailResponseDto> cancelOperationProcessExecution(ExternalHttpContext context, String id) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CANCEL_OPERATION_PATH+ CommonConstants.PATH_ID);
         final HttpEntity<AuditOptions> request = new HttpEntity(buildHeaders(context));
-        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, ProcessDetailDto.class);
+        ResponseEntity<VitamUIProcessDetailResponseDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, VitamUIProcessDetailResponseDto.class);
         return response;
     }
 
-    public ResponseEntity<ProcessDetailDto> updateOperationActionProcess(ExternalHttpContext context, String id, String actionId) {
+    public ResponseEntity<VitamUIProcessDetailResponseDto> updateOperationActionProcess(ExternalHttpContext context, String id, String actionId) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.UPDATE_OPERATION_PATH+ CommonConstants.PATH_ID);
         final HttpEntity<AuditOptions> request = new HttpEntity(actionId, buildHeaders(context));
-        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, ProcessDetailDto.class);
+        ResponseEntity<VitamUIProcessDetailResponseDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, VitamUIProcessDetailResponseDto.class);
         return response;
     }
 

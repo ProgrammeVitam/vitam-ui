@@ -1,7 +1,8 @@
-import { ApplicationId } from 'ui-frontend-common';
 import { Component, OnInit } from '@angular/core';
+import { ApplicationId } from 'ui-frontend-common';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'starter-kit-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss']

@@ -50,6 +50,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.ProfileExternalService;
@@ -240,7 +241,7 @@ public class ProfileExternalController {
 
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException , PreconditionFailedException{
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException , PreconditionFailedException{
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);

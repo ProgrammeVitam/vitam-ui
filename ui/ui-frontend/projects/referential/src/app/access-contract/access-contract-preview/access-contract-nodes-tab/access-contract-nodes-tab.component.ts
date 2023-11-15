@@ -38,6 +38,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import '@angular/localize/init';
+import '@angular/localize/init';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
@@ -72,7 +73,7 @@ export class AccessContractNodesTabComponent implements OnInit {
         this.initTitles();
       } else {
         this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
+          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
           null,
           {
             panelClass: 'vitamui-snack-bar',

@@ -28,16 +28,16 @@
  */
 
 
-import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
-import {BehaviorSubject, Observable, of} from "rxjs";
-import {AccessionRegisterListComponent} from "./accession-register-list.component";
-import {AccessionRegistersService} from "../accession-register.service";
-import {Direction, InfiniteScrollTable, PageRequest, SearchService, TableFilterModule} from "ui-frontend-common";
-import {TranslateModule} from "@ngx-translate/core";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {VitamUICommonTestModule} from "ui-frontend-common/testing";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {TranslateModule} from '@ngx-translate/core';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {Direction, InfiniteScrollTable, PageRequest, SearchService, TableFilterModule} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {AccessionRegistersService} from '../accession-register.service';
+import {AccessionRegisterListComponent} from './accession-register-list.component';
 
 describe('AccessionRegisterListComponent', () => {
 
@@ -84,15 +84,15 @@ describe('AccessionRegisterListComponent', () => {
   describe('searchRequest', () => {
     it('searchRequest should work', () => {
       // Given
-      const search_emit = spyOn(InfiniteScrollTable.prototype, 'search');
+      const searchEmit = spyOn(InfiniteScrollTable.prototype, 'search');
       accessionRegistersService.getDateIntervalChanges = () => new BehaviorSubject({
-        endDateMin: "",
-        endDateMax: "14/09/1988"
+        endDateMin: '',
+        endDateMax: '14/09/1988'
       })
       // When
       component.searchRequest();
       // Then
-      expect(search_emit).toHaveBeenCalledWith(new PageRequest(
+      expect(searchEmit).toHaveBeenCalledWith(new PageRequest(
         0,
         20,
         'EndDate',

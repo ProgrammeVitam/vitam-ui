@@ -36,22 +36,13 @@
  */
 package fr.gouv.vitamui.cas.webflow.configurer;
 
-import javax.security.auth.login.*;
-
 import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
+import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
 import lombok.val;
-import org.apereo.cas.authentication.PrincipalException;
-import org.apereo.cas.authentication.adaptive.UnauthorizedAuthenticationException;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
-import org.apereo.cas.authentication.exceptions.AccountDisabledException;
-import org.apereo.cas.authentication.exceptions.AccountPasswordMustChangeException;
-import org.apereo.cas.authentication.exceptions.InvalidLoginLocationException;
-import org.apereo.cas.authentication.exceptions.InvalidLoginTimeException;
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.services.UnauthorizedServiceForPrincipalException;
-import org.apereo.cas.ticket.UnsatisfiedAuthenticationPolicyException;
-import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.web.flow.CasWebflowConstants;
+import org.apereo.cas.web.flow.StringToCharArrayConverter;
 import org.apereo.cas.web.flow.configurer.DefaultLoginWebflowConfigurer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
@@ -60,11 +51,10 @@ import org.springframework.webflow.engine.Flow;
 import org.springframework.webflow.engine.History;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 
-import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
+import java.util.Map;
 
 /**
  * A webflow configurer:
- * - with a specific processing for the redirections ("secured connection" intermediate page)
  * - to handle the change password action even if the user is already authenticated
  * - with a only-username page
  * - with a (username+)password page.
@@ -85,7 +75,6 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
                                         final ConfigurableApplicationContext applicationContext, final CasConfigurationProperties casProperties) {
         super(flowBuilderServices, flowDefinitionRegistry, applicationContext, casProperties);
     }
-
 
     @Override
     protected void createTicketGrantingTicketCheckAction(final Flow flow) {
@@ -109,41 +98,15 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
     }
 
     @Override
-    protected void createHandleAuthenticationFailureAction(final Flow flow) {
-        val handler = createActionState(flow, CasWebflowConstants.STATE_ID_HANDLE_AUTHN_FAILURE,
-            CasWebflowConstants.ACTION_ID_AUTHENTICATION_EXCEPTION_HANDLER);
-        createTransitionForState(handler, AccountDisabledException.class.getSimpleName(), CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
-        createTransitionForState(handler, AccountLockedException.class.getSimpleName(), CasWebflowConstants.STATE_ID_ACCOUNT_LOCKED);
-        createTransitionForState(handler, AccountExpiredException.class.getSimpleName(), CasWebflowConstants.STATE_ID_EXPIRED_PASSWORD);
-        createTransitionForState(handler, AccountLockedException.class.getSimpleName(), CasWebflowConstants.STATE_ID_ACCOUNT_LOCKED);
-        // CUSTO: instead of STATE_ID_MUST_CHANGE_PASSWORD, send to STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO
-        createTransitionForState(handler, AccountPasswordMustChangeException.class.getSimpleName(), CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO);
-        createTransitionForState(handler, CredentialExpiredException.class.getSimpleName(), CasWebflowConstants.STATE_ID_EXPIRED_PASSWORD);
-        createTransitionForState(handler, InvalidLoginLocationException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INVALID_WORKSTATION);
-        createTransitionForState(handler, InvalidLoginTimeException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INVALID_AUTHENTICATION_HOURS);
-        createTransitionForState(handler, FailedLoginException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, AccountNotFoundException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, UnauthorizedServiceForPrincipalException.class.getSimpleName(),
-            CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, PrincipalException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, UnsatisfiedAuthenticationPolicyException.class.getSimpleName(),
-            CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, UnauthorizedAuthenticationException.class.getSimpleName(),
-            CasWebflowConstants.STATE_ID_AUTHENTICATION_BLOCKED);
-        createTransitionForState(handler, CasWebflowConstants.STATE_ID_SERVICE_UNAUTHZ_CHECK, CasWebflowConstants.STATE_ID_SERVICE_UNAUTHZ_CHECK);
-        createStateDefaultTransition(handler, CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        handler.getEntryActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_CLEAR_WEBFLOW_CREDENTIALS));
-    }
-
-    @Override
     protected void createLoginFormView(final Flow flow) {
-        val propertiesToBind = CollectionUtils.wrapList("username");
+        val propertiesToBind = Map.of("username", Map.of("required", "true"));
         val binder = createStateBinderConfiguration(propertiesToBind);
 
         val state = createViewState(flow, CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM, "login/casLoginView", binder);
         state.getRenderActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_RENDER_LOGIN_FORM));
         createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
 
+        // CUSTO: CasWebflowConstants.STATE_ID_REAL_SUBMIT becomes INTERMEDIATE_SUBMIT
         val transition = createTransitionForState(state, CasWebflowConstants.TRANSITION_ID_SUBMIT, INTERMEDIATE_SUBMIT);
         val attributes = transition.getAttributes();
         attributes.put("bind", Boolean.TRUE);
@@ -165,7 +128,9 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
     }
 
     protected void createPwdFormView(final Flow flow) {
-        val propertiesToBind = CollectionUtils.wrapList("username", "password");
+        val propertiesToBind = Map.of(
+            "username", Map.of("required", "true"),
+            "password", Map.of("converter", StringToCharArrayConverter.ID));
         val binder = createStateBinderConfiguration(propertiesToBind);
 
         val state = createViewState(flow, VIEW_PWD_FORM, "casPwdView", binder);

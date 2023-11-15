@@ -51,6 +51,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.GroupExternalService;
@@ -171,10 +172,8 @@ public class GroupExternalController implements CrudController<GroupDto> {
         return groupCrudService.patch(partialDto);
     }
 
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException  {
-
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for group with id :{}", id);

@@ -1,0 +1,15 @@
+---
+
+- hosts: hosts_vitamui_api_gateway
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    app_default_root_path: "/vitamui"
+    vitamui_struct: "{{ vitamui.api_gateway }}"
+    vitamui_certificate_type: "server"
+    password_keystore: "{{ keystores_server_api_gateway }}"
+    password_truststore: "{{ truststores_server }}"
+    vitam_cert: "{{ vitam_certs.vitamui }}"
+    consul_tags: "api-gateway, api, internal"

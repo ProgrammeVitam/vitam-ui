@@ -68,7 +68,10 @@ class TesthostComponent {
     enabled: true,
     readonly : false,
     authnRequestBinding: AuthnRequestBindingEnum.POST,
-    autoProvisioningEnabled: false
+    autoProvisioningEnabled: false,
+    authnRequestSigned: false,
+    maximumAuthenticationLifetime: 0,
+    wantsAssertionsSigned: false,
   };
   disabled: boolean;
   @ViewChild(EditableKeystoreComponent, { static: false }) component: EditableKeystoreComponent;

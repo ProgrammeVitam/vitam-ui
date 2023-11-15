@@ -45,13 +45,12 @@ export class EventDisplayHelperService {
   constructor() { }
 
   getAllEvents(ingest: any): any[] {
-    let events = [];
+    const events = [];
     let rootEvent = null;
     let actionEvent = null;
-    
     if (ingest.length > 0) {
 
-      for (let event of ingest) {
+      for (const event of ingest) {
         this.eventData = this.getEventData(event);
         if (event.evParentId === null) {
           rootEvent = new Event(this.eventData, [])
