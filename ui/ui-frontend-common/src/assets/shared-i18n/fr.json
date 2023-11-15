@@ -13,6 +13,7 @@
     "UPDATE": "Modifier",
     "NEXT": "Suivant",
     "CONFIRM": "Confirmer",
+    "SAVE": "Enregistrer",
     "CLOSE": "Fermer",
     "REQUIRED": "Champ requis",
     "INCORRECT_VALUE": "Valeur incorrecte",
