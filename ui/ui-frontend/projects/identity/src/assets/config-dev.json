@@ -1,5 +1,5 @@
 {
-  "GATEWAY_ENABLED": true,
+  "GATEWAY_ENABLED": false,
   "REFERENTIAL_URL": "https://dev.vitamui.com:4202",
   "VERSION_RELEASE": "6.4",
   "PLATFORM_NAME": "VITAM-UI",
@@ -17,7 +17,9 @@
   "UI_URL": "https://dev.vitamui.com:4201",
   "ARCHIVES_SEARCH_URL": null,
   "PORTAL_URL": "https://dev.vitamui.com:4200",
-  "ALLOWED_URLS": ["/identity-api"],
+  "ALLOWED_URLS": [
+    "/identity-api"
+  ],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
     "redirectUri": "?",
