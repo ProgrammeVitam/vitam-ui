@@ -3,7 +3,7 @@ pki_dir: "{{lookup('env','PWD')}}/../../../dev-deployment/environments/certs"
 # Overwrite vitamui defaults in order to perform transparent execution of deployment scripts.
 
 gateway:
-  enabled: true
+  enabled: false
 
 vitamui_defaults:
   folder:
