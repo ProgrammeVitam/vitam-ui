@@ -300,8 +300,8 @@ customer-init:
         - ROLE_UPDATE_MANAGEMENT_CONTRACT
         - ROLE_DELETE_MANAGEMENT_CONTRACT
 
-    - name: Profil pour les VERSEMENTS GETORIX
-      description: Versements Getorix
+    - name: VersementGetorix Archéologue
+      description: Profil Archéologue pour les versements GETORIX
       app-name: GETORIX_DEPOSIT_APP
       level:
       roles:
@@ -309,6 +309,22 @@ customer-init:
         - ROLE_CREATE_GETORIX_DEPOSIT
         - ROLE_UPDATE_GETORIX_DEPOSIT
         - ROLE_DELETE_GETORIX_DEPOSIT
+        - ROLE_CLOSE_TRANSACTIONS
+
+    - name: VersementGetorix Archiviste
+      description: Profil Archiviste pour les versements GETORIX
+      app-name: GETORIX_DEPOSIT_APP
+      level:
+      roles:
+        - ROLE_GET_GETORIX_DEPOSIT
+        - ROLE_CREATE_GETORIX_DEPOSIT
+        - ROLE_UPDATE_GETORIX_DEPOSIT
+        - ROLE_DELETE_GETORIX_DEPOSIT
+        - ROLE_SEND_TRANSACTIONS
+        - ROLE_CLOSE_TRANSACTIONS
+        - ROLE_UPDATE_UNITS_METADATA
+        - ROLE_REOPEN_TRANSACTIONS
+        - ROLE_ABORT_TRANSACTIONS
 
   # Other Default profiles for admin group
   admin-profiles:

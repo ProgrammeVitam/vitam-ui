@@ -2,17 +2,18 @@ db = db.getSiblingDB('iam')
 
 print("START 07_create_profile_GETORIX_DEPOSIT_APP.js");
 
-// ========================================= GETORIX_DEPOSIT : ADD NEW ADMIN PROFILE =========================================
+// ========================================= GETORIX_DEPOSIT : ADD NEW GETORIX PROFILEs =========================================
 
 var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
 db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 
-    db.profiles.insert({
-        "_id" : "PROFIL_" + tenant.identifier + "-GETORIX_DEPOSIT_APP-ADMIN",
+       // Profil : ARCHEOLOGUE
+    db.profiles.insertOne({
+        "_id" : "PROFIL_" + tenant.identifier + "-GETORIX_DEPOSIT_APP-ARCHAEOLOGIST",
         "identifier" : NumberInt(maxIdProfile++),
-        "name": "Getorix deposit Profile",
-        "description": "Profil de l'application des versementgetorix",
+        "name": "Getorix deposit : archaeologist Profile",
+        "description": "Profil d'un archéologue de l'application des versementgetorix",
         "tenantIdentifier": NumberInt(tenant.identifier),
         "applicationName" : "GETORIX_DEPOSIT_APP",
         "enabled" : true,
@@ -23,7 +24,33 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
             {"name": "ROLE_GET_GETORIX_DEPOSIT"},
             {"name": "ROLE_CREATE_GETORIX_DEPOSIT"},
             {"name": "ROLE_UPDATE_GETORIX_DEPOSIT"},
-            {"name": "ROLE_DELETE_GETORIX_DEPOSIT"}
+            {"name": "ROLE_DELETE_GETORIX_DEPOSIT"},
+            {"name": "ROLE_CLOSE_TRANSACTIONS"}
+         ]
+    });
+
+    // Profil : ARCHIVISTE
+    db.profiles.insertOne({
+        "_id" : "PROFIL_" + tenant.identifier + "-GETORIX_DEPOSIT_APP-ARCHVIST",
+        "identifier" : NumberInt(maxIdProfile++),
+        "name": "Getorix deposit : Archivist Profile",
+        "description": "Profil d'un archiviste de l'application des versementgetorix",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName" : "GETORIX_DEPOSIT_APP",
+        "enabled" : true,
+        "readonly" : true,
+        "level" : "",
+        "customerId" : tenant.customerId,
+        "roles" : [
+            {"name": "ROLE_GET_GETORIX_DEPOSIT"},
+            {"name": "ROLE_CREATE_GETORIX_DEPOSIT"},
+            {"name": "ROLE_UPDATE_GETORIX_DEPOSIT"},
+            {"name": "ROLE_DELETE_GETORIX_DEPOSIT"},
+            {"name": "ROLE_UPDATE_TRANSACTIONS"},
+            {"name": "ROLE_SEND_TRANSACTIONS"},
+            {"name": "ROLE_CLOSE_TRANSACTIONS"},
+            {"name": "ROLE_ABORT_TRANSACTIONS"},
+            {"name": "ROLE_REOPEN_TRANSACTIONS"}
          ]
     });
 
