@@ -12,7 +12,7 @@ docker-compose -f ./mongo_cluster.yml up -d
 sleep 2
 
 # Create replica set and wait a few before execution other init scripts
-docker exec -it vitamui-mongo /bin/bash -c "mongo --port=27018 < /scripts/mongo/replica-set/000_replicaset_dev.js;sleep 5;mongo --port=27018 < /scripts/mongo/replica-set/00_check_replicaset.js"
+docker exec -it vitamui-mongo /bin/bash -c "mongosh --port=27018 -f /scripts/mongo/replica-set/000_replicaset_dev.js;sleep 5;mongosh --port=27018 -f /scripts/mongo/replica-set/00_check_replicaset.js"
 
 #########################
 

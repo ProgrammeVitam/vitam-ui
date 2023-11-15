@@ -76,7 +76,7 @@ spring:
       on-profile: gateway
 
 gateway:
-  enabled: true
+  enabled: false
 server:
   ssl:
     client-auth: want

@@ -1,9 +1,10 @@
-version: '3'
+version: "3"
 
 services:
   mongo-dev:
-    image: mongo:4.0.6
-    container_name: vitamui-mongo
+    image: mongo:7.0.2
+    container_name:
+      vitamui-mongo
       #    environment:
     # provide your credentials here
     #        - MONGO_INITDB_ROOT_USERNAME=root
@@ -24,8 +25,9 @@ services:
     command: mongod --replSet "rs0" --port=27018
 
   mongo-dev2:
-    image: mongo:4.0.6
-    container_name: vitamui-mongo2
+    image: mongo:7.0.2
+    container_name:
+      vitamui-mongo2
       #    environment:
     # provide your credentials here
     #        - MONGO_INITDB_ROOT_USERNAME=root
@@ -37,7 +39,7 @@ services:
     ports:
       - "27019:27019"
     volumes:
-        # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
+      # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
       - "$PWD/mongo-entrypoint/:/scripts/mongo/data"
       - "$PWD/replica-set/:/scripts/mongo/replica-set"
 
@@ -45,12 +47,12 @@ services:
     command: mongod --replSet "rs0" --port=27019
 
   mongo-dev3:
-    image: mongo:4.0.6
+    image: mongo:7.0.2
     container_name: vitamui-mongo3
-#    environment:
-        # provide your credentials here
-#        - MONGO_INITDB_ROOT_USERNAME=root
-#        - MONGO_INITDB_ROOT_PASSWORD=rootpwd
+    #    environment:
+    # provide your credentials here
+    #        - MONGO_INITDB_ROOT_USERNAME=root
+    #        - MONGO_INITDB_ROOT_PASSWORD=rootpwd
 
     networks:
       - mongo-cluster
@@ -58,7 +60,7 @@ services:
     ports:
       - "27020:27020"
     volumes:
-        # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
+      # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
       - "$PWD/mongo-entrypoint/:/scripts/mongo/data"
       - "$PWD/replica-set/:/scripts/mongo/replica-set"
 
