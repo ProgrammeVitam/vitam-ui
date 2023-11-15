@@ -4,7 +4,7 @@ print("START 08_create_application_GETORIX_DEPOSIT_APP.js");
 
 // -------- CREATE NEW VITAMUI APPLICATION : GETORIX DEPOSIT -----
 
-db.applications.insert({
+db.applications.insertOne({
     "identifier" : "GETORIX_DEPOSIT_APP",
 {% if vitamui.collect.base_url is defined %}
     "url": "{{ vitamui.collect.base_url }}/getorix-deposit",
