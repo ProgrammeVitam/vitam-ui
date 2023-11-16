@@ -2,11 +2,12 @@
 spring:
   cloud:
     consul:
-      enabled: true
       discovery:
-        preferIpAddress: true
+        prefer-ip-address: true
+        deregister: false
         tags: {{ consul_tags }}
-        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+        instance-id: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+        service-name: vitamui-{{ vitamui_struct.vitamui_component }}
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml

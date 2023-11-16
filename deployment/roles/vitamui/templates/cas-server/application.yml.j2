@@ -1,10 +1,11 @@
 spring:
   cloud:
     consul:
-      enabled: true
       discovery:
-        preferIpAddress: true
+        prefer-ip-address: true
+        deregister: false
         tags: {{ consul_tags }}
+
 spring.application.name: cas-server
 
 
