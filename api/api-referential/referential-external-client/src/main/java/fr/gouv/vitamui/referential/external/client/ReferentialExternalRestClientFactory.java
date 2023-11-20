@@ -123,4 +123,8 @@ public class ReferentialExternalRestClientFactory extends BaseRestClientFactory 
     public LogbookManagementOperationExternalRestClient getLogbookManagementOperationExternalRestClient() {
         return new LogbookManagementOperationExternalRestClient(getRestTemplate(), getBaseUrl());
     }
+
+    public SchemaClient getSchemaClient() {
+        return new SchemaClient(getRestTemplate(), getBaseUrl());
+    }
 }

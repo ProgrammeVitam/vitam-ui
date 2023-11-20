@@ -44,6 +44,7 @@ import fr.gouv.vitamui.ui.commons.rest.ExternalParametersController;
 import fr.gouv.vitamui.ui.commons.rest.LogbookController;
 import fr.gouv.vitamui.ui.commons.rest.OntologyCommonController;
 import fr.gouv.vitamui.ui.commons.rest.RuleController;
+import fr.gouv.vitamui.ui.commons.rest.SchemaController;
 import fr.gouv.vitamui.ui.commons.rest.SecurityController;
 import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
 import fr.gouv.vitamui.ui.commons.rest.UnitController;
@@ -57,6 +58,7 @@ import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.OntologyCommonService;
 import fr.gouv.vitamui.ui.commons.service.RuleService;
+import fr.gouv.vitamui.ui.commons.service.SchemaService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 import fr.gouv.vitamui.ui.commons.service.UnitService;
 import fr.gouv.vitamui.ui.commons.service.UserInfoService;
@@ -155,5 +157,12 @@ public class AutoConfigurationRestController {
     @ConditionalOnMissingBean
     public OntologyCommonController ontologyCommonController(final OntologyCommonService ontologyCommonService) {
         return new OntologyCommonController(ontologyCommonService);
+    }
+
+    @Bean("schemaController")
+    @DependsOn("schemaService")
+    @ConditionalOnMissingBean
+    public SchemaController schemaController(final SchemaService schemaService) {
+        return new SchemaController(schemaService);
     }
 }

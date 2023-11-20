@@ -1,0 +1,5 @@
+<ng-container *ngIf="displayObjectService.displayObject$ | async as displayObject">
+  <vitamui-common-group *ngIf="displayObject.type === 'group'" [displayObject]="displayObject"></vitamui-common-group>
+  <vitamui-common-list *ngIf="displayObject.type === 'list'" [displayObject]="displayObject"></vitamui-common-list>
+  <vitamui-common-primitive *ngIf="displayObject.type === 'primitive'" [displayObject]="displayObject"></vitamui-common-primitive>
+</ng-container>

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -106,7 +106,9 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-tokens';
 import { LogbookModule } from './logbook/logbook.module';
 import { LoggerModule } from './logger/logger.module';
+import { ObjectViewerModule } from './object-viewer/object-viewer.module';
 import { PipesModule } from './pipes/pipes.module';
+import { SchemaModule } from './schema/schema.module';
 import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
@@ -114,13 +116,15 @@ import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   // tslint:disable-next-line: semicolon whitespace
-  return () => configService.load(environment.configUrls).toPromise();;
+  const p = () => configService.load(environment.configUrls).toPromise();
+
+  return p;
 }
 
 export function startupServiceFactory(startupService: StartupService, authService: AuthService) {
   // leave it like this due to run packagr issue :
   // https://github.com/ng-packagr/ng-packagr/issues/696 & https://github.com/angular/angular/issues/
-  return () =>
+  const p = () =>
     new Promise((resolve) => {
       authService
         .login()
@@ -129,64 +133,73 @@ export function startupServiceFactory(startupService: StartupService, authServic
           switchMap(() => startupService.load())
         )
         .subscribe(() => resolve(true));
-    // tslint:disable-next-line: semicolon whitespace
-    });;
+      // tslint:disable-next-line: semicolon whitespace
+    });
+
+  return p;
 }
 
 @NgModule({
   declarations: [BlankComponent, ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
   imports: [
-    CommonModule,
-    HttpClientModule,
-    MatDialogModule,
-    MatSnackBarModule,
     AccountModule,
     ApplicationSelectContentModule,
+    ArchiveModule,
+    AutocompletePositionDirectiveModule,
     CancelledSnackBarModule,
     CollapseDirectiveModule,
-    EllipsisDirectiveModule,
+    CommonModule,
+    CommonProgressBarModule,
     ConfirmDialogModule,
     CustomerSelectContentModule,
-    PipesModule,
-    VitamUICustomerSelectModule,
-    VitamUIDisplayNodeModule,
-    VitamUIDurationInputModule,
-    VitamUIFieldErrorModule,
-    VitamUIInputModule,
-    VitamUIMenuTileModule,
-    VitamUIListInputModule,
-    VitamUISnackBarModule,
-    VitamUITenantSelectModule,
     DownloadSnackBarModule,
     DragAndDropModule,
     EditableFieldModule,
+    EllipsisDirectiveModule,
+    FooterModule,
+    HeaderModule,
+    HttpClientModule,
     InfiniteScrollModule,
     LogbookModule,
+    LogbookOperationFacetModule,
     LoggerModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatSnackBarModule,
     NavbarModule,
-    HeaderModule,
-    SelectTenantDialogModule,
+    ObjectViewerModule,
     OrderByButtonModule,
     OrderDropdownModule,
+    PipesModule,
+    ReactiveFormsModule,
+    ResizeSidebarModule,
     RowCollapseModule,
+    ScrollTopModule,
     SearchBarModule,
     SearchBarWithSiblingButtonModule,
     SecurityModule,
+    SelectTenantDialogModule,
     SlideToggleModule,
     StepperModule,
     SubrogationModule,
     TooltipModule,
-    CommonProgressBarModule,
-    VitamuiCommonSelectModule,
-    VitamuiDragDropFileModule,
-    VitamUIAutocompleteModule,
-    ScrollTopModule,
-    FooterModule,
-    VitamuiBodyModule,
-    VitamuiContentBreadcrumbModule,
-    VitamuiCommonBannerModule,
+    TranslateModule,
     UserPhotoModule,
+    VitamUIAutocompleteModule,
+    VitamuiBodyModule,
+    VitamuiCommonBannerModule,
+    VitamuiCommonSelectModule,
+    VitamuiContentBreadcrumbModule,
+    VitamUICustomerSelectModule,
+    VitamUIDisplayNodeModule,
+    VitamuiDragDropFileModule,
+    VitamUIDurationInputModule,
+    VitamuiFacetModule,
+    VitamUIFieldErrorModule,
+    VitamUIInputModule,
+    VitamUIListInputModule,
     VitamuiMenuButtonModule,
+    VitamUIMenuTileModule,
     VitamuiSidenavHeaderModule,
     TranslateModule,
     ResizeSidebarModule,
@@ -199,68 +212,74 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ArchiveModule,
     UserAlertCardModule,
     ApplicationCardModule,
+    SchemaModule,
+    VitamUISnackBarModule,
+    VitamUITenantSelectModule,
   ],
   entryComponents: [ErrorDialogComponent],
   exports: [
     AccountModule,
-    TranslateModule,
-    SelectLanguageModule,
     ApplicationSelectContentModule,
+    ArchiveModule,
+    AutocompletePositionDirectiveModule,
     BlankComponent,
-    ConfirmDialogModule,
-    CollapseModule,
     CollapseDirectiveModule,
-    EllipsisDirectiveModule,
-    VitamUICustomerSelectModule,
-    VitamUIDisplayNodeModule,
-    VitamUIDurationInputModule,
-    VitamUIFieldErrorModule,
-    VitamUIInputModule,
-    VitamUIListInputModule,
-    VitamUIMenuTileModule,
-    VitamUITenantSelectModule,
+    CollapseModule,
+    CommonProgressBarModule,
+    CommonTooltipModule,
+    ConfirmDialogModule,
     DragAndDropModule,
     EditableFieldModule,
+    EllipsisDirectiveModule,
+    FooterModule,
+    HeaderModule,
     InfiniteScrollModule,
     LogbookModule,
+    LogbookOperationFacetModule,
     LoggerModule,
     NavbarModule,
-    HeaderModule,
-    SelectTenantDialogModule,
+    ObjectViewerModule,
     OrderByButtonModule,
     OrderDropdownModule,
+    PipesModule,
+    ResizeSidebarModule,
     RowCollapseModule,
+    ScrollTopModule,
     SearchBarModule,
     SearchBarWithSiblingButtonModule,
     SecurityModule,
+    SelectLanguageModule,
+    SelectTenantDialogModule,
     SlideToggleModule,
     StepperModule,
     SubrogationModule,
     TooltipModule,
-    VitamuiCommonSelectModule,
-    VitamuiDragDropFileModule,
-    VitamUIAutocompleteModule,
-    ScrollTopModule,
-    FooterModule,
-    VitamuiBodyModule,
-    PipesModule,
-    VitamuiContentBreadcrumbModule,
-    VitamuiCommonBannerModule,
+    TranslateModule,
     UserPhotoModule,
-    CommonProgressBarModule,
-    CommonTooltipModule,
-    VitamuiSidenavHeaderModule,
-    VitamuiMenuButtonModule,
-    ResizeSidebarModule,
-    AutocompletePositionDirectiveModule,
-    LogbookOperationFacetModule,
+    VitamUIAutocompleteModule,
+    VitamuiBodyModule,
+    VitamuiCommonBannerModule,
+    VitamuiCommonSelectModule,
+    VitamuiContentBreadcrumbModule,
+    VitamUICustomerSelectModule,
+    VitamUIDisplayNodeModule,
+    VitamuiDragDropFileModule,
+    VitamUIDurationInputModule,
     VitamuiFacetModule,
+    VitamUIFieldErrorModule,
+    VitamUIInputModule,
     VitamuiIntervalDatePickerComponent,
+    VitamUIListInputModule,
+    VitamuiMenuButtonModule,
+    VitamUIMenuTileModule,
     VitamuiMultiInputsModule,
     UserAlertCardModule,
+    VitamuiSidenavHeaderModule,
+    VitamUITenantSelectModule,
     VitamuiTreeNodeModule,
     ArchiveModule,
     ApplicationCardModule,
+    SchemaModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

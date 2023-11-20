@@ -346,13 +346,19 @@ public class ServicesData {
 
     public static final String SERVICE_ONTOLOGIES = "ONTOLOGIES";
 
-    public static final String ROLE_GET_ONTOLOGIES = CREATE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+    public static final String ROLE_GET_ONTOLOGIES = GET_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
-    public static final String ROLE_CREATE_ONTOLOGIES = GET_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+    public static final String ROLE_CREATE_ONTOLOGIES = CREATE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     public static final String ROLE_DELETE_ONTOLOGIES = DELETE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     public static final String ROLE_IMPORT_ONTOLOGIES = IMPORT_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+
+    //------------------------------------ ONTOLOGIES -----------------------------------------
+
+    public static final String SERVICE_SCHEMAS = "SCHEMAS";
+
+    public static final String ROLE_GET_SCHEMAS = GET_ROLE_PREFIX + SERVICE_SCHEMAS;
 
     //------------------------------------- OPERATIONS --------------------------------------------
 

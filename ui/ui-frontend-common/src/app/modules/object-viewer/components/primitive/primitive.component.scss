@@ -1,0 +1,20 @@
+:host {
+  padding-bottom: 10px;
+}
+
+.field {
+  font-weight: 400;
+
+  label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--vitamui-primary);
+    padding-bottom: 5px;
+    overflow-wrap: anywhere;
+  }
+
+  div {
+    overflow-wrap: anywhere;
+  }
+}

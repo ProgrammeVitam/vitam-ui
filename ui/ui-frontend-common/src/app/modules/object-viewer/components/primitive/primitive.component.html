@@ -1,0 +1,14 @@
+<div class="field">
+  <label>{{ displayObject.path | translate }}</label>
+  <div [ngSwitch]="uiComponent">
+    <ng-container *ngSwitchCase="'datepicker'">
+      {{ displayObject.value | date : 'medium' | empty }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'datetime'">
+      {{ displayObject.value | date : 'medium' | empty }}
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      {{ displayObject.value | empty }}
+    </ng-container>
+  </div>
+</div>

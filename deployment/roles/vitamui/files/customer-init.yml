@@ -213,6 +213,7 @@ customer-init:
         - ROLE_TRANSFER_REQUEST
         - ROLE_TRANSFER_ACKNOWLEDGMENT
         - ROLE_GET_RULES
+        - ROLE_GET_SCHEMAS
 
     - name: Consultation
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
@@ -225,6 +226,7 @@ customer-init:
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
+        - ROLE_GET_SCHEMAS
 
     - name: Archiviste
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
@@ -238,6 +240,7 @@ customer-init:
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
+        - ROLE_GET_SCHEMAS
 
     - name: Registre des fonds
       description: Visualisation de l'ensemble des données du registre des fonds
