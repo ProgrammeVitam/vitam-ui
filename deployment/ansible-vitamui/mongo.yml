@@ -1,6 +1,14 @@
 ---
 
 - hosts: hosts_vitamui_mongod
+  gather_facts: no
+  any_errors_fatal: true
+  tasks:
+      - debug:
+          var: "{{ gateway.enabled }}"
+
+
+- hosts: hosts_vitamui_mongod
   roles:
     - mongo_common
     - mongo
