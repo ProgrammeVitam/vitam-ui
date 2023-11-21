@@ -36,7 +36,9 @@
  */
 package fr.gouv.vitamui.referential.internal.server.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -150,14 +152,15 @@ public class ManagementContractInternalController {
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final ManagementContractDto partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException, AccessExternalClientException,
+        JsonProcessingException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.sanitizeCriteria(partialDto);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, partialDto.getId()), "The DTO identifier must match the path identifier for update.");
         return managementContractInternalService.patch(vitamContext, partialDto);
     }
 

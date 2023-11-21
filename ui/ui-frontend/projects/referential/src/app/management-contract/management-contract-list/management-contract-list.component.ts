@@ -26,7 +26,7 @@
  */
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, ManagementContract, PageRequest } from 'ui-frontend-common';
 import { ManagementContractService } from '../management-contract.service';
@@ -106,21 +106,7 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
         (mngContract: ManagementContract) => mngContract.identifier === managementContract.identifier
       );
       if (index > -1) {
-        this.dataSource[index] = {
-          id: managementContract.id,
-          tenant: managementContract.tenant,
-          version: managementContract.version,
-          name: managementContract.name,
-          identifier: managementContract.identifier,
-          description: managementContract.description,
-          status: managementContract.status,
-          creationDate: managementContract.creationDate,
-          lastUpdate: managementContract.lastUpdate,
-          activationDate: managementContract.activationDate,
-          deactivationDate: managementContract.deactivationDate,
-          storage: managementContract.storage,
-          versionRetentionPolicy: managementContract.versionRetentionPolicy,
-        };
+        this.dataSource[index] = { ...managementContract };
       }
     });
   }

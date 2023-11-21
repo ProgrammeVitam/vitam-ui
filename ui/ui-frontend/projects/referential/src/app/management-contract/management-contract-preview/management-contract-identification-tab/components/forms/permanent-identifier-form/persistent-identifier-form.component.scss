@@ -1,0 +1,62 @@
+h5 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.header {
+  margin: 0.5rem 0;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 5px;
+  font-weight: 700;
+  box-shadow: 0 0 2px rgba(var(--vitamui-grey-rgb), 0.2), 0 1px 4px rgba(var(--vitamui-grey-rgb), 0.05);
+  border-left: 2px solid transparent;
+
+  &.opened {
+    border-left: 2px solid var(--vitamui-primary);
+  }
+
+  .mat-checkbox-layout,
+  .mat-checkbox-label,
+  span {
+    font-size: 1rem;
+    color: var(--vitamui-primary);
+  }
+}
+
+.icon {
+  font-size: 1.5rem !important;
+}
+
+.content {
+  background-color: white;
+  padding: 1rem 0.5rem;
+  border-radius: 5px;
+
+  label {
+    color: var(--vitamui-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+  }
+}
+
+.delete-button {
+  border: 1px solid var(--vitamui-primary);
+  border-radius: 50%;
+}
+
+.mat-checkbox-frame,
+.mat-checkbox-background,
+.mat-checkbox-anim-unchecked-checked .mat-checkbox-anim-checked-unchecked {
+  transform: scale(1.2);
+}
+
+.radio-button-group-wrapper {
+  padding: 0.5rem 0;
+}
+
+// To override
+.vitamui-mat-select {
+  padding-bottom: 0;
+}

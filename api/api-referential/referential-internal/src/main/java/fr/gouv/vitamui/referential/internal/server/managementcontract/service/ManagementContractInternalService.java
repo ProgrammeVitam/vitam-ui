@@ -46,7 +46,6 @@ import fr.gouv.vitam.common.model.administration.ManagementContractModel;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -57,6 +56,9 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractVitamDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
+import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractDtoToModelConverter;
+import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractModelToDtoConverter;
+import fr.gouv.vitamui.referential.internal.server.managementcontract.PatchManagementContractModel;
 import fr.gouv.vitamui.referential.internal.server.managementcontract.converter.ManagementContractConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,11 +91,17 @@ public class ManagementContractInternalService {
 
     private final LogbookService logbookService;
 
+    private ManagementContractDtoToModelConverter managementContractDtoToModelConverter;
+    private ManagementContractModelToDtoConverter managementContractModelToDtoConverter;
+
     @Autowired
-    public ManagementContractInternalService(ManagementContractService managementContractService,
-        VitamUIManagementContractService
-            vitamUIManagementContractService, ObjectMapper objectMapper, ManagementContractConverter converter,
-        LogbookService logbookService) {
+    public ManagementContractInternalService(
+        final ManagementContractService managementContractService,
+        final VitamUIManagementContractService vitamUIManagementContractService,
+        final ObjectMapper objectMapper,
+        final ManagementContractConverter converter,
+        final LogbookService logbookService
+    ) {
         this.managementContractService = managementContractService;
         this.vitamUIManagementContractService = vitamUIManagementContractService;
         this.objectMapper = objectMapper;
@@ -196,7 +204,7 @@ public class ManagementContractInternalService {
 
     public ManagementContractDto create(VitamContext vitamContext, ManagementContractDto managementContractDto) {
         try {
-            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
+            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
             RequestResponse requestResponse = managementContractService.createManagementContracts(vitamContext,
                 Collections.singletonList(converter
                     .convertVitamUiManagementContractToVitamMgt(managementContractDto)));
@@ -210,88 +218,22 @@ public class ManagementContractInternalService {
         }
     }
 
-    private JsonNode convertMapPartialDtoToUpperCaseVitamFields(Map<String, Object> partialDto) {
+    public ManagementContractDto patch(VitamContext vitamContext, final ManagementContractDto managementContractDto)
+        throws AccessExternalClientException, InvalidParseOperationException, JsonProcessingException {
+        final String identifier = managementContractDto.getIdentifier();
+        final ManagementContractModel managementContractModel =
+            managementContractDtoToModelConverter.convert(managementContractDto);
+        final String serializedManagementContractModel = objectMapper.writeValueAsString(managementContractModel);
+        final PatchManagementContractModel patchManagementContractModel =
+            objectMapper.readValue(serializedManagementContractModel, PatchManagementContractModel.class);
+        final JsonNode patchQuery = buildPatchQuery(patchManagementContractModel);
+        final RequestResponse<?> requestResponse =
+            vitamUIManagementContractService.patchManagementContract(vitamContext, identifier, patchQuery);
+        if (Response.Status.OK.getStatusCode() != requestResponse.getHttpCode()) {
+            throw new AccessExternalClientException(MANAGEMENT_CONTRACT_NOT_PATCH);
+        }
 
-        ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
-
-        // Transform Vitam-UI fields into Vitam fields
-        if (partialDto.get("name") != null) {
-            propertiesToUpdate.put("Name", (String) partialDto.get("name"));
-        }
-        if (partialDto.get("description") != null) {
-            propertiesToUpdate.put("Description", (String) partialDto.get("description"));
-        }
-        if (partialDto.get("status") != null) {
-            propertiesToUpdate.put("Status", (String) partialDto.get("status"));
-        }
-        if (partialDto.get("activationDate") != null) {
-            propertiesToUpdate.put("ActivationDate", (String) partialDto.get("activationDate"));
-        }
-        if (partialDto.get("deactivationDate") != null) {
-            propertiesToUpdate.put("DeactivationDate", (String) partialDto.get("deactivationDate"));
-        }
-        if (partialDto.get("lastUpdate") != null) {
-            propertiesToUpdate.put("LastUpdate", (String) partialDto.get("lastUpdate"));
-        }
-        if (partialDto.get("creationDate") != null) {
-            propertiesToUpdate.put("CreationDate", (String) partialDto.get("creationDate"));
-        }
-        if (partialDto.get("unitStrategy") != null) {
-            propertiesToUpdate.put("Storage.UnitStrategy", (String) partialDto.get("unitStrategy"));
-        }
-        if (partialDto.get("objectStrategy") != null) {
-            propertiesToUpdate.put("Storage.ObjectStrategy", (String) partialDto.get("objectStrategy"));
-        }
-        if (partialDto.get("objectGroupStrategy") != null) {
-            propertiesToUpdate.put("Storage.ObjectGroupStrategy", (String) partialDto.get("objectGroupStrategy"));
-        }
-        /**
-         * the versionRetentionPolicy property is not taken into account by the back of vitam
-         * therefore impossible to test at this time.
-         */
-        if (partialDto.get("versionRetentionPolicy") != null) {
-            LOGGER.debug("versionRetentionPolicy = {}", partialDto.get("versionRetentionPolicy"));
-        }
-        return propertiesToUpdate;
-    }
-
-    public ManagementContractDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
-        String id = (String) partialDto.get("identifier");
-        if (id == null) {
-            LOGGER.error("id must be one of the update criteria");
-            throw new BadRequestException("id must be one of the update criteria");
-        }
-        partialDto.remove("id");
-        partialDto.remove("identifier");
-
-        try {
-            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
-            JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
-
-            ObjectNode action = JsonHandler.createObjectNode();
-            action.set("$set", fieldsUpdated);
-
-            ArrayNode actions = JsonHandler.createArrayNode();
-            actions.add(action);
-
-            ObjectNode query = JsonHandler.createObjectNode();
-            query.set("$action", actions);
-
-            LOGGER.debug("Send ManagementContract update request: {}", query);
-
-            RequestResponse<?> requestResponse =
-                vitamUIManagementContractService.patchManagementContract(vitamContext, id, query);
-
-            if (Response.Status.OK.getStatusCode() != requestResponse.getHttpCode()) {
-                throw new AccessExternalClientException(MANAGEMENT_CONTRACT_NOT_PATCH);
-            }
-
-            return getOne(vitamContext, id);
-
-        } catch (InvalidParseOperationException | AccessExternalClientException e) {
-            LOGGER.error(MANAGEMENT_CONTRACT_NOT_PATCH);
-            throw new InternalServerException(MANAGEMENT_CONTRACT_NOT_PATCH, e);
-        }
+        return getOne(vitamContext, identifier);
     }
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
@@ -304,4 +246,29 @@ public class ManagementContractInternalService {
         }
     }
 
+    @Autowired
+    public void setManagementContractDtoToModelConverter(
+        ManagementContractDtoToModelConverter managementContractDtoToModelConverter) {
+        this.managementContractDtoToModelConverter = managementContractDtoToModelConverter;
+    }
+
+    @Autowired
+    public void setManagementContractModelToDtoConverter(
+        ManagementContractModelToDtoConverter managementContractModelToDtoConverter) {
+        this.managementContractModelToDtoConverter = managementContractModelToDtoConverter;
+    }
+
+    private JsonNode buildPatchQuery(PatchManagementContractModel patchManagementContractModel) {
+        final JsonNode jsonNode = objectMapper.valueToTree(patchManagementContractModel);
+        final ObjectNode action = JsonHandler.createObjectNode();
+        action.set("$set", jsonNode);
+
+        final ArrayNode actions = JsonHandler.createArrayNode();
+        actions.add(action);
+
+        final ObjectNode query = JsonHandler.createObjectNode();
+        query.set("$action", actions);
+
+        return query;
+    }
 }

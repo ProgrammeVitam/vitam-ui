@@ -15,10 +15,8 @@ h5 {
   min-width: 152.22px;
 }
 
-
 .form-persistent-identifier {
   .object-menu {
-
     padding: 0 5px;
     border-radius: 5px;
     margin-left: 0;
@@ -35,16 +33,12 @@ h5 {
     }
 
     .mat-checkbox {
-
       .span {
         color: var(--vitamui-primary) !important;
-        background-color: #00B1D5;
+        background-color: #00b1d5;
       }
     }
-
   }
-
-
 
   .object-details {
     padding: 15px 15px;
@@ -52,27 +46,23 @@ h5 {
     background-color: var(--vitamui-background);
     font-size: 14px;
 
-
     .vitamui-mat-select.mat-form-field {
-
       font-size: 14px;
     }
 
     .delete-button {
       border: 1px solid var(--vitamui-primary);
       border-radius: 50%;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
       width: 30px;
       height: 30px;
       font-size: medium;
       color: var(--vitamui-primary);
       cursor: pointer;
-
     }
 
     label {
       color: var(--vitamui-primary);
     }
   }
-
 }
