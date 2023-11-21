@@ -134,26 +134,27 @@ pipeline {
             steps {
                 sh 'npmrc default'
                 sh '''
-                    $MVN_COMMAND clean install \
-                		-D skipTests \
-                		-P vitam \
-                		-pl '!ui/ui-archive-search' \
-                		-pl '!ui/ui-collect' \
-                		-pl '!ui/ui-commons' \
-                		-pl '!ui/ui-identity' \
-                		-pl '!ui/ui-ingest' \
-                		-pl '!ui/ui-pastis' \
-                		-pl '!ui/ui-portal' \
-                		-pl '!ui/ui-referential'
+                    $MVN_COMMAND install \
+                        -D skipTests \
+                        -P vitam \
+                        -pl '!ui/ui-archive-search' \
+                        -pl '!ui/ui-collect' \
+                        -pl '!ui/ui-commons' \
+                        -pl '!ui/ui-identity' \
+                        -pl '!ui/ui-ingest' \
+                        -pl '!ui/ui-pastis' \
+                        -pl '!ui/ui-portal' \
+                        -pl '!ui/ui-referential'
                 '''
                 sh '''
-                    $MVN_COMMAND clean deploy \
-                		-D skipTests \
-                		-P standalone \
-                		-pl 'api/api-pastis/pastis-standalone'
+                    $MVN_COMMAND deploy \
+                        -D skipTests \
+                        -P standalone \
+                        -pl 'api/api-pastis/pastis-standalone'
                 '''
             }
         }
+
         stage('Build COTS') {
             when {
                 environment(name: 'DO_BUILD', value: 'true')
