@@ -101,7 +101,7 @@ function waitForReplicaSetPrimaryElection() {
             throw "ERROR : Cannot get mongod replica set status";
         }
 
-        if (status.myState === 1) {
+        if (status.members.find(member => member.stateStr === 'PRIMARY')) {
             print("OK : mongod replica set elected primary node");
             return;
         }
