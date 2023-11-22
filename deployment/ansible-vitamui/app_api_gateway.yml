@@ -79,7 +79,7 @@
     - role: nginx-webapp
       vars:
         frontend_role_goal: "install"
-        frontend_application_version: "{{ app_version }}"
+        frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
         frontend_application_name: "{{ hostvars[inventory_hostname]['ui_portal']['frontend_name'] }}"
       when: gateway.enabled | default(False)
 
@@ -88,7 +88,7 @@
     - role: nginx-webapp
       vars:
         frontend_role_goal: "install"
-        frontend_application_version: "{{ app_version }}"
+        frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
         frontend_application_name: "{{ hostvars[inventory_hostname]['ui_identity']['frontend_name'] }}"
       when: gateway.enabled | default(False)
 
@@ -97,7 +97,7 @@
     - role: nginx-webapp
       vars:
         frontend_role_goal: "install"
-        frontend_application_version: "{{ app_version }}"
+        frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
         frontend_application_name: "{{ hostvars[inventory_hostname]['ui_identity_admin']['frontend_name'] }}"
       when: gateway.enabled | default(False)
 
@@ -106,6 +106,6 @@
 #     - role: nginx-webapp
 #       vars:
 #         frontend_role_goal: "install"
-#         frontend_application_version: "{{ app_version }}"
+#         frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
 #         frontend_application_name: "{{ hostvars[inventory_hostname]['ui_referential']['frontend_name'] }}"
 #       when: gateway.enabled | default(False)
