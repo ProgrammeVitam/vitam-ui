@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: True
 /*
  * IMPORTANT :
  * - This script creates mongod replica set on first Vitam installation.
@@ -8,7 +9,7 @@
  */
 
 function checkExistingReplicaSet() {
-
+    print("INFO: checkExistingReplicaSet");
     var rsStatus = rs.status();
 
     if(!rsStatus.ok) {
@@ -28,7 +29,7 @@ function checkExistingReplicaSet() {
 }
 
 function checkExistingReplicaSetMembers() {
-
+    print("INFO: checkExistingReplicaSetMembers");
     var rsConfig = rs.config();
 
     let targetMembers = buildTargetReplicaSetMemberConfiguration();
@@ -51,21 +52,21 @@ function checkExistingReplicaSetMembers() {
 }
 
 function buildTargetReplicaSetMemberConfiguration() {
+    print("INFO: buildTargetReplicaSetMemberConfiguration");
     var idCpt = 0;
-    let members = [ { _id: idCpt++, host: "{{ ip_service }}:{{ mongodb.mongod_port }}" } ];
+    let members = [];
 {% for host in groups['hosts_vitamui_mongod'] %}
-    {% if hostvars[host]['mongo_rs_bootstrap'] is not defined or hostvars[host]['mongo_rs_bootstrap']|lower != "true" %}
     members.push({
         _id: idCpt++,
-        host: "{{ hostvars[host]['ip_service'] }}:{{ mongodb.mongod_port }}"
+        host: "{{ hostvars[host]['ip_service'] }}:{{ mongodb.mongod_port }}",
+        priority: {{ '1' if (hostvars[host]['is_small'] | default(false) | bool == true) else '10' }}
     });
-    {% endif %}
 {% endfor %}
     return members;
 }
 
 function initReplicaSetPrimary() {
-
+    print("INFO: initReplicaSetPrimary");
     let members = buildTargetReplicaSetMemberConfiguration();
 
     let rsInit = rs.initiate(
@@ -82,7 +83,7 @@ function initReplicaSetPrimary() {
 }
 
 function waitForReplicaSetPrimaryElection() {
-
+    print("INFO: waitForReplicaSetPrimaryElection");
     var status;
     for (let i = 0; i < 60; i++) {
 
@@ -107,7 +108,7 @@ function waitForReplicaSetPrimaryElection() {
 }
 
 function waitForWritablePrimary() {
-
+    print("INFO: waitForWritablePrimary");
     var instanceStatus;
     for (let i = 0; i < 60; i++) {
 
@@ -119,7 +120,7 @@ function waitForWritablePrimary() {
         }
 
         if(instanceStatus.isWritablePrimary) {
-            print("OK : Primary node is writable");
+            print("OK : Primary node " + instanceStatus.primary + " is writable");
             return;
         }
 
