@@ -149,14 +149,19 @@ hosts_vitamui_mongod
 
 [hosts_vitamui_mongod]
 # EDIT: Mandatory
-# Mandatory params
-#  - mongo_rs_bootstrap=true (default: false)
 # Optional params
+#  - mongo_rs_bootstrap=true (default: false); mandatory for 1 node of the shard, some init commands will be executed on it
 #  - mongo_cluster_name=mongo-vitamui (default: mongo-vitamui)
 #  - mongo_shard_id=0 (default: 0)
+#  - mongo_arbiter=true ; the node will be only an arbiter, it will not store data ; do not add this parameter on a mongo_rs_bootstrap node, maximum 1 node per shard
+#  - mongod_memory=x (default: unset); this will force the wiredtiger cache size to x (unit is GB)
+#  - is_small=true (default: false); this will force the priority for this server to be lower when electing master ; hardware can be downgraded for this machine
 #  - mongo_express_enabled=true to deploy mongo_express (default: false)
-# Example:
-# vm-mongo-ui mongo_rs_bootstrap=true mongo_express_enabled=true
+# Recommended practice in production: use 3 instances per shard
+# Example for a PSSmin deployment:
+# vm1-mongo-ui mongo_rs_bootstrap=true mongo_express_enabled=true
+# vm2-mongo-ui
+# vm3-mongo-ui mongod_memory=1 is_small=true
 
 
 ################################################################################

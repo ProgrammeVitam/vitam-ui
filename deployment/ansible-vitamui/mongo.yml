@@ -1,6 +1,7 @@
 ---
 
 - hosts: hosts_vitamui_mongod
+  any_errors_fatal: true
   roles:
     - mongo_common
     - mongo
