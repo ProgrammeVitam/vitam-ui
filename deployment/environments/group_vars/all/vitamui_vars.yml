@@ -3,8 +3,6 @@ single_vm_hostnames: [ "localhost" ]
 
 pki_dir: "{{ inventory_dir }}/certs"
 
-server_name: "{{ vitamui_site_name }}.env.programmevitam.fr"
-
 ################################################################################
 ### Default parameters
 vitamui_defaults:
@@ -71,10 +69,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8002
     port_admin: 7002
-    clientId: "identity"
-    base_url: "https://{{ server_name }}/identity"
-    serviceId: "^https://{{ server_name }}/identity/.*"
-    name: Identity Access Management Application
+    base_url: "https://{{ vitam_reverse_external_dns }}/identity"
     # Custom directories linked to the module
     dirs:
       - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
@@ -85,10 +80,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8401
     port_admin: 7401
-    name: Identity Admin Access Management Application
-    clientId: "identity-admin"
-    base_url: "https://{{ server_name }}/identity-admin"
-    serviceId: "^https://{{ server_name }}/identity-admin/.*"
+    base_url: "https://{{ vitam_reverse_external_dns }}/identity-admin"
 
   referential:
     host: "referential.service.{{ consul_domain }}"
@@ -97,10 +89,7 @@ vitamui:
     port_service: 8005
     port_admin: 7005
     server_connection_timeout: 60000
-    name: Referential Application
-    base_url: "https://{{ server_name }}/referential"
-    clientId: "referential"
-    serviceId: "^https://{{ server_name }}/referential/.*"
+    base_url: "https://{{ vitam_reverse_external_dns }}/referential"
     # Custom directories linked to the module
     dirs:
       - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
@@ -111,10 +100,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8003
     port_admin: 7003
-    name: Portal Application
-    base_url: "https://{{ server_name }}"
-    clientId: "portal"
-    serviceId: "^https://{{ server_name }}/"
+    base_url: "https://{{ vitam_reverse_external_dns }}"
 
   referential_external:
     host: "vitamui-referential-external.service.{{ consul_domain }}"
@@ -197,9 +183,9 @@ vitamui:
     port_service: 8008
     port_admin: 7008
     name: Ingest Application
-    base_url: "https://{{ server_name }}/ingest"
+    base_url: "https://{{ vitam_reverse_external_dns }}/ingest"
     clientId: "ingest"
-    serviceId: "^https://{{ server_name }}/ingest/.*"
+    serviceId: "^https://{{ vitam_reverse_external_dns }}/ingest/.*"
 
   ingest_external:
     host: "vitamui-ingest-external.service.{{ consul_domain }}"

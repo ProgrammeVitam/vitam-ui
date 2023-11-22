@@ -1,7 +1,7 @@
 frontend:
   # Certificate/password for global certificate
   certificate: frontend
-  key_password: "{{ vault_cert_server_frontend_key }}"
+  key_password: "" #{{ vault_cert_server_frontend_key }}" TOCHANGE
   repository_url: "http://nexus.dev.programmevitam.fr"
   apps:
     - name: identity

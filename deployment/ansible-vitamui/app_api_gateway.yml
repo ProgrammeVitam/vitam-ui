@@ -15,13 +15,6 @@
     consul_tags: "api-gateway, api, internal"
 
 - hosts: hosts_ui_portal
-  gather_facts: no
-  any_errors_fatal: true
-  tasks:
-      - debug:
-          var: "{{ gateway.enabled }}"
-
-- hosts: hosts_ui_portal
   tasks:
     - include_role:
         name: assets_copy

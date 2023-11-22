@@ -4,40 +4,53 @@ db = db.getSiblingDB("cas");
 
 print("START 004_TRV-400_enable_oidc_code_grant_type_on_identity_service_ref.js");
 
-var serviceWithMaxId = db.services.find({}).sort({ _id: -1 }).limit(1)[0];
-var maxId = serviceWithMaxId ? serviceWithMaxId._id : 0;
+db.services.updateOne(
+    { "_id" :  NumberInt(2) },
+    {
+        "$set" : {
+            "_class": "org.apereo.cas.services.OidcRegisteredService",
+            "clientId": "identity",
+            "serviceId" : "{{ vitamui.identity.serviceId | default('^' + vitamui.identity.base_url + '/.*') }}",
+            "name": "Identity Access Management Application",
+            "bypassApprovalPrompt": true,
+            "supportedGrantTypes": ["authorization_code"],
+            "supportedResponseTypes": ["code", "token"],
+            "attributeReleasePolicy": {
+                "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy",
+                allowedAttributes: ["authtoken"],
+            },
+            jsonFormat: true,
+        },
+        "$setOnInsert": {
+            "_id" :  NumberInt(2)
+        }
+    },
+    { "upsert":true }
+);
 
-db.services.insertOne({
-  _id: NumberInt(++maxId),
-  _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "{{ vitamui.identity.clientId }}",
-  serviceId: "{{ vitamui.identity.serviceId }}",
-  name: "{{ vitamui.identity.name }}",
-  bypassApprovalPrompt: true,
-  supportedGrantTypes: ["authorization_code"],
-  supportedResponseTypes: ["code", "token"],
-  attributeReleasePolicy: {
-    _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    allowedAttributes: ["authtoken"],
-  },
-  jsonFormat: true,
-});
-
-db.services.insertOne({
-  _id: NumberInt(++maxId),
-  _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "{{ vitamui.identity_admin.clientId }}",
-  serviceId: "{{ vitamui.identity_admin.serviceId }}",
-  name: "{{ vitamui.identity_admin.name }}",
-  bypassApprovalPrompt: true,
-  supportedGrantTypes: ["authorization_code"],
-  supportedResponseTypes: ["code", "token"],
-  attributeReleasePolicy: {
-    _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    allowedAttributes: ["authtoken"],
-  },
-  jsonFormat: true,
-});
+db.services.updateOne(
+    { "_id" :  NumberInt(3) },
+    {
+        "$set" : {
+            "_class": "org.apereo.cas.services.OidcRegisteredService",
+            "clientId": "identity-admin",
+            "serviceId" : "{{ vitamui.identity_admin.serviceId | default('^' + vitamui.identity_admin.base_url + '/.*') }}",
+            "name": "Identity Admin Access Management Application",
+            "bypassApprovalPrompt": true,
+            "supportedGrantTypes": ["authorization_code"],
+            "supportedResponseTypes": ["code", "token"],
+            "attributeReleasePolicy": {
+                "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy",
+                allowedAttributes: ["authtoken"],
+            },
+            jsonFormat: true,
+        },
+        "$setOnInsert": {
+            "_id" :  NumberInt(3)
+        }
+    },
+    { "upsert":true }
+);
 
 print("END 004_TRV-400_enable_oidc_code_grant_type_on_identity_service_ref.js");
 
