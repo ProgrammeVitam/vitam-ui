@@ -1,110 +1,114 @@
 ---
 
-- fail: msg="Variable '{{ mongod_source_template_dir }}' is not defined"
-  when: mongod_source_template_dir is undefined
+- block:
 
-- name: Compute list of mongo nodes
-  set_fact:
-    mongo_nodes: "{{ mongo_nodes | default([]) + [ hostvars[item]['ip_service'] + ':'+ mongodb.mongod_port | string ] }}"
-  loop: "{{ groups['hosts_vitamui_mongod'] }}"
+  - fail: msg="Variable '{{ mongod_source_template_dir }}' is not defined"
+    when: mongod_source_template_dir is undefined
 
-- name: Set Mongo URI
-  set_fact:
-    mongod_uri: "{{ mongo_nodes| join(',') }}"
+  - name: Compute list of mongo nodes
+    set_fact:
+      mongo_nodes: "{{ mongo_nodes | default([]) + [ hostvars[item]['ip_service'] + ':'+ mongodb.mongod_port | string ] }}"
+    loop: "{{ groups['hosts_vitamui_mongod'] }}"
 
-- name: Set mongod_output_dir_entry_point
-  set_fact:
-    mongod_output_dir_entry_point: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/"
+  - name: Set Mongo URI
+    set_fact:
+      mongod_uri: "{{ mongo_nodes| join(',') }}"
 
-- import_tasks: check_auth.yml
+  - name: Set mongod_output_dir_entry_point
+    set_fact:
+      mongod_output_dir_entry_point: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/"
 
-- name: Initialize directory if it doesn't exist.
-  file:
-    path: "{{ mongod_output_dir_entry_point }}"
-    state: directory
+  - import_tasks: check_auth.yml
 
-- name: "Clean directory {{ mongod_output_dir_entry_point }}"
-  shell: "rm -Rf {{ mongod_output_dir_entry_point }}/*"
+  - name: Initialize directory if it doesn't exist.
+    file:
+      path: "{{ mongod_output_dir_entry_point }}"
+      state: directory
 
-# We sort directories by theirs versions
-- name: List script files versions in the directory {{ mongod_source_template_dir }}
-  delegate_to: localhost
-  shell:
-    cmd: find * -maxdepth 1 -type d | sort -V
-    chdir: "{{ mongod_source_template_dir }}"
-  register: versions
+  - name: "Clean directory {{ mongod_output_dir_entry_point }}"
+    shell: "rm -Rf {{ mongod_output_dir_entry_point }}/*"
 
-# For each version, we apply a second sort on the index of the script file.
-- name: List script files in the directory {{ mongod_source_template_dir }}
-  delegate_to: localhost
-  shell:
-    cmd: find {{ version }}/* -type f -print | sort -V -t '_' -k1
-    chdir: "{{ mongod_source_template_dir }}"
-  register: output
-  loop: "{{ versions.stdout_lines }}"
-  loop_control:
-    loop_var: version
+  # We sort directories by theirs versions
+  - name: List script files versions in the directory {{ mongod_source_template_dir }}
+    delegate_to: localhost
+    shell:
+      cmd: find * -maxdepth 1 -type d | sort -V
+      chdir: "{{ mongod_source_template_dir }}"
+    register: versions
 
-- name: "Compute file scripts"
-  delegate_to: localhost
-  set_fact:
-    mongod_files: "{{ (mongod_files| default([])) + item.stdout_lines }}"
-  loop: "{{ output.results }}"
+  # For each version, we apply a second sort on the index of the script file.
+  - name: List script files in the directory {{ mongod_source_template_dir }}
+    delegate_to: localhost
+    shell:
+      cmd: find {{ version }}/* -type f -print | sort -V -t '_' -k1
+      chdir: "{{ mongod_source_template_dir }}"
+    register: output
+    loop: "{{ versions.stdout_lines }}"
+    loop_control:
+      loop_var: version
 
-# We apply regex for included and excluded files in order to compute the eligible scripts.
-- name: Compute list of excluded files
-  delegate_to: localhost
-  set_fact:
-    mongod_excluded_files : "{{ (mongod_excluded_files| default([])) + [ item.0 ] }}"
-  when: item.0 is not match(item.1) or item.0 is match(item.2)
-  with_nested:
-    - "{{ mongod_files }}"
-    - "{{ mongodb.included_scripts }}"
-    - "{{ mongodb.excluded_scripts }}"
+  - name: "Compute file scripts"
+    delegate_to: localhost
+    set_fact:
+      mongod_files: "{{ (mongod_files| default([])) + item.stdout_lines }}"
+    loop: "{{ output.results }}"
 
-- name: Compute list of eligible files
-  delegate_to: localhost
-  set_fact:
-    mongod_eligible_files : "{{ (mongod_eligible_files| default([])) + [ {'name': item, 'version': item | regex_replace('^(.+)/(.+)$', '\\1') ,'finalname': 'vitamui_' + item | regex_replace('/', '_') | basename | regex_replace('\\.j2$')} ] }}"
-  loop: "{{ mongod_files | difference(mongod_excluded_files| default([])) }}"
+  # We apply regex for included and excluded files in order to compute the eligible scripts.
+  - name: Compute list of excluded files
+    delegate_to: localhost
+    set_fact:
+      mongod_excluded_files : "{{ (mongod_excluded_files| default([])) + [ item.0 ] }}"
+    when: item.0 is not match(item.1) or item.0 is match(item.2)
+    with_nested:
+      - "{{ mongod_files }}"
+      - "{{ mongodb.included_scripts }}"
+      - "{{ mongodb.excluded_scripts }}"
 
-# We generate scripts and upload on remote host
-- name: Compute and copy script files
-  template:
-    src: "{{ mongod_source_template_dir }}/{{ item.name }}"
-    dest: "{{ mongod_output_dir_entry_point }}/{{ item.finalname }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: 0755
-  loop: "{{ mongod_eligible_files | unique }}"
+  - name: Compute list of eligible files
+    delegate_to: localhost
+    set_fact:
+      mongod_eligible_files : "{{ (mongod_eligible_files| default([])) + [ {'name': item, 'version': item | regex_replace('^(.+)/(.+)$', '\\1') ,'finalname': 'vitamui_' + item | regex_replace('/', '_') | basename | regex_replace('\\.j2$')} ] }}"
+    loop: "{{ mongod_files | difference(mongod_excluded_files| default([])) }}"
 
-- name: "Prepare file"
-  include_tasks: "prepare_script.yml"
-  when: mongodb.versioning is defined and mongodb.versioning.enable
-  loop: "{{ mongod_eligible_files | unique }}"
-  loop_control:
-    loop_var: mongo_file
+  # We generate scripts and upload on remote host
+  - name: Compute and copy script files
+    template:
+      src: "{{ mongod_source_template_dir }}/{{ item.name }}"
+      dest: "{{ mongod_output_dir_entry_point }}/{{ item.finalname }}"
+      owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+      group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+      mode: 0755
+    loop: "{{ mongod_eligible_files | unique }}"
 
-- name: Compute main script file
-  template:
-    src: "main_script.js.j2"
-    dest: "{{ mongod_output_dir_entry_point }}/main_script.js"
-    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: 0755
+  - name: "Prepare file"
+    include_tasks: "prepare_script.yml"
+    when: mongodb.versioning is defined and mongodb.versioning.enable
+    loop: "{{ mongod_eligible_files | unique }}"
+    loop_control:
+      loop_var: mongo_file
 
-- name: Load script in database
-  shell: "mongo \"mongodb://{{ mongod_uri }}/admin\" {{ mongo_credentials }} {{ mongod_output_dir_entry_point }}/main_script.js"
-#  no_log: "{{ hide_passwords_during_deploy }}"
-  when: mongodb.docker is not defined or not mongodb.docker.enable
+  - name: Compute main script file
+    template:
+      src: "main_script.js.j2"
+      dest: "{{ mongod_output_dir_entry_point }}/main_script.js"
+      owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+      group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+      mode: 0755
 
-- name: Load script in database test (docker)
-  command: "docker exec --tty {{ mongodb.docker.image_name }} /bin/bash -c \"mongo \\\"mongodb://{{ mongod_uri }}/admin\\\" {{ mongo_credentials }} {{ mongodb.docker.internal_dir}}/app/mongod/main_script.js \""
-  #no_log: "{{ hide_passwords_during_deploy }}"
-  when: mongodb.docker is defined and mongodb.docker.enable
+  - name: Load script in database
+    shell: "mongo \"mongodb://{{ mongod_uri }}/admin\" {{ mongo_credentials }} {{ mongod_output_dir_entry_point }}/main_script.js"
+  #  no_log: "{{ hide_passwords_during_deploy }}"
+    when: mongodb.docker is not defined or not mongodb.docker.enable
 
-# - name: "Execute file"
-#   include_tasks: "execute_script.yml"
-#   loop: "{{ mongod_eligible_files | unique }}"
-#   loop_control:
-#     loop_var: mongo_file
+  - name: Load script in database test (docker)
+    command: "docker exec --tty {{ mongodb.docker.image_name }} /bin/bash -c \"mongo \\\"mongodb://{{ mongod_uri }}/admin\\\" {{ mongo_credentials }} {{ mongodb.docker.internal_dir}}/app/mongod/main_script.js \""
+    #no_log: "{{ hide_passwords_during_deploy }}"
+    when: mongodb.docker is defined and mongodb.docker.enable
+
+  # - name: "Execute file"
+  #   include_tasks: "execute_script.yml"
+  #   loop: "{{ mongod_eligible_files | unique }}"
+  #   loop_control:
+  #     loop_var: mongo_file
+
+  run_once: true
