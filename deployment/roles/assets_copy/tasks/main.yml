@@ -25,7 +25,8 @@
 - name: "Assets > Tasks > main.yml | Copy assets"
   copy:
     src: "{{ item }}"
-    dest: "{{ asset_path }}/{{ item | basename }}"
+    #dest: "{{ asset_path }}/{{ item | basename }}"
+    dest: "{{ asset_path }}/"
     owner: "{{ asset_user }}"
     group: "{{ asset_group }}"
     mode: '0644'
@@ -36,7 +37,8 @@
 - name: "Assets > Tasks > main.yml | Copy favicon.ico"
   copy:
     src: "{{ item }}"
-    dest: "{{ asset_favicon_path }}/{{ item | basename }}"
+    #dest: "{{ asset_favicon_path }}/{{ item | basename }}"
+    dest: "{{ asset_favicon_path }}/"
     owner: "{{ asset_user }}"
     group: "{{ asset_group }}"
     mode: '0644'
