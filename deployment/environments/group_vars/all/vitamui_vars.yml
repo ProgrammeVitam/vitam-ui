@@ -159,6 +159,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8001
     port_admin: 7001
+    base_url: "https://{{ vitam_reverse_external_dns }}/cas"
     hostname_verification: true
     theme:
       vitamui_platform_name: VITAM-UI
@@ -182,10 +183,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8008
     port_admin: 7008
-    name: Ingest Application
     base_url: "https://{{ vitam_reverse_external_dns }}/ingest"
-    clientId: "ingest"
-    serviceId: "^https://{{ vitam_reverse_external_dns }}/ingest/.*"
 
   ingest_external:
     host: "vitamui-ingest-external.service.{{ consul_domain }}"
@@ -208,6 +206,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8009
     port_admin: 7009
+    base_url: "https://{{ vitam_reverse_external_dns }}/archive-search"
 
   archive_search_external:
     host: "vitamui-archive-search-external.service.{{ consul_domain }}"
@@ -264,6 +263,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 9015
     port_admin: 7015
+    base_url: "https://{{ vitam_reverse_external_dns }}/pastis"
 
 ################################################################################
 
