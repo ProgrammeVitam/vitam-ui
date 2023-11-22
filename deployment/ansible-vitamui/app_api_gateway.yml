@@ -15,80 +15,56 @@
     consul_tags: "api-gateway, api, internal"
 
 
-- hosts: ui_*
-  #environment: "{{ local_environment | default({}) }}"
+- hosts: hosts_ui_portal
   tasks:
     - include_role:
         name: assets_copy
       vars:
-        asset_path: "{{ root_path }}/data/{{ frontend_app.name }}/package/assets"
-        asset_favicon_path: "{{ root_path }}/data/{{ frontend_app.name }}/package"
+        asset_path: "/vitamui/data/{{ item }}/package/assets"
+        asset_favicon_path: "/vitamui/data/{{ item }}/package"
         asset_user: "{{ frontend_user | default('nginx') }}"
         asset_group: "{{ frontend_group | default('nginx') }}"
       with_items:
-        - "{{frontend.apps}}"
-      loop_control:
-        loop_var: frontend_app
+        - "portal"
       when: gateway.enabled | default(False)
 
-# - hosts: hosts_ui_portal
-#   tasks:
-#     - include_role:
-#         name: assets_copy
-#       vars:
-#         asset_path: "{{ root_path }}/data/{{ frontend_app.name }}/package/assets"
-#         asset_favicon_path: "{{ root_path }}/data/{{ frontend_app.name }}/package"
-#         asset_user: "{{ frontend_user | default('nginx') }}"
-#         asset_group: "{{ frontend_group | default('nginx') }}"
-#       with_items:
-#         - "{{frontend.apps}}"
-#       loop_control:
-#         loop_var: frontend_app
-#       when: gateway.enabled | default(False)
+- hosts: hosts_ui_identity
+  tasks:
+    - include_role:
+        name: assets_copy
+      vars:
+        asset_path: "/vitamui/data/{{ item }}/package/assets"
+        asset_favicon_path: "/vitamui/data/{{ item }}/package"
+        asset_user: "{{ frontend_user | default('nginx') }}"
+        asset_group: "{{ frontend_group | default('nginx') }}"
+      with_items:
+        - "identity"
+      when: gateway.enabled | default(False)
 
-# - hosts: hosts_ui_identity
-#   tasks:
-#     - include_role:
-#         name: assets_copy
-#       vars:
-#         asset_path: "{{ root_path }}/data/{{ frontend_app.name }}/package/assets"
-#         asset_favicon_path: "{{ root_path }}/data/{{ frontend_app.name }}/package"
-#         asset_user: "{{ frontend_user | default('nginx') }}"
-#         asset_group: "{{ frontend_group | default('nginx') }}"
-#       with_items:
-#         - "{{frontend.apps}}"
-#       loop_control:
-#         loop_var: frontend_app
-#       when: gateway.enabled | default(False)
-
-# - hosts: hosts_ui_identity_admin
-#   tasks:
-#     - include_role:
-#         name: assets_copy
-#       vars:
-#         asset_path: "{{ root_path }}/data/{{ frontend_app.name }}/package/assets"
-#         asset_favicon_path: "{{ root_path }}/data/{{ frontend_app.name }}/package"
-#         asset_user: "{{ frontend_user | default('nginx') }}"
-#         asset_group: "{{ frontend_group | default('nginx') }}"
-#       with_items:
-#         - "{{frontend.apps}}"
-#       loop_control:
-#         loop_var: frontend_app
-#       when: gateway.enabled | default(False)
+- hosts: hosts_ui_identity_admin
+  tasks:
+    - include_role:
+        name: assets_copy
+      vars:
+        asset_path: "/vitamui/data/{{ item }}/package/assets"
+        asset_favicon_path: "/vitamui/data/{{ item }}/package"
+        asset_user: "{{ frontend_user | default('nginx') }}"
+        asset_group: "{{ frontend_group | default('nginx') }}"
+      with_items:
+        - "identity-admin"
+      when: gateway.enabled | default(False)
 
 # - hosts: hosts_ui_referential
 #   tasks:
 #     - include_role:
 #         name: assets_copy
 #       vars:
-#         asset_path: "{{ root_path }}/data/{{ frontend_app.name }}/package/assets"
-#         asset_favicon_path: "{{ root_path }}/data/{{ frontend_app.name }}/package"
+#         asset_path: "/vitamui/data/{{ item }}/package/assets"
+#         asset_favicon_path: "/vitamui/data/{{ item }}/package"
 #         asset_user: "{{ frontend_user | default('nginx') }}"
 #         asset_group: "{{ frontend_group | default('nginx') }}"
 #       with_items:
-#         - "{{frontend.apps}}"
-#       loop_control:
-#         loop_var: frontend_app
+#         - "referential"
 #       when: gateway.enabled | default(False)
 
 - hosts: hosts_ui_portal
