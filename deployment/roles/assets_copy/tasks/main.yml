@@ -10,23 +10,10 @@
     group: "{{ asset_group }}"
   become: true
 
-- debug:
-    var: asset_path
-
-- debug:
-    var: asset_default_files
-
-- debug:
-    var: item
-  when: item is not match(".*favicon.ico")
-  with_fileglob: "{{ asset_default_files }}"
-  become: true
-
 - name: "Assets > Tasks > main.yml | Copy assets"
   copy:
     src: "{{ item }}"
-    #dest: "{{ asset_path }}/{{ item | basename }}"
-    dest: "{{ asset_path }}/"
+    dest: "{{ asset_path }}/{{ item | basename }}"
     owner: "{{ asset_user }}"
     group: "{{ asset_group }}"
     mode: '0644'
@@ -37,8 +24,7 @@
 - name: "Assets > Tasks > main.yml | Copy favicon.ico"
   copy:
     src: "{{ item }}"
-    #dest: "{{ asset_favicon_path }}/{{ item | basename }}"
-    dest: "{{ asset_favicon_path }}/"
+    dest: "{{ asset_favicon_path }}/{{ item | basename }}"
     owner: "{{ asset_user }}"
     group: "{{ asset_group }}"
     mode: '0644'
