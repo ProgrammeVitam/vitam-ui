@@ -1,0 +1,57 @@
+{
+  "GATEWAY_ENABLED": {{ gateway.enabled | default(False) | lower }},
+  "REFERENTIAL_URL": "{{ ui_referential.base_url }}",
+  "VERSION_RELEASE": "{{ app_version }}",
+  "PLATFORM_NAME": "{{ ui_portal.platform_name }}",
+  "INGEST_URL": null,
+  "PORTAL_TITLE": "{{ portal.title }}",
+  "THEME_COLORS": {
+    "vitamui-primary": "{{ theme.vitamui_primary }}",
+    "vitamui-secondary": "{{ theme.vitamui_secondary }}",
+    "vitamui-tertiary": "{{ theme.vitamui_tertiary }}",
+    "vitamui-header-footer": "{{ theme.vitamui_header_footer }}",
+    "vitamui-background": "{{ theme.vitamui_background }}"
+  },
+  "PORTAL_MESSAGE": "{{ portal.message }}",
+  "UI_URL": "{{ ui_portal.base_url }}",
+  "ARCHIVES_SEARCH_URL": null,
+  "PORTAL_URL": "{{ ui_portal.base_url }}",
+  "ALLOWED_URLS": ["/portal-api"],
+  "OIDC_CONFIG": {
+    "issuer": "{{ cas_server.base_url }}/oidc",
+    "redirectUri": "?",
+    "postLogoutRedirectUri": "{{ ui_portal.base_url }}/",
+    "clientId": "portal",
+    "responseType": "code",
+    "scope": "openid",
+    "showDebugInformation": false
+  },
+  "PORTAL_LOGO": "{{ ui_portal.portal_logo }}",
+  "HEADER_LOGO": "{{ ui_portal.header_logo }}",
+  "FOOTER_LOGO": "{{ ui_portal.footer_logo }}",
+  "USER_LOGO": "{{ ui_portal.user_logo }}",
+  {%- if ui_portal.has_tenant_list is defined or ui_portal.has_lang_selection is defined
+      or ui_portal.has_site_selection is defined +%}
+  "UI": {
+      {%- if ui_portal.has_tenant_list is defined +%}
+        "hasTenantList": {{ "true" if ui_portal.has_tenant_list else "false" }},
+      {%- endif +%}
+      {%- if ui_portal.has_lang_selection is defined +%}
+        "hasLangSelection": {{ "true" if ui_portal.has_lang_selection else "false" }},
+      {%- endif +%}
+      {%- if ui_portal.has_site_selection is defined +%}
+        "hasSiteSelection" : {{ "true" if ui_portal.has_site_selection else "false" }}
+      {%- endif +%}
+  },
+  {%- endif +%}
+  "CATEGORY_CONFIGURATION": [
+    {%- for id, category in portal_categories.items() +%}
+    {
+      "displayTitle": {{ category.displayTitle | lower }},
+      "identifier": "{{ id }}",
+      "title": "{{ category.title }}",
+      "order": {{ category.order }}
+    }{{ ", " if not loop.last else "" }}
+    {%- endfor +%}
+  ]
+}
