@@ -12,6 +12,7 @@
 # IntelliJ IDEA
 ######################
 .idea/
+.run
 **/.idea
 **/*.iws
 **/*.iml
@@ -36,7 +37,7 @@ nb-configuration.xml
 **/node_modules/
 **/npm-debug.log.*
 **/.awcache/*
-
+coverage/
 ######################
 # SASS
 ######################
@@ -232,14 +233,13 @@ deployment/playbooks/templates/vitamui/conf/*/*.p12
 ###################################
 # Vitam development configuration #
 ###################################
-api/api-archive-search/archive-search-internal/src/main/config/dev-vitam/*
-api/api-archive-search/archive-search-internal/src/main/resources/dev/*
-api/api-ingest/ingest-internal/src/main/config/dev-vitam/*
-api/api-ingest/ingest-internal/src/main/resources/dev/*
-api/api-referential/referential-internal/src/main/config/dev-vitam/*
-api/api-referential/referential-internal/src/main/resources/dev/*
-api/api-iam/iam-internal/src/main/config/dev-vitam/*
-api/api-iam/iam-internal/src/main/resources/dev/*
+api/api-archive-search/archive-search-internal/src/main/resources/dev/vitam/
+api/api-archive-search/archive-search-internal/src/main/resources/ontology/
+api/api-ingest/ingest-internal/src/main/resources/dev/vitam/
+api/api-referential/referential-internal/src/main/resources/dev/vitam/
+api/api-iam/iam-internal/src/main/resources/dev/vitam/
+api/api-collect/collect-internal/src/main/resources/dev/vitam/
+api/api-collect/collect-internal/src/main/resources/ontology/
 
 ##########################################
 # Mongo workspace entry-point #
