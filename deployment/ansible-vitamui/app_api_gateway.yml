@@ -44,24 +44,13 @@
     frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
     frontend_application_name: "identity-admin"
 
+
 # - hosts: hosts_ui_referential
-#   tasks:
-#     - include_role:
-#         name: assets_copy
-#       vars:
-#         asset_path: "/vitamui/data/{{ item }}/package/assets"
-#         asset_favicon_path: "/vitamui/data/{{ item }}/package"
-#         asset_user: "{{ frontend_user | default('nginx') }}"
-#         asset_group: "{{ frontend_group | default('nginx') }}"
-#       with_items:
-#         - "referential"
-#       when: gateway.enabled | default(False)
-# - hosts: hosts_ui_referential
-#   tasks:
-#    - include_role:
-#        name: nginx-webapp
-#       vars:
-#         frontend_role_goal: "install"
-#         frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
-#         frontend_application_name: "{{ hostvars[inventory_hostname]['ui_referential']['frontend_name'] }}"
-#       when: gateway.enabled | default(False)
+#   gather_facts: no
+#   any_errors_fatal: true
+#   roles:
+#     - { role: assets_copy, when: gateway.enabled | default(False) }
+#     - { role: nginx-webapp, when: gateway.enabled | default(False) }
+#   vars:
+#     frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
+#     frontend_application_name: "referential"
