@@ -113,7 +113,6 @@
     "@types/jasminewd2": "^2.0.8",
     "@types/lodash-es": "^4.17.3",
     "@types/node": "^12.11.1",
-    "@types/underscore": "^1.10.0",
     "codelyzer": "^5.1.2",
     "cp-cli": "^2.0.0",
     "file-loader": "^6.0.0",
