@@ -42,7 +42,7 @@
 
 - name: "Frontend-app > install.yml | Add configuration files"
   template:
-    src: "{{ frontend_application.name }}/{{ item.filename }}"
+    src: "frontend/{{ frontend_application.name }}/{{ item.filename }}"
     dest: "{{ item.destination }}"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"

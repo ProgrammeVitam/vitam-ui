@@ -27,7 +27,7 @@
 
 - name: 'Frontend-app > download.yml | Copy  artefact from local folder'
   copy:
-    src: "{{ frontend_application.name }}-{{ frontend_application_version }}.tgz"
+    src: "vitam-ui-{{ frontend_application.name }}-{{ frontend_application_version }}.tgz"
     dest: "{{ frontend_download_dir }}/{{ frontend_application.name }}.tgz"
     owner: "{{ frontend_user }}"
     mode: 0644

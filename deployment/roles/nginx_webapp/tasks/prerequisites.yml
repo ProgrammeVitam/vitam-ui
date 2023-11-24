@@ -26,7 +26,7 @@
     that:
       - frontend_application.name is defined
       - frontend_application.certificate is defined
-      - frontend_application.repo is defined
+    #  - frontend_application.repo is defined
 
 - block:
   - name: Frontend-app > prerequisites.yml | Check variable > frontend_application_version
