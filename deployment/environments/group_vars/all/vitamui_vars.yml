@@ -101,6 +101,10 @@ vitamui:
     port_service: 8003
     port_admin: 7003
     base_url: "https://{{ vitam_reverse_external_dns }}"
+    portal_logo: "logo_PORTAL.png"
+    header_logo: "logo_HEADER.png"
+    footer_logo: "logo_FOOTER.png"
+    user_logo: "logo_USER.png"
 
   referential_external:
     host: "vitamui-referential-external.service.{{ consul_domain }}"
@@ -387,3 +391,9 @@ opentracing:
 java_prerequisites:
   debian: "openjdk-11-jre-headless"
   redhat: "java-11-openjdk-headless"
+
+#######@
+
+portal:
+  message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toute sécurité et pour imprimer des étiquettes en quelques clics."
+  title: "Portail des applications de l'archivage"

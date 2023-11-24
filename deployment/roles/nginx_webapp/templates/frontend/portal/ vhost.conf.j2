@@ -1,7 +1,7 @@
 # Portal
 server {
-  listen              {{ ui_portal.server_port}} ssl;
-  server_name         {{ server_name }};
+  listen              {{ vitamui.portal.port_service }} ssl;
+  server_name         {{ vitam_reverse_external_dns }};
   include /etc/nginx/ssl/ssl.conf;
 
   root   /xelians-apps/data/portal/package;

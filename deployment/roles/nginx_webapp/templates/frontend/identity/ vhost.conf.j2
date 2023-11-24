@@ -1,6 +1,6 @@
 server {
-  listen              {{ ui_identity.server_port}} ssl;
-  server_name         {{ server_name }};
+  listen              {{ vitamui.identity.server_port}} ssl;
+  server_name         {{ vitam_reverse_external_dns }};
   include /etc/nginx/ssl/ssl.conf;
 
   root   /xelians-apps/data/identity/package;
