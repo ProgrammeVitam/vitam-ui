@@ -1,5 +1,5 @@
 {
-  "GATEWAY_ENABLED": {{ gateway.enabled | default(False) | lower }},
+  "GATEWAY_ENABLED": "{{ gateway.enabled | default(False) | lower }}",
   "REFERENTIAL_URL": "{{ vitamui.referential.base_url }}",
   "VERSION_RELEASE": "{{ app_version }}",
   "PLATFORM_NAME": "{{ vitamui_platform_informations.platform_name }}",
@@ -27,10 +27,10 @@
     "scope": "openid",
     "showDebugInformation": false
   },
-  "PORTAL_LOGO": "{{ ui_identity_admin.portal_logo | default(ui_portal.portal_logo) }}",
-  "HEADER_LOGO": "{{ ui_identity_admin.header_logo | default(ui_portal.header_logo) }}",
-  "FOOTER_LOGO": "{{ ui_identity_admin.footer_logo | default(ui_portal.footer_logo) }}",
-  "USER_LOGO": "{{ ui_identity_admin.user_logo | default(ui_portal.user_logo) }}",
+  "PORTAL_LOGO": "{{ ui_identity_admin.portal_logo | default(vitamui.portal.portal_logo) }}",
+  "HEADER_LOGO": "{{ ui_identity_admin.header_logo | default(vitamui.portal.header_logo) }}",
+  "FOOTER_LOGO": "{{ ui_identity_admin.footer_logo | default(vitamui.portal.footer_logo) }}",
+  "USER_LOGO": "{{ ui_identity_admin.user_logo | default(vitamui.portal.user_logo) }}",
   "CATEGORY_CONFIGURATION": [
     {%- for id, category in portal_categories.items() +%}
     {

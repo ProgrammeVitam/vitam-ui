@@ -8,7 +8,7 @@ server {
 
   location ~* \.(jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2|eot|css|js|json)$ {
     add_header X-Content-Type-Options "nosniff" always;
-    add_header Cache-Control "{{ui_portal.resources_header_cache_control}}";
+    add_header Cache-Control "{{ vitamui.portal.resources_header_cache_control}}";
     include  /etc/nginx/mime.types;
     try_files $uri $uri/ =404;
   }
@@ -23,7 +23,7 @@ server {
   }
 
   location /portal-api {
-    proxy_pass {{ 'https' if gateway.server_secure | bool else 'http' }}://api-gateway;
+    proxy_pass {{ 'https' if vitamui.api_gateway.server_secure | bool else 'http' }}://api-gateway;
     proxy_ssl_certificate /etc/nginx/ssl/ui-portal.crt;
     proxy_ssl_certificate_key /etc/nginx/ssl/ui-portal.key;
     proxy_ssl_password_file /etc/nginx/ssl/ui-portal.key_pass;
