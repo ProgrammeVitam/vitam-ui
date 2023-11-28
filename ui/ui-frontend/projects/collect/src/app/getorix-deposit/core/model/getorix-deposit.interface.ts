@@ -26,6 +26,7 @@
  */
 
 export interface GetorixDeposit {
+  id: string;
   originatingAgency: string;
   versatileService: string;
   firstScientificOfficerFirstName: string;

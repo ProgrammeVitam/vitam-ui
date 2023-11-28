@@ -59,12 +59,19 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
     private applicationService: ApplicationService,
     private router: Router,
     private startupService: StartupService,
-    private logger: Logger,
+    private logger: Logger
   ) {}
 
   ngOnInit() {}
 
   public navigateTo(data: BreadCrumbData): void {
+    if (data.isGetorix && data.isGetorix === true) {
+      if (data.redirectUrl) {
+        this.router.navigateByUrl(data.redirectUrl).then(() => {
+          window.location.reload();
+        });
+      }
+    }
     if (data.redirectUrl) {
       this.router.navigateByUrl(data.redirectUrl);
     } else if (!data.identifier || data.identifier === ApplicationId.PORTAL_APP) {

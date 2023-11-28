@@ -7,7 +7,27 @@
     "DEPOSIT_QUESTION" : "You have submitted the report and would like to deposit your archives? Here:",
     "STEPS_TO_FOLLOW" : "The steps to follow",
     "GUIDE_TO_SHOW" :"Consult our guide to assist you step by step in uploading your archives :",
+    "BREAD_CRUMB" : {
+      "ARCHIVAL_SPACE" : "My archive space",
+      "NEW_PROJECT" : "New project",
+      "UPLOAD_ARCHIVES" :"archive deposit"
+    },
     "CREATION_PROCESS": {
+      "SUCCESS" : {
+        "TITLE" : "Prepare to submit content",
+        "SAVE_OK" :"The information about your search has been saved, thank you",
+        "SAVE_DETAILS" : "You will now be able to save your archives for the operation: ",
+        "BEFORE_STARTING" :"Before starting, make sure that your content is usable by archivists and your colleagues by checking the following elements:",
+        "CHECK_CONTENT" :"I have checked the relevance of the content to be uploaded",
+        "WICH_CONTENT" :"What content should I archive ?",
+        "PICTURES_CHECK" :"I have sorted the photos to upload",
+        "HOW_CHECK_PICTURES" :"How do I sort my photos correctly ?",
+        "CONTENT_NAMES" :"I have carefully named the contents",
+        "HOW_CONTENT_NAMES" :"How do I name my content correctly ?",
+        "PDF_CREATE_COPY" :"I have created a PDF copy of the files in the specific format",
+        "WICH_FORMATS" :"What management of specific formats?",
+        "ACTION":"Post my content"
+      },
       "REQUIRED" : "Required fields",
       "MIN_LENGTH" :"At least 2 characters are required",
       "MIN_LENGTH_MIN" :"At least 3 characters are required",

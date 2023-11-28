@@ -1,0 +1,25 @@
+<vitamui-common-sidenav-header
+  [title]="valueDetails"
+  [hasToolTipOnTitle]="true"
+  [toolTipTitleText]="valueDetails"
+  [toolTipTitleDuration]="300"
+  (onclose)="emitClose()"
+  (onDownload)="downloadFile()"
+  [hasDownloadLink]="true"
+>
+</vitamui-common-sidenav-header>
+
+<div class="vitamui-sidepanel-body">
+  hello
+
+  <div>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.' + valueDetails | translate }}</div>
+  <div>{{ valueDetails }}</div>
+  <ng-container> </ng-container>
+
+  <div [ngSwitch]="valueDetails">
+    <div *ngSwitchCase="'WICH_CONTENT'" class="text-green">this : WICH_CONTENT</div>
+    <div *ngSwitchCase="'HOW_CHECK_PICTURES'" class="text-orange">this : HOW_CHECK_PICTURES</div>
+    <div *ngSwitchCase="'HOW_CONTENT_NAMES'" class="text-red">this : HOW_CONTENT_NAMES</div>
+    <div *ngSwitchCase="'WICH_FORMATS'" class="text-black">this : WICH_FORMATS</div>
+  </div>
+</div>

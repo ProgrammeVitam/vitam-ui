@@ -1,8 +1,19 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <getorix-deposit-advise-preview
+      *ngIf="openedItem"
+      [valueDetails]="openedItem"
+      (previewClose)="closePanel()"
+    ></getorix-deposit-advise-preview>
+  </mat-sidenav>
+
   <mat-sidenav-content>
     <div id="page-top-top" [ngStyle]="{ 'padding-bottom': '40px' }"></div>
     <div class="vitamui-content">
-      <div *ngIf="!showForm" class="row">
+      <vitamui-common-title-breadcrumb *ngIf="isSuccessCreation" [data]="dataBreadcrumb">{{
+        'COLLECT.APP_BREADCRUMB' | translate
+      }}</vitamui-common-title-breadcrumb>
+      <div *ngIf="showInitialForm" class="row">
         <div class="col-3">
           <div class="text-return">
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
@@ -789,19 +800,83 @@
           </form>
           <br />
           <br />
-          <button class="btn primary" (click)="validateCreation()">
-            <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VALIDATE' | translate }}</span>
-          </button>
+
+          <div *ngIf="!pending; then btnActivated; else inProgressSpinner"></div>
         </div>
         <!-- sur 3 col-->
         <div class="col-1"></div>
         <div class="col-1">
-          <div [ngStyle]="{ position: 'fixed', 'padding-top': '20px' }">
-            <button class="btn primary" (click)="validateCreation()">
-              <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VALIDATE' | translate }}</span>
-            </button>
+          <div [ngStyle]="{ position: 'fixed', 'padding-top': '20px' }" *ngIf="!pending; then btnActivated; else inProgressSpinner"></div>
+        </div>
+      </div>
+      <div *ngIf="isSuccessCreation" class="row">
+        <div class="col-3">
+          <div class="text-return">
+            <i class="vitamui-icon vitamui-icon-chevron-left" [ngStyle]="{ 'font-size': '24px' }"></i>
+            <span class="return clickable" (click)="returnToMainPage()"> {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.BACK' | translate }}</span>
           </div>
         </div>
+        <div class="col-6">
+          <div class="title" [ngStyle]="{ 'padding-top': '65px', 'padding-bottom': '50px' }">
+            {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.TITLE' | translate }}
+          </div>
+          <div class="description" [ngStyle]="{ 'padding-top': '20px', 'padding-bottom': '50px' }">
+            <div class="row">
+              <div class="col-1"><i class="material-icons success-icon">check_circle</i></div>
+              <div class="col-11 success-message">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.SAVE_OK' | translate }}</div>
+            </div>
+
+            <div class="row">
+              <p></p>
+              <br />
+              <div class="col-1"><span class="green-vertical-line"></span></div>
+              <div class="col-11">
+                <p>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.SAVE_DETAILS' | translate }}</p>
+                <p class="operation-details">
+                  {{ getorixDepositCreated?.operationName }} ({{ getorixDepositCreated?.internalAdministratorNumber }})
+                </p>
+              </div>
+            </div>
+
+            <p class="before-start">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.BEFORE_STARTING' | translate }}
+            </p>
+            <i class="vitamui-icon vitamui-icon-arrow-right2 icon-css"></i>
+            <span class="question-deposit">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.CHECK_CONTENT' | translate }}
+            </span>
+            <p class="question-deposit-panel" (click)="showDetails('WICH_CONTENT')">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT' | translate }}
+            </p>
+
+            <i class="vitamui-icon vitamui-icon-arrow-right2 icon-css"></i>
+            <span class="question-deposit">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.PICTURES_CHECK' | translate }}
+            </span>
+            <p class="question-deposit-panel" (click)="showDetails('HOW_CHECK_PICTURES')">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CHECK_PICTURES' | translate }}
+            </p>
+            <i class="vitamui-icon vitamui-icon-arrow-right2 icon-css"></i>
+            <span class="question-deposit">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.CONTENT_NAMES' | translate }}
+            </span>
+            <p class="question-deposit-panel" (click)="showDetails('HOW_CONTENT_NAMES')">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES' | translate }}
+            </p>
+            <i class="vitamui-icon vitamui-icon-arrow-right2 icon-css"></i
+            ><span class="question-deposit">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.PDF_CREATE_COPY' | translate }}
+            </span>
+            <p class="question-deposit-panel" (click)="showDetails('WICH_FORMATS')">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_FORMATS' | translate }}
+            </p>
+          </div>
+
+          <button class="btn primary" (click)="goToUploadOperationObjects()">
+            <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.ACTION' | translate }} </span>
+          </button>
+        </div>
+        <div class="col-3"></div>
       </div>
     </div>
   </mat-sidenav-content>
@@ -826,4 +901,15 @@
       {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DIALOG_ACTION.CANCEL' | translate }}
     </button>
   </mat-dialog-actions>
+</ng-template>
+
+<ng-template #inProgressSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+<ng-template #btnActivated>
+  <button class="btn primary" (click)="validateCreation()">
+    <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VALIDATE' | translate }}</span>
+  </button>
 </ng-template>

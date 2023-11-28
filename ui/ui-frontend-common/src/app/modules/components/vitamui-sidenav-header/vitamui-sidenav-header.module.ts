@@ -39,10 +39,11 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import { VitamuiSidenavHeaderComponent } from './vitamui-sidenav-header.component';
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatTooltipModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatTooltipModule, TranslateModule],
   declarations: [VitamuiSidenavHeaderComponent],
   exports: [VitamuiSidenavHeaderComponent],
 })
