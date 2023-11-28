@@ -32,13 +32,13 @@
   "FOOTER_LOGO": "{{ ui_identity_admin.footer_logo | default(vitamui.portal.footer_logo) }}",
   "USER_LOGO": "{{ ui_identity_admin.user_logo | default(vitamui.portal.user_logo) }}",
   "CATEGORY_CONFIGURATION": [
-    {%- for id, category in vitamui_defaults.portal_categories.items() +%}
+    {%- for id, category in vitamui_defaults.portal_categories.items() %}
     {
       "displayTitle": {{ category.displayTitle | lower }},
       "identifier": "{{ id }}",
       "title": "{{ category.title }}",
       "order": {{ category.order }}
     }{{ ", " if not loop.last else "" }}
-    {%- endfor +%}
+    {%- endfor %}
   ]
 }

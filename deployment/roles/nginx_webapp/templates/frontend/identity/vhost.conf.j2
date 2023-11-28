@@ -1,5 +1,5 @@
 server {
-  listen              {{ vitamui.identity.server_port}} ssl;
+  listen              {{ vitamui.identity.port_service}} ssl;
   server_name         {{ vitam_reverse_external_dns }};
   include /etc/nginx/ssl/ssl.conf;
 
