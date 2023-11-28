@@ -33,15 +33,15 @@
   {%- if vitamui.portal.has_tenant_list is defined or vitamui.portal.has_lang_selection is defined
       or vitamui.portal.has_site_selection is defined +%}
   "UI": {
-      {%- if vitamui.portal.has_tenant_list is defined +%}
-        "hasTenantList": {{ "true" if vitamui.portal.has_tenant_list else "false" }},
-      {%- endif +%}
-      {%- if vitamui.portal.has_lang_selection is defined +%}
-        "hasLangSelection": {{ "true" if vitamui.portal.has_lang_selection else "false" }},
-      {%- endif +%}
-      {%- if vitamui.portal.has_site_selection is defined +%}
-        "hasSiteSelection" : {{ "true" if vitamui.portal.has_site_selection else "false" }},
-      {%- endif +%}
+    {%- if vitamui.portal.has_tenant_list is defined +%}
+    "hasTenantList": {{ "true" if vitamui.portal.has_tenant_list else "false" }},
+    {%- endif +%}
+    {%- if vitamui.portal.has_lang_selection is defined +%}
+    "hasLangSelection": {{ "true" if vitamui.portal.has_lang_selection else "false" }},
+    {%- endif +%}
+    {%- if vitamui.portal.has_site_selection is defined +%}
+    "hasSiteSelection" : {{ "true" if vitamui.portal.has_site_selection else "false" }}
+    {%- endif +%}
   },
 {%- endif %}
   "CATEGORY_CONFIGURATION": [
