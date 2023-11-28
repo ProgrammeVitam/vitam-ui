@@ -25,45 +25,30 @@
  * accept its terms.
  */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
-import { CreateGetorixDepositComponent } from './create-getorix-deposit/create-getorix-deposit.component';
-import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object/getorix-deposit-upload-object.component';
-import { GetorixDepositComponent } from './getorix-deposit.component';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-const routes: Route[] = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full',
-  },
-  {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    component: GetorixDepositComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier/create',
-    component: CreateGetorixDepositComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier/create/upload-object/:operationIdentifier',
-    component: GetorixDepositUploadObjectComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-];
-
-@NgModule({
-  declarations: [],
-  imports: [CommonModule, RouterModule.forChild(routes)],
-  exports: [RouterModule],
+@Component({
+  selector: 'getorix-deposit-advise-preview',
+  templateUrl: './getorix-deposit-advise-preview.component.html',
+  styleUrls: ['./getorix-deposit-advise-preview.component.scss'],
 })
-export class GetorixDepositRoutingModule {}
+export class GetorixDepositAdvisePreviewComponent implements OnInit {
+  @Output() previewClose = new EventEmitter();
+
+  @Input()
+  valueDetails: string;
+
+  constructor() {}
+
+  ngOnInit(): void {
+    console.log('hello', this.valueDetails);
+  }
+
+  emitClose() {
+    this.previewClose.emit();
+  }
+
+  downloadFile() {
+    console.log('lien pour télécharger le fichier');
+  }
+}

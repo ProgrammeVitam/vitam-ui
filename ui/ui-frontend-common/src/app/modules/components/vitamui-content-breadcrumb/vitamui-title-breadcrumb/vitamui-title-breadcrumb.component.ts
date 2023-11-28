@@ -48,10 +48,9 @@ import { StartupService } from '../../../startup.service';
 @Component({
   selector: 'vitamui-common-title-breadcrumb',
   templateUrl: './vitamui-title-breadcrumb.component.html',
-  styleUrls: ['./vitamui-title-breadcrumb.component.scss']
+  styleUrls: ['./vitamui-title-breadcrumb.component.scss'],
 })
 export class VitamuiTitleBreadcrumbComponent implements OnInit {
-
   @Input()
   public data?: BreadCrumbData[];
 
@@ -61,11 +60,18 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
     private router: Router,
     private startupService: StartupService,
     private logger: Logger
-  ) { }
+  ) {}
 
   ngOnInit() {}
 
   public navigateTo(data: BreadCrumbData): void {
+    if (data.isGetorix && data.isGetorix === true) {
+      if (data.redirectUrl) {
+        this.router.navigateByUrl(data.redirectUrl).then(() => {
+          window.location.reload();
+        });
+      }
+    }
     if (data.redirectUrl) {
       this.router.navigateByUrl(data.redirectUrl);
     } else if (!data.identifier || data.identifier === ApplicationId.PORTAL_APP) {

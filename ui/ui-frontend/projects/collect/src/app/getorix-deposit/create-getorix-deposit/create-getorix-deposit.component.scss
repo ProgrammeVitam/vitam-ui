@@ -280,3 +280,73 @@ $dark-red: #ea0101;
 .title-padding {
   padding-bottom: 15px;
 }
+
+.question-deposit {
+  color: var(--secondary-secondary-900, #050c15);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  padding-left: 60px;
+}
+.question-deposit-panel {
+  color: var(--vitamui-primary);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.1px;
+  text-decoration-line: underline;
+  cursor: pointer;
+  padding-left: 60px;
+  margin-top: 10px;
+}
+.before-start {
+  color: var(--grey-grey-900, #212121);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  padding-bottom: 30px;
+  padding-top: 40px;
+}
+.icon-css {
+  position: absolute;
+  padding-top: 4px;
+  font-size: 20px;
+  padding-left: 15px;
+}
+.green-vertical-line {
+  border-left: 2px solid;
+  display: block;
+  height: 100%;
+  border-radius: -2px;
+  margin-left: 50%;
+  stroke-width: 1px;
+  color: var(--green-green-500, #27740a);
+}
+.success-icon {
+  color: var(--green-green-500, #27740a);
+  font-size: 40px;
+}
+.success-message {
+  color: var(--green-green-500, #27740a);
+  font-family: Mulish;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+}
+.operation-details {
+  margin-bottom: 0px;
+  margin-top: -15px;
+  color: var(--grey-grey-900, #212121);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}

@@ -34,17 +34,25 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { CreateGetorixDepositComponent } from './create-getorix-deposit/create-getorix-deposit.component';
+import { GetorixDepositAdvisePreviewComponent } from './getorix-deposit-advise-preview/getorix-deposit-advise-preview.component';
 import { GetorixDepositRoutingModule } from './getorix-deposit-routing.module';
+import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object/getorix-deposit-upload-object.component';
 import { GetorixDepositComponent } from './getorix-deposit.component';
 import { GetorixDepositService } from './getorix-deposit.service';
 
 @NgModule({
-  declarations: [GetorixDepositComponent, CreateGetorixDepositComponent],
+  declarations: [
+    GetorixDepositComponent,
+    CreateGetorixDepositComponent,
+    GetorixDepositUploadObjectComponent,
+    GetorixDepositAdvisePreviewComponent,
+  ],
   imports: [
     CommonModule,
     MatSidenavModule,
@@ -60,6 +68,7 @@ import { GetorixDepositService } from './getorix-deposit.service';
     FormsModule,
     MatInputModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
   ],
   providers: [GetorixDepositService],
   exports: [GetorixDepositComponent],

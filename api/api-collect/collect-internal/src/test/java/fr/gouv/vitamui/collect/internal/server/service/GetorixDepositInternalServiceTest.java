@@ -27,7 +27,15 @@
 
 package fr.gouv.vitamui.collect.internal.server.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.collect.common.dto.ProjectDto;
+import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.ArchaeologistGetorixAddressDto;
 import fr.gouv.vitamui.collect.common.dto.DepositStatus;
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
@@ -35,11 +43,13 @@ import fr.gouv.vitamui.collect.internal.server.dao.GetorixDepositRepository;
 import fr.gouv.vitamui.collect.internal.server.domain.GetorixDepositModel;
 import fr.gouv.vitamui.collect.internal.server.service.converters.GetorixDepositConverter;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,13 +57,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import javax.ws.rs.core.Response;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import static fr.gouv.vitamui.iam.common.utils.IamDtoBuilder.buildUserDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -66,24 +80,57 @@ class GetorixDepositInternalServiceTest {
         mock(GetorixDepositRepository.class);
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
+    private final CollectService collectService = mock(CollectService.class);
 
     private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
 
 
     private final GetorixDepositConverter getorixDepositConverter = new GetorixDepositConverter();
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    final PodamFactory factory = new PodamFactoryImpl();
+
 
     @BeforeEach
     public void setup() throws Exception {
 
         getorixDepositInternalService = new GetorixDepositInternalService(sequenceRepository, getorixDepositRepository,
-            getorixDepositConverter, internalSecurityService);
+            getorixDepositConverter, internalSecurityService, collectService);
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
     @Test
-    void testCreateGetorixDeposit_ok_when_all_condition_ok() {
+    void testCreateGetorixDeposit_ok_when_all_condition_ok() throws VitamClientException, JsonProcessingException {
+
+        // GIVEN
+        // Create Project OK
+        final ProjectDto projectDto = factory.manufacturePojo(ProjectDto.class);
+        RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
+        responseFromVitam.setHttpCode(200);
+        responseFromVitam.setHits(1, 1, 1, 1);
+        responseFromVitam.addResult(projectDto);
+
+        RequestResponse<JsonNode> mockResponse = RequestResponse
+            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+
+        Mockito.when(collectService.initProject(any(), any()))
+            .thenReturn(mockResponse);
+
+        // Create transaction : OK
+        final TransactionDto transactionDto = factory.manufacturePojo(TransactionDto.class);
+        RequestResponseOK<TransactionDto> transactionResponseFromVitam = new RequestResponseOK<>();
+        transactionResponseFromVitam.setHttpCode(200);
+        transactionResponseFromVitam.setHits(1, 1, 1, 1);
+        transactionResponseFromVitam.addResult(transactionDto);
+
+        RequestResponse<JsonNode> transactionMockResponse = RequestResponse
+            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(transactionResponseFromVitam)).build());
+
+        Mockito.when(collectService.initTransaction(any(), any(), any()))
+            .thenReturn(transactionMockResponse);
+
         final GetorixDepositDto getorixDepositDto =
             getorixDepositConverter.convertEntityToDto(buildGetorixDepositModel());
 
@@ -121,6 +168,53 @@ class GetorixDepositInternalServiceTest {
         result.setVersatileService(created.getVersatileService());
 
         assertThat(result).isEqualToComparingFieldByField(created);
+    }
+
+    @Test
+    void testCreateGetorixDeposit_ko_when_init_transaction_is_ko() throws VitamClientException, JsonProcessingException {
+
+        // GIVEN
+        // Create Project OK
+        final ProjectDto projectDto = factory.manufacturePojo(ProjectDto.class);
+        RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
+        responseFromVitam.setHttpCode(200);
+        responseFromVitam.setHits(1, 1, 1, 1);
+        responseFromVitam.addResult(projectDto);
+
+        RequestResponse<JsonNode> mockResponse = RequestResponse
+            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+
+        Mockito.when(collectService.initProject(any(), any()))
+            .thenReturn(mockResponse);
+
+        RequestResponse<ProjectDto> transactionResponseFromVitam = new RequestResponse<>() {
+            @Override
+            public Response toResponse() {
+                return null;
+            }
+        };
+        RequestResponse<JsonNode> transactionMockResponse = RequestResponse
+            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(transactionResponseFromVitam)).build());
+        Mockito.when(collectService.initTransaction(any(), any(), any()))
+            .thenReturn(transactionMockResponse);
+
+        VitamContext vitamContext = new VitamContext(15);
+        final GetorixDepositDto getorixDepositDto =
+            getorixDepositConverter.convertEntityToDto(buildGetorixDepositModel());
+
+        final GetorixDepositModel other = new GetorixDepositModel();
+        VitamUIUtils.copyProperties(getorixDepositDto, other);
+        other.setId(UUID.randomUUID().toString());
+
+        when(getorixDepositRepository.save(ArgumentMatchers.any())).thenReturn(other);
+
+        final AuthUserDto user = buildAuthUserDto();
+
+        Mockito.when(internalSecurityService.getUser()).thenReturn(user);
+
+        assertThatCode(()-> getorixDepositInternalService.createGetorixDeposit(getorixDepositDto, vitamContext))
+            .isInstanceOf(InternalServerException.class)
+            .hasMessage("Unable to create transaction");
     }
 
     @Test
@@ -185,6 +279,40 @@ class GetorixDepositInternalServiceTest {
         assertThatCode(()-> getorixDepositInternalService.createGetorixDeposit(getorixDepositDto, vitamContext))
             .isInstanceOf(UnAuthorizedException.class)
             .hasMessage("You are not authorized to create the deposit ");
+    }
+
+    @Test
+    void testCreateGetorixDeposit_ko_when_init_project_is_ko() throws VitamClientException, JsonProcessingException {
+
+        // GIVEN
+        RequestResponse<ProjectDto> responseFromVitam = new RequestResponse<>() {
+            @Override
+            public Response toResponse() {
+                return null;
+            }
+        };
+        RequestResponse<JsonNode> mockResponse = RequestResponse
+            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+        Mockito.when(collectService.initProject(any(), any()))
+            .thenReturn(mockResponse);
+
+        VitamContext vitamContext = new VitamContext(15);
+        final GetorixDepositDto getorixDepositDto =
+            getorixDepositConverter.convertEntityToDto(buildGetorixDepositModel());
+
+        final GetorixDepositModel other = new GetorixDepositModel();
+        VitamUIUtils.copyProperties(getorixDepositDto, other);
+        other.setId(UUID.randomUUID().toString());
+
+        when(getorixDepositRepository.save(ArgumentMatchers.any())).thenReturn(other);
+
+        final AuthUserDto user = buildAuthUserDto();
+
+        Mockito.when(internalSecurityService.getUser()).thenReturn(user);
+
+        assertThatCode(()-> getorixDepositInternalService.createGetorixDeposit(getorixDepositDto, vitamContext))
+            .isInstanceOf(InternalServerException.class)
+            .hasMessage("Unable to create project");
     }
 
     private AuthUserDto buildAuthUserDto() {

@@ -25,45 +25,28 @@
  * accept its terms.
  */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
-import { CreateGetorixDepositComponent } from './create-getorix-deposit/create-getorix-deposit.component';
-import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object/getorix-deposit-upload-object.component';
-import { GetorixDepositComponent } from './getorix-deposit.component';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
-const routes: Route[] = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full',
-  },
-  {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    component: GetorixDepositComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier/create',
-    component: CreateGetorixDepositComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier/create/upload-object/:operationIdentifier',
-    component: GetorixDepositUploadObjectComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-];
-
-@NgModule({
-  declarations: [],
-  imports: [CommonModule, RouterModule.forChild(routes)],
-  exports: [RouterModule],
+@Component({
+  selector: 'getorix-deposit-upload-object',
+  templateUrl: './getorix-deposit-upload-object.component.html',
+  styleUrls: ['./getorix-deposit-upload-object.component.scss'],
 })
-export class GetorixDepositRoutingModule {}
+export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
+  tenantIdentifierSubscription: Subscription;
+  operationId: string;
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
+      this.operationId = params.operationIdentifier;
+      console.log(' params', params);
+    });
+  }
+
+  ngOnDestroy() {
+    this.tenantIdentifierSubscription?.unsubscribe();
+  }
+}
