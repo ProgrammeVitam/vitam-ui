@@ -37,7 +37,7 @@
     },
   {%- endif +%}
   "CATEGORY_CONFIGURATION": [
-    {%- for id, category in portal_categories.items() +%}
+    {%- for id, category in vitamui_defaults.portal_categories.items() +%}
     {
       "displayTitle": {{ category.displayTitle | lower }},
       "identifier": "{{ id }}",
