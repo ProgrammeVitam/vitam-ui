@@ -1,0 +1,13 @@
+fix nginx conf category part
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Tue Nov 28 09:18:25 2023 +0100
+#
+# On branch story_11868_api_gateway_ansible
+# Your branch is up to date with 'origin/story_11868_api_gateway_ansible'.
+#
+# Changes to be committed:
+#	modified:   deployment/roles/nginx_webapp/templates/frontend/portal/config.json.j2
+#

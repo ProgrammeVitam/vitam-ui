@@ -30,28 +30,27 @@
   "HEADER_LOGO": "{{ vitamui.portal.header_logo }}",
   "FOOTER_LOGO": "{{ vitamui.portal.footer_logo }}",
   "USER_LOGO": "{{ portal.user_logo }}",
-  {%- if vitamui.portal.has_tenant_list is defined or vitamui.portal.has_lang_selection is defined
-      or vitamui.portal.has_site_selection is defined +%}
+  {%- if vitamui.portal.has_tenant_list is defined or vitamui.portal.has_lang_selection is defined or vitamui.portal.has_site_selection is defined %}
   "UI": {
-    {%- if vitamui.portal.has_tenant_list is defined +%}
+    {%- if vitamui.portal.has_tenant_list is defined %}
     "hasTenantList": {{ "true" if vitamui.portal.has_tenant_list else "false" }},
-    {%- endif +%}
-    {%- if vitamui.portal.has_lang_selection is defined +%}
+    {%- endif %}
+    {%- if vitamui.portal.has_lang_selection is defined %}
     "hasLangSelection": {{ "true" if vitamui.portal.has_lang_selection else "false" }},
-    {%- endif +%}
-    {%- if vitamui.portal.has_site_selection is defined +%}
+    {%- endif %}
+    {%- if vitamui.portal.has_site_selection is defined %}
     "hasSiteSelection" : {{ "true" if vitamui.portal.has_site_selection else "false" }}
-    {%- endif +%}
+    {%- endif %}
   },
-{%- endif %}
+  {%- endif %}
   "CATEGORY_CONFIGURATION": [
-    {%- for id, category in vitamui_defaults.portal_categories.items() +%}
+    {%- for id, category in vitamui_defaults.portal_categories.items() %}
     {
       "displayTitle": {{ category.displayTitle | lower }},
       "identifier": "{{ id }}",
       "title": "{{ category.title }}",
       "order": {{ category.order }}
     }{{ ", " if not loop.last else "" }}
-    {%- endfor +%}
+    {%- endfor %}
   ]
 }
