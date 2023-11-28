@@ -25,42 +25,6 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.vitamui-icon-ontologie:before {
-  content: "\e964";
-  color: #757575;
-}
-.vitamui-icon-fichiers:before {
-  content: "\e965";
-  color: #757575;
-}
-.vitamui-icon-agent:before {
-  content: "\e966";
-  color: #757575;
-}
-.vitamui-icon-releve:before {
-  content: "\e967";
-  color: #757575;
-}
-.vitamui-icon-dsl:before {
-  content: "\e968";
-  color: #757575;
-}
-.vitamui-icon-operation:before {
-  content: "\e969";
-  color: #757575;
-}
-.vitamui-icon-contrat:before {
-  content: "\e96a";
-  color: #757575;
-}
-.vitamui-icon-securite:before {
-  content: "\e96b";
-  color: #757575;
-}
-.vitamui-icon-audit:before {
-  content: "\e96c";
-  color: #757575;
-}
 .vitamui-icon-trash:before {
   content: "\e963";
   color: #474d4a;
@@ -832,4 +796,94 @@ i.vitamui-icon {
 }
 .vitamui-icon-radio-checked:before {
   content: "\ea78";
+}
+.vitamui-icon-applicatif:before {
+  content: "\e964";
+  color: #474747;
+}
+.vitamui-icon-operation:before {
+  content: "\e967";
+  color: #474747;
+}
+.vitamui-icon-ontologie:before {
+  content: "\e965";
+  color: #474747;
+}
+.vitamui-icon-securite:before {
+  content: "\e968";
+  color: #474747;
+}
+.vitamui-icon-fichiers:before {
+  content: "\e969";
+  color: #474747;
+}
+.vitamui-icon-contrat:before {
+  content: "\e966";
+  color: #474747;
+}
+.vitamui-icon-audit:before {
+  content: "\e96a";
+  color: #474747;
+}
+.vitamui-icon-agent:before {
+  content: "\e96b";
+  color: #474747;
+}
+.vitamui-icon-point-right:before {
+  content: "\ea04";
+}
+.vitamui-icon-arrow-right2:before {
+  content: "\ea3c";
+}
+.vitamui-icon-scenarios:before {
+  content: "\e9c6";
+  color: #fe4f02;
+}
+.vitamui-icon-releve:before {
+  content: "\e9c7";
+  color: #fe4f02;
+}
+.vitamui-icon-dsl:before {
+  content: "\e9c8";
+  color: #fe4f02;
+}
+.vitamui-icon-droit:before {
+  content: "\e9c9";
+  color: #fe4f02;
+}
+.vitamui-icon-add-applicatif:before {
+  content: "\e96c";
+  color: #fff;
+}
+.vitamui-icon-add-operation:before {
+  content: "\e96d";
+  color: #fff;
+}
+.vitamui-icon-add-securite:before {
+  content: "\e96e";
+  color: #fff;
+}
+.vitamui-icon-add-user:before {
+  content: "\e96f";
+  color: #fff;
+}
+.vitamui-icon-add-audit:before {
+  content: "\e970";
+  color: #fff;
+}
+.vitamui-icon-add-ontologie:before {
+  content: "\e974";
+  color: #fff;
+}
+.vitamui-icon-add-contrat:before {
+  content: "\e971";
+  color: #fff;
+}
+.vitamui-icon-add-fichiers:before {
+  content: "\e972";
+  color: #fff;
+}
+.vitamui-icon-trash1:before {
+  content: "\e973";
+  color: #474d4a;
 }

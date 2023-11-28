@@ -25,45 +25,43 @@
  * accept its terms.
  */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
-import { CreateGetorixDepositComponent } from './create-getorix-deposit/create-getorix-deposit.component';
-import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object/getorix-deposit-upload-object.component';
-import { GetorixDepositComponent } from './getorix-deposit.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object.component';
 
-const routes: Route[] = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full',
-  },
-  {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    component: GetorixDepositComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier/create',
-    component: CreateGetorixDepositComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier/create/upload-object/:operationIdentifier',
-    component: GetorixDepositUploadObjectComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-];
+describe('GetorixDepositUploadObjectComponent', () => {
+  let component: GetorixDepositUploadObjectComponent;
+  let fixture: ComponentFixture<GetorixDepositUploadObjectComponent>;
 
-@NgModule({
-  declarations: [],
-  imports: [CommonModule, RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class GetorixDepositRoutingModule {}
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [GetorixDepositUploadObjectComponent],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot(), InjectorModule, LoggerModule.forRoot()],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            navigate: () => {},
+            params: of({ tenantIdentifier: 1, operationIdentifier: 'operationIdentifier' }),
+            data: of({ appId: 'GETORIX_DEPOSIT_APP' }),
+            events: of({}),
+          },
+        },
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(GetorixDepositUploadObjectComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

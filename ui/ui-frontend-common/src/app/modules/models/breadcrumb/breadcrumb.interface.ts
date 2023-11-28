@@ -3,4 +3,5 @@ export interface BreadCrumbData {
   identifier?: string;
   format?: 'TITLECASE' | 'UPPERCASE' | 'LOWERCASE';
   redirectUrl?: string;
+  isGetorix?: boolean;
 }
