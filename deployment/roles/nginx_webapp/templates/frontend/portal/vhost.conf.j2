@@ -23,7 +23,7 @@ server {
   }
 
   location /portal-api {
-    proxy_pass {{ 'https' if vitamui.api_gateway.server_secure | bool else 'http' }}://api-gateway;
+    proxy_pass {{ 'https' if vitamui.api_gateway.server_secure | bool else 'http' }}://API-GATEWAY;
     proxy_ssl_certificate /etc/nginx/ssl/ui-portal.crt;
     proxy_ssl_certificate_key /etc/nginx/ssl/ui-portal.key;
     proxy_ssl_password_file /etc/nginx/ssl/ui-portal.key_pass;
