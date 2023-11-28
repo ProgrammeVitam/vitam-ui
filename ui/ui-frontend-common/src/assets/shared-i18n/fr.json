@@ -2,6 +2,9 @@
   "SNACK_BAR": {
     "TENANT_NOT_FOUND": "Liste des tenants introuvable pour :"
   },
+  "PREVIEW_PANEL" : {
+    "DOWNLOAD_LINK" :"Consulter le guide de versement complet"
+  },
   "COMMON": {
     "ADD": "Ajouter",
     "UNDO": "Annuler",
