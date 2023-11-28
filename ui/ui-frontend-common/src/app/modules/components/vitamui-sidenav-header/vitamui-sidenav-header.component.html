@@ -33,6 +33,7 @@
           <h5 class="m-0">{{ title }}</h5>
           <p class="text medium m-0">{{ subtitle }}</p>
         </div>
+
         <div *ngIf="!actionsBelowTitle" class="d-flex align-items-end justify-content-end actions">
           <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
         </div>
@@ -42,6 +43,7 @@
         <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
       </div>
     </div>
+    <div (click)="onDownload.emit()" class="download-link" *ngIf="hasDownloadLink">{{ 'PREVIEW_PANEL.DOWNLOAD_LINK' | translate }}</div>
   </div>
 </div>
 

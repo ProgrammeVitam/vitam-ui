@@ -27,14 +27,28 @@
 
 package fr.gouv.vitamui.collect.internal.server.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.collect.common.dto.ProjectDto;
+import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
 import fr.gouv.vitamui.collect.internal.server.dao.GetorixDepositRepository;
 import fr.gouv.vitamui.collect.internal.server.domain.GetorixDepositModel;
 import fr.gouv.vitamui.collect.internal.server.service.converters.GetorixDepositConverter;
+import fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter;
+import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -42,6 +56,7 @@ import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +64,7 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
+import static fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter.toVitamuiCollectProjectDto;
 
 /**
  * The service to manage all Getorix Deposits
@@ -60,20 +76,27 @@ public class GetorixDepositInternalService  extends
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(GetorixDepositInternalService.class);
 
     private static final String NOT_ALLOWED_TO_CREATE_DEPOSIT = "You can not create the deposit";
+    public static final String UNABLE_TO_CREATE_PROJECT = "Unable to create project";
+    public static final String UNABLE_TO_CREATE_TRANSACTION = "Unable to create transaction";
+    public static final String UNABLE_TO_PROCESS_RESPONSE = "Unable to process response";
+
     private final GetorixDepositRepository getorixDepositRepository;
 
     private final GetorixDepositConverter getorixDepositConverter;
 
     private final InternalSecurityService internalSecurityService;
 
+    private final CollectService collectService;
+
     @Autowired
     public GetorixDepositInternalService(final CustomSequenceRepository sequenceRepository,
         GetorixDepositRepository getorixDepositRepository, GetorixDepositConverter getorixDepositConverter,
-        InternalSecurityService internalSecurityService) {
+        InternalSecurityService internalSecurityService, CollectService collectService) {
         super(sequenceRepository);
         this.getorixDepositRepository = getorixDepositRepository;
         this.getorixDepositConverter = getorixDepositConverter;
         this.internalSecurityService = internalSecurityService;
+        this.collectService = collectService;
     }
 
     public GetorixDepositDto createGetorixDeposit(GetorixDepositDto getorixDepositDto, VitamContext vitamContext) {
@@ -100,11 +123,70 @@ public class GetorixDepositInternalService  extends
 
         manageDepositDates(getorixDepositDto);
 
-        getorixDepositDto.setTransactionId("transactionId");
+        CollectProjectDto collectProjectDto = new CollectProjectDto();
+        collectProjectDto.setStatus("OPEN");
+        collectProjectDto.setMessageIdentifier(getorixDepositDto.getOperationName());
+        collectProjectDto.setOriginatingAgencyIdentifier(getorixDepositDto.getOriginatingAgency());
+        collectProjectDto.setSubmissionAgencyIdentifier(getorixDepositDto.getVersatileService());
+
+        CollectTransactionDto collectTransactionDto = new CollectTransactionDto();
+        collectTransactionDto.setStatus("OPEN");
+
+        final CollectProjectDto projectResult = createProject(collectProjectDto, vitamContext);
+
+        CollectTransactionDto transactionResult = createTransactionForProject(collectTransactionDto,
+            projectResult.getId(), vitamContext);
+
+        getorixDepositDto.setTransactionId(transactionResult.getId());
+
         getorixDepositDto.setCreationDate(OffsetDateTime.now());
-        getorixDepositDto.setProjectId("projectId");
+        getorixDepositDto.setProjectId(projectResult.getId());
 
         return this.create(getorixDepositDto);
+    }
+
+    private CollectProjectDto createProject(CollectProjectDto collectProjectDto, VitamContext vitamContext) {
+        LOGGER.debug("CollectProjectDto: {}", collectProjectDto);
+        try {
+            ProjectDto projectDto = ProjectConverter.toVitamProjectDto(collectProjectDto);
+            RequestResponse<JsonNode> requestResponse = collectService.initProject(vitamContext, projectDto);
+            if (!requestResponse.isOk()) {
+                throw new VitamClientException("Error occurs when retrieving projects!");
+            }
+            return toVitamuiCollectProjectDto(
+                JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    ProjectDto.class));
+        } catch (VitamClientException e) {
+            LOGGER.debug(UNABLE_TO_CREATE_PROJECT + ": {}", e);
+            throw new InternalServerException(UNABLE_TO_CREATE_PROJECT, e);
+        } catch (InvalidParseOperationException e) {
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
+            throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
+        }
+    }
+
+    private CollectTransactionDto createTransactionForProject(
+        CollectTransactionDto collectTransactionDto, String projectId, VitamContext vitamContext) {
+        LOGGER.debug("CollectTransactionDto: ", collectTransactionDto);
+        try {
+            SanityChecker.checkSecureParameter(projectId);
+            TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
+            RequestResponse<JsonNode> requestResponse =
+                collectService.initTransaction(vitamContext, transactionDto, projectId);
+            if (!requestResponse.isOk()) {
+                LOGGER.error("Error occurs when creating transaction");
+                throw new VitamClientException("Error occurs when creating transaction");
+            }
+            return TransactionConverter.toVitamUiDto(
+                JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    TransactionDto.class));
+        } catch (VitamClientException e) {
+            LOGGER.debug(UNABLE_TO_CREATE_TRANSACTION + ": {}", e);
+            throw new InternalServerException(UNABLE_TO_CREATE_TRANSACTION, e);
+        } catch (InvalidParseOperationException e) {
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
+            throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
+        }
     }
 
      @Override

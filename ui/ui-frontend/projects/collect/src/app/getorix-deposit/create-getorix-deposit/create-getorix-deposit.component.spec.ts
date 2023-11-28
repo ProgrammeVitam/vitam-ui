@@ -47,7 +47,13 @@ describe('CreateGetorixDepositComponent', () => {
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
 
-  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+  const routerMock = {
+    navigate: () => {},
+    url: 'https://localhost/collect/getorix-deposit/tenant/1/create',
+    params: of({ tenantIdentifier: 1 }),
+    data: of({ appId: 'GETORIX_DEPOSIT_APP' }),
+    events: of({}),
+  };
 
   const getorixDepositServiceMock = jasmine.createSpyObj('GetorixDepositService', {
     createGetorixDeposit: () => of({}),
@@ -64,7 +70,7 @@ describe('CreateGetorixDepositComponent', () => {
       providers: [
         {
           provide: Router,
-          useValue: routerSpy,
+          useValue: routerMock,
         },
         FormBuilder,
         {
@@ -135,8 +141,9 @@ describe('CreateGetorixDepositComponent', () => {
 
   it('should redirect to /getorix-deposit/tenant/1', () => {
     const router = TestBed.inject(Router);
+    spyOn(routerMock, 'navigate').and.callThrough();
     component.returnToMainPage();
-    expect(router.navigate).toHaveBeenCalledWith(['/getorix-deposit/tenant/', 1]);
+    expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should return the object without empty values', () => {

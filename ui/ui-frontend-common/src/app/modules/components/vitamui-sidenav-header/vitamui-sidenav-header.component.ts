@@ -66,5 +66,11 @@ export class VitamuiSidenavHeaderComponent {
 
   @Input() actionsBelowTitle = false;
 
+  @Output()
+  onDownload = new EventEmitter<string>();
+
+  @Input()
+  hasDownloadLink = false;
+
   constructor() {}
 }

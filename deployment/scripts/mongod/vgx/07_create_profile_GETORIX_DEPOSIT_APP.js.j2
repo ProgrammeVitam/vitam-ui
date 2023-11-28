@@ -68,13 +68,13 @@ db.sequences.updateOne({
 
 //============================ UPDATE ADMIN GROUPS =============================
 
-var profileGetorixDepositId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-GETORIX_DEPOSIT_APP-ADMIN";
+var profileArchaeologistGetorixDepositId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-GETORIX_DEPOSIT_APP-ARCHAEOLOGIST";
 
 db.groups.updateOne({
     "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
 }, {
     $addToSet: {
-        "profileIds": profileGetorixDepositId
+        "profileIds": profileArchaeologistGetorixDepositId
     }
 });
 
@@ -82,7 +82,26 @@ db.groups.updateOne({
     "_id": "admin_group"
 }, {
     $addToSet: {
-        "profileIds": profileGetorixDepositId
+        "profileIds": profileArchaeologistGetorixDepositId
+    }
+});
+
+
+var profileArchivistGetorixDepositId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-GETORIX_DEPOSIT_APP-ARCHVIST";
+
+db.groups.updateOne({
+    "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
+}, {
+    $addToSet: {
+        "profileIds": profileArchivistGetorixDepositId
+    }
+});
+
+db.groups.updateOne({
+    "_id": "admin_group"
+}, {
+    $addToSet: {
+        "profileIds": profileArchivistGetorixDepositId
     }
 });
 
