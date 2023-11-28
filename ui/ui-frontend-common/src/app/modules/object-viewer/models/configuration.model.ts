@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DisplayRule } from './display-rule.model';
-import { ExtendedOntology } from './extended-ontology.model';
+import { SchemaElement } from './schema-element.model';
 
 export interface Configuration {
-  readonly ontology: ExtendedOntology;
+  readonly schemaElement: SchemaElement;
   readonly displayRule: DisplayRule;
 }

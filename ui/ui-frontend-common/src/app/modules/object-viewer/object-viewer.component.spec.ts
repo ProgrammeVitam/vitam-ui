@@ -19,8 +19,8 @@ import { DisplayObjectHelperService } from './services/display-object-helper.ser
 import { DisplayRuleHelperService } from './services/display-rule-helper.service';
 import { FavoriteEntryService } from './services/favorite-entry.service';
 import { LayoutService } from './services/layout.service';
-import { OntologyToDisplayRuleMapper } from './services/ontology-to-display-rule.mapper';
 import { PathStrategyDisplayObjectService } from './services/path-strategy-display-object.service';
+import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
 import { TypeService } from './services/type.service';
 
 class FakeTranslateLoader implements TranslateLoader {
@@ -58,12 +58,11 @@ describe('ObjectViewerComponent', () => {
         TypeService,
         DisplayObjectHelperService,
         DisplayRuleHelperService,
-        OntologyToDisplayRuleMapper,
+        SchemaElementToDisplayRuleService,
         DateDisplayService,
         LayoutService,
         FavoriteEntryService,
         { provide: BASE_URL, useValue: '/fake-api' },
-        // { provide: OntologyService, useClass: MockExtendedOntologyService },
         { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
       ],
       imports: [
@@ -115,321 +114,321 @@ describe('ObjectViewerComponent', () => {
 
 const template: DisplayRule[] = [
   {
-    path: '_sps',
+    Path: '_sps',
     ui: {
-      path: '_sps',
+      Path: '_sps',
       component: 'textfield',
       layout: { columns: 2, size: 'medium' },
     },
   },
   {
-    path: '',
+    Path: '',
     ui: {
-      path: 'Generalities',
+      Path: 'Generalities',
       component: 'group',
       layout: { columns: 2, size: 'medium' },
     },
   },
   {
-    path: 'DescriptionLevel',
+    Path: 'DescriptionLevel',
     ui: {
-      path: 'Generalities.DescriptionLevel',
+      Path: 'Generalities.DescriptionLevel',
       component: 'select',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'Title',
+    Path: 'Title',
     ui: {
-      path: 'Generalities.Title',
+      Path: 'Generalities.Title',
       component: 'textfield',
       layout: { columns: 2, size: 'medium' },
     },
   },
   {
-    path: 'Title_.*',
+    Path: 'Title_.*',
     ui: {
-      path: 'Generalities.Title_.*',
+      Path: 'Generalities.Title_.*',
       component: 'select+textfield',
       layout: { columns: 2, size: 'medium' },
     },
   },
   {
-    path: 'Description',
+    Path: 'Description',
     ui: {
-      path: 'Generalities.Description',
+      Path: 'Generalities.Description',
       component: null,
       layout: { columns: 2, size: 'large' },
     },
   },
   {
-    path: 'Description_.*',
+    Path: 'Description_.*',
     ui: {
-      path: 'Generalities.Description_.*',
+      Path: 'Generalities.Description_.*',
       component: 'select+textarea',
       layout: { columns: 2, size: 'large' },
     },
   },
   {
-    path: 'Tag',
+    Path: 'Tag',
     ui: {
-      path: 'Generalities.Tag',
+      Path: 'Generalities.Tag',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: '',
+    Path: '',
     ui: {
-      path: 'Generalities.Dates',
+      Path: 'Generalities.Dates',
       component: 'group',
       layout: { columns: 2, size: 'medium' },
     },
   },
   {
-    path: 'StartDate',
+    Path: 'StartDate',
     ui: {
-      path: 'Generalities.Dates.StartDate',
+      Path: 'Generalities.Dates.StartDate',
       component: 'datepicker',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'EndDate',
+    Path: 'EndDate',
     ui: {
-      path: 'Generalities.Dates.EndDate',
+      Path: 'Generalities.Dates.EndDate',
       component: 'datepicker',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'CreatedDate',
+    Path: 'CreatedDate',
     ui: {
-      path: 'Generalities.Dates.CreatedDate',
+      Path: 'Generalities.Dates.CreatedDate',
       component: 'datepicker',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'TransactedDate',
+    Path: 'TransactedDate',
     ui: {
-      path: 'Generalities.Dates.TransactedDate',
+      Path: 'Generalities.Dates.TransactedDate',
       component: 'datepicker',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'SentDate',
+    Path: 'SentDate',
     ui: {
-      path: 'Generalities.Dates.SentDate',
+      Path: 'Generalities.Dates.SentDate',
       component: 'datepicker',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'ReceivedDate',
+    Path: 'ReceivedDate',
     ui: {
-      path: 'Generalities.Dates.ReceivedDate',
+      Path: 'Generalities.Dates.ReceivedDate',
       component: 'datepicker',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'RegisteredDate',
+    Path: 'RegisteredDate',
     ui: {
-      path: 'Generalities.Dates.RegisteredDate',
+      Path: 'Generalities.Dates.RegisteredDate',
       component: 'datepicker',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'AcquiredDate',
+    Path: 'AcquiredDate',
     ui: {
-      path: 'Generalities.Dates.AcquiredDate',
+      Path: 'Generalities.Dates.AcquiredDate',
       component: 'datepicker',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'DateLitteral',
+    Path: 'DateLitteral',
     ui: {
-      path: 'Generalities.Dates.DateLitteral',
+      Path: 'Generalities.Dates.DateLitteral',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: '',
+    Path: '',
     ui: {
-      path: 'Generalities.Identifiers',
+      Path: 'Generalities.Identifiers',
       component: 'group',
       layout: { columns: 2, size: 'medium' },
     },
   },
   {
-    path: 'SystemId',
+    Path: 'SystemId',
     ui: {
-      path: 'Generalities.Identifiers.SystemId',
+      Path: 'Generalities.Identifiers.SystemId',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'OriginatingSystemId',
+    Path: 'OriginatingSystemId',
     ui: {
-      path: 'Generalities.Identifiers.OriginatingSystemId',
+      Path: 'Generalities.Identifiers.OriginatingSystemId',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'OriginatingAgencyArchiveUnitIdentifier',
+    Path: 'OriginatingAgencyArchiveUnitIdentifier',
     ui: {
-      path: 'Generalities.Identifiers.OriginatingAgencyArchiveUnitIdentifier',
+      Path: 'Generalities.Identifiers.OriginatingAgencyArchiveUnitIdentifier',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'TransferringAgencyArchiveUnitIdentifier',
+    Path: 'TransferringAgencyArchiveUnitIdentifier',
     ui: {
-      path: 'Generalities.Identifiers.TransferringAgencyArchiveUnitIdentifier',
+      Path: 'Generalities.Identifiers.TransferringAgencyArchiveUnitIdentifier',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'ArchivalAgencyArchiveUnitIdentifier',
+    Path: 'ArchivalAgencyArchiveUnitIdentifier',
     ui: {
-      path: 'Generalities.Identifiers.ArchivalAgencyArchiveUnitIdentifier',
+      Path: 'Generalities.Identifiers.ArchivalAgencyArchiveUnitIdentifier',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'FilePlanPosition',
+    Path: 'FilePlanPosition',
     ui: {
-      path: 'Generalities.Identifiers.FilePlanPosition',
+      Path: 'Generalities.Identifiers.FilePlanPosition',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'PersistentIdentifier',
+    Path: 'PersistentIdentifier',
     ui: {
-      path: 'Generalities.PersistentIdentifier',
+      Path: 'Generalities.PersistentIdentifier',
       component: 'group',
       layout: { columns: 2, size: 'medium' },
     },
   },
   {
-    path: 'PersistentIdentifier.PersistentIdentifierType',
+    Path: 'PersistentIdentifier.PersistentIdentifierType',
     ui: {
-      path: 'Generalities.PersistentIdentifier.PersistentIdentifierType',
+      Path: 'Generalities.PersistentIdentifier.PersistentIdentifierType',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'PersistentIdentifier.PersistentIdentifierOrigin',
+    Path: 'PersistentIdentifier.PersistentIdentifierOrigin',
     ui: {
-      path: 'Generalities.PersistentIdentifier.PersistentIdentifierOrigin',
+      Path: 'Generalities.PersistentIdentifier.PersistentIdentifierOrigin',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'PersistentIdentifier.PersistentIdentifierReference',
+    Path: 'PersistentIdentifier.PersistentIdentifierReference',
     ui: {
-      path: 'Generalities.PersistentIdentifier.PersistentIdentifierReference',
+      Path: 'Generalities.PersistentIdentifier.PersistentIdentifierReference',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'PersistentIdentifier.PersistentIdentifierContent',
+    Path: 'PersistentIdentifier.PersistentIdentifierContent',
     ui: {
-      path: 'Generalities.PersistentIdentifier.PersistentIdentifierContent',
+      Path: 'Generalities.PersistentIdentifier.PersistentIdentifierContent',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: '',
+    Path: '',
     ui: {
-      path: 'Generalities.Characteristics',
+      Path: 'Generalities.Characteristics',
       component: 'group',
       layout: { columns: 2, size: 'medium' },
     },
   },
   {
-    path: 'Type',
+    Path: 'Type',
     ui: {
-      path: 'Generalities.Characteristics.Type',
+      Path: 'Generalities.Characteristics.Type',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'DocumentType',
+    Path: 'DocumentType',
     ui: {
-      path: 'Generalities.Characteristics.DocumentType',
+      Path: 'Generalities.Characteristics.DocumentType',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'Language',
+    Path: 'Language',
     ui: {
-      path: 'Generalities.Characteristics.Language',
+      Path: 'Generalities.Characteristics.Language',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'DescriptionLanguage',
+    Path: 'DescriptionLanguage',
     ui: {
-      path: 'Generalities.Characteristics.DescriptionLanguage',
+      Path: 'Generalities.Characteristics.DescriptionLanguage',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'Status',
+    Path: 'Status',
     ui: {
-      path: 'Generalities.Characteristics.Status',
+      Path: 'Generalities.Characteristics.Status',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'Source',
+    Path: 'Source',
     ui: {
-      path: 'Generalities.Characteristics.Source',
+      Path: 'Generalities.Characteristics.Source',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'Version',
+    Path: 'Version',
     ui: {
-      path: 'Generalities.Characteristics.Version',
+      Path: 'Generalities.Characteristics.Version',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'OriginatingSystemIdReplyTo',
+    Path: 'OriginatingSystemIdReplyTo',
     ui: {
-      path: 'Generalities.Characteristics.OriginatingSystemIdReplyTo',
+      Path: 'Generalities.Characteristics.OriginatingSystemIdReplyTo',
       component: 'textfield',
       layout: { columns: 1, size: 'small' },
     },
   },
   {
-    path: 'TextContent',
+    Path: 'TextContent',
     ui: {
-      path: 'Generalities.Characteristics.TextContent',
+      Path: 'Generalities.Characteristics.TextContent',
       component: 'textfield',
       layout: { columns: 2, size: 'medium' },
     },

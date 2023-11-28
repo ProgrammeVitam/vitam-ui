@@ -54,6 +54,6 @@ export type UiComponentDateFormatMapName = 'wanted' | 'pretty';
 
 export type SedaVersion = '2.1' | '2.2' | '2.3' | string;
 
-export type Cardinality = '0-1' | '1-1' | '0-N' | '1-N' | 'one' | 'many';
+export type Cardinality = 'ONE' | 'MANY' | 'ONE_REQUIRED' | 'MANY_REQUIRED';
 
 export type LayoutSize = 'small' | 'medium' | 'large';

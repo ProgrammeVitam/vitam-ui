@@ -7,8 +7,7 @@ import { map } from 'rxjs/operators';
 import { BASE_URL } from '../../../injection-tokens';
 import { LoggerModule } from '../../../logger';
 import { ObjectViewerModule } from '../../../object-viewer/object-viewer.module';
-import { MockExtendedOntologyService } from '../../../object-viewer/services/mock-extended-ontology.service';
-import { OntologyService } from '../../../ontology';
+import { MockSchemaService } from '../../../object-viewer/services/mock-schema.service';
 import { Collection, Schema, SchemaService } from '../../../schema';
 import { SchemaApiService } from '../../../schema/schema-api.service';
 import { ArchiveUnitViewerComponent } from './archive-unit-viewer.component';
@@ -68,15 +67,15 @@ describe('ArchiveUnitViewerComponent', () => {
       providers: [
         SchemaService,
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: OntologyService, useClass: MockExtendedOntologyService },
+        { provide: SchemaService, useClass: MockSchemaService },
         {
           provide: SchemaApiService,
           use: () => ({
             getSchemas: (collections: Collection[]): Observable<Schema[]> => {
-              return new MockExtendedOntologyService().getInternalOntologyFieldsList().pipe(map((schema) => [schema]));
+              return new MockSchemaService().getSchema(null).pipe(map((schema) => [schema]));
             },
             getSchema: (collection: Collection): Observable<Schema> => {
-              return new MockExtendedOntologyService().getInternalOntologyFieldsList();
+              return new MockSchemaService().getSchema(null);
             },
           }),
         },

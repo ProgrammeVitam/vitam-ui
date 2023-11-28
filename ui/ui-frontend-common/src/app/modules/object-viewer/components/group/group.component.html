@@ -7,7 +7,7 @@
             class="vitamui-icon icon"
             [ngClass]="{ 'vitamui-icon-chevron-down': displayObject.open, 'vitamui-icon-chevron-right': !displayObject.open }"
           ></i>
-          <span class="object-name">{{ displayObject.path | translate }}</span>
+          <span class="object-name">{{ displayObject.displayRule.ui.label | empty }}</span>
         </div>
         <div *ngIf="favoriteEntry" class="v-col align-items-center favorite-entry">
           {{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}

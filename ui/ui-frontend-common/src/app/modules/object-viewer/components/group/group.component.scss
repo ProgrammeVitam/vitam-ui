@@ -82,6 +82,7 @@
   line-height: 28px;
   font-weight: 700;
   cursor: pointer;
+  border-left: 2px solid transparent;
 
   &.opened {
     border-left: 2px solid var(--vitamui-primary);

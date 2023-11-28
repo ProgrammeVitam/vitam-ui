@@ -27,6 +27,6 @@
  *
  */
 
-import { ExtendedOntology } from '../../object-viewer/models';
+import { SchemaElement } from '../../object-viewer/models';
 
-export interface Schema extends Array<ExtendedOntology> {}
+export interface Schema extends Array<SchemaElement> {}

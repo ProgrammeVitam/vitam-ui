@@ -29,9 +29,8 @@ package fr.gouv.vitamui.referential.internal.server.schema;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
 import fr.gouv.vitam.common.model.administration.OntologyStringTypeSize;
-import fr.gouv.vitam.common.model.administration.OntologyType;
 import fr.gouv.vitam.common.model.administration.SchemaModel;
-import fr.gouv.vitamui.referential.common.dto.ExtendedOntologyDto;
+import fr.gouv.vitamui.referential.common.dto.SchemaElementDto;
 import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
 
@@ -40,33 +39,27 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class SchemaModelToExtendedOntologyDtoConverter extends StdConverter<SchemaModel, ExtendedOntologyDto> {
+public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaModel, SchemaElementDto> {
     @Override
-    public ExtendedOntologyDto convert(SchemaModel schemaModel) {
+    public SchemaElementDto convert(SchemaModel schemaModel) {
         final OntologyStringTypeSize stringTypeSize = schemaModel.getStringSize();
         final String stringSize = stringTypeSize != null ? stringTypeSize.value().toLowerCase(Locale.ROOT) : null;
 
-        return (ExtendedOntologyDto) new ExtendedOntologyDto()
-            //        setId(schemaModel.getId()) // No mapping
-            //        setTenant(schemaModel.getTenant()) // No mapping
-            //        setVersion(schemaModel.getVersion()) // Don't know if still used
-            //        setDepth(schemaModel.getDepth()) // Not precomputed
+        return (SchemaElementDto) new SchemaElementDto()
             .setPath(schemaModel.getPath())
-            //        setDataType(schemaModel.getDataType()) // Mapped by Type
-            .setDataSize(stringSize)
+            .setStringSize(stringSize)
             .setCardinality(Cardinality.of(schemaModel.getCardinality().value()))
-            .setIdentifier(schemaModel.getIdentifier())
+            .setFieldName(schemaModel.getFieldName())
             .setShortName(schemaModel.getShortName())
             .setDescription(schemaModel.getDescription())
-            //        setCreationDate(schemaModel.getCreationDate()) // No mapping
-            //        setLastUpdate(schemaModel.getLastUpdate()) // No mapping
             .setSedaField(schemaModel.getSedaField())
             .setApiField(schemaModel.getApiField())
             .setType(schemaModel.getType())
             .setOrigin(schemaModel.getOrigin())
             .setCollections(mapCollections(schemaModel))
             .setSedaVersions(schemaModel.getSedaVersions())
-            .setRootPaths(null);
+            .setCategory(schemaModel.getCategory())
+            .setApiPath(schemaModel.getApiPath());
     }
 
     private List<Collection> mapCollections(final SchemaModel schemaModel) {

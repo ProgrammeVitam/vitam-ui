@@ -74,7 +74,6 @@ describe('DataStructureService', () => {
         information: 'information',
       },
     };
-    console.log(service.unflatten(flattened));
     expect(service.unflatten(flattened)).toEqual(expected);
   });
 

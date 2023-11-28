@@ -44,4 +44,5 @@ export interface Ui extends WithPath {
   readonly favoriteKeys?: string[];
   readonly open?: boolean;
   readonly display?: boolean;
+  label?: string;
 }

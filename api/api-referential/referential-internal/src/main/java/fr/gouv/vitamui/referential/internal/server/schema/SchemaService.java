@@ -64,7 +64,7 @@ public class SchemaService {
         try {
             final RequestResponse<SchemaModel> payload = getSchemaModels(collection).orElseThrow();
             final List<SchemaModel> schemaModels = ((RequestResponseOK<SchemaModel>) payload).getResults();
-            final SchemaModelToExtendedOntologyDtoConverter converter = new SchemaModelToExtendedOntologyDtoConverter();
+            final SchemaModelToSchemaElementDtoConverter converter = new SchemaModelToSchemaElementDtoConverter();
             final SchemaDto schemaDto = new SchemaDto();
             schemaDto.addAll(schemaModels.stream()
                 .map(converter::convert)

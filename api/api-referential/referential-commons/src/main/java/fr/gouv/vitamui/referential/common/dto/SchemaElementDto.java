@@ -35,6 +35,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class ExtendedOntologyDto extends ExtendedOntologyCreateDto {
+public class SchemaElementDto extends SchemaElementCreateDto {
     private String id;
 }
