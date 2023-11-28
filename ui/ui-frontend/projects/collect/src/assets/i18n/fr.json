@@ -1,13 +1,33 @@
 {
   "GETORIX_DEPOSIT" : {
     "APP_BREADCRUMB" :"Préparation des versementGetorix",
-    "CREATE_DEPOSIT" : "Commencer le dépot",
+    "CREATE_DEPOSIT" : "Commencer le dépôt",
     "GUIDE" : "Guidez-moi",
-    "ARCHIVE_SPACE" :"Mon espace d’archivage",
+    "ARCHIVE_SPACE" :"Mon espace d'archivage",
     "DEPOSIT_QUESTION" : "Vous avez rendu le rapport et souhaitez passer aux dépôt de vos archives ? Par ici :",
     "STEPS_TO_FOLLOW" : "Les étapes à suivre",
     "GUIDE_TO_SHOW" :"Consultez notre guide pour vous accompagner pas à pas dans le versement de vos archives :",
+    "BREAD_CRUMB" : {
+      "ARCHIVAL_SPACE" : "Mon espace d'archivage",
+      "NEW_PROJECT" : "Nouveau projet",
+      "UPLOAD_ARCHIVES" :"dépôt des archives"
+    },
     "CREATION_PROCESS": {
+      "SUCCESS" : {
+        "TITLE" : "Préparer le dépôt des contenus",
+        "SAVE_OK" :"Les informations sur votre fouille ont bien été enregistrées, merci",
+        "SAVE_DETAILS" : "Vous allez maintenant pouvoir déposer vos archives pour l’opération : ",
+        "BEFORE_STARTING" :"Avant de commencer, assurez-vous que votre contenu soit exploitable par les archivistes et par vos collègues en vérifiant les éléments suivants :",
+        "CHECK_CONTENT" :"J’ai vérifié la pertinence des contenus à verser",
+        "WICH_CONTENT" :"Quels contenus archiver ?",
+        "PICTURES_CHECK" :"J’ai trié les photos à déposer",
+        "HOW_CHECK_PICTURES" :"Comment trier correctement mes photos ?",
+        "CONTENT_NAMES" :"J’ai nommé attentivement les contenus",
+        "HOW_CONTENT_NAMES" :"Comment nommer correctement mes contenus ?",
+        "PDF_CREATE_COPY" :"J’ai créé une copie PDF des fichiers au format spécifique",
+        "WICH_FORMATS" :"Quelle gestion des formats spécifiques ?",
+        "ACTION":"Déposer mes contenus"
+      },
       "REQUIRED" : "Champs obligatoire",
       "MIN_LENGTH" :"Il faut au moins 2 caractères",
       "MIN_LENGTH_MIN" :"Il faut au moins 2 caractères",
@@ -101,7 +121,7 @@
       "DOCUMENT_DATES" :"Dates des documents",
       "ARCHIVE_STATUS" :"Etat des archives papiers",
       "VOLUME_DETAILS":"Volumétrie des archives",
-      "FURNITURE" :"Mobiler"
+      "FURNITURE" :"Mobilier"
     }
   },
   "COLLECT": {

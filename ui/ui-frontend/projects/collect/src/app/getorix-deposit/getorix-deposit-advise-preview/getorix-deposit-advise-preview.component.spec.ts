@@ -25,45 +25,31 @@
  * accept its terms.
  */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
-import { CreateGetorixDepositComponent } from './create-getorix-deposit/create-getorix-deposit.component';
-import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object/getorix-deposit-upload-object.component';
-import { GetorixDepositComponent } from './getorix-deposit.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-const routes: Route[] = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full',
-  },
-  {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    component: GetorixDepositComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier/create',
-    component: CreateGetorixDepositComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-  {
-    path: 'tenant/:tenantIdentifier/create/upload-object/:operationIdentifier',
-    component: GetorixDepositUploadObjectComponent,
-    canActivate: [ActiveTenantGuard],
-  },
-];
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { GetorixDepositAdvisePreviewComponent } from './getorix-deposit-advise-preview.component';
 
-@NgModule({
-  declarations: [],
-  imports: [CommonModule, RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class GetorixDepositRoutingModule {}
+describe('GetorixDepositAdvisePreviewComponent', () => {
+  let component: GetorixDepositAdvisePreviewComponent;
+  let fixture: ComponentFixture<GetorixDepositAdvisePreviewComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [GetorixDepositAdvisePreviewComponent],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot(), InjectorModule, LoggerModule.forRoot()],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(GetorixDepositAdvisePreviewComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
