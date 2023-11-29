@@ -145,6 +145,16 @@ public class GetorixDepositInternalService  extends
         return this.create(getorixDepositDto);
     }
 
+    public GetorixDepositDto getGetorixDepositById(String id) {
+        AuthUserDto authUserDto = internalSecurityService.getUser();
+        if(Objects.isNull(authUserDto)) {
+            LOGGER.error("You are not authorized to create the deposit");
+            throw new UnAuthorizedException("You are not authorized to create the deposit ");
+        }
+        LOGGER.debug("[Internal] : get the GetorixDeposit details by id : {}", id);
+        return this.getOne(id);
+    }
+
     private CollectProjectDto createProject(CollectProjectDto collectProjectDto, VitamContext vitamContext) {
         LOGGER.debug("CollectProjectDto: {}", collectProjectDto);
         try {

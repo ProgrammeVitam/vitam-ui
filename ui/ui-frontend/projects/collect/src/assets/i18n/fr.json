@@ -12,6 +12,12 @@
       "NEW_PROJECT" : "Nouveau projet",
       "UPLOAD_ARCHIVES" :"dépôt des archives"
     },
+    "UPLOAD_ARCHIVES" : {
+      "OPERATION_NUMBER" :"Numéro : ",
+      "UPDATE_CONTENT_DESCRIPTION" :"Modifier la description du contenu",
+      "COMMENTS" :"COMMENTAIRES",
+      "SEND_TO_ARCHIVIST" :"Envoyer à l'archiviste"
+    },
     "CREATION_PROCESS": {
       "SUCCESS" : {
         "TITLE" : "Préparer le dépôt des contenus",

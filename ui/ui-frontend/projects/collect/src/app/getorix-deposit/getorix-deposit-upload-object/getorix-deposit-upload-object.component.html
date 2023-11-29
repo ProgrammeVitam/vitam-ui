@@ -1,3 +1,39 @@
-<p>getorix-deposit-upload-object works!</p>
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+  <mat-sidenav-content>
+    <div class="vitamui-content" [ngStyle]="{ 'padding-top': '40px' }">
+      <vitamui-common-title-breadcrumb [data]="dataBreadcrumb"> </vitamui-common-title-breadcrumb>
 
-{{ operationId }}
+      <div class="row" [ngStyle]="{ 'margin-top': '-10px' }">
+        <div class="col-7">
+          <p class="title">{{ getorixDepositDetails?.operationName }}</p>
+          <p class="num">
+            {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.OPERATION_NUMBER' | translate }}
+            {{ getorixDepositDetails?.internalAdministratorNumber }}
+          </p>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-2">
+          <button class="btn primary" [ngStyle]="{ 'margin-top': '15%' }">
+            <span> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.SEND_TO_ARCHIVIST' | translate }}</span>
+          </button>
+        </div>
+      </div>
+      <div class="row" [ngStyle]="{ ' padding-top': '15px' }">
+        <div class="col-3">
+          <p class="update-ingest" (click)="goToUpdateOperation()">
+            {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UPDATE_CONTENT_DESCRIPTION' | translate }}
+          </p>
+        </div>
+        <div class="col-7"></div>
+        <div class="col-2">
+          <p class="comment" (click)="showComments()">
+            <i class="material-icons comment-icon">message </i>
+            {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.COMMENTS' | translate }}
+          </p>
+        </div>
+      </div>
+
+      {{ operationId }}
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
