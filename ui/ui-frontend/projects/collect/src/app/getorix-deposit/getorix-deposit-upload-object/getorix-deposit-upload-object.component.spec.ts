@@ -27,21 +27,37 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object.component';
 
 describe('GetorixDepositUploadObjectComponent', () => {
   let component: GetorixDepositUploadObjectComponent;
   let fixture: ComponentFixture<GetorixDepositUploadObjectComponent>;
 
+  const routerMock = {
+    navigate: () => {},
+    url: 'https://localhost/collect/getorix-deposit/tenant/1/create',
+    params: of({ tenantIdentifier: 1 }),
+    data: of({ appId: 'GETORIX_DEPOSIT_APP' }),
+    events: of({}),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [GetorixDepositUploadObjectComponent],
       imports: [HttpClientTestingModule, TranslateModule.forRoot(), InjectorModule, LoggerModule.forRoot()],
       providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        {
+          provide: Router,
+          useValue: routerMock,
+        },
         {
           provide: ActivatedRoute,
           useValue: {

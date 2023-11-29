@@ -12,6 +12,12 @@
       "NEW_PROJECT" : "New project",
       "UPLOAD_ARCHIVES" :"archive deposit"
     },
+    "UPLOAD_ARCHIVES" : {
+      "OPERATION_NUMBER" :"Number : ",
+      "UPDATE_CONTENT_DESCRIPTION" :"Edit content description",
+      "COMMENTS" :"Comments",
+      "SEND_TO_ARCHIVIST" :"Send to archivist"
+    },
     "CREATION_PROCESS": {
       "SUCCESS" : {
         "TITLE" : "Prepare to submit content",

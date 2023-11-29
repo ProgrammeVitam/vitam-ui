@@ -39,4 +39,8 @@ export class GetorixDepositService {
   createGetorixDeposit(getorixDeposit: GetorixDeposit): Observable<GetorixDeposit> {
     return this.getorixDepositApiService.createGetorixDeposit(getorixDeposit);
   }
+
+  getGetorixDepositById(getorixDepositId: string): Observable<GetorixDeposit> {
+    return this.getorixDepositApiService.getGetorixDepositById(getorixDepositId);
+  }
 }
