@@ -33,6 +33,7 @@ import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.GetorixDepositExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
@@ -43,6 +44,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,5 +78,15 @@ public class GetorixDepositExternalController {
         SanityChecker.sanitizeCriteria(getorixDepositDto);
         LOGGER.debug("[EXTERNAL] : Create GetorixDepositDto {}", getorixDepositDto);
         return getorixDepositExternalService.create(getorixDepositDto);
+    }
+
+    @Secured(ServicesData.ROLE_GET_GETORIX_DEPOSIT)
+    @GetMapping(value = CommonConstants.PATH_ID)
+    public GetorixDepositDto getorixDepositById(final @PathVariable("id") String getorixDepositId)
+        throws PreconditionFailedException {
+        ParameterChecker.checkParameter("the Getorix Deposit Id is mandatory : ", getorixDepositId);
+        SanityChecker.checkSecureParameter(getorixDepositId);
+        LOGGER.debug("[External] : get the GetorixDeposit details by id : {}", getorixDepositId);
+        return getorixDepositExternalService.getOne(getorixDepositId);
     }
 }
