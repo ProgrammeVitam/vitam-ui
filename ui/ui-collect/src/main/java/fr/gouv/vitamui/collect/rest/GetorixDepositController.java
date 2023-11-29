@@ -31,6 +31,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
 import fr.gouv.vitamui.collect.service.GetorixDepositService;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -40,6 +41,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,5 +78,16 @@ public class GetorixDepositController extends AbstractUiRestController {
         SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("[UI] : Create new Getorix Deposit");
         return getorixDepositService.create(buildUiHttpContext(), entityDto);
+    }
+
+    @ApiOperation(value = "Get Getorix Deposit Details by Id")
+    @GetMapping(value = CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public GetorixDepositDto getorixDepositById(final @PathVariable("id") String getorixDepositId)
+        throws PreconditionFailedException {
+        ParameterChecker.checkParameter("the Getorix Deposit Id is mandatory : ", getorixDepositId);
+        SanityChecker.checkSecureParameter(getorixDepositId);
+        LOGGER.debug("[UI] : get the GetorixDeposit details by id : {}", getorixDepositId);
+        return getorixDepositService.getOne(buildUiHttpContext(), getorixDepositId);
     }
 }

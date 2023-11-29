@@ -26,8 +26,12 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { BreadCrumbData, Logger } from 'ui-frontend-common';
+import { GetorixDeposit } from '../core/model/getorix-deposit.interface';
+import { GetorixDepositService } from '../getorix-deposit.service';
 
 @Component({
   selector: 'getorix-deposit-upload-object',
@@ -35,18 +39,54 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./getorix-deposit-upload-object.component.scss'],
 })
 export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
-  tenantIdentifierSubscription: Subscription;
+  operationIdentifierSubscription: Subscription;
   operationId: string;
-  constructor(private route: ActivatedRoute) {}
+  dataBreadcrumb: BreadCrumbData[];
+  getorixDepositDetails: GetorixDeposit;
+
+  constructor(
+    private route: ActivatedRoute,
+    private getorixDepositService: GetorixDepositService,
+    private router: Router,
+    private translateService: TranslateService,
+    private loggerService: Logger
+  ) {}
 
   ngOnInit(): void {
-    this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
+    this.operationIdentifierSubscription = this.route.params.subscribe((params) => {
       this.operationId = params.operationIdentifier;
-      console.log(' params', params);
+      this.dataBreadcrumb = [
+        {
+          redirectUrl: this.router.url.replace('/create', '').replace('upload-object', '').replace(this.operationId, ''),
+          label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.ARCHIVAL_SPACE'),
+        },
+        {
+          label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.NEW_PROJECT'),
+          redirectUrl: this.router.url.replace('upload-object', '').replace(this.operationId, ''),
+          isGetorix: true,
+        },
+        { label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.UPLOAD_ARCHIVES') },
+      ];
+      this.getorixDepositService.getGetorixDepositById(params.operationIdentifier).subscribe(
+        (data: GetorixDeposit) => {
+          this.getorixDepositDetails = data;
+        },
+        (error) => {
+          this.loggerService.error('error while searching for this operation', error);
+          this.router.navigate([this.router.url.replace('/create', '').replace('upload-object', '').replace(this.operationId, '')]);
+        }
+      );
     });
   }
 
+  goToUpdateOperation() {
+    console.log('update the operation');
+  }
+  showComments() {
+    console.log('show comments');
+  }
+
   ngOnDestroy() {
-    this.tenantIdentifierSubscription?.unsubscribe();
+    this.operationIdentifierSubscription?.unsubscribe();
   }
 }
