@@ -12,6 +12,10 @@
       - frontend_application_name is defined
       - frontend_application_name != ""
 
+- debug:
+    var: frontend.apps
+
+
 - name: Frontend-app > prerequisites.yml | Set variable frontend_application
   set_fact:
     frontend_application: >-

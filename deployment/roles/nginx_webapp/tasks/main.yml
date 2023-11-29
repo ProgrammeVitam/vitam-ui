@@ -1,8 +1,5 @@
 ---
 
-- debug:
-    msg: "in nginx-webapp"
-
 - import_tasks: prerequisites.yml
 
 - name: Frontend-app > Install - {{ frontend_application.name }}

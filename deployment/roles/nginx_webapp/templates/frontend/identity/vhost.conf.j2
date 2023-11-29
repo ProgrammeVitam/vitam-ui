@@ -3,7 +3,7 @@ server {
   server_name         {{ vitam_reverse_external_dns }};
   include /etc/nginx/ssl/ssl.conf;
 
-  root   /xelians-apps/data/identity/package;
+  root   /vitamui/data/identity/package;
 
   location ~* \.(jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2|eot|css|js|json)$ {
     add_header X-Content-Type-Options "nosniff" always;
