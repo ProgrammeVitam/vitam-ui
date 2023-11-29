@@ -56,12 +56,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.ws.rs.core.Response;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static fr.gouv.vitamui.iam.common.utils.IamDtoBuilder.buildUserDto;
@@ -313,6 +315,41 @@ class GetorixDepositInternalServiceTest {
         assertThatCode(()-> getorixDepositInternalService.createGetorixDeposit(getorixDepositDto, vitamContext))
             .isInstanceOf(InternalServerException.class)
             .hasMessage("Unable to create project");
+    }
+
+    @Test
+    void testGetGetorixDepositById_ko_when_user_not_connected() {
+
+        String getorixDepositId = "getorixDepositId";
+        Mockito.when(internalSecurityService.getUser()).thenReturn(null);
+
+        assertThatCode(()-> getorixDepositInternalService.getGetorixDepositById(getorixDepositId))
+            .isInstanceOf(UnAuthorizedException.class)
+            .hasMessage("You are not authorized to create the deposit ");
+    }
+
+    @Test
+    void testGetGetorixDepositById_OK_when_all_conditions_ok() {
+
+        String getorixDepositId = "getorixDepositId";
+        final GetorixDepositDto getorixDepositDto =
+            getorixDepositConverter.convertEntityToDto(buildGetorixDepositModel());
+
+        final GetorixDepositModel other = new GetorixDepositModel();
+        VitamUIUtils.copyProperties(getorixDepositDto, other);
+        other.setId(UUID.randomUUID().toString());
+
+        when(getorixDepositRepository.findOne((Query) any())).thenReturn(Optional.of(other));
+
+        final AuthUserDto user = buildAuthUserDto();
+
+        Mockito.when(internalSecurityService.getUser()).thenReturn(user);
+
+        GetorixDepositDto getorixDepositDtoResult = getorixDepositInternalService.getGetorixDepositById(getorixDepositId);
+        assertThatCode(()-> getorixDepositInternalService.getGetorixDepositById(getorixDepositId))
+            .doesNotThrowAnyException();
+        assertThat(getorixDepositDtoResult).isNotNull();
+
     }
 
     private AuthUserDto buildAuthUserDto() {

@@ -71,4 +71,11 @@ public class GetorixDepositExternalService extends
         LOGGER.debug("[EXTERNAL] : Create new Getorix Deposit");
         return super.create(dto);
     }
+
+    @Override
+    @Transactional
+    public GetorixDepositDto getOne(final String getorixDepositId) {
+        LOGGER.debug("[External] : get the GetorixDeposit details by id : {}", getorixDepositId);
+        return super.getOne(getorixDepositId);
+    }
 }
