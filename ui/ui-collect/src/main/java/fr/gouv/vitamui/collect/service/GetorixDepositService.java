@@ -64,4 +64,10 @@ public class GetorixDepositService extends AbstractPaginateService<GetorixDeposi
         return super.create(c, dto);
     }
 
+    @Override
+    public GetorixDepositDto getOne(final ExternalHttpContext c, final String getorixDepositId) {
+        LOGGER.debug("[UI] : get the GetorixDeposit details by id : {}", getorixDepositId);
+        return super.getOne(c, getorixDepositId);
+    }
+
 }

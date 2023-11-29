@@ -49,4 +49,12 @@ export class GetorixDepositApiService extends BaseHttpClient<any> {
   createGetorixDeposit(getorixDeposit: GetorixDeposit): Observable<GetorixDeposit> {
     return this.http.post<any>(`${this.apiUrl}`, getorixDeposit);
   }
+
+  // getGetorixDepositById(getorixDepositId: string): Observable<GetorixDeposit> {
+  //   return super.getOne(getorixDepositId);
+  // }
+
+  getGetorixDepositById(getorixDepositId: string): Observable<GetorixDeposit> {
+    return this.http.get<GetorixDeposit>(`${this.apiUrl}/` + getorixDepositId);
+  }
 }
