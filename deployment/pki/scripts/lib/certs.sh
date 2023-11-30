@@ -72,8 +72,8 @@ function generateHostCertificate {
     openssl ca -config "${REPERTOIRE_CONFIG}/crt-config" \
         -passin pass:"${INTERMEDIATE_CA_KEY}" \
         -out "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.crt" \
-        -in "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.req" -batch
-       # -extensions extension_${TYPE_CERTIFICAT} -batch
+        -in "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.req" \
+        -extensions extension_${TYPE_CERTIFICAT} -batch
 
     openssl x509 \
         -in "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.crt" \
