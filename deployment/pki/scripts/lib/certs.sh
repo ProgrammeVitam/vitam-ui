@@ -165,11 +165,6 @@ function generateClientCertificate {
         -in "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.req" \
         -extensions extension_${TYPE_CERTIFICAT} -batch
 
-    # RGO added: create pem cert
-    openssl x509 \
-        -in "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.crt" \
-        -out "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.pem"
-
     purge_directory "${CLIENT_CERTIFICATE_PATH}"
     purge_directory "${REPERTOIRE_CONFIG}/${CLIENT_TYPE}"
 }
@@ -254,7 +249,6 @@ function generateClientCertAndStorePassphrase {
         # Store the key to the vault
         setComponentPassphrase certs "client_${CLIENT_TYPE}_${COMPONENT}_key" \
                                     "${CERT_KEY}"
-
     else
         pki_logger "Le certificat CLIENT - ${CLIENT_TYPE} - ${COMPONENT} existe déjà, il ne sera pas recréé..."
     fi
