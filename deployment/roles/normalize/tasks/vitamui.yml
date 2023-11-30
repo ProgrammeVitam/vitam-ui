@@ -8,6 +8,18 @@
     group: root
     mode: 0555
 
+- name: Create the user vitam
+  ansible.builtin.user:
+    name: vitam
+    shell: /bin/bash
+  when: install_mode == "container"
+
+- name: Create the user vitamui
+  ansible.builtin.user:
+    name: vitamui
+    shell: /bin/bash
+  when: install_mode == "container"
+
 # FIXME : put it in group_vars (root/root/555)
 - name: Ensure {{ vitamui_defaults.folder.root_path | default('/vitamui') }} sub-directories exist
   file:

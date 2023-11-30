@@ -76,6 +76,23 @@
     - mongo-express
   notify:
    - reload consul configuration for mongo-express
+  when: install_mode != "container"
+
+- name: Deploy consul agent service declaration
+  template:
+    src: "service-componentid.json.j2"
+    dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/service-{{ item }}.json"
+    owner: "{{ vitam_defaults.users.vitam }}"
+    group: "{{ vitam_defaults.users.group }}"
+    mode: "0777"
+  with_items:
+    - "mongo-express-{{ mongo_cluster_name }}"
+  tags:
+    - consul_conf
+    - mongo-express
+  notify:
+   - reload consul configuration for mongo-express
+  when: install_mode == "container"
 
 - meta: flush_handlers
   tags:

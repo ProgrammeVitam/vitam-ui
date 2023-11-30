@@ -1,0 +1,25 @@
+[Unit]
+Description=Docker container service unit
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker pull pic-prod-nexus.vitam-factory:9080/vitamui/{{ vitamui_struct.vitamui_component }}:latest
+ExecStart=/usr/bin/docker run --rm --network host --name {{ vitamui_struct.vitamui_component }} --user 1003:1004 \
+                              -e "JAVA_TOOL_OPTIONS=-Xlog:gc*,gc+age=trace,safepoint:file=/vitamui/log/{{ vitamui_struct.vitamui_component }}/gc.log:utctime,pid,tags:filecount=32,filesize=64m -XX:MaxRAMPercentage=75.0 -XX:MinRAMPercentage=50.0 -XX:+ExitOnOutOfMemoryError -Dorg.owasp.esapi.resources=/vitamui/conf/{{ vitamui_struct.vitamui_component }} -Dlogback.configurationFile=/vitamui/conf/{{ vitamui_struct.vitamui_component }}/logback.xml -Dvitam.config.folder=/vitamui/conf/{{ vitamui_struct.vitamui_component }} -Dvitam.data.folder=/vitamui/data/{{ vitamui_struct.vitamui_component }} -Dvitam.tmp.folder=/vitamui/tmp/{{ vitamui_struct.vitamui_component }} -Dvitam.log.folder=/vitamui/log/{{ vitamui_struct.vitamui_component }} -Djava.security.properties=/vitamui/conf/{{ vitamui_struct.vitamui_component }}/java.security -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/vitamui/log/{{ vitamui_struct.vitamui_component }}" \
+                              -v "{{ vitamui_folder_conf }}:{{ vitamui_folder_conf }}:rw" \
+                              -v "{{ vitamui_folder_log }}:{{ vitamui_folder_log }}:rw" \
+                              -v "{{ vitamui_folder_data }}:{{ vitamui_folder_data }}:rw" \
+                              -v "{{ vitamui_folder_tmp }}:{{ vitamui_folder_tmp }}:rw" \
+                              -v "{{ vitamui_folder_lib }}:{{ vitamui_folder_lib }}:rw" \
+                              pic-prod-nexus.vitam-factory:9080/vitamui/{{ vitamui_struct.vitamui_component }}:latest \
+                              {{ vitamui_folder_conf }}/{{ vitamui_struct.vitamui_component }}.conf
+
+ExecStop=/usr/bin/docker stop -t 85 {{ vitamui_struct.vitamui_component }}
+ExecReload=/usr/bin/docker restart -t 85 {{ vitamui_struct.vitamui_component }}
+TimeoutStartSec=60
+TimeoutStopSec=30
+StartLimitBurst=6
+
+[Install]
+WantedBy=multi-user.target

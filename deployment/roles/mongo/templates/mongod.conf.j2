@@ -5,11 +5,12 @@
 
 
 # where to write logging data.
+{% if install_mode != 'container' %}
 systemLog:
   destination: syslog
   syslogFacility: local0
   logAppend: true
-
+{% endif %}
 
 # Where and how to store data.
 storage:
