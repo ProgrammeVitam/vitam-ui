@@ -68,7 +68,7 @@
     dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/service-{{ item }}.json"
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitam_defaults.users.group }}"
-    mode: "{{ vitam_defaults.folder.conf_permission }}"
+    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.conf_permission }}"
   with_items:
     - "mongo-express-{{ mongo_cluster_name }}"
   tags:

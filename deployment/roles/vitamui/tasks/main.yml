@@ -12,7 +12,7 @@
     - update_package_vitamui
   notify:
     - restart service
-  when: force_vitamui_version is not defined
+  when: force_vitamui_version is not defined and install_mode != "container"
 
 # Force a specific version to install (even downgrade)
 - block:
@@ -43,8 +43,7 @@
     notify: restart service
     when: ansible_os_family == "RedHat"
 
-  when: force_vitamui_version is defined
-
+  when: force_vitamui_version is defined and install_mode != "container"
 #### Configuration ####
 
 - name: Check that the directories exist (must be removed when the RPM plugin will be patched)
@@ -75,6 +74,7 @@
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   notify:
     - restart service
+  when: install_mode != "container"
 
 - name: Deploy common configuration files in sysconfig subdir
   template:
@@ -89,6 +89,20 @@
     - update_jvmoptions_vitamui
   notify:
     - restart service
+  when: install_mode != "container"
+
+- name: Deploy systemd service file
+  template:
+    src: vitamui-container-componentid.service.j2
+    dest: "{{ '/lib/systemd/system' if ansible_os_family == 'Debian' else '/usr/lib/systemd/system' }}/vitamui-{{ vitamui_struct.vitamui_component }}.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  tags:
+    - update_vitam_configuration
+  notify:
+    - restart service
+  when: install_mode == "container"
 
 - name: Deploy common configuration files
   template:

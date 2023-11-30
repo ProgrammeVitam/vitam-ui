@@ -38,15 +38,16 @@ spring:
   application:
     name: gateway-server
   cloud:
+    config:
+      enabled: false
     consul:
       enabled: true
       host: {{ hostvars[inventory_hostname][consul.network] if (inventory_hostname in groups['hosts_vitamui_consul_server'] or inventory_hostname in groups['hosts_consul_server']) else 'localhost' }}
       discovery:
+        serviceName: gateway-server
         preferIpAddress: true
         tags: {{ consul_tags }}
         instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
-    config:
-      enabled: false
     gateway:
       httpclient:
         wiretap: false

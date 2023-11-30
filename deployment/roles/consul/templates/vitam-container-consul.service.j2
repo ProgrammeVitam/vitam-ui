@@ -1,0 +1,29 @@
+[Unit]
+Description=Consul is a distributed, highly-available, and multi-datacenter aware tool for service discovery, configuration, and orchestration (Docker version).
+Documentation=http://www.consul.io
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker pull {{ container_repository.registry_url }}/vitam-external/hashicorp/consul:{{ consul_version }}
+ExecStartPre=-/usr/bin/docker stop vitam-consul
+ExecStartPre=-/usr/bin/docker rm vitam-consul
+ExecStart=/usr/bin/docker run --rm --net=host -e 'CONSUL_ALLOW_PRIVILEGED_PORTS=' --name vitam-consul \
+        --memory=1024m \
+        --cpus=1 \
+        -v "/vitam/conf/consul:/consul/config" \
+        -v "/vitam/log/consul:/vitam/log/consul" \
+        -v "/vitam/script/consul:/vitam/script/consul" \
+        -v "/vitam/data/consul:/consul/data" \
+        -v "/vitam/tmp/consul:/vitam/tmp/consul" \
+        {{ container_repository.registry_url }}/vitam-external/hashicorp/consul:{{ consul_version }}
+
+ExecStop=/usr/bin/docker stop -t 85 vitam-consul
+ExecRestart=/usr/bin/docker restart -t 85 vitam-consul
+ExecReload=/usr/bin/docker exec vitam-consul sh -c 'kill -HUP $(pidof consul)'
+TimeoutStartSec=60
+TimeoutStopSec=30
+StartLimitBurst=6
+
+[Install]
+WantedBy=multi-user.target

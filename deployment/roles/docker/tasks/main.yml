@@ -1,0 +1,46 @@
+---
+
+- include_tasks: daemon_update_conf.yml
+
+- include_tasks: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: Debian.yml
+  when: ansible_os_family == 'Debian'
+
+# Cf. https://docs.docker.com/engine/admin/systemd/
+- name: Ensure systemd docker service drop-in folder is there
+  file:
+    name: "/etc/systemd/system/docker.service.d"
+    state: directory
+
+# KWA : add root folders for data / conf / ... directories here ?
+# KWA : configure docker login for repo
+
+- name: Add http proxy conf for docker
+  template:
+    src: "http_proxy.conf.j2"
+    dest: /etc/systemd/system/docker.service.d/http_proxy.conf
+  notify:
+  - "docker - restart service"
+  when:
+    - http_proxy_environnement is defined
+    - http_proxy_environnement != ""
+
+- name: Add Vitam user to the docker group
+  user:
+    name: vitam
+    groups: docker
+    append: yes
+  notify: "docker - restart service"
+
+- meta: flush_handlers
+
+- name: Login into Docker registry
+  docker_login:
+    registry_url: "{{ container_repository.registry_url }}"
+    username: "{{ container_repository.username }}"
+    password: "{{ container_repository.password }}"
+  when:
+    - install_mode == "container"
+    - container_repository is defined

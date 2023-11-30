@@ -1,0 +1,29 @@
+[Unit]
+Description=MongoDB (mongod) Database Service (Docker version)
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker pull {{ container_repository.registry_url }}/vitam-external/mongodb/mongodb-community-server:7.0.8-ubuntu2204
+ExecStartPre=-/usr/bin/docker stop vitamui-mongod
+ExecStartPre=-/usr/bin/docker rm vitamui-mongod
+ExecStart=/usr/bin/docker run --rm --net=host --name vitamui-mongod --user 1003:1003 \
+        -v "/vitamui/conf/mongod:/vitamui/conf/mongod:rw" \
+        -v "/vitamui/log/mongod:/vitamui/log/mongod:rw" \
+        -v "/vitamui/script/mongod:/vitamui/script/mongod:rw" \
+        -v "/vitamui/data/mongod:/vitamui/data/mongod:rw" \
+        -v "/vitamui/app/mongod:/vitamui/app/mongod:rw" \
+        -v "/vitamui/tmp/mongod:/vitamui/tmp/mongod:rw" \
+        -v /etc/localtime:/etc/localtime:ro \
+        {{ container_repository.registry_url }}/vitam-external/mongodb/mongodb-community-server:7.0.8-ubuntu2204 \
+        --config /vitamui/conf/mongod/mongod.conf \
+        --dbpath /vitamui/data/mongod
+
+ExecStop=/usr/bin/docker stop -t 85 vitamui-mongod
+ExecReload=/usr/bin/docker restart -t 85 vitamui-mongod
+TimeoutStartSec=60
+TimeoutStopSec=30
+StartLimitBurst=6
+
+[Install]
+WantedBy=multi-user.target

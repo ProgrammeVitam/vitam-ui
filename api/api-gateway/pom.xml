@@ -17,6 +17,7 @@
         <rpm.skip>false</rpm.skip>
         <swagger.dir>api-gateway</swagger.dir>
         <swagger.skip>false</swagger.skip>
+        <jib.skip>true</jib.skip>
     </properties>
 
     <dependencies>
@@ -57,6 +58,16 @@
 
     <build>
         <plugins>
+            <plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+                    <configuration>
+                        <to>
+                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/api-gateway</image>
+                            <tags>${project.version}</tags>
+                        </to>
+                    </configuration>
+			</plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
