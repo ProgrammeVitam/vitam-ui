@@ -5,16 +5,16 @@ frontend:
   repository_url: "http://nexus.dev.programmevitam.fr"
   apps:
     - name: identity
-      certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity"
+      certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-identity/ui-identity"
       key_pass: "" #"{{ server_ui_identity_key }}" #"{{ vault_cert_client_client_external_ui_identity_key }}"
       #repo: "@vitam-ui"
     - name: identity-admin
       component: identity
-      certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity-admin"
+      certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-identity-admin/ui-identity-admin"
       key_pass: "" #"{{ server_ui_identity_admin_key }}" #"{{ vault_cert_client_client_external_ui_identity_admin_key }}"
       #repo: "@vitam-ui"
     - name: portal
-      certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-portal"
+      certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-portal/ui-portal"
       key_pass: "" #"{{ server_ui_portal_key }}" #"{{ vault_cert_client_client_external_ui_portal_key }}"
       #repo: "@vitam-ui"
 
@@ -31,7 +31,7 @@ frontend_configurations: ["{{ playbook_dir }}/templates/frontend/nginx/conf.d/*"
 app_certificates:
   - name: portal
     contextId: ui_portal_context
-    certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-portal.crt"
+    certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-portal/ui-portal.crt"
     group: "ui_portal"
   - name: cas
     contextId: cas_context
@@ -39,13 +39,13 @@ app_certificates:
     group: "cas_server"
   - name: identity
     contextId: ui_admin_identity_context
-    certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity-admin.crt"
+    certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-identity-admin/ui-identity-admin.crt"
     group: "ui_identity"
   - name: identity-admin
     contextId: ui_identity_context
-    certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity.crt"
+    certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-identity/ui-identity.crt"
     group: "ui_identity_admin"
   - name: referential
     contextId: ui_referential_context
-    certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-referential.crt"
+    certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-referential/ui-referential.crt"
     group: "ui_referential"
