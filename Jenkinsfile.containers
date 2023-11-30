@@ -1,0 +1,318 @@
+pipeline {
+    agent {
+        label 'java11'
+    }
+
+    environment {
+        MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
+        MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DdeployAtEnd=true "
+        M2_REPO = "${HOME}/.m2"
+        CI = credentials("app-jenkins")
+        SERVICE_SONAR_URL = credentials("service-sonar-java11-url")
+        SERVICE_NEXUS_URL = credentials("service-nexus-url")
+        SERVICE_REPO_SSHURL = credentials("repository-connection-string")
+        SERVICE_DOCKER_PULL_URL=credentials("SERVICE_DOCKER_PULL_URL")
+        SERVICE_REPOSITORY_URL=credentials("service-repository-url")
+        GITHUB_ACCOUNT_TOKEN = credentials("vitam-prg-token")
+
+    }
+
+
+        stages {
+
+
+
+            stage('Build and create docker images'){
+                steps {
+
+
+                    withCredentials([
+                    [$class: 'UsernamePasswordMultiBinding', credentialsId: 'app-jenkins',usernameVariable: 'CI_USR', passwordVariable: 'CI_PSW'],
+                    string(credentialsId: "service-nexus-url", variable: 'SERVICE_NEXUS_URL')
+                    ]) {
+
+
+                    sh 'mvn  --settings .ci/settings.xml --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true package -Pvitam -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true  -Djib.to.auth.username=$CI_USR  -Djib.to.auth.password=$CI_PSW -pl "!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express" -Denv.SERVICE_NEXUS_URL=$SERVICE_NEXUS_URL -DsendCredentialsOverHttp=true'
+                    // sh '$MVN_COMMAND install jib:build  -Pvitam -Dmaven.test.skip=true -DskipTests=true -Djacoco.skip=true -Dlicense.skip -Denv.SERVICE_NEXUS_URL=$SERVICE_NEXUS_URL -DsendCredentialsOverHttp=true     -Djib.to.auth.username=$CI_USR  -Djib.to.auth.password=$CI_PSW -pl "!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express"'
+
+                    }
+
+
+
+                }
+
+            }
+        stage('Set scanner preriquities') {
+            steps {
+                // Install trivy
+                sh 'sudo curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/install.sh | sudo sh -s -- -b /usr/local/bin v0.47.0'
+                sh 'sudo curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl > html.tpl'
+                    withCredentials([
+                    [$class: 'UsernamePasswordMultiBinding', credentialsId: 'app-jenkins',usernameVariable: 'CI_USR', passwordVariable: 'CI_PSW'],
+                    string(credentialsId: "service-nexus-url", variable: 'SERVICE_NEXUS_URL')
+                    ]) {
+                        sh 'echo $CI_PSW | docker login  pic-prod-nexus.vitam-factory:9080 -u $CI_USR --password-stdin'
+                    }
+            }
+        }
+
+/*        stage('Scan containers') {
+            steps {
+                // Scan all vuln levels
+                sh 'mkdir -p reports'
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/access-external'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/access-external --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/access-external-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'access-external-scan.html',
+                    reportName: 'Trivy Scan access-external',
+                    reportTitles: 'Trivy Scan access-external'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/access-internal'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/access-internal --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/access-internal-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'access-internal-scan.html',
+                    reportName: 'Trivy Scan access-internal',
+                    reportTitles: 'Trivy Scan access-internal'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/batch-report'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/batch-report --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/batch-report-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'batch-report-scan.html',
+                    reportName: 'Trivy Scan batch-report',
+                    reportTitles: 'Trivy Scan batch-report'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/collect-external'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/collect-external --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/collect-external-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'collect-external-scan.html',
+                    reportName: 'Trivy Scan collect-external',
+                    reportTitles: 'Trivy Scan collect-external'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/collect-internal'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/collect-internal --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/collect-internal-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'collect-internal-scan.html',
+                    reportName: 'Trivy Scan collect-internal',
+                    reportTitles: 'Trivy Scan collect-internal'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/functional-administration'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/functional-administration --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/functional-administration-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'functional-administration-scan.html',
+                    reportName: 'Trivy Scan functional-administration',
+                    reportTitles: 'Trivy Scan functional-administration'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/ihm-demo'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/ihm-demo --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/ihm-demo-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'ihm-demo-scan.html',
+                    reportName: 'Trivy Scan ihm-demo',
+                    reportTitles: 'Trivy Scan ihm-demo'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/ihm-recette'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/ihm-recette --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/ihm-recette-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'ihm-recette-scan.html',
+                    reportName: 'Trivy Scan ihm-recette',
+                    reportTitles: 'Trivy Scan ihm-recette'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/ingest-internal'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/ingest-internal --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/ingest-internal-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'ingest-internal-scan.html',
+                    reportName: 'Trivy Scan ingest-internal',
+                    reportTitles: 'Trivy Scan ingest-internal'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/ingest-external'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/ingest-external --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/ingest-external-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'ingest-external-scan.html',
+                    reportName: 'Trivy Scan ingest-external',
+                    reportTitles: 'Trivy Scan ingest-external'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/ingest-security'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/ingest-security --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/ingest-security-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'ingest-security-scan.html',
+                    reportName: 'Trivy Scan ingest-security',
+                    reportTitles: 'Trivy Scan ingest-security'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/logbook'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/logbook --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/logbook-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'logbook-scan.html',
+                    reportName: 'Trivy Scan logbook',
+                    reportTitles: 'Trivy Scan logbook'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/metadata'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/metadata --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/metadata-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'metadata-scan.html',
+                    reportName: 'Trivy Scan metadata',
+                    reportTitles: 'Trivy Scan metadata'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/metadata-collect'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/metadata-collect --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/metadata-collect-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'metadata-collect-scan.html',
+                    reportName: 'Trivy Scan metadata-collect',
+                    reportTitles: 'Trivy Scan metadata-collect'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/offer'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/offer --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/offer-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'offer-scan.html',
+                    reportName: 'Trivy Scan offer',
+                    reportTitles: 'Trivy Scan offer'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/processing'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/processing --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/processing-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'processing-scan.html',
+                    reportName: 'Trivy Scan processing',
+                    reportTitles: 'Trivy Scan processing'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/scheduler'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/scheduler --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/scheduler-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'scheduler-scan.html',
+                    reportName: 'Trivy Scan scheduler',
+                    reportTitles: 'Trivy Scan scheduler'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/storage-engine'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/storage-engine --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/storage-engine-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'storage-engine-scan.html',
+                    reportName: 'Trivy Scan storage-engine',
+                    reportTitles: 'Trivy Scan storage-engine'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/worker'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/worker --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/worker-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'worker-scan.html',
+                    reportName: 'Trivy Scan worker',
+                    reportTitles: 'Trivy Scan worker'
+                ]
+
+                sh 'docker pull pic-prod-nexus.vitam-factory:9080/vitam/workspace'
+                sh 'trivy image pic-prod-nexus.vitam-factory:9080/vitam/workspace --ignore-unfixed --vuln-type os,library --format template --template "@html.tpl" -o reports/workspace-scan.html'
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'workspace-scan.html',
+                    reportName: 'Trivy Scan workspace',
+                    reportTitles: 'Trivy Scan workspace'
+                ]
+                // Scan again and fail on CRITICAL vulns
+               // sh 'trivy filesystem --ignore-unfixed --vuln-type os,library --exit-code 1 --severity CRITICAL'
+
+            }
+
+        }
+*/
+}
+    post {
+        // Clean after build
+        always {
+            sh 'docker system prune -a -f'
+ //           cleanWs()
+        }
+    }
+
+}

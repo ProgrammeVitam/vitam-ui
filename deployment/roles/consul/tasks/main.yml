@@ -15,6 +15,7 @@
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
   notify: "consul - restart service"
+  when: install_mode != "container"
 
 - name: Deploy systemd service file for vitam-consul
   template:
@@ -24,11 +25,24 @@
     group: root
     mode: "0644"
   notify: "consul - restart service"
+  when: install_mode != "container"
+
+- name: Deploy systemd service file for vitam-consul
+  template:
+    src: vitam-container-consul.service.j2
+    dest: "{{ '/lib/systemd/system' if ansible_os_family == 'Debian' else '/usr/lib/systemd/system' }}/vitam-consul.service"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - "consul - restart service"
+  when: install_mode == "container"
 
 - name: rustine VITAMUI ensure vitam user is member of vitamui group
   user:
     name: vitam
     groups: vitam, {{ vitamui_defaults.users.group | default('vitamui') }}
+  when: install_mode != "container"
 
 #### Configuration ####
 
@@ -48,6 +62,25 @@
     - data
     - tmp
   notify: "consul - restart service"
+  when: install_mode != "container"
+
+- name: Check that the consul directories exist
+  file:
+    path: "{{ vitam_defaults.folder.root_path }}/{{ item }}/consul"
+    state: directory
+    owner: "{{ vitam_defaults.users.vitam }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "0777"
+  with_items:
+    - app
+    - bin
+    - conf
+    - lib
+    - log
+    - data
+    - tmp
+  notify: "consul - restart service"
+  when: install_mode == "container"
 
 - name: Deploy consul sysconfig file
   template:
@@ -57,6 +90,7 @@
     group: "{{ vitam_defaults.users.group }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: "consul - restart service"
+  when: install_mode != "container"
 
 - name: Deploy consul common configuration files
   template:
@@ -66,7 +100,17 @@
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   notify: "consul - restart service"
+  when: install_mode != "container"
 
+- name: Deploy consul common configuration files
+  template:
+    src: consul.json.j2
+    dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/consul.json"
+    owner: "{{ vitam_defaults.users.vitam }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "0777"
+  notify: "consul - restart service"
+  when: install_mode == "container"
 # Ensure that the installation is complete and consul up before setting up the system-wide dns resolver...
 - meta: flush_handlers
 
@@ -134,3 +178,10 @@
     host: "127.0.0.1"
     port: 53
     state: "started"
+
+- name: Restart vitam-consul
+  service:
+    name: vitam-consul
+    enabled: "{{ consul.at_boot | default(service_at_boot) }}"
+    state: restarted
+  when: install_mode == "container"

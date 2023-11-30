@@ -20,16 +20,16 @@
   stat:
     path: /usr/lib/systemd/system/tuned.service
   register: tuned_service_status
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == "RedHat" and install_mode != "container"
 
 - name: Check if tuned is installed
   stat:
     path: /lib/systemd/system/tuned.service
   register: tuned_service_status
-  when: ansible_os_family == "Debian"
+  when: ansible_os_family == "Debian" and install_mode != "container"
 
 - set_fact: status_tuned_present="{{ tuned_service_status.stat.exists }}"
-  when: tuned_service_status.changed
+  when: tuned_service_status.changed and install_mode != "container"
 
 - block:
 
@@ -58,6 +58,7 @@
   when:
     - status_tuned_present |bool
     - ansible_virtualization_type != "docker"
+    - install_mode != "container"
 
 - name: check /sys/kernel/mm/transparent_hugepage existence
   stat:
@@ -88,4 +89,4 @@
         enabled: yes
         state: started
 
-  when: ( ansible_virtualization_type not in ["docker","lxc"] ) and ( transparent_hugepage_dir.stat.isdir is defined and transparent_hugepage_dir.stat.isdir )
+  when: ( ansible_virtualization_type not in ["docker","lxc"] ) and ( transparent_hugepage_dir.stat.isdir is defined and transparent_hugepage_dir.stat.isdir ) and install_mode != "container"

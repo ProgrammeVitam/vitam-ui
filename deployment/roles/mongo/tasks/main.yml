@@ -9,7 +9,7 @@
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
   notify: restart mongod
-  when: force_vitamui_version is not defined
+  when: force_vitamui_version is not defined and install_mode != "container"
 
 # Force a specific version to install (even downgrade)
 - block:
@@ -38,14 +38,25 @@
     notify: restart mongod
     when: ansible_os_family == "RedHat"
 
-  when: force_vitamui_version is defined
+  when: force_vitamui_version is defined  and install_mode != "container"
 
 - name: Disable mongod default service
   service:
     name: mongod
     state: stopped
     enabled: no
+  when: install_mode != "container"
 
+- name: Deploy systemd service file for vitamui-mongod
+  template:
+    src: vitamui-container-mongo.service.j2
+    dest: "{{ '/lib/systemd/system' if ansible_os_family == 'Debian' else '/usr/lib/systemd/system' }}/vitamui-mongod.service"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - "restart mongod"
+  when: install_mode == "container"
 #### Configuration ####
 
 - name: Check that the directories exists (must be removed when the RPM plugin will be patched)
@@ -66,6 +77,27 @@
     - tmp
   notify: restart mongod
   tags: update_mongodb_configuration
+  when: install_mode != "container"
+
+- name: Check that the directories exists (must be removed when the RPM plugin will be patched)
+  file:
+    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}/mongod"
+    state: directory
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "0777"
+  with_items:
+    - app
+    - bin
+    - conf
+    - data
+    - lib
+    - log
+    - script
+    - tmp
+  notify: restart mongod
+  tags: update_mongodb_configuration
+  when: install_mode == "container"
 
 - name: Create db directory
   file:
@@ -76,6 +108,20 @@
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   notify: restart mongod
   tags: update_mongodb_configuration
+  when: install_mode != "container"
+
+
+- name: Create db directory
+  file:
+    path: "{{ mongo_db_path }}"
+    state: directory
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "0777"
+  notify: restart mongod
+  tags: update_mongodb_configuration
+  when: install_mode == "container"
+
 
 - name: Create the mongod configuration server file
   template:
@@ -86,6 +132,19 @@
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   notify: restart mongod
   tags: update_mongodb_configuration
+  when: install_mode != "container"
+
+
+- name: Create the mongod configuration server file
+  template:
+    src: mongod.conf.j2
+    dest: "{{ mongo_config_path }}/mongod.conf"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "0444"
+  notify: restart mongod
+  tags: update_mongodb_configuration
+  when: install_mode == "container"
 
 #### Consul configuration ####
 
@@ -99,6 +158,19 @@
   tags:
     - consul_conf
     - update_mongodb_configuration
+  when: install_mode != "container"
+
+- name: Ensure consul config dir is OK
+  file:
+    path: "{{ consul.conf_folder | default('/vitam/conf/consul') }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "0777"
+    state: directory
+  tags:
+    - consul_conf
+    - update_mongodb_configuration
+  when: install_mode == "container"
 
 - name: Deploy consul agent service declaration
   template:
@@ -111,6 +183,20 @@
     - consul_conf
     - update_mongodb_configuration
   notify: reload consul configuration for mongo
+  when: install_mode != "container"
+
+- name: Deploy consul agent service declaration
+  template:
+    src: "service-componentid.json.j2"
+    dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/service-mongod.json"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "0777"
+  tags:
+    - consul_conf
+    - update_mongodb_configuration
+  notify: reload consul configuration for mongo
+  when: install_mode == "container"
 
 # Ensure that the installation is complete and consul up before contnuing...
 - meta: flush_handlers
@@ -138,6 +224,7 @@
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: 0600
   tags: update_mongodb_configuration
+
 
 # # Now let's initiate the replica set
 # # Do this only on the first node of the current shard

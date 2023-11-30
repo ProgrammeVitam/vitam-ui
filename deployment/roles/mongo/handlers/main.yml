@@ -1,11 +1,11 @@
 ---
+- name: restart mongod
+  service:
+    name: "{{ mongodb.service_name | default('vitamui-mongod') }}"
+    state: restarted
+    daemon_reload: yes
 
 - name: reload consul configuration for mongo
   service:
     name: "{{ consul.service_name | default('vitam-consul') }}"
     state: reloaded
-
-- name: restart mongod
-  service:
-    name: "{{ mongodb.service_name | default('vitamui-mongod') }}"
-    state: restarted
