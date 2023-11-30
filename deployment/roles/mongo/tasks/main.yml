@@ -145,6 +145,10 @@
 
 - block:
 
+    - fail:
+        msg: "ERROR: mongo_rs_bootstrap node can't be mongo_arbiter !"
+      when: mongo_arbiter | default(false) | bool == true
+
     - name: Wait for the service port to be open on all members of the replica
       wait_for:
         host: "{{ hostvars[item]['ip_service'] }}"
@@ -152,8 +156,7 @@
         timeout: "{{ vitamui_defaults.services.start_timeout }}"
       with_items:
         - "{{ groups['hosts_vitamui_mongod'] }}"
-      tags:
-        - update_mongodb_configuration
+      tags: update_mongodb_configuration
 
     - name: Copy the script which initiate the replica set
       template:
@@ -162,23 +165,11 @@
         owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
         group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
         mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-      tags:
-        - update_mongodb_configuration
-
-    # - name: Copy script that restore configuration of mongod sharded cluster
-    #   template:
-    #     src: "restore-mongod.js.j2"
-    #     dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/restore-mongod.js"
-    #     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    #     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    #     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-    #   tags:
-    #     - update_mongodb_configuration
+      tags: update_mongodb_configuration
 
     - name: Initiate the replica set
       command: "mongosh --host {{ ip_service }} --port {{ mongodb.mongod_port }} --quiet --file {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/init-replica.js"
-      tags:
-        - update_mongodb_configuration
+      tags: update_mongodb_configuration
 
     - import_tasks: check_auth.yml
 
@@ -190,12 +181,10 @@
         owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
         group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
         mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-      tags:
-        - update_mongodb_configuration
+      tags: update_mongodb_configuration
 
     - name: Create the local shard user
       command: "mongosh --host {{ ip_service }} --port {{ mongodb.mongod_port }} {{ mongo_credentials }} --quiet --file {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/local-user.js"
-      tags:
-        - update_mongodb_configuration
+      tags: update_mongodb_configuration
 
-  when: mongo_rs_bootstrap is defined and mongo_rs_bootstrap|lower == "true"
+  when: mongo_rs_bootstrap | default(false) | bool == true
