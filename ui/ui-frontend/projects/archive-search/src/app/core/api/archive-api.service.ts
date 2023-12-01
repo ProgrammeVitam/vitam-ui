@@ -39,13 +39,20 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
-  ApiUnitObject, BaseHttpClient, BASE_URL, Ontology, PageRequest, PaginatedResponse, SearchCriteriaDto, SearchCriteriaHistory,
-  SearchResponse, Unit
+  ApiUnitObject,
+  BaseHttpClient,
+  BASE_URL,
+  Ontology,
+  PageRequest,
+  PaginatedResponse,
+  SearchCriteriaDto,
+  SearchCriteriaHistory,
+  SearchResponse,
+  Unit,
 } from 'ui-frontend-common';
-import { ExportDIPCriteriaList } from '../../archive/models/dip-request-detail.interface';
+import { ExportDIPRequestDto, TransferRequestDto } from '../../archive/models/dip.interface';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
-import { TransferRequestDto } from '../../archive/models/transfer-request-detail.interface';
 import { UnitDescriptiveMetadataDto } from '../../archive/models/unitDescriptiveMetadata.interface';
 
 @Injectable({
@@ -120,8 +127,8 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     return this.http.get<ApiUnitObject>(`${this.apiUrl}/object/${id}`, { headers, responseType: 'json' });
   }
 
-  exportDipApiService(exportDIPCriteriaList: ExportDIPCriteriaList, headers?: HttpHeaders): Observable<string> {
-    return this.http.post(`${this.apiUrl}/export-dip`, exportDIPCriteriaList, {
+  exportDipApiService(exportDIPRequestDto: ExportDIPRequestDto, headers?: HttpHeaders): Observable<string> {
+    return this.http.post(`${this.apiUrl}/export-dip`, exportDIPRequestDto, {
       responseType: 'text',
       headers,
     });

@@ -34,3 +34,6 @@ export enum ObjectQualifierType {
 }
 
 export const ObjectQualifierTypeList: Array<string> = Object.values(ObjectQualifierType);
+
+export type ObjectQualifierTypeKeys = keyof typeof ObjectQualifierType;
+export type ObjectQualifierTypeType = typeof ObjectQualifierType[ObjectQualifierTypeKeys];

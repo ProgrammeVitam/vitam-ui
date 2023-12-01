@@ -69,14 +69,16 @@ public class TransferVitamOperationsInternalService {
 
     private TransferRequest prepareTransferRequestBody(final TransferRequestDto transferRequestDto,
         JsonNode dslQuery) {
-        TransferRequest transferRequest = new TransferRequest();
+        final TransferRequest transferRequest = new TransferRequest();
         if (transferRequestDto != null) {
-            DataObjectVersions dataObjectVersions = new DataObjectVersions();
-            dataObjectVersions.setDataObjectVersions(transferRequestDto.getDataObjectVersions());
+            final DataObjectVersions dataObjectVersions = new DataObjectVersions();
+            dataObjectVersions.setDataObjectVersionsPatterns(transferRequestDto.getDataObjectVersionsPatterns());
+
             transferRequest.setTransferWithLogBookLFC(transferRequestDto.isLifeCycleLogs());
             transferRequest.setDslRequest(dslQuery);
             transferRequest.setDataObjectVersionToExport(dataObjectVersions);
             transferRequest.setTransferRequestParameters(transferRequestDto.getTransferRequestParameters());
+            transferRequest.setSedaVersion(transferRequestDto.getSedaVersion());
         }
         return transferRequest;
     }
@@ -90,8 +92,6 @@ public class TransferVitamOperationsInternalService {
             archiveSearchInternalService.prepareDslQuery(transferRequestDto.getSearchCriteria(), vitamContext);
         LOGGER.debug("Transfer request final DSL query: {} ", dslQuery);
 
-        DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
-        dataObjectVersionToExport.setDataObjectVersions(transferRequestDto.getDataObjectVersions());
         TransferRequest transferRequest = prepareTransferRequestBody(transferRequestDto, dslQuery);
 
         JsonNode response = sendTransferRequest(vitamContext, transferRequest);
