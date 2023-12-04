@@ -63,6 +63,7 @@ vitamui:
     port_admin: 7090
     enabled: true
     server_secure: true
+    client_certificate_header_name: x-ssl-cert
 
   identity:
     host: "identity.service.{{ consul_domain }}"

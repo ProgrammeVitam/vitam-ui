@@ -29,6 +29,9 @@ server:
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
     client-auth: need
+    {% if gateway.enabled | default(False) is sameas true %}
+    client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name }}
+    {% endif %}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
   error:
@@ -49,6 +52,11 @@ management:
     port: {{ vitamui_struct.port_admin }}
     ssl:
       enabled: false
+
+{% if gateway.enabled | default(False) is sameas true %}
+gateway:
+  enabled: true
+{% endif %}
 
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
