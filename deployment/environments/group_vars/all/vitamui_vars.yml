@@ -173,6 +173,7 @@ vitamui:
     port_service: 8001
     port_admin: 7001
     base_url: "https://{{ vitam_reverse_external_dns }}/cas"
+    external_url:
     hostname_verification: true
     theme:
       vitamui_platform_name: VITAM-UI

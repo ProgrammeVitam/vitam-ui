@@ -27,11 +27,13 @@ server:
     {% if gateway.enabled | default(False) is sameas true %}
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name }}
     {% endif %}
-    enabled-protocols: {{ssl_setting.enabled_protocols}}
-    ciphers: {{ssl_setting.ciphers}}
-  error:
-    path: /error
+    #enabled-protocols: {{ssl_setting.enabled_protocols}}
+    #ciphers: {{ssl_setting.ciphers}}
+  #error:
+  #  path: /error
 {% endif %}
+
+  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
 
   tomcat:
     accesslog:
@@ -102,6 +104,7 @@ cas:
 {% endif %}
   internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
 
+{% if opentracing.enable is sameas true %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
@@ -110,3 +113,4 @@ opentracing:
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
+{% endif %}
