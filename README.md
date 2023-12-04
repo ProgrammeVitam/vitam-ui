@@ -23,22 +23,21 @@ in which you install Ansible 2.7.0:
 #### Without VirtualEnv
 * First remove older versions of Ansible before re-installing it:
 `pip uninstall ansible`.
-* Si une version d'ansible à été installée via `apt-get install`, il est nécessaire de la désinstaller : `apt-get remove ansible`
+* Si une version d'ansible a été installée via `apt-get install`, il est nécessaire de la désinstaller : `apt-get remove ansible`
 
 #### Common steps
 * Install Ansible 2.7.0: `pip install ansible==2.7.0`
 * Check the version of ansible: `ansible --version`
 
-Il est possible que l'ajout du lien vers ansible dans le PATH et/ou qu'un redémarage soit nécessaire
+Il est possible que l'ajout du lien vers ansible dans le PATH et/ou qu'un redémarrage soit nécessaire
 
 ## Configuration
 - Clone project and change ownership: `sudo chown -R $USER vitam-ui/`
 - Build project using the "right" profile (see [Maven profiles](#Maven-profiles) and [Build](#Build))
 
 ### For Vitam internal developers
-- Build project using `vitam` profile (see [Build for Vitam developers
-](#Build-for-Vitam-internal-developers))
 - Set up environment variables : `SERVICE_NEXUS_URL` and `SERVICE_REPOSITORY_URL`
+- Build project using `vitam` profile (see [Build for Vitam developers](#Build-for-Vitam-internal-developers))
 - Copy files: `collect-external-client.conf`,`access-external-client.conf`, `ingest-external-client.conf`, `keystore_ihm-demo.p12` and `truststore_ihm-demo.jks` into `api/api-(iam|referential)/(iam|referential)-internal/src/main/config/dev-vitam/`
 - Redirect `dev.vitamui.com` URL defined in code to `localhost` : add this line `127.0.0.1       dev.vitamui.com` to your `hosts` (`/etc/hosts`) file
 
@@ -221,8 +220,8 @@ To generate `index.pdf` and `index.html` from `swagger.json`:
      mvn generate-resources -Pswagger-docs
 
 # Run
-Pour lancer [VITAM](tools/vitamui-conf-dev/README.md) en mode développement et permettre à VITAMUI d'accéder à ces APIs,
-voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
+Pour lancer [VITAM](docs/developeurs/vitamui-conf-dev/README.md) en mode développement et permettre à VITAMUI d'accéder à ces APIs,
+voir la [configuration](docs/developeurs/vitamui-conf-dev/README.md) suivante.
 
 ## 1 - Démarrage du Mongo VitamUI
 ```
@@ -231,7 +230,7 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
 │   │   ├── mongo: './restart_dev.sh'
 ```
 
-## 2 - Démarrage du docker smpt4dev (facultatif)
+## 2 - Démarrage du docker smtp4dev (facultatif)
 ```
 ├── tools
 │   ├── docker
@@ -434,7 +433,7 @@ Une compilation avec `-Pwebpack` a été effectuée.
 ## 16 - Se connecter sur le portail via :
 - https://dev.vitamui.com:4200
 
-## 17 - Se connecter sur la page de réception des mails smpt4dev via :
+## 17 - Se connecter sur la page de réception des mails smtp4dev via :
 - http://localhost:3000/
 
 ## 18 - Lancer l'application 'starter-kit' contenant des exemples de composants graphiques du design system
