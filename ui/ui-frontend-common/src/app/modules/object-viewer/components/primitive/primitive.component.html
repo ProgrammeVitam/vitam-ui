@@ -1,5 +1,5 @@
 <div class="field">
-  <label>{{ displayObject.path | translate }}</label>
+  <label>{{ displayObject.displayRule.ui.label | empty }}</label>
   <div [ngSwitch]="uiComponent">
     <ng-container *ngSwitchCase="'datepicker'">
       {{ displayObject.value | date : 'medium' | empty }}

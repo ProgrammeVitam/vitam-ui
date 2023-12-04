@@ -34,9 +34,9 @@ describe('DisplayObjectHelperService', () => {
             favoriteKeys: [],
             open: true,
             displayRule: {
-              path: '',
+              Path: '',
               ui: {
-                path: '',
+                Path: '',
                 component: 'textfield',
                 layout: {
                   columns: 1,
@@ -68,9 +68,9 @@ describe('DisplayObjectHelperService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: '[0]',
+                  Path: '[0]',
                   ui: {
-                    path: '[0]',
+                    Path: '[0]',
                     component: 'textfield',
                     layout: {
                       columns: 1,
@@ -91,9 +91,9 @@ describe('DisplayObjectHelperService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: '[1]',
+                  Path: '[1]',
                   ui: {
-                    path: '[1]',
+                    Path: '[1]',
                     component: 'textfield',
                     layout: {
                       columns: 1,
@@ -114,9 +114,9 @@ describe('DisplayObjectHelperService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: '[2]',
+                  Path: '[2]',
                   ui: {
-                    path: '[2]',
+                    Path: '[2]',
                     component: 'textfield',
                     layout: {
                       columns: 1,
@@ -131,9 +131,9 @@ describe('DisplayObjectHelperService', () => {
             favoriteKeys: [],
             open: true,
             displayRule: {
-              path: '',
+              Path: '',
               ui: {
-                path: '',
+                Path: '',
                 component: 'group',
                 layout: {
                   columns: 2,
@@ -165,9 +165,9 @@ describe('DisplayObjectHelperService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: 'id',
+                  Path: 'id',
                   ui: {
-                    path: 'id',
+                    Path: 'id',
                     component: 'textfield',
                     layout: {
                       columns: 1,
@@ -188,9 +188,9 @@ describe('DisplayObjectHelperService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: 'name',
+                  Path: 'name',
                   ui: {
-                    path: 'name',
+                    Path: 'name',
                     component: 'textfield',
                     layout: {
                       columns: 1,
@@ -205,9 +205,9 @@ describe('DisplayObjectHelperService', () => {
             favoriteKeys: [],
             open: true,
             displayRule: {
-              path: '',
+              Path: '',
               ui: {
-                path: '',
+                Path: '',
                 component: 'group',
                 layout: {
                   columns: 2,
@@ -223,9 +223,9 @@ describe('DisplayObjectHelperService', () => {
           data: { id: '1', name: 'core', tags: ['low', 'medium', 'high'] },
           template: [
             {
-              path: '',
+              Path: '',
               ui: {
-                path: '',
+                Path: '',
                 component: 'group',
                 layout: {
                   columns: 2,
@@ -235,17 +235,17 @@ describe('DisplayObjectHelperService', () => {
               },
             },
             {
-              path: '',
+              Path: '',
               ui: {
-                path: 'Generalities',
+                Path: 'Generalities',
                 component: 'group',
                 favoriteKeys: ['name'],
               },
             },
             {
-              path: 'name',
+              Path: 'name',
               ui: {
-                path: 'Generalities.name',
+                Path: 'Generalities.name',
                 component: 'group',
               },
             },
@@ -267,9 +267,9 @@ describe('DisplayObjectHelperService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: 'id',
+                  Path: 'id',
                   ui: {
-                    path: 'id',
+                    Path: 'id',
                     component: 'textfield',
                     layout: {
                       columns: 1,
@@ -290,9 +290,9 @@ describe('DisplayObjectHelperService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: 'name',
+                  Path: 'name',
                   ui: {
-                    path: 'name',
+                    Path: 'name',
                     component: 'textfield',
                     layout: {
                       columns: 1,
@@ -320,9 +320,9 @@ describe('DisplayObjectHelperService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'tags[0]',
+                      Path: 'tags[0]',
                       ui: {
-                        path: 'tags[0]',
+                        Path: 'tags[0]',
                         component: 'textfield',
                         layout: {
                           columns: 1,
@@ -343,9 +343,9 @@ describe('DisplayObjectHelperService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'tags[1]',
+                      Path: 'tags[1]',
                       ui: {
-                        path: 'tags[1]',
+                        Path: 'tags[1]',
                         component: 'textfield',
                         layout: {
                           columns: 1,
@@ -366,9 +366,9 @@ describe('DisplayObjectHelperService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'tags[2]',
+                      Path: 'tags[2]',
                       ui: {
-                        path: 'tags[2]',
+                        Path: 'tags[2]',
                         component: 'textfield',
                         layout: {
                           columns: 1,
@@ -383,9 +383,9 @@ describe('DisplayObjectHelperService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: 'tags',
+                  Path: 'tags',
                   ui: {
-                    path: 'tags',
+                    Path: 'tags',
                     component: 'group',
                     layout: {
                       columns: 2,
@@ -400,9 +400,9 @@ describe('DisplayObjectHelperService', () => {
             favoriteKeys: ['name'],
             open: true,
             displayRule: {
-              path: '',
+              Path: '',
               ui: {
-                path: '',
+                Path: '',
                 component: 'group',
                 layout: {
                   columns: 2,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DisplayRule, ExtendedOntology } from '../models';
+import { DisplayRule, SchemaElement } from '../models';
 
 type ComponentName =
   | 'balise-n1'
@@ -22,12 +22,12 @@ type ComponentName =
   | 'datepicker-datetime';
 
 @Injectable()
-export class OntologyToDisplayRuleMapper {
-  private ontologyComponentTypeToDisplayRule: Record<ComponentName, DisplayRule> = {
+export class SchemaElementToDisplayRuleService {
+  private schemaElementComponentTypeToDisplayRule: Record<ComponentName, DisplayRule> = {
     'attribut-mono': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'select+textfield',
         layout: {
           columns: 2,
@@ -36,9 +36,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'attribut-multi': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'select+textarea',
         layout: {
           columns: 2,
@@ -47,9 +47,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'attribut-short-mono': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'select+textfield',
         layout: {
           columns: 1,
@@ -58,9 +58,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'attribut-short-multi': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'select+textarea',
         layout: {
           columns: 1,
@@ -69,9 +69,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'balise-n1': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'group',
         layout: {
           columns: 2,
@@ -80,9 +80,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'balise-n2': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'group',
         layout: {
           columns: 2,
@@ -91,9 +91,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'balise-n3': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'group',
         layout: {
           columns: 2,
@@ -102,9 +102,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'balise-n4': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'group',
         layout: {
           columns: 2,
@@ -113,9 +113,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'datepicker-date': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'datepicker',
         layout: {
           columns: 1,
@@ -124,9 +124,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'datepicker-datetime': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'datetime',
         layout: {
           columns: 1,
@@ -135,9 +135,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'select-mono': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'select',
         layout: {
           columns: 1,
@@ -146,9 +146,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'select-multi': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'select',
         layout: {
           columns: 1,
@@ -157,9 +157,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'textfield-large-mono': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'textfield',
         layout: {
           columns: 2,
@@ -168,9 +168,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'textfield-large-multi': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'textarea',
         layout: {
           columns: 2,
@@ -179,9 +179,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'textfield-medium-mono': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'textfield',
         layout: {
           columns: 2,
@@ -190,9 +190,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'textfield-medium-multi': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'textarea',
         layout: {
           columns: 2,
@@ -201,9 +201,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'textfield-short-mono': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'textfield',
         layout: {
           columns: 1,
@@ -212,9 +212,9 @@ export class OntologyToDisplayRuleMapper {
       },
     },
     'textfield-short-multi': {
-      path: null,
+      Path: null,
       ui: {
-        path: null,
+        Path: null,
         component: 'textarea',
         layout: {
           columns: 1,
@@ -224,19 +224,15 @@ export class OntologyToDisplayRuleMapper {
     },
   };
 
-  public mapOntologyToComponent(ontology: ExtendedOntology): ComponentName {
+  public mapSchemaElementToComponent(schemaElement: SchemaElement): ComponentName {
     const defaultComponent: ComponentName = 'textfield-short-mono';
 
-    if (!ontology) {
+    if (!schemaElement) {
       return defaultComponent;
     }
 
-    if (ontology.DataType === 'object') {
-      const computedDepth = ontology.path.split('.').length - 1;
-
-      if (computedDepth !== ontology.Depth) {
-        throw new Error("Computed ontogoly depth is not equal to it's attribute Depth");
-      }
+    if (schemaElement.Type === 'OBJECT') {
+      const computedDepth = schemaElement.Path.split('.').length - 1;
 
       if (computedDepth === 0) {
         return 'balise-n1';
@@ -254,16 +250,16 @@ export class OntologyToDisplayRuleMapper {
       return defaultComponent;
     }
 
-    if (ontology.DataType === 'string') {
-      const isUnique = ontology.Cardinality.endsWith('1') || ontology.Cardinality === 'one';
+    if (schemaElement.Type === 'TEXT' || schemaElement.Type === 'KEYWORD') {
+      const isUnique = schemaElement.Cardinality.includes('ONE');
       const isMultiple = !isUnique;
-      const isSpecial = ontology.path.includes('_.');
+      const isSpecial = schemaElement.Path.includes('_.');
 
       if (isSpecial) {
-        if (isUnique && ontology.DataSize === 'short') {
+        if (isUnique && schemaElement.StringSize === 'SHORT') {
           return 'attribut-short-mono';
         }
-        if (isMultiple && ontology.DataSize === 'short') {
+        if (isMultiple && schemaElement.StringSize === 'SHORT') {
           return 'attribut-short-multi';
         }
         if (isUnique) {
@@ -276,80 +272,84 @@ export class OntologyToDisplayRuleMapper {
         return defaultComponent;
       }
 
-      if (isUnique && ontology.DataSize === 'short') {
+      if (isUnique && schemaElement.StringSize === 'SHORT') {
         return 'textfield-short-mono';
       }
-      if (isUnique && ontology.DataSize === 'medium') {
+      if (isUnique && schemaElement.StringSize === 'MEDIUM') {
         return 'textfield-medium-mono';
       }
-      if (isUnique && ontology.DataSize === 'large') {
+      if (isUnique && schemaElement.StringSize === 'LARGE') {
         return 'textfield-large-mono';
       }
-      if (isMultiple && ontology.DataSize === 'short') {
+      if (isMultiple && schemaElement.StringSize === 'SHORT') {
         return 'textfield-short-multi';
       }
-      if (isMultiple && ontology.DataSize === 'medium') {
+      if (isMultiple && schemaElement.StringSize === 'MEDIUM') {
         return 'textfield-medium-multi';
       }
-      if (isMultiple && ontology.DataSize === 'large') {
+      if (isMultiple && schemaElement.StringSize === 'LARGE') {
         return 'textfield-large-multi';
       }
 
       return defaultComponent;
     }
 
-    if (ontology.DataType === 'enum') {
-      const isUnique = ontology.Cardinality.endsWith('1') || ontology.Cardinality === 'one';
-      const isMultiple = !isUnique;
+    // Rules for enums not represented in schemas
+    // if (schemaElement.Type === 'TEXT') {
+    //   const isUnique = schemaElement.Cardinality.includes('ONE');
+    //   const isMultiple = !isUnique;
 
-      if (isUnique) {
-        return 'select-mono';
-      }
-      if (isMultiple) {
-        return 'select-multi';
-      }
+    //   if (isUnique) {
+    //     return 'select-mono';
+    //   }
+    //   if (isMultiple) {
+    //     return 'select-multi';
+    //   }
 
-      return defaultComponent;
-    }
+    //   return defaultComponent;
+    // }
 
-    if (ontology.DataType === 'date') {
+    if (schemaElement.Type === 'DATE') {
       return 'datepicker-date';
     }
-    if (ontology.DataType === 'datetime') {
-      return 'datepicker-datetime';
-    }
-    if (ontology.DataType === 'number') {
+    // Rules for datetime not represented in schemas
+    // if (schemaElement.Type === 'DATE') {
+    //   return 'datepicker-datetime';
+    // }
+
+    if (schemaElement.Type === 'LONG') {
       return defaultComponent;
     }
 
     return defaultComponent;
   }
 
-  private mapComponentToDisplayRule(component: ComponentName, path: string = null): DisplayRule {
-    const displayRule = this.ontologyComponentTypeToDisplayRule[component];
-    const { ui } = displayRule;
+  public mapSchemaElementToDisplayRule(schemaElement: SchemaElement): DisplayRule {
+    const component: ComponentName = this.mapSchemaElementToComponent(schemaElement);
+    const baseDisplayRule = this.schemaElementComponentTypeToDisplayRule[component];
 
-    return { ...displayRule, path, ui: { ...ui, path } };
+    return {
+      ...baseDisplayRule,
+      Path: schemaElement.Path,
+      ui: {
+        ...baseDisplayRule.ui,
+        Path: schemaElement.ApiPath,
+        label: schemaElement.ShortName,
+        display: schemaElement.Category === 'DESCRIPTION',
+      },
+    };
   }
 
-  public mapOntologyToDisplayRule(ontology: ExtendedOntology): DisplayRule {
-    const path = this.getOntologyFrontendModelPath(ontology);
-    const component: ComponentName = this.mapOntologyToComponent(ontology);
-    const displayRule = this.mapComponentToDisplayRule(component, path);
-
-    return displayRule;
+  public mapSchemaToDisplayRules(schema: SchemaElement[]): DisplayRule[] {
+    return schema.map((schemaElement) => this.mapSchemaElementToDisplayRule(schemaElement));
   }
 
-  public mapOntologiesToDisplayRules(ontologies: ExtendedOntology[]): DisplayRule[] {
-    return ontologies.map((ontology) => this.mapOntologyToDisplayRule(ontology));
-  }
+  public getSchemaElementFrontendModelPath(schemaElement: SchemaElement): string {
+    const fragments = schemaElement.Path.split('.');
 
-  public getOntologyFrontendModelPath(ontology: ExtendedOntology): string {
-    const fragments = ontology.path.split('.');
-
-    if (ontology.ApiField) {
+    if (schemaElement.ApiField) {
       fragments.pop();
-      fragments.push(ontology.ApiField);
+      fragments.push(schemaElement.ApiField);
     }
 
     return fragments.join('.');

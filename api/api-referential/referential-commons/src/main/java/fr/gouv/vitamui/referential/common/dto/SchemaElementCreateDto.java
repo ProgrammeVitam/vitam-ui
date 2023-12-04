@@ -29,6 +29,7 @@ package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitam.common.model.administration.OntologyOrigin;
+import fr.gouv.vitam.common.model.administration.SchemaCategory;
 import fr.gouv.vitam.common.model.administration.SchemaType;
 import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
@@ -39,15 +40,13 @@ import java.util.List;
 
 @Data
 @Accessors(chain = true)
-public class ExtendedOntologyCreateDto {
+public class SchemaElementCreateDto {
     @JsonProperty("Tenant") private Integer tenant;
     @JsonProperty("Version") private Integer version;
-    @JsonProperty("Depth") private Integer depth; // TODO: Useless, easy to compute
-    @JsonProperty("path") private String path;
-    @JsonProperty("DataType") private String dataType;
-    @JsonProperty("DataSize") private String dataSize; // TODO: Useless, don't know how to use this
+    @JsonProperty("Path") private String path;
+    @JsonProperty("StringSize") private String stringSize;
     @JsonProperty("Cardinality") private Cardinality cardinality;
-    @JsonProperty("Identifier") private String identifier;
+    @JsonProperty("FieldName") private String fieldName;
     @JsonProperty("ShortName") private String shortName;
     @JsonProperty("Description") private String description;
     @JsonProperty("CreationDate") private String creationDate;
@@ -59,4 +58,6 @@ public class ExtendedOntologyCreateDto {
     @JsonProperty("Collections") private List<Collection> collections;
     @JsonProperty("SedaVersions") private List<String> sedaVersions;
     @JsonProperty("RootPaths") private List<String> rootPaths;
+    @JsonProperty("Category") private SchemaCategory category;
+    @JsonProperty("ApiPath") private String apiPath;
 }

@@ -34,31 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Ontology } from '../../models';
 import { Cardinality, SedaVersion } from '../types';
 import { WithPath } from './with-path.model';
 
-export interface ExtendedOntology extends WithPath, Ontology {
-  readonly DataType:
-    | 'object'
-    | 'array'
-    | 'string'
-    | 'number'
-    | 'enum'
-    | 'date'
-    | 'complex Type'
-    | 'NonEmptyTokenType'
-    | 'nonEmptyToken'
-    | 'token'
-    | 'entier'
-    | 'IDREF'
-    | 'language'
-    | 'objet'
-    | 'S.O'
-    | string;
-  readonly DataSize: 'short' | 'medium' | 'large';
+export interface SchemaElement extends WithPath {
+  readonly id?: string;
+  readonly FieldName: string;
+  readonly ApiField: string;
+  readonly Type: 'TEXT' | 'KEYWORD' | 'DATE' | 'OBJECT' | 'BOOLEAN' | 'LONG';
+  readonly Origin: string;
+  readonly SedaField?: string;
+  readonly ShortName?: string;
+  readonly Description?: string;
+  readonly CreationDate?: string;
+  readonly LastUpdate?: string;
+  readonly TenantIds?: string[];
+  readonly Indexed: boolean;
+  readonly StringSize?: 'SHORT' | 'MEDIUM' | 'LARGE';
   readonly Cardinality: Cardinality;
   readonly SedaVersions: SedaVersion[];
-  readonly Depth: number;
   readonly Collections: string[];
+  readonly ApiPath: string;
+  readonly Category: 'DESCRIPTION' | 'MANAGEMENT' | 'OTHER';
 }

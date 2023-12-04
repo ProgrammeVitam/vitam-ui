@@ -37,11 +37,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { Logger } from '../../logger/logger';
-import { OntologyService } from '../../ontology';
-import { DisplayObject, DisplayObjectService, DisplayRule, ExtendedOntology } from '../models';
+import { Collection, Schema, SchemaService } from '../../schema';
+import { DisplayObject, DisplayObjectService, DisplayRule, SchemaElement } from '../models';
 import { DisplayObjectHelperService } from './display-object-helper.service';
 import { DisplayRuleHelperService } from './display-rule-helper.service';
-import { OntologyToDisplayRuleMapper } from './ontology-to-display-rule.mapper';
+import { SchemaElementToDisplayRuleService } from './schema-element-to-display-rule.service';
 import { TypeService } from './type.service';
 
 enum Mode {
@@ -49,7 +49,7 @@ enum Mode {
 }
 
 @Injectable()
-export class OntologyStrategyDisplayObjectService implements DisplayObjectService {
+export class SchemaStrategyDisplayObjectService implements DisplayObjectService {
   private readonly configuration = {
     displayEmptyValues: false,
   };
@@ -66,38 +66,34 @@ export class OntologyStrategyDisplayObjectService implements DisplayObjectServic
 
   constructor(
     private logger: Logger,
-    private ontologyService: OntologyService,
+    private schemaService: SchemaService,
     private displayObjectHelper: DisplayObjectHelperService,
     private displayRuleHelper: DisplayRuleHelperService,
-    private componentMapperService: OntologyToDisplayRuleMapper,
+    private componentMapperService: SchemaElementToDisplayRuleService,
     private typeService: TypeService
   ) {
-    combineLatest([
-      this.ontologyService.getInternalOntologyFieldsList() as Observable<ExtendedOntology[]>,
-      this.data,
-      this.template,
-    ]).subscribe(
-      ([ontologies, data, template]) => {
+    combineLatest([this.schemaService.getSchema(Collection.ARCHIVE_UNIT), this.data, this.template]).subscribe(
+      ([schema, data, template]) => {
         if (data === null) {
           this.displayObject.next(null);
 
           return;
         }
 
-        const ontologiesByOrigin = this.groupOntologiesByOrigin(ontologies);
-        const internalOntologies = ontologiesByOrigin[this.OriginInternal] || [];
-        const externalOntologies = ontologiesByOrigin[this.OriginExternal] || [];
+        const schemaByOrigin = this.groupSchemaByOrigin(schema);
+        const internalSchema = schemaByOrigin[this.OriginInternal] || [];
+        const externalSchema = schemaByOrigin[this.OriginExternal] || [];
         const defaultTemplate = this.getDefaultTemplate(data);
-        const internalOntologyTemplate = this.componentMapperService.mapOntologiesToDisplayRules(internalOntologies);
-        const externalOntologyTemplate = this.componentMapperService.mapOntologiesToDisplayRules(externalOntologies);
+        const internalSchemaTemplate = this.componentMapperService.mapSchemaToDisplayRules(internalSchema);
+        const externalSchemaTemplate = this.componentMapperService.mapSchemaToDisplayRules(externalSchema);
         const customTemplate = template;
-        const otherMetadataTemplate = this.getOtherMetadataTemplate(externalOntologies);
+        const otherMetadataTemplate = this.getOtherMetadataTemplate(externalSchema);
         const kwargs = {
-          ontologies,
-          ontologiesByOrigin,
+          schema,
+          schemaByOrigin,
           defaultTemplate,
-          internalOntologyTemplate,
-          externalOntologyTemplate,
+          internalSchemaTemplate,
+          externalSchemaTemplate,
           customTemplate,
           otherMetadataTemplate,
         };
@@ -110,27 +106,27 @@ export class OntologyStrategyDisplayObjectService implements DisplayObjectServic
     );
   }
 
-  private groupOntologiesByOrigin(ontologies: ExtendedOntology[]): Record<string, ExtendedOntology[]> {
-    const groupedByOrigin: Record<string, ExtendedOntology[]> = {};
+  private groupSchemaByOrigin(schema: SchemaElement[]): Record<string, SchemaElement[]> {
+    const groupedByOrigin: Record<string, SchemaElement[]> = {};
 
-    ontologies
-      .filter((ontology) => {
-        if (!ontology.Origin) {
-          this.logger.warn(this, `Path ${ontology.path} have not origin, it will be skipped...`, { ontology });
+    schema
+      .filter((schemaElement) => {
+        if (!schemaElement.Origin) {
+          this.logger.warn(this, `Path ${schemaElement.Path} have not origin, it will be skipped...`, { schemaElement });
 
           return false;
         }
 
         return true;
       })
-      .forEach((ontology) => {
-        const originToLocaleLowerCase = ontology.Origin.toLocaleLowerCase();
+      .forEach((schemaElement) => {
+        const originToLocaleLowerCase = schemaElement.Origin.toLocaleLowerCase();
 
         if (!groupedByOrigin[originToLocaleLowerCase]) {
           groupedByOrigin[originToLocaleLowerCase] = [];
         }
 
-        groupedByOrigin[originToLocaleLowerCase].push(ontology);
+        groupedByOrigin[originToLocaleLowerCase].push(schemaElement);
       });
 
     return groupedByOrigin;
@@ -153,17 +149,17 @@ export class OntologyStrategyDisplayObjectService implements DisplayObjectServic
   }
 
   private computeDisplayObject({
-    ontologies,
+    schema,
     defaultTemplate,
-    internalOntologyTemplate,
-    externalOntologyTemplate,
+    internalSchemaTemplate,
+    externalSchemaTemplate,
     customTemplate,
     otherMetadataTemplate,
   }: {
-    ontologies: ExtendedOntology[];
+    schema: SchemaElement[];
     defaultTemplate: DisplayRule[];
-    internalOntologyTemplate: DisplayRule[];
-    externalOntologyTemplate: DisplayRule[];
+    internalSchemaTemplate: DisplayRule[];
+    externalSchemaTemplate: DisplayRule[];
     customTemplate: DisplayRule[];
     otherMetadataTemplate: DisplayRule[];
   }): DisplayObject {
@@ -171,13 +167,13 @@ export class OntologyStrategyDisplayObjectService implements DisplayObjectServic
       throw new Error(`Mode ${this.mode.value} is not supported`);
     }
 
-    const ontologyTemplate = internalOntologyTemplate.concat(externalOntologyTemplate);
-    const finalOntologyTemplate = this.displayRuleHelper.mergeDisplayRulesByPath(ontologyTemplate, defaultTemplate);
-    const finalCustomTemplate = this.displayRuleHelper.prioritizeAndMergeDisplayRules(finalOntologyTemplate, customTemplate);
-    const finalOtherMetadataTemplate = this.displayRuleHelper.prioritizeAndMergeDisplayRules(finalOntologyTemplate, otherMetadataTemplate);
-    const finalNotConsumedRulesByCustomTemplate = this.displayRuleHelper.getUniqueDisplayRules(finalOntologyTemplate, finalCustomTemplate);
+    const schemaTemplate = internalSchemaTemplate.concat(externalSchemaTemplate);
+    const finalSchemaTemplate = this.displayRuleHelper.mergeDisplayRulesByPath(schemaTemplate, defaultTemplate);
+    const finalCustomTemplate = this.displayRuleHelper.prioritizeAndMergeDisplayRules(finalSchemaTemplate, customTemplate);
+    const finalOtherMetadataTemplate = this.displayRuleHelper.prioritizeAndMergeDisplayRules(finalSchemaTemplate, otherMetadataTemplate);
+    const finalNotConsumedRulesByCustomTemplate = this.displayRuleHelper.getUniqueDisplayRules(finalSchemaTemplate, finalCustomTemplate);
     const finalNotConsumedRulesByOtherMetadataTemplate = this.displayRuleHelper.getUniqueDisplayRules(
-      finalOntologyTemplate,
+      finalSchemaTemplate,
       finalOtherMetadataTemplate
     );
     const finalNotConsumedTemplate = this.displayRuleHelper.getCommonDisplayRules(
@@ -186,57 +182,46 @@ export class OntologyStrategyDisplayObjectService implements DisplayObjectServic
     );
 
     const template = finalCustomTemplate.concat(finalNotConsumedTemplate).concat(finalOtherMetadataTemplate);
-
-    this.logger.log(
-      this,
-      'computeDisplayObject',
-      { internalOntologyTemplate, externalOntologyTemplate },
-      {
-        ontologyTemplate,
-        finalOntologyTemplate,
-        finalCustomTemplate,
-        finalOtherMetadataTemplate,
-        finalNotConsumedRulesByCustomTemplate,
-        finalNotConsumedRulesByOtherMetadataTemplate,
-        finalNotConsumedTemplate,
-      }
-    );
-
     const displayObject = this.displayObjectHelper.templateDrivenDisplayObject(this.data.value, template, this.configuration);
 
-    this.logger.log(this, 'computeDisplayObject', {
-      displayObject,
-    });
-
-    this.hideUnconcernedNodes(ontologies, displayObject);
+    this.fillDisplayObjectLabelsWithSchemaShortNames(displayObject, schema);
+    this.hideInconsistentDisplayObjects(displayObject);
+    this.hideSchemaCategoryDisplayObjects(displayObject, schema, ['MANAGEMENT', 'OTHER']);
 
     return displayObject;
   }
 
-  private ontologyByPathFilter =
-    (path: string) =>
-    (ontology: ExtendedOntology): boolean => {
-      const backendPath = ontology.path;
-      const frontendPath = this.componentMapperService.getOntologyFrontendModelPath(ontology);
+  private hideInconsistentDisplayObjects(displayObject: DisplayObject): void {
+    const isConsistent = this.typeService.isConsistent(displayObject.value);
 
-      return [backendPath, frontendPath].includes(path);
-    };
-
-  private hideUnconcernedNodes(ontologies: ExtendedOntology[], displayObject: DisplayObject): void {
-    const { displayRule, value } = displayObject;
-    const { path, ui } = displayRule;
-    const ontology = ontologies.find(this.ontologyByPathFilter(path));
-    const belongsToOntologies = Boolean(ontology);
-    const isConsistent = this.typeService.isConsistent(value);
-    const isVirtual = displayRule.path === null;
-    const belongsToTemplate = this.template.value.some((rule) => rule.ui.path === path);
-    const shouldDisplay = isConsistent && (belongsToOntologies || isVirtual || belongsToTemplate);
-
-    displayObject.displayRule = { ...displayRule, ui: { ...ui, display: shouldDisplay } };
-
-    if (displayObject.children) {
-      displayObject.children.forEach((child) => this.hideUnconcernedNodes(ontologies, child));
+    if (isConsistent) {
+      return displayObject.children.forEach((child) => this.hideInconsistentDisplayObjects(child));
     }
+
+    displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, display: false } };
+  }
+
+  private hideSchemaCategoryDisplayObjects(displayObject: DisplayObject, schema: Schema, categories: string[]): void {
+    const dataPath = displayObject.displayRule.Path;
+    const schemaPath = this.displayRuleHelper.convertDataPathToSchemaPath(dataPath);
+    const schemaElement = schema.find((se) => se.ApiPath === schemaPath);
+
+    if (Boolean(schemaElement) && categories.includes(schemaElement.Category)) {
+      displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, display: false } };
+    }
+
+    displayObject.children.forEach((child) => this.hideSchemaCategoryDisplayObjects(child, schema, categories));
+  }
+
+  private fillDisplayObjectLabelsWithSchemaShortNames(displayObject: DisplayObject, schema: Schema) {
+    const dataPath = displayObject.displayRule.Path;
+    const schemaPath = this.displayRuleHelper.convertDataPathToSchemaPath(dataPath);
+    const schemaElement = schema.find((se) => se.ApiPath === schemaPath);
+
+    if (Boolean(schemaElement)) {
+      displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, label: schemaElement.ShortName } };
+    }
+    displayObject.children.forEach((child) => this.fillDisplayObjectLabelsWithSchemaShortNames(child, schema));
   }
 
   private getDefaultTemplate(data: any): DisplayRule[] {
@@ -245,11 +230,11 @@ export class OntologyStrategyDisplayObjectService implements DisplayObjectServic
     return this.displayObjectHelper.extractDisplayRules(defaultDisplayObject);
   }
 
-  private getOtherMetadataTemplate(ontologies: ExtendedOntology[], origin = this.OriginExternal): DisplayRule[] {
+  private getOtherMetadataTemplate(schema: SchemaElement[], origin = this.OriginExternal): DisplayRule[] {
     const otherMetadataDisplayRule: DisplayRule = {
-      path: null,
+      Path: null,
       ui: {
-        path: this.PathOtherMetadata,
+        Path: this.PathOtherMetadata,
         component: 'group',
         open: false,
         display: true,
@@ -259,16 +244,14 @@ export class OntologyStrategyDisplayObjectService implements DisplayObjectServic
         },
       },
     };
-    const externalOntologyMovedInOtherMetadataTemplate = this.componentMapperService
-      .mapOntologiesToDisplayRules(ontologies)
-      .map((displayRule) => ({
-        ...displayRule,
-        ui: {
-          ...displayRule.ui,
-          path: `${this.PathOtherMetadata}.${displayRule.ui.path}`,
-        },
-      }));
+    const externalSchemaMovedInOtherMetadataTemplate = this.componentMapperService.mapSchemaToDisplayRules(schema).map((displayRule) => ({
+      ...displayRule,
+      ui: {
+        ...displayRule.ui,
+        path: `${this.PathOtherMetadata}.${displayRule.ui.Path}`,
+      },
+    }));
 
-    return [otherMetadataDisplayRule].concat(externalOntologyMovedInOtherMetadataTemplate);
+    return [otherMetadataDisplayRule].concat(externalSchemaMovedInOtherMetadataTemplate);
   }
 }

@@ -8,7 +8,7 @@
               class="vitamui-icon icon"
               [ngClass]="{ 'vitamui-icon-chevron-down': displayObject.open, 'vitamui-icon-chevron-right': !displayObject.open }"
             ></i>
-            <span class="object-name">{{ displayObject.path | translate }}</span>
+            <span class="object-name">{{ displayObject.displayRule.ui.label | empty }}</span>
           </div>
         </div>
       </div>
@@ -24,13 +24,13 @@
   </div>
 </ng-container>
 
-<vitamui-common-primitive
-  *ngIf="isPrimitiveList && displayObject.children.length === 1"
-  [displayObject]="displayObject.children[0]"
-></vitamui-common-primitive>
+<div *ngIf="isPrimitiveList && displayObject.children.length === 1" class="field">
+  <label>{{ displayObject.displayRule.ui.label | empty }}</label>
+  <div>{{ displayObject.children[0].value | empty }}</div>
+</div>
 
 <div *ngIf="isPrimitiveList && displayObject.children.length > 1" class="field">
-  <label>{{ displayObject.path | translate }}</label>
+  <label>{{ displayObject.displayRule.ui.label | empty }}</label>
   <ul>
     <li *ngFor="let item of displayObject.children">{{ item.value }}</li>
   </ul>

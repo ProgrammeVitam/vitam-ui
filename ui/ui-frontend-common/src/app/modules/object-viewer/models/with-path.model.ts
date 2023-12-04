@@ -35,5 +35,5 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export interface WithPath {
-  readonly path: string;
+  readonly Path: string;
 }

@@ -51,8 +51,8 @@ import { DisplayObjectHelperService } from './services/display-object-helper.ser
 import { DisplayRuleHelperService } from './services/display-rule-helper.service';
 import { FavoriteEntryService } from './services/favorite-entry.service';
 import { LayoutService } from './services/layout.service';
-import { OntologyToDisplayRuleMapper } from './services/ontology-to-display-rule.mapper';
 import { PathStrategyDisplayObjectService } from './services/path-strategy-display-object.service';
+import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
 import { TypeService } from './services/type.service';
 
 @NgModule({
@@ -64,7 +64,7 @@ import { TypeService } from './services/type.service';
     TypeService,
     DisplayObjectHelperService,
     DisplayRuleHelperService,
-    OntologyToDisplayRuleMapper,
+    SchemaElementToDisplayRuleService,
     LayoutService,
     FavoriteEntryService,
     { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },

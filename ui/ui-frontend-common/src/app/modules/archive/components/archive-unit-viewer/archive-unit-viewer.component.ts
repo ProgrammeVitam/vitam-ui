@@ -1,25 +1,20 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DisplayObjectService, DisplayRule } from '../../../object-viewer/models';
-import { OntologyStrategyDisplayObjectService } from '../../../object-viewer/services/ontology-strategy-display-object.service';
-import { OntologyService } from '../../../ontology';
-import { ArchiveUnitSchemaService } from './archive-unit-schema-service';
+import { SchemaStrategyDisplayObjectService } from '../../../object-viewer/services/schema-strategy-display-object.service';
 
 @Component({
   selector: 'vitamui-common-archive-unit-viewer',
   templateUrl: './archive-unit-viewer.component.html',
   styleUrls: ['./archive-unit-viewer.component.scss'],
-  providers: [
-    { provide: DisplayObjectService, useClass: OntologyStrategyDisplayObjectService },
-    { provide: OntologyService, useClass: ArchiveUnitSchemaService },
-  ],
+  providers: [{ provide: DisplayObjectService, useClass: SchemaStrategyDisplayObjectService }],
 })
 export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
   @Input() data!: any;
   @Input() template: DisplayRule[] = [
     {
-      path: '',
+      Path: '',
       ui: {
-        path: '',
+        Path: '',
         component: 'group',
         open: true,
         display: true,
@@ -30,9 +25,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: '#originating_agency',
+      Path: '#originating_agency',
       ui: {
-        path: '#originating_agency',
+        Path: '#originating_agency',
         component: 'textfield',
         open: true,
         display: true,
@@ -40,37 +35,40 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
           columns: 2,
           size: 'small',
         },
+        label: 'Service producteur',
       },
     },
     {
-      path: '#originating_agencies',
+      Path: '#originating_agencies',
       ui: {
-        path: '#originating_agencies',
-        component: 'textfield',
+        Path: '#originating_agencies',
+        component: 'group',
         open: true,
         display: true,
         layout: {
           columns: 2,
           size: 'small',
         },
+        label: 'Services producteurs liés à l’unité archivistique',
       },
     },
     {
-      path: null,
+      Path: null,
       ui: {
-        path: 'Generalities',
+        Path: 'Generalities',
         component: 'group',
         open: true,
         layout: {
           columns: 2,
           size: 'medium',
         },
+        label: 'Généralités',
       },
     },
     {
-      path: 'DescriptionLevel',
+      Path: 'DescriptionLevel',
       ui: {
-        path: 'Generalities.DescriptionLevel',
+        Path: 'Generalities.DescriptionLevel',
         component: 'select',
         layout: {
           columns: 1,
@@ -79,9 +77,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'Title',
+      Path: 'Title',
       ui: {
-        path: 'Generalities.Title',
+        Path: 'Generalities.Title',
         component: 'textfield',
         layout: {
           columns: 2,
@@ -90,9 +88,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'Title_',
+      Path: 'Title_',
       ui: {
-        path: 'Generalities.Title_',
+        Path: 'Generalities.Title_',
         component: 'select+textfield',
         layout: {
           columns: 2,
@@ -101,9 +99,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'Description',
+      Path: 'Description',
       ui: {
-        path: 'Generalities.Description',
+        Path: 'Generalities.Description',
         component: 'textarea',
         layout: {
           columns: 2,
@@ -112,9 +110,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'Description_.*',
+      Path: 'Description_.*',
       ui: {
-        path: 'Generalities.Description_.*',
+        Path: 'Generalities.Description_.*',
         component: 'select+textarea',
         layout: {
           columns: 2,
@@ -123,9 +121,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'Tag',
+      Path: 'Tag',
       ui: {
-        path: 'Generalities.Tag',
+        Path: 'Generalities.Tag',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -134,21 +132,22 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: null,
+      Path: null,
       ui: {
-        path: 'Generalities.Dates',
+        Path: 'Generalities.Dates',
         component: 'group',
         open: false,
         layout: {
           columns: 2,
           size: 'medium',
         },
+        label: 'Date(s)',
       },
     },
     {
-      path: 'StartDate',
+      Path: 'StartDate',
       ui: {
-        path: 'Generalities.Dates.StartDate',
+        Path: 'Generalities.Dates.StartDate',
         component: 'datepicker',
         layout: {
           columns: 1,
@@ -157,9 +156,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'EndDate',
+      Path: 'EndDate',
       ui: {
-        path: 'Generalities.Dates.EndDate',
+        Path: 'Generalities.Dates.EndDate',
         component: 'datepicker',
         layout: {
           columns: 1,
@@ -168,9 +167,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'CreatedDate',
+      Path: 'CreatedDate',
       ui: {
-        path: 'Generalities.Dates.CreatedDate',
+        Path: 'Generalities.Dates.CreatedDate',
         component: 'datepicker',
         layout: {
           columns: 1,
@@ -179,9 +178,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'TransactedDate',
+      Path: 'TransactedDate',
       ui: {
-        path: 'Generalities.Dates.TransactedDate',
+        Path: 'Generalities.Dates.TransactedDate',
         component: 'datepicker',
         layout: {
           columns: 1,
@@ -190,9 +189,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'SentDate',
+      Path: 'SentDate',
       ui: {
-        path: 'Generalities.Dates.SentDate',
+        Path: 'Generalities.Dates.SentDate',
         component: 'datepicker',
         layout: {
           columns: 1,
@@ -201,9 +200,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'ReceivedDate',
+      Path: 'ReceivedDate',
       ui: {
-        path: 'Generalities.Dates.ReceivedDate',
+        Path: 'Generalities.Dates.ReceivedDate',
         component: 'datepicker',
         layout: {
           columns: 1,
@@ -212,9 +211,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'RegisteredDate',
+      Path: 'RegisteredDate',
       ui: {
-        path: 'Generalities.Dates.RegisteredDate',
+        Path: 'Generalities.Dates.RegisteredDate',
         component: 'datepicker',
         layout: {
           columns: 1,
@@ -223,9 +222,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'AcquiredDate',
+      Path: 'AcquiredDate',
       ui: {
-        path: 'Generalities.Dates.AcquiredDate',
+        Path: 'Generalities.Dates.AcquiredDate',
         component: 'datepicker',
         layout: {
           columns: 1,
@@ -234,9 +233,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'DateLitteral',
+      Path: 'DateLitteral',
       ui: {
-        path: 'Generalities.Dates.DateLitteral',
+        Path: 'Generalities.Dates.DateLitteral',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -245,21 +244,22 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: null,
+      Path: null,
       ui: {
-        path: 'Generalities.Identifiers',
+        Path: 'Generalities.Identifiers',
         component: 'group',
         open: false,
         layout: {
           columns: 2,
           size: 'medium',
         },
+        label: 'Identifiant(s)',
       },
     },
     {
-      path: 'SystemId',
+      Path: 'SystemId',
       ui: {
-        path: 'Generalities.Identifiers.SystemId',
+        Path: 'Generalities.Identifiers.SystemId',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -268,9 +268,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'OriginatingSystemId',
+      Path: 'OriginatingSystemId',
       ui: {
-        path: 'Generalities.Identifiers.OriginatingSystemId',
+        Path: 'Generalities.Identifiers.OriginatingSystemId',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -279,9 +279,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'OriginatingAgencyArchiveUnitIdentifier',
+      Path: 'OriginatingAgencyArchiveUnitIdentifier',
       ui: {
-        path: 'Generalities.Identifiers.OriginatingAgencyArchiveUnitIdentifier',
+        Path: 'Generalities.Identifiers.OriginatingAgencyArchiveUnitIdentifier',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -290,9 +290,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'TransferringAgencyArchiveUnitIdentifier',
+      Path: 'TransferringAgencyArchiveUnitIdentifier',
       ui: {
-        path: 'Generalities.Identifiers.TransferringAgencyArchiveUnitIdentifier',
+        Path: 'Generalities.Identifiers.TransferringAgencyArchiveUnitIdentifier',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -301,9 +301,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'ArchivalAgencyArchiveUnitIdentifier',
+      Path: 'ArchivalAgencyArchiveUnitIdentifier',
       ui: {
-        path: 'Generalities.Identifiers.ArchivalAgencyArchiveUnitIdentifier',
+        Path: 'Generalities.Identifiers.ArchivalAgencyArchiveUnitIdentifier',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -312,9 +312,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'FilePlanPosition',
+      Path: 'FilePlanPosition',
       ui: {
-        path: 'Generalities.Identifiers.FilePlanPosition',
+        Path: 'Generalities.Identifiers.FilePlanPosition',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -323,21 +323,22 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: null,
+      Path: null,
       ui: {
-        path: 'Generalities.Characteristics',
+        Path: 'Generalities.Characteristics',
         component: 'group',
         open: false,
         layout: {
           columns: 2,
           size: 'medium',
         },
+        label: 'Caractéristique(s)',
       },
     },
     {
-      path: 'Type',
+      Path: 'Type',
       ui: {
-        path: 'Generalities.Characteristics.Type',
+        Path: 'Generalities.Characteristics.Type',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -346,9 +347,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'DocumentType',
+      Path: 'DocumentType',
       ui: {
-        path: 'Generalities.Characteristics.DocumentType',
+        Path: 'Generalities.Characteristics.DocumentType',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -357,9 +358,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'Language',
+      Path: 'Language',
       ui: {
-        path: 'Generalities.Characteristics.Language',
+        Path: 'Generalities.Characteristics.Language',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -368,9 +369,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'DescriptionLanguage',
+      Path: 'DescriptionLanguage',
       ui: {
-        path: 'Generalities.Characteristics.DescriptionLanguage',
+        Path: 'Generalities.Characteristics.DescriptionLanguage',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -379,9 +380,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'Status',
+      Path: 'Status',
       ui: {
-        path: 'Generalities.Characteristics.Status',
+        Path: 'Generalities.Characteristics.Status',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -390,9 +391,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'Source',
+      Path: 'Source',
       ui: {
-        path: 'Generalities.Characteristics.Source',
+        Path: 'Generalities.Characteristics.Source',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -401,9 +402,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'Version',
+      Path: 'Version',
       ui: {
-        path: 'Generalities.Characteristics.Version',
+        Path: 'Generalities.Characteristics.Version',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -412,9 +413,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'OriginatingSystemIdReplyTo',
+      Path: 'OriginatingSystemIdReplyTo',
       ui: {
-        path: 'Generalities.Characteristics.OriginatingSystemIdReplyTo',
+        Path: 'Generalities.Characteristics.OriginatingSystemIdReplyTo',
         component: 'textfield',
         layout: {
           columns: 1,
@@ -423,9 +424,9 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
       },
     },
     {
-      path: 'TextContent',
+      Path: 'TextContent',
       ui: {
-        path: 'Generalities.Characteristics.TextContent',
+        Path: 'Generalities.Characteristics.TextContent',
         component: 'textfield',
         layout: {
           columns: 2,

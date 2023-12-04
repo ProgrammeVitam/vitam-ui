@@ -53,7 +53,7 @@ export class DisplayObjectHelperService {
 
   public getComponentType(data: any, template: DisplayRule[] = [], path: string = ''): ComponentType {
     const type: DisplayObjectType = this.typeService.dataType(data);
-    const componentFromTemplate = template.find((displayRule) => displayRule?.ui?.path === path)?.ui?.component;
+    const componentFromTemplate = template.find((displayRule) => displayRule?.ui?.Path === path)?.ui?.component;
     const componentFromType = ((displayObjectType: DisplayObjectType): ComponentType =>
       displayObjectType === DisplayObjectType.GROUP ? 'group' : 'textfield')(type);
 
@@ -61,7 +61,7 @@ export class DisplayObjectHelperService {
   }
 
   public getFavoriteKeys(path: string, template: DisplayRule[] = []): string[] {
-    const displayRule = template.find((rule) => rule?.ui?.path === path);
+    const displayRule = template.find((rule) => rule?.ui?.Path === path);
 
     return displayRule?.ui?.favoriteKeys || [];
   }
@@ -73,7 +73,7 @@ export class DisplayObjectHelperService {
     configuration = { displayEmptyValues: true }
   ): DisplayObject {
     const defaultDisplayRule = this.displayRuleHelperService.toDisplayRule(data, path, configuration);
-    const templateDisplayRule = template.find((rule) => rule?.ui?.path === path);
+    const templateDisplayRule = template.find((rule) => rule?.ui?.Path === path);
     const displayRule: DisplayRule = this.dataStructureService.deepMerge(defaultDisplayRule, templateDisplayRule);
 
     let children = [];
@@ -112,7 +112,7 @@ export class DisplayObjectHelperService {
 
     const mappings = template.map((displayRule) => this.mapValueToUiPath(data, displayRule));
     const consistentMappings = mappings.filter((value) => configuration.displayEmptyValues || this.typeService.hasDefined(value));
-    const flatTemplatedData = consistentMappings.reduce(this.dataStructureService.deepMerge, {});
+    const flatTemplatedData = consistentMappings.reduce((acc, cur) => this.dataStructureService.deepMerge(acc, cur), {});
     const nestedTemplatedData = this.dataStructureService.unflatten(flatTemplatedData);
     const templatedDisplayObject = this.toDisplayObject(nestedTemplatedData, template, '', configuration);
 
@@ -152,8 +152,8 @@ export class DisplayObjectHelperService {
   }
 
   private mapValueToUiPath(data: any, displayRule: DisplayRule) {
-    const key = displayRule.ui.path;
-    const value = displayRule.path ? this.dataStructureService.deepValue(data, displayRule.path) : undefined;
+    const key = displayRule.ui.Path;
+    const value = displayRule.Path ? this.dataStructureService.deepValue(data, displayRule.Path) : undefined;
 
     return { [key]: value };
   }

@@ -3,39 +3,39 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { BASE_URL } from '../../injection-tokens';
 import { LoggerModule } from '../../logger/logger.module';
-import { OntologyService } from '../../ontology';
+import { SchemaService } from '../../schema';
 import { DisplayObject, DisplayRule } from '../models';
 import { DisplayObjectType } from '../types';
 import { DataStructureService } from './data-structure.service';
 import { DisplayObjectHelperService } from './display-object-helper.service';
 import { DisplayRuleHelperService } from './display-rule-helper.service';
-import { MockExtendedOntologyService } from './mock-extended-ontology.service';
-import { OntologyStrategyDisplayObjectService } from './ontology-strategy-display-object.service';
-import { OntologyToDisplayRuleMapper } from './ontology-to-display-rule.mapper';
+import { MockSchemaService } from './mock-schema.service';
+import { SchemaElementToDisplayRuleService } from './schema-element-to-display-rule.service';
+import { SchemaStrategyDisplayObjectService } from './schema-strategy-display-object.service';
 import { TypeService } from './type.service';
 
-describe('OntologyStrategyDisplayObjectService', () => {
+describe('SchemaStrategyDisplayObjectService', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
-  let service: OntologyStrategyDisplayObjectService;
+  let service: SchemaStrategyDisplayObjectService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, LoggerModule.forRoot()],
       providers: [
-        OntologyStrategyDisplayObjectService,
+        SchemaStrategyDisplayObjectService,
         TypeService,
         DataStructureService,
         DisplayObjectHelperService,
         DisplayRuleHelperService,
-        OntologyToDisplayRuleMapper,
+        SchemaElementToDisplayRuleService,
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: OntologyService, useClass: MockExtendedOntologyService },
+        { provide: SchemaService, useClass: MockSchemaService },
       ],
     });
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(OntologyStrategyDisplayObjectService);
+    service = TestBed.inject(SchemaStrategyDisplayObjectService);
   });
 
   describe('Observable initialization', () => {
@@ -47,14 +47,12 @@ describe('OntologyStrategyDisplayObjectService', () => {
   });
 
   describe('Default mode', () => {
-    it('should update data and compute display object when data is an ontology', (done) => {
+    it('should update data and compute display object when data is a schema element', (done) => {
       const data = { Title: 'La ville de Paris' };
 
       service.setData(data);
 
       service.displayObject$.subscribe((displayObject: DisplayObject) => {
-        console.log('displayObject', displayObject);
-
         expect(displayObject).toBeTruthy();
         expect(displayObject.children).toBeTruthy();
         expect(displayObject.children.length).toEqual(1);
@@ -67,14 +65,12 @@ describe('OntologyStrategyDisplayObjectService', () => {
       });
     });
 
-    it('should update data and compute display object when data is not an ontology', (done) => {
+    it('should update data and compute display object when data is not a schema element', (done) => {
       const data = { notOntologicKey: 'La ville de Paris' };
 
       service.setData(data);
 
       service.displayObject$.subscribe((displayObject: DisplayObject) => {
-        console.log('displayObject', displayObject);
-
         expect(displayObject).toBeTruthy();
         expect(displayObject.children).toBeTruthy();
         expect(displayObject.children.length).toEqual(1);
@@ -87,15 +83,15 @@ describe('OntologyStrategyDisplayObjectService', () => {
       });
     });
 
-    it('should display ontology nodes and not others', (done) => {
+    it('should display schema element nodes and not others', (done) => {
       const inputs: { data: any; template: DisplayRule[]; expected: DisplayObject }[] = [
         {
           data: { id: '1', Title: 'core', tags: ['low', 'medium', 'high'] },
           template: [
             {
-              path: '',
+              Path: '',
               ui: {
-                path: '',
+                Path: '',
                 component: 'group',
                 layout: {
                   columns: 2,
@@ -124,9 +120,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: 'id',
+                  Path: 'id',
                   ui: {
-                    path: 'id',
+                    Path: 'id',
                     component: 'textfield',
                     layout: {
                       columns: 2,
@@ -147,9 +143,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: 'Title',
+                  Path: 'Title',
                   ui: {
-                    path: 'Title',
+                    Path: 'Title',
                     component: 'textfield',
                     layout: {
                       columns: 2,
@@ -177,9 +173,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'tags[0]',
+                      Path: 'tags[0]',
                       ui: {
-                        path: 'tags[0]',
+                        Path: 'tags[0]',
                         component: 'textfield',
                         layout: {
                           columns: 2,
@@ -200,9 +196,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'tags[0]',
+                      Path: 'tags[0]',
                       ui: {
-                        path: 'tags[0]',
+                        Path: 'tags[0]',
                         component: 'textfield',
                         layout: {
                           columns: 2,
@@ -223,9 +219,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'tags[0]',
+                      Path: 'tags[0]',
                       ui: {
-                        path: 'tags[0]',
+                        Path: 'tags[0]',
                         component: 'textfield',
                         layout: {
                           columns: 2,
@@ -240,9 +236,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: 'tags',
+                  Path: 'tags',
                   ui: {
-                    path: 'tags',
+                    Path: 'tags',
                     component: 'group',
                     layout: {
                       columns: 2,
@@ -257,9 +253,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
             favoriteKeys: ['Title'],
             open: true,
             displayRule: {
-              path: '',
+              Path: '',
               ui: {
-                path: '',
+                Path: '',
                 component: 'group',
                 layout: {
                   columns: 2,
@@ -292,38 +288,39 @@ describe('OntologyStrategyDisplayObjectService', () => {
         await expect(displayObject.children.length).toEqual(3);
         await expect(displayObject.children[0]).toBeTruthy();
         await expect(displayObject.children[0].path).toEqual('id');
-        await expect(displayObject.children[0].displayRule.ui.display).toEqual(false);
+        await expect(displayObject.children[0].displayRule.ui.display).toEqual(true);
         await expect(displayObject.children[1]).toBeTruthy();
+        // Title display value depends on mocked values need to be DESCRIPTIVE category.
         await expect(displayObject.children[1].path).toEqual('Title');
-        await expect(displayObject.children[1].displayRule.ui.display).toEqual(true);
+        await expect(displayObject.children[1].displayRule.ui.display).toEqual(false);
         await expect(displayObject.children[2]).toBeTruthy();
         await expect(displayObject.children[2].path).toEqual('tags');
-        await expect(displayObject.children[2].displayRule.ui.display).toEqual(false);
+        await expect(displayObject.children[2].displayRule.ui.display).toEqual(true);
         await expect(displayObject.children[2].children).toBeTruthy();
         await expect(displayObject.children[2].children.length).toEqual(3);
         await expect(displayObject.children[2].children[0].path).toEqual('tags[0]');
         await expect(displayObject.children[2].children[0].value).toEqual('low');
-        await expect(displayObject.children[2].children[0].displayRule.ui.display).toEqual(false);
+        await expect(displayObject.children[2].children[0].displayRule.ui.display).toEqual(true);
         await expect(displayObject.children[2].children[1].path).toEqual('tags[1]');
         await expect(displayObject.children[2].children[1].value).toEqual('medium');
-        await expect(displayObject.children[2].children[1].displayRule.ui.display).toEqual(false);
+        await expect(displayObject.children[2].children[1].displayRule.ui.display).toEqual(true);
         await expect(displayObject.children[2].children[2].path).toEqual('tags[2]');
         await expect(displayObject.children[2].children[2].value).toEqual('high');
-        await expect(displayObject.children[2].children[2].displayRule.ui.display).toEqual(false);
+        await expect(displayObject.children[2].children[2].displayRule.ui.display).toEqual(true);
 
         done();
       });
     });
 
-    it('should only map data known as ontology or custom template to display object', (done) => {
+    it('should only map data known as schema element or custom template to display object', (done) => {
       const inputs: { data: any; template: DisplayRule[]; expected: DisplayObject }[] = [
         {
           data: { id: '1', Title: 'core', Tag: ['low', 'medium', 'high'] },
           template: [
             {
-              path: '',
+              Path: '',
               ui: {
-                path: '',
+                Path: '',
                 component: 'group',
                 layout: {
                   columns: 2,
@@ -333,17 +330,17 @@ describe('OntologyStrategyDisplayObjectService', () => {
               },
             },
             {
-              path: null,
+              Path: null,
               ui: {
-                path: 'Generalities',
+                Path: 'Generalities',
                 component: 'group',
                 favoriteKeys: [],
               },
             },
             {
-              path: 'Title',
+              Path: 'Title',
               ui: {
-                path: 'Generalities.Title',
+                Path: 'Generalities.Title',
                 component: 'textfield',
               },
             },
@@ -379,9 +376,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'Title',
+                      Path: 'Title',
                       ui: {
-                        path: 'Generalities.Title',
+                        Path: 'Generalities.Title',
                         component: 'textfield',
                         layout: {
                           columns: 1,
@@ -396,9 +393,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: null,
+                  Path: null,
                   ui: {
-                    path: 'Generalities',
+                    Path: 'Generalities',
                     component: 'group',
                     favoriteKeys: [],
                     layout: {
@@ -427,9 +424,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'Tag[0]',
+                      Path: 'Tag[0]',
                       ui: {
-                        path: 'Tag[0]',
+                        Path: 'Tag[0]',
                         component: 'textfield',
                         layout: {
                           columns: 1,
@@ -450,9 +447,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'Tag[1]',
+                      Path: 'Tag[1]',
                       ui: {
-                        path: 'Tag[1]',
+                        Path: 'Tag[1]',
                         component: 'textfield',
                         layout: {
                           columns: 1,
@@ -473,9 +470,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                     favoriteKeys: [],
                     open: true,
                     displayRule: {
-                      path: 'Tag[2]',
+                      Path: 'Tag[2]',
                       ui: {
-                        path: 'Tag[2]',
+                        Path: 'Tag[2]',
                         component: 'textfield',
                         layout: {
                           columns: 1,
@@ -490,9 +487,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
                 favoriteKeys: [],
                 open: true,
                 displayRule: {
-                  path: 'Tag',
+                  Path: 'Tag',
                   ui: {
-                    path: 'Tag',
+                    Path: 'Tag',
                     component: 'group',
                     layout: {
                       columns: 2,
@@ -507,9 +504,9 @@ describe('OntologyStrategyDisplayObjectService', () => {
             favoriteKeys: ['Title'],
             open: true,
             displayRule: {
-              path: '',
+              Path: '',
               ui: {
-                path: '',
+                Path: '',
                 component: 'group',
                 layout: {
                   columns: 2,
@@ -537,7 +534,6 @@ describe('OntologyStrategyDisplayObjectService', () => {
       service.setTemplate(template);
       service.setData(data);
       service.displayObject$.subscribe(async (displayObject) => {
-        console.log({ displayObject });
         await expect(displayObject).toBeTruthy();
         await expect(displayObject.favoriteKeys).toBeTruthy();
         await expect(displayObject.favoriteKeys.length).toEqual(1);
