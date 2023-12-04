@@ -10,20 +10,28 @@
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
-  <mat-tab-group class="preview-tab-group">
+  <mat-tab-group class="preview-tab-group" #tabs>
     <mat-tab label="{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATIONS' | translate }}">
       <app-management-contract-information-tab
         [inputManagementContract]="inputManagementContract"
         (updated)="updatedChange($event, 0)"
+        #informationTab
       ></app-management-contract-information-tab>
     </mat-tab>
     <mat-tab label="{{ 'CONTRACT_MANAGEMENT.PREVIEW.STORAGE' | translate }}">
       <app-management-contract-storage-tab
         [inputManagementContract]="inputManagementContract"
-        (updated)="updatedChange($event, 0)"
+        (updated)="updatedChange($event, 1)"
+        #storageTab
       ></app-management-contract-storage-tab>
     </mat-tab>
-
+    <mat-tab label="{{ 'CONTRACT_MANAGEMENT.PREVIEW.IDENTIFICATION' | translate }}">
+      <app-management-contract-identification-tab
+        [managementContract]="inputManagementContract"
+        (updated)="updatedChange($event, 2)"
+        #identificationTab
+      ></app-management-contract-identification-tab>
+    </mat-tab>
     <mat-tab label="{{ 'CONTRACT_MANAGEMENT.PREVIEW.HISTORY' | translate }}">
       <vitamui-common-operation-history-tab
         [id]="inputManagementContract?.id"

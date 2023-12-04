@@ -28,11 +28,13 @@
  */
 package fr.gouv.vitamui.referential.internal.server.managementcontract.converter;
 
+import fr.gouv.vitam.common.model.administration.PersistentIdentifierUsage;
 import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.ManagementContractModelDto;
 import fr.gouv.vitamui.commons.api.domain.PersistentIdentifierPolicyDto;
 import fr.gouv.vitamui.commons.api.domain.PersistentIdentifierPolicyMgtContractDto;
 import fr.gouv.vitamui.commons.api.domain.PersistentIdentifierUsageDto;
+import fr.gouv.vitamui.commons.api.domain.PersistentIdentifierUsageMgtContractDto;
 import fr.gouv.vitamui.commons.api.domain.StorageDetailDto;
 import fr.gouv.vitamui.commons.api.domain.StorageManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.VersionRetentionPolicyDto;
@@ -152,6 +154,40 @@ public class ManagementContractConverter {
             versionRetentionPolicyMgtContractDto.setUsages(versionUsageMgtContractDtoSet);
             managementContractDto.setVersionRetentionPolicy(versionRetentionPolicyMgtContractDto);
         }
+
+        if (managementContractVitamDto.getPersistentIdentifierPolicyList() == null) {
+            return managementContractDto;
+        }
+
+        managementContractDto.setPersistentIdentifierPolicyList(
+            managementContractVitamDto.getPersistentIdentifierPolicyList().stream().map(persistentIdentifierPolicyVitamDto -> {
+                PersistentIdentifierPolicyMgtContractDto persistentIdentifierPolicyMgtContractDto = new PersistentIdentifierPolicyMgtContractDto();
+
+                persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierPolicyType(
+                    persistentIdentifierPolicyVitamDto.getPersistentIdentifierPolicyType());
+                persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierUnit(
+                    persistentIdentifierPolicyVitamDto.getPersistentIdentifierUnit());
+                persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierAuthority(
+                    persistentIdentifierPolicyVitamDto.getPersistentIdentifierAuthority());
+
+                if (persistentIdentifierPolicyVitamDto.getPersistentIdentifierUsages() != null) {
+
+                    List<PersistentIdentifierUsageMgtContractDto> persistentIdentifierUsages =
+                        persistentIdentifierPolicyVitamDto.getPersistentIdentifierUsages().stream()
+                            .map(usageMgtContractDto -> {
+                                PersistentIdentifierUsageMgtContractDto usageDto = new PersistentIdentifierUsageMgtContractDto();
+                                usageDto.setUsageName(usageMgtContractDto.getUsageName());
+                                usageDto.setInitialVersion(usageMgtContractDto.getInitialVersion());
+                                usageDto.setIntermediaryVersion(usageMgtContractDto.getIntermediaryVersion());
+                                return usageDto;
+                            }).collect(Collectors.toList());
+
+                    persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierUsages(persistentIdentifierUsages);
+                }
+                return persistentIdentifierPolicyMgtContractDto;
+            }).collect(Collectors.toList())
+        );
+
         return managementContractDto;
     }
 

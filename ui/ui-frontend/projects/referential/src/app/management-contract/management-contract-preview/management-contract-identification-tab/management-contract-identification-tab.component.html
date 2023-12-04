@@ -1,0 +1,30 @@
+<form [formGroup]="contractForm" (ngSubmit)="submit()">
+  <div formArrayName="persistentIdentifiers">
+    <div *ngFor="let persistentIdentifier of getPersistentIdentifiers().controls">
+      <app-persistent-identifier-form
+        [form]="persistentIdentifier"
+        (objectUsagePolicyAdded)="contractForm.markAsDirty()"
+        (objectUsagePolicyRemoved)="contractForm.markAsDirty()"
+      ></app-persistent-identifier-form>
+    </div>
+  </div>
+  <mat-error *ngFor="let error of contractForm.errors">
+    {{ error }}
+  </mat-error>
+  <div class="row">
+    <div *ngIf="!sending" class="col">
+      <button
+        type="submit"
+        class="btn secondary mt-3 mb-3"
+        matTooltip="{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.SAVE' | translate }}"
+        matTooltipClass="vitamui-tooltip"
+        [disabled]="isSubmitButtonDisabled()"
+      >
+        {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.SAVE' | translate }}
+      </button>
+    </div>
+    <div *ngIf="sending" class="col d-flex justify-content-center">
+      <mat-spinner class="vitamui-spinner medium mt-3 mb-3"></mat-spinner>
+    </div>
+  </div>
+</form>

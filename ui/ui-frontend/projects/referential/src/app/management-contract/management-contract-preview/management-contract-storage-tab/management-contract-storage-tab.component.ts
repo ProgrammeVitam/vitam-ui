@@ -27,9 +27,9 @@
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, ManagementContract, StorageStrategy } from 'ui-frontend-common';
+import { ManagementContract, StorageStrategy, diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { ManagementContractService } from '../../management-contract.service';
 
@@ -69,7 +69,7 @@ export class ManagementContractStorageTabComponent implements OnInit, OnDestroy 
 
     this._inputManagementContract = managementContract;
 
-    this.resetForm(this.inputManagementContract.storage);
+    this.resetForm(this.inputManagementContract);
     this.updated.emit(false);
   }
 
@@ -129,8 +129,8 @@ export class ManagementContractStorageTabComponent implements OnInit, OnDestroy 
     );
   }
 
-  resetForm(storageStrategy: StorageStrategy) {
-    this.form.reset(storageStrategy, { emitEvent: false });
+  resetForm(managementContract: ManagementContract) {
+    this.form.reset(managementContract.storage, { emitEvent: false });
   }
 
   ngOnDestroy() {

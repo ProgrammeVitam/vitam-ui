@@ -60,6 +60,7 @@
     "PREVIEW": {
       "INFORMATIONS": "Informations",
       "STORAGE": "Stockage",
+      "IDENTIFICATION": "Identification",
       "HISTORY": "Historique",
       "INFORMATION": {
         "NAME": "Nom du contrat",
@@ -75,6 +76,55 @@
         "UNIT_STRATEGY": "Unité d’archives",
         "OBJECT_GROUP_STRATEGY": "Groupes d’objets techniques",
         "OBJECT_STRATEGY": "Fichiers numériques"
+      }
+    },
+    "FORM_UPDATE": {
+      "TITLE": "Paramétrage d'identification pérenne",
+      "IDENTIFIER_TYPE": "Type d'identifiant",
+      "CHOOSE_IDENTIFIER_TYPE": "Choisissez un type d'identifiant",
+      "NAMING_AUTORITY": "Autorité nommante",
+      "ERROR_MESSAGES": {
+        "INVALID_OBJECT_USAGE_POLICY": "La règle sur l'objet d'usage n'est pas valide"
+      },
+      "POSITIONING_TITLE": "Positionnement des identifiants",
+      "ARCHIVAL_UNIT": "Unité archivistique",
+      "TECHNICAL_OBJECT": "Objet technique",
+      "FORMAT": "Format",
+      "REMOVE_USAGE": "Supprimer cet usage",
+      "TARGET_USAGE": "Usage cible ",
+      "INITIAL_VERSION": "Version initiale",
+      "YES": "Oui",
+      "NO": "Non",
+      "LATER_VERSIONS": "Versions ultérieures",
+      "ALL": "Toutes",
+      "LAST": "Dernière",
+      "NONE": "Aucune",
+      "ADD_USAGE": "Ajouter un usage",
+      "SAVE": "Enregistrer",
+      "PERMANENT_IDENTIFIER_POLICY_OPTION": {
+        "NONE": {
+          "LABEL": "Aucun"
+        },
+        "ARK": {
+          "LABEL": "ARK"
+        }
+      },
+      "OBJECT_USAGE_OPTION": {
+        "BINARYMASTER": {
+          "LABEL": "Original numérique"
+        },
+        "DISSEMINATION": {
+          "LABEL": "Copie de diffusion"
+        },
+        "PHYSICALMASTER": {
+          "LABEL": "Original papier"
+        },
+        "TEXTCONTENT": {
+          "LABEL": "Contenu brut"
+        },
+        "THUMBNAIL": {
+          "LABEL": "Vignette"
+        }
       }
     }
   },

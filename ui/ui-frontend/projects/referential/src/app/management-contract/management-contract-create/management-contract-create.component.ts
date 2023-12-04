@@ -25,20 +25,21 @@
  * accept its terms.
  */
 
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {Subscription} from 'rxjs';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
   Logger,
-  ManagementContract, Option,
+  ManagementContract,
+  Option,
   PersistentIdentifierPolicyTypeEnum,
-  StorageStrategy
+  StorageStrategy,
 } from 'ui-frontend-common';
 import * as uuid from 'uuid';
-import {ManagementContractService} from '../management-contract.service';
-import {ManagementContractCreateValidators} from '../validators/management-contract-create.validators';
+import { ManagementContractService } from '../management-contract.service';
+import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -48,7 +49,6 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./management-contract-create.component.scss'],
 })
 export class ManagementContractCreateComponent implements OnInit, OnDestroy {
-
   constructor(
     public dialogRef: MatDialogRef<ManagementContractCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -57,8 +57,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     private managementContractService: ManagementContractService,
     private managementContractCreateValidators: ManagementContractCreateValidators,
     private logger: Logger
-  ) {
-  }
+  ) {}
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
@@ -84,13 +83,12 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   technicalObjectActivated = false;
 
   usages: Option[] = [
-    {key: 'BinaryMaster', label: 'Original numérique', info: ''},
-    {key: 'Dissemination', label: 'Copie de diffusion', info: ''},
-    {key: 'Thumbnail', label: 'Vignette', info: ''},
-    {key: 'TextContent', label: 'Contenu brut', info: ''},
-    {key: 'PhysicalMaster', label: 'Original papier', info: ''},
+    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
+    { key: 'Dissemination', label: 'Copie de diffusion', info: '' },
+    { key: 'Thumbnail', label: 'Vignette', info: '' },
+    { key: 'TextContent', label: 'Contenu brut', info: '' },
+    { key: 'PhysicalMaster', label: 'Original papier', info: '' },
   ];
-
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -111,8 +109,8 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
         persistentIdentifierUnit: [false],
         persistentIdentifierObject: [false],
         persistentIdentifierAuthority: ['', [Validators.required, Validators.pattern('^[0-9]{5,9}$')]],
-        persistentIdentifierUsages: this.formBuilder.array([this.createUsageFormGroup()])
-      })
+        persistentIdentifierUsages: this.formBuilder.array([this.createUsageFormGroup()]),
+      }),
     });
 
     this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value: boolean) => {
@@ -155,7 +153,6 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     delete managementContractFrom.persistentIdentifierPolicy.persistentIdentifierObject;
     managementContractFrom.persistentIdentifierPolicyList = [managementContractFrom.persistentIdentifierPolicy];
 
-
     const managementContract = managementContractFrom as ManagementContract;
     managementContract.status === 'ACTIVE'
       ? (managementContract.activationDate = new Date().toISOString())
@@ -175,10 +172,10 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     this.apiSubscriptions = this.managementContractService.create(managementContract).subscribe(
       () => {
         this.isDisabledButton = false;
-        this.dialogRef.close({success: true, action: 'none'});
+        this.dialogRef.close({ success: true, action: 'none' });
       },
       (error: any) => {
-        this.dialogRef.close({success: false, action: 'none'});
+        this.dialogRef.close({ success: false, action: 'none' });
         this.logger.error(error);
       }
     );
@@ -219,14 +216,12 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-
   thirdStepValid(): boolean {
     const persistentIdentifierPolicy = this.form.get('persistentIdentifierPolicy');
 
     if (!persistentIdentifierPolicy) {
       return false;
     }
-
 
     const persistentIdentifierPolicyType = persistentIdentifierPolicy.get('persistentIdentifierPolicyType');
     const persistentIdentifierUnit = persistentIdentifierPolicy.get('persistentIdentifierUnit');
@@ -253,7 +248,6 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-
   openClose() {
     this.gotOpened = !this.gotOpened;
   }
@@ -268,19 +262,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       usageName: [null, Validators.required],
       initialVersion: ['true', Validators.required],
-      intermediaryVersion: ['ALL', Validators.required]
+      intermediaryVersion: ['ALL', Validators.required],
     });
   }
-
-  deleteUsage(index: number) {
-    const persistentIdentifierUsagesArray = this.form.get('persistentIdentifierPolicy.persistentIdentifierUsages') as FormArray;
-
-    if (persistentIdentifierUsagesArray && persistentIdentifierUsagesArray.length > 1) {
-      persistentIdentifierUsagesArray.removeAt(index);
-    } else {
-      const firstElement = persistentIdentifierUsagesArray.at(0);
-      firstElement.reset();
-    }
-  }
-
 }

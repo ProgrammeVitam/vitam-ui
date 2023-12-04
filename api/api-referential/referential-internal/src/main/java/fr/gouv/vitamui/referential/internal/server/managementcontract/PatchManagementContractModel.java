@@ -25,66 +25,33 @@
  * accept its terms.
  */
 
-import { Id } from '../id.interface';
+package fr.gouv.vitamui.referential.internal.server.managementcontract;
 
-export interface ManagementContract extends Id {
-  tenant: number;
-  version: number;
-  name: string;
-  identifier: string;
-  description: string;
-  status: string;
-  creationDate: string;
-  lastUpdate: string;
-  activationDate: string;
-  deactivationDate: string;
-  storage: StorageStrategy;
-  versionRetentionPolicy: VersionRetentionPolicy;
-  persistentIdentifierPolicyList?: PersistentIdentifierPolicy[];
-}
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitamui.commons.api.domain.PersistentIdentifierPolicyDto;
+import fr.gouv.vitamui.commons.api.domain.StorageDetailDto;
+import lombok.Data;
 
-export interface PersistentIdentifierPolicy {
-  persistentIdentifierPolicyType: PersistentIdentifierPolicyTypeEnum;
-  persistentIdentifierUnit: boolean;
-  persistentIdentifierAuthority: string;
-  persistentIdentifierUsages: PersistentIdentifierUsage[];
-}
+import java.util.List;
 
-export interface PersistentIdentifierUsage {
-  intermediaryVersion: string;
-  initialVersion: string;
-  usageName: string;
-}
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class PatchManagementContractModel {
+    @JsonProperty("Storage")
+    private StorageDetailDto storage;
 
-export enum PersistentIdentifierPolicyTypeEnum {
-  ARK = 'ARK',
-}
+    @JsonProperty("PersistentIdentifierPolicy")
+    private List<PersistentIdentifierPolicyDto> persistentIdentifierPolicyList;
 
-export interface StorageStrategy {
-  unitStrategy: string;
-  objectGroupStrategy: string;
-  objectStrategy: string;
-}
+    @JsonProperty("Name")
+    private String name;
 
-export interface VersionRetentionPolicy {
-  initialVersion: boolean;
-  intermediaryVersionEnum: string;
-  usages: Set<VersionUsage>;
-}
+    @JsonProperty("Description")
+    private String description;
 
-export interface VersionUsage {
-  usageName: string;
-  initialVersion: boolean;
-  intermediaryVersion: IntermediaryVersionEnum;
-}
-
-export enum IntermediaryVersionEnum {
-  ALL = 'ALL',
-  LAST = 'LAST',
-  NONE = 'NONE',
-}
-
-export enum ManagementContractStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
+    @JsonProperty("Status")
+    private String status;
 }

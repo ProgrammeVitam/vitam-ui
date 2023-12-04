@@ -34,25 +34,60 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import { Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ManagementContract } from 'ui-frontend-common';
+import { ManagementContractIdentificationTabComponent } from './management-contract-identification-tab/management-contract-identification-tab.component';
+import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
+import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';
 @Component({
   selector: 'app-management-contract-preview',
   templateUrl: './management-contract-preview.component.html',
   styleUrls: ['./management-contract-preview.component.scss'],
 })
-export class ManagementContractPreviewComponent implements OnInit {
-  @Output()
-  previewClose: EventEmitter<any> = new EventEmitter();
+export class ManagementContractPreviewComponent implements OnChanges, AfterViewInit {
+  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  @Input() inputManagementContract: ManagementContract;
+  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  @ViewChild('informationTab', { static: false }) informationTab: ManagementContractInformationTabComponent;
+  @ViewChild('storageTab', { static: false }) storageTab: ManagementContractStorageTabComponent;
+  @ViewChild('identificationTab', { static: false }) identificationTab: ManagementContractIdentificationTabComponent;
 
-  @Input()
-  inputManagementContract: ManagementContract;
+  private tabUpdated: boolean[] = [false, false, false, false];
+  private tabLinks: Array<
+    ManagementContractInformationTabComponent | ManagementContractStorageTabComponent | ManagementContractIdentificationTabComponent
+  > = [];
 
-  tabUpdated: boolean[] = [false, false];
+  @HostListener('window:beforeunload', ['$event'])
+  async beforeunloadHandler(event: any) {
+    if (this.tabUpdated[this.tabs.selectedIndex]) {
+      event.preventDefault();
+      await this.checkBeforeExit();
+      return '';
+    }
+  }
 
-  constructor() {}
+  constructor(private matDialog: MatDialog) {}
 
-  ngOnInit() {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.inputManagementContract && this.tabUpdated.some((update) => update)) {
+      this.inputManagementContract = changes.inputManagementContract.previousValue;
+      this.checkBeforeExit().then(() => {
+        this.inputManagementContract = changes.inputManagementContract.currentValue;
+      });
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.tabs._handleClick = this.interceptTabChange.bind(this);
+    this.tabLinks.push(this.informationTab);
+    this.tabLinks.push(this.storageTab);
+    this.tabLinks.push(this.identificationTab);
+  }
 
   updatedChange(updated: boolean, index: number) {
     this.tabUpdated[index] = updated;
@@ -66,7 +101,41 @@ export class ManagementContractPreviewComponent implements OnInit {
     );
   }
 
-  emitClose() {
+  async emitClose() {
+    if (this.tabUpdated[this.tabs.selectedIndex]) {
+      await this.checkBeforeExit();
+    }
     this.previewClose.emit();
+  }
+
+  async checkBeforeExit() {
+    if (await this.confirmAction()) {
+      const subscription: Subscription = this.tabLinks[this.tabs.selectedIndex]
+        .prepareSubmit()
+        .pipe(
+          tap((managementContract) => {
+            this.inputManagementContract = managementContract;
+          })
+        )
+        .subscribe(() => subscription.unsubscribe());
+    } else {
+      this.tabLinks[this.tabs.selectedIndex].resetForm(this.inputManagementContract);
+    }
+  }
+
+  async confirmAction(): Promise<boolean> {
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+
+    dialog.componentInstance.dialogType = 'changeTab';
+
+    return await dialog.afterClosed().toPromise();
+  }
+
+  async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
+    if (this.tabUpdated[this.tabs.selectedIndex]) {
+      await this.checkBeforeExit();
+    }
+
+    return MatTabGroup.prototype._handleClick.apply(this.tabs, [tab, tabHeader, idx]);
   }
 }

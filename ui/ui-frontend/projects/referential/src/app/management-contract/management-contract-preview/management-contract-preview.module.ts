@@ -49,6 +49,8 @@ import { RouterModule } from '@angular/router';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
+import { PersistentIdentifierFormModule } from './management-contract-identification-tab/components/forms/permanent-identifier-form/persistent-identifier-form.module';
+import { ManagementContractIdentificationTabComponent } from './management-contract-identification-tab/management-contract-identification-tab.component';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
 import { ManagementContractPreviewComponent } from './management-contract-preview.component';
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';
@@ -69,8 +71,14 @@ import { ManagementContractStorageTabComponent } from './management-contract-sto
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
+    PersistentIdentifierFormModule,
   ],
-  declarations: [ManagementContractPreviewComponent, ManagementContractInformationTabComponent, ManagementContractStorageTabComponent],
+  declarations: [
+    ManagementContractPreviewComponent,
+    ManagementContractInformationTabComponent,
+    ManagementContractStorageTabComponent,
+    ManagementContractIdentificationTabComponent,
+  ],
   exports: [ManagementContractPreviewComponent],
 })
 export class ManagementContractPreviewModule {}

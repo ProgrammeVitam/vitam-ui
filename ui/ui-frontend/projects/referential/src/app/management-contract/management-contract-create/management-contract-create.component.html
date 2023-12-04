@@ -9,13 +9,12 @@
         <h4 class="mt-0 mb-0">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.CREATION_ACTION' | translate }}</h4>
         <h5 class="mt-0 mb-1">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.INFORMATIONS' | translate }}</h5>
 
-
-        <div class=" mt-4 form-group">
+        <div class="mt-4 form-group">
           <div class="row">
             <div class="col">
               <vitamui-common-slide-toggle [formControl]="statusControl">{{
                 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.CONTRACT_STATUS' | translate
-                }}</vitamui-common-slide-toggle>
+              }}</vitamui-common-slide-toggle>
             </div>
           </div>
           <div class="row">
@@ -30,7 +29,7 @@
                 <ng-container *ngIf="form.get('name')?.touched">
                   <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
                     'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.MANDATORY_FIELD' | translate
-                    }}</vitamui-common-input-error>
+                  }}</vitamui-common-input-error>
 
                   <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
                     {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NAME_ALREADY_EXIST' | translate }}
@@ -74,8 +73,7 @@
           </div>
         </div>
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext
-                  [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
           <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
@@ -83,16 +81,15 @@
     <!-- Step 2 -->
     <cdk-step>
       <div class="content">
-
         <h4 class="mt-0 mb-0">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.CREATION_ACTION' | translate }}</h4>
-        <h5 class="mt-0 mb-1">     {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.STORAGE_POLICIES' | translate }}
+        <h5 class="mt-0 mb-1">
+          {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.STORAGE_POLICIES' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info"
             matTooltip=" {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.STORAGE_POLICIES_TOOLTIP' | translate }}"
             matTooltipClass="vitamui-tooltip"
           ></i>
         </h5>
-
 
         <div class="mt-4 form-group">
           <div class="row">
@@ -121,22 +118,19 @@
             </div>
           </div>
         </div>
-        <div class="actions ">
+        <div class="actions">
           <div class="container">
-
-
             <div class="row">
               <div class="col-3">
-                <button type="button" class="btn primary " cdkStepperNext
-                        [disabled]="secondStepInvalid() || isDisabledButton">{{ 'COMMON.NEXT' | translate }}</button>
+                <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid() || isDisabledButton">
+                  {{ 'COMMON.NEXT' | translate }}
+                </button>
               </div>
               <div class="col-3">
                 <button type="button" class="btn cancel" [disabled]="isDisabledButton" (click)="onCancel()">
                   {{ 'COMMON.UNDO' | translate }}
                 </button>
               </div>
-
-
             </div>
             <div class="row mt-2">
               <div class="col">
@@ -144,41 +138,40 @@
                   {{ 'COMMON.BACK' | translate }}
                 </button>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </cdk-step>
 
     <!-- Step 3 -->
     <cdk-step>
-
       <div class="content">
-
-        <h4>{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.CREATION_ACTION' | translate }}
-        </h4>
-        <h5>  {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.PARAMETRAGE_IDENTIFICATION_PERENNE' | translate }}
+        <h4>{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.CREATION_ACTION' | translate }}</h4>
+        <h5>
+          {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.PARAMETRAGE_IDENTIFICATION_PERENNE' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info"
             matTooltip=" {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.PARAMETRAGE_IDENTIFICATION_PERENNE_TOOLTIP' | translate }}"
             matTooltipClass="vitamui-tooltip"
-          ></i></h5>
+          ></i>
+        </h5>
 
         <div formGroupName="persistentIdentifierPolicy" class="form-group form-persistent-identifier">
           <div class="row">
             <div class="col-12 form-control">
               <mat-form-field class="vitamui-mat-select">
                 <mat-label>{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER_TYPE' | translate }}</mat-label>
-                <mat-select formControlName="persistentIdentifierPolicyType"
-                            placeholder="Type d'identifiant'"
-                            panelclass="vitamui-mat-select"
-                            required="required"
+                <mat-select
+                  formControlName="persistentIdentifierPolicyType"
+                  placeholder="Type d'identifiant'"
+                  panelclass="vitamui-mat-select"
+                  required="required"
                 >
-                  <mat-option *ngFor="let persistentIdentifierPolicyType of persistentIdentifierPolicyTypes"
-                              [value]="persistentIdentifierPolicyType"
-                  >{{ persistentIdentifierPolicyType }}
+                  <mat-option
+                    *ngFor="let persistentIdentifierPolicyType of persistentIdentifierPolicyTypes"
+                    [value]="persistentIdentifierPolicyType"
+                    >{{ persistentIdentifierPolicyType }}
                   </mat-option>
                 </mat-select>
                 <mat-placeholder>{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.CHOOSE_IDENTIFIER_TYPE' | translate }}</mat-placeholder>
@@ -197,9 +190,7 @@
               >
               </vitamui-common-input>
             </div>
-
           </div>
-
 
           <div class="object-menu row pt-3 pb-3">
             <div class="line shrink object-name col-11">
@@ -211,37 +202,29 @@
             </div>
           </div>
 
-
-          <div class="object-menu row mt-2 pt-3 pb-3" [ngClass]="{'opened': gotOpened}">
+          <div class="object-menu row mt-2 pt-3 pb-3" [ngClass]="{ opened: gotOpened }">
             <div class="line shrink object-name col-1">
               <mat-checkbox matTooltipClass="vitamui-tooltip" formControlName="persistentIdentifierObject">
-                <label class="node-label ">
+                <label class="node-label">
                   {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.TECHNICAL_OBJECT' | translate }}
                 </label>
               </mat-checkbox>
             </div>
             <div class="col-11 line open-close-icon" (click)="openClose()">
-              <i class="vitamui-icon  d-flex justify-content-end"
-                 [ngClass]=" gotOpened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right'"></i>
+              <i
+                class="vitamui-icon d-flex justify-content-end"
+                [ngClass]="gotOpened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right'"
+              ></i>
             </div>
           </div>
 
-
           <div formArrayName="persistentIdentifierUsages" class="object-details container pt-2 mt-2" *ngIf="gotOpened">
-
             <ng-container *ngFor="let usage of persistentIdentifierUsagesControls(); let i = index">
-              <div [formGroupName]="i" class="row   ml-0 mr-0">
-
-
+              <div [formGroupName]="i" class="row ml-0 mr-0">
                 <div class="ml-0 col-4">
                   <mat-form-field class="vitamui-mat-select">
-                    <mat-label>{{'Usage cible ' + i}}</mat-label>
-                    <mat-select
-                      placeholder="Format"
-                      panelclass="vitamui-mat-select"
-                      formControlName="usageName"
-                    >
-
+                    <mat-label>{{ 'Usage cible ' + i }}</mat-label>
+                    <mat-select placeholder="Format" panelclass="vitamui-mat-select" formControlName="usageName">
                       <mat-option *ngFor="let usage of usages" [value]="usage.key"> {{ usage.label }}</mat-option>
                     </mat-select>
                     <div class="select-arrow">
@@ -253,10 +236,12 @@
                   <label> {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.INITIAL_VERSION' | translate }}</label>
                   <div>
                     <mat-radio-group aria-label="Version Initiale" formControlName="initialVersion">
-                      <mat-radio-button class="mr-2"
-                                        value="true">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.YES' | translate }}</mat-radio-button>
-                      <mat-radio-button class="mr-2"
-                                        value="false">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NO' | translate }}</mat-radio-button>
+                      <mat-radio-button class="mr-2" value="true">{{
+                        'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.YES' | translate
+                      }}</mat-radio-button>
+                      <mat-radio-button class="mr-2" value="false">{{
+                        'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NO' | translate
+                      }}</mat-radio-button>
                     </mat-radio-group>
                   </div>
                 </div>
@@ -265,43 +250,44 @@
                   <label> {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.LATER_VERSIONS' | translate }}</label>
                   <div>
                     <mat-radio-group aria-label="Version ultérieures" formControlName="intermediaryVersion">
-                      <mat-radio-button class="mr-2"
-                                        value="ALL">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.ALL' | translate }}</mat-radio-button>
-                      <mat-radio-button class="mr-2"
-                                        value="LAST">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.LAST' | translate }}</mat-radio-button>
-                      <mat-radio-button class="mr-2"
-                                        value="NONE">{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NONE' | translate }}</mat-radio-button>
+                      <mat-radio-button class="mr-2" value="ALL">{{
+                        'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.ALL' | translate
+                      }}</mat-radio-button>
+                      <mat-radio-button class="mr-2" value="LAST">{{
+                        'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.LAST' | translate
+                      }}</mat-radio-button>
+                      <mat-radio-button class="mr-2" value="NONE">{{
+                        'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NONE' | translate
+                      }}</mat-radio-button>
                     </mat-radio-group>
                   </div>
                 </div>
 
                 <div class="line split col-1">
-                  <div class="line shrink object-type">
-                  </div>
-                  <button class="delete-button" (click)="deleteUsage(i)"
-                          matTooltip="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.REMOVE_USAGE' | translate }}"
-                          matTooltipClass="vitamui-tooltip">
+                  <div class="line shrink object-type"></div>
+                  <button
+                    class="delete-button"
+                    (click)="deleteUsage(i)"
+                    matTooltip="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.REMOVE_USAGE' | translate }}"
+                    matTooltipClass="vitamui-tooltip"
+                  >
                     <i class="vitamui-icon vitamui-icon-delete"></i>
                   </button>
                 </div>
               </div>
             </ng-container>
 
-            <div class="row  ml-0 mr-0 bt-2 " *ngIf="gotOpened">
+            <div class="row ml-0 mr-0 bt-2" *ngIf="gotOpened">
               <button type="button" class="col btn link back justify-content-start" (click)="addUsage()">
                 <i class="vitamui-icon vitamui-icon-chevron-right"></i>
                 <span>{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.ADD_LINE' | translate }}</span>
               </button>
-
             </div>
           </div>
         </div>
 
-
-        <div class="actions ">
+        <div class="actions">
           <div class="container">
-
-
             <div class="row">
               <div class="col-3">
                 <button type="submit" class="btn primary" [disabled]="!thirdStepValid() || isDisabledButton">
@@ -313,8 +299,6 @@
                   {{ 'COMMON.UNDO' | translate }}
                 </button>
               </div>
-
-
             </div>
             <div class="row mt-2">
               <div class="col-3">
@@ -322,14 +306,10 @@
                   {{ 'COMMON.BACK' | translate }}
                 </button>
               </div>
-
             </div>
           </div>
-
         </div>
-
       </div>
-
     </cdk-step>
   </vitamui-common-stepper>
 </form>

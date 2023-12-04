@@ -27,7 +27,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -38,30 +38,30 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { ManagementContractCreateComponent } from './management-contract-create.component';
-import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatRadioModule} from "@angular/material/radio";
 
 @NgModule({
   declarations: [ManagementContractCreateComponent],
   entryComponents: [ManagementContractCreateComponent],
-    imports: [
-        CommonModule,
-        SharedModule,
-        MatButtonToggleModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatProgressBarModule,
-        MatSelectModule,
-        MatSnackBarModule,
-        MatTooltipModule,
-        ReactiveFormsModule,
-        VitamUICommonModule,
-        VitamUILibraryModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        FormsModule,
-    ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatTooltipModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    FormsModule,
+  ],
 })
 export class ManagementContractCreateModule {}

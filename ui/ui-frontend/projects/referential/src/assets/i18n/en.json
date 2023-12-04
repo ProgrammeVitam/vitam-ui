@@ -60,6 +60,7 @@
     "PREVIEW": {
       "INFORMATIONS": "Informations",
       "STORAGE": "Storage",
+      "IDENTIFICATION": "Identification",
       "HISTORY": "History",
       "INFORMATION": {
         "NAME": "Contract name",
@@ -75,6 +76,55 @@
         "UNIT_STRATEGY": "Archive Unit",
         "OBJECT_GROUP_STRATEGY": "Technical object groups",
         "OBJECT_STRATEGY": "Digital files"
+      }
+    },
+    "FORM_UPDATE": {
+      "TITLE": "Persistent identifier settings",
+      "IDENTIFIER_TYPE": "Identifier type",
+      "CHOOSE_IDENTIFIER_TYPE": "Choose identifier type",
+      "NAMING_AUTORITY": "Naming authority",
+      "ERROR_MESSAGES": {
+        "INVALID_OBJECT_USAGE_POLICY": "Invalid object usage policy"
+      },
+      "POSITIONING_TITLE": "Positioning title",
+      "ARCHIVAL_UNIT": "Archival unit",
+      "TECHNICAL_OBJECT": "Technical object",
+      "FORMAT": "Format",
+      "REMOVE_USAGE": "Remove usage",
+      "TARGET_USAGE": "Target usage",
+      "INITIAL_VERSION": "Initial version",
+      "YES": "Yes",
+      "NO": "No",
+      "LATER_VERSIONS": "Later versions",
+      "ALL": "All",
+      "LAST": "Last",
+      "NONE": "None",
+      "ADD_USAGE": "Add usage",
+      "SAVE": "Save",
+      "PERMANENT_IDENTIFIER_POLICY_OPTION": {
+        "NONE": {
+          "LABEL": "None"
+        },
+        "ARK": {
+          "LABEL": "ARK"
+        }
+      },
+      "OBJECT_USAGE_OPTION": {
+        "BINARYMASTER": {
+          "LABEL": "Binary master"
+        },
+        "DISSEMINATION": {
+          "LABEL": "Dissemination"
+        },
+        "PHYSICALMASTER": {
+          "LABEL": "Physical master"
+        },
+        "TEXTCONTENT": {
+          "LABEL": "Text content"
+        },
+        "THUMBNAIL": {
+          "LABEL": "Thumbnail"
+        }
       }
     }
   },
