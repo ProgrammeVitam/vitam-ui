@@ -34,11 +34,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { Moment } from 'moment';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AuthService, BreadCrumbData, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { AuthService, BreadCrumbData, GlobalEventService, Logger, SidenavPage } from 'ui-frontend-common';
 import { DepositFormError, DepositOperationCategory } from '../core/model/deposit-operation-category.interface';
 import { DepositStatus, GetorixDeposit } from '../core/model/getorix-deposit.interface';
 import { GetorixDepositService } from '../getorix-deposit.service';
 
+const OTHER = 'OTHER';
+const SEARCH = 'SEARCH';
+const DIAGNOSIS = 'DIAGNOSIS';
+const ORIGINATING_AGENCY = 'originatingAgency';
+const VERSATILE_SERVICE = 'versatileService';
 @Component({
   selector: 'create-getorix-deposit',
   templateUrl: './create-getorix-deposit.component.html',
@@ -267,6 +272,7 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
   dataBreadcrumb: BreadCrumbData[];
   getorixDepositCreated: GetorixDeposit;
   pending = false;
+  operationId: string;
 
   previousDepositForm = {
     originatingAgency: '',
@@ -306,10 +312,15 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
     public dialog: MatDialog,
     private authService: AuthService,
     globalEventService: GlobalEventService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private loggerService: Logger
   ) {
     super(route, globalEventService);
     this.initExportForm();
+
+    this.getorixDepositform.get('operationType').valueChanges.subscribe((data) => {
+      this.operationTypeDisabled = data !== OTHER;
+    });
   }
 
   ngOnInit() {
@@ -333,6 +344,30 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
     });
 
     this.detectChanges();
+
+    this.operationId = this.route.snapshot.queryParamMap.get('operationId');
+
+    if (this.operationId) {
+      this.showInitialForm = false;
+      this.showForm = true;
+      this.getorixDepositService.getGetorixDepositById(this.operationId).subscribe(
+        (data) => {
+          this.showInitialForm = false;
+          this.showForm = true;
+          this.isSuccessCreation = false;
+          this.getorixDepositform.patchValue(data);
+          if (data.operationType !== SEARCH && data.operationType !== DIAGNOSIS) {
+            this.getorixDepositform.patchValue({ operationTypeValue: data.operationType });
+            this.getorixDepositform.patchValue({ operationType: OTHER });
+            this.operationTypeDisabled = false;
+          }
+        },
+        (error) => {
+          this.loggerService.error('error while searching for this operation', error);
+          window.location.href = this.router.url.replace('?operationId=', '').replace(this.operationId, '');
+        }
+      );
+    }
   }
 
   returnToMainPage() {
@@ -366,7 +401,7 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
 
     if (this.versatileServiceDisabled) {
       this.depositFormError.find((deposit) => deposit.inputName == 'versatileService').isValid = true;
-      if (this.getorixDepositform.get('originatingAgency').valid) {
+      if (this.getorixDepositform.get(ORIGINATING_AGENCY).valid) {
         this.operationCategoryList.find((category) => category.target == 'agencyDetails').isError = false;
       }
     }
@@ -389,28 +424,45 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
       getorixDeposit.tenantIdentifier = +this.tenantIdentifier;
       getorixDeposit.depositStatus = DepositStatus.IN_PROGRESS;
       getorixDeposit.userId = this.authService.user.id;
-      if (this.getorixDepositform.get('versatileService').value === '') {
-        getorixDeposit.versatileService = this.getorixDepositform.get('originatingAgency').value;
+      if (
+        this.getorixDepositform.get(VERSATILE_SERVICE).value === '' ||
+        (this.getorixDepositform.get(VERSATILE_SERVICE).value !== '' &&
+          this.getorixDepositform.get(VERSATILE_SERVICE).value !== this.getorixDepositform.get(ORIGINATING_AGENCY).value)
+      ) {
+        getorixDeposit.versatileService = this.getorixDepositform.get(ORIGINATING_AGENCY).value;
+        if (!this.versatileServiceDisabled) {
+          getorixDeposit.versatileService = this.getorixDepositform.get(VERSATILE_SERVICE).value;
+        }
       }
-      this.getOperationTypeValue(this.operationType, getorixDeposit);
 
-      this.createInProgressDepositSubscription = this.getorixDepositService
-        .createGetorixDeposit(this.removeEmptyValue(getorixDeposit))
-        .subscribe((data) => {
-          this.getorixDepositCreated = data;
-          this.getorixDepositform.reset();
-          this.depositFormError.map((deposit) => (deposit.isValid = false));
-          this.showInputErrorFrame = false;
-          this.formChanged = false;
-          this.showSecondScientifOfficer = false;
-          this.detectChanges();
-          this.scrollToTop();
-          this.scrollToElement('page-top-top');
+      if (this.getorixDepositform.get('operationType').value === OTHER) {
+        getorixDeposit.operationType = this.getorixDepositform.get('operationTypeValue').value;
+      }
+      if (this.operationId) {
+        getorixDeposit.id = this.operationId;
+        this.getorixDepositService.updateGetorixDeposit(this.removeEmptyValue(getorixDeposit)).subscribe(() => {
           this.pending = false;
-          this.showForm = false;
-          this.showInitialForm = false;
-          this.isSuccessCreation = true;
+          window.location.href = this.router.url.replace('?operationId=', '/upload-object/');
         });
+      } else {
+        this.createInProgressDepositSubscription = this.getorixDepositService
+          .createGetorixDeposit(this.removeEmptyValue(getorixDeposit))
+          .subscribe((data) => {
+            this.getorixDepositCreated = data;
+            this.getorixDepositform.reset();
+            this.depositFormError.map((deposit) => (deposit.isValid = false));
+            this.showInputErrorFrame = false;
+            this.formChanged = false;
+            this.showSecondScientifOfficer = false;
+            this.detectChanges();
+            this.scrollToTop();
+            this.scrollToElement('page-top-top');
+            this.pending = false;
+            this.showForm = false;
+            this.showInitialForm = false;
+            this.isSuccessCreation = true;
+          });
+      }
     }
   }
 
@@ -425,20 +477,6 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
   deleteSecondScientificOfficer() {
     this.showSecondScientifOfficer = false;
     this.showOfficerAction = true;
-  }
-
-  checkOperationType(event: any) {
-    this.operationType = event.value;
-    if (event.value == 'OTHER') {
-      this.operationTypeDisabled = false;
-    } else {
-      this.operationTypeDisabled = true;
-      this.getorixDepositform.patchValue({ operationType: null });
-    }
-  }
-
-  checkFurniture(event: any) {
-    this.getorixDepositform.patchValue({ furniture: event.value == 'YES' });
   }
 
   ngOnDestroy() {
@@ -507,11 +545,17 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
           getorixDeposit.tenantIdentifier = +this.tenantIdentifier;
           getorixDeposit.depositStatus = DepositStatus.DRAFT;
           getorixDeposit.userId = this.authService.user.id;
-          if (this.getorixDepositform.get('versatileService').value === '') {
-            getorixDeposit.versatileService = this.getorixDepositform.get('originatingAgency').value;
+          if (
+            this.getorixDepositform.get(VERSATILE_SERVICE).value === '' ||
+            (this.getorixDepositform.get(VERSATILE_SERVICE).value !== '' &&
+              this.getorixDepositform.get(VERSATILE_SERVICE).value !== this.getorixDepositform.get(ORIGINATING_AGENCY).value)
+          ) {
+            getorixDeposit.versatileService = this.getorixDepositform.get(ORIGINATING_AGENCY).value;
           }
 
-          this.getOperationTypeValue(this.operationType, getorixDeposit);
+          if (this.getorixDepositform.get('operationType').value === OTHER) {
+            getorixDeposit.operationType = this.getorixDepositform.get('operationTypeValue').value;
+          }
 
           this.createDraftedDepositSubscription = this.getorixDepositService
             .createGetorixDeposit(this.removeEmptyValue(getorixDeposit))
@@ -528,14 +572,6 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
         });
     } else {
       this.exitWithoutSave();
-    }
-  }
-
-  getOperationTypeValue(operationType: string, getorixDeposit: GetorixDeposit) {
-    if (operationType === 'OTHER') {
-      getorixDeposit.operationType = this.getorixDepositform.get('operationType').value;
-    } else {
-      getorixDeposit.operationType = operationType;
     }
   }
 
@@ -582,6 +618,7 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
       secondScientificOfficerLastName: [''],
       operationName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.ALPHA_NUMERIC_REGEX)]],
       operationType: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.ALPHA_NUMERIC_REGEX)]],
+      operationTypeValue: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.ALPHA_NUMERIC_REGEX)]],
       internalAdministratorNumber: ['', [Validators.required, Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
       nationalNumber: ['', [Validators.required, Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
       prescriptionOrderNumber: ['', [Validators.required, Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
@@ -593,7 +630,7 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
       saveLastCondition: [''],
       materialStatus: [''],
       archiveVolume: ['', [Validators.required, Validators.pattern(this.NUMERIC_REGEX), Validators.minLength(1)]],
-      furniture: [''],
+      furniture: [false],
       furnitureComment: [''],
       archaeologistGetorixAddress: this.formBuilder.group({
         placeName: [''],
@@ -608,7 +645,7 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
 
   goToUploadOperationObjects() {
     if (this.getorixDepositCreated) {
-      this.router.navigate([this.router.url, 'upload-object', this.getorixDepositCreated.id]).then(() => window.location.reload());
+      window.location.href = this.router.url + '/upload-object/' + this.getorixDepositCreated.id;
     }
   }
 

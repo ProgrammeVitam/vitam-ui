@@ -36,7 +36,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { GetorixDeposit } from '../core/model/getorix-deposit.interface';
 import { GetorixDepositService } from '../getorix-deposit.service';
 import { CreateGetorixDepositComponent } from './create-getorix-deposit.component';
 
@@ -55,11 +54,14 @@ describe('CreateGetorixDepositComponent', () => {
     events: of({}),
   };
 
-  const getorixDepositServiceMock = jasmine.createSpyObj('GetorixDepositService', {
+  const getorixDepositServiceMock = {
     createGetorixDeposit: () => of({}),
-  });
+    getGetorixDepositById: () => of({}),
+  };
 
   const authServiceMock = { user: { level: '', id: 'userId' } };
+
+  const mockWindow = { location: { href: '' } };
 
   beforeEach(async () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -72,6 +74,7 @@ describe('CreateGetorixDepositComponent', () => {
           provide: Router,
           useValue: routerMock,
         },
+        { provide: 'Window', useValue: mockWindow },
         FormBuilder,
         {
           provide: ActivatedRoute,
@@ -80,6 +83,11 @@ describe('CreateGetorixDepositComponent', () => {
             params: of({ tenantIdentifier: 1 }),
             data: of({ appId: 'GETORIX_DEPOSIT_APP' }),
             events: of({}),
+            snapshot: {
+              queryParamMap: {
+                get: () => 'operationId',
+              },
+            },
           },
         },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -116,21 +124,6 @@ describe('CreateGetorixDepositComponent', () => {
     const result = component.depositFormError.find((deposit) => deposit.inputName == 'originatingAgency');
     expect(result).not.toBeNull();
     expect(result.isValid).toBeFalsy();
-  });
-
-  it('should set the operation type value', () => {
-    const operationType = 'SEARCH';
-    let getorixDeposit = {} as GetorixDeposit;
-    component.getOperationTypeValue(operationType, getorixDeposit);
-    expect(getorixDeposit).not.toBeNull();
-    expect(getorixDeposit.operationType).toEqual('SEARCH');
-  });
-
-  it('should disable the operation type input', () => {
-    const event = { value: 'SEARCH', type: 'input' };
-    component.checkOperationType(event);
-    expect(component.operationType).toEqual('SEARCH');
-    expect(component.operationTypeDisabled).toBeTruthy();
   });
 
   it('should show the creation form', () => {
@@ -170,12 +163,6 @@ describe('CreateGetorixDepositComponent', () => {
     expect(component.checkVersatileServiceBoxChange).toBeTruthy();
   });
 
-  it('should furniture value be true', () => {
-    const event = { value: 'YES' };
-    component.checkFurniture(event);
-    expect(component.getorixDepositform.get('furniture')).toBeTruthy();
-  });
-
   it('should call close for all close dialog', () => {
     const matDialogSpyTest = TestBed.inject(MatDialog);
     component.exitWithoutSave();
@@ -202,21 +189,6 @@ describe('CreateGetorixDepositComponent', () => {
     component.onMouseMove('agencyDetails');
     const result = component.operationCategoryList.find((element) => element.target == 'agencyDetails');
     expect(result.isSelected).toBeTruthy();
-  });
-
-  it('should set the operation type value from the form', () => {
-    const operationType = 'OTHER';
-    let getorixDeposit = {} as GetorixDeposit;
-    component.getOperationTypeValue(operationType, getorixDeposit);
-    expect(getorixDeposit).not.toBeNull();
-    expect(getorixDeposit.operationType).toEqual('');
-  });
-
-  it('should enable the operation type input', () => {
-    const event = { value: 'OTHER', type: 'input' };
-    component.checkOperationType(event);
-    expect(component.operationType).toEqual('OTHER');
-    expect(component.operationTypeDisabled).toBeFalsy();
   });
 
   it('should the creation of second officer to be disabled', () => {

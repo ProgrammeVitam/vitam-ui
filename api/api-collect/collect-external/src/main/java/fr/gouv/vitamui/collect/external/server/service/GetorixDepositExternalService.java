@@ -78,4 +78,10 @@ public class GetorixDepositExternalService extends
         LOGGER.debug("[External] : get the GetorixDeposit details by id : {}", getorixDepositId);
         return super.getOne(getorixDepositId);
     }
+
+    @Override
+    public GetorixDepositDto update(final GetorixDepositDto getorixDepositDto) {
+        LOGGER.debug("[External] : update the Getorix Deposit details with id : {}", getorixDepositDto.getId());
+        return super.update(getorixDepositDto);
+    }
 }
