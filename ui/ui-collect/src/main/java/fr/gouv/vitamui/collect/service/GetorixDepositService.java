@@ -33,6 +33,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +69,15 @@ public class GetorixDepositService extends AbstractPaginateService<GetorixDeposi
     public GetorixDepositDto getOne(final ExternalHttpContext c, final String getorixDepositId) {
         LOGGER.debug("[UI] : get the GetorixDeposit details by id : {}", getorixDepositId);
         return super.getOne(c, getorixDepositId);
+    }
+
+    public GetorixDepositDto updateGetorixDepositDetails(final ExternalHttpContext c, final GetorixDepositDto getorixDepositDto) {
+        LOGGER.debug("[UI] : Update the Getorix Deposit details process");
+        if (StringUtils.isBlank(getorixDepositDto.getId())) {
+            throw new IllegalArgumentException("Getorix Deposit identifier is mandatory.");
+        }
+        LOGGER.debug("[UI] : Update the Getorix Deposit details with id : {}", getorixDepositDto.getId());
+        return super.update(c, getorixDepositDto);
     }
 
 }

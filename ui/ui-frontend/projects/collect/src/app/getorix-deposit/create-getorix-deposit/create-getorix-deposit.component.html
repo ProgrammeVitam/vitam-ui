@@ -48,7 +48,7 @@
         <div class="col-4">
           <div [ngStyle]="{ position: 'sticky', top: '100px' }">
             <ng-container>
-              <div class="text-return-creation">
+              <div class="text-return-creation" *ngIf="!operationId">
                 <i class="vitamui-icon vitamui-icon-chevron-left"></i>
 
                 <span class="return clickable" (click)="returnToGetorixInitialPage()">
@@ -151,6 +151,7 @@
                 </div>
 
                 <vitamui-common-input
+                  *ngIf="!versatileServiceDisabled"
                   class="col-12 px-0"
                   formControlName="versatileService"
                   minlength="2"
@@ -309,43 +310,46 @@
                 <p [ngStyle]="{ 'font-size': '16px' }">{{ 'GETORIX_DEPOSIT.INPUT_NAMES.OPERATION_TYPE' | translate }}</p>
 
                 <div class="radio-group">
-                  <div class="radio-btn-list">
-                    <mat-radio-button class="radio-button" (change)="checkOperationType($event)" [value]="'DIAGNOSIS'">
-                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_TYPE.DIAGNOSTIC' | translate }}
-                    </mat-radio-button>
-                  </div>
-
-                  <div class="radio-btn-list">
-                    <mat-radio-button class="radio-button" (change)="checkOperationType($event)" [value]="'SEARCH'">
-                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_TYPE.SEARCH' | translate }}
-                    </mat-radio-button>
-                  </div>
-                  <div class="radio-btn-list">
-                    <mat-radio-button class="radio-button" (change)="checkOperationType($event)" [value]="'OTHER'">
-                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_TYPE.OTHER' | translate }}
-                    </mat-radio-button>
-                  </div>
+                  <mat-radio-group formControlName="operationType">
+                    <mat-radio-button class="mr-2" [value]="'DIAGNOSIS'">{{
+                      'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_TYPE.DIAGNOSTIC' | translate
+                    }}</mat-radio-button>
+                    <br />
+                    <mat-radio-button class="mr-2" [value]="'SEARCH'">
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_TYPE.SEARCH' | translate }}</mat-radio-button
+                    >
+                    <br />
+                    <mat-radio-button class="mr-2" [value]="'OTHER'">
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_TYPE.OTHER' | translate }}</mat-radio-button
+                    >
+                  </mat-radio-group>
                 </div>
 
                 <vitamui-common-input
                   class="col-12 px-0"
-                  formControlName="operationType"
+                  formControlName="operationTypeValue"
                   minlength="3"
                   required
                   [disabled]="operationTypeDisabled"
                   placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.OPERATION_TYPE' | translate }}"
                 >
                   <vitamui-common-input-error
-                    *ngIf="!operationTypeDisabled && showInputErrorFrame && getorixDepositform?.get('operationType')?.hasError('required')"
+                    *ngIf="
+                      !operationTypeDisabled && showInputErrorFrame && getorixDepositform?.get('operationTypeValue')?.hasError('required')
+                    "
                   >
                     {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
                   >
                   <vitamui-common-input-error
-                    *ngIf="!operationTypeDisabled && showInputErrorFrame && getorixDepositform?.get('operationType')?.hasError('minlength')"
+                    *ngIf="
+                      !operationTypeDisabled && showInputErrorFrame && getorixDepositform?.get('operationTypeValue')?.hasError('minlength')
+                    "
                     >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.MIN_LENGTH_MIN' | translate }}</vitamui-common-input-error
                   >
                   <vitamui-common-input-error
-                    *ngIf="!operationTypeDisabled && showInputErrorFrame && getorixDepositform?.get('operationType')?.hasError('pattern')"
+                    *ngIf="
+                      !operationTypeDisabled && showInputErrorFrame && getorixDepositform?.get('operationTypeValue')?.hasError('pattern')
+                    "
                   >
                     {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
                   >
@@ -774,17 +778,15 @@
                 <p [ngStyle]="{ 'font-size': '16px' }">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.FURNITURE_QUESTION' | translate }}</p>
 
                 <div class="radio-group">
-                  <div class="radio-btn-list">
-                    <mat-radio-button class="radio-button" (change)="checkFurniture($event)" [value]="'YES'">
-                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.YES' | translate }}
-                    </mat-radio-button>
-                  </div>
-
-                  <div class="radio-btn-list">
-                    <mat-radio-button class="radio-button" (change)="checkFurniture($event)" [value]="'No'">
-                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.NO' | translate }}
-                    </mat-radio-button>
-                  </div>
+                  <mat-radio-group formControlName="furniture">
+                    <mat-radio-button class="mr-2" [value]="true">{{
+                      'GETORIX_DEPOSIT.CREATION_PROCESS.YES' | translate
+                    }}</mat-radio-button>
+                    <br />
+                    <mat-radio-button class="mr-2" [value]="false">
+                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.NO' | translate }}</mat-radio-button
+                    >
+                  </mat-radio-group>
                 </div>
 
                 <vitamui-common-textarea
