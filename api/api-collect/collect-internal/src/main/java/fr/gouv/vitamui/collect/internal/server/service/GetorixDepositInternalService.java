@@ -49,6 +49,7 @@ import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -79,6 +80,8 @@ public class GetorixDepositInternalService  extends
     public static final String UNABLE_TO_CREATE_PROJECT = "Unable to create project";
     public static final String UNABLE_TO_CREATE_TRANSACTION = "Unable to create transaction";
     public static final String UNABLE_TO_PROCESS_RESPONSE = "Unable to process response";
+    public static final String UNABLE_TO_UPDATE_TRANSACTION = "Unable to update transaction";
+    public static final String UNABLE_TO_UPDATE_PROJECT = "Unable to update project";
 
     private final GetorixDepositRepository getorixDepositRepository;
 
@@ -106,7 +109,7 @@ public class GetorixDepositInternalService  extends
         AuthUserDto authUserDto = internalSecurityService.getUser();
         if(Objects.isNull(authUserDto)) {
             LOGGER.error("You are not authorized to create the deposit");
-            throw new UnAuthorizedException("You are not authorized to create the deposit ");
+            throw new UnAuthorizedException("You are not authorized to create the deposit");
         }
         if(Objects.isNull(getorixDepositDto)) {
             LOGGER.error("The Getorix deposit information are not provided");
@@ -123,11 +126,7 @@ public class GetorixDepositInternalService  extends
 
         manageDepositDates(getorixDepositDto);
 
-        CollectProjectDto collectProjectDto = new CollectProjectDto();
-        collectProjectDto.setStatus("OPEN");
-        collectProjectDto.setMessageIdentifier(getorixDepositDto.getOperationName());
-        collectProjectDto.setOriginatingAgencyIdentifier(getorixDepositDto.getOriginatingAgency());
-        collectProjectDto.setSubmissionAgencyIdentifier(getorixDepositDto.getVersatileService());
+        CollectProjectDto collectProjectDto = initializeVitamProject(getorixDepositDto);
 
         CollectTransactionDto collectTransactionDto = new CollectTransactionDto();
         collectTransactionDto.setStatus("OPEN");
@@ -138,21 +137,61 @@ public class GetorixDepositInternalService  extends
             projectResult.getId(), vitamContext);
 
         getorixDepositDto.setTransactionId(transactionResult.getId());
-
-        getorixDepositDto.setCreationDate(OffsetDateTime.now());
         getorixDepositDto.setProjectId(projectResult.getId());
+        getorixDepositDto.setCreationDate(OffsetDateTime.now());
 
         return this.create(getorixDepositDto);
     }
 
     public GetorixDepositDto getGetorixDepositById(String id) {
-        AuthUserDto authUserDto = internalSecurityService.getUser();
-        if(Objects.isNull(authUserDto)) {
-            LOGGER.error("You are not authorized to create the deposit");
-            throw new UnAuthorizedException("You are not authorized to create the deposit ");
-        }
+
+        checkIsUserAuthenticated("You are not authorized to get the deposit details");
         LOGGER.debug("[Internal] : get the GetorixDeposit details by id : {}", id);
         return this.getOne(id);
+    }
+
+    public GetorixDepositDto updateGetorixDepositDetails(String getorixDepositId, GetorixDepositDto getorixDepositDto,
+        VitamContext vitamContext) {
+
+        if(Objects.isNull(getorixDepositDto)) {
+            LOGGER.error("The getorixDeposit should not be null");
+            throw new BadRequestException("The getorixDeposit should not be null");
+        }
+        if(Objects.isNull(getorixDepositId)) {
+            LOGGER.error("The getorixDepositId should not be null");
+            throw new BadRequestException("The getorixDepositId should not be null");
+        }
+        if(!getorixDepositId.equals(getorixDepositDto.getId())) {
+            LOGGER.error("The getorixDepositId should be correct");
+            throw new ForbiddenException("The getorixDepositId should be correct");
+        }
+        GetorixDepositDto getorixDepositDtoExisted = this.getOne(getorixDepositId);
+
+        if(Objects.isNull(getorixDepositDtoExisted)) {
+            LOGGER.error("The getorixDeposit with this Id : {} not found", getorixDepositDto.getId());
+            throw new NotFoundException("The getorixDeposit not found");
+        }
+        getorixDepositDto.setCreationDate(getorixDepositDtoExisted.getCreationDate());
+        getorixDepositDto.setTransactionId(getorixDepositDtoExisted.getTransactionId());
+        getorixDepositDto.setProjectId(getorixDepositDtoExisted.getProjectId());
+
+        checkIsUserAuthenticated("You are not authorized to update the deposit");
+
+        LOGGER.debug("[Internal] : update the GetorixDeposit details with id : {}", getorixDepositDto.getId());
+
+        getorixDepositDto.setLastUpdate(OffsetDateTime.now());
+
+        LOGGER.debug("Update the Vitam Collect Project with id {}", getorixDepositDto.getProjectId());
+        CollectProjectDto collectProjectDto = initializeVitamProject(getorixDepositDto);
+        collectProjectDto.setId(getorixDepositDto.getProjectId());
+        updateCollectProject(collectProjectDto, vitamContext);
+
+        LOGGER.debug("Update the Vitam Collect Transaction with id {}", getorixDepositDto.getTransactionId());
+        CollectTransactionDto collectTransactionDto = initializeVitamTransaction(getorixDepositDto);
+        collectTransactionDto.setId(getorixDepositDto.getTransactionId());
+        updateCollectTransaction(collectTransactionDto, vitamContext);
+
+        return this.update(getorixDepositDto);
     }
 
     private CollectProjectDto createProject(CollectProjectDto collectProjectDto, VitamContext vitamContext) {
@@ -161,23 +200,24 @@ public class GetorixDepositInternalService  extends
             ProjectDto projectDto = ProjectConverter.toVitamProjectDto(collectProjectDto);
             RequestResponse<JsonNode> requestResponse = collectService.initProject(vitamContext, projectDto);
             if (!requestResponse.isOk()) {
+                LOGGER.debug("Error occurs when retrieving projects!");
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }
             return toVitamuiCollectProjectDto(
                 JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     ProjectDto.class));
-        } catch (VitamClientException e) {
-            LOGGER.debug(UNABLE_TO_CREATE_PROJECT + ": {}", e);
-            throw new InternalServerException(UNABLE_TO_CREATE_PROJECT, e);
-        } catch (InvalidParseOperationException e) {
-            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
-            throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
+        } catch (VitamClientException exception) {
+            LOGGER.debug(UNABLE_TO_CREATE_PROJECT + ": {}", exception.getMessage());
+            throw new InternalServerException(UNABLE_TO_CREATE_PROJECT, exception);
+        } catch (InvalidParseOperationException exception) {
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", exception.getMessage());
+            throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, exception);
         }
     }
 
     private CollectTransactionDto createTransactionForProject(
         CollectTransactionDto collectTransactionDto, String projectId, VitamContext vitamContext) {
-        LOGGER.debug("CollectTransactionDto: ", collectTransactionDto);
+        LOGGER.debug("CollectTransactionDto: {} ", collectTransactionDto);
         try {
             SanityChecker.checkSecureParameter(projectId);
             TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
@@ -190,13 +230,62 @@ public class GetorixDepositInternalService  extends
             return TransactionConverter.toVitamUiDto(
                 JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     TransactionDto.class));
-        } catch (VitamClientException e) {
-            LOGGER.debug(UNABLE_TO_CREATE_TRANSACTION + ": {}", e);
-            throw new InternalServerException(UNABLE_TO_CREATE_TRANSACTION, e);
-        } catch (InvalidParseOperationException e) {
-            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
-            throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
+        } catch (VitamClientException exception) {
+            LOGGER.debug(UNABLE_TO_CREATE_TRANSACTION + ": {}", exception.getMessage());
+            throw new InternalServerException(UNABLE_TO_CREATE_TRANSACTION, exception);
+        } catch (InvalidParseOperationException exception) {
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", exception.getMessage());
+            throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, exception);
         }
+    }
+
+    private void updateCollectProject(CollectProjectDto collectProjectDto, VitamContext vitamContext) {
+        LOGGER.debug("CollectProjectDto: {}", collectProjectDto);
+        try {
+            ProjectDto projectDto = ProjectConverter.toVitamProjectDto(collectProjectDto);
+            RequestResponse<JsonNode> requestResponse = collectService.updateProject(vitamContext, projectDto);
+            if (!requestResponse.isOk()) {
+                LOGGER.debug("Error occurs when updating project!");
+                throw new VitamClientException("Error occurs when updating project!");
+            }
+        } catch (VitamClientException vitamClientException) {
+            LOGGER.debug(UNABLE_TO_UPDATE_PROJECT + ": {}", vitamClientException.getMessage());
+            throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT, vitamClientException);
+        }
+    }
+
+    private void updateCollectTransaction(CollectTransactionDto collectTransactionDto,
+        VitamContext vitamContext) {
+        LOGGER.debug("CollectTransactionDto: {}", collectTransactionDto);
+        try {
+            TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
+            RequestResponse<JsonNode> requestResponse = collectService.updateTransaction(vitamContext, transactionDto);
+            if (!requestResponse.isOk()) {
+                LOGGER.debug("Error occurs when updating transaction!");
+                throw new VitamClientException("Error occurs when updating transaction!");
+            }
+        } catch (VitamClientException vitamClientException) {
+            LOGGER.debug(UNABLE_TO_UPDATE_TRANSACTION + ": {}", vitamClientException.getMessage());
+            throw new InternalServerException(UNABLE_TO_UPDATE_TRANSACTION, vitamClientException);
+        }
+    }
+
+    private CollectTransactionDto initializeVitamTransaction(GetorixDepositDto getorixDepositDto) {
+        CollectTransactionDto collectTransactionDto = new CollectTransactionDto();
+        collectTransactionDto.setStatus("OPEN");
+        collectTransactionDto.setMessageIdentifier(getorixDepositDto.getOperationName());
+        collectTransactionDto.setOriginatingAgencyIdentifier(getorixDepositDto.getOriginatingAgency());
+        collectTransactionDto.setSubmissionAgencyIdentifier(getorixDepositDto.getVersatileService());
+        return collectTransactionDto;
+    }
+
+    private CollectProjectDto initializeVitamProject(GetorixDepositDto getorixDepositDto) {
+        CollectProjectDto collectProjectDto = new CollectProjectDto();
+        collectProjectDto.setStatus("OPEN");
+        collectProjectDto.setMessageIdentifier(getorixDepositDto.getOperationName());
+        collectProjectDto.setOriginatingAgencyIdentifier(getorixDepositDto.getOriginatingAgency());
+        collectProjectDto.setSubmissionAgencyIdentifier(getorixDepositDto.getVersatileService());
+        return collectProjectDto;
     }
 
      @Override
@@ -230,6 +319,13 @@ public class GetorixDepositInternalService  extends
 
         if(getorixDepositDto.getDocumentEndDate() != null) {
             getorixDepositDto.setDocumentEndDate(getorixDepositDto.getDocumentEndDate().plusDays(1));
+        }
+    }
+    private void checkIsUserAuthenticated(String errorMessage) {
+        AuthUserDto authUserDto = internalSecurityService.getUser();
+        if(Objects.isNull(authUserDto)) {
+            LOGGER.error(errorMessage);
+            throw new UnAuthorizedException(errorMessage);
         }
     }
 }
