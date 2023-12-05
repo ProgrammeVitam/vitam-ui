@@ -67,9 +67,10 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
   public navigateTo(data: BreadCrumbData): void {
     if (data.isGetorix && data.isGetorix === true) {
       if (data.redirectUrl) {
-        this.router.navigateByUrl(data.redirectUrl).then(() => {
-          window.location.reload();
-        });
+        window.location.href = data.redirectUrl;
+        // this.router.navigateByUrl(data.redirectUrl).then(() => {
+        //   window.location.reload();
+        // });
       }
     }
     if (data.redirectUrl) {

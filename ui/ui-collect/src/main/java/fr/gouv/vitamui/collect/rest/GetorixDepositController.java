@@ -44,6 +44,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -83,11 +84,22 @@ public class GetorixDepositController extends AbstractUiRestController {
     @ApiOperation(value = "Get Getorix Deposit Details by Id")
     @GetMapping(value = CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public GetorixDepositDto getorixDepositById(final @PathVariable("id") String getorixDepositId)
+    public GetorixDepositDto getGetorixDepositById(final @PathVariable("id") String getorixDepositId)
         throws PreconditionFailedException {
         ParameterChecker.checkParameter("the Getorix Deposit Id is mandatory : ", getorixDepositId);
         SanityChecker.checkSecureParameter(getorixDepositId);
         LOGGER.debug("[UI] : get the GetorixDeposit details by id : {}", getorixDepositId);
         return getorixDepositService.getOne(buildUiHttpContext(), getorixDepositId);
+    }
+
+    @ApiOperation(value = "Update Getorix Deposit Details with Id")
+    @PutMapping(CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public GetorixDepositDto updateGetorixDepositDetails(@RequestBody final GetorixDepositDto getorixDepositDto)
+        throws PreconditionFailedException {
+        ParameterChecker.checkParameter("The Getorix Deposit is mandatory", getorixDepositDto);
+        SanityChecker.sanitizeCriteria(getorixDepositDto);
+        LOGGER.debug("[UI] : Update Getorix Deposit with id :{}", getorixDepositDto.getId());
+        return getorixDepositService.updateGetorixDepositDetails(buildUiHttpContext(), getorixDepositDto);
     }
 }

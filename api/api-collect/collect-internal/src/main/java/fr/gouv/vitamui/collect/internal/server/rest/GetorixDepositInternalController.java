@@ -28,7 +28,6 @@
 package fr.gouv.vitamui.collect.internal.server.rest;
 
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.ExternalParametersService;
@@ -40,10 +39,12 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,9 +73,10 @@ public class GetorixDepositInternalController {
         this.externalParametersService = externalParametersService;
     }
 
+    @ApiOperation(value = "Create Getorix Deposit")
     @PostMapping()
     public GetorixDepositDto createGetorixDeposit(final @Valid @RequestBody GetorixDepositDto getorixDepositDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter("the Getorix Deposit is mandatory : ", getorixDepositDto);
         SanityChecker.sanitizeCriteria(getorixDepositDto);
         LOGGER.debug("[Internal] : Create new Getorix Deposit");
@@ -82,12 +84,27 @@ public class GetorixDepositInternalController {
             externalParametersService.buildVitamContextFromExternalParam());
     }
 
+    @ApiOperation(value = "Get Getorix Deposit Details")
     @GetMapping(value = CommonConstants.PATH_ID)
-    public GetorixDepositDto getorixDepositById(final @PathVariable("id") String getorixDepositId) throws
+    public GetorixDepositDto getGetorixDepositById(final @PathVariable("id") String getorixDepositId) throws
         PreconditionFailedException {
         ParameterChecker.checkParameter("the Getorix Deposit Id is mandatory : ", getorixDepositId);
         SanityChecker.checkSecureParameter(getorixDepositId);
         LOGGER.debug("[Internal] : get the GetorixDeposit details by id : {}", getorixDepositId);
         return getorixDepositInternalService.getGetorixDepositById(getorixDepositId);
+    }
+
+    @ApiOperation(value = "Update Getorix Deposit Details")
+    @PutMapping(CommonConstants.PATH_ID)
+    public GetorixDepositDto updateGetorixDepositDetails(final @PathVariable("id") String getorixDepositId,
+        final @RequestBody GetorixDepositDto getorixDepositDto) throws
+        PreconditionFailedException {
+        ParameterChecker.checkParameter("the Getorix Deposit Dto is mandatory : ", getorixDepositDto);
+        ParameterChecker.checkParameter("the Getorix Deposit Id is mandatory : ", getorixDepositId);
+        SanityChecker.sanitizeCriteria(getorixDepositDto);
+        SanityChecker.checkSecureParameter(getorixDepositId);
+        LOGGER.debug("[Internal] : update the GetorixDeposit details by id : {}", getorixDepositId);
+        return getorixDepositInternalService.updateGetorixDepositDetails(getorixDepositId, getorixDepositDto,
+            externalParametersService.buildVitamContextFromExternalParam());
     }
 }
