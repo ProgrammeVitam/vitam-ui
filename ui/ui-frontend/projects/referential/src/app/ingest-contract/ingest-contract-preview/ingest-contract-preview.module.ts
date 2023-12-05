@@ -37,6 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -50,12 +51,15 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab/ingest-contract-attachment-tab.component';
-import { IngestContractNodeUpdateComponent } from './ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component';
+import {
+  IngestContractNodeUpdateComponent
+} from './ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
 import { IngestContractInformationTabComponent } from './ingest-contract-information-tab/ingest-contract-information-tab.component';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab/ingest-contract-object-tab.component';
 import { IngestContractPreviewComponent } from './ingest-contract-preview.component';
+import { IngestContractSignatureTabComponent } from './ingest-contract-signature-tab/ingest-contract-signature-tab.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +67,7 @@ import { IngestContractPreviewComponent } from './ingest-contract-preview.compon
     IngestContractInformationTabComponent,
     IngestContractFormatTabComponent,
     IngestContractObjectTabComponent,
+    IngestContractSignatureTabComponent,
     IngestContractAttachmentTabComponent,
     IngestContractNodeUpdateComponent,
     IngestContractHeritageTabComponent,
@@ -77,6 +82,7 @@ import { IngestContractPreviewComponent } from './ingest-contract-preview.compon
     ReactiveFormsModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatButtonToggleModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,

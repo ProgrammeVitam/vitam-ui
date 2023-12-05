@@ -34,28 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpHeaders, HttpParams} from '@angular/common/http';
-import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import '@angular/localize/init';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {FileFormat, FilingPlanMode} from 'projects/vitamui-library/src/public-api';
-import {Subscription} from 'rxjs';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FileFormat, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
+import { Subscription } from 'rxjs';
 import {
-  ConfirmDialogService,
-  ExternalParameters,
-  ExternalParametersService,
-  IngestContract,
-  Option,
-  SignaturePolicy,
-  SignedDocumentPolicyEnum
+  ConfirmDialogService, ExternalParameters, ExternalParametersService, IngestContract, Option, SignaturePolicy, SignedDocumentPolicyEnum
 } from 'ui-frontend-common';
-import {ArchiveProfileApiService} from '../../core/api/archive-profile-api.service';
-import {ManagementContractApiService} from '../../core/api/management-contract-api.service';
-import {FileFormatService} from '../../file-format/file-format.service';
-import {IngestContractService} from '../ingest-contract.service';
-import {IngestContractCreateValidators} from './ingest-contract-create.validators';
+import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
+import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
+import { FileFormatService } from '../../file-format/file-format.service';
+import { IngestContractService } from '../ingest-contract.service';
+import { IngestContractCreateValidators } from './ingest-contract-create.validators';
 
 @Component({
   selector: 'app-ingest-contract-create',
@@ -109,11 +103,11 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   isDisabledButton = false;
 
   usages: Option[] = [
-    {key: 'BinaryMaster', label: 'Original numérique', info: ''},
-    {key: 'Dissemination', label: 'Diffusion', info: ''},
-    {key: 'Thumbnail', label: 'Vignette', info: ''},
-    {key: 'TextContent', label: 'Contenu brut', info: ''},
-    {key: 'PhysicalMaster', label: 'Original papier', info: ''},
+    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
+    { key: 'Dissemination', label: 'Diffusion', info: '' },
+    { key: 'Thumbnail', label: 'Vignette', info: '' },
+    { key: 'TextContent', label: 'Contenu brut', info: '' },
+    { key: 'PhysicalMaster', label: 'Original papier', info: '' },
   ];
 
   ngOnInit() {
@@ -211,8 +205,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.linkParentIdControl.setValue({included: [], excluded: []});
-    this.checkParentIdControl.setValue({included: [], excluded: []});
+    this.linkParentIdControl.setValue({ included: [], excluded: [] });
+    this.checkParentIdControl.setValue({ included: [], excluded: [] });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
