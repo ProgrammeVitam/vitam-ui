@@ -24,9 +24,10 @@ db.certificates.insertOne({
     {% endfor %}
 {%- endmacro %}
 
-{{ process('{{ pki_dir }}/server/hosts/%host%/ui-portal.pem', 'ui_portal_context', 'hosts_ui_portal') }}
+
+{{ process('{{ pki_dir }}/client-external/clients/ui-portal/ui-portal.pem', 'ui_portal_context', 'hosts_ui_portal') }}
 {{ process('{{ pki_dir }}/server/hosts/%host%/cas-server.pem', 'cas_context', 'hosts_cas_server') }}
-{{ process('{{ pki_dir }}/server/hosts/%host%/ui-identity-admin.pem', 'ui_admin_identity_context', 'hosts_ui_identity_admin') }}
-{{ process('{{ pki_dir }}/server/hosts/%host%/ui-identity.pem', 'ui_identity_context', 'hosts_ui_identity') }}
+{{ process('{{ pki_dir }}/client-external/clients/ui-identity-admin/ui-identity-admin.pem', 'ui_admin_identity_context', 'hosts_ui_identity_admin') }}
+{{ process('{{ pki_dir }}/client-external/clients/ui-identity/ui-identity.pem', 'ui_identity_context', 'hosts_ui_identity') }}
 
 print("END security.populate_certificates_ref.js");
