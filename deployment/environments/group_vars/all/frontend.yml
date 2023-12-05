@@ -6,16 +6,16 @@ frontend:
   apps:
     - name: identity
       certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity"
-      key_pass: "" #{{ server_ui_identity_key }}" #"{{ vault_cert_client_client_external_ui_identity_key }}"
+      key_pass: "{{ server_ui_identity_key }}" #"{{ vault_cert_client_client_external_ui_identity_key }}"
       #repo: "@vitam-ui"
     - name: identity-admin
       component: identity
       certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity-admin"
-      key_pass: "" #{{ server_ui_identity_admin_key }}" #"{{ vault_cert_client_client_external_ui_identity_admin_key }}"
+      key_pass: "{{ server_ui_identity_admin_key }}" #"{{ vault_cert_client_client_external_ui_identity_admin_key }}"
       #repo: "@vitam-ui"
     - name: portal
       certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-portal"
-      key_pass: "" #{{ server_ui_portal_key }}" #"{{ vault_cert_client_client_external_ui_portal_key }}"
+      key_pass: "{{ server_ui_portal_key }}" #"{{ vault_cert_client_client_external_ui_portal_key }}"
       #repo: "@vitam-ui"
 
 frontend_user: "vitamui"
