@@ -33,7 +33,7 @@ server:
 
 {% endif %}
 
-  max-http-header-size: {{ iam_internal.server_max_http_header_size }}
+  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
 
   tomcat:
     accesslog:
