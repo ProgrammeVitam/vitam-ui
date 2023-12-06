@@ -15,20 +15,19 @@
     - name: Set mongo_no_auth fact to true
       set_fact:
         mongo_no_auth: true
-      when: "mongo_authent_enabled.rc != 0"
+      when: mongo_authent_enabled.rc != 0
   when: mongodb.docker is not defined or not mongodb.docker.enable
 
 - block:
     - name: Load script in database (docker)
       shell: "docker exec --tty {{ mongodb.docker.image_name }} /bin/bash -c \"mongo --host mongodb://{{ mongod_uri }}/admin?replicaSet={{ mongod_replicaset_name }} -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'\""
-
       failed_when: false
       register: mongo_authent_enabled
 
     - name: Set mongo_no_auth fact to true
       set_fact:
         mongo_no_auth: true
-      when: "mongo_authent_enabled.rc != 0"
+      when: mongo_authent_enabled.rc != 0
   when: mongodb.docker is defined and mongodb.docker.enable
 
 # When authentication is required, we set mongodb admin credentials
