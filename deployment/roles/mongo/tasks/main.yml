@@ -148,14 +148,14 @@
     - fail:
         msg: "ERROR: mongo_rs_bootstrap node can't be mongo_arbiter !"
       when: mongo_arbiter | default(false) | bool == true
+      tags: update_mongodb_configuration
 
     - name: Wait for the service port to be open on all members of the replica
       wait_for:
         host: "{{ hostvars[item]['ip_service'] }}"
         port: "{{ mongodb.mongod_port }}"
         timeout: "{{ vitamui_defaults.services.start_timeout }}"
-      with_items:
-        - "{{ groups['hosts_vitamui_mongod'] }}"
+      with_items: "{{ groups['hosts_vitamui_mongod'] }}"
       tags: update_mongodb_configuration
 
     - name: Copy the script which initiate the replica set
@@ -174,6 +174,12 @@
     - import_tasks: check_auth.yml
 
     # Create the local shard admin user
+    - name: Compute list of mongo_nodes
+      set_fact:
+        mongo_nodes: "{{ mongo_nodes | default([]) + [ hostvars[item]['ip_service'] + ':' + mongodb.mongod_port | string ] }}"
+      loop: "{{ groups['hosts_vitamui_mongod'] }}"
+      when: hostvars[item]['mongo_arbiter'] | default(false) | bool == false
+
     - name: Copy the script which create the local users
       template:
         src: local-user.js.j2
@@ -184,7 +190,7 @@
       tags: update_mongodb_configuration
 
     - name: Create the local shard user
-      command: "mongosh --host {{ ip_service }} --port {{ mongodb.mongod_port }} {{ mongo_credentials }} --quiet --file {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/local-user.js"
+      command: "mongosh --host {{ mongo_nodes | join(',') }} {{ mongo_credentials }} --quiet --file {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/local-user.js"
       tags: update_mongodb_configuration
 
   when: mongo_rs_bootstrap | default(false) | bool == true
