@@ -40,10 +40,10 @@ function generateCerts {
     generateHostCertAndStorePassphrase          pastis-external     hosts_vitamui_pastis_external
 
     #Zone UI
-    generateClientCertAndStorePassphrase          ui-portal           client-external
-    generateClientCertAndStorePassphrase          ui-identity         client-external
-    generateClientCertAndStorePassphrase          ui-identity-admin   client-external
-    generateClientCertAndStorePassphrase          ui-referential      client-external
+    generateClientCertAndStorePassphrase        ui-portal           client-external
+    generateClientCertAndStorePassphrase        ui-identity         client-external
+    generateClientCertAndStorePassphrase        ui-identity-admin   client-external
+    generateClientCertAndStorePassphrase        ui-referential      client-external
     generateHostCertAndStorePassphrase          ui-ingest           hosts_ui_ingest
     generateHostCertAndStorePassphrase          ui-archive-search   hosts_ui_archive_search
     generateHostCertAndStorePassphrase          ui-collect          hosts_ui_collect

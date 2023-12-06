@@ -23,9 +23,11 @@ server:
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
-    client-auth: need
     {% if gateway.enabled | default(False) is sameas true -%}
+    client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name }}
+    {% else %}
+    client-auth: need
     {% endif %}
     #enabled-protocols: {{ssl_setting.enabled_protocols}}
     #ciphers: {{ssl_setting.ciphers}}
@@ -66,10 +68,6 @@ iam-external:
 {% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.security_internal.secure | default(secure) | lower }}
     ssl-configuration:
-      keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore }}
-        type: JKS
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
@@ -84,10 +82,6 @@ iam-external:
 {% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
     ssl-configuration:
-      keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore }}
-        type: JKS
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}

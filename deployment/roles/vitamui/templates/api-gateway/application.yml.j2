@@ -5,8 +5,8 @@ server:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
     key-password: {{ password_keystore }}
-    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-    trust-store-password: {{ password_truststore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_external.jks
+    trust-store-password: {{ truststores_client_external }}
     client-auth: need
 {% endif %}
   max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}

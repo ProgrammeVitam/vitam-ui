@@ -52,8 +52,6 @@ vitamui_defaults:
 
 ################################################################################
 
-gateway.enabled: true
-
 vitamui:
   api_gateway:
     host: "api-gateway.service.{{ consul_domain }}"
