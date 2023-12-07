@@ -43,6 +43,12 @@ function checkExistingReplicaSetMembers() {
         for (const targetMember of targetMembers) {
             let rsConfigMember = rsConfigMembers.find(member => member.host === targetMember.host);
             if (rsConfigMember) {
+                if(rsConfigMember.arbiterOnly !== targetMember.arbiterOnly) {
+                    printjson(rsConfig);
+                    throw "ERROR : Host " + targetMember.host + " expected " +
+                        (targetMember.arbiterOnly? "" : "NOT ") + "to be arbiter (mongo_arbiter=true)";
+                }
+
                 print("INFO : host " + targetMember.host + " found in mongod replica set");
             } else {
                 printjson(rsConfig);
@@ -71,6 +77,7 @@ function buildTargetReplicaSetMemberConfiguration() {
         {% if (hostvars[host]['mongo_rs_bootstrap'] | default(false) | bool != true) and (hostvars[host]['mongo_arbiter'] | default(false) | bool == true) %}
         arbiterOnly: true
         {% else %}
+        arbiterOnly: false,
         priority: {{ '1' if (hostvars[host]['is_small'] | default(false) | bool == true) else '10' }}
         {% endif %}
     });
