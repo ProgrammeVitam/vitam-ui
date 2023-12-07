@@ -4,6 +4,10 @@ mat-card {
     cursor: pointer;
     box-shadow: none!important;
     background-color: transparent;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 mat-card > img, .appIcon {
