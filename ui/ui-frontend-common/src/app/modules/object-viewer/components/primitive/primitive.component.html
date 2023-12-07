@@ -2,10 +2,10 @@
   <label>{{ displayObject.displayRule.ui.label | empty }}</label>
   <div [ngSwitch]="uiComponent">
     <ng-container *ngSwitchCase="'datepicker'">
-      {{ displayObject.value | date : 'medium' | empty }}
+      {{ displayObject.value | date : dateFormat | empty }}
     </ng-container>
     <ng-container *ngSwitchCase="'datetime'">
-      {{ displayObject.value | date : 'medium' | empty }}
+      {{ displayObject.value | date : dateFormat | empty }}
     </ng-container>
     <ng-container *ngSwitchDefault>
       {{ displayObject.value | empty }}

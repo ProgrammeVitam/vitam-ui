@@ -288,25 +288,25 @@ describe('SchemaStrategyDisplayObjectService', () => {
         await expect(displayObject.children.length).toEqual(3);
         await expect(displayObject.children[0]).toBeTruthy();
         await expect(displayObject.children[0].path).toEqual('id');
-        await expect(displayObject.children[0].displayRule.ui.display).toEqual(true);
+        await expect(displayObject.children[0].displayRule.ui.display).toEqual(false); // Hidden by labelless filtering
         await expect(displayObject.children[1]).toBeTruthy();
         // Title display value depends on mocked values need to be DESCRIPTIVE category.
         await expect(displayObject.children[1].path).toEqual('Title');
-        await expect(displayObject.children[1].displayRule.ui.display).toEqual(false);
+        await expect(displayObject.children[1].displayRule.ui.display).toEqual(true);
         await expect(displayObject.children[2]).toBeTruthy();
         await expect(displayObject.children[2].path).toEqual('tags');
-        await expect(displayObject.children[2].displayRule.ui.display).toEqual(true);
+        await expect(displayObject.children[2].displayRule.ui.display).toEqual(false); // Hidden by labelless filtering
         await expect(displayObject.children[2].children).toBeTruthy();
         await expect(displayObject.children[2].children.length).toEqual(3);
         await expect(displayObject.children[2].children[0].path).toEqual('tags[0]');
         await expect(displayObject.children[2].children[0].value).toEqual('low');
-        await expect(displayObject.children[2].children[0].displayRule.ui.display).toEqual(true);
+        await expect(displayObject.children[2].children[0].displayRule.ui.display).toEqual(false); // Hidden by labelless filtering
         await expect(displayObject.children[2].children[1].path).toEqual('tags[1]');
         await expect(displayObject.children[2].children[1].value).toEqual('medium');
-        await expect(displayObject.children[2].children[1].displayRule.ui.display).toEqual(true);
+        await expect(displayObject.children[2].children[1].displayRule.ui.display).toEqual(false); // Hidden by labelless filtering
         await expect(displayObject.children[2].children[2].path).toEqual('tags[2]');
         await expect(displayObject.children[2].children[2].value).toEqual('high');
-        await expect(displayObject.children[2].children[2].displayRule.ui.display).toEqual(true);
+        await expect(displayObject.children[2].children[2].displayRule.ui.display).toEqual(false); // Hidden by labelless filtering
 
         done();
       });

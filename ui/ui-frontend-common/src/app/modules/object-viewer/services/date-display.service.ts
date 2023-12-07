@@ -44,7 +44,7 @@ export class DateDisplayService {
     default: { datepicker: 'medium', datetime: 'medium' },
   };
 
-  public getFormat(component: ComponentType, formatSet = 'default') {
+  public getFormat(component: ComponentType, formatSet = 'wanted') {
     return this.dateFormat[formatSet][component] || 'short';
   }
 }
