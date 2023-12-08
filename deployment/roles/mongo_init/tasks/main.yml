@@ -9,10 +9,11 @@
     set_fact:
       mongo_nodes: "{{ mongo_nodes | default([]) + [ hostvars[item]['ip_service'] + ':'+ mongodb.mongod_port | string ] }}"
     loop: "{{ groups['hosts_vitamui_mongod'] }}"
+    when: hostvars[item]['mongo_arbiter'] | default(false) | bool == false
 
   - name: Set Mongo URI
     set_fact:
-      mongod_uri: "{{ mongo_nodes| join(',') }}"
+      mongod_uri: "{{ mongo_nodes | join(',') }}"
 
   - name: Set mongod_output_dir_entry_point
     set_fact:
