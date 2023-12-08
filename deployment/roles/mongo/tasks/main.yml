@@ -145,6 +145,11 @@
 
 - block:
 
+    - fail:
+        msg: "ERROR: mongo_rs_bootstrap node can't be mongo_arbiter !"
+      when: mongo_arbiter | default(false) | bool == true
+      tags: update_mongodb_configuration
+
     - name: Wait for the service port to be open on all members of the replica
       wait_for:
         host: "{{ hostvars[item]['ip_service'] }}"
