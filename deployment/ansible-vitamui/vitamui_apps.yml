@@ -52,9 +52,9 @@
     - vitamui
   vars:
     vitamui_struct: "{{ vitamui.cas_server }}"
-    vitamui_certificate_type: "external"
+    vitamui_certificate_type: "server"
     password_keystore: "{{ keystores_server_cas_server }}"
-    password_truststore: "{{ truststores_client_external }}"
+    password_truststore: "{{ truststores_server }}"
     consul_tags: "cas-server, cas, external"
   tags:
     - cas-server
