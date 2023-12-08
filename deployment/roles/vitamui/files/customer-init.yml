@@ -288,6 +288,7 @@ customer-init:
         - ROLE_UPDATE_TRANSACTIONS
         - ROLE_DELETE_TRANSACTIONS
         - ROLE_UPDATE_UNITS_METADATA
+        - ROLE_GET_SCHEMAS
 
     - name: Profil pour les contrats de gestion
       description: Contrats de gestion
