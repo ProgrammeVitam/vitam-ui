@@ -14,7 +14,7 @@
       <div *ngIf="showInitialForm" class="row">
         <div class="col-3">
           <div class="text-return">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <i class="vitamui-icon vitamui-icon-chevron-left" [ngStyle]="{ 'font-size': '24px' }"></i>
             <span class="return clickable" (click)="returnToMainPage()"> {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.BACK' | translate }}</span>
           </div>
         </div>
@@ -46,10 +46,10 @@
       <div *ngIf="showForm" class="row">
         <!-- sur 3 col-->
         <div class="col-4">
-          <div [ngStyle]="{ position: 'sticky', top: '100px' }">
+          <div [ngStyle]="{ position: 'sticky', top: '70px' }">
             <ng-container>
               <div class="text-return-creation" *ngIf="!operationId">
-                <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+                <i class="vitamui-icon vitamui-icon-chevron-left" [ngStyle]="{ 'font-size': '24px' }"></i>
 
                 <span class="return clickable" (click)="returnToGetorixInitialPage()">
                   {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SAVE_EXIT' | translate }}
@@ -78,7 +78,7 @@
           <div></div>
         </div>
         <!-- sur 6 col-->
-        <div id="page-top" class="col-6" [ngStyle]="{ 'padding-top': '45px' }">
+        <div id="page-top" class="col-6" [ngStyle]="{ 'padding-top': '5px' }">
           <form [formGroup]="getorixDepositform">
             <div class="content vitamui-form">
               <div *ngIf="showInputErrorFrame" class="error-message-background">
@@ -113,7 +113,12 @@
               <div class="text-title">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.MANDATORY_FIELDS_MESSAGE' | translate }}</div>
 
               <!--Organisme titulaire-->
-              <div id="agencyDetails" class="form-title" (mousemove)="onMouseMove('agencyDetails')">
+              <div
+                id="agencyDetails"
+                class="form-title"
+                (mousemove)="onMouseMove('agencyDetails')"
+                [ngStyle]="{ 'padding-top': '0px', 'padding-bottom': '0px' }"
+              >
                 <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.AGENCY_DETAILS' | translate }}</p>
 
                 <vitamui-common-input
@@ -183,7 +188,12 @@
               </div>
 
               <!-- Responsable scientifique -->
-              <div id="scientificOfficer" class="form-title" (mousemove)="onMouseMove('scientificOfficer')">
+              <div
+                id="scientificOfficer"
+                class="form-title"
+                (mousemove)="onMouseMove('scientificOfficer')"
+                [ngStyle]="{ 'padding-top': '0px' }"
+              >
                 <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.SCIENTIFIC_OFFICER' | translate }}</p>
                 <vitamui-common-input
                   class="col-12 px-0"
@@ -269,7 +279,12 @@
               </div>
 
               <!-- Nom et type d'opération -->
-              <div id="operaionNameAndType" class="form-title" (mousemove)="onMouseMove('operaionNameAndType')">
+              <div
+                id="operaionNameAndType"
+                class="form-title"
+                (mousemove)="onMouseMove('operaionNameAndType')"
+                [ngStyle]="{ 'padding-top': '0px', 'padding-bottom': '0px' }"
+              >
                 <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.OPERATION_TYPE_NAME' | translate }}</p>
 
                 <vitamui-common-input
@@ -292,7 +307,7 @@
                   >
                 </vitamui-common-input>
 
-                <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
+                <div class="col-12 px-0">
                   <div class="guide-design">
                     <div class="row">
                       <div class="col-1">
@@ -395,7 +410,7 @@
                   >
                 </vitamui-common-input>
 
-                <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
+                <div class="col-12 px-0">
                   <div class="guide-design">
                     <div class="row">
                       <div class="col-1">
@@ -436,7 +451,7 @@
                   >
                 </vitamui-common-input>
 
-                <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
+                <div class="col-12 px-0">
                   <div class="guide-design">
                     <div class="row">
                       <div class="col-1">
@@ -453,7 +468,12 @@
               </div>
 
               <!-- Localisation de l'opération -->
-              <div id="operationLocalisation" class="form-title" (mousemove)="onMouseMove('operationLocalisation')">
+              <div
+                id="operationLocalisation"
+                class="form-title"
+                (mousemove)="onMouseMove('operationLocalisation')"
+                [ngStyle]="{ 'padding-bottom': '0px' }"
+              >
                 <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.LOCALISATION' | translate }}</p>
                 <ng-container formGroupName="archaeologistGetorixAddress">
                   <vitamui-common-input
@@ -542,7 +562,7 @@
                 </vitamui-common-textarea>
 
                 <div class="col-12 px-0">
-                  <div class="guide-design">
+                  <div class="guide-design" [ngStyle]="{ 'margin-top': '20px' }">
                     <div class="row">
                       <div class="col-1">
                         <span class="vertical-line"></span>
@@ -579,7 +599,13 @@
                         >{{ getorixDepositform.get('operationStartDate').value | dateTime : 'MM/yyyy' }}
                       </span>
                     </ng-template>
-                    <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="operationStartDate" />
+                    <input
+                      class="hidden"
+                      size="0"
+                      [matDatepicker]="pickerSatrDate"
+                      formControlName="operationStartDate"
+                      [max]="getorixDepositform.get('operationEndDate').value"
+                    />
                     <mat-datepicker
                       #pickerSatrDate
                       panelClass="custom-header"
@@ -611,7 +637,13 @@
                         >{{ getorixDepositform.get('operationEndDate').value | dateTime : 'MM/yyyy' }}
                       </span>
                     </ng-template>
-                    <input class="hidden" size="0" [matDatepicker]="pickerEndDate" formControlName="operationEndDate" />
+                    <input
+                      class="hidden"
+                      size="0"
+                      [matDatepicker]="pickerEndDate"
+                      formControlName="operationEndDate"
+                      [min]="getorixDepositform.get('operationStartDate').value"
+                    />
                     <mat-datepicker
                       #pickerEndDate
                       panelClass="custom-header"
@@ -645,7 +677,13 @@
                         >{{ getorixDepositform.get('documentStartDate').value | dateTime : 'yyyy' }}
                       </span>
                     </ng-template>
-                    <input class="hidden" size="0" [matDatepicker]="documentPickerSatrtDate" formControlName="documentStartDate" />
+                    <input
+                      class="hidden"
+                      size="0"
+                      [matDatepicker]="documentPickerSatrtDate"
+                      formControlName="documentStartDate"
+                      [max]="getorixDepositform.get('documentEndDate').value"
+                    />
                     <mat-datepicker
                       #documentPickerSatrtDate
                       panelClass="custom-header"
@@ -676,7 +714,13 @@
                         >{{ getorixDepositform.get('documentEndDate').value | dateTime : 'yyyy' }}
                       </span>
                     </ng-template>
-                    <input class="hidden" size="0" [matDatepicker]="documentPickerEndDate" formControlName="documentEndDate" />
+                    <input
+                      class="hidden"
+                      size="0"
+                      [matDatepicker]="documentPickerEndDate"
+                      formControlName="documentEndDate"
+                      [min]="getorixDepositform.get('documentStartDate').value"
+                    />
                     <mat-datepicker
                       #documentPickerEndDate
                       panelClass="custom-header"
@@ -689,9 +733,8 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="col-12 px-0">
-                  <div class="guide-design">
+                  <div class="guide-design" [ngStyle]="{ 'margin-top': '20px' }">
                     <div class="row">
                       <div class="col-1">
                         <span class="vertical-line"></span>
@@ -727,7 +770,7 @@
                 >
                 </vitamui-common-input>
 
-                <div class="col-12 px-0" [ngStyle]="{ 'margin-top': '-20px' }">
+                <div class="col-12 px-0">
                   <div class="guide-design">
                     <div class="row">
                       <div class="col-1">
@@ -806,7 +849,10 @@
         <!-- sur 3 col-->
         <div class="col-1"></div>
         <div class="col-1">
-          <div [ngStyle]="{ position: 'fixed', 'padding-top': '20px' }" *ngIf="!pending; then btnActivated; else inProgressSpinner"></div>
+          <div
+            [ngStyle]="{ position: 'fixed', 'padding-top': '20px' }"
+            *ngIf="!pending; then btnActivatedLeft; else inProgressSpinner"
+          ></div>
         </div>
       </div>
       <div *ngIf="isSuccessCreation" class="row">
@@ -907,6 +953,11 @@
   <div class="vitamui-min-content">
     <mat-spinner class="vitamui-spinner medium"></mat-spinner>
   </div>
+</ng-template>
+<ng-template #btnActivatedLeft>
+  <button class="btn primary" (click)="validateCreation()" [ngStyle]="{ position: 'fixed' }">
+    <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VALIDATE' | translate }}</span>
+  </button>
 </ng-template>
 <ng-template #btnActivated>
   <button class="btn primary" (click)="validateCreation()">

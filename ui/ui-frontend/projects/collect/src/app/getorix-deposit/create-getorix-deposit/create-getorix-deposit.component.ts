@@ -34,7 +34,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Moment } from 'moment';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AuthService, BreadCrumbData, GlobalEventService, Logger, SidenavPage } from 'ui-frontend-common';
+import { AuthService, BreadCrumbData, GlobalEventService, Logger, SidenavPage, StartupService } from 'ui-frontend-common';
 import { DepositFormError, DepositOperationCategory } from '../core/model/deposit-operation-category.interface';
 import { DepositStatus, GetorixDeposit } from '../core/model/getorix-deposit.interface';
 import { GetorixDepositService } from '../getorix-deposit.service';
@@ -313,7 +313,8 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
     private authService: AuthService,
     globalEventService: GlobalEventService,
     private translateService: TranslateService,
-    private loggerService: Logger
+    private loggerService: Logger,
+    private startupService: StartupService
   ) {
     super(route, globalEventService);
     this.initExportForm();
@@ -329,18 +330,23 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
     this.showForm = false;
     this.showInitialForm = true;
 
-    this.dataBreadcrumb = [
-      {
-        redirectUrl: this.router.url.replace('/create', ''),
-        label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.ARCHIVAL_SPACE'),
-      },
-      { label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.NEW_PROJECT'), redirectUrl: this.router.url, isGetorix: true },
-      { label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.UPLOAD_ARCHIVES') },
-    ];
     this.scrollToTop();
-    this.scrollToElement('page-top-top');
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
+      if (this.tenantIdentifier) {
+        this.dataBreadcrumb = [
+          {
+            redirectUrl: this.router.url.replace('/create', ''),
+            label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.ARCHIVAL_SPACE'),
+          },
+          {
+            label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.NEW_PROJECT'),
+            redirectUrl: this.router.url,
+            isGetorix: true,
+          },
+          { label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.UPLOAD_ARCHIVES') },
+        ];
+      }
     });
 
     this.detectChanges();
@@ -416,7 +422,6 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
 
     if (this.showInputErrorFrame) {
       this.scrollToTop();
-      this.scrollToElement('page-top-top');
       this.showForm = true;
       this.pending = false;
     } else {
@@ -442,7 +447,12 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
         getorixDeposit.id = this.operationId;
         this.getorixDepositService.updateGetorixDeposit(this.removeEmptyValue(getorixDeposit)).subscribe(() => {
           this.pending = false;
-          window.location.href = this.router.url.replace('?operationId=', '/upload-object/');
+          window.location.href =
+            this.startupService.getCollectUrl() +
+            '/getorix-deposit/tenant/' +
+            this.tenantIdentifier +
+            '/create/upload-object/' +
+            this.operationId;
         });
       } else {
         this.createInProgressDepositSubscription = this.getorixDepositService
@@ -456,7 +466,6 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
             this.showSecondScientifOfficer = false;
             this.detectChanges();
             this.scrollToTop();
-            this.scrollToElement('page-top-top');
             this.pending = false;
             this.showForm = false;
             this.showInitialForm = false;
@@ -510,8 +519,14 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
 
   scrollToElement(htmlElementId: string) {
     this.operationCategoryList.map((element) => (element.isSelected = false));
-    const element = document.getElementById(htmlElementId);
-    element.scrollIntoView({ behavior: 'auto', block: 'center' });
+    if (htmlElementId === 'furniture') {
+      const element = document.getElementById('volumeDetails');
+      element.scrollIntoView({ behavior: 'auto', block: 'center' });
+    } else {
+      const element = document.getElementById(htmlElementId);
+      element.scrollIntoView({ behavior: 'auto', block: 'center' });
+    }
+
     if (this.operationCategoryList.find((category) => category.target == htmlElementId)) {
       this.operationCategoryList.find((category) => category.target == htmlElementId).isSelected = true;
     }
@@ -645,7 +660,12 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
 
   goToUploadOperationObjects() {
     if (this.getorixDepositCreated) {
-      window.location.href = this.router.url + '/upload-object/' + this.getorixDepositCreated.id;
+      window.location.href =
+        this.startupService.getCollectUrl() +
+        '/getorix-deposit/tenant/' +
+        this.tenantIdentifier +
+        '/create/upload-object/' +
+        this.getorixDepositCreated.id;
     }
   }
 

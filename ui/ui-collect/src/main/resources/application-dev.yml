@@ -109,7 +109,7 @@ ui-collect:
       hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
-    collect: "https://dev.vitamui.com:4210/collect"
+    collect: "https://dev.vitamui.com:4210"
     ingest: "https://dev.vitamui.com:4208/ingest"
     referential: "https://dev.vitamui.com:4202"
     archives-search: "https://dev.vitamui.com:4209/archive-search"
