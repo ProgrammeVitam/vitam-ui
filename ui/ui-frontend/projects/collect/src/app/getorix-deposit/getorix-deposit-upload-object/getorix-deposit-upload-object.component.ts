@@ -63,7 +63,6 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
         {
           label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.NEW_PROJECT'),
           redirectUrl: this.router.url.replace('/upload-object/', '').replace(this.operationId, ''),
-          isGetorix: true,
         },
         { label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.UPLOAD_ARCHIVES') },
       ];
