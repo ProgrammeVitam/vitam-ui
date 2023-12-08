@@ -2,6 +2,8 @@ pki_dir: "{{lookup('env','PWD')}}/../../../dev-deployment/environments/certs"
 
 # Overwrite vitamui defaults in order to perform transparent execution of deployment scripts.
 
+hide_passwords_during_deploy: false
+
 vitamui_defaults:
   folder:
     root_path: "{{lookup('env','PWD')}}/mongo-entrypoint"
@@ -69,7 +71,7 @@ vitamui_platform_informations:
   company_name: "system company"
   default_email_domain: "change-it.fr"
   email_domains: "change-it.fr"
-  default_password: '$2a$10$5X2kf8hP52sA6HKe2t2vm.ulwx9bs3HI/QT/tg1k5/fQu0WFtSoUW' # password
+  default_password: "$2a$10$5X2kf8hP52sA6HKe2t2vm.ulwx9bs3HI/QT/tg1k5/fQu0WFtSoUW" # password
   address:
     street: change-it
     zip_code: change-it
