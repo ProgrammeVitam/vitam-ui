@@ -11,7 +11,7 @@
   set_fact:
     mongo_credentials: ""
     mongo_no_auth: true
-  when: "mongo_authent_enabled.rc != 0"
+  when: mongo_authent_enabled.rc != 0
   tags: update_mongodb_configuration
 
 # When authentication is required, we set mongodb admin credentials
@@ -19,7 +19,7 @@
   set_fact:
     mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }}"
     mongo_no_auth: false
-  when: "mongo_authent_enabled.rc == 0"
+  when: mongo_authent_enabled.rc == 0
   no_log: "{{ hide_passwords_during_deploy }}"
   tags: update_mongodb_configuration
 
