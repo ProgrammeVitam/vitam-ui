@@ -1,17 +1,20 @@
 [Unit]
-Description=Consul is a distributed, highly-available, and multi-datacenter aware tool for service discovery, configuration, and orchestration.
-Documentation=http://www.consul.io
+Description="HashiCorp Consul - A service mesh solution"
+Documentation=https://www.consul.io/
+Requires=network-online.target
 After=network-online.target
-Wants=network-online.target
+ConditionFileNotEmpty={{ vitam_defaults.folder.root_path }}/conf/consul/consul.json
 
 [Service]
+EnvironmentFile=-{{ vitam_defaults.folder.root_path }}/conf/consul/sysconfig.conf
 User={{ vitam_defaults.users.vitam }}
 Group={{ vitam_defaults.users.group }}
-EnvironmentFile=-{{ vitam_defaults.folder.root_path }}/conf/consul/sysconfig.conf
-ExecStart={{ vitam_defaults.folder.root_path }}/bin/consul/consul $CMD_OPTS
+ExecStart=/usr/bin/consul $CMD_OPTS
 ExecReload=/bin/kill -HUP $MAINPID
-KillSignal=SIGINT
-#CapabilityBoundingSet=CAP_NET_BIND_SERVICE #KWA: doesn't seem to do anything...
+KillMode=process
+KillSignal=SIGTERM
+Restart=on-failure
+LimitNOFILE=65536
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 
 [Install]
