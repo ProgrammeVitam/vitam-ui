@@ -11,7 +11,7 @@
 
   <artifactId>pastis-standalone</artifactId>
   <description>Pastis Standalone Version</description>
-  <name>VITAMUI Pastis API</name>
+  <name>VITAMUI Pastis Standalone API</name>
 
   <properties>
     <maven.compile.target>11</maven.compile.target>
@@ -27,6 +27,7 @@
     <webpack.test.skip>false</webpack.test.skip>
     <skipAllFrontend>false</skipAllFrontend>
     <skipAllFrontendTests>false</skipAllFrontendTests>
+    <main.basedir>${project.parent.parent.parent.basedir}</main.basedir> <!--le plugin directory-maven-plugin du pom principale ne se lance jamais avant -->
   </properties>
 
   <dependencies>

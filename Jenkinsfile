@@ -36,6 +36,7 @@ pipeline {
                     env.DO_MAJ_CONTEXT = 'true'
                     env.DO_TEST = 'true'
                     env.DO_BUILD = 'true'
+                    env.DO_BUILD_PASTIS_STANDALONE = 'true'
                     env.DO_PUBLISH = 'true'
                 }
             }
@@ -59,11 +60,13 @@ pipeline {
                         booleanParam(name: 'DO_MAJ_CONTEXT', defaultValue: true, description: 'Run Stage Upgrade build context.'),
                         booleanParam(name: 'DO_TEST', defaultValue: false, description: 'Run Stage Check vulnerabilities and tests.'),
                         booleanParam(name: 'DO_BUILD', defaultValue: true, description: 'Run Stage Build sources & COTS.'),
+                        booleanParam(name: 'DO_BUILD_PASTIS_STANDALONE', defaultValue: false, description: 'Run build stage for pastis standalone'),
                         booleanParam(name: 'DO_PUBLISH', defaultValue: true, description: 'Run Stage Publish to repository.'),
                     ]
                     env.DO_MAJ_CONTEXT = INPUT_PARAMS.DO_MAJ_CONTEXT
                     env.DO_TEST = INPUT_PARAMS.DO_TEST
                     env.DO_BUILD = INPUT_PARAMS.DO_BUILD
+                    env.DO_BUILD_PASTIS_STANDALONE = INPUT_PARAMS.DO_BUILD_PASTIS_STANDALONE
                     env.DO_PUBLISH = INPUT_PARAMS.DO_PUBLISH
                 }
             }
@@ -126,12 +129,28 @@ pipeline {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
             }
             when {
-                environment(name: 'DO_BUILD', value: 'true')
+                environment(name: 'DO_BUILD_PASTIS_STANDALONE', value: 'true')
             }
             steps {
                 sh 'npmrc default'
                 sh '''
-                    $MVN_COMMAND deploy -Pstandalone -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl api/api-pastis/pastis-standalone
+                    $MVN_COMMAND install \
+                        -D skipTests \
+                        -P vitam \
+                        -pl '!ui/ui-archive-search' \
+                        -pl '!ui/ui-collect' \
+                        -pl '!ui/ui-commons' \
+                        -pl '!ui/ui-identity' \
+                        -pl '!ui/ui-ingest' \
+                        -pl '!ui/ui-pastis' \
+                        -pl '!ui/ui-portal' \
+                        -pl '!ui/ui-referential'
+                '''
+                sh '''
+                    $MVN_COMMAND deploy \
+                        -D skipTests \
+                        -P standalone \
+                        -pl 'api/api-pastis/pastis-standalone'
                 '''
             }
         }
