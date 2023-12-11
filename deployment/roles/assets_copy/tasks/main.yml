@@ -1,0 +1,33 @@
+---
+# tasks file for assets
+
+- name: "Assets > Tasks > main.yml | Create directory if it doesn't exist"
+  file:
+    path: "{{ asset_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ asset_user }}"
+    group: "{{ asset_group }}"
+  become: true
+
+- name: "Assets > Tasks > main.yml | Copy assets"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ asset_path }}/{{ item | basename }}"
+    owner: "{{ asset_user }}"
+    group: "{{ asset_group }}"
+    mode: '0644'
+  when: item is not match(".*favicon.ico")
+  with_fileglob: "{{ asset_default_files }}"
+  become: true
+
+- name: "Assets > Tasks > main.yml | Copy favicon.ico"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ asset_favicon_path }}/{{ item | basename }}"
+    owner: "{{ asset_user }}"
+    group: "{{ asset_group }}"
+    mode: '0644'
+  when: item is match(".*favicon.ico")
+  with_fileglob: "{{ asset_default_files }}"
+  become: true

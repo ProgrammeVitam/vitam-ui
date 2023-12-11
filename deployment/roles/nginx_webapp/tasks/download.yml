@@ -1,0 +1,34 @@
+---
+
+- name: 'Frontend-app > download.yml | Purge existing download folder'
+  file:
+    path: "{{ frontend_download_dir }}"
+    state: absent
+  become: true
+
+- name: 'Frontend-app > download.yml | Create download folder'
+  file:
+    path: "{{ frontend_download_dir }}"
+    state: directory
+    owner: "{{ frontend_user }}"
+    group: "{{ frontend_group }}"
+    mode: 0755
+  become: true
+
+# - name: 'Frontend-app > download.yml | Download  artefact'
+#   get_url:
+#     url: "{{ hostvars[inventory_hostname]['frontend']['repository_url'].rstrip('/') }}/{{ frontend_application.repository_path | default('repository/npm') }}/{{ frontend_application.repo | default('') }}/{{ frontend_application.component | default(frontend_application.name) }}/-/{{ frontend_application.component | default(frontend_application.name) }}-{{ frontend_application_version }}.tgz"
+#     dest: "{{ frontend_download_dir }}/{{ frontend_application.name }}.tgz"
+#     mode: '0600'
+#     username: "{{ nexus_user }}"
+#     password: "{{ nexus_password }}"
+#     validate_certs: "{{ frontend_artifact_check_ssl | default(true) }}"
+#   become: true
+
+- name: 'Frontend-app > download.yml | Copy  artefact from local folder'
+  copy:
+    src: "vitam-ui-{{ frontend_application.name }}-{{ frontend_application_version }}.tgz"
+    dest: "{{ frontend_download_dir }}/{{ frontend_application.name }}.tgz"
+    owner: "{{ frontend_user }}"
+    mode: 0644
+  become: true

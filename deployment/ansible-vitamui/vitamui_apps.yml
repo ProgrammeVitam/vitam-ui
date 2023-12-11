@@ -73,6 +73,7 @@
     consul_tags: "ui-identity, ui"
   tags:
     - ui-identity
+  when: not gateway.enabled | default(True)
 
 
 - hosts: hosts_ui_portal
@@ -88,6 +89,7 @@
     consul_tags: "ui-portal, ui"
   tags:
     - ui-portal
+  when: not gateway.enabled | default(True)
 
 # supposed portlets
 - hosts: hosts_ui_identity_admin
@@ -103,3 +105,4 @@
     consul_tags: "ui-identity-admin, ui"
   tags:
     - ui-identity-admin
+  when: not gateway.enabled | default(True)

@@ -1,0 +1,101 @@
+---
+
+- name: 'Frontend-app > install.yml | Purge existing folder'
+  file:
+    path: "{{ frontend_data_dir }}"
+    state: absent
+  when: frontend_purge
+  become: true
+
+- name: 'Frontend-app > install.yml | Create folder'
+  file:
+    path: "{{ frontend_data_dir }}"
+    state: directory
+    owner: "{{ frontend_user }}"
+    group: "{{ frontend_group }}"
+    mode: 0755
+  become: true
+
+- name: 'Frontend-app > install.yml | Unarchive content'
+  unarchive:
+    src: "{{ frontend_download_dir }}/{{ frontend_application.name }}.tgz"
+    dest: "{{ frontend_data_dir }}/"
+    owner: "{{ frontend_user }}"
+    group: "{{ frontend_group }}"
+    remote_src: yes
+  become: true
+
+- name: 'Frontend-app > install.yml | Remove archive'
+  file:
+    path: "{{ frontend_download_dir }}/{{ frontend_application.name }}.tgz"
+    state: absent
+  become: true
+
+- name: 'Frontend-app > install.yml | Check owner/permissions on extracted data'
+  file:
+    path: "{{ frontend_data_dir }}"
+    owner: "{{ frontend_user }}"
+    group: "{{ frontend_group }}"
+    recurse: true
+    mode: 0755
+  become: true
+
+- name: "Frontend-app > install.yml | Add configuration files"
+  template:
+    src: "frontend/{{ frontend_application.name }}/{{ item.filename }}"
+    dest: "{{ item.destination }}"
+    group: "{{ frontend_group }}"
+    owner: "{{ frontend_user }}"
+  with_items:
+  - { filename: "config.json.j2", destination: "{{ frontend_root_path }}/data/{{ frontend_application.name }}/package/assets/config.json"}
+  - { filename: "vhost.conf.j2", destination: "/etc/nginx/conf.d/{{ frontend_application.name }}.conf"}
+  become: true
+
+# - debug:
+#     var: frontend_application.certificate
+#   become: true
+
+# - debug:
+#     var: frontend_application.name
+#   become: true
+
+- name: "Frontend-app > install.yml | Add certificate"
+  copy:
+    src: "{{ frontend_application.certificate }}.crt"
+    dest: "/etc/nginx/ssl/{{ frontend_application.certificate | basename }}.crt"
+    group: "{{ frontend_group }}"
+    owner: "{{ frontend_user }}"
+  #with_fileglob:
+  #  - "{{ frontend_application.certificate }}"
+  become: true
+
+- name: "Frontend-app > install.yml | Add key"
+  copy:
+    src: "{{ frontend_application.certificate }}.key"
+    dest: "/etc/nginx/ssl/{{ frontend_application.certificate | basename }}.key"
+    group: "{{ frontend_group }}"
+    owner: "{{ frontend_user }}"
+  #with_fileglob:
+  #  - "{{ frontend_application.certificate }}"
+  become: true
+
+# - debug:
+#     var: frontend_application.key_pass
+#   when: frontend_application.key_pass is defined
+#   become: true
+
+- name: "Frontend-app > install.yml | Add keypass"
+  template:
+    src: "certificate.key_pass.j2"
+    dest: "/etc/nginx/ssl/ui-{{frontend_application.name }}.key_pass"
+    group: "{{ frontend_group }}"
+    owner: "{{ frontend_user }}"
+  when: frontend_application.key_pass is defined
+  become: true
+
+- name: "Frontend-app > install.yml | Reload nginx"
+  become: true
+  service:
+    name: nginx
+    state: "reloaded"
+  when: frontend_proxy_reload is sameas true

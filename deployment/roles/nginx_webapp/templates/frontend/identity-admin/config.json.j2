@@ -1,0 +1,44 @@
+{
+  "GATEWAY_ENABLED": {{ gateway.enabled | default(False) | lower }},
+  "REFERENTIAL_URL": "{{ vitamui.referential.base_url }}",
+  "VERSION_RELEASE": "{{ frontend_application_version }}",
+  "PLATFORM_NAME": "{{ vitamui_platform_informations.platform_name }}",
+  "INGEST_URL": null,
+  "PORTAL_TITLE": "{{ portal.title }}",
+  "MAX_STREET_LENGTH": {{ vitamui_platform_informations.address.max_street_length }},
+  "THEME_COLORS": {
+    "vitamui-primary": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_primary }}",
+    "vitamui-secondary": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_secondary }}",
+    "vitamui-tertiary": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_tertiary }}",
+    "vitamui-header-footer": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_header_footer }}",
+    "vitamui-background": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_background }}"
+  },
+  "PORTAL_MESSAGE": "{{ portal.message }}",
+  "UI_URL": "{{ vitamui.identity_admin.base_url }}",
+  "ARCHIVES_SEARCH_URL": null,
+  "PORTAL_URL": "{{ vitamui.portal.base_url }}",
+  "ALLOWED_URLS": ["/identity-api"],
+  "OIDC_CONFIG": {
+    "issuer": "{{ vitamui.cas_server.base_url }}/oidc",
+    "redirectUri": "?",
+    "postLogoutRedirectUri": "{{ vitamui.portal.base_url }}/",
+    "clientId": "identity-admin",
+    "responseType": "code",
+    "scope": "openid",
+    "showDebugInformation": false
+  },
+  "PORTAL_LOGO": "{{ ui_identity_admin.portal_logo | default(vitamui.portal.portal_logo) }}",
+  "HEADER_LOGO": "{{ ui_identity_admin.header_logo | default(vitamui.portal.header_logo) }}",
+  "FOOTER_LOGO": "{{ ui_identity_admin.footer_logo | default(vitamui.portal.footer_logo) }}",
+  "USER_LOGO": "{{ ui_identity_admin.user_logo | default(vitamui.portal.user_logo) }}",
+  "CATEGORY_CONFIGURATION": [
+    {%- for id, category in vitamui_defaults.portal_categories.items() %}
+    {
+      "displayTitle": {{ category.displayTitle | lower }},
+      "identifier": "{{ id }}",
+      "title": "{{ category.title }}",
+      "order": {{ category.order }}
+    }{{ ", " if not loop.last else "" }}
+    {%- endfor %}
+  ]
+}

@@ -1,0 +1,31 @@
+server {
+  listen              {{ vitamui.referential.port_service}} ssl;
+  server_name         {{ vitam_reverse_external_dns }};
+  include /etc/nginx/ssl/ssl.conf;
+
+  root    /vitamui/data/referential/package;
+
+  location ~* \.(jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2|eot|css|js|json)$ {
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Cache-Control "{{ vitamui.referential.resources_header_cache_control}}";
+    include  /etc/nginx/mime.types;
+    try_files $uri $uri/ =404;
+  }
+
+  location / {
+    add_header X-Content-Type-Options "nosniff" always;
+    include  /etc/nginx/mime.types;
+    if ( $uri = '/index.html' ) {
+      add_header Cache-Control no-store always;
+    }
+    try_files $uri $uri/ /index.html;
+  }
+
+  location /referential-api {
+    proxy_pass {{ 'https' if vitamui.api_gateway.server_secure | bool else 'http' }}://API-GATEWAY;
+    proxy_ssl_certificate /etc/nginx/ssl/ui-referential.crt;
+    proxy_ssl_certificate_key /etc/nginx/ssl/ui-referential.key;
+    proxy_ssl_password_file /etc/nginx/ssl/ui-referential.key_pass;
+    proxy_ssl_session_reuse off;
+  }
+}

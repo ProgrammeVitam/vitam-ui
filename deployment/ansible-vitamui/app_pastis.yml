@@ -28,3 +28,4 @@
     password_keystore: "{{ keystores_server_ui_pastis }}"
     password_truststore: "{{ truststores_server }}"
     consul_tags: "ui-pastis, ui"
+  when: not gateway.enabled | default(True)

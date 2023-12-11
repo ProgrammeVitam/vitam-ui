@@ -41,4 +41,5 @@
     password_keystore: "{{ keystores_server_ui_ingest }}"
     password_truststore: "{{ truststores_server }}"
     consul_tags: "ui-ingest, ui"
+  when: not gateway.enabled | default(True)
 

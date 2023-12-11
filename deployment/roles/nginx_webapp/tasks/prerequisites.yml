@@ -1,0 +1,42 @@
+---
+
+- name: Frontend-app > prerequisites.yml | Check variable > frontend_role_goal
+  assert:
+    that:
+      - frontend_role_goal is defined
+      - frontend_role_goal != ""
+
+- name: Frontend-app > prerequisites.yml | Check variable > frontend_application_name
+  assert:
+    that:
+      - frontend_application_name is defined
+      - frontend_application_name != ""
+
+# - debug:
+#     var: frontend.apps
+
+
+- name: Frontend-app > prerequisites.yml | Set variable frontend_application
+  set_fact:
+    frontend_application: >-
+          {{
+            frontend.apps
+            | selectattr('name', '==', frontend_application_name)
+            | first
+          }}
+
+- name: Frontend-app > prerequisites.yml | Check variable > frontend_application
+  assert:
+    that:
+      - frontend_application.name is defined
+      - frontend_application.certificate is defined
+    #  - frontend_application.repo is defined
+
+- block:
+  - name: Frontend-app > prerequisites.yml | Check variable > frontend_application_version
+    assert:
+      that:
+        - frontend_application_version is defined
+        - frontend_application_version != ""
+
+  when: frontend_role_goal == 'install'

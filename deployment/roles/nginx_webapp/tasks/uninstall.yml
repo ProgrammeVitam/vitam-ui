@@ -1,0 +1,19 @@
+---
+
+- name: 'Frontend-app > uninstall.yml | Delete application'
+  file:
+    path: "{{ frontend_data_dir }}"
+    state: absent
+  become: true
+
+- name: 'Frontend-app > uninstall.yml | Delete vhost'
+  file:
+    path: "/etc/nginx/conf.d/{{ frontend_application.name }}.conf"
+    state: absent
+  become: true
+
+- name: "Frontend-app > uninstall.yml | Reload nginx"
+  become: true
+  service:
+    name: nginx
+    state: "reloaded"
