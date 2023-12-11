@@ -74,7 +74,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>npm run build vitamui-librairy</id>
+            <id>npm run build vitamui-library</id>
             <goals>
               <goal>npm</goal>
             </goals>
