@@ -38,6 +38,7 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
+import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -80,7 +81,13 @@ registerLocaleData(localeFr, 'fr');
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [Title, { provide: LOCALE_ID, useValue: 'fr' }, { provide: WINDOW_LOCATION, useValue: window.location }, DatePipe],
+  providers: [
+    Title,
+    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: WINDOW_LOCATION, useValue: window.location },
+    { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
+    DatePipe,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

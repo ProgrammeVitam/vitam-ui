@@ -25,13 +25,20 @@
  * accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Logger, SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
+import {
+  ConfirmDialogService,
+  Logger,
+  ObjectQualifierTypeList,
+  ObjectQualifierTypeType,
+  SearchCriteriaEltDto,
+  StartupService,
+} from 'ui-frontend-common';
 import { ArchiveService } from '../../../archive.service';
-import { TransferRequestDto, TransferRequestParameters } from '../../../models/transfer-request-detail.interface';
+import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
 
 @Component({
   selector: 'app-transfer-request-modal',
@@ -39,16 +46,18 @@ import { TransferRequestDto, TransferRequestParameters } from '../../../models/t
   styleUrls: ['./transfer-request-modal.component.scss'],
 })
 export class TransferRequestModalComponent implements OnInit, OnDestroy {
-  transferRequestFormGroup: FormGroup;
+  stepIndex = 0;
+  stepCount = 2;
+  formGroups: FormGroup[];
   itemSelected: number;
   selectedItemCountKnown: boolean;
   keyPressSubscription: Subscription;
-  dataObjectVersions = ['BinaryMaster', 'Dissemination', 'Thumbnail', 'TextContent', 'PhysicalMaster'];
+  dataObjectVersions = ObjectQualifierTypeList;
 
   constructor(
     private translate: TranslateService,
     public dialogRef: MatDialogRef<TransferRequestModalComponent>,
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private archiveService: ArchiveService,
     private startupService: StartupService,
     private confirmDialogService: ConfirmDialogService,
@@ -60,14 +69,74 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
       accessContract: string;
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
-    }
+    },
   ) {}
 
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;
     this.selectedItemCountKnown = this.data.selectedItemCountKnown;
-    this.initTransferForm();
+    this.initForms();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+  }
+
+  private initForms() {
+    this.formGroups = [
+      this.fb.group({
+        archivalAgreement: [null, Validators.required],
+        originatingAgencyIdentifier: [null, Validators.required],
+        comment: [null],
+        submissionAgencyIdentifier: [null],
+        relatedTransferReference: [null],
+        transferRequestReplyIdentifier: [null],
+        archivalAgencyIdentifier: [null, Validators.required],
+        transferringAgency: [null],
+      }),
+      this.fb.group({
+        includeLifeCycleLogs: [true],
+        sedaVersion: ['2.2'],
+        includeObjects: [true],
+        usages: this.fb.array([
+          this.fb.group({
+            usage: ['BinaryMaster', Validators.required],
+            version: ['FIRST'],
+          }),
+        ]),
+      }),
+    ];
+  }
+
+  get archivalAgreement(): FormControl {
+    return this.formGroups[0].get('archivalAgreement') as FormControl;
+  }
+
+  get originatingAgencyIdentifier(): FormControl {
+    return this.formGroups[0].get('originatingAgencyIdentifier') as FormControl;
+  }
+
+  get archivalAgencyIdentifier(): FormControl {
+    return this.formGroups[0].get('archivalAgencyIdentifier') as FormControl;
+  }
+
+  get usages(): FormArray {
+    return this.formGroups[1].get('usages') as FormArray;
+  }
+
+  listUsages(i: number): string[] {
+    const otherUsages = (this.usages.value as { usage: string }[]).filter((_, index) => i !== index).map((v) => v.usage);
+    return this.dataObjectVersions.filter((usage) => !otherUsages.includes(usage));
+  }
+
+  addUsage() {
+    this.usages.push(
+      this.fb.group({
+        usage: [null, Validators.required],
+        version: ['FIRST'],
+      }),
+    );
+  }
+
+  removeUsage(i: number) {
+    this.usages.removeAt(i);
   }
 
   ngOnDestroy() {
@@ -75,7 +144,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.transferRequestFormGroup.dirty) {
+    if (this.formGroups.some((fg) => fg.dirty)) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -83,44 +152,39 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.transferRequestFormGroup.invalid) {
+    if (this.formGroups.some((fg) => fg.invalid)) {
       return;
     }
 
-    const transferRequestParameters: TransferRequestParameters = this.transferRequestFormGroup.getRawValue();
-    transferRequestParameters.relatedTransferReference = [this.transferRequestFormGroup.get('relatedTransferReference').value];
+    const step1Values = this.formGroups[0].getRawValue();
+    const step2Values = this.formGroups[1].getRawValue();
+    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[] = step2Values.includeObjects ? step2Values.usages : [];
     const transferRequestDto: TransferRequestDto = {
-      transferRequestParameters,
+      transferRequestParameters: step1Values,
       searchCriteria: this.data.searchCriteria,
-      dataObjectVersions: this.dataObjectVersions,
-      lifeCycleLogs: this.transferRequestFormGroup.get('lifeCycleLogs').value === this.translate.instant('ARCHIVE_SEARCH.DIP.INCLUDE'),
+      dataObjectVersionsPatterns: usages.reduce(
+        (acc: TransferRequestDto['dataObjectVersionsPatterns'], uv) => {
+          acc[uv.usage] = [uv.version];
+          return acc;
+        },
+        {} as TransferRequestDto['dataObjectVersionsPatterns'],
+      ),
+      lifeCycleLogs: step2Values.includeLifeCycleLogs,
+      sedaVersion: step2Values.sedaVersion,
     };
 
     this.archiveService.transferRequestService(transferRequestDto).subscribe(
       (response) => {
         this.dialogRef.close(true);
-        const serviceUrl =
-          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
+        const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${
+          this.data.tenantIdentifier
+        }?guid=${response}`;
         this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.REQUEST_MESSAGE'), serviceUrl);
-        this.transferRequestFormGroup.reset();
+        this.formGroups.forEach((fg) => fg.reset());
       },
       (error: any) => {
-        this.logger.error('Error message :', error);
-      }
+        this.logger.error('Error message:', error);
+      },
     );
-  }
-
-  private initTransferForm() {
-    this.transferRequestFormGroup = this.formBuilder.group({
-      lifeCycleLogs: [this.translate.instant('ARCHIVE_SEARCH.DIP.INCLUDE')],
-      archivalAgreement: [null, Validators.required],
-      originatingAgencyIdentifier: [null, Validators.required],
-      comment: [null],
-      submissionAgencyIdentifier: [null],
-      relatedTransferReference: [null],
-      transferRequestReplyIdentifier: [null],
-      archivalAgencyIdentifier: [null, Validators.required],
-      transferringAgency: [null],
-    });
   }
 }

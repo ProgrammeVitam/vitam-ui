@@ -24,9 +24,29 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { SearchCriteriaEltDto } from 'ui-frontend-common';
+import { ObjectQualifierTypeType, SearchCriteriaEltDto } from 'ui-frontend-common';
 
-export interface ExportDIPRequestDetail {
+type DIPSedaVersion = '2.1' | '2.2';
+
+export type QualifierVersion = 'LAST' | 'ALL' | 'FIRST';
+
+export interface ExportDIPRequestDto {
+  dipRequestParameters: ExportDIPRequestDetail;
+  exportDIPSearchCriteria: SearchCriteriaEltDto[];
+  dataObjectVersionsPatterns: { [key in ObjectQualifierTypeType]: QualifierVersion[] };
+  lifeCycleLogs: boolean;
+  sedaVersion: DIPSedaVersion;
+}
+
+export interface TransferRequestDto {
+  transferRequestParameters: TransferRequestParameters;
+  searchCriteria: SearchCriteriaEltDto[];
+  dataObjectVersionsPatterns: { [key in ObjectQualifierTypeType]: QualifierVersion[] };
+  lifeCycleLogs: boolean;
+  sedaVersion: DIPSedaVersion;
+}
+
+interface ExportDIPRequestDetail {
   messageRequestIdentifier: string;
   requesterIdentifier: string;
   archivalAgencyIdentifier: string;
@@ -35,9 +55,21 @@ export interface ExportDIPRequestDetail {
   comment: string;
 }
 
-export interface ExportDIPCriteriaList {
-  dipRequestParameters: ExportDIPRequestDetail;
-  exportDIPSearchCriteria: SearchCriteriaEltDto[];
-  dataObjectVersions: string[];
-  lifeCycleLogs: boolean;
+interface TransferRequestParameters {
+  /** Contrat d'entrée *Requis* */
+  archivalAgreement: string;
+  /** Identifiant du service producteur *Requis* */
+  originatingAgencyIdentifier: string;
+  /** Commentaire(s) */
+  comment: string;
+  /** Identifiant du service versant */
+  submissionAgencyIdentifier: string;
+  /** Référence d'un transfert associé */
+  relatedTransferReference: Array<string>;
+  /** Identifiant de la réponse à une demande de transfert */
+  transferRequestReplyIdentifier: string;
+  /** Identifiant du service d'archives *Requis* */
+  archivalAgencyIdentifier: string;
+  /** Identifiant du service responsable du transfert */
+  transferringAgency: string;
 }

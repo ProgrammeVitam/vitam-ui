@@ -39,9 +39,9 @@ import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExt
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -64,9 +64,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -218,7 +218,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         TransferRequestDto transferRequestDto = new TransferRequestDto()
             .setTransferRequestParameters(new TransferRequestParameters())
             .setSearchCriteria(new SearchCriteriaDto())
-            .setDataObjectVersions(Collections.emptySet())
+            .setDataObjectVersionsPatterns(Map.of())
             .setLifeCycleLogs(true);
         when(archivesSearchExternalService.transferRequest(transferRequestDto))
             .thenReturn("OK");

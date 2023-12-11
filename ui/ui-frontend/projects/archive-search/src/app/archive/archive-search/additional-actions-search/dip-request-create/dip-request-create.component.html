@@ -1,131 +1,216 @@
-<br />
-
-<form [formGroup]="exportDIPform" (ngSubmit)="onSubmit()">
-  <div class="content vitamui-form">
-    <div class="text-title">{{ 'ARCHIVE_SEARCH.DIP.REQUEST_DIP_EXPORT' | translate }}</div>
-    <div class="text large bold">{{ 'ARCHIVE_SEARCH.DIP.DIP_PARAMS' | translate }}</div>
-    <div class="text-title" *ngIf="selectedItemCountKnown && itemSelected > 1">
-      {{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
-    </div>
-    <div class="text-title" *ngIf="selectedItemCountKnown && itemSelected === 1">
-      {{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ONE_ITEM_SELECTED' | translate }}
-    </div>
-    <div class="text-title" *ngIf="!selectedItemCountKnown">
-      {{ 'ARCHIVE_SEARCH.MORE_THAN_THRESHOLD' | translate }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
-    </div>
-    <br />
-
-    <vitamui-common-input
-      class="col-10 px-0"
-      formControlName="messageRequestIdentifier"
-      minlength="2"
-      maxlength="100"
-      required
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.REQUEST_ID' | translate }}"
-    >
-      <vitamui-common-input-error
-        *ngIf="
-          exportDIPform?.get('messageRequestIdentifier')?.touched && exportDIPform?.get('messageRequestIdentifier')?.hasError('required')
-        "
-        >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}</vitamui-common-input-error
-      >
-    </vitamui-common-input>
-
-    <vitamui-common-input
-      class="col-10 px-0"
-      formControlName="requesterIdentifier"
-      minlength="2"
-      maxlength="100"
-      required
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.REQUESTER_ID' | translate }}"
-    >
-      <vitamui-common-input-error
-        *ngIf="exportDIPform?.get('requesterIdentifier')?.touched && exportDIPform?.get('requesterIdentifier')?.hasError('required')"
-        >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}</vitamui-common-input-error
-      >
-    </vitamui-common-input>
-
-    <vitamui-common-input
-      class="col-10 px-0"
-      formControlName="archivalAgencyIdentifier"
-      minlength="2"
-      maxlength="300"
-      required
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY' | translate }}"
-    >
-      <vitamui-common-input-error
-        *ngIf="
-          exportDIPform?.get('archivalAgencyIdentifier')?.touched && exportDIPform?.get('archivalAgencyIdentifier')?.hasError('required')
-        "
-        >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}</vitamui-common-input-error
-      >
-    </vitamui-common-input>
-
-    <vitamui-common-input
-      class="col-10 px-0"
-      [required]="false"
-      formControlName="authorizationRequestReplyIdentifier"
-      maxlength="300"
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.AUTHORISATION_REQUEST_REPLY' | translate }}"
-    >
-      <vitamui-common-input-error
-        *ngIf="
-          exportDIPform?.get('authorizationRequestReplyIdentifier')?.touched &&
-          exportDIPform?.get('authorizationRequestReplyIdentifier')?.hasError('required')
-        "
-        >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}</vitamui-common-input-error
-      >
-    </vitamui-common-input>
-
-    <vitamui-common-input
-      class="col-10 px-0"
-      [required]="false"
-      formControlName="submissionAgencyIdentifier"
-      maxlength="100"
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID' | translate }}"
-    >
-      <vitamui-common-input-error
-        *ngIf="
-          exportDIPform?.get('submissionAgencyIdentifier')?.touched &&
-          exportDIPform?.get('submissionAgencyIdentifier')?.hasError('required')
-        "
-        >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}</vitamui-common-input-error
-      >
-    </vitamui-common-input>
-
-    <vitamui-common-input
-      class="col-10 px-0"
-      [required]="false"
-      formControlName="comment"
-      maxlength="300"
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.COMMENT' | translate }}"
-    >
-      <vitamui-common-input-error *ngIf="exportDIPform?.get('comment')?.touched && exportDIPform?.get('comment')?.hasError('required')">{{
-        'ARCHIVE_SEARCH.DIP.REQUIRED' | translate
-      }}</vitamui-common-input-error>
-    </vitamui-common-input>
-
-    <div class="row">
-      <label for="lifeCycleLogs" class="col-3 text-center"> {{ 'ARCHIVE_SEARCH.DIP.LOGS' | translate }} </label>
-      <mat-button-toggle-group
-        formControlName="lifeCycleLogs"
-        class="col-8"
-        #group="matButtonToggleGroup"
-        class="vitamui-button-toggle-group"
-      >
-        <mat-button-toggle value="Inclure"> {{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }}</mat-button-toggle>
-        <mat-button-toggle value="Exclure">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }} </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-    <br />
-
-    <div class="d-flex mt-4">
-      <button type="submit" class="btn primary mr-4" [disabled]="exportDIPform.invalid">
-        {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
-      </button>
-      <button type="button" class="btn link cancel" (click)="onCancel()">
-        {{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}
-      </button>
-    </div>
+<div class="header">
+  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
+</div>
+<div class="content vitamui-form">
+  <div class="text-title">{{ 'ARCHIVE_SEARCH.DIP.DIP_EXPORT' | translate }}</div>
+  <div class="text large bold">
+    <ng-container *ngIf="stepIndex === 0">{{ 'ARCHIVE_SEARCH.DIP.DIP_CONTEXT' | translate }}</ng-container>
+    <ng-container *ngIf="stepIndex === 1">{{ 'ARCHIVE_SEARCH.DIP.DIP_PARAMS' | translate }}</ng-container>
   </div>
-</form>
+  <div class="text-title">
+    <ng-container
+      *ngIf="selectedItemCountKnown && itemSelected > 1">{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
+    </ng-container>
+    <ng-container
+      *ngIf="selectedItemCountKnown && itemSelected === 1">{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ONE_ITEM_SELECTED' | translate }}
+    </ng-container>
+    <ng-container
+      *ngIf="!selectedItemCountKnown">{{ 'ARCHIVE_SEARCH.MORE_THAN_THRESHOLD' | translate }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
+    </ng-container>
+  </div>
+  <br />
+  <vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex=$event.selectedIndex">
+    <cdk-step>
+      <form [formGroup]="formGroups[0]">
+        <vitamui-common-input
+          class="col-10 px-0"
+          formControlName="messageRequestIdentifier"
+          minlength="2"
+          maxlength="100"
+          required
+          placeholder="{{ 'ARCHIVE_SEARCH.DIP.REQUEST_ID' | translate }}"
+        >
+          <vitamui-common-input-error
+            *ngIf="messageRequestIdentifier.touched && messageRequestIdentifier.hasError('required')"
+          >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
+          </vitamui-common-input-error
+          >
+        </vitamui-common-input>
+
+        <vitamui-common-input
+          class="col-10 px-0"
+          formControlName="requesterIdentifier"
+          minlength="2"
+          maxlength="100"
+          required
+          placeholder="{{ 'ARCHIVE_SEARCH.DIP.REQUESTER_ID' | translate }}"
+        >
+          <vitamui-common-input-error
+            *ngIf="requesterIdentifier.touched && requesterIdentifier.hasError('required')"
+          >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
+          </vitamui-common-input-error
+          >
+        </vitamui-common-input>
+
+        <vitamui-common-input
+          class="col-10 px-0"
+          formControlName="archivalAgencyIdentifier"
+          minlength="2"
+          maxlength="300"
+          required
+          placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY' | translate }}"
+        >
+          <vitamui-common-input-error
+            *ngIf="
+          archivalAgencyIdentifier.touched && archivalAgencyIdentifier.hasError('required')
+        "
+          >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
+          </vitamui-common-input-error
+          >
+        </vitamui-common-input>
+
+        <vitamui-common-input
+          class="col-10 px-0"
+          [required]="false"
+          formControlName="authorizationRequestReplyIdentifier"
+          maxlength="300"
+          placeholder="{{ 'ARCHIVE_SEARCH.DIP.AUTHORISATION_REQUEST_REPLY' | translate }}"
+        >
+        </vitamui-common-input>
+
+        <vitamui-common-input
+          class="col-10 px-0"
+          [required]="false"
+          formControlName="submissionAgencyIdentifier"
+          maxlength="100"
+          placeholder="{{ 'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID' | translate }}"
+        >
+        </vitamui-common-input>
+
+        <vitamui-common-input
+          class="col-10 px-0"
+          [required]="false"
+          formControlName="comment"
+          maxlength="300"
+          placeholder="{{ 'ARCHIVE_SEARCH.DIP.COMMENT' | translate }}"
+        >
+        </vitamui-common-input>
+
+        <div class="hgap-20">
+          <button type="button" class="btn primary" [disabled]="formGroups[0].invalid" cdkStepperNext>
+            {{ 'ARCHIVE_SEARCH.DIP.NEXT' | translate }}
+          </button>
+          <button type="button" class="btn link cancel" (click)="onCancel()">
+            {{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}
+          </button>
+        </div>
+      </form>
+    </cdk-step>
+    <cdk-step>
+      <form [formGroup]="formGroups[1]" (ngSubmit)="onSubmit()">
+        <div class="gap-40">
+          <div class="gap-20">
+            <div class="gap-10">
+              <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.LOGS' | translate }}</div>
+              <mat-button-toggle-group
+                formControlName="includeLifeCycleLogs"
+                #group="matButtonToggleGroup"
+                class="vitamui-button-toggle-group"
+              >
+                <mat-button-toggle [value]="true">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }}</mat-button-toggle>
+                <mat-button-toggle [value]="false">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }}</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+
+            <div class="gap-10">
+              <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.SEDA_VERSION' | translate }}</div>
+              <mat-button-toggle-group
+                formControlName="sedaVersion"
+                class="vitamui-button-toggle-group"
+              >
+                <mat-button-toggle value="2.1">SEDA 2.1</mat-button-toggle>
+                <mat-button-toggle value="2.2">SEDA 2.2</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+
+            <div class="gap-30">
+              <div class="gap-10">
+                <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE_OBJECTS' | translate }}</div>
+                <mat-button-toggle-group
+                  formControlName="includeObjects"
+                  class="vitamui-button-toggle-group"
+                >
+                  <mat-button-toggle [value]="true">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }}</mat-button-toggle>
+                  <mat-button-toggle [value]="false">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }}</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+
+              <div class="gap-10" *ngIf="formGroups[1].get('includeObjects').value" formArrayName="usages">
+                <div *ngFor="let usage of usages.controls; let i = index" class="hgap-40">
+                  <div class="hgap-20" [formGroupName]="i">
+                    <mat-form-field class="vitamui-mat-select usage">
+                      <mat-select
+                        placeholder="{{ ('ARCHIVE_SEARCH.DIP.TARGET_USAGE_#') | translate:{i: i + 1} }}"
+                        panelClass="vitamui-mat-select"
+                        formControlName="usage"
+                      >
+                        <mat-option *ngFor="let usage of listUsages(i)" [value]="usage">{{
+                            ('ARCHIVE_SEARCH.DIP.USAGES.' + usage) | translate
+                          }}
+                        </mat-option>
+                      </mat-select>
+                      <div class="select-arrow">
+                        <i class="material-icons">keyboard_arrow_up</i>
+                        <i class="material-icons">keyboard_arrow_down</i>
+                      </div>
+                    </mat-form-field>
+                    <div class="gap-10">
+                      <label
+                        class="caption-caption-bold primary"> {{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSION' | translate }}</label>
+                      <mat-radio-group class="hgap-10" formControlName="version">
+                        <mat-radio-button
+                          value="FIRST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.FIRST' | translate }}
+                        </mat-radio-button>
+                        <mat-radio-button
+                          value="ALL">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.ALL' | translate }}
+                        </mat-radio-button>
+                        <mat-radio-button
+                          value="LAST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.LAST' | translate }}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                  <button *ngIf="i > 0" class="delete-button" type="button" (click)="removeUsage(i)">
+                    <i class="vitamui-icon vitamui-icon-delete"></i>
+                  </button>
+                </div>
+
+                <button *ngIf="usages.length < dataObjectVersions.length" type="button"
+                        class="btn link"
+                        (click)="addUsage()">
+                  <i class="vitamui-icon vitamui-icon-add"></i>
+                  {{ 'ARCHIVE_SEARCH.DIP.ADD_USAGE' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gap-20">
+            <div class="hgap-20">
+              <button type="submit" class="btn primary mr-4" [disabled]="formGroups[1].invalid">
+                {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
+              </button>
+              <button type="button" class="btn link cancel" (click)="onCancel()">
+                {{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}
+              </button>
+            </div>
+            <button type="button" class="btn link back" cdkStepperPrevious>
+              <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+              {{ 'COMMON.BACK' | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </cdk-step>
+  </vitamui-common-stepper>
+</div>

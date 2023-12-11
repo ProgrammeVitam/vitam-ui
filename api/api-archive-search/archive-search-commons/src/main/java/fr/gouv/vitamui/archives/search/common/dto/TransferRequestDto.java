@@ -27,6 +27,8 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitam.common.model.administration.DataObjectVersionType;
+import fr.gouv.vitam.common.model.dip.QualifierVersion;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequestParameters;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import lombok.Getter;
@@ -35,6 +37,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Set;
 
 @ToString
@@ -43,9 +46,9 @@ import java.util.Set;
 @Getter
 @Accessors(chain = true)
 public class TransferRequestDto implements Serializable {
-
     private TransferRequestParameters transferRequestParameters;
     private SearchCriteriaDto searchCriteria;
-    private Set<String> dataObjectVersions;
+    private Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns;
     private boolean lifeCycleLogs;
+    private String sedaVersion;
 }

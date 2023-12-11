@@ -37,6 +37,9 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.administration.DataObjectVersionType;
+import fr.gouv.vitam.common.model.dip.QualifierVersion;
+import fr.gouv.vitam.common.model.export.transfer.TransferRequest;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
@@ -44,6 +47,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -53,10 +57,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.Set;
 
+import static fr.gouv.vitam.common.model.administration.DataObjectVersionType.BINARY_MASTER;
+import static fr.gouv.vitam.common.model.dip.QualifierVersion.FIRST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 class TransferVitamOperationsInternalServiceTest {
@@ -79,7 +88,8 @@ class TransferVitamOperationsInternalServiceTest {
     void transferRequest_should_pass()
         throws Exception {
         //Given
-        TransferRequestDto transferRequestDto = newTransferRequestDto();
+        final Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns = Map.of(BINARY_MASTER, Set.of(FIRST));
+        final TransferRequestDto transferRequestDto = newTransferRequestDto(true, "2.2", dataObjectVersionsPatterns);
         VitamContext vitamContext = newVitamContext();
         String jsonDslQuery =
             "{\"$roots\":[],\"$query\":[{\"$and\":[{\"$eq\":{\"#id\":\"aeaqaaaaaehmay6yaaqhual6ysiaariaaaba\"}}]}],\"$filter\":{\"$limit\":10},\"$projection\":{},\"$facets\":[]}";
@@ -92,11 +102,19 @@ class TransferVitamOperationsInternalServiceTest {
         RequestResponse<JsonNode> responseReturned =
             RequestResponseOK.getFromJsonNode(newJsonNode(requestResponseOKJson));
         Mockito.when(transferRequestService.transferRequest(eq(vitamContext), any())).thenReturn(responseReturned);
+
         //When
         String response = transferVitamOperationsInternalService.transferRequest(transferRequestDto, vitamContext);
+
         //then
         assertThat(response).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
 
+        ArgumentCaptor<TransferRequest> argumentCaptor = ArgumentCaptor.forClass(TransferRequest.class);
+        verify(transferRequestService).transferRequest(any(VitamContext.class), argumentCaptor.capture());
+        final TransferRequest transferRequest = argumentCaptor.getValue();
+        assertThat(transferRequest.isTransferWithLogBookLFC()).isTrue();
+        assertThat(transferRequest.getSedaVersion()).isEqualTo("2.2");
+        assertThat(transferRequest.getDataObjectVersionToExport().getDataObjectVersionsPatterns()).isEqualTo(dataObjectVersionsPatterns);
     }
 
     @Test
@@ -146,7 +164,12 @@ class TransferVitamOperationsInternalServiceTest {
         return new VitamContext(1);
     }
 
-    private TransferRequestDto newTransferRequestDto() {
-        return new TransferRequestDto();
+    private TransferRequestDto newTransferRequestDto(boolean lifeCycleLogs, String sedaVersion,
+        Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns) {
+        final TransferRequestDto transferRequestDto = new TransferRequestDto();
+        transferRequestDto.setLifeCycleLogs(lifeCycleLogs);
+        transferRequestDto.setSedaVersion(sedaVersion);
+        transferRequestDto.setDataObjectVersionsPatterns(dataObjectVersionsPatterns);
+        return transferRequestDto;
     }
 }

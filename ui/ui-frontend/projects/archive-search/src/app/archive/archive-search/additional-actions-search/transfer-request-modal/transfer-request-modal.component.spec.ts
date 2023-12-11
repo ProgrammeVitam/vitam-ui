@@ -33,7 +33,15 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  BASE_URL,
+  ConfirmDialogService,
+  InjectorModule,
+  LoggerModule,
+  ObjectQualifierType,
+  ObjectQualifierTypeList,
+  WINDOW_LOCATION,
+} from 'ui-frontend-common';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { TransferRequestModalComponent } from './transfer-request-modal.component';
 
@@ -97,21 +105,6 @@ describe('TransferRequestModalComponent tests', () => {
     fixture.detectChanges();
   });
 
-  it('Component should be created', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('items Selected should be grather than 0 ', () => {
-    expect(component.itemSelected).toBeGreaterThan(0);
-    expect(component.itemSelected).toEqual(30);
-  });
-
-  it('Should have an accessContract ', () => {
-    expect(component.data.accessContract).toBeDefined();
-    expect(component.data.accessContract).not.toBeNull();
-    expect(component.data.accessContract).toEqual('ContratTNR');
-  });
-
   it('should not call transferRequestService of archiveService when transferRequestFormGroup is invalid', () => {
     // Given
     spyOn(archiveServiceMock, 'transferRequestService').and.callThrough();
@@ -123,10 +116,53 @@ describe('TransferRequestModalComponent tests', () => {
     expect(archiveServiceMock.transferRequestService).not.toHaveBeenCalled();
   });
 
-  it('Should have a tenant identifier ', () => {
-    expect(component.data.tenantIdentifier).toBeDefined();
-    expect(component.data.tenantIdentifier).not.toBeNull();
-    expect(component.data.tenantIdentifier).toEqual('1');
+  it('should have correct default values for toggle buttons', () => {
+    expect(component.formGroups[1].get('includeLifeCycleLogs').value).toBe(true);
+    expect(component.formGroups[1].get('sedaVersion').value).toBe('2.2');
+    expect(component.formGroups[1].get('includeObjects').value).toBe(true);
+  });
+
+  it('should have "Original numérique" usage with "Initiale" version by default', () => {
+    const usage: { usage: string; version: string } = component.formGroups[1].get('usages').value[0];
+    expect(usage.usage).toBe('BinaryMaster');
+    expect(usage.version).toBe('FIRST');
+  });
+
+  it('should add a usage when asked', () => {
+    expect(component.formGroups[1].get('usages').value.length).toBe(1);
+    component.addUsage();
+    expect(component.formGroups[1].get('usages').value.length).toBe(2);
+  });
+
+  it('should remove a usage when asked', () => {
+    component.addUsage();
+    expect(component.formGroups[1].get('usages').value.length).toBe(2);
+    component.removeUsage(1);
+    expect(component.formGroups[1].get('usages').value.length).toBe(1);
+  });
+
+  it('should only list non already selected usages when listing usages', () => {
+    // First usage is "BinaryMaster" by default and any usage is selectable
+    expect(component.listUsages(0).length).toBe(ObjectQualifierTypeList.length);
+
+    // We add a new usage
+    component.addUsage();
+
+    // After adding a new usage, first usage can still choose any usage
+    expect(component.listUsages(0).length).toBe(ObjectQualifierTypeList.length);
+    // But second usage cannot select "BinaryMaster" as it is already selected in the first usage
+    expect(component.listUsages(1).length).toBe(ObjectQualifierTypeList.length - 1);
+    expect(component.listUsages(1)).not.toContain(ObjectQualifierType.BINARYMASTER);
+
+    // We select "Dissemination" in second usage
+    component.usages.at(1).patchValue({ usage: ObjectQualifierType.DISSEMINATION, version: ['FIRST'] });
+
+    // After selecting "Dissemination" usage in second usage, first usage can no longer choose "Dissemination"
+    expect(component.listUsages(0).length).toBe(ObjectQualifierTypeList.length - 1);
+    expect(component.listUsages(0)).not.toContain(ObjectQualifierType.DISSEMINATION);
+    // Second usage can still select the same usages (all except BinaryMaster)
+    expect(component.listUsages(1).length).toBe(ObjectQualifierTypeList.length - 1);
+    expect(component.listUsages(1)).not.toContain(ObjectQualifierType.BINARYMASTER);
   });
 
   describe('DOM', () => {
@@ -141,6 +177,10 @@ describe('TransferRequestModalComponent tests', () => {
     it('should have 8 vitamui input', () => {
       const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-common-input');
       expect(elementVitamuiInput.length).toBe(8);
+    });
+
+    it('should have 3 mat-button-toggle-group', () => {
+      expect(fixture.nativeElement.querySelectorAll('mat-button-toggle-group').length).toBe(3);
     });
   });
 });

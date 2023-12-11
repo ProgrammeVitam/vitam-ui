@@ -36,25 +36,36 @@
  */
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Logger, SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
+import {
+  ConfirmDialogService,
+  Logger,
+  ObjectQualifierTypeList,
+  ObjectQualifierTypeType,
+  SearchCriteriaEltDto,
+  StartupService,
+} from 'ui-frontend-common';
 import * as uuid from 'uuid';
 import { ArchiveService } from '../../../archive.service';
-import { ExportDIPCriteriaList, ExportDIPRequestDetail } from '../../../models/dip-request-detail.interface';
+import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
 
 @Component({
   selector: 'app-dip-request-create',
   templateUrl: './dip-request-create.component.html',
-  styleUrls: ['./dip-request-create.component.css'],
+  styleUrls: ['./dip-request-create.component.scss'],
 })
 export class DipRequestCreateComponent implements OnInit, OnDestroy {
+  stepIndex = 0;
+  stepCount = 2;
+  formGroups: FormGroup[];
+
   constructor(
     private translate: TranslateService,
     public dialogRef: MatDialogRef<DipRequestCreateComponent>,
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private archiveService: ArchiveService,
     private startupService: StartupService,
     private confirmDialogService: ConfirmDialogService,
@@ -66,20 +77,79 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       accessContract: string;
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
-    }
+    },
   ) {}
-  exportDIPform: FormGroup;
-  exportDIPIncludeform: FormGroup;
+
   itemSelected: number;
   selectedItemCountKnown: boolean;
   keyPressSubscription: Subscription;
-  dataObjectVersions = ['BinaryMaster', 'Dissemination', 'Thumbnail', 'TextContent', 'PhysicalMaster'];
+  dataObjectVersions = ObjectQualifierTypeList;
 
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;
     this.selectedItemCountKnown = this.data.selectedItemCountKnown;
-    this.initExportForm();
+    this.initForms();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+  }
+
+  private initForms() {
+    const messageRequestIdentifier = uuid.v4();
+    this.formGroups = [
+      this.fb.group({
+        messageRequestIdentifier: [{ value: messageRequestIdentifier, disabled: true }, Validators.required],
+        requesterIdentifier: [null, Validators.required],
+        archivalAgencyIdentifier: [null, Validators.required],
+        authorizationRequestReplyIdentifier: [null],
+        submissionAgencyIdentifier: [null],
+        comment: [null],
+        archivalAgreement: [this.data.accessContract],
+      }),
+      this.fb.group({
+        includeLifeCycleLogs: [false],
+        sedaVersion: ['2.2'],
+        includeObjects: [true],
+        usages: this.fb.array([
+          this.fb.group({
+            usage: ['BinaryMaster', Validators.required],
+            version: ['FIRST'],
+          }),
+        ]),
+      }),
+    ];
+  }
+
+  get messageRequestIdentifier(): FormControl {
+    return this.formGroups[0].get('messageRequestIdentifier') as FormControl;
+  }
+
+  get requesterIdentifier(): FormControl {
+    return this.formGroups[0].get('requesterIdentifier') as FormControl;
+  }
+
+  get archivalAgencyIdentifier(): FormControl {
+    return this.formGroups[0].get('archivalAgencyIdentifier') as FormControl;
+  }
+
+  get usages(): FormArray {
+    return this.formGroups[1].get('usages') as FormArray;
+  }
+
+  listUsages(i: number): string[] {
+    const otherUsages = (this.usages.value as { usage: string }[]).filter((_, index) => i !== index).map((v) => v.usage);
+    return this.dataObjectVersions.filter((usage) => !otherUsages.includes(usage));
+  }
+
+  addUsage() {
+    this.usages.push(
+      this.fb.group({
+        usage: [null, Validators.required],
+        version: ['FIRST'],
+      }),
+    );
+  }
+
+  removeUsage(i: number) {
+    this.usages.removeAt(i);
   }
 
   ngOnDestroy() {
@@ -87,51 +157,47 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.exportDIPform.dirty) {
+    if (this.formGroups.some((fg) => fg.dirty)) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
     }
   }
 
-  private initExportForm() {
-    const messageRequestIdentifier = uuid.v4();
-    this.exportDIPform = this.formBuilder.group({
-      lifeCycleLogs: [this.translate.instant('ARCHIVE_SEARCH.DIP.EXCLUDE')],
-      messageRequestIdentifier: [{ value: messageRequestIdentifier, disabled: true }, Validators.required],
-      requesterIdentifier: [null, Validators.required],
-      archivalAgencyIdentifier: [null, Validators.required],
-      authorizationRequestReplyIdentifier: [null],
-      submissionAgencyIdentifier: [null],
-      comment: [null],
-      archivalAgreement: [this.data.accessContract],
-    });
-  }
-
   onSubmit() {
-    if (this.exportDIPform.invalid) {
+    if (this.formGroups.some((fg) => fg.invalid)) {
       return;
     }
 
-    const exportDIPformDetail: ExportDIPRequestDetail = this.exportDIPform.getRawValue();
-    const exportDIPCriteriaList: ExportDIPCriteriaList = {
-      dipRequestParameters: exportDIPformDetail,
+    const step1Values = this.formGroups[0].getRawValue();
+    const step2Values = this.formGroups[1].getRawValue();
+    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[] = step2Values.includeObjects ? step2Values.usages : [];
+    const exportDIPRequestDto: ExportDIPRequestDto = {
+      dipRequestParameters: step1Values,
       exportDIPSearchCriteria: this.data.exportDIPSearchCriteria,
-      dataObjectVersions: this.dataObjectVersions,
-      lifeCycleLogs: this.exportDIPform.get('lifeCycleLogs').value === this.translate.instant('ARCHIVE_SEARCH.DIP.INCLUDE'),
+      dataObjectVersionsPatterns: usages.reduce(
+        (acc: ExportDIPRequestDto['dataObjectVersionsPatterns'], uv) => {
+          acc[uv.usage] = [uv.version];
+          return acc;
+        },
+        {} as ExportDIPRequestDto['dataObjectVersionsPatterns'],
+      ),
+      lifeCycleLogs: step2Values.includeLifeCycleLogs,
+      sedaVersion: step2Values.sedaVersion,
     };
 
-    this.archiveService.exportDIPService(exportDIPCriteriaList).subscribe(
+    this.archiveService.exportDIPService(exportDIPRequestDto).subscribe(
       (response) => {
         this.dialogRef.close(true);
-        const serviceUrl =
-          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
+        const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${
+          this.data.tenantIdentifier
+        }?guid=${response}`;
 
         this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.REQUEST_MESSAGE'), serviceUrl);
       },
       (error: any) => {
         this.logger.error('Error message :', error);
-      }
+      },
     );
   }
 }
