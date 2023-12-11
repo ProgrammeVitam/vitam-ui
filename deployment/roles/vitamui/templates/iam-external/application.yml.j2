@@ -23,13 +23,18 @@ server:
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
+    {% if gateway.enabled | default(False) is sameas true -%}
+    client-auth: want
+    client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name }}
+    {% else %}
     client-auth: need
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
+    {% endif %}
   error:
     path: /error
 {% endif %}
-
+  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
     accesslog:
         enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
@@ -49,6 +54,11 @@ server-identity:
   identityRole: vitamui-{{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
+{% if gateway.enabled | default(False) is sameas true %}
+gateway:
+  enabled: true
+{% endif %}
+
 iam-external:
   security-client:
     server-host: {{ vitamui.security_internal.host }}
@@ -56,6 +66,11 @@ iam-external:
 {% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.security_internal.secure | default(secure) | lower }}
     ssl-configuration:
+      {% if gateway.enabled | default(False) is sameas true -%}
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      {% else %}
       keystore:
         key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
@@ -63,6 +78,7 @@ iam-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
+      {% endif %}
       hostname-verification: false
 {% endif %}
   iam-internal-client:
@@ -74,6 +90,11 @@ iam-external:
 {% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
     ssl-configuration:
+      {% if gateway.enabled | default(False) is sameas true -%}
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      {% else %}
       keystore:
         key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
@@ -81,6 +102,7 @@ iam-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
+      {% endif %}
       hostname-verification: false
 {% endif %}
 
@@ -94,6 +116,7 @@ cas:
 {% endif %}
   internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
 
+{% if opentracing.enable is sameas true %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
@@ -102,3 +125,4 @@ opentracing:
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
+{% endif %}
