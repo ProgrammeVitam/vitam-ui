@@ -189,10 +189,6 @@ hosts_vitamui_consul_server
 ################################################################################
 [vitam:children]
 hosts_consul_server
-hosts_ingest_external
-hosts_access_external
-hosts_functionnal_admin
-hosts_security_internal
 hosts_elasticsearch_log
 
 # MINIMUM REQUIRED IN ZONE VITAM
@@ -200,20 +196,8 @@ hosts_elasticsearch_log
 # EDIT: Mandatory unless [hosts_vitamui_consul_server] is defined
 # Choose between [hosts_consul_server] and [hosts_vitamui_consul_server]. If both defined [hosts_vitamui_consul_server] will be used by default.
 
-[hosts_ingest_external]
-# EDIT: Mandatory
-
-[hosts_access_external]
-# EDIT: Mandatory
-
-[hosts_functionnal_admin]
-# EDIT: Mandatory
-
-[hosts_security_internal]
-# EDIT: Mandatory
-
 [hosts_elasticsearch_log]
-# EDIT: Mandatory
+# EDIT: Mandatory when [hosts_vitamui_logstash] is defined
 
 
 ################################################################################
