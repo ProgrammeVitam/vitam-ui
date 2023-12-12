@@ -21,7 +21,7 @@
     - { role: assets_copy, when: gateway.enabled | default(False) }
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
-    frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
+    frontend_application_version: "7.1.0-SNAPSHOT" #"{{ app_version }}"
     frontend_application_name: "portal"
 
 - hosts: hosts_ui_identity
@@ -31,7 +31,7 @@
     - { role: assets_copy, when: gateway.enabled | default(False) }
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
-    frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
+    frontend_application_version: "7.1.0-SNAPSHOT" #"{{ app_version }}"
     frontend_application_name: "identity"
 
 - hosts: hosts_ui_identity_admin
@@ -41,7 +41,7 @@
     - { role: assets_copy, when: gateway.enabled | default(False) }
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
-    frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
+    frontend_application_version: "7.1.0-SNAPSHOT" #"{{ app_version }}"
     frontend_application_name: "identity-admin"
 
 - hosts: hosts_ui_referential
@@ -51,5 +51,5 @@
     - { role: assets_copy, when: gateway.enabled | default(False) }
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
-    frontend_application_version: "5.4.0-SNAPSHOT" #"{{ app_version }}"
+    frontend_application_version: "7.1.0-SNAPSHOT" #"{{ app_version }}"
     frontend_application_name: "referential"

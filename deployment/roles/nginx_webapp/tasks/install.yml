@@ -18,7 +18,7 @@
 
 - name: 'Frontend-app > install.yml | Unarchive content'
   unarchive:
-    src: "{{ frontend_download_dir }}/{{ frontend_application.name }}.tgz"
+    src: "{{ frontend_download_dir }}/{{ frontend_application.name }}.zip"
     dest: "{{ frontend_data_dir }}/"
     owner: "{{ frontend_user }}"
     group: "{{ frontend_group }}"
@@ -51,14 +51,6 @@
   - { filename: "vhost.conf.j2", destination: "/etc/nginx/conf.d/{{ frontend_application.name }}.conf"}
   become: true
 
-# - debug:
-#     var: frontend_application.certificate
-#   become: true
-
-# - debug:
-#     var: frontend_application.name
-#   become: true
-
 - name: "Frontend-app > install.yml | Add certificate"
   copy:
     src: "{{ frontend_application.certificate }}.crt"
@@ -78,11 +70,6 @@
   #with_fileglob:
   #  - "{{ frontend_application.certificate }}"
   become: true
-
-# - debug:
-#     var: frontend_application.key_pass
-#   when: frontend_application.key_pass is defined
-#   become: true
 
 - name: "Frontend-app > install.yml | Add keypass"
   template:
