@@ -65,7 +65,7 @@
     </div>
   </div>
 
-  <div class="form-group bottom" *ngIf="showSpinner; then loadingSpinner; else saveBtn"></div>
+  <div class="form-group bottom" *ngIf="submitting; then loadingSpinner; else saveBtn"></div>
 </form>
 
 <ng-template #loadingSpinner>
@@ -76,7 +76,7 @@
 
 <ng-template #saveBtn>
   <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submited">
+    <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submitting">
       {{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.SAVE' | translate }}
     </button>
   </div>

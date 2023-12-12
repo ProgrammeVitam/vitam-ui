@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group" #tabs>
+    <mat-tab-group class="preview-tab-group show-pagination" #tabs>
 
       <mat-tab label="Informations" i18n-label="Information tab@@ingestContractPreviewTabInformation">
         <app-ingest-contract-information-tab
@@ -22,8 +22,7 @@
           [tenantIdentifier]="tenantIdentifier"
           (updated)="updatedChange($event, 0)"
           [readOnly]="readOnly"
-          #infoTab
-        >
+          #infoTab>
         </app-ingest-contract-information-tab>
       </mat-tab>
 
@@ -33,14 +32,8 @@
           [tenantIdentifier]="tenantIdentifier"
           (updated)="updatedChange($event, 1)"
           [readOnly]="readOnly"
-          #formatsTab
-        >
+          #formatsTab>
         </app-ingest-contract-format-tab>
-      </mat-tab>
-
-      <mat-tab label="{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate}}" class="no-padding">
-        <app-ingest-contract-signature-tab [ingestContract]="ingestContract">
-        </app-ingest-contract-signature-tab>
       </mat-tab>
 
       <mat-tab label="Objets" i18n-label="Objets tab@@ingestContractPreviewTabObjects" class="no-padding">
@@ -51,8 +44,16 @@
 
       <mat-tab label="Héritage" i18n-label="Objets tab@@ingestContractPreviewTabHeritage" class="no-padding">
         <app-ingest-contract-heritage-tab [readOnly]="readOnly" [ingestContract]="ingestContract"
-                                          (updated)="updatedChange($event, 3)" #heritageTab>
+                                          (updated)="updatedChange($event, 3)"
+                                          #heritageTab>
         </app-ingest-contract-heritage-tab>
+      </mat-tab>
+
+      <mat-tab label="{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate}}" class="no-padding">
+        <app-ingest-contract-signature-tab [ingestContract]="ingestContract"
+                                           (updated)="updatedChange($event, 4)"
+                                           #signatureTab>
+        </app-ingest-contract-signature-tab>
       </mat-tab>
 
       <mat-tab label="Rattachement" i18n-label="Rattachement tab@@ingestContractPreviewTabLink" class="no-padding">

@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { EMPTY, Observable } from 'rxjs';
 import { IngestContract, SignaturePolicy, SignedDocumentPolicyEnum } from 'ui-frontend-common';
 import { IngestContractService } from '../../ingest-contract.service';
 
@@ -44,7 +45,22 @@ import { IngestContractService } from '../../ingest-contract.service';
   templateUrl: './ingest-contract-signature-tab.component.html',
   styleUrls: ['./ingest-contract-signature-tab.component.scss'],
 })
-export class IngestContractSignatureTabComponent implements OnChanges {
+export class IngestContractSignatureTabComponent {
+
+  readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
+
+  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  form: FormGroup;
+  submitting = false;
+  private _ingestContract: IngestContract;
+
+  @Input()
+  set ingestContract(ingestContract: IngestContract) {
+    this._ingestContract = ingestContract;
+    this.resetForm(ingestContract);
+    this.updated.emit(false);
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,14 +68,11 @@ export class IngestContractSignatureTabComponent implements OnChanges {
   ) {
   }
 
-  readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
+  previousValue = (): SignaturePolicy => {
+    return this._ingestContract.signaturePolicy;
+  };
 
-  @Input() ingestContract: IngestContract;
-  form: FormGroup;
-
-  submitting = false;
-
-  ngOnChanges(): void {
+  ngOnChangesUnused(): void {
     if (this.ingestContract.signaturePolicy) {
       this.form = this.formBuilder.group({
         signedDocument: [this.ingestContract.signaturePolicy.signedDocument],
@@ -78,22 +91,31 @@ export class IngestContractSignatureTabComponent implements OnChanges {
   }
 
   signaturePolicyUnchanged() {
-    if (this.submitting) {return true;}
+    const actual = this.form.value as SignaturePolicy;
+    const previous = this.previousValue();
+    const unchanged = JSON.stringify(actual) === JSON.stringify(previous);
+    this.updated.emit(!unchanged);
+    return unchanged;
+  }
+
+  prepareSubmit(): Observable<IngestContract> {
+    if (this.signaturePolicyUnchanged()) {
+      return EMPTY;
+    }
     const signaturePolicy = this.form.value as SignaturePolicy;
-    return JSON.stringify(signaturePolicy) === JSON.stringify(this.ingestContract.signaturePolicy);
+    const formData = {
+      id: this._ingestContract.id,
+      identifier: this._ingestContract.identifier,
+      signaturePolicy,
+    };
+    return this.ingestContractService.patch(formData);
   }
 
   onSubmit() {
     this.submitting = true;
-    const signaturePolicy = this.form.value as SignaturePolicy;
-    const formData = {
-      id: this.ingestContract.id,
-      identifier: this.ingestContract.identifier,
-      signaturePolicy,
-    };
-    this.ingestContractService.patch(formData).subscribe(
+    this.prepareSubmit().subscribe(
       (ingestContract: IngestContract) => {
-        this.ingestContract.signaturePolicy = ingestContract.signaturePolicy;
+        this._ingestContract.signaturePolicy = ingestContract.signaturePolicy;
         this.submitting = false;
       },
       (error) => {
@@ -119,6 +141,24 @@ export class IngestContractSignatureTabComponent implements OnChanges {
       return true;
     }
     return null;
+  }
+
+  resetForm(ingestContract: IngestContract) {
+    if (ingestContract.signaturePolicy) {
+      this.form = this.formBuilder.group({
+        signedDocument: [this._ingestContract.signaturePolicy.signedDocument],
+        declaredSignature: [this._ingestContract.signaturePolicy.declaredSignature],
+        declaredTimestamp: [this._ingestContract.signaturePolicy.declaredTimestamp],
+        declaredAdditionalProof: [this._ingestContract.signaturePolicy.declaredAdditionalProof],
+      });
+    } else {
+      this.form = this.formBuilder.group({
+        signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
+        declaredSignature: [false],
+        declaredTimestamp: [false],
+        declaredAdditionalProof: [false],
+      });
+    }
   }
 
 }

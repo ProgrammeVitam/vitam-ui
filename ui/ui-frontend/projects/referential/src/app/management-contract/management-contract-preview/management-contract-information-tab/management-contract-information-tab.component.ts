@@ -43,8 +43,7 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
-  submited = false;
-  showSpinner = false;
+  submitting = false;
 
   statusControlValueChangesSubscribe: Subscription;
 
@@ -118,19 +117,16 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
   }
 
   onSubmit() {
-    this.submited = true;
-    this.showSpinner = true;
+    this.submitting = true;
     this.prepareSubmit().subscribe(
       () => {
         this.managementContractService.get(this._inputManagementContract.identifier).subscribe((response) => {
-          this.submited = false;
-          this.showSpinner = false;
+          this.submitting = false;
           this.inputManagementContract = response;
         });
       },
       () => {
-        this.submited = false;
-        this.showSpinner = false;
+        this.submitting = false;
       }
     );
   }

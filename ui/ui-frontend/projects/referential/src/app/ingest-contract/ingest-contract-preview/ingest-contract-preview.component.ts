@@ -45,6 +45,7 @@ import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/i
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
 import { IngestContractInformationTabComponent } from './ingest-contract-information-tab/ingest-contract-information-tab.component';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab/ingest-contract-object-tab.component';
+import { IngestContractSignatureTabComponent } from './ingest-contract-signature-tab/ingest-contract-signature-tab.component';
 
 @Component({
   selector: 'app-ingest-contract-preview',
@@ -67,11 +68,13 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
     | IngestContractFormatTabComponent
     | IngestContractObjectTabComponent
     | IngestContractHeritageTabComponent
+    | IngestContractSignatureTabComponent
   > = [];
   @ViewChild('infoTab', { static: false }) infoTab: IngestContractInformationTabComponent;
   @ViewChild('formatsTab', { static: false }) formatsTab: IngestContractFormatTabComponent;
   @ViewChild('objectsTab', { static: false }) objectsTab: IngestContractObjectTabComponent;
   @ViewChild('heritageTab', { static: false }) heritageTab: IngestContractHeritageTabComponent;
+  @ViewChild('signatureTab', { static: false }) signatureTab: IngestContractSignatureTabComponent;
 
   @HostListener('window:beforeunload', ['$event'])
   async beforeunloadHandler(event: any) {
@@ -96,6 +99,7 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
     this.tabLinks[1] = this.formatsTab;
     this.tabLinks[2] = this.objectsTab;
     this.tabLinks[3] = this.heritageTab;
+    this.tabLinks[4] = this.signatureTab;
   }
 
   updatedChange(updated: boolean, index: number) {
@@ -120,7 +124,6 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       await this.checkBeforeExit();
     }
-
     const args = [tab, tabHeader, idx];
     return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
   }
