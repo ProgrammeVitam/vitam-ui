@@ -34,20 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {IconButtonComponent} from './icon-button.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { TextButtonComponent } from './text-button.component';
 
 @NgModule({
-  declarations: [
-    IconButtonComponent
-  ],
-  imports: [
-    CommonModule,
-  ],
-  exports: [
-    IconButtonComponent
-  ]
+  declarations: [TextButtonComponent],
+  imports: [CommonModule],
+  exports: [TextButtonComponent],
 })
-export class IconButtonModule {
-}
+export class TextButtonModule {}

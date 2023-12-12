@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -34,20 +35,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {DefaultButtonComponent} from './default-button.component';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-@NgModule({
-  declarations: [
-    DefaultButtonComponent
-  ],
-  imports: [
-    CommonModule,
-  ],
-  exports: [
-    DefaultButtonComponent
-  ]
+@Component({
+  selector: 'vitamui-default-button',
+  templateUrl: './default-button.component.html',
+  styleUrls: ['./default-button.component.scss'],
 })
-export class DefaultButtonModule {
+export class DefaultButtonComponent {
+  @Input() text: string;
+  @Input() type: 'Primary' | 'Secondary' | 'Tertiary' | 'Contrast' = 'Primary';
+  @Input() outline = false;
+  @Input() disabled = false;
+  @Input() leftIcon: string;
+  @Input() rightIcon: string;
+
+  @Input() isCdkStepperPrevious: boolean;
+
+  @Output() actionOnClick = new EventEmitter<string>();
+
+  constructor() {}
+
+  click() {
+    this.actionOnClick.emit();
+  }
 }

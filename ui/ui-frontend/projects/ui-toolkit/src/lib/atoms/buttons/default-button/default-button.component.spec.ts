@@ -34,20 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {TextButtonComponent} from './text-button.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@NgModule({
-  declarations: [
-    TextButtonComponent
-  ],
-  imports: [
-    CommonModule,
-  ],
-  exports: [
-    TextButtonComponent
-  ]
-})
-export class TextButtonModule {
-}
+import { DefaultButtonComponent } from './default-button.component';
+
+describe('TextButtonComponent', () => {
+  let component: DefaultButtonComponent;
+  let fixture: ComponentFixture<DefaultButtonComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [DefaultButtonComponent],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DefaultButtonComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

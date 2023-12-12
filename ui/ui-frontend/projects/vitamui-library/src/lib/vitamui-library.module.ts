@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import {
-  UpdatedApplicationSelectContentModule
-} from './components/application-select-content/application-select-content.module';
-import { TextButtonModule } from './components/buttons/text-button/text-button.module';
+import { UpdatedApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import { CardGroupModule } from './components/card-group/card-group.module';
 import { CardSelectModule } from './components/card-select/card-select.module';
 import { CardModule } from './components/card/card.module';
@@ -18,7 +15,6 @@ import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-op
 @NgModule({
   declarations: [],
   imports: [
-    TextButtonModule,
     CardGroupModule,
     CardModule,
     CardSelectModule,
@@ -32,7 +28,6 @@ import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-op
     VitamUISelectAllOptionModule,
   ],
   exports: [
-    TextButtonModule,
     CardGroupModule,
     CardModule,
     CardSelectModule,

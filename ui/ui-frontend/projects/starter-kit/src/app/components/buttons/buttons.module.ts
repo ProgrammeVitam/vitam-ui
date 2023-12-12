@@ -3,13 +3,11 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { DefaultButtonModule, IconButtonModule, TextButtonModule } from 'vitamui-library';
+import { DefaultButtonModule, IconButtonModule, TextButtonModule } from 'ui-toolkit';
 import { ButtonsComponent } from './buttons.component';
 
 @NgModule({
-  declarations: [
-    ButtonsComponent
-  ],
+  declarations: [ButtonsComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -17,11 +15,8 @@ import { ButtonsComponent } from './buttons.component';
     MatButtonToggleModule,
     DefaultButtonModule,
     IconButtonModule,
-    TextButtonModule
+    TextButtonModule,
   ],
-  exports: [
-    ButtonsComponent
-  ]
+  exports: [ButtonsComponent],
 })
-export class ButtonsModule {
-}
+export class ButtonsModule {}

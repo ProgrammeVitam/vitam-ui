@@ -1,4 +1,3 @@
-/* tslint:disable:component-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -35,28 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { IconButtonComponent } from './icon-button.component';
 
-@Component({
-  selector: 'vitamui-icon-button',
-  templateUrl: './icon-button.component.html',
-  styleUrls: ['./icon-button.component.scss']
+@NgModule({
+  declarations: [IconButtonComponent],
+  imports: [CommonModule],
+  exports: [IconButtonComponent],
 })
-export class IconButtonComponent {
-  @Input() type: 'Primary' | 'Secondary' = 'Primary';
-  @Input() size: 'Large' | 'Medium' | 'Small' = 'Medium';
-  @Input() outline = false;
-  @Input() disabled = false;
-  @Input() icon: string;
-
-  @Input() isCdkStepperPrevious: boolean;
-
-  @Output() actionOnClick = new EventEmitter<string>();
-
-  constructor() {
-  }
-
-  click() {
-    this.actionOnClick.emit();
-  }
-}
+export class IconButtonModule {}

@@ -61,7 +61,9 @@
         background: var(--vitamui-primary-300);
         border: 2px solid transparent;
         /* Primary/2dp-primary */
-        box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
+        box-shadow:
+          0 0 2px rgba(112, 35, 130, 0.4),
+          0 1px 4px rgba(112, 35, 130, 0.2);
       }
 
       &:active:enabled {
@@ -75,7 +77,8 @@
         /* Primary/Primary-500 */
         border: 1px solid var(--vitamui-primary);
 
-        span, i {
+        span,
+        i {
           /* Primary/Primary-500 */
           color: var(--vitamui-primary);
         }
@@ -86,9 +89,12 @@
           /* Primary/Primary-300 */
           border: 1px solid var(--vitamui-primary-300);
           /* Primary/2dp-primary */
-          box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
+          box-shadow:
+            0 0 2px rgba(112, 35, 130, 0.4),
+            0 1px 4px rgba(112, 35, 130, 0.2);
 
-          span, i {
+          span,
+          i {
             /* Primary/Primary-300 */
             color: var(--vitamui-primary-300);
           }
@@ -100,7 +106,8 @@
           /* Primary/Primary-700 */
           border: 1px solid var(--vitamui-primary-700);
 
-          span, i {
+          span,
+          i {
             /* Primary/Primary-700 */
             color: var(--vitamui-primary-700);
           }
@@ -118,7 +125,9 @@
         background: var(--vitamui-secondary-400);
         border: 2px dashed transparent;
         /* Secondary/2dp-secondary */
-        box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
+        box-shadow:
+          0 0 2px rgba(37, 99, 169, 0.4),
+          0 1px 4px rgba(37, 99, 169, 0.2);
       }
 
       &:active:enabled {
@@ -133,7 +142,8 @@
         /* Secondary/Secondary-500 */
         border: 1px solid var(--vitamui-secondary);
 
-        span, i {
+        span,
+        i {
           /* Secondary/Secondary-500 */
           color: var(--vitamui-secondary);
         }
@@ -144,9 +154,12 @@
           /* Secondary/Secondary-400 */
           border: 1px solid var(--vitamui-secondary-400);
           /* Secondary/2dp-secondary */
-          box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
+          box-shadow:
+            0 0 2px rgba(37, 99, 169, 0.4),
+            0 1px 4px rgba(37, 99, 169, 0.2);
 
-          span, i {
+          span,
+          i {
             /* Secondary/Secondary-400 */
             color: var(--vitamui-secondary-400);
           }
@@ -158,9 +171,12 @@
           /* Secondary/Secondary-700 */
           border: 1px solid var(--vitamui-secondary-700);
           /* X_Secondary/2dp-secondary */
-          box-shadow: 0 0 2px rgba(14, 188, 255, 0.4), 0 1px 4px rgba(14, 188, 255, 0.2);
+          box-shadow:
+            0 0 2px rgba(14, 188, 255, 0.4),
+            0 1px 4px rgba(14, 188, 255, 0.2);
 
-          span, i {
+          span,
+          i {
             /* Secondary/Secondary-700 */
             color: var(--vitamui-secondary-700);
           }
@@ -172,7 +188,8 @@
       background: white;
       border: 1px solid transparent;
 
-      span, i {
+      span,
+      i {
         /* Grey/Grey-900  #212121 */
         color: var(--vitamui-grey-900);
       }
@@ -182,9 +199,12 @@
         background: var(--vitamui-primary-50);
         border: 1px solid transparent;
         /* Primary/2dp-primary */
-        box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
+        box-shadow:
+          0 0 2px rgba(112, 35, 130, 0.4),
+          0 1px 4px rgba(112, 35, 130, 0.2);
 
-        span, i {
+        span,
+        i {
           /* Primary/Primary-400 */
           color: var(--vitamui-primary-400);
         }
@@ -195,7 +215,8 @@
         background: var(--vitamui-primary-100);
         border: 1px solid transparent;
 
-        span, i {
+        span,
+        i {
           /* Primary/Primary-700 */
           color: var(--vitamui-primary-700);
         }
@@ -207,7 +228,8 @@
       background: var(--vitamui-grey-300);
       cursor: default;
 
-      span, i {
+      span,
+      i {
         /* Grey/Grey-700 - color: #616161; */
         color: var(--vitamui-grey-700);
       }
@@ -218,11 +240,11 @@
         /* Grey/Grey-700 */
         border: 1px solid var(--vitamui-grey-700);
 
-        span, i {
+        span,
+        i {
           /* Grey/Grey-700 - color: #616161; */
           color: var(--vitamui-grey-700);
         }
-
       }
     }
 
@@ -231,7 +253,8 @@
       background: white;
       border: 2px solid transparent;
 
-      span, i {
+      span,
+      i {
         /* Primary/Primary-500 */
         color: var(--vitamui-primary);
       }
@@ -241,9 +264,12 @@
         background: var(--vitamui-primary-50);
         border: 2px solid transparent;
         /* Dark/2dp-dark */
-        box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
+        box-shadow:
+          0 0 2px rgba(33, 33, 33, 0.2),
+          0 1px 4px rgba(33, 33, 33, 0.05);
 
-        span, i {
+        span,
+        i {
           /* Primary/Primary-700 */
           color: var(--vitamui-primary-700);
         }
@@ -254,7 +280,8 @@
         background: var(--vitamui-primary-100);
         border: 2px solid transparent;
 
-        span, i {
+        span,
+        i {
           /* Primary/Primary-700 */
           color: var(--vitamui-primary-700);
         }
@@ -266,7 +293,8 @@
         opacity: 0.5;
         cursor: default;
 
-        span, i {
+        span,
+        i {
           /* Primary/Primary-500 */
           color: var(--vitamui-primary);
         }
@@ -277,7 +305,8 @@
         /* Basics/White */
         border: 1px solid white;
 
-        span, i {
+        span,
+        i {
           /* Basics/White */
           color: white;
         }
@@ -288,9 +317,12 @@
           /* Basics/White */
           border: 1px solid white;
           /* Dark/2dp-dark */
-          box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
+          box-shadow:
+            0 0 2px rgba(33, 33, 33, 0.2),
+            0 1px 4px rgba(33, 33, 33, 0.05);
 
-          span, i {
+          span,
+          i {
             /* Basics/White */
             color: white;
           }
@@ -302,7 +334,8 @@
           /* Basics/White */
           border: 1px solid white;
 
-          span, i {
+          span,
+          i {
             /* Basics/White */
             color: white;
           }
@@ -313,9 +346,7 @@
           /* Basics/White */
           border: 1px solid white;
         }
-
       }
     }
-
   }
 }

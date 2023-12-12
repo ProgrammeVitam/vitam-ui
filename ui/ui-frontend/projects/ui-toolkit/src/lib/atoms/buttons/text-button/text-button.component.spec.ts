@@ -1,4 +1,3 @@
-/* tslint:disable:component-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -35,29 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'vitamui-default-button',
-  templateUrl: './default-button.component.html',
-  styleUrls: ['./default-button.component.scss']
-})
-export class DefaultButtonComponent {
-  @Input() text: string;
-  @Input() type: 'Primary' | 'Secondary' | 'Tertiary' | 'Contrast' = 'Primary';
-  @Input() outline = false;
-  @Input() disabled = false;
-  @Input() leftIcon: string;
-  @Input() rightIcon: string;
+import { TextButtonComponent } from './text-button.component';
 
-  @Input() isCdkStepperPrevious: boolean;
+describe('TextButtonComponent', () => {
+  let component: TextButtonComponent;
+  let fixture: ComponentFixture<TextButtonComponent>;
 
-  @Output() actionOnClick = new EventEmitter<string>();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [TextButtonComponent],
+    }).compileComponents();
+  });
 
-  constructor() {
-  }
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TextButtonComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  click() {
-    this.actionOnClick.emit();
-  }
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

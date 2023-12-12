@@ -69,7 +69,9 @@
         background: var(--vitamui-primary-300);
         border: 2px solid transparent;
         /* Primary/2dp-primary */
-        box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
+        box-shadow:
+          0 0 2px rgba(112, 35, 130, 0.4),
+          0 1px 4px rgba(112, 35, 130, 0.2);
       }
 
       &:active:enabled {
@@ -93,8 +95,9 @@
           /* Primary/Primary-300  #C672D9 */
           border: 1px solid var(--vitamui-primary-300);
           /* Primary/2dp-primary */
-          box-shadow: 0 0 2px rgba(112, 35, 130, 0.4), 0 1px 4px rgba(112, 35, 130, 0.2);
-
+          box-shadow:
+            0 0 2px rgba(112, 35, 130, 0.4),
+            0 1px 4px rgba(112, 35, 130, 0.2);
         }
 
         &:active:enabled {
@@ -116,7 +119,9 @@
         background: var(--vitamui-secondary-400);
         border: 2px dashed transparent;
         /* Secondary/2dp-secondary */
-        box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
+        box-shadow:
+          0 0 2px rgba(37, 99, 169, 0.4),
+          0 1px 4px rgba(37, 99, 169, 0.2);
       }
 
       &:active:enabled {
@@ -142,7 +147,9 @@
           /* Secondary/Secondary-400 */
           border: 1px solid var(--vitamui-secondary-400);
           /* Secondary/2dp-secondary */
-          box-shadow: 0 0 2px rgba(37, 99, 169, 0.4), 0 1px 4px rgba(37, 99, 169, 0.2);
+          box-shadow:
+            0 0 2px rgba(37, 99, 169, 0.4),
+            0 1px 4px rgba(37, 99, 169, 0.2);
 
           i {
             /* Secondary/Secondary-400 */
@@ -156,7 +163,9 @@
           /* Secondary/Secondary-700 */
           border: 1px solid var(--vitamui-secondary-700);
           /* X_Secondary/2dp-secondary */
-          box-shadow: 0 0 2px rgba(14, 188, 255, 0.4), 0 1px 4px rgba(14, 188, 255, 0.2);
+          box-shadow:
+            0 0 2px rgba(14, 188, 255, 0.4),
+            0 1px 4px rgba(14, 188, 255, 0.2);
 
           i {
             /* Secondary/Secondary-700 */
@@ -186,10 +195,7 @@
           /* Grey/Grey-700  #616161; */
           color: var(--vitamui-grey-700);
         }
-
       }
     }
-
-
   }
 }

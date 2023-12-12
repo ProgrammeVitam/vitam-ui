@@ -1033,6 +1033,46 @@
           }
         }
       }
+    },
+    "ui-toolkit": {
+      "projectType": "library",
+      "root": "projects/ui-toolkit",
+      "sourceRoot": "projects/ui-toolkit/src",
+      "prefix": "vitam",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/ui-toolkit/tsconfig.lib.json",
+            "project": "projects/ui-toolkit/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ui-toolkit/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ui-toolkit/src/test.ts",
+            "tsConfig": "projects/ui-toolkit/tsconfig.spec.json",
+            "karmaConfig": "projects/ui-toolkit/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ui-toolkit/tsconfig.lib.json",
+              "projects/ui-toolkit/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "portal",

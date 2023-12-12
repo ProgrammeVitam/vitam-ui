@@ -78,7 +78,6 @@
     }
 
     &.LeftIcon {
-
       i {
         display: flex;
         align-items: center;
@@ -122,18 +121,18 @@
 
     &.Destructive {
       /* Red/Red-500 */
-      color: #C10000;
+      color: #c10000;
 
       &:hover:enabled {
         /* Red/Red-900 */
-        color: #9E0000;
+        color: #9e0000;
         /* Red/Red-50 */
-        background-color: #F8E0E0;
+        background-color: #f8e0e0;
       }
 
       &:active:enabled {
         /* Red/Red-900 */
-        color: #9E0000;
+        color: #9e0000;
         background-color: transparent;
       }
     }
@@ -143,6 +142,5 @@
       /* Grey/Grey-700 - color: #616161; */
       color: var(--vitamui-grey-700);
     }
-
   }
 }
