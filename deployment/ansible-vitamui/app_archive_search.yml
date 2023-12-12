@@ -33,13 +33,13 @@
   gather_facts: no
   any_errors_fatal: true
   roles:
-    - vitamui
-  vars:
-    app_default_root_path: "/vitamui"
-    vitamui_struct: "{{ vitamui.archive_search }}"
-    vitamui_certificate_type: "server"
-    password_keystore: "{{ keystores_server_ui_archive_search }}"
-    password_truststore: "{{ truststores_server }}"
-    consul_tags: "ui-archive-search, ui"
-  when: not gateway.enabled | default(True)
+    - role: vitamui
+      vars:
+        app_default_root_path: "/vitamui"
+        vitamui_struct: "{{ vitamui.archive_search }}"
+        vitamui_certificate_type: "server"
+        password_keystore: "{{ keystores_server_ui_archive_search }}"
+        password_truststore: "{{ truststores_server }}"
+        consul_tags: "ui-archive-search, ui"
+      when: not gateway.enabled | default(True)
 

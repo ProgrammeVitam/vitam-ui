@@ -4,14 +4,14 @@ db = db.getSiblingDB("cas");
 
 print("START 037_enable_oidc_code_grant_type_on_referential_service_ref.js");
 
-db.services.deleteOne({ "_id": 4, });
+db.services.deleteOne({ "_id": 4 });
 
 db.services.insertOne({
   _id: NumberInt(4),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "referential",
   serviceId : "{{ vitamui.referential.serviceId | default('^' + vitamui.referential.base_url + '/.*') }}",
-  name: "{{ vitamui.referential.name }}",
+  name: "Referential Application",
   bypassApprovalPrompt: true,
   supportedGrantTypes: ["authorization_code"],
   supportedResponseTypes: ["code", "token"],

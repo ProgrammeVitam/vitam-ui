@@ -30,7 +30,8 @@ db.certificates.insertOne({
     {% endfor %}
 {%- endmacro %}
 
-{{ process('{{ pki_dir }}/server/hosts/%host%/ui-referential.pem', 'ui_referential_context', 'hosts_ui_referential') }}
+
+{{ process('{{ pki_dir }}/client-external/clients/ui-referential/ui-referential.pem', 'ui_referential_context', 'hosts_ui_referential') }}
 {{ process('{{ pki_dir }}/server/hosts/%host%/ui-ingest.pem', 'ui_ingest_context', 'hosts_ui_ingest') }}
 {{ process('{{ pki_dir }}/server/hosts/%host%/ui-archive-search.pem', 'ui_archive_search_context', 'hosts_ui_archive_search') }}
 

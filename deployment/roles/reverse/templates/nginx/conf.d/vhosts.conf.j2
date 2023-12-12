@@ -13,7 +13,14 @@ server {
 
   # UI IDENTITY_ADMIN
   location /identity-admin {
+
+    {% if gateway.enabled | default(False) is sameas true %}
+    rewrite /identity-admin/(.*) /$1  break;
+    proxy_pass https://IDENTITY_ADMIN;
+    {% else %}
     proxy_pass https://IDENTITY_ADMIN/identity-admin;
+    {% endif %}
+
     sub_filter '/identity/' 'https://{{ vitam_reverse_external_dns }}/identity-admin/';
     sub_filter_types text/html text/css;
     sub_filter_once off;
@@ -23,14 +30,28 @@ server {
 
   # UI IDENTITY
   location /identity {
+
+    {% if gateway.enabled | default(False) is sameas true %}
+    rewrite /identity/(.*) /$1  break;
+    proxy_pass https://IDENTITY;
+    {% else %}
     proxy_pass https://IDENTITY/identity;
+    {% endif %}
+
     include /etc/nginx/conf.d/proxy_params;
   }
 
 {% if groups['hosts_ui_referential']|length > 0 %}
   # UI REFERENTIAL
   location /referential {
+
+    {% if gateway.enabled | default(False) is sameas true %}
+    rewrite /referential/(.*) /$1  break;
+    proxy_pass https://REFERENTIAL;
+    {% else %}
     proxy_pass https://REFERENTIAL/referential;
+    {% endif %}
+
     include /etc/nginx/conf.d/proxy_params;
   }
 {% endif %}

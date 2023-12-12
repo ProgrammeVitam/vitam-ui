@@ -1,0 +1,58 @@
+frontend:
+  # Certificate/password for global certificate
+  certificate: frontend
+  key_password: "" #{{ vault_cert_server_frontend_key }}" TOCHANGE
+  repository_url: "http://nexus.dev.programmevitam.fr"
+  apps:
+    - name: identity
+      #certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity.crt"
+      certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-identity/ui-identity"
+      key_pass: "{{ client_client_external_ui_identity_key }}" #"{{ server_ui_identity_key }}
+    - name: identity-admin
+      certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-identity-admin/ui-identity-admin"
+      #certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity-admin.crt"
+      key_pass:  "{{ client_client_external_ui_identity_admin_key }}" #"{{ server_ui_identity_admin_key }}"
+    - name: portal
+      certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-portal/ui-portal"
+      #certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-portal.crt"
+      key_pass:  "{{ client_client_external_ui_portal_key }}" #"{{ server_ui_portal_key }}"
+    - name: referential
+      #certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-referential.crt"
+      certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-referential/ui-referential"
+      key_pass: "{{ client_client_external_ui_referential_key }}" #"{{ server_ui_referential_key }}"
+
+frontend_user: "vitamui"
+frontend_group: "vitamui"
+
+#frontend_certificates:
+# - "{{ pki_dir }}/certs/server/frontend*"
+
+frontend_ssl_global_certificate_enabled: true
+frontend_configurations: ["{{ playbook_dir }}/templates/frontend/nginx/conf.d/*"]
+
+###### info in cas #### to move
+app_certificates:
+  - name: portal
+    contextId: ui_portal_context
+    certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-portal/ui-portal.crt"
+    #certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-portal.crt"
+    group: "ui_portal"
+  - name: cas
+    contextId: cas_context
+    certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/cas_server.crt"
+    group: "cas_server"
+  - name: identity-admin
+    contextId: ui_admin_identity_context
+    certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-identity-admin/ui-identity-admin.crt"
+    #certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity-admin.crt"
+    group: "ui_identity_admin"
+  - name: identity
+    contextId: ui_identity_context
+    certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-identity/ui-identity.crt"
+    #certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-identity.crt"
+    group: "ui_identity"
+  - name: referential
+    contextId: ui_referential_context
+    certificate: "{{ inventory_dir }}/certs/client-external/clients/ui-referential/ui-referential.crt"
+    #certificate: "{{ inventory_dir }}/certs/server/hosts/vitam-env-xel-vm-0.vitam-env/ui-referential.crt"
+    group: "ui_referential"

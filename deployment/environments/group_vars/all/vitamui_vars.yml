@@ -87,8 +87,8 @@ vitamui:
     host: "referential.service.{{ consul_domain }}"
     vitamui_component: "ui-referential"
     vitamui_component_type: "ui"
-    port_service: 8005
-    port_admin: 7005
+    port_service: 8006
+    port_admin: 7006
     server_connection_timeout: 60000
     base_url: "https://{{ vitam_reverse_external_dns }}/referential"
     resources_header_cache_control: "max-age=1800, must-revalidate"
@@ -179,7 +179,7 @@ vitamui:
       vitamui_logo_large: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo-large.png"
     reset_password_url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
     cors:
-      enabled: false
+      enabled: true
 
   security_internal:
     host: "vitamui-security-internal.service.{{ consul_domain }}"
