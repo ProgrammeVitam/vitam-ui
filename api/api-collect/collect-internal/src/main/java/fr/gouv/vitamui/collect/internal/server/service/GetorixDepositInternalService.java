@@ -145,8 +145,8 @@ public class GetorixDepositInternalService  extends
 
     public GetorixDepositDto getGetorixDepositById(String id) {
 
-        checkIsUserAuthenticated("You are not authorized to get the deposit details");
         LOGGER.debug("[Internal] : get the GetorixDeposit details by id : {}", id);
+        checkIsUserAuthenticated("You are not authorized to get the deposit details");
         return this.getOne(id);
     }
 
@@ -195,7 +195,7 @@ public class GetorixDepositInternalService  extends
     }
 
     private CollectProjectDto createProject(CollectProjectDto collectProjectDto, VitamContext vitamContext) {
-        LOGGER.debug("CollectProjectDto: {}", collectProjectDto);
+        LOGGER.debug("Create CollectProjectDto: {}", collectProjectDto);
         try {
             ProjectDto projectDto = ProjectConverter.toVitamProjectDto(collectProjectDto);
             RequestResponse<JsonNode> requestResponse = collectService.initProject(vitamContext, projectDto);
@@ -217,7 +217,7 @@ public class GetorixDepositInternalService  extends
 
     private CollectTransactionDto createTransactionForProject(
         CollectTransactionDto collectTransactionDto, String projectId, VitamContext vitamContext) {
-        LOGGER.debug("CollectTransactionDto: {} ", collectTransactionDto);
+        LOGGER.debug(" Create CollectTransactionDto: {} ", collectTransactionDto);
         try {
             SanityChecker.checkSecureParameter(projectId);
             TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
@@ -240,7 +240,7 @@ public class GetorixDepositInternalService  extends
     }
 
     private void updateCollectProject(CollectProjectDto collectProjectDto, VitamContext vitamContext) {
-        LOGGER.debug("CollectProjectDto: {}", collectProjectDto);
+        LOGGER.debug("Update CollectProjectDto: {}", collectProjectDto);
         try {
             ProjectDto projectDto = ProjectConverter.toVitamProjectDto(collectProjectDto);
             RequestResponse<JsonNode> requestResponse = collectService.updateProject(vitamContext, projectDto);
@@ -256,7 +256,7 @@ public class GetorixDepositInternalService  extends
 
     private void updateCollectTransaction(CollectTransactionDto collectTransactionDto,
         VitamContext vitamContext) {
-        LOGGER.debug("CollectTransactionDto: {}", collectTransactionDto);
+        LOGGER.debug("Update CollectTransactionDto: {}", collectTransactionDto);
         try {
             TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
             RequestResponse<JsonNode> requestResponse = collectService.updateTransaction(vitamContext, transactionDto);
@@ -283,6 +283,7 @@ public class GetorixDepositInternalService  extends
         CollectProjectDto collectProjectDto = new CollectProjectDto();
         collectProjectDto.setStatus("OPEN");
         collectProjectDto.setMessageIdentifier(getorixDepositDto.getOperationName());
+        collectProjectDto.setName(getorixDepositDto.getOperationName());
         collectProjectDto.setOriginatingAgencyIdentifier(getorixDepositDto.getOriginatingAgency());
         collectProjectDto.setSubmissionAgencyIdentifier(getorixDepositDto.getVersatileService());
         return collectProjectDto;
