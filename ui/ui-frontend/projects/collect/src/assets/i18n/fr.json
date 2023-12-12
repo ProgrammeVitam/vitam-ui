@@ -16,7 +16,11 @@
       "OPERATION_NUMBER" :"Numéro : ",
       "UPDATE_CONTENT_DESCRIPTION" :"Modifier la description du contenu",
       "COMMENTS" :"COMMENTAIRES",
-      "SEND_TO_ARCHIVIST" :"Envoyer à l'archiviste"
+      "SEND_TO_ARCHIVIST" :"Envoyer à l'archiviste",
+      "DRAG_AND_DROP": "Glisser-déposer  vos archives ou",
+      "BROWSE" :"importer depuis votre ordinateur",
+      "UPLOAD_FILE_ALREADY_IMPORTED": "Dossier déjà importer !",
+      "TERMINATED": "Les fichiers ont été bien envoyé à VITAM" 
     },
     "CREATION_PROCESS": {
       "SUCCESS" : {

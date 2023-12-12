@@ -13,7 +13,7 @@
         </div>
         <div class="col-3"></div>
         <div class="col-2">
-          <button class="btn primary" [ngStyle]="{ 'margin-top': '15%' }">
+          <button class="btn primary" [ngStyle]="{ 'margin-top': '15%' }" (click)="notifyArchivist()">
             <span> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.SEND_TO_ARCHIVIST' | translate }}</span>
           </button>
         </div>
@@ -34,6 +34,84 @@
       </div>
 
       {{ operationId }}
+
+      <div class="row">
+        <div class="col">
+          <div class="content">
+            <div class="main-content">
+              <div
+                class="drag-and-drop-area"
+                (dragleave)="onDragLeave($event)"
+                (dragover)="onDragOver($event)"
+                (drop)="onDropped($event)"
+                [ngClass]="{ 'on-over': hasDropZoneOver }"
+              >
+                <input #fileSearch (change)="handleFile($event)" class="input-file" directory multiple type="file" webkitdirectory />
+                <div class="drop-area">
+                  <div class="pbjects-drop">
+                    <p class="url-select">
+                      <i class="material-icons">add</i>
+                      {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.DRAG_AND_DROP' | translate }}
+                      <span (click)="addFolder()" class="url-select clickable-texte">
+                        {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.BROWSE' | translate }}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3"></div>
+      </div>
+
+      <div></div>
+      <br />
+      <div vitamuiCommonInfiniteScroll>
+        <div class="vitamui-table">
+          <div class="vitamui-table-head">
+            <div class="col d-flex align-items-center">
+              <input
+                type="checkbox"
+                class="criteria-choice-input"
+                [checked]="isAllChecked"
+                [indeterminate]="isIndeterminate"
+                (click)="checkParentBoxChange($event)"
+              />
+            </div>
+            <div class="col">Type</div>
+            <div class="col-7">Nom</div>
+
+            <div class="col-4 selected-elements">
+              3 ÉLÉMENTS SÉLECTIONNÉS <i (click)="editUnits()" class="vitamui-icon vitamui-icon-edit icon-action"></i
+              ><i class="vitamui-icon vitamui-icon-arrow-right2 icon-action" (click)="reclassifyUnits()"></i>
+              <i class="vitamui-icon vitamui-icon-delete icon-action" (click)="deleteUnits()"></i>
+              <i (click)="addNewObject()" class="material-icons add-icon clickable" [ngStyle]="{ 'font-size': '40px' }">add_circle</i>
+            </div>
+          </div>
+
+          <div class="vitamui-table-body">
+            <div class="vitamui-table-rows" *ngFor="let element of myList; let index = index">
+              <div class="vitamui-row d-flex align-items-center">
+                <div class="col d-flex align-items-center">
+                  <input
+                    class="criteria-choice-input"
+                    type="checkbox"
+                    (click)="checkChildrenBoxChange(element, $event)"
+                    [checked]="isAllChecked"
+                  />
+                </div>
+                <div class="col d-flex align-items-center">
+                  <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
+                </div>
+                <div class="col-11 d-flex align-items-center">{{ element }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- <div class="upload-percent">component to follow the upload steps</div> -->
   </mat-sidenav-content>
 </mat-sidenav-container>

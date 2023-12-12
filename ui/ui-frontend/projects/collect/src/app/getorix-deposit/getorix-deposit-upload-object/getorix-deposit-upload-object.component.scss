@@ -1,5 +1,5 @@
 .title {
-  color: var(--primary-primary-900, #110514);
+  color: #110514;
   font-family: Mulish;
   font-size: 24px;
   font-style: normal;
@@ -8,7 +8,7 @@
   letter-spacing: -0.5px;
 }
 .num {
-  color: var(--primary-primary-900, #110514);
+  color: #110514;
   font-family: Mulish;
   font-size: 20px;
   font-style: normal;
@@ -46,4 +46,123 @@
   width: 24px;
   height: 24px;
   margin-right: 10px;
+}
+
+.add-icon {
+  color: var(--vitamui-primary);
+  font-size: 35px;
+  padding-left: 70px;
+  margin-top: -10px;
+  right: 20px;
+}
+
+.selected-elements {
+  color: var(--vitamui-primary);
+  text-align: left;
+  font-family: Mulish;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  display: inline-block;
+}
+
+.icon-action {
+  color: var(--vitamui-primary);
+  font-size: 24px;
+  cursor: pointer;
+  padding-left: 25px;
+}
+
+.content {
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    height: 150px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: start;
+
+    .line {
+      margin-bottom: 20px;
+    }
+
+    button {
+      margin-right: 20px;
+    }
+  }
+}
+
+.drag-and-drop-area {
+  width: 100%;
+  height: 25vh;
+  border: 2px dashed var(--vitamui-primary);
+  border-radius: 6px;
+  box-shadow: 0 0 80px rgba(255, 255, 249, 0.3);
+  background: white;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
+  .drop-area {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+
+    .objects-drop {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+.on-over {
+  border: 2px solid var(--vitamui-secondary);
+  height: 300px;
+
+  p {
+    color: white;
+  }
+
+  .drop-area {
+    height: 100%;
+    background: #5cbaa9;
+    opacity: 0.9;
+    color: white;
+    overflow: hidden;
+  }
+}
+
+.input-file {
+  display: none;
+}
+
+.url-select {
+  color: var(--vitamui-primary);
+  text-align: center;
+  font-family: Mulish;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+}
+.clickable-texte {
+  cursor: pointer;
+  text-decoration-line: underline;
+}
+
+.upload-percent {
+  position: fixed;
+  bottom: 10px;
+  right: 100px;
 }

@@ -160,7 +160,7 @@
     "serialize-javascript": "^5.0.1",
     "timers": "^0.1.1",
     "tslib": "^2.0.3",
-    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-2.1.59.tgz",
+    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-2.2.1.tgz",
     "underscore": "^1.13.1",
     "utf-8-validate": "^5.0.2",
     "uuid": "^7.0.2",

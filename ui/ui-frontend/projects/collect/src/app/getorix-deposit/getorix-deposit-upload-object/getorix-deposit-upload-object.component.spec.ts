@@ -27,6 +27,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
@@ -49,7 +50,7 @@ describe('GetorixDepositUploadObjectComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [GetorixDepositUploadObjectComponent],
-      imports: [HttpClientTestingModule, TranslateModule.forRoot(), InjectorModule, LoggerModule.forRoot()],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot(), InjectorModule, MatSnackBarModule, LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
