@@ -51,7 +51,6 @@ export class CollectUploadService {
 
   private static uploadFilesInfo(files: any) {
     let size = 0;
-    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < files.length; i++) {
       size += files[i].size;
     }
@@ -104,12 +103,14 @@ export class CollectUploadService {
     return indexName !== -1;
   }
 
-  uploadZip(tenantIdentifier: number, transactionId: string) {
+  uploadZip(tenantIdentifier: number, transactionId: string, repositoryName?: string) {
+    const zippedFileName = repositoryName ? `${repositoryName}.zip` : `${transactionId}.zip`;
     this.zippedFile = {
-      name: `${transactionId}.zip`,
+      name: zippedFileName,
       size: this.filesToUpload.map((f) => f.size).reduce((prev, cur) => prev + cur, 0),
       uploadedSize: 0,
     };
+
     this.watchZippedFile$.next(this.zippedFile);
     let headers = new HttpHeaders();
     headers = headers.set(CollectUploadService.X_TENANT_KEY, tenantIdentifier.toString());
@@ -124,6 +125,7 @@ export class CollectUploadService {
       responseType: 'text' as 'text',
       reportProgress: true,
     };
+
     return this.zipFile
       .generateInternalStream({ type: 'blob' })
       .accumulate((metadata) => {
@@ -153,7 +155,6 @@ export class CollectUploadService {
       return;
     }
     this.uploadInfo(CollectUploadService.uploadFilesInfo(files));
-    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < files.length; i++) {
       const item = files[i];
       this.zipFile.file(item.webkitRelativePath, item);
