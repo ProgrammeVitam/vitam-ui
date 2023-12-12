@@ -176,29 +176,13 @@ hosts_vitamui_consul_server
 ################################################################################
 [vitam:children]
 hosts_consul_server
-hosts_ingest_external
-hosts_access_external
 hosts_elasticsearch_log
-hosts_functionnal_admin
-hosts_security_internal
 
 # MINIMUM REQUIRED IN ZONE VITAM
 [hosts_consul_server]
 localhost
 
-[hosts_ingest_external]
-localhost
-
-[hosts_access_external]
-localhost
-
 [hosts_elasticsearch_log]
-localhost
-
-[hosts_functionnal_admin]
-localhost
-
-[hosts_security_internal]
 localhost
 
 ################################################################################
