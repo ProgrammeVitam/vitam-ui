@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>ui-frontend</artifactId>
@@ -116,6 +116,17 @@
             <configuration>
               <skip>${skipAllFrontendTests}</skip>
               <arguments>run test:conf-ci</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm run package</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <skip>${skipAllFrontend}</skip>
+              <arguments>run package -- --project=</arguments>
             </configuration>
           </execution>
         </executions>

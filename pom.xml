@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.gouv.vitamui</groupId>
@@ -1724,6 +1724,19 @@
                                 </arguments>
                             </configuration>
                         </execution>
+                        <execution>
+                            <id>npm run package</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>package</phase>
+                            <configuration>
+                                <skip>${skipAllFrontend}</skip>
+                                <arguments>run package${angular.build.profile} --
+                                    --project=${angular.build.project}
+                                </arguments>
+                            </configuration>
+                        </execution>
                     </executions>
                 </plugin>
                 <plugin>
@@ -2225,10 +2238,10 @@
                 </sonar.dependencyCheck.xmlReportPath>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
-                <sonar.host.url />
+                <sonar.host.url/>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
-                <sonar.login />
+                <sonar.login/>
                 <sonar.typescript.lcov.reportPaths>
                     ${main.basedir}/ui/ui-frontend/target/coverage/commons/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/flow/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/identity/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/portal/lcov.info
                 </sonar.typescript.lcov.reportPaths>
@@ -2274,15 +2287,17 @@
                                 <version>${maven.swagger2markup.plugin.version}</version>
                             </dependency>
                         </dependencies>
-						<configuration>
-							<swaggerInput>${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}/swagger.json</swaggerInput>
-							<outputDir>${project.build.directory}/generated-sources/swagger/</outputDir>
-							<config>
-								<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
-								<swagger2markup.outputLanguage>FR</swagger2markup.outputLanguage>
-								<swagger2markup.generatedExamplesEnabled>TRUE</swagger2markup.generatedExamplesEnabled>
-								<swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
-							</config>
+                        <configuration>
+                            <swaggerInput>
+                                ${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}/swagger.json
+                            </swaggerInput>
+                            <outputDir>${project.build.directory}/generated-sources/swagger/</outputDir>
+                            <config>
+                                <swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
+                                <swagger2markup.outputLanguage>FR</swagger2markup.outputLanguage>
+                                <swagger2markup.generatedExamplesEnabled>TRUE</swagger2markup.generatedExamplesEnabled>
+                                <swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
+                            </config>
                             <skip>${swagger.skip}</skip>
                         </configuration>
                         <executions>
@@ -2344,7 +2359,9 @@
                                 </goals>
                                 <configuration>
                                     <backend>pdf</backend>
-                                    <outputDirectory>${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}</outputDirectory>
+                                    <outputDirectory>
+                                        ${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}
+                                    </outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
