@@ -9,7 +9,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>api-referential</artifactId>
-        <version>6.2-SNAPSHOT</version>
+        <version>6.2</version>
     </parent>
 
     <dependencies>

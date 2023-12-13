@@ -5,7 +5,7 @@
     <parent>
         <artifactId>api-collect</artifactId>
         <groupId>fr.gouv.vitamui</groupId>
-        <version>6.2-SNAPSHOT</version>
+        <version>6.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
