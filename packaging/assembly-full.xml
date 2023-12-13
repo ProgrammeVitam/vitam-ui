@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+  <id>FULL</id>
+  <formats>
+    <format>tar.gz</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+
+
+    <!-- Add the public GPG key -->
+    <fileSet>
+        <directory>.</directory>
+        <outputDirectory>/</outputDirectory>
+        <includes>
+            <include>GPG-KEY-vitam</include>
+        </includes>
+    </fileSet>
+
+
+    <!-- RPM PACKAGES -->
+    <fileSet>
+        <directory>packages/rpm/repodata</directory>
+        <outputDirectory>/rpm/repodata</outputDirectory>
+        <includes>
+            <include>**/*</include>
+        </includes>
+    </fileSet>
+
+    <fileSet>
+        <directory>packages/rpm/cots/</directory>
+        <outputDirectory>/rpm/cots</outputDirectory>
+        <includes>
+            <include>*.rpm</include>
+        </includes>
+    </fileSet>
+
+    <fileSet>
+        <directory>packages/rpm/vitamui/</directory>
+        <outputDirectory>/rpm/vitamui</outputDirectory>
+        <includes>
+            <include>*.rpm</include>
+        </includes>
+    </fileSet>
+
+
+    <!-- DEB PACKAGES -->
+    <fileSet>
+        <directory>packages/deb/</directory>
+        <outputDirectory>/deb</outputDirectory>
+        <includes>
+            <include>Packages</include>
+            <include>Packages.gz</include>
+            <include>Release</include>
+            <include>InRelease</include>
+        </includes>
+    </fileSet>
+
+    <fileSet>
+        <directory>packages/deb/cots/</directory>
+        <outputDirectory>/deb/cots</outputDirectory>
+        <includes>
+            <include>*.deb</include>
+        </includes>
+    </fileSet>
+
+    <fileSet>
+        <directory>packages/deb/vitamui/</directory>
+        <outputDirectory>/deb/vitamui</outputDirectory>
+        <includes>
+            <include>*.deb</include>
+        </includes>
+    </fileSet>
+
+
+    <!-- Sources -->
+    <fileSet>
+      <directory>..</directory>
+      <outputDirectory>sources</outputDirectory>
+      <excludes>
+        <!-- IntelliJ project files -->
+        <exclude>**/*.iml</exclude>
+        <exclude>**/.idea/**</exclude>
+        <!-- Various build files & folders -->
+        <exclude>**/build/**</exclude>
+        <exclude>**/_build/**</exclude>
+        <exclude>**/target/**</exclude>
+        <exclude>**/*.class</exclude>
+        <exclude>**/*.log</exclude>
+        <!-- RPM build files -->
+        <exclude>**/RPMS/**</exclude>
+        <exclude>**/SRPMS/**</exclude>
+        <exclude>**/BUILD/**</exclude>
+        <exclude>**/BUILDROOT/**</exclude>
+        <!-- Eclipse project files -->
+        <exclude>**/.classpath</exclude>
+        <exclude>**/.project</exclude>
+        <exclude>**/.settings/**</exclude>
+        <!-- Ansible temp files -->
+        <exclude>**/*.retry</exclude>
+        <!-- Git-related -->
+        <exclude>**/.git/**</exclude>
+        <!-- Other -->
+        <exclude>**/node_modules/**</exclude>
+        <exclude>**/evosuite-tests/**</exclude>
+        <exclude>**/rpm_signed/**</exclude>
+        <exclude>**/*@tmp/**</exclude>
+      </excludes>
+    </fileSet>
+
+
+    <!-- Ansible deployment files -->
+    <fileSet>
+      <directory>../deployment</directory>
+      <outputDirectory>deployment</outputDirectory>
+      <excludes>
+        <exclude>target/**</exclude>
+        <exclude>**/*.retry</exclude>
+        <exclude>**/*.settings/**</exclude>
+        <exclude>**/*.project</exclude>
+        <exclude>pki/tempcerts/**</exclude>
+        <exclude>environments/certs/**</exclude>
+        <exclude>environments/certs_vitam/**</exclude>
+        <exclude>environments/keystores/**</exclude>
+      </excludes>
+    </fileSet>
+  </fileSets>
+
+
+</assembly>
