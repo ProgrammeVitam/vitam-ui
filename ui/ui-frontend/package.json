@@ -96,7 +96,15 @@
     "publish:collect": "cp projects/collect/package.json dist/collect/package.json && npm publish dist/collect/",
     "publish:archive-search": "cp projects/archive-search/package.json dist/archive-search/package.json && npm publish dist/archive-search/",
     "publish:referential": "cp projects/referential/package.json dist/referential/package.json && npm publish dist/referential/",
-    "publish:all": "npm run publish:portal &&  npm run publish:identity  && npm run publish:referential"
+    "publish:all": "npm run publish:portal &&  npm run publish:identity  && npm run publish:referential && npm run publish:archive-search && npm run publish:collect  && npm run publish:pastis && npm run publish:ingest",
+    "package:identity": "cp projects/identity/package.json dist/identity/package.json && npm pack dist/identity/",
+    "package:archive-search": "cp projects/archive-search/package.json dist/archive-search/package.json && npm pack dist/archive-search/",
+    "package:portal": "cp projects/portal/package.json dist/portal/package.json && npm pack dist/portal/",
+    "package:collect": "cp projects/collect/package.json dist/collect/package.json && npm pack dist/collect/",
+    "package:ingest": "cp projects/ingest/package.json dist/ingest/package.json && npm pack dist/ingest/",
+    "package:pastis": "cp projects/pastis/package.json dist/pastis/package.json && npm pack dist/pastis/",
+    "package:referential": "cp projects/referential/package.json dist/referential/package.json && npm pack dist/referential/",
+    "package:all": "npm run package:portal &&  npm run package:identity  && npm run package:referential && npm run package:archive-search && npm run package:collect  && npm run package:pastis && npm run package:ingest"
   },
   "private": true,
   "dependencies": {
