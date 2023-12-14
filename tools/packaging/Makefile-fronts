@@ -1,0 +1,59 @@
+
+# Staging root configuration
+DESTDIR         := $(abspath ./package-stage/)
+STAGING_ROOT    =  $(abspath $(DESTDIR)/)
+FPM             =  /usr/local/bin/fpm
+USER            := vitamui
+GROUP           := $(USER)
+
+# Package metas
+COPYRIGHT           = VitamUI Copyright 2018 VITAM_UI
+COMMIT_ID           = $(shell  git rev-parse --short HEAD)
+BRANCHE             = $(shell  git rev-parse --abbv6L6zFUCr82Bjy9Qrev-ref HEAD)
+DESCRIPTION         = $(NAME)-rsc package for vitamui solution. Branch: $(BRANCHE), commit: $(COMMIT_ID)
+
+# Install params
+VITAMUI_DIRS         =  data
+PACKAGING_DIR       := $(dir $(lastword $(MAKEFILE_LIST)))
+TEMPLATE_TMP_DIR    := $(abspath ./package-templates/)
+TEMPLATE_SRC        = $(wildcard $(PACKAGING_DIR)/templates/*)
+TEMPLATE_SRC_OVERRIDE = $(wildcard $(shell pwd)/../packaging/*)
+RPM_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION)-rsc.rpm
+DEB_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION)-rsc.deb
+
+# fpm packaging default args
+FPM_PACK_ARGS               = -f --description "$(DESCRIPTION)"
+FPM_PACK_META               = --license "$(COPYRIGHT)" -n "vitamui-$(NAME)-rsc" -v $(VERSION)
+
+# variable used to copy
+NAME_WITHOUT_SUFFIX  := $(subst ui-,,$(NAME))
+RESSOURCE_DIR_ORIGIN := $(abspath ../../ui-frontend/dist/$(NAME_WITHOUT_SUFFIX)/)
+RESSOURCE_DIR_DEST   := $(abspath $(STAGING_ROOT)/vitamui/data/)
+
+clean:
+	@rm -Rf $(TEMPLATE_TMP_DIR) $(STAGING_ROOT)
+
+$(STAGING_ROOT):
+	@mkdir -p $(STAGING_ROOT)
+
+stage: $(STAGING_ROOT)
+
+$(VITAMUI_DIRS): stage
+	@mkdir -p $(abspath $(STAGING_ROOT)/vitamui/$@/$(NAME))
+
+vitamui-dirs:  $(VITAMUI_DIRS)
+
+install: clean stage vitamui-dirs
+	@echo "Ressources origin: $(RESSOURCE_DIR_ORIGIN)"
+	@echo "Ressources dest:   $(RESSOURCE_DIR_DEST))"
+	sudo mkdir   -p -m 750 $(RESSOURCE_DIR_DEST)
+	ls -ld $(dir $(abspath $(RESSOURCE_DIR_DEST)))
+	cp -r $(RESSOURCE_DIR_ORIGIN) $(abspath $(RESSOURCE_DIR_DEST))
+
+rpm: install
+	@$(FPM) --verbose -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
+
+deb: install
+	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) -t deb -p $(DEB_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
+
+.PHONY: clean install stage vitamui-dirs rpm deb package $(TEMPLATE_TMP_DIR)

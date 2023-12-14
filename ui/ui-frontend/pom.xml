@@ -104,7 +104,9 @@
             <phase>process-sources</phase>
             <configuration>
               <skip>${skipAllFrontend}</skip>
-              <arguments>run build -- --project= --output-path=target/www</arguments>
+              <!--<arguments>run build project=${angular.build.project} output-path=target/www</arguments>-->
+              <!--<arguments>run build:prod output-path=target/www</arguments>-->
+              <arguments>run build:allModules</arguments>
             </configuration>
           </execution>
           <execution>
@@ -116,6 +118,21 @@
             <configuration>
               <skip>${skipAllFrontendTests}</skip>
               <arguments>run test:conf-ci</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm run package</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <skip>${skipAllFrontend}</skip>
+              <!--<arguments>run package  project=</arguments>-->
+              <arguments>run package:all</arguments>
+              <!--<arguments>run package${angular.build.profile}
+                project=${angular.build.project}
+            </arguments>-->
             </configuration>
           </execution>
         </executions>
