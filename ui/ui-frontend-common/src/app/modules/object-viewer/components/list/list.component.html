@@ -1,35 +1,17 @@
 <ng-container *ngIf="!isPrimitiveList">
-  <div class="header mat-elevation-z1" [ngClass]="{ opened: displayObject.open }" (click)="toggle()">
-    <div class="v-row">
-      <div class="v-col">
-        <div class="v-row">
-          <div class="v-col align-items-center">
-            <i
-              class="vitamui-icon icon"
-              [ngClass]="{ 'vitamui-icon-chevron-down': displayObject.open, 'vitamui-icon-chevron-right': !displayObject.open }"
-            ></i>
-            <span class="object-name">{{ displayObject.displayRule.ui.label | empty }}</span>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="favoriteEntry" class="v-col">{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</div>
-    </div>
-  </div>
-  <div class="content" [ngClass]="{ 'display-none': !displayObject.open }">
-    <ng-container *ngFor="let child of displayObject.children">
-      <vitamui-common-group *ngIf="child.type === DisplayObjectType.GROUP" [displayObject]="child"></vitamui-common-group>
-      <vitamui-common-list *ngIf="child.type === DisplayObjectType.LIST" [displayObject]="child"></vitamui-common-list>
-      <vitamui-common-primitive *ngIf="child.type === DisplayObjectType.PRIMITIVE" [displayObject]="child"></vitamui-common-primitive>
-    </ng-container>
-  </div>
+  <ng-container *ngFor="let child of displayObject.children">
+    <vitamui-common-group *ngIf="child.type === DisplayObjectType.GROUP" [displayObject]="child"></vitamui-common-group>
+    <vitamui-common-list *ngIf="child.type === DisplayObjectType.LIST" [displayObject]="child"></vitamui-common-list>
+    <vitamui-common-primitive *ngIf="child.type === DisplayObjectType.PRIMITIVE" [displayObject]="child"></vitamui-common-primitive>
+  </ng-container>
 </ng-container>
 
-<div *ngIf="isPrimitiveList && displayObject.children.length === 1" class="field">
+<div *ngIf="isPrimitiveList && displayObject.children.length === 1" class="field primitive">
   <label>{{ displayObject.displayRule.ui.label | empty }}</label>
   <div>{{ displayObject.children[0].value | empty }}</div>
 </div>
 
-<div *ngIf="isPrimitiveList && displayObject.children.length > 1" class="field">
+<div *ngIf="isPrimitiveList && displayObject.children.length > 1" class="field primitive">
   <label>{{ displayObject.displayRule.ui.label | empty }}</label>
   <ul>
     <li *ngFor="let item of displayObject.children">{{ item.value }}</li>

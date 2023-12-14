@@ -187,6 +187,7 @@ export class SchemaStrategyDisplayObjectService implements DisplayObjectService 
     this.fillDisplayObjectLabelsWithSchemaShortNames(displayObject, schema);
     this.hideInconsistentDisplayObjects(displayObject);
     this.hideSchemaCategoryDisplayObjects(displayObject, schema, ['MANAGEMENT', 'OTHER']);
+    this.hideLabellessDisplayObjects(displayObject);
 
     return displayObject;
   }
@@ -211,6 +212,16 @@ export class SchemaStrategyDisplayObjectService implements DisplayObjectService 
     }
 
     displayObject.children.forEach((child) => this.hideSchemaCategoryDisplayObjects(child, schema, categories));
+  }
+
+  private hideLabellessDisplayObjects(displayObject: DisplayObject): void {
+    const hasLabel = Boolean(displayObject.displayRule.ui.label);
+
+    if (!hasLabel) {
+      displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, display: false } };
+    }
+
+    displayObject.children.forEach((child) => this.hideLabellessDisplayObjects(child));
   }
 
   private fillDisplayObjectLabelsWithSchemaShortNames(displayObject: DisplayObject, schema: Schema) {

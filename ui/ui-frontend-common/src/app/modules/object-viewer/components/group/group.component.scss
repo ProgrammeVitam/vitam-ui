@@ -28,7 +28,6 @@
 
 .content {
   background-color: transparent;
-  padding: 20px 30px;
 
   .header {
     // Le header du deuxième niveau a une hauteur de 40px
@@ -66,12 +65,13 @@
 
   .content {
     background-color: white;
+    padding: 20px 30px;
+    margin-bottom: 10px;
   }
 }
 
 .header {
   min-height: 50px;
-  margin-top: 10px;
   margin-bottom: 10px;
   padding-left: 16px;
   border-radius: 5px;
@@ -87,6 +87,7 @@
   &.opened {
     border-left: 2px solid var(--vitamui-primary);
     color: var(--vitamui-primary);
+    margin-bottom: 5px;
   }
 }
 

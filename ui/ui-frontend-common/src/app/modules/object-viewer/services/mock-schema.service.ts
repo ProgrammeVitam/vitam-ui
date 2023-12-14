@@ -6574,7 +6574,7 @@ export class MockSchemaService {
       Collections: ['Unit'],
       SedaVersions: ['2.1', '2.2', '2.3'],
       StringSize: 'SHORT',
-      Category: 'OTHER',
+      Category: 'DESCRIPTION',
       ApiPath: 'Title',
       SedaField: 'Title',
       ShortName: 'Intitulé',

@@ -22,6 +22,7 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
           columns: 2,
           size: 'medium',
         },
+        label: '',
       },
     },
     {
