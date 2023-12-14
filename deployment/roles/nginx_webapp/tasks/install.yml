@@ -16,33 +16,13 @@
     mode: 0755
   become: true
 
-- name: 'Frontend-app > install.yml | Unarchive content'
-  unarchive:
-    src: "{{ frontend_download_dir }}/{{ frontend_application.name }}.zip"
-    dest: "{{ frontend_data_dir }}/"
-    owner: "{{ frontend_user }}"
-    group: "{{ frontend_group }}"
-    remote_src: yes
-  become: true
 
-- name: 'Frontend-app > install.yml | Remove archive'
-  file:
-    path: "{{ frontend_download_dir }}/{{ frontend_application.name }}.tgz"
-    state: absent
-  become: true
+#install by yum the ressources
 
-- name: 'Frontend-app > install.yml | Check owner/permissions on extracted data'
-  file:
-    path: "{{ frontend_data_dir }}"
-    owner: "{{ frontend_user }}"
-    group: "{{ frontend_group }}"
-    recurse: true
-    mode: 0755
-  become: true
 
 - name: "Frontend-app > install.yml | Add configuration files"
   template:
-    src: "frontend/{{ frontend_application.name }}/{{ item.filename }}"
+    src: "frontend/{{ item.filename }}"
     dest: "{{ item.destination }}"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
@@ -53,28 +33,18 @@
 
 - name: "Frontend-app > install.yml | Add certificate"
   copy:
-    src: "{{ frontend_application.certificate }}.crt"
-    dest: "/etc/nginx/ssl/{{ frontend_application.certificate | basename }}.crt"
+    src: "{{ item }}"
+    dest: "{{ nginx_ssl_dir }}"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
-  #with_fileglob:
-  #  - "{{ frontend_application.certificate }}"
-  become: true
-
-- name: "Frontend-app > install.yml | Add key"
-  copy:
-    src: "{{ frontend_application.certificate }}.key"
-    dest: "/etc/nginx/ssl/{{ frontend_application.certificate | basename }}.key"
-    group: "{{ frontend_group }}"
-    owner: "{{ frontend_user }}"
-  #with_fileglob:
-  #  - "{{ frontend_application.certificate }}"
+  with_fileglob:
+    - "{{ frontend_application.certificate }}" #TODO GET PATH FOR CERT
   become: true
 
 - name: "Frontend-app > install.yml | Add keypass"
   template:
     src: "certificate.key_pass.j2"
-    dest: "/etc/nginx/ssl/ui-{{frontend_application.name }}.key_pass"
+    dest: "{{ nginx_ssl_dir }}/{{vitamui_struct.vitamui_component}}.key_pass"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
   when: frontend_application.key_pass is defined

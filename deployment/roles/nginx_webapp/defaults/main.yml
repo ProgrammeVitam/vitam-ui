@@ -7,11 +7,13 @@ frontend_root_path: '/vitamui'
 frontend_data_dir: "{{ frontend_root_path }}/data/{{ frontend_application_name }}"
 frontend_download_dir: "{{ frontend_root_path }}/tmp/{{ frontend_application_name }}"
 
-frontend_user: nginx
-frontend_group: nginx
+frontend_user: "{{ vitamui_defaults.users.vitamui }}"
+frontend_group: "{{ vitamui_defaults.users.group }}"
 
 # Supported goals: install, uninstall
 frontend_role_goal: install
 
 # Flag indicating if the reverse proxy must be reloaded after the installation.
 frontend_proxy_reload: false
+
+nginx_ssl_dir: '/etc/nginx/ssl'

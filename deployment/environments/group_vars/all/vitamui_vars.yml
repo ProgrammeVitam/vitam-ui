@@ -60,7 +60,6 @@ vitamui:
     port_service: 8090
     port_admin: 7090
     server_secure: true
-    client_certificate_header_name: x-ssl-cert
 
   identity:
     host: "identity.service.{{ consul_domain }}"
@@ -69,7 +68,6 @@ vitamui:
     port_service: 8002
     port_admin: 7002
     base_url: "https://{{ vitam_reverse_external_dns }}/identity"
-    resources_header_cache_control: "max-age=1800, must-revalidate"
     # Custom directories linked to the module
     dirs:
       - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
@@ -81,7 +79,6 @@ vitamui:
     port_service: 8401
     port_admin: 7401
     base_url: "https://{{ vitam_reverse_external_dns }}/identity-admin"
-    resources_header_cache_control: "max-age=1800, must-revalidate"
 
   referential:
     host: "referential.service.{{ consul_domain }}"
@@ -91,7 +88,6 @@ vitamui:
     port_admin: 7006
     server_connection_timeout: 60000
     base_url: "https://{{ vitam_reverse_external_dns }}/referential"
-    resources_header_cache_control: "max-age=1800, must-revalidate"
     # Custom directories linked to the module
     dirs:
       - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
@@ -103,11 +99,6 @@ vitamui:
     port_service: 8003
     port_admin: 7003
     base_url: "https://{{ vitam_reverse_external_dns }}"
-    portal_logo: "logo_PORTAL.png"
-    header_logo: "logo_HEADER.png"
-    footer_logo: "logo_FOOTER.png"
-    user_logo: "logo_USER.png"
-    resources_header_cache_control: "max-age=1800, must-revalidate"
     has_tenant_list: false
     has_lang_selection: false
     has_site_selection: true
@@ -156,12 +147,6 @@ vitamui:
     connect_timeout: 30
     read_timeout: 30
     write_timeout: 30
-    # gdpr_alert_readonly: true
-    # login_max_failure: 5
-    # login_interval: 20
-    # logbook:
-    #   enabled: "true"
-    #   delay: 60000
 
   cas_server:
     host: "cas-server.service.{{ consul_domain }}"
@@ -170,10 +155,7 @@ vitamui:
     port_service: 8001
     port_admin: 7001
     base_url: "https://{{ vitam_reverse_external_dns }}/cas"
-    external_url:
-    hostname_verification: true
     theme:
-      vitamui_platform_name: VITAM-UI
       vitamui_favicon: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/favicon.ico"
       vitam_logo: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo.png"
       vitamui_logo_large: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo-large.png"
@@ -396,10 +378,3 @@ opentracing:
 java_prerequisites:
   debian: "openjdk-11-jre-headless"
   redhat: "java-11-openjdk-headless"
-
-###############
-
-
-portal:
-  message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toute sécurité et pour imprimer des étiquettes en quelques clics."
-  title: "Portail des applications de l'archivage"

@@ -1,19 +1,19 @@
+#jinja2: lstrip_blocks: True
+
 ##################################################################
 # UPSTREAM DEFINITION == PER 'HOSTS-*' ZONE + PER APPLICATION PORT
 ##################################################################
 
 # API GATEWAY
 
-{%- if gateway.enabled is defined and gateway.enabled == true %}
-
+{% if gateway.enabled is defined and gateway.enabled == true %}
 upstream API-GATEWAY {
-
 {% for h in groups['hosts_vitamui_api_gateway'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.api_gateway.port_service }};
 {% endfor %}
 }
 
-{%- endif %}
+{% endif %}
 
 # VITAMUI
 

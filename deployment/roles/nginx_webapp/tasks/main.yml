@@ -1,14 +1,11 @@
 ---
 
-- import_tasks: prerequisites.yml
-
-- name: Frontend-app > Install - {{ frontend_application.name }}
+- name: Frontend-app > Install - {{ vitamui_struct.vitamui_component }}
   block:
-    - import_tasks: download.yml
     - import_tasks: install.yml
   when: frontend_role_goal == 'install'
 
-- name: Frontend-app > Uninstall - {{ frontend_application.name }}
+- name: Frontend-app > Uninstall - {{ vitamui_struct.vitamui_component }}
   block:
     - import_tasks: uninstall.yml
   when: frontend_role_goal == 'uninstall'

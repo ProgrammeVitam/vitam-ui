@@ -30,7 +30,7 @@ server:
     trust-store-password: {{ password_truststore }}
     {% if gateway.enabled | default(False) is sameas true %}
     client-auth: want
-    client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name }}
+    client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
     {% else %}
     client-auth: need
     enabled-protocols: {{ssl_setting.enabled_protocols}}
