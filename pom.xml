@@ -2009,6 +2009,27 @@
                                     </arguments>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>rpm-package</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>target</workingDirectory>
+                                    <skip>${rpm.skip}</skip>
+                                    <arguments>
+                                        <argument>-f</argument>
+                                        <argument>${main.basedir}/tools/packaging/Makefile-fronts</argument>
+                                        <argument>rpm</argument>
+                                        <argument>NAME=${project.artifactId}</argument>
+                                        <argument>VERSION=${project.version}</argument>
+                                        <argument>RESSOURCE_DEST=${rpm.jar-file}</argument>
+                                        <argument>USER=vitamui</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
