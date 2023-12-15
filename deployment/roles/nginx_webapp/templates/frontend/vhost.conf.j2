@@ -7,7 +7,7 @@ server {
 
   location ~* \.(jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2|eot|css|js|json)$ {
     add_header X-Content-Type-Options "nosniff" always;
-    add_header Cache-Control "{{ vitamui.identity.resources_header_cache_control | default('max-age=1800, must-revalidate')}}";
+    add_header Cache-Control "{{ vitamui_struct.resources_header_cache_control | default('max-age=1800, must-revalidate')}}";
     include  /etc/nginx/mime.types;
     try_files $uri $uri/ =404;
   }

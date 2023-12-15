@@ -32,12 +32,7 @@
   "HEADER_LOGO": "{{ vitamui_struct.header_logo | default(vitamui_platform_informations.theme.header_logo) }}",
   "FOOTER_LOGO": "{{ vitamui_struct.footer_logo | default(vitamui_platform_informations.theme.footer_logo) }}",
   "USER_LOGO": "{{ vitamui_struct.user_logo | default(vitamui_platform_informations.theme.user_logo) }}",
-  {% if vitamui_struct.vitamui_component == "ui-identity" and vitam.enabled is defined %}
-    "VITAM": {
-      "enabled": {{ "true" if vitam.enabled else "false" }}
-    },
-  {% endif %}
-  {% if vitamui_struct.vitamui_component == "ui-portal" and vitamui.portal.has_tenant_list is defined or vitamui.portal.has_lang_selection is defined or vitamui.portal.has_site_selection is defined %}
+  {% if vitamui_struct.vitamui_component == "ui-portal" %}
   "UI": {
     "hasTenantList": {{ "true" if vitamui.portal.has_tenant_list | default(false) | bool == true else "false" }},
     "hasLangSelection": {{ "true" if vitamui.portal.has_lang_selection | default(false) | bool == true else "false" }},
