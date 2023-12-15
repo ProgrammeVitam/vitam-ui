@@ -20,7 +20,10 @@
       "DRAG_AND_DROP": "Glisser-déposer  vos archives ou",
       "BROWSE" :"importer depuis votre ordinateur",
       "UPLOAD_FILE_ALREADY_IMPORTED": "Dossier déjà importer !",
-      "TERMINATED": "Les fichiers ont été bien envoyé à VITAM" 
+      "TERMINATED": "Les fichiers ont été bien envoyé, ils sont en cours de traitement par VITAM",
+      "SELECTED_ELEMENTS" : "ÉLÉMENTS SÉLECTIONNÉS",
+      "NAME" : "Nom",
+      "SHOW_TREES_PLANS": "Afficher l'arborescence des unités"  
     },
     "CREATION_PROCESS": {
       "SUCCESS" : {
@@ -70,7 +73,7 @@
       "PERSCRIPTION_NUMBER_MESSAGE" :"Si vous avez plusieurs arrêtés, notez tous les numéros.",
       "OPERATION_TYPE" : {
         "OTHER" :"Autre",
-        "SEARCH" :"fouille",
+        "SEARCH" :"Fouille",
         "DIAGNOSTIC" :"Diagnostic"
       },
       "OPERATION_NUMBER_MESSAGE" : {
@@ -120,7 +123,7 @@
 
     },
     "OPERATION_CATEGORY" : {
-      "AGENCY_DETAILS" :"Organisme titulaire",
+      "AGENCY_DETAILS" :"Organisme de rattachement ou opérateur",
       "SCIENTIFIC_OFFICER" :"Responsable scientifique",
       "OPERATION_TYPE_NAME" : "Nom et type d'opération",
       "OPERATION_NUMBER" :"Numéro d'opération",

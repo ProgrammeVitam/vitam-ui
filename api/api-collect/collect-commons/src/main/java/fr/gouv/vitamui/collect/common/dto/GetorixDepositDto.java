@@ -47,7 +47,7 @@ import java.time.OffsetDateTime;
     fieldName = "depositStatus",
     fieldValue = "IN_PROGRESS",
     fieldNamesToCheck = {"originatingAgency", "operationName", "operationType", "firstScientificOfficerFirstName",
-        "firstScientificOfficerLastName", "internalAdministratorNumber", "nationalNumber", "archiveVolume", "operationEndDate",
+        "firstScientificOfficerLastName", "nationalNumber", "archiveVolume", "operationEndDate",
         "documentStartDate", "documentEndDate", "archaeologistGetorixAddress", "operationStartDate"})
 public class GetorixDepositDto extends IdDto {
 

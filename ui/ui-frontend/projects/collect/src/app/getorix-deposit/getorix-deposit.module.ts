@@ -38,6 +38,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { CreateGetorixDepositComponent } from './create-getorix-deposit/create-getorix-deposit.component';
 import { GetorixDepositAdvisePreviewComponent } from './getorix-deposit-advise-preview/getorix-deposit-advise-preview.component';
@@ -69,6 +70,7 @@ import { GetorixDepositService } from './getorix-deposit.service';
     MatInputModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatTreeModule,
   ],
   providers: [GetorixDepositService],
   exports: [GetorixDepositComponent],
