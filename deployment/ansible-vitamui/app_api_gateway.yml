@@ -22,8 +22,7 @@
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
     vitamui_struct: "{{ vitamui.portal }}"
-    #frontend_application_version: "7.1.0-SNAPSHOT" #"{{ app_version }}"
-    #frontend_application_name: "portal"
+    frontend_purge: true
 
 - hosts: hosts_ui_identity
   gather_facts: no
@@ -33,8 +32,6 @@
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
     vitamui_struct: "{{ vitamui.identity }}"
-    #frontend_application_version: "7.1.0-SNAPSHOT" #"{{ app_version }}"
-    #frontend_application_name: "identity"
 
 - hosts: hosts_ui_identity_admin
   gather_facts: no
@@ -44,8 +41,6 @@
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
     vitamui_struct: "{{ vitamui.identity_admin }}"
-    #frontend_application_version: "7.1.0-SNAPSHOT" #"{{ app_version }}"
-    #frontend_application_name: "identity-admin"
 
 - hosts: hosts_ui_referential
   gather_facts: no
@@ -55,5 +50,3 @@
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
     vitamui_struct: "{{ vitamui.referential }}"
-    #frontend_application_version: "7.1.0-SNAPSHOT" #"{{ app_version }}"
-    #frontend_application_name: "referential"

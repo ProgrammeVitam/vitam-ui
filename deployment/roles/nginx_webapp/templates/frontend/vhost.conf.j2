@@ -3,7 +3,7 @@ server {
   server_name         {{ vitam_reverse_external_dns }};
   include {{ nginx_ssl_dir }}/ssl.conf;
 
-  root   /vitamui/data/{{ vitamui_struct.vitamui_component | replace(' ui-','') }}/package;
+  root   /vitamui/data/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }};
 
   location ~* \.(jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2|eot|css|js|json)$ {
     add_header X-Content-Type-Options "nosniff" always;
@@ -21,7 +21,7 @@ server {
     try_files $uri $uri/ /index.html;
   }
 
-  location /{{ vitamui_struct.vitamui_component | replace(' ui-','') }}-api {
+  location /{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api {
     proxy_pass {{ 'https' if vitamui.api_gateway.server_secure | default(true) | bool else 'http' }}://API-GATEWAY;
     proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.crt;
     proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key;

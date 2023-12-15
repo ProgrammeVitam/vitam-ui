@@ -18,12 +18,12 @@
   "UI_URL": "{{ vitamui.identity.base_url }}",
   "ARCHIVES_SEARCH_URL": null,
   "PORTAL_URL": "{{ vitamui.portal.base_url }}",
-  "ALLOWED_URLS": ["/{{ vitamui_struct.vitamui_component | replace(' ui-','') }}-api"],
+  "ALLOWED_URLS": ["/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api"],
   "OIDC_CONFIG": {
     "issuer": "{{ vitamui.cas_server.base_url }}/oidc",
     "redirectUri": "?",
     "postLogoutRedirectUri": "{{ vitamui.portal.base_url }}/",
-    "clientId": "{{ vitamui_struct.vitamui_component | replace(' ui-','') }}",
+    "clientId": "{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}",
     "responseType": "code",
     "scope": "openid",
     "showDebugInformation": false

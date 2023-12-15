@@ -1,11 +1,10 @@
 ---
 
 frontend_external_templates_dir: "{{ playbook_dir }}/templates/frontend"
-frontend_purge: true
+frontend_purge: false
 frontend_repo_url: 'nexus.dev.programmevitam.fr'
 frontend_root_path: '/vitamui'
-frontend_data_dir: "{{ frontend_root_path }}/data/{{ frontend_application_name }}"
-frontend_download_dir: "{{ frontend_root_path }}/tmp/{{ frontend_application_name }}"
+frontend_data_dir: "{{ frontend_root_path }}/data"
 
 frontend_user: "{{ vitamui_defaults.users.vitamui }}"
 frontend_group: "{{ vitamui_defaults.users.group }}"
@@ -16,4 +15,9 @@ frontend_role_goal: install
 # Flag indicating if the reverse proxy must be reloaded after the installation.
 frontend_proxy_reload: false
 
-nginx_ssl_dir: '/etc/nginx/ssl'
+nginx_ssl_dir: '/etc/nginx/conf.d/ssl'
+
+vault_cert_file: "{{ inventory_dir }}/certs/vault-certs.yml"
+vault_cert_pass_file: "../vault_pki.pass"
+
+package_name: "vitamui-{{ vitamui_struct.vitamui_component }}-rsc"

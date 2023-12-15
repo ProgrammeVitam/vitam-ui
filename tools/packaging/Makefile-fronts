@@ -39,7 +39,7 @@ $(STAGING_ROOT):
 stage: $(STAGING_ROOT)
 
 $(VITAMUI_DIRS): stage
-	@mkdir -p $(abspath $(STAGING_ROOT)/vitamui/$@/$(NAME))
+	@mkdir -p $(abspath $(STAGING_ROOT)/vitamui/$@/$(NAME_WITHOUT_SUFFIX))
 
 vitamui-dirs:  $(VITAMUI_DIRS)
 

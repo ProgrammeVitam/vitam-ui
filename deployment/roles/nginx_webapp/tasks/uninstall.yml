@@ -8,7 +8,7 @@
 
 - name: 'Frontend-app > uninstall.yml | Delete vhost'
   file:
-    path: "/etc/nginx/conf.d/{{ frontend_application.name }}.conf"
+    path: "/etc/nginx/conf.d/{{ vitamui_struct.vitamui_component }}.conf"
     state: absent
   become: true
 

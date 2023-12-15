@@ -16,41 +16,96 @@
     mode: 0755
   become: true
 
+- name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }}'
+  yum:
+    name: "{{ vitamui_struct.package_name | default(package_name) }}"
+    state: present
+  register: package_installed
+  retries: "{{ packages_install_retries_number }}"
+  until: package_installed is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+  tags: update_package_vitamui
+  become: true
+  when: vitamui_struct.vitamui_component != "ui-identity-admin"
 
-#install by yum the ressources
+- name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }} - Copy folder'
+  copy:
+    src: "{{ frontend_data_dir }}/identity"
+    dest: "{{ frontend_data_dir }}/identity-admin"
+    remote_src: yes
+  become: true
+  when: vitamui_struct.vitamui_component == "ui-identity-admin"
 
+- block:
 
-- name: "Frontend-app > install.yml | Add configuration files"
+  - name: 'Frontend-app > install.yml | Get package facts'
+    package_facts:
+    register: package_facts_result
+    no_log: true
+
+  - name: 'Frontend-app > install.yml | Get application version from package'
+    set_fact:
+      frontend_application_version: "{{ package_facts_result.ansible_facts.packages[ vitamui_struct.package_name | default(package_name) ][0].version }}"
+
+  when: vitamui_struct.vitamui_component != "ui-identity-admin"
+
+- name: 'Frontend-app > install.yml | Add config.json file'
   template:
-    src: "frontend/{{ item.filename }}"
-    dest: "{{ item.destination }}"
+    src: "frontend/config.json.j2"
+    dest: "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}/assets/config.json"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
-  with_items:
-  - { filename: "config.json.j2", destination: "{{ frontend_root_path }}/data/{{ frontend_application.name }}/package/assets/config.json"}
-  - { filename: "vhost.conf.j2", destination: "/etc/nginx/conf.d/{{ frontend_application.name }}.conf"}
+  when: vitamui_struct.vitamui_component != "ui-identity-admin"
   become: true
 
-- name: "Frontend-app > install.yml | Add certificate"
+- name: 'Frontend-app > install.yml | Add vhost.conf file'
+  template:
+    src: "frontend/vhost.conf.j2"
+    dest: "/etc/nginx/conf.d/{{ vitamui_struct.vitamui_component }}.conf"
+    group: "{{ frontend_group }}"
+    owner: "{{ frontend_user }}"
+  become: true
+
+- name: 'Frontend-app > install.yml | Add UI certificate to reverse'
   copy:
     src: "{{ item }}"
     dest: "{{ nginx_ssl_dir }}"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
   with_fileglob:
-    - "{{ frontend_application.certificate }}" #TODO GET PATH FOR CERT
+    - "{{ inventory_dir }}/certs/client-external/clients/{{ vitamui_struct.vitamui_component }}/*"
   become: true
 
-- name: "Frontend-app > install.yml | Add keypass"
+- block:
+
+  - name: 'Frontend-app > install.yml | Decrypt vault-certs'
+    command: "ansible-vault decrypt {{ vault_cert_file }} --vault-password-file {{ vault_cert_pass_file }}"
+
+  - name: 'Frontend-app > install.yml | Read certificate key from vault file'
+    include_vars:
+      file: "{{ vault_cert_file }}"
+      name: ui_keys
+    no_log: true
+
+  - name: 'Frontend-app > install.yml | Encrypt back vault-certs'
+    command: "ansible-vault encrypt {{ vault_cert_file }} --vault-password-file {{ vault_cert_pass_file }}"
+
+  delegate_to: localhost
+
+- name:  'Frontend-app > install.yml |  Selected key for {{ vitamui_struct.vitamui_component }}'
+  set_fact:
+    selected_key: "{{ ui_keys['client_client_external_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
+  no_log: true
+
+- name: 'Frontend-app > install.yml | Add keypass'
   template:
     src: "certificate.key_pass.j2"
     dest: "{{ nginx_ssl_dir }}/{{vitamui_struct.vitamui_component}}.key_pass"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
-  when: frontend_application.key_pass is defined
   become: true
 
-- name: "Frontend-app > install.yml | Reload nginx"
+- name: 'Frontend-app > install.yml | Reload nginx'
   become: true
   service:
     name: nginx
