@@ -50,7 +50,7 @@ const VERSATILE_SERVICE = 'versatileService';
   styleUrls: ['./create-getorix-deposit.component.scss'],
 })
 export class CreateGetorixDepositComponent extends SidenavPage<any> implements OnInit, OnDestroy {
-  ALPHA_NUMERIC_REGEX = /^[a-zA-ZÀ-ÖØ-öø-ÿ\d\-_\s]+$/i;
+  ALPHA_NUMERIC_REGEX = /^[a-zA-Z'"À-ÖØ-öø-ÿ\d\-_\s]+$/i;
   NUMERIC_REGEX = /^[0-9]*$/;
 
   showConfirmLeaveGetorixDepisitCreationSuscription: Subscription = new Subscription();
@@ -634,7 +634,7 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
       operationName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.ALPHA_NUMERIC_REGEX)]],
       operationType: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.ALPHA_NUMERIC_REGEX)]],
       operationTypeValue: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.ALPHA_NUMERIC_REGEX)]],
-      internalAdministratorNumber: ['', [Validators.required, Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
+      internalAdministratorNumber: ['', [Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
       nationalNumber: ['', [Validators.required, Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
       prescriptionOrderNumber: ['', [Validators.required, Validators.pattern(this.ALPHA_NUMERIC_REGEX), Validators.minLength(1)]],
       operationParticularities: [''],

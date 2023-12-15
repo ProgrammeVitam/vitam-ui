@@ -25,6 +25,67 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+.vitamui-icon-electronic-file1:before {
+  content: "\e975";
+  color: #757575;
+}
+.vitamui-icon-electronic-folder1:before {
+  content: "\e976";
+  color: #757575;
+}
+.vitamui-icon-scenarios:before {
+  content: "\e9c6";
+  color: #fe4f02;
+}
+.vitamui-icon-releve:before {
+  content: "\e9c7";
+  color: #fe4f02;
+}
+.vitamui-icon-dsl:before {
+  content: "\e9c8";
+  color: #fe4f02;
+}
+.vitamui-icon-droit:before {
+  content: "\e9c9";
+  color: #fe4f02;
+}
+.vitamui-icon-add-applicatif:before {
+  content: "\e96c";
+  color: #fff;
+}
+.vitamui-icon-add-operation:before {
+  content: "\e96d";
+  color: #fff;
+}
+.vitamui-icon-add-securite:before {
+  content: "\e96e";
+  color: #fff;
+}
+.vitamui-icon-add-user:before {
+  content: "\e96f";
+  color: #fff;
+}
+.vitamui-icon-add-audit:before {
+  content: "\e970";
+  color: #fff;
+}
+.vitamui-icon-add-ontologie:before {
+  content: "\e974";
+  color: #fff;
+}
+.vitamui-icon-add-contrat:before {
+  content: "\e971";
+  color: #fff;
+}
+.vitamui-icon-add-fichiers:before {
+  content: "\e972";
+  color: #fff;
+}
+.vitamui-icon-trash1:before {
+  content: "\e973";
+  color: #474d4a;
+}
 .vitamui-icon-trash:before {
   content: "\e963";
   color: #474d4a;
@@ -834,56 +895,4 @@ i.vitamui-icon {
 }
 .vitamui-icon-arrow-right2:before {
   content: "\ea3c";
-}
-.vitamui-icon-scenarios:before {
-  content: "\e9c6";
-  color: #fe4f02;
-}
-.vitamui-icon-releve:before {
-  content: "\e9c7";
-  color: #fe4f02;
-}
-.vitamui-icon-dsl:before {
-  content: "\e9c8";
-  color: #fe4f02;
-}
-.vitamui-icon-droit:before {
-  content: "\e9c9";
-  color: #fe4f02;
-}
-.vitamui-icon-add-applicatif:before {
-  content: "\e96c";
-  color: #fff;
-}
-.vitamui-icon-add-operation:before {
-  content: "\e96d";
-  color: #fff;
-}
-.vitamui-icon-add-securite:before {
-  content: "\e96e";
-  color: #fff;
-}
-.vitamui-icon-add-user:before {
-  content: "\e96f";
-  color: #fff;
-}
-.vitamui-icon-add-audit:before {
-  content: "\e970";
-  color: #fff;
-}
-.vitamui-icon-add-ontologie:before {
-  content: "\e974";
-  color: #fff;
-}
-.vitamui-icon-add-contrat:before {
-  content: "\e971";
-  color: #fff;
-}
-.vitamui-icon-add-fichiers:before {
-  content: "\e972";
-  color: #fff;
-}
-.vitamui-icon-trash1:before {
-  content: "\e973";
-  color: #474d4a;
 }
