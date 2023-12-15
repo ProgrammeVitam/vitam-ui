@@ -51,20 +51,16 @@
 .add-icon {
   color: var(--vitamui-primary);
   font-size: 35px;
-  padding-left: 70px;
-  margin-top: -10px;
-  right: 20px;
+  padding-left: 25px;
 }
 
 .selected-elements {
   color: var(--vitamui-primary);
   text-align: left;
   font-family: Mulish;
-  font-size: 12px;
   font-style: normal;
   font-weight: 700;
   line-height: 16px;
-  letter-spacing: -0.2px;
   display: inline-block;
 }
 
@@ -72,7 +68,7 @@
   color: var(--vitamui-primary);
   font-size: 24px;
   cursor: pointer;
-  padding-left: 25px;
+  padding-left: 10px;
 }
 
 .content {
@@ -156,6 +152,7 @@
   font-weight: 700;
   line-height: 28px;
 }
+
 .clickable-texte {
   cursor: pointer;
   text-decoration-line: underline;
@@ -165,4 +162,34 @@
   position: fixed;
   bottom: 10px;
   right: 100px;
+}
+
+.padding-css {
+  padding-right: 20px;
+}
+
+.tree-btn {
+  position: absolute;
+  top: 8%;
+  left: 0;
+}
+.btn-css {
+  background-color: white;
+  color: var(--vitamui-primary);
+  width: 40px;
+  height: 60px;
+}
+
+.left-not-arround {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border: 1px solid #9d9d9d;
+}
+
+.right-arround {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 0px;
+  border: 1px solid whitesmoke;
+  border-left: 0px;
 }

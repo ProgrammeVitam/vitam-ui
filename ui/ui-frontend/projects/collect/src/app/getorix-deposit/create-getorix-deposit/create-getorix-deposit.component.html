@@ -850,7 +850,7 @@
         <div class="col-1"></div>
         <div class="col-1">
           <div
-            [ngStyle]="{ position: 'fixed', 'padding-top': '20px' }"
+            [ngStyle]="{ position: 'absolute', 'padding-top': '20px' }"
             *ngIf="!pending; then btnActivatedLeft; else inProgressSpinner"
           ></div>
         </div>
@@ -955,7 +955,7 @@
   </div>
 </ng-template>
 <ng-template #btnActivatedLeft>
-  <button class="btn primary" (click)="validateCreation()" [ngStyle]="{ position: 'fixed' }">
+  <button class="btn primary" (click)="validateCreation()" [ngStyle]="{ position: 'absolute' }">
     <span>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.VALIDATE' | translate }}</span>
   </button>
 </ng-template>
