@@ -20,7 +20,10 @@
       "DRAG_AND_DROP": "Drag and drop your archives or",
       "BROWSE" :"import from your computer",
       "UPLOAD_FILE_ALREADY_IMPORTED": "Folder already imported !",
-      "TERMINATED": "The files have been sent to VITAM" 
+      "TERMINATED": "The files have been sent, they are being processed by VITAM",
+      "SELECTED_ELEMENTS" : "ELEMENTS ARE SELECTED",
+      "NAME" : "Name",
+      "SHOW_TREES_PLANS": "Show units tree"  
     },
     "CREATION_PROCESS": {
       "SUCCESS" : {
@@ -120,7 +123,7 @@
 
     },
     "OPERATION_CATEGORY" : {
-      "AGENCY_DETAILS" :"Holding organization",
+      "AGENCY_DETAILS" :"Holding organization or operator",
       "SCIENTIFIC_OFFICER" :"Scientific officer",
       "OPERATION_TYPE_NAME" : "Operation name and type",
       "OPERATION_NUMBER" :"Operation number",
