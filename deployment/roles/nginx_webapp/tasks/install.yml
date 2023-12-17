@@ -75,7 +75,7 @@
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
   with_fileglob:
-    - "{{ inventory_dir }}/certs/client-external/clients/{{ vitamui_struct.vitamui_component }}/*"
+    - "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/{{ vitamui_struct.vitamui_component }}*"
   become: true
 
 - block:
@@ -96,7 +96,7 @@
 
 - name:  'Frontend-app > install.yml |  Selected key for {{ vitamui_struct.vitamui_component }}'
   set_fact:
-    selected_key: "{{ ui_keys['client_client_external_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
+    selected_key: "{{ ui_keys['server_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
   no_log: true
 
 - name: 'Frontend-app > install.yml | Add keypass'
