@@ -17,13 +17,14 @@ VITAMUI_DIRS         =  data
 PACKAGING_DIR       := $(dir $(lastword $(MAKEFILE_LIST)))
 TEMPLATE_TMP_DIR    := $(abspath ./package-templates/)
 TEMPLATE_SRC        = $(wildcard $(PACKAGING_DIR)/templates/*)
-TEMPLATE_SRC_OVERRIDE = $(wildcard $(shell pwd)/../packaging/*)
+#TEMPLATE_SRC_OVERRIDE = $(wildcard $(shell pwd)/../packaging/*)
 RPM_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION)-rsc.rpm
 DEB_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION)-rsc.deb
 
 # fpm packaging default args
 FPM_PACK_ARGS               = -f --description "$(DESCRIPTION)"
 FPM_PACK_META               = --license "$(COPYRIGHT)" -n "vitamui-$(NAME)-rsc" -v $(VERSION)
+FPM_PACK_INSTALL_SCRIPTS    = --before-install "$(TEMPLATE_TMP_DIR)/before-install-rsc.sh" --after-install "$(TEMPLATE_TMP_DIR)/after-install-rsc.sh"
 
 # variable used to copy
 NAME_WITHOUT_SUFFIX  := $(subst ui-,,$(NAME))
@@ -43,17 +44,27 @@ $(VITAMUI_DIRS): stage
 
 vitamui-dirs:  $(VITAMUI_DIRS)
 
-install: clean stage vitamui-dirs
+template-files:
+	@mkdir -p $(TEMPLATE_TMP_DIR)
+	@for fic in  $(TEMPLATE_SRC) ; \
+	do \
+		sed  \
+			-e "s/__NAME__/$(NAME_WITHOUT_SUFFIX)/g" \
+			-e "s/__USER__/$(USER)/g" \
+			-e "s/__GROUP__/$(GROUP)/g" \
+			$$fic >  $(TEMPLATE_TMP_DIR)/`basename $$fic`; \
+	done
+
+install: clean stage vitamui-dirs template-files
 	@echo "Ressources origin: $(RESSOURCE_DIR_ORIGIN)"
 	@echo "Ressources dest:   $(RESSOURCE_DIR_DEST))"
 	sudo mkdir   -p -m 750 $(RESSOURCE_DIR_DEST)
-	ls -ld $(dir $(abspath $(RESSOURCE_DIR_DEST)))
 	cp -r $(RESSOURCE_DIR_ORIGIN) $(abspath $(RESSOURCE_DIR_DEST))
 
 rpm: install
-	@$(FPM) --verbose -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
+	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
 
 deb: install
-	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) -t deb -p $(DEB_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
+	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) -t deb -p $(DEB_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
 
 .PHONY: clean install stage vitamui-dirs rpm deb package $(TEMPLATE_TMP_DIR)
