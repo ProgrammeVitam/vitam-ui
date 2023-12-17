@@ -25,6 +25,7 @@ DEB_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION)-rsc.deb
 FPM_PACK_ARGS               = -f --description "$(DESCRIPTION)"
 FPM_PACK_META               = --license "$(COPYRIGHT)" -n "vitamui-$(NAME)-rsc" -v $(VERSION)
 FPM_PACK_INSTALL_SCRIPTS    = --before-install "$(TEMPLATE_TMP_DIR)/before-install-rsc.sh" --after-install "$(TEMPLATE_TMP_DIR)/after-install-rsc.sh"
+FPM_PACK_REMOVE_SCRIPTS     = --after-remove "$(TEMPLATE_TMP_DIR)/after-remove-rsc.sh"
 
 # variable used to copy
 NAME_WITHOUT_SUFFIX  := $(subst ui-,,$(NAME))
@@ -62,9 +63,9 @@ install: clean stage vitamui-dirs template-files
 	cp -r $(RESSOURCE_DIR_ORIGIN) $(abspath $(RESSOURCE_DIR_DEST))
 
 rpm: install
-	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
+	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
 
 deb: install
-	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) -t deb -p $(DEB_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
+	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t deb -p $(DEB_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
 
 .PHONY: clean install stage vitamui-dirs rpm deb package $(TEMPLATE_TMP_DIR)
