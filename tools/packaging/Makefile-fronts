@@ -17,9 +17,8 @@ VITAMUI_DIRS         =  data
 PACKAGING_DIR       := $(dir $(lastword $(MAKEFILE_LIST)))
 TEMPLATE_TMP_DIR    := $(abspath ./package-templates/)
 TEMPLATE_SRC        = $(wildcard $(PACKAGING_DIR)/templates/*)
-#TEMPLATE_SRC_OVERRIDE = $(wildcard $(shell pwd)/../packaging/*)
-RPM_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION)-rsc.rpm
-DEB_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION)-rsc.deb
+RPM_OUTPUT_PATH     := vitamui-$(NAME)-rsc-$(VERSION).rpm
+DEB_OUTPUT_PATH     := vitamui-$(NAME)-rsc-$(VERSION).deb
 
 # fpm packaging default args
 FPM_PACK_ARGS               = -f --description "$(DESCRIPTION)"
