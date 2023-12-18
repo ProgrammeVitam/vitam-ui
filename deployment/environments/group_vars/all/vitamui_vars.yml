@@ -59,7 +59,6 @@ vitamui:
     vitamui_component_type: "internal"
     port_service: 8090
     port_admin: 7090
-    server_secure: true
 
   identity:
     host: "identity.service.{{ consul_domain }}"
@@ -84,8 +83,8 @@ vitamui:
     host: "referential.service.{{ consul_domain }}"
     vitamui_component: "ui-referential"
     vitamui_component_type: "ui"
-    port_service: 8006
-    port_admin: 7006
+    port_service: 8005
+    port_admin: 7005
     server_connection_timeout: 60000
     #base_url: "https://{{ vitam_reverse_external_dns }}/referential"
     # Custom directories linked to the module
@@ -154,6 +153,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8001
     port_admin: 7001
+    hostname_verification: true
     #: "https://{{ vitam_reverse_external_dns }}/cas"
     theme:
       vitamui_favicon: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/favicon.ico"

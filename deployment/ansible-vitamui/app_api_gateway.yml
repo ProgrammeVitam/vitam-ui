@@ -22,7 +22,6 @@
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
     vitamui_struct: "{{ vitamui.portal }}"
-    frontend_purge: true
 
 - hosts: hosts_ui_identity
   gather_facts: no
