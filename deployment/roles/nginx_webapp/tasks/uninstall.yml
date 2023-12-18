@@ -1,19 +1,11 @@
 ---
 
-- name: 'Frontend-app > uninstall.yml | Delete application'
-  file:
-    path: "{{ frontend_data_dir }}"
+- name: Uninstall UI front ressources
+  package:
+    name: "{{ vitamui_struct.package_name | default(package_name) }}"
     state: absent
-  become: true
-
-- name: 'Frontend-app > uninstall.yml | Delete vhost'
-  file:
-    path: "/etc/nginx/conf.d/{{ vitamui_struct.vitamui_component }}.conf"
-    state: absent
-  become: true
-
-- name: "Frontend-app > uninstall.yml | Reload nginx"
-  become: true
-  service:
-    name: nginx
-    state: "reloaded"
+  register: result
+  retries: "{{ packages_install_retries_number | default(2) }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay | default(10) }}"
+  notify: reload nginx

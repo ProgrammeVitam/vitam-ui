@@ -1,17 +1,9 @@
 ---
 
-- name: 'Frontend-app > install.yml | Create folder'
-  file:
-    path: "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component }}"
-    state: directory
-    owner: "{{ frontend_user }}"
-    group: "{{ frontend_group }}"
-    mode: 0755
-
 - name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }}'
-  yum:
+  package:
     name: "{{ vitamui_struct.package_name | default(package_name) }}"
-    state: present
+    state: latest
   register: package_installed
   retries: "{{ packages_install_retries_number }}"
   until: package_installed is succeeded
