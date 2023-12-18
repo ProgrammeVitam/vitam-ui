@@ -1,10 +1,6 @@
 ---
 
-frontend_external_templates_dir: "{{ playbook_dir }}/templates/frontend"
-frontend_purge: false
-frontend_repo_url: 'nexus.dev.programmevitam.fr'
-frontend_root_path: '/vitamui'
-frontend_data_dir: "{{ frontend_root_path }}/data"
+frontend_data_dir: "{{ vitamui_defaults.folder.root_path }}/data"
 
 frontend_user: "{{ vitamui_defaults.users.vitamui }}"
 frontend_group: "{{ vitamui_defaults.users.group }}"

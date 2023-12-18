@@ -16,15 +16,5 @@
     owner: "{{ asset_user }}"
     group: "{{ asset_group }}"
     mode: '0644'
-  when: item is not match(".*favicon.ico")
   with_fileglob: "{{ asset_default_files }}"
 
-- name: "Assets > Tasks > main.yml | Copy favicon.ico"
-  copy:
-    src: "{{ item }}"
-    dest: "{{ asset_favicon_path }}/{{ item | basename }}"
-    owner: "{{ asset_user }}"
-    group: "{{ asset_group }}"
-    mode: '0644'
-  when: item is match(".*favicon.ico")
-  with_fileglob: "{{ asset_default_files }}"

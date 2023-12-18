@@ -1,9 +1,7 @@
 ---
-# defaults file for assets
-asset_path: "/vitamui/conf/assets"
-asset_favicon_path: "/vitamui/conf/assets"
 
-asset_user: nginx
-asset_group: nginx
-
+asset_path: "/{{ vitamui_defaults.folder.root_path }}/conf/assets"
+asset_user: "{{ vitamui_defaults.users.vitamui }}"
+asset_group: "{{ vitamui_defaults.users.group }}"
 asset_default_files: "../files/*"
+

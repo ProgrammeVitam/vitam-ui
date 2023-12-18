@@ -1,14 +1,8 @@
 ---
 
-- name: 'Frontend-app > install.yml | Purge existing folder'
-  file:
-    path: "{{ frontend_data_dir }}"
-    state: absent
-  when: frontend_purge
-
 - name: 'Frontend-app > install.yml | Create folder'
   file:
-    path: "{{ frontend_data_dir }}"
+    path: "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component }}"
     state: directory
     owner: "{{ frontend_user }}"
     group: "{{ frontend_group }}"

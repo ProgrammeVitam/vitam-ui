@@ -1,7 +1,7 @@
 Role Name
 =========
 
-Role allowing to deploy default assets for XAM apps.
+Role allowing to deploy default assets for Vitamui apps.
 
 Requirements
 ------------
@@ -20,6 +20,8 @@ STRING - Specify the owner of assets.
 ### asset_group
 STRING - Specify the group linked to the previous owner of assets.
 
+### asset_default_files
+STRING - Custom asset override
 
 Dependencies
 ------------
@@ -32,7 +34,7 @@ Example Playbook
 ```
 - hosts: vitamui
   roles:
-    - { role: assets-xam }
+    - { role: assets-copy }
 ```
 
 License
