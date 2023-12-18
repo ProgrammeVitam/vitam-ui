@@ -1,9 +1,14 @@
+#jinja2: lstrip_blocks: True
 server {
   listen              {{ vitamui_struct.port_service}} ssl;
   server_name         {{ vitam_reverse_external_dns }};
   include {{ nginx_ssl_dir }}/ssl.conf;
 
+  {% if vitamui_struct.vitamui_component == "ui-identity-admin" %}
+  root   /vitamui/data/identity;
+  {% else %}
   root   /vitamui/data/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }};
+  {% endif %}
 
   location ~* \.(jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2|eot|css|js|json)$ {
     add_header X-Content-Type-Options "nosniff" always;

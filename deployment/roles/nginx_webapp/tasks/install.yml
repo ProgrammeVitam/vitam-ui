@@ -9,17 +9,6 @@
   until: package_installed is succeeded
   delay: "{{ packages_install_retries_delay }}"
   tags: update_package_vitamui
-  when: vitamui_struct.vitamui_component != "ui-identity-admin"
-  notify: reload nginx
-
-- name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }} - Copy folder'
-  copy:
-    src: "{{ frontend_data_dir }}/identity/"
-    dest: "{{ frontend_data_dir }}/identity-admin"
-    group: "{{ frontend_group }}"
-    owner: "{{ frontend_user }}"
-    remote_src: yes
-  when: vitamui_struct.vitamui_component == "ui-identity-admin"
   notify: reload nginx
 
 - block:
