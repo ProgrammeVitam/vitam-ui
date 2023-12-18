@@ -15,7 +15,7 @@
 
 - name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }} - Copy folder'
   copy:
-    src: "{{ frontend_data_dir }}/identity"
+    src: "{{ frontend_data_dir }}/identity/"
     dest: "{{ frontend_data_dir }}/identity-admin"
     remote_src: yes
   when: vitamui_struct.vitamui_component == "ui-identity-admin"
