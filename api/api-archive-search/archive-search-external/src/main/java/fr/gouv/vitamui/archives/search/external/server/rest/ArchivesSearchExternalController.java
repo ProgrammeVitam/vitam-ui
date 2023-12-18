@@ -31,7 +31,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -44,6 +43,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -248,7 +248,7 @@ public class ArchivesSearchExternalController {
 
     @Secured(ServicesData.ROLE_TRANSFER_ACKNOWLEDGMENT)
     @ApiOperation(value = "Upload an ATR file for the transfer acknowledgment", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT , consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public String transferAcknowledgment(InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
     ) throws InvalidParseOperationException, PreconditionFailedException {
@@ -268,4 +268,15 @@ public class ArchivesSearchExternalController {
         LOGGER.debug("[EXTERNAL] : Get External ontologies list");
         return archivesSearchExternalService.getExternalOntologiesList();
     }
+
+    @GetMapping(RestApi.PERSISTENT_IDENTIFIER)
+    public List<ResultsDto> findByPersistentIdentifier(
+        final @RequestParam(value = "id") String arkId
+    ) {
+        LOGGER.debug("[EXTERNAL] : Get by persistent identifier {}", arkId);
+        List<ResultsDto> list = archivesSearchExternalService.findByPersistentIdentifier(arkId);
+        LOGGER.debug("[EXTERNAL] : list = {}", list);
+        return list;
+    }
+
 }

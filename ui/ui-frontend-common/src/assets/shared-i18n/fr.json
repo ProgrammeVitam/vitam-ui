@@ -105,6 +105,9 @@
     }
   },
   "APPLICATION": {
+    "ARK_SEARCH_APP": {
+      "NAME": "Recherche par identifiant pérenne"
+    },
     "PORTAL_APP": {
       "NAME": "Portail"
     },
@@ -4245,14 +4248,14 @@
     "SEARCH_CRITERIA_AND": "Et le ",
     "SEARCH_CRITERIA_GTE": "Après le ",
     "SEARCH_CRITERIA_LTE": "Avant le ",
-    "SHOW_SEARCH_CRITERIA": "Afficher les filtres de recherche",
-    "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
+    "SHOW_SEARCH_CRITERIA": "AFFICHER LES CRITERES DE RECHERCHE",
+    "HIDE_SEARCH_CRITERIA": "MASQUER LES CRITERES DE RECHERCHE",
     "COMPUTE_RULES_FACETS": "Afficher les facettes",
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Supprimer les filtres de la règle",
     "SEARCH_CRITERIA_FILTER": {
       "DATES": "Dates",
       "UA_TYPE": "Type d'unités archivistiques",
-      "TITLE": "Filtre de recherche",
+      "TITLE": "Recherche multi-critères",
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
       "DUA_TITLE": "Durée d'utilité administrative",
       "ACCESS_TITLE": "Communicabilité",
@@ -4704,7 +4707,7 @@
       }
     },
     "CRITERIA_CATEGORY": {
-      "ADD": "Ajouter des filtres",
+      "ADD": "Ajouter des critères",
       "APPRAISAL_RULE": "Durée d’utilité administrative",
       "STORAGE_RULE": "Durée d’utilité courante",
       "ACCESS_RULE": "Communicabilité",
@@ -4875,8 +4878,8 @@
     "SEARCH_CRITERIA_AND": "Et le ",
     "SEARCH_CRITERIA_GTE": "Après le ",
     "SEARCH_CRITERIA_LTE": "Avant le ",
-    "SHOW_SEARCH_CRITERIA": "Afficher les filtres de recherche",
-    "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
+    "SHOW_SEARCH_CRITERIA": "AFFICHER LES CRITERES DE RECHERCHE",
+    "HIDE_SEARCH_CRITERIA": "MASQUER LES CRITERES DE RECHERCHE",
     "COMPUTE_RULES_FACETS": "Afficher les facettes",
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Supprimer les filtres de la règle",
     "NO_PHYSICAL_ARCHIVE_MSG": "Pas d'archive physique",
@@ -4884,7 +4887,7 @@
     "SEARCH_CRITERIA_FILTER": {
       "DATES": "Dates",
       "UA_TYPE": "Type d'unités archivistiques",
-      "TITLE": "Filtre de recherche",
+      "TITLE": "Recherche multi-critères",
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
       "DUA_TITLE": "Durée d'utilité administrative",
       "ACCESS_TITLE": "Communicabilité",
@@ -5309,7 +5312,7 @@
       "NO_VALUE_FOUND_TO_DISPLAY": "Aucune valeur à afficher"
     },
     "CRITERIA_CATEGORY": {
-      "ADD": "Ajouter des filtres",
+      "ADD": "Ajouter des critères",
       "APPRAISAL_RULE": "Durée d’utilité administrative",
       "STORAGE_RULE": "Durée d’utilité courante",
       "ACCESS_RULE": "Communicabilité",
@@ -5329,6 +5332,16 @@
     },
     "EXPORT_CSV": {
       "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
+    },
+    "ARK_SEARCH": {
+      "GO_TO_PAGE": "Recherche par identifiant pérenne"
+    }
+  },
+  "ARK_SEARCH": {
+    "SEARCH_PLACEHOLDER": "Rechercher une unité archivistique par identifiant pérenne",
+    "MODAL": {
+      "TITLE": "",
+      "SEARCH_BY_ID": "Recherche par identifiant pérenne"
     }
   },
   "SEDA": {

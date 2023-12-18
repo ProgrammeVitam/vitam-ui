@@ -194,6 +194,9 @@ public class ResultsDto {
     @JsonProperty("Keyword")
     private List<KeywordDto> keyword = new ArrayList<>();
 
+    @JsonProperty("PersistentIdentifier")
+    private List<PersistentIdentifierDto> persistentIdentifier = new ArrayList<>();
+
     @JsonProperty("#approximate_creation_date")
     @JsonAlias({"_acd"})
     private String approximateCreationDate;
@@ -227,4 +230,5 @@ public class ResultsDto {
             setUnitType(unitType);
         }
     }
+
 }

@@ -51,8 +51,8 @@ import { SearchCriteriaListService } from './search-criteria-list.service';
   styleUrls: ['./search-criteria-list.component.css'],
 })
 export class SearchCriteriaListComponent implements OnInit, OnDestroy {
-  @Output()
-  storedSearchCriteriaHistory = new EventEmitter<any>();
+
+  @Output() storedSearchCriteriaHistory = new EventEmitter<any>();
 
   searchCriteriaHistory: SearchCriteriaHistory[];
   private readonly orderChange = new Subject<string>();

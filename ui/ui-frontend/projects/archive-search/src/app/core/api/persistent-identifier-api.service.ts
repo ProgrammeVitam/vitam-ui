@@ -24,26 +24,24 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  *
- *
  */
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
-import { BaseHttpClient } from '../base-http-client';
-import { BASE_URL } from '../injection-tokens';
-import { Ontology } from '../models';
+import { Observable } from 'rxjs';
+import { BaseHttpClient, BASE_URL, Unit } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OntologyApiService extends BaseHttpClient<Ontology> {
+export class PersistentIdentifierApiService extends BaseHttpClient<any> {
+
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/ontology');
+    super(http, baseUrl + '/archive-search');
   }
 
-  // TODO: ROLLBACK
-  getInternalOntologyFieldsList(): Observable<Ontology[]> {
-    return EMPTY;
+  findByPersistentIdentifier(arkId: string, headers?: HttpHeaders): Observable<Unit[]> {
+    return this.http.get<any>(this.apiUrl + '/persistent-identifier' + '?id=' + arkId, { headers });
   }
+
 }

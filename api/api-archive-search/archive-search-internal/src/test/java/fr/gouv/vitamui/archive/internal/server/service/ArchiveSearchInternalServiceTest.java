@@ -45,7 +45,6 @@ import com.google.common.io.ByteStreams;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
@@ -57,9 +56,12 @@ import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,24 +71,29 @@ import org.mockito.InjectMocks;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class ArchiveSearchInternalServiceTest {
 
-    @MockBean(name = "objectMapper")
-    private ObjectMapper objectMapper;
+    VitamContext defaultVitamContext = new VitamContext(1);
+    private ObjectMapper simpleObjectMapper = new ObjectMapper();
 
     @MockBean(name = "unitService")
     private UnitService unitService;
+
+    @MockBean(name = "persistentIdentifierService")
+    private PersistentIdentifierService persistentIdentifierService;
 
     @MockBean(name = "archiveSearchAgenciesInternalService")
     private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
@@ -110,17 +117,19 @@ public class ArchiveSearchInternalServiceTest {
     @BeforeEach
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        archiveSearchInternalService =
-            new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
-                archiveSearchRulesInternalService, archiveSearchFacetsInternalService);
+        archiveSearchInternalService = new ArchiveSearchInternalService(simpleObjectMapper,
+            unitService,
+            archiveSearchAgenciesInternalService,
+            archiveSearchRulesInternalService,
+            archiveSearchFacetsInternalService,
+            persistentIdentifierService);
     }
 
     @Test
-    void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() throws VitamClientException,
-        IOException, InvalidParseOperationException {
+    void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() throws Exception {
         // Given
         when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(FILING_HOLDING_SCHEME_RESULTS));
+            .thenReturn(responseFromFile(FILING_HOLDING_SCHEME_RESULTS));
         // When
         JsonNode jsonNode = archiveSearchInternalService.searchArchiveUnits(any(), any());
 
@@ -136,17 +145,13 @@ public class ArchiveSearchInternalServiceTest {
         Assertions.assertThat(vitamUISearchResponseDto.getResults()).hasSize(20);
     }
 
-    private RequestResponse<JsonNode> buildUnitMetadataResponse(String filename)
-        throws IOException, InvalidParseOperationException {
+    private RequestResponse<JsonNode> responseFromFile(String filename) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream(filename);
+        InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         Assertions.assertThat(inputStream).isNotNull();
-        return RequestResponseOK
-            .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
+        return RequestResponseOK.getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
-
 
 
     @Test
@@ -171,7 +176,7 @@ public class ArchiveSearchInternalServiceTest {
     public void testReclassificationThenOK() throws Exception {
         // Given
         when(unitService.reclassification(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE));
+            .thenReturn(responseFromFile(UPDATE_RULES_ASYNC_RESPONSE));
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -201,9 +206,9 @@ public class ArchiveSearchInternalServiceTest {
 
         //When //Then
         String expectingGuid =
-            archiveSearchInternalService.reclassification(reclassificationCriteriaDto, new VitamContext(1));
+            archiveSearchInternalService.reclassification(reclassificationCriteriaDto, defaultVitamContext);
         assertThatCode(() -> {
-            archiveSearchInternalService.reclassification(reclassificationCriteriaDto, new VitamContext(1));
+            archiveSearchInternalService.reclassification(reclassificationCriteriaDto, defaultVitamContext);
         }).doesNotThrowAnyException();
 
         Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
@@ -233,7 +238,7 @@ public class ArchiveSearchInternalServiceTest {
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest1() throws Exception {
         // Given
         when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildUnitDescriptiveMetadataDto(null, null, null, null, "01/01/2023", Arrays.asList("StartDate"));
@@ -248,7 +253,7 @@ public class ArchiveSearchInternalServiceTest {
     void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest2() throws Exception {
         // Given
         when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildUnitDescriptiveMetadataDto("some title", null, null, null, "01/01/2023",
@@ -265,7 +270,7 @@ public class ArchiveSearchInternalServiceTest {
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest3() throws Exception {
         // Given
         when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildUnitDescriptiveMetadataDto("some title", "some description", "Item", null, null,
@@ -282,7 +287,7 @@ public class ArchiveSearchInternalServiceTest {
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest4() throws Exception {
         // Given
         when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildUnitDescriptiveMetadataDto(null, null, null, null, null,
@@ -299,7 +304,7 @@ public class ArchiveSearchInternalServiceTest {
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest5() throws Exception {
         // Given
         when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildUnitDescriptiveMetadataDto("Title", null, "Item", null, null,
@@ -316,7 +321,7 @@ public class ArchiveSearchInternalServiceTest {
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest6() throws Exception {
         // Given
         when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildFullUnitDescriptiveMetadataDto(
@@ -335,7 +340,7 @@ public class ArchiveSearchInternalServiceTest {
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest7() throws Exception {
         // Given
         when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildFullUnitDescriptiveMetadataDto(
@@ -392,6 +397,48 @@ public class ArchiveSearchInternalServiceTest {
         Assertions.assertThat(
             givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
                 .has("DescriptionLevel")).isTrue();
+    }
+
+    @Test
+    void findByPersitentIdentifier_OK() throws Exception {
+        // Given
+        String arkId = "ark:/22567/001a957db5eadaac";
+        when(persistentIdentifierService.findUnitsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
+            .thenReturn(responseFromFile("data/ark/unit_with_ark_id.json"));
+        // When
+        List<ResultsDto> resultsDto = archiveSearchInternalService.findByPersitentIdentifier(arkId, defaultVitamContext);
+        // Then
+        verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
+        Assertions.assertThat(resultsDto.size()).isEqualTo(4);
+        Assertions.assertThat(resultsDto.get(0).getId()).isEqualTo("aeaqaaaaaaecg2hnabhluammhk7supyaaabq");
+        Assertions.assertThat(resultsDto.get(0).getPersistentIdentifier()).isNotEmpty();
+        Assertions.assertThat(resultsDto.get(0).getPersistentIdentifier().get(0).getPersistentIdentifierContent()).isEqualTo(arkId);
+    }
+
+    @Test
+    void findByPersitentIdentifier_with_no_results_should_return_empty_list() throws Exception {
+        // Given
+        String arkId = "ark:/22567/001a957db5eadaac";
+        when(persistentIdentifierService.findUnitsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
+            .thenReturn(responseFromFile("data/ark/bad_ark_id.json"));
+        // When Then
+        List<ResultsDto> resultsDto = archiveSearchInternalService.findByPersitentIdentifier(arkId, defaultVitamContext);
+        // Then
+        verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
+        Assertions.assertThat(resultsDto.size()).isEqualTo(0);
+    }
+
+    @Test
+    void findByPersitentIdentifier_whith_client_error_should_throw() throws Exception {
+        // Given
+        String arkId = "ark:/22567/001a957db5eadaac";
+        when(persistentIdentifierService.findUnitsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
+            .thenThrow(new VitamClientException("exception thrown by client"));
+        // When Then
+        assertThatThrownBy(() -> archiveSearchInternalService.findByPersitentIdentifier(arkId, defaultVitamContext))
+            .isInstanceOf(VitamClientException.class)
+            .hasMessage("exception thrown by client");
+        verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
     }
 
     private UnitDescriptiveMetadataDto buildUnitDescriptiveMetadataDto

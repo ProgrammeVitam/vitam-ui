@@ -31,7 +31,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -40,6 +39,7 @@ import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRest
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -286,4 +286,9 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         LOGGER.debug("Get All External Ontologies");
         return archiveSearchExternalRestClient.getExternalOntologyFieldsList(context);
     }
+
+    public List<ResultsDto> findByPersistentIdentifier(String arkId, ExternalHttpContext context) {
+        return archiveSearchExternalRestClient.findByPersistentIdentifier(arkId, context);
+    }
+
 }

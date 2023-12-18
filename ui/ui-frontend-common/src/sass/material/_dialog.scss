@@ -1,18 +1,36 @@
-.vitamui-dialog > .mat-dialog-container {
-    border-radius: 20px;
-    padding: 30px;
+.vitamui-dialog .mat-dialog-container {
+  border-radius: 20px;
+  padding: 40px;
+
+  .content {
+    padding: 0;
+
+    // dialog title
+    > .text.large:first-of-type {
+      margin: 1.5rem 0;
+    }
+
+    .actions:last-of-type {
+      display: flex;
+      margin-top: 30px;
+    }
+
+    .actions:last-of-type > button:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
 }
 
 .vitamui-confirm-dialog > .mat-dialog-container {
-    border-radius: 20px;
-    padding: 40px 60px 30px 40px;
+  border-radius: 20px;
+  padding: 40px 60px 30px 40px;
 
-    .mat-dialog-actions {
-        margin-bottom: 0;
-        padding-top: 30px;
+  .mat-dialog-actions {
+    margin-bottom: 0;
+    padding-top: 30px;
 
-        button + button {
-            margin-left: 20px;
-        }
+    button + button {
+      margin-left: 20px;
     }
+  }
 }

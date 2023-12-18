@@ -92,7 +92,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   additionalSearchCriteriaCategoryIndex = 0;
   included = false;
   showCriteriaPanel = true;
-  showSearchCriteriaPanel = false;
   archiveUnits: Unit[];
 
   listOfUAIdToInclude: CriteriaValue[] = [];
@@ -327,7 +326,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   private initializeSelectionParams() {
     this.pending = true;
     this.showCriteriaPanel = false;
-    this.showSearchCriteriaPanel = false;
     this.currentPage = 0;
     this.archiveUnits = [];
     this.criteriaSearchList = [];
@@ -555,7 +553,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     if (this.searchCriterias && this.searchCriterias.size === 0) {
       this.submited = false;
       this.showCriteriaPanel = true;
-      this.showSearchCriteriaPanel = false;
       // Get initial AUs by project Id
       this.searchCriteriaKeys = [];
       this.searchCriterias = new Map();

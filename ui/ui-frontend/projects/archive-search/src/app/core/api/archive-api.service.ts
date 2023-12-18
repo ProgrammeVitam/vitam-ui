@@ -36,19 +36,11 @@
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
-  ApiUnitObject,
-  BaseHttpClient,
-  BASE_URL,
-  Ontology,
-  PageRequest,
-  PaginatedResponse,
-  SearchCriteriaDto,
-  SearchCriteriaHistory,
-  SearchResponse,
-  Unit,
+  ApiUnitObject, BASE_URL, BaseHttpClient, Ontology, PageRequest, PaginatedResponse, SearchCriteriaDto, SearchCriteriaHistory,
+  SearchResponse, Unit,
 } from 'ui-frontend-common';
 import { ExportDIPRequestDto, TransferRequestDto } from '../../archive/models/dip.interface';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
@@ -76,8 +68,15 @@ export class ArchiveApiService extends BaseHttpClient<any> {
       .pipe(tap((result) => result.values.map((ev) => (ev.parsedData = ev.data != null ? JSON.parse(ev.data) : null))));
   }
 
-  getFilingHoldingScheme(headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', { headers });
+  // TODO: ROLLBACK
+  getFilingHoldingScheme(_?: HttpHeaders): Observable<SearchResponse> {
+    const rep: SearchResponse = {
+      $hits: { limit: 10000, offset: 0, total: 0, size: 0 },
+      $results: [],
+      $facetResults: []
+    }
+    return of(rep);
+    // return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', { headers });
   }
 
   get(unitId: string, headers?: HttpHeaders): Observable<SearchResponse> {
@@ -197,6 +196,10 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   getInternalOntologiesList(): Observable<Ontology[]> {
-    return this.http.get<Ontology[]>(`${this.apiUrl}/internal-ontologies`);
+    console.log('POUEEEET')
+    return this.http.get<Ontology[]>('/Users/laedanrex/IdeaProjects/VitamProjects/vitam-ui/.directory/0-helpers/ontology-internal.json')
+    // return this.http.get<Ontology[]>(`${this.apiUrl}/internal-ontologies`);
+    // const json = fetch('./data.json').then((response) => response.json());
+
   }
 }

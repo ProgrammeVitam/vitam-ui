@@ -176,6 +176,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
     FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
     FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.id);
+    console.log('addToSearchCriteria ' + JSON.stringify(node))
     this.archiveSharedDataService.emitNode(this.nodeData);
   }
 

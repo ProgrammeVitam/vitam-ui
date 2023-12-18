@@ -1,0 +1,1462 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 4,
+    "offset": 0,
+    "limit": 10000,
+    "size": 4
+  },
+  "$results": [
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "monSIP",
+      "Description": "Sed placerat sapien a arcu venenatis ultrices. Sed a eleifend odio, ac tincidunt sem. Fusce luctus in augue nec volutpat. Integer libero elit, aliquet nec dapibus at, dictum feugiat sapien. Quisque feugiat purus id sapien facilisis, nec sodales diam semper. Mauris pretium luctus malesuada",
+      "Agent": [
+        {
+          "Function": [
+            "Ajout SEDA 2.2"
+          ],
+          "Role": [
+            "Ajout SEDA 2.2"
+          ]
+        }
+      ],
+      "Writer": [
+        {
+          "Nationality": [
+            "Sealand"
+          ]
+        }
+      ],
+      "Addressee": [
+        {
+          "FirstName": "Jules",
+          "FullName": "Iulius Caesar Divus",
+          "Nationality": [
+            "Italien"
+          ]
+        },
+        {
+          "GivenName": "Alexandre",
+          "BirthPlace": {
+            "City": "Pella",
+            "Country": "Macédoine"
+          }
+        }
+      ],
+      "Transmitter": [
+        {
+          "Function": [
+            "Service de transmission"
+          ]
+        }
+      ],
+      "Sender": [
+        {
+          "GivenName": "Alexander",
+          "BirthDate": "1970-06-03",
+          "Position": [
+            "CEO"
+          ],
+          "Mandate": [
+            "Mandataire_1",
+            "Mandataire_2"
+          ]
+        }
+      ],
+      "RelatedObjectReference": {
+        "Replaces": [
+          {
+            "ExternalReference": "ID_Fictif"
+          }
+        ]
+      },
+      "StartDate": "2016-06-03T15:28:00",
+      "EndDate": "2016-06-03T15:28:00",
+      "Event": [
+        {
+          "evDateTime": "2016-06-03T15:28:00"
+        },
+        {
+          "evId": "EventIdentifier_content0",
+          "evTypeProc": "EventTypeCode_content0",
+          "evType": "EventType_content0",
+          "evDateTime": "2016-06-03T15:28:00",
+          "evTypeDetail": "EventDetail_content0",
+          "outcome": "Outcome0",
+          "outDetail": "OutcomeDetail_content0",
+          "outMessg": "OutcomeDetailMessage_content0",
+          "evDetData": "EventDetailData_content0_seda23",
+          "linkingAgentIdentifier": [
+            {
+              "LinkingAgentIdentifierType": "Preservation system",
+              "LinkingAgentIdentifierValue": "SAE",
+              "LinkingAgentRole": "Role"
+            }
+          ]
+        }
+      ],
+      "SigningInformation": {
+        "SigningRole": [
+          "SignedDocument",
+          "Signature",
+          "Timestamp"
+        ],
+        "DetachedSigningRole": [
+          "AdditionalProof"
+        ],
+        "SignatureDescription": [
+          {
+            "Signer": {
+              "FirstName": "Fulgence Marie Auguste",
+              "BirthName": "Bienvenüe",
+              "FullName": "Fulgence Marie Auguste Bienvenüe",
+              "GivenName": "Le père du métro",
+              "Gender": "M",
+              "BirthDate": "1852-01-27",
+              "BirthPlace": {
+                "Geogname": "Uzel",
+                "Address": "Place de la Mairie",
+                "PostalCode": "22460",
+                "City": "Uzel",
+                "Region": "Bretagne",
+                "Country": "France"
+              },
+              "DeathDate": "1936-08-03",
+              "DeathPlace": {
+                "Geogname": "Paris",
+                "Address": "Hôpital Boucicaut",
+                "PostalCode": "75015",
+                "City": "Paris",
+                "Region": "Ile de France",
+                "Country": "France"
+              },
+              "Nationality": [
+                "Française"
+              ],
+              "Identifier": [
+                "0000 0000 5488 9547"
+              ],
+              "Function": [
+                "Ingénierie"
+              ],
+              "Activity": [
+                "Conception de lignes de métro"
+              ],
+              "Position": [
+                "Chef de l'inspection des Ponts et Chaussées"
+              ],
+              "Role": [
+                "Directeur des travaux"
+              ],
+              "Mandate": [
+                "Loi du 30 mars 1898"
+              ],
+              "SigningTime": "1998-04-04T08:07:06"
+            },
+            "Validator": {
+              "FirstName": "Fulgence Marie Auguste",
+              "BirthName": "Bienvenüe",
+              "FullName": "Fulgence Marie Auguste Bienvenüe",
+              "GivenName": "Le père du métro",
+              "Gender": "M",
+              "BirthDate": "1852-01-27",
+              "BirthPlace": {
+                "Geogname": "Uzel",
+                "Address": "Place de la Mairie",
+                "PostalCode": "22460",
+                "City": "Uzel",
+                "Region": "Bretagne",
+                "Country": "France"
+              },
+              "DeathDate": "1936-08-03",
+              "DeathPlace": {
+                "Geogname": "Paris",
+                "Address": "Hôpital Boucicaut",
+                "PostalCode": "75015",
+                "City": "Paris",
+                "Region": "Ile de France",
+                "Country": "France"
+              },
+              "Nationality": [
+                "Française"
+              ],
+              "Identifier": [
+                "0000 0000 5488 9547"
+              ],
+              "Function": [
+                "Ingénierie"
+              ],
+              "Activity": [
+                "Conception de lignes de métro"
+              ],
+              "Position": [
+                "Chef de l'inspection des Ponts et Chaussées"
+              ],
+              "Role": [
+                "Directeur des travaux"
+              ],
+              "Mandate": [
+                "Loi du 30 mars 1898"
+              ],
+              "ValidationTime": "1998-04-04T08:07:06"
+            },
+            "SigningType": "QualifiedSignature"
+          }
+        ],
+        "TimestampingInformation": [
+          {
+            "TimeStamp": "2017-04-04T08:07:06",
+            "AdditionalTimestampingInformation": "ExtraInfo"
+          }
+        ],
+        "AdditionalProof": [
+          {
+            "AdditionalProofInformation": [
+              "ExtraInfo1",
+              "ExtraInfo2"
+            ]
+          }
+        ],
+        "Extended": {
+          "ExtraField1": [
+            "Val1",
+            "Val2"
+          ],
+          "ExtraField2": [
+            {
+              "SubField2": [
+                "Val3"
+              ]
+            }
+          ]
+        }
+      },
+      "TextContent": [
+        "Contenu du message"
+      ],
+      "OriginatingSystemIdReplyTo": "Système source",
+      "DateLitteral": "XXème siècle",
+      "PersistentIdentifier": [
+        {
+          "PersistentIdentifierType": "ark",
+          "PersistentIdentifierOrigin": "OriginatingAgency",
+          "PersistentIdentifierReference": "Agency-00001",
+          "PersistentIdentifierContent": "ark:/22567/001a957db5eadaac"
+        }
+      ],
+      "#id": "aeaqaaaaaaecg2hnabhluammhk7supyaaabq",
+      "#tenant": 0,
+      "#object": "aebaaaaaaaecg2hnabhluammhk7suhaaaaaq",
+      "#unitups": [],
+      "#min": 1,
+      "#max": 1,
+      "#allunitups": [],
+      "#management": {
+        "StorageRule": {
+          "FinalAction": "Transfer"
+        },
+        "AppraisalRule": {
+          "FinalAction": "Keep"
+        },
+        "ClassificationRule": {
+          "ClassificationAudience": "ClassificationAudience0",
+          "ClassificationLevel": "Secret Défense",
+          "ClassificationOwner": "ClassificationOwner0"
+        },
+        "HoldRule": {
+          "Rules": [
+            {
+              "Rule": "HOL-00002",
+              "StartDate": "2000-01-01",
+              "HoldEndDate": "2010-01-01",
+              "HoldOwner": "Owner",
+              "HoldReason": "Reason",
+              "HoldReassessingDate": "2005-01-01",
+              "PreventRearrangement": false,
+              "EndDate": "2010-01-01"
+            }
+          ]
+        }
+      },
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaacecg2heaasbeammhk7sgoiaaaaq"
+      ],
+      "#opi": "aeeaaaaaacecg2heaasbeammhk7sgoiaaaaq",
+      "#originating_agency": "FRAN_NP_009913",
+      "#originating_agencies": [
+        "FRAN_NP_009913"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.3",
+      "#implementationVersion": "7.1.0-SNAPSHOT",
+      "#approximate_creation_date": "2023-12-05T16:10:57.308",
+      "#approximate_update_date": "2023-12-05T16:10:57.308"
+    },
+    {
+      "DescriptionLevel": "Item",
+      "Title_": {
+        "fr": "Chemin des dames - Le château de la Motte",
+        "en": "Chemin des dames - The Castle of La Motte"
+      },
+      "FilePlanPosition": [
+        "AB-001"
+      ],
+      "OriginatingSystemId": [
+        "ID01"
+      ],
+      "ArchivalAgencyArchiveUnitIdentifier": [
+        "1 Num 1/204-3"
+      ],
+      "OriginatingAgencyArchiveUnitIdentifier": [
+        "CP1"
+      ],
+      "TransferringAgencyArchiveUnitIdentifier": [
+        "CP1"
+      ],
+      "Description": "Allemant. - Au chemin des Dames : le château et la ferme de la Motte totalement détruits.",
+      "CustodialHistory": {
+        "CustodialHistoryItem": [
+          "La collection de cartes postales présentée ici provient des\n                            nombreux prêts qui ont été proposés aux Archives de la Vendée lors de la Grande\n                            Collecte 1914-1918.",
+          "Ces cartes postales, écrites pour la plupart, ont été dans bien\n                            des cas numérisées recto verso, sauf avis contraire des prêteurs ou lorsqu'il s'agit\n                            d'une série. La date de la correspondance, ou plus rarement celle de l'oblitération,\n                            est précisée en présentation du contenu, ainsi que le nom de son auteur si son\n                            témoignage apporte un éclairage nouveau (une mention permet de retrouver ses autres\n                            écrits).",
+          "A noter : les cartes représentant des périodes de manoeuvres ou\n                            des armes proviennent de clichés pris avant le conflit.",
+          "Dans le cas présent : Collecte 14-18. Prêt Hervé,\n                            2014"
+        ]
+      },
+      "Language": [
+        "french"
+      ],
+      "Tag": [
+        "Grande Collecte"
+      ],
+      "Keyword": [
+        {
+          "KeywordContent": "Aisne (département)",
+          "KeywordType": "geogname"
+        },
+        {
+          "KeywordContent": "Guerre 1914-1918",
+          "KeywordType": "subject"
+        },
+        {
+          "KeywordContent": "Dommages de guerre",
+          "KeywordType": "subject"
+        },
+        {
+          "KeywordContent": "Carte postale",
+          "KeywordType": "genreform"
+        }
+      ],
+      "AuthorizedAgent": [
+        {
+          "FirstName": "John",
+          "BirthName": "Doe",
+          "GivenName": "Martin",
+          "Gender": "Male",
+          "BirthDate": "2000-01-01",
+          "BirthPlace": {
+            "Geogname": "Geogname",
+            "Address": "123 my Street",
+            "PostalCode": "CD255",
+            "City": "Toronto",
+            "Region": "Ontario",
+            "Country": "Canada"
+          },
+          "DeathDate": "2000-01-01",
+          "DeathPlace": {
+            "Geogname": "Geogname",
+            "Address": "123 my Street",
+            "PostalCode": "CD255",
+            "City": "Toronto",
+            "Region": "Ontario",
+            "Country": "Canada"
+          },
+          "Nationality": [
+            "Canadian"
+          ],
+          "Identifier": [
+            "ABC"
+          ]
+        }
+      ],
+      "Source": "Prêt Hervé, 2014, CP1",
+      "RelatedObjectReference": {
+        "IsVersionOf": [],
+        "Replaces": [
+          {
+            "ArchiveUnitRefId": "aeaqaaaaaaecg2hnabhluammhk7fyjiaaaaq"
+          }
+        ],
+        "Requires": [],
+        "IsPartOf": [],
+        "References": []
+      },
+      "TransactedDate": "2017-06-01T09:31:00",
+      "AcquiredDate": "2016-01-05T09:31:00",
+      "RegisteredDate": "2014-06-12T09:31:00",
+      "StartDate": "1914-01-01T09:31:00",
+      "EndDate": "1918-12-31T19:06:44",
+      "SigningInformation": {
+        "SigningRole": [
+          "SignedDocument",
+          "Signature",
+          "Timestamp"
+        ],
+        "DetachedSigningRole": [
+          "AdditionalProof"
+        ],
+        "SignatureDescription": [
+          {
+            "Signer": {
+              "FirstName": "Fulgence Marie Auguste",
+              "BirthName": "Bienvenüe",
+              "FullName": "Fulgence Marie Auguste Bienvenüe",
+              "GivenName": "Le père du métro",
+              "Gender": "M",
+              "BirthDate": "1852-01-27",
+              "BirthPlace": {
+                "Geogname": "Uzel",
+                "Address": "Place de la Mairie",
+                "PostalCode": "22460",
+                "City": "Uzel",
+                "Region": "Bretagne",
+                "Country": "France"
+              },
+              "DeathDate": "1936-08-03",
+              "DeathPlace": {
+                "Geogname": "Paris",
+                "Address": "Hôpital Boucicaut",
+                "PostalCode": "75015",
+                "City": "Paris",
+                "Region": "Ile de France",
+                "Country": "France"
+              },
+              "Nationality": [
+                "Française"
+              ],
+              "Identifier": [
+                "0000 0000 5488 9547"
+              ],
+              "Function": [
+                "Ingénierie"
+              ],
+              "Activity": [
+                "Conception de lignes de métro"
+              ],
+              "Position": [
+                "Chef de l'inspection des Ponts et Chaussées"
+              ],
+              "Role": [
+                "Directeur des travaux"
+              ],
+              "Mandate": [
+                "Loi du 30 mars 1898"
+              ],
+              "SigningTime": "1998-04-04T08:07:06"
+            },
+            "Validator": {
+              "FirstName": "Fulgence Marie Auguste",
+              "BirthName": "Bienvenüe",
+              "FullName": "Fulgence Marie Auguste Bienvenüe",
+              "GivenName": "Le père du métro",
+              "Gender": "M",
+              "BirthDate": "1852-01-27",
+              "BirthPlace": {
+                "Geogname": "Uzel",
+                "Address": "Place de la Mairie",
+                "PostalCode": "22460",
+                "City": "Uzel",
+                "Region": "Bretagne",
+                "Country": "France"
+              },
+              "DeathDate": "1936-08-03",
+              "DeathPlace": {
+                "Geogname": "Paris",
+                "Address": "Hôpital Boucicaut",
+                "PostalCode": "75015",
+                "City": "Paris",
+                "Region": "Ile de France",
+                "Country": "France"
+              },
+              "Nationality": [
+                "Française"
+              ],
+              "Identifier": [
+                "0000 0000 5488 9547"
+              ],
+              "Function": [
+                "Ingénierie"
+              ],
+              "Activity": [
+                "Conception de lignes de métro"
+              ],
+              "Position": [
+                "Chef de l'inspection des Ponts et Chaussées"
+              ],
+              "Role": [
+                "Directeur des travaux"
+              ],
+              "Mandate": [
+                "Loi du 30 mars 1898"
+              ],
+              "ValidationTime": "1998-04-04T08:07:06"
+            },
+            "SigningType": "QualifiedSignature"
+          }
+        ],
+        "TimestampingInformation": [
+          {
+            "TimeStamp": "2017-04-04T08:07:06",
+            "AdditionalTimestampingInformation": "ExtraInfo"
+          }
+        ],
+        "AdditionalProof": [
+          {
+            "AdditionalProofInformation": [
+              "ExtraInfo1",
+              "ExtraInfo2"
+            ]
+          }
+        ],
+        "Extended": {
+          "ExtraField1": [
+            "Val1",
+            "Val2"
+          ],
+          "ExtraField2": [
+            {
+              "SubField2": [
+                "Val3"
+              ]
+            }
+          ]
+        }
+      },
+      "Gps": {
+        "GpsVersionID": "52.7",
+        "GpsAltitude": 255,
+        "GpsAltitudeRef": "GpsAltitudeRef",
+        "GpsLatitude": "49.4769199",
+        "GpsLatitudeRef": "GpsLatitudeRef",
+        "GpsLongitude": "3.4417368",
+        "GpsLongitudeRef": "GpsLongitudeRef",
+        "GpsDateStamp": "22:44 24/10/11"
+      },
+      "PersistentIdentifier": [
+        {
+          "PersistentIdentifierType": "ark",
+          "PersistentIdentifierOrigin": "OriginatingAgency",
+          "PersistentIdentifierReference": "Agency-00001",
+          "PersistentIdentifierContent": "ark:/22567/001a957db5eadaac"
+        }
+      ],
+      "#id": "aeaqaaaaaaecg2hnabhluammhk7fyiyaaaaq",
+      "#tenant": 0,
+      "#object": "aebaaaaaaaecg2hnabhluammhk7fk5yaaaaq",
+      "#unitups": [],
+      "#min": 1,
+      "#max": 1,
+      "#allunitups": [],
+      "#management": {
+        "AccessRule": {
+          "Inheritance": {
+            "PreventRulesId": [
+              "ACC-00001"
+            ]
+          }
+        },
+        "HoldRule": {
+          "Rules": [
+            {
+              "Rule": "HOL-00001",
+              "StartDate": "2000-01-01",
+              "PreventRearrangement": true,
+              "EndDate": "2001-01-01"
+            },
+            {
+              "Rule": "HOL-00002",
+              "StartDate": "2000-01-01",
+              "HoldEndDate": "2010-01-01",
+              "HoldOwner": "Owner",
+              "HoldReason": "Reason",
+              "HoldReassessingDate": "2005-01-01",
+              "PreventRearrangement": false,
+              "EndDate": "2010-01-01"
+            },
+            {
+              "Rule": "HOL-00004"
+            }
+          ],
+          "Inheritance": {
+            "PreventRulesId": [
+              "HOL-00003"
+            ]
+          }
+        }
+      },
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaacecg2heaasbeammhk7e5raaaaaq"
+      ],
+      "#opi": "aeeaaaaaacecg2heaasbeammhk7e5raaaaaq",
+      "#originating_agency": "Vitam",
+      "#originating_agencies": [
+        "Vitam"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.3",
+      "#implementationVersion": "7.1.0-SNAPSHOT",
+      "#approximate_creation_date": "2023-12-05T16:10:05.310",
+      "#approximate_update_date": "2023-12-05T16:10:05.310"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "monSIP",
+      "Description": "Sed placerat sapien a arcu venenatis ultrices. Sed a eleifend odio, ac tincidunt sem. Fusce luctus in augue nec volutpat. Integer libero elit, aliquet nec dapibus at, dictum feugiat sapien. Quisque feugiat purus id sapien facilisis, nec sodales diam semper. Mauris pretium luctus malesuada",
+      "Agent": [
+        {
+          "Function": [
+            "Ajout SEDA 2.2"
+          ],
+          "Role": [
+            "Ajout SEDA 2.2"
+          ]
+        }
+      ],
+      "Writer": [
+        {
+          "Nationality": [
+            "Sealand"
+          ]
+        }
+      ],
+      "Addressee": [
+        {
+          "FirstName": "Jules",
+          "FullName": "Iulius Caesar Divus",
+          "Nationality": [
+            "Italien"
+          ]
+        },
+        {
+          "GivenName": "Alexandre",
+          "BirthPlace": {
+            "City": "Pella",
+            "Country": "Macédoine"
+          }
+        }
+      ],
+      "Transmitter": [
+        {
+          "Function": [
+            "Service de transmission"
+          ]
+        }
+      ],
+      "Sender": [
+        {
+          "GivenName": "Alexander",
+          "BirthDate": "1970-06-03",
+          "Position": [
+            "CEO"
+          ],
+          "Mandate": [
+            "Mandataire_1",
+            "Mandataire_2"
+          ]
+        }
+      ],
+      "RelatedObjectReference": {
+        "Replaces": [
+          {
+            "ExternalReference": "ID_Fictif"
+          }
+        ]
+      },
+      "StartDate": "2016-06-03T15:28:00",
+      "EndDate": "2016-06-03T15:28:00",
+      "Event": [
+        {
+          "evDateTime": "2016-06-03T15:28:00"
+        },
+        {
+          "evId": "EventIdentifier_content0",
+          "evTypeProc": "EventTypeCode_content0",
+          "evType": "EventType_content0",
+          "evDateTime": "2016-06-03T15:28:00",
+          "evTypeDetail": "EventDetail_content0",
+          "outcome": "Outcome0",
+          "outDetail": "OutcomeDetail_content0",
+          "outMessg": "OutcomeDetailMessage_content0",
+          "evDetData": "EventDetailData_content0_seda22",
+          "linkingAgentIdentifier": [
+            {
+              "LinkingAgentIdentifierType": "Preservation system",
+              "LinkingAgentIdentifierValue": "SAE",
+              "LinkingAgentRole": "Role"
+            }
+          ]
+        }
+      ],
+      "Signature": [
+        {
+          "Signer": [
+            {
+              "BirthName": "Henry",
+              "SigningTime": "2016-06-03T15:28:00"
+            },
+            {
+              "Nationality": [
+                "Monaco"
+              ],
+              "SigningTime": "2016-06-03T15:28:00"
+            }
+          ],
+          "Validator": {
+            "FirstName": "ValidatorFirstName",
+            "FullName": "ValidatorFullName",
+            "ValidationTime": "2016-06-03T15:28:00"
+          },
+          "ReferencedObject": {
+            "SignedObjectId": "aebqaaaaacecg2hmabhlsammhk3jvlqaaaca",
+            "SignedObjectDigest": {
+              "MessageDigest": "942bb63cc16bf5ca3ba7fabf40ce9be19c3185a36cd87ad17c63d6fad1aa29d4312d73f2d6a1ba1266c3a71fc4119dd476d2d776cf2ad2acd7a9a3dfa1f80dc7",
+              "Algorithm": "SHA-512"
+            }
+          }
+        }
+      ],
+      "TextContent": [
+        "Contenu du message"
+      ],
+      "OriginatingSystemIdReplyTo": "Système source",
+      "DateLitteral": "XXème siècle",
+      "PersistentIdentifier": [
+        {
+          "PersistentIdentifierType": "ark",
+          "PersistentIdentifierOrigin": "OriginatingAgency",
+          "PersistentIdentifierReference": "Agency-00001",
+          "PersistentIdentifierContent": "ark:/22567/001a957db5eadaac"
+        }
+      ],
+      "#id": "aeaqaaaaaaecg2hmabhlsammhk3jvlyaaabq",
+      "#tenant": 0,
+      "#object": "aebaaaaaaaecg2hmabhlsammhk3jviiaaaaq",
+      "#unitups": [],
+      "#min": 1,
+      "#max": 1,
+      "#allunitups": [],
+      "#management": {
+        "StorageRule": {
+          "FinalAction": "Transfer"
+        },
+        "AppraisalRule": {
+          "FinalAction": "Keep"
+        },
+        "ClassificationRule": {
+          "ClassificationAudience": "ClassificationAudience0",
+          "ClassificationLevel": "Secret Défense",
+          "ClassificationOwner": "ClassificationOwner0"
+        },
+        "HoldRule": {
+          "Rules": [
+            {
+              "Rule": "HOL-00002",
+              "StartDate": "2000-01-01",
+              "HoldEndDate": "2010-01-01",
+              "HoldOwner": "Owner",
+              "HoldReason": "Reason",
+              "HoldReassessingDate": "2005-01-01",
+              "PreventRearrangement": false,
+              "EndDate": "2010-01-01"
+            }
+          ]
+        }
+      },
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaacecg2heaasbeammhk3jilyaaaaq"
+      ],
+      "#opi": "aeeaaaaaacecg2heaasbeammhk3jilyaaaaq",
+      "#originating_agency": "FRAN_NP_009913",
+      "#originating_agencies": [
+        "FRAN_NP_009913"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.2",
+      "#implementationVersion": "7.1.0-SNAPSHOT",
+      "#approximate_creation_date": "2023-12-05T16:01:36.268",
+      "#approximate_update_date": "2023-12-05T16:01:36.268"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "1_Saint Denis Université (ligne 13)",
+      "FilePlanPosition": [
+        "13.1.",
+        "RATP.13.1."
+      ],
+      "OriginatingSystemId": [
+        "123456",
+        "AZERTY"
+      ],
+      "ArchivalAgencyArchiveUnitIdentifier": [
+        "20170045/1",
+        "AMN.X/12"
+      ],
+      "OriginatingAgencyArchiveUnitIdentifier": [
+        "7890",
+        "QWERTY"
+      ],
+      "TransferringAgencyArchiveUnitIdentifier": [
+        "Toto1",
+        "1Otot"
+      ],
+      "Description": "Cette ArchiveUnit n'a aucune règle propre, mais récupère du ManagementMetadata du SIP un NeedAuthorization à true, une StorageRule avec un FinalAction à Copy, une AppraisalRule avec un FinalAction à Keep, une AccessRule avec la Rule ACC-00002 dont la StartDate est 01/01/2000 et une ClassificationRule dont la Rule est CLASS-00001 avec pour StartDate 03/06/2015, Confidentiel Défense pour ClassificationLevel, ClassificationOwner0 pour ClassificationOwner, ClassificationAudience0 pour ClassificationAudience, 03/06/2016 comme ClassificationReassasingDate et un NeedReassessingAuthorization à true",
+      "CustodialHistory": {
+        "CustodialHistoryItem": [
+          "Saint-Denis - Université est une station de la ligne 13 du métro de Paris, située au nord de la commune de Saint-Denis, en limite de celle de Pierrefitte-sur-Seine, dans le département de la Seine-Saint-Denis. C'est le terminus de la ligne 13 sur sa branche nord-est",
+          "La station est ouverte le 25 mai 1998. Son nom vient de sa proximité immédiate de l'université de Paris VIII à Saint-Denis."
+        ]
+      },
+      "Type": "Information de représentation",
+      "DocumentType": "Plan",
+      "Language": [
+        "fr"
+      ],
+      "DescriptionLanguage": "fr",
+      "Status": "Original",
+      "Version": "2",
+      "Tag": [
+        "station",
+        "métropolitain"
+      ],
+      "Keyword": [
+        {
+          "KeywordContent": "Transport en commun",
+          "KeywordReference": "ark:/67717/T1-1273",
+          "KeywordType": "subject"
+        },
+        {
+          "KeywordContent": "Saint-Denis",
+          "KeywordReference": "93066",
+          "KeywordType": "geogname"
+        }
+      ],
+      "Coverage": {
+        "Spatial": [
+          "Saint-Denis"
+        ],
+        "Temporal": [
+          "20e siècle"
+        ],
+        "Juridictional": [
+          "Communauté de communes de Plaine Commune"
+        ]
+      },
+      "OriginatingAgency": {
+        "Identifier": "RATP"
+      },
+      "SubmissionAgency": {
+        "Identifier": "RATP"
+      },
+      "AuthorizedAgent": [
+        {
+          "FirstName": "Fulgence Marie Auguste",
+          "BirthName": "Bienvenüe",
+          "FullName": "Fulgence Marie Auguste Bienvenüe",
+          "GivenName": "Le père du métro",
+          "Gender": "M",
+          "BirthDate": "1852-01-27",
+          "BirthPlace": {
+            "Geogname": "Uzel",
+            "Address": "Place de la Mairie",
+            "PostalCode": "22460",
+            "City": "Uzel",
+            "Region": "Bretagne",
+            "Country": "France"
+          },
+          "DeathDate": "1936-08-03",
+          "DeathPlace": {
+            "Geogname": "Paris",
+            "Address": "Hôpital Boucicaut",
+            "PostalCode": "75015",
+            "City": "Paris",
+            "Region": "Ile de France",
+            "Country": "France"
+          },
+          "Nationality": [
+            "Française"
+          ],
+          "Identifier": [
+            "0000 0000 5488 9547"
+          ],
+          "Function": [
+            "Ingénierie"
+          ],
+          "Activity": [
+            "Conception de lignes de métro"
+          ],
+          "Position": [
+            "Chef de l'inspection des Ponts et Chaussées"
+          ],
+          "Role": [
+            "Directeur des travaux"
+          ],
+          "Mandate": [
+            "Loi du 30 mars 1898"
+          ]
+        },
+        {
+          "Corpname": "Compagnie du chemin de fer métropolitain de Paris",
+          "Identifier": [
+            "CMP"
+          ],
+          "Function": [
+            "Transport"
+          ],
+          "Activity": [
+            "Transport en commun"
+          ],
+          "Position": [
+            "Direction"
+          ],
+          "Role": [
+            "Direction"
+          ],
+          "Mandate": [
+            "Statuts de 1899"
+          ]
+        }
+      ],
+      "Writer": [
+        {
+          "FirstName": "Fulgence Marie Auguste",
+          "BirthName": "Bienvenüe",
+          "FullName": "Fulgence Marie Auguste Bienvenüe",
+          "GivenName": "Le père du métro",
+          "Gender": "M",
+          "BirthDate": "1852-01-27",
+          "BirthPlace": {
+            "Geogname": "Uzel",
+            "Address": "Place de la Mairie",
+            "PostalCode": "22460",
+            "City": "Uzel",
+            "Region": "Bretagne",
+            "Country": "France"
+          },
+          "DeathDate": "1936-08-03",
+          "DeathPlace": {
+            "Geogname": "Paris",
+            "Address": "Hôpital Boucicaut",
+            "PostalCode": "75015",
+            "City": "Paris",
+            "Region": "Ile de France",
+            "Country": "France"
+          },
+          "Nationality": [
+            "Française"
+          ],
+          "Identifier": [
+            "0000 0000 5488 9547"
+          ],
+          "Function": [
+            "Ingénierie"
+          ],
+          "Activity": [
+            "Conception de lignes de métro"
+          ],
+          "Position": [
+            "Chef de l'inspection des Ponts et Chaussées"
+          ],
+          "Role": [
+            "Directeur des travaux"
+          ],
+          "Mandate": [
+            "Loi du 30 mars 1898"
+          ]
+        }
+      ],
+      "Addressee": [
+        {
+          "FirstName": "Fulgence Marie Auguste",
+          "BirthName": "Bienvenüe",
+          "FullName": "Fulgence Marie Auguste Bienvenüe",
+          "GivenName": "Le père du métro",
+          "Gender": "M",
+          "BirthDate": "1852-01-27",
+          "BirthPlace": {
+            "Geogname": "Uzel",
+            "Address": "Place de la Mairie",
+            "PostalCode": "22460",
+            "City": "Uzel",
+            "Region": "Bretagne",
+            "Country": "France"
+          },
+          "DeathDate": "1936-08-03",
+          "DeathPlace": {
+            "Geogname": "Paris",
+            "Address": "Hôpital Boucicaut",
+            "PostalCode": "75015",
+            "City": "Paris",
+            "Region": "Ile de France",
+            "Country": "France"
+          },
+          "Nationality": [
+            "Française"
+          ],
+          "Identifier": [
+            "0000 0000 5488 9547"
+          ],
+          "Function": [
+            "Ingénierie"
+          ],
+          "Activity": [
+            "Conception de lignes de métro"
+          ],
+          "Position": [
+            "Chef de l'inspection des Ponts et Chaussées"
+          ],
+          "Role": [
+            "Directeur des travaux"
+          ],
+          "Mandate": [
+            "Loi du 30 mars 1898"
+          ]
+        }
+      ],
+      "Recipient": [
+        {
+          "FirstName": "Fulgence Marie Auguste",
+          "BirthName": "Bienvenüe",
+          "FullName": "Fulgence Marie Auguste Bienvenüe",
+          "GivenName": "Le père du métro",
+          "Gender": "M",
+          "BirthDate": "1852-01-27",
+          "BirthPlace": {
+            "Geogname": "Uzel",
+            "Address": "Place de la Mairie",
+            "PostalCode": "22460",
+            "City": "Uzel",
+            "Region": "Bretagne",
+            "Country": "France"
+          },
+          "DeathDate": "1936-08-03",
+          "DeathPlace": {
+            "Geogname": "Paris",
+            "Address": "Hôpital Boucicaut",
+            "PostalCode": "75015",
+            "City": "Paris",
+            "Region": "Ile de France",
+            "Country": "France"
+          },
+          "Nationality": [
+            "Française"
+          ],
+          "Identifier": [
+            "0000 0000 5488 9547"
+          ],
+          "Function": [
+            "Ingénierie"
+          ],
+          "Activity": [
+            "Conception de lignes de métro"
+          ],
+          "Position": [
+            "Chef de l'inspection des Ponts et Chaussées"
+          ],
+          "Role": [
+            "Directeur des travaux"
+          ],
+          "Mandate": [
+            "Loi du 30 mars 1898"
+          ]
+        }
+      ],
+      "Transmitter": [
+        {
+          "FirstName": "Fulgence Marie Auguste",
+          "BirthName": "Bienvenüe",
+          "FullName": "Fulgence Marie Auguste Bienvenüe",
+          "GivenName": "Le père du métro",
+          "Gender": "M",
+          "BirthDate": "1852-01-27",
+          "BirthPlace": {
+            "Geogname": "Uzel",
+            "Address": "Place de la Mairie",
+            "PostalCode": "22460",
+            "City": "Uzel",
+            "Region": "Bretagne",
+            "Country": "France"
+          },
+          "DeathDate": "1936-08-03",
+          "DeathPlace": {
+            "Geogname": "Paris",
+            "Address": "Hôpital Boucicaut",
+            "PostalCode": "75015",
+            "City": "Paris",
+            "Region": "Ile de France",
+            "Country": "France"
+          },
+          "Nationality": [
+            "Française"
+          ],
+          "Identifier": [
+            "0000 0000 5488 9547"
+          ],
+          "Function": [
+            "Ingénierie"
+          ],
+          "Activity": [
+            "Conception de lignes de métro"
+          ],
+          "Position": [
+            "Chef de l'inspection des Ponts et Chaussées"
+          ],
+          "Role": [
+            "Directeur des travaux"
+          ],
+          "Mandate": [
+            "Loi du 30 mars 1898"
+          ]
+        }
+      ],
+      "Sender": [
+        {
+          "FirstName": "Fulgence Marie Auguste",
+          "BirthName": "Bienvenüe",
+          "FullName": "Fulgence Marie Auguste Bienvenüe",
+          "GivenName": "Le père du métro",
+          "Gender": "M",
+          "BirthDate": "1852-01-27",
+          "BirthPlace": {
+            "Geogname": "Uzel",
+            "Address": "Place de la Mairie",
+            "PostalCode": "22460",
+            "City": "Uzel",
+            "Region": "Bretagne",
+            "Country": "France"
+          },
+          "DeathDate": "1936-08-03",
+          "DeathPlace": {
+            "Geogname": "Paris",
+            "Address": "Hôpital Boucicaut",
+            "PostalCode": "75015",
+            "City": "Paris",
+            "Region": "Ile de France",
+            "Country": "France"
+          },
+          "Nationality": [
+            "Française"
+          ],
+          "Identifier": [
+            "0000 0000 5488 9547"
+          ],
+          "Function": [
+            "Ingénierie"
+          ],
+          "Activity": [
+            "Conception de lignes de métro"
+          ],
+          "Position": [
+            "Chef de l'inspection des Ponts et Chaussées"
+          ],
+          "Role": [
+            "Directeur des travaux"
+          ],
+          "Mandate": [
+            "Loi du 30 mars 1898"
+          ]
+        }
+      ],
+      "Source": "Wikipedia",
+      "RelatedObjectReference": {
+        "IsVersionOf": [
+          {
+            "ArchiveUnitRefId": "aeaqaaaaaaecg2hnabhluammhkx3flaaaaba"
+          }
+        ],
+        "Replaces": [
+          {
+            "DataObjectReference": {
+              "DataObjectGroupReferenceId": "aebaaaaaaaecg2hnabhluammhkx3enqaaaaq"
+            }
+          }
+        ],
+        "Requires": [
+          {
+            "RepositoryArchiveUnitPID": "19850526/6"
+          }
+        ],
+        "IsPartOf": [
+          {
+            "RepositoryObjectPID": "12345676890"
+          }
+        ],
+        "References": [
+          {
+            "ExternalReference": "4-LK18-3389"
+          }
+        ]
+      },
+      "CreatedDate": "2017-01-01",
+      "TransactedDate": "2017-01-01",
+      "AcquiredDate": "2017-01-01",
+      "SentDate": "2017-01-01",
+      "ReceivedDate": "2017-01-01",
+      "RegisteredDate": "2017-01-01",
+      "StartDate": "2017-04-04T08:07:06",
+      "EndDate": "2017-04-04T08:07:06",
+      "Event": [
+        {
+          "evId": "123456",
+          "evTypeProc": "Ligne_ouverture",
+          "evType": "Ouverture",
+          "evDateTime": "1998-05-25T08:07:06",
+          "evTypeDetail": "Ouverture de la station à l'exploitation",
+          "outcome": "OK",
+          "outDetail": "Ligne_Ouverture_OK",
+          "outMessg": "Ouverture de la station effectuée avec succès",
+          "evDetData": "500 personnes présentes"
+        }
+      ],
+      "SigningInformation": {
+        "SigningRole": [
+          "SignedDocument",
+          "Signature",
+          "Timestamp"
+        ],
+        "DetachedSigningRole": [
+          "AdditionalProof"
+        ],
+        "SignatureDescription": [
+          {
+            "Signer": {
+              "FirstName": "Fulgence Marie Auguste",
+              "BirthName": "Bienvenüe",
+              "FullName": "Fulgence Marie Auguste Bienvenüe",
+              "GivenName": "Le père du métro",
+              "Gender": "M",
+              "BirthDate": "1852-01-27",
+              "BirthPlace": {
+                "Geogname": "Uzel",
+                "Address": "Place de la Mairie",
+                "PostalCode": "22460",
+                "City": "Uzel",
+                "Region": "Bretagne",
+                "Country": "France"
+              },
+              "DeathDate": "1936-08-03",
+              "DeathPlace": {
+                "Geogname": "Paris",
+                "Address": "Hôpital Boucicaut",
+                "PostalCode": "75015",
+                "City": "Paris",
+                "Region": "Ile de France",
+                "Country": "France"
+              },
+              "Nationality": [
+                "Française"
+              ],
+              "Identifier": [
+                "0000 0000 5488 9547"
+              ],
+              "Function": [
+                "Ingénierie"
+              ],
+              "Activity": [
+                "Conception de lignes de métro"
+              ],
+              "Position": [
+                "Chef de l'inspection des Ponts et Chaussées"
+              ],
+              "Role": [
+                "Directeur des travaux"
+              ],
+              "Mandate": [
+                "Loi du 30 mars 1898"
+              ],
+              "SigningTime": "1998-04-04T08:07:06"
+            },
+            "Validator": {
+              "FirstName": "Fulgence Marie Auguste",
+              "BirthName": "Bienvenüe",
+              "FullName": "Fulgence Marie Auguste Bienvenüe",
+              "GivenName": "Le père du métro",
+              "Gender": "M",
+              "BirthDate": "1852-01-27",
+              "BirthPlace": {
+                "Geogname": "Uzel",
+                "Address": "Place de la Mairie",
+                "PostalCode": "22460",
+                "City": "Uzel",
+                "Region": "Bretagne",
+                "Country": "France"
+              },
+              "DeathDate": "1936-08-03",
+              "DeathPlace": {
+                "Geogname": "Paris",
+                "Address": "Hôpital Boucicaut",
+                "PostalCode": "75015",
+                "City": "Paris",
+                "Region": "Ile de France",
+                "Country": "France"
+              },
+              "Nationality": [
+                "Française"
+              ],
+              "Identifier": [
+                "0000 0000 5488 9547"
+              ],
+              "Function": [
+                "Ingénierie"
+              ],
+              "Activity": [
+                "Conception de lignes de métro"
+              ],
+              "Position": [
+                "Chef de l'inspection des Ponts et Chaussées"
+              ],
+              "Role": [
+                "Directeur des travaux"
+              ],
+              "Mandate": [
+                "Loi du 30 mars 1898"
+              ],
+              "ValidationTime": "1998-04-04T08:07:06"
+            },
+            "SigningType": "QualifiedSignature"
+          }
+        ],
+        "TimestampingInformation": [
+          {
+            "TimeStamp": "2017-04-04T08:07:06",
+            "AdditionalTimestampingInformation": "ExtraInfo"
+          }
+        ],
+        "AdditionalProof": [
+          {
+            "AdditionalProofInformation": [
+              "ExtraInfo1",
+              "ExtraInfo2"
+            ]
+          }
+        ],
+        "Extended": {
+          "ExtraField1": [
+            "Val1",
+            "Val2"
+          ],
+          "ExtraField2": [
+            {
+              "SubField2": [
+                "Val3"
+              ]
+            }
+          ]
+        }
+      },
+      "Gps": {
+        "GpsVersionID": "Système géodésique WGS 84",
+        "GpsAltitude": 36,
+        "GpsAltitudeRef": "0",
+        "GpsLatitude": "48 56 45.395",
+        "GpsLatitudeRef": "N",
+        "GpsLongitude": "2 21 49.964",
+        "GpsLongitudeRef": "E",
+        "GpsDateStamp": "2018-03-01T11:04:00"
+      },
+      "PersistentIdentifier": [
+        {
+          "PersistentIdentifierType": "ark",
+          "PersistentIdentifierOrigin": "OriginatingAgency",
+          "PersistentIdentifierReference": "Agency-00001",
+          "PersistentIdentifierContent": "ark:/22567/001a957db5eadaac"
+        }
+      ],
+      "Arrangement": [
+        "Hiérarchique"
+      ],
+      "#id": "aeaqaaaaaaecg2hnabhluammhkx3faiaaaba",
+      "#tenant": 0,
+      "#unitups": [],
+      "#min": 1,
+      "#max": 1,
+      "#allunitups": [],
+      "#management": {
+        "StorageRule": {
+          "FinalAction": "Copy"
+        },
+        "AppraisalRule": {
+          "FinalAction": "Keep"
+        },
+        "AccessRule": {
+          "Rules": [
+            {
+              "Rule": "ACC-00002",
+              "StartDate": "2000-01-01",
+              "EndDate": "2025-01-01"
+            }
+          ]
+        },
+        "ClassificationRule": {
+          "Rules": [
+            {
+              "Rule": "CLASS-00001",
+              "StartDate": "2015-06-03",
+              "EndDate": "2025-06-03"
+            }
+          ],
+          "ClassificationAudience": "ClassificationAudience0",
+          "ClassificationLevel": "Confidentiel Défense",
+          "ClassificationOwner": "ClassificationOwner0",
+          "ClassificationReassessingDate": "2016-06-03",
+          "NeedReassessingAuthorization": true
+        },
+        "NeedAuthorization": true
+      },
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaacecg2heaasbeammhkx2vqqaaaaq"
+      ],
+      "#opi": "aeeaaaaaacecg2heaasbeammhkx2vqqaaaaq",
+      "#originating_agency": "RATP",
+      "#originating_agencies": [
+        "RATP"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.3",
+      "#implementationVersion": "7.1.0-SNAPSHOT",
+      "#approximate_creation_date": "2023-12-05T15:54:04.524",
+      "#approximate_update_date": "2023-12-05T15:54:04.524"
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$roots": [],
+    "$query": [
+      {
+        "$eq": {
+          "PersistentIdentifier.PersistentIdentifierContent": "ark:/22567/001a957db5eadaac"
+        }
+      }
+    ],
+    "$filter": {},
+    "$projection": {
+      "$fields": {}
+    },
+    "$facets": []
+  }
+}

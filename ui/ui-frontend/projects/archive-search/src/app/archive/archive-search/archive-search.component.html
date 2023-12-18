@@ -18,6 +18,9 @@
         <button mat-menu-item [disabled]="!hasTransferAcknowledgmentRole" (click)="showAcknowledgmentTransferForm()">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACTION_TITLE' | translate }}
         </button>
+        <button mat-menu-item (click)="goToPersistentIdentifierSearchPage()">
+          {{ 'ARCHIVE_SEARCH.ARK_SEARCH.GO_TO_PAGE' | translate }}
+        </button>
       </vitamui-common-menu-button>
     </div>
   </div>

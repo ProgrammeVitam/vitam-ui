@@ -46,7 +46,7 @@ import { NodeData } from '../archive/models/nodedata.interface';
   providedIn: 'root',
 })
 export class ArchiveSharedDataService {
-  private sourceNode = new BehaviorSubject<NodeData>(new NodeData());
+  private sourceNode = new BehaviorSubject<NodeData>(null);
   private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
   private targetNode = new BehaviorSubject<string>('');
   private facetsSubject = new BehaviorSubject<ResultFacet[]>([]);

@@ -1,0 +1,31 @@
+<div class="header">
+</div>
+
+<div class="content">
+
+  <h2 class="title">{{ 'ARK_SEARCH.MODAL.SEARCH_BY_ID' | translate }}</h2>
+  <h4 class="subtitle">
+    {{ 'L’unité archivistique associée à l’identifiant pérenne' | translate }}<br/>
+    <span id="ark-search-id-value">{{ data.arkId }}</span><br/>
+    <span id="ark-search-error-detail">
+      <ng-container [ngSwitch]="data.status">
+        <ng-container *ngSwitchCase="ArkStatus.TRANSFERRED">
+          {{ 'a été transférée vers un autre SAE, le ' | translate }} JJ/MM/AA
+        </ng-container>
+        <ng-container *ngSwitchCase="ArkStatus.ELIMINATED">
+          {{ 'a été éliminée du système, le ' | translate }} JJ/MM/AA
+        </ng-container>
+      </ng-container>
+    </span>
+  </h4>
+
+  <div class="main-content">
+  </div>
+
+  <div class="actions">
+    <button (click)="closeDialog()" class="btn primary" type="button">
+      {{ 'COMMON.CLOSE' | translate }}
+    </button>
+  </div>
+
+</div>

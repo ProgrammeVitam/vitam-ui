@@ -338,4 +338,15 @@ public class ArchiveSearchInternalController {
         final Integer tenantId = securityService.getTenantIdentifier();
         return archiveInternalService.readExternalOntologiesFromFile(tenantId);
     }
+
+    @GetMapping(RestApi.PERSISTENT_IDENTIFIER)
+    public List<ResultsDto> findByPersistentIdentifier(
+        final @RequestParam("id") String arkId
+    ) throws VitamClientException {
+        LOGGER.debug("[INTERNAL] : Get by persistent identifier {}", arkId);
+        List<ResultsDto> list = archiveInternalService.findByPersitentIdentifier(arkId, externalParametersService.buildVitamContextFromExternalParam());
+        LOGGER.debug("[INTERNAL] : list = {}", list);
+        return list;
+    }
+
 }

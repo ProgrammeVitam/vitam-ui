@@ -51,4 +51,6 @@ public class RestApi {
     public static final String ARCHIVE_UNITS = "/archive-units";
     public static final String TRANSFER_ACKNOWLEDGMENT = "/transfer-acknowledgment";
     public static final String BULK_OPERATION_THRESHOLDS = "/bulk-operations-thresholds";
+    public static final String PERSISTENT_IDENTIFIER = "/persistent-identifier";
+
 }

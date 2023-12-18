@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -23,27 +23,35 @@
  *
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
- *
- *
  */
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
-import { BaseHttpClient } from '../base-http-client';
-import { BASE_URL } from '../injection-tokens';
-import { Ontology } from '../models';
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
-@Injectable({
-  providedIn: 'root',
-})
-export class OntologyApiService extends BaseHttpClient<Ontology> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/ontology');
-  }
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+public class PersistentIdentifierDto {
 
-  // TODO: ROLLBACK
-  getInternalOntologyFieldsList(): Observable<Ontology[]> {
-    return EMPTY;
-  }
+    @JsonProperty("PersistentIdentifierType")
+    private String persistentIdentifierType;
+
+    @JsonProperty("PersistentIdentifierOrigin")
+    private String persistentIdentifierOrigin;
+
+    @JsonProperty("PersistentIdentifierReference")
+    private String persistentIdentifierReference;
+
+    @JsonProperty("PersistentIdentifierContent")
+    private String persistentIdentifierContent;
+
 }
