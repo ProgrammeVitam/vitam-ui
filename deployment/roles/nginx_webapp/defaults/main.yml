@@ -12,9 +12,6 @@ frontend_group: "{{ vitamui_defaults.users.group }}"
 # Supported goals: install, uninstall
 frontend_role_goal: install
 
-# Flag indicating if the reverse proxy must be reloaded after the installation.
-frontend_proxy_reload: true
-
 nginx_ssl_dir: '/etc/nginx/conf.d/ssl'
 
 vault_cert_file: "{{ inventory_dir }}/certs/vault-certs.yml"

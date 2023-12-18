@@ -5,7 +5,6 @@
     path: "{{ frontend_data_dir }}"
     state: absent
   when: frontend_purge
-  become: true
 
 - name: 'Frontend-app > install.yml | Create folder'
   file:
@@ -14,7 +13,6 @@
     owner: "{{ frontend_user }}"
     group: "{{ frontend_group }}"
     mode: 0755
-  become: true
 
 - name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }}'
   yum:
@@ -25,8 +23,8 @@
   until: package_installed is succeeded
   delay: "{{ packages_install_retries_delay }}"
   tags: update_package_vitamui
-  become: true
   when: vitamui_struct.vitamui_component != "ui-identity-admin"
+  notify: reload nginx
 
 - name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }} - Copy folder'
   copy:
@@ -35,15 +33,15 @@
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
     remote_src: yes
-  become: true
   when: vitamui_struct.vitamui_component == "ui-identity-admin"
+  notify: reload nginx
 
 - block:
 
   - name: 'Frontend-app > install.yml | Get package facts'
     package_facts:
     register: package_facts_result
-    no_log: true
+    no_log: "{{ hide_passwords_during_deploy }}"
 
   - name: 'Frontend-app > install.yml | Get application version from package'
     set_fact:
@@ -58,7 +56,7 @@
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
   when: vitamui_struct.vitamui_component != "ui-identity-admin"
-  become: true
+  notify: reload nginx
 
 - name: 'Frontend-app > install.yml | Add vhost.conf file'
   template:
@@ -66,7 +64,7 @@
     dest: "/etc/nginx/conf.d/{{ vitamui_struct.vitamui_component }}.conf"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
-  become: true
+  notify: reload nginx
 
 - name: 'Frontend-app > install.yml | Add UI certificate to reverse'
   copy:
@@ -76,7 +74,7 @@
     owner: "{{ frontend_user }}"
   with_fileglob:
     - "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/{{ vitamui_struct.vitamui_component }}*"
-  become: true
+  notify: reload nginx
 
 - block:
 
@@ -87,7 +85,7 @@
     include_vars:
       file: "{{ vault_cert_file }}"
       name: ui_keys
-    no_log: true
+    no_log: "{{ hide_passwords_during_deploy }}"
 
   - name: 'Frontend-app > install.yml | Encrypt back vault-certs'
     command: "ansible-vault encrypt {{ vault_cert_file }} --vault-password-file {{ vault_cert_pass_file }}"
@@ -97,7 +95,7 @@
 - name:  'Frontend-app > install.yml |  Selected key for {{ vitamui_struct.vitamui_component }}'
   set_fact:
     selected_key: "{{ ui_keys['server_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
-  no_log: true
+  no_log: "{{ hide_passwords_during_deploy }}"
 
 - name: 'Frontend-app > install.yml | Add keypass'
   template:
@@ -105,11 +103,4 @@
     dest: "{{ nginx_ssl_dir }}/{{vitamui_struct.vitamui_component}}.key_pass"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
-  become: true
-
-- name: 'Frontend-app > install.yml | Reload nginx'
-  become: true
-  service:
-    name: nginx
-    state: "reloaded"
-  when: frontend_proxy_reload is sameas true
+  notify: reload nginx
