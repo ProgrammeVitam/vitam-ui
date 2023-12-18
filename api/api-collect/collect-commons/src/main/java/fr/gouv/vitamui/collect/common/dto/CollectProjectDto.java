@@ -68,4 +68,5 @@ public class CollectProjectDto extends IdDto {
     private String acquisitionInformation;
     private String createdOn;
     private String lastModifyOn;
+    private Boolean automaticIngest;
 }

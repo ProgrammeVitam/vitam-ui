@@ -48,6 +48,7 @@ export interface Project extends Id {
   lastModifyOn?: Date;
   facets?: FacetDetails[];
   tenant?: string;
+  automaticIngest?: boolean;
 }
 
 export interface MetadataUnitUp {
