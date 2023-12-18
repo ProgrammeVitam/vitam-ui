@@ -8,7 +8,6 @@
     mode: 0755
     owner: "{{ asset_user }}"
     group: "{{ asset_group }}"
-  become: true
 
 - name: "Assets > Tasks > main.yml | Copy assets"
   copy:
@@ -19,7 +18,6 @@
     mode: '0644'
   when: item is not match(".*favicon.ico")
   with_fileglob: "{{ asset_default_files }}"
-  become: true
 
 - name: "Assets > Tasks > main.yml | Copy favicon.ico"
   copy:
@@ -30,4 +28,3 @@
     mode: '0644'
   when: item is match(".*favicon.ico")
   with_fileglob: "{{ asset_default_files }}"
-  become: true
