@@ -5,9 +5,9 @@ server {
   include {{ nginx_ssl_dir }}/ssl.conf;
 
   {% if vitamui_struct.vitamui_component == "ui-identity-admin" %}
-  root   /vitamui/data/identity;
+  root   {{ frontend_data_dir }}/identity;
   {% else %}
-  root   /vitamui/data/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }};
+  root   {{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }};
   {% endif %}
 
   location ~* \.(jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2|eot|css|js|json)$ {

@@ -176,7 +176,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8008
     port_admin: 7008
-    #base_url: "https://{{ vitam_reverse_external_dns }}/ingest"
+    base_url: "https://{{ vitam_reverse_external_dns }}/ingest"
 
   ingest_external:
     host: "vitamui-ingest-external.service.{{ consul_domain }}"

@@ -2,16 +2,16 @@
 
 db = db.getSiblingDB("cas");
 
-print("START 037_enable_oidc_code_grant_type_on_referential_service_ref.js");
+print("START 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
 
-db.services.deleteOne({ "_id": 4 });
+db.services.deleteOne({ "_id": NumberInt(1) });
 
 db.services.insertOne({
-  _id: NumberInt(4),
+  _id: NumberInt(1),
   _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "referential",
-  serviceId : "{{ vitamui.referential.serviceId | default('^' + vitamui.referential.base_url + '/.*') }}",
-  name: "Referential Application",
+  clientId: "portal",
+  serviceId: "{{ vitamui.portal.serviceId | default('^' + vitamui.portal.base_url + '/.*') }}",
+  name: "Portal Application",
   bypassApprovalPrompt: true,
   supportedGrantTypes: ["authorization_code"],
   supportedResponseTypes: ["code", "token"],
@@ -19,9 +19,10 @@ db.services.insertOne({
     _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
     allowedAttributes: ["authtoken"],
   },
+  evaluationOrder: 10000,
   jsonFormat: true,
 });
 
-print("END 037_enable_oidc_code_grant_type_on_referential_service_ref.js");
+print("END 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
 
 {% endif %}

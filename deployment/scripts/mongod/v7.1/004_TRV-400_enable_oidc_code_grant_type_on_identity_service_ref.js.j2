@@ -4,13 +4,13 @@ db = db.getSiblingDB("cas");
 
 print("START 004_TRV-400_enable_oidc_code_grant_type_on_identity_service_ref.js");
 
-db.services.deleteOne({ "_id": 2 });
+db.services.deleteOne({ "_id": NumberInt(2) });
 
 db.services.insertOne({
   _id: NumberInt(2),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "identity",
-  serviceId : "{{ vitamui.identity.serviceId | default('^' + vitamui.identity.base_url + '/.*') }}",
+  serviceId: "{{ vitamui.identity.serviceId | default('^' + vitamui.identity.base_url + '/.*') }}",
   name: "Identity Access Management Application",
   bypassApprovalPrompt: true,
   supportedGrantTypes: ["authorization_code"],
@@ -23,7 +23,7 @@ db.services.insertOne({
 });
 
 
-db.services.deleteOne({ "_id": 3 });
+db.services.deleteOne({ "_id": NumberInt(3) });
 
 db.services.insertOne({
   _id: NumberInt(3),
