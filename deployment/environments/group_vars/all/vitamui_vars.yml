@@ -199,6 +199,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8009
     port_admin: 7009
+    base_url: "https://{{ vitam_reverse_external_dns }}/archive-search"
 
   archive_search_external:
     host: "vitamui-archive-search-external.service.{{ consul_domain }}"
@@ -220,6 +221,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8010
     port_admin: 7010
+    base_url: "https://{{ vitam_reverse_external_dns }}/collect"
 
   collect_external:
     host: "vitamui-collect-external.service.{{ consul_domain }}"
@@ -255,6 +257,7 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 9015
     port_admin: 7015
+    base_url: "https://{{ vitam_reverse_external_dns }}/pastis"
 
 ################################################################################
 
