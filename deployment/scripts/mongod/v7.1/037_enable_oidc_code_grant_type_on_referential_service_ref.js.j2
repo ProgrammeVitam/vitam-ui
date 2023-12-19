@@ -10,7 +10,7 @@ db.services.insertOne({
   _id: NumberInt(4),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "{{ vitamui.referential.clientId | default('referential') }}",
-  serviceId: "{{ vitamui.referential.serviceId | default('^' + vitamui.referential.base_url + '/.*') }}",
+  serviceId: "{{ vitamui.referential.serviceId | default('^' + vitamui.referential.base_url | default(url_prefix+'/referential') + '/.*') }}",
   name: "{{ vitamui.referential.name | default('Referential Application') }}",
   bypassApprovalPrompt: true,
   supportedGrantTypes: ["authorization_code"],

@@ -32,7 +32,7 @@
   "ALLOWED_URLS": ["/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api"],
   {% endif %}
   "OIDC_CONFIG": {
-    "issuer": "{{ vitamui.cas_server.base_url | default(url_prefix+'/cas') }}"/oidc",
+    "issuer": "{{ vitamui.cas_server.base_url | default(url_prefix+'/cas') }}/oidc",
     "redirectUri": "?",
     "postLogoutRedirectUri": "{{ vitamui.portal.base_url | default(url_prefix+'/') }}",
     "clientId": "{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}",

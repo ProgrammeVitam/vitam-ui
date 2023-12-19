@@ -104,8 +104,6 @@
             <phase>process-sources</phase>
             <configuration>
               <skip>${skipAllFrontend}</skip>
-              <!--<arguments>run build project=${angular.build.project} output-path=target/www</arguments>-->
-              <!--<arguments>run build:prod output-path=target/www</arguments>-->
               <arguments>run build:allModules</arguments>
             </configuration>
           </execution>
@@ -128,11 +126,7 @@
             <phase>package</phase>
             <configuration>
               <skip>${skipAllFrontend}</skip>
-              <!--<arguments>run package  project=</arguments>-->
               <arguments>run package:all</arguments>
-              <!--<arguments>run package${angular.build.profile}
-                project=${angular.build.project}
-            </arguments>-->
             </configuration>
           </execution>
         </executions>

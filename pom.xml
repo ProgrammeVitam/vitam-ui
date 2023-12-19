@@ -1725,19 +1725,6 @@
                                 </arguments>
                             </configuration>
                         </execution>
-                        <!--<execution>
-                            <id>npm run package</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <phase>package</phase>
-                            <configuration>
-                                <skip>${skipAllFrontend}</skip>
-                                <arguments>run package${angular.build.profile}
-                                project=${angular.build.project}
-                                </arguments>
-                            </configuration>
-                        </execution>-->
                     </executions>
                 </plugin>
                 <plugin>
@@ -2095,37 +2082,6 @@
                 </plugins>
             </build>
         </profile>
-
-        <!-- This profile is used to build rpm package.-->
-        <!--<profile>
-            <id>rpm-publish</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>rpm-publish</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <skip>${rpm.skip}</skip>
-                                    <executable>${main.basedir}/tools/packaging/publish.sh</executable>
-                                    <workingDirectory>target</workingDirectory>
-                                    <arguments>
-                                        <argument>${rpm.publication.env}</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>-->
-
         <!-- This profile is used to define skipTests value for Karma when -DskipTests is used
         during maven process. -->
         <profile>
