@@ -9,7 +9,7 @@ db.services.deleteOne({ "_id": NumberInt(2) });
 db.services.insertOne({
   _id: NumberInt(2),
   _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "identity",
+  clientId: "{{ vitamui.identity.clientId | default('identity') }}",
   serviceId: "{{ vitamui.identity.serviceId | default('^' + vitamui.identity.base_url + '/.*') }}",
   name: "Identity Access Management Application",
   bypassApprovalPrompt: true,
@@ -28,7 +28,7 @@ db.services.deleteOne({ "_id": NumberInt(3) });
 db.services.insertOne({
   _id: NumberInt(3),
   _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "identity-admin",
+  clientId: "{{ vitamui.identity_admin.clientId | default('identity-admin') }}",
   serviceId : "{{ vitamui.identity_admin.serviceId | default('^' + vitamui.identity_admin.base_url + '/.*') }}",
   name: "Identity Admin Access Management Application",
   bypassApprovalPrompt: true,

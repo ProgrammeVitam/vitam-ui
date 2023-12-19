@@ -9,7 +9,7 @@ db.services.deleteOne({ "_id": NumberInt(1) });
 db.services.insertOne({
   _id: NumberInt(1),
   _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "portal",
+  clientId: "{{ vitamui.portal.clientId | default('portal') }}",
   serviceId: "{{ vitamui.portal.serviceId | default('^' + vitamui.portal.base_url + '/.*') }}",
   name: "Portal Application",
   bypassApprovalPrompt: true,

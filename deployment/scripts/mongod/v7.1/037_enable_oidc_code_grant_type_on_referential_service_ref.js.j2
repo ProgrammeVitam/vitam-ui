@@ -9,7 +9,7 @@ db.services.deleteOne({ "_id": NumberInt(4) });
 db.services.insertOne({
   _id: NumberInt(4),
   _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "referential",
+  clientId: "{{ vitamui.referential.clientId | default('referential') }}",
   serviceId : "{{ vitamui.referential.serviceId | default('^' + vitamui.referential.base_url + '/.*') }}",
   name: "Referential Application",
   bypassApprovalPrompt: true,
