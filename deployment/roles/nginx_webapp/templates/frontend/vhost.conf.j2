@@ -22,7 +22,11 @@ server {
     try_files $uri $uri/ /index.html;
   }
 
+  {% if vitamui_struct.vitamui_component == 'ui-identity-admin' %}
+  location /identity-api {
+  {% else %}
   location /{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api {
+  {% endif %}
     proxy_pass {{ 'https' if vitamui.api_gateway.server_secure | default(true) | bool else 'http' }}://API-GATEWAY;
     proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.crt;
     proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key;

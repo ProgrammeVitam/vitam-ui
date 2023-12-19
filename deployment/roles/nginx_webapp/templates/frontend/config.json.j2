@@ -15,10 +15,22 @@
     "vitamui-background": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_background }}"
   },
   "PORTAL_MESSAGE": "{{ vitamui_platform_informations.portal_message }}",
+  {% if vitamui_struct.vitamui_component == 'ui-portal' %}
+  "UI_URL": "{{ vitamui.portal.base_url }}",
+  {% else if vitamui_struct.vitamui_component == 'ui-identity' %}
   "UI_URL": "{{ vitamui.identity.base_url }}",
+  {% else if vitamui_struct.vitamui_component == 'ui-identity-admin' %}
+  "UI_URL": "{{ vitamui.identity_admin.base_url }}",
+  {% else if vitamui_struct.vitamui_component == 'ui-referential' %}
+   "UI_URL": "{{ vitamui.referential.base_url }}",
+  {% endif %}
   "ARCHIVES_SEARCH_URL": null,
   "PORTAL_URL": "{{ vitamui.portal.base_url }}",
+  {% if vitamui_struct.vitamui_component = 'ui-identity-admin' %}
+  "ALLOWED_URLS": ["/identity-api"],
+  {% else %}
   "ALLOWED_URLS": ["/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api"],
+  {% endif %}
   "OIDC_CONFIG": {
     "issuer": "{{ vitamui.cas_server.base_url }}/oidc",
     "redirectUri": "?",
