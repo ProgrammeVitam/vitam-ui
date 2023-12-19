@@ -40,4 +40,4 @@
         password_keystore: "{{ keystores_server_ui_referential }}"
         password_truststore: "{{ truststores_server }}"
         consul_tags: "ui-referential, ui"
-      when: not gateway.enabled | default(True)
+      when: gateway.enabled | default(false) | bool  == false
