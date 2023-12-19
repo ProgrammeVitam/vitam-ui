@@ -1725,7 +1725,7 @@
                                 </arguments>
                             </configuration>
                         </execution>
-                        <execution>
+                        <!--<execution>
                             <id>npm run package</id>
                             <goals>
                                 <goal>npm</goal>
@@ -1733,11 +1733,11 @@
                             <phase>package</phase>
                             <configuration>
                                 <skip>${skipAllFrontend}</skip>
-                                <arguments>run package${angular.build.profile} --
-                                    --project=${angular.build.project}
+                                <arguments>run package${angular.build.profile}
+                                project=${angular.build.project}
                                 </arguments>
                             </configuration>
-                        </execution>
+                        </execution>-->
                     </executions>
                 </plugin>
                 <plugin>
