@@ -11,7 +11,7 @@ db.services.insertOne({
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "{{ vitamui.portal.clientId | default('portal') }}",
   serviceId: "{{ vitamui.portal.serviceId | default('^' + vitamui.portal.base_url + '/.*') }}",
-  name: "Portal Application",
+  name: "{{ vitamui.portal.name | default('Portal Application') }}",
   bypassApprovalPrompt: true,
   supportedGrantTypes: ["authorization_code"],
   supportedResponseTypes: ["code", "token"],
