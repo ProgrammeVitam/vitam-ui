@@ -1,0 +1,27 @@
+{% if gateway.enabled | default(False) %}
+
+db = db.getSiblingDB("cas");
+
+print("START 039_enable_oidc_code_grant_type_on_ingest_service_ref.js");
+
+db.services.deleteOne({ "_id": NumberInt(5) });
+
+db.services.insertOne({
+  _id: NumberInt(5),
+  _class: "org.apereo.cas.services.OidcRegisteredService",
+  clientId: "{{ vitamui.ingest.clientId | default('ingest') }}",
+  serviceId: "{{ vitamui.ingest.serviceId | default('^' + vitamui.ingest.base_url | default(url_prefix+'/ingest') + '/.*') }}",
+  name: "{{ vitamui.ingest.name | default('Ingest Management Application') }}",
+  bypassApprovalPrompt: true,
+  supportedGrantTypes: ["authorization_code"],
+  supportedResponseTypes: ["code", "token"],
+  attributeReleasePolicy: {
+    _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+    allowedAttributes: ["authtoken"],
+  },
+  jsonFormat: true,
+});
+
+print("END 039_enable_oidc_code_grant_type_on_ingest_service_ref.js");
+
+{% endif %}

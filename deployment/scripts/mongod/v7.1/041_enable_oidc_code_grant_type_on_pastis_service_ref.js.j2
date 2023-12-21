@@ -1,0 +1,27 @@
+{% if gateway.enabled | default(False) %}
+
+db = db.getSiblingDB("cas");
+
+print("START 040_enable_oidc_code_grant_type_on_pastis_service_ref.js");
+
+db.services.deleteOne({ "_id": NumberInt(8) });
+
+db.services.insertOne({
+  _id: NumberInt(8),
+  _class: "org.apereo.cas.services.OidcRegisteredService",
+  clientId: "{{ vitamui.pastis.clientId | default('pastis') }}",
+  serviceId: "{{ vitamui.pastis.serviceId | default('^' + vitamui.pastis.base_url | default(url_prefix+'/pastis') + '/.*') }}",
+  name: "{{ vitamui.pastis.name | default('Archive Search Management Application') }}",
+  bypassApprovalPrompt: true,
+  supportedGrantTypes: ["authorization_code"],
+  supportedResponseTypes: ["code", "token"],
+  attributeReleasePolicy: {
+    _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+    allowedAttributes: ["authtoken"],
+  },
+  jsonFormat: true,
+});
+
+print("END 040_enable_oidc_code_grant_type_on_pastis_service_ref.js");
+
+{% endif %}
