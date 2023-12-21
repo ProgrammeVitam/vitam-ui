@@ -7,7 +7,7 @@ db.services.insertOne({
 	"_id": NumberInt(1),
 	"_class": "org.apereo.cas.services.CasRegisteredService",
 	"serviceId": "^{{ vitamui.portal.base_url|default(url_prefix) }}/.*",
-	"name": "Z Portal Application",
+	"name": "{{ vitamui.portal.name | default('Portal Application') }}",
 	"logoutType" : "FRONT_CHANNEL",
 	"logoutUrl": "{{ vitamui.portal.base_url|default(url_prefix) }}/logout",
 	"attributeReleasePolicy": {
@@ -23,7 +23,7 @@ db.services.insertOne({
 {% else %}
 	"serviceId": "^{{ url_prefix }}/identity/.*",
 {% endif %}
-	"name": "Identity Access Management Application",
+	"name": "{{ vitamui.identity.name | default('Identity Access Management Application') }}",
 	"logoutType" : "FRONT_CHANNEL",
 {% if vitamui.identity.base_url is defined %}
 	"logoutUrl": "{{ vitamui.identity.base_url }}/logout",
@@ -43,7 +43,7 @@ db.services.insertOne({
 {% else %}
 	"serviceId": "^{{ url_prefix }}/identity-admin/.*",
 {% endif %}
-	"name": "Identity Admin Access Management Application",
+	"name": "{{ vitamui.identity_admin.name | default('Identity Admin Access Management Application') }}",
 	"logoutType" : "FRONT_CHANNEL",
 {% if vitamui.identity_admin.base_url is defined %}
 	"logoutUrl": "{{ vitamui.identity_admin.base_url }}/logout",
