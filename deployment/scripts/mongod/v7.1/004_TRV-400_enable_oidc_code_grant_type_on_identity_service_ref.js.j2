@@ -4,15 +4,10 @@ db = db.getSiblingDB("cas");
 
 print("START 004_TRV-400_enable_oidc_code_grant_type_on_identity_service_ref.js");
 
-var result = db.services.find(
-    {"name": "{{ vitamui.identity.name | default('Identity Access Management Application') }}"},
-    {"_id": 1}
-);
-
-db.services.deleteOne({ "_id": result._id });
+db.services.deleteOne({ "_id": NumberInt(2) });
 
 db.services.insertOne({
-  _id: result._id,
+  _id: NumberInt(2),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "{{ vitamui.identity.clientId | default('identity') }}",
   serviceId: "{{ vitamui.identity.serviceId | default('^' + vitamui.identity.base_url | default(url_prefix+'/identity') + '/.*') }}",
@@ -27,15 +22,10 @@ db.services.insertOne({
   jsonFormat: true,
 });
 
-result = db.services.find(
-    {"name": "{{ vitamui.identity_admin.name | default('Identity Admin Access Management Application') }}"},
-    {"_id": 1}
-);
-
-db.services.deleteOne({ "_id": result._id });
+db.services.deleteOne({ "_id": NumberInt(3) });
 
 db.services.insertOne({
-  _id: result._id,
+  _id: NumberInt(3),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "{{ vitamui.identity_admin.clientId | default('identity-admin') }}",
   serviceId: "{{ vitamui.identity_admin.serviceId | default('^' + vitamui.identity_admin.base_url | default(url_prefix+'/identity_admin') + '/.*') }}",
