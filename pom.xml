@@ -1989,7 +1989,6 @@
                                         <argument>NAME=${project.artifactId}</argument>
                                         <argument>VERSION=${project.version}</argument>
                                         <argument>JAR_FILE=${rpm.jar-file}</argument>
-                                        <argument>USER=vitamui</argument>
                                         <!-- If you want to changes default dependencies (only
                                         systemd),
                                         define them as a comma separated list of packages -->
@@ -2013,7 +2012,6 @@
                                         <argument>rpm</argument>
                                         <argument>NAME=${project.artifactId}</argument>
                                         <argument>VERSION=${project.version}</argument>
-                                        <argument>USER=vitamui</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -2049,7 +2047,6 @@
                                         <argument>NAME=${project.artifactId}</argument>
                                         <argument>VERSION=${project.version}</argument>
                                         <argument>JAR_FILE=${rpm.jar-file}</argument>
-                                        <argument>USER=vitamui</argument>
                                         <!-- If you want to changes default dependencies (only
                                         systemd),
                                         define them as a comma separated list of packages -->
@@ -2073,7 +2070,6 @@
                                         <argument>deb</argument>
                                         <argument>NAME=${project.artifactId}</argument>
                                         <argument>VERSION=${project.version}</argument>
-                                        <argument>USER=vitamui</argument>
                                     </arguments>
                                 </configuration>
                             </execution>

@@ -140,7 +140,6 @@ spring:
               /referential-api/management-contract/**,
               /referential-api/agency/**,
               /referential-api/fileformat/**,
-              /referential-api/fileFormat/**,
               /referential-api/operation/**,
               /referential-api/logbook-management-operation/**,
               /referential-api/customers/**,
@@ -157,7 +156,6 @@ spring:
 
           filters:
             - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
-            - RewritePath=/referential-api/fileFormat(?<segment>.*),/referential/v1/fileformats$\{segment}
             - RewritePath=/referential-api/operation(?<segment>.*),/referential/v1/operations$\{segment}
             - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}

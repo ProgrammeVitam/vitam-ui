@@ -34,7 +34,7 @@ Example Playbook
 ```
 - hosts: vitamui
   roles:
-    - { role: assets-copy }
+    - { role: assets_copy }
 ```
 
 License
