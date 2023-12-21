@@ -152,6 +152,7 @@ spring:
               /referential-api/profile/**,
               /referential-api/search/**,
               /referential-api/rules/**,
+              /referential-api/rule/**,
               /referential-api/customers/**
 
           filters:
@@ -160,6 +161,7 @@ spring:
             - RewritePath=/referential-api/operation(?<segment>.*),/referential/v1/operations$\{segment}
             - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
+            - RewritePath=/referential-api/rule/(?<segment>.*),/referential/v1/rules/$\{segment}
             - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
 
     discovery:
