@@ -4,7 +4,6 @@ db = db.getSiblingDB("cas");
 
 print("START 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
 
-
 db.services.deleteOne({ "_id": NumberInt(1) });
 
 db.services.insertOne({
