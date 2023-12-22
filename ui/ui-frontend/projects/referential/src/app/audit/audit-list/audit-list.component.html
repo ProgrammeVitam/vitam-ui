@@ -1,82 +1,84 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <table class="vitamui-table">
-    <thead>
-      <tr>
-        <th><i class="vitamui-icon vitamui-icon-audit vitamui-row-icon"></i></th>
-        <th>
-          <div class="vitamui-table-header">
-            <span i18n="audit identifier column header@@auditListIdentifierHeader">Identifiant</span>
-            <vitamui-common-order-by-button
-              orderByKey="#id"
-              [(orderBy)]="orderBy"
-              [(direction)]="direction"
-              (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
-          </div>
-        </th>
-        <th>Catégorie</th>
-        <th>
-          <div class="vitamui-table-header">
-            <span i18n="audit createdDate column header@@auditListCreatedDateHeader">Date de création</span>
-            <vitamui-common-order-by-button
-              orderByKey="evDateTime"
-              [(orderBy)]="orderBy"
-              [(direction)]="direction"
-              (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
-          </div>
-        </th>
-        <th>Statut</th>
-        <th>Message</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let audit of dataSource; let index = index">
-        <tr class="vitamui-table-row">
-          <td>
-            <i
-              class="vitamui-icon vitamui-icon-audit vitamui-row-icon status-badge"
-              [ngClass]="{
-                'status-badge-green': auditStatus(audit) == 'OK',
-                'status-badge-grey': auditStatus(audit) == 'STARTED',
-                'status-badge-orange': auditStatus(audit) == 'WARNING',
-                'status-badge-red': auditStatus(audit) == 'KO' || auditStatus(audit) == 'FATAL'
-              }"
-            ></i>
-          </td>
-          <td class="clickable" (click)="auditClick.emit(audit)">{{ audit?.id }}</td>
-          <td class="clickable" (click)="auditClick.emit(audit)">
-            <vitamui-common-event-type-label [key]="audit?.type"> </vitamui-common-event-type-label>
-          </td>
-          <td class="clickable" (click)="auditClick.emit(audit)">{{ audit?.dateTime | dateTime: 'dd/MM/yyyy' }}</td>
-          <td
-            class="clickable"
-            (click)="auditClick.emit(audit)"
-            [ngClass]="{
-              'text-green': auditStatus(audit) == 'OK',
-              'text-grey': auditStatus(audit) == 'STARTED',
-              'text-orange': auditStatus(audit) == 'WARNING',
-              'text-red': auditStatus(audit) == 'KO' || auditStatus(audit) == 'FATAL'
-            }"
-          >
-            {{ auditStatus(audit) }}
-          </td>
-          <td class="clickable" (click)="auditClick.emit(audit)">{{ auditMessage(audit) }}</td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1 d-flex align-items-center">
+        <i class="vitamui-icon vitamui-icon-audit"></i>
+      </div>
 
-  <div class="vitamui-table-footer">
-    <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-    <button
-      *ngIf="!pending && infiniteScrollDisabled && auditService.canLoadMore"
-      (click)="loadMore()"
-      class="btn"
-      i18n="Show more results@@tableMoreResultButton"
-    >
-      Afficher plus de résultats...
-    </button>
-    <span *ngIf="!pending && !auditService.canLoadMore">Fin des résultats</span>
+      <div class="col-3 d-flex align-items-center justify-content-between">
+        <div>{{ 'AUDIT.HOME.ARRAY.IDENTIFIER' | translate }}</div>
+        <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        {{ 'AUDIT.HOME.ARRAY.CATEGORY' | translate }}
+
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="operationFilterTemplate"
+        #categoryFilterTrigger="vitamuiCommonTableFilter"
+        [class.active]="filterMap['operationCategories'] && filterMap['operationCategories'].length > 0">
+        <i class="material-icons vitamui-row-icon">filter_list</i>
+      </button>
+      </div>
+
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        <div>{{ 'AUDIT.HOME.ARRAY.CREATION_DATE' | translate }}</div>
+        <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-1">{{ 'AUDIT.HOME.ARRAY.STATUS' | translate }}</div>
+
+      <div class="col-3">{{ 'AUDIT.HOME.ARRAY.MESSAGE' | translate }}</div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let value of dataSource" (click)="auditClick.emit(value)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1">
+            <i class="vitamui-icon vitamui-icon-audit" [ngClass]="value | eventTypeBadgeClass"></i>
+          </div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ value.id }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>
+            <vitamui-common-event-type-label [key]="value?.type"> </vitamui-common-event-type-label>
+          </div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ value.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+          <div class="col-1" vitamuiCommonEllipsis [ngClass]="value | eventTypeColorClass">
+            {{ (value | lastEvent).outcome }}
+          </div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ (value | lastEvent).outMessage }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && auditService.canLoadMore && !pending then loadMore"></div>
   </div>
-</table>
+</div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="auditService.loadMore()">
+    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #operationFilterTemplate>
+  <vitamui-common-table-filter [(filter)]="filterMap['type']" (filterChange)="onFilterCategoryChange($event)">
+    <ng-container *ngFor="let operation of getOperationCategories()">
+      <vitamui-common-table-filter-option value="{{ operation }}">
+        {{'AUDIT.OPERATIONS_CATEGORIES.' +  operation | translate}}
+      </vitamui-common-table-filter-option>
+    </ng-container>
+  </vitamui-common-table-filter>
+</ng-template>

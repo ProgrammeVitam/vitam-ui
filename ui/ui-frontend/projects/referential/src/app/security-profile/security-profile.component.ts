@@ -69,11 +69,8 @@ export class SecurityProfileComponent extends SidenavPage<SecurityProfile> imple
     });
     dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.success) {
+      if (result?.success) {
         this.refreshList();
-      }
-      if (result.action === 'restart') {
-        this.openCreateSecurityProfileDialog();
       }
     });
   }

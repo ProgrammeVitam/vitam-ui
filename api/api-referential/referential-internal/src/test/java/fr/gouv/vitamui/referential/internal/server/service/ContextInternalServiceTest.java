@@ -283,20 +283,6 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400() throws AccessExternalClientException, IOException, InvalidParseOperationException {
-        VitamContext vitamContext = new VitamContext(0);
-        ContextDto contextDto = new ContextDto();
-
-        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
-        EasyMock.replay(vitamContextService);
-
-        assertThatCode(() -> {
-            contextInternalService.create(vitamContext, contextDto);
-        }).doesNotThrowAnyException();
-    }
-
-    @Test
     public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();

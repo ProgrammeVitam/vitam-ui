@@ -51,6 +51,8 @@ import {VitamUICommonModule} from 'ui-frontend-common';
 
 import {OntologyInformationTabComponent} from './ontology-information-tab/ontology-information-tab.component';
 import {OntologyPreviewComponent} from './ontology-preview.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   imports: [
@@ -67,7 +69,9 @@ import {OntologyPreviewComponent} from './ontology-preview.component';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatOptionModule,
-    MatTabsModule
+    MatTabsModule,
+    MatDatepickerModule,
+    MatInputModule
   ],
   declarations: [
     OntologyPreviewComponent,

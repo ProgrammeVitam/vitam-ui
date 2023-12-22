@@ -122,6 +122,9 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
     @MockBean
     private TenantRepository tenantRepository;
 
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
+
     private InternalHttpContext internalHttpContext;
 
     private ProfileRepository profilRepository;
@@ -151,6 +154,10 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
     @MockBean
     private ApplicationInternalService applicationInternalService;
 
+    private UserExportService userExportService;
+
+    private UserInfoInternalService userInfoInternalService;
+
     @Before
     public void setUp() throws NoSuchFieldException, SecurityException, Exception {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
@@ -161,12 +168,12 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         profilRepository = mock(ProfileRepository.class);
         subrogationRepository = mock(SubrogationRepository.class);
         addressService = mock(AddressService.class);
-
-        internalUserService = new UserInternalService(sequenceGeneratorService, userRepository, groupInternalService, internalProfileService,
-                mock(UserEmailInternalService.class), tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository,
-                iamLogbookService, userConverter, null, null, addressService, applicationInternalService, null);
-
+        userExportService = mock(UserExportService.class);
+        userInfoInternalService = mock(UserInfoInternalService.class);
+        connectionHistoryService = mock(ConnectionHistoryService.class);
+        internalUserService = new UserInternalService(sequenceGeneratorService, userRepository, groupInternalService, internalProfileService, mock(UserEmailInternalService.class), tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository, iamLogbookService, userConverter, null, null, addressService, applicationInternalService, null, userExportService, userInfoInternalService, connectionHistoryService);
         iamAuthentificationService = new IamAuthentificationService(internalUserService, tokenRepository, subrogationRepository);
+        iamAuthentificationService.setTokenMaxTtl(30);
         iamAuthentificationService.setTokenAdditionalTtl(15);
 
         tokenRepository.deleteAll();
@@ -192,6 +199,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
     public void testGetUserProfileByToken() {
         final Token token = new Token();
         token.setId(TOKEN_VALUE);
+        token.setCreatedDate(Calendar.getInstance().getTime());
         token.setUpdatedDate(Calendar.getInstance().getTime());
         token.setRefId(USER_ID);
         tokenRepository.save(token);
@@ -306,7 +314,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         group.setEnabled(true);
         group.setCustomerId(customerId);
         user.setSiteCode("001");
-        user.setCenterCode("002");
+        user.setCenterCodes(List.of("002"));
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupInternalService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
@@ -341,7 +349,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Date de désactivation\":\"\","
                 + "\"Date de suppression\":\"\","
                 + "\"Code du site\":\"001\","
-                + "\"Code du centre\":\"002\","
+                + "\"Code des centres\":\"[002]\","
                 + "\"Nom de la rue\":\"-\","
                 + "\"Code postal\":\"-\","
                 + "\"Ville\":\"-\","
@@ -407,10 +415,9 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         internalUserService.patch(partialDto);
         partialDto.remove("siteCode");
 
-        partialDto.put("centerCode", "002");
+        partialDto.put("centerCodes", List.of("002"));
         internalUserService.patch(partialDto);
-        partialDto.remove("centerCode");
-
+        partialDto.remove("centerCodes");
         partialDto.put("autoProvisioningEnabled", true);
         internalUserService.patch(partialDto);
         partialDto.remove("autoProvisioningEnabled");

@@ -51,7 +51,9 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
 
-  constructor(private archiveService: ArchiveService, private clipboard: Clipboard) {}
+  constructor(private archiveService: ArchiveService,
+              private clipboard: Clipboard) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
@@ -69,12 +71,10 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
     event.stopPropagation();
-    return this.archiveService.launchDownloadObjectFromUnit(
-      this.archiveUnit['#id'],
+    return this.archiveService.launchDownloadObjectFromUnit(this.archiveUnit['#id'],
       this.tenantIdentifier,
       versionWithQualifier.qualifier,
-      versionWithQualifier.version
-    );
+      versionWithQualifier.version);
   }
 
   copyToClipboard(text: string) {
@@ -82,12 +82,16 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
   }
 
   sendCalls(archiveUnit: Unit) {
-    const headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', this.accessContract);
-    this.archiveService.getObjectById(archiveUnit['#id'], headers).subscribe((unitObject) => {
-      this.unitObject = unitObject;
-      this.versionsWithQualifiersOrdered = qualifiersToVersionsWithQualifier(this.unitObject['#qualifiers']);
-      this.setFirstVersionWithQualifierOpen();
-    });
+    const headers = new HttpHeaders()
+      .append('Content-Type', 'application/json')
+      .append('X-Access-Contract-Id', this.accessContract);
+    this.archiveService
+      .getObjectById(archiveUnit['#id'], headers)
+      .subscribe((unitObject) => {
+        this.unitObject = unitObject
+        this.versionsWithQualifiersOrdered = qualifiersToVersionsWithQualifier(this.unitObject['#qualifiers'])
+        this.setFirstVersionWithQualifierOpen();
+      });
   }
 
   setFirstVersionWithQualifierOpen() {

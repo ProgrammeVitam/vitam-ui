@@ -36,18 +36,17 @@
  */
 package fr.gouv.vitamui.iam.common.utils;
 
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.Resource;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-
-import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
-import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.Resource;
-
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 
 /**
  * Build an identity provider.
@@ -90,6 +89,8 @@ public class IdentityProviderBuilder {
 
     private final boolean authnRequestSigned;
 
+    private final boolean propagateLogout;
+
     private final boolean autoProvisioningEnabled;
 
     // OIDC provider data
@@ -115,7 +116,7 @@ public class IdentityProviderBuilder {
     public IdentityProviderBuilder(final String name, final String technicalName, final Boolean enabled,
                                    final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
                                    final String privateKeyPassword, final Resource idpMetadata, final String customerId,
-                                   final boolean readonly, final String mailAttribute, final String identifierAttribute, final Integer maximumAuthenticationLifetime, final AuthnRequestBindingEnum authnRequestBinding, final boolean wantsAssertionsSigned, final boolean authnRequestSigned, final boolean autoProvisioningEnabled,
+                                   final boolean readonly, final String mailAttribute, final String identifierAttribute, final Integer maximumAuthenticationLifetime, final AuthnRequestBindingEnum authnRequestBinding, final boolean wantsAssertionsSigned, final boolean authnRequestSigned, final boolean propagateLogout, final boolean autoProvisioningEnabled,
                                    String clientId, String clientSecret, String discoveryUrl, String scope, String preferredJwsAlgorithm, Map<String, String> customParams, Boolean useState, Boolean useNonce, Boolean usePkce, String protocoleType) {
         this.name = name;
         this.technicalName = technicalName;
@@ -134,6 +135,7 @@ public class IdentityProviderBuilder {
         this.authnRequestBinding =  authnRequestBinding;
         this.wantsAssertionsSigned = wantsAssertionsSigned;
         this.authnRequestSigned = authnRequestSigned;
+        this.propagateLogout = propagateLogout;
         this.autoProvisioningEnabled = autoProvisioningEnabled;
         this.clientId=clientId;
         this.clientSecret=clientSecret;
@@ -161,6 +163,7 @@ public class IdentityProviderBuilder {
         idp.setAuthnRequestBinding(authnRequestBinding);
         idp.setWantsAssertionsSigned(wantsAssertionsSigned);
         idp.setAuthnRequestSigned(authnRequestSigned);
+        idp.setPropagateLogout(propagateLogout);
         idp.setClientId(clientId);
         idp.setClientSecret(clientSecret);
         idp.setDiscoveryUrl(discoveryUrl);

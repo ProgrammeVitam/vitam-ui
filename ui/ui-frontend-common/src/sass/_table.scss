@@ -24,7 +24,6 @@ table.vitamui-table {
         &:hover td .row-expand-btn {
             display: inline-flex;
         }
-
     }
 
     th {
@@ -86,12 +85,13 @@ table.vitamui-table {
     }
 
     tr {
-        td, th {
+        td,
+        th {
             position: relative;
             height: 60px;
 
             &:not(.no-border):before {
-                content: '';
+                content: "";
                 display: block;
                 position: absolute;
                 bottom: 0;
@@ -146,8 +146,7 @@ table.vitamui-table {
     }
 
     tbody > tr:not(.no-hover):hover {
-
-      background-color: rgba(var(--vitamui-primary-rgb), 0.15);
+        background-color: rgba(var(--vitamui-primary-rgb), 0.15);
     }
 
     .vitamui-table-row {
@@ -176,7 +175,6 @@ table.vitamui-table {
                 transition-timing-function: ease-out;
             }
         }
-
     }
 }
 
@@ -227,9 +225,12 @@ table.vitamui-table {
 
     &.active {
         color: var(--vitamui-primary);
+
+        i {
+            color: var(--vitamui-primary);
+        }
     }
 }
-
 
 /*******************************/
 /******* NEW TABLE CSS *********/
@@ -276,7 +277,6 @@ $row-padding: 0.8rem;
     color: var(--vitamui-grey-900);
     align-items: center;
     font-size: 14px;
-    font-weight: bold;
 
     i {
         color: var(--vitamui-grey-700);
@@ -302,12 +302,16 @@ $row-padding: 0.8rem;
 
         &.no-hover {
             &:hover {
-                background-color: transparent!important;
+                background-color: transparent !important;
             }
         }
 
         button {
             max-height: 40px;
+        }
+
+        div div:first-child {
+            font-weight: 700;
         }
     }
 
@@ -359,14 +363,12 @@ $row-padding: 0.8rem;
         &:hover {
             background-color: transparent;
         }
-
     }
 }
 
 // Profile list item css
 .vitamui-profile-list {
     background-color: var(--vitamui-grey-100);
-
 
     .profile-label {
         font-size: 12px;

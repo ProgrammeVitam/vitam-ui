@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -90,12 +90,12 @@ export class AccessContractService extends SearchService<AccessContract> {
       tap((response) => this.updated.next(response)),
       tap(
         (response) => {
-             this.snackBarService.open({
-              message: 'SNACKBAR.ACCESS_CONTRACT_UPDATED',
-              translateParams:{
-                name: response.name,
-              },
-              icon: 'vitamui-icon-contrat',
+          this.snackBarService.open({
+            message: 'SNACKBAR.ACCESS_CONTRACT_UPDATED',
+            translateParams: {
+              name: response.name,
+            },
+            icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {
@@ -107,24 +107,27 @@ export class AccessContractService extends SearchService<AccessContract> {
 
   create(accessContract: AccessContract) {
     return this.accessContractApi.create(accessContract).pipe(
-      tap(
-        (response: AccessContract) => {
-             this.snackBarService .open({
-              message: 'SNACKBAR.ACCESS_CONTRACT_CREATED',
-              translateParams:{
-                name: response.name,
-              },
-            icon: 'vitamui-icon-contrat',
-          });
-        },
-        (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+      tap((response: AccessContract) => {
+        this.snackBarService.open({
+          message: 'SNACKBAR.ACCESS_CONTRACT_CREATED',
+          translateParams: {
+            name: response.name,
+          },
+          icon: 'vitamui-icon-contrat',
+        });
+      })
     );
   }
 
   setTenantId(tenantIdentifier: number) {
     this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+  }
+
+  public downloadImportAccessContractFileModel(): Observable<HttpResponse<Blob>> {
+    return this.accessContractApi.getImportAccessContractFileModel();
+  }
+
+  public exportAccessContracts(): Observable<HttpResponse<Blob>> {
+    return this.accessContractApi.exportAccessContracts();
   }
 }

@@ -35,16 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Context, Option } from 'ui-frontend-common';
-import { SecurityProfileService } from '../../security-profile/security-profile.service';
-import { ContextService } from '../context.service';
-import { ContextCreateValidators } from './context-create.validators';
-
-const PROGRESS_BAR_MULTIPLICATOR = 100;
+import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Subscription} from 'rxjs';
+import {ConfirmDialogService, Context, Option} from 'ui-frontend-common';
+import {SecurityProfileService} from '../../security-profile/security-profile.service';
+import {ContextService} from '../context.service';
+import {ContextCreateValidators} from './context-create.validators';
 
 @Component({
   selector: 'app-context-create',
@@ -57,7 +55,6 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   statusControl = new FormControl(false);
   stepIndex = 0;
-  accessContractInfo: { code: string; name: string; companyName: string } = { code: '', name: '', companyName: '' };
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -67,7 +64,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 2;
+  stepCount = 2;
   private keyPressSubscription: Subscription;
   isDisabledButton = false;
 
@@ -149,9 +146,8 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
         this.isDisabledButton = false;
         this.dialogRef.close({ success: true, action: 'none' });
       },
-      (error: any) => {
-        this.dialogRef.close({ success: false, action: 'none' });
-        console.error(error);
+      () => {
+        this.isDisabledButton = false;
       }
     );
   }
@@ -187,9 +183,5 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
         idx++;
       }
     }
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 }

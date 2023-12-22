@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,6 +105,9 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
 
     @MockBean
     private LogbookService logbookService;
+
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
 
     public OwnerInternalServiceIntegTest() {
     }

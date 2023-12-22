@@ -73,7 +73,7 @@
         <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
         <assertj.version>3.15.0</assertj.version>
         <bouncycastle.version>1.68</bouncycastle.version>
-        <cas.version>6.6.4</cas.version>
+        <cas.version>6.6.12</cas.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <commons.collections4.version>4.4</commons.collections4.version>
@@ -84,7 +84,7 @@
         <commons.text.version>1.10.0</commons.text.version>
         <cucumber.version>5.6.0</cucumber.version>
         <easymock.version>4.2</easymock.version>
-        <embedded.mongo.version>3.0.0</embedded.mongo.version>
+        <embedded.mongo.version>3.4.5</embedded.mongo.version>
         <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
         <font.awesome.version>5.11.2</font.awesome.version>
         <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>

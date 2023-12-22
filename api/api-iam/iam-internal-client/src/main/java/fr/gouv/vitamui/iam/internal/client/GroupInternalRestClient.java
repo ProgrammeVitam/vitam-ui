@@ -46,12 +46,14 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,5 +120,16 @@ public class GroupInternalRestClient extends BasePaginatingAndSortingRestClient<
     protected ParameterizedTypeReference<PaginatedValuesDto<GroupDto>> getDtoPaginatedClass() {
         return new ParameterizedTypeReference<PaginatedValuesDto<GroupDto>>() {
         };
+    }
+
+    public ResponseEntity<Resource> exportProfileGroups(final InternalHttpContext context, final Optional<String> optionalCriteria) {
+        LOGGER.debug("Export profile groups");
+        final URIBuilder uriBuilder = getUriBuilderFromPath(CommonConstants.PATH_EXPORT);
+        optionalCriteria.ifPresent(criteria -> uriBuilder.addParameter("criteria", criteria));
+        final URI uri = buildUriBuilder(uriBuilder);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<Resource> response = restTemplate.exchange(uri, HttpMethod.GET, request, Resource.class);
+        checkResponse(response);
+        return response;
     }
 }

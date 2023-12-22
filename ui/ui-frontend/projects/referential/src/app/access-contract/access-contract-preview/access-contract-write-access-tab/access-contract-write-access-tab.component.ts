@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -47,9 +47,8 @@ import { AccessContractService } from '../../access-contract.service';
   templateUrl: './access-contract-write-access-tab.component.html',
   styleUrls: ['./access-contract-write-access-tab.component.scss'],
 })
-export class AccessContractWriteAccessTabComponent implements OnInit {
-  @Input()
-  set accessContract(accessContract: AccessContract) {
+export class AccessContractWriteAccessTabComponent {
+  @Input() set accessContract(accessContract: AccessContract) {
     this._accessContract = accessContract;
 
     if (!accessContract.writingPermission) {
@@ -66,55 +65,42 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
     return this._accessContract;
   }
 
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
+  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  public form: FormGroup;
+  public submited = false;
+
+  // tslint:disable-next-line:variable-name
+  private _accessContract: AccessContract;
+
+  previousValue = (): AccessContract => {
+    return this._accessContract;
+  };
 
   constructor(private formBuilder: FormBuilder, private accessContractService: AccessContractService) {
     this.form = this.formBuilder.group({
       writingRestrictedDesc: [true],
       writingPermission: [false],
     });
+
+    this.form.controls.writingPermission.valueChanges.subscribe((value) => {
+      if(!value){
+        this.form.controls.writingRestrictedDesc.setValue(false);
+      }
+    });
+    
   }
 
-  form: FormGroup;
-  submited = false;
-
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  // tslint:disable-next-line:variable-name
-  private _accessContract: AccessContract;
-  previousValue = (): AccessContract => {
-    return this._accessContract;
-  };
-
-  unchanged(): boolean {
+  public unChanged(): boolean {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
-
     this.updated.emit(!unchanged);
 
     return unchanged;
   }
 
-  prepareSubmit(): Observable<AccessContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
-      filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) =>
-        this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
-    );
-  }
-
-  onSubmit() {
+  public onSubmit(): void {
     this.submited = true;
-    // if (this.isInvalid()) { return; }
+
     this.prepareSubmit().subscribe(
       () => {
         this.accessContractService.get(this._accessContract.identifier).subscribe((response) => {
@@ -128,9 +114,17 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  private prepareSubmit(): Observable<AccessContract> {
+    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+      filter((formData) => !isEmpty(formData)),
+      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      switchMap((formData: { id: string; [key: string]: any }) =>
+        this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
+      )
+    );
+  }
 
-  resetForm(accessContract: AccessContract) {
+  private resetForm(accessContract: AccessContract): void {
     this.form.reset(accessContract, { emitEvent: false });
   }
 }

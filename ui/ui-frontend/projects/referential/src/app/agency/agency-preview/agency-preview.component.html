@@ -1,30 +1,17 @@
-<div class="vitamui-sidepanel">
-    <div class="vitamui-sidepanel-header">
-        <div class="d-flex justify-content-end">
-        <button class="btn link cancel" (click)="emitClose()">
-            <i class="vitamui-icon vitamui-icon-close"></i>
-        </button>
-        </div>
+<vitamui-common-sidenav-header [title]="agency.name" [subtitle]="'(' + agency.identifier + ')'"
+  [icon]="'vitamui-icon-agent'" (onclose)="emitClose()">
+</vitamui-common-sidenav-header>
 
-        <div class="title">
-            <div matTooltipClass="vitamui-tooltip">
-                <h5 class="m-0 text-primary">{{ agency?.name }}</h5>
-                <p class="text large light m-0">{{ agency?.identifier }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="vitamui-sidepanel-body">
-        <mat-tab-group class="preview-tab-group" #tabs>
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group" (selectedIndexChange)="selectedIndex = $event">
+    <mat-tab [label]="'AGENCY.TAB.INFORMATION' | translate">
+      <app-agency-information-tab *ngIf="selectedIndex === 0" [agency]="agency" [tenantIdentifier]="tenantIdentifier"></app-agency-information-tab>
+    </mat-tab>
 
-            <mat-tab label="Informations" i18n-label="Information tab@@agencyPreviewTabInformation">
-                <app-agency-information-tab [agency]="agency" [readOnly]="isPopup" (updated)="updatedChange($event, 0)" #infoTab></app-agency-information-tab>
-            </mat-tab>
-
-            <mat-tab label="Historique" i18n-label="History tab@@agencyPreviewTabHistory">
-                <vitamui-common-operation-history-tab [id]="agency?.identifier"
-                                                      [identifier]="agency?.identifier" collectionName="agency" [filter]="filterEvents">
-                </vitamui-common-operation-history-tab>
-            </mat-tab>
-        </mat-tab-group>
-    </div>
+    <mat-tab [label]="'AGENCY.TAB.HISTORY' | translate">
+      <vitamui-common-operation-history-tab [id]="agency?.identifier" [identifier]="agency?.identifier"
+        collectionName="agency" [filter]="filterEvents">
+      </vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>

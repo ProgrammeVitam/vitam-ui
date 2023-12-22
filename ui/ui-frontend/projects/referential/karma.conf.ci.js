@@ -6,6 +6,9 @@ module.exports = function(config){
 
       // Override base config dir
         config.set({
+              files: [
+                './src/test.ts'
+              ],
               coverageIstanbulReporter: {
               dir: 'target/coverage/referential',
                 fixWebpackSourcePaths: true

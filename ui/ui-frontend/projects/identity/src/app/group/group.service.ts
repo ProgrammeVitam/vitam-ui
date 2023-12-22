@@ -38,7 +38,7 @@ import { Observable, Subject } from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import { Criterion, Group, Operators, SearchQuery, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { GroupApiService } from '../core/api/group-api.service';
@@ -147,5 +147,9 @@ export class GroupService extends SearchService<Group> {
       .pipe(
         map((levels) => levels.filter((l) => !!l))
       );
+  }
+
+  export(): Observable<HttpResponse<Blob>> {
+    return this.groupApi.export();
   }
 }

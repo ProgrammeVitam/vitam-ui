@@ -65,10 +65,12 @@ public class AccessContractDto implements Serializable {
     private String lastUpdate;
 
     private String activationDate;
-    
+
     private String deactivationDate;
 
     private Boolean writingPermission;
+
+    private Boolean writingRestrictedDesc;
 
     private Boolean everyOriginatingAgency;
 
@@ -79,6 +81,8 @@ public class AccessContractDto implements Serializable {
     private Set<String> ruleCategoryToFilter;
 
     private Set<String> originatingAgencies;
+
+    private Set<String> dataObjectVersion;
 
     private Set<String> rootUnits;
 
@@ -128,7 +132,7 @@ public class AccessContractDto implements Serializable {
     public void setActivationDate(String activationDate) {
         this.activationDate = activationDate;
     }
-    
+
     @JsonProperty("deactivationDate")
     public void setDeactivationDate(String deactivationDate) {
         this.deactivationDate = deactivationDate;
@@ -149,6 +153,11 @@ public class AccessContractDto implements Serializable {
         this.everyDataObjectVersion = everyDataObjectVersion;
     }
 
+    @JsonProperty("writingRestrictedDesc")
+    public void setWritingRestrictedDesc(Boolean writingRestrictedDesc) {
+        this.writingRestrictedDesc = writingRestrictedDesc;
+    }
+
     @JsonProperty("accessLog ")
     public void setAccessLog(String accessLog) {
         this.accessLog = accessLog;
@@ -162,6 +171,11 @@ public class AccessContractDto implements Serializable {
     @JsonProperty("originatingAgencies")
     public void setOriginatingAgencies(Set<String> originatingAgencies) {
         this.originatingAgencies = originatingAgencies;
+    }
+
+    @JsonProperty("dataObjectVersion")
+    public void setDataObjectVersion(Set<String> dataObjectVersion) {
+        this.dataObjectVersion = dataObjectVersion;
     }
 
     @JsonProperty("rootUnits")
@@ -218,7 +232,7 @@ public class AccessContractDto implements Serializable {
     public String getActivationDate() {
         return activationDate;
     }
-    
+
     @JsonProperty("DeactivationDate")
     public String getDeactivationDate() {
         return deactivationDate;
@@ -254,6 +268,11 @@ public class AccessContractDto implements Serializable {
         return originatingAgencies;
     }
 
+    @JsonProperty("DataObjectVersion")
+    public Set<String> getDataObjectVersion() {
+        return dataObjectVersion;
+    }
+
     @JsonProperty("RootUnits")
     public Set<String> getRootUnits() {
         return rootUnits;
@@ -264,4 +283,8 @@ public class AccessContractDto implements Serializable {
         return excludedRootUnits;
     }
 
+    @JsonProperty("WritingRestrictedDesc")
+    public Boolean getWritingRestrictedDesc() {
+        return writingRestrictedDesc;
+    }
 }

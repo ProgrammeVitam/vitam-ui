@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { InputsComponent } from './inputs.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [InputsComponent],
@@ -22,7 +23,8 @@ import { InputsComponent } from './inputs.component';
     MatFormFieldModule,
     MatDatepickerModule,
     MatInputModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    TranslateModule
   ],
   exports: [InputsComponent],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],

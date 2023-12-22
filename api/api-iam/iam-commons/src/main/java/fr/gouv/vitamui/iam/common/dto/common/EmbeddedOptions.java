@@ -42,5 +42,6 @@ package fr.gouv.vitamui.iam.common.dto.common;
  *
  */
 public enum EmbeddedOptions {
-    ALL
+    ALL,
+    RESTRICTED
 }

@@ -38,11 +38,12 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
 import {merge, Subject} from 'rxjs';
-import {debounceTime, filter} from 'rxjs/operators';
+import {debounceTime, filter, takeUntil} from 'rxjs/operators';
 import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
 
 import {Ontology} from '../../../../../vitamui-library/src/lib/models/ontology';
 import {OntologyService} from '../ontology.service';
+import {TranslateService} from "@ngx-translate/core";
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -69,9 +70,11 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
 
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     public ontologyService: OntologyService,
+    private translateService: TranslateService,
     private matDialog: MatDialog
   ) {
     super(ontologyService);
@@ -95,6 +98,8 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
+
+    this.replaceUpdatedOntology();
   }
 
   buildOntologyCriteriaFromSearch() {
@@ -107,6 +112,8 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.updatedData.unsubscribe();
   }
 
@@ -121,7 +128,7 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   deleteOntologyDialog(ontology: Ontology) {
     const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
 
-    dialog.componentInstance.objectType = 'ontologie';
+    dialog.componentInstance.objectType = this.translateService.instant('ONTOLOGY.HOME.TITLE');
     dialog.componentInstance.objectName = ontology.identifier;
 
     dialog.afterClosed().pipe(
@@ -133,8 +140,17 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
         }
       );
     });
+  }
 
-
+  private replaceUpdatedOntology(): void {
+    this.ontologyService.updated.pipe(takeUntil(this.destroy$)).subscribe(
+      (updatedOntology: Ontology) => {
+        const index = this.dataSource.findIndex((item: Ontology) => item.id === updatedOntology.id);
+        if (index !== -1) {
+          this.dataSource[index] = updatedOntology;
+        }
+      }
+    );
   }
 
 }

@@ -1,115 +1,89 @@
-<div class="header">
-  <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
-</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()" cdkFocusInitial>
+  <div class="content mt-5">
+    <div class="text medium light">{{'FILE_FORMATS.CREATE_DIALOG.SUBTITLE' | translate}}</div>
+    <div class="text large bold mb-3">{{'FILE_FORMATS.CREATE_DIALOG.TITLE' | translate}}</div>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
-    <cdk-step>
-      <div class="content">
-        <h2 i18n="Create fileFormat title@@fileFormatCreateTitle1">Création d'un format</h2>
-        <h3 i18n="Create fileFormat title@@fileFormatCreateTitle2">Informations</h3>
+    <div class="d-flex">
+      <!-- Must we validate Min / max length ? -->
+      <vitamui-common-input
+        class="w-100"
+        formControlName="puid"
+        minlength="2"
+        maxlength="100"
+        required
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.IDENTIFIER' | translate">
+        <ng-container *ngIf="form.get('puid')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('puid')?.errors?.required">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="!!form?.get('puid')?.errors?.puidExists">
+            {{ 'FILE_FORMATS.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+    </div>
 
-        <div class="d-flex">
-          <!-- Must we validate Min / max length ? -->
-          <vitamui-common-input
-            class="field-puid"
-            formControlName="puid"
-            minlength="2"
-            maxlength="100"
-            required
-            placeholder="External PUID"
-            i18n-placeholder="puid@@fileformatCreatePuidPlaceholder"
-          >
-            <ng-container *ngIf="form.get('puid')?.touched">
-              <vitamui-common-input-error *ngIf="!!form.get('puid')?.errors?.required">{{
-                'COMMON.REQUIRED' | translate
-              }}</vitamui-common-input-error>
-              <vitamui-common-input-error
-                *ngIf="!!form?.get('puid')?.errors?.puidExists"
-                i18n="Identfier exists error hint@@formErrorIdentifierExists"
-                >PUID déjà utilisé</vitamui-common-input-error
-              >
-            </ng-container>
-          </vitamui-common-input>
-          <i
-            class="material-icons field-tooltip select-tooltip"
-            matTooltip="Identifiant du nouveau format ajouté"
-            matTooltipClass="vitamui-tooltip"
-            >info</i
-          >
-        </div>
+    <div class="d-flex">
+      <!-- Must we validate Min / max length ? -->
+      <vitamui-common-input
+        class="w-100"
+        formControlName="name"
+        minlength="2"
+        maxlength="100"
+        required
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.NAME'  | translate">
+        <ng-container *ngIf="form.get('name')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
+            'COMMON.REQUIRED' | translate
+          }}</vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
+            {{ 'FILE_FORMATS.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+    </div>
 
-        <div class="d-flex">
-          <!-- Must we validate Min / max length ? -->
-          <vitamui-common-input
-            class="field-name"
-            formControlName="name"
-            minlength="2"
-            maxlength="100"
-            required
-            placeholder="Nom"
-            i18n-placeholder="Name@@fileFormatCreateNamePlaceholder"
-          >
-            <ng-container *ngIf="form.get('name')?.touched">
-              <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
-                'COMMON.REQUIRED' | translate
-              }}</vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists" i18n="Name exists error hint@@formErrorNameExists"
-                >Nom déjà utilisé</vitamui-common-input-error
-              >
-            </ng-container>
-          </vitamui-common-input>
-          <i class="material-icons field-tooltip select-tooltip" matTooltip="Format du fichier" matTooltipClass="vitamui-tooltip">info</i>
-        </div>
+    <div class="d-flex">
+      <!-- Must we validate Min / max length ? -->
+      <vitamui-common-input
+        class="w-100"
+        formControlName="mimeType"
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.MIME_TYPE' | translate">
+      </vitamui-common-input>
+    </div>
 
-        <div class="d-flex">
-          <!-- Must we validate Min / max length ? -->
-          <vitamui-common-input
-            class="field-mimeType"
-            formControlName="mimeType"
-            placeholder="Type MIME"
-            i18n-placeholder="mimeType@@fileFormatCreateMimeTypePlaceholder"
-          >
-          </vitamui-common-input>
-          <i
-            class="material-icons field-tooltip select-tooltip"
-            matTooltip="Correspond à un format de fichier fourni par le registre PRONOM. Peut être vide"
-            matTooltipClass="vitamui-tooltip"
-            >info</i
-          >
-        </div>
+    <div class="d-flex">
+      <!-- Must we validate Min / max length ? -->
+      <vitamui-common-input
+        class="w-100"
+        formControlName="version"
+        required
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.VERSION' | translate">
+        <vitamui-common-input-error *ngIf="form.get('version')?.touched && form.get('version')?.hasError('required')">
+          {{ 'COMMON.REQUIRED' | translate}}
+        </vitamui-common-input-error>
+      </vitamui-common-input>
+    </div>
 
-        <div class="d-flex">
-          <!-- Must we validate Min / max length ? -->
-          <vitamui-common-input
-            class="field-version"
-            formControlName="version"
-            required
-            placeholder="Version"
-            i18n-placeholder="Version@@fileFormatCreateVersionPlaceholder"
-          >
-            <vitamui-common-input-error *ngIf="form.get('version')?.touched && form.get('version')?.hasError('required')">{{
-              'COMMON.REQUIRED' | translate
-            }}</vitamui-common-input-error>
-          </vitamui-common-input>
-        </div>
+    <div class="d-flex">
+      <!-- Must we validate Min / max length ? -->
+      <vitamui-common-input
+        class="w-100"
+        formControlName="extensions"
+        required
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.EXTENSION' | translate">
+        <vitamui-common-input-error *ngIf="form.get('extensions')?.touched && form.get('extensions')?.hasError('required')">
+          {{ 'COMMON.REQUIRED' | translate}}
+        </vitamui-common-input-error>
+      </vitamui-common-input>
+    </div>
 
-        <div class="d-flex">
-          <!-- Must we validate Min / max length ? -->
-          <vitamui-common-input
-            class="field-extensions"
-            formControlName="extensions"
-            placeholder="Extension"
-            i18n-placeholder="Extension@@fileFormatCreateExtensionsPlaceholder"
-          >
-          </vitamui-common-input>
-        </div>
+    <div class="actions">
+      <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isCreationPending || isDisabledButton">
+        {{ 'COMMON.TERMINATE' | translate }}
+      </button>
+      <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+    </div>
 
-        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isCreationPending || isDisabledButton">
-          {{ 'COMMON.SUBMIT' | translate }}
-        </button>
-        <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-      </div>
-    </cdk-step>
-  </vitamui-common-stepper>
+  </div>
 </form>

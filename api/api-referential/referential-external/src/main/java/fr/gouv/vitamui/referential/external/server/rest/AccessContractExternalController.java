@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -52,15 +51,18 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.AccessContractExternalService;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -146,5 +148,30 @@ public class AccessContractExternalController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return accessContractExternalService.findHistoryById(id);
+    }
+
+    @ApiOperation(value = "Export access contract to a csv file")
+    @GetMapping(path = RestApi.EXPORT_CSV)
+    @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
+    public ResponseEntity<Resource> exportAccessContracts() {
+        LOGGER.debug("export all access contract to csv file");
+        return accessContractExternalService.exportAccessContracts();
+    }
+
+    /***
+     * Import access contracts from a csv file
+     * @param file the access contracts csv file to import
+     * @return the vitam response
+     */
+    @Secured(ServicesData.ROLE_CREATE_ACCESS_CONTRACTS)
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> importAccessContracts(@RequestParam("file") MultipartFile file) {
+
+        SanityChecker.isValidFileName(file.getOriginalFilename());
+        ParameterChecker.checkParameter("The fileName is mandatory parameter : ", file.getOriginalFilename());
+        LOGGER.debug("Import access contracts file {}", file.getOriginalFilename());
+
+        return accessContractExternalService.importAccessContracts(file);
     }
 }

@@ -1,7 +1,7 @@
 {
   "GATEWAY_ENABLED": false,
   "REFERENTIAL_URL": "https://dev.vitamui.com:4202/referential",
-  "VERSION_RELEASE": "6.4",
+  "VERSION_RELEASE": "7.1.0-SNAPSHOT",
   "PLATFORM_NAME": "VITAM-UI",
   "INGEST_URL": "https://dev.vitamui.com:4208/ingest",
   "PORTAL_TITLE": "Portail des applications de l'archivage",
@@ -16,9 +16,7 @@
   "UI_URL": "https://dev.vitamui.com:4202",
   "ARCHIVES_SEARCH_URL": null,
   "PORTAL_URL": "https://dev.vitamui.com:4200",
-  "ALLOWED_URLS": [
-    "/referential-api"
-  ],
+  "ALLOWED_URLS": ["/referential-api"],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
     "redirectUri": "?",
@@ -63,5 +61,6 @@
       "title": "Organisation & droits utilisateurs",
       "order": 5
     }
-  ]
+  ],
+  "VITAM_ADMIN_TENANT": 1
 }

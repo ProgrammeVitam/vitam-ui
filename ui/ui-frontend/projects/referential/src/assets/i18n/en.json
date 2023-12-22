@@ -1,10 +1,55 @@
 {
   "COMMON": {
     "CANCEL": "Cancel",
+    "BACK": "Back",
     "SUBMIT": "Confirm",
+    "TERMINATE": "Terminate",
     "UPDATE": "Update",
     "APPLY_UPDATE": "Apply changes",
-    "REQUIRED": "Required field"
+    "REQUIRED": "Required field",
+    "EDIT": "Edit",
+    "SAVE": "Save",
+    "NAME_ALREADY_EXISTS": "Name already in use",
+    "DESCRIPTION": "Description",
+    "NAME": "Name",
+    "SEARCH": "Search",
+    "COPY": "Copy",
+    "DELETE": "Delete"
+  },
+  "IMPORT_DIALOG": {
+    "TITLE": "Manual Ingest",
+    "ACCESS_CONTRACT_SUBTITLE": "Access contract(s) import",
+    "INGEST_CONTRACT_SUBTITLE": "Ingest contract(s) import",
+    "AGENCY_SUBTITLE": "Agency referential import",
+    "RULES_SUBTITLE": "Importing a business rule repository",
+    "FILE_FORMAT_SUBTITLE": "Importing a file format repository",
+    "ONTOLOGY_SUBTITLE": "Importing an ontology repository",
+    "IMPORT": "Import",
+    "DRAG_DROP": "Drag / Drop or ",
+    "CHOOSE_FILE": "click to browse",
+    "FILE_FORMAT_DETAIL_INFO": "The import file must be in csv format, encoded in UTF8, with semicolon separator",
+    "WRONG_FORMAT": "The file format is not supported, please choose a {{ format }} format",
+    "ERRORS_DURING_IMPORT": "One or more errors have been identified in the import file.<br>Please review the details of these errors and correct the import file.",
+    "ERRORS_LIST": "List of identified errors:",
+    "IMPORT_ERROR_MESSAGE": {
+      "FILE_IS_EMPTY": "The file is empty.",
+      "FILE_SIZE_TOO_BIG": "the import file must not exceed 2 MB.",
+      "ONLY_ONE_HEADER_INCORRECT_SEPARATOR": "There is only one column found in the file, the separator may be incorrect.",
+      "FILE_MUST_RESPECT_COLUMNS_LENGTH": "The file must respect the number of columns.",
+      "FILE_MUST_RESPECT_COLUMN_NAME": "Column {{ column }}, line {{ line }}: the expected name for this column is '{{ data }}'",
+      "AT_LEAST_ONE_LINE": "The file must contain at least 1 line in addition to the header.",
+      "BAD_ROWS_LENGTH_IN_LINE": "the line {{ line }} does not respect the number of columns.",
+      "MANDATORY_VALUE": "Column {{ column }}, line {{ line }}: the value must be filled in.",
+      "NOT_ALLOWED_VALUE": "Column {{ column }}, row {{ line }}: value '{{ data }}' is not one of the allowed values.",
+      "ISO_8859_1_ONLY": "Column {{ column }}, line {{ line }}: value '{{ data }}' does not respect ISO-8859-1 characters.",
+      "REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP": "Import failed. Please consult the error details in the operations log."
+    }
+  },
+  "CONFIRM_DIALOG": {
+    "DELETE_TITLE": "Delete {{objectType}}",
+    "UNSAVED_CHANGES_TITLE": "Unsaved Changes",
+    "DELETE": "Do you confirm the deletion : {{objectType}} - {{objectName}}",
+    "SAVE": "Do you want to save the changes?"
   },
   "CONTRACT_MANAGEMENT": {
     "CONTRACT_PAGE": {
@@ -156,7 +201,28 @@
     }
   },
   "LOGBOOK_OPERATION_DETAIL": {
-    "DOWNLOAD_ATR": "Download the ATR"
+    "DOWNLOAD_ATR": "Download the ATR",
+    "DOWNLOAD_DIP": "Download the DIP",
+    "DOWNLOAD_DIP_TRANSFER": "Download the DIP transfer",
+    "DOWNLOAD_REPORT": "Download report",
+    "TAB": {
+      "INFORMATIONS": {
+        "TITLE": "Informations",
+        "OPERATION_CATEGORY": "Operation category",
+        "EXTERNAL_AGENTS_INDENTIFIERS": "External agents identifiers",
+        "ASSOCIATED_CONTRACT": "Associated contract",
+        "APPLICATION_IDENTIFIER": "Application identifier",
+        "TRANSACTION_NUMBER": "Transaction number",
+        "OPERATION_IDENTIFIER": "Operation identifier",
+        "INTERNAL_ACTORS": "Internal actor(s)",
+        "REPORT": "Report",
+        "ADDITIONAL_OPERATION_INFORMATIONS": "Additonal operation informations",
+        "MESSAGE": "Message"
+      },
+      "DETAILS": {
+        "TITLE": "Details"
+      }
+    }
   },
   "LOGBOOK_OPERATION_PAGE": {
     "TITLE": "Operations management",
@@ -249,6 +315,7 @@
     },
     "FACETS": {
       "SHOW_SEARCH_FILTERS": "Show search filters",
+      "HIDE_SEARCH_FILTERS": "Hide search filters",
       "DATE_SEARCH_FILTER_LABEL": "Filter by pick-up date between",
       "TOTAL_OPERATION_ENTRIES": "All operations",
       "TOTAL_UNITS": "All units",
@@ -305,20 +372,698 @@
       }
     }
   },
+  "ACCESS_CONTRACT": {
+    "HOME": {
+      "TITLE": "Set up access contracts",
+      "SEARCH_PLACEHOLDER": "Name, ID",
+      "CREATE_ACCESS_CONTRACT": "Create access contract",
+      "IMPORT": "Import",
+      "EXPORT": "Export",
+      "DOWNLOAD_MODEL": "Download Model",
+      "ARRAY": {
+        "NAME": "Name",
+        "IDENTIFIER": "Identifier",
+        "CREATION_DATE": "Creation date",
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive"
+      }
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Information",
+        "ACTIVE_CONTRACT": "Active contract",
+        "NAME": "Name",
+        "DESCRIPTION": "Description",
+        "ACCESS_LOGS": "Access logging",
+        "RULES_FILTERS": "Allow filtering on business rules",
+        "SELECT_RULES": "Select Rules",
+        "CREATION_DATE": "Creation date",
+        "LAST_MODIFICATION_DATE": "Last modification date",
+        "ACTIVATION_DATE": "Activation date",
+        "DEACTIVATION_DATE": "Deactivation date"
+      },
+      "USAGE": {
+        "TITLE": "Usage and Service",
+        "ALL_AGENCIES": "All producer services",
+        "SELECT_AGENCY": "Producer(s) service",
+        "SELECT_AGENCY_SEARCH": "Type producer service ID or name",
+        "NO_AGENCY_SELECTED": "Please select at least one service",
+        "ALL_USAGES": "All uses",
+        "SELECT_USAGES": "Select usages",
+        "NO_USAGE_SELECTED": "Please select at least one usage"
+      },
+      "WRITE_RIGHTS": {
+        "TITLE": "Write rights",
+        "WRITING_RESTRICTION": "Editing restriction to description metadata",
+        "WRITE_RIGHT": "Write rights"
+      },
+      "POSITIONS": {
+        "TITLE": "Positions",
+        "CONSULTATION_POSITIONS": "Consultation positions:",
+        "EXCLUDED_POSITIONS": "Excluded Positions:",
+        "ALL_POSITIONS": "All positions",
+        "NO_EXCLUDED_POSITION": "No position excluded"
+      },
+      "HISTORY": {
+        "TITLE": "History"
+      }
+    },
+    "CREATE_DIALOG": {
+      "TITLE": "Creation of an access contract",
+      "SUBTITLE": "Information",
+      "STATUS": "Active access contract",
+      "NAME": "Name",
+      "IDENTIFIER": "ID",
+      "DESCRIPTION": "Description",
+      "ACCESS_LOG": "Access logging",
+      "ACCESS_LOG_TOOLTIP": "Right to log access to objects",
+      "RULE_FILTER": "Allow filtering on business rules",
+      "RULE_FILTER_TOOLTIP": "Filter access based on expired business rules",
+      "RULE_FILTER_PLACEHOLDER": "Select Rules",
+      "RULE_FILTER_SELECT_TOOLTIP": "Choose the management rules",
+      "PRODUCER_SERVICES_TITLE": "Producer services and uses",
+      "EVERY_ORIGINATING_AGENCY": "All producer services",
+      "EVERY_ORIGINATING_AGENCY_TOOLTIP": "Producer service associated with the contract and accessing the archives",
+      "EVERY_ORIGINATING_AGENCY_PLACEHOLDER": "Select producer services",
+      "EVERY_ORIGINATING_AGENCY_SELECT_TOOLTIP": "Choose from one to several producer services",
+      "EVERY_DATA_OBJECT_VERSION": "All uses",
+      "EVERY_DATA_OBJECT_VERSION_TOOLTIP": "Use to which the access contract gives the right",
+      "EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER": "Select uses",
+      "EVERY_DATA_OBJECT_VERSION_SELECT_TOOLTIP": "Choose from one to several uses",
+      "WRITING_PERMISSION_TITLE": "Writing right",
+      "WRITING_PERMISSION": "Write rights",
+      "WRITING_PERMISSION_TOOLTIP": "Give write permissions on archives",
+      "WRITING_RESTRICTED_DESC": "Restriction of modification to descriptive metadata",
+      "POSITIONS_TITLE": "Consulting Positions",
+      "ALL_POSITIONS": "All Positions",
+      "ALL_POSITIONS_TOOLTIP": "Choice of the positions to which one wishes to give access in consultation",
+      "NAME_ALREADY_EXISTS": "Name already in use",
+      "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
+      "SELECT_AGENCY_SEARCH": "Type producer service ID or name"
+    },
+    "UPDATE_NODE_DIALOG": {
+      "TITLE": "Change of consultation positions",
+      "ALL_POSITIONS_INFO": "Choice of positions to which you wish to give access during consultation"
+    }
+  },
+  "FILE_FORMATS": {
+    "HOME": {
+      "TITLE": "Files formats referential",
+      "SEARCH_PLACEHOLDER": "Name, ID",
+      "CREATE_FILE_FORMATS": "Create file format",
+      "FILE_FORMAT": "file format",
+      "IMPORT": "Import",
+      "ARRAY": {
+        "NAME": "Name",
+        "IDENTIFIER": "Identifier",
+        "CREATION_DATE": "Creation date"
+      }
+    },
+    "CREATE_DIALOG": {
+      "TITLE": "Information",
+      "SUBTITLE": "Create file format",
+      "IDENTIFIER": "Identifier",
+      "NAME": "Name",
+      "MIME_TYPE": "MIME type",
+      "VERSION": "Version",
+      "EXTENSION": "Extension(s)",
+      "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
+      "NAME_ALREADY_EXISTS": "Name already in use"
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Information",
+        "NAME": "Name",
+        "MIME_TYPE": "MIME type",
+        "VERSION_PRONOM": "VersionPronom",
+        "VERSION": "Version",
+        "EXTENSION": "Extension(s)"
+      },
+      "HISTORY": {
+        "TITLE": "History"
+      }
+    }
+  },
+  "CONTEXTS_APP": {
+    "HOME": {
+      "TITLE": "Application contexts",
+      "SEARCH_PLACEHOLDER": "Name, ID",
+      "CREATE_CONTEXT": "Create context",
+      "ARRAY": {
+        "NAME": "Name",
+        "IDENTIFIER": "Identifier",
+        "CREATION_DATE": "Creation date",
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive"
+      }
+    },
+    "CREATE_DIALOG": {
+      "INFORMATION": {
+        "TITLE": "Create application context",
+        "SUBTITLE": "Information",
+        "STATUS": "Application context enabled",
+        "NAME": "Name",
+        "IDENTIFIER": "Identifier",
+        "SECURITY_PROFILE": "Security profile",
+        "TENANT_TOGGLE": "Control over tenants",
+        "TENANT_TOGGLE_TOOLTIP_FALSE": "No check is performed on tenants and contracts defined in the application context when an external application connects to the service",
+        "TENANT_TOGGLE_TOOLTIP_TRUE": "A check is performed on the tenants and contracts defined in the application context when an external application connects to the service",
+        "NAME_ALREADY_EXISTS": "Name already in use",
+        "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use"
+      },
+      "PERMISSION": {
+        "TITLE": "Permissions",
+        "SUBTITLE": "Information",
+        "ORGANISATION_ERROR": "Please note that you have entered two different organizations",
+        "TENANT_ERROR": "A tenant must be selected for each permission",
+        "PERMISSION_ERROR": "At least one permission must be entered",
+        "ARRAY": {
+          "ORGANISATIONS": "Organizations",
+          "TENANTS": "Tenants",
+          "ACCESS_CONTRACT": "Access contract",
+          "ACCESS_CONTRACT_TITLE": "All access contracts",
+          "INGEST_CONTRACT": "Ingest contract",
+          "INGEST_CONTRACT_TITLE": "All entry contracts",
+          "TENANT_TOOLTIP": "Choose for each tenant the contracts that will apply"
+        },
+        "ADD_PERMISSION": "Add Permission",
+        "ADD_TENANT": "Add a new tenant with their contracts"
+      }
+    },
+    "EDIT_DIALOG": {
+      "PERMISSIONS": {
+        "TITLE": "Update application context",
+        "SUBTITLE": "Permissions",
+        "ORGANISATION_ERROR": "Please note that you have entered two different organizations",
+        "TENANT_ERROR": "A tenant must be selected for each permission",
+        "PERMISSION_ERROR": "At least one permission must be entered"
+      }
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Information",
+        "NAME": "Name",
+        "SECURITY_PROFILE": "Security profile",
+        "TENANT_TOGGLE": "Control over tenants",
+        "STATUS_TOGGLE": "Application context enabled",
+        "CREATION_DATE": "Creation Date",
+        "LAST_UPDATE_DATE": "Last update date",
+        "ACTIVATION_DATE": "Activation date",
+        "DEACTIVATION_DATE": "Deactivation date"
+      },
+      "HISTORY": {
+        "TITLE": "History"
+      },
+      "PERMISSIONS": {
+        "TITLE": "Permissions",
+        "EDIT": "Edit permission",
+        "ORGANISATION": "Organization",
+        "TENANT": "Tenant",
+        "INGEST_CONTRACT": "Ingest contract",
+        "ACCESS_CONTRACT": "Access contract"
+      }
+    }
+  },
+  "ONTOLOGY": {
+    "HOME": {
+      "TITLE": "Ontology",
+      "SEARCH_PLACEHOLDER": "Name, identifier",
+      "CREATE_VOCABULARY": "Create vocabulary",
+      "IMPORT": "Import",
+      "ARRAY": {
+        "IDENTIFIER": "Identifier",
+        "NAME": "Name",
+        "DESCRIPTION": "Description",
+        "CREATION_DATE": "Creation date"
+      }
+    },
+    "CREATE_DIALOG": {
+      "TITLE": "Create vocabulary",
+      "SUBTITLE": "Information",
+      "IDENTIFIER": "Identifier",
+      "NAME": "Name",
+      "TYPE": "Type",
+      "COLLECTION": "Collection",
+      "DESCRIPTION": "Description",
+      "IDENTIFIER_TOOLTIP": "For external vocabularies, this identifier corresponds to the name of the metadata as it is named in the transfer slip or in an archival unit profile",
+      "TYPE_TOOLTIP": "Vocabulary indexing type, corresponding to a type expected by the Elastic Search engine",
+      "COLLECTION_TOOLTIP": "Mongo DB collection that uses the vocabulary",
+      "NAME_ALREADY_EXISTS": "Name already in use",
+      "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
+      "IDENTIFIER_NO_COMPLIANT": "Non-compliant identifier"
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Information",
+        "NAME": "Name",
+        "TYPE": "Type",
+        "COLLECTION": "Collection",
+        "DESCRIPTION": "Description",
+        "CREATION_DATE": "Creation date"
+      },
+      "HISTORY": {
+        "TITLE": "History"
+      }
+    }
+  },
+  "RULES_APP": {
+    "HOME": {
+      "TITLE": "Management rules repository",
+      "SEARCH_PLACEHOLDER": "Rule title",
+      "CREATE": "Create rule",
+      "RULE_MANAGEMENT": "management rule",
+      "IMPORT": "Import",
+      "EXPORT": "Export",
+      "ARRAY": {
+        "IDENTIFIER": "Identifier",
+        "TYPE": "Rule type",
+        "NAME": "Rule title",
+        "PERIOD": "Period",
+        "UNIT_MEASURE": "Units of measure"
+      }
+    },
+    "CREATE_DIALOG": {
+      "TITLE": "Management rules",
+      "SUBTITLE": "Information",
+      "IDENTIFIER": "Identifier",
+      "NAME": "Rule title",
+      "TYPE": "Rule type",
+      "DESCRIPTION": "Description",
+      "PERIOD": "Period",
+      "UNIT_MEASURE": "Unit of measure",
+      "IDENTIFIER_TOOLTIP": "The identifier is unique per type of rule. It must not include spaces or accented characters",
+      "TYPE_TOOLTIP": "StorageRule : Current useful life - AppraisalRule : Administrative useful life - AccessRule : Communicability delay - ReuseRule: Duration of reuse - DisseminationRule : Broadcast delay - ClassificationRule : Classification duration",
+      "NAME_ALREADY_EXISTS": "Name already in use",
+      "IDENTIFIER_ALREADY_EXISTS": "The rule code entered already exists",
+      "IDENTIFIER_NO_COMPLIANT": "Non-compliant identifier"
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Information",
+        "TYPE": "Rule type",
+        "NAME": "Rule title",
+        "PERIOD": "Period",
+        "UNIT_MEASURE": "Unit measure",
+        "DESCRIPTION": "Description"
+      },
+      "HISTORY": {
+        "TITLE": "History"
+      }
+    }
+  },
+  "SECURITY_PROFILE_APP": {
+    "HOME": {
+      "TITLE": "Security Profiles",
+      "SEARCH_PLACEHOLDER": "Name, identifier",
+      "CREATE": "Create profile",
+      "ARRAY": {
+        "NAME": "Name",
+        "IDENTIFIER": "Identifier"
+      }
+    },
+    "CREATE_DIALOG": {
+      "INFORMATION": {
+        "TITLE": "Create security profile",
+        "SUBTITLE": "Information",
+        "NAME": "Name",
+        "ACCESS": "All access",
+        "ACCESS_TOOLTIP": "Rights to which the security profile gives access",
+        "IDENTIFIER": "Identifier",
+        "SECURITY_PROFILE": "Security profile",
+        "NAME_ALREADY_EXISTS": "Name already in use",
+        "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use"
+      },
+      "PERMISSION": {
+        "TITLE": "Create security profile",
+        "SUBTITLE": "Permissions",
+        "ARRAY": {
+          "SERVICE": "Service",
+          "READ": "Read",
+          "WRITE": "Write",
+          "DELETE": "Delete"
+        }
+      }
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Information",
+        "NAME": "Name",
+        "ACCESS": "All access"
+      },
+      "HISTORY": {
+        "TITLE": "History"
+      },
+      "PERMISSIONS": {
+        "TITLE": "Permissions",
+        "ACCESS": "All access is authorized"
+      }
+    }
+  },
+  "AGENCY": {
+    "HOME": {
+      "TITLE": "Configure agent services",
+      "TITLE_PLACEHOLDER": "Name, Identifier",
+      "ACTION_BUTTON": "Create agent service",
+      "ACTION_IMPORT": "Import the referential",
+      "ACTION_EXPORT": "Export the referential",
+      "ARRAY": {
+        "NAME": "Name",
+        "IDENTIFIER": "Identifier",
+        "DESCRIPTION": "Description",
+        "CREATION_DATE": "Creation date"
+      },
+      "DELETE_CONFIM_DIALOG": {
+        "TITLE": "Removing an agency",
+        "MESSAGE": "Do you confirm the removal of agency {{name}}?"
+      }
+    },
+    "CREATE_DIALOG": {
+      "TITLE": "Information",
+      "SUBTITLE": "Creating an agent service",
+      "IDENTIFIER": "Identifier",
+      "NAME": "Name",
+      "DESCRIPTION": "Description",
+      "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
+      "NAME_ALREADY_EXISTS": "Name already in use",
+      "VALIDATE_AND_CREATE": "End and create a new agent service"
+    },
+    "TAB": {
+      "INFORMATION": "Informations",
+      "HISTORY": "History",
+      "NAME": "Name",
+      "DESCRIPTION": "Description"
+    }
+  },
+  "LOGBOOK": {
+    "OPERATIONS_CATEGORIES": {
+      "TRANSFER_REPLY": "Transfer acknowledgment",
+      "AUDIT": "Audit",
+      "MASTERDATA": "Master Data",
+      "ELIMINATION": "Elimination of archival units",
+      "INGEST": "Input",
+      "INGEST_TEST": "Blank Entry",
+      "EXPORT_DIP": "Export DIP",
+      "EXTERNAL_LOGBOOK": "External event logging",
+      "UPDATE": "Update",
+      "RECLASSIFICATION": "Archival unit tree modification",
+      "PRESERVATION": "Global preservation process",
+      "STORAGE_BACKUP": "Backup of write logs",
+      "TRACEABILITY": "Security",
+      "CHECK": "Checking secure logs",
+      "ARCHIVE_TRANSFER": "Transfer"
+    },
+    "HOME": {
+      "TITLE": "Operations log",
+      "SEARCH_PLACEHOLDER": "Identifier",
+      "REFRESH": "Refresh",
+      "START_DATE": "Start date",
+      "END_DATE": "End date",
+      "ARRAY": {
+        "IDENTIFIER": "Identifier",
+        "CATEGORY": "Operation category",
+        "OPERATION": "Operation",
+        "START_DATE": "Start date",
+        "END_DATE": "End date",
+        "STATUS": "Status",
+        "STEP": "Step"
+      }
+    }
+  },
+  "INGEST_CONTRACT": {
+    "HOME": {
+      "TITLE": "Set up ingest contracts",
+      "SEARCH_PLACEHOLDER": "Name, identifier",
+      "CREATE_INGEST_CONTRACT": "Create an ingest contract",
+      "IMPORT": "Import",
+      "DOWNLOAD_MODEL": "Download Model",
+      "EXPORT": "Export",
+      "ARRAY": {
+        "NAME": "Name",
+        "IDENTIFIER": "Identifier",
+        "CREATION_DATE": "Creation date",
+        "PROFILE_COUNT": "Number of archive profiles",
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive"
+      }
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Information",
+        "ACTIVE_CONTRACT": "Active contract",
+        "INACTIVE_CONTRACT": "Inactive contract",
+        "ARCHIVE_PROFILE": "Archiving Profiles",
+        "MANAGEMENT_CONTRACT": "Management contracts",
+        "CREATION_DATE": "Creation date",
+        "LAST_MODIFICATION_DATE": "Date of last modification",
+        "ACTIVATION_DATE": "Activation date",
+        "DEACTIVATION_DATE": "Deactivation date"
+      },
+      "FORMAT": {
+        "TITLE": "Formats",
+        "ALL_FORMAT": "All file formats",
+        "SELECT_FORMAT": "Select file formats",
+        "ALLOW_FORMAT": "Allow unidentified formats",
+        "SELECT_FORMAT_SEARCH": "Search file format",
+        "NO_FORMAT_SELECTED": "Please select at least one format"
+      },
+      "OBJECTS": {
+        "TITLE": "Uses",
+        "BINARY_MENDATORY": "Mandatory digital original",
+        "ALL_USAGES": "All authorized uses",
+        "SELECT_FORMAT": "Select uses"
+      },
+      "LEGACY": {
+        "TITLE": "Legacy",
+        "LEGACY_RULES": "Calculation of inheritance of rules and indexation of deadlines"
+      },
+      "ATTACHEMENT": {
+        "TITLE": "Attachment",
+        "POSITION": "SIP attachment position:",
+        "CONTROL": {
+          "TITLE": "Connection control:",
+          "AUTHORIZED": "Allowed",
+          "REQUIRED": "Mandatory",
+          "UNAUTHORIZED": "Forbidden"
+        }
+      },
+      "HISTORY": {
+        "TITLE": "History"
+      }
+    },
+    "CREATE_DIALOG": {
+      "TITLE": "Creation of an ingest contract",
+      "INFORMATIONS": "Informations",
+      "INGEST_CONTRACT_ACTIVE": "Ingest contract active",
+      "NAME_ALREADY_EXISTS": "Name already in use",
+      "NAME": "Name",
+      "IDENTIFIER_ALREADY_EXIST": "Identifier already in use",
+      "IDENTIFIER": "Identifier",
+      "ARCHIVE_PROFILE": "Archive profiles",
+      "MANAGEMENT_CONTRACT": "Management contracts",
+      "EVERY_FORMAT_TYPES": "Every format types",
+      "ALLOW_EVERY_FORMAT_TYPES": "Allow all existing binary object formats in the format repository",
+      "FILES_FORMAT_SELECT": "Select file formats",
+      "FILES_FORMAT_SEARCH": "Search for file formats",
+      "CHOOSE_ALLOWED_FILE_FORMATS": "Choose the binary formats you want to allow",
+      "ALLOW_UNIDENTIFIED_FORMATS": "Allow unidentified formats",
+      "ALLOW_UNIDENTIFIED_FORMATS_DESCRIPTION": "Allow unreferenced binary object formats in the format repository",
+      "BINARY_OBJECT_MANDATORY": "Mandatory digital original",
+      "BINARY_OBJECT_MANDATORY_TOOLTIP": "Option to make the presence of a « Master » type binary object mandatory or not",
+      "ALL_USAGES_ALLOWED": "All usages allowed",
+      "ALL_USAGES_ALLOWED_TOOLTIP": "Authorized use(s) in the case of adding a binary object to an existing group of technical objects",
+      "COMPUTING_INHERITED_RULES": "Calculation of inheritance of rules and indexation of deadlines",
+      "COMPUTING_INHERITED_RULES_TOOLIP": "Indexing of archival units marked as invalid when entered so that they are calculated in an automatic process triggered periodically",
+      "ATTACHEMENT_POSITION": "Attachment control",
+      "ATTACHEMENT_POSITION_TOOLTIP": "Option to control the attachment declaration in a slip",
+      "ATTACHEMENT_CONTROL": "Attachements control",
+      "ATTACHEMENT_CONTROL_TOOLTIP": "Option to control the attachment declaration in a slip",
+      "ATTACHEMENT_CONTROL_ALLOW": "Allowed",
+      "ATTACHEMENT_CONTROL_MANDATORY": "Mandatory",
+      "ATTACHEMENT_CONTROL_FORBIDDEN": "Forbidden",
+      "ATTACHEMENT_CONTROL_ALLOW_TOOLTIP": "Allow a slip to contain nodes without having to",
+      "ATTACHEMENT_CONTROL_MANDATORY_TOOLTIP": "Makes the presence of at least one node mandatory",
+      "ATTACHEMENT_CONTROL_FORBIDDEN_TOOLTIP": "Prohibits the presence of attachment nodes in the slip",
+      "SELECT_TREE_POSITIONS": "Select tree positions",
+      "FILE_FORMATS": "File formats",
+      "USAGES": "Usages",
+      "LEGACY": "Legacy",
+      "SELECT_USAGES": "Select usages"
+    },
+    "UPDATE_NODE_DIALOG": {
+      "UPDATE_SIP": "Modification of SIP attachment positions",
+      "UPDATE_AU": "Modification of AU attachment positions",
+      "TITLE": "Home position",
+      "ATTACHEMENT_CONTROL_INFO":"Option allowing you to control the attachment declaration in a slip"
+    }
+  },
+  "SECURE": {
+    "HOME": {
+      "TITLE": "Security Operations",
+      "SEARCH_PLACEHOLDER": "Identifier",
+      "START_DATE": "Start date",
+      "END_DATE": "End date",
+      "ARRAY": {
+        "IDENTIFIER": "Identifier",
+        "CATEGORY": "Operation category",
+        "OPERATION": "Operation",
+        "CREATION_DATE": "Creation date",
+        "STATUS": "Status",
+        "MESSAGE": "Message",
+        "TRACEABILITY_TYPES": {
+          "STP_OP_SECURISATION": "Operations",
+          "LOGBOOK_UNIT_LFC_TRACEABILITY": "Lifecycle of archival units",
+          "LOGBOOK_OBJECTGROUP_LFC_TRACEABILITY": "Object Group Lifecycle",
+          "STP_STORAGE_SECURISATION": "Write log"
+        }
+      }
+    },
+    "TAB": {
+      "INFORMATIONS": {
+        "INFORMATIONS": "Informations",
+        "DOWNLOAD_REPORT": "Download report",
+        "OPERATION_TYPE": "Operation type",
+        "OPERATIONS": "Operations",
+        "RELEASE_DATE": "Release date",
+        "STATUS": "Status",
+        "START_DATE": "Start date",
+        "END_DATE": "End date",
+        "NUMBER_OF_OPERATIONS": "Number of operations",
+        "FILE_NAME": "File name",
+        "FILE_SIZE": "File size",
+        "HASH_ALGORITHM": "Hash algorithm",
+        "STAMP_DATE": "Stamp date",
+        "SIGNATURE_CERTIFICATE": "Signature certificate",
+        "MERKLE_TREE_HASH": "Merkle tree hash"
+      },
+      "CHECK": {
+        "CHECK": "Check",
+        "CHECK_SECURITY": "Check security",
+        "CHECK_STEPS": "Check steps"
+      },
+      "DETAILS": {
+        "DETAILS": "Details"
+      }
+    }
+  },
+  "DSL": {
+    "HOME": {
+      "TITLE": "DSL Query",
+      "SEARCH_CATEGORY": "Search category",
+      "IDENTIFIER": "Identifier",
+      "ACCESS_CONTRACT": "Access contract",
+      "ARCHIVE_UNIT": "Archive unit",
+      "TECHNICAL_OBJECT_GROUP": "Technical object group",
+      "IDIENTIFIER_LENGTH_ERROR": "A device identifier must contain {{ length }} characters",
+      "UNKOWN_UNIT": "Unknown unit",
+      "REQUEST": "DSL Request (JSON Format)",
+      "REQUEST_RESULT": "DSL request result",
+      "VALIDATE_JSON": "Validate JSON"
+    }
+  },
+  "PROBATIVE_VALUE": {
+    "HOME": {
+      "TITLE": "Reports of probative value",
+      "GENERATE_VALUE": "Generate statement",
+      "SEARCH_PLACEHOLDER": "Statement ID, UA ID...",
+      "START_DATE": "Start date",
+      "END_DATE": "End date",
+      "ARRAY": {
+        "IDENTIFIER": "Identifier",
+        "CREATION_DATE": "Creation date",
+        "STATUS": "Status",
+        "MESSAGE": "Result"
+      }
+    },
+    "CREATE_DIALOG": {
+      "TITLE": "Generate a statement of probative value",
+      "SUBTITLE": "Information",
+      "UNIT_ID": "Archival unit identifier",
+      "USAGE": "Select a use",
+      "VERSION": "Version",
+      "SUBMIT": "Generate the statement",
+      "ACCESS_CONTACT_NOT_SET": "No access contract is associated with the user",
+      "ERROR_MESSAGE_REQUIRED_LENGTH": "The field must contain at least {{ requiredLength }} characters"
+    },
+    "PREVIEW_PANEL": {
+      "DOWNLOAD": "Download the statement"
+    }
+  },
+  "AUDIT": {
+    "HOME": {
+      "TITLE": "Audits",
+      "START_AUDIT": "Start an audit",
+      "SEARCH_PLACEHOLDER": "Name, identifier",
+      "START_DATE": "Start date",
+      "END_DATE": "End date",
+      "ARRAY": {
+        "IDENTIFIER": "Identifier",
+        "CATEGORY": "Category",
+        "CREATION_DATE": "Creation date",
+        "STATUS": "Status",
+        "MESSAGE": "Result"
+      }
+    },
+    "OPERATIONS_CATEGORIES" : {
+      "PROCESS_AUDIT": "Integrity and Existence",
+      "EVIDENCE_AUDIT": "Consistency",
+      "RECTIFICATION_AUDIT": "Correct"
+    },
+    "TAB": {
+      "INFORMATIONS": {
+        "TITLE": "Informations",
+        "DOWNLOAD_REPORT": "Download report",
+        "OPERATION_CATEGORY": "Operation category",
+        "EXTERNAL_AGENTS_INDENTIFIERS": "External agents identifiers",
+        "ASSOCIATED_CONTRACT": "Associated contract",
+        "ASSIGMENT_DATE": "Assigment date",
+        "OPERATION_IDENTIFIER": "Operation identifier",
+        "TRANSACTION_NUMBER":  "Transaction number",
+        "APPLICATION_IDENTIFIER": "Application identifier",
+        "OBJECT_IDENTIFIER": "Object identifier",
+        "REPORT": "Report",
+        "ADDITIONAL_OPERATION_INFORMATIONS": "Additonal operation informations",
+        "MESSAGE": "Result"
+      },
+      "DETAILS": {
+        "TITLE": "Details"
+      }
+    },
+    "CREATE_DIALOG": {
+      "TITLE": "Starting an audit",
+      "SUBTITLE": "Information",
+      "AUDIT_TYPE": "Audit type",
+      "ALL_PRODUCERS": "All producing services",
+      "ALL_PRODUCERS_PLACEHOLDER": "Select producing service",
+      "ALL_NODES": "All home positions",
+      "NODES": "Home positions",
+      "EVIDENCE_AUDIT_IDENTIFIER": "Consistency audit identifier",
+      "EVIDENCE_AUDIT_NOT_FOUND": "The consistency audit identifier entered does not exist",
+      "OPERATIONS_CATEGORIES": {
+        "AUDIT_FILE_EXISTING": "Existence",
+        "AUDIT_FILE_INTEGRITY": "Integrity",
+        "AUDIT_FILE_CONSISTENCY": "Consistency",
+        "AUDIT_FILE_RECTIFICATION": "Fix"
+      }
+    }
+  },
   "SNACKBAR": {
     "ACCESS_CONTRACT_CREATED": "The access contract has been successfully created",
     "ACCESS_CONTRACT_UPDATED": "The access contract has been successfully updated",
+    "ACCESS_CONTRACT_IMPORTED": "Access contracts has been successfully imported",
     "INGEST_CONTRACT_CREATED": "The entry contract has been created",
     "INGEST_CONTRACT_UPDATED": "The input contract has been updated successfully",
+    "INGEST_CONTRACT_IMPORTED": "Ingest contracts has been successfully imported",
+    "AGENCY_CONTRACT_IMPORTED": "Import completed successfully. Please consult the details of the import in the logbook",
+    "AGENCY_CONTRACT_IMPORT_FAIL": "Import failed. Please check the error details in the logbook",
     "AGENCY_CONTRACT_CREATED": "The agent service has been created",
     "AGENCY_CONTRACT_UPDATED": "The agent service has been successfully updated",
     "AGENCY_CONTRACT_DELETED": "The agent service has been successfully deleted",
-    "AGENCY_CONTRACT_DELETE_ERROR": "Error removing Service Agent",
+    "AGENCY_CONTRACT_DELETE_ERROR": "Unable to delete an already used agent service",
     "AGENCY_CONTRACT_EXPORT_ALL": "Agent services export in progress ...",
-    "FILE_FORMAT_CONTRACT_CREATED": "The file format has been created",
-    "FILE_FORMAT_CONTRACT_UPDATED": "The file format has been updated successfully",
-    "FILE_FORMAT_CONTRACT_DELETED": "The file format has been deleted successfully",
-    "FILE_FORMAT_CONTRACT_DELETING": "The file format deletion in progress ...",
+    "FILE_FORMAT_CONTRACT_CREATED": "The format has been created",
+    "FILE_FORMAT_CONTRACT_UPDATED": "The format has been updated successfully",
+    "FILE_FORMAT_CONTRACT_DELETED": "The format has been deleted successfully",
+    "FILE_FORMAT_CONTRACT_DELETING": "The format deletion in progress ...",
     "CONTEXT_CREATED": "The application context has been successfully created",
     "CONTEXT_UPDATED": "The application context has been successfully updated",
     "SECURITY_CREATED": "The security profile has been created",
@@ -327,7 +1072,7 @@
     "ONTOLOGY_CREATED": "The ontology has been successfully created",
     "ONTOLOGY_UPDATED": "The ontology has been updated successfully",
     "ONTOLOGY_DELETED": "Ontology has been successfully deleted",
-    "AUDIT_RUN": "The audit has been launched.",
+    "AUDIT_RUN": "The audit \"{{type}}\" has been launched",
     "PROBATIVE_VALUE_RUN": "The probative value statement has been launched",
     "FORMAT_INVALID": "Invalid request format",
     "RULE_DELETION_START": "The deletion of the management rule {{ name }} is in progress ...",
@@ -341,6 +1086,11 @@
     "RULE_DELETE_SUCCESS": "Management rule {{ name }} has been deleted",
     "RULE_DELETE_FAILED": "Management rule {{ name }} could not be deleted",
     "RULE_EXPORT_ALL": "Export of management rules in progress ...",
-    "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de {{ limit }} résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
+    "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de {{ limit }} résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche.",
+    "NO_ACCESS_CONTRACT_LINKED": "No access contract is associated with the user",
+    "TRACEABILITY_OPERATION_SUCCESS": "Secure log verification audit has been initiated.",
+    "TRACEABILITY_OPERATION_FAILED": "Secure log verification audit failed.",
+    "OPEN_LOGBOOK": "Open logbook",
+    "INVALID_DSL_REQUEST_FORMAT": "Invalid request format"
   }
 }

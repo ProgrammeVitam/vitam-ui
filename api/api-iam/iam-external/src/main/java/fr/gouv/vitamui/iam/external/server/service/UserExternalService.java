@@ -56,6 +56,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -129,7 +130,12 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     @Override
     public PaginatedValuesDto<UserDto> getAllPaginated(final Integer page, final Integer size,
             final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+        this.checkAllowedOrderby(orderBy);
         return super.getAllPaginated(page, size, criteria, orderBy, direction);
+    }
+
+    public Resource exportUsers(final Optional<String> criteria) {
+        return getClient().exportUsers(getInternalHttpContext(), checkAuthorization(criteria));
     }
 
     @Override
@@ -146,15 +152,23 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
         }
     }
 
+    private void checkAllowedOrderby(Optional<String> optOrderBy) {
+        optOrderBy.ifPresent(orderBy -> {
+            if(orderBy.trim().equalsIgnoreCase("password")) {
+                throw new ForbiddenException("forbidden orderby field");
+            }
+        });
+    }
+
     /**
      * If the user is not an admin, he can see only users with a sub LEVEL and himself
      * Example : Users { id: 10, level: ROOT} can see only users with a LEVEL : ROOT..* and himself
-     * @param query
+     * @param query query
      */
     private void addLevelRestriction(final QueryDto query) {
         final QueryDto levelQuery = new QueryDto();
         levelQuery.setQueryOperator(QueryOperator.OR);
-        levelQuery.addCriterion("level", externalSecurityService.getLevel() + ".", CriterionOperator.STARTWITH);
+        levelQuery.addCriterion(LEVEL_KEY, externalSecurityService.getLevel() + ".", CriterionOperator.STARTWITH);
         levelQuery.addCriterion("id", externalSecurityService.getUser().getId(), CriterionOperator.EQUALS);
         query.addQuery(levelQuery);
     }
@@ -176,7 +190,7 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     @Override
     protected Collection<String> getAllowedKeys() {
         return Arrays.asList("id", "lastname", "firstname", "identifier", "groupId", "language", "email", "otp",
-                "subrogeable", "phone", "mobile", "lastConnection", "status", "level", TYPE_KEY, CUSTOMER_ID_KEY, "siteCode", "centerCode");
+                "subrogeable", "phone", "mobile", "lastConnection", "status", LEVEL_KEY, TYPE_KEY, CUSTOMER_ID_KEY, "siteCode", "centerCodes");
     }
 
     @Override
@@ -193,6 +207,16 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     }
 
     @Override
+    protected Collection<String> getRestrictedKeys(final QueryDto query) {
+        Collection<String> restrictedKeys = getRestrictedKeys();
+        if (externalSecurityService.hasRole(ServicesData.ROLE_GET_USERS_ALL_CUSTOMERS)) {
+            Optional<String> customerIdKey = query.getCriterionList().stream().map(Criterion::getKey).filter(CUSTOMER_ID_KEY::equals).findFirst();
+            customerIdKey.ifPresent(customerId-> restrictedKeys.removeIf(customerId::equals));
+        }
+        return restrictedKeys;
+    }
+
+    @Override
     protected String getVersionApiCrtieria() {
         return CRITERIA_VERSION_V2;
     }
@@ -202,6 +226,7 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
         return userInternalRestClient;
     }
 
+    @Override
     public LogbookOperationsResponseDto findHistoryById(final String id) {
         checkLogbookRight(id);
         final JsonNode body = getClient().findHistoryById(getInternalHttpContext(), id);
@@ -233,7 +258,7 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
             final boolean hasRolePatchUserAnalytics = externalSecurityService.hasRole(ServicesData.ROLE_UPDATE_USER_INFOS);
 
             if (!hasRolePatchUserAnalytics) {
-                throw new UnAuthorizedException(String.format("Unable to patch analytics for user with id: %s", partialDto.get(USER_ID_ATTRIBUTE)));
+                throw new ForbiddenException(String.format("Unable to patch analytics for user with id: %s", partialDto.get(USER_ID_ATTRIBUTE)));
             }
         }
 

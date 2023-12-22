@@ -5,40 +5,23 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+      <div class="vitamui-heading">
+        <vitamui-common-title-breadcrumb>
+          {{'ONTOLOGY.HOME.TITLE' | translate}}
+        </vitamui-common-title-breadcrumb>
 
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true">
-        </vitamui-common-navbar>
+        <vitamui-common-banner [searchbarPlaceholder]="'ONTOLOGY.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+          <button class="btn primary ml-3 mr-3" (click)="openCreateOntologyDialog()">
+            <span>{{'ONTOLOGY.HOME.CREATE_VOCABULARY' | translate}}</span>
+          </button>
 
-        <div class="vitamui-heading">
-          <vitamui-common-title-breadcrumb>
-            {{ 'APPLICATION.ONTOLOGY_APP.NAME' | translate }}
-          </vitamui-common-title-breadcrumb>
-        </div>
-
-        <div class="controls">
-
-          <vitamui-common-search-bar
-            name="ontology-search"
-            (search)="onSearchSubmit($event)"
-            placeholder="Nom, Identifiant" i18n-placeholder="@@ontologySearchPlaceholder"
-          ></vitamui-common-search-bar>
-
-          <div class="actions">
-            <button class="btn secondary" (click)="openCreateOntologyDialog()">
-              <i class="vitamui-icon vitamui-icon-add-ontologie btn-create"></i> <span i18n="Create ontology button label@@ontologyListCreateButton">Créer un vocabulaire</span>
-            </button>
-            <button class="btn more-actions" (click)="openOntologyImportDialog()" i18n="Import ontology button label@@ontologyListImportButton">
-              Importer
-            </button>
-          </div>
-
-        </div>
-      </div>
+          <button class="btn secondary" (click)="openOntologyImportDialog()">
+            <span>{{'ONTOLOGY.HOME.IMPORT' | translate}}</span>
+          </button>
+        </vitamui-common-banner>
     </div>
 
-    <div class="vitamui-body vitamui-container">
+    <div class="vitamui-content">
       <app-ontology-list (ontologyClick)="showOntology($event)" [search]="search"></app-ontology-list>
     </div>
   </mat-sidenav-content>

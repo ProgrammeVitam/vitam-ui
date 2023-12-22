@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -48,6 +48,7 @@ import { ArchiveModule } from './archive/archive.module';
 import { AuthService } from './auth.service';
 import { ApplicationCardModule } from './components/application';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
+import { VitamUIAutocompleteModule, VitamUIAutocompleteMultiSelectModule } from './components/autocomplete';
 import { BlankComponent } from './components/blank/blank.component';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
 import { CollapseModule } from './components/collapse/collapse.module';
@@ -72,7 +73,6 @@ import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
 import { UserAlertCardModule } from './components/user-alerts/user-alerts-card';
-import { VitamUIAutocompleteModule } from './components/vitamui-autocomplete/vitamui-autocomplete.module';
 import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamuiCommonBannerModule } from './components/vitamui-common-banner/vitamui-common-banner.module';
 import { VitamuiCommonSelectModule } from './components/vitamui-common-select/vitamui-common-select.module';
@@ -116,15 +116,13 @@ import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   // tslint:disable-next-line: semicolon whitespace
-  const p = () => configService.load(environment.configUrls).toPromise();
-
-  return p;
+  return () => configService.load(environment.configUrls).toPromise();;
 }
 
 export function startupServiceFactory(startupService: StartupService, authService: AuthService) {
   // leave it like this due to run packagr issue :
   // https://github.com/ng-packagr/ng-packagr/issues/696 & https://github.com/angular/angular/issues/
-  const p = () =>
+  return () =>
     new Promise((resolve) => {
       authService
         .login()
@@ -134,9 +132,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
         )
         .subscribe(() => resolve(true));
       // tslint:disable-next-line: semicolon whitespace
-    });
-
-  return p;
+    });;
 }
 
 @NgModule({
@@ -177,6 +173,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ScrollTopModule,
     SearchBarModule,
     SearchBarWithSiblingButtonModule,
+    VitamUIAutocompleteMultiSelectModule,
     SecurityModule,
     SelectTenantDialogModule,
     SlideToggleModule,
@@ -257,6 +254,9 @@ export function startupServiceFactory(startupService: StartupService, authServic
     TranslateModule,
     UserPhotoModule,
     VitamUIAutocompleteModule,
+    VitamUIAutocompleteMultiSelectModule,
+    ScrollTopModule,
+    FooterModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,
     VitamuiCommonSelectModule,

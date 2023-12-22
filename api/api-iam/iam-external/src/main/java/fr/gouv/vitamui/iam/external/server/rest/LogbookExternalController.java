@@ -58,6 +58,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,6 +81,11 @@ import java.util.Optional;
 @RestController
 @ResponseBody
 public class LogbookExternalController {
+
+    private static final String DOWNLOAD_TYPE_DIP = "dip";
+    private static final String DOWNLOAD_TYPE_TRANSFER_SIP = "transfersip";
+    private static final String DOWNLOAD_TYPE_BATCH_REPORT = "batchreport";
+    private static final String DOWNLOAD_TYPE_OBJECT = "object";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookExternalController.class);
 
@@ -172,8 +178,19 @@ public class LogbookExternalController {
         ParameterChecker.checkParameter("The Identifier and the download type are mandatory parameters: ", id, downloadType);
         SanityChecker.checkSecureParameter(id, downloadType);
         LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
+        String fileName = id + ".json";
+        if (DOWNLOAD_TYPE_OBJECT.equals(downloadType)) {
+            fileName = id + ".xml";
+        }
+
+        if (DOWNLOAD_TYPE_BATCH_REPORT.equals(downloadType)) {
+            fileName = id + ".jsonl";
+        }
+        if (DOWNLOAD_TYPE_DIP.equals(downloadType) || DOWNLOAD_TYPE_TRANSFER_SIP.equals(downloadType)) {
+            fileName = id + ".zip";
+        }
         ResponseEntity<Resource> responseResource = logbookExternalService.downloadReport(id, downloadType).block();
-        return RestUtils.buildFileResponse(responseResource, Optional.empty(), Optional.empty());
+        return RestUtils.buildFileResponse(responseResource, Optional.empty(), Optional.of(fileName));
     }
 
 }

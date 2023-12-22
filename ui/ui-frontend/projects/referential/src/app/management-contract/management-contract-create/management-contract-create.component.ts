@@ -27,16 +27,9 @@
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import {
-  ConfirmDialogService,
-  Logger,
-  ManagementContract,
-  Option,
-  PersistentIdentifierPolicyTypeEnum,
-  StorageStrategy,
-} from 'ui-frontend-common';
+import { ConfirmDialogService, Logger, ManagementContract, Option, PersistentIdentifierPolicyTypeEnum, StorageStrategy } from 'ui-frontend-common';
 import * as uuid from 'uuid';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
@@ -49,20 +42,6 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./management-contract-create.component.scss'],
 })
 export class ManagementContractCreateComponent implements OnInit, OnDestroy {
-  constructor(
-    public dialogRef: MatDialogRef<ManagementContractCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private managementContractService: ManagementContractService,
-    private managementContractCreateValidators: ManagementContractCreateValidators,
-    private logger: Logger
-  ) {}
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
-  }
-
   form: FormGroup;
   stepIndex = 0;
   stepCount = 3;
@@ -78,6 +57,16 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
 
   gotOpened = false;
   deleteDisabled = true;
+
+  constructor(
+    public dialogRef: MatDialogRef<ManagementContractCreateComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private formBuilder: FormBuilder,
+    private confirmDialogService: ConfirmDialogService,
+    private managementContractService: ManagementContractService,
+    private managementContractCreateValidators: ManagementContractCreateValidators,
+    private logger: Logger
+  ) {}
 
   statusControl = new FormControl(true);
   technicalObjectActivated = false;
@@ -179,6 +168,10 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
         this.logger.error(error);
       }
     );
+  }
+
+  get stepProgress() {
+    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 
   firstStepInvalid(): boolean {

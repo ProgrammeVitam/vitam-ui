@@ -81,22 +81,13 @@ export class FileFormatService extends SearchService<FileFormat> {
     return this.fileFormatApiService.check(agency, this.headers);
   }
 
-  create(agency: FileFormat) {
-    return this.fileFormatApiService.create(agency, this.headers)
+  create(fileFormat: FileFormat) {
+    return this.fileFormatApiService.create(fileFormat, this.headers)
       .pipe(
         tap(
-          (response: FileFormat) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED',
-              translateParams:{
-                name: response.puid,
-              },
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
+          () =>
+            this.snackBarService.open({message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED', icon: 'vitamui-icon-fichiers'}),
+          (error) => this.snackBarService.open({ message: error.error.message, translate: false })
         )
       );
   }
@@ -106,18 +97,9 @@ export class FileFormatService extends SearchService<FileFormat> {
       .pipe(
         tap((response) => this.updated.next(response)),
         tap(
-          (response) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.FILE_FORMAT_CONTRACT_UPDATED',
-              translateParams:{
-                name: response.puid,
-              },
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
+          () =>
+            this.snackBarService.open({message: 'SNACKBAR.FILE_FORMAT_CONTRACT_UPDATED', icon: 'vitamui-icon-fichiers'}),
+          (error) => this.snackBarService.open({ message: error.error.message, translate: false })
         )
       );
   }
@@ -125,13 +107,7 @@ export class FileFormatService extends SearchService<FileFormat> {
   delete(fileFormat: FileFormat): Observable<any> {
     return this.fileFormatApiService.delete(fileFormat.puid).pipe(
       tap(() => {
-          this.snackBarService.open({
-            message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETED',
-            translateParams:{
-              name: fileFormat.puid,
-            },
-            icon: 'vitamui-icon-admin-key'
-          });
+          this.snackBarService.open({ message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETED', icon: 'vitamui-icon-fichiers' });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });

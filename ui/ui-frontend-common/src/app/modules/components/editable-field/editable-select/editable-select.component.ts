@@ -60,7 +60,7 @@ export const EDITABLE_SELECT_VALUE_ACCESSOR: any = {
 export class EditableSelectComponent extends EditableFieldComponent {
   @ContentChildren(EditableOptionComponent) options: QueryList<EditableOptionComponent>;
 
-  @ViewChild('select') select: MatSelect;
+  @ViewChild('select') select: any;
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<EditableFieldComponent>;
 
   @Input() showConfirmDialog = false;

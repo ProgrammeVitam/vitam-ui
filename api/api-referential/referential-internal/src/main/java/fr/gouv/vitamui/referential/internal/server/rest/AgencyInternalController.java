@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -51,6 +52,7 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
+import fr.gouv.vitamui.referential.internal.server.utils.ExportCSVUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -74,8 +76,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.ws.rs.core.Response;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -160,7 +161,8 @@ public class AgencyInternalController {
         Response response = agencyInternalService.export(vitamContext);
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream)entity);
+            var mergedBomCsvInputStream = new SequenceInputStream(new ByteArrayInputStream(ExportCSVUtils.BOM), (InputStream)entity);
+            Resource resource = new InputStreamResource(mergedBomCsvInputStream);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
         return null;
@@ -174,7 +176,7 @@ public class AgencyInternalController {
     }
 
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         if(file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
             SanityChecker.isValidFileName(file.getOriginalFilename());
@@ -183,6 +185,7 @@ public class AgencyInternalController {
         SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug("import agency file {}", fileName);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return agencyInternalService.importAgencies(vitamContext, fileName, file);
+        RequestResponse requestResponse = agencyInternalService.importAgencies(vitamContext, fileName, file);
+        return new ResponseEntity<>(requestResponse.toJsonNode(), HttpStatus.valueOf(requestResponse.getHttpCode()));
     }
 }

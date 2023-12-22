@@ -116,7 +116,8 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
       maximumAuthenticationLifetime: [null, Validators.pattern('^[0-9]*$')],
       wantsAssertionsSigned: [true],
-      authnRequestSigned: [true]
+      authnRequestSigned: [true],
+      propagateLogout: [false]
     });
   }
 
@@ -131,6 +132,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       useState: [true],
       useNonce: [true],
       usePkce: [false],
+      propagateLogout: [false]
     });
   }
   initializeCommonControls() {

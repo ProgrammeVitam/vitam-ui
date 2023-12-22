@@ -41,6 +41,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
@@ -60,7 +61,8 @@ import {AgencyCreateValidators} from './agency-create.validators';
     MatSelectModule,
     MatSnackBarModule,
     ReactiveFormsModule,
-    VitamUICommonModule
+    VitamUICommonModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     AgencyCreateComponent

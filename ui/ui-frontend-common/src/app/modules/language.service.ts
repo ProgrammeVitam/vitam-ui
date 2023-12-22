@@ -38,7 +38,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { Option } from './components/vitamui-autocomplete';
+import { Option } from './components/autocomplete';
 
 // can be completed at need
 export enum MinLangString {

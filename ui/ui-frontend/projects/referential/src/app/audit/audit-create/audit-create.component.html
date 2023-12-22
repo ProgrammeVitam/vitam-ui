@@ -1,143 +1,92 @@
 <div class="header">
-  <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
+  <vitamui-common-progress-bar [count]="getStepCount()" [index]="stepIndex"></vitamui-common-progress-bar>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper>
+  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
-      <div class="content">
-        <h5>Lancement d'un audit</h5>
-        <h4>Informations</h4>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-8 form-control">
-              <vitamui-radio-group formControlName="auditActions" label="Type d'audit" required>
-                <vitamui-radio label="Existence" value="{{AuditAction.AUDIT_FILE_EXISTING}}"></vitamui-radio>
-                <vitamui-radio label="Intégrité" value="{{AuditAction.AUDIT_FILE_INTEGRITY}}" checked></vitamui-radio>
-                <vitamui-radio label="Cohérence" value="{{AuditAction.AUDIT_FILE_CONSISTENCY}}"></vitamui-radio>
-                <vitamui-radio label="Correctif" value="{{AuditAction.AUDIT_FILE_RECTIFICATION}}"></vitamui-radio>
-              </vitamui-radio-group>
-            </div>
-          </div>
+      <div class="content mt-3">
+        <div class="text medium light">{{'AUDIT.CREATE_DIALOG.TITLE' | translate}}</div>
+        <div class="text large bold mb-3">{{'AUDIT.CREATE_DIALOG.SUBTITLE' | translate}}</div>
+
+        <div class="mt-3">
+          <div class="text normal mb-3">{{'AUDIT.CREATE_DIALOG.AUDIT_TYPE' | translate}} <span class="asterix">*</span></div>
+          <mat-button-toggle-group formControlName="auditActions" class="vitamui-button-toggle-group">
+            <mat-button-toggle *ngFor="let action of getAuditActions()" [value]="action">
+              <span>{{'AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + action | translate }}</span>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
         </div>
 
-        <div class="form-group" *ngIf="form.value.auditActions === AuditAction.AUDIT_FILE_RECTIFICATION">
-          <div class="row">
-            <div class="col-8 form-control">
-              <vitamui-common-input
-                class="field-evidenceAudit"
-                formControlName="evidenceAudit"
-                placeholder="Identifiant d'audit de cohérence"
-                i18n-placeholder="evidenceAudit@@auditCreateEvidenceAudit"
-                required
-              >
-                <ng-container *ngIf="form.get('evidenceAudit')?.touched">
-                  <vitamui-common-input-error
-                    *ngIf="!!form.get('evidenceAudit')?.errors?.required"
-                    i18n="Required field error hint@@formErrorRequiredField"
-                  >Champ requis
-                  </vitamui-common-input-error
-                  >
-                  <vitamui-common-input-error
-                    *ngIf="!!form?.get('evidenceAudit')?.errors?.invalidEvidenceAuditId"
-                    i18n="Identfier exists error hint@@formErrorIdentifierExists"
-                  >L'identifiant d'audit de cohérence saisi n'existe pas
-                  </vitamui-common-input-error>
-                </ng-container>
-              </vitamui-common-input>
-            </div>
-          </div>
+        <div class="mt-4" *ngIf="showProducerToggle()">
+          <vitamui-common-slide-toggle [formControl]="allProducerServices">
+            <span>{{'AUDIT.CREATE_DIALOG.ALL_PRODUCERS' | translate}}</span>
+          </vitamui-common-slide-toggle>
         </div>
 
-        <div
-          class="form-group"
-          *ngIf="form.value.auditActions !== AuditAction.AUDIT_FILE_CONSISTENCY && form.value.auditActions !== AuditAction.AUDIT_FILE_RECTIFICATION"
-        >
-          <div class="row">
-            <div class="col-8 form-control">
-              <vitamui-common-slide-toggle [formControl]="allProducerServices">Tous les services producteurs
-              </vitamui-common-slide-toggle>
-            </div>
-
-            <div class="col-8 form-control">
-              <mat-form-field
-                class="vitamui-mat-select"
-                *ngIf="
-                  allProducerServices.value === false &&
-                  accessionRegisterSummaries &&
-                  (form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING || form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY)
-                "
-              >
-                <mat-select
-                  formControlName="objectId"
-                  placeholder="Selectionnez le service producteur"
-                  panelclass="vitamui-mat-select"
-                  required
-                >
-                  <mat-option *ngFor="let accession of accessionRegisterSummaries"
-                              [value]="accession.originatingAgency">
-                    {{ accession.originatingAgency }}
-                  </mat-option>
-                </mat-select>
-                <div class="select-arrow">
-                  <i class="material-icons">keyboard_arrow_up</i>
-                  <i class="material-icons">keyboard_arrow_down</i>
-                </div>
-              </mat-form-field>
-            </div>
-          </div>
+        <div class="mt-4" *ngIf="showAllNodesToggle()">
+          <vitamui-common-slide-toggle [formControl]="allNodes">
+            <span>{{'AUDIT.CREATE_DIALOG.ALL_NODES' | translate}}</span>
+          </vitamui-common-slide-toggle>
         </div>
 
-        <div class="form-group" *ngIf="form.value.auditActions === AuditAction.AUDIT_FILE_CONSISTENCY">
-          <div class="row">
-            <div class="col-8 form-control">
-              <vitamui-common-slide-toggle [formControl]="allNodes">Tous les noeuds de rattachement
-              </vitamui-common-slide-toggle>
-            </div>
+        <mat-form-field class="vitamui-mat-select w-100" *ngIf="showProducerSelection()">
+          <mat-select formControlName="objectId" required
+            placeholder="{{'AUDIT.CREATE_DIALOG.ALL_PRODUCERS_PLACEHOLDER' | translate}}"
+            panelclass="vitamui-mat-select">
+            <mat-option *ngFor="let accession of accessionRegisterSummaries" [value]="accession.originatingAgency">
+              {{ accession.originatingAgency }}
+            </mat-option>
+          </mat-select>
+
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
           </div>
-        </div>
-        <div class="btn-container">
-          <button
-            type="button"
-            class="btn primary"
-            cdkStepperNext
-            *ngIf="!this.allNodes.value"
-            [disabled]="!isStepValid() || isDisabledButton"
-          >
-            {{ 'COMMON.NEXT' | translate }}
+        </mat-form-field>
+
+        <vitamui-common-input class="w-100 mt-4" formControlName="evidenceAudit" required
+          *ngIf="showEvidenceAuditInput()"
+          placeholder="{{'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_IDENTIFIER' | translate}}">
+          <ng-container *ngIf="form.get('evidenceAudit')?.touched">
+            <vitamui-common-input-error *ngIf="!!form.get('evidenceAudit').errors?.required">
+              {{'COMMON.REQUIRED' | translate }}
+            </vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="!!form?.get('evidenceAudit').errors?.invalidEvidenceAuditId">
+              {{'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_NOT_FOUND' | translate }}
+            </vitamui-common-input-error>
+          </ng-container>
+        </vitamui-common-input>
+
+        <div class="actions">
+          <button type="button" *ngIf="!this.allNodes.value" class="btn primary" cdkStepperNext>
+            {{'COMMON.NEXT' | translate }}
           </button>
-
-          <button type="submit" class="btn primary" *ngIf="this.allNodes.value"
-                  [disabled]="!isStepValid() || isDisabledButton">
-            {{ 'COMMON.SUBMIT' | translate }}
+          <button type="submit" *ngIf="this.allNodes.value" class="btn primary"
+            [disabled]="!isStepValid() || isDisabledButton">
+            {{'COMMON.TERMINATE' | translate }}
           </button>
-
           <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
     </cdk-step>
 
     <cdk-step>
-      <div class="content">
-        <h5>Lancement d'un audit</h5>
-        <h4>Noeud de rattachement (SIP)</h4>
+      <div class="content mt-3">
+        <div class="text medium light">{{'AUDIT.CREATE_DIALOG.TITLE' | translate}}</div>
+        <div class="text large bold mb-3">{{'AUDIT.CREATE_DIALOG.NODES' | translate}}</div>
 
-        <div class="form-group">
-          <vitamui-library-filing-plan
-            [formControl]="selectedNodes"
-            [tenantIdentifier]="tenantIdentifier"
-            [accessContract]="accessContractId"
-            [mode]="FILLING_PLAN_MODE_INCLUDE"
-          >
-          </vitamui-library-filing-plan>
-        </div>
+        <vitamui-library-filing-plan [formControl]="selectedNodes" [tenantIdentifier]="tenantIdentifier"
+          [accessContract]="accessContractId" [mode]="FILLING_PLAN_MODE_INCLUDE">
+        </vitamui-library-filing-plan>
+
         <div class="actions">
-          <button type="submit" class="btn primary">{{ 'COMMON.SUBMIT' | translate }}</button>
+          <button type="submit" class="btn primary">{{ 'COMMON.TERMINATE' | translate }}</button>
           <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
-        <button type="button" class="back" cdkStepperPrevious>
-          <i class="material-icons">arrow_back</i>
-          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+        <button type="button" class="btn link mt-2" cdkStepperPrevious>
+          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+          <ng-container>{{'COMMON.BACK' | translate}}</ng-container>
         </button>
       </div>
     </cdk-step>

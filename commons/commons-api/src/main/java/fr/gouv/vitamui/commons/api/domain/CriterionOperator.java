@@ -49,6 +49,7 @@ public enum CriterionOperator {
     CONTAINS,
     CONTAINSIGNORECASE,
     BETWEEN,
+    STARTWITHIGNORECASE,
     STARTWITH,
     ELEMMATCH,
     ISNULL,

@@ -2,10 +2,10 @@ import {CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { EMPTY, of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
-import { AccessContractService } from '../../access-contract/access-contract.service';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
 
@@ -22,9 +22,6 @@ describe('ProbativeValuePreviewComponent', () => {
 
   beforeEach(
     waitForAsync(() => {
-      const accessContractServiceMock = {
-        getAllForTenant: () => of([]),
-      };
 
       const activatedRouteMock = {
         params: of({ tenantIdentifier: 1 }),
@@ -37,13 +34,11 @@ describe('ProbativeValuePreviewComponent', () => {
       };
 
       TestBed.configureTestingModule({
-        declarations: [ProbativeValuePreviewComponent, MockTruncatePipe],
-        imports: [MatSnackBarModule],
+        declarations: [ProbativeValuePreviewComponent, EventTypeBadgeClassPipe, MockTruncatePipe],
+        imports: [MatSnackBarModule, TranslateModule.forRoot()],
         providers: [
-          { provide: AccessContractService, useValue: accessContractServiceMock },
           { provide: ExternalParametersService, useValue: externalParametersServiceMock },
           { provide: ProbativeValueService, useValue: {} },
-          { provide: TranslateService, useValue: { instant: () => EMPTY } },
           { provide: ActivatedRoute, useValue: activatedRouteMock },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],

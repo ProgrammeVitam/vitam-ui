@@ -39,6 +39,8 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatDialogModule} from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSelectModule} from '@angular/material/select';
@@ -47,11 +49,15 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {RouterModule} from '@angular/router';
 import {VitamUICommonModule} from 'ui-frontend-common';
 
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 import {SharedModule} from '../shared/shared.module';
 import {SecurisationListModule} from './securisation-list/securisation-list.module';
 import {SecurisationPreviewModule} from './securisation-preview/securisation-preview.module';
 import {SecurisationRoutingModule} from './securisation-routing.module';
 import {SecurisationComponent} from './securisation.component';
+
 
 @NgModule({
   imports: [
@@ -70,11 +76,17 @@ import {SecurisationComponent} from './securisation.component';
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatSelectModule,
-    SharedModule
+    SharedModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMomentDateModule
   ],
   declarations: [
     SecurisationComponent
-  ]
+  ],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }
+  ],
 })
 export class SecurisationModule {
 }

@@ -32,19 +32,18 @@ import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.QueryOperator;
-import fr.gouv.vitamui.iam.external.server.config.AutoConfigurationVitam;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -59,19 +58,12 @@ public class ApplicationService extends AbstractInternalClientService {
 
     private final ApplicationInternalRestClient applicationInternalRestClient;
 
-    private final AutoConfigurationVitam autoConfigurationVitam;
-
-
-    private Map<String, List<String>> listEnableExternalIdentifiers;
-
     public ApplicationService(final ExternalSecurityService externalSecurityService,
                               final ApplicationExternalService applicationExternalService,
-                              final ApplicationInternalRestClient applicationInternalRestClient,
-                              AutoConfigurationVitam autoConfigurationVitam) {
+                              final ApplicationInternalRestClient applicationInternalRestClient) {
         super(externalSecurityService);
         this.applicationInternalRestClient = applicationInternalRestClient;
         this.applicationExternalService = applicationExternalService;
-        this.autoConfigurationVitam = autoConfigurationVitam;
     }
 
     public Map<String, Object> getApplications(final boolean filterApp) {
@@ -86,24 +78,8 @@ public class ApplicationService extends AbstractInternalClientService {
         return portalConfig;
     }
 
-    private Map<String, List<String>> getListEnableExternalIdentifiers() {
-        if (listEnableExternalIdentifiers == null) {
-            listEnableExternalIdentifiers = autoConfigurationVitam.getTenants();
-        }
-        return listEnableExternalIdentifiers;
-    }
-
-    public Boolean isApplicationExternalIdentifierEnabled(final String identifier) {
-        final String tenantId = externalSecurityService.getTenantIdentifier().toString();
-
-        final Map<String, List<String>> externalIdentifiers = getListEnableExternalIdentifiers();
-
-        if (externalIdentifiers != null && listEnableExternalIdentifiers.containsKey(tenantId)) {
-            final List<String> enabledApplications = listEnableExternalIdentifiers.get(tenantId);
-            return (enabledApplications.contains(identifier));
-        }
-
-        return false;
+    public ResponseEntity<Boolean> isApplicationExternalIdentifierEnabled(String applicationId) {
+        return applicationInternalRestClient.isApplicationExternalIdentifierEnabled(getInternalHttpContext(), applicationId);
     }
 
     @Override

@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,30 @@ public class UserInternalRestClient extends BasePaginatingAndSortingRestClient<U
 
     public UserInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
+    }
+
+    public Resource exportUsers(final InternalHttpContext context, final Optional<String> criteria) {
+        LOGGER.debug("Export users");
+
+        final URIBuilder uriBuilder = getUriBuilderFromPath(CommonConstants.PATH_EXPORT);
+        criteria.ifPresent(o -> uriBuilder.addParameter("criteria", o));
+        final URI uri = buildUriBuilder(uriBuilder);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<Resource> response = restTemplate.exchange(uri, HttpMethod.GET, request, Resource.class);
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public Resource exportUserConnectionHistory(final InternalHttpContext context, final Optional<String> criteria) {
+        LOGGER.debug("Export user connection history with criteria: {}", criteria);
+
+        final URIBuilder uriBuilder = getUriBuilderFromPath(CommonConstants.CONNECTION_HISTORY_EXPORT);
+        criteria.ifPresent(o -> uriBuilder.addParameter("criteria", o));
+        final URI uri = buildUriBuilder(uriBuilder);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<Resource> response = restTemplate.exchange(uri, HttpMethod.GET, request, Resource.class);
+        checkResponse(response);
+        return response.getBody();
     }
 
     public AuthUserDto getMe(final InternalHttpContext context) {

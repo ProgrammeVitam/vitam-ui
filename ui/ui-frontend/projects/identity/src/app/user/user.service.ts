@@ -48,7 +48,7 @@ import {
   VitamUISnackBarService,
 } from 'ui-frontend-common';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { UserApiService } from '../core/api/user-api.service';
@@ -140,5 +140,9 @@ export class UserService extends SearchService<User> {
 
   getLevelsNoEmpty(query?: SearchQuery): Observable<string[]> {
     return this.userApi.getLevels(query).pipe(map((levels) => levels.filter((l) => !!l)));
+  }
+
+  export(): Observable<HttpResponse<Blob>> {
+    return this.userApi.export();
   }
 }

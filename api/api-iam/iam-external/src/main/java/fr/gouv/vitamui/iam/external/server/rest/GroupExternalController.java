@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -60,6 +59,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
@@ -192,6 +192,13 @@ public class GroupExternalController implements CrudController<GroupDto> {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get levels with criteria={}", criteria);
         return groupCrudService.getLevels(criteria);
+    }
+
+    @GetMapping(CommonConstants.PATH_EXPORT)
+    @Secured(ServicesData.ROLE_GET_GROUPS)
+    public ResponseEntity<Resource> exportProfileGroups() {
+        LOGGER.debug("Export all profile groups to xlsx file");
+        return groupCrudService.exportProfileGroups();
     }
 
 }

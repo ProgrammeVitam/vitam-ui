@@ -50,6 +50,7 @@ import { IngestContractService } from '../../ingest-contract.service';
 })
 export class IngestContractObjectTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
   submited = false;
@@ -93,9 +94,23 @@ export class IngestContractObjectTabComponent implements OnInit {
     this.form = this.formBuilder.group({
       masterMandatory: [true],
       everyDataObjectVersion: [true, Validators.required],
-      dataObjectVersion: [[], Validators.required],
+      dataObjectVersion: [[]],
+    });
+
+    this.form.controls.everyDataObjectVersion.valueChanges.subscribe((value: boolean) => {
+      if (value) {
+        this.form.controls.dataObjectVersion.setValidators([]);
+        this.form.controls.dataObjectVersion.setValue([]);
+        this.form.controls.dataObjectVersion.updateValueAndValidity();
+      } else {
+        this.form.controls.dataObjectVersion.setValidators(Validators.required);
+        this.form.controls.dataObjectVersion.markAllAsTouched();
+        this.form.controls.dataObjectVersion.updateValueAndValidity();
+      }
     });
   }
+
+  ngOnInit() { }
 
   unchanged(): boolean {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
@@ -107,7 +122,7 @@ export class IngestContractObjectTabComponent implements OnInit {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) =>
+      switchMap((formData: { id: string;[key: string]: any }) =>
         this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))
       )
     );
@@ -128,13 +143,13 @@ export class IngestContractObjectTabComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
-
   isInvalid(): boolean {
-    return (
+    const isInvalid = (
       this.form.get('everyDataObjectVersion').value === false &&
       (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending)
-    );
+    )
+    this.isFormValid.emit(!isInvalid);
+    return isInvalid;
   }
 
   resetForm(ingestContract: IngestContract) {

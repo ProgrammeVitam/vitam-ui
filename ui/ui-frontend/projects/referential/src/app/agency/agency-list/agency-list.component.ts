@@ -37,11 +37,10 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import {
-  AccessContract,
+  // AccessContract,
   AdminUserProfile,
   Agency,
   ApplicationId,
@@ -51,7 +50,7 @@ import {
   InfiniteScrollTable,
   PageRequest,
   Role,
-  User,
+  SecurityService,
 } from 'ui-frontend-common';
 import { AgencyService } from '../agency.service';
 
@@ -64,8 +63,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('search')
-  set searchText(searchText: string) {
+  @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
@@ -77,20 +75,23 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
 
   @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<AgencyListComponent>;
   @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  @ViewChild('confirmDeleteDialog', { static: true }) confirmDeleteDialog: TemplateRef<AgencyListComponent>;
 
-  overridePendingChange: true;
-  loaded = false;
-  orderBy = 'Name';
+  agencyToDelete: Agency;
+  hasDeleteRole = false;
+  orderBy = 'Identifier';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }> = {
+    appId: ApplicationId.USERS_APP,
+    tenantIdentifier: +this.authService.user.proofTenantIdentifier,
+    roles: [Role.ROLE_GENERIC_USERS],
+  };
 
-  private groups: Array<{ id: string; group: any }> = [];
+  readonly orderChange = new Subject<string>();
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
 
-  @Input()
-  get connectedUserInfo(): AdminUserProfile {
+  @Input() get connectedUserInfo(): AdminUserProfile {
     return this._connectedUserInfo;
   }
 
@@ -105,44 +106,55 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     public agencyService: AgencyService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private securityService: SecurityService,
   ) {
     super(agencyService);
-    this.genericUserRole = {
-      appId: ApplicationId.USERS_APP,
-      tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS],
-    };
   }
 
   ngOnInit() {
-    this.agencyService
-      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
-      .subscribe((data: AccessContract[]) => {
-        this.dataSource = data;
-      });
-
     const tenantChange = this.route.paramMap.pipe(
       filter((paramMap) => !!paramMap.get('tenantIdentifier')),
       map((paramMap) => +paramMap.get('tenantIdentifier')),
       distinctUntilChanged(),
-      tap((tenantIdentifier) => {
-        this.agencyService.setTenantId(tenantIdentifier);
-      })
+      tap((tenantIdentifier) => {this.agencyService.setTenantId(tenantIdentifier);
+        this.securityService
+        .hasRole(ApplicationId.AGENCIES_APP, tenantIdentifier, Role.ROLE_CREATE_AGENCIES)
+        .subscribe((value: boolean) => (this.hasDeleteRole = value));})
     );
 
-    const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
-      debounceTime(FILTER_DEBOUNCE_TIME_MS)
-    );
-
-    searchCriteriaChange.subscribe(() => {
-      const query: any = this.buildAgencyCriteriaFromSearch();
-      const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
-      this.search(pageRequest);
-    });
+    merge(tenantChange, this.searchChange, this.filterChange, this.orderChange)
+      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS))
+      .subscribe(() => {
+        const query: any = this.buildAgencyCriteriaFromSearch();
+        const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
+        this.search(pageRequest);
+      });
   }
 
-  buildAgencyCriteriaFromSearch() {
+  ngOnDestroy() {
+    this.updatedData.unsubscribe();
+  }
+
+  public searchAgencyOrdered(): void {
+    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT));
+  }
+
+  public deleteAgencyDialog(agency: Agency): void {
+    this.agencyToDelete = agency;
+    this.matDialog
+      .open(this.confirmDeleteDialog, { panelClass: 'vitamui-confirm-dialog' })
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.agencyToDelete = null;
+        this.agencyService
+          .delete(agency)
+          .subscribe(() => this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)));
+      });
+  }
+
+  private buildAgencyCriteriaFromSearch() {
     const criteria: any = {};
     if (this._searchText.length > 0) {
       criteria.Name = this._searchText;
@@ -150,39 +162,5 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     }
 
     return criteria;
-  }
-
-  ngOnDestroy() {
-    this.updatedData.unsubscribe();
-  }
-
-  getGroup(user: User) {
-    const userGroup = this.groups.find((group) => group.id === user.groupId);
-
-    return userGroup ? userGroup.group : undefined;
-  }
-
-  searchAgencyOrdered() {
-    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT));
-  }
-
-  emitOrderChange() {
-    this.orderChange.next();
-  }
-
-  deleteAgencyDialog(agency: Agency) {
-    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
-
-    dialog.componentInstance.objectType = 'service agent';
-    dialog.componentInstance.objectName = agency.identifier;
-
-    dialog
-      .afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        this.agencyService.delete(agency).subscribe(() => {
-          this.searchAgencyOrdered();
-        });
-      });
   }
 }

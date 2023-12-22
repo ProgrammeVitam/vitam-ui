@@ -1,0 +1,5 @@
+﻿Identifier;Name*;Description;Status;ArchiveProfiles;CheckParentLink;CheckParentId;LinkParentId;FormatUnidentifiedAuthorized;EveryFormatType;FormatType;ManagementContractId;ComputedInheritedRulesAtIngest;MasterMandatory;EveryDataObjectVersion;DataObjectVersion
+MONCONTRAT01;Contrat entrée Full;Contrats d'entrée full;ACTIVE;;REQUIRED;;;false;;fmt/56|fmt/678|fmt/154;;false;;false;BinaryMaster|PhysicalMaster
+MONCONTRAT02;Contrat d'entrée finances;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis gravida sit amet lorem ut porta. In commodo justo sed tincidunt laoreet. Integer tellus quam, dictum non consequat id, varius at dui.;INACTIVE;;;;;;true;;;true;false;true;
+MONCONTRAT03;Contrat d'entrée santé;Contrat d'entrée santé ;;;;;;true;true;;;true;false;;Thumbnail
+MONCONTRAT04;Contrat d'entrée gestion commerciale;;ACTIVE;;UNAUTHORIZED;;;true;true;;;;;true;

@@ -446,9 +446,9 @@
       "NAME": "Barcode",
       "TOOLTIP": "Reserve physical archive identifiers and print barcode labels"
     },
-    "PHYSICAL_CUSTOMERS_APP": {
-      "NAME": "Physical archives Services",
-      "TOOLTIP": "Configure the physical archive services and the rights of the client organization"
+    "CUSTOMERS_ADVANCED_PARAM_APP": {
+      "NAME": "Advanced parameters of customers",
+      "TOOLTIP": "Define the advanced parameters of customers and tenants"
     },
     "ARCHIVE_BATCH_INGEST_PROFILE_APP": {
       "NAME": "Deposit by slip",

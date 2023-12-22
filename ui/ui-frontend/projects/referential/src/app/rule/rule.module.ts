@@ -53,6 +53,7 @@ import {RuleListComponent} from './rule-list/rule-list.component';
 import {RulePreviewModule} from './rule-preview/rule-preview.module';
 import {RuleRoutingModule} from './rule-routing.module';
 import {RuleComponent} from './rule.component';
+import {ImportDialogModule} from "../shared/import-dialog/import-dialog.module";
 
 @NgModule({
   imports: [
@@ -65,6 +66,7 @@ import {RuleComponent} from './rule.component';
     RuleRoutingModule,
     RuleCreateModule,
     RulePreviewModule,
+    ImportDialogModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

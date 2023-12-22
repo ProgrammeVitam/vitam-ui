@@ -12,6 +12,11 @@
         margin: 2px;
     }
 
+    &.mat-checkbox-indeterminate .mat-checkbox-background{
+      clip-path: polygon(0 100%, 100% 100%, 100% 0);
+      padding: 30%;
+    }
+
     .mat-checkbox-checkmark-path {
         stroke: var(--vitamui-grey-300) !important;
         stroke-width: 5px;

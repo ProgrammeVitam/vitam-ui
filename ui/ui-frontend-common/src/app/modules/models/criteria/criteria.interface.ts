@@ -37,6 +37,13 @@
 import { Criterion } from './criterion.interface';
 
 export interface SearchQuery {
-  queryOperator?: 'AND' | 'OR' | 'HAVING' | 'NOR';
+  queryOperator?: QueryOperator;
   criteria: Array<Criterion | SearchQuery>;
+}
+
+export enum QueryOperator {
+  AND = 'AND',
+  OR = 'OR',
+  HAVING = 'HAVING',
+  NOR = 'NOR'
 }

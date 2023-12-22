@@ -57,6 +57,7 @@ export interface IdentityProvider extends Id {
   maximumAuthenticationLifetime: number;
   wantsAssertionsSigned: boolean;
   authnRequestSigned: boolean;
+  propagateLogout: boolean;
   autoProvisioningEnabled: boolean;
   clientId?: string;
   clientSecret?: string;

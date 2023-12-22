@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
+import { AuditPreviewComponent } from './audit-preview.component';
+import { AuditService } from '../audit.service';
+import { PipesModule } from '../../shared/pipes/pipes.module';
 
-import {CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {of} from 'rxjs';
-import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
-import {AuditService} from '../audit.service';
-import {AuditPreviewComponent} from './audit-preview.component';
-
-@Pipe({name: 'truncate'})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -60,15 +60,18 @@ describe('AuditPreviewComponent', () => {
     const externalParametersServiceMock = {
       getUserExternalParameters: () => of(parameters)
     };
+    const snackBarSpy = jasmine.createSpyObj(['open']);
 
     TestBed.configureTestingModule({
       declarations: [AuditPreviewComponent, MockTruncatePipe],
       providers: [
-        {provide: AuditService, useValue: {}},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock}
+        { provide: AuditService, useValue: {} },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy }
       ],
       imports: [
-        MatSnackBarModule
+        PipesModule,
+        TranslateModule.forRoot()
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

@@ -73,13 +73,10 @@ export class ContextService extends SearchService<Context> {
   create(context: Context) {
     return this.contextApiService.create(context, this.headers).pipe(
       tap(
-        (response: Context) => {
+        () => {
           this.snackBarService.open({
             message: 'SNACKBAR.CONTEXT_CREATED',
-              translateParams:{
-                name: response.identifier,
-              },
-            icon: 'vitamui-icon-admin-key',
+            icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {
@@ -91,15 +88,11 @@ export class ContextService extends SearchService<Context> {
 
   patch(data: { id: string; [key: string]: any }): Observable<Context> {
     return this.contextApiService.patch(data).pipe(
-      tap((response) => this.updated.next(response)),
       tap(
-        (response) => {
+        () => {
           this.snackBarService.open({
             message: 'SNACKBAR.CONTEXT_UPDATED',
-              translateParams:{
-                name: response.identifier,
-              },
-            icon: 'vitamui-icon-admin-key',
+            icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {

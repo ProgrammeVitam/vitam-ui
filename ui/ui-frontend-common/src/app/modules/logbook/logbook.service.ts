@@ -36,6 +36,7 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LogbookApiService } from '../api/logbook-api.service';
@@ -253,13 +254,13 @@ function flattenChildEvents(acc: Event[], current: Event): Event[] {
   return acc.concat(current.events);
 }
 
-function sortEventByDate(ev1: Event, ev2: Event): number {
+export function sortEventByDate(ev1: Event, ev2: Event): number {
   const ev1Date = getEffectiveDate(ev1);
   const ev2Date = getEffectiveDate(ev2);
 
-  if (ev1Date > ev2Date) {
+  if (moment(ev1Date).isAfter(moment(ev2Date))) {
     return -1;
-  } else if (ev1Date < ev2Date) {
+  } else if (moment(ev1Date).isBefore(moment(ev2Date))) {
     return 1;
   }
 
@@ -267,10 +268,8 @@ function sortEventByDate(ev1: Event, ev2: Event): number {
 }
 
 function getEffectiveDate(event: Event): Date {
-  const operationDate = event.parsedData ? event.parsedData['Date d\'opération'] : null;
-
-  if (operationDate) {
-    return new Date(operationDate);
+  if (event.parsedData && event.parsedData['Date d\'opération']) {
+    return new Date(event.parsedData['Date d\'opération']);
   }
 
   return event.dateTime;

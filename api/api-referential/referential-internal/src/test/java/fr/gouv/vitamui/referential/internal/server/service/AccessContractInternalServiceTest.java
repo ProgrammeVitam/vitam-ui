@@ -50,28 +50,43 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
+import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
+import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractConverter;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
+import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractCSVUtils;
+import org.apache.commons.io.IOUtils;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.easymock.EasyMock.*;
 
@@ -83,6 +98,8 @@ public class AccessContractInternalServiceTest {
     private VitamUIAccessContractService vitamUIAccessContractService;
     private LogbookService logbookService;
     private AccessContractInternalService accessContractInternalService;
+    private ApplicationInternalRestClient applicationInternalRestClient;
+    private InternalSecurityService internalSecurityService;
 
     @Before
     public void setUp() {
@@ -92,7 +109,9 @@ public class AccessContractInternalServiceTest {
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         AccessContractConverter converter = new AccessContractConverter();
         logbookService = mock(LogbookService.class);
-        accessContractInternalService = new AccessContractInternalService(accessContractService, vitamUIAccessContractService, objectMapper, converter, logbookService);
+        applicationInternalRestClient = mock(ApplicationInternalRestClient.class);
+        internalSecurityService = mock(InternalSecurityService.class);
+        accessContractInternalService = new AccessContractInternalService(accessContractService, vitamUIAccessContractService, objectMapper, converter, logbookService, applicationInternalRestClient, internalSecurityService);
 
         // Mock server identity for Logs when not using spring
         PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
@@ -276,7 +295,7 @@ public class AccessContractInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_400() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_BadRequestException_when_vitamclient_400() throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
@@ -288,7 +307,7 @@ public class AccessContractInternalServiceTest {
 
         assertThatCode(() -> {
             accessContractInternalService.create(vitamContext, accessContractDto);
-        }).doesNotThrowAnyException();
+        }).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -450,5 +469,60 @@ public class AccessContractInternalServiceTest {
         }).isInstanceOf(VitamClientException.class);
     }
 
+    @Test
+    public void import_should_return_ok() throws IOException, InvalidParseOperationException, AccessExternalClientException {
+        VitamContext vitamContext = new VitamContext(0);
+        File file = new File("src/test/resources/data/import_access_contracts_valid.csv");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+
+        expect(internalSecurityService.getHttpContext())
+            .andReturn(new InternalHttpContext(0,"","","","","","",""));
+        EasyMock.replay(internalSecurityService);
+
+        expect(applicationInternalRestClient.isApplicationExternalIdentifierEnabled(isA(InternalHttpContext.class), eq("ACCESS_CONTRACT")))
+            .andReturn(new ResponseEntity<>(false, HttpStatus.OK));
+        EasyMock.replay(applicationInternalRestClient);
+
+        expect(accessContractService.createAccessContracts(isA(VitamContext.class), isA(InputStream.class)))
+            .andReturn(new RequestResponseOK().setHttpCode(200));
+        EasyMock.replay(accessContractService);
+
+        assertThatCode(() -> {
+            accessContractInternalService.importAccessContracts(vitamContext, multipartFile);
+        }).doesNotThrowAnyException();
+    }
+
+    @Test
+    public void import_should_throws_BadRequestException_when_sending_to_vitam() throws IOException, InvalidParseOperationException, AccessExternalClientException {
+        VitamContext vitamContext = new VitamContext(0);
+        File file = new File("src/test/resources/data/import_access_contracts_invalid_rejected_by_vitam.csv");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+
+        expect(internalSecurityService.getHttpContext())
+            .andReturn(new InternalHttpContext(0,"","","","","","",""));
+        EasyMock.replay(internalSecurityService);
+
+        expect(applicationInternalRestClient.isApplicationExternalIdentifierEnabled(isA(InternalHttpContext.class), eq("ACCESS_CONTRACT")))
+            .andReturn(new ResponseEntity<>(false, HttpStatus.OK));
+        EasyMock.replay(applicationInternalRestClient);
+
+        expect(accessContractService.createAccessContracts(isA(VitamContext.class), isA(InputStream.class)))
+            .andReturn(new RequestResponseOK().setHttpCode(400));
+        EasyMock.replay(accessContractService);
+
+        BadRequestException badRequestException = null;
+
+        try {
+            accessContractInternalService.importAccessContracts(vitamContext, multipartFile);
+        } catch (BadRequestException e) {
+            badRequestException = e;
+        }
+
+        assertThat(badRequestException).isNotNull();
+        assertThat(badRequestException.getMessage()).isEqualTo("The CSV file has been rejected by vitam");
+        assertThat(badRequestException.getArgs()).isEqualTo(List.of(AccessContractCSVUtils.errorToJson(ErrorImportFile.builder().error(ErrorImportFileMessage.REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP).build())));
+    }
 
 }

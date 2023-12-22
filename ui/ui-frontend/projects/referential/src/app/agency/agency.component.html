@@ -1,56 +1,32 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-agency-preview *ngIf="openedItem" (previewClose)="closePanel()" [agency]="openedItem"></app-agency-preview>
+    <app-agency-preview *ngIf="openedItem" (previewClose)="closePanel()" [agency]="openedItem" [tenantIdentifier]="tenantIdentifier"></app-agency-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{ 'AGENCY.HOME.TITLE' | translate }}
+      </vitamui-common-title-breadcrumb>
 
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
-        </vitamui-common-navbar>
+      <vitamui-common-banner [searchbarPlaceholder]="'AGENCY.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+        <button class="btn primary mr-3" (click)="openCreateAgencyDialog()" [disabled]="!hasCreateRole">
+          <span>{{ 'AGENCY.HOME.ACTION_BUTTON' | translate }}</span>
+        </button>
 
-        <div class="vitamui-heading">
-          <vitamui-common-title-breadcrumb>
-            {{ 'APPLICATION.AGENCIES_APP.TITLE' | translate }}
-          </vitamui-common-title-breadcrumb>
-        </div>
-
-        <div class="controls">
-
-          <vitamui-common-search-bar name="agency-search" (search)="onSearchSubmit($event)"
-                                     placeholder="Nom, Identifiant"
-                                     i18n-placeholder="@@agencySearchPlaceholder"></vitamui-common-search-bar>
-
-          <div class="actions">
-            <button class="btn secondary" (click)="openCreateAgencyDialog()" [disabled]="(checkCreateRole | async)!==true">
-              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i>
-              <span i18n="Create agency button label@@agencyListCreateButton">Créer un service agent</span>
-            </button>
-            <button class="btn more-actions" [matMenuTriggerFor]="moreMenu"
-                    [disabled]="(checkImportRole | async)!==true && (checkExportRole | async)!== true">
-              <i class="material-icons">more_horiz</i>
-              <span i18n="More actions button label@@AgencyListMoreActionsButton">Autres actions</span>
-            </button>
-            <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
-              <button mat-menu-item (click)="openAgencyImportDialog()" [disabled]="(checkImportRole | async) !==true"
-                      i18n="export button label@@agencyImportButton">
-                Importer
-              </button>
-              <button mat-menu-item (click)="exportAgencies()" i18n="export button label@@agencyExportButton"
-                      [disabled]="(checkExportRole | async)!==true">
-                Exporter
-              </button>
-            </mat-menu>
-          </div>
-        </div>
-      </div>
+        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [disabled]="!hasImportRole && !hasExportRole">
+          <button mat-menu-item [disabled]="!hasImportRole" (click)="openAgencyImportDialog()">
+            {{ 'AGENCY.HOME.ACTION_IMPORT' | translate }}
+          </button>
+          <button mat-menu-item [disabled]="!hasExportRole" (click)="exportAgencies()">
+            {{ 'AGENCY.HOME.ACTION_EXPORT' | translate }}
+          </button>
+        </vitamui-common-menu-button>
+      </vitamui-common-banner>
     </div>
 
-    <div class="vitamui-body vitamui-container">
+    <div class="vitamui-content">
       <app-agency-list (agencyClick)="showAgency($event)" [search]="search"></app-agency-list>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

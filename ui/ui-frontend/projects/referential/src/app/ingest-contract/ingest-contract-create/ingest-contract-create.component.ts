@@ -37,19 +37,16 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import '@angular/localize/init';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FileFormat, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
-import {
-  ConfirmDialogService, ExternalParameters, ExternalParametersService, IngestContract, Option, SignaturePolicy, SignedDocumentPolicyEnum
-} from 'ui-frontend-common';
+import { ConfirmDialogService, ExternalParameters, ExternalParametersService, IngestContract, Option, SignaturePolicy, SignedDocumentPolicyEnum, VitamUISnackBarService, VitamuiAutocompleteMultiselectOptions } from 'ui-frontend-common';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
+
 
 @Component({
   selector: 'app-ingest-contract-create',
@@ -88,16 +85,15 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
-  ) {
-  }
+    private vitamUISnackBarService: VitamUISnackBarService
+  ) { }
 
   statusControl = new FormControl(false);
   linkParentIdControl = new FormControl();
   checkParentIdControl = new FormControl();
   accessContractSelect = new FormControl(null);
 
-  formatTypeList: FileFormat[];
+  formatTypesOptions: VitamuiAutocompleteMultiselectOptions = { options: [] };
   managementContracts: any[];
   archiveProfiles: any[];
   isDisabledButton = false;
@@ -141,6 +137,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
         declaredTimestamp: [],
         declaredAdditionalProof: [],
       }),
+      signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
       elementsToCheck: [new Array<string>()],
 
       /* default */
@@ -148,8 +145,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       computeInheritedRulesAtIngest: [false, Validators.required],
     });
 
-    this.fileFormatService.getAllForTenant('' + this.tenantIdentifier).subscribe((files) => {
-      this.formatTypeList = files;
+    this.fileFormatService.getAllForTenant('' + this.tenantIdentifier).subscribe((fileFormats) => {
+      this.formatTypesOptions.options = fileFormats.map(fileFormat => { return { key: fileFormat.puid, label: fileFormat.puid + ' - ' + fileFormat.name }; });
     });
 
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
@@ -157,14 +154,9 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractSelect.setValue(accessContratId);
       } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
-          null,
-          {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          }
-        );
+        this.vitamUISnackBarService.open({
+          message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
+        })
       }
     });
 
@@ -217,7 +209,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   onCancel() {
     if (this.form.dirty) {
-      this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
+      this.confirmDialogService.confirmBeforeClosing(this.dialogRef, { subTitle: 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' });
     } else {
       this.dialogRef.close();
     }

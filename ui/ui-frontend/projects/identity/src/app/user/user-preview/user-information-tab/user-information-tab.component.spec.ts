@@ -80,7 +80,7 @@ let expectedUser: User = {
   },
   siteCode: '001',
   disablingDate : null,
-  centerCode: '000001',
+  centerCodes: ['000001'],
   autoProvisioningEnabled: false
 };
 let userInfolanguage: UserInfo = {
@@ -201,7 +201,7 @@ describe('UserInfoTabComponent', () => {
       },
       siteCode: '001',
       disablingDate : null,
-      centerCode: '000001',
+      centerCodes: ['000001'],
       autoProvisioningEnabled: false
     };
     expectedCustomer = {

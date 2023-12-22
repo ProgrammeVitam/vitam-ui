@@ -38,7 +38,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { Context, diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
@@ -102,6 +102,10 @@ export class ContextInformationTabComponent {
       status: [null, Validators.required],
       securityProfile: [null, Validators.required],
       enableControl: [null, Validators.required],
+      creationDate: [{value: null, disabled:true}, Validators.required],
+      activationDate: [{value: null, disabled:true}],
+      lastUpdate: [{value: null, disabled:true}],
+      deactivationDate: [{value: null, disabled:true}],
     });
 
     this.securityProfileService.getAll().subscribe((securityProfiles) => {
@@ -121,10 +125,6 @@ export class ContextInformationTabComponent {
 
   isInvalid(): boolean {
     return false;
-  }
-
-  getEnableControl(): boolean {
-    return this.form.getRawValue().enableControl;
   }
 
   prepareSubmit(): Observable<Context> {
@@ -160,7 +160,10 @@ export class ContextInformationTabComponent {
     }
     this.prepareSubmit().subscribe(
       () => {
-        this.contextService.get(this._context.identifier).subscribe((response) => {
+        this.contextService.get(this._context.identifier).pipe(
+          tap((response) => this.contextService.updated.next(response))
+        )
+        .subscribe((response) => {
           this.submited = false;
           this.context = response;
         });

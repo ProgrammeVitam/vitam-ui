@@ -22,5 +22,17 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "assets",
+      "urls": ["/assets/**"],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "30m",
+        "strategy": "performance",
+        "timeout": "10s"
+      }
+    }
   ]
 }

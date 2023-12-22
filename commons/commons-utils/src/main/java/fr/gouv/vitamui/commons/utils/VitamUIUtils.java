@@ -144,10 +144,11 @@ public final class VitamUIUtils {
         if (obj == null) {
             return false;
         }
-        final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        final Validator validator = factory.getValidator();
-        final Set<ConstraintViolation<Object>> violations = validator.validate(obj);
-        return violations.isEmpty();
+        try (final ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            final Validator validator = factory.getValidator();
+            final Set<ConstraintViolation<Object>> violations = validator.validate(obj);
+            return violations.isEmpty();
+        }
     }
 
     /**

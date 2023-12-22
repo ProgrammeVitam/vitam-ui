@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnInit} from '@angular/core';
-import {Event} from 'projects/vitamui-library/src/public-api';
+import { Component, Input } from '@angular/core';
+import { Event } from 'ui-frontend-common';
 
 
 @Component({
@@ -43,15 +43,12 @@ import {Event} from 'projects/vitamui-library/src/public-api';
   templateUrl: './audit-information-tab.component.html',
   styleUrls: ['./audit-information-tab.component.scss']
 })
-export class AuditInformationTabComponent implements OnInit {
+export class AuditInformationTabComponent {
 
   @Input()
   audit: Event;
 
   constructor() {
-  }
-
-  ngOnInit() {
   }
 
   associatedContract(audit: Event) {

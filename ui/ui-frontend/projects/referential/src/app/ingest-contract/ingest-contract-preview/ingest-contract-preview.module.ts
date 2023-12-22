@@ -40,6 +40,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
@@ -51,9 +53,7 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab/ingest-contract-attachment-tab.component';
-import {
-  IngestContractNodeUpdateComponent
-} from './ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component';
+import { IngestContractNodeUpdateComponent } from './ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
 import { IngestContractInformationTabComponent } from './ingest-contract-information-tab/ingest-contract-information-tab.component';
@@ -89,7 +89,9 @@ import { IngestContractSignatureTabComponent } from './ingest-contract-signature
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   exports: [IngestContractPreviewComponent],
 })
-export class IngestContractPreviewModule {}
+export class IngestContractPreviewModule { }

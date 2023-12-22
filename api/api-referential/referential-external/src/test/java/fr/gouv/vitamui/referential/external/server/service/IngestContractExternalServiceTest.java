@@ -40,12 +40,21 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.internal.client.IngestContractInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.IngestContractInternalWebClient;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,6 +68,10 @@ public class IngestContractExternalServiceTest extends ExternalServiceTest {
 
     @Mock
     private IngestContractInternalRestClient ingestContractInternalRestClient;
+
+    @Mock
+    private IngestContractInternalWebClient ingestContractInternalWebClient;
+
     @Mock
     private ExternalSecurityService externalSecurityService;
 
@@ -68,7 +81,7 @@ public class IngestContractExternalServiceTest extends ExternalServiceTest {
     public void init() {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        ingestContractExternalService = new IngestContractExternalService(externalSecurityService, ingestContractInternalRestClient);
+        ingestContractExternalService = new IngestContractExternalService(externalSecurityService, ingestContractInternalRestClient, ingestContractInternalWebClient);
     }
 
     @Test
@@ -114,5 +127,22 @@ public class IngestContractExternalServiceTest extends ExternalServiceTest {
             ingestContractExternalService.check(new IngestContractDto());
         }).doesNotThrowAnyException();
 
+    }
+
+    @Test
+    public void import_should_return_ok() throws IOException {
+
+        // Given
+        File file = new File("src/test/resources/data/import_ingest_contracts_valid.csv");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+
+        when(ingestContractInternalWebClient.importIngestContracts(any(InternalHttpContext.class), any(MultipartFile.class)))
+            .thenReturn(new ResponseEntity<Void>(HttpStatus.CREATED));
+
+        // When Then
+        assertThatCode(() -> {
+            ingestContractExternalService.importIngestContracts(multipartFile);
+        }).doesNotThrowAnyException();
     }
 }

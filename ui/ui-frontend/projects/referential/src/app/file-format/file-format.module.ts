@@ -50,6 +50,7 @@ import {FileFormatListComponent} from './file-format-list/file-format-list.compo
 import {FileFormatPreviewModule} from './file-format-preview/file-format-preview.module';
 import {FileFormatRoutingModule} from './file-format-routing.module';
 import {FileFormatComponent} from './file-format.component';
+import {ImportDialogModule} from "../shared/import-dialog/import-dialog.module";
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import {FileFormatComponent} from './file-format.component';
     FileFormatRoutingModule,
     FileFormatCreateModule,
     FileFormatPreviewModule,
+    ImportDialogModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

@@ -42,8 +42,6 @@ import { ConfirmDialogService } from 'ui-frontend-common';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
-
 @Component({
   selector: 'app-security-profile-create',
   templateUrl: './security-profile-create.component.html',
@@ -53,8 +51,7 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   @Input() isSlaveMode: boolean;
 
   form: FormGroup;
-  stepIndex = 1;
-  accessContractInfo: { code: string; name: string; companyName: string } = { code: '', name: '', companyName: '' };
+  stepIndex = 0;
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -63,7 +60,7 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 2;
+  public stepCount = 2;
   private keyPressSubscription: Subscription;
   isDisabledButton = false;
 
@@ -139,7 +136,4 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
-  }
 }

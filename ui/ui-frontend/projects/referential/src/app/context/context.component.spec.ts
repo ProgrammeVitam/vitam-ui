@@ -42,7 +42,7 @@ describe('ContextComponent', () => {
       ],
       providers: [
         { provide: ApplicationService, useValue: applicationServiceMock },
-        { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY } },
+        { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY } },
         { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } }
       ],
       imports: [

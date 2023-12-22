@@ -103,7 +103,7 @@ public class UserConverter implements Converter<UserDto, User> {
 
     public static final String AUTO_PROVISIONING_ENABLED_KEY = "Mise à jour automatique";
 
-    public static final String CENTER_CODE = "Code du centre";
+    public static final String CENTER_CODES = "Code des centres";
 
     private final GroupRepository groupRepository;
 
@@ -132,7 +132,7 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(DISABLING_DATE, LogbookUtils.getValue(user.getDisablingDate()));
         userLogbookData.put(REMOVING_DATE, LogbookUtils.getValue(user.getRemovingDate()));
         userLogbookData.put(SITE_CODE, LogbookUtils.getValue(user.getSiteCode()));
-        userLogbookData.put(CENTER_CODE, LogbookUtils.getValue(user.getCenterCode()));
+        userLogbookData.put(CENTER_CODES, LogbookUtils.getValue(user.getCenterCodes()));
         AddressDto address = new AddressDto(GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE);
         addressConverter.addAddress(address, userLogbookData);
         Optional<Group> group = groupRepository.findById(user.getGroupId());

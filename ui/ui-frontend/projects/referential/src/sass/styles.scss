@@ -11,7 +11,7 @@
 @import 'tooltip';
 @import 'text';
 
-
+/** DEPREACATED : CLEAR AT THE END OF THE REDESIGN **/
 vitamui-common-slide-toggle {
   padding-bottom: 15px;
 }
@@ -32,11 +32,6 @@ vitamui-common-slide-toggle {
 .preview-tab-group {
   height: 100%;
 }
-
-.vitamui-mat-select {
-  padding-bottom: 30px;
-}
-
 .btn.more-actions {
   background-color: transparent;
   color: var(--vitamui-secondary);
@@ -63,6 +58,12 @@ vitamui-common-slide-toggle {
   background-color: transparent;
   color: var(--vitamui-grey-900);
   border: 1px solid transparent;
+}
+
+.btn.back {
+  background-color: transparent;
+  color: var(--vitamui-primary);
+  border: transparent;
 }
 
 .vitamui-container {

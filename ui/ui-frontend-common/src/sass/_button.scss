@@ -207,6 +207,14 @@
     }
   }
 
+  &.small {
+    font-size: 12px;
+
+    > i {
+      font-size: 12px;
+    }
+  }
+
   &:hover:not(.cancel) {
     span {
       text-decoration: none;

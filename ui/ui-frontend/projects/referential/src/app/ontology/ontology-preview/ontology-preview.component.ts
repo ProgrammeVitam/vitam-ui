@@ -82,7 +82,6 @@ export class OntologyPreviewComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
   }
 

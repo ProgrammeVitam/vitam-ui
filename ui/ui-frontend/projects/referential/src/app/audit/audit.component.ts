@@ -34,76 +34,59 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Event} from 'projects/vitamui-library/src/public-api';
-import {GlobalEventService, Option, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
-
-import {AuditCreateComponent} from './audit-create/audit-create.component';
-import {AuditListComponent} from './audit-list/audit-list.component';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { Event } from 'projects/vitamui-library/src/public-api';
+import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
+import { AuditCreateComponent } from './audit-create/audit-create.component';
+import { AuditListComponent } from './audit-list/audit-list.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-audit',
   templateUrl: './audit.component.html',
-  styleUrls: ['./audit.component.scss']
+  styleUrls: ['./audit.component.scss'],
 })
-export class AuditComponent extends SidenavPage<Event> implements OnInit {
+export class AuditComponent extends SidenavPage<Event> {
+  public dateRangeFilterForm: FormGroup;
+  public filters: any = {};
+  public search: string;
+  public tenantIdentifier: string;
 
-  search: string;
-  tenantIdentifier: string;
-
-  auditTypes: Option[] = [
-    {key: 'PROCESS_AUDIT', label: 'Integrité et Existence'},
-    {key: 'EVIDENCE_AUDIT', label: 'Cohérence'},
-    {key: 'RECTIFICATION_AUDIT', label: 'Correctif'}
-  ];
-
-  dateRangeFilterForm: FormGroup;
-
-  filters: any = {};
-
-  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
-  @ViewChild(AuditListComponent, {static: true}) auditListComponent: AuditListComponent;
+  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
+  @ViewChild(AuditListComponent, { static: true }) auditListComponent: AuditListComponent;
 
   constructor(
     public dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder) {
+    public route: ActivatedRoute,
+    public globalEventService: GlobalEventService,
+    private formBuilder: FormBuilder
+  ) {
     super(route, globalEventService);
 
-    route.params.subscribe(params => {
+    route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,
       endDate: null,
-      types: []
     });
 
-    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe(value => {
-      this.filters.startDate = value;
-      this.auditListComponent.filters = this.filters;
+    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
+      this.filters = {...this.filters, startDate: value };
     });
+
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
-      if (value) {
-        value.setDate(value.getDate() + 1);
-      }
-      this.filters.endDate = value;
-      this.auditListComponent.filters = this.filters;
-    });
-    this.dateRangeFilterForm.controls.types.valueChanges.subscribe(value => {
-      this.filters.types = value;
-      this.auditListComponent.filters = this.filters;
+      let updatedDate = value ? moment(value).endOf('day') : null;
+      this.filters = { ...this.filters, endDate: updatedDate };
     });
   }
 
   openCreateAuditDialog() {
-    const dialogRef = this.dialog.open(AuditCreateComponent, {panelClass: 'vitamui-modal', disableClose: true});
+    const dialogRef = this.dialog.open(AuditCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
     dialogRef.componentInstance.tenantIdentifier = +this.tenantIdentifier;
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined && result.success) {
@@ -116,6 +99,7 @@ export class AuditComponent extends SidenavPage<Event> implements OnInit {
     if (!this.auditListComponent) {
       return;
     }
+
     this.auditListComponent.searchAuditOrdered();
   }
 
@@ -123,29 +107,16 @@ export class AuditComponent extends SidenavPage<Event> implements OnInit {
     this.search = search || '';
   }
 
-  clearDate(date: 'startDate' | 'endDate') {
-    if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
-    } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
-    } else {
-      console.error('clearDate() error: unknown date ' + date);
+  clearDate(dateToClear: 'startDate' | 'endDate', $event: any, input: HTMLInputElement): void {
+    if (!!this.dateRangeFilterForm.get(dateToClear).value) {
+      this.dateRangeFilterForm.get(dateToClear).reset();
     }
-  }
 
-  resetFilters() {
-    this.dateRangeFilterForm.reset();
-    this.searchBar.reset();
-  }
-
-  ngOnInit() {
+    input.value = null;
+    $event.stopPropagation();
   }
 
   showAudit(item: Event) {
     this.openPanel(item);
-  }
-
-  changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 }

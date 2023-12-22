@@ -55,7 +55,8 @@ describe('AccessContractListComponent', () => {
 
   const accessContractServiceMock = {
     getAll: () => of([]),
-    search: () => EMPTY
+    search: () => EMPTY,
+    updated: EMPTY
   };
 
   beforeEach(waitForAsync(() => {

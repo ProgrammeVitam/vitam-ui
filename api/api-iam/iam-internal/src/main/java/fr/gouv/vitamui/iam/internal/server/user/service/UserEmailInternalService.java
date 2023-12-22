@@ -91,19 +91,13 @@ public class UserEmailInternalService {
 
     public void sendCreationEmail(final UserDto userDto) {
         if (userDto != null && userDto.getStatus() == UserStatusEnum.ENABLED && userDto.getType() == UserTypeEnum.NOMINATIVE) {
-            try {
-                final List<IdentityProviderDto> providers = internalIdentityProviderService.getAll(Optional.empty(), Optional.empty());
-                if (identityProviderHelper.identifierMatchProviderPattern(providers, userDto.getEmail())) {
-                    LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
-                    final UserInfoDto userInfoDto = userInfoInternalService.getOne(userDto.getUserInfoId());
-                    restClientFactory.getRestTemplate().getForEntity(restClientFactory.getBaseUrl() + casResetPasswordUrl, Boolean.class, userDto.getEmail(),
-                            userDto.getFirstname(), userDto.getLastname(), LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage());
-                }
+            final List<IdentityProviderDto> providers = internalIdentityProviderService.getAll(Optional.empty(), Optional.empty());
+            if (identityProviderHelper.identifierMatchProviderPattern(providers, userDto.getEmail())) {
+                LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
+                final UserInfoDto userInfoDto = userInfoInternalService.getOne(userDto.getUserInfoId());
+                restClientFactory.getRestTemplate().getForEntity(restClientFactory.getBaseUrl() + casResetPasswordUrl, Boolean.class, userDto.getEmail(),
+                        userDto.getFirstname(), userDto.getLastname(), LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage());
             }
-            catch (final Exception e) {
-                LOGGER.error("User creation: failed to send mail after creation. \n{}", e);
-            }
-
         }
     }
 }

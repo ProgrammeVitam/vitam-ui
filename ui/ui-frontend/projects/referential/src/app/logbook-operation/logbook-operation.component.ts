@@ -34,105 +34,81 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {GlobalEventService, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
-import {EventFilter} from './event-filter.interface';
-import {LogbookOperationListComponent} from './logbook-operation-list/logbook-operation-list.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { EventFilter } from './event-filter.interface';
+import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
 
 @Component({
   selector: 'app-logbook-operation',
   templateUrl: './logbook-operation.component.html',
-  styleUrls: ['./logbook-operation.component.scss']
+  styleUrls: ['./logbook-operation.component.scss'],
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit {
-  search = '';
-  dateRangeFilterForm: FormGroup;
-  tenantIdentifier: number;
-  filters: Readonly<EventFilter> = {};
-  workflowGuidToSearch: string;
+  @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;
 
-  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
-  @ViewChild(LogbookOperationListComponent, {static: true}) list: LogbookOperationListComponent;
+  public search = '';
+  public tenantIdentifier: number;
+  public dateRangeFilterForm: FormGroup;
+  public filters: Readonly<EventFilter> = {};
+
+  private workflowGuidToSearch: string;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
-    globalEventService: GlobalEventService,
+    globalEventService: GlobalEventService
   ) {
     super(route, globalEventService);
+  }
 
+  ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => (this.tenantIdentifier = +paramMap.get('tenantIdentifier')));
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,
-      endDate: null
+      endDate: null,
     });
 
     this.dateRangeFilterForm.valueChanges.subscribe((value) => {
       this.filters = {
         type: this.filters.type,
         status: this.filters.status,
-        dateRange: value
+        dateRange: value,
       };
     });
-  }
 
-  ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       if (params.guid) {
         this.workflowGuidToSearch = params.guid;
-        this.searchBar.searchValue = this.workflowGuidToSearch;
         this.onSearchSubmit(this.workflowGuidToSearch);
         this.openOperationDetail();
       }
     });
-    if (!this.list) {
-      console.error('LogbookOperationComponent Error: no list in the template');
-    }
   }
 
-  openOperationDetail() {
-    setTimeout(() => {
-      this.list.eventClick.emit(this.list.dataSource[0]);
-    }, 2000);
-  }
-
-  changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
-  }
-
-  onSearchSubmit(search: string) {
-    this.search = search || '';
-  }
-
-  clearDate(date: 'startDate' | 'endDate') {
-    if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
-    } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
-    } else {
-      console.error('clearDate() error: unknown date ' + date);
-    }
-  }
-
-  refreshList() {
-    if (!this.list) {
-      return;
-    }
-
+  public refreshList(): void {
     this.list.refreshList();
   }
 
-  resetFilters() {
-    this.clearDate('startDate');
-    this.clearDate('endDate');
-    this.searchBar.reset();
-    this.list.resetFilters();
+  public onSearchSubmit(search: string): void {
+    this.search = search || '';
   }
 
+  public clearDate(dateToClear: 'startDate' | 'endDate', $event: any, input: HTMLInputElement): void {
+    if (!!this.dateRangeFilterForm.get(dateToClear).value) {
+      this.dateRangeFilterForm.get(dateToClear).reset();
+    }
+
+    input.value = null;
+    $event.stopPropagation();
+  }
+
+  private openOperationDetail(): void {
+    setTimeout(() => this.list.eventClick.emit(this.list.dataSource[0]), 2000);
+  }
 }

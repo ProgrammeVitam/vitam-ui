@@ -79,9 +79,12 @@
       "SUBROGATION_DENIED": "Votre demande de subrogation a été refusée",
       "SUBROGATION_UNAVAILABLE": "La subrogation pour cet utilisateur est momentanément impossible",
       "ACCOUNT_UPDATE": "Les informations ont été mises à jour",
-      "OIDC_UPDATE": "Pour le protocole OIDC, ces champs doivent être renseignés : url discovery, client identifier et client secret pour que la modification aurait lieu",
+      "OIDC_UPDATE": "Pour le protocole OIDC, ces champs doivent être renseignés : url discovery, client identifier et client secret pour que la modification ait lieu",
+      "SAML_UPDATE_ERROR": "Pour le protocole SAML, ces champs doivent être renseignés : Nom de l'IDP, Patterns, Keystore de CAS, Metadata de l'IDP pour que la modification ait lieu",
       "USER_ALREADY_DELETED": "L'utilisateur que vous cherchez est déja supprimé",
-      "USER_TO_DELETE": "Un ou plusieurs utilisateur(s) inactif (s) dans votre organisation qui nécessitent l'effacement de leurs données personnelles"
+      "USER_TO_DELETE": "Un ou plusieurs utilisateur(s) inactif (s) dans votre organisation qui nécessitent l'effacement de leurs données personnelles",
+      "USER_EXPORT_SUCCESS": "Export des utilisateurs effectué avec succès.",
+      "GROUP_EXPORT_SUCCESS": "Export des groupes de profils effectué avec succès."
     }
   },
   "CUSTOMER": {
@@ -185,9 +188,10 @@
         "SUBTITLE_OIDC": "Paramètres spécificiques OIDC"
       },
       "AUTO_PROVISIONING": "Mise à jour automatique des utilisateurs",
-      "MAXIMUM_AUTHENTICATION_LIFETIME" : "Temps maximum de connexion (secondes)",
+      "MAXIMUM_AUTHENTICATION_LIFETIME": "Temps maximum de connexion (secondes)",
       "WANTS_ASSERTION_SIGNED": "Assertions signées",
-      "AUTHN_REQUEST_SIGNED": "Requête d'authentification signée"
+      "AUTHN_REQUEST_SIGNED": "Requête d'authentification signée",
+      "PROPAGATE_LOGOUT": "Déconnexion propagée"
     },
     "GRAPHIC_IDENTITY": {
       "TOGGLE_TITLE": "Identité graphique personnalisée",
@@ -270,6 +274,7 @@
     "HOME": {
       "TITLE_PLACEHOLDER": "Nom, Prénom, Identifiant, Email",
       "ACTION_BUTTON": "Créer un utilisateur",
+      "EXPORT": "Exporter",
       "RESULTS_TABLE": {
         "NAME": "Nom / Prénom",
         "LAST_CONNEXION": "Dernière connexion",
@@ -305,7 +310,7 @@
         "MOBILE": "Numéro de mobile",
         "FIX": "Numéro de fixe"
       },
-      "CENTER_CODE": "Code du centre",
+      "CENTER_CODES": "Code des centres",
       "SITE_CODE": "Code du site",
       "INTERNAL_CODE": "Code Interne",
       "DEFAULT_LANGUAGE": "Langue de l'interface",
@@ -403,6 +408,7 @@
     "HOME": {
       "TITLE_PLACEHOLDER": "Nom du groupe, Identifiant, Description, Unité d'appartenance",
       "ACTION_BUTTON": "Créer un Groupe",
+      "EXPORT": "Exporter",
       "RESULTS_TABLE": {
         "NAME": "Nom du groupe",
         "DESCRIPTION": "Description",

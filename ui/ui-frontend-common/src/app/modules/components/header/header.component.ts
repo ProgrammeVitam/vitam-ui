@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public trustedInlineLogoUrl: SafeUrl;
   public hasTenantSelection = false;
   public hasCustomerSelection = false;
+  public hasSiteSelection = false;
   public portalUrl: string;
   public currentUser: AuthUser;
   public selectedTenant: MenuOption;
@@ -72,6 +73,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.portalUrl = this.startupService.getPortalUrl();
+    this.hasSiteSelection = this.startupService.getHasSiteSelection();
     this.tenants = this.tenantService.getTenants().map((tenant: Tenant) => {
       return { value: tenant, label: tenant.name };
     });
@@ -235,6 +237,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       });
     }
+
+    // Subscribe to route changes
+    this.router.events
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe((data: any) => {
+      if (data?.snapshot?.params) {
+          const tenantIdentifier = +data.snapshot.params.tenantIdentifier;
+          // Subcribe to active tenant changes
+          if (!!tenantIdentifier){
+          this.tenantService.setSelectedTenantByIdentifier(tenantIdentifier);
+        }
+        }
+    });
+
 
     // Subcribe to active tenant changes
     this.tenantService

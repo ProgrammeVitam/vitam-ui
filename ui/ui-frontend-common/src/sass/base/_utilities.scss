@@ -1,31 +1,35 @@
 .clickable {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .hidden {
-    visibility: hidden!important;
+  visibility: hidden !important;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 .underline {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .bg-primary {
-    background-color: var(--vitamui-primary)!important;
+  background-color: var(--vitamui-primary) !important;
 }
 
 .bg-secondary {
-    background-color: var(--vitamui-secondary)!important;
+  background-color: var(--vitamui-secondary) !important;
 }
 
 .no-hover {
-    &:hover {
-      background-color: transparent!important;
-    }
+  &:hover {
+    background-color: transparent !important;
+  }
 }
 
 .w-100 {
-    width: 100% !important;
+  width: 100% !important;
 }
 
 $vitamui-colors: vitamui-grey, vitamui-primary, vitamui-secondary;
@@ -35,4 +39,8 @@ $vitamui-colors: vitamui-grey, vitamui-primary, vitamui-secondary;
       color: var(--#{$color}-#{$i * 100});
     }
   }
+}
+
+.align-middle {
+  vertical-align: middle;
 }

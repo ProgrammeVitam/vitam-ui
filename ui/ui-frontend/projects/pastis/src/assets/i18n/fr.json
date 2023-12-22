@@ -451,9 +451,9 @@
       "NAME": "Etiquettes",
       "TOOLTIP": "Gestion des etiquettes"
     },
-    "PHYSICAL_CUSTOMERS_APP": {
-      "NAME": "Organisations physiques",
-      "TOOLTIP": "Paramétrer les organisations physiques"
+    "CUSTOMERS_ADVANCED_PARAM_APP": {
+      "NAME": "Paramétrage avancé des organisations",
+      "TOOLTIP": "Définir le paramétrage avancé des organisations et des coffres"
     },
     "ARCHIVE_BATCH_INGEST_PROFILE_APP": {
       "NAME": "Profils APP Dépôt par bordereau",

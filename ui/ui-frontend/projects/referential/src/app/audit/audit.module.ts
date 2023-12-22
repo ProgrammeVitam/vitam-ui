@@ -34,28 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {RouterModule} from '@angular/router';
-import {VitamUICommonModule} from 'ui-frontend-common';
-
-import {SharedModule} from '../shared/shared.module';
-import {AuditCreateModule} from './audit-create/audit-create.module';
-import {AuditListModule} from './audit-list/audit-list.module';
-import {AuditPreviewModule} from './audit-preview/audit-preview.module';
-import {AuditRoutingModule} from './audit-routing.module';
-import {AuditComponent} from './audit.component';
-
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { PipesModule } from '../shared/pipes/pipes.module';
+import { SharedModule } from '../shared/shared.module';
+import { AuditCreateModule } from './audit-create/audit-create.module';
+import { AuditPreviewModule } from './audit-preview/audit-preview.module';
+import { AuditRoutingModule } from './audit-routing.module';
+import { AuditComponent } from './audit.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AuditListComponent } from './audit-list/audit-list.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 
 @NgModule({
+  declarations: [AuditComponent, AuditListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -64,7 +69,6 @@ import {AuditComponent} from './audit.component';
     VitamUICommonModule,
     AuditRoutingModule,
     AuditPreviewModule,
-    AuditListModule,
     AuditCreateModule,
     MatMenuModule,
     MatSnackBarModule,
@@ -73,11 +77,15 @@ import {AuditComponent} from './audit.component';
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatSelectModule,
-    SharedModule
+    SharedModule,
+    MatFormFieldModule,
+    MatInputModule,
+    PipesModule,
+    TableFilterModule,
+    MatMomentDateModule
   ],
-  declarations: [
-    AuditComponent
-  ]
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }
+  ],
 })
-export class AuditModule {
-}
+export class AuditModule {}

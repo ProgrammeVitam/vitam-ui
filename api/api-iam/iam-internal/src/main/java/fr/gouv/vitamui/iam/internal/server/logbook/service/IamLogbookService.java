@@ -71,20 +71,19 @@ import fr.gouv.vitamui.iam.internal.server.subrogation.domain.Subrogation;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
+import fr.gouv.vitamui.iam.internal.server.user.domain.ConnectionHistory;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.OffsetDateTime;
+import java.util.*;
 
 /**
  *
@@ -104,12 +103,18 @@ public class IamLogbookService {
 
     private final TenantRepository tenantRepository;
 
+    private final ConnectionHistoryService connectionHistoryService;
+
+    @Value("#{new Boolean('${user.connection.tracing.enabled}')}")
+    private boolean isTraceConnectionActive;
+
     public IamLogbookService(final EventService logbookService, final InternalSecurityService internalSecurityService, final Converters converters,
-            final TenantRepository tenantRepository) {
+            final TenantRepository tenantRepository, final ConnectionHistoryService connectionHistoryService) {
         eventService = logbookService;
         this.internalSecurityService = internalSecurityService;
         this.converters = converters;
         this.tenantRepository = tenantRepository;
+        this.connectionHistoryService = connectionHistoryService;
     }
 
     /**
@@ -426,6 +431,12 @@ public class IamLogbookService {
     public void loginEvent(final User user, final String surrogateIdentifier, final String ip, final String errorMessage) {
         LOGGER.debug("Login statut: {} / user: {} - {} / surrogate: {} / IP: {} / errorMessage: {}", errorMessage != null ? StatusCode.KO : StatusCode.OK,
                 user.getIdentifier(), user.getEmail(), surrogateIdentifier, ip, errorMessage);
+        if (errorMessage == null && isTraceConnectionActive) {
+            ConnectionHistory connectionHistory = ConnectionHistory.builder().userId(user.getIdentifier())
+                .subrogatedUserId(surrogateIdentifier)
+                .connectionDateTime(new Date()).build();
+            this.connectionHistoryService.saveUserConnection(connectionHistory);
+        }
     }
 
     /**

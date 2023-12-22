@@ -1,29 +1,19 @@
-<div class="vitamui-sidepanel">
-  <div class="vitamui-sidepanel-header">
-    <div class="d-flex justify-content-end">
-      <button class="btn link cancel" (click)="emitClose()">
-        <i class="vitamui-icon vitamui-icon-close"></i>
-      </button>
-    </div>
+<vitamui-common-sidenav-header
+  [title]="rule?.ruleValue?.substr(0, 33)"
+  [subtitle]="'(' + rule?.ruleId + ')'"
+  (onclose)="emitClose()">
+</vitamui-common-sidenav-header>
 
-    <div class="title">
-      <div matTooltipClass="vitamui-tooltip">
-        <h5 class="m-0 text-primary">
-          {{ rule?.ruleValue.substr(0, 33) }} <small>({{ rule?.ruleId }})</small>
-        </h5>
-      </div>
-    </div>
-  </div>
-  <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group" #tabs>
-      <mat-tab label="Informations" i18n-label="Information tab@@rulePreviewTabInformation">
-        <app-rule-information-tab [rule]="rule" (updated)="updatedChange($event, 0)" #infoTab> </app-rule-information-tab>
-      </mat-tab>
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group" #tabs>
+    <mat-tab [label]="'RULES_APP.TAB.INFORMATION.TITLE' | translate">
+      <app-rule-information-tab [rule]="rule" (updated)="updatedChange($event, 0)" #infoTab> </app-rule-information-tab>
+    </mat-tab>
 
-      <mat-tab label="Historique" i18n-label="History tab@@rulePreviewTabHistory">
-        <vitamui-common-operation-history-tab [id]="rule?.id" [identifier]="rule?.id" collectionName="rules" [filter]="filterEvents">
-        </vitamui-common-operation-history-tab>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+    <mat-tab [label]="'RULES_APP.TAB.HISTORY.TITLE' | translate">
+      <vitamui-common-operation-history-tab [id]="rule?.id" [identifier]="rule?.id" collectionName="rules" [filter]="filterEvents">
+      </vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>
+

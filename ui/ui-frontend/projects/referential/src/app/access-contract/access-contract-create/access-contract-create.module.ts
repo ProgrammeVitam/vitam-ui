@@ -43,9 +43,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTooltipModule} from '@angular/material/tooltip';
 import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import {VitamUICommonModule, VitamUIAutocompleteMultiSelectModule} from 'ui-frontend-common';
+
 
 import {SharedModule} from 'projects/identity/src/app/shared/shared.module';
 import {AccessContractCreateComponent} from './access-contract-create.component';
@@ -60,10 +60,10 @@ import {AccessContractCreateComponent} from './access-contract-create.component'
     MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatTooltipModule,
     ReactiveFormsModule,
     VitamUICommonModule,
-    VitamUILibraryModule
+    VitamUILibraryModule,
+    VitamUIAutocompleteMultiSelectModule,
   ],
   declarations: [
     AccessContractCreateComponent

@@ -15,7 +15,6 @@
 
   div {
     color: var(--vitamui-grey-900);
-    font-weight: 700;
   }
 }
 
@@ -66,7 +65,6 @@ input[type='email'].vitamui-input {
   border: none;
   border-radius: 4px;
   font-size: 16px;
-  font-weight: 700;
 
   &.ng-valid.ng-touched {
     border: 1px solid $green;

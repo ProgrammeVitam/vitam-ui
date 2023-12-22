@@ -1,58 +1,64 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
+  <div class="d-flex mt-3">
+    <vitamui-common-input
+      formControlName="shortName"
+      [placeholder]="'ONTOLOGY.TAB.INFORMATION.NAME' | translate"
+      disabled>
+    </vitamui-common-input>
+  </div>
 
-    <div class="row">
-        <div class="col-10 form-control">
-            <vitamui-common-input formControlName="shortName" placeholder="Nom" disabled="disabled"
-                i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
-            </vitamui-common-input>
-        </div>
-    </div>
+  <div class="d-flex">
+    <mat-form-field class="vitamui-mat-select w-100">
+        <mat-select
+          formControlName="type"
+          [disabled]="isInternal"
+          [placeholder]="'ONTOLOGY.TAB.INFORMATION.TYPE' | translate">
+           <mat-option *ngFor='let type of types' [value]="type.key">
+             {{type.label}}
+           </mat-option>
+        </mat-select>
+      <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
+    </mat-form-field>
+  </div>
 
-    <div class="row">
-        <div class="col-10 form-control">
-            <mat-form-field class="vitamui-mat-select">
-                <mat-select formControlName="type" [disabled]="isInternal" placeholder="Type" panelclass="vitamui-mat-select">
-                   <mat-option *ngFor='let type of types' [value]="type.key">{{type.label}}</mat-option>
-                </mat-select>
-                <div class="select-arrow">
-                    <i class="material-icons">keyboard_arrow_up</i>
-                    <i class="material-icons">keyboard_arrow_down</i>
-                </div>
-            </mat-form-field>
-        </div>
+  <div class="d-flex mt-4">
+    <mat-form-field class="vitamui-mat-select w-100">
+        <mat-select
+          formControlName="collections"
+          [disabled]="isInternal"
+          [placeholder]="'ONTOLOGY.TAB.INFORMATION.COLLECTION' | translate"
+          multiple>
+          <mat-option *ngFor='let collection of collections' [value]="collection.key">
+            {{collection.label}}
+          </mat-option>
+        </mat-select>
+      <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
+    </mat-form-field>
+  </div>
 
-        <div class="col-10 form-control">
-            <mat-form-field class="vitamui-mat-select">
-                <mat-select formControlName="collections" [disabled]="isInternal" placeholder="Collections" panelclass="vitamui-mat-select"
-                    multiple>
-                  <mat-option *ngFor='let collection of collections' [value]="collection.key">{{collection.label}}</mat-option>
-                </mat-select>
-                <div class="select-arrow">
-                    <i class="material-icons">keyboard_arrow_up</i>
-                    <i class="material-icons">keyboard_arrow_down</i>
-                </div>
-            </mat-form-field>
-        </div>
-    </div>
+  <div class="d-flex mt-4">
+    <vitamui-common-textarea
+      class="w-100"
+      formControlName="description"
+      [disabled]="isInternal"
+      [placeholder]="'ONTOLOGY.TAB.INFORMATION.DESCRIPTION' | translate"
+      [rows]="3">
+        <ng-container *ngIf="form.get('description')?.touched">
+            <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
+              {{'COMMON.REQUIRED' | translate}}
+            </vitamui-common-input-error>
+        </ng-container>
+    </vitamui-common-textarea>
+  </div>
 
-    <div class="row">
-        <div class="col-10 form-control">
-            <vitamui-common-textarea formControlName="description" [disabled]="isInternal" placeholder="Description" [rows]="3">
-                <ng-container *ngIf="form.get('description')?.touched">
-                    <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
-                    </vitamui-common-input-error>
-                </ng-container>
-            </vitamui-common-textarea>
-        </div>
-    </div>
+  <mat-form-field class="w-100 vitamui-input vitamui-date mt-4" disabled>
+    <input matInput [value]="form.get('creationDate').value | dateTime: 'dd/MM/yyyy'" 
+           [placeholder]="'ONTOLOGY.TAB.INFORMATION.CREATION_DATE' | translate" disabled/>
+  </mat-form-field>
 
-    <div class="row">
-        <div class="col-10">
-            <span>Date de création</span> : {{inputOntology?.creationDate | dateTime: 'dd/MM/yyyy'}}
-        </div>
-    </div>
-
-  <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
+  <div class="actions mt-5">
+    <button type="submit" class="btn primary" [disabled]="unchanged() || submited">
+      {{ 'COMMON.SAVE' | translate }}
+    </button>
   </div>
 </form>

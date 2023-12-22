@@ -91,7 +91,6 @@ public class VitamResponseHandler {
             List<FacetBucketDto> bucks = buckets.stream()
                     .filter(b -> StringUtils.containsIgnoreCase(b.getValue(), parts[parts.length - 1]))
                     .sorted((b1, b2) -> b2.getCount().compareTo(b1.getCount())).collect(Collectors.toList());
-            Long total = bucks.stream().map(FacetBucketDto::getCount).reduce(0L, Long::sum);
             bucks = bucks.stream().limit(5).collect(Collectors.toList());
 
             for (FacetBucketDto facetBucket : bucks) {
@@ -107,7 +106,6 @@ public class VitamResponseHandler {
                     }
                 }
             }
-            bucks.add(new FacetBucketDto("all", total));
             facetRes.setBuckets(bucks);
             facetRes.setName(facetResults.get(0).getName());
         }
