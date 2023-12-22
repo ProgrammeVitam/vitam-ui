@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -164,6 +163,8 @@ public class ExternalParamProfileExternalController implements
         return service.findHistoryById(id);
     }
 
+    // @deprecated: This endpoint is mandatory only to handle ui module
+    // after removing ui module we must delete this enpoint
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
@@ -177,6 +178,13 @@ public class ExternalParamProfileExternalController implements
         LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")),
             "The DTO identifier must match the path identifier for update.");
+        return service.patch(partialDto);
+    }
+
+    @PatchMapping(value = CommonConstants.PATH_ME)
+    @Secured(ServicesData.ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
+    public ExternalParamProfileDto patchMe(@RequestBody final Map<String, Object> partialDto) throws PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(partialDto);
         return service.patch(partialDto);
     }
 
