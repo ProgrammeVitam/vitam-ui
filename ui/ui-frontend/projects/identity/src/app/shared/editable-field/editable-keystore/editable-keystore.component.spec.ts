@@ -52,6 +52,7 @@ import { EditableKeystoreComponent } from './editable-keystore.component';
 })
 class TesthostComponent {
   identityProvider: IdentityProvider = {
+    propagateLogout: false,
     id: '1',
     customerId: '2',
     name: 'testIDP',

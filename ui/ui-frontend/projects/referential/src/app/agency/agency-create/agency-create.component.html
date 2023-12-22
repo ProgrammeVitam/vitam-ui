@@ -1,88 +1,59 @@
-<div class="header">
-  <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
-</div>
+<div class="content mt-3">
+    <div class="text medium light">{{ 'AGENCY.CREATE_DIALOG.SUBTITLE' | translate }}</div>
+    <div class="text large bold">{{ 'AGENCY.CREATE_DIALOG.TITLE' | translate }}</div>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
-    <cdk-step>
-      <div class="content">
-        <h4 i18n="Create agency title@@agencyCreateTitle1">Création d'un service agent</h4>
-        <h5 i18n="Create agency title@@agencyCreateTitle2">Informations</h5>
+  <form class="mt-4" [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial>
+    <ng-container *ngIf="!isLoading; else loading">
+      <vitamui-common-input
+        class="w-100"
+        formControlName="identifier"
+        placeholder="{{ 'AGENCY.CREATE_DIALOG.IDENTIFIER' | translate }}"
+        required
+      >
+        <ng-container *ngIf="form.get('identifier')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.identifierExists">
+            {{ 'AGENCY.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
 
-        <div class="d-flex">
-          <vitamui-common-input
-            class="field-identifier"
-            formControlName="identifier"
-            minlength="2"
-            maxlength="100"
-            required
-            placeholder="Identifiant"
-            i18n-placeholder="Identifier@@agencyCreateIdentifierPlaceholder"
-          >
-            <ng-container *ngIf="form.get('identifier')?.touched">
-              <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">{{
-                'COMMON.REQUIRED' | translate
-              }}</vitamui-common-input-error>
-              <vitamui-common-input-error
-                *ngIf="!!form?.get('identifier')?.errors?.identifierExists"
-                i18n="Identfier exists error hint@@formErrorIdentifierExists"
-                >Identifiant déjà utilisé</vitamui-common-input-error
-              >
-            </ng-container>
-          </vitamui-common-input>
-        </div>
-
-        <div class="d-flex">
-          <vitamui-common-input
-            class="field-name"
-            formControlName="name"
-            minlength="2"
-            maxlength="100"
-            required
-            placeholder="Nom"
-            i18n-placeholder="Name@@agencyCreateNamePlaceholder"
+      <vitamui-common-input class="w-100" formControlName="name" placeholder="{{ 'AGENCY.CREATE_DIALOG.NAME' | translate }}" required
           >
             <ng-container *ngIf="form.get('name')?.touched">
-              <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
-                'COMMON.REQUIRED' | translate
-              }}</vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists" i18n="Name exists error hint@@formErrorNameExists"
-                >Nom déjà utilisé</vitamui-common-input-error
-              >
-            </ng-container>
-          </vitamui-common-input>
-        </div>
+              <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+              <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists" >
+            {{ 'AGENCY.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
 
-        <div class="d-flex">
-          <vitamui-common-input
-            class="field-description"
-            formControlName="description"
-            minlength="4"
-            maxlength="100"
-            placeholder="Description"
-            i18n-placeholder="Description@@agencyCreateDescriptionPlaceholder"
-          >
-            <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('required')">{{
-              'COMMON.REQUIRED' | translate
-            }}</vitamui-common-input-error>
-          </vitamui-common-input>
-        </div>
-        <div class="btn-container">
-          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">
-            {{ 'COMMON.SUBMIT' | translate }}
-          </button>
-          <button
-            type="button"
-            class="btn primary"
-            [disabled]="form.pending || form.invalid || isDisabledButton"
-            (click)="onSubmitAndCreate()"
-            i18n="Finish agency creation button@@agencyCreateFinishButton"
-          >
-            Terminer et créer un nouveau service agent
-          </button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-        </div>
-      </div>
-    </cdk-step>
-  </vitamui-common-stepper>
-</form>
+      <vitamui-common-textarea
+        class="w-100"
+        formControlName="description"
+        placeholder="{{ 'AGENCY.CREATE_DIALOG.DESCRIPTION' | translate }}"
+      >
+      </vitamui-common-textarea>
+    </ng-container>
+
+    <div class="actions">
+      <button type="submit" class="btn primary" [disabled]="form.invalid || form.pending || isLoading">
+        <span>{{ 'COMMON.TERMINATE' | translate }}</span>
+      </button>
+
+      <button type="button" class="btn primary" [disabled]="form.invalid || form.pending || isLoading" (click)="onSubmitAndCreate()">
+        <span>{{ 'AGENCY.CREATE_DIALOG.VALIDATE_AND_CREATE' | translate }}</span>
+      </button>
+
+      <button type="button" class="btn cancel link" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+    </div>
+  </form>
+</div>
+
+<ng-template #loading>
+  <div class="loader">
+    <mat-spinner *ngIf="isLoading" class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

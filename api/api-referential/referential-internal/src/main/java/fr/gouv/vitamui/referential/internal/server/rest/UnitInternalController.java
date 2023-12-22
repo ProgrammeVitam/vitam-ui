@@ -127,12 +127,16 @@ public class UnitInternalController {
 
     @GetMapping(RestApi.FILING_PLAN_PATH)
     public VitamUISearchResponseDto getFilingAndHoldingUnits(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId)
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The accessContractId is a mandatory parameter: ", accessContractId);
+        SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Get filing and holding units with projections on needed fields ONLY!");
+        SanityChecker.checkSecureParameter(accessContractId);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         final JsonNode fillingOrHoldingQuery = unitInternalService.createQueryForFillingOrHoldingUnit();
-        return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery,
-                externalParametersService.buildVitamContextFromExternalParam()),
+        return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery, vitamContext),
             VitamUISearchResponseDto.class);
     }
 

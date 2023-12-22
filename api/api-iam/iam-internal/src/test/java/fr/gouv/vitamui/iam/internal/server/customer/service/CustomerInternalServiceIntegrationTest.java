@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -139,6 +140,8 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
     @Mock
     private ExternalParametersInternalService externalParametersInternalService;
 
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
 
 
     @Before

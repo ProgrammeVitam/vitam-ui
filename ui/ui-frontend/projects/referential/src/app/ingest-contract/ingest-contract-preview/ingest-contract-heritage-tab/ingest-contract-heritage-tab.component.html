@@ -1,13 +1,9 @@
-<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div class="row">
-    <div class="col-10 form-control">
-      <vitamui-common-slide-toggle [disabled]="readOnly" formControlName="computeInheritedRulesAtIngest"
-        >Calcul des héritages de règles et d'indexation des échéances
-      </vitamui-common-slide-toggle>
-    </div>
-  </div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <vitamui-common-slide-toggle [disabled]="readOnly" formControlName="computeInheritedRulesAtIngest">
+    <span>{{'INGEST_CONTRACT.TAB.LEGACY.LEGACY_RULES' | translate}}</span>
+  </vitamui-common-slide-toggle>
 
-  <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="readOnly || unchanged() || submited">Enregistrer</button>
-  </div>
+  <button type="submit" class="btn primary mt-4" [disabled]="readOnly || unchanged() || submited">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
 </form>

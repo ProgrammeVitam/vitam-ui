@@ -38,6 +38,7 @@ import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserEmailInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
@@ -87,10 +88,13 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     @Mock
     private UserConverter userConverter;
 
+    @Mock
+    private ConnectionHistoryService connectionHistoryService;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        userController = new UserInternalController(internalUserService);
+        userController = new UserInternalController(internalUserService, connectionHistoryService);
         Mockito.when(userConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(userConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
@@ -219,7 +223,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         userDto.setIdentifier(null);
 
         prepareServices();
-        when(userRepository.findByEmail(any())).thenReturn(buildUser());
+        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(buildUser());
 
         try {
             userController.create(userDto);
@@ -318,7 +322,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         userDto.setEmail("test" + userDto.getEmail());
 
         prepareServices();
-        when(userRepository.findByEmail(userDto.getEmail())).thenReturn(buildUser());
+        when(userRepository.findByEmailIgnoreCase(userDto.getEmail())).thenReturn(buildUser());
 
         try {
             userController.update(userDto.getId(), userDto);
@@ -350,7 +354,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         UserDto userDto = buildUserDto();
         UserInternalService userInternalService = Mockito.mock(UserInternalService.class);
         when(userInternalService.patchAnalytics(any())).thenReturn(userDto);
-        userController = new UserInternalController(userInternalService);
+        userController = new UserInternalController(userInternalService, connectionHistoryService);
         Map<String, Object> partialDto = Map.of(APPLICATION_ID, "SUBROGATIONS_APP");
 
         UserDto result = userController.patchAnalytics(partialDto);

@@ -159,7 +159,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setLastname("zz");
         user.setCustomerId(CUSTOMER_ID);
         user.setPasswordExpirationDate(OffsetDateTime.now());
-        when(userRepository.findByEmail(EMAIL)).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCase(EMAIL)).thenReturn(user);
 
         final Customer customer = new Customer();
         customer.setPasswordRevocationDelay(156);

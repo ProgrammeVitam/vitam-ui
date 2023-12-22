@@ -34,43 +34,47 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute} from '@angular/router';
 
-import { FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
-import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'ui-frontend-common';
-import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
-import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
-import { FileFormatCreateComponent } from './file-format-create/file-format-create.component';
-import { FileFormatListComponent } from './file-format-list/file-format-list.component';
-import { Observable, Subscription } from 'rxjs';
+import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
+import {ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage} from 'ui-frontend-common';
+import {FileFormatCreateComponent} from './file-format-create/file-format-create.component';
+import {FileFormatListComponent} from './file-format-list/file-format-list.component';
+import {Observable, Subscription} from 'rxjs';
+import {ImportDialogParam, ReferentialTypes} from "../shared/import-dialog/import-dialog-param.interface";
+import {FileTypes} from "../../../../vitamui-library/src/lib/models/file-types.enum";
+import {ImportDialogComponent} from "../shared/import-dialog/import-dialog.component";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-file-format',
   templateUrl: './file-format.component.html',
-  styleUrls: ['./file-format.component.scss'],
+  styleUrls: ['./file-format.component.scss']
 })
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit {
+
   search = '';
   tenantIdentifier: number;
   tenantIdentifierSubscription: Subscription;
   hasCreateRole = new Observable<boolean>();
   hasImportRole = new Observable<boolean>();
 
-  @ViewChild(FileFormatListComponent, { static: true }) fileFormatListComponentListComponent: FileFormatListComponent;
+  @ViewChild(FileFormatListComponent, {static: true}) fileFormatListComponentListComponent: FileFormatListComponent;
 
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     globalEventService: GlobalEventService,
-    private securityService: SecurityService,
+    private translateService: TranslateService,
+    private securityService: SecurityService
   ) {
     super(route, globalEventService);
   }
 
   openCreateFileFormatDialog() {
-    const dialogRef = this.dialog.open(FileFormatCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(FileFormatCreateComponent, {panelClass: 'vitamui-modal', disableClose: true});
     dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         this.refreshList();
@@ -92,16 +96,8 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   ngOnInit() {
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
       if (params.tenantIdentifier) {
-        this.hasCreateRole = this.securityService.hasRole(
-          ApplicationId.FILE_FORMATS_APP,
-          parseInt(params.tenantIdentifier),
-          Role.ROLE_CREATE_FILE_FORMATS,
-        );
-        this.hasImportRole = this.securityService.hasRole(
-          ApplicationId.FILE_FORMATS_APP,
-          parseInt(params.tenantIdentifier),
-          Role.ROLE_IMPORT_FILE_FORMATS,
-        );
+        this.hasCreateRole = this.securityService.hasRole(ApplicationId.FILE_FORMATS_APP, parseInt(params.tenantIdentifier), Role.ROLE_CREATE_FILE_FORMATS);
+        this.hasImportRole = this.securityService.hasRole(ApplicationId.FILE_FORMATS_APP, parseInt(params.tenantIdentifier), Role.ROLE_IMPORT_FILE_FORMATS);
       }
     });
   }
@@ -115,15 +111,28 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   }
 
   openFileFormatImportDialog() {
-    const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
+    const params: ImportDialogParam = {
+      title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
+      subtitle: this.translateService.instant('IMPORT_DIALOG.FILE_FORMAT_SUBTITLE'),
+      allowedFiles: [FileTypes.XML],
+      referential: ReferentialTypes.FILE_FORMAT,
+      successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',
+      errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
+      iconMessage: 'vitamui-icon-fichiers',
+    };
+
+    this.dialog
+    .open(ImportDialogComponent, {
       panelClass: 'vitamui-modal',
-      data: Referential.FILE_FORMAT,
       disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.success) {
+      data: params,
+    })
+    .afterClosed()
+    .subscribe((result) => {
+      if (result?.successfulImport) {
         this.refreshList();
       }
     });
   }
+
 }

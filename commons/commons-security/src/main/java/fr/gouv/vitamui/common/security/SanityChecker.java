@@ -92,10 +92,9 @@ public class SanityChecker {
     private static final Validator ESAPI = init();
     private static final List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST =
         List.of("$action", "$add", "$pull", "#unitups", "#allunitups", "#id", "$in", "$eq",
-            "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields",
-            "authorizationRequestReplyIdentifier",
+            "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields", "authorizationRequestReplyIdentifier",
             "$limit", "$orderby", "$eq", "$offset", "events.agIdExt.TransferringAgency",
-            "events.agIdExt.originatingAgency", "events.evDetData.ArchivalAgreement", "events.evDetData.EvDetailReq");
+            "events.agIdExt.originatingAgency","events.evDetData.ArchivalAgreement", "events.evDetData.EvDetailReq", "$gte", "$lte");
 
     private SanityChecker() {
         // Empty constructor

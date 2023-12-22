@@ -48,7 +48,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -161,7 +161,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     }
 
     private QualifiersDto getLastObjectQualifier(ResultsDto got) {
-        for (String qualifierName : ObjectQualifierType.downloadableValuesOrdered) {
+        for (String qualifierName : ObjectQualifierTypeEnum.allValuesOrdered) {
             QualifiersDto qualifierFound = got.getQualifiers().stream()
                 .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
                 .reduce((first, second) -> second)

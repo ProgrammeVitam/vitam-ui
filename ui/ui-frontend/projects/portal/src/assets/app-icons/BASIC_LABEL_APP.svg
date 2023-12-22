@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.Ombre_x0020_portée{fill:none;}
+	.Lueur_x0020_externe_x0020_5 pt{fill:none;}
+	.Néon_x0020_bleu{fill:none;stroke:#8AACDA;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;}
+	.Ton_x0020_clair_x0020_chrome{fill:url(#SVGID_1_);stroke:#FFFFFF;stroke-width:0.3629;stroke-miterlimit:1;}
+	.Swing_GS{fill:#FFDD00;}
+	.Alysse_GS{fill:#A6D0E4;}
+	.basic-label-0{fill:#EAEAEC;}
+	.basic-label-1{fill:#D8D8D8;}
+	.basic-label-2{fill:none;stroke:#75757C;stroke-width:0.4;stroke-miterlimit:10;}
+	.basic-label-3{fill:#75757C;}
+	.basic-label-4{fill:#6DA3BC;}
+	.basic-label-5{fill:#93BDD3;}
+	.basic-label-6{fill:#F0F2F7;}
+	.basic-label-7{fill:#FFFFFF;}
+	.basic-label-8{fill:#232736;}
+	.basic-label-9{fill:#A6AAB3;}
+	.basic-label-10{fill:#787C8E;}
+	.basic-label-11{fill:#4A4E67;}
+	.basic-label-12{fill-rule:evenodd;clip-rule:evenodd;fill:#D8D8D8;}
+	.basic-label-13{fill:#1D1D1B;}
+	.basic-label-14{fill:#3C3C3B;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="111.5" width="109.9" x="45.7" y="-145.4"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="6.123234e-17" y2="-1">
+	<stop  offset="0" style="stop-color:#656565"/>
+	<stop  offset="0.618" style="stop-color:#1B1B1B"/>
+	<stop  offset="0.6292" style="stop-color:#545454"/>
+	<stop  offset="0.9831" style="stop-color:#3E3E3E"/>
+</linearGradient>
+<g>
+	<g>
+		<path class="basic-label-0" d="M57,65.3h87.3c6.2,0,11.3,4.5,11.3,10.1v18.8L45.7,94.5v-19C45.7,69.8,50.7,65.3,57,65.3z"/>
+		<path class="basic-label-1" d="M57,68.5h87.3c6.2,0,11.3,5.1,11.3,11.3v21H45.7v-21C45.7,73.6,50.7,68.5,57,68.5z"/>
+		<path class="basic-label-2" d="M59.5,71.5h82.2c5.7,0,10.3,4.6,10.3,10.3v19.9H49.2V81.7C49.2,76.1,53.8,71.5,59.5,71.5z"/>
+		<path class="basic-label-3" d="M144.2,119.5H61.4c-6.2,0-11.3-5.1-11.3-11.3l-4.5-7.6h109.9l-4.5,7.6C151.1,114.5,150.5,119.5,144.2,119.5z"
+			/>
+		<g>
+			<g>
+				<circle class="basic-label-4" cx="59.7" cy="84.7" r="2.9"/>
+			</g>
+			<g>
+				<circle class="basic-label-5" cx="59.7" cy="84.1" r="2"/>
+			</g>
+			<g>
+				<circle class="basic-label-6" cx="68" cy="84.7" r="2.9"/>
+			</g>
+			<g>
+				<circle class="basic-label-7" cx="68" cy="84.1" r="2"/>
+			</g>
+		</g>
+		<rect x="68.7" y="97.4" class="basic-label-8" width="63.9" height="22.2"/>
+		<rect x="68.7" y="44.2" class="basic-label-3" width="61.5" height="25.1"/>
+		<rect x="68.7" y="44.2" class="basic-label-9" width="61.5" height="25.1"/>
+		<rect x="68.7" y="63" class="basic-label-10" width="61.5" height="6.4"/>
+		
+			<rect x="76.2" y="33.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 197.5322 103.225)" class="basic-label-7" width="45.2" height="35.4"/>
+		
+			<rect x="76.2" y="63" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 197.5322 132.3037)" class="basic-label-6" width="45.2" height="6.4"/>
+		<g>
+			<path class="basic-label-3" d="M139.8,91.9v-3.7h-3.7v-2.7h3.7v-3.7h2.5v3.7h3.7v2.7h-3.7v3.7H139.8z"/>
+		</g>
+		<g>
+			<path class="basic-label-6" d="M139.8,91v-3.7h-3.7v-2.7h3.7v-3.7h2.5v3.7h3.7v2.7h-3.7V91H139.8z"/>
+		</g>
+		<rect x="61.4" y="119.5" class="basic-label-3" width="81.9" height="2.8"/>
+		<rect x="61.4" y="118.1" class="basic-label-8" width="81.9" height="1.4"/>
+		<g>
+			<rect x="75.8" y="110.3" class="basic-label-3" width="49.6" height="35.1"/>
+			<rect x="78" y="102.6" class="basic-label-7" width="45.2" height="39.9"/>
+		</g>
+		<rect x="78" y="102.6" class="basic-label-6" width="45.2" height="10.1"/>
+		<polygon class="basic-label-6" points="45.7,100.7 46.6,102.2 68.7,102.2 68.7,100.7 		"/>
+		<polygon class="basic-label-6" points="155.5,100.7 154.6,102.2 132.5,102.2 132.5,100.7 		"/>
+		<rect x="68.7" y="97.4" class="basic-label-3" width="63.9" height="3.3"/>
+		<polygon class="basic-label-6" points="111,44.2 121.3,44.2 111,33.9 		"/>
+	</g>
+	<rect x="68.7" y="69.3" class="basic-label-11" width="61.5" height="2.1"/>
+	<rect x="68.7" y="44.2" class="basic-label-12" width="7.5" height="1"/>
+	<rect x="121.3" y="44.2" class="basic-label-12" width="8.8" height="1"/>
+	<g>
+		<rect x="86" y="106.2" class="basic-label-13" width="12.1" height="6.4"/>
+		<rect x="86" y="116.4" class="basic-label-14" width="12.1" height="3.4"/>
+		<rect x="86" y="122.1" class="basic-label-14" width="12.1" height="2.3"/>
+		
+			<rect x="86" y="132.8" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 184.0599 269.1824)" class="basic-label-14" width="12.1" height="3.5"/>
+		
+			<rect x="86" y="128.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 184.0599 259.5676)" class="basic-label-14" width="12.1" height="1.9"/>
+		
+			<rect x="86" y="126.3" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 184.0599 253.8638)" class="basic-label-14" width="12.1" height="1.3"/>
+	</g>
+	<g>
+		<rect x="103.1" y="106.2" class="basic-label-13" width="12.1" height="6.4"/>
+		<rect x="103.1" y="116.4" class="basic-label-14" width="12.1" height="3.4"/>
+		<rect x="103.1" y="122.1" class="basic-label-14" width="12.1" height="2.3"/>
+		
+			<rect x="103.1" y="132.8" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 218.3177 269.1824)" class="basic-label-14" width="12.1" height="3.5"/>
+		
+			<rect x="103.1" y="128.9" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 218.3177 259.5676)" class="basic-label-14" width="12.1" height="1.9"/>
+		
+			<rect x="103.1" y="126.3" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 218.3177 253.8638)" class="basic-label-14" width="12.1" height="1.3"/>
+	</g>
+</g>
+</svg>

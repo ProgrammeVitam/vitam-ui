@@ -61,7 +61,7 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
   private searchCriteriaSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  public readonly orderChange = new Subject<string>();
 
   @Input('search')
   set searchText(searchText: string) {

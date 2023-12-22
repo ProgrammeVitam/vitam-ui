@@ -34,27 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatOptionModule } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTabsModule } from '@angular/material/tabs';
-import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatOptionModule} from '@angular/material/core';
+import {MatDialogModule} from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTabsModule} from '@angular/material/tabs';
+import {RouterModule} from '@angular/router';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
-import { AccessContractNodesTabComponent } from './access-contract-nodes-tab/access-contract-nodes-tab.component';
-import { AccessContractNodeUpdateComponent } from './access-contract-nodes-tab/access-contract-nodes-update/access-contract-node-update.component';
-import { AccessContractPreviewComponent } from './access-contract-preview.component';
-import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
-import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
+import {AccessContractInformationTabComponent} from './access-contract-information-tab/access-contract-information-tab.component';
+import {AccessContractNodesTabComponent} from './access-contract-nodes-tab/access-contract-nodes-tab.component';
+import {
+  AccessContractNodeUpdateComponent
+} from './access-contract-nodes-tab/access-contract-nodes-update/access-contract-node-update.component';
+import {AccessContractPreviewComponent} from './access-contract-preview.component';
+import {
+  AccessContractUsageAndServicesTabComponent
+} from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
+import {AccessContractWriteAccessTabComponent} from './access-contract-write-access-tab/access-contract-write-access-tab.component';
 
 @NgModule({
   imports: [
@@ -72,6 +78,8 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   declarations: [
     AccessContractPreviewComponent,
@@ -79,9 +87,13 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
     AccessContractUsageAndServicesTabComponent,
     AccessContractWriteAccessTabComponent,
     AccessContractNodesTabComponent,
-    AccessContractNodeUpdateComponent,
+    AccessContractNodeUpdateComponent
   ],
   entryComponents: [AccessContractNodeUpdateComponent],
-  exports: [AccessContractPreviewComponent],
+  exports: [
+    AccessContractPreviewComponent
+  ]
+
 })
-export class AccessContractPreviewModule {}
+export class AccessContractPreviewModule {
+}

@@ -45,10 +45,7 @@ import { OperationApiService } from '../core/api/operation-api.service';
   providedIn: 'root',
 })
 export class SecurisationService extends SearchService<Event> {
-  constructor(
-    private operationApiService: OperationApiService,
-    http: HttpClient,
-  ) {
+  constructor(private operationApiService: OperationApiService, public http: HttpClient) {
     super(http, operationApiService, 'ALL');
   }
 

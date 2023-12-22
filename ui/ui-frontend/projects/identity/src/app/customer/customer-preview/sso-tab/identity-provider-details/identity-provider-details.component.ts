@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -49,9 +49,9 @@ const UPDATE_DEBOUNCE_TIME = 200;
 @Component({
   selector: 'app-identity-provider-details',
   templateUrl: './identity-provider-details.component.html',
-  styleUrls: ['./identity-provider-details.component.scss'],
+  styleUrls: ['./identity-provider-details.component.scss']
 })
-export class IdentityProviderDetailsComponent implements OnInit {
+export class IdentityProviderDetailsComponent {
   @Input()
   set identityProvider(identityProvider: IdentityProvider) {
     this._identityProvider = identityProvider;
@@ -64,9 +64,11 @@ export class IdentityProviderDetailsComponent implements OnInit {
     }
     this.previousValue = this.form.value;
   }
+
   get identityProvider(): IdentityProvider {
     return this._identityProvider;
   }
+
   private _identityProvider: IdentityProvider;
 
   @Input()
@@ -79,9 +81,11 @@ export class IdentityProviderDetailsComponent implements OnInit {
       return domain;
     });
   }
+
   get domains(): Array<{ value: string; disabled: boolean }> {
     return this._domains;
   }
+
   private _domains: Array<{ value: string; disabled: boolean }> = [];
   displayOIDCSAMLBLOCKS = false;
   private previousValue: {
@@ -102,6 +106,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
     useState: boolean;
     useNonce: boolean;
     usePkce: boolean;
+    propagateLogout: boolean;
   };
 
   @Input()
@@ -123,9 +128,11 @@ export class IdentityProviderDetailsComponent implements OnInit {
       }
     }
   }
+
   get readOnly(): boolean {
     return this._readOnly;
   }
+
   private _readOnly: boolean;
   jwsAlgorithms = JWS_ALGORITHMS;
   form: FormGroup;
@@ -143,17 +150,17 @@ export class IdentityProviderDetailsComponent implements OnInit {
     this.specificSamlControls = this.initializeSamlControls();
     this.specificOidcControls = this.initializeOidcControls();
     this.form = this.formBuilder.group({
-      ...this.commonsControls.controls,
+      ...this.commonsControls.controls
     });
     this.idpMetadata = new FormControl({ value: newFile([''], 'metadata.xml'), disabled: true });
   }
+
   updateForm() {
     if (this.form.value?.protocoleType !== this.previousValue?.protocoleType) {
       this.displayOIDCSAMLBLOCKS = false;
       this.manageForm(this.form.getRawValue());
     }
   }
-  ngOnInit() {}
 
   initializeCommonControls(): FormGroup {
     const commonFormGroup = this.formBuilder.group({
@@ -165,7 +172,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
       patterns: [null, Validators.required],
       mailAttribute: [null],
       identifierAttribute: [null],
-      autoProvisioningEnabled: [false, Validators.required],
+      autoProvisioningEnabled: [false, Validators.required]
     });
 
     commonFormGroup.get('protocoleType').valueChanges.subscribe((newProtocol: ProtocoleType) => {
@@ -175,12 +182,14 @@ export class IdentityProviderDetailsComponent implements OnInit {
     });
     return commonFormGroup;
   }
+
   initializeSamlControls(): FormGroup {
     return this.formBuilder.group({
       authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
       maximumAuthenticationLifetime: [null],
       wantsAssertionsSigned: [this.identityProvider ? this.identityProvider.wantsAssertionsSigned : null, Validators.required],
       authnRequestSigned: [this.identityProvider ? this.identityProvider.authnRequestSigned : null, Validators.required],
+      propagateLogout: [this.identityProvider ? this.identityProvider.propagateLogout : null, Validators.required]
     });
   }
 
@@ -195,6 +204,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
       useState: [true],
       useNonce: [true],
       usePkce: [false],
+      propagateLogout: [false]
     });
   }
 
@@ -242,7 +252,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
             customParams: null,
             useState: null,
             useNonce: null,
-            usePkce: null,
+            usePkce: null
           };
           break;
         case ProtocoleType.SAML:
@@ -251,8 +261,8 @@ export class IdentityProviderDetailsComponent implements OnInit {
             keystoreBase64: null,
             keystorePassword: null,
             maximumAuthenticationLifetime: null,
-            wantsAssertionsSigned: null,
-            authnRequestSigned: null,
+            wantsAssertionsSigned: true,
+            authnRequestSigned: true
           };
           break;
       }
@@ -269,29 +279,29 @@ export class IdentityProviderDetailsComponent implements OnInit {
     switch (formValue.protocoleType) {
       case ProtocoleType.CERTIFICAT:
         this.form = this.formBuilder.group({
-          ...this.commonsControls.controls,
+          ...this.commonsControls.controls
         });
         break;
       case ProtocoleType.SAML:
         this.form = this.formBuilder.group({
           ...this.commonsControls.controls,
-          ...this.specificSamlControls.controls,
+          ...this.specificSamlControls.controls
         });
         // set default value if it is not defined
         if (!formValue.authnRequestBinding) {
           formValue.authnRequestBinding = AuthnRequestBindingEnum.POST;
         }
         if (formValue.authnRequestSigned == null) {
-          formValue.authnRequestSigned = this.identityProvider.authnRequestSigned;
+          formValue.authnRequestSigned = true;
         }
         if (formValue.wantsAssertionsSigned == null) {
-          formValue.wantsAssertionsSigned = this.identityProvider.wantsAssertionsSigned;
+          formValue.wantsAssertionsSigned = true;
         }
         break;
       case ProtocoleType.OIDC:
         this.form = this.formBuilder.group({
           ...this.commonsControls.controls,
-          ...this.specificOidcControls.controls,
+          ...this.specificOidcControls.controls
         });
         // set default value if it is not defined
         if (formValue.useState === undefined || formValue.useState === null) {
@@ -304,8 +314,10 @@ export class IdentityProviderDetailsComponent implements OnInit {
 
     this.form.reset(formValue, { emitEvent: false });
     this.manageChanges();
-    if (this.form.invalid) {
+    if (this.form.invalid && formValue.protocoleType === ProtocoleType.OIDC) {
       this.snackBarService.open({ message: 'SHARED.SNACKBAR.OIDC_UPDATE' });
+    } else if (this.form.invalid && formValue.protocoleType === ProtocoleType.SAML) {
+      this.snackBarService.open({ message: 'SHARED.SNACKBAR.SAML_UPDATE_ERROR' });
     }
     this.displayOIDCSAMLBLOCKS = true;
   }

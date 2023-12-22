@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { AccessContract, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { AccessContract, SearchService , VitamUISnackBarService} from 'ui-frontend-common';
 import { AccessContractApiService } from '../core/api/access-contract-api.service';
 
 @Injectable({
@@ -47,11 +47,7 @@ import { AccessContractApiService } from '../core/api/access-contract-api.servic
 export class AccessContractService extends SearchService<AccessContract> {
   updated = new Subject<AccessContract>();
 
-  constructor(
-    private accessContractApi: AccessContractApiService,
-    private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
-  ) {
+  constructor(private accessContractApi: AccessContractApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
     super(http, accessContractApi, 'ALL');
   }
 
@@ -76,7 +72,7 @@ export class AccessContractService extends SearchService<AccessContract> {
     return this.accessContractApi.check(accessContract, this.headers);
   }
 
-  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
     const existContract: any = {};
     if (properties.name) {
       existContract.name = properties.name;
@@ -103,32 +99,35 @@ export class AccessContractService extends SearchService<AccessContract> {
           });
         },
         (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
-        },
-      ),
+            this.snackBarService.open({ message: error.error.message, translate: false });
+        }
+      )
     );
   }
 
   create(accessContract: AccessContract) {
     return this.accessContractApi.create(accessContract).pipe(
-      tap(
-        (response: AccessContract) => {
-          this.snackBarService.open({
-            message: 'SNACKBAR.ACCESS_CONTRACT_CREATED',
-            translateParams: {
-              name: response.name,
-            },
-            icon: 'vitamui-icon-contrat',
-          });
-        },
-        (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
-        },
-      ),
+      tap((response: AccessContract) => {
+        this.snackBarService.open({
+          message: 'SNACKBAR.ACCESS_CONTRACT_CREATED',
+          translateParams: {
+            name: response.name,
+          },
+          icon: 'vitamui-icon-contrat',
+        });
+      })
     );
   }
 
   setTenantId(tenantIdentifier: number) {
     this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+  }
+
+  public downloadImportAccessContractFileModel(): Observable<HttpResponse<Blob>> {
+    return this.accessContractApi.getImportAccessContractFileModel();
+  }
+
+  public exportAccessContracts(): Observable<HttpResponse<Blob>> {
+    return this.accessContractApi.exportAccessContracts();
   }
 }

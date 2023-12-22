@@ -37,11 +37,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { EllipsisDirectiveModule } from '../../directives/ellipsis/ellipsis.directive.module';
 import { VitamUIDisplayNodeComponent } from './vitamui-display-node.component';
 
 @NgModule({
-  imports: [MatTooltipModule, CommonModule],
+  imports: [MatTooltipModule, CommonModule, EllipsisDirectiveModule],
   declarations: [VitamUIDisplayNodeComponent],
   exports: [VitamUIDisplayNodeComponent],
 })

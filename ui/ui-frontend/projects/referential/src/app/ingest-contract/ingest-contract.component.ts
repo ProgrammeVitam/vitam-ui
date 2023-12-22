@@ -37,11 +37,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ApplicationService, DownloadUtils, GlobalEventService, IngestContract, SecurityService, SidenavPage } from 'ui-frontend-common';
+import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
+import { Observable, Subscription } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { ApplicationService, GlobalEventService, IngestContract, SecurityService, SidenavPage } from 'ui-frontend-common';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
+import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
+import { TranslateService } from '@ngx-translate/core';
+import { FileTypes } from 'projects/vitamui-library/src/lib/models/file-types.enum';
+import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
+import { IngestContractService } from './ingest-contract.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-ingest-contract',
@@ -66,6 +73,9 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     globalEventService: GlobalEventService,
     private applicationService: ApplicationService,
     private securityService: SecurityService,
+    private translateService: TranslateService,
+    private downloadSnackBarService: DownloadSnackBarService,
+    private ingestContractService: IngestContractService
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -78,6 +88,17 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
         this.tenantId = +params.tenantIdentifier;
       }
     });
+  }
+
+  ngOnInit() {
+    this.hasUpdateIngestRole$ = this.route.params.pipe(
+      mergeMap((params) => {
+        this.tenantIdentifier = +params.tenantIdentifier;
+        return this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_INGEST_CONTRACTS');
+      })
+    );
+
+    this.updateSlaveMode();
   }
 
   openCreateIngestcontractDialog() {
@@ -115,18 +136,50 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     });
   }
 
-  ngOnInit() {
-    this.hasUpdateIngestRole$ = this.route.params.pipe(
-      mergeMap((params) => {
-        this.tenantIdentifier = +params.tenantIdentifier;
-        return this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_INGEST_CONTRACTS');
-      }),
-    );
-
-    this.updateSlaveMode();
-  }
-
   showIngestContract(item: IngestContract) {
     this.openPanel(item);
+  }
+
+  public openImport(): void {
+    const params: ImportDialogParam = {
+      title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
+      subtitle: this.translateService.instant('IMPORT_DIALOG.INGEST_CONTRACT_SUBTITLE'),
+      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.FILE_FORMAT_DETAIL_INFO'),
+      allowedFiles: [FileTypes.CSV],
+      referential: ReferentialTypes.INGEST_CONTRACT,
+      successMessage: 'SNACKBAR.INGEST_CONTRACT_IMPORTED',
+      iconMessage: 'vitamui-icon-user',
+    };
+
+    this.dialog
+      .open(ImportDialogComponent, { panelClass: 'vitamui-modal', disableClose: true, data: params })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.successfulImport) {
+          this.refreshList();
+        }
+      });
+  }
+
+  public downloadModel(): void {
+    this.ingestContractService
+      .downloadImportFileModel()
+      .subscribe((response: HttpResponse<Blob>) =>
+        DownloadUtils.loadFromBlob(response, response.body.type, 'Import_ingest_contract_template.csv')
+      );
+  }
+
+  public export(): void {
+    this.downloadSnackBarService.openDownloadBar();
+    const request: Subscription = this.ingestContractService.exportIngestContracts().subscribe(
+      (response: HttpResponse<Blob>) => {
+        DownloadUtils.loadFromBlob(response, response.body.type, 'Exported_ingest_contracts.csv');
+        this.downloadSnackBarService.close();
+      },
+      () => this.downloadSnackBarService.close()
+    );
+
+    this.downloadSnackBarService.cancelDownload.subscribe(() => request.unsubscribe());
+
   }
 }

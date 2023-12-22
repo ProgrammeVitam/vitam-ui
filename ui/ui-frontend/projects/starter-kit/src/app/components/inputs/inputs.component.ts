@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { CountryOption, CountryService, Option } from 'ui-frontend-common';
+import { CountryOption, CountryService, Option, VitamuiAutocompleteMultiselectOptions } from 'ui-frontend-common';
 import { extend } from 'underscore';
+import { TranslateService } from '@ngx-translate/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'starter-kit-inputs',
   templateUrl: './inputs.component.html',
   styleUrls: ['./inputs.component.scss'],
-  providers: [CountryService],
+  providers: [CountryService]
 })
-export class InputsComponent implements OnInit {
+export class InputsComponent implements OnInit, OnDestroy {
   public control = new FormControl();
 
   public streetEmpty = new FormControl('', [Validators.maxLength(3)]);
@@ -29,11 +32,15 @@ export class InputsComponent implements OnInit {
   public file = new FormControl(new File(['test'], 'test', { type: 'text/plain' }));
 
   public countries: Option[];
+  public multiSelectOptions: VitamuiAutocompleteMultiselectOptions;
 
-  autoCompleteSelect = new FormControl();
-  autoCompleteSelectDisabled = new FormControl();
+  public autoCompleteSelect = new FormControl();
+  public autoCompleteSelectDisabled = new FormControl();
+  public autoCompleteMultiSelect = new FormControl();
 
-  constructor(private countryService: CountryService) {}
+  private readonly destroyer$ = new Subject();
+
+  constructor(private countryService: CountryService, private translateService: TranslateService) {}
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -47,15 +54,39 @@ export class InputsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initMultiselectOptions();
+    this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe(() => {
+      this.updateCountryTranslation();
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroyer$.next();
+    this.destroyer$.complete();
+  }
+
+  private initMultiselectOptions(): void {
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((value) =>
         extend({
           key: value.code,
           label: value.name,
-        }),
+        })
       );
       this.autoCompleteSelect.setValue('DE');
+      this.multiSelectOptions = { options: this.countries, customSorting: this.sortAlphabetically };
     });
     this.autoCompleteSelectDisabled.disable({ emitEvent: false });
   }
+
+  private sortAlphabetically = (a: Option, b: Option): number => {
+    return a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1;
+  };
+
+  private updateCountryTranslation(): void {
+    this.countries.forEach((country)=> {
+      country.label = this.countryService.getTranslatedCountryNameByCode(country.key);
+    });
+  }
+
 }

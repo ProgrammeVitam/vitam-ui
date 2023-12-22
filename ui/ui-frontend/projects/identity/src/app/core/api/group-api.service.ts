@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -83,5 +83,9 @@ export class GroupApiService extends BaseHttpClient<Group> {
     }
 
     return this.http.get<string[]>(this.apiUrl + '/levels', { params, headers });
+  }
+
+  export(): Observable<HttpResponse<Blob>> {
+    return this.http.get(`${this.apiUrl}/export`, { observe: 'response', responseType: 'blob' });
   }
 }

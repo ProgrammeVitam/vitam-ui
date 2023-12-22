@@ -25,7 +25,7 @@
  * accept its terms.
  *
  */
-import { isEmpty } from 'underscore';
+import { isEmpty } from 'lodash-es';
 import { ResultFacet } from '../criteria';
 import { DescriptionLevel, Unit } from '../units';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';

@@ -34,12 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 
-import { SecurityProfileService } from '../security-profile.service';
-import { SecurityProfilePreviewComponent } from './security-profile-preview.component';
+import {TranslateModule} from '@ngx-translate/core';
+import {SecurityProfileService} from '../security-profile.service';
+import {SecurityProfilePreviewComponent} from './security-profile-preview.component';
 
 describe('SecurityProfilePreviewComponent', () => {
   let component: SecurityProfilePreviewComponent;
@@ -47,13 +48,17 @@ describe('SecurityProfilePreviewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TranslateModule.forRoot()
+      ],
       declarations: [SecurityProfilePreviewComponent],
       providers: [
-        { provide: MatDialog, useValue: {} },
-        { provide: SecurityProfileService, useValue: {} },
+        {provide: MatDialog, useValue: {}},
+        {provide: SecurityProfileService, useValue: {}}
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    })
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -51,6 +51,7 @@ import {
 
 import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';
 import { OperationApiService } from '../core/api/operation-api.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -61,7 +62,8 @@ export class AuditService extends SearchService<Event> {
     private logbookApiService: LogbookApiService,
     private accessionRegisterSummaryApiService: AccessionRegisterSummaryApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
+    private translateService: TranslateService,
+    public http: HttpClient
   ) {
     super(http, operationApiService, 'ALL');
   }
@@ -75,28 +77,26 @@ export class AuditService extends SearchService<Event> {
     return this.operationApiService.runAudit(audit, headers).pipe(
       tap(
         () => {
-          console.log('Audit: ', audit);
           this.snackBarService.open({
             message: 'SNACKBAR.AUDIT_RUN',
             translateParams: {
-              id: audit.identifier,
+              type: this.translateService.instant('AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + audit.auditActions),
             },
             icon: 'vitamui-icon-audit',
           });
         },
         (error: any) => {
-          console.log('error: ', error);
           if (!error || !error.error) {
             return;
           }
           this.snackBarService.open({ message: error.error.message, translate: false });
-        },
-      ),
+        }
+      )
     );
   }
 
   download(id: string, eventType: string, accessContractId: string) {
-    const headers: HttpHeaders = new HttpHeaders({ 'X-Access-Contract-Id': accessContractId });
+    const headers: HttpHeaders = new HttpHeaders({'X-Access-Contract-Id': accessContractId});
     let downloadObservable: Observable<HttpResponse<Blob> | Blob>;
     let fileName: string;
     let downloadType: string;
@@ -121,7 +121,7 @@ export class AuditService extends SearchService<Event> {
 
         let blob: Blob;
         if (response instanceof HttpResponse) {
-          blob = new Blob([response.body], { type: 'octet/stream' });
+          blob = new Blob([response.body], {type: 'octet/stream'});
         } else {
           blob = response;
         }
@@ -134,14 +134,14 @@ export class AuditService extends SearchService<Event> {
         element.click();
         document.body.removeChild(element);
       },
-      (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
+      (error) => this.snackBarService.open({ message: error.error.message, translate: false })
     );
   }
 
   getAllAccessionRegister(accessContractId: string): Observable<AccessionRegisterSummary[]> {
     return this.accessionRegisterSummaryApiService.getAllByParams(
       new HttpParams(),
-      new HttpHeaders({ 'X-Access-Contract-Id': accessContractId }),
+      new HttpHeaders({'X-Access-Contract-Id': accessContractId})
     );
   }
 

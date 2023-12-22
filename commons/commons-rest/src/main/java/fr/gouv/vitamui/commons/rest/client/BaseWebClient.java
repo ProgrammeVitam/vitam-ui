@@ -38,7 +38,6 @@ package fr.gouv.vitamui.commons.rest.client;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
@@ -392,6 +391,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
                 try {
                     error = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                         .readValue(serviceException, VitamUIError.class);
+                    error.setStatus(response.statusCode().value());
                 } catch (final IOException e) {
                     LOGGER.error("Error when retrieving exception {}", e);
                     error = new VitamUIError();

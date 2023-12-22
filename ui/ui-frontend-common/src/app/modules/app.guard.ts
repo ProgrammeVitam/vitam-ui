@@ -73,7 +73,9 @@ export class AppGuard implements CanActivate {
     }
 
     this.startupService.CURRENT_APP_ID = appId;
-
+    if (this.translateService.currentLang) {
+      this.titleService.setTitle(this.translateService.instant(`${APPLICATION_TRANSLATE_PATH}.${appId}.NAME`));
+    }
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.titleService.setTitle(this.translateService.instant(APPLICATION_TRANSLATE_PATH + '.' + appId + '.NAME'));
     });

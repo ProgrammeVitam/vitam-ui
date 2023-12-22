@@ -4,10 +4,16 @@ db = db.getSiblingDB("cas");
 
 print("START 037_enable_oidc_code_grant_type_on_referential_service_ref.js");
 
-db.services.deleteOne({ "_id": NumberInt(4) });
+db.services.deleteOne({ "clientId": "{{ vitamui.referential.clientId | default('referential') }}" });
+
+var serviceWithMaxId = db.services.aggregate([
+    { $sort: { _id: -1 } },
+    { $limit: 1 }
+]).toArray();
+var maxId = serviceWithMaxId.length > 0 ? serviceWithMaxId[0]._id : 0;
 
 db.services.insertOne({
-  _id: NumberInt(4),
+  _id: NumberInt(++maxId),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "{{ vitamui.referential.clientId | default('referential') }}",
   serviceId: "{{ vitamui.referential.serviceId | default('^' + vitamui.referential.base_url | default(url_prefix+'/referential') + '/.*') }}",

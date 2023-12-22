@@ -1,10 +1,10 @@
 {
   "GATEWAY_ENABLED": false,
   "REFERENTIAL_URL": "https://dev.vitamui.com:4202",
-  "VERSION_RELEASE": "6.4",
+  "VERSION_RELEASE": "7.1.0-SNAPSHOT",
   "PLATFORM_NAME": "VITAM-UI",
   "INGEST_URL": null,
-  "PORTAL_TITLE": "Portail des applications de Vitam",
+  "PORTAL_TITLE": "Portail des applications de l'archivage",
   "MAX_STREET_LENGTH": 250,
   "THEME_COLORS": {
     "vitamui-primary": "#702382",

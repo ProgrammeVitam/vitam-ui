@@ -96,12 +96,10 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
           DEFAULT_PAGE_SIZE,
           this.orderBy,
           Direction.ASCENDANT,
-          JSON.stringify(this.buildProbativeValueCriteriaFromSearch()),
-        ),
+          JSON.stringify(this.buildProbativeValueCriteriaFromSearch())
+        )
       )
-      .subscribe((data: any[]) => {
-        this.dataSource = data;
-      });
+      .subscribe((data: any[]) => (this.dataSource = data));
 
     const searchCriteriaChange = merge(this.searchChange, this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
@@ -110,6 +108,10 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
+  }
+
+  ngOnDestroy() {
+    this.updatedData.unsubscribe();
   }
 
   buildProbativeValueCriteriaFromSearch() {
@@ -132,10 +134,6 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
     return criteria;
   }
 
-  ngOnDestroy() {
-    this.updatedData.unsubscribe();
-  }
-
   searchProbativeValueOrdered() {
     const query: any = this.buildProbativeValueCriteriaFromSearch();
     this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(query)));
@@ -143,17 +141,5 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
 
   emitOrderChange() {
     this.orderChange.next();
-  }
-
-  probativeValueStatus(probativeValue: any): string {
-    return probativeValue.events !== undefined && probativeValue.events.length !== 0
-      ? probativeValue.events[probativeValue.events.length - 1].outcome
-      : probativeValue.outcome;
-  }
-
-  probativeValueMessage(probativeValue: any): string {
-    return probativeValue.events !== undefined && probativeValue.events.length !== 0
-      ? probativeValue.events[probativeValue.events.length - 1].outMessage
-      : probativeValue.outMessage;
   }
 }

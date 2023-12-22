@@ -36,14 +36,16 @@
  */
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ExternalParametersService } from 'ui-frontend-common';
+import { ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
 import { SecurisationService } from '../securisation.service';
 import { SecurisationPreviewComponent } from './securisation-preview.component';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -68,7 +70,7 @@ describe('SecurisationPreviewComponent', () => {
     outMessage: 'outMessage',
     data: 'data',
     parsedData: {
-      Size: 2,
+      Size: 2
     },
     objectId: 'objectId',
     collectionName: 'collectionName',
@@ -77,53 +79,54 @@ describe('SecurisationPreviewComponent', () => {
     agIdExt: 'agIdExt',
     obIdReq: 'obIdReq',
     rightsStatementIdentifier: 'rightsStatementIdentifier',
-    events: [
-      {
-        id: 'id2',
-        idAppSession: 'idAppSession2',
-        idRequest: 'idRequest2',
-        parentId: 'id',
-        type: 'type',
-        obIdReq: 'obIdReq',
-        typeProc: 'typeProc',
-        dateTime: new Date('1995-12-17'),
-        outcome: 'outcome',
-        outDetail: 'outDetail',
-        outMessage: 'outMessage',
-        data: 'data',
-        parsedData: {
-          dataKey: 'dataValue',
-        },
-        objectId: 'objectId',
-        collectionName: 'collectionName',
-        agId: 'agId',
-        agIdApp: 'agIdApp',
-        agIdExt: 'agIdExt',
-        rightsStatementIdentifier: 'rightsStatementIdentifier',
+    events: [{
+      id: 'id2',
+      idAppSession: 'idAppSession2',
+      idRequest: 'idRequest2',
+      parentId: 'id',
+      type: 'type',
+      obIdReq: 'obIdReq',
+      typeProc: 'typeProc',
+      dateTime: new Date('1995-12-17'),
+      outcome: 'outcome',
+      outDetail: 'outDetail',
+      outMessage: 'outMessage',
+      data: 'data',
+      parsedData: {
+        dataKey: 'dataValue'
       },
-    ],
+      objectId: 'objectId',
+      collectionName: 'collectionName',
+      agId: 'agId',
+      agIdApp: 'agIdApp',
+      agIdExt: 'agIdExt',
+      rightsStatementIdentifier: 'rightsStatementIdentifier'
+    }]
   };
+
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
   beforeEach(waitForAsync(() => {
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters),
-    };
-
-    const activatedRouteMock = {
-      params: of({ tenantIdentifier: 1 }),
+      getUserExternalParameters: () => of(parameters)
     };
 
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, MatSnackBarModule],
-      declarations: [SecurisationPreviewComponent, MockTruncatePipe],
+      imports: [
+        BrowserAnimationsModule,
+        MatSnackBarModule,
+        TranslateModule.forRoot()
+      ],
+      declarations: [SecurisationPreviewComponent, MockTruncatePipe, EventTypeBadgeClassPipe],
       providers: [
         { provide: SecurisationService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy }
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    })
+      .compileComponents();
   }));
 
   beforeEach(() => {

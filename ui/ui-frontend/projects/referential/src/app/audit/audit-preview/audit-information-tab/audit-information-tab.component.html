@@ -1,54 +1,58 @@
-<div class="row">
-  <div class="col-12 mb-3">
-    <label>Catégorie d'opération</label>
-    <div>
-      <vitamui-common-event-type-label [key]="audit?.type"> </vitamui-common-event-type-label>
-    </div>
+<div class="read-only-field">
+  <label>{{ 'AUDIT.TAB.INFORMATIONS.OPERATION_CATEGORY' | translate }}</label>
+  <div class="word-break">
+    <vitamui-common-event-type-label [key]="audit?.type"></vitamui-common-event-type-label>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-6 mb-3">
-    <label>Identifiant des agents externes</label>
-    <div>{{ audit?.agIdExt }}</div>
+<div class="d-flex">
+  <div class="read-only-field mr-5">
+    <label>{{ 'AUDIT.TAB.INFORMATIONS.EXTERNAL_AGENTS_INDENTIFIERS' | translate }}</label>
+    <div class="word-break">{{ audit?.agIdExt }}</div>
   </div>
-  <div class="col-6 mb-3">
-    <label>Contrat associé</label>
-    <div>{{ associatedContract(audit) }}</div>
-  </div>
-  <div class="col-6 mb-3">
-    <label>Identifiant de l’application</label>
-    <div>{{ audit?.agIdApp }}</div>
-  </div>
-  <div class="col-6 mb-3">
-    <label>Numéro de transaction</label>
-    <div>{{ audit?.idRequest }}</div>
-  </div>
-  <div class="col-12 mb-3">
-    <label>Date d’affectation</label>
-    <div>{{ audit?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
-  </div>
-  <div class="col-6 mb-3">
-    <label>Identification de l’opération</label>
-    <div>{{ audit?.idRequest }}</div>
-  </div>
-  <div class="col-6 mb-3">
-    <label>Identification de l’object</label>
-    <div>{{ audit?.objectId }}</div>
+  <div class="read-only-field">
+    <label>{{ 'AUDIT.TAB.INFORMATIONS.ASSOCIATED_CONTRACT' | translate }}</label>
+    <div class="word-break">{{ associatedContract(audit) }}</div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-12 mb-3">
-    <label>Rapport</label>
-    <div>{{ auditReport(audit) }}</div>
+<div class="d-flex">
+  <div class="read-only-field mr-5">
+    <label>{{ 'AUDIT.TAB.INFORMATIONS.APPLICATION_IDENTIFIER' | translate }}</label>
+    <div class="word-break">{{ audit?.agIdApp }}</div>
   </div>
-  <div class="col-12 mb-3">
-    <label>Informations complémentaires sur l’opération</label>
-    <div>{{ audit?.data }}</div>
+  <div class="read-only-field">
+    <label>{{ 'AUDIT.TAB.INFORMATIONS.TRANSACTION_NUMBER' | translate }}</label>
+    <div class="word-break">{{ audit?.idRequest }}</div>
   </div>
-  <div class="col-12 mb-3">
-    <label>Message</label>
-    <div>{{ auditMessage(audit) }}</div>
-  </div>
+</div>
+
+<div class="read-only-field">
+  <label>{{ 'AUDIT.TAB.INFORMATIONS.ASSIGMENT_DATE' | translate }}</label>
+  <div class="word-break">{{ audit?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+</div>
+
+<div class="read-only-field">
+  <label>{{ 'AUDIT.TAB.INFORMATIONS.OPERATION_IDENTIFIER' | translate }}</label>
+  <div class="word-break">{{ audit?.idRequest }}</div>
+</div>
+
+<div class="read-only-field">
+  <label>{{ 'AUDIT.TAB.INFORMATIONS.OBJECT_IDENTIFIER' | translate }}</label>
+  <div class="word-break">{{ audit?.objectId }}</div>
+</div>
+
+<div class="read-only-field">
+  <label>{{ 'AUDIT.TAB.INFORMATIONS.REPORT' | translate }}</label>
+  <div class="word-break">{{ auditReport(audit) }}</div>
+</div>
+
+<div class="read-only-field">
+  <label>{{ 'AUDIT.TAB.INFORMATIONS.ADDITIONAL_OPERATION_INFORMATIONS' | translate }}</label>
+  <div class="word-break">{{ audit?.data }}</div>
+</div>
+
+<div class="read-only-field">
+  <label>{{ 'AUDIT.TAB.INFORMATIONS.MESSAGE' | translate }}</label>
+  <div class="word-break">{{ auditMessage(audit) }}</div>
 </div>

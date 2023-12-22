@@ -38,11 +38,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamuiSidenavHeaderComponent } from './vitamui-sidenav-header.component';
+import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatTooltipModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, CommonTooltipModule],
   declarations: [VitamuiSidenavHeaderComponent],
   exports: [VitamuiSidenavHeaderComponent],
 })

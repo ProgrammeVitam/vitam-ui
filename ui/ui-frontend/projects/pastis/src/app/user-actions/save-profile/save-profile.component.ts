@@ -291,12 +291,14 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
               }
             });
         } else if (result.action === 'rattachement') {
+          // tslint:disable-next-line:no-shadowed-variable
           const dataToSendToPopUp = {} as PastisDialogDataCreate;
           dataToSendToPopUp.titleDialog = this.popupSaveSelectNoticeTitleDialog;
           dataToSendToPopUp.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
           dataToSendToPopUp.okLabel = this.popupSaveCreateNoticeOkLabel;
           dataToSendToPopUp.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
           dataToSendToPopUp.profileMode = this.profileService.profileMode;
+          // tslint:disable-next-line:no-shadowed-variable
           const selectNoticeDialog = this.dialog.open(SelectNoticeComponent, {
             width: '800px',
             panelClass: 'pastis-popup-modal-box',

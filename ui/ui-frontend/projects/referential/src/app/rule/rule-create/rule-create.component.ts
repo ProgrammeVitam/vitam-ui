@@ -42,8 +42,6 @@ import { ConfirmDialogService, Rule, RuleService } from 'ui-frontend-common';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateValidators } from './rule-create.validators';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
-
 @Component({
   selector: 'app-rule-create',
   templateUrl: './rule-create.component.html',
@@ -60,7 +58,6 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 1;
   private keyPressSubscription: Subscription;
 
   ruleTypes = RULE_TYPES;
@@ -124,9 +121,5 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
         console.error(error);
       },
     );
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 }

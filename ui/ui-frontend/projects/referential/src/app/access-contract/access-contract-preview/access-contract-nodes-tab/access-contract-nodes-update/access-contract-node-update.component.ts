@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FilingPlanMode } from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service';
 import { AccessContract } from 'ui-frontend-common';
 import { AccessContractService } from '../../../access-contract.service';
@@ -52,6 +52,7 @@ export class AccessContractNodeUpdateComponent implements OnInit {
   tenantIdentifier: number;
   selectNodesForm: FormGroup;
   selectedRootsControl = new FormControl();
+  allRootUnitsControl = new FormControl(false);
 
   hasError = true;
   message: string;
@@ -64,7 +65,7 @@ export class AccessContractNodeUpdateComponent implements OnInit {
     public dialogRef: MatDialogRef<AccessContractNodeUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { accessContract: AccessContract; searchAccessContractId: string; tenantIdentifier: number },
     private formBuilder: FormBuilder,
-    private accessContractService: AccessContractService,
+    private accessContractService: AccessContractService
   ) {
     this.searchAccessContractId = this.data.searchAccessContractId;
     this.tenantIdentifier = this.data.tenantIdentifier;
@@ -76,13 +77,16 @@ export class AccessContractNodeUpdateComponent implements OnInit {
   }
 
   ngOnInit() {
+    const rootUnits: string[] = this.accessContract.rootUnits || [];
+    this.allRootUnitsControl.setValue(rootUnits.length === 0);
+
     this.selectedRootsControl.valueChanges.subscribe((value) => {
       this.selectNodesForm.get('rootUnits').setValue(value.included);
       this.selectNodesForm.get('excludedRootUnits').setValue(value.excluded);
     });
 
     this.selectedRootsControl.setValue({
-      included: this.accessContract.rootUnits || [],
+      included: rootUnits,
       excluded: this.accessContract.excludedRootUnits || [],
     });
   }
@@ -92,21 +96,20 @@ export class AccessContractNodeUpdateComponent implements OnInit {
   }
 
   updateAccessContractNodes() {
+    const rootUnits: string[] = this.allRootUnitsControl.value ? [] : this.selectNodesForm.get('rootUnits').value;
+    const excludedRootUnits: string[] = this.allRootUnitsControl.value ? [] : this.selectNodesForm.get('excludedRootUnits').value;
+
     const formData = {
       id: this.accessContract.id,
       identifier: this.accessContract.identifier,
-      rootUnits: this.selectNodesForm.get('rootUnits').value,
-      excludedRootUnits: this.selectNodesForm.get('excludedRootUnits').value,
+      rootUnits,
+      excludedRootUnits,
     };
 
     this.accessContractService.patch(formData).subscribe(
-      () => {
-        this.dialogRef.close(true);
-      },
-      (error) => {
-        this.dialogRef.close(false);
-        console.error(error);
-      },
+      (updatedAccessContract) => {
+        this.dialogRef.close(updatedAccessContract);
+      }
     );
   }
 }

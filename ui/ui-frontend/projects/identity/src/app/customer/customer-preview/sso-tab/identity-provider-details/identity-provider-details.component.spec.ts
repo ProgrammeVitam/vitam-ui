@@ -95,6 +95,7 @@ class EditablePatternStubComponent implements ControlValueAccessor {
 class TestHostComponent {
   @ViewChild(IdentityProviderDetailsComponent, { static: false }) component: IdentityProviderDetailsComponent;
   provider: IdentityProvider = {
+    propagateLogout: false,
     id: '42',
     customerId: '1234',
     identifier: '2',

@@ -48,7 +48,7 @@
   "UI": {
     "hasTenantList": {{ "true" if vitamui.portal.has_tenant_list | default(false) | bool == true else "false" }},
     "hasLangSelection": {{ "true" if vitamui.portal.has_lang_selection | default(false) | bool == true else "false" }},
-    "hasSiteSelection" : {{ "true" if vitamui.portal.has_site_selection | default(true) | bool == true else "false" }}
+    "hasSiteSelection" : {{ "true" if vitamui.portal.has_site_selection | default(false) | bool == true else "false" }}
   },
   {% endif %}
   "CATEGORY_CONFIGURATION": [

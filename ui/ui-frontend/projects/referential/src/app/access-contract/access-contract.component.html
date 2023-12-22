@@ -2,44 +2,33 @@
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-access-contract-preview
       *ngIf="openedItem"
-      (previewClose)="closePanel()"
       [accessContract]="openedItem"
-      [tenantIdentifier]="tenantId"
-    >
-    </app-access-contract-preview>
+      [tenantIdentifier]="tenantIdentifier"
+      (previewClose)="closePanel()"
+    ></app-access-contract-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"> </vitamui-common-navbar>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{'ACCESS_CONTRACT.HOME.TITLE' | translate}}
+      </vitamui-common-title-breadcrumb>
 
-        <div class="vitamui-heading">
-          <vitamui-common-title-breadcrumb>
-            {{ 'APPLICATION.ACCESS_APP.NAME' | translate }}
-          </vitamui-common-title-breadcrumb>
-        </div>
+      <vitamui-common-banner [searchbarPlaceholder]="'ACCESS_CONTRACT.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+        <button class="btn primary mr-3" (click)="openCreateAccesscontractDialog()">
+          <span>{{'ACCESS_CONTRACT.HOME.CREATE_ACCESS_CONTRACT' | translate}}</span>
+        </button>
 
-        <div class="controls">
-          <vitamui-common-search-bar
-            name="access-contract-search"
-            (search)="onSearchSubmit($event)"
-            placeholder="Nom, Identifiant, ..."
-            i18n-placeholder="@@accessContractSearchPlaceholder"
-          ></vitamui-common-search-bar>
-
-          <div class="actions">
-            <button class="btn secondary" (click)="openCreateAccesscontractDialog()">
-              <i class="vitamui-icon vitamui-icon-contrat btn-create"></i>
-              <span i18n="Create an access contract button label@@accessContractListCreateButton">Créer un contrat d'accès</span>
-            </button>
-          </div>
-        </div>
-      </div>
+        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+          <button mat-menu-item (click)="openImport()">{{ 'ACCESS_CONTRACT.HOME.IMPORT' | translate }}</button>
+          <button mat-menu-item (click)="export()">{{ 'ACCESS_CONTRACT.HOME.EXPORT' | translate }}</button>
+          <button mat-menu-item (click)="downloadModel()">{{ 'ACCESS_CONTRACT.HOME.DOWNLOAD_MODEL' | translate }}</button>
+        </vitamui-common-menu-button>
+      </vitamui-common-banner>
     </div>
 
-    <div class="vitamui-body vitamui-container">
-      <app-access-contract-list (accessContractClick)="showAccessContract($event)" [search]="search"> </app-access-contract-list>
+    <div class="vitamui-content">
+      <app-access-contract-list (accessContractClick)="openPanel($event)" [search]="search"></app-access-contract-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

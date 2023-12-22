@@ -45,11 +45,7 @@ import { OperationApiService } from '../core/api/operation-api.service';
   providedIn: 'root',
 })
 export class ProbativeValueService extends SearchService<Event> {
-  constructor(
-    private operationApiService: OperationApiService,
-    private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
-  ) {
+  constructor(private operationApiService: OperationApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
     super(http, operationApiService, 'ALL');
   }
 
@@ -65,6 +61,7 @@ export class ProbativeValueService extends SearchService<Event> {
         () => {
           this.snackBarService.open({
             message: 'SNACKBAR.PROBATIVE_VALUE_RUN',
+            icon: 'vitamui-icon-releve'
           });
         },
         (error) => {
@@ -73,8 +70,8 @@ export class ProbativeValueService extends SearchService<Event> {
             return;
           }
           this.snackBarService.open({ message: error.error.message, translate: false });
-        },
-      ),
+        }
+      )
     );
   }
 

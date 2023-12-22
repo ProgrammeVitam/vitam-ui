@@ -34,27 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import {Component, Input, NO_ERRORS_SCHEMA} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
+import {InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { OntologyComponent } from './ontology.component';
+import {OntologyComponent} from './ontology.component';
+import {TranslateModule} from "@ngx-translate/core";
 
-@Component({ selector: 'app-ontology-preview', template: '' })
+@Component({selector: 'app-ontology-preview', template: ''})
 // tslint:disable-next-line:component-class-suffix
 class OntologyPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-ontology-list', template: '' })
+@Component({selector: 'app-ontology-list', template: ''})
 // tslint:disable-next-line:component-class-suffix
-class OntologyListStub {}
+class OntologyListStub {
+}
 
 describe('OntologyComponent', () => {
   let component: OntologyComponent;
@@ -62,18 +64,24 @@ describe('OntologyComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [OntologyComponent, OntologyListStub, OntologyPreviewStub],
+      declarations: [
+        OntologyComponent,
+        OntologyListStub,
+        OntologyPreviewStub
+      ],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
+        TranslateModule.forRoot(),
         InjectorModule,
         LoggerModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
-        MatDialogModule,
+        MatDialogModule
       ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
   }));
 
   beforeEach(() => {

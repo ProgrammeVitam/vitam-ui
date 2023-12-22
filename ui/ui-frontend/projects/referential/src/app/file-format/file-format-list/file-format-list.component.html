@@ -1,79 +1,85 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <thead>
-    <tr>
-      <th><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon"></i></th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="fileFormat name column header@@fileFormatListNameHeader">Nom</span>
-          <vitamui-common-order-by-button
-            orderByKey="Name"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="fileFormat id column header@@fileFormatListIdHeader">PUID</span>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table" >
+    <div class="vitamui-table-head">
+      <div class="col-1 d-flex align-items-center"></div>
+
+      <div class="col-3 d-flex align-items-center justify-content-between">
+        <div>{{'FILE_FORMATS.HOME.ARRAY.IDENTIFIER' | translate}}</div>
           <vitamui-common-order-by-button
             orderByKey="PUID"
             [(orderBy)]="orderBy"
             [(direction)]="direction"
             (orderChange)="emitOrderChange()"
           ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="fileFormat desc column header@@fileFormatListCreationDateHeader">Date de création</span>
+      </div>
+
+      <div class="col-4 d-flex align-items-center justify-content-between">
+          <div>{{'FILE_FORMATS.HOME.ARRAY.NAME' | translate}}</div>
+          <vitamui-common-order-by-button
+            orderByKey="Name"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-4 d-flex align-items-center justify-content-between">
+        <div>{{'FILE_FORMATS.HOME.ARRAY.CREATION_DATE' | translate}}</div>
           <vitamui-common-order-by-button
             orderByKey="CreatedDate"
             [(orderBy)]="orderBy"
             [(direction)]="direction"
             (orderChange)="emitOrderChange()"
           ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let format of dataSource; let index = index">
-      <tr class="vitamui-table-row">
-        <td><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon status-badge status-badge-green"></i></td>
-        <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.name }}</td>
-        <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.puid }}</td>
-        <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.createdDate | dateTime: 'dd/MM/yyyy' }}</td>
-        <td>
-          <div class="actions" *ngIf="!isInternal(format)">
-            <button
-              class="btn-circle primary"
-              (click)="deleteFileFormatDialog(format)"
-              *vitamuiCommonHasRole="{
-                appId: 'FILE_FORMATS_APP',
-                tenantIdentifier: +this.genericUserRole.tenantIdentifier,
-                role: 'ROLE_DELETE_FILE_FORMATS'
-              }"
-            >
-              <i class="vitamui-icon vitamui-icon-trash"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+      </div>
+    </div>
 
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button
-    *ngIf="!pending && infiniteScrollDisabled && fileFormatService.canLoadMore"
-    (click)="loadMore()"
-    class="btn"
-    i18n="Show more results@@tableMoreResultButton"
-  >
-    Afficher plus de résultats...
-  </button>
-  <span *ngIf="!pending && !fileFormatService.canLoadMore">Fin des résultats</span>
+    <div class="vitamui-table-body">
+        <div class="vitamui-table-rows" *ngFor="let format of dataSource; let index = index" (click)="fileFormatClick.emit(format)">
+          <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="col-1"><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon"></i></div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ format?.puid }}</div>
+            <div class="col-4" vitamuiCommonEllipsis>{{ format?.name }}</div>
+            <div class="col-4 actions" vitamuiCommonEllipsis>
+              <span>{{ format?.createdDate | dateTime: 'dd/MM/yyyy' }}</span>
+              <div *ngIf="!isInternal(format)">
+                <button
+                  class="btn btn-circle primary"
+                  (click)="$event.stopPropagation(); deleteFileFormatDialog(format)"
+                  *vitamuiCommonHasRole="{
+                  appId: 'FILE_FORMATS_APP',
+                  tenantIdentifier: vitamAdminTenant,
+                  role: 'ROLE_DELETE_FILE_FORMATS'
+                }"
+                >
+                  <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && fileFormatService.canLoadMore && !pending then loadMore"></div>
+  </div>
 </div>
+
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="fileFormatService.loadMore()">
+    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

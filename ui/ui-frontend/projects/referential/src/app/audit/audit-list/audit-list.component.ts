@@ -38,8 +38,8 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
-
 import { AuditService } from '../audit.service';
+import { AuditOperation } from '../../models/audit.interface';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -56,8 +56,7 @@ export class AuditFilters {
 })
 export class AuditListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('search')
-  set searchText(searchText: string) {
+  @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
@@ -65,8 +64,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
-  @Input('filters')
-  set filters(filters: AuditFilters) {
+  @Input('filters') set filters(filters: AuditFilters) {
     this._filters = filters;
     this.filterChange.next(filters);
   }
@@ -76,10 +74,10 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
 
   @Output() auditClick = new EventEmitter<any>();
 
-  loaded = false;
-
-  orderBy = '#id';
-  direction = Direction.ASCENDANT;
+  public loaded = false;
+  public orderBy = '#id';
+  public direction = Direction.ASCENDANT;
+  public filterMap: { [key: string]: any[] } = { type: null };
 
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
@@ -91,45 +89,16 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
 
   ngOnInit() {
     this.auditService
-      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(this.buildAuditCriteriaFromSearch())))
-      .subscribe((data: any[]) => {
-        this.dataSource = data;
-      });
+      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(this.buildCriteriaFromSearch())))
+      .subscribe((data: any[]) => (this.dataSource = data));
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
-      const query: any = this.buildAuditCriteriaFromSearch();
+      const query: any = this.buildCriteriaFromSearch();
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
-  }
-
-  buildAuditCriteriaFromSearch() {
-    const criteria: any = {};
-    criteria.evTypeProc = 'AUDIT';
-    if (this._searchText !== undefined && this._searchText.length > 0) {
-      criteria['#id'] = this._searchText;
-    }
-
-    if (this._filters) {
-      if (this._filters.startDate) {
-        criteria.evDateTime_Start = this._filters.startDate;
-      }
-      if (this._filters.endDate) {
-        criteria.evDateTime_End = this._filters.endDate;
-      }
-      if (this._filters.types && this._filters.types.length > 0) {
-        criteria.evType = this._filters.types;
-      }
-    }
-
-    // Default type filter used to exclude the other types
-    if (!criteria.evType) {
-      criteria.evType = ['PROCESS_AUDIT', 'EVIDENCE_AUDIT', 'RECTIFICATION_AUDIT'];
-    }
-
-    return criteria;
   }
 
   ngOnDestroy() {
@@ -137,7 +106,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   }
 
   searchAuditOrdered() {
-    const query: any = this.buildAuditCriteriaFromSearch();
+    const query: any = this.buildCriteriaFromSearch();
     this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(query)));
   }
 
@@ -151,5 +120,43 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
 
   auditMessage(audit: any): string {
     return audit.events !== undefined && audit.events.length !== 0 ? audit.events[audit.events.length - 1].outMessage : audit.outMessage;
+  }
+
+  public getOperationCategories(): string[] {
+    return Object.keys(AuditOperation);
+  }
+
+  public onFilterCategoryChange(values: AuditOperation[]): void {
+    this._filters.types = values;
+    this.filterChange.next(this.filterMap);
+  }
+
+  private buildCriteriaFromSearch() {
+    const criteria: any = {};
+    criteria.evTypeProc = 'AUDIT';
+    if (this._searchText !== undefined && this._searchText.length > 0) {
+      criteria['#id'] = this._searchText;
+    }
+
+    if (this._filters) {
+      if (this._filters.startDate) {
+        criteria.evDateTime_Start = this._filters.startDate;
+      }
+
+      if (this._filters.endDate) {
+        criteria.evDateTime_End = this._filters.endDate;
+      }
+
+      if (this._filters.types && this._filters.types.length > 0) {
+        criteria.evType = this._filters.types;
+      }
+    }
+
+    // Default type filter used to exclude the other types
+    if (!criteria.evType) {
+      criteria.evType = this.getOperationCategories();
+    }
+
+    return criteria;
   }
 }

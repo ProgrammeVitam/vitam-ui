@@ -39,10 +39,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { SearchUnitApiService, Status } from 'projects/vitamui-library/src/public-api';
+import {SearchUnitApiService, Status} from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import {BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule} from 'ui-frontend-common';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {TranslateModule} from "@ngx-translate/core";
 
 describe('AccessContractNodesTabComponent', () => {
   let component: AccessContractNodesTabComponent;
@@ -73,28 +75,31 @@ describe('AccessContractNodesTabComponent', () => {
     excludedRootUnits: [''],
   };
 
-  beforeEach(waitForAsync(() => {
-    const parameters: Map<string, string> = new Map<string, string>();
-    parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
-    const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters),
-    };
+  beforeEach(
+    waitForAsync(() => {
+      const parameters: Map<string, string> = new Map<string, string>();
+      parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
+      const externalParametersServiceMock = {
+        getUserExternalParameters: () => of(parameters),
+      };
 
-    const unitValueMock = {
-      getByDsl: () => of({}),
-    };
+      const unitValueMock = {
+        getByDsl: () => of({}),
+      };
 
-    TestBed.configureTestingModule({
-      declarations: [AccessContractNodesTabComponent],
-      imports: [MatSnackBarModule],
-      providers: [
-        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        { provide: SearchUnitApiService, useValue: unitValueMock },
-        { provide: MatDialog, useValue: {} },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [AccessContractNodesTabComponent],
+        imports: [MatSnackBarModule, HttpClientTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+        providers: [
+          { provide: BASE_URL, useValue: '/fake-api' },
+          { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+          { provide: SearchUnitApiService, useValue: unitValueMock },
+          { provide: MatDialog, useValue: {} },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractNodesTabComponent);

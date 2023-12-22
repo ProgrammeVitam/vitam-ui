@@ -42,6 +42,9 @@ import { of } from 'rxjs';
 import { AccessContractService } from '../../../access-contract/access-contract.service';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { BASE_URL, VitamUISnackBarService } from 'ui-frontend-common';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('SecurisationCheckTabComponent', () => {
   let component: SecurisationCheckTabComponent;
@@ -60,7 +63,7 @@ describe('SecurisationCheckTabComponent', () => {
     outMessage: 'outMessage',
     data: 'data',
     parsedData: {
-      Size: 2,
+      Size: 2
     },
     objectId: 'objectId',
     collectionName: 'collectionName',
@@ -69,52 +72,59 @@ describe('SecurisationCheckTabComponent', () => {
     agIdExt: 'agIdExt',
     rightsStatementIdentifier: 'rightsStatementIdentifier',
     obIdReq: 'obIdReq',
-    events: [
-      {
-        id: 'id2',
-        idAppSession: 'idAppSession2',
-        idRequest: 'idRequest2',
-        parentId: 'id',
-        type: 'type',
-        obIdReq: 'obIdReq',
-        typeProc: 'typeProc',
-        dateTime: new Date('1995-12-17'),
-        outcome: 'outcome',
-        outDetail: 'outDetail',
-        outMessage: 'outMessage',
-        data: 'data',
-        parsedData: {
-          dataKey: 'dataValue',
-        },
-        objectId: 'objectId',
-        collectionName: 'collectionName',
-        agId: 'agId',
-        agIdApp: 'agIdApp',
-        agIdExt: 'agIdExt',
-        rightsStatementIdentifier: 'rightsStatementIdentifier',
+    events: [{
+      id: 'id2',
+      idAppSession: 'idAppSession2',
+      idRequest: 'idRequest2',
+      parentId: 'id',
+      type: 'type',
+      obIdReq: 'obIdReq',
+      typeProc: 'typeProc',
+      dateTime: new Date('1995-12-17'),
+      outcome: 'outcome',
+      outDetail: 'outDetail',
+      outMessage: 'outMessage',
+      data: 'data',
+      parsedData: {
+        dataKey: 'dataValue'
       },
-    ],
+      objectId: 'objectId',
+      collectionName: 'collectionName',
+      agId: 'agId',
+      agIdApp: 'agIdApp',
+      agIdExt: 'agIdExt',
+      rightsStatementIdentifier: 'rightsStatementIdentifier'
+    }]
   };
+
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
   beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
-      data: of({ appId: 'TRACEABILITY_APP' }),
+      data: of({ appId: 'TRACEABILITY_APP' })
     };
 
     const accessContractServiceMock = {
-      getAllForTenant: () => of([]),
+      getAllForTenant: () => of([])
     };
 
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        TranslateModule.forRoot()
+      ],
       declarations: [SecurisationCheckTabComponent],
       providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: SecurisationService, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy }
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .compileComponents();
   }));
 
   beforeEach(() => {

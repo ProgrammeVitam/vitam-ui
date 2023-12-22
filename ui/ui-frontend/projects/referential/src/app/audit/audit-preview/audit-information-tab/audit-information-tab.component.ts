@@ -34,21 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
-import { Event } from 'projects/vitamui-library/src/public-api';
+import { Component, Input } from '@angular/core';
+import { Event } from 'ui-frontend-common';
+
 
 @Component({
   selector: 'app-audit-information-tab',
   templateUrl: './audit-information-tab.component.html',
-  styleUrls: ['./audit-information-tab.component.scss'],
+  styleUrls: ['./audit-information-tab.component.scss']
 })
-export class AuditInformationTabComponent implements OnInit {
+export class AuditInformationTabComponent {
+
   @Input()
   audit: Event;
 
-  constructor() {}
-
-  ngOnInit() {}
+  constructor() {
+  }
 
   associatedContract(audit: Event) {
     try {
@@ -59,11 +60,11 @@ export class AuditInformationTabComponent implements OnInit {
   }
 
   auditReport(audit: Event) {
-    const reports = audit.events.filter((ev) => ev.outDetail.includes('REPORT_AUDIT'));
-    return reports.length === 0 ? null : reports[0].outMessage;
+    const reports = audit.events.filter(ev => ev.outDetail.includes('REPORT_AUDIT'));
+    return (reports.length === 0) ? null : reports[0].outMessage;
   }
 
   auditMessage(audit: any): string {
-    return audit.events !== undefined && audit.events.length !== 0 ? audit.events[audit.events.length - 1].outMessage : audit.outMessage;
+    return (audit.events !== undefined && audit.events.length !== 0) ? audit.events[audit.events.length - 1].outMessage : audit.outMessage;
   }
 }

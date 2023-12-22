@@ -98,7 +98,8 @@ spring:
               /referential-api/profile/**,
               /referential-api/search/**,
               /referential-api/rules/**,
-              /referential-api/customers/**
+              /referential-api/customers/**,
+              /referential-api/static/**
 
           filters:
             - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
@@ -106,6 +107,7 @@ spring:
             - RewritePath=/referential-api/operation(?<segment>.*),/referential/v1/operations$\{segment}
             - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
+            - RewritePath=/referential-api/static(?<segment>.*), $\{segment}
             - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
 
 logging:

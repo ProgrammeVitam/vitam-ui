@@ -48,7 +48,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
@@ -151,7 +151,7 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierType.BINARYMASTER.getValue());
+        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.BINARYMASTER.getValue());
         assertThat(objectData.getVersion()).isEqualTo(1);
         assertThat(objectData.getMimeType()).isEqualTo("text/plain");
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq.txt");
@@ -173,7 +173,7 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierType.BINARYMASTER.getValue());
+        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.BINARYMASTER.getValue());
         assertThat(objectData.getVersion()).isEqualTo(1);
         assertThat(objectData.getMimeType()).isEqualTo("text/plain");
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq.txt");
@@ -194,7 +194,7 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierType.BINARYMASTER.getValue());
+        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.BINARYMASTER.getValue());
         assertThat(objectData.getVersion()).isEqualTo(2);
         assertThat(objectData.getMimeType()).isEqualTo("text/plain");
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq.txt");
@@ -215,7 +215,7 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierType.DISSEMINATION.getValue());
+        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.DISSEMINATION.getValue());
         assertThat(objectData.getVersion()).isEqualTo(1);
         assertThat(objectData.getMimeType()).isEqualTo("image/png");
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih5ziaaaba.png");
@@ -236,7 +236,7 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierType.DISSEMINATION.getValue());
+        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.DISSEMINATION.getValue());
         assertThat(objectData.getVersion()).isEqualTo(1);
         assertThat(objectData.getMimeType()).isEqualTo("image/png");
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih5ziaaaba.png");
@@ -278,7 +278,7 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierType.THUMBNAIL.getValue());
+        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.THUMBNAIL.getValue());
         assertThat(objectData.getVersion()).isEqualTo(1);
         assertThat(objectData.getMimeType()).isEqualTo("image/jpeg");
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih54qaaaba.jpeg");
@@ -300,7 +300,7 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertEquals(objectData.getQualifier(), ObjectQualifierType.BINARYMASTER.getValue());
+        assertEquals(objectData.getQualifier(), ObjectQualifierTypeEnum.BINARYMASTER.getValue());
         assertThat(objectData.getVersion()).isEqualTo(1);
         assertThat(objectData.getMimeType()).isEqualTo("text/plain");
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahly3l5ab7vwalzlvsew3aaaaaq.txt");
@@ -337,7 +337,7 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierType.TEXTCONTENT.getValue());
+        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
         assertThat(objectData.getVersion()).isEqualTo(3);
         assertThat(objectData.getMimeType()).isEqualTo("image/png");
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih5ziaaaba.png");
@@ -357,7 +357,7 @@ public class ArchivesSearchServiceTest {
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
-        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierType.TEXTCONTENT.getValue());
+        assertThat(objectData.getQualifier()).isEqualTo(ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
         assertThat(objectData.getVersion()).isEqualTo(3);
         assertThat(objectData.getMimeType()).isEqualTo("image/png");
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih5ziaaaba.png");

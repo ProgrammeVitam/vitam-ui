@@ -83,8 +83,7 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
 
         Mockito.when(groupConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(groupConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
-        internalGroupService = new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository, internalProfileService, userRepository,
-                internalSecurityService, tenantRepository, iamLogbookService, groupConverter, null);
+        internalGroupService = new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository, internalProfileService, userRepository, internalSecurityService, tenantRepository, iamLogbookService, groupConverter, null, null);
 
         controller = new GroupInternalController(internalGroupService);
         controller.setInternalGroupService(internalGroupService);

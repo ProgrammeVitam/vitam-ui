@@ -7,6 +7,9 @@
     type="text"
     [placeholder]="placeholder"
     [disabled]="disabled"
+    (keydown.enter)="onSearch()"
+    (keydown.escape)="reset()"
+    (keydown)="$event.stopPropagation()"
   />
   <button *ngIf="searchValue" type="button" class="btn-reset" (click)="reset()" [disabled]="disabled">
     <i class="material-icons">clear</i>

@@ -69,6 +69,8 @@ vitam.tenant.init.mandatory: true
 
 customer.init.config.file: src/main/resources/dev/customer-init.yml
 
+user.connection.tracing.enabled: false
+
 # Jaeger
 opentracing:
   jaeger:

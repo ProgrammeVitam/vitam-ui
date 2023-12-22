@@ -65,6 +65,9 @@ import lombok.ToString;
 public class Token extends IdDocument {
 
     @NotNull
+    private Date createdDate;
+
+    @NotNull
     @Indexed(name = "idx_token_date", background = true, expireAfterSeconds = 0)
     private Date updatedDate;
 

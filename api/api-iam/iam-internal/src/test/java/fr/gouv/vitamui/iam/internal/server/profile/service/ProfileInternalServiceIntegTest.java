@@ -36,6 +36,7 @@ import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.junit.After;
 import org.junit.Assert;
@@ -104,6 +105,9 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
 
     @MockBean
     private OwnerRepository ownerRepository;
+
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
 
     @MockBean
     private SpMetadataGenerator spMetadataGenerator;

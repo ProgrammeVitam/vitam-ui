@@ -69,9 +69,7 @@ public class GroupInternalServiceTest {
 
     @Before
     public void setup() {
-        internalGroupService = new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository,
-                profileInternalService, userRepository, internalSecurityService, tenantRepository, iamLogbookService,
-                groupConverter, null);
+        internalGroupService = new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository, profileInternalService, userRepository, internalSecurityService, tenantRepository, iamLogbookService, groupConverter, null, null);
         final Tenant tenant = new Tenant();
         tenant.setCustomerId("customerId");
         when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);

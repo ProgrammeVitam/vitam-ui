@@ -3,6 +3,7 @@ package fr.gouv.vitamui.iam.internal.server.subrogation.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import java.util.Date;
 import java.util.Optional;
 
@@ -72,6 +73,9 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
     @MockBean
     private SequenceGeneratorService sequenceGeneratorService;
 
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
+
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
 
     private final InternalHttpContext internalHttpContext = mock(InternalHttpContext.class);
@@ -130,7 +134,7 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
         repository.save(subro);
         final AuthUserDto currentUser = new AuthUserDto();
         currentUser.setEmail("surrogate@vitamui.com");
-        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCase(ArgumentMatchers.anyString())).thenReturn(new User());
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 
@@ -150,7 +154,7 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
         repository.save(subro);
         final AuthUserDto currentUser = new AuthUserDto();
         currentUser.setEmail("surrogate@vitamui.com");
-        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCase(ArgumentMatchers.anyString())).thenReturn(new User());
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 

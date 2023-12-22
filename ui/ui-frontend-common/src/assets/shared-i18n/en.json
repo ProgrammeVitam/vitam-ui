@@ -138,11 +138,11 @@
     },
     "INGEST_APP": {
       "NAME": "Ingest contracts",
-      "TOOLTIP": "Consult, create and modify ingest contracts"
+      "TOOLTIP": "Access, create and update ingest contracts"
     },
     "ACCESS_APP": {
       "NAME": "Access contracts",
-      "TOOLTIP": "Consult, create and modify access contracts"
+      "TOOLTIP": "Access, create and update access contracts"
     },
     "HIERARCHY_PROFILE_APP": {
       "NAME": "Profile hierarchy",
@@ -232,9 +232,9 @@
       "NAME": "Barcode",
       "TOOLTIP": "Reserve physical archive identifiers and print barcode labels"
     },
-    "PHYSICAL_CUSTOMERS_APP": {
-      "NAME": "Physical archives Services",
-      "TOOLTIP": "Configure the physical archive services and the rights of the client organization"
+    "CUSTOMERS_ADVANCED_PARAM_APP": {
+      "NAME": "Advanced parameters of customers",
+      "TOOLTIP": "Define the advanced parameters of customers and tenants"
     },
     "ARCHIVE_BATCH_INGEST_PROFILE_APP": {
       "NAME": "Deposit by slip",
@@ -318,6 +318,10 @@
       "NAME": "Statements of probative value",
       "TOOLTIP": "Generate probative value statements"
     },
+    "PROBATIVE_VALUE_APP": {
+      "NAME": "Reports of probative value",
+      "TOOLTIP": "Export a statement of probative value"
+    },
     "LOGBOOK_OPERATION_APP": {
       "NAME": "Operations log",
       "TOOLTIP": "Consult the log of operations carried out in the system"
@@ -350,6 +354,14 @@
     "PASTIS_APP": {
       "NAME": "Documentary profiles",
       "TOOLTIP": "Access, create, edit, or delete archive profiles and unit profiles"
+    },
+    "BNPP_UNITS_APP": {
+      "NAME": "BNPP units",
+      "TOOLTIP": "Configure BNPP's membership units"
+    },
+    "CUSTOMERS_SUPERVISION_APP": {
+      "NAME": "Customers supervision",
+      "TOOLTIP": "Oversee ingests for all customers"
     }
   },
   "FOOTER": {
@@ -443,7 +455,7 @@
       "SINGULAR": "on {{ total }} (1 element not downloaded)",
       "PLURAL": "on {{ total }} ({{ count }} elements not downloaded)"
     },
-    "FILE_TRANSFER": "Transferring file"
+    "DOWNLOAD_FILE": "Downloading file"
   },
   "EDITABLE_SELECT": {
     "CONFIM_UPDATE": "Are you sure you want to make this change?"
@@ -455,6 +467,16 @@
   "MULTIPLE_EMAILS_INPUT": {
     "PLACEHOLDER": "name@domain.xyz",
     "ERROR": "You must enter at least one email address"
+  },
+  "MULTIPLE_SELECT_AUTOCOMPLETE": {
+    "COMPLETE_SELECTION": "Complete the selection",
+    "EMPTY_SELECTION": "Empty the selection",
+    "CONSULT_SELECTION": "Consult the selection",
+    "SELECT_ALL": "Select all",
+    "SELECTED_ELEMENT": {
+      "SINGULAR": "selected element",
+      "PLURAL": "selected elements"
+    }
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Default)"
@@ -485,6 +507,7 @@
       "STORAGE_ASSIGNMENT": "assignment",
       "REMOVAL_ASSIGNMENT": "assignment",
       "VALIDATION": "validation",
+      "DOUBLE_VALIDATION": "validation",
       "ITEM_SIGNATURE": "signature",
       "DISPOSAL": "disposal",
       "ITEM_CONSOLIDATION": "archive validation",
@@ -493,10 +516,12 @@
       "ASSIGNMENT": "assignment",
       "PHYSICAL_DOCUMENTS_INDEXATION": "indexing",
       "DISPOSAL_CONFIRMATION": "consolidated archives validation",
-      "TRANSFER_REQUEST_VALIDATION": "acceptance of the request"
+      "TRANSFER_REQUEST_VALIDATION": "acceptance of the request",
+      "INDEX_ITEM_REFUSE": "correction"
     },
     "STATUS": {
-      "BLOCKED": "to do"
+      "BLOCKED": "to do",
+      "REFUSED": "to do"
     },
     "SEE_MORE": "See more"
   },
@@ -3340,6 +3365,8 @@
     "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.KO": "Failed to check the processing throttling thresholds of archival units",
     "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.FATAL": "Technical error while checking processing limitation thresholds of archival units",
     "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD.WARNING": "Warning when checking processing throttling thresholds of archival units"
+
+
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
