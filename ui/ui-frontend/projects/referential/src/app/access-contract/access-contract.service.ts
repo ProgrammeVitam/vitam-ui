@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -129,5 +129,13 @@ export class AccessContractService extends SearchService<AccessContract> {
 
   setTenantId(tenantIdentifier: number) {
     this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+  }
+
+  public downloadImportAccessContractFileModel(): Observable<HttpResponse<Blob>> {
+    return this.accessContractApi.getImportAccessContractFileModel();
+  }
+
+  public exportAccessContracts(): Observable<HttpResponse<Blob>> {
+    return this.accessContractApi.exportAccessContracts();
   }
 }

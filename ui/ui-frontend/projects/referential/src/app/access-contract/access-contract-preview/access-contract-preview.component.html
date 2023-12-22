@@ -1,65 +1,34 @@
-<div class="vitamui-sidepanel">
-  <div class="vitamui-sidepanel-header">
-    <div class="d-flex justify-content-end">
-      <button class="btn link cancel" (click)="emitClose()">
-        <i class="vitamui-icon vitamui-icon-close"></i>
-      </button>
-    </div>
+<vitamui-common-sidenav-header [title]="accessContract.name" [subtitle]="'(' + accessContract.identifier + ')'"
+    (onclose)="emitClose()"></vitamui-common-sidenav-header>
 
-    <div class="title">
-      <div matTooltipClass="vitamui-tooltip">
-        <h5 class="m-0 text-primary">{{ accessContract?.name }}</h5>
-        <p class="text large light m-0">{{ accessContract?.identifier }}</p>
-      </div>
-    </div>
-  </div>
+<div class="vitamui-sidepanel-body">
+    <mat-tab-group class="preview-tab-group show-pagination" #tabs>
+        <mat-tab [label]="'ACCESS_CONTRACT.TAB.INFORMATION.TITLE' | translate">
+            <app-access-contract-information-tab #infoTab [accessContract]="accessContract" (isFormValid)="formTabValidityChange($event, 0)"
+                (updated)="updatedChange($event, 0)" (updatedAccessContract)="updatedAccessContract($event)"></app-access-contract-information-tab>
+        </mat-tab>
 
-  <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group" #tabs>
-      <mat-tab label="Informations" i18n-label="Information tab@@accessContractPreviewTabInformation">
-        <app-access-contract-information-tab
-          [accessContract]="accessContract"
-          #infoTab
-          [readOnly]="isPopup"
-          (updated)="updatedChange($event, 0)"
-        ></app-access-contract-information-tab>
-      </mat-tab>
+        <mat-tab [label]="'ACCESS_CONTRACT.TAB.USAGE.TITLE' | translate">
+            <app-access-contract-usage-and-services-tab #usageTab [accessContract]="accessContract" (isFormValid)="formTabValidityChange($event, 1)"
+                (updated)="updatedChange($event, 1)">
+            </app-access-contract-usage-and-services-tab>
+        </mat-tab>
 
-      <mat-tab label="Usage et Services" i18n-label="Usage and Services tab@@accessContractPreviewTabGroupe" class="no-padding">
-        <app-access-contract-usage-and-services-tab
-          [accessContract]="accessContract"
-          #usageTab
-          [readOnly]="isPopup"
-          (updated)="updatedChange($event, 1)"
-        >
-        </app-access-contract-usage-and-services-tab>
-      </mat-tab>
+        <mat-tab [label]="'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.TITLE' | translate">
+            <app-access-contract-write-access-tab #writeTab [accessContract]="accessContract"
+                (updated)="updatedChange($event, 2)">
+            </app-access-contract-write-access-tab>
+        </mat-tab>
 
-      <mat-tab label="Droits d'écritures" i18n-label="Write Access tab@@accessContractPreviewTabWrite" class="no-padding">
-        <app-access-contract-write-access-tab
-          [accessContract]="accessContract"
-          #writeTab
-          [readOnly]="isPopup"
-          (updated)="updatedChange($event, 2)"
-        >
-        </app-access-contract-write-access-tab>
-      </mat-tab>
+        <mat-tab [label]="'ACCESS_CONTRACT.TAB.POSITIONS.TITLE' | translate">
+            <app-access-contract-nodes-tab [accessContract]="accessContract" [tenantIdentifier]="tenantIdentifier">
+            </app-access-contract-nodes-tab>
+        </mat-tab>
 
-      <mat-tab label="Positions" i18n-label="Nodes tab@@accessContractPreviewTabNode" class="no-padding">
-        <app-access-contract-nodes-tab [accessContract]="accessContract" [tenantIdentifier]="tenantIdentifier" [readOnly]="isPopup">
-        </app-access-contract-nodes-tab>
-      </mat-tab>
-
-      <mat-tab label="Historique" i18n-label="History tab@@accessContractPreviewTabHistory">
-        <vitamui-common-operation-history-tab
-          [id]="accessContract?.id"
-          [identifier]="accessContract?.identifier"
-          collectionName="accesscontract"
-          [filter]="filterEvents"
-          [filteringByIdentifier]="false"
-        >
-        </vitamui-common-operation-history-tab>
-      </mat-tab>
+        <mat-tab [label]="'ACCESS_CONTRACT.TAB.HISTORY.TITLE' | translate">
+            <vitamui-common-operation-history-tab [id]="accessContract?.id" [identifier]="accessContract?.identifier"
+                collectionName="accesscontract" [filter]="filterEvents" [filteringByIdentifier]="false">
+            </vitamui-common-operation-history-tab>
+        </mat-tab>
     </mat-tab-group>
-  </div>
 </div>

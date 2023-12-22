@@ -48,15 +48,17 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
   }
 
   initFiningTree() {
-    this.filingPlanService.loadTree(this.tenantIdentifier, this.componentId).subscribe((nodes) => {
-      this.nestedDataSource.data = nodes;
-      this.nestedTreeControl.dataNodes = nodes;
-      this.initCheckedNodes(this.selectedNodes, nodes);
-    });
+    this.filingPlanService
+      .loadTree(this.tenantIdentifier, this.accessContract, this.componentId)
+      .subscribe(nodes => {
+        this.nestedDataSource.data = nodes;
+        this.nestedTreeControl.dataNodes = nodes;
+        this.initCheckedNodes(this.selectedNodes, nodes);
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.tenantIdentifier) {
+    if (changes.accessContract) {
       this.initFiningTree();
     }
   }
@@ -74,14 +76,17 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
       }
 
       childNode.checked = check;
+      childNode.disabledChild = false;
+
       if (this.mode === FilingPlanMode.INCLUDE_ONLY) {
         childNode.disabled = check;
       }
 
-      this.selectedNodes.included = this.selectedNodes.included.filter((id) => childNode.id !== id);
+      this.selectedNodes.included = this.selectedNodes.included.filter(id => childNode.vitamId !== id);
 
       if (this.mode === FilingPlanMode.BOTH) {
-        this.selectedNodes.excluded = this.selectedNodes.excluded.filter((id) => childNode.id !== id);
+        childNode.disabled = !childNode.parents[0]?.checked;
+        this.selectedNodes.excluded = this.selectedNodes.excluded.filter(id => childNode.vitamId !== id);
       }
 
       this.updateChildrenStatusAndSelectedNodes(childNode.children, check);
@@ -184,6 +189,10 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
     nodes.forEach((node) => {
       if (!node || shouldStop) {
         return;
+      }
+
+      if(this.mode === FilingPlanMode.BOTH && node.parents?.length > 0){
+        node.disabled = !node.parents[0].checked;
       }
 
       if (this.mode === FilingPlanMode.SOLO && obj.included && obj.included.includes(node.vitamId)) {

@@ -37,11 +37,13 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { FileTypes } from 'projects/vitamui-library/src/public-api';
+import { zip } from 'rxjs';
 import { Agency, ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'ui-frontend-common';
-import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
-import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
+import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
+import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
 import { AgencyService } from './agency.service';
@@ -52,38 +54,44 @@ import { AgencyService } from './agency.service';
   styleUrls: ['./agency.component.scss'],
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
+  @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;
+
   search = '';
   tenantIdentifier: number;
-
-  checkCreateRole = new Observable<boolean>();
-  checkImportRole = new Observable<boolean>();
-  checkExportRole = new Observable<boolean>();
-
-  @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;
+  hasCreateRole = false;
+  hasImportRole = false;
+  hasExportRole = false;
 
   constructor(
     public dialog: MatDialog,
+    public globalEventService: GlobalEventService,
     private route: ActivatedRoute,
-    private router: Router,
-    globalEventService: GlobalEventService,
     private securityService: SecurityService,
     private agencyService: AgencyService,
+    private translateService: TranslateService
   ) {
     super(route, globalEventService);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
     });
 
-    this.checkCreateRole = this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_CREATE_AGENCIES);
-    this.checkImportRole = this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_IMPORT_AGENCIES);
-    this.checkExportRole = this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_EXPORT_AGENCIES);
+    zip(
+      this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_CREATE_AGENCIES),
+      this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_IMPORT_AGENCIES),
+      this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_EXPORT_AGENCIES),
+    ).subscribe((values: [boolean, boolean, boolean]) => {
+      this.hasCreateRole = values[0];
+      this.hasImportRole = values[1];
+      this.hasExportRole = values[2];
+    })
   }
 
-  openCreateAgencyDialog() {
+  public openCreateAgencyDialog(): void {
     const dialogRef = this.dialog.open(AgencyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
         this.refreshList();
@@ -94,17 +102,41 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     });
   }
 
-  openAgencyImportDialog() {
-    const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
+  public openAgencyImportDialog(): void {
+    const params: ImportDialogParam = {
+      title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
+      subtitle: this.translateService.instant('IMPORT_DIALOG.AGENCY_SUBTITLE'),
+      allowedFiles: [FileTypes.CSV],
+      referential: ReferentialTypes.AGENCY,
+      successMessage: 'SNACKBAR.AGENCY_CONTRACT_IMPORTED',
+      errorMessage: 'SNACKBAR.AGENCY_CONTRACT_IMPORT_FAIL',
+      iconMessage: 'vitamui-icon-agent',
+    };
+
+    this.dialog
+    .open(ImportDialogComponent, {
       panelClass: 'vitamui-modal',
-      data: Referential.AGENCY,
       disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.success) {
+      data: params,
+    })
+    .afterClosed()
+    .subscribe((result) => {
+      if (result?.successfulImport) {
         this.refreshList();
       }
     });
+  }
+
+  public onSearchSubmit(search: string): void {
+    this.search = search || '';
+  }
+
+  public showAgency(item: Agency): void {
+    this.openPanel(item);
+  }
+
+  public exportAgencies(): void {
+    this.agencyService.export();
   }
 
   private refreshList() {
@@ -112,21 +144,5 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
       return;
     }
     this.agencyListComponent.searchAgencyOrdered();
-  }
-
-  onSearchSubmit(search: string) {
-    this.search = search || '';
-  }
-
-  showAgency(item: Agency) {
-    this.openPanel(item);
-  }
-
-  exportAgencies() {
-    this.agencyService.export();
-  }
-
-  changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 }

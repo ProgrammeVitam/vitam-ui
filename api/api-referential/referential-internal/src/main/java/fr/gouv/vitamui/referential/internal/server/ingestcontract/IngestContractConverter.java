@@ -63,10 +63,10 @@ public class IngestContractConverter {
             ingestContract.setCheckParentLink(IngestContractCheckState.valueOf(dto.getCheckParentLink()));
         }
 
-        ingestContract.setCreationdate(dto.getCreationdate());
-        ingestContract.setLastupdate(dto.getLastupdate());
-        ingestContract.setActivationdate(dto.getActivationdate());
-        ingestContract.setDeactivationdate(dto.getDeactivationdate());
+        ingestContract.setCreationdate(dto.getCreationDate());
+        ingestContract.setLastupdate(dto.getLastUpdate());
+        ingestContract.setActivationdate(dto.getActivationDate());
+        ingestContract.setDeactivationdate(dto.getDeactivationDate());
         ingestContract.setComputeInheritedRulesAtIngest(dto.isComputeInheritedRulesAtIngest());
         ingestContract.setSignaturePolicy(convertDtoToVitam(dto.getSignaturePolicy()));
 
@@ -85,10 +85,10 @@ public class IngestContractConverter {
         dto.setEveryFormatType(ingestContract.isEveryFormatType());
         dto.setEveryDataObjectVersion(ingestContract.isEveryDataObjectVersion());
         dto.setComputeInheritedRulesAtIngest(ingestContract.isComputeInheritedRulesAtIngest());
-        dto.setCreationdate(ingestContract.getCreationdate());
-        dto.setLastupdate(ingestContract.getLastupdate());
-        dto.setActivationdate(ingestContract.getActivationdate());
-        dto.setDeactivationdate(ingestContract.getDeactivationdate());
+        dto.setCreationDate(ingestContract.getCreationdate());
+        dto.setLastUpdate(ingestContract.getLastupdate());
+        dto.setActivationDate(ingestContract.getActivationdate());
+        dto.setDeactivationDate(ingestContract.getDeactivationdate());
         dto.setSignaturePolicy(convertVitamToDto(ingestContract.getSignaturePolicy()));
 
         return dto;

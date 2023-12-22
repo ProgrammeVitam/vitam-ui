@@ -37,6 +37,7 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {TranslateModule} from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, SecurityProfile } from 'ui-frontend-common';
 import { SecurityProfileService } from '../security-profile.service';
@@ -55,6 +56,7 @@ describe('SecurityProfileListComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SecurityProfileListComponent],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: SecurityProfileService, useValue: securityProfileServiceMock },

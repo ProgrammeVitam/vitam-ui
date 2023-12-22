@@ -1,82 +1,68 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <div class="col-10 form-control">
-      <vitamui-common-input formControlName="name" placeholder="Nom" disabled i18n-placeholder="name@@fileFormatPreviewLabelName">
-        <ng-container *ngIf="form.get('name')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
-            >{{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-input>
-    </div>
+
+  <div class="d-flex">
+    <vitamui-common-input
+      class="w-100"
+      formControlName="name"
+      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.NAME' | translate"
+      disabled>
+    </vitamui-common-input>
   </div>
 
-  <div class="form-group">
-    <div class="col-10 form-control">
-      <vitamui-common-input
-        formControlName="mimeType"
-        placeholder="Type MIME"
-        disabled="{{ isInternal() || !(hasUpdatetRole | async) ? 'disabled' : 'false' }}"
-        i18n-placeholder="mimeType@@fileFormatPreviewLabelMimeType"
-      >
-      </vitamui-common-input>
-    </div>
+  <div class="d-flex">
+    <vitamui-common-input
+      class="w-100"
+      formControlName="mimeType"
+      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.MIME_TYPE' | translate"
+      [disabled]="isInternal() || !(hasUpdatetRole | async)">
+    </vitamui-common-input>
   </div>
 
-  <div class="form-group" *ngIf="isInternal()">
-    <div class="col-10 form-control">
-      <vitamui-common-input
-        formControlName="versionPronom"
-        placeholder="VersionPronom"
-        disabled="disabled"
-        i18n-placeholder="versionPronom@@fileFormatPreviewLabelVersionPronom"
-      >
-        <ng-container *ngIf="form.get('versionPronom')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('versionPronom')?.errors?.required"
-            >{{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-input>
-    </div>
+  <div class="d-flex" *ngIf="isInternal()">
+    <vitamui-common-input
+      class="w-100"
+      formControlName="versionPronom"
+      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION_PRONOM' | translate"
+      disabled>
+      <ng-container *ngIf="form.get('versionPronom')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('versionPronom')?.errors?.required">
+          {{'COMMON.REQUIRED' | translate}}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
   </div>
 
-  <div class="form-group" *ngIf="!isInternal()">
-    <div class="col-10 form-control">
-      <vitamui-common-input
-        formControlName="version"
-        placeholder="Version"
-        [disabled]="!(hasUpdatetRole | async)"
-        i18n-placeholder="version@@fileFormatPreviewLabelVersion"
-      >
-        <ng-container *ngIf="form.get('version')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required"
-            >{{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-input>
-    </div>
+  <div class="d-flex" *ngIf="!isInternal()">
+    <vitamui-common-input
+      class="w-100"
+      formControlName="version"
+      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION' | translate"
+      [disabled]="!(hasUpdatetRole | async)">
+      <ng-container *ngIf="form.get('version')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required">
+          {{'COMMON.REQUIRED' | translate}}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
   </div>
 
-  <div class="form-group">
-    <div class="col-10 form-control">
-      <vitamui-common-input
-        formControlName="extensions"
-        placeholder="Extensions"
-        disabled="{{ isInternal() || !(hasUpdatetRole | async) ? 'disabled' : 'false' }}"
-        i18n-placeholder="extensions@@fileFormatPreviewLabelExtensions"
-      >
-        <ng-container *ngIf="form.get('extensions')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('extensions')?.errors?.required"
-            >{{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-input>
-    </div>
+  <div class="d-flex">
+    <vitamui-common-input
+      class="w-100"
+      formControlName="extensions"
+      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.EXTENSION' | translate"
+      disabled="{{isInternal() || !(hasUpdatetRole | async) ? 'disabled': 'false'}}">
+      <ng-container *ngIf="form.get('extensions')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('extensions')?.errors?.required">
+          {{'COMMON.REQUIRED' | translate}}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
   </div>
 
-  <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="isInvalid() || !(hasUpdatetRole | async) || unchanged() || submited">
-      Enregistrer
+  <div class="actions">
+    <button type="submit" class="btn primary" [disabled]="isInvalid() || !(hasUpdatetRole | async) || unchanged() || submited">
+      {{ 'COMMON.SAVE' | translate }}
     </button>
   </div>
 </form>

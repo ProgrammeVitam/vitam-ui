@@ -46,5 +46,6 @@ public enum OperationType {
     VITAM,
     ZIP,
     ITEM_CREATION,
-    VITAM_DOCUMENTS_UPLOAD
+    VITAM_DOCUMENTS_UPLOAD,
+    VITAM_AND_LOCAL_DOWNLOAD
 }

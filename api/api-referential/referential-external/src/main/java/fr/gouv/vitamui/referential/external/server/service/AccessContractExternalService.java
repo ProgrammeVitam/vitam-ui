@@ -51,10 +51,14 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.internal.client.AccessContractInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.AccessContractInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -65,10 +69,13 @@ public class AccessContractExternalService extends AbstractResourceClientService
 
     private AccessContractInternalRestClient accessContractInternalRestClient;
 
+    private AccessContractInternalWebClient accessContractInternalWebClient;
+
     @Autowired
-    public AccessContractExternalService(ExternalSecurityService externalSecurityService, AccessContractInternalRestClient accessContractInternalRestClient) {
+    public AccessContractExternalService(ExternalSecurityService externalSecurityService, AccessContractInternalRestClient accessContractInternalRestClient, AccessContractInternalWebClient accessContractInternalWebClient) {
         super(externalSecurityService);
         this.accessContractInternalRestClient = accessContractInternalRestClient;
+        this.accessContractInternalWebClient = accessContractInternalWebClient;
     }
 
     public List<AccessContractDto> getAll(final Optional<String> criteria) {
@@ -120,5 +127,14 @@ public class AccessContractExternalService extends AbstractResourceClientService
 
     public boolean check(AccessContractDto accessContractDto) {
         return accessContractInternalRestClient.check(getInternalHttpContext(), accessContractDto);
+    }
+
+    public ResponseEntity<Void> importAccessContracts(MultipartFile file) {
+        return accessContractInternalWebClient.importAccessContracts(getInternalHttpContext(), file);
+    }
+
+
+    public ResponseEntity<Resource> exportAccessContracts() {
+        return accessContractInternalRestClient.exportAccessContracts(getInternalHttpContext());
     }
 }

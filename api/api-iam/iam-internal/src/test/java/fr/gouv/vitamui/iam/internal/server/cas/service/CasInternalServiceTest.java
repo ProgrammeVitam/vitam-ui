@@ -36,27 +36,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import fr.gouv.vitamui.commons.api.domain.GroupDto;
-import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
-import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
-import fr.gouv.vitamui.iam.internal.server.provisioning.service.ProvisioningInternalService;
-import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CasInternalServiceTest {
@@ -119,7 +98,7 @@ class CasInternalServiceTest {
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
 
-        when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(false);
+        when(userRepository.existsByEmailIgnoreCase(ArgumentMatchers.any())).thenReturn(false);
 
         when(userInternalService.findUserByEmail(USER_EMAIL))
                 .thenReturn(buildAuthUser(false));
@@ -152,7 +131,7 @@ class CasInternalServiceTest {
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
 
-        when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(true);
+        when(userRepository.existsByEmailIgnoreCase(ArgumentMatchers.any())).thenReturn(true);
         when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(true));
 
 
@@ -167,7 +146,7 @@ class CasInternalServiceTest {
         when(identityProviderInternalService.getOne(IDP))
                 .thenReturn(buildIDP(true));
 
-        when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(true);
+        when(userRepository.existsByEmailIgnoreCase(ArgumentMatchers.any())).thenReturn(true);
         when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(false));
 
         final UserDto user = casInternalService.getUser(USER_EMAIL, IDP, null, null);

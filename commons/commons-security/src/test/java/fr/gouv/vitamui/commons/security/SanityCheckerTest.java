@@ -303,6 +303,17 @@ public class SanityCheckerTest {
     }
 
     @Test
+    public void sanitizeJson_should_not_fail_with_keys_$gte_and_$lte_$orderBy()
+        throws FileNotFoundException, InvalidParseOperationException {
+        final String jsonWithGteAndLteKeys = "logbook_operations_with_gte_and_lte_keys.json";
+        final File file = PropertiesUtils.findFile(jsonWithGteAndLteKeys);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
+            doesNotThrowAnyException();
+    }
+
+    @Test
     public void sanitizeJson_should_not_fail_with_ingest_search_keys()
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithIngestComplexe_Keys = "ingest_search_complexe_key.json";
@@ -311,64 +322,6 @@ public class SanityCheckerTest {
         Assertions.assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).
             doesNotThrowAnyException();
-    }
-
-    @Test
-    public void test_isValidParameterName_with_html_code() {
-        assertFalse(SanityChecker.isValidParameter("<vitamui>aa<primary>"));
-    }
-
-    @Test
-    public void test_sanitizeCriteria_with_object_contains_xml_tag()
-        throws InvalidParseOperationException, PreconditionFailedException, IOException {
-        final String OBJECT_XML_TAG = "object_with_xml_tag.json";
-        final File file = PropertiesUtils.findFile(OBJECT_XML_TAG);
-        final JsonNode json = JsonHandler.getFromFile(file);
-        Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).
-            isInstanceOf(PreconditionFailedException.class);
-    }
-
-    @Test
-    public void test_checkHtmlPattern_with_html_text() {
-        assertThatCode(() -> SanityChecker.checkHtmlPattern("<div class=\"col-6 form-control\"> <p class=\"title-text\">bla bla bla</p></div>"))
-            .isInstanceOf(PreconditionFailedException.class)
-            .hasMessageContaining("the parameter :");
-    }
-
-    @Test
-    public void test_sanitizeCriteria_with_object_contains_html_tag()
-        throws InvalidParseOperationException, PreconditionFailedException, IOException {
-        final String OBJECT_HTML_TAG = "object_with_html_tag.json";
-        final File file = PropertiesUtils.findFile(OBJECT_HTML_TAG);
-        final JsonNode json = JsonHandler.getFromFile(file);
-        Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).
-            isInstanceOf(PreconditionFailedException.class);
-    }
-
-    @Test
-    public void test_checkHtmlPattern_with_correct_text() {
-        assertThatCode(() -> SanityChecker.checkHtmlPattern("test test good values"))
-            .doesNotThrowAnyException();
-    }
-
-    @Test
-    public void test_sanitizeCriteria_with_object_contains_correct_values()
-        throws InvalidParseOperationException, PreconditionFailedException, IOException {
-        final String OBJECT_WITH_CORRECT_VALUES = "object_with_correct_values.json";
-        final File file = PropertiesUtils.findFile(OBJECT_WITH_CORRECT_VALUES);
-        final JsonNode json = JsonHandler.getFromFile(file);
-        Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).
-            doesNotThrowAnyException();
-    }
-
-    @Test
-    public void test_checkJsonAll_with_null_object() {
-        assertThatCode(() -> SanityChecker.checkJsonAll((JsonNode) null)).
-            isInstanceOf(InvalidParseOperationException.class)
-            .hasMessage("Json is not valid from Sanitize check");
     }
 
 }

@@ -77,6 +77,11 @@ export class SecurityProfilePermissionsTabComponent {
   @Input()
   // tslint:disable-next-line:no-shadowed-variable
   set SecurityProfile(SecurityProfile: SecurityProfile) {
+
+    if (!SecurityProfile.permissions) {
+      SecurityProfile.permissions = [];
+    }
+
     this._SecurityProfile = SecurityProfile;
     this.resetForm(this.SecurityProfile);
   }
@@ -147,9 +152,9 @@ export class SecurityProfilePermissionsTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) =>
-        this.SecurityProfileService.patch(formData).pipe(catchError(() => of(null))),
-      ),
+      switchMap((formData: { id: string;[key: string]: any }) =>
+        this.SecurityProfileService.patch(formData).pipe(catchError(() => of(null)))
+      )
     );
   }
 

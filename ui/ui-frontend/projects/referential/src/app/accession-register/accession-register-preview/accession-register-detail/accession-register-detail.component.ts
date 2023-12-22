@@ -66,7 +66,7 @@ export class AccessionRegisterDetailComponent implements OnInit {
     this.showFullComment = !this.showFullComment;
   }
 
-  formatedComment() {
+  formatedComment(): string {
     if (!this.accessionRegisterDetail.comment || this.accessionRegisterDetail.comment.length < 1) {
       return '';
     }

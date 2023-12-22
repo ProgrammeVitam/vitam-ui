@@ -20,9 +20,22 @@
         "files": [
           "/assets/**",
           "!/assets/**/*.json",
+          "!/assets/logo_*.png",
           "/*.(eot|otf|svg|jpg|ttf|woff|woff2|ani)",
           "/*-bg.png"
         ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "assets",
+      "urls": ["/assets/**"],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "30m",
+        "strategy": "performance",
+        "timeout": "10s"
       }
     }
   ]

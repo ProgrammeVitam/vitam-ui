@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -139,5 +140,9 @@ export class UserService extends SearchService<User> {
 
   getLevelsNoEmpty(query?: SearchQuery): Observable<string[]> {
     return this.userApi.getLevels(query).pipe(map((levels) => levels.filter((l) => !!l)));
+  }
+
+  export(): Observable<HttpResponse<Blob>> {
+    return this.userApi.export();
   }
 }

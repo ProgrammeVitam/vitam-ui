@@ -34,21 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { FileFormat, FILE_FORMAT_EXTERNAL_PREFIX } from 'projects/vitamui-library/src/lib/models/file-format';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
+import {FileFormat, FILE_FORMAT_EXTERNAL_PREFIX} from 'projects/vitamui-library/src/lib/models/file-format';
+import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
 import { merge, Subject } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import {debounceTime, filter, takeUntil} from 'rxjs/operators';
 import {
   AdminUserProfile,
-  ApplicationId,
-  AuthService,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
   PageRequest,
-  Role,
+  StartupService,
   User,
   VitamUISnackBarService,
 } from 'ui-frontend-common';
@@ -81,11 +90,12 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   loaded = false;
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
+  vitamAdminTenant: number;
 
   private groups: Array<{ id: string; group: any }> = [];
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
+  private destroy$ = new Subject<void>();
 
   @Input()
   get connectedUserInfo(): AdminUserProfile {
@@ -101,21 +111,19 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
 
   constructor(
     public fileFormatService: FileFormatService,
-    private authService: AuthService,
     private matDialog: MatDialog,
     private snackBarService: VitamUISnackBarService,
+    private translateService: TranslateService,
+    private startupService: StartupService
   ) {
     super(fileFormatService);
-    this.genericUserRole = {
-      appId: ApplicationId.USERS_APP,
-      tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS],
-    };
   }
 
   ngOnInit() {
-    this.fileFormatService
-      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
+
+    this.vitamAdminTenant = +this.startupService.getConfigStringValue('VITAM_ADMIN_TENANT');
+
+    this.fileFormatService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe((data: FileFormat[]) => {
         this.dataSource = data;
       });
@@ -128,6 +136,8 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
+
+    this.replaceUpdatedFileFormat();
   }
 
   buildFileFormatCriteriaFromSearch() {
@@ -141,6 +151,8 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.updatedData.unsubscribe();
   }
 
@@ -164,7 +176,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   deleteFileFormatDialog(fileFormat: FileFormat) {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
 
-    dialog.componentInstance.objectType = 'format de fichier';
+    dialog.componentInstance.objectType = this.translateService.instant('FILE_FORMATS.HOME.FILE_FORMAT');
     dialog.componentInstance.objectName = fileFormat.puid;
 
     dialog
@@ -184,4 +196,16 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
         });
       });
   }
+
+  private replaceUpdatedFileFormat(): void {
+    this.fileFormatService.updated.pipe(takeUntil(this.destroy$)).subscribe(
+      (ffUpdated: FileFormat) => {
+        const index = this.dataSource.findIndex((item: FileFormat) => item.id === ffUpdated.id);
+        if (index !== -1) {
+          this.dataSource[index] = ffUpdated;
+        }
+      }
+    );
+  }
+
 }

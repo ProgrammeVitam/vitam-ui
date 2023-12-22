@@ -51,10 +51,14 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.internal.client.IngestContractInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.IngestContractInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -66,10 +70,13 @@ public class IngestContractExternalService extends AbstractResourceClientService
 
     private IngestContractInternalRestClient ingestContractInternalRestClient;
 
+    private IngestContractInternalWebClient ingestContractInternalWebClient;
+
     @Autowired
-    public IngestContractExternalService(ExternalSecurityService externalSecurityService, IngestContractInternalRestClient ingestContractInternalRestClient) {
+    public IngestContractExternalService(ExternalSecurityService externalSecurityService, IngestContractInternalRestClient ingestContractInternalRestClient, IngestContractInternalWebClient ingestContractInternalWebClient) {
         super(externalSecurityService);
         this.ingestContractInternalRestClient = ingestContractInternalRestClient;
+        this.ingestContractInternalWebClient = ingestContractInternalWebClient;
     }
 
     public List<IngestContractDto> getAll(final Optional<String> criteria) {
@@ -127,5 +134,13 @@ public class IngestContractExternalService extends AbstractResourceClientService
 
     public boolean check(IngestContractDto ingestContractDto) {
         return ingestContractInternalRestClient.check(getInternalHttpContext(), ingestContractDto);
+    }
+
+    public ResponseEntity<Void> importIngestContracts(MultipartFile file) {
+        return ingestContractInternalWebClient.importIngestContracts(getInternalHttpContext(), file);
+    }
+
+    public ResponseEntity<Resource> exportIngestContracts() {
+        return ingestContractInternalRestClient.exportIngestContracts(getInternalHttpContext());
     }
 }

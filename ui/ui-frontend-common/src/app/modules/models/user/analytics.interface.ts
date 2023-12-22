@@ -5,4 +5,5 @@ export interface Analytics {
   applications: ApplicationAnalytics[];
   lastTenantIdentifier: number;
   alerts: AlertAnalytics[];
+  lastHeaderExtraSelection: string;
 }

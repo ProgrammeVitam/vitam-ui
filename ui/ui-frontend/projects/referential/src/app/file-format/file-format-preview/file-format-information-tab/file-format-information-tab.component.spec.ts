@@ -34,16 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { FileFormat } from 'projects/vitamui-library/src/public-api';
-import { of } from 'rxjs';
-import { WINDOW_LOCATION } from 'ui-frontend-common';
-import { FileFormatService } from '../../file-format.service';
-import { FileFormatInformationTabComponent } from './file-format-information-tab.component';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {FileFormat} from 'projects/vitamui-library/src/public-api';
+import {of} from 'rxjs';
+import {WINDOW_LOCATION} from 'ui-frontend-common';
+import {FileFormatService} from '../../file-format.service';
+import {FileFormatInformationTabComponent} from './file-format-information-tab.component';
+import {TranslateModule} from '@ngx-translate/core';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 describe('FileFormatInformationTabComponent', () => {
   let component: FileFormatInformationTabComponent;
@@ -82,6 +84,7 @@ describe('FileFormatInformationTabComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [FileFormatInformationTabComponent],
       providers: [
         {
@@ -89,7 +92,6 @@ describe('FileFormatInformationTabComponent', () => {
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }) },
         },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        FormBuilder,
         { provide: FileFormatService, useValue: fileFormatServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -104,7 +106,8 @@ describe('FileFormatInformationTabComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', fakeAsync(() => {
+    tick();
     expect(component).toBeTruthy();
-  });
+  }));
 });

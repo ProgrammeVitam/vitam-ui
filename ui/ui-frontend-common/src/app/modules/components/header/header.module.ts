@@ -10,6 +10,7 @@ import { HeaderComponent } from './header.component';
 import { ItemSelectModule } from './item-select/item-select.module';
 import { MenuModule } from './menu/menu.module';
 import { SelectLanguageModule } from './select-language/select-language.module';
+import { SelectSiteModule } from './select-site/select-site.module';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
 import { UserPhotoModule } from './user-photo/user-photo.module';
 
@@ -28,6 +29,7 @@ import { UserPhotoModule } from './user-photo/user-photo.module';
     TranslateModule,
     SelectLanguageModule,
     UserAlertsMenuModule,
+    SelectSiteModule
   ],
   exports: [HeaderComponent],
 })

@@ -48,7 +48,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { PipesModule } from '../../shared/pipes/pipes.module';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
+
 
 @NgModule({
   declarations: [ProbativeValuePreviewComponent],
@@ -67,6 +69,7 @@ import { ProbativeValuePreviewComponent } from './probative-value-preview.compon
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
+    PipesModule
   ],
   exports: [ProbativeValuePreviewComponent],
 })

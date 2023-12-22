@@ -7,18 +7,18 @@
 
   <div *ngIf="userGroup">
     <div class="mb-3">
-      <p class="text normal spaced light mb-1">{{ 'USER.GROUP.GROUP' | translate }}</p>
-      <p class="text medium bold m-0">{{ userGroup?.name }}</p>
+        <p class="text normal spaced light mb-1">{{'USER.GROUP.GROUP' | translate}}</p>
+        <p class="text medium m-0">{{ userGroup?.name }}</p>
     </div>
 
     <div class="mb-3">
-      <p class="text normal spaced light mb-1">{{ 'USER.GROUP.LEVEL' | translate }}</p>
-      <p class="text medium bold m-0">{{ userGroup?.level }}</p>
+        <p class="text normal spaced light mb-1">{{'USER.GROUP.LEVEL' | translate}}</p>
+        <p class="text medium m-0">{{ userGroup?.level }}</p>
     </div>
 
     <div class="mb-3">
-      <p class="text normal spaced light mb-1">{{ 'USER.GROUP.DESCRIPTION' | translate }}</p>
-      <p class="text medium bold m-0">{{ userGroup?.description }}</p>
+        <p class="text normal spaced light mb-1">{{'USER.GROUP.DESCRIPTION' | translate}}</p>
+        <p class="text medium m-0">{{ userGroup?.description }}</p>
     </div>
   </div>
 

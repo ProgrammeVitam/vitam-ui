@@ -3,7 +3,7 @@
   --color-font: var(--vitamui-primary-font);
 
   .tooltip-custom {
-    display: inline-flex;
+    display: inline-block;
     padding: 4px;
     border: 1px solid var(--vitamui-primary);
     background-color: var(--color);
@@ -16,6 +16,7 @@
     left: 4px;
     bottom: 0px;
     max-width: 200px;
+    word-wrap: break-word;
 
     &:before {
       content: '';

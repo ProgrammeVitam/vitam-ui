@@ -38,7 +38,7 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
-import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,8 +53,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType.BINARYMASTER;
-import static fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType.DISSEMINATION;
+import static fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum.BINARYMASTER;
+import static fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum.DISSEMINATION;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
@@ -171,7 +171,7 @@ public class ProjectObjectGroupServiceTest {
     }
 
 
-    private VersionsDto newVersionsDto(String id, ObjectQualifierType type, Integer version, String filename) {
+    private VersionsDto newVersionsDto(String id, ObjectQualifierTypeEnum type, Integer version, String filename) {
         return new VersionsDto()
             .setId(id)
             .setFileInfoModel(newFileInfoModel(filename))

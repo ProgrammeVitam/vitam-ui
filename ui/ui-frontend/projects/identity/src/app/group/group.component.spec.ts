@@ -39,7 +39,7 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
+import {ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule, VitamUISnackBarService} from 'ui-frontend-common';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -49,6 +49,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupComponent } from './group.component';
+import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { GroupService } from './group.service';
 
 let component: GroupComponent;
 let fixture: ComponentFixture<GroupComponent>;
@@ -82,6 +85,7 @@ describe('GroupComponent', () => {
   beforeEach(waitForAsync(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -92,14 +96,26 @@ describe('GroupComponent', () => {
         InjectorModule,
         SearchBarModule,
         LoggerModule.forRoot(),
+        MatSnackBarModule,
+      
+      ],
+      declarations: [
+        GroupComponent,
+        GroupListStubComponent,
+        GroupPreviewStubComponent,
       ],
       declarations: [GroupComponent, GroupListStubComponent, GroupPreviewStubComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: ENVIRONMENT, useValue: environment },
-      ],
-    }).compileComponents();
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: DownloadSnackBarService, useValue: {} },
+        { provide: GroupService, useValue: {} }
+        
+      ]
+    })
+      .compileComponents();
   }));
 
   beforeEach(() => {

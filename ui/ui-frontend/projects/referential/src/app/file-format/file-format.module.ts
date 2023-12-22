@@ -34,22 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { SharedModule } from '../shared/shared.module';
-import { FileFormatCreateModule } from './file-format-create';
-import { FileFormatListComponent } from './file-format-list/file-format-list.component';
-import { FileFormatPreviewModule } from './file-format-preview/file-format-preview.module';
-import { FileFormatRoutingModule } from './file-format-routing.module';
-import { FileFormatComponent } from './file-format.component';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {RouterModule} from '@angular/router';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
+import {SharedModule} from '../shared/shared.module';
+import {FileFormatCreateModule} from './file-format-create';
+import {FileFormatListComponent} from './file-format-list/file-format-list.component';
+import {FileFormatPreviewModule} from './file-format-preview/file-format-preview.module';
+import {FileFormatRoutingModule} from './file-format-routing.module';
+import {FileFormatComponent} from './file-format.component';
+import {ImportDialogModule} from "../shared/import-dialog/import-dialog.module";
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import { FileFormatComponent } from './file-format.component';
     FileFormatRoutingModule,
     FileFormatCreateModule,
     FileFormatPreviewModule,
+    ImportDialogModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

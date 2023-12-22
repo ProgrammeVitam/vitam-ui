@@ -135,7 +135,7 @@ export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
   }
 
   handleFileInput(files: FileList) {
-    this.handleFile(files);
+    this.handleFileList(files);
   }
 
   onDragOver(inDropZone: boolean) {
@@ -146,7 +146,7 @@ export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
     this.hasDropZoneOver = inDropZone;
   }
 
-  onDropped(files: FileList) {
+  onDropped(files: File[]) {
     this.hasDropZoneOver = false;
     this.handleFile(files);
   }
@@ -155,10 +155,18 @@ export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
     return fileName.endsWith(CSV_EXTENSION);
   }
 
-  initializeFileToUpload(files: FileList) {
+  initializeFileToUpload(files: File[]) {
+    if (files) {
+      this.fileToUpload = files[0];
+
+      this.fileName = this.fileToUpload.name;
+      this.fileSize = this.fileToUpload.size;
+    }
+  }
+
+  initializeFileListToUpload(files: FileList) {
     if (files) {
       this.fileToUpload = files.item(0);
-
       this.fileName = this.fileToUpload.name;
       this.fileSize = this.fileToUpload.size;
     }
@@ -186,7 +194,7 @@ export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
     this.isAtrNotValid = false;
   }
 
-  handleFile(files: FileList) {
+  handleFile(files: File[]) {
     this.initializeParameters();
     this.initializeFileToUpload(files);
 
@@ -199,4 +207,19 @@ export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
       return;
     }
   }
+
+  handleFileList(files: FileList) {
+    this.initializeParameters();
+    this.initializeFileListToUpload(files);
+
+    const transformer = new BytesPipe(this.logger);
+    this.fileSizeString = transformer.transform(this.fileSize);
+
+    if (!this.checkFileExtension(this.fileName)) {
+      this.erroeMessage = this.translateService.instant('COLLECT.UPDATE_UNITS_METADATA.FILE_BAD_FORMAT');
+      this.hasError = true;
+      return;
+    }
+  }
+
 }

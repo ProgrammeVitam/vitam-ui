@@ -25,42 +25,84 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.vitamui-icon-ic40-flux:before {
-  content: "\e966";
-  color: #757575;
+.vitamui-icon-anomalie-2:before {
+  content: "\e975";
+}
+.vitamui-icon-customers-supervision:before {
+  content: "\e974";
+}
+.vitamui-icon-external-param-profil:before {
+  content: "\e973";
+}
+.vitamui-icon-reporting:before {
+  content: "\e96f";
+}
+.vitamui-icon-accession-register:before {
+  content: "\e970";
+}
+.vitamui-icon-logbook-management-operation:before {
+  content: "\e971";
+}
+.vitamui-icon-logbook-operations:before {
+  content: "\e972";
+}
+.vitamui-icon-rules:before {
+  content: "\e96d";
+}
+.vitamui-icon-security-profile:before {
+  content: "\e96e";
 }
 .vitamui-icon-ic40-flux-manuel:before {
   content: "\e964";
+  color: #757575;
+}
+.vitamui-icon-ic40-flux:before {
+  content: "\e966";
   color: #757575;
 }
 .vitamui-icon-ic40-flux-industriel:before {
   content: "\e965";
   color: #757575;
 }
+.vitamui-icon-agent:before {
+  content: "\e966";
+}
+.vitamui-icon-releve:before {
+  content: "\e967";
+}
+.vitamui-icon-dsl:before {
+  content: "\e968";
+}
+.vitamui-icon-operation:before {
+  content: "\e969";
+}
+.vitamui-icon-contrat:before {
+  content: "\e96a";
+}
+.vitamui-icon-securite:before {
+  content: "\e96b";
+  }
+.vitamui-icon-audit:before {
+  content: "\e96c";
+  }
 .vitamui-icon-trash:before {
   content: "\e963";
-  color: #474d4a;
-}
+  }
 .vitamui-icon-import-csv:before {
   content: "\e962";
-  color: #757575;
-}
+  }
 .vitamui-icon-icone-arbre:before {
   content: "\e961";
-  color: #616161;
-}
+  }
 .vitamui-icon-ic24-user-transfer:before {
   content: "\e95e";
-  color: #757575;
-}
+  }
 .vitamui-icon-ic24-limination:before {
   content: "\e95f";
-  color: #757575;
-}
+  }
 .vitamui-icon-ic24-prservation:before {
   content: "\e960";
-  color: #757575;
-}
+  }
 .vitamui-icon-filing-plan:before {
   content: "\ea77";
 }

@@ -34,16 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FileFormat, FILE_FORMAT_EXTERNAL_PREFIX } from 'projects/vitamui-library/src/public-api';
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
-import { FileFormatService } from '../file-format.service';
-import { FileFormatCreateValidators } from './file-format-create.validators';
-
-const PROGRESS_BAR_MULTIPLICATOR = 100;
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/public-api';
+import {Subscription} from 'rxjs';
+import {ConfirmDialogService} from 'ui-frontend-common';
+import {FileFormatService} from '../file-format.service';
+import {FileFormatCreateValidators} from './file-format-create.validators';
 
 @Component({
   selector: 'app-file-format-create',
@@ -52,19 +50,12 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 })
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  stepIndex = 0;
-  accessContractInfo: { code: string; name: string; companyName: string } = { code: '', name: '', companyName: '' };
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
   isCreationPending = false;
   isDisabledButton = false;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 1;
   private keyPressSubscription: Subscription;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
@@ -74,8 +65,8 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
-    private agencyService: FileFormatService,
-    private fileFormatCreateValidators: FileFormatCreateValidators,
+    private fileFormatService: FileFormatService,
+    private fileFormatCreateValidators: FileFormatCreateValidators
   ) {}
 
   ngOnInit() {
@@ -117,7 +108,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
 
     // Disable the submit button to prevent double submit
     this.isCreationPending = true;
-    this.agencyService.create(format).subscribe(
+    this.fileFormatService.create(format).subscribe(
       () => {
         this.isDisabledButton = false;
         this.dialogRef.close({ success: true });
@@ -127,9 +118,5 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
         console.error(error);
       },
     );
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 }

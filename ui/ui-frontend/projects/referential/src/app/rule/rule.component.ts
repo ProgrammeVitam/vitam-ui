@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { ApplicationId, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage } from 'ui-frontend-common';
-import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
-import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
-import { RuleCreateComponent } from './rule-create/rule-create.component';
-import { RuleListComponent } from './rule-list/rule-list.component';
-import { NULL_TYPE, RULE_TYPES } from './rules.constants';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {ApplicationId, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage} from 'ui-frontend-common';
+import {RuleCreateComponent} from './rule-create/rule-create.component';
+import {RuleListComponent} from './rule-list/rule-list.component';
+import {ImportDialogParam, ReferentialTypes} from "../shared/import-dialog/import-dialog-param.interface";
+import {FileTypes} from "../../../../vitamui-library/src/lib/models/file-types.enum";
+import {ImportDialogComponent} from "../shared/import-dialog/import-dialog.component";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-rules',
@@ -54,12 +54,10 @@ import { NULL_TYPE, RULE_TYPES } from './rules.constants';
 export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   @ViewChild(RuleListComponent, { static: true }) ruleListComponentListComponent: RuleListComponent;
 
-  search = '';
-  typeFilterForm: FormGroup;
+  search: string = '';
   filters: string;
   tenantId: number;
 
-  ruleTypes = NULL_TYPE.concat(RULE_TYPES);
 
   checkCreateRole = new Observable<boolean>();
   checkImportRole = new Observable<boolean>();
@@ -70,9 +68,9 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
+    private translateService: TranslateService,
     globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder,
-    private securityService: SecurityService,
+    private securityService: SecurityService
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -86,14 +84,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
       }
     });
 
-    this.typeFilterForm = this.formBuilder.group({
-      ruleTypes: null,
-    });
-
-    this.typeFilterForm.controls.ruleTypes.valueChanges.subscribe((value) => {
-      this.filters = value;
-      this.ruleListComponentListComponent.filters = this.filters;
-    });
   }
 
   openCreateRuleDialog() {
@@ -140,13 +130,25 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   }
 
   openRuleImportDialog() {
-    const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
+    const params: ImportDialogParam = {
+      title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
+      subtitle: this.translateService.instant('IMPORT_DIALOG.RULES_SUBTITLE'),
+      allowedFiles: [FileTypes.CSV],
+      referential: ReferentialTypes.RULE,
+      successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',
+      errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
+      iconMessage: 'vitamui-icon-rules',
+    };
+
+    this.dialog
+    .open(ImportDialogComponent, {
       panelClass: 'vitamui-modal',
-      data: Referential.RULE,
       disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.success) {
+      data: params,
+    })
+    .afterClosed()
+    .subscribe((result) => {
+      if (result?.successfulImport) {
         this.refreshList();
       }
     });

@@ -52,6 +52,8 @@ export class IngestContractNodeUpdateComponent implements OnInit {
   accessContractId: string;
   tenantIdentifier: number;
   selectNodesForm: FormGroup;
+
+  stepCount = 2;
   stepIndex = 0;
 
   hasError = true;
@@ -62,6 +64,7 @@ export class IngestContractNodeUpdateComponent implements OnInit {
 
   linkParentIdControl = new FormControl();
   checkParentIdControl = new FormControl();
+  checkParentLinkControl = new FormControl();
 
   constructor(
     public dialogRef: MatDialogRef<IngestContractNodeUpdateComponent>,
@@ -74,7 +77,7 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.selectNodesForm = this.formBuilder.group({
       linkParentId: [{ value: null, disabled: true }, Validators.required],
-      checkParentLink: ['AUTHORIZED', Validators.required],
+      checkParentLink: [null, Validators.required],
       checkParentId: [{ value: null, disabled: true }, Validators.required],
     });
   }
@@ -92,11 +95,20 @@ export class IngestContractNodeUpdateComponent implements OnInit {
       this.selectNodesForm.controls.checkParentId.setValue(value.included);
     });
 
+    this.checkParentLinkControl.valueChanges.subscribe((value) => {
+      this.selectNodesForm.controls.checkParentLink.setValue(value);
+    });
+
     this.linkParentIdControl.setValue(
       this.ingestContract.linkParentId ? { included: [this.ingestContract.linkParentId], excluded: [] } : { included: [], excluded: [] },
     );
+
     this.checkParentIdControl.setValue(
       this.ingestContract.checkParentId ? { included: this.ingestContract.checkParentId, excluded: [] } : { included: [], excluded: [] },
+    );
+
+    this.checkParentLinkControl.setValue(
+      this.ingestContract.checkParentLink ? this.ingestContract.checkParentLink : 'AUTHORIZED'
     );
   }
 
@@ -114,13 +126,9 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     };
 
     this.ingestContractService.patch(formData).subscribe(
-      () => {
-        this.dialogRef.close(true);
-      },
-      (error: any) => {
-        this.dialogRef.close(false);
-        console.error(error);
-      },
+      (updatedIngestContract) => {
+        this.dialogRef.close(updatedIngestContract);
+      }
     );
   }
 

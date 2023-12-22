@@ -73,35 +73,46 @@ export class OntologyService extends SearchService<Ontology> {
   }
 
   create(ontology: Ontology) {
-    return this.ontologyApiService.create(ontology, this.headers).pipe(
-      tap(
-        (response: Ontology) => {
-          this.snackBarService.open({
-            message: 'SNACKBAR.ONTOLOGY_CREATED',
-            translateParams: {
-              name: response.identifier,
-            },
-            icon: 'vitamui-icon-ontologie',
-          });
-        },
-        (error: any) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
-        },
-      ),
-    );
+    return this.ontologyApiService.create(ontology, this.headers)
+      .pipe(
+        tap(
+          () => {
+            this.snackBarService.open({
+              message: 'SNACKBAR.ONTOLOGY_CREATED',
+              icon: 'vitamui-icon-ontologie'
+            });
+          },
+          (error: any) => {
+            this.snackBarService.open({ message: error.error.message, translate: false });
+          }
+        )
+      );
   }
 
-  patch(data: { id: string; [key: string]: any }): Observable<Ontology> {
-    return this.ontologyApiService.patch(data).pipe(
-      tap((response) => this.updated.next(response)),
-      tap(
-        (response) => {
+  patch(data: { id: string, [key: string]: any }): Observable<Ontology> {
+    return this.ontologyApiService.patch(data)
+      .pipe(
+        tap((response) => this.updated.next(response)),
+        tap(
+          () => {
+            this.snackBarService.open({
+              message: 'SNACKBAR.ONTOLOGY_UPDATED',
+              icon: 'vitamui-icon-ontologie'
+            });
+          },
+          (error) => {
+            this.snackBarService.open({ message: error.error.message, translate: false });
+          }
+        )
+      );
+  }
+
+  delete(ontology: Ontology): Observable<any> {
+    return this.ontologyApiService.delete(ontology.id).pipe(
+      tap(() => {
           this.snackBarService.open({
-            message: 'SNACKBAR.ONTOLOGY_UPDATED',
-            translateParams: {
-              name: response.identifier,
-            },
-            icon: 'vitamui-icon-ontologie',
+            message: 'SNACKBAR.ONTOLOGY_DELETED',
+            icon: 'vitamui-icon-ontologie'
           });
         },
         (error) => {

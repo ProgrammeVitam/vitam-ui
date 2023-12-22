@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Observable, of} from 'rxjs';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
 import { diff, IngestContract } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
+import {extend, isEmpty} from 'underscore';
 
 import { IngestContractService } from '../../ingest-contract.service';
 
@@ -73,10 +73,8 @@ export class IngestContractHeritageTabComponent implements OnInit {
     return this._ingestContract;
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private ingestContractService: IngestContractService,
-  ) {}
+  constructor(private formBuilder: FormBuilder, private ingestContractService: IngestContractService) {
+  }
 
   ngOnInit() {
     const rule = this.ingestContract !== undefined ? this.ingestContract.computeInheritedRulesAtIngest : false;
@@ -109,7 +107,7 @@ export class IngestContractHeritageTabComponent implements OnInit {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
         this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
       ),
@@ -120,6 +118,6 @@ export class IngestContractHeritageTabComponent implements OnInit {
     if (this.form === undefined || ingestContract === undefined) {
       return;
     }
-    this.form.reset({ computeInheritedRulesAtIngest: ingestContract.computeInheritedRulesAtIngest }, { emitEvent: false });
+    this.form.reset({computeInheritedRulesAtIngest: ingestContract.computeInheritedRulesAtIngest}, {emitEvent: false});
   }
 }

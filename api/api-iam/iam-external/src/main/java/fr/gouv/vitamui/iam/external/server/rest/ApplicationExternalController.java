@@ -105,7 +105,7 @@ public class ApplicationExternalController implements CrudController<Application
 
     @GetMapping(path = "/{identifier:.+}/externalid")
     @ApiOperation(value = "Check if an application can have an external identifier")
-    public Boolean isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String identifier) {
+    public ResponseEntity<Boolean>  isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String identifier) {
         SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("isApplicationExternalIdentifierEnabled");
         return applicationService.isApplicationExternalIdentifierEnabled(identifier);

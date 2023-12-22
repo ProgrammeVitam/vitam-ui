@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.cas.web;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,18 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.DefaultCorsProcessor;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +35,10 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 public class CustomCorsProcessor extends DefaultCorsProcessor {
+
+    private static final String IDP_LOCATION_XPATH_EXPRESSION = "//*/SingleSignOnService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']/@Location";
+
+    private static final String IDP_ENTITY_XPATH_EXPRESSION = "//*/@entityID";
 
     // CUSTO:
     private final ProvidersService providersService;
@@ -40,7 +55,7 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
         HttpHeaders responseHeaders = response.getHeaders();
 
         // CUSTO:
-        if(ALLOWED_ORIGINS_WITHOUT_CREDENTIALS.contains(requestOrigin)) {
+        if (ALLOWED_ORIGINS_WITHOUT_CREDENTIALS.contains(requestOrigin)) {
             allowOrigin = requestOrigin;
         }
 
@@ -54,15 +69,12 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
                 val identityProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), clientName);
                 if (identityProvider.isPresent()) {
                     String providerUrl = null;
-                    val provider=  identityProvider.get();
+                    val provider = identityProvider.get();
                     // SAML?
                     val samlMetadata = provider.getIdpMetadata();
                     if (StringUtils.isNotBlank(samlMetadata)) {
-                        providerUrl = StringUtils.substringBetween(samlMetadata, "SingleSignOnService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST\" Location=\"", "\"");
-                        if (StringUtils.isBlank(providerUrl)) {
-                            providerUrl = StringUtils.substringBetween(samlMetadata, "entityID=\"", "\"");
-                        }
-                    // OIDC?
+                        providerUrl = getSamlProviderUrl(provider);
+                        // OIDC?
                     } else {
                         val discoveryUrl = provider.getDiscoveryUrl();
                         if (StringUtils.isNotBlank(discoveryUrl)) {
@@ -140,5 +152,31 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
     private List<String> getHeadersToUse(ServerHttpRequest request, boolean isPreFlight) {
         HttpHeaders headers = request.getHeaders();
         return (isPreFlight ? headers.getAccessControlRequestHeaders() : new ArrayList<>(headers.keySet()));
+    }
+
+    private String getSamlProviderUrl(IdentityProviderDto provider) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        try (StringReader samlMetadataCharacterStream = new StringReader(provider.getIdpMetadata());) {
+
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(new InputSource(samlMetadataCharacterStream));
+            XPathFactory xpathFactory = XPathFactory.newInstance();
+            XPath xpath = xpathFactory.newXPath();
+
+            var location = xpath.evaluate(IDP_LOCATION_XPATH_EXPRESSION, document);
+            if (StringUtils.isNotBlank(location)) {
+                return location;
+            }
+
+            var entityId = xpath.evaluate(IDP_ENTITY_XPATH_EXPRESSION, document);
+            if (StringUtils.isNotBlank(entityId)) {
+                return entityId;
+            }
+
+        } catch (IOException | ParserConfigurationException | SAXException | XPathExpressionException e) {
+            LOGGER.error("Error during IDP's URL extraction from IDP metadata of provider with Identifier: {}", provider.getIdentifier(), e);
+        }
+        return null;
     }
 }

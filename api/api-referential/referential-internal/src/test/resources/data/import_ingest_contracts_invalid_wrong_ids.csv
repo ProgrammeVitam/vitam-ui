@@ -1,0 +1,2 @@
+﻿Identifier;Name*;Description;Status;ArchiveProfiles;CheckParentLink;CheckParentId;LinkParentId;FormatUnidentifiedAuthorized;EveryFormatType;FormatType;ManagementContractId;ComputedInheritedRulesAtIngest;MasterMandatory;EveryDataObjectVersion;DataObjectVersion
+;Contrat entrée Full;Contrats d'entrée full;ACTIVE;PR_000001|PR_000003;REQUIRED;;aeaqaaaabie64k3vabq2qalo2ok7oeqaaaaq;false;;fmt/56|fmt/678|fmt/154;;false;;false;BinaryMaster|PhysicalMaster

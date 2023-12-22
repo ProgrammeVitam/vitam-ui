@@ -91,7 +91,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
       country: string;
     };
     siteCode: string;
-    centerCode: string;
+    centerCodes: string[];
     internalCode: string;
     autoProvisioningEnabled: boolean;
   };
@@ -131,7 +131,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         country: [null, Validators.required],
       }),
       siteCode: [null],
-      centerCode: [null],
+      centerCodes: [null],
       internalCode: [null],
       autoProvisioningEnabled: null,
     });

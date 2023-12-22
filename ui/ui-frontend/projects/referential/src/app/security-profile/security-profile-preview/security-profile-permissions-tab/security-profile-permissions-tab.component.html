@@ -1,10 +1,14 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div *ngIf="form.value.fullAccess">Tous les accès sont autorisés.</div>
+
+  <div class="mt-3" *ngIf="form.value.fullAccess">{{ 'SECURITY_PROFILE_APP.TAB.PERMISSIONS.ACCESS' | translate }}</div>
 
   <div *ngIf="!form.value.fullAccess">
-    <app-security-profile-edit-permission formControlName="permissions" [small]="true"></app-security-profile-edit-permission>
+    <app-security-profile-edit-permission formControlName="permissions"></app-security-profile-edit-permission>
   </div>
-  <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
+
+  <div class="actions mt-3">
+    <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited">
+      {{ 'COMMON.SAVE' | translate }}
+    </button>
   </div>
 </form>

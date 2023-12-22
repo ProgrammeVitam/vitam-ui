@@ -52,12 +52,15 @@ import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import io.swagger.annotations.Api;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -74,6 +77,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping(RestApi.V1_USERS_URL)
+@RequiredArgsConstructor
 @Getter
 @Setter
 @Api(tags = "users", value = "Users Management", description = "Users Management")
@@ -81,11 +85,18 @@ public class UserInternalController implements CrudController<UserDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInternalController.class);
 
-    private UserInternalService internalUserService;
+    private final  UserInternalService internalUserService;
 
-    @Autowired
-    public UserInternalController(final UserInternalService internalUserService) {
-        this.internalUserService = internalUserService;
+    private final ConnectionHistoryService connectionHistoryService;
+
+
+    @GetMapping(CommonConstants.PATH_EXPORT)
+    public ResponseEntity<Resource> exportUsers(@RequestParam(required = false) final Optional<String> criteria) {
+        LOGGER.debug("Export all users to xlsx file");
+
+        return ResponseEntity.ok()
+            .contentType(MediaType.valueOf(MediaType.APPLICATION_OCTET_STREAM_VALUE))
+            .body(internalUserService.exportUsers(criteria));
     }
 
     /**
@@ -219,5 +230,14 @@ public class UserInternalController implements CrudController<UserDto> {
     public UserDto patchAnalytics(@RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch analytics with {}", partialDto);
         return internalUserService.patchAnalytics(partialDto);
+    }
+
+    @GetMapping(CommonConstants.CONNECTION_HISTORY_EXPORT)
+    public ResponseEntity<Resource> exportUserConnectionHistory(final Optional<String> criteria) {
+        LOGGER.debug("Export all user history connection to xlsx file");
+
+        return ResponseEntity.ok()
+            .contentType(MediaType.valueOf(MediaType.APPLICATION_OCTET_STREAM_VALUE))
+            .body(connectionHistoryService.exportConnectionHistory(criteria));
     }
 }

@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -82,5 +83,12 @@ public class IngestContractInternalRestClient  extends BasePaginatingAndSortingR
         final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
             request, Boolean.class);
         return response.getStatusCode() == HttpStatus.OK;
+    }
+
+    public ResponseEntity<Resource> exportIngestContracts(final InternalHttpContext context) {
+        final ResponseEntity<Resource> response = restTemplate.exchange(
+            getUrl()  + RestApi.EXPORT_CSV, HttpMethod.GET, new HttpEntity<>(buildHeaders(context)), Resource.class);
+        checkResponse(response);
+        return response;
     }
 }

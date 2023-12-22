@@ -1,0 +1,66 @@
+{
+  "GATEWAY_ENABLED": false,
+  "REFERENTIAL_URL": "https://dev.vitamui.com:4202",
+  "VERSION_RELEASE": "6.4",
+  "PLATFORM_NAME": "VITAM-UI",
+  "INGEST_URL": null,
+  "PORTAL_TITLE": "Portail des applications de l'archivage",
+  "MAX_STREET_LENGTH": 250,
+  "THEME_COLORS": {
+    "vitamui-primary": "#702382",
+    "vitamui-secondary": "#2563A9",
+    "vitamui-tertiary": "#C22A40",
+    "vitamui-header-footer": "#ffffff",
+    "vitamui-background": "#F5F7FC"
+  },
+  "PORTAL_MESSAGE": "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toute sécurité et pour imprimer des étiquettes en quelques clics.",
+  "UI_URL": "https://dev.vitamui.com:4201",
+  "ARCHIVES_SEARCH_URL": null,
+  "PORTAL_URL": "https://dev.vitamui.com:4200",
+  "ALLOWED_URLS": ["/identity-api"],
+  "OIDC_CONFIG": {
+    "issuer": "https://dev.vitamui.com:8080/cas/oidc",
+    "redirectUri": "?",
+    "postLogoutRedirectUri": "https://dev.vitamui.com:4201",
+    "clientId": "identity",
+    "responseType": "code",
+    "scope": "openid",
+    "showDebugInformation": true
+  },
+  "PORTAL_LOGO": "logo_PORTAL.png",
+  "HEADER_LOGO": "logo_HEADER.png",
+  "FOOTER_LOGO": "logo_FOOTER.png",
+  "USER_LOGO": "logo_USER.png",
+  "CATEGORY_CONFIGURATION": [
+    {
+      "displayTitle": true,
+      "identifier": "ingest_and_consultation",
+      "title": "Versement & consultation",
+      "order": 1
+    },
+    {
+      "displayTitle": true,
+      "identifier": "referential",
+      "title": "Référentiels",
+      "order": 2
+    },
+    {
+      "displayTitle": true,
+      "identifier": "supervision_and_audits",
+      "title": "Supervision & Audits",
+      "order": 3
+    },
+    {
+      "displayTitle": true,
+      "identifier": "security_and_application_rights",
+      "title": "Sécurité & droits applicatifs",
+      "order": 4
+    },
+    {
+      "displayTitle": true,
+      "identifier": "organization_and_user_rights",
+      "title": "Organisation & droits utilisateurs",
+      "order": 5
+    }
+  ]
+}

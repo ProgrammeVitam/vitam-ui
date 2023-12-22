@@ -48,26 +48,14 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
+import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
-import fr.gouv.vitamui.referential.common.service.IngestContractService;
-import fr.gouv.vitamui.referential.common.service.OntologyService;
-import fr.gouv.vitamui.referential.common.service.OperationService;
-import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
-import fr.gouv.vitamui.referential.common.service.VitamArchivalProfileUnitService;
-import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
-import fr.gouv.vitamui.referential.common.service.VitamContextService;
-import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
-import fr.gouv.vitamui.referential.common.service.VitamProfileService;
-import fr.gouv.vitamui.referential.common.service.VitamRuleService;
-import fr.gouv.vitamui.referential.common.service.VitamSecurityProfileService;
-import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
-import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
+import fr.gouv.vitamui.referential.common.service.*;
 import fr.gouv.vitamui.referential.internal.server.security.WebSecurityConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -109,6 +97,11 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
         final InternalAuthentificationService internalAuthentificationService) {
         return new InternalApiAuthenticationProvider(internalAuthentificationService);
+    }
+
+    @Bean
+    public ApplicationInternalRestClient applicationInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getApplicationInternalRestClient();
     }
 
     @Bean

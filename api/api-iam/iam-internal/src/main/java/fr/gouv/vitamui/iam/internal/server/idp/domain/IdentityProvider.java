@@ -99,6 +99,8 @@ public class IdentityProvider extends CustomerIdDocument {
 
     private boolean autoProvisioningEnabled;
 
+    private boolean propagateLogout;
+
 
     // SAML provider data
     private String keystoreBase64;

@@ -34,14 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService, IngestContract } from 'ui-frontend-common';
-import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
+import {of} from 'rxjs';
+import {BASE_URL, ExternalParameters, ExternalParametersService, IngestContract, LoggerModule} from 'ui-frontend-common';
+import {IngestContractAttachmentTabComponent} from './ingest-contract-attachment-tab.component';
+import {TranslateModule} from '@ngx-translate/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('IngestContractAttachmentTabComponent', () => {
   let component: IngestContractAttachmentTabComponent;
@@ -85,17 +87,19 @@ describe('IngestContractAttachmentTabComponent', () => {
       getByDsl: () => of({}),
     };
 
-    TestBed.configureTestingModule({
-      declarations: [IngestContractAttachmentTabComponent],
-      imports: [MatSnackBarModule],
-      providers: [
-        { provide: MatDialog, useValue: {} },
-        { provide: SearchUnitApiService, useValue: unitValueMock },
-        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [IngestContractAttachmentTabComponent],
+        imports: [MatSnackBarModule, TranslateModule.forRoot(), HttpClientTestingModule, LoggerModule.forRoot()],
+        providers: [
+          { provide: BASE_URL, useValue: '/fake-api'},
+          {provide: MatDialog, useValue: {} },
+          { provide: SearchUnitApiService, useValue: unitValueMock },
+          { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractAttachmentTabComponent);

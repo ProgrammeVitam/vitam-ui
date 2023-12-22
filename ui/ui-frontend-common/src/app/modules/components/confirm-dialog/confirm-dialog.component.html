@@ -1,12 +1,15 @@
-<h2 *ngIf="dialogTitle" mat-dialog-title>{{ dialogTitle }}</h2>
+<div class="text medium light" *ngIf="dialogSubTitle">{{ dialogSubTitle }}</div>
+<div class="text large bold" *ngIf="dialogTitle">{{ dialogTitle }}</div>
 
-<mat-dialog-content><ng-content></ng-content></mat-dialog-content>
+<mat-dialog-content class="mt-4">
+  <ng-content></ng-content>
+</mat-dialog-content>
 
 <mat-dialog-actions>
   <button class="btn primary" [matDialogClose]="true" cdkFocusInitial>
     <ng-container>{{ confirmLabel ? confirmLabel : ('COMMON.CONFIRM' | translate) }}</ng-container>
   </button>
-  <button class="btn link" [matDialogClose]="false">
-    <ng-container>{{ cancelLabel ? cancelLabel : ('COMMON.BACK' | translate) }}</ng-container>
+  <button class="btn link cancel" [matDialogClose]="false">
+    <ng-container>{{ cancelLabel ? cancelLabel : 'COMMON.BACK' | translate }}</ng-container>
   </button>
 </mat-dialog-actions>

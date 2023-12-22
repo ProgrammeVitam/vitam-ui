@@ -224,7 +224,7 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         checkContainsAuthorizedKeys(query);
         final QueryDto securedQuery = QueryDto.andQuery();
         query.keyFilter(getAllowedKeys());
-        getRestrictedKeys().forEach(key -> addAccessRestrictionByKey(key, securedQuery));
+        getRestrictedKeys(query).forEach(key -> addAccessRestrictionByKey(key, securedQuery));
         securedQuery.addQuery(query);
         return securedQuery;
     }
@@ -328,6 +328,13 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      */
     protected Collection<String> getRestrictedKeys() {
         return Arrays.asList(CUSTOMER_ID_KEY);
+    }
+
+    /**
+     * Override for add and remove restriction, like customerId, tenantIdentifier etc.
+     */
+    protected Collection<String> getRestrictedKeys(final QueryDto criteria) {
+        return getRestrictedKeys();
     }
 
     /**

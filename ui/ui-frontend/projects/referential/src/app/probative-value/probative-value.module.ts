@@ -49,12 +49,19 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 
 import { SharedModule } from '../shared/shared.module';
 import { ProbativeValueCreateModule } from './probative-value-create/probative-value-create.module';
-import { ProbativeValueListModule } from './probative-value-list/probative-value-list.module';
 import { ProbativeValuePreviewModule } from './probative-value-preview/probative-value-preview.module';
 import { ProbativeValueRoutingModule } from './probative-value-routing.module';
 import { ProbativeValueComponent } from './probative-value.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { PipesModule } from '../shared/pipes/pipes.module';
+import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 
 @NgModule({
+  declarations: [ProbativeValueComponent, ProbativeValueListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -62,7 +69,6 @@ import { ProbativeValueComponent } from './probative-value.component';
     ReactiveFormsModule,
     VitamUICommonModule,
     ProbativeValueRoutingModule,
-    ProbativeValueListModule,
     ProbativeValueCreateModule,
     ProbativeValuePreviewModule,
     MatMenuModule,
@@ -73,7 +79,13 @@ import { ProbativeValueComponent } from './probative-value.component';
     MatDatepickerModule,
     MatSelectModule,
     SharedModule,
+    MatFormFieldModule,
+    MatInputModule,
+    PipesModule,
+    MatMomentDateModule
   ],
-  declarations: [ProbativeValueComponent],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }
+  ],
 })
 export class ProbativeValueModule {}

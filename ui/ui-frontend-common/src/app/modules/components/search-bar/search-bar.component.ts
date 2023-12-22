@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-search-bar',
@@ -62,12 +62,10 @@ export class SearchBarComponent implements OnInit {
 
   ngOnInit() {}
 
-  @HostListener('keydown.enter')
   onSearch() {
     this.search.emit(this.searchValue);
   }
 
-  @HostListener('keydown.escape')
   reset() {
     this.searchValue = null;
     this.clear.emit();

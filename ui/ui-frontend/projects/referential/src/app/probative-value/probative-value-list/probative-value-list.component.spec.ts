@@ -36,10 +36,10 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-
-import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValueListComponent } from './probative-value-list.component';
+import { ProbativeValueService } from '../probative-value.service';
 
 describe('ProbativeValueListComponent', () => {
   let component: ProbativeValueListComponent;
@@ -50,10 +50,14 @@ describe('ProbativeValueListComponent', () => {
       search: () => of(null),
     };
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [ProbativeValueListComponent],
-      providers: [{ provide: ProbativeValueService, useValue: probativeValueServiceMock }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+      providers: [
+        { provide: ProbativeValueService, useValue: probativeValueServiceMock }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
   }));
 
   beforeEach(() => {

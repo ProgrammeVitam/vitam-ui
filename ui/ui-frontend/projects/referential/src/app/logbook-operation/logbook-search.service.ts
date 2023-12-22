@@ -46,14 +46,14 @@ export class LogbookSearchService extends SearchService<Event> {
     super(logbookApi);
   }
 
-  static buildVitamQuery(pageRequest: PageRequest, criteria: any): VitamSelectQuery {
+  static buildVitamQuery(pageRequest: PageRequest, criteria: any, evDateTime?: -1 | 1): VitamSelectQuery {
     const baseParameters: Partial<VitamSelectQuery> = {
       $projection: {},
       $filter: {
         $limit: pageRequest.size,
         $offset: Math.max(0, pageRequest.page - 1) * pageRequest.size,
-        $orderby: { evDateTime: -1 },
-      },
+        $orderby: { evDateTime }
+      }
     };
 
     if (!criteria) {

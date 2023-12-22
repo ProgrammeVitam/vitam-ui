@@ -41,6 +41,7 @@ import fr.gouv.vitamui.iam.internal.server.tenant.converter.TenantConverter;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.junit.After;
@@ -158,12 +159,12 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
     @MockBean
     private ExternalParametersInternalService externalParametersInternalService;
 
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
+
     @Before
     public void setup() {
-        internalGroupService =
-            new GroupInternalService(new SequenceGeneratorService(sequenceRepository), groupRepository, customerRepository, internalProfileService,
-                userRepository,
-                internalSecurityService, repository, iamLogbookService, groupConverter, null);
+        internalGroupService = new GroupInternalService(new SequenceGeneratorService(sequenceRepository), groupRepository, customerRepository, internalProfileService, userRepository, internalSecurityService, repository, iamLogbookService, groupConverter, null, null);
 
         internalProfileService =
                 new ProfileInternalService(new SequenceGeneratorService(sequenceRepository), profileRepository, customerRepository, groupRepository, repository, userRepository,

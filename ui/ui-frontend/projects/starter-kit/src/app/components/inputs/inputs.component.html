@@ -14,7 +14,7 @@
       <div class="col-8">
         <vitamui-common-editable-input [formControl]="streetEmpty" [label]="'Editable input'"></vitamui-common-editable-input>
       </div>
-      <vitamui-common-editable-input [formControl]="streetDisable" [label]="'Editable input disabled'" [disabled]="true">
+      <vitamui-common-editable-input [disabled]="true" [formControl]="streetDisable" [label]="'Editable input disabled'">
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -133,7 +133,7 @@
           </mat-form-field>
         </div>
         <mat-form-field class="mr-3 field-domain vitamui-mat-select">
-          <mat-select [formControl]="country" panelClass="vitamui-mat-select" disabled>
+          <mat-select [formControl]="country" disabled panelClass="vitamui-mat-select">
             <mat-option *ngFor="let country of countries" [value]="country.key">
               {{ country.label }}
             </mat-option>
@@ -147,9 +147,9 @@
       <div class="row m-0 mt-4">
         <div class="col-8">
           <vitamui-common-editable-select [formControl]="country" [label]="'Editable select'">
-            <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
-            <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
-            <vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
+            <vitamui-common-editable-option content="Royaume Uni" value="GB"></vitamui-common-editable-option>
+            <vitamui-common-editable-option content="France" value="FR"></vitamui-common-editable-option>
+            <vitamui-common-editable-option content="Allemagne" value="DE"></vitamui-common-editable-option>
           </vitamui-common-editable-select>
         </div>
         <vitamui-common-editable-select [formControl]="country" [label]="'Editable select disabled'" [disabled]="true">
@@ -160,8 +160,7 @@
       </div>
     </div>
 
-    <h4>Auto complete</h4>
-
+    <h4>{{'INPUT.AUTOCOMPLETE' | translate}}</h4>
     <div class="d-flex justify-content-around">
       <vitamui-common-vitamui-autocomplete
         [options]="countries"
@@ -177,15 +176,36 @@
         </vitamui-common-input-error>
       </vitamui-common-vitamui-autocomplete>
 
-      <vitamui-common-vitamui-autocomplete
-        [options]="countries"
-        [formControl]="autoCompleteSelectDisabled"
-        [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
-        disable="true"
-      >
-      </vitamui-common-vitamui-autocomplete>
-    </div>
-    <h4>Textarea</h4>
+    <vitamui-common-vitamui-autocomplete
+      [options]="countries"
+      [formControl]="autoCompleteSelectDisabled"
+      [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+      disable="true"
+    >
+    </vitamui-common-vitamui-autocomplete>
+  </div>
+
+  <h4>{{'INPUT.AUTOCOMPLETE_MULTI_SELECT' | translate}}</h4>
+  <div class="d-flex justify-content-around">
+    <vitamui-common-autocomplete-multi-select
+      [formControl]="autoCompleteMultiSelect"
+      [multiSelectOptions]="multiSelectOptions"
+      [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+      [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
+      class="w-100"
+      required
+    >
+      <vitamui-common-input-error
+        *ngIf="autoCompleteMultiSelect.touched && autoCompleteMultiSelect.hasError('required')">{{
+        'COMMON.REQUIRED' | translate
+        }}</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="autoCompleteMultiSelect.touched && autoCompleteMultiSelect.hasError('match')">{{
+        'COMMON.INCORRECT_VALUE' | translate
+        }}</vitamui-common-input-error>
+    </vitamui-common-autocomplete-multi-select>
+  </div>
+
+  <h4>{{'INPUT.TEXTAREA' | translate}}</h4>
     <div class="d-flex flex-column">
       <div class="row m-0 mt-4">
         <div class="col-8">
@@ -202,7 +222,7 @@
       </div>
     </div>
 
-    <h4>Level</h4>
+    <h4>{{'INPUT.LEVEL' | translate}}</h4>
     <div class="d-flex flex-column">
       <div class="row m-0 mt-4 pl-3">
         <vitamui-common-level-input></vitamui-common-level-input>
@@ -219,29 +239,27 @@
     <div class="row m-0">
       <div class="col-12 mt-4">
         <vitamui-common-slide-toggle class="mr-3">Slide Toggle Off</vitamui-common-slide-toggle>
-        <vitamui-common-slide-toggle class="mr-3" [checked]="false" [disabled]="true"
-          >Slide Toggle Off disabled
-        </vitamui-common-slide-toggle>
-        <vitamui-common-slide-toggle class="mr-3" [checked]="true">Slide Toggle On</vitamui-common-slide-toggle>
-        <vitamui-common-slide-toggle class="mr-3" [checked]="true" [disabled]="true">Slide Toggle On disabled </vitamui-common-slide-toggle>
-      </div>
+        <vitamui-common-slide-toggle [checked]="false" [disabled]="true" class="mr-3">Slide Toggle Off disabled </vitamui-common-slide-toggle>
+      <vitamui-common-slide-toggle [checked]="true" class="mr-3">Slide Toggle On</vitamui-common-slide-toggle>
+        <vitamui-common-slide-toggle [checked]="true" [disabled]="true" class="mr-3">Slide Toggle On disabled </vitamui-common-slide-toggle>
     </div>
-    <h4>Toggle Group</h4>
-    <div class="d-flex flex-column">
-      <div class="row m-0 mt-4 pl-3">
-        <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group mr-4">
-          <mat-button-toggle [value]="'FIRST'">
-            <span>First</span>
-          </mat-button-toggle>
-          <mat-button-toggle [value]="'MIDDLE'">
-            <span>Middle</span>
-          </mat-button-toggle>
-          <mat-button-toggle [value]="'LAST'">
-            <span>Last</span>
-          </mat-button-toggle>
-        </mat-button-toggle-group>
+  </div>
+  <h4>Toggle Group</h4>
+  <div class="d-flex flex-column">
+    <div class="row m-0 mt-4 pl-3">
+      <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group mr-4">
+        <mat-button-toggle [value]="'FIRST'">
+          <span>First</span>
+        </mat-button-toggle>
+        <mat-button-toggle [value]="'MIDDLE'">
+          <span>Middle</span>
+        </mat-button-toggle>
+        <mat-button-toggle [value]="'LAST'">
+          <span>Last</span>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
 
-        <mat-button-toggle-group disabled [formControl]="control" class="vitamui-button-toggle-group disabled">
+        <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group disabled" disabled>
           <mat-button-toggle [value]="'FIRST'">
             <span>First</span>
           </mat-button-toggle>

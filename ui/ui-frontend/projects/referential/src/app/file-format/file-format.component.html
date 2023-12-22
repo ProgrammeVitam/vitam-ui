@@ -4,43 +4,23 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{'FILE_FORMATS.HOME.TITLE' | translate}}
+      </vitamui-common-title-breadcrumb>
 
-        <div class="vitamui-heading">
-          <vitamui-common-title-breadcrumb>
-            {{ 'APPLICATION.FILE_FORMATS_APP.TITLE' | translate }}
-          </vitamui-common-title-breadcrumb>
-        </div>
+      <vitamui-common-banner [searchbarPlaceholder]="'FILE_FORMATS.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+        <button class="btn primary ml-3 mr-3" (click)="openCreateFileFormatDialog()" [disabled]="!(hasCreateRole | async)">
+          <span>{{'FILE_FORMATS.HOME.CREATE_FILE_FORMATS' | translate}}</span>
+        </button>
 
-        <div class="controls">
-          <vitamui-common-search-bar
-            name="file-format-search"
-            (search)="onSearchSubmit($event)"
-            placeholder="Nom, PUID"
-            i18n-placeholder="@@fileFormatSearchPlaceholder"
-          ></vitamui-common-search-bar>
-
-          <div class="actions">
-            <button class="btn secondary" (click)="openCreateFileFormatDialog()" [disabled]="!(hasCreateRole | async)">
-              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i>
-              <span i18n="Create fileFormat button label@@fileFormatListCreateButton">Créer un format de fichier</span>
-            </button>
-            <button
-              class="btn more-actions"
-              (click)="openFileFormatImportDialog()"
-              i18n="Import fileFormat button label@@fileFormatListImportButton"
-              [disabled]="!(hasImportRole | async)"
-            >
-              Importer
-            </button>
-          </div>
-        </div>
-      </div>
+        <button class="btn secondary" (click)="openFileFormatImportDialog()" [disabled]="!(hasImportRole | async)">
+          <span>{{'FILE_FORMATS.HOME.IMPORT' | translate}}</span>
+        </button>
+      </vitamui-common-banner>
     </div>
 
-    <div class="vitamui-body vitamui-container">
+    <div class="vitamui-content">
       <app-file-format-list (fileFormatClick)="showFileFormat($event)" [search]="search"></app-file-format-list>
     </div>
   </mat-sidenav-content>

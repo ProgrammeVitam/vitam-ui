@@ -31,6 +31,41 @@
 </div>
 
 <div>
+  <h4>{{ 'ARRAY.BASIC_WITH_DOUBLE_LINES_TITLE' | translate }}</h4>
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-2">
+        <i class="vitamui-icon vitamui-icon-gestion-de-profil"></i>
+      </div>
+      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
+      <div class="col-2">{{ 'COMMON.ID' | translate }}</div>
+      <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
+      <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let profile of dataSource" (click)="handleClick(profile)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-2">
+            <i
+              class="vitamui-icon vitamui-icon-gestion-de-profil"
+              [ngClass]="profile?.enabled ? 'status-badge-green' : 'status-badge-grey'"
+            ></i>
+          </div>
+          <div class="col-3">
+            <div vitamuiCommonEllipsis>{{ profile.name }}</div>
+            <div vitamuiCommonEllipsis class="text normal light">{{ profile.name }}</div>
+          </div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ profile.identifier }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ profile.description }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ profile.level }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
   <h4>{{ 'ARRAY.FILTER_TITLE' | translate }}</h4>
   <div class="vitamui-table">
     <div class="vitamui-table-head">
@@ -146,11 +181,9 @@
                 <i class="vitamui-icon vitamui-icon-bank"></i>
                 <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@rotateAnimation]="row.state">keyboard_arrow_up</i>
               </div>
-              <div [style.display]="'contents'">
-                <div class="col-3" vitamuiCommonEllipsis>{{ customer?.name }}</div>
-                <div class="col-2" vitamuiCommonEllipsis>{{ customer?.identifier }}</div>
-                <div class="col-3" vitamuiCommonEllipsis>{{ customer?.description }}</div>
-              </div>
+              <div class="col-3" vitamuiCommonEllipsis>{{ customer?.name }}</div>
+              <div class="col-2" vitamuiCommonEllipsis>{{ customer?.identifier }}</div>
+              <div class="col-3" vitamuiCommonEllipsis>{{ customer?.description }}</div>
               <div class="col-2 actions">
                 <span vitamuiCommonEllipsis>{{ customer?.level }}</span>
                 <div>

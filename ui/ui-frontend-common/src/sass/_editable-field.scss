@@ -47,26 +47,13 @@ $anim-timing: 150ms ease-out;
   position: relative;
   max-width: 100%;
 
-  .editable-field-text-content {
-    margin-top: 15px;
-    width: 100%;
-    font-weight: 700;
-    line-height: 18px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-
-  .editable-field-control {
-    display: none;
-  }
-
-  .editable-field-control > input {
-    margin-top: 5px;
-    padding: 0px;
-
-    &:focus {
-      outline: none;
+    .editable-field-text-content {
+        margin-top: 15px;
+        width: 100%;
+        line-height: 18px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
   }
 

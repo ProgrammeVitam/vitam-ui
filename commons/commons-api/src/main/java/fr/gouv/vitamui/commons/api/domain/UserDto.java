@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.api.domain;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -121,7 +122,7 @@ public class UserDto extends CustomerIdDto {
 
     private OffsetDateTime removingDate;
 
-    private String centerCode;
+    private List<String> centerCodes;
 
     private boolean autoProvisioningEnabled;
 

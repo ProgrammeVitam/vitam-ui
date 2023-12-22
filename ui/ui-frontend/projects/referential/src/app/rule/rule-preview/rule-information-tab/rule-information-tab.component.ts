@@ -171,25 +171,4 @@ export class RuleInformationTabComponent implements OnInit {
     this.form.reset(rule, { emitEvent: false });
   }
 
-  getRuleTypeLabel(): string {
-    const formControl = this.form.get('ruleType');
-    if (formControl) {
-      const ruleType = this.ruleTypes.find((item) => item.key === formControl.value);
-      if (ruleType) {
-        return ruleType.label;
-      }
-    }
-    return '';
-  }
-
-  getRuleMeasurementLabel(): string {
-    const formControl = this.form.get('ruleMeasurement');
-    if (formControl) {
-      const ruleMeasurement = this.ruleMeasurements.find((item) => item.key === formControl.value);
-      if (ruleMeasurement) {
-        return ruleMeasurement.label;
-      }
-    }
-    return '';
-  }
 }

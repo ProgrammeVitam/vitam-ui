@@ -54,6 +54,8 @@ import { IngestContractService } from '../../ingest-contract.service';
 })
 export class IngestContractInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() updatedIngestContract: EventEmitter<IngestContract> = new EventEmitter<IngestContract>();
+  @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() tenantIdentifier: number;
 
   form: FormGroup;
@@ -78,6 +80,12 @@ export class IngestContractInformationTabComponent implements OnInit {
   set ingestContract(ingestContract: IngestContract) {
     if (!ingestContract.managementContractId) {
       ingestContract.managementContractId = '';
+    }
+    if (!ingestContract.name) {
+      ingestContract.name = '';
+    }
+    if (!ingestContract.description) {
+      ingestContract.description = '';
     }
     this._ingestContract = ingestContract;
     this.resetForm(this.ingestContract);
@@ -109,7 +117,7 @@ export class IngestContractInformationTabComponent implements OnInit {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       status: ['ACTIVE'],
-      name: [null, [], this.ingestContractCreateValidators.uniqueNameWhileEdit(this.previousValue)],
+      name: [null, Validators.required, this.ingestContractCreateValidators.uniqueNameWhileEdit(this.previousValue)],
       description: [null, Validators.required],
       archiveProfiles: [new Array<string>() /* Validators.required */],
       managementContractId: [null],
@@ -147,7 +155,7 @@ export class IngestContractInformationTabComponent implements OnInit {
   }
 
   isInvalid(): boolean {
-    return (
+    const isInvalid = (
       this.form.get('name').invalid ||
       this.form.get('name').pending ||
       this.form.get('description').invalid ||
@@ -157,13 +165,15 @@ export class IngestContractInformationTabComponent implements OnInit {
       this.form.get('archiveProfiles').invalid ||
       this.form.get('archiveProfiles').pending
     );
+    this.isFormValid.emit(!isInvalid);
+    return isInvalid;
   }
 
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => {
+      switchMap((formData: { id: string;[key: string]: any }) => {
         // Update the activation and deactivation dates if the contract status has changed before sending the data
         if (formData.status) {
           if (formData.status === 'ACTIVE') {
@@ -190,6 +200,7 @@ export class IngestContractInformationTabComponent implements OnInit {
         this.ingestContractService.get(this._ingestContract.identifier).subscribe((response) => {
           this.submited = false;
           this.ingestContract = response;
+          this.updatedIngestContract.emit(response);
         });
       },
       () => {

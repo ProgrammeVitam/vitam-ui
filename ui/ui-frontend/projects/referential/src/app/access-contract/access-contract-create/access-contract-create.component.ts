@@ -34,20 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import '@angular/localize/init';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilingPlanMode, Status } from 'projects/vitamui-library/src/public-api';
-import { Subscription } from 'rxjs';
-import { AccessContract, ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
+import {
+  AccessContract,
+  Agency,
+  ConfirmDialogService,
+  ExternalParameters,
+  ExternalParametersService,
+  Option,
+  VitamUISnackBarService,
+  VitamuiAutocompleteMultiselectOptions,
+} from 'ui-frontend-common';
 import { AgencyService } from '../../agency/agency.service';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 import { RULE_TYPES } from '../../rule/rules.constants';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
+import { map, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-access-contract-create',
@@ -59,40 +66,19 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   @Input() isSlaveMode: boolean;
 
   form: FormGroup;
-  stepIndex = 0;
-  hasCustomGraphicIdentity = false;
-  hasError = true;
-  message: string;
-
   FILLING_PLAN_MODE = FilingPlanMode;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 4;
-  private keyPressSubscription: Subscription;
+  stepIndex = 0;
+  stepCount = 4;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
-
-  constructor(
-    public dialogRef: MatDialogRef<AccessContractCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private accessContractCreateValidators: AccessContractCreateValidators,
-    private accessContractService: AccessContractService,
-    private agencyService: AgencyService,
-    private confirmDialogService: ConfirmDialogService,
-    private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar,
-  ) {}
+  private unsubscribe = new Subject();
 
   allNodes = new FormControl(false);
   ruleFilter = new FormControl(false);
   selectNodesControl = new FormControl({ included: [], excluded: [] });
   accessContractSelect = new FormControl(null, Validators.required);
 
-  originatingAgencies: Option[] = [];
+  originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions = { options: [] };
 
   isDisabledButton = false;
 
@@ -107,26 +93,44 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
   ];
 
+  constructor(
+    public dialogRef: MatDialogRef<AccessContractCreateComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private formBuilder: FormBuilder,
+    private accessContractCreateValidators: AccessContractCreateValidators,
+    private accessContractService: AccessContractService,
+    private agencyService: AgencyService,
+    private confirmDialogService: ConfirmDialogService,
+    private externalParameterService: ExternalParametersService,
+    private vitamUISnackBarService: VitamUISnackBarService
+  ) {}
+
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-        this.accessContractSelect.setValue(accessContratId);
-      } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
-          null,
-          {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          },
-        );
-      }
-    });
+    this.externalParameterService
+      .getUserExternalParameters()
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((parameters) => {
+        const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+        if (accessContractId && accessContractId.length > 0) {
+          this.accessContractSelect.setValue(accessContractId);
+        } else {
+          this.vitamUISnackBarService.open({
+            message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
+          });
+        }
+      });
 
     this.agencyService
       .getAll()
-      .subscribe((agencies) => (this.originatingAgencies = agencies.map((x) => ({ label: x.name, key: x.identifier }))));
+      .pipe(
+        map((agencies: Agency[]) => {
+          const options: Option[] = agencies.map((x) => ({ label: x.identifier + ' - ' + x.name, key: x.identifier }));
+          return { options };
+        })
+      )
+      .subscribe((options: VitamuiAutocompleteMultiselectOptions) => {
+        this.originatingAgenciesOptions = options;
+      });
 
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueIdentifier()],
@@ -136,10 +140,17 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       accessLog: [false],
       ruleCategoryToFilter: [new Array<string>(), Validators.required],
       /* <- step 2 -> */
-      everyOriginatingAgency: [true],
-      originatingAgencies: [null],
-      everyDataObjectVersion: [true],
-      dataObjectVersion: [new Array<string>()],
+      secondStep: this.formBuilder.group(
+        {
+          everyOriginatingAgency: [true],
+          originatingAgencies: [[]],
+          everyDataObjectVersion: [true],
+          dataObjectVersion: [new Array<string>()],
+        },
+        {
+          validators: [this.secondStepValidator()],
+        }
+      ),
       /* <- step 3 -> */
       writingPermission: [false],
       writingRestrictedDesc: [true],
@@ -159,22 +170,26 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+    this.confirmDialogService
+      .listenToEscapeKeyPress(this.dialogRef)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(() => this.onCancel());
   }
 
   ngOnDestroy() {
-    this.keyPressSubscription.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  onCancel() {
+  onCancel(): void {
     if (this.form.dirty) {
-      this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
+      this.confirmDialogService.confirmBeforeClosing(this.dialogRef, { subTitle: 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' });
     } else {
       this.dialogRef.close();
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.lastStepInvalid()) {
       this.isDisabledButton = true;
       return;
@@ -190,13 +205,13 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
         this.dialogRef.close(true);
       },
       (error) => {
-        this.dialogRef.close(false);
+        this.isDisabledButton = false;
         console.error(error);
       },
     );
   }
 
-  firstStepInvalid(): boolean {
+  public firstStepInvalid(): boolean {
     return (
       this.form.get('identifier').invalid ||
       this.form.get('identifier').pending ||
@@ -212,16 +227,19 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  secondStepInvalid(): boolean {
-    return (
-      (this.form.get('everyOriginatingAgency').value === false &&
-        (this.form.get('originatingAgencies').invalid || this.form.get('originatingAgencies').pending)) ||
-      (this.form.get('everyDataObjectVersion').value === false &&
-        (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending))
-    );
+  private secondStepValidator(): ValidatorFn {
+    return (form: FormGroup): ValidationErrors | null => {
+      if (form.get('everyOriginatingAgency').value == false && form.get('originatingAgencies').value.length == 0) {
+        return { originatingAgencies: true };
+      }
+      if (form.get('everyDataObjectVersion').value === false && form.get('dataObjectVersion').value.length == 0) {
+        return { dataObjectVersion: true };
+      }
+      return null;
+    };
   }
 
-  lastStepInvalid(): boolean {
+  public lastStepInvalid(): boolean {
     return (
       this.allNodes.invalid ||
       this.allNodes.pending ||
@@ -229,13 +247,13 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
-  }
-
   private mapToAccessContract(form: FormGroup): AccessContract {
     return {
       ...form.value,
+      everyOriginatingAgency: this.getControl(form, 'secondStep.everyOriginatingAgency').value,
+      originatingAgencies: this.getControl(form, 'secondStep.originatingAgencies').value,
+      everyDataObjectVersion: this.getControl(form, 'secondStep.everyDataObjectVersion').value,
+      dataObjectVersion: this.getControl(form, 'secondStep.dataObjectVersion').value,
       status: this.mapStatus(this.getControl(form, 'status').value),
       accessLog: this.mapStatus(this.getControl(form, 'accessLog').value),
     } as AccessContract;

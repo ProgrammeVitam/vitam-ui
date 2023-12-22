@@ -108,8 +108,13 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     this._groups = groupList;
   }
 
+  get isVitamEnabled(): boolean {
+    return this.startupService.isVitamEnabled();
+  }
+
   // tslint:disable-next-line:variable-name
   private _groups: Group[];
+
 
   constructor(
     private matDialog: MatDialog,

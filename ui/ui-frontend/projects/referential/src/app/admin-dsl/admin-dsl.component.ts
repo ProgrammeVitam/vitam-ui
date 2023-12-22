@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import '@angular/localize/init';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppRootComponent, DslQueryType, Option, VitamUISnackBarService } from 'ui-frontend-common';
 import { AccessContractService } from '../access-contract/access-contract.service';
@@ -49,22 +49,19 @@ import { AdminDslService } from './admin-dsl.service';
   templateUrl: './admin-dsl.component.html',
   styleUrls: ['./admin-dsl.component.scss'],
 })
-export class AdminDslComponent extends AppRootComponent implements OnInit {
+export class AdminDslComponent extends AppRootComponent {
   tenantId: number;
-
   form: FormGroup;
-
   accessContracts: Option[] = [];
   dslQueryTypeEnum = DslQueryType;
-  dslQueryFormatErrorMessage = $localize`:dsl query format error message@@dslQueryFormatErrorMessage:Format de la requête invalide`;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private adminDslService: AdminDslService,
     private snackBarService: VitamUISnackBarService,
     private accessContractService: AccessContractService,
     private formBuilder: FormBuilder,
+    private clipboard: Clipboard
   ) {
     super(route);
 
@@ -109,7 +106,7 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
         },
       );
     } catch (syntaxError) {
-      this.snackBarService.open({ message: this.dslQueryFormatErrorMessage, translate: false });
+      this.snackBarService.open({ message: 'SNACKBAR.INVALID_DSL_REQUEST_FORMAT' });
     }
   }
 
@@ -125,21 +122,12 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
     }
   }
 
-  copyToClipbord(element: HTMLTextAreaElement) {
-    element.select();
-    document.execCommand('copy');
-    element.setSelectionRange(0, 0);
+  copyToClipbord(value: string) {
+    this.clipboard.copy(value);
   }
 
   clear() {
     this.form.controls.response.reset();
-  }
-
-  ngOnInit() {}
-
-  changeTenant(tenantIdentifier: number) {
-    this.tenantId = tenantIdentifier;
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
   /**

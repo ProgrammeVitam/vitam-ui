@@ -64,6 +64,7 @@ export class ProbativeValueService extends SearchService<Event> {
         () => {
           this.snackBarService.open({
             message: 'SNACKBAR.PROBATIVE_VALUE_RUN',
+            icon: 'vitamui-icon-releve'
           });
         },
         (error) => {

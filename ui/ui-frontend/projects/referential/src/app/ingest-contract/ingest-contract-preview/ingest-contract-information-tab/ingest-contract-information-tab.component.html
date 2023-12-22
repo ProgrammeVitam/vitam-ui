@@ -1,143 +1,77 @@
-<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div class="row">
-    <div class="col-10 form-control">
-      <vitamui-common-slide-toggle [disabled]="isReadOnly" [formControl]="statusControl" i18n="status@@ingestContractPreviewLabelName">
-        Contrat actif
-      </vitamui-common-slide-toggle>
-    </div>
-  </div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <vitamui-common-slide-toggle [disabled]="isReadOnly" [formControl]="statusControl" class="w-100">
+    <span>{{ ('INGEST_CONTRACT.TAB.INFORMATION.' + (statusControl.value ? 'ACTIVE_CONTRACT' : 'INACTIVE_CONTRACT')) | translate }}</span>
+  </vitamui-common-slide-toggle>
 
-  <div class="row">
-    <div class="col-10 form-control">
-      <vitamui-library-input formControlName="name" placeholder="Nom" i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
-        <ng-container *ngIf="form.get('name')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
-            >{{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists" i18n="Name exists error hint@@formErrorNameExists"
-            >Nom déjà utilisé</vitamui-common-input-error
-          >
-        </ng-container>
-      </vitamui-library-input>
-    </div>
+  <vitamui-common-input formControlName="name" placeholder="{{ 'COMMON.NAME' | translate }}" class="w-100" required>
+    <ng-container *ngIf="form.get('name')?.touched">
+      <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{ 'COMMON.REQUIRED' | translate }}
+      </vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
+        {{ 'COMMON.NAME_ALREADY_EXISTS'| translate  }}
+      </vitamui-common-input-error>
+    </ng-container>
+  </vitamui-common-input>
 
-    <div class="col-10 form-control">
-      <vitamui-common-textarea
-        formControlName="description"
-        placeholder="Description"
-        i18n-placeholder="description@@ingestContractPreviewLabelName"
-        [rows]="3"
-      >
-        <ng-container *ngIf="form.get('description')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required"
-            >{{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-textarea>
-    </div>
-  </div>
+  <vitamui-common-textarea formControlName="description" placeholder="{{ 'COMMON.DESCRIPTION' | translate }}"
+    required>
+    <vitamui-common-input-error *ngIf="form.get('description')?.touched && !!form.get('description')?.errors?.required">
+      {{ 'COMMON.REQUIRED' | translate }}
+    </vitamui-common-input-error>
+  </vitamui-common-textarea>
 
-  <div class="row">
-    <div class="col-10 form-control">
-      <mat-form-field class="vitamui-mat-select">
-        <mat-select
-          formControlName="archiveProfiles"
-          placeholder="Profil d'archivage"
-          i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
-          panelclass="vitamui-mat-select"
-          multiple
-        >
-          <mat-option *ngFor="let profiles of archiveProfiles" [value]="profiles.identifier">{{ profiles.name }}</mat-option>
-        </mat-select>
-        <div class="select-arrow">
-          <i class="material-icons">keyboard_arrow_up</i>
-          <i class="material-icons">keyboard_arrow_down</i>
-        </div>
-      </mat-form-field>
+  <mat-form-field class="vitamui-mat-select w-100 mt-3 p-0">
+    <mat-select formControlName="archiveProfiles"
+      placeholder="{{'INGEST_CONTRACT.TAB.INFORMATION.ARCHIVE_PROFILE' | translate }}" panelclass="vitamui-mat-select"
+      multiple>
+      <mat-option *ngFor="let profiles of archiveProfiles" [value]="profiles.identifier">{{ profiles.name }}
+      </mat-option>
+    </mat-select>
+    <div class="select-arrow">
+      <i class="material-icons">keyboard_arrow_up</i>
+      <i class="material-icons">keyboard_arrow_down</i>
     </div>
+  </mat-form-field>
 
     <div class="col-10 form-control">
       <mat-form-field class="vitamui-mat-select">
         <mat-select
           formControlName="managementContractId"
-          placeholder="Contrat de gestion"
-          i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
+          placeholder="{{'INGEST_CONTRACT.TAB.INFORMATION.MANAGEMENT_CONTRACT' | translate }}"
           panelclass="vitamui-mat-select"
         >
           <mat-option [value]="null"> {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.SELECT_MANAGEMENT_CONTRACT' | translate }}</mat-option>
           <mat-option *ngFor="let managementContract of managementContracts" [value]="managementContract.identifier">{{
             managementContract.name
           }}</mat-option>
-        </mat-select>
-        <div class="select-arrow">
-          <i class="material-icons">keyboard_arrow_up</i>
-          <i class="material-icons">keyboard_arrow_down</i>
-        </div>
-      </mat-form-field>
+    </mat-select>
+    <div class="select-arrow">
+      <i class="material-icons">keyboard_arrow_up</i>
+      <i class="material-icons">keyboard_arrow_down</i>
     </div>
-  </div>
+  </mat-form-field>
 
-  <div class="row">
-    <div class="col-10 form-control">
-      <vitamui-library-input
-        placeholder="Date de création"
-        i18n-placeholder="creationDate@@ingestContractPreviewLabelCreationDate"
-        [value]="ingestContract?.creationDate | dateTime: 'dd/MM/yyyy'"
-        disabled
-      >
-      </vitamui-library-input>
-    </div>
+  <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
+    <input placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate }}"
+    [value]="ingestContract.creationDate ? (ingestContract.creationDate  | dateTime: 'dd/MM/yyyy') : '-'" disabled matInput  />
+  </mat-form-field>
 
-    <div class="col-10 form-control">
-      <vitamui-library-input
-        placeholder="Date de derniere modification"
-        i18n-placeholder="lastUpdate@@ingestContractPreviewLabelLastUpdate"
-        [value]="ingestContract?.lastUpdate | dateTime: 'dd/MM/yyyy'"
-        disabled
-      >
-      </vitamui-library-input>
-    </div>
+  <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
+    <input placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate }}"
+    [value]="ingestContract.lastUpdate ? (ingestContract.lastUpdate  | dateTime: 'dd/MM/yyyy') : '-'" disabled matInput  />
+  </mat-form-field>
 
-    <div class="col-10 form-control">
-      <vitamui-library-input
-        placeholder="Date d'activation"
-        *ngIf="ingestContract?.status === 'ACTIVE' && ingestContract?.activationDate"
-        i18n-placeholder="activationDate@@ingestContractPreviewLabelActivationDate"
-        [value]="ingestContract?.activationDate | dateTime: 'dd/MM/yyyy'"
-        disabled
-      >
-      </vitamui-library-input>
-      <vitamui-library-input
-        placeholder="Date d'activation"
-        *ngIf="ingestContract?.status !== 'ACTIVE' || !ingestContract?.activationDate"
-        i18n-placeholder="activationDate@@ingestContractPreviewLabelActivationDate"
-        [value]=""
-        disabled
-      >
-      </vitamui-library-input>
-    </div>
+  <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
+    <input placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate }}"
+    [value]="ingestContract?.status === 'ACTIVE' && ingestContract?.activationDate ? (ingestContract.activationDate | dateTime: 'dd/MM/yyyy') : '-'" disabled matInput  />
+  </mat-form-field>
 
-    <div class="col-10 form-control">
-      <vitamui-library-input
-        placeholder="Date de désactivation"
-        *ngIf="ingestContract?.deactivationDate"
-        i18n-placeholder="deactivationDate@@ingestContractPreviewLabelDeactivationDate"
-        [value]="ingestContract?.deactivationDate | dateTime: 'dd/MM/yyyy'"
-        disabled
-      >
-      </vitamui-library-input>
-      <vitamui-library-input
-        placeholder="Date de désactivation"
-        *ngIf="!ingestContract?.deactivationDate"
-        i18n-placeholder="deactivationDate@@ingestContractPreviewLabelDeactivationDate"
-        [value]=""
-        disabled
-      >
-      </vitamui-library-input>
-    </div>
-  </div>
+  <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
+    <input placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate }}"
+    [value]="ingestContract?.deactivationDate ? (ingestContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'" disabled matInput  />
+  </mat-form-field>
 
-  <div class="row bottom">
-    <button type="submit" class="btn secondary my-3" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
-  </div>
+  <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unchanged() || submited">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
 </form>

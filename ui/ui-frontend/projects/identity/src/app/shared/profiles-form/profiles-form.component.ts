@@ -136,6 +136,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
       )
       .subscribe((profiles) => {
         this.profiles = profiles;
+        this.profileIds = this.filterProfileIds(this.profileIds, this.profiles, this.applicationsDetails);
         this.profileIds = this.profileIds.sort(byApplicationName(this.profiles, this.applicationsDetails));
         this.updateApplicationTree();
         this.loading = false;
@@ -207,6 +208,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
         return !foundProfile;
       })
       .filter((profile) => !this.profileIds.includes(profile.id))
+      .filter((profile) => this.applicationsDetails.some((app) => app.identifier === profile.applicationName))
       .forEach((profile) => {
         const application = this.applications.find((a) => a.key === profile.applicationName);
         if (application) {
@@ -247,10 +249,8 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
 
   private buildApplicationOption(profile: Profile): OptionTree {
     const application = this.applicationsDetails.find((app) => app.identifier === profile.applicationName);
-    let appLabel = '';
-    if (application) {
-      appLabel = this.applicationsDetails.find((app) => app.identifier === application.identifier).name;
-    }
+    let appLabel =  this.applicationsDetails.find((app) => app.identifier === application.identifier).name;
+
 
     return {
       key: profile.applicationName,
@@ -294,6 +294,13 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
 
   resetTree() {
     this.appSelect.setValue(null);
+  }
+
+  private filterProfileIds(profileIds: string[], profiles: Profile[], applicationsDetails: Application[]): string[] {
+    return profiles
+      .filter((profile) => applicationsDetails.some((app) => app.identifier === profile.applicationName))
+      .map((profile) => profile.id)
+      .filter((profileIdentifier) => profileIds.includes(profileIdentifier));
   }
 }
 

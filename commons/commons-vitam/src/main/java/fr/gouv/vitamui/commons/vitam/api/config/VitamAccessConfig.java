@@ -43,8 +43,10 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.access.ObjectService;
 import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.util.AccessExternalClientEmptyMock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class VitamAccessConfig extends VitamClientConfig {
@@ -65,8 +67,15 @@ public class VitamAccessConfig extends VitamClientConfig {
     }
 
     @Bean
+    @Profile("!vitam-mock")
     public LogbookService getLogbookService() {
         return new LogbookService(accessExternalClient(), ingestExternalClient(), adminExternalClient());
+    }
+
+    @Bean
+    @Profile("vitam-mock")
+    public LogbookService getLogbookServiceClientMock() {
+        return new LogbookService(new AccessExternalClientEmptyMock(), ingestExternalClient(), adminExternalClient());
     }
 
     @Bean

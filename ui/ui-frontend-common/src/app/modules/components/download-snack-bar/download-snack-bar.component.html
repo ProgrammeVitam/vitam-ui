@@ -7,7 +7,9 @@
         {{ notDownloadable | i18nPlural: downloadCountOverTotalMap | translate: { total: total, count: notDownloadable } }}
       </ng-container>
     </div>
-    <div *ngIf="!isCompressed" class="download-label">{{ 'DOWNLOAD.FILE_TRANSFER' | translate }} : {{ progressionValue | percent }}</div>
+    <div *ngIf="!isCompressed" class="download-label">
+      {{'DOWNLOAD.DOWNLOAD_FILE' | translate}} : {{progressionValue | percent}}
+    </div>
     <div *ngIf="progressionValue; else interdeterminateProgress" class="download-progress-bar-container">
       <mat-progress-bar class="download-progress-bar" mode="determinate" [value]="progressionInPercentage"></mat-progress-bar>
     </div>

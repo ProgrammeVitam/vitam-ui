@@ -11,10 +11,26 @@
     margin: 2px;
   }
 
-  .mat-checkbox-checkmark-path {
-    stroke: var(--vitamui-grey-300) !important;
-    stroke-width: 5px;
-  }
+    &.mat-checkbox-checked .mat-checkbox-background,
+    .mat-checkbox-background {
+        background: transparent;
+        margin: 2px;
+    }
+
+    &.mat-checkbox-indeterminate .mat-checkbox-background{
+      clip-path: polygon(0 100%, 100% 100%, 100% 0);
+      padding: 30%;
+    }
+
+    .mat-checkbox-checkmark-path {
+        stroke: var(--vitamui-grey-300) !important;
+        stroke-width: 5px;
+    }
+
+    span{
+        font-size:14px;
+        color:var(--vitamui-grey-900);
+    }
 
   span {
     font-size: 14px;

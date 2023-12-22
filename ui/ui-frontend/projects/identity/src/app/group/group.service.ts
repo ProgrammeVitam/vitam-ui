@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpParams } from '@angular/common/http';
+import { HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -142,5 +142,9 @@ export class GroupService extends SearchService<Group> {
 
   getNonEmptyLevels(query: SearchQuery) {
     return this.groupApi.getLevels(query).pipe(map((levels) => levels.filter((l) => !!l)));
+  }
+
+  export(): Observable<HttpResponse<Blob>> {
+    return this.groupApi.export();
   }
 }

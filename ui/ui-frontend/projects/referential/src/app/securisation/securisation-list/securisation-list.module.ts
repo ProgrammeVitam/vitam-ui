@@ -34,16 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
+import { PipesModule } from '../../shared/pipes/pipes.module';
+
+import {SecurisationListComponent} from './securisation-list.component';
 
 import { SecurisationListComponent } from './securisation-list.component';
 
 @NgModule({
   declarations: [SecurisationListComponent],
-  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule],
-  exports: [SecurisationListComponent],
+  imports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    VitamUICommonModule,
+    PipesModule,
+    TableFilterModule
+  ],
+  exports: [
+    SecurisationListComponent
+  ]
 })
 export class SecurisationListModule {}

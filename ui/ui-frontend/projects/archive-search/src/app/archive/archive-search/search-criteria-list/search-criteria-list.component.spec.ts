@@ -42,13 +42,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import {
-  CriteriaDataType,
-  CriteriaOperator,
-  InjectorModule,
-  LoggerModule,
-  SearchCriteriaEltements,
-  SearchCriteriaHistory,
+import {  CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule , SearchCriteriaEltements, SearchCriteriaHistory
 } from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';

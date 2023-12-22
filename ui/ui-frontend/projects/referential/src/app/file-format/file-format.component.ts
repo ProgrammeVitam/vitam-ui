@@ -38,13 +38,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
-import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'ui-frontend-common';
-import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
-import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
-import { FileFormatCreateComponent } from './file-format-create/file-format-create.component';
-import { FileFormatListComponent } from './file-format-list/file-format-list.component';
-import { Observable, Subscription } from 'rxjs';
+import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
+import {ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage} from 'ui-frontend-common';
+import {FileFormatCreateComponent} from './file-format-create/file-format-create.component';
+import {FileFormatListComponent} from './file-format-list/file-format-list.component';
+import {Observable, Subscription} from 'rxjs';
+import {ImportDialogParam, ReferentialTypes} from "../shared/import-dialog/import-dialog-param.interface";
+import {FileTypes} from "../../../../vitamui-library/src/lib/models/file-types.enum";
+import {ImportDialogComponent} from "../shared/import-dialog/import-dialog.component";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-file-format',
@@ -64,7 +66,8 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
     public dialog: MatDialog,
     private route: ActivatedRoute,
     globalEventService: GlobalEventService,
-    private securityService: SecurityService,
+    private translateService: TranslateService,
+    private securityService: SecurityService
   ) {
     super(route, globalEventService);
   }
@@ -115,15 +118,28 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   }
 
   openFileFormatImportDialog() {
-    const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
+    const params: ImportDialogParam = {
+      title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
+      subtitle: this.translateService.instant('IMPORT_DIALOG.FILE_FORMAT_SUBTITLE'),
+      allowedFiles: [FileTypes.XML],
+      referential: ReferentialTypes.FILE_FORMAT,
+      successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',
+      errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
+      iconMessage: 'vitamui-icon-fichiers',
+    };
+
+    this.dialog
+    .open(ImportDialogComponent, {
       panelClass: 'vitamui-modal',
-      data: Referential.FILE_FORMAT,
       disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.success) {
+      data: params,
+    })
+    .afterClosed()
+    .subscribe((result) => {
+      if (result?.successfulImport) {
         this.refreshList();
       }
     });
   }
+
 }

@@ -1,23 +1,14 @@
-<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div class="row">
-    <div class="col-10 form-control">
-      <div class="form-group">
-        <vitamui-common-slide-toggle formControlName="writingPermission">Droits d'écriture </vitamui-common-slide-toggle>
-      </div>
-    </div>
-  </div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <vitamui-common-slide-toggle class="w-100" formControlName="writingPermission">
+        <span>{{'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.WRITE_RIGHT' | translate}}</span>
+    </vitamui-common-slide-toggle>
 
-  <div class="row">
-    <div class="col-10 form-control">
-      <div class="form-group" *ngIf="form.controls.writingPermission.value === true">
-        <vitamui-common-slide-toggle formControlName="writingRestrictedDesc"
-          >Restriction de modification aux métadonnées de description</vitamui-common-slide-toggle
-        >
-      </div>
-    </div>
-  </div>
+    <vitamui-common-slide-toggle class="w-100 p-0" *ngIf="!!form.controls.writingPermission.value"
+        formControlName="writingRestrictedDesc">
+        <span>{{'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.WRITING_RESTRICTION' | translate}}</span>
+    </vitamui-common-slide-toggle>
 
-  <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="unchanged() || submited">Enregistrer</button>
-  </div>
+    <button type="submit" class="btn primary mt-4" [disabled]="unChanged() || submited">
+        {{'COMMON.SAVE' | translate}}
+    </button>
 </form>

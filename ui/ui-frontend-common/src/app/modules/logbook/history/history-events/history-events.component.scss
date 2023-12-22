@@ -4,19 +4,25 @@
   padding-left: 12px;
   font-size: 12px;
 
-  &.event-error {
-    .history-event-date,
-    .history-event-outcome,
-    .history-event-type {
-      color: #ea0101;
+    &.event-error {
+        .history-event-date,
+        .history-event-outcome,
+        .history-event-title,
+        .history-event-outmessage,
+        .history-event-details {
+            color: #EA0101;
+        }
     }
   }
 
-  &.event-warning {
-    .history-event-date,
-    .history-event-outcome,
-    .history-event-type {
-      color: #ffa610;
+    &.event-warning {
+        .history-event-date,
+        .history-event-outcome,
+        .history-event-title,
+        .history-event-outmessage,
+        .history-event-details {
+            color: #FFA610;
+        }
     }
   }
 
@@ -65,9 +71,17 @@
     border-width: 1px 0 0 1px;
   }
 
-  &:last-child::before {
-    border-width: 0 0 0 0;
-  }
+    &::before {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 9px;
+        width: 0px;
+        height: 100%;
+        border-color: var(--vitamui-grey-400);
+        border-style: solid;
+        border-width: 1px 0 0 1px;
+    }
 
   &:after {
     content: '';

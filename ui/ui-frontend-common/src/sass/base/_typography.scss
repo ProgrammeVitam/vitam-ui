@@ -3,8 +3,8 @@ h2,
 h3,
 h4,
 h5 {
-  color: var(--vitamui-grey-900);
-  margin: 10px 0;
+    color: var(--vitamui-grey-900);
+    margin: 10px 0;
 
   @include text-colors;
 }
@@ -15,23 +15,23 @@ h1 {
 }
 
 h2 {
-  font-size: 60px;
-  font-weight: 900;
+    font-size: 60px;
+    font-weight: 900;
 }
 
 h3 {
-  font-size: 42px;
-  font-weight: 800;
+    font-size: 42px;
+    font-weight: 800;
 }
 
 h4 {
-  font-size: 30px;
-  font-weight: 600;
+    font-size: 30px;
+    font-weight: 600;
 }
 
 h5 {
-  font-size: 24px;
-  font-weight: 800;
+    font-size: 24px;
+    font-weight: 800;
 }
 
 .text {
@@ -68,17 +68,23 @@ h5 {
     letter-spacing: 0.8px;
   }
 
-  &.uppercase {
-    text-transform: uppercase;
-  }
+    &.uppercase {
+        text-transform: uppercase;
+    }
 
-  @include text-colors;
+    &.break {
+        overflow-wrap: break-word;
+    }
+
+    @include text-colors;
 }
 
 .text-ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: block;
-  min-width: 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+    white-space: normal;
 }

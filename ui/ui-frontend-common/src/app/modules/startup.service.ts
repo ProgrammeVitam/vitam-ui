@@ -284,6 +284,12 @@ export class StartupService {
     return null;
   }
 
+  getHasSiteSelection(): boolean {
+    if (this.configurationLoaded()) {
+      return this.configurationData.UI?.hasSiteSelection;
+    }
+  }
+
   getConfigStringValue(key: string): string {
     if (this.configurationLoaded() && this.configurationData.hasOwnProperty(key)) {
       return this.configurationData[key];
@@ -324,5 +330,12 @@ export class StartupService {
     if (this.configurationLoaded()) {
       return this.configurationData.CUSTOMER;
     }
+  }
+
+  isVitamEnabled(): boolean {
+    if (this.configurationLoaded()) {
+      return this.configurationData.VITAM?.enabled ?? true;
+    }
+    return true;
   }
 }

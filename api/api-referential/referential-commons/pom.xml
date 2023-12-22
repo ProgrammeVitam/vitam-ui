@@ -58,6 +58,12 @@
             <artifactId>commons-vitam</artifactId>
         </dependency>
 
+        <!-- CSV -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+        </dependency>
+
         <!--  TEST -->
         <dependency>
             <groupId>org.junit.vintage</groupId>

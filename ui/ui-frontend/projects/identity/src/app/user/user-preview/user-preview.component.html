@@ -44,13 +44,9 @@
       ></app-user-group-tab>
     </mat-tab>
 
-    <mat-tab [label]="'USER.TAB.HISTORY' | translate">
-      <vitamui-common-multi-operation-history-tab
-        [collectionsMap]="collectionsMap"
-        [identifiers]="identifiers"
-        [filter]="filterAuthenticationEvents"
-      ></vitamui-common-multi-operation-history-tab>
-    </mat-tab>
+    <mat-tab *ngIf="isVitamEnabled" [label]="'USER.TAB.HISTORY' | translate">
+      <vitamui-common-multi-operation-history-tab [collectionsMap]="collectionsMap" [identifiers]="identifiers" [filter]="filterAuthenticationEvents"></vitamui-common-multi-operation-history-tab>
+   </mat-tab>
   </mat-tab-group>
 </div>
 

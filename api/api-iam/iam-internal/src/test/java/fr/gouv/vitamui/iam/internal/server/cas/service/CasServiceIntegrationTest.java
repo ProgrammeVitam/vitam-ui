@@ -32,8 +32,10 @@ import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
+import fr.gouv.vitamui.iam.internal.server.user.dao.ConnectionHistoryRepository;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import org.junit.Before;
 import org.junit.Test;
@@ -109,6 +111,12 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
     @MockBean
     private TenantRepository tenantRepository;
 
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
+
+    @MockBean
+    private ConnectionHistoryRepository connectionHistoryRepository;
+
     @Mock
     private InternalHttpContext internalHttpContext;
 
@@ -152,7 +160,7 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         subro.setSurrogateCustomerId("surrogateCustomerId");
         Mockito.when(subrogationRepository.findBySuperUserAndSurrogate(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
             .thenReturn(Optional.of(subro));
-        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCase(ArgumentMatchers.anyString())).thenReturn(new User());
         casService.deleteSubrogationBySuperUserAndSurrogate(superUser, surrogate);
 
         final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
@@ -199,7 +207,7 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         Mockito.when(internalUserService.findUserByEmail(ArgumentMatchers.anyString())).thenReturn(user);
         Mockito.when(internalUserService.loadGroupAndProfiles(ArgumentMatchers.any())).thenReturn(authUser);
         Mockito.when(subrogationRepository.findOneBySurrogate(ArgumentMatchers.anyString())).thenReturn(subro);
-        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCase(ArgumentMatchers.anyString())).thenReturn(new User());
         casService.getUserByEmail(email, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER));
         return subro;
     }
@@ -215,7 +223,7 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         if (pwd != null) {
             user.setPassword(passwordEncoder.encode(pwd));
         }
-        Mockito.when(userRepository.findByEmail(jsonNode.findValue("EMAIL").textValue())).thenReturn(user);
+        Mockito.when(userRepository.findByEmailIgnoreCase(jsonNode.findValue("EMAIL").textValue())).thenReturn(user);
         final Customer customer = new Customer();
         customer.setId(jsonNode.findValue("CUSTOMER_ID").textValue());
         customer.setPasswordRevocationDelay(Integer.parseInt(jsonNode.findValue("PASSWORD_EXPIRATION_DELAY").textValue()));

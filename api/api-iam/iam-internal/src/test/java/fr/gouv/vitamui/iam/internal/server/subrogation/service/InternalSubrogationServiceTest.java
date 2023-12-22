@@ -108,8 +108,8 @@ public final class InternalSubrogationServiceTest {
         final Subrogation subro = buildSubrogation("id", julienEmail, pierreEmail);
         Mockito.when(internalSecurityService.getUser()).thenReturn(IamDtoBuilder.buildAuthUserDto("id", julienEmail));
         Mockito.when(subrogationRepository.save(ArgumentMatchers.any())).thenReturn(subro);
-        Mockito.when(userRepository.findByEmail(pierreEmail)).thenReturn(pierre);
-        Mockito.when(userRepository.findByEmail(julienEmail)).thenReturn(julien);
+        Mockito.when(userRepository.findByEmailIgnoreCase(pierreEmail)).thenReturn(pierre);
+        Mockito.when(userRepository.findByEmailIgnoreCase(julienEmail)).thenReturn(julien);
         Mockito.when(customerRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(customer));
 
         final SubrogationDto subroToCreate = new SubrogationDto();
@@ -143,8 +143,8 @@ public final class InternalSubrogationServiceTest {
         VitamUIUtils.copyProperties(extUserMakhtar, makhtar);
         final Subrogation subro = buildSubrogation("id", julienEmail, pierreEmail);
         Mockito.when(internalSecurityService.getUser()).thenReturn(IamDtoBuilder.buildAuthUserDto("id", julienEmail));
-        Mockito.when(userRepository.findByEmail(pierreEmail)).thenReturn(pierre);
-        Mockito.when(userRepository.findByEmail(makhtarEmail)).thenReturn(makhtar);
+        Mockito.when(userRepository.findByEmailIgnoreCase(pierreEmail)).thenReturn(pierre);
+        Mockito.when(userRepository.findByEmailIgnoreCase(makhtarEmail)).thenReturn(makhtar);
         Mockito.when(customerRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(customer));
 
         final SubrogationDto subroToCreate = new SubrogationDto();

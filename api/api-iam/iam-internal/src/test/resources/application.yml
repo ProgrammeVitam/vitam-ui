@@ -51,3 +51,4 @@ address:
 password:
   max-old-password: 12 # default is 3
 
+user.connection.tracing.enabled: true

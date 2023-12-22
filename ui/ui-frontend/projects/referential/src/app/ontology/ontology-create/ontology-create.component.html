@@ -1,123 +1,110 @@
-<div class="header">
-  <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
-</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial>
+  <div class="content mt-5">
+    <div class="text medium light">{{'ONTOLOGY.CREATE_DIALOG.TITLE' | translate}}</div>
+    <div class="text large bold mb-3">{{'ONTOLOGY.CREATE_DIALOG.SUBTITLE' | translate}}</div>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-stepper>
-    <cdk-step>
-      <div class="content">
-        <h4 i18n="Create ontology title@@ontologyCreateTitle1">Création d'un vocabulaire</h4>
-        <h5 i18n="Create ontology title@@ontologyCreateTitle1">Informations</h5>
-        <div class="row">
-          <div class="col-8 form-control">
-            <vitamui-common-input
-              class="field-identifier"
-              formControlName="identifier"
-              minlength="2"
-              maxlength="100"
-              required
-              placeholder="Identifiant"
-              i18n-placeholder="Identifier@@ontologyCreateIdentifierPlaceholder"
-            >
-              <ng-container *ngIf="form.get('identifier')?.touched">
-                <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">{{
-                  'COMMON.REQUIRED' | translate
-                }}</vitamui-common-input-error>
-                <vitamui-common-input-error
-                  *ngIf="!!form?.get('identifier')?.errors?.idExists"
-                  i18n="Identfier exists error hint@@formErrorIdentifierExists"
-                  >Identifiant déjà utilisé
-                </vitamui-common-input-error>
-                <vitamui-common-input-error
-                  *ngIf="!!form?.get('identifier')?.errors?.idPattern"
-                  i18n="Identfier pattern error hint@@formErrorIdentifierPattern"
-                  >Identifiant non conforme
-                </vitamui-common-input-error>
-              </ng-container>
-            </vitamui-common-input>
-          </div>
-          <i
-            class="material-icons field-tooltip select-tooltip"
-            matTooltip="Pour les vocabulaires externes, cet identifiant correspond au nom de la métadonnée telle qu'elle est nommée dans le bordereau de transfert ou dans un profil d'unité archivistique"
-            matTooltipClass="vitamui-tooltip"
-            >info</i
-          >
+    <div class="d-flex align-items-center">
+      <vitamui-common-input
+        class="w-100"
+        formControlName="identifier"
+        minlength="2"
+        maxlength="100"
+        required
+        [placeholder]="'ONTOLOGY.CREATE_DIALOG.IDENTIFIER' | translate">
+        <ng-container *ngIf="form.get('identifier')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">
+            {{ 'COMMON.REQUIRED' | translate}}
+          </vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.idExists">
+            {{ 'ONTOLOGY.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
+          </vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.idPattern">
+            {{ 'ONTOLOGY.CREATE_DIALOG.IDENTIFIER_NO_COMPLIANT' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+      <i class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
+        vitamuiCommonToolTip="{{'ONTOLOGY.CREATE_DIALOG.IDENTIFIER_TOOLTIP' | translate}}"
+      ></i>
+    </div>
 
-          <div class="col-8 form-control">
-            <vitamui-common-input
-              class="field-name"
-              formControlName="shortName"
-              minlength="2"
-              maxlength="100"
-              placeholder="Nom"
-              i18n-placeholder="Name@@ontologyCreateNamePlaceholder"
-            >
-              <ng-container *ngIf="form.get('shortName')?.touched">
-                <vitamui-common-input-error *ngIf="!!form.get('shortName')?.errors?.required">{{
-                  'COMMON.REQUIRED' | translate
-                }}</vitamui-common-input-error>
-                <vitamui-common-input-error
-                  *ngIf="!!form?.get('shortName')?.errors?.nameExists"
-                  i18n="Name exists error hint@@formErrorNameExists"
-                  >Nom déjà utilisé</vitamui-common-input-error
-                >
-              </ng-container>
-            </vitamui-common-input>
-          </div>
+    <div class="d-flex">
+      <vitamui-common-input
+        class="w-100"
+        formControlName="shortName"
+        minlength="2"
+        maxlength="100"
+        [placeholder]="'ONTOLOGY.CREATE_DIALOG.NAME' | translate">
+        <ng-container *ngIf="form.get('shortName')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('shortName')?.errors?.required">
+            {{ 'COMMON.REQUIRED' | translate}}
+          </vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="!!form?.get('shortName')?.errors?.nameExists">
+            {{ 'ONTOLOGY.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+    </div>
 
-          <div class="col-8 form-control">
-            <mat-form-field class="vitamui-mat-select">
-              <mat-select formControlName="type" placeholder="Type" panelclass="vitamui-mat-select" required="required">
-                <mat-option *ngFor="let type of types" [value]="type.key">{{ type.label }}</mat-option>
-              </mat-select>
-              <div class="select-arrow">
-                <i class="material-icons">keyboard_arrow_up</i>
-                <i class="material-icons">keyboard_arrow_down</i>
-              </div>
-            </mat-form-field>
-          </div>
-          <i
-            class="material-icons field-tooltip select-tooltip"
-            matTooltip="Type d'indexation du vocabulaire, correspondant à un type attendu par le moteur Elastic Search"
-            matTooltipClass="vitamui-tooltip"
-            >info</i
-          >
+    <div class="d-flex align-items-center pb-4">
+      <mat-form-field class="vitamui-mat-select w-100 pb-0">
+        <mat-select
+          formControlName="type"
+          [placeholder]="'ONTOLOGY.CREATE_DIALOG.TYPE' | translate"
+          required>
+          <mat-option *ngFor="let type of types" [value]="type.key">
+            {{ type.label }}
+          </mat-option>
+        </mat-select>
+        <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
+      </mat-form-field>
+      <i class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
+         vitamuiCommonToolTip="{{'ONTOLOGY.CREATE_DIALOG.TYPE_TOOLTIP' | translate}}">
+      </i>
+    </div>
 
-          <div class="col-8 form-control">
-            <mat-form-field class="vitamui-mat-select">
-              <mat-select formControlName="collections" placeholder="Collections" panelclass="vitamui-mat-select" multiple>
-                <mat-option *ngFor="let collection of collections" [value]="collection.key">{{ collection.label }}</mat-option>
-              </mat-select>
-              <div class="select-arrow">
-                <i class="material-icons">keyboard_arrow_up</i>
-                <i class="material-icons">keyboard_arrow_down</i>
-              </div>
-            </mat-form-field>
-          </div>
-          <i
-            class="material-icons field-tooltip select-tooltip"
-            matTooltip="Collection de la base Mongo DB qui utilise le vocabulaire"
-            matTooltipClass="vitamui-tooltip"
-            >info</i
-          >
 
-          <div class="col-12 form-control">
-            <vitamui-common-textarea formControlName="description" placeholder="Description" [rows]="3">
-              <ng-container *ngIf="form.get('description')?.touched">
-                <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required"
-                  >{{ 'COMMON.REQUIRED' | translate }}
-                </vitamui-common-input-error>
-              </ng-container>
-            </vitamui-common-textarea>
-          </div>
-        </div>
-        <div class="btn-container">
-          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">
-            {{ 'COMMON.SUBMIT' | translate }}
-          </button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-        </div>
-      </div>
-    </cdk-step>
-  </vitamui-common-stepper>
+    <div class="d-flex align-items-center pb-4">
+      <mat-form-field class="vitamui-mat-select w-100 pb-0">
+        <mat-select
+          formControlName="collections"
+          [placeholder]="'ONTOLOGY.CREATE_DIALOG.COLLECTION' | translate"
+          multiple>
+          <mat-option *ngFor="let collection of collections" [value]="collection.key">
+            {{ collection.label }}
+          </mat-option>
+        </mat-select>
+        <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
+      </mat-form-field>
+      <i class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
+         vitamuiCommonToolTip="{{'ONTOLOGY.CREATE_DIALOG.COLLECTION_TOOLTIP' | translate}}">
+      </i>
+    </div>
+
+
+    <div class="d-flex">
+      <vitamui-common-textarea
+        formControlName="description"
+        class="w-100"
+        [placeholder]="'ONTOLOGY.CREATE_DIALOG.DESCRIPTION' | translate"
+        [rows]="3">
+        <ng-container *ngIf="form.get('description')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-textarea>
+    </div>
+
+
+    <div class="actions">
+      <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">
+        {{ 'COMMON.TERMINATE' | translate }}
+      </button>
+      <button type="button" class="btn cancel" (click)="onCancel()">
+        {{ 'COMMON.UNDO' | translate }}
+      </button>
+    </div>
+
+  </div>
 </form>

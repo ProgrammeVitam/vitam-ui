@@ -38,8 +38,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 
-import { SecurityProfileService } from '../security-profile.service';
-import { SecurityProfilePreviewComponent } from './security-profile-preview.component';
+import {TranslateModule} from '@ngx-translate/core';
+import {SecurityProfileService} from '../security-profile.service';
+import {SecurityProfilePreviewComponent} from './security-profile-preview.component';
 
 describe('SecurityProfilePreviewComponent', () => {
   let component: SecurityProfilePreviewComponent;
@@ -47,6 +48,9 @@ describe('SecurityProfilePreviewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TranslateModule.forRoot()
+      ],
       declarations: [SecurityProfilePreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },

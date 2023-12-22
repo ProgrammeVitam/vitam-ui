@@ -45,12 +45,13 @@ import { RouterModule } from '@angular/router';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 
-import { SharedModule } from '../shared/shared.module';
-import { OntologyCreateModule } from './ontology-create/ontology-create.module';
-import { OntologyListComponent } from './ontology-list/ontology-list.component';
-import { OntologyPreviewModule } from './ontology-preview/ontology-preview.module';
-import { OntologyRoutingModule } from './ontology-routing.module';
-import { OntologyComponent } from './ontology.component';
+import {SharedModule} from '../shared/shared.module';
+import {OntologyCreateModule} from './ontology-create/ontology-create.module';
+import {OntologyListComponent} from './ontology-list/ontology-list.component';
+import {OntologyPreviewModule} from './ontology-preview/ontology-preview.module';
+import {OntologyRoutingModule} from './ontology-routing.module';
+import {OntologyComponent} from './ontology.component';
+import {ImportDialogModule} from "../shared/import-dialog/import-dialog.module";
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import { OntologyComponent } from './ontology.component';
     OntologyRoutingModule,
     OntologyCreateModule,
     OntologyPreviewModule,
+    ImportDialogModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

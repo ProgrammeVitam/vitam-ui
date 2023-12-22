@@ -96,16 +96,16 @@ export class VitamuiDragDropFileComponent implements OnInit {
 
   ngOnInit() {}
 
-  public onImageDropped(files: FileList): void {
+  public onImageDropped(files: File[]): void {
     this.hasDropZoneOver = false;
     this.handleImage(files);
   }
 
-  private handleImage(files: FileList): void {
+  private handleImage(files: File[]): void {
     this.hasError = false;
     this.lastImageUploaded = this.imageToUpload;
     this.message = null;
-    this.imageToUpload = files.item(0);
+    this.imageToUpload = files[0];
     if (this.imageToUpload.type.split('/')[0] !== this.IMAGE_TYPE_PREFIX) {
       this.message = "Le fichier que vous essayez de déposer n'est pas une image";
       this.hasError = true;
@@ -149,6 +149,35 @@ export class VitamuiDragDropFileComponent implements OnInit {
   }
 
   public handleFileInput(files: FileList): void {
-    this.handleImage(files);
+    this.handleImageList(files);
+  }
+
+  private handleImageList(files: FileList): void {
+    this.hasError = false;
+    this.lastImageUploaded = this.imageToUpload;
+    this.message = null;
+    this.imageToUpload = files.item(0);
+    if (this.imageToUpload.type.split('/')[0] !== this.IMAGE_TYPE_PREFIX) {
+      this.message = 'Le fichier que vous essayez de déposer n\'est pas une image';
+      this.hasError = true;
+      return;
+    }
+    const reader = new FileReader();
+    const logoImage = new Image();
+    reader.onload = () => {
+      const logoUrl = reader.result;
+      logoImage.src = logoUrl as string;
+      logoImage.onload = () => {
+        if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
+          this.imageToUpload = this.lastImageUploaded;
+          // tslint:disable-next-line: max-line-length
+          this.message = `Les dimensions du fichier que vous essayez de déposer sont supérieures à ${this.logoSize.width}px * ${this.logoSize.height}px`;
+          this.hasError = true;
+        } else {
+          this.imageUrl = logoUrl as string;
+        }
+      };
+    };
+    reader.readAsDataURL(this.imageToUpload);
   }
 }

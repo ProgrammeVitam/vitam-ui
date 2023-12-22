@@ -36,10 +36,7 @@
  */
 package fr.gouv.vitamui.iam.internal.server.application.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -55,7 +52,6 @@ import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -80,13 +76,18 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
     private final ApplicationConverter applicationConverter;
     private final InternalSecurityService internalSecurityService;
 
+    private final ExternalIdentifierConfiguration externalIdentifierConfiguration;
+
     @Autowired
-    public ApplicationInternalService(final SequenceGeneratorService sequenceGeneratorService, final ApplicationRepository applicationRepository,
-        final ApplicationConverter applicationConverter, final InternalSecurityService internalSecurityService) {
+    public ApplicationInternalService(final SequenceGeneratorService sequenceGeneratorService,
+                                      final ApplicationRepository applicationRepository,
+        final ApplicationConverter applicationConverter, final InternalSecurityService internalSecurityService,
+                                      ExternalIdentifierConfiguration externalIdentifierConfiguration) {
         super(sequenceGeneratorService);
         this.applicationRepository = applicationRepository;
         this.applicationConverter = applicationConverter;
         this.internalSecurityService = internalSecurityService;
+        this.externalIdentifierConfiguration = externalIdentifierConfiguration;
     }
 
     /**
@@ -118,6 +119,14 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
             filterApp(apps);
         }
         return apps;
+    }
+
+
+    public boolean isApplicationExternalIdentifierEnabled(String applicationId) {
+        String tenantId = internalSecurityService.getTenantIdentifier().toString();
+        Map<String, List<String>> enabledApplicationsByTenant = externalIdentifierConfiguration.getTenants();
+        List<String> tenantEnabledApplications = enabledApplicationsByTenant.getOrDefault(tenantId, Collections.emptyList());
+        return tenantEnabledApplications.contains(applicationId);
     }
 
 
@@ -159,6 +168,13 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
     @Override
     protected Converter<ApplicationDto, Application> getConverter() {
         return applicationConverter;
+    }
+
+    public Map<String, String> findApplicationByIdentifier(List<String> identifiers){
+        var applications = this.applicationRepository.findAllByIdentifierIn(identifiers);
+        return applications.stream()
+            .collect(Collectors.toMap(Application::getIdentifier, Application::getName));
+
     }
 
 }

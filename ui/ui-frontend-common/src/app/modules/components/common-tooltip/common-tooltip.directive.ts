@@ -81,6 +81,7 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   showTimeoutId: ReturnType<typeof setTimeout>;
   hideTimeoutId: ReturnType<typeof setTimeout>;
 
+
   /** Disables the display of the tooltip. */
   @Input('vitamuiCommonToolTipDisabled')
   get disabled(): boolean {
@@ -102,13 +103,15 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   constructor(
     private overlay: Overlay,
     private overlayPositionBuilder: OverlayPositionBuilder,
-    private elementRef: ElementRef,
-  ) {}
+    private elementRef: ElementRef
+  ) { }
 
   ngOnInit(): void {
     if (TooltipPosition[this.position]) {
       const position = VITAMUI_TOOL_TIP_POSITIONS[this.position];
-      const positionStrategy = this.overlayPositionBuilder.flexibleConnectedTo(this.elementRef).withPositions([position]);
+      const positionStrategy = this.overlayPositionBuilder
+        .flexibleConnectedTo(this.elementRef)
+        .withPositions([position]);
       this.overlayRef = this.overlay.create({ positionStrategy });
     }
   }
@@ -134,7 +137,7 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('mouseout')
+  @HostListener('mouseleave')
   @HostListener('mousedown')
   @HostListener('blur')
   hide() {

@@ -40,6 +40,8 @@ import { Event } from 'projects/vitamui-library/src/lib/models/event';
 import { of } from 'rxjs';
 import { AuditService } from '../audit.service';
 import { AuditListComponent } from './audit-list.component';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { TableFilterModule } from 'ui-frontend-common';
 
 describe('AuditListComponent', () => {
   let component: AuditListComponent;
@@ -52,6 +54,7 @@ describe('AuditListComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [AuditListComponent],
+      imports: [VitamUICommonTestModule, TableFilterModule],
       providers: [{ provide: AuditService, useValue: auditServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

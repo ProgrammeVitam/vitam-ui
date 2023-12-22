@@ -46,13 +46,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import { SharedModule } from '../shared/shared.module';
-import { RuleCreateModule } from './rule-create/rule-create.module';
-import { RuleListComponent } from './rule-list/rule-list.component';
-import { RulePreviewModule } from './rule-preview/rule-preview.module';
-import { RuleRoutingModule } from './rule-routing.module';
-import { RuleComponent } from './rule.component';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {SharedModule} from '../shared/shared.module';
+import {RuleCreateModule} from './rule-create/rule-create.module';
+import {RuleListComponent} from './rule-list/rule-list.component';
+import {RulePreviewModule} from './rule-preview/rule-preview.module';
+import {RuleRoutingModule} from './rule-routing.module';
+import {RuleComponent} from './rule.component';
+import {ImportDialogModule} from "../shared/import-dialog/import-dialog.module";
 
 @NgModule({
   imports: [
@@ -65,6 +66,7 @@ import { RuleComponent } from './rule.component';
     RuleRoutingModule,
     RuleCreateModule,
     RulePreviewModule,
+    ImportDialogModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

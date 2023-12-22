@@ -46,6 +46,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 
+import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 import { SharedModule } from '../shared/shared.module';
 import { IngestContractCreateModule } from './ingest-contract-create/ingest-contract-create.module';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
@@ -72,6 +73,7 @@ import { IngestContractComponent } from './ingest-contract.component';
     IngestContractPreviewModule,
     IngestContractCreateModule,
     TableFilterModule,
+    ImportDialogModule
   ],
 })
 export class IngestContractModule {}

@@ -46,7 +46,7 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class IngestContractApiService extends BaseHttpClient<IngestContract> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor(http: HttpClient, @Inject(BASE_URL) private baseUrl: string) {
     super(http, baseUrl + '/ingestcontract');
   }
 
@@ -77,7 +77,21 @@ export class IngestContractApiService extends BaseHttpClient<IngestContract> {
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
-  patch(partialIngestContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialIngestContract: { id: string;[key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialIngestContract, headers);
+  }
+
+  public getImportFileModel(): Observable<HttpResponse<Blob>> {
+    return this.http.get(this.baseUrl + '/static/import-ingest-contracts-model.csv', {
+      observe: 'response',
+      responseType: 'blob',
+    });
+  }
+
+  public exportIngestContracts(): Observable<HttpResponse<Blob>> {
+    return this.http.get(super.getApiUrl() + '/export-csv', {
+      observe: 'response',
+      responseType: 'blob',
+    });
   }
 }

@@ -43,6 +43,7 @@ import { Subscription } from 'rxjs';
 import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
 import { ProbativeValueCreateComponent } from './probative-value-create/probative-value-create.component';
 import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-probative-value',
@@ -77,22 +78,21 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
     });
 
     this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters.startDate = value;
-      this.probativeValueListComponent.filters = this.filters;
+      this.filters = { ...this.filters, startDate: value };
     });
+
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
-      if (value) {
-        value.setDate(value.getDate() + 1);
-      }
-      this.filters.endDate = value;
-      this.probativeValueListComponent.filters = this.filters;
+      this.filters = {...this.filters, endDate: value ? moment(value).endOf('day') : null } ;
     });
   }
+
+  ngOnInit() {}
 
   openCreateProbativeValueDialog() {
     const dialogRef = this.dialog.open(ProbativeValueCreateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
+      autoFocus: false
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result !== undefined && result.success) {
@@ -112,22 +112,20 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
     this.search = search || '';
   }
 
-  clearDate(date: 'startDate' | 'endDate') {
-    if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
-    } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
-    } else {
-      console.error('clearDate() error: unknown date ' + date);
+
+  clearDate(dateToClear: 'startDate' | 'endDate', $event: any, input: HTMLInputElement): void {
+    if (!!this.dateRangeFilterForm.get(dateToClear).value) {
+      this.dateRangeFilterForm.get(dateToClear).reset();
     }
+
+    input.value = null;
+    $event.stopPropagation();
   }
 
   resetFilters() {
     this.dateRangeFilterForm.reset();
     this.searchBar.reset();
   }
-
-  ngOnInit() {}
 
   showProbativeValue(item: Event) {
     this.openPanel(item);

@@ -16,6 +16,7 @@ import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.Assert;
@@ -57,6 +58,9 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
 
     @Autowired
     private IamLogbookService iamLogbookService;
+
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
 
     @MockBean
     private SpMetadataGenerator spMetadataGenerator;
