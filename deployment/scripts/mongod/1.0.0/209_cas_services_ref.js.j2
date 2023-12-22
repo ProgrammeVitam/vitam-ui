@@ -10,7 +10,7 @@ db.services.insertOne({
 {% else %}
 	"serviceId": "^{{ url_prefix }}/referential/.*",
 {% endif %}
-	"name": "Referential Management Application 2",
+	"name": "{{ vitamui.referential.name | default('Referential Application') }}",
 	"logoutType" : "FRONT_CHANNEL",
 {% if vitamui.referential.base_url is defined %}
 	"logoutUrl": "{{ vitamui.referential.base_url }}/logout",

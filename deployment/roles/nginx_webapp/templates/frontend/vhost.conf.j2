@@ -1,0 +1,36 @@
+#jinja2: lstrip_blocks: True
+server {
+  listen              {{ vitamui_struct.port_service}} ssl;
+  server_name         {{ vitam_reverse_external_dns }};
+  include {{ nginx_ssl_dir }}/ssl.conf;
+
+  root   {{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }};
+
+  location ~* \.(jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2|eot|css|js|json)$ {
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Cache-Control "{{ vitamui_struct.resources_header_cache_control | default('max-age=1800, must-revalidate')}}";
+    include  /etc/nginx/mime.types;
+    try_files $uri $uri/ =404;
+  }
+
+  location / {
+    add_header X-Content-Type-Options "nosniff" always;
+    include  /etc/nginx/mime.types;
+    if ( $uri = '/index.html' ) {
+      add_header Cache-Control no-store always;
+    }
+    try_files $uri $uri/ /index.html;
+  }
+
+  {% if vitamui_struct.vitamui_component == 'ui-identity-admin' %}
+  location /identity-api {
+  {% else %}
+  location /{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api {
+  {% endif %}
+    proxy_pass {{ 'https' if vitamui.api_gateway.server_secure | default(true) | bool else 'http' }}://API-GATEWAY;
+    proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.crt;
+    proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key;
+    proxy_ssl_password_file {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key_pass;
+    proxy_ssl_session_reuse off;
+  }
+}

@@ -1,0 +1,23 @@
+---
+
+- name: 'Uninstall UI front ressources'
+  package:
+    name: "{{ vitamui_struct.package_name | default(package_name) }}"
+    state: absent
+  register: result
+  retries: "{{ packages_install_retries_number | default(2) }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay | default(10) }}"
+  notify: reload nginx
+
+- name: 'Remove artefacts'
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.crt"
+    - "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.pem"
+    - "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key_pass"
+    - "/etc/nginx/conf.d/{{ vitamui_struct.vitamui_component }}.conf"
+    - "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}/assets/config.json"
+  notify: reload nginx

@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: True
 spring:
   cloud:
     consul:
@@ -26,13 +27,17 @@ server:
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
+    {% if gateway.enabled | default(False) is sameas true %}
+    {% else %}
     client-auth: need
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
   error:
     path: /error
+    {% endif %}
 
 {% endif %}
+  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
     connection-timeout: {{ vitamui_struct.server_connection_timeout }}
     accesslog:
@@ -60,6 +65,11 @@ clients:
 {% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
     ssl-configuration:
+      {% if gateway.enabled | default(False) is sameas true %}
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      {% else %}
       keystore:
         key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
@@ -67,11 +77,13 @@ clients:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
+      {% endif %}
       hostname-verification: false
 {% endif %}
 
 internal_ontology_file_path: {{ vitamui_folder_data }}/internal_ontology_fields.json
 
+{% if opentracing.enable is sameas true %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
@@ -80,3 +92,4 @@ opentracing:
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
+{% endif %}

@@ -1,0 +1,20 @@
+---
+# tasks file for assets
+
+- name: "Assets > Tasks > main.yml | Create directory if it doesn't exist"
+  file:
+    path: "{{ asset_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ asset_user }}"
+    group: "{{ asset_group }}"
+
+- name: "Assets > Tasks > main.yml | Copy assets"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ asset_path }}/{{ item | basename }}"
+    owner: "{{ asset_user }}"
+    group: "{{ asset_group }}"
+    mode: '0644'
+  with_fileglob: "{{ asset_default_files }}"
+

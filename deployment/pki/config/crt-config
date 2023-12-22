@@ -46,16 +46,16 @@ CN = ${ENV::OPENSSL_CN}
 
 # Certificates creation parameters : extensions
 
-#[ extension_server ]
-#nsComment                       = "Certificat Serveur SSL"
-#subjectKeyIdentifier            = hash
-#authorityKeyIdentifier          = keyid,issuer:always
-#issuerAltName                   = issuer:copy
-#subjectAltName                  = ${ENV::OPENSSL_SAN}
-#basicConstraints                = critical,CA:FALSE
-#keyUsage                        = digitalSignature, keyEncipherment
-#nsCertType                      = server
-#extendedKeyUsage                = serverAuth
+[ extension_server ]
+nsComment                       = "Certificat Serveur SSL"
+subjectKeyIdentifier            = hash
+authorityKeyIdentifier          = keyid,issuer:always
+issuerAltName                   = issuer:copy
+subjectAltName                  = ${ENV::OPENSSL_SAN}
+basicConstraints                = critical,CA:FALSE
+keyUsage                        = digitalSignature, keyEncipherment
+nsCertType                      = server, client
+extendedKeyUsage                = serverAuth, clientAuth
 
 [ extension_client ]
 nsComment                       = "Certificat Client SSL"

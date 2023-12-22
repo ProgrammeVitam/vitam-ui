@@ -35,6 +35,7 @@ pipeline {
                 script {
                     env.DO_MAJ_CONTEXT = 'true'
                     env.DO_TEST = 'true'
+                    env.DO_GENERATE_FRONT_RSC = 'true'
                     env.DO_BUILD = 'true'
                     env.DO_BUILD_PASTIS_STANDALONE = 'true'
                     env.DO_PUBLISH = 'true'
@@ -59,12 +60,14 @@ pipeline {
                     parameters: [
                         booleanParam(name: 'DO_MAJ_CONTEXT', defaultValue: true, description: 'Run Stage Upgrade build context.'),
                         booleanParam(name: 'DO_TEST', defaultValue: false, description: 'Run Stage Check vulnerabilities and tests.'),
+                        booleanParam(name: 'DO_GENERATE_FRONT_RSC', defaultValue: true, description: 'Run Stage that generate front ressources.'),
                         booleanParam(name: 'DO_BUILD', defaultValue: true, description: 'Run Stage Build sources & COTS.'),
                         booleanParam(name: 'DO_BUILD_PASTIS_STANDALONE', defaultValue: false, description: 'Run build stage for pastis standalone'),
                         booleanParam(name: 'DO_PUBLISH', defaultValue: true, description: 'Run Stage Publish to repository.'),
                     ]
                     env.DO_MAJ_CONTEXT = INPUT_PARAMS.DO_MAJ_CONTEXT
                     env.DO_TEST = INPUT_PARAMS.DO_TEST
+                    env.DO_GENERATE_FRONT_RSC = INPUT_PARAMS.DO_GENERATE_FRONT_RSC
                     env.DO_BUILD = INPUT_PARAMS.DO_BUILD
                     env.DO_BUILD_PASTIS_STANDALONE = INPUT_PARAMS.DO_BUILD_PASTIS_STANDALONE
                     env.DO_PUBLISH = INPUT_PARAMS.DO_PUBLISH
@@ -106,6 +109,24 @@ pipeline {
                 always {
                     junit '**/target/surefire-reports/*.xml'
                 }
+            }
+        }
+
+        stage('Generate front ressources') {
+            when {
+                environment(name: 'DO_GENERATE_FRONT_RSC', value: 'true')
+            }
+            environment {
+                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
+                NODE_OPTIONS="--max_old_space_size=12288"
+            }
+            steps {
+                sh 'node -v'
+                sh 'npmrc default'
+
+                sh '''
+                $MVN_COMMAND clean verify -Pvitam -pl 'ui/ui-frontend-common, ui/ui-frontend'
+                '''
             }
         }
 

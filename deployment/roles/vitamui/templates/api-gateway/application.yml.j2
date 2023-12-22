@@ -137,10 +137,9 @@ spring:
               Path=
               /referential-api/accesscontract/**,
               /referential-api/ingestcontract/**,
-              /referential-api/managementcontract/**,
+              /referential-api/management-contract/**,
               /referential-api/agency/**,
               /referential-api/fileformat/**,
-              /referential-api/fileFormat/**,
               /referential-api/operation/**,
               /referential-api/logbook-management-operation/**,
               /referential-api/customers/**,
@@ -152,14 +151,15 @@ spring:
               /referential-api/profile/**,
               /referential-api/search/**,
               /referential-api/rules/**,
+              /referential-api/rule/**,
               /referential-api/customers/**
 
           filters:
             - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
-            - RewritePath=/referential-api/fileFormat(?<segment>.*),/referential/v1/fileformats$\{segment}
             - RewritePath=/referential-api/operation(?<segment>.*),/referential/v1/operations$\{segment}
             - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
+            - RewritePath=/referential-api/rule/(?<segment>.*),/referential/v1/rules/$\{segment}
             - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
 
     discovery:

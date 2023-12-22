@@ -139,14 +139,14 @@ cas:
 {% else %}
   external-url: "{{ url_prefix }}/cas"
 {% endif %}
-  internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
+  internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http{% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
 
   callback-url: ${ui.url}/portal-api/callback
 {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}
   ssl:
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
-    hostname-verification: {{ vitamui.cas_server.hostname_verification }}
+    hostname-verification: {{ vitamui.cas_server.hostname_verification | default(true)}}
 {% endif %}
 
 opentracing:

@@ -16,6 +16,7 @@
     <properties>
         <angular.build.project>portal</angular.build.project>
         <rpm.skip>false</rpm.skip>
+        <rpm_rsc.skip>false</rpm_rsc.skip>
         <skipAllFrontend>false</skipAllFrontend>
         <skipAllFrontendTests>false</skipAllFrontendTests>
         <sonar.sources>src/main/java</sonar.sources>

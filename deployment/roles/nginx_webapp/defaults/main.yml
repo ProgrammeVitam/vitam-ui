@@ -1,0 +1,16 @@
+---
+
+frontend_data_dir: "{{ vitamui_defaults.folder.root_path }}/data"
+
+frontend_user: "{{ vitamui_defaults.users.vitamui }}"
+frontend_group: "{{ vitamui_defaults.users.group }}"
+
+# Supported goals: install, uninstall
+frontend_role_goal: install
+
+nginx_ssl_dir: '/etc/nginx/conf.d/ssl'
+
+vault_cert_file: "{{ inventory_dir }}/certs/vault-certs.yml"
+vault_cert_pass_file: "../vault_pki.pass"
+
+package_name: "vitamui-{{ vitamui_struct.vitamui_component }}-rsc"

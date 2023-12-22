@@ -215,6 +215,7 @@
         <rpm.jar-file>${project.build.finalName}.jar</rpm.jar-file>
         <!-- Put this properties to false sub-module when you want to use profile -->
         <rpm.skip>true</rpm.skip>
+        <rpm_rsc.skip>true</rpm_rsc.skip>
         <rpm.publication.env>dev</rpm.publication.env>
         <!-- Swagger doc generation -->
         <swagger.dir>.</swagger.dir>
@@ -1988,11 +1989,29 @@
                                         <argument>NAME=${project.artifactId}</argument>
                                         <argument>VERSION=${project.version}</argument>
                                         <argument>JAR_FILE=${rpm.jar-file}</argument>
-                                        <argument>USER=vitamui</argument>
                                         <!-- If you want to changes default dependencies (only
                                         systemd),
                                         define them as a comma separated list of packages -->
                                         <argument>DEPENDENCIES=systemd,java-11-openjdk</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>rpm-package-front</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>target</workingDirectory>
+                                    <skip>${rpm_rsc.skip}</skip>
+                                    <arguments>
+                                        <argument>-f</argument>
+                                        <argument>${main.basedir}/tools/packaging/Makefile-fronts</argument>
+                                        <argument>rpm</argument>
+                                        <argument>NAME=${project.artifactId}</argument>
+                                        <argument>VERSION=${project.version}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -2028,7 +2047,6 @@
                                         <argument>NAME=${project.artifactId}</argument>
                                         <argument>VERSION=${project.version}</argument>
                                         <argument>JAR_FILE=${rpm.jar-file}</argument>
-                                        <argument>USER=vitamui</argument>
                                         <!-- If you want to changes default dependencies (only
                                         systemd),
                                         define them as a comma separated list of packages -->
@@ -2036,33 +2054,22 @@
                                     </arguments>
                                 </configuration>
                             </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- This profile is used to build rpm package.-->
-        <profile>
-            <id>rpm-publish</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
                             <execution>
-                                <id>rpm-publish</id>
-                                <phase>deploy</phase>
+                                <id>deb-package-front</id>
+                                <phase>install</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <skip>${rpm.skip}</skip>
-                                    <executable>${main.basedir}/tools/packaging/publish.sh</executable>
+                                    <executable>make</executable>
                                     <workingDirectory>target</workingDirectory>
+                                    <skip>${rpm_rsc.skip}</skip>
                                     <arguments>
-                                        <argument>${rpm.publication.env}</argument>
+                                        <argument>-f</argument>
+                                        <argument>${main.basedir}/tools/packaging/Makefile-fronts</argument>
+                                        <argument>deb</argument>
+                                        <argument>NAME=${project.artifactId}</argument>
+                                        <argument>VERSION=${project.version}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -2071,7 +2078,6 @@
                 </plugins>
             </build>
         </profile>
-
         <!-- This profile is used to define skipTests value for Karma when -DskipTests is used
         during maven process. -->
         <profile>

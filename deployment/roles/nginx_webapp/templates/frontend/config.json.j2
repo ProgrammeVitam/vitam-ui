@@ -1,0 +1,69 @@
+#jinja2: lstrip_blocks: True
+{
+  "GATEWAY_ENABLED": {{ gateway.enabled | default(False) | lower }},
+  "REFERENTIAL_URL": "{{ vitamui.referential.base_url | default(url_prefix+'/referential') }}",
+  "VERSION_RELEASE": "{{ frontend_application_version }}",
+  "PLATFORM_NAME": "{{ vitamui_platform_informations.platform_name }}",
+  "INGEST_URL": null,
+  "PORTAL_TITLE": "{{ vitamui_platform_informations.portal_title }}",
+  "MAX_STREET_LENGTH": {{ vitamui_platform_informations.address.max_street_length }},
+  "THEME_COLORS": {
+    "vitamui-primary": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_primary }}",
+    "vitamui-secondary": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_secondary }}",
+    "vitamui-tertiary": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_tertiary }}",
+    "vitamui-header-footer": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_header_footer }}",
+    "vitamui-background": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_background }}"
+  },
+  "PORTAL_MESSAGE": "{{ vitamui_platform_informations.portal_message }}",
+  {% if vitamui_struct.vitamui_component == 'ui-portal' %}
+  "UI_URL": "{{ vitamui.portal.base_url | default(url_prefix+'/') }}",
+  {% elif vitamui_struct.vitamui_component == 'ui-identity' %}
+  "UI_URL": "{{ vitamui.identity.base_url | default(url_prefix+'/identity') }}",
+  {% elif vitamui_struct.vitamui_component == 'ui-identity-admin' %}
+  "UI_URL": "{{ vitamui.identity_admin.base_url | default(url_prefix+'/identity_admin') }}",
+  {% elif vitamui_struct.vitamui_component == 'ui-referential' %}
+  "UI_URL": "{{ vitamui.referential.base_url | default(url_prefix+'/referential') }}",
+  {% endif %}
+  "ARCHIVES_SEARCH_URL": null,
+  "PORTAL_URL": "{{ vitamui.portal.base_url | default(url_prefix+'/') }}",
+  {% if vitamui_struct.vitamui_component == 'ui-identity-admin' %}
+  "ALLOWED_URLS": ["/identity-api"],
+  {% else %}
+  "ALLOWED_URLS": ["/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api"],
+  {% endif %}
+  "OIDC_CONFIG": {
+    "issuer": "{{ vitamui.cas_server.base_url | default(url_prefix+'/cas') }}/oidc",
+    "redirectUri": "?",
+    "postLogoutRedirectUri": "{{ vitamui.portal.base_url | default(url_prefix+'/') }}",
+    "clientId": "{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}",
+    "responseType": "code",
+    "scope": "openid",
+    "showDebugInformation": false
+  },
+  "PORTAL_LOGO": "{{ vitamui_struct.portal_logo | default(vitamui_platform_informations.theme.portal_logo) }}",
+  "HEADER_LOGO": "{{ vitamui_struct.header_logo | default(vitamui_platform_informations.theme.header_logo) }}",
+  "FOOTER_LOGO": "{{ vitamui_struct.footer_logo | default(vitamui_platform_informations.theme.footer_logo) }}",
+  "USER_LOGO": "{{ vitamui_struct.user_logo | default(vitamui_platform_informations.theme.user_logo) }}",
+  {% if vitamui_struct.vitamui_component == "ui-portal" %}
+  "UI": {
+    "hasTenantList": {{ "true" if vitamui.portal.has_tenant_list | default(false) | bool == true else "false" }},
+    "hasLangSelection": {{ "true" if vitamui.portal.has_lang_selection | default(false) | bool == true else "false" }},
+    "hasSiteSelection" : {{ "true" if vitamui.portal.has_site_selection | default(true) | bool == true else "false" }}
+  },
+  {% endif %}
+  "CATEGORY_CONFIGURATION": [
+    {% for id, category in vitamui_defaults.portal_categories.items() %}
+    {
+      "displayTitle": {{ category.displayTitle | lower }},
+      "identifier": "{{ id }}",
+      "title": "{{ category.title }}",
+      "order": {{ category.order }}
+    }{{ ", " if not loop.last else "" }}
+    {% endfor %}
+  {% if vitamui_struct.vitamui_component == "ui-referential" %}
+  ],
+  "VITAM_ADMIN_TENANT": {{ vitamui_platform_informations.vitam_admin_tenant | default(1) }}
+  {% else %}
+  ]
+  {% endif %}
+}

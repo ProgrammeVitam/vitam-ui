@@ -32,11 +32,12 @@
   gather_facts: no
   any_errors_fatal: true
   roles:
-    - vitamui
-  vars:
-    app_default_root_path: "/vitamui"
-    vitamui_struct: "{{ vitamui.referential }}"
-    vitamui_certificate_type: "server"
-    password_keystore: "{{ keystores_server_ui_referential }}"
-    password_truststore: "{{ truststores_server }}"
-    consul_tags: "ui-referential, ui"
+    - role: vitamui
+      vars:
+        app_default_root_path: "/vitamui"
+        vitamui_struct: "{{ vitamui.referential }}"
+        vitamui_certificate_type: "server"
+        password_keystore: "{{ keystores_server_ui_referential }}"
+        password_truststore: "{{ truststores_server }}"
+        consul_tags: "ui-referential, ui"
+      when: gateway.enabled | default(false) | bool  == false

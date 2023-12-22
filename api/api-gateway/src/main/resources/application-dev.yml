@@ -87,7 +87,6 @@ spring:
               /referential-api/managementcontract/**,
               /referential-api/agency/**,
               /referential-api/fileformat/**,
-              /referential-api/fileFormat/**,
               /referential-api/operation/**,
               /referential-api/logbook-management-operation/**,
               /referential-api/customers/**,

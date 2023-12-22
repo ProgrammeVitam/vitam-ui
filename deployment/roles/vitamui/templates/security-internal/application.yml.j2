@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: True
 spring:
   cloud:
     consul:
@@ -30,13 +31,17 @@ server:
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
+    {% if gateway.enabled | default(False) is sameas true %}
+    {% else %}
     client-auth: need
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
   error:
     path: /error
+    {% endif %}
 
 {% endif %}
+  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
     accesslog:
       enabled: "{{ vitamui_struct.accesslogs | default('true') }}"
@@ -51,6 +56,7 @@ management:
     ssl:
       enabled: false
 
+{% if opentracing.enable is sameas true %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
@@ -59,3 +65,4 @@ opentracing:
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
+{% endif %}

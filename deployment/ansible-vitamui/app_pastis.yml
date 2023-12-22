@@ -20,11 +20,12 @@
   gather_facts: no
   any_errors_fatal: true
   roles:
-    - vitamui
-  vars:
-    app_default_root_path: "/vitamui"
-    vitamui_struct: "{{ vitamui.pastis }}"
-    vitamui_certificate_type: "server"
-    password_keystore: "{{ keystores_server_ui_pastis }}"
-    password_truststore: "{{ truststores_server }}"
-    consul_tags: "ui-pastis, ui"
+    - role: vitamui
+      vars:
+        app_default_root_path: "/vitamui"
+        vitamui_struct: "{{ vitamui.pastis }}"
+        vitamui_certificate_type: "server"
+        password_keystore: "{{ keystores_server_ui_pastis }}"
+        password_truststore: "{{ truststores_server }}"
+        consul_tags: "ui-pastis, ui"
+      when: gateway.enabled | default(false) | bool  == false

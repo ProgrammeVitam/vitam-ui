@@ -94,6 +94,9 @@ vitamui:
     vitamui_component_type: "ui"
     port_service: 8003
     port_admin: 7003
+    has_tenant_list: false
+    has_lang_selection: false
+    has_site_selection: true
 
   referential_external:
     host: "vitamui-referential-external.service.{{ consul_domain }}"
@@ -139,12 +142,6 @@ vitamui:
     connect_timeout: 30
     read_timeout: 30
     write_timeout: 30
-    # gdpr_alert_readonly: true
-    # login_max_failure: 5
-    # login_interval: 20
-    # logbook:
-    #   enabled: "true"
-    #   delay: 60000
 
   cas_server:
     host: "cas-server.service.{{ consul_domain }}"
@@ -154,13 +151,12 @@ vitamui:
     port_admin: 7001
     hostname_verification: true
     theme:
-      vitamui_platform_name: VITAM-UI
       vitamui_favicon: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/favicon.ico"
       vitam_logo: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo.png"
       vitamui_logo_large: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo-large.png"
     reset_password_url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
     cors:
-      enabled: false
+      enabled: true
 
   security_internal:
     host: "vitamui-security-internal.service.{{ consul_domain }}"

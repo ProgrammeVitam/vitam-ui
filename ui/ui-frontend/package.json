@@ -34,6 +34,7 @@
     "build:en": "ng build --prod --i18n-file src/locale/messages.en.xlf --i18n-format xlf --i18n-locale en --output-path ../../../target/www/en",
     "build:all": "npm run build:fr && npm run build:en",
     "build:demo": "ng build demo --prod --i18n-locale fr",
+    "build:allModules": "npm run build:portal &&  npm run build:identity  && npm run build:referential && npm run build:archive-search && npm run build:ingest",
     "build:portal": "export NODE_OPTIONS=--max_old_space_size=8192; ng build portal --prod",
     "build:identity": "export NODE_OPTIONS=--max_old_space_size=8192; ng build identity --prod --base-href=/identity/ --deploy-url=/identity/",
     "build:ingest": "export NODE_OPTIONS=--max_old_space_size=8192; ng build ingest --prod --i18n-locale fr",
@@ -96,7 +97,15 @@
     "publish:collect": "cp projects/collect/package.json dist/collect/package.json && npm publish dist/collect/",
     "publish:archive-search": "cp projects/archive-search/package.json dist/archive-search/package.json && npm publish dist/archive-search/",
     "publish:referential": "cp projects/referential/package.json dist/referential/package.json && npm publish dist/referential/",
-    "publish:all": "npm run publish:portal &&  npm run publish:identity  && npm run publish:referential"
+    "publish:all": "npm run publish:portal &&  npm run publish:identity  && npm run publish:referential && npm run publish:archive-search && npm run publish:collect  && npm run publish:pastis && npm run publish:ingest",
+    "package:identity": "mkdir -p dist/identity/ && cp projects/identity/package.json dist/identity/package.json && npm pack dist/identity/",
+    "package:archive-search": "mkdir -p dist/archive-search/ && cp projects/archive-search/package.json dist/archive-search/package.json && npm pack dist/archive-search/",
+    "package:portal": "mkdir -p dist/portal/ && cp projects/portal/package.json dist/portal/package.json && npm pack dist/portal/",
+    "package:collect": "mkdir -p dist/collect/ && cp projects/collect/package.json dist/collect/package.json && npm pack dist/collect/",
+    "package:ingest": "mkdir -p dist/ingest/ && cp projects/ingest/package.json dist/ingest/package.json && npm pack dist/ingest/",
+    "package:pastis": "mkdir -p dist/pastis/ && cp projects/pastis/package.json dist/pastis/package.json && npm pack dist/pastis/",
+    "package:referential": "mkdir -p dist/referential/ && cp projects/referential/package.json dist/referential/package.json && npm pack dist/referential/",
+    "package:all": "npm run package:portal &&  npm run package:identity  && npm run package:referential && npm run package:archive-search && npm run package:collect  && npm run package:pastis && npm run package:ingest"
   },
   "private": true,
   "dependencies": {
