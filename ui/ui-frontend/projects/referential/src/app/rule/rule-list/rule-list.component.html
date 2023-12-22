@@ -1,99 +1,111 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <thead>
-    <tr>
-      <th><i class="vitamui-icon vitamui-icon-rules vitamui-row-icon"></i></th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="rule ruleId column header@@ruleListRuleIdHeader">Identifiant</span>
-          <vitamui-common-order-by-button
-            orderByKey="RuleId"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="rule ruleType column header@@ruleListRuleTypeHeader">Type de règle</span>
-          <vitamui-common-order-by-button
-            orderByKey="RuleType"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="rule ruleValue column header@@ruleListRuleValueHeader">Intitulé de règle</span>
-          <vitamui-common-order-by-button
-            orderByKey="RuleValue"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="rule ruleDuration column header@@ruleListRuleDurationHeader">Durée</span>
-          <vitamui-common-order-by-button
-            orderByKey="RuleDuration"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="rule ruleMeasurement column header@@ruleListRuleMeasurementHeader">Unités de mesure</span>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+
+      <div class="col-1"></div>
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        <span>{{ 'RULES_APP.HOME.ARRAY.IDENTIFIER' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="RuleId"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        <span>{{ 'RULES_APP.HOME.ARRAY.TYPE' | translate }}</span>
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="ruleTypeFilterTemplate">
+          <i class="material-icons">filter_list</i>
+        </button>
+      </div>
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        <span>{{ 'RULES_APP.HOME.ARRAY.NAME' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="RuleValue"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        <span>{{ 'RULES_APP.HOME.ARRAY.PERIOD' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="RuleDuration"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        <span>{{ 'RULES_APP.HOME.ARRAY.UNIT_MEASURE' | translate }}</span>
           <vitamui-common-order-by-button
             orderByKey="RuleMeasurement"
             [(orderBy)]="orderBy"
             [(direction)]="direction"
             (orderChange)="emitOrderChange()"
           ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let rule of dataSource; let index = index">
-      <tr class="vitamui-table-row">
-        <td><i class="vitamui-icon vitamui-icon-rules vitamui-row-icon"></i></td>
-        <td class="clickable" (click)="ruleClick.emit(rule)">{{ rule?.ruleId }}</td>
-        <td class="clickable" (click)="ruleClick.emit(rule)">{{ getRuleType(rule?.ruleType) }}</td>
-        <td class="clickable" (click)="ruleClick.emit(rule)">{{ rule?.ruleValue }}</td>
-        <td class="clickable" (click)="ruleClick.emit(rule)">{{ rule?.ruleDuration }}</td>
-        <td class="clickable" (click)="ruleClick.emit(rule)">{{ getRuleMeasurement(rule?.ruleMeasurement) }}</td>
-        <td>
-          <div class="actions">
-            <button class="btn-circle primary" (click)="deleteRuleDialog(rule)" *vitamuiCommonHasRole="{
-              appId: 'RULES_APP',
-              tenantIdentifier: +this.genericUserRole.tenantIdentifier,
-              role: 'ROLE_DELETE_RULES'
-            }">
-              <i class="vitamui-icon vitamui-icon-trash"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+      </div>
+      <div class="col-1"></div>
+    </div>
 
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button
-    *ngIf="!pending && infiniteScrollDisabled && ruleService.canLoadMore"
-    (click)="loadMore()"
-    class="btn"
-    i18n="Show more results@@tableMoreResultButton"
-  >
-    Afficher plus de résultats...
-  </button>
-  <span *ngIf="!pending && !ruleService.canLoadMore">Fin des résultats</span>
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let rule of dataSource; let index = index" (click)="ruleClick.emit(rule)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1"><i class="vitamui-icon vitamui-icon-rules vitamui-row-icon"></i></div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ rule?.ruleId }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ getRuleType(rule?.ruleType) }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ rule?.ruleValue }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ rule?.ruleDuration }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ getRuleMeasurement(rule?.ruleMeasurement) }}</div>
+          <div class="col-1 actions">
+            <div>
+              <button
+                class="btn btn-circle primary"
+                (click)="$event.stopPropagation(); deleteRuleDialog(rule)" *vitamuiCommonHasRole="{
+                    appId: 'RULES_APP',
+                    tenantIdentifier: +this.genericUserRole.tenantIdentifier,
+                    role: 'ROLE_DELETE_RULES'
+                  }">
+                <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && ruleService.canLoadMore && !pending then loadMore"></div>
+  </div>
 </div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="ruleService.loadMore()">
+    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #ruleTypeFilterTemplate>
+  <vitamui-common-table-filter [(filter)]="filterMap['ruleType']" (filterChange)="onFilterChange('ruleType', $event)">
+
+    <vitamui-common-table-filter-option *ngFor="let ruleType of ruleTypes" value="{{ruleType.key}}">
+      <div class="table-filter-icon">
+        <span class="badge-state">{{ruleType.label}}</span>
+      </div>
+    </vitamui-common-table-filter-option>
+  </vitamui-common-table-filter>
+</ng-template>
+
+
+

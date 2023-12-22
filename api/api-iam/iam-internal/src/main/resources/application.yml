@@ -30,8 +30,9 @@ metrics:
   reporterIntervalUnit: MINUTES
   index: metrics-vitam-jvm
 
-# 4 (hours) * 60 (minutes)
-token.ttl: 240
+# Tokens TTL
+token.max-ttl: 480 # 8 (hours) * 60 (minutes)
+token.ttl: 240 # 4 (hours) * 60 (minutes)
 token.additional.ttl: 15
 subrogaton.token.ttl: 165
 api.token.ttl: 480

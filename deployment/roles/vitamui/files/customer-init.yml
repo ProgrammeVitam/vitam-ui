@@ -54,7 +54,7 @@ customer-init:
         - ROLE_CREATE_INGEST_CONTRACTS
         - ROLE_UPDATE_INGEST_CONTRACTS
         - ROLE_GET_FILLING_PLAN_ACCESS
-        - ROLE_GET_MANAGEMENT_CONTRACTS
+        - ROLE_GET_MANAGEMENT_CONTRACT
         - ROLE_GET_ARCHIVE_PROFILES
         - ROLE_GET_FILE_FORMATS
         - ROLE_GET_UNITS
@@ -68,8 +68,11 @@ customer-init:
       roles:
         - ROLE_GET_INGEST_CONTRACTS
         - ROLE_GET_FILLING_PLAN_ACCESS
-        - ROLE_GET_MANAGEMENT_CONTRACTS
+        - ROLE_GET_MANAGEMENT_CONTRACT
         - ROLE_GET_ARCHIVE_PROFILES
+        - ROLE_GET_FILE_FORMATS
+        - ROLE_GET_UNITS
+        - ROLE_GET_EXTERNAL_PARAMS
 
     - name:  Profil gestion des services agents
       description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour
@@ -114,13 +117,6 @@ customer-init:
         - ROLE_GET_OPERATIONS
         - ROLE_RUN_PROBATIVE_VALUE
 
-    - name: Profil pour la lecture des formats de fichiers
-      description: Lecture des formats de fichiers dans Vitam
-      app-name: FILE_FORMATS_APP
-      level:
-      roles:
-        - ROLE_GET_FILE_FORMATS
-
     - name: Profil Journal des Opérations
       description: Gestion des applications des Journaux des Opérations
       app-name: LOGBOOK_OPERATION_APP
@@ -146,25 +142,6 @@ customer-init:
         - ROLE_CREATE_HOLDING_FILLING_SCHEME
         - ROLE_GET_HOLDING_FILLING_SCHEME
         - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
-
-    - name: Profil pour la gestion des règles de gestion
-      description: Gestion des règles de gestion
-      app-name: RULES_APP
-      level:
-      roles:
-        - ROLE_GET_RULES
-        - ROLE_CREATE_RULES
-        - ROLE_UPDATE_RULES
-        - ROLE_DELETE_RULES
-        - ROLE_IMPORT_RULES
-        - ROLE_EXPORT_RULES
-
-    - name: Profil consultation des règles de gestion
-      description: Profil pour la consultation des règles de gestion dans Vitam sans mises à jour des règles
-      app-name: RULES_APP
-      level:
-      roles:
-        - ROLE_GET_RULES
 
     - name: Lancement de recherches par DSL
       description: Lancement de recherches par DSL dans Vitam
@@ -289,17 +266,6 @@ customer-init:
         - ROLE_DELETE_TRANSACTIONS
         - ROLE_UPDATE_UNITS_METADATA
         - ROLE_GET_SCHEMAS
-
-    - name: Profil pour les contrats de gestion
-      description: Contrats de gestion
-      app-name: MANAGEMENT_CONTRACT_APP
-      level:
-      roles:
-        - ROLE_GET_MANAGEMENT_CONTRACT
-        - ROLE_CREATE_MANAGEMENT_CONTRACT
-        - ROLE_UPDATE_MANAGEMENT_CONTRACT
-        - ROLE_DELETE_MANAGEMENT_CONTRACT
-
 
   # Other Default profiles for admin group
   admin-profiles:

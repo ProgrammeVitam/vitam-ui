@@ -35,13 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {of} from 'rxjs';
-import {AccessContractService} from '../../../access-contract/access-contract.service';
-import {SecurisationService} from '../../securisation.service';
+import { of } from 'rxjs';
+import { AccessContractService } from '../../../access-contract/access-contract.service';
+import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { BASE_URL, VitamUISnackBarService } from 'ui-frontend-common';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('SecurisationCheckTabComponent', () => {
   let component: SecurisationCheckTabComponent;
@@ -94,10 +97,12 @@ describe('SecurisationCheckTabComponent', () => {
     }]
   };
 
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+
   beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
-      params: of({tenantIdentifier: 1}),
-      data: of({appId: 'TRACEABILITY_APP'})
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'TRACEABILITY_APP' })
     };
 
     const accessContractServiceMock = {
@@ -105,15 +110,21 @@ describe('SecurisationCheckTabComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [ SecurisationCheckTabComponent ],
+      imports: [
+        HttpClientTestingModule,
+        TranslateModule.forRoot()
+      ],
+      declarations: [SecurisationCheckTabComponent],
       providers: [
-        {provide: AccessContractService, useValue: accessContractServiceMock},
-        {provide: SecurisationService, useValue: {}},
-        {provide: ActivatedRoute, useValue: activatedRouteMock}
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+        { provide: SecurisationService, useValue: {} },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy }
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

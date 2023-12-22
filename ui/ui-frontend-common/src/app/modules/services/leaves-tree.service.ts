@@ -26,7 +26,7 @@
  */
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isEmpty } from 'underscore';
+import { isEmpty } from 'lodash-es';
 import { FilingHoldingSchemeHandler, FilingHoldingSchemeNode, PagedResult, ResultFacet, SearchCriteriaDto } from '../models';
 import { FacetsUtils } from '../models/criteria/search-criteria.utils';
 import { LeavesTreeApiService } from './leaves-tree-api.service';

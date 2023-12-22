@@ -57,6 +57,7 @@ import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.internal.server.application.dao.ApplicationRepository;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
+import fr.gouv.vitamui.iam.internal.server.application.service.ExternalIdentifierConfiguration;
 import fr.gouv.vitamui.iam.internal.server.cas.service.CasInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
@@ -71,6 +72,7 @@ import fr.gouv.vitamui.iam.internal.server.externalparamprofile.dao.ExternalPara
 import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
+import fr.gouv.vitamui.iam.internal.server.group.service.GroupExportService;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.idp.converter.IdentityProviderConverter;
 import fr.gouv.vitamui.iam.internal.server.idp.dao.IdentityProviderRepository;
@@ -100,9 +102,7 @@ import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserInfoConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserInfoRepository;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserEmailInternalService;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
+import fr.gouv.vitamui.iam.internal.server.user.service.*;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
@@ -290,16 +290,16 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public UserInternalService userService(final SequenceGeneratorService sequenceGeneratorService,
-        final UserRepository userRepository,
-        final ProfileInternalService profileInternalService, final UserEmailInternalService userEmailInternalService,
-            final TenantRepository tenantRepository, final InternalSecurityService internalSecurityService, final CustomerRepository customerRepository,
-            final ProfileRepository profilRepository, final GroupInternalService groupInternalService, final GroupRepository groupRepository,
-            final IamLogbookService iamLogbookService, final UserConverter userConverter, final MongoTransactionManager mongoTransactionManager,
-            final LogbookService logbookService, final AddressService addressService, final ApplicationInternalService applicationInternalService,
-            final PasswordConfiguration passwordConfiguration) {
+                                           final UserRepository userRepository,
+                                           final ProfileInternalService profileInternalService, final UserEmailInternalService userEmailInternalService,
+                                           final TenantRepository tenantRepository, final InternalSecurityService internalSecurityService, final CustomerRepository customerRepository,
+                                           final ProfileRepository profilRepository, final GroupInternalService groupInternalService, final GroupRepository groupRepository,
+                                           final IamLogbookService iamLogbookService, final UserConverter userConverter, final MongoTransactionManager mongoTransactionManager,
+                                           final LogbookService logbookService, final AddressService addressService, final ApplicationInternalService applicationInternalService,
+                                           final PasswordConfiguration passwordConfiguration, final UserExportService userExportService, final UserInfoInternalService userInfoInternalService, final ConnectionHistoryService connectionHistoryService) {
         return new UserInternalService(sequenceGeneratorService, userRepository, groupInternalService, profileInternalService, userEmailInternalService,
                 tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository, iamLogbookService, userConverter,
-                mongoTransactionManager, logbookService, addressService, applicationInternalService, passwordConfiguration);
+                mongoTransactionManager, logbookService, addressService, applicationInternalService, passwordConfiguration, userExportService, userInfoInternalService, connectionHistoryService);
     }
 
     @Bean
@@ -311,15 +311,15 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public GroupInternalService groupInternalService(final SequenceGeneratorService sequenceGeneratorService,
-        final GroupRepository groupRepository,
-        final CustomerRepository customerRepository, final ProfileInternalService internalProfileService,
-        final UserRepository userRepository,
-        final InternalSecurityService internalSecurityService, final TenantRepository tenantRepository,
-        final IamLogbookService iamLogbookService,
-        final GroupConverter groupConverter, final LogbookService logbookService) {
+                                                     final GroupRepository groupRepository,
+                                                     final CustomerRepository customerRepository, final ProfileInternalService internalProfileService,
+                                                     final UserRepository userRepository,
+                                                     final InternalSecurityService internalSecurityService, final TenantRepository tenantRepository,
+                                                     final IamLogbookService iamLogbookService,
+                                                     final GroupConverter groupConverter, final LogbookService logbookService, final GroupExportService groupExportService) {
         return new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository, internalProfileService,
             userRepository,
-            internalSecurityService, tenantRepository, iamLogbookService, groupConverter, logbookService);
+            internalSecurityService, tenantRepository, iamLogbookService, groupConverter, logbookService, groupExportService);
     }
 
     @Bean
@@ -336,11 +336,13 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ApplicationInternalService applicationInternalService(final SequenceGeneratorService sequenceGeneratorService,
-        final ApplicationRepository applicationRepository, final ApplicationConverter applicationConverter,
-        final InternalSecurityService internalSecurityService) {
+    public ApplicationInternalService applicationInternalService(SequenceGeneratorService sequenceGeneratorService,
+                                                                 ApplicationRepository applicationRepository,
+                                                                 ApplicationConverter applicationConverter,
+                                                                 InternalSecurityService internalSecurityService,
+                                                                 ExternalIdentifierConfiguration enabledApplicationConfiguration) {
         return new ApplicationInternalService(sequenceGeneratorService, applicationRepository, applicationConverter,
-            internalSecurityService);
+            internalSecurityService, enabledApplicationConfiguration);
     }
 
     @Bean

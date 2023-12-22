@@ -40,7 +40,7 @@ import fr.gouv.vitamui.commons.api.enums.OperationActionStatus;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamSearchRequestDto;
-import fr.gouv.vitamui.referential.common.dto.VitamUIProcessDetailResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
 import org.junit.Before;
 import org.junit.Test;

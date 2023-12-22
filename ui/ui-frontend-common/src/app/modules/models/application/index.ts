@@ -36,3 +36,5 @@
  */
 export * from './application.interface';
 export * from './category.interface';
+export * from './ui.interface';
+export * from './vitam-configuration.interface';

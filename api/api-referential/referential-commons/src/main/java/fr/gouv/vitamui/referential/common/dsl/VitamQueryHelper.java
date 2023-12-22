@@ -158,6 +158,13 @@ public class VitamQueryHelper {
                             query.add(eq(searchKey, evType));
                             break;
                         }
+                        // in list of string EvType
+                        if(entry.getValue() instanceof List){
+                            final List<String> stringValues = (ArrayList<String>) entry.getValue();
+                            query.add(in(searchKey, stringValues.stream().toArray(String[]::new)));
+                            break;
+                        }
+
                         break;
                     case STATUS:
                         // in list of string operation

@@ -69,6 +69,7 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
         authnRequestBinding: identityProvider.authnRequestBinding,
         authnRequestSigned: identityProvider.authnRequestSigned,
         wantsAssertionsSigned: identityProvider.wantsAssertionsSigned,
+        propagateLogout: identityProvider.propagateLogout,
         maximumAuthenticationLifetime: identityProvider.maximumAuthenticationLifetime,
         autoProvisioningEnabled: identityProvider.autoProvisioningEnabled,
         clientId: identityProvider.clientId,

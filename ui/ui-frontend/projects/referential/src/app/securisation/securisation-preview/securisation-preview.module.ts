@@ -51,6 +51,7 @@ import {VitamUICommonModule} from 'ui-frontend-common';
 import {SecurisationCheckTabComponent} from './securisation-check-tab/securisation-check-tab.component';
 import {SecurisationInformationTabComponent} from './securisation-information-tab/securisation-information-tab.component';
 import {SecurisationPreviewComponent} from './securisation-preview.component';
+import { PipesModule } from '../../shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [SecurisationPreviewComponent, SecurisationInformationTabComponent, SecurisationCheckTabComponent],
@@ -68,7 +69,8 @@ import {SecurisationPreviewComponent} from './securisation-preview.component';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatOptionModule,
-    MatTabsModule
+    MatTabsModule,
+    PipesModule
   ],
   exports: [
     SecurisationPreviewComponent

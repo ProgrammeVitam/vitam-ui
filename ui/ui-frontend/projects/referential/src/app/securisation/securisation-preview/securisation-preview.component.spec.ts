@@ -34,19 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ActivatedRoute} from '@angular/router';
-import {of} from 'rxjs';
+import { of } from 'rxjs';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ExternalParametersService } from 'ui-frontend-common';
-import {SecurisationService} from '../securisation.service';
-import {SecurisationPreviewComponent} from './securisation-preview.component';
+import { ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
+import { SecurisationService } from '../securisation.service';
+import { SecurisationPreviewComponent } from './securisation-preview.component';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 
-@Pipe({name: 'truncate'})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -103,26 +104,25 @@ describe('SecurisationPreviewComponent', () => {
     }]
   };
 
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+
   beforeEach(waitForAsync(() => {
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
       getUserExternalParameters: () => of(parameters)
     };
 
-    const activatedRouteMock = {
-      params: of({tenantIdentifier: 1})
-    };
-
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        TranslateModule.forRoot()
       ],
-      declarations: [SecurisationPreviewComponent,MockTruncatePipe],
+      declarations: [SecurisationPreviewComponent, MockTruncatePipe, EventTypeBadgeClassPipe],
       providers: [
-        {provide: SecurisationService, useValue: {}},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock},
-        {provide: ActivatedRoute, useValue: activatedRouteMock}
+        { provide: SecurisationService, useValue: {} },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

@@ -79,8 +79,8 @@ export class NavbarComponent {
     this.portalUrl = startupService.getPortalUrl();
     this.base64Logo = startupService.getLogo();
 
-    this.trustedAppLogoUrl = startupService.getAppLogoURL() ?
-    this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL()) : null;
+    // this.trustedAppLogoUrl = startupService.getAppLogoURL() ?
+    // this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL()) : null;
 
     if (this.authService.user) {
       this.currentUser = this.authService.user;

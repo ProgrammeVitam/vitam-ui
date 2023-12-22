@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { AccessContract, Option, diff } from 'ui-frontend-common';
-import { isEmpty } from 'underscore';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { AccessContract, Agency, diff, Option, VitamuiAutocompleteMultiselectOptions } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
 import { AgencyService } from '../../../agency/agency.service';
 import { AccessContractService } from '../../access-contract.service';
 
@@ -48,39 +48,36 @@ import { AccessContractService } from '../../access-contract.service';
   templateUrl: './access-contract-usage-and-services-tab.component.html',
   styleUrls: ['./access-contract-usage-and-services-tab.component.scss'],
 })
-export class AccessContractUsageAndServicesTabComponent implements OnInit {
-  private _accessContract: AccessContract;
-  private _initialAccessContract: AccessContract;
-
-  @Input()
-  public set accessContract(accessContract: AccessContract) {
-    this.initAccessContract(accessContract);
-    this._initialAccessContract = this.deepClone(accessContract);
-    this._accessContract = accessContract;
-
-    this.resetForm(this._initialAccessContract);
+export class AccessContractUsageAndServicesTabComponent {
+  @Input() set accessContract(accessContract: AccessContract) {
+    this.setAccessContract(accessContract);
+    this.resetForm(this.accessContract);
   }
 
-  public get accessContract(): AccessContract {
+  get accessContract(): AccessContract {
     return this._accessContract;
   }
 
-  @Input() readOnly: boolean;
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  form: FormGroup;
-  submitting = false;
-  changed = false;
-  originatingAgencies: Option[];
-
-  // FIXME: Get list from common var ?
-  usages: Option[] = [
+  public form: FormGroup;
+  public submited = false;
+  public originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions;
+  public usages: Option[] = [
     { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
     { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
     { key: 'Thumbnail', label: 'Vignettes', info: '' },
     { key: 'TextContent', label: 'Contenu textuel', info: '' },
     { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
   ];
+
+  // tslint:disable-next-line:variable-name
+  private _accessContract: AccessContract;
+
+  previousValue = (): AccessContract => {
+    return this._accessContract;
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -90,108 +87,129 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
     this.initForm();
   }
 
-  ngOnInit(): void {
-    this.loadAgencies();
-    this.initTogglingLogic(this.form.controls.everyOriginatingAgency);
-    this.initTogglingLogic(this.form.controls.everyDataObjectVersion);
-    this.form.valueChanges
-      .pipe(
-        map((value) => JSON.stringify(diff(value, this._initialAccessContract)) !== '{}'),
-        tap({
-          next: (value) => {
-            this.changed = value;
-          },
-        })
-      )
-      .subscribe((value) => this.updated.emit(value));
+  public unChanged(): boolean {
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    this.updated.emit(!unchanged);
+
+    return unchanged;
+  }
+
+  public isInvalid(): boolean {
+    const isInvalid = this.form.invalid;
+    this.isFormValid.emit(!isInvalid);
+    return isInvalid;
   }
 
   public onSubmit() {
-    this.submitting = true;
+    this.submited = true;
     this.prepareSubmit().subscribe(
       () => {
-        this.accessContractService.get(this.accessContract.identifier).subscribe((response) => {
-          this._initialAccessContract = this.deepClone(response);
-
-          /**
-           * Have to assign without overwriting "this.accessContract" reference because
-           * don't have mecanism to update access contract list properly.
-           *
-           * TODO: Improve access contracts management by extracting life cycle into a specialized service.
-           */
-          Object.assign(this.accessContract, response);
+        this.accessContractService.get(this._accessContract.identifier).subscribe((response) => {
+          this.submited = false;
+          this.accessContract = response;
         });
-        this.submitting = false;
       },
       () => {
-        this.submitting = false;
-      },
-      () => {
-        this.submitting = false;
+        this.submited = false;
       }
     );
   }
 
-  public prepareSubmit(): Observable<AccessContract> {
-    const { id, identifier } = this._initialAccessContract;
-    const data = this.form.getRawValue();
-    const delta = diff(data, this._initialAccessContract); // If items in arrays are same but not in same ordre then the diff will detect a change.
-    const dataToPatch = { id, identifier, ...delta };
-
-    if (isEmpty(delta)) return of(null);
-
-    return of(dataToPatch).pipe(
-      switchMap((formData: { id: string; [key: string]: any }) =>
+  private prepareSubmit(): Observable<AccessContract> {
+    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+      filter((formData) => !isEmpty(formData)),
+      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      switchMap((formData: { id: string;[key: string]: any }) =>
         this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
       )
     );
   }
 
-  public resetForm(accessContract: AccessContract) {
-    this.form.reset(accessContract);
-    this.form.controls.originatingAgencies.setValidators(accessContract.everyOriginatingAgency ? [] : Validators.required);
-    this.form.controls.originatingAgencies.setValue(accessContract.originatingAgencies || [], { emitEvent: false });
-    this.form.controls.dataObjectVersion.setValidators(accessContract.everyDataObjectVersion ? [] : Validators.required);
-    this.form.controls.dataObjectVersion.setValue(accessContract.dataObjectVersion || [], { emitEvent: false });
+  private setAccessContract(accessContract: AccessContract): void {
+
+    if (!accessContract.originatingAgencies) {
+      accessContract.originatingAgencies = [];
+    }
+
+    if (!accessContract.dataObjectVersion) {
+      accessContract.dataObjectVersion = [];
+    }
+
+    this._accessContract = { ...accessContract, originatingAgencies: accessContract.originatingAgencies?.sort() };
+
+    this.agencyService
+      .getAll()
+      .pipe(
+        map((agencies: Agency[]) => {
+          const options: Option[] = agencies.map((agency) => ({ label: agency.identifier + ' - ' + agency.name, key: agency.identifier }));
+          return { options };
+        }),
+        tap((options: VitamuiAutocompleteMultiselectOptions) => (this.originatingAgenciesOptions = options))
+      )
+      .subscribe(() => {
+        this.form.controls.originatingAgencies.setValue(accessContract.originatingAgencies);
+        this.form.controls.dataObjectVersion.setValue(accessContract.dataObjectVersion);
+      });
   }
 
   private initForm(): void {
     this.form = this.formBuilder.group({
-      everyOriginatingAgency: [true, [Validators.required]],
-      originatingAgencies: [null, [Validators.required]],
-      everyDataObjectVersion: [true, [Validators.required]],
-      dataObjectVersion: [null, [Validators.required]],
+      everyOriginatingAgency: [true, Validators.required],
+      originatingAgencies: [[]],
+      everyDataObjectVersion: [true, Validators.required],
+      dataObjectVersion: [[]],
     });
-    if (this.readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+
+    this.form.controls.everyOriginatingAgency.valueChanges.subscribe((allAgencies) => {
+      if (allAgencies) {
+        // remove required validator on originatingAgencySelect
+        this.form.controls.originatingAgencies.setValidators([]);
+        this.form.controls.originatingAgencies.setValue([]);
+        this.form.controls.originatingAgencies.updateValueAndValidity();
+      } else {
+        // add required validator on originatingAgencySelect
+        this.form.controls.originatingAgencies.setValidators(Validators.required);
+        this.form.controls.originatingAgencies.markAllAsTouched();
+        this.form.controls.originatingAgencies.updateValueAndValidity();
+      }
+    });
+
+    this.form.controls.everyDataObjectVersion.valueChanges.subscribe((allUsage) => {
+      if (allUsage) {
+        // remove required validator on usageSelect
+        this.form.controls.dataObjectVersion.setValidators([]);
+        this.form.controls.dataObjectVersion.setValue([]);
+        this.form.controls.dataObjectVersion.updateValueAndValidity();
+      } else {
+        // add required validator on usageSelect
+        this.form.controls.dataObjectVersion.setValidators(Validators.required);
+        this.form.controls.dataObjectVersion.markAllAsTouched();
+        this.form.controls.dataObjectVersion.updateValueAndValidity();
+      }
+    });
+  }
+
+  private resetForm(accessContract: AccessContract): void {
+    if (!this.form) {
+      this.initForm();
     }
-  }
 
-  private initAccessContract(accessContract: AccessContract): AccessContract {
-    accessContract.originatingAgencies = accessContract.originatingAgencies || [];
-    accessContract.dataObjectVersion = accessContract.dataObjectVersion || [];
+    if (accessContract.everyOriginatingAgency) {
+      // remove required validator on originatingAgencySelect
+      this.form.controls.originatingAgencies.setValidators([]);
+    } else {
+      // add required validator on originatingAgencySelect
+      this.form.controls.originatingAgencies.setValidators(Validators.required);
+    }
 
-    return accessContract;
-  }
+    if (accessContract.everyDataObjectVersion) {
+      // remove required validator on usageSelect
+      this.form.controls.dataObjectVersion.setValidators([]);
+    } else {
+      // add required validator on usageSelect
+      this.form.controls.dataObjectVersion.setValidators(Validators.required);
+    }
 
-  private loadAgencies = () => {
-    this.agencyService
-      .getAll()
-      .subscribe((agencies) => (this.originatingAgencies = agencies.map((x) => ({ label: x.name, key: x.identifier }))));
-  };
-
-  private initTogglingLogic = (abstractControl: AbstractControl): void => {
-    abstractControl.valueChanges.subscribe((value: boolean) => {
-      abstractControl.setValidators(value ? [] : [Validators.required]);
-      if (!value) abstractControl.markAllAsTouched();
-      abstractControl.updateValueAndValidity({ emitEvent: false });
-    });
-  };
-
-  private deepClone(object: any): any {
-    return JSON.parse(JSON.stringify(object));
+    this.form.reset(accessContract, { emitEvent: false });
   }
 }

@@ -34,18 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DialogInputData } from './dialog-input-data.interface';
 
 @Component({
   selector: 'vitamui-common-close-popup-dialog',
   templateUrl: './close-popup-dialog.component.html',
   styleUrls: ['./close-popup-dialog.component.scss']
 })
-export class ClosePopupDialogComponent implements OnInit {
+export class ClosePopupDialogComponent {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  constructor(
+    @Inject(MAT_DIALOG_DATA)
+    public data?: DialogInputData
+  ) { }
 
 }

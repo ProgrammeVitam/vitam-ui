@@ -197,7 +197,7 @@ public class CommonConstants {
 
     public static final String SITE_CODE = "siteCode";
 
-    public static final String CENTER_CODE = "centerCode";
+    public static final String CENTER_CODES = "centerCodes";
 
     public static final String INTERNAL_CODE = "internalCode";
 
@@ -244,6 +244,9 @@ public class CommonConstants {
     public static final String USER_INFO_ID = "userInfoId";
 
     public static final String USER_INFO_HISTORY = "/{id}/history";
+
+    public static final String CONNECTION_HISTORY_EXPORT = "/connection-history" + PATH_EXPORT;
+
 
     /**
      * Constant contains application list for portal/header applications display

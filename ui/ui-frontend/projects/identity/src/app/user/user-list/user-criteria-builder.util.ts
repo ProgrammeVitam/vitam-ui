@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { buildCriteriaFromFilters, Criterion, Operators, SearchQuery } from 'ui-frontend-common';
+import {buildCriteriaFromFilters, Criterion, Operators, QueryOperator, SearchQuery} from 'ui-frontend-common';
 
 const USER_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<Criterion | SearchQuery> }> = {
   status: (statusList: string[]): SearchQuery[] => {
@@ -52,7 +52,7 @@ const USER_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<
       );
     }
 
-    return [{ queryOperator: 'AND', criteria: andCriterionList }];
+    return [{ queryOperator: QueryOperator.AND, criteria: andCriterionList }];
   },
   level: (levelList: string[]): Criterion[] => {
     if (levelList.length === 0) {

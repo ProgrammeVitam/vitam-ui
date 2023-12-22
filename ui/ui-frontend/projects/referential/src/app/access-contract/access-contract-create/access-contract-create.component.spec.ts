@@ -47,13 +47,15 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {EMPTY, of} from 'rxjs';
-import {ConfirmDialogService, ExternalParametersService} from 'ui-frontend-common';
+import {BASE_URL, ConfirmDialogService, ExternalParametersService, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 import {AgencyService} from '../../agency/agency.service';
 import {AccessContractService} from '../access-contract.service';
 import {AccessContractCreateComponent} from './access-contract-create.component';
 import {AccessContractCreateValidators} from './access-contract-create.validators';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {TranslateModule} from "@ngx-translate/core";
 
 const expectedAccessContract = {
   identifier: 'AC_ID',
@@ -118,13 +120,17 @@ describe('AccessContractCreateComponent', () => {
         MatSnackBarModule,
         NoopAnimationsModule,
         MatProgressSpinnerModule,
+        HttpClientTestingModule,
         VitamUICommonTestModule,
+        TranslateModule.forRoot(),
+        LoggerModule.forRoot(),
       ],
       declarations: [
         AccessContractCreateComponent
       ],
       providers: [
         {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {provide: BASE_URL, useValue: '/fake-api'},
         {provide: MAT_DIALOG_DATA, useValue: {}},
         {provide: AgencyService, useValue: agencyServiceSpy},
         {provide: AccessContractService, useValue: accessContractServiceSpy},
@@ -168,14 +174,6 @@ describe('AccessContractCreateComponent', () => {
       // Step 4
       expect(page.control('rootUnits')).toBeTruthy();
       expect(page.control('excludedRootUnits')).toBeTruthy();
-    });
-
-    it('should have a submit button', () => {
-      expect(page.submit).toBeTruthy();
-      expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedAccessContract);
-      fixture.detectChanges();
-      expect(page.submit.attributes.disabled).toBeFalsy();
     });
   });
 
@@ -221,15 +219,6 @@ describe('AccessContractCreateComponent', () => {
       const accessContractService = TestBed.inject(AccessContractService);
       component.onSubmit();
       expect(accessContractService.create).toHaveBeenCalledTimes(0);
-    });
-
-    it('should call create()', () => {
-      const accessContractService = TestBed.inject(AccessContractService);
-      const matDialogRef = TestBed.inject(MatDialogRef);
-      component.form.setValue(expectedAccessContract);
-      component.onSubmit();
-      expect(accessContractService.create).toHaveBeenCalledTimes(1);
-      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

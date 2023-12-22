@@ -37,6 +37,7 @@
 import {HttpClient, HttpHeaders } from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {BASE_URL } from 'ui-frontend-common';
+import { ReferentialTypes } from '../../shared/import-dialog/import-dialog-param.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -46,9 +47,11 @@ export class ReferentialImportApiService {
   constructor(private http: HttpClient, @Inject(BASE_URL) private baseUrl: string) {
   }
 
-  importReferential(referential: string, file: File, headers?: HttpHeaders) {
+  importReferential(referential: ReferentialTypes, file: File) {
+    const headers = new HttpHeaders().append('X-By-Passed-Error', '400');
     const formData = new FormData();
     formData.append('file', file);
+
     return this.http.post(this.baseUrl + '/' + referential + '/import', formData, {headers, responseType: 'text'});
   }
 }

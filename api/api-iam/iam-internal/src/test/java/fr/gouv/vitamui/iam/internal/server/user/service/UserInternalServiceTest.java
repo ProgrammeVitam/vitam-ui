@@ -110,6 +110,8 @@ public final class UserInternalServiceTest {
 
     private SequenceGeneratorService sequenceGeneratorService;
 
+    private ConnectionHistoryService connectionHistoryService;
+
     private ProfileRepository profileRepository;
 
     private TenantRepository tenantRepository;
@@ -119,6 +121,10 @@ public final class UserInternalServiceTest {
     private final UserConverter userConverter = new UserConverter(groupRepository, addressConverter);
 
     private ApplicationInternalService applicationInternalService;
+
+    private UserExportService userExportService;
+
+    private UserInfoInternalService userInfoInternalService;
 
     @Before
     public void setUp() {
@@ -134,11 +140,10 @@ public final class UserInternalServiceTest {
         internalGroupService = mock(GroupInternalService.class);
         addressService = mock(AddressService.class);
         applicationInternalService = mock(ApplicationInternalService.class);
-
-        internalUserService = new UserInternalService(sequenceGeneratorService, userRepository, internalGroupService, internalProfileService,
-                userEmailInternalService, tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository,
-                mock(IamLogbookService.class), userConverter, null, null, addressService, applicationInternalService,  null);
-
+        userExportService = mock(UserExportService.class);
+        userInfoInternalService = mock(UserInfoInternalService.class);
+        connectionHistoryService = mock(ConnectionHistoryService.class);
+        internalUserService = new UserInternalService(sequenceGeneratorService, userRepository, internalGroupService, internalProfileService, userEmailInternalService, tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository, mock(IamLogbookService.class), userConverter, null, null, addressService, applicationInternalService, null, userExportService, userInfoInternalService, connectionHistoryService);
         tokenRepository = mock(TokenRepository.class);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
@@ -192,7 +197,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(user);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -375,7 +380,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(userRepository.existsById(any())).thenReturn(true);
@@ -431,7 +436,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(userRepository.existsById(any())).thenReturn(true);
@@ -477,7 +482,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(userRepository.existsById(any())).thenReturn(true);
@@ -546,7 +551,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(user);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -650,7 +655,7 @@ public final class UserInternalServiceTest {
         groupDto.setCustomerId(user.getCustomerId());
         groupDto.setLevel(user.getLevel());
 
-        when(userRepository.findByEmail(email)).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCase(email)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -702,7 +707,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(user);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -796,7 +801,7 @@ public final class UserInternalServiceTest {
         groupDto.setCustomerId(user.getCustomerId());
         groupDto.setLevel(user.getLevel());
 
-        when(userRepository.findByEmail(email)).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCase(email)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 

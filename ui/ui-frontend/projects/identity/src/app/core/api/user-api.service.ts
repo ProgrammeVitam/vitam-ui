@@ -34,17 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, SearchQuery, User } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserApiService extends BaseHttpClient<User> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/users');
   }
@@ -61,7 +60,7 @@ export class UserApiService extends BaseHttpClient<User> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
@@ -69,16 +68,20 @@ export class UserApiService extends BaseHttpClient<User> {
     return super.create(user, headers);
   }
 
-  patch(userPartial: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<User> {
+  patch(userPartial: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<User> {
     return super.patch(userPartial, headers);
   }
 
   getLevels(query?: SearchQuery, headers?: HttpHeaders): Observable<string[]> {
-    let params =  new HttpParams();
+    let params = new HttpParams();
     if (query) {
       params = params.set('criteria', JSON.stringify(query));
     }
 
     return this.http.get<string[]>(this.apiUrl + '/levels', { params, headers });
+  }
+
+  export(): Observable<HttpResponse<Blob>> {
+    return this.http.get(this.apiUrl + '/export', { observe: 'response', responseType: 'blob' });
   }
 }

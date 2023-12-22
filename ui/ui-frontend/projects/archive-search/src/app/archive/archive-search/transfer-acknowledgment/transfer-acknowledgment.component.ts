@@ -148,16 +148,16 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     this.dialogRef.close(true);
   }
 
-  initializeFileToUpload(files: FileList) {
+  initializeFileToUpload(files: File[]) {
     if (files) {
-      this.fileToUpload = files.item(0);
+      this.fileToUpload = files[0];
 
       this.fileName = this.fileToUpload.name;
       this.fileSize = this.fileToUpload.size;
     }
   }
 
-  handleFile(files: FileList) {
+  handleFile(files: File[]) {
     this.initializeParameters();
     this.initializeFileToUpload(files);
 
@@ -176,12 +176,39 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     }
   }
 
+  initializeFileListToUpload(files: FileList) {
+    if (files) {
+      this.fileToUpload = files.item(0);
+
+      this.fileName = this.fileToUpload.name;
+      this.fileSize = this.fileToUpload.size;
+    }
+  }
+
+  handleFileList(files: FileList) {
+    this.initializeParameters();
+    this.initializeFileListToUpload(files);
+
+    const transformer = new BytesPipe(this.logger);
+    this.fileSizeString = transformer.transform(this.fileSize);
+
+    if (!this.checkFileExtension(this.fileName)) {
+      this.message = this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
+      this.hasError = true;
+      return;
+    } else {
+      if (this.fileSize > FILE_MAX_SIZE) {
+        this.logger.error(this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.AUTHORIZED_SIZE'));
+        this.hasFileSizeError = true;
+      }
+    }
+  }
   addTransferAtrFile() {
     this.atrXmlFile.nativeElement.click();
   }
 
   handleFileInput(files: FileList) {
-    this.handleFile(files);
+    this.handleFileList(files);
   }
 
   onDragOver(inDropZone: boolean) {
@@ -192,7 +219,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     this.hasDropZoneOver = inDropZone;
   }
 
-  onDropped(files: FileList) {
+  onDropped(files: File[]) {
     this.hasDropZoneOver = false;
     this.handleFile(files);
   }

@@ -50,23 +50,20 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -143,4 +140,21 @@ public class AccessContractInternalController {
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return accessContractInternalService.findHistoryByIdentifier(vitamContext, id);
     }
+
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public ResponseEntity<Void> importAccessContracts(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("importing access contracts file {}", fileName);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return accessContractInternalService.importAccessContracts(vitamContext, file);
+    }
+
+    @ApiOperation(value = "Export access contract to a csv file")
+    @GetMapping(path = RestApi.EXPORT_CSV)
+    public ResponseEntity<Resource> exportAccessContracts() throws IOException {
+        LOGGER.debug("export all access contract to csv file");
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        final Resource exportedResult = accessContractInternalService.exportAccessContracts(vitamContext);
+        return new ResponseEntity<>(exportedResult, HttpStatus.OK);
+    }
+
 }

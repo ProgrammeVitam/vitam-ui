@@ -49,6 +49,7 @@ export enum Operators {
   notin = 'NOTIN',
   elemMatch = 'ELEMMATCH',
   isNull = 'ISNULL',
+  startWithIgnoreCase = 'STARTWITHIGNORECASE',
   startWith = 'STARTWITH',
   count = 'COUNT',
   isNotNull = 'ISNOTNULL',

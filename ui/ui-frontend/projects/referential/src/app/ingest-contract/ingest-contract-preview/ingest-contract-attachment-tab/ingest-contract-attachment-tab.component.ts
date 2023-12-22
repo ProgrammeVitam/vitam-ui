@@ -37,12 +37,9 @@
 /* tslint:disable:object-literal-key-quotes quotemark */
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import '@angular/localize/init';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-import { AccessContract, ExternalParameters, ExternalParametersService, IngestContract } from 'ui-frontend-common';
-import '@angular/localize/init';
+import { AccessContract, ExternalParameters, ExternalParametersService, IngestContract, VitamUISnackBarService } from 'ui-frontend-common';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 
 @Component({
@@ -51,18 +48,23 @@ import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-updat
   styleUrls: ['./ingest-contract-attachment-tab.component.scss'],
 })
 export class IngestContractAttachmentTabComponent implements OnInit {
+  @Input() tenantIdentifier: number;
+  @Input() readOnly: boolean;
+  @Input() set ingestContract(ingestContract: IngestContract) {
+    this._ingestContract = ingestContract;
+    this.initSearchAccessContractIdAndTitles();
+  }
+
+  get ingestContract(): IngestContract {
+    return this._ingestContract;
+  }
+
   submited = false;
-
-  @Input()
-  tenantIdentifier: number;
-
-  @Input()
-  readOnly: boolean;
-
   accessContractId: string;
-
   accessContracts: AccessContract[];
   titles: any = {};
+  linkParentIdTitle: string;
+  checkParentIdTitles: string[] = [];
 
   // tslint:disable-next-line:variable-name
   private _ingestContract: IngestContract;
@@ -71,37 +73,23 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     return this._ingestContract;
   };
 
-  @Input()
-  set ingestContract(ingestContract: IngestContract) {
-    this._ingestContract = ingestContract;
-  }
-
-  get ingestContract(): IngestContract {
-    return this._ingestContract;
-  }
-
   constructor(
     private unitService: SearchUnitApiService,
     private externalParameterService: ExternalParametersService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
-  ) {}
+    private vitamUISnackBarService: VitamUISnackBarService
+  ) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  private initSearchAccessContractIdAndTitles(): void {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-        this.accessContractId = accessContratId;
+      const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+      if (accessContractId && accessContractId.length > 0) {
+        this.accessContractId = accessContractId;
         this.initTitles();
       } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
-          null,
-          {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          }
-        );
+        this.vitamUISnackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
       }
     });
   }
@@ -112,9 +100,16 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     this.unitService.getByDsl(null, this.getDslForRootNodes(), headers).subscribe((response) => {
       if (response.httpCode === 200) {
         this.titles = {};
+        this.checkParentIdTitles = [];
         response.$results.forEach((result: any) => {
-          this.titles[result['#id']] = result.Title;
+          if (this.ingestContract.checkParentId.includes(result['#id'])) {
+            this.checkParentIdTitles.push(result.Title);
+          }
+          if (this.ingestContract.linkParentId === result['#id']) {
+            this.linkParentIdTitle = result.Title;
+          }
         });
+        this.checkParentIdTitles.sort();
       }
     });
   }
@@ -149,6 +144,7 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     if (!this.accessContractId) {
       return;
     }
+
     this.dialog.open(IngestContractNodeUpdateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
@@ -157,10 +153,12 @@ export class IngestContractAttachmentTabComponent implements OnInit {
         accessContractId: this.accessContractId,
         tenantIdentifier: this.tenantIdentifier,
       },
-    });
-  }
-
-  getTitle(id: string) {
-    return this.titles[id] || id;
+    })
+      .afterClosed()
+      .subscribe((updatedIngestContract: IngestContract) => {
+        if (updatedIngestContract) {
+          this.ingestContract = updatedIngestContract;
+        }
+      });
   }
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -74,6 +75,9 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
     @MockBean
     private UserRepository userRepository;
 
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
+
     private static final String ID = "ID";
 
     private static final String CUSTOMER_ID = "CUSTOMER_ID";
@@ -100,8 +104,7 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
 
     @Before
     public void setup() {
-        service = new GroupInternalService(new SequenceGeneratorService(sequenceRepository), repository, customerRepository, internalProfileService, userRepository, internalSecurityService,
-                tenantRepository, iamLogbookService, groupConverter, null);
+        service = new GroupInternalService(new SequenceGeneratorService(sequenceRepository), repository, customerRepository, internalProfileService, userRepository, internalSecurityService, tenantRepository, iamLogbookService, groupConverter, null, null);
 
         repository.deleteAll();
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);

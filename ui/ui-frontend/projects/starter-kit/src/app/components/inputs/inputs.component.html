@@ -1,270 +1,291 @@
 <div class="d-flex flex-column">
-    <h4>Simple</h4>
-    <div class="d-flex flex-column">
-        <div class="row m-0 pl-3 pr-3 mt-4">
-            <vitamui-common-input [formControl]="streetEmpty" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
-            <vitamui-common-input [formControl]="streetInvalid" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
-            <vitamui-common-input disabled [formControl]="streetDisable" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
-        </div>
-        <div class="row m-0">
-            <div class="col-8">
-                <vitamui-common-editable-input [formControl]="streetEmpty" [label]="'Editable input'">
-                </vitamui-common-editable-input>
-            </div>
-            <vitamui-common-editable-input [formControl]="streetDisable" [label]="'Editable input disabled'" [disabled]="true">
-            </vitamui-common-editable-input>
-        </div>
+  <h4>Simple</h4>
+  <div class="d-flex flex-column">
+    <div class="row m-0 pl-3 pr-3 mt-4">
+      <vitamui-common-input [formControl]="streetEmpty" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
+      <vitamui-common-input [formControl]="streetInvalid" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
+      <vitamui-common-input
+        [formControl]="streetDisable"
+        [placeholder]="'COMMON.ADRESS.STREET' | translate"
+        disabled
+      ></vitamui-common-input>
     </div>
-    <h4>Email</h4>
-    <div class="d-flex flex-column">
-        <div class="row m-0 pl-3 mt-4">
-
-            <vitamui-common-input class="field-email" [formControl]="emailFirstPart" placeholder="Adresse e-mail">
-            </vitamui-common-input>
-
-            <span class="d-flex mx-2 mt-1 layer text-center">@</span>
-
-            <mat-form-field class="field-domain vitamui-mat-select">
-                <mat-select [formControl]="domain" panelClass="vitamui-mat-select">
-                    <mat-option value="test.fr">test.fr</mat-option>
-                    <mat-option value="test2.com">test2.com</mat-option>
-                </mat-select>
-                <div class="select-arrow">
-                    <i class="material-icons">keyboard_arrow_up</i>
-                    <i class="material-icons">keyboard_arrow_down</i>
-                </div>
-            </mat-form-field>
-        </div>
-        <div class="row m-0">
-            <div class="col-8">
-                <vitamui-common-editable-email-input [formControl]="email" [label]="'Editable email'"
-                    [domains]="['test.fr', 'test.com', 'test.de']"></vitamui-common-editable-email-input>
-            </div>
-            <vitamui-common-editable-email-input [formControl]="email" [label]="'Editable email disabled'"
-                [domains]="['test.fr', 'test.com', 'test.de']" [disabled]="true"></vitamui-common-editable-email-input>
-
-        </div>
-        <div class="row m-0">
-            <div class="col-8">
-                <vitamui-common-multiple-email-input [formControl]="emails" [label]="'Editable multiple email input'">
-                </vitamui-common-multiple-email-input>
-            </div>
-            <vitamui-common-multiple-email-input [formControl]="emails"
-                [label]="'Editable multiple email input disabled'" [disabled]="true">
-            </vitamui-common-multiple-email-input>
-        </div>
-    </div>
-
-    <h4>List</h4>
-    <div class="d-flex flex-column">
-        <div class="row m-0 pl-3 pr-3 mt-4">
-            <vitamui-common-list-input [formControl]="list" [placeholder]="'Multiple input'">
-            </vitamui-common-list-input>
-        </div>
-    </div>
-    <h4>Select</h4>
-    <div class="d-flex flex-column">
-        <div class="row m-0 mt-4">
-            <div class="col-8">
-                <mat-form-field class="mr-3 field-domain vitamui-mat-select">
-                    <mat-select [formControl]="country" panelClass="vitamui-mat-select">
-                      <mat-option *ngFor="let country of countries" [value]="country.key">
-                        {{country.label}}
-                      </mat-option>
-                    </mat-select>
-                    <div class="select-arrow">
-                        <i class="material-icons">keyboard_arrow_up</i>
-                        <i class="material-icons">keyboard_arrow_down</i>
-                    </div>
-                </mat-form-field>
-            </div>
-            <mat-form-field class="mr-3 field-domain vitamui-mat-select">
-                <mat-select [formControl]="country" panelClass="vitamui-mat-select" disabled>
-                  <mat-option *ngFor="let country of countries" [value]="country.key">
-                    {{country.label}}
-                  </mat-option>
-                </mat-select>
-                <div class="select-arrow">
-                    <i class="material-icons">keyboard_arrow_up</i>
-                    <i class="material-icons">keyboard_arrow_down</i>
-                </div>
-            </mat-form-field>
-
-        </div>
-        <div class="row m-0 mt-4">
-            <div class="col-8">
-                <vitamui-common-editable-select [formControl]="country" [label]="'Editable select'">
-                    <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
-                    <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
-                    <vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
-                </vitamui-common-editable-select>
-            </div>
-            <vitamui-common-editable-select [formControl]="country" [label]="'Editable select disabled'"
-                [disabled]="true">
-                <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
-                <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
-                <vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
-            </vitamui-common-editable-select>
-        </div>
-    </div>
-
-    <h4>Auto complete</h4>
-
-    <div class="d-flex justify-content-around">
-        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompleteSelect" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate" required>
-            <vitamui-common-input-error *ngIf="autoCompleteSelect.touched && autoCompleteSelect.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="autoCompleteSelect.touched && autoCompleteSelect.hasError('match')">{{'COMMON.INCORRECT_VALUE' | translate}}</vitamui-common-input-error>
-        </vitamui-common-vitamui-autocomplete>
-
-        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompleteSelectDisabled" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate" disable="true">
-        </vitamui-common-vitamui-autocomplete>
-    </div>
-    <h4>Textarea</h4>
-    <div class="d-flex flex-column">
-        <div class="row m-0 mt-4">
-            <div class="col-8">
-                <vitamui-common-textarea [formControl]="textarea" placeholder="Textarea">
-                </vitamui-common-textarea>
-            </div>
-            <vitamui-common-textarea [formControl]="textarea" placeholder="Textarea" disabled>
-            </vitamui-common-textarea>
-        </div>
-        <div class="row m-0 mt-4">
-            <div class="col-8">
-                <vitamui-common-editable-textarea [formControl]="textarea" [label]="'Editable textarea'">
-                </vitamui-common-editable-textarea>
-            </div>
-            <vitamui-common-editable-textarea [formControl]="textarea" [label]="'Editable textarea disabled'"
-                [disabled]="true">
-            </vitamui-common-editable-textarea>
-        </div>
-    </div>
-
-    <h4>Level</h4>
-    <div class="d-flex flex-column">
-        <div class="row m-0 mt-4 pl-3">
-            <vitamui-common-level-input></vitamui-common-level-input>
-        </div>
-        <div class="row m-0">
-            <div class="col-8">
-                <vitamui-common-editable-level-input [label]="'Editable level input'">
-                </vitamui-common-editable-level-input>
-            </div>
-            <vitamui-common-editable-level-input [formControl]="level" [label]="'Editable level input disabled'"
-                [disabled]="true">
-            </vitamui-common-editable-level-input>
-        </div>
-    </div>
-    <h4>Toggle</h4>
     <div class="row m-0">
-        <div class="col-12 mt-4">
-            <vitamui-common-slide-toggle class="mr-3">Slide Toggle Off</vitamui-common-slide-toggle>
-            <vitamui-common-slide-toggle class="mr-3" [checked]="false" [disabled]="true">Slide Toggle Off disabled</vitamui-common-slide-toggle>
-            <vitamui-common-slide-toggle class="mr-3" [checked]="true">Slide Toggle On</vitamui-common-slide-toggle>
-            <vitamui-common-slide-toggle class="mr-3" [checked]="true" [disabled]="true">Slide Toggle On disabled</vitamui-common-slide-toggle>
-        </div>
-
+      <div class="col-8">
+        <vitamui-common-editable-input [formControl]="streetEmpty" [label]="'Editable input'"> </vitamui-common-editable-input>
+      </div>
+      <vitamui-common-editable-input [disabled]="true" [formControl]="streetDisable" [label]="'Editable input disabled'">
+      </vitamui-common-editable-input>
     </div>
-    <h4>Toggle Group</h4>
-    <div class="d-flex flex-column">
-        <div class="row m-0 mt-4 pl-3">
-            <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group mr-4">
-                <mat-button-toggle [value]="'FIRST'">
-                    <span>First</span>
-                </mat-button-toggle>
-                <mat-button-toggle [value]="'MIDDLE'">
-                    <span>Middle</span>
-                </mat-button-toggle>
-                <mat-button-toggle [value]="'LAST'">
-                    <span>Last</span>
-                </mat-button-toggle>
-            </mat-button-toggle-group>
+  </div>
+  <h4>Email</h4>
+  <div class="d-flex flex-column">
+    <div class="row m-0 pl-3 mt-4">
+      <vitamui-common-input [formControl]="emailFirstPart" class="field-email" placeholder="Adresse e-mail"> </vitamui-common-input>
 
-            <mat-button-toggle-group disabled [formControl]="control" class="vitamui-button-toggle-group disabled">
-                <mat-button-toggle [value]="'FIRST'">
-                    <span>First</span>
-                </mat-button-toggle>
-                <mat-button-toggle [value]="'MIDDLE'">
-                    <span>Middle</span>
-                </mat-button-toggle>
-                <mat-button-toggle [value]="'LAST'">
-                    <span>Last</span>
-                </mat-button-toggle>
-            </mat-button-toggle-group>
+      <span class="d-flex mx-2 mt-1 layer text-center">@</span>
+
+      <mat-form-field class="field-domain vitamui-mat-select">
+        <mat-select [formControl]="domain" panelClass="vitamui-mat-select">
+          <mat-option value="test.fr">test.fr</mat-option>
+          <mat-option value="test2.com">test2.com</mat-option>
+        </mat-select>
+        <div class="select-arrow">
+          <i class="material-icons">keyboard_arrow_up</i>
+          <i class="material-icons">keyboard_arrow_down</i>
         </div>
-        <div class="row m-0">
-            <div class="col-8 mt-4">
-                <vitamui-common-editable-toggle-group [formControl]="toggle" [label]="'Editable toggle Group'">
-                    <vitamui-common-editable-button-toggle value="Value 1" content="Label 1">
-                    </vitamui-common-editable-button-toggle>
-                    <vitamui-common-editable-button-toggle value="Value 2" content="Label 2">
-                    </vitamui-common-editable-button-toggle>
-                    <vitamui-common-editable-button-toggle value="Value 3" content="Label 3">
-                    </vitamui-common-editable-button-toggle>
-                </vitamui-common-editable-toggle-group>
-            </div>
-            <div class="mt-4">
-                <vitamui-common-editable-toggle-group [formControl]="toggle" [label]="'Editable toggle Group disabled'"
-                    [disabled]="true">
-                    <vitamui-common-editable-button-toggle value="Value 1" content="Label 1">
-                    </vitamui-common-editable-button-toggle>
-                    <vitamui-common-editable-button-toggle value="Value 2" content="Label 2">
-                    </vitamui-common-editable-button-toggle>
-                    <vitamui-common-editable-button-toggle value="Value 3" content="Label 3">
-                    </vitamui-common-editable-button-toggle>
-                </vitamui-common-editable-toggle-group>
-            </div>
-        </div>
+      </mat-form-field>
     </div>
+    <div class="row m-0">
+      <div class="col-8">
+        <vitamui-common-editable-email-input
+          [domains]="['test.fr', 'test.com', 'test.de']"
+          [formControl]="email"
+          [label]="'Editable email'"
+        ></vitamui-common-editable-email-input>
+      </div>
+      <vitamui-common-editable-email-input
+        [disabled]="true"
+        [domains]="['test.fr', 'test.com', 'test.de']"
+        [formControl]="email"
+        [label]="'Editable email disabled'"
+      ></vitamui-common-editable-email-input>
+    </div>
+    <div class="row m-0">
+      <div class="col-8">
+        <vitamui-common-multiple-email-input [formControl]="emails" [label]="'Editable multiple email input'">
+        </vitamui-common-multiple-email-input>
+      </div>
+      <vitamui-common-multiple-email-input [disabled]="true" [formControl]="emails" [label]="'Editable multiple email input disabled'">
+      </vitamui-common-multiple-email-input>
+    </div>
+  </div>
 
+  <h4>List</h4>
+  <div class="d-flex flex-column">
+    <div class="row m-0 pl-3 pr-3 mt-4">
+      <vitamui-common-list-input [formControl]="list" [placeholder]="'Multiple input'"> </vitamui-common-list-input>
+    </div>
+  </div>
+  <h4>Select</h4>
+  <div class="d-flex flex-column">
+    <div class="row m-0 mt-4">
+      <div class="col-8">
+        <mat-form-field class="mr-3 field-domain vitamui-mat-select">
+          <mat-select [formControl]="country" panelClass="vitamui-mat-select">
+            <mat-option *ngFor="let country of countries" [value]="country.key">
+              {{ country.label }}
+            </mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
+      </div>
+      <mat-form-field class="mr-3 field-domain vitamui-mat-select">
+        <mat-select [formControl]="country" disabled panelClass="vitamui-mat-select">
+          <mat-option *ngFor="let country of countries" [value]="country.key">
+            {{ country.label }}
+          </mat-option>
+        </mat-select>
+        <div class="select-arrow">
+          <i class="material-icons">keyboard_arrow_up</i>
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="row m-0 mt-4">
+      <div class="col-8">
+        <vitamui-common-editable-select [formControl]="country" [label]="'Editable select'">
+          <vitamui-common-editable-option content="Royaume Uni" value="GB"></vitamui-common-editable-option>
+          <vitamui-common-editable-option content="France" value="FR"></vitamui-common-editable-option>
+          <vitamui-common-editable-option content="Allemagne" value="DE"></vitamui-common-editable-option>
+        </vitamui-common-editable-select>
+      </div>
+      <vitamui-common-editable-select [disabled]="true" [formControl]="country" [label]="'Editable select disabled'">
+        <vitamui-common-editable-option content="Royaume Uni" value="GB"></vitamui-common-editable-option>
+        <vitamui-common-editable-option content="France" value="FR"></vitamui-common-editable-option>
+        <vitamui-common-editable-option content="Allemagne" value="DE"></vitamui-common-editable-option>
+      </vitamui-common-editable-select>
+    </div>
+  </div>
+
+  <h4>{{'INPUT.AUTOCOMPLETE' | translate}}</h4>
+  <div class="d-flex justify-content-around">
+    <vitamui-common-vitamui-autocomplete
+      [formControl]="autoCompleteSelect"
+      [options]="countries"
+      [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+      required
+    >
+      <vitamui-common-input-error *ngIf="autoCompleteSelect.touched && autoCompleteSelect.hasError('required')">{{
+        'COMMON.REQUIRED' | translate
+      }}</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="autoCompleteSelect.touched && autoCompleteSelect.hasError('match')">{{
+        'COMMON.INCORRECT_VALUE' | translate
+      }}</vitamui-common-input-error>
+    </vitamui-common-vitamui-autocomplete>
+
+    <vitamui-common-vitamui-autocomplete
+      [formControl]="autoCompleteSelectDisabled"
+      [options]="countries"
+      [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+      disable="true"
+    >
+    </vitamui-common-vitamui-autocomplete>
+  </div>
+
+  <h4>{{'INPUT.AUTOCOMPLETE_MULTI_SELECT' | translate}}</h4>
+  <div class="d-flex justify-content-around">
+    <vitamui-common-autocomplete-multi-select
+      [formControl]="autoCompleteMultiSelect"
+      [multiSelectOptions]="multiSelectOptions"
+      [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+      [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
+      class="w-100"
+      required
+    >
+      <vitamui-common-input-error
+        *ngIf="autoCompleteMultiSelect.touched && autoCompleteMultiSelect.hasError('required')">{{
+        'COMMON.REQUIRED' | translate
+        }}</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="autoCompleteMultiSelect.touched && autoCompleteMultiSelect.hasError('match')">{{
+        'COMMON.INCORRECT_VALUE' | translate
+        }}</vitamui-common-input-error>
+    </vitamui-common-autocomplete-multi-select>
+  </div>
+
+  <h4>{{'INPUT.TEXTAREA' | translate}}</h4>
+  <div class="d-flex flex-column">
+    <div class="row m-0 mt-4">
+      <div class="col-8">
+        <vitamui-common-textarea [formControl]="textarea" placeholder="Textarea"> </vitamui-common-textarea>
+      </div>
+      <vitamui-common-textarea [formControl]="textarea" disabled placeholder="Textarea"> </vitamui-common-textarea>
+    </div>
+    <div class="row m-0 mt-4">
+      <div class="col-8">
+        <vitamui-common-editable-textarea [formControl]="textarea" [label]="'Editable textarea'"> </vitamui-common-editable-textarea>
+      </div>
+      <vitamui-common-editable-textarea [disabled]="true" [formControl]="textarea" [label]="'Editable textarea disabled'">
+      </vitamui-common-editable-textarea>
+    </div>
+  </div>
+
+  <h4>{{'INPUT.LEVEL' | translate}}</h4>
+  <div class="d-flex flex-column">
+    <div class="row m-0 mt-4 pl-3">
+      <vitamui-common-level-input></vitamui-common-level-input>
+    </div>
+    <div class="row m-0">
+      <div class="col-8">
+        <vitamui-common-editable-level-input [label]="'Editable level input'"> </vitamui-common-editable-level-input>
+      </div>
+      <vitamui-common-editable-level-input [disabled]="true" [formControl]="level" [label]="'Editable level input disabled'">
+      </vitamui-common-editable-level-input>
+    </div>
+  </div>
+  <h4>Toggle</h4>
+  <div class="row m-0">
+    <div class="col-12 mt-4">
+      <vitamui-common-slide-toggle class="mr-3">Slide Toggle Off</vitamui-common-slide-toggle>
+      <vitamui-common-slide-toggle [checked]="false" [disabled]="true" class="mr-3">Slide Toggle Off disabled </vitamui-common-slide-toggle>
+      <vitamui-common-slide-toggle [checked]="true" class="mr-3">Slide Toggle On</vitamui-common-slide-toggle>
+      <vitamui-common-slide-toggle [checked]="true" [disabled]="true" class="mr-3">Slide Toggle On disabled </vitamui-common-slide-toggle>
+    </div>
+  </div>
+  <h4>Toggle Group</h4>
+  <div class="d-flex flex-column">
+    <div class="row m-0 mt-4 pl-3">
+      <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group mr-4">
+        <mat-button-toggle [value]="'FIRST'">
+          <span>First</span>
+        </mat-button-toggle>
+        <mat-button-toggle [value]="'MIDDLE'">
+          <span>Middle</span>
+        </mat-button-toggle>
+        <mat-button-toggle [value]="'LAST'">
+          <span>Last</span>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group disabled" disabled>
+        <mat-button-toggle [value]="'FIRST'">
+          <span>First</span>
+        </mat-button-toggle>
+        <mat-button-toggle [value]="'MIDDLE'">
+          <span>Middle</span>
+        </mat-button-toggle>
+        <mat-button-toggle [value]="'LAST'">
+          <span>Last</span>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="row m-0">
+      <div class="col-8 mt-4">
+        <vitamui-common-editable-toggle-group [formControl]="toggle" [label]="'Editable toggle Group'">
+          <vitamui-common-editable-button-toggle content="Label 1" value="Value 1"> </vitamui-common-editable-button-toggle>
+          <vitamui-common-editable-button-toggle content="Label 2" value="Value 2"> </vitamui-common-editable-button-toggle>
+          <vitamui-common-editable-button-toggle content="Label 3" value="Value 3"> </vitamui-common-editable-button-toggle>
+        </vitamui-common-editable-toggle-group>
+      </div>
+      <div class="mt-4">
+        <vitamui-common-editable-toggle-group [disabled]="true" [formControl]="toggle" [label]="'Editable toggle Group disabled'">
+          <vitamui-common-editable-button-toggle content="Label 1" value="Value 1"> </vitamui-common-editable-button-toggle>
+          <vitamui-common-editable-button-toggle content="Label 2" value="Value 2"> </vitamui-common-editable-button-toggle>
+          <vitamui-common-editable-button-toggle content="Label 3" value="Value 3"> </vitamui-common-editable-button-toggle>
+        </vitamui-common-editable-toggle-group>
+      </div>
+    </div>
+  </div>
 
   <h4>Date</h4>
   <div class="d-flex">
     <mat-form-field class="col-3 vitamui-input vitamui-date mr-4">
-      <input [matDatepicker]="pickerStart"  matInput placeholder="Depuis">
+      <input [matDatepicker]="pickerStart" matInput placeholder="Depuis" />
       <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #pickerStart></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field class="col-3 vitamui-input vitamui-date mr-4">
-      <input [matDatepicker]="pickerEnd"  matInput placeholder="jusqu'au">
+      <input [matDatepicker]="pickerEnd" matInput placeholder="jusqu'au" />
       <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #pickerEnd></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field class="col-3 vitamui-input vitamui-date mr-4" disabled>
-        <input [matDatepicker]="pickerStart"  matInput placeholder="Depuis" disabled>
-        <mat-datepicker-toggle [for]="pickerStart" matSuffix disabled></mat-datepicker-toggle>
-        <mat-datepicker #pickerStart disabled></mat-datepicker>
-      </mat-form-field>
+      <input [matDatepicker]="pickerStart" disabled matInput placeholder="Depuis" />
+      <mat-datepicker-toggle [for]="pickerStart" disabled matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart disabled></mat-datepicker>
+    </mat-form-field>
   </div>
 
-    <h4>Duration</h4>
-    <div class="d-flex flex-column">
-        <div class="row m-0 mt-4 pl-3">
-            <vitamui-common-vitamui-duration-input [formControl]="duration">
-            </vitamui-common-vitamui-duration-input>
-        </div>
-        <div class="row m-0 mt-4">
-            <div class="col-8">
-                <vitamui-common-editable-duration-input [formControl]="duration" [label]="'Editable duration input'">
-                </vitamui-common-editable-duration-input>
-            </div>
-            <vitamui-common-editable-duration-input [formControl]="duration"
-                [label]="'Editable duration input disabled'" [disabled]="true"></vitamui-common-editable-duration-input>
-
-        </div>
+  <h4>Duration</h4>
+  <div class="d-flex flex-column">
+    <div class="row m-0 mt-4 pl-3">
+      <vitamui-common-vitamui-duration-input [formControl]="duration"> </vitamui-common-vitamui-duration-input>
     </div>
-    <h4>File</h4>
-    <div class="row m-0">
-        <div class="col-8 mt-4">
-            <vitamui-common-editable-file [formControl]="file" [label]="'Editable file upload'">
-            </vitamui-common-editable-file>
-        </div>
-        <div class="mt-4">
-            <vitamui-common-editable-file [formControl]="file" [label]="'Editable file upload disabled'"
-                [disabled]="true">
-            </vitamui-common-editable-file>
-        </div>
+    <div class="row m-0 mt-4">
+      <div class="col-8">
+        <vitamui-common-editable-duration-input [formControl]="duration" [label]="'Editable duration input'">
+        </vitamui-common-editable-duration-input>
+      </div>
+      <vitamui-common-editable-duration-input
+        [disabled]="true"
+        [formControl]="duration"
+        [label]="'Editable duration input disabled'"
+      ></vitamui-common-editable-duration-input>
     </div>
+  </div>
+  <h4>File</h4>
+  <div class="row m-0">
+    <div class="col-8 mt-4">
+      <vitamui-common-editable-file [formControl]="file" [label]="'Editable file upload'"> </vitamui-common-editable-file>
+    </div>
+    <div class="mt-4">
+      <vitamui-common-editable-file [disabled]="true" [formControl]="file" [label]="'Editable file upload disabled'">
+      </vitamui-common-editable-file>
+    </div>
+  </div>
 </div>

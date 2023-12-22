@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,6 +82,9 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
     private IdentityProviderConverter identityProviderConverter = new IdentityProviderConverter(spMetadataGenerator);
 
     private IdentityProviderInternalService service;
+
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
 
     @MockBean
     private UserRepository userRepository;

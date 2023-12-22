@@ -36,9 +36,42 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import java.security.cert.CertificateParsingException;
-import java.util.*;
-import java.util.regex.Pattern;
+import static fr.gouv.vitamui.commons.api.CommonConstants.ADDRESS_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.ANALYTICS_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.API_PARAMETER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.AUTH_TOKEN_PARAMETER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.BASIC_CUSTOMER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CENTER_CODES;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_IDENTIFIER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.EMAIL_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.FIRSTNAME_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.GROUP_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.INTERNAL_CODE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LASTNAME_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_CONNECTION_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LEVEL_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.MOBILE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.NB_FAILED_ATTEMPTS_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.OTP_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PASSWORD_EXPIRATION_DATE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PHONE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PROFILE_GROUP_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PROOF_TENANT_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.READONLY_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.ROLES_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SITE_CODE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.STATUS_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUBROGEABLE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_IDENTIFIER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SURROGATION_PARAMETER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.TENANTS_BY_APP_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.USER_INFO_ID;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
@@ -54,6 +87,16 @@ import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import java.security.cert.CertificateParsingException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
@@ -63,34 +106,17 @@ import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.SurrogatePrincipal;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
-import org.apereo.cas.authentication.principal.*;
+import org.apereo.cas.authentication.principal.ClientCredential;
+import org.apereo.cas.authentication.principal.NullPrincipal;
+import org.apereo.cas.authentication.principal.Principal;
+import org.apereo.cas.authentication.principal.PrincipalFactory;
+import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
-
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.util.CommonHelper;
-import org.springframework.beans.factory.annotation.Value;
 import org.pac4j.jee.context.JEEContext;
 import org.springframework.webflow.execution.RequestContextHolder;
-
-import java.security.cert.CertificateParsingException;
-import java.util.*;
-import java.util.regex.Pattern;
-
-import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.domain.ProfileDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-
-import lombok.val;
-
-import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
 /**
  * Resolver to retrieve the user.
@@ -304,7 +330,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             attributes.put(PROOF_TENANT_ID_ATTRIBUTE, Collections.singletonList(authUser.getProofTenantIdentifier()));
             attributes.put(TENANTS_BY_APP_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp())));
             attributes.put(SITE_CODE, Collections.singletonList(user.getSiteCode()));
-            attributes.put(CENTER_CODE, Collections.singletonList(user.getCenterCode()));
+            attributes.put(CENTER_CODES, Collections.singletonList(user.getCenterCodes()));
             final Set<String> roles = new HashSet<>();
             final List<ProfileDto> profiles = authUser.getProfileGroup().getProfiles();
             profiles.forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));

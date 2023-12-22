@@ -53,12 +53,16 @@ import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.internal.server.group.service.GroupExportService;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -213,5 +217,16 @@ public class GroupInternalController implements CrudController<GroupDto> {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get levels with criteria={}", criteria);
         return internalGroupService.getLevels(criteria);
+    }
+
+    @GetMapping(CommonConstants.PATH_EXPORT)
+    public ResponseEntity<Resource> exportProfileGroups(final Optional<String> criteria) {
+        SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("Export all profile groups to xlsx file with criteria={}", criteria);
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + GroupExportService.getFilename())
+            .contentType(MediaType.valueOf(MediaType.APPLICATION_OCTET_STREAM_VALUE))
+            .body(internalGroupService.exportProfileGroups(criteria));
     }
 }

@@ -151,8 +151,8 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     @Override
     protected void prepareServices() {
         Mockito.when(subrogationRepository.findOneBySurrogate(SURROGATE_EMAIL)).thenReturn(new Subrogation());
-        Mockito.when(userRepository.findByEmail(SURROGATE_EMAIL)).thenReturn(SURROGATE);
-        Mockito.when(userRepository.findByEmail(SUPER_USER_EMAIL)).thenReturn(SUPERUSER);
+        Mockito.when(userRepository.findByEmailIgnoreCase(SURROGATE_EMAIL)).thenReturn(SURROGATE);
+        Mockito.when(userRepository.findByEmailIgnoreCase(SUPER_USER_EMAIL)).thenReturn(SUPERUSER);
         final Customer customer = new Customer();
         customer.setSubrogeable(true);
         when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
@@ -164,7 +164,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
         final SubrogationDto dto = buildDto();
         dto.setSurrogate(SURROGATE_CREATE_EMAIL);
         prepareServices();
-        Mockito.when(userRepository.findByEmail(SURROGATE_CREATE_EMAIL)).thenReturn(SURROGATE_CREATE);
+        Mockito.when(userRepository.findByEmailIgnoreCase(SURROGATE_CREATE_EMAIL)).thenReturn(SURROGATE_CREATE);
         Mockito.when(subrogationRepository.findOneBySurrogate(SURROGATE_CREATE_EMAIL)).thenReturn(null);
         Mockito.when(internalSecurityService.getUser()).thenReturn(IamDtoBuilder.buildAuthUserDto("id", SUPER_USER_EMAIL));
         getController().create(dto);
@@ -176,7 +176,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
         final SubrogationDto dto = buildDto();
         dto.setSurrogate(SURROGATE_CREATE_EMAIL);
         prepareServices();
-        Mockito.when(userRepository.findByEmail(SURROGATE_CREATE_EMAIL)).thenReturn(SURROGATE_CREATE);
+        Mockito.when(userRepository.findByEmailIgnoreCase(SURROGATE_CREATE_EMAIL)).thenReturn(SURROGATE_CREATE);
         Mockito.when(subrogationRepository.findOneBySurrogate(SURROGATE_CREATE_EMAIL)).thenReturn(null);
         final Customer customer = new Customer();
         customer.setSubrogeable(false);

@@ -62,7 +62,7 @@ export class VitamUISnackBarComponent implements OnInit {
   }
 
   public callBack(): void {
-    this.data.callBack.subscribe();
+    this.data.callBack?.subscribe();
     this.close();
   }
 }

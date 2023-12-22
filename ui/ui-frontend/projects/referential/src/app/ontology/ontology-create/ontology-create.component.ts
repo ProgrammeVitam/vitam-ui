@@ -42,8 +42,6 @@ import { ConfirmDialogService, Option } from 'ui-frontend-common';
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
-
 @Component({
   selector: 'app-ontology-create',
   templateUrl: './ontology-create.component.html',
@@ -52,7 +50,6 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 export class OntologyCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   stepIndex = 0;
-  accessContractInfo: { code: string; name: string; companyName: string } = { code: '', name: '', companyName: '' };
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -62,7 +59,6 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 1;
   private keyPressSubscription: Subscription;
 
   // FIXME: Get list from common var ?
@@ -134,9 +130,5 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
         console.error(error);
       }
     );
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 }

@@ -2,34 +2,27 @@
   <div class="permission" *ngFor="let permission of updatedPermissions">
     <ul>
       <li>
-        <span class="label">Organisation : </span>
+        <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.ORGANISATION' | translate }}</span> :
         {{ getOrganisationName(permission.tenant) }}
       </li>
       <li>
-        <span class="label">Tenant : </span>
+        <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.TENANT' | translate }}</span> :
         {{ tenants?.get(permission.tenant)?.name }}
       </li>
       <li *ngIf="permission.accessContracts?.length > 0">
-        <span class="label">Contrat(s) d'entrée</span>
+        <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.ACCESS_CONTRACT' | translate }}</span> :
         {{ getAccessContractNames(permission.accessContracts) }}</li>
       <li *ngIf="permission.ingestContracts?.length > 0">
-        <span class="label">Contrat(s) d'accès : </span>
+        <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.INGEST_CONTRACT' | translate }}</span> :
         {{ getIngestContractNames(permission.ingestContracts) }}
       </li>
     </ul>
     <mat-divider></mat-divider>
   </div>
 
-  <div class="actions" *ngIf="!readOnly">
-    <button class="btn secondary" (click)="openEditContextDialog()">
-      <i class="btn-create"></i>
-      <span i18n="Update context modify permission button label@@contextUpdatePermissionModifyButton">Modifier</span>
-    </button>
-  </div>
-
-  <div class="bottom">
-    <button type="submit" class="btn secondary" [disabled]="readOnly || unchanged || submited" (click)="onSubmit()">
-      <span i18n="Update context save permission button label@@contextUpdatePermissionSaveButton">Enregistrer</span>
+  <div class="actions mt-3">
+    <button class="btn primary" (click)="openEditContextDialog()">
+      <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.EDIT' | translate }}</span>
     </button>
   </div>
 </div>

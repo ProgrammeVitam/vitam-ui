@@ -34,13 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, waitForAsync} from '@angular/core/testing';
 import {MatDialog} from '@angular/material/dialog';
 import {of} from 'rxjs';
 
 import {SecurisationService} from '../securisation.service';
 import {SecurisationListComponent} from './securisation-list.component';
+import {TranslateModule} from "@ngx-translate/core";
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import {ReactiveFormsModule} from "@angular/forms";
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {TableFilterModule} from "ui-frontend-common";
 
 describe('SecurisationListComponent', () => {
   let component: SecurisationListComponent;
@@ -52,12 +56,13 @@ describe('SecurisationListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), VitamUICommonTestModule, ReactiveFormsModule, TableFilterModule],
       declarations: [SecurisationListComponent],
       providers: [
         {provide: MatDialog, useValue: {}},
         {provide: SecurisationService, useValue: securisationServiceMock}
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -68,7 +73,7 @@ describe('SecurisationListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', fakeAsync(() => {
     expect(component).toBeTruthy();
-  });
+  }));
 });

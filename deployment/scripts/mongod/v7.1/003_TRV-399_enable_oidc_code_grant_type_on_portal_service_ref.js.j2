@@ -4,10 +4,14 @@ db = db.getSiblingDB("cas");
 
 print("START 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
 
-db.services.deleteOne({ "_id": NumberInt(1) });
+var serviceWithMaxId = db.services.aggregate([
+    { $sort: { _id: -1 } },
+    { $limit: 1 }
+]).toArray();
+var maxId = serviceWithMaxId.length > 0 ? serviceWithMaxId[0]._id : 0;
 
 db.services.insertOne({
-  _id: NumberInt(1),
+  _id: NumberInt(++maxId),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "{{ vitamui.portal.clientId | default('portal') }}",
   serviceId: "{{ vitamui.portal.serviceId | default('^' + vitamui.portal.base_url | default(url_prefix) + '/.*') }}",

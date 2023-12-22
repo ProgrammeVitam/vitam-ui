@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Criterion, SearchQuery } from '../';
+import {Criterion, QueryOperator, SearchQuery} from '../';
 import { Operators } from './operators.enum';
 
 export function buildCriteriaFromSearch(search: string, keys: string[]): SearchQuery[] {
@@ -43,7 +43,7 @@ export function buildCriteriaFromSearch(search: string, keys: string[]): SearchQ
   }
 
   return [{
-    queryOperator: 'OR',
+    queryOperator: 'OR' as QueryOperator,
     criteria: keys.map((key) => ({ key, value: '*' + search + '*', operator: Operators.equalsIgnoreCase }))
   }];
 }

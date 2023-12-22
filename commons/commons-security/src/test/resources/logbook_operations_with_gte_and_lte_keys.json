@@ -1,0 +1,24 @@
+{
+  "$query":{
+    "$and":[
+      {
+        "$gte":{
+          "evDateTime":"2023-06-30T22:00:00.000Z"
+        },
+        "$lte":{
+          "evDateTime":"2023-07-31T21:59:59.999Z"
+        }
+      }
+    ]
+  },
+  "$projection":{
+
+  },
+  "$filter":{
+    "$limit":20,
+    "$offset":0,
+    "$orderby":{
+      "evDateTime":-1
+    }
+  }
+}

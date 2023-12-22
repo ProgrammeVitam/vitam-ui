@@ -56,9 +56,9 @@ public interface UserRepository extends VitamUIRepository<User, String> {
 
     Optional<User> findByIdAndCustomerId(String id, String customerId);
 
-    User findByEmail(String email);
+    User findByEmailIgnoreCase(String email);
 
-    boolean existsByEmail(String email);
+    boolean existsByEmailIgnoreCase(String email);
 
     long countByGroupId(String profileGroupId);
 

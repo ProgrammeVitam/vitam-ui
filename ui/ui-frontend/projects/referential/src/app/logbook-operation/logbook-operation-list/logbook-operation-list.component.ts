@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
+
 import { DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
 
 import {
@@ -55,7 +55,7 @@ import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { EventFilter } from '../event-filter.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
-import { LOGBOOK_OPERATION_CATEGORIES } from '../logbook-operation-constants';
+import { LogbookOperation } from '../logbook-operation.enum';
 import { LogbookSearchService } from '../logbook-search.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -66,88 +66,106 @@ const ARCHIVE_TRANSFER_LABEL = 'ARCHIVE_TRANSFER_LABEL';
   selector: 'app-logbook-operation-list',
   templateUrl: './logbook-operation-list.component.html',
   styleUrls: ['./logbook-operation-list.component.scss'],
-  animations: [
-    trigger('expansion', [
-      state('collapsed', style({ height: '0px', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-
-    trigger('arrow', [
-      state('collapsed', style({ transform: 'rotate(180deg)' })),
-      state('expanded', style({ transform: 'none' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-  ],
 })
 export class LogbookOperationListComponent extends InfiniteScrollTable<Event> implements OnInit, OnChanges, OnDestroy {
   @Input() tenantIdentifier: number;
 
-  @Input('search')
-  set searchText(searchText: string) {
+  @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  @Input('filters')
-  set searchFilters(searchFilters: Readonly<EventFilter>) {
+  @Input('filters') set searchFilters(searchFilters: Readonly<EventFilter>) {
     this._searchFilters = searchFilters;
     this.searchFiltersChange.next(searchFilters);
   }
 
-  private _searchText: string;
-  private _searchFilters: Readonly<EventFilter>;
-
-  logbookOperationsSubscription: Subscription;
-
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<LogbookOperationListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
-
   @Output() eventClick = new EventEmitter<Event>();
 
-  orderBy = 'name';
-  direction = Direction.ASCENDANT;
+  @ViewChild('filterTemplate') filterTemplate: TemplateRef<LogbookOperationListComponent>;
+  @ViewChild('filterButton') filterButton: ElementRef;
+
+  public orderByDate = false;
+  public filterMap: { [key: string]: any[] } = { operationCategories: null };
+  public orderDirection = Direction.ASCENDANT;
+  public readonly orderChange = new Subject<string>();
+  public readonly LOGBOOK_OPERATION = LogbookOperation;
+  public readonly DIRECTION = Direction;
 
   private readonly searchFiltersChange = new Subject<Readonly<EventFilter>>();
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
-
-  filterMap: { [key: string]: any[] } = {
-    operationCategories: null,
-  };
-  operationCategoriesFilterOptions: Array<{ value: string; label: string }> = [];
+  private _searchText: string;
+  private _searchFilters: Readonly<EventFilter>;
+  private logbookOperationsSubscription: Subscription;
 
   constructor(public logbookSearchService: LogbookSearchService, private logbookDownloadService: LogbookDownloadService) {
     super(logbookSearchService);
   }
 
   ngOnInit() {
-    this.pending = true;
     this.updatedData.subscribe(() => this.onDataSourceReloaded());
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange).pipe(
       debounceTime(FILTER_DEBOUNCE_TIME_MS)
     );
 
-    searchCriteriaChange.subscribe(() => {
-      this.refreshList();
-    });
-    this.refreshOperationCategoriesOptions();
-    this.refreshList();
+    searchCriteriaChange.subscribe(() => this.refreshList());
     this.logbookOperationsSubscription = this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperationsReloaded) =>
       this.updateLogbookOperations(logbookOperationsReloaded)
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.tenantIdentifier || changes.filters) {
+      this.refreshList();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.logbookOperationsSubscription?.unsubscribe();
+  }
+
+  public changeOrderByDate(): void {
+    this.orderByDate = !this.orderByDate;
+    this.orderChange.next();
+  }
+
+  public getOperationCategories(): string[] {
+    return Object.keys(LogbookOperation);
+  }
+
+  public manageOperationLabel(type: string) {
+    return type === ARCHIVE_TRANSFER ? ARCHIVE_TRANSFER_LABEL : type;
+  }
+
+  public handleClick(event: Event) {
+    this.eventClick.emit(event);
+  }
+
+  public onFilterChange(key: string, values: any[]): void {
+    this.filterMap[key] = values;
+    this.filterChange.next(this.filterMap);
+  }
+
+  public resetFilters(): void {
+    this.filterMap.operationCategories = null;
+    this.filterChange.next(this.filterMap);
+  }
+
+  public refreshList(): void {
+    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, null, null);
+    const query = JSON.stringify(
+      LogbookSearchService.buildVitamQuery(pageRequest, this.buildCriteriaFromSearch(), this.orderByDate ? 1 : -1)
+    );
+    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, null, null, query));
   }
 
   private onDataSourceReloaded() {
     if (this.pending) {
       return;
     }
-    this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource);
-  }
 
-  manageOperationLabel(type: string) {
-    return type === ARCHIVE_TRANSFER ? ARCHIVE_TRANSFER_LABEL : type;
+    this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource);
   }
 
   private updateLogbookOperations(logbookOperationsReloaded: Event[]) {
@@ -157,7 +175,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     });
   }
 
-  buildCriteriaFromSearch() {
+  private buildCriteriaFromSearch() {
     const criteria: any = {};
     if (this._searchText !== undefined && this._searchText.length > 0) {
       criteria.evId = this._searchText;
@@ -177,42 +195,5 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     }
 
     return criteria;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.tenantIdentifier || changes.filters) {
-      this.refreshList();
-    }
-  }
-
-  refreshOperationCategoriesOptions() {
-    this.operationCategoriesFilterOptions = LOGBOOK_OPERATION_CATEGORIES.map((operationCategory) => ({
-      value: operationCategory.key,
-      label: operationCategory.label,
-    }));
-  }
-
-  refreshList() {
-    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction);
-    const query = JSON.stringify(LogbookSearchService.buildVitamQuery(pageRequest, this.buildCriteriaFromSearch()));
-    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, query));
-  }
-
-  onFilterChange(key: string, values: any[]) {
-    this.filterMap[key] = values;
-    this.filterChange.next(this.filterMap);
-  }
-
-  resetFilters() {
-    this.filterMap.operationCategories = null;
-    this.filterChange.next(this.filterMap);
-  }
-
-  selectEvent(event: Event) {
-    this.eventClick.emit(event);
-  }
-
-  ngOnDestroy(): void {
-    this.logbookOperationsSubscription?.unsubscribe();
   }
 }

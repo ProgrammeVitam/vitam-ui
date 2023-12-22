@@ -106,12 +106,12 @@ public final class ApiUtils {
     @SuppressWarnings("rawtypes")
     public static String getContentFromResourceFile(final Class clazz, final String fileName) throws IOException {
         final ClassLoader classLoader = clazz.getClassLoader();
-        final InputStream stream = classLoader.getResourceAsStream(fileName);
-        if (stream == null) {
-            throw new InternalServerException("File not found : " + fileName);
+        try (final InputStream stream = classLoader.getResourceAsStream(fileName)) {
+            if (stream == null) {
+                throw new InternalServerException("File not found : " + fileName);
+            }
+            return IOUtils.toString(stream, StandardCharsets.UTF_8);
         }
-
-        return IOUtils.toString(stream, StandardCharsets.UTF_8);
     }
 
     public static ByteArrayResource getByteArrayResourceFromFilePath(final String fileName) {
@@ -128,11 +128,12 @@ public final class ApiUtils {
         if (dto == null) {
             throw new ValidationException("validation failed  object is null");
         }
-        final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        final Validator validator = factory.getValidator();
-        final Set<ConstraintViolation<Object>> violations = validator.validate(dto);
-        if (!violations.isEmpty()) {
-            throw new ValidationException("validation failed " + violations.toString());
+        try (final ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            final Validator validator = factory.getValidator();
+            final Set<ConstraintViolation<Object>> violations = validator.validate(dto);
+            if (!violations.isEmpty()) {
+                throw new ValidationException("validation failed " + violations.toString());
+            }
         }
     }
 

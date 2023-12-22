@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Observable } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
-
 import { hasModifierKey } from '@angular/cdk/keycodes';
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable, TemplateRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
 
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
+import { DialogInputData } from './dialog-input-data.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -51,14 +51,14 @@ export class ConfirmDialogService {
 
   constructor(private matDialog: MatDialog) { }
 
-  confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>): Observable<boolean> {
-    return this.matDialog.open(componentOrTemplateRef, { panelClass: 'vitamui-confirm-dialog' }).afterClosed().pipe(
+  public confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>, data?: DialogInputData): Observable<boolean> {
+    return this.matDialog.open(componentOrTemplateRef, { panelClass: 'vitamui-confirm-dialog', data }).afterClosed().pipe(
       filter((result) => !!result)
     );
   }
 
   // returns an observable that emits when escape is pressed
-  listenToEscapeKeyPress(matDialogRef: MatDialogRef<unknown>): Observable<any> {
+  public listenToEscapeKeyPress(matDialogRef: MatDialogRef<unknown>): Observable<any> {
     return matDialogRef.keydownEvents()
       .pipe(
         filter((event) => event.key === 'Escape' && !hasModifierKey(event)),
@@ -67,7 +67,7 @@ export class ConfirmDialogService {
   }
 
   // Opens a confirmation dialog before closing the dialog
-  confirmBeforeClosing(matDialogRef: MatDialogRef<unknown>) {
-    this.confirm(ClosePopupDialogComponent).subscribe(() => matDialogRef.close());
+  public confirmBeforeClosing(matDialogRef: MatDialogRef<unknown>, data?: DialogInputData): void {
+    this.confirm(ClosePopupDialogComponent, data).subscribe(() => matDialogRef.close());
   }
 }

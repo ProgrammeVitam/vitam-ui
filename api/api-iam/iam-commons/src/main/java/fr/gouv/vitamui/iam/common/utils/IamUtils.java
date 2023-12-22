@@ -41,6 +41,8 @@ import java.util.Optional;
 
 public final class IamUtils {
 
+    public static final String EMAIL_VALID_REGEXP = "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
+
     private IamUtils() {
     }
 

@@ -60,6 +60,7 @@ public class Pac4jClientIdentityProviderDto extends IdentityProviderDto {
         setMailAttribute(dto.getMailAttribute());
         setIdentifierAttribute(dto.getIdentifierAttribute());
         setAutoProvisioningEnabled(dto.isAutoProvisioningEnabled());
+        setPropagateLogout(dto.isPropagateLogout());
 
         setKeystoreBase64(dto.getKeystoreBase64());
         setKeystorePassword(dto.getKeystorePassword());
@@ -68,6 +69,8 @@ public class Pac4jClientIdentityProviderDto extends IdentityProviderDto {
         setSpMetadata(dto.getSpMetadata());
         setMaximumAuthenticationLifetime(dto.getMaximumAuthenticationLifetime());
         setAuthnRequestBinding(dto.getAuthnRequestBinding());
+        setWantsAssertionsSigned(dto.getWantsAssertionsSigned());
+        setAuthnRequestSigned(dto.getAuthnRequestSigned());
 
         setClientId(dto.getClientId());
         setClientSecret(dto.getClientSecret());

@@ -46,3 +46,9 @@ export enum AuditType {
   originatingagency = 'originatingagency',
   dsl = 'dsl',
 }
+
+export enum AuditOperation {
+  PROCESS_AUDIT = 'PROCESS_AUDIT',
+  EVIDENCE_AUDIT = 'EVIDENCE_AUDIT',
+  RECTIFICATION_AUDIT = 'RECTIFICATION_AUDIT'
+}

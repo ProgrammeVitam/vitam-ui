@@ -45,13 +45,11 @@ import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -89,5 +87,11 @@ public class ApplicationInternalController {
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return internalApplicationService.getAll(criteria, embedded);
+    }
+
+    @GetMapping(path = "/{identifier}/externalid")
+    @ApiOperation(value = "Check if an application can have an external identifier")
+    public boolean isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String applicationId) {
+        return internalApplicationService.isApplicationExternalIdentifierEnabled(applicationId);
     }
 }

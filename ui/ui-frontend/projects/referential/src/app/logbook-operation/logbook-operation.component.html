@@ -1,106 +1,45 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-logbook-operation-detail
-      *ngIf="openedItem"
-      [tenantIdentifier]="tenantIdentifier"
-      [eventId]="openedItem?.id"
-      (closePanel)="closePanel()"
-    ></app-logbook-operation-detail>
+    <app-logbook-operation-detail *ngIf="openedItem" [tenantIdentifier]="tenantIdentifier" [eventId]="openedItem?.id"
+      (closePanel)="closePanel()"></app-logbook-operation-detail>
   </mat-sidenav>
+
   <mat-sidenav-content>
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <vitamui-common-navbar
-          [appId]="appId"
-          [hideTenantMenu]="false"
-          [hideCustomerMenu]="true"
-          (tenantSelect)="changeTenant($event)"
-        ></vitamui-common-navbar>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{'LOGBOOK.HOME.TITLE' | translate}}
+      </vitamui-common-title-breadcrumb>
 
-        <div class="vitamui-heading">
-          <vitamui-common-title-breadcrumb>
-            {{ 'APPLICATION.LOGBOOK_OPERATION_APP.NAME' | translate }}
-          </vitamui-common-title-breadcrumb>
-        </div>
+      <vitamui-common-banner [searchbarPlaceholder]="'LOGBOOK.HOME.SEARCH_PLACEHOLDER' | translate"
+        (search)="onSearchSubmit($event)">
+        <button class="btn primary" (click)="refreshList()">
+          <span>{{ 'LOGBOOK.HOME.REFRESH' | translate }}</span>
+          <i class="vitamui-icon vitamui-icon-refresh"></i>
+        </button>
+      </vitamui-common-banner>
 
-        <div class="controls">
-          <div class="search-bar-filters">
-            <vitamui-common-search-bar
-              name="logbook-operation-search"
-              (search)="onSearchSubmit($event)"
-              placeholder="Nom, Identifiant"
-              i18n-placeholder="@@logbookOperationSearchPlaceholder"
-            >
-            </vitamui-common-search-bar>
-            <div class="reset-filters" (click)="resetFilters()">Effacer les filtres et la recherche</div>
-          </div>
-          <div class="actions">
-            <button class="btn secondary" (click)="refreshList()">
-              <i class="vitamui-icon vitamui-icon-refresh"></i> <span>Rafraîchir</span>
-            </button>
+      <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2">
+        <mat-form-field class="vitamui-input vitamui-date mr-4">
+          <input [matDatepicker]="pickerStart" [max]="dateRangeFilterForm.get('endDate').value" matInput
+            placeholder="{{'LOGBOOK.HOME.START_DATE' | translate }}" formControlName="startDate" #stDateInput />
+          <i class="vitamui-icon vitamui-icon-close" *ngIf="stDateInput.value" (click)="clearDate('startDate', $event, stDateInput)"></i>
+          <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
 
-            <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
-              <span mat-menu-item i18n="@@apiSupervisionComingSoon"> Bientôt </span>
-            </mat-menu>
-          </div>
-        </div>
-
-        <div class="filter-controls">
-          <form [formGroup]="dateRangeFilterForm" class="date-filter-container">
-            <div class="date-filter-container">
-              <div class="date-filter">
-                <span
-                  *ngIf="!dateRangeFilterForm.get('startDate').value; else showStartDate"
-                  (click)="pickerStart.open()"
-                  i18n="@@apiSupervisionStartDate"
-                  >Date de début</span
-                >
-                <ng-template #showStartDate>
-                  <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }}</span>
-                  <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDate')">clear</i>
-                </ng-template>
-                <input
-                  class="hidden"
-                  size="0"
-                  [matDatepicker]="pickerStart"
-                  formControlName="startDate"
-                  [max]="dateRangeFilterForm.get('endDate').value"
-                />
-                <mat-datepicker #pickerStart></mat-datepicker>
-              </div>
-              <div class="date-filter">
-                <span
-                  *ngIf="!dateRangeFilterForm.get('endDate').value; else showEndDate"
-                  (click)="pickerEnd.open()"
-                  i18n="@@apiSupervisionEndDate"
-                  >Date de fin</span
-                >
-                <ng-template #showEndDate
-                  ><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value | dateTime: 'dd/MM/yyyy' }} </span>
-                  <i class="material-icons clear-date-icon clickable" (click)="clearDate('endDate')">clear</i></ng-template
-                >
-                <input
-                  class="hidden"
-                  size="0"
-                  [matDatepicker]="pickerEnd"
-                  formControlName="endDate"
-                  [min]="dateRangeFilterForm.get('startDate').value"
-                />
-                <mat-datepicker #pickerEnd></mat-datepicker>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+        <mat-form-field class="vitamui-input vitamui-date">
+          <input [matDatepicker]="pickerEnd" [min]="dateRangeFilterForm.get('startDate').value" matInput
+            placeholder="{{'LOGBOOK.HOME.END_DATE' | translate }}" formControlName="endDate" #endDateInput />
+          <i class="vitamui-icon vitamui-icon-close" *ngIf="endDateInput.value" (click)="clearDate('endDate', $event, endDateInput)"></i>
+          <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+      </form>
     </div>
 
-    <div class="vitamui-body vitamui-container">
-      <app-logbook-operation-list
-        [filters]="filters"
-        [tenantIdentifier]="tenantIdentifier"
-        [search]="search"
-        (eventClick)="openPanel($event)"
-      ></app-logbook-operation-list>
+    <div class="vitamui-content">
+      <app-logbook-operation-list [filters]="filters" [tenantIdentifier]="tenantIdentifier" [search]="search"
+        (eventClick)="openPanel($event)"></app-logbook-operation-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
