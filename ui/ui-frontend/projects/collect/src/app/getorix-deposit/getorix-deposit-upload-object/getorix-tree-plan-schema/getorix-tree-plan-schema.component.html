@@ -1,0 +1,15 @@
+<div class="row tree-title">
+  <div class="col" (click)="emitClose()">
+    <p class="text-css">{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.TREE.HIDE_TREE' | translate }}</p>
+  </div>
+</div>
+
+<div *ngIf="searchHasMatches" class="vitamui-sidepanel-header flex-column">
+  <getorix-leaves-tree
+    (searchUnitsOfNode)="searchUnits($event)"
+    [transactionId]="transactionId"
+    [searchRequestResultFacets]="requestResultFacets"
+    [searchRequestTotalResults]="searchRequestTotalResults"
+  >
+  </getorix-leaves-tree>
+</div>

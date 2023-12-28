@@ -29,6 +29,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GetorixDepositApiService } from './core/api/getorix-deposit-api.service';
 import { GetorixDeposit } from './core/model/getorix-deposit.interface';
+import { GetorixUnitFullPath } from './core/model/getorix-unit-full-path.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -46,5 +47,9 @@ export class GetorixDepositService {
 
   updateGetorixDeposit(getorixDeposit: GetorixDeposit): Observable<GetorixDeposit> {
     return this.getorixDepositApiService.updateGetorixDepositInformations(getorixDeposit);
+  }
+
+  getUnitFullPath(unitId: string): Observable<GetorixUnitFullPath[]> {
+    return this.getorixDepositApiService.getUnitFullPath(unitId);
   }
 }
