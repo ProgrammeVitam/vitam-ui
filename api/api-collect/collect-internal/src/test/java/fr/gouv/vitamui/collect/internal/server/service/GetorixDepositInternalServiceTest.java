@@ -52,6 +52,7 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
+import fr.gouv.vitamui.commons.vitam.api.dto.TitleDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,6 +85,7 @@ class GetorixDepositInternalServiceTest {
         mock(GetorixDepositRepository.class);
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
+
     private final CollectService collectService = mock(CollectService.class);
 
     private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
@@ -94,12 +96,11 @@ class GetorixDepositInternalServiceTest {
 
     final PodamFactory factory = new PodamFactoryImpl();
 
-
     @BeforeEach
     public void setup() {
 
         getorixDepositInternalService = new GetorixDepositInternalService(sequenceRepository, getorixDepositRepository,
-            getorixDepositConverter, internalSecurityService, collectService);
+            getorixDepositConverter, internalSecurityService, collectService, objectMapper);
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
@@ -581,6 +582,47 @@ class GetorixDepositInternalServiceTest {
         assertThatCode(()-> getorixDepositInternalService.updateGetorixDepositDetails(getorixDepositId, getorixDepositDto, vitamContext))
             .isInstanceOf(InternalServerException.class)
             .hasMessage("Unable to update project");
+    }
+
+    @Test
+    void fetchTitle_should_return_title_when_title_is_present() {
+        final String title = "default_title";
+        final String response =  getorixDepositInternalService.fetchTitle(title, null);
+        assertThat(response).isNotNull().isEqualTo("default_title");
+    }
+    @Test
+    void fetchTitle_should_return_null_when_title_titleFr_titleEn_not_present() {
+        final String result = getorixDepositInternalService.fetchTitle(null, null);
+        assertThat(result).isNull();
+    }
+
+    @Test
+    void fetchTitle_should_return_titleFr_when_titleFr_is_present() {
+        final TitleDto titleDto = new TitleDto( );
+        titleDto.setFr("titleFr");
+        final String response =  getorixDepositInternalService.fetchTitle(null, titleDto);
+        assertThat(response).isNotNull().isEqualTo("titleFr");
+    }
+
+    @Test
+    void fetchTitle_should_return_titleEn_when_titleEn_is_present() {
+        final TitleDto titleDto = new TitleDto( );
+        titleDto.setEn("titleEn");
+        final String response =  getorixDepositInternalService.fetchTitle(null, titleDto);
+        assertThat(response).isNotNull().isEqualTo("titleEn");
+    }
+
+    @Test
+    void getUnitFullPath_shouldThrowExceptionWhenFindArchiveUnitById_ko() throws VitamClientException {
+        // GIVEN
+        String unitId = "id";
+        VitamContext vitamContext = new VitamContext(1);
+        when(collectService.findUnitById(unitId, vitamContext))
+            .thenThrow(new VitamClientException("EXCEPTION : Archive Unit not found"));
+        // THEN
+        assertThatCode(() ->getorixDepositInternalService.getUnitFullPath(unitId, vitamContext))
+            .isInstanceOf(VitamClientException.class)
+            .hasMessage("EXCEPTION : Archive Unit not found");
     }
 
     private AuthUserDto buildAuthUserDto() {

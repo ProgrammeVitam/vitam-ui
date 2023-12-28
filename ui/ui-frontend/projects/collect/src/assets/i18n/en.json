@@ -23,7 +23,12 @@
       "TERMINATED": "The files have been sent, they are being processed by VITAM",
       "SELECTED_ELEMENTS" : "ELEMENTS ARE SELECTED",
       "NAME" : "Name",
-      "SHOW_TREES_PLANS": "Show units tree"  
+      "SHOW_TREES_PLANS": "Show units tree",
+      "TREE" : {
+        "HIDE_TREE" :"Collapse tree",
+        "MY_ARCHIVES" : "My archives",
+        "LOAD_MORE_UNITS": "Show more elements"
+      }   
     },
     "CREATION_PROCESS": {
       "SUCCESS" : {

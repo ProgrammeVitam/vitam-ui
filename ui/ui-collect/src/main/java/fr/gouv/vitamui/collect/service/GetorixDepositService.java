@@ -28,6 +28,7 @@
 package fr.gouv.vitamui.collect.service;
 
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
+import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.external.client.GetorixDepositExternalRestClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -36,6 +37,8 @@ import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GetorixDepositService extends AbstractPaginateService<GetorixDepositDto> {
@@ -78,6 +81,11 @@ public class GetorixDepositService extends AbstractPaginateService<GetorixDeposi
         }
         LOGGER.debug("[UI] : Update the Getorix Deposit details with id : {}", getorixDepositDto.getId());
         return super.update(c, getorixDepositDto);
+    }
+
+    public List<UnitFullPath> getUnitFullPath(String unitId, ExternalHttpContext context) {
+        LOGGER.debug("[UI] : Get the full Path of the unit with Id : {}", unitId);
+        return getorixDepositExternalRestClient.getUnitFullPath(unitId, context).getBody();
     }
 
 }

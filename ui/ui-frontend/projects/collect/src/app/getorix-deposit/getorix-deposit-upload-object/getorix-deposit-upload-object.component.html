@@ -1,4 +1,12 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+  <mat-sidenav class="custom-sidenav" #panel mode="side" [fixedInViewport]="true" [opened]="show" vitamuiCommonResizeSidebar="left">
+    <getorix-tree-plan-schema
+      [searchHasMatches]="searchHasResults"
+      (searchUnitsOfNode)="searchUnitsOfNode($event)"
+      *ngIf="getorixDepositDetailsFound"
+    ></getorix-tree-plan-schema>
+  </mat-sidenav>
+
   <mat-sidenav-content>
     <div class="vitamui-content" [ngStyle]="{ 'padding-top': '40px' }">
       <vitamui-common-title-breadcrumb [data]="dataBreadcrumb"> </vitamui-common-title-breadcrumb>
@@ -13,12 +21,12 @@
         </div>
         <div class="col-3"></div>
         <div class="col-2">
-          <button class="btn primary" [ngStyle]="{ 'margin-top': '15%' }" (click)="notifyArchivist()">
+          <button class="btn primary btn-margin" (click)="notifyArchivist()">
             <span> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.SEND_TO_ARCHIVIST' | translate }}</span>
           </button>
         </div>
       </div>
-      <div class="row" [ngStyle]="{ ' padding-top': '15px' }">
+      <div class="row row-padding">
         <div class="col-3">
           <p class="update-ingest" (click)="goToUpdateOperation()">
             {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UPDATE_CONTENT_DESCRIPTION' | translate }}
@@ -43,20 +51,60 @@
             matTooltipClass="vitamui-tooltip"
             [matTooltipShowDelay]="300"
           >
-            <i class="material-icons" [ngStyle]="{ 'font-size': '40px' }">chevron_right</i>
+            <i class="material-icons icon-size">chevron_right</i>
           </button>
         </div>
       </div>
 
-      {{ operationId }}
-
       <div></div>
       <ng-container *ngIf="!pending; then uploadObjectActivated; else inProgressSpinner"> </ng-container>
 
-      <div></div>
       <br />
+      <div class="horizontal-line" *ngIf="!pending && totalResults > 0"></div>
       <br />
-      <br />
+
+      <!-- Path with less than 5 elements-->
+      <div class="my-archives" *ngIf="nodeParentsFullPath.length > 0 && nodeParentsFullPath.length < 5 && !pending && !isLoadUnitPath">
+        <ng-container *ngFor="let element of nodeParentsFullPath; let lastItem = last">
+          <span class="path-archive clickable" (click)="getUnitsOfNode(element)" *ngIf="!lastItem && element.id !== 'ORPHANS_NODE'"
+            >{{ element.title | truncate : 26 }}
+          </span>
+          <span class="path-archive clickable" (click)="getUnitsOfNode(element)" *ngIf="element.id === 'ORPHANS_NODE'">{{
+            'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.TREE.MY_ARCHIVES' | translate
+          }}</span>
+          <span *ngIf="lastItem">{{ element.title }}</span>
+          <span *ngIf="!lastItem" class="path-archive"> / </span>
+        </ng-container>
+      </div>
+
+      <!-- Path with more than 5 elements-->
+      <div class="my-archives" *ngIf="nodeParentsFullPath.length >= 5 && !pending">
+        <span class="path-archive clickable" (click)="getUnitsOfNode(nodeParentsFullPath[0])">{{ nodeParentsFullPath[0].title }}</span>
+        <span class="path-archive"> / </span>
+
+        <span [matMenuTriggerFor]="childrenMenu" (click)="openNodeChildrenMenu()" #childrenMenuMenuTrigger>
+          <i class="vitamui-icon vitamui-icon-folder-content icon-folder"></i>
+          <mat-menu #childrenMenu="matMenu" class="node-children-menu">
+            <span *ngFor="let nodeElement of nodeParentsFullPath.slice(1, nodeParentsFullPath.length - 2)" [ngStyle]="{ width: '100%' }">
+              <button mat-menu-item (click)="getUnitsOfNode(nodeElement)">
+                <i class="vitamui-icon vitamui-icon-folder" [ngStyle]="{ 'padding-right': '10px' }"></i>
+                {{ nodeElement.title | truncate : 36 }}
+              </button>
+            </span>
+          </mat-menu>
+        </span>
+        <span class="path-archive"> / </span>
+        <span class="path-archive clickable" (click)="getUnitsOfNode(nodeParentsFullPath[nodeParentsFullPath.length - 2])">{{
+          nodeParentsFullPath[nodeParentsFullPath.length - 2].title | truncate : 26
+        }}</span>
+        <span class="path-archive"> / </span>
+        <span>{{ nodeParentsFullPath[nodeParentsFullPath.length - 1].title | truncate : 26 }}</span>
+      </div>
+
+      <!--When parent node selected-->
+      <div class="my-archives" *ngIf="nodeParentsFullPath.length === 0 && !pending && totalResults > 0">
+        <span>{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.TREE.MY_ARCHIVES' | translate }} </span>
+      </div>
 
       <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="totalResults > 0">
         <div class="vitamui-table">
@@ -93,7 +141,7 @@
             <div class="col-3" *ngIf="numberOfSelectedElements === 0"></div>
 
             <div class="col">
-              <i (click)="addNewObject()" class="material-icons icon-action clickable" [ngStyle]="{ 'font-size': '40px' }">add_circle</i>
+              <i (click)="uploadNewObject()" class="material-icons icon-action clickable icon-size">add_circle</i>
             </div>
           </div>
 
@@ -103,6 +151,7 @@
                 class="vitamui-row d-flex align-items-center"
                 (mouseenter)="onMouseOverOnUnitRow(archiveUnit)"
                 (mouseleave)="onMouseLeaveOnUnitRow(archiveUnit)"
+                [ngClass]="isItemSelectedOver(archiveUnit) || isItemSelected(archiveUnit) ? 'unit-selected' : 'unit-not-selected'"
               >
                 <div class="col d-flex align-items-center">
                   <input
@@ -148,11 +197,11 @@
 
 <ng-template #inProgressSpinner>
   <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner x-large" color="accent"></mat-spinner>
+    <mat-spinner class="vitamui-spinner large" color="accent"></mat-spinner>
   </div>
 </ng-template>
 <ng-template #uploadObjectActivated>
-  <div class="row" *ngIf="isShowUploadComponent || totalResults === 0" [ngStyle]="{ 'padding-top': '45px' }">
+  <div class="row row-padding" *ngIf="isShowUploadComponent || totalResults === 0">
     <div class="col">
       <div class="content">
         <div class="main-content">

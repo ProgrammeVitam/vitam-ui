@@ -88,7 +88,7 @@ export class LeavesTreeService {
         FilingHoldingSchemeHandler.setCountRecursively(parentNodes, this.searchRequestResultFacets);
         this.loadingNodesDetails = false;
         return pagedResult;
-      }),
+      })
     );
   }
 
@@ -100,7 +100,7 @@ export class LeavesTreeService {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      }),
+      })
     );
   }
 
@@ -110,10 +110,9 @@ export class LeavesTreeService {
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results, true);
         const tocheck = [...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList];
-        console.log(JSON.stringify(tocheck));
         this.compareAddedNodeWithKnownFacets(tocheck);
         return pagedResult;
-      }),
+      })
     );
   }
 
@@ -124,7 +123,7 @@ export class LeavesTreeService {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      }),
+      })
     );
   }
 
@@ -134,7 +133,7 @@ export class LeavesTreeService {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      }),
+      })
     );
   }
 
@@ -145,7 +144,7 @@ export class LeavesTreeService {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      }),
+      })
     );
   }
 

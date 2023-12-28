@@ -312,6 +312,8 @@ customer-init:
         - ROLE_UPDATE_GETORIX_DEPOSIT
         - ROLE_DELETE_GETORIX_DEPOSIT
         - ROLE_CLOSE_TRANSACTIONS
+        - ROLE_GET_PROJECTS
+        - ROLE_GET_ARCHIVE_SEARCH
 
     - name: VersementGetorix Archiviste
       description: Profil Archiviste pour les versements GETORIX
@@ -327,7 +329,8 @@ customer-init:
         - ROLE_UPDATE_UNITS_METADATA
         - ROLE_REOPEN_TRANSACTIONS
         - ROLE_ABORT_TRANSACTIONS
-
+        - ROLE_GET_PROJECTS
+        - ROLE_GET_ARCHIVE_SEARCH
 
   #- name: profileName
   #  description: desc

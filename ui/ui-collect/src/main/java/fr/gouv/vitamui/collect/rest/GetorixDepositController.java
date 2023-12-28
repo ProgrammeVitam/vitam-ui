@@ -29,6 +29,7 @@ package fr.gouv.vitamui.collect.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
+import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.service.GetorixDepositService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -52,6 +53,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import java.util.List;
 
 
 @Api(tags = "Getorix")
@@ -101,5 +103,16 @@ public class GetorixDepositController extends AbstractUiRestController {
         SanityChecker.sanitizeCriteria(getorixDepositDto);
         LOGGER.debug("[UI] : Update Getorix Deposit with id :{}", getorixDepositDto.getId());
         return getorixDepositService.updateGetorixDepositDetails(buildUiHttpContext(), getorixDepositDto);
+    }
+
+    @ApiOperation(value = "Get the Archive Unit Full Path")
+    @GetMapping(CommonConstants.PATH_ID + CommonConstants.FULL_PATH)
+    @ResponseStatus(HttpStatus.OK)
+    public List<UnitFullPath> getUnitFullPath(final @PathVariable("id") String unitId) throws
+        PreconditionFailedException {
+        ParameterChecker.checkParameter("the Archive Unit Id is mandatory : ", unitId);
+        SanityChecker.checkSecureParameter(unitId);
+        LOGGER.debug("[UI] : Get the full Path of the unit with Id : {}", unitId);
+        return getorixDepositService.getUnitFullPath(unitId, buildUiHttpContext());
     }
 }

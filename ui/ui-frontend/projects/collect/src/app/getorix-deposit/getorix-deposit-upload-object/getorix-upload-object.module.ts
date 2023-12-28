@@ -24,29 +24,23 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-export enum VitamuiRoles {
-  ROLE_CREATE_ARCHIVE_SEARCH = 'ROLE_CREATE_ARCHIVE_SEARCH',
-  ROLE_GET_ARCHIVE_SEARCH = 'ROLE_GET_ARCHIVE_SEARCH',
-  ROLE_GET_ALL_ARCHIVE_SEARCH = 'ROLE_GET_ALL_ARCHIVE_SEARCH',
-  ROLE_SEARCH_WITH_RULES = 'ROLE_SEARCH_WITH_RULES',
-  ROLE_EXPORT_DIP = 'ROLE_EXPORT_DIP',
-  ROLE_TRANSFER_REQUEST = 'ROLE_TRANSFER_REQUEST',
-  ROLE_ELIMINATION = 'ROLE_ELIMINATION',
-  ROLE_UPDATE_MANAGEMENT_RULES = 'ROLE_UPDATE_MANAGEMENT_RULES',
-  ROLE_COMPUTED_INHERITED_RULES = 'ROLE_COMPUTED_INHERITED_RULES',
-  ROLE_RECLASSIFICATION = 'ROLE_RECLASSIFICATION',
-  ROLE_TRANSFER_ACKNOWLEDGMENT = 'ROLE_TRANSFER_ACKNOWLEDGMENT',
-  ROLE_UPDATE_RULES = 'ROLE_UPDATE_RULES',
-  // Getorix Deposit ROLES
-  ROLE_GET_GETORIX_DEPOSIT = 'ROLE_GET_GETORIX_DEPOSIT',
-  ROLE_CREATE_GETORIX_DEPOSIT = 'ROLE_CREATE_GETORIX_DEPOSIT',
-  ROLE_UPDATE_GETORIX_DEPOSIT = 'ROLE_UPDATE_GETORIX_DEPOSIT',
-  ROLE_DELETE_GETORIX_DEPOSIT = 'ROLE_DELETE_GETORIX_DEPOSIT',
-  ROLE_SEND_TRANSACTIONS = 'ROLE_SEND_TRANSACTIONS',
-  ROLE_CLOSE_TRANSACTIONS = 'ROLE_CLOSE_TRANSACTIONS',
-  ROLE_UPDATE_UNITS_METADATA = 'ROLE_UPDATE_UNITS_METADATA',
-  ROLE_REOPEN_TRANSACTIONS = 'ROLE_REOPEN_TRANSACTIONS',
-  ROLE_ABORT_TRANSACTIONS = 'ROLE_ABORT_TRANSACTIONS',
-  ROLE_GET_PROJECTS = 'ROLE_GET_PROJECTS',
-  ROLE_CREATE_PROJECTS = 'ROLE_CREATE_PROJECTS',
-}
+
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { ArchiveSearchHelperService } from '../../collect/archive-search-collect/archive-search-criteria/services/archive-search-helper.service';
+import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object.component';
+import { GetorixLeavesTreeComponent } from './getorix-leaves-tree/getorix-leaves-tree.component';
+import { GetorixTreePlanSchemaComponent } from './getorix-tree-plan-schema/getorix-tree-plan-schema.component';
+import { GetorixTreeNodeComponent } from './getorix-tree-node/getorix-tree-node.component';
+
+@NgModule({
+  declarations: [GetorixDepositUploadObjectComponent, GetorixLeavesTreeComponent, GetorixTreePlanSchemaComponent, GetorixTreeNodeComponent],
+  imports: [CommonModule, MatTreeModule, VitamUICommonModule, MatCheckboxModule, MatSidenavModule, MatProgressSpinnerModule],
+  providers: [ArchiveSearchHelperService],
+})
+export class GetorixUploadObjectModule {}
