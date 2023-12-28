@@ -96,7 +96,7 @@ vitamui:
     port_admin: 7003
     has_tenant_list: false
     has_lang_selection: false
-    has_site_selection: true
+    has_site_selection: false
 
   referential_external:
     host: "vitamui-referential-external.service.{{ consul_domain }}"
