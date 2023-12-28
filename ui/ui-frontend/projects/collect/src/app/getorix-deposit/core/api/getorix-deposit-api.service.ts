@@ -25,11 +25,12 @@
  * accept its terms.
  */
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL, BaseHttpClient } from 'ui-frontend-common';
 import { GetorixDeposit } from '../model/getorix-deposit.interface';
+import { GetorixUnitFullPath } from '../model/getorix-unit-full-path.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -56,5 +57,9 @@ export class GetorixDepositApiService extends BaseHttpClient<any> {
 
   updateGetorixDepositInformations(getorixDeposit: GetorixDeposit): Observable<GetorixDeposit> {
     return this.http.put<GetorixDeposit>(`${this.apiUrl}/${getorixDeposit.id}`, getorixDeposit);
+  }
+
+  getUnitFullPath(unitId: string, headers?: HttpHeaders): Observable<GetorixUnitFullPath[]> {
+    return this.http.get<GetorixUnitFullPath[]>(this.apiUrl + '/' + unitId + '/full-path', { headers });
   }
 }

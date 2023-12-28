@@ -27,7 +27,9 @@
 
 package fr.gouv.vitamui.collect.internal.server.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -39,6 +41,7 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
+import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.internal.server.dao.GetorixDepositRepository;
 import fr.gouv.vitamui.collect.internal.server.domain.GetorixDepositModel;
 import fr.gouv.vitamui.collect.internal.server.service.converters.GetorixDepositConverter;
@@ -58,11 +61,17 @@ import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.TitleDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter.toVitamuiCollectProjectDto;
@@ -83,6 +92,8 @@ public class GetorixDepositInternalService  extends
     public static final String UNABLE_TO_UPDATE_TRANSACTION = "Unable to update transaction";
     public static final String UNABLE_TO_UPDATE_PROJECT = "Unable to update project";
 
+    private static final String RESULTS = "$results";
+
     private final GetorixDepositRepository getorixDepositRepository;
 
     private final GetorixDepositConverter getorixDepositConverter;
@@ -91,15 +102,20 @@ public class GetorixDepositInternalService  extends
 
     private final CollectService collectService;
 
+    private final ObjectMapper objectMapper;
+
+    List<UnitFullPath> unitFullPaths = new ArrayList<>();
+
     @Autowired
     public GetorixDepositInternalService(final CustomSequenceRepository sequenceRepository,
         GetorixDepositRepository getorixDepositRepository, GetorixDepositConverter getorixDepositConverter,
-        InternalSecurityService internalSecurityService, CollectService collectService) {
+        InternalSecurityService internalSecurityService, CollectService collectService, ObjectMapper objectMapper) {
         super(sequenceRepository);
         this.getorixDepositRepository = getorixDepositRepository;
         this.getorixDepositConverter = getorixDepositConverter;
         this.internalSecurityService = internalSecurityService;
         this.collectService = collectService;
+        this.objectMapper = objectMapper;
     }
 
     public GetorixDepositDto createGetorixDeposit(GetorixDepositDto getorixDepositDto, VitamContext vitamContext) {
@@ -192,6 +208,65 @@ public class GetorixDepositInternalService  extends
         updateCollectTransaction(collectTransactionDto, vitamContext);
 
         return this.update(getorixDepositDto);
+    }
+
+    public void prepareArchiveUnitFullPath(String unitId, VitamContext vitamContext) throws VitamClientException {
+        LOGGER.debug("Get the full Path of the unit with Id : {}", unitId);
+        ResultsDto archiveUnitDetails = findArchiveUnitById(unitId, vitamContext);
+        LOGGER.debug("Archive unit found {}", archiveUnitDetails);
+        UnitFullPath unitFullPath = new UnitFullPath();
+        unitFullPath.setId(archiveUnitDetails.getId());
+        unitFullPath.setUnitType(archiveUnitDetails.getUnitType());
+        unitFullPath.setTitle(fetchTitle(archiveUnitDetails.getTitle(), archiveUnitDetails.getTitle_()));
+        unitFullPaths.add(unitFullPath);
+
+        if(!archiveUnitDetails.getUnitups().isEmpty()) {
+            prepareArchiveUnitFullPath(archiveUnitDetails.getUnitups().get(0), vitamContext);
+        } else {
+            LOGGER.debug("No parents found");
+            UnitFullPath defaultUnitFullPath = new UnitFullPath();
+            defaultUnitFullPath.setId("ORPHANS_NODE");
+            defaultUnitFullPath.setUnitType(null);
+            defaultUnitFullPath.setTitle("Mes Archives");
+            unitFullPaths.add(defaultUnitFullPath);
+            Collections.reverse(unitFullPaths);
+        }
+    }
+
+    public List<UnitFullPath> getUnitFullPath(String unitId, VitamContext vitamContext) throws VitamClientException {
+        LOGGER.debug("Get the full Path of the unit with Id : {}", unitId);
+        LOGGER.debug("Prepare the path of the unit : {}", unitId);
+        unitFullPaths = new ArrayList<>();
+        prepareArchiveUnitFullPath(unitId, vitamContext);
+        return unitFullPaths;
+    }
+
+    public String fetchTitle(String title, TitleDto titleDto) {
+        if(Objects.nonNull(title)) {
+            return title;
+        } else {
+            if(Objects.nonNull(titleDto)) {
+                if(Objects.nonNull(titleDto.getFr())) {
+                    return titleDto.getFr();
+                } else {
+                    return titleDto.getEn();
+                }
+            }
+        }
+        return null;
+    }
+
+    private ResultsDto findArchiveUnitById(String id, VitamContext vitamContext) throws VitamClientException {
+        try {
+            LOGGER.debug("Archive Unit Id : {}", id);
+            String result = StringUtils
+                .chop(collectService.findUnitById(id, vitamContext).toJsonNode().get(RESULTS).toString()
+                    .substring(1));
+            return objectMapper.readValue(result, ResultsDto.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Can not get the archive unit {} ", e);
+            throw new VitamClientException("Unable to find the UA", e);
+        }
     }
 
     private CollectProjectDto createProject(CollectProjectDto collectProjectDto, VitamContext vitamContext) {

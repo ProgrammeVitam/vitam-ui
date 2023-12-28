@@ -23,7 +23,12 @@
       "TERMINATED": "Les fichiers ont été bien envoyé, ils sont en cours de traitement par VITAM",
       "SELECTED_ELEMENTS" : "ÉLÉMENTS SÉLECTIONNÉS",
       "NAME" : "Nom",
-      "SHOW_TREES_PLANS": "Afficher l'arborescence des unités"  
+      "SHOW_TREES_PLANS": "Afficher l'arborescence des unités",
+      "TREE" : {
+        "HIDE_TREE" :"Réduire l'arborescence",
+        "MY_ARCHIVES" : "Mes archives",
+        "LOAD_MORE_UNITS": "Voir plus d'éléments"
+      }  
     },
     "CREATION_PROCESS": {
       "SUCCESS" : {

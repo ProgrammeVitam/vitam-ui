@@ -28,7 +28,9 @@
 package fr.gouv.vitamui.collect.internal.server.rest;
 
 
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
+import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.internal.server.service.GetorixDepositInternalService;
@@ -50,6 +52,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -106,5 +109,16 @@ public class GetorixDepositInternalController {
         LOGGER.debug("[Internal] : update the GetorixDeposit details by id : {}", getorixDepositId);
         return getorixDepositInternalService.updateGetorixDepositDetails(getorixDepositId, getorixDepositDto,
             externalParametersService.buildVitamContextFromExternalParam());
+    }
+
+    @ApiOperation(value = "Get the Archive Unit Full Path")
+    @GetMapping(CommonConstants.PATH_ID + CommonConstants.FULL_PATH)
+    public List<UnitFullPath> getUnitFullPath(final @PathVariable("id") String unitId) throws PreconditionFailedException,
+        VitamClientException {
+        ParameterChecker.checkParameter("the Archive Unit Id is mandatory : ", unitId);
+        SanityChecker.checkSecureParameter(unitId);
+        LOGGER.debug("[INTERNAL] : Get the full Path of the unit with Id : {}", unitId);
+        return getorixDepositInternalService.getUnitFullPath(unitId, externalParametersService
+            .buildVitamContextFromExternalParam());
     }
 }

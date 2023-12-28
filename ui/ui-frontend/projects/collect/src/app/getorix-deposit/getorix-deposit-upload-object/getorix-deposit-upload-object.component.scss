@@ -71,6 +71,12 @@
   padding-left: 10px;
 }
 
+.icon-folder {
+  color: var(--vitamui-primary);
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .content {
   .main-content {
     display: flex;
@@ -192,4 +198,115 @@
   border-bottom-left-radius: 0px;
   border: 1px solid whitesmoke;
   border-left: 0px;
+}
+
+::ng-deep .mat-sidenav-content {
+  flex-grow: 1;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--vitamui-primary);
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #eee;
+    border-radius: 5px;
+  }
+}
+
+.custom-sidenav {
+  min-width: 300px;
+  max-width: 600px;
+}
+
+.vitamui-row {
+  padding: 0.8rem;
+  margin-bottom: 0rem;
+  background-color: white;
+}
+
+.unit-selected {
+  background-color: var(--Primary-Primary-50, #f7ebfa);
+  border-radius: 5px;
+  border: 1px solid var(--vitamui-primary);
+}
+.unit-not-selected {
+  background-color: white;
+}
+
+.my-archives {
+  color: var(--Grey-Grey-900, #212121);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  padding-bottom: 20px;
+}
+
+.path-archive {
+  color: var(--vitamui-primary);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+::ng-deep .mat-menu-panel {
+  max-width: 950px !important;
+  min-height: 0px !important;
+}
+
+::ng-deep .node-children-menu {
+  width: 425px;
+  border-radius: 10px;
+  border: 1px solid var(--Grey-Grey-400, #bdbdbd);
+  background: #fff;
+  display: inline-flex;
+  padding: 10px;
+  align-items: flex-start;
+  button {
+    color: var(--Grey-Grey-900, #212121);
+    font-family: Mulish;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0.1px;
+    width: 400px;
+  }
+}
+
+::ng-deep .mat-menu-item:hover:not([disabled]) {
+  border-radius: 5px;
+  background-color: var(--Primary-Primary-50, #f7ebfa);
+}
+
+.horizontal-line {
+  border-top: 1px solid var(--Grey-Grey-300, #e0e0e0);
+  padding-bottom: 12px;
+}
+
+.row-padding {
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.icon-size {
+  font-size: 40px;
+}
+
+.btn-margin {
+  margin-top: 15%;
 }

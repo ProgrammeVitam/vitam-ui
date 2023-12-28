@@ -1,0 +1,27 @@
+<button
+  mat-icon-button
+  [disabled]="disabled"
+  disableRipple
+  [attr.aria-label]="'toggle ' + node?.label"
+  (click)="nodeToggle.emit()"
+  class="arrow"
+  type="button"
+>
+  <i *ngIf="icon !== 'vitamui-icon-file'" class="material-icons mat-icon-rtl-mirror icon-css">{{
+    expanded ? 'expand_more' : 'chevron_right'
+  }}</i>
+</button>
+
+<mat-checkbox
+  class="custom-checkbox"
+  id="enable{{ node?.id }}"
+  [disabled]="node?.disabled"
+  matTooltip="{{ node?.title }}"
+  matTooltipClass="vitamui-tooltip"
+  [matTooltipShowDelay]="300"
+>
+  <label class="node-label" (click)="onLabelClick(node)" [ngClass]="icon !== 'vitamui-icon-file' ? 'clickable' : 'not-clickable'">
+    <i class="pad vitamui-icon {{ icon }}"></i>
+    {{ node?.title | truncate : 30 }}
+  </label>
+</mat-checkbox>

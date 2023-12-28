@@ -27,21 +27,43 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, Subscription, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { BreadCrumbData, Direction, Logger, PagedResult, SearchCriteriaEltDto, Unit } from 'ui-frontend-common';
+import {
+  ArchiveSearchResultFacets,
+  BreadCrumbData,
+  CriteriaDataType,
+  CriteriaOperator,
+  Direction,
+  FilingHoldingSchemeNode,
+  GlobalEventService,
+  Logger,
+  ORPHANS_NODE_ID,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaEltDto,
+  SearchCriteriaMgtRuleEnum,
+  SearchCriteriaTypeEnum,
+  SidenavPage,
+  Unit,
+} from 'ui-frontend-common';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from '../../collect/archive-search-collect/archive-collect.service';
-import { ArchiveSharedDataService } from '../../collect/archive-search-collect/archive-search-criteria/services/archive-shared-data.service';
+import { ArchiveFacetsService } from '../../collect/archive-search-collect/archive-search-criteria/services/archive-facets.service';
+import { ArchiveSearchHelperService } from '../../collect/archive-search-collect/archive-search-criteria/services/archive-search-helper.service';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../collect/shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../collect/shared/collect-upload/collect-upload.service';
 import { GetorixDeposit } from '../core/model/getorix-deposit.interface';
+import { GetorixUnitFullPath } from '../core/model/getorix-unit-full-path.interface';
 import { GetorixDepositService } from '../getorix-deposit.service';
+import { GetorixDepositSharedDataService } from '../services/getorix-deposit-shared-data.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
+const UNIT_UPS = '#unitups';
 
 const PAGE_SIZE = 10;
 @Component({
@@ -49,7 +71,7 @@ const PAGE_SIZE = 10;
   templateUrl: './getorix-deposit-upload-object.component.html',
   styleUrls: ['./getorix-deposit-upload-object.component.scss'],
 })
-export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
+export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implements OnInit, OnDestroy {
   operationIdentifierSubscription: Subscription;
   operationId: string;
   dataBreadcrumb: BreadCrumbData[];
@@ -82,14 +104,28 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
   selectedItemsList: string[] = [];
   selectedItemsListOver: string[] = [];
 
-  // units tree
   show = true;
+  getorixDepositDetailsFound = false;
 
   private readonly orderChange = new Subject<string>();
   subscriptions: Subscription = new Subscription();
 
+  archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
+
+  searchCriterias: Map<string, SearchCriteria>;
+
+  nodeParents: { id: string; title: string }[];
+
+  nodeParentsFullPath: GetorixUnitFullPath[] = [];
+
+  @ViewChild('childrenMenuMenuTrigger', { read: MatMenuTrigger, static: false })
+  childrenMenuMenuTrigger: MatMenuTrigger;
+
+  isLoadUnitPath = false;
+
   constructor(
     private route: ActivatedRoute,
+    globalEventService: GlobalEventService,
     private getorixDepositService: GetorixDepositService,
     private router: Router,
     private translateService: TranslateService,
@@ -97,15 +133,20 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
     private uploadService: CollectUploadService,
     private snackBar: MatSnackBar,
     private translationService: TranslateService,
-    private logger: Logger,
     private archiveUnitCollectService: ArchiveCollectService,
-    private getorixDepositSharedDateService: ArchiveSharedDataService
-  ) {}
+    private getorixDepositSharedDateService: GetorixDepositSharedDataService,
+    private archiveFacetsService: ArchiveFacetsService,
+    private archiveHelperService: ArchiveSearchHelperService
+  ) {
+    super(route, globalEventService);
+  }
 
   ngOnInit(): void {
     this.isIndeterminate = false;
     this.itemNotSelected = 0;
     this.isAllChecked = false;
+
+    this.searchCriterias = new Map();
 
     this.uploadFiles$ = this.uploadService.getUploadingFiles();
     this.zippedFile$ = this.uploadService.getZipFile();
@@ -123,15 +164,19 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
         },
         { label: this.translateService.instant('GETORIX_DEPOSIT.BREAD_CRUMB.UPLOAD_ARCHIVES') },
       ];
-      this.getorixDepositService.getGetorixDepositById(params.operationIdentifier).subscribe(
-        (data: GetorixDeposit) => {
-          this.getorixDepositDetails = data;
-          this.searchUnits();
-        },
-        (error) => {
-          this.loggerService.error('error while searching for this operation', error);
-          this.router.navigate([this.router.url.replace('/create', '').replace('upload-object', '').replace(this.operationId, '')]);
-        }
+      this.subscriptions.add(
+        this.getorixDepositService.getGetorixDepositById(params.operationIdentifier).subscribe(
+          (data: GetorixDeposit) => {
+            this.getorixDepositDetails = data;
+            this.searchUnits(true);
+            this.getorixDepositDetailsFound = true;
+            this.getorixDepositSharedDateService.emitTransactionId(this.getorixDepositDetails.transactionId);
+          },
+          (error) => {
+            this.loggerService.error('error while searching for this operation', error);
+            this.router.navigate([this.router.url.replace('/create', '').replace('upload-object', '').replace(this.operationId, '')]);
+          }
+        )
       );
     });
 
@@ -139,13 +184,15 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
       merge(this.orderChange)
         .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS))
         .subscribe(() => {
-          this.searchUnits();
+          this.searchSubmit();
         })
     );
 
-    this.getorixDepositSharedDateService.getToggle().subscribe((hidden) => {
-      this.show = hidden;
-    });
+    this.subscriptions.add(
+      this.getorixDepositSharedDateService.getToggle().subscribe((hidden) => {
+        this.show = hidden;
+      })
+    );
   }
 
   goToUpdateOperation() {
@@ -163,7 +210,7 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
     this.subscriptions?.unsubscribe();
   }
 
-  addNewObject() {
+  uploadNewObject() {
     this.isShowUploadComponent = !this.isShowUploadComponent;
   }
 
@@ -288,11 +335,13 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
   }
 
   deleteAllFiles() {
-    this.uploadFiles$.subscribe((data) => {
-      data.forEach((file) => {
-        this.removeFolder(file);
-      });
-    });
+    this.subscriptions.add(
+      this.uploadFiles$.subscribe((data) => {
+        data.forEach((file) => {
+          this.removeFolder(file);
+        });
+      })
+    );
   }
 
   async sendFilesToVitam() {
@@ -311,7 +360,8 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
               duration: 10000,
             });
             setTimeout(() => {
-              this.searchUnits();
+              const node = { id: 'ORPHANS_NODE' } as FilingHoldingSchemeNode;
+              this.searchUnitsOfNode(node, true);
             }, 3000);
           }
         );
@@ -321,8 +371,21 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
       });
   }
 
-  searchUnits() {
+  searchSubmit() {
+    this.submited = true;
+    this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
+    this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
+    for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
+      this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
+    }
+    if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      this.searchUnits(false);
+    }
+  }
+
+  searchUnits(isLoadTree: boolean) {
     this.pending = true;
+    this.isLoadUnitPath = true;
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
@@ -332,34 +395,51 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
       trackTotalHits: false,
     };
 
-    this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.getorixDepositDetails.transactionId).subscribe(
-      (pagedResult: PagedResult) => {
-        if (this.currentPage === 0) {
-          this.archiveUnits = pagedResult.results;
-          this.searchHasResults = !isEmpty(pagedResult.results);
-          this.totalResults = pagedResult.totalResults;
-        } else if (pagedResult.results) {
-          pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
-          if (this.isAllChecked) {
-            pagedResult.results.forEach((unit) => {
-              this.selectedItemsList.push(unit['#id']);
-              this.selectedItemsListOver.push(unit['#id']);
-            });
-          }
-        }
-        this.pageNumbers = pagedResult.pageNumbers;
-        if (this.isAllChecked) {
-          this.numberOfSelectedElements = this.totalResults - this.itemNotSelected;
-        }
-        this.canLoadMore = this.currentPage < this.pageNumbers - 1;
+    if (isLoadTree) {
+      this.getorixDepositSharedDateService.emitSearchCriterias(searchCriteria);
+    }
 
-        this.pending = false;
-      },
-      (error: HttpErrorResponse) => {
-        this.logger.error('Error message :', error.message);
-        this.canLoadMore = false;
-        this.pending = false;
-      }
+    this.subscriptions.add(
+      this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.getorixDepositDetails.transactionId).subscribe(
+        (pagedResult: PagedResult) => {
+          if (this.currentPage === 0) {
+            this.archiveUnits = pagedResult.results;
+            this.searchHasResults = !isEmpty(pagedResult.results);
+            if (isLoadTree) {
+              this.getorixDepositSharedDateService.emitHasResult(!isEmpty(pagedResult.results));
+            }
+            this.totalResults = pagedResult.totalResults;
+            this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
+            this.totalResults = pagedResult.totalResults;
+            if (isLoadTree) {
+              this.getorixDepositSharedDateService.emitTotalResults(this.totalResults);
+              this.getorixDepositSharedDateService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+            }
+          } else if (pagedResult.results) {
+            pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
+            if (this.isAllChecked) {
+              pagedResult.results.forEach((unit) => {
+                this.selectedItemsList.push(unit['#id']);
+                this.selectedItemsListOver.push(unit['#id']);
+              });
+            }
+          }
+          this.pageNumbers = pagedResult.pageNumbers;
+          if (this.isAllChecked) {
+            this.numberOfSelectedElements = this.totalResults - this.itemNotSelected;
+          }
+          this.canLoadMore = this.currentPage < this.pageNumbers - 1;
+
+          this.pending = false;
+          this.isLoadUnitPath = false;
+        },
+        (error: HttpErrorResponse) => {
+          this.logger.error('Error message :', error.message);
+          this.canLoadMore = false;
+          this.pending = false;
+          this.isLoadUnitPath = false;
+        }
+      )
     );
   }
 
@@ -374,10 +454,10 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
     this.submited = true;
     this.currentPage = this.currentPage + 1;
 
-    this.searchUnits();
+    this.searchUnits(false);
   }
 
-  getArchiveUnitType(archiveUnit: any) {
+  getArchiveUnitType(archiveUnit: Unit) {
     if (archiveUnit) {
       return archiveUnit['#unitType'];
     }
@@ -422,6 +502,7 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
   hideTreeBlock(hidden: boolean) {
     this.show = !hidden;
   }
+
   onMouseOverOnUnitRow(unit: Unit) {
     if (!this.isItemSelected(unit)) {
       this.selectedItemsListOver.push(unit['#id']);
@@ -436,5 +517,58 @@ export class GetorixDepositUploadObjectComponent implements OnInit, OnDestroy {
 
   isItemSelectedOver(archiveUnit: Unit) {
     return this.selectedItemsListOver.filter((element) => element === archiveUnit['#id']).length > 0;
+  }
+
+  searchUnitsOfNode(selectedUnitFolder: FilingHoldingSchemeNode, isLoadTree?: boolean) {
+    this.isAllChecked = false;
+    this.numberOfSelectedElements = 0;
+    this.currentPage = 0;
+    this.selectedItemsListOver = [];
+    this.selectedItemsList = [];
+    this.archiveUnits = [];
+    this.criteriaSearchList = [];
+    if (selectedUnitFolder.id !== ORPHANS_NODE_ID) {
+      this.criteriaSearchList.push({
+        criteria: UNIT_UPS,
+        operator: CriteriaOperator.IN,
+        category: SearchCriteriaTypeEnum.FIELDS,
+        values: [{ id: selectedUnitFolder.id, value: selectedUnitFolder.id }],
+        dataType: CriteriaDataType.STRING,
+      });
+    }
+    this.findParents(selectedUnitFolder);
+    if (isLoadTree) {
+      this.searchUnits(true);
+    } else {
+      this.searchUnits(false);
+    }
+  }
+
+  getUnitsOfNode(unitFullPath: GetorixUnitFullPath) {
+    const node = { id: unitFullPath.id } as FilingHoldingSchemeNode;
+    this.getorixDepositSharedDateService.emitSelectedNode(node);
+
+    this.nodeParentsFullPath.splice(this.nodeParentsFullPath.indexOf(unitFullPath) + 1);
+    this.searchUnitsOfNode(node);
+  }
+
+  // function to find parents
+  findParents(selectedUnitFolder: FilingHoldingSchemeNode) {
+    this.nodeParents = [];
+    this.nodeParentsFullPath = [];
+    this.isLoadUnitPath = true;
+
+    if (selectedUnitFolder.id !== ORPHANS_NODE_ID) {
+      this.subscriptions.add(
+        this.getorixDepositService.getUnitFullPath(selectedUnitFolder.id).subscribe((data) => {
+          this.nodeParentsFullPath = data;
+          this.isLoadUnitPath = false;
+        })
+      );
+    }
+  }
+
+  openNodeChildrenMenu() {
+    this.childrenMenuMenuTrigger.openMenu();
   }
 }

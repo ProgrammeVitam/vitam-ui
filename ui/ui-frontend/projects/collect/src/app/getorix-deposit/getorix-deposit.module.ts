@@ -38,22 +38,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTreeModule } from '@angular/material/tree';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { CreateGetorixDepositComponent } from './create-getorix-deposit/create-getorix-deposit.component';
 import { GetorixDepositAdvisePreviewComponent } from './getorix-deposit-advise-preview/getorix-deposit-advise-preview.component';
 import { GetorixDepositRoutingModule } from './getorix-deposit-routing.module';
-import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object/getorix-deposit-upload-object.component';
+import { GetorixUploadObjectModule } from './getorix-deposit-upload-object/getorix-upload-object.module';
 import { GetorixDepositComponent } from './getorix-deposit.component';
 import { GetorixDepositService } from './getorix-deposit.service';
+import { GetorixDepositSharedDataService } from './services/getorix-deposit-shared-data.service';
 
 @NgModule({
-  declarations: [
-    GetorixDepositComponent,
-    CreateGetorixDepositComponent,
-    GetorixDepositUploadObjectComponent,
-    GetorixDepositAdvisePreviewComponent,
-  ],
+  declarations: [GetorixDepositComponent, CreateGetorixDepositComponent, GetorixDepositAdvisePreviewComponent],
   imports: [
     CommonModule,
     MatSidenavModule,
@@ -70,9 +65,9 @@ import { GetorixDepositService } from './getorix-deposit.service';
     MatInputModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatTreeModule,
+    GetorixUploadObjectModule,
   ],
-  providers: [GetorixDepositService],
+  providers: [GetorixDepositService, GetorixDepositSharedDataService],
   exports: [GetorixDepositComponent],
 })
 export class GetorixDepositModule {}
