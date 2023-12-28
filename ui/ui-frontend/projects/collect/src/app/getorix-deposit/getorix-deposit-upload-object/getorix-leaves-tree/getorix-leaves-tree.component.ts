@@ -34,121 +34,94 @@ import {
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   LeavesTreeService,
-  PagedResult,
   ResultFacet,
   SearchCriteriaDto,
   UnitType,
   nodeToVitamuiIcon,
 } from 'ui-frontend-common';
-import { ArchiveCollectService } from '../../../../archive-collect.service';
-import { Pair } from '../../../models/utils';
-import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
+import { ArchiveCollectService } from '../../../collect/archive-search-collect/archive-collect.service';
+import { GetorixDepositSharedDataService } from '../../services/getorix-deposit-shared-data.service';
 
 @Component({
-  selector: 'app-leaves-tree',
-  templateUrl: './leaves-tree.component.html',
-  styleUrls: ['./leaves-tree.component.scss'],
+  selector: 'getorix-leaves-tree',
+  templateUrl: './getorix-leaves-tree.component.html',
+  styleUrls: ['./getorix-leaves-tree.component.scss'],
 })
-export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
-  readonly DEFAULT_UNIT_PAGE_SIZE = 10;
-
-  @Input() loadingNodeUnit: boolean;
+export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() transactionId: string;
-  loadingNodesDetails: boolean;
-  // Already a graph
-  @Input() nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
   @Input() searchRequestResultFacets: ResultFacet[];
   @Input() searchRequestTotalResults: number;
+  @Output() searchUnitsOfNode = new EventEmitter<FilingHoldingSchemeNode>();
 
-  @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
-  @Output() showNodeDetail: EventEmitter<Pair> = new EventEmitter();
-  @Output() switchView: EventEmitter<void> = new EventEmitter();
-
+  selectedNode: FilingHoldingSchemeNode;
+  nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
+  showEveryNodes = true;
+  searchCriterias: SearchCriteriaDto;
+  leavesTreeService: LeavesTreeService;
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
     (node) => node.children
   );
-  showEveryNodes = true;
-  showFacetsCount = true;
-  private searchCriterias: SearchCriteriaDto;
-  private subscriptions: Subscription = new Subscription();
-  private leavesTreeService: LeavesTreeService;
 
-  constructor(private archiveSharedDataService: ArchiveSharedDataService, private archiveCollectService: ArchiveCollectService) {
+  private subscriptions: Subscription = new Subscription();
+
+  constructor(
+    private getorixDepositSharedDataService: GetorixDepositSharedDataService,
+    private archiveCollectService: ArchiveCollectService
+  ) {
     this.leavesTreeService = new LeavesTreeService(this.archiveCollectService);
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subscribeOnSearchCriteriasUpdate();
-  }
+    if (this.nestedDataSourceLeaves === undefined) {
+      this.subscriptions.add(
+        this.getorixDepositSharedDataService.getNestedDataSourceLeavesSubject().subscribe((data) => {
+          this.nestedDataSourceLeaves = data;
+          if (data) {
+            this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
+            if (this.searchCriterias) {
+              this.loadNodesDetailsFromFacetsIdsAndAddThem(this.nestedDataSourceLeaves.data, this.searchRequestResultFacets);
+            }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nestedDataSourceLeaves || changes.searchRequestResultFacets) {
-      this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
-      if (this.searchCriterias) {
-        this.loadNodesDetailsFromFacetsIdsAndAddThem(this.nestedDataSourceLeaves.data, this.searchRequestResultFacets);
-      }
-      if (changes.searchRequestResultFacets && changes.searchRequestResultFacets.currentValue.length > 0) {
-        this.leavesTreeService.setSearchRequestResultFacets(changes.searchRequestResultFacets.currentValue);
-      }
-      this.refreshTreeNodes();
+            this.refreshTreeNodes();
+
+            if (this.transactionId) {
+              this.leavesTreeService.setTransactionId(this.transactionId);
+            }
+          }
+        })
+      );
     }
-    if (changes.transactionId) {
-      this.leavesTreeService.setTransactionId(this.transactionId);
-    }
+    this.subscriptions.add(
+      this.getorixDepositSharedDataService.getSelectedNode().subscribe((data) => {
+        this.selectedNode = data;
+      })
+    );
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
-
-  addToSearchCriteriaList(node: FilingHoldingSchemeNode) {
-    this.addToSearchCriteria.emit(node);
-  }
-
-  private searchUnderNode(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchUnderNode(parentNode).subscribe((_: PagedResult) => {
-      this.refreshTreeNodes();
+  ngOnChanges(changes: SimpleChanges) {
+    this.getorixDepositSharedDataService.getNestedDataSourceLeavesSubject().subscribe((data) => {
+      this.nestedDataSourceLeaves = data;
+      if (data) {
+        if (changes.nestedDataSourceLeaves || changes.searchRequestResultFacets) {
+          this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
+          if (this.searchCriterias) {
+            this.loadNodesDetailsFromFacetsIdsAndAddThem(this.nestedDataSourceLeaves.data, this.searchRequestResultFacets);
+          }
+          if (changes.searchRequestResultFacets && changes.searchRequestResultFacets.currentValue.length > 0) {
+            this.leavesTreeService.setSearchRequestResultFacets(changes.searchRequestResultFacets.currentValue);
+          }
+          this.refreshTreeNodes();
+        }
+        if (changes.transactionId) {
+          this.leavesTreeService.setTransactionId(this.transactionId);
+        }
+      }
     });
   }
 
-  private searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchUnderNodeWithSearchCriterias(parentNode).subscribe((_: PagedResult) => {
-      this.refreshTreeNodes();
-    });
-  }
-
-  private searchAtNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchAtNodeWithSearchCriterias(parentNode).subscribe((_: PagedResult) => {
-      this.refreshTreeNodes();
-    });
-  }
-
-  private searchOrphans(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchOrphans(parentNode).subscribe((_: PagedResult) => {
-      this.refreshTreeNodes();
-    });
-  }
-
-  private searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchOrphansWithSearchCriterias(parentNode).subscribe((_: PagedResult) => {
-      this.refreshTreeNodes();
-    });
-  }
-
-  private loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes: FilingHoldingSchemeNode[], facets: ResultFacet[]) {
-    this.leavesTreeService.loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes, facets).subscribe((_: PagedResult) => {
-      this.refreshTreeNodes();
-    });
-  }
-
-  private refreshTreeNodes() {
-    const data = this.nestedDataSourceLeaves.data;
-    this.nestedDataSourceLeaves.data = null;
-    this.nestedDataSourceLeaves.data = data;
-  }
-
-  private firstToggle(node: FilingHoldingSchemeNode): boolean {
-    return this.leavesTreeService.firstToggle(node);
+  ngOnDestroy() {
+    this.subscriptions?.unsubscribe();
   }
 
   toggleOrphansNode(node: FilingHoldingSchemeNode) {
@@ -211,23 +184,15 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return FilingHoldingSchemeHandler.isOrphansNode(node);
   }
 
-  nodeHasPositiveCount(node: FilingHoldingSchemeNode): boolean {
-    return node.count && node.count > 0;
-  }
-
   nodeHasResultOrShowAll(node: FilingHoldingSchemeNode) {
-    return this.nodeHasPositiveCount(node) || this.showEveryNodes;
+    return (node.count && node.count > 0) || this.showEveryNodes;
   }
 
-  onLabelClick(selectedUnit: FilingHoldingSchemeNode) {
-    if (selectedUnit.id === selectedUnit.vitamId) {
-      this.showNodeDetail.emit(new Pair(selectedUnit.vitamId, true));
-    } else {
-      this.showNodeDetail.emit(new Pair(selectedUnit.vitamId, false));
-    }
+  onLabelClickToSearchUnitsOfNode(selectedUnit: FilingHoldingSchemeNode) {
+    this.searchUnitsOfNode.emit(selectedUnit);
   }
 
-  switchViewAllNodes(): void {
+  switchViewAllNodes() {
     this.showEveryNodes = !this.showEveryNodes;
   }
 
@@ -235,9 +200,73 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return nodeToVitamuiIcon(filingholdingscheme);
   }
 
+  checkNodeClicked(node: FilingHoldingSchemeNode) {
+    if (node) {
+      return node.id === this.selectedNode.id;
+    }
+  }
+
+  private loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes: FilingHoldingSchemeNode[], facets: ResultFacet[]) {
+    this.subscriptions.add(
+      this.leavesTreeService.loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes, facets).subscribe(() => {
+        this.refreshTreeNodes();
+      })
+    );
+  }
+
+  private refreshTreeNodes() {
+    const data = this.nestedDataSourceLeaves.data;
+    this.nestedDataSourceLeaves.data = null;
+    this.nestedDataSourceLeaves.data = data;
+  }
+
+  private firstToggle(node: FilingHoldingSchemeNode): boolean {
+    return this.leavesTreeService.firstToggle(node);
+  }
+
+  private searchUnderNode(parentNode: FilingHoldingSchemeNode) {
+    this.subscriptions.add(
+      this.leavesTreeService.searchUnderNode(parentNode).subscribe(() => {
+        this.refreshTreeNodes();
+      })
+    );
+  }
+
+  private searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
+    this.subscriptions.add(
+      this.leavesTreeService.searchUnderNodeWithSearchCriterias(parentNode).subscribe(() => {
+        this.refreshTreeNodes();
+      })
+    );
+  }
+
+  private searchAtNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
+    this.subscriptions.add(
+      this.leavesTreeService.searchAtNodeWithSearchCriterias(parentNode).subscribe(() => {
+        this.refreshTreeNodes();
+      })
+    );
+  }
+
+  private searchOrphans(parentNode: FilingHoldingSchemeNode) {
+    this.subscriptions.add(
+      this.leavesTreeService.searchOrphans(parentNode).subscribe(() => {
+        this.refreshTreeNodes();
+      })
+    );
+  }
+
+  private searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
+    this.subscriptions.add(
+      this.leavesTreeService.searchOrphansWithSearchCriterias(parentNode).subscribe(() => {
+        this.refreshTreeNodes();
+      })
+    );
+  }
+
   private subscribeOnSearchCriteriasUpdate() {
     this.subscriptions.add(
-      this.archiveSharedDataService.getSearchCriterias().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
+      this.getorixDepositSharedDataService.getSearchCriterias().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
         this.leavesTreeService.setSearchCriterias(searchCriteriaDto);
         this.searchCriterias = searchCriteriaDto;
       })

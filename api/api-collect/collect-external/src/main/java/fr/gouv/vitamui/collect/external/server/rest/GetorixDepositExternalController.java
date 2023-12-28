@@ -29,6 +29,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
+import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.GetorixDepositExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -53,6 +54,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Getter
@@ -103,5 +105,16 @@ public class GetorixDepositExternalController {
         ParameterChecker.checkParameter("Identifier is mandatory : ", getorixDepositDto.getId());
         LOGGER.debug("[External] : Update Getorix Deposit with id :{}", getorixDepositDto.getId());
         return getorixDepositExternalService.update(getorixDepositDto);
+    }
+
+    @ApiOperation(value = "Get the Archive Unit Full Path")
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @GetMapping(CommonConstants.PATH_ID + CommonConstants.FULL_PATH)
+    public List<UnitFullPath> getUnitFullPath(final @PathVariable("id") String unitId) throws
+        PreconditionFailedException {
+        ParameterChecker.checkParameter("the Archive Unit Id is mandatory : ", unitId);
+        SanityChecker.checkSecureParameter(unitId);
+        LOGGER.debug("[EXTERNAL] : Get the full Path of the unit with Id : {}", unitId);
+        return getorixDepositExternalService.getUnitFullPath(unitId);
     }
 }

@@ -25,7 +25,10 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
             {"name": "ROLE_CREATE_GETORIX_DEPOSIT"},
             {"name": "ROLE_UPDATE_GETORIX_DEPOSIT"},
             {"name": "ROLE_DELETE_GETORIX_DEPOSIT"},
-            {"name": "ROLE_CLOSE_TRANSACTIONS"}
+            {"name": "ROLE_CLOSE_TRANSACTIONS"},
+            {"name": "ROLE_GET_PROJECTS"},
+            {"name": "ROLE_GET_ARCHIVE_SEARCH"},
+            {"name": "ROLE_CREATE_PROJECTS"}
          ]
     });
 
@@ -50,7 +53,10 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
             {"name": "ROLE_SEND_TRANSACTIONS"},
             {"name": "ROLE_CLOSE_TRANSACTIONS"},
             {"name": "ROLE_ABORT_TRANSACTIONS"},
-            {"name": "ROLE_REOPEN_TRANSACTIONS"}
+            {"name": "ROLE_REOPEN_TRANSACTIONS"},
+            {"name": "ROLE_GET_PROJECTS"},
+            {"name": "ROLE_GET_ARCHIVE_SEARCH"},
+            {"name": "ROLE_CREATE_PROJECTS"}
          ]
     });
 

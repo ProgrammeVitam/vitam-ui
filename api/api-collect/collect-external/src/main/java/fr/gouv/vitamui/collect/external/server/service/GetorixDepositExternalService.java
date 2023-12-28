@@ -28,6 +28,7 @@
 package fr.gouv.vitamui.collect.external.server.service;
 
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
+import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.internal.client.GetorixDepositInternalRestClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -40,6 +41,8 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -83,5 +86,11 @@ public class GetorixDepositExternalService extends
     public GetorixDepositDto update(final GetorixDepositDto getorixDepositDto) {
         LOGGER.debug("[External] : update the Getorix Deposit details with id : {}", getorixDepositDto.getId());
         return super.update(getorixDepositDto);
+    }
+
+    public List<UnitFullPath> getUnitFullPath(String unitId) {
+        LOGGER.debug("[EXTERNAL] : Get the full Path of the unit with Id : {}", unitId);
+        return getorixDepositInternalRestClient.getUnitFullPath(unitId, getInternalHttpContext())
+            .getBody();
     }
 }

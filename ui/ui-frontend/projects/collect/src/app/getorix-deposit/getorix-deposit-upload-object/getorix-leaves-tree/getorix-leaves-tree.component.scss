@@ -1,0 +1,75 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: start;
+  width: 100%;
+
+  div,
+  mat-tree,
+  mat-tree-node,
+  mat-nested-tree-node {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+    width: 100%;
+  }
+
+  .mat-tree-node {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  mat-nested-tree-node .childs {
+    padding-left: 25px;
+  }
+
+  .tree-getorix-scheme {
+    flex: 1;
+    flex-direction: column;
+    mat-tree-node,
+    mat-nested-tree-node {
+      flex-direction: column;
+    }
+  }
+
+  .load-more-ua {
+    cursor: pointer;
+    color: var(--vitamui-primary);
+    font-family: Mulish;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0.1px;
+  }
+}
+
+.node-selected {
+  background-color: var(--Secondary-Secondary-50, #eaf2fa);
+}
+
+.getorix-scheme-tree-invisible {
+  display: none;
+}
+
+.getorix-schema-tree-node {
+  position: relative;
+  border-bottom: 1px solid transparentize(#979797, 0.7);
+  color: var(--vitamui-secondary-dark-5);
+}
+
+.vertical-line {
+  border-left: 6px solid;
+  color: var(--vitamui-primary);
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  position: relative;
+  left: 0;
+}
+
+.node-not-selected {
+  background-color: #fff;
+}

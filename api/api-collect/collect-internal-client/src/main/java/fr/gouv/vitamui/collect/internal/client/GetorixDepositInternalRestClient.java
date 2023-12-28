@@ -28,12 +28,18 @@
 package fr.gouv.vitamui.collect.internal.client;
 
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
+import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -66,4 +72,15 @@ public class GetorixDepositInternalRestClient extends
         return RestApi.GETORIX_DEPOSIT_PATH;
     }
 
+    private ParameterizedTypeReference<List<UnitFullPath>> getUnitFullPathListClass() {
+        return new ParameterizedTypeReference<>() {
+        };
+    }
+
+    public ResponseEntity<List<UnitFullPath>> getUnitFullPath(String unitId, final InternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + CommonConstants.FULL_PATH);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(unitId), HttpMethod.GET, request, getUnitFullPathListClass());
+    }
 }

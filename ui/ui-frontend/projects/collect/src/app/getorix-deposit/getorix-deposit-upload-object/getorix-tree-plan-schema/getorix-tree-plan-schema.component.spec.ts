@@ -25,63 +25,93 @@
  * accept its terms.
  */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { ArchiveSearchHelperService } from '../../collect/archive-search-collect/archive-search-criteria/services/archive-search-helper.service';
-import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object.component';
+import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { ArchiveCollectService } from '../../../collect/archive-search-collect/archive-collect.service';
+import { GetorixTreePlanSchemaComponent } from './getorix-tree-plan-schema.component';
 
-describe('GetorixDepositUploadObjectComponent', () => {
-  let component: GetorixDepositUploadObjectComponent;
-  let fixture: ComponentFixture<GetorixDepositUploadObjectComponent>;
+describe('GetorixTreePlanSchemaComponent', () => {
+  let component: GetorixTreePlanSchemaComponent;
+  let fixture: ComponentFixture<GetorixTreePlanSchemaComponent>;
 
-  const routerMock = {
-    navigate: () => {},
-    url: 'https://localhost/collect/getorix-deposit/tenant/1/create',
-    params: of({ tenantIdentifier: 1 }),
-    data: of({ appId: 'GETORIX_DEPOSIT_APP' }),
-    events: of({}),
+  const rootNode: FilingHoldingSchemeNode = {
+    id: 'rootId',
+    title: 'RootTitle',
+    type: 'RecordGrp',
+    children: [],
+    vitamId: 'rootId',
+    checked: false,
+    hidden: false,
   };
 
-  const archiveSearchHelperMockService = {
-    buildNodesListForQUery: () => of(),
-    buildFieldsCriteriaListForQUery: () => of(),
-    buildManagementRulesCriteriaListForQuery: () => of(),
+  const rootChildren: FilingHoldingSchemeNode[] = [
+    {
+      id: 'rootChild-1',
+      title: 'RootChild 1',
+      type: 'RecordGrp',
+      children: [],
+      vitamId: 'rootChild-1',
+      checked: false,
+      hidden: false,
+    },
+    {
+      id: 'rootChild-2',
+      title: 'RootChild 2',
+      type: 'RecordGrp',
+      children: [],
+      vitamId: 'rootChild-2',
+      checked: false,
+      hidden: false,
+    },
+  ];
+
+  rootNode.children = rootChildren;
+  rootChildren[0].children = [
+    {
+      id: 'leaf-1',
+      title: 'Leaf 1',
+      type: 'RecordGrp',
+      children: [],
+      vitamId: 'leaf-1',
+      checked: false,
+      hidden: false,
+    },
+    {
+      id: 'leaf-2',
+      title: 'Leaf 2',
+      type: 'RecordGrp',
+      children: [],
+      vitamId: 'leaf-2',
+      checked: false,
+      hidden: false,
+    },
+  ];
+  const nodes = [rootNode];
+
+  const archiveCollectServiceMock = {
+    loadFilingHoldingSchemeTree: () => of(nodes),
+    searchArchiveUnitsByCriteria: () => of(),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GetorixDepositUploadObjectComponent],
-      imports: [HttpClientTestingModule, TranslateModule.forRoot(), InjectorModule, MatSnackBarModule, LoggerModule.forRoot()],
+      declarations: [GetorixTreePlanSchemaComponent],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot(), InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment },
-        { provide: WINDOW_LOCATION, useValue: window.location },
-        {
-          provide: Router,
-          useValue: routerMock,
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            navigate: () => {},
-            params: of({ tenantIdentifier: 1, operationIdentifier: 'operationIdentifier' }),
-            data: of({ appId: 'GETORIX_DEPOSIT_APP' }),
-            events: of({}),
-          },
-        },
-        { provide: ArchiveSearchHelperService, useValue: archiveSearchHelperMockService },
+        { provide: ArchiveCollectService, useValue: archiveCollectServiceMock },
+        { provide: environment, useValue: environment },
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GetorixDepositUploadObjectComponent);
+    fixture = TestBed.createComponent(GetorixTreePlanSchemaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

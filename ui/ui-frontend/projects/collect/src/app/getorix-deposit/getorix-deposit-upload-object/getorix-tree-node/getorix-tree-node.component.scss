@@ -1,0 +1,50 @@
+:host {
+  width: 100%;
+  max-height: 275px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  .arrow {
+    display: flex;
+    justify-content: center;
+  }
+
+  .node-label {
+    flex-grow: 1;
+    padding: 10px 0;
+    color: var(--Grey-Grey-900, #212121);
+    font-family: Mulish;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0.1px;
+  }
+
+  .hover-btn {
+    margin-right: 8px;
+  }
+
+  .pad {
+    margin-right: 5px;
+  }
+}
+
+::ng-deep .custom-checkbox .mat-checkbox-inner-container {
+  display: none;
+}
+
+.icon-css {
+  font-size: 26px;
+  color: var(--Grey-Grey-900, #212121);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.not-clickable {
+  cursor: auto;
+}
