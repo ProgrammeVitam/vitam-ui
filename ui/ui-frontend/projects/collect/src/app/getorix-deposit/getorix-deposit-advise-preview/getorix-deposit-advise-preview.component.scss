@@ -1,0 +1,67 @@
+.text-content {
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 30px;
+}
+
+.text-cadre {
+  border-radius: 5px;
+  background: var(--Additional-Additional-50, #e5e7ff);
+  margin-top: 10px;
+}
+
+.first-text {
+  color: var(--Additional-Additional-900, #000aa3);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  padding: 15px;
+}
+
+.middle-text {
+  color: var(--Grey-Grey-900, #212121);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.advise-text {
+  color: var(--Grey-Grey-900, #212121);
+  font-family: Mulish;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.advise-title {
+  color: var(--Grey-Grey-700, #616161);
+  font-family: Mulish;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 32px;
+  letter-spacing: -0.5px;
+}
+.text-bold {
+  color: var(--Grey-Grey-900, #212121);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.text-weight {
+  color: var(--Additional-Additional-900, #000aa3);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  padding: 15px;
+}
