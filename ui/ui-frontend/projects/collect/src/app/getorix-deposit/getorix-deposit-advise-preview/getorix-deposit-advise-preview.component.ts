@@ -26,6 +26,7 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'getorix-deposit-advise-preview',
@@ -38,14 +39,18 @@ export class GetorixDepositAdvisePreviewComponent implements OnInit {
   @Input()
   valueDetails: string;
 
-  constructor() {}
+  constructor(private translateService: TranslateService) {}
 
-  ngOnInit(): void {
-    console.log('hello', this.valueDetails);
-  }
+  ngOnInit() {}
 
   emitClose() {
     this.previewClose.emit();
+  }
+
+  getTitleValue(titleCode: string) {
+    if (titleCode) {
+      return this.translateService.instant('GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.' + titleCode);
+    }
   }
 
   downloadFile() {
