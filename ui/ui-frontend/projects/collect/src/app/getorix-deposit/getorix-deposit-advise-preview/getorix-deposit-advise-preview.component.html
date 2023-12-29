@@ -1,7 +1,7 @@
 <vitamui-common-sidenav-header
-  [title]="valueDetails"
+  [title]="getTitleValue(valueDetails)"
   [hasToolTipOnTitle]="true"
-  [toolTipTitleText]="valueDetails"
+  [toolTipTitleText]="getTitleValue(valueDetails)"
   [toolTipTitleDuration]="300"
   (onclose)="emitClose()"
   (onDownload)="downloadFile()"
@@ -10,16 +10,178 @@
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
-  hello
-
-  <div>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.' + valueDetails | translate }}</div>
-  <div>{{ valueDetails }}</div>
-  <ng-container> </ng-container>
-
   <div [ngSwitch]="valueDetails">
-    <div *ngSwitchCase="'WICH_CONTENT'" class="text-green">this : WICH_CONTENT</div>
-    <div *ngSwitchCase="'HOW_CHECK_PICTURES'" class="text-orange">this : HOW_CHECK_PICTURES</div>
-    <div *ngSwitchCase="'HOW_CONTENT_NAMES'" class="text-red">this : HOW_CONTENT_NAMES</div>
-    <div *ngSwitchCase="'WICH_FORMATS'" class="text-black">this : WICH_FORMATS</div>
+    <div *ngSwitchCase="'WICH_CONTENT'" class="text-content">
+      <div class="text-cadre">
+        <div class="first-text">
+          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.FIRST_TEXT' | translate }}
+        </div>
+      </div>
+
+      <br />
+
+      <div class="middle-text">
+        <p>
+          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.MIDDLE_TEXT_FIRST' | translate }}
+        </p>
+        <p>
+          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.MIDDLE_TEXT_SECOND' | translate }}
+        </p>
+        <ul>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.MIDDLE_TEXT_ITEM_FIRST' | translate }}</li>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.MIDDLE_TEXT_ITEM_SECOND' | translate }}</li>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.MIDDLE_TEXT_ITEM_THIRD' | translate }}</li>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.MIDDLE_TEXT_ITEM_FOURTH' | translate }}</li>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.MIDDLE_TEXT_ITEM_FIFTH' | translate }}</li>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.MIDDLE_TEXT_ITEM_SIXTH' | translate }}</li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="advise-title">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.ADVISE' | translate }}</p>
+        <p class="advise-text">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.ADVISE_DUPLICATE' | translate }}</p>
+        <ul class="middle-text">
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.ADVISE_DUPLICATE_TEXT_FIRST' | translate }}</li>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.ADVISE_DUPLICATE_TEXT_SECOND' | translate }}</li>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.ADVISE_DUPLICATE_TEXT_THIRD' | translate }}</li>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.ADVISE_DUPLICATE_TEXT_FOURTH' | translate }}</li>
+          <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.ADVISE_DUPLICATE_TEXT_FIFTH' | translate }}</li>
+        </ul>
+        <p class="advise-text">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.ADVISE_DELETE' | translate }}</p>
+        <p class="middle-text">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.ADVISE_DELETE_TEXT' | translate }}</p>
+      </div>
+      <div class="text-cadre">
+        <div class="first-text">
+          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.LAST_TEXT_FIRST' | translate }}
+        </div>
+        <div class="first-text">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT_TEXT.LAST_TEXT_SECOND' | translate }}</div>
+      </div>
+
+      <br />
+      <br />
+    </div>
+    <div *ngSwitchCase="'HOW_CHECK_PICTURES'" class="text-content">
+      <p class="advise-text" [ngStyle]="{ 'font-size': '16px' }">
+        {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CHECK_PICTURES_TEXT.HOW_CHECK_PICTURES_TEXT_FIRST' | translate }}
+      </p>
+
+      <p class="middle-text">
+        {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CHECK_PICTURES_TEXT.HOW_CHECK_PICTURES_TEXT_SECOND' | translate }}
+      </p>
+      <ul class="middle-text">
+        <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CHECK_PICTURES_TEXT.HOW_CHECK_PICTURES_TEXT_THIRD' | translate }}</li>
+        <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CHECK_PICTURES_TEXT.HOW_CHECK_PICTURES_TEXT_FOURTH' | translate }}</li>
+        <li>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CHECK_PICTURES_TEXT.HOW_CHECK_PICTURES_TEXT_FIFTH' | translate }}</li>
+      </ul>
+    </div>
+    <div *ngSwitchCase="'HOW_CONTENT_NAMES'" class="text-content">
+      <div class="middle-text">
+        <p>
+          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_FIRST_1' | translate }}
+          <span class="text-bold">
+            {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_FIRST_2' | translate }}</span
+          >
+        </p>
+        <p>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_SECOND' | translate }}</p>
+        <p>
+          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_THIRD_1' | translate }}
+          <span class="text-bold">{{
+            'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_THIRD_2' | translate
+          }}</span>
+          {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_THIRD_3' | translate }}
+        </p>
+      </div>
+
+      <div class="advise-text">
+        <p>{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES' | translate }}</p>
+      </div>
+      <div class="middle-text">
+        <ul>
+          <li>
+            <span class="text-bold">
+              {{
+                'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_FIRST_1' | translate
+              }}</span
+            >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_FIRST_2' | translate }}
+          </li>
+
+          <li>
+            <span class="text-bold">
+              {{
+                'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_SECOND_1' | translate
+              }}</span
+            >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_SECOND_2' | translate }}
+          </li>
+
+          <li>
+            <span class="text-bold">
+              {{
+                'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_THIRD_1' | translate
+              }}</span
+            >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_THIRD_2' | translate }}
+          </li>
+
+          <li>
+            <span class="text-bold">
+              {{
+                'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_FOURTH_1' | translate
+              }}</span
+            >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_FOURTH_2' | translate }}
+            <span class="text-bold">{{
+              'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_FOURTH_3' | translate
+            }}</span>
+            (, ; : ! ? ’ / \ : * " ‹ › % ( ) @ & ; ...),
+            <span>{{
+              'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_FOURTH_4' | translate
+            }}</span>
+          </li>
+
+          <li>
+            <span class="text-bold">
+              {{
+                'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_FIFTH_1' | translate
+              }}</span
+            >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_FIFTH_2' | translate }}
+          </li>
+
+          <li>
+            <span class="text-bold">
+              {{
+                'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_SIXTH_1' | translate
+              }}</span
+            >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_SIXTH_2' | translate }}
+          </li>
+
+          <li>
+            <span class="text-bold">
+              {{
+                'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_SEVENTH_1' | translate
+              }}</span
+            >{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_PRACTICES_SEVENTH_2' | translate }}
+          </li>
+        </ul>
+      </div>
+      <br />
+      <div class="text-cadre">
+        <div>
+          <p class="text-weight">
+            {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_LAST_1' | translate }}
+            <span class="first-text" [ngStyle]="{ padding: '0px' }">
+              {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.HOW_CONTENT_NAMES_TEXT.HOW_CONTENT_NAMES_TEXT_LAST_2' | translate }}</span
+            >
+          </p>
+        </div>
+      </div>
+
+      <br />
+    </div>
+    <div *ngSwitchCase="'WICH_FORMATS'" class="text-content">
+      <p class="advise-text" [ngStyle]="{ 'font-size': '16px' }">
+        {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_FORMATS_TEXT.WICH_FORMATS_TEXT_FIRST' | translate }}
+      </p>
+
+      <p class="middle-text">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_FORMATS_TEXT.WICH_FORMATS_TEXT_SECOND' | translate }}</p>
+      <p class="middle-text">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_FORMATS_TEXT.WICH_FORMATS_TEXT_THIRD' | translate }}</p>
+    </div>
   </div>
 </div>

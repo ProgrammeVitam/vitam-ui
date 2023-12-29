@@ -26,7 +26,8 @@
           matTooltipClass="vitamui-tooltip"
           [matTooltipShowDelay]="toolTipTitleDuration"
         >
-          <h5 class="m-0 text-primary">{{ title }}</h5>
+          <h5 class="m-0 text-primary" *ngIf="!hasDownloadLink">{{ title }}</h5>
+          <div class="getorix-title" *ngIf="hasDownloadLink">{{ title }}</div>
           <p class="text large light m-0">{{ subtitle }}</p>
         </div>
         <div *ngIf="!hasToolTipOnTitle || !toolTipTitleText || !toolTipTitleDuration">
@@ -43,7 +44,11 @@
         <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
       </div>
     </div>
-    <div (click)="onDownload.emit()" class="download-link" *ngIf="hasDownloadLink">{{ 'PREVIEW_PANEL.DOWNLOAD_LINK' | translate }}</div>
+    <div *ngIf="hasDownloadLink">
+      <span (click)="onDownload.emit()" class="download-link">
+        {{ 'PREVIEW_PANEL.DOWNLOAD_LINK' | translate }}
+      </span>
+    </div>
   </div>
 </div>
 

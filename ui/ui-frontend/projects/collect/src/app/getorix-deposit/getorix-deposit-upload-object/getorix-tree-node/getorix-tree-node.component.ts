@@ -42,11 +42,16 @@ export class GetorixTreeNodeComponent implements OnInit {
   @Input() expanded: boolean;
   @Input() disabled: boolean;
   @Output() nodeToggle = new EventEmitter<void>();
+  @Output() firstNodeToggle = new EventEmitter<void>();
   @Output() labelClickToSearchUnits = new EventEmitter<FilingHoldingSchemeNode>();
 
   constructor(private getorixDepositSharedDataService: GetorixDepositSharedDataService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.expanded) {
+      this.showFirstNodeChildren();
+    }
+  }
 
   onLabelClick(nodeSelected: FilingHoldingSchemeNode) {
     if (nodeSelected?.unitType === INGEST && nodeSelected.descriptionLevel === ITEM) {
@@ -59,5 +64,9 @@ export class GetorixTreeNodeComponent implements OnInit {
       }
       this.labelClickToSearchUnits.emit(nodeSelected);
     }
+  }
+
+  showFirstNodeChildren() {
+    this.firstNodeToggle.emit();
   }
 }
