@@ -114,6 +114,6 @@ export class DisplayRuleHelperService {
   }
 
   public convertDataPathToSchemaPath(dataPath: string): string {
-    return dataPath ? dataPath.replace(/\[\d+\]/, '') : dataPath;
+    return dataPath ? dataPath.replace(/\[\d+\]/g, '') : dataPath;
   }
 }
