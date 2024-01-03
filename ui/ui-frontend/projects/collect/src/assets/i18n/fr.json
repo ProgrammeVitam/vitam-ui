@@ -28,6 +28,14 @@
         "HIDE_TREE" :"Réduire l'arborescence",
         "MY_ARCHIVES" : "Mes archives",
         "LOAD_MORE_UNITS": "Voir plus d'éléments"
+      },
+      "UNIT_ACTION" : {
+        "SHOW_DETAILS" : "Lire les informations",
+        "COMMENT" : "Commenter",
+        "RENAME" : "Renommer",
+        "MOVE" : "Déplacer vers",
+        "DELETE" : "Supprimer",
+        "IMPORT" : "Importer"
       }  
     },
     "CREATION_PROCESS": {
