@@ -119,9 +119,8 @@
                 (click)="checkParentBoxChange($event)"
               />
             </div>
-            <div class="col"></div>
 
-            <div class="col-7 d-flex align-items-center padding-css">
+            <div class="col-6 d-flex align-items-center padding-css">
               {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.NAME' | translate }}
               <vitamui-common-order-by-button
                 orderByKey="Title"
@@ -132,22 +131,80 @@
               </vitamui-common-order-by-button>
             </div>
             <div class="col"></div>
-            <div class="col-3 selected-elements" *ngIf="numberOfSelectedElements > 0">
-              {{ numberOfSelectedElements }} {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.SELECTED_ELEMENTS' | translate }}
-              <i (click)="editUnits()" class="vitamui-icon vitamui-icon-edit icon-action"></i
-              ><i class="vitamui-icon vitamui-icon-arrow-right2 icon-action" (click)="reclassifyUnits()"></i>
-              <i class="vitamui-icon vitamui-icon-delete icon-action" (click)="deleteUnits()"></i>
-            </div>
-            <div class="col-3" *ngIf="numberOfSelectedElements === 0"></div>
 
-            <div class="col">
-              <i (click)="uploadNewObject()" class="material-icons icon-action clickable icon-size">add_circle</i>
+            <div class="col-5" [ngStyle]="{ 'text-align': 'end' }">
+              <span class="selected-elements" *ngIf="numberOfSelectedElements > 0"
+                >{{ numberOfSelectedElements }} {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.SELECTED_ELEMENTS' | translate }}</span
+              >
+
+              <i
+                matTooltip="{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.SHOW_DETAILS' | translate }}"
+                matTooltipClass="getorix-tooltip"
+                [matTooltipShowDelay]="300"
+                matTooltipPosition="above"
+                class="material-icons icon-action"
+                *ngIf="numberOfSelectedElements > 0"
+                >info
+              </i>
+              <i
+                matTooltip="{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.COMMENT' | translate }}"
+                matTooltipClass="getorix-tooltip"
+                [matTooltipShowDelay]="300"
+                matTooltipPosition="above"
+                class="material-icons icon-action"
+                *ngIf="numberOfSelectedElements > 0"
+                >message
+              </i>
+              <i
+                matTooltip="{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.RENAME' | translate }}"
+                matTooltipClass="getorix-tooltip"
+                [matTooltipShowDelay]="300"
+                matTooltipPosition="above"
+                (click)="editUnits()"
+                class="material-icons icon-action"
+                *ngIf="numberOfSelectedElements > 0"
+                >edit
+              </i>
+
+              <i
+                matTooltip="{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.MOVE' | translate }}"
+                matTooltipClass="getorix-tooltip"
+                [matTooltipShowDelay]="300"
+                matTooltipPosition="above"
+                (click)="reclassifyUnits()"
+                class="material-icons icon-action"
+                *ngIf="numberOfSelectedElements > 0"
+                >arrow_forward
+              </i>
+
+              <i
+                matTooltip="{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.DELETE' | translate }}"
+                matTooltipClass="getorix-tooltip"
+                [matTooltipShowDelay]="300"
+                matTooltipPosition="above"
+                (click)="deleteUnits()"
+                class="material-icons icon-action"
+                *ngIf="numberOfSelectedElements > 0"
+                [ngStyle]="{ 'padding-right': '10px' }"
+                >delete
+              </i>
+
+              <i
+                matTooltip="{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.IMPORT' | translate }}"
+                matTooltipClass="getorix-tooltip"
+                [matTooltipShowDelay]="300"
+                matTooltipPosition="above"
+                (click)="uploadNewObject()"
+                class="material-icons clickable icon-size"
+                >add_circle</i
+              >
             </div>
           </div>
 
           <div class="vitamui-table-body">
             <div class="vitamui-table-rows" *ngFor="let archiveUnit of archiveUnits">
               <div
+                (contextmenu)="onRightClick($event, archiveUnit)"
                 class="vitamui-row d-flex align-items-center"
                 (mouseenter)="onMouseOverOnUnitRow(archiveUnit)"
                 (mouseleave)="onMouseLeaveOnUnitRow(archiveUnit)"
@@ -180,11 +237,29 @@
                     </ng-container>
                   </span>
                 </div>
-                <div class="col-10 d-flex align-items-center">
+                <div class="col-6 d-flex align-items-center">
                   {{ archiveUnit?.Title }}
                 </div>
+                <div class="col-5"></div>
                 <div class="col"></div>
-                <div class="col"></div>
+
+                <div
+                  style="visibility: hidden; position: fixed"
+                  [style.left.px]="menuTopLeftPosition.x"
+                  [style.top.px]="menuTopLeftPosition.y"
+                  [matMenuTriggerFor]="unitActionMenu"
+                  #matUnitActionMenuTrigger
+                ></div>
+                <mat-menu #unitActionMenu="matMenu" class="unit-action-menu">
+                  <button mat-menu-item>{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.SHOW_DETAILS' | translate }}</button>
+                  <button mat-menu-item>{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.COMMENT' | translate }}</button>
+                  <button mat-menu-item>{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.RENAME' | translate }}</button>
+                  <button mat-menu-item>{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.MOVE' | translate }}</button>
+                  <button mat-menu-item class="delete-text">
+                    {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.DELETE' | translate }}
+                    <i class="vitamui-icon vitamui-icon-delete vitamui-row-icon delete-css"></i>
+                  </button>
+                </mat-menu>
               </div>
             </div>
           </div>

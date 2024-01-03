@@ -123,6 +123,11 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
 
   isLoadUnitPath = false;
 
+  menuTopLeftPosition = { x: 0, y: 0 };
+
+  @ViewChild('matUnitActionMenuTrigger', { read: MatMenuTrigger, static: false })
+  matUnitActionMenuTrigger: MatMenuTrigger;
+
   constructor(
     private route: ActivatedRoute,
     globalEventService: GlobalEventService,
@@ -570,5 +575,15 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
 
   openNodeChildrenMenu() {
     this.childrenMenuMenuTrigger.openMenu();
+  }
+
+  onRightClick(event: MouseEvent, item: any) {
+    console.log('test', item);
+    event.preventDefault();
+
+    this.menuTopLeftPosition.x = event.clientX;
+    this.menuTopLeftPosition.y = event.clientY;
+
+    this.matUnitActionMenuTrigger.openMenu();
   }
 }
