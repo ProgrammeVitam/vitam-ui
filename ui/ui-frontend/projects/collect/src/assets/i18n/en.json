@@ -28,7 +28,15 @@
         "HIDE_TREE" :"Collapse tree",
         "MY_ARCHIVES" : "My archives",
         "LOAD_MORE_UNITS": "Show more elements"
-      }   
+      },
+      "UNIT_ACTION" : {
+        "SHOW_DETAILS" : "Read the informations",
+        "COMMENT" : "Comment",
+        "RENAME" : "Rename",
+        "MOVE" : "Move to",
+        "DELETE" : "Delete",
+        "IMPORT" : "Import"
+      }    
     },
     "CREATION_PROCESS": {
       "SUCCESS" : {
