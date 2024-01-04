@@ -4,6 +4,8 @@ db = db.getSiblingDB("cas");
 
 print("START 037_enable_oidc_code_grant_type_on_referential_service_ref.js");
 
+db.services.deleteOne({ "clientId": "{{ vitamui.referential.clientId | default('referential') }}" });
+
 var serviceWithMaxId = db.services.aggregate([
     { $sort: { _id: -1 } },
     { $limit: 1 }

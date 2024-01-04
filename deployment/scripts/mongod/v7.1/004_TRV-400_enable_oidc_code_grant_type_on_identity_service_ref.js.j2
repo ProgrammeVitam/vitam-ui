@@ -4,6 +4,8 @@ db = db.getSiblingDB("cas");
 
 print("START 004_TRV-400_enable_oidc_code_grant_type_on_identity_service_ref.js");
 
+db.services.deleteOne({ "clientId": "{{ vitamui.identity.clientId | default('identity') }}" });
+
 var serviceWithMaxId = db.services.aggregate([
     { $sort: { _id: -1 } },
     { $limit: 1 }
